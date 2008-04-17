@@ -1,0 +1,38 @@
+* This plugin is for using the native Quicktime synthesizer in TuxGuitar on mac OS X. It requires a version of TuxGuitar 0.9 or better (CVS).
+
+The provided prebuilt binaries will probably only work in 10.4, it may however be possible to build it on 10.3 (I am not sure)
+
++------------------------------------+
+| To install the provided binaries:  |
++------------------------------------+
+
+Right-click on 'TuxGuitar.app', choose 'Show Package Contents'
+
+copy file called 'tuxguitar-coreaudio-jni.jnilib' into 'TuxGuitar.app/Contents/MacOS/'
+copy file called 'tuxguitar-coreaudio.jar' into 'TuxGuitar.app/Contents/MacOS/share/plugins/'
+
+open TuxGuitar
+open menu 'Tools > Settings' and select midi port 'CoreAudio' in the 'Sound' section
+
++----------------------------------+
+| To build the plugin from source  |
++----------------------------------+
+
+----------------------- Building TuxGuitar itself -----------------------
+
+	if you are using a CVS checkout do this first:
+	cd into TuxGuitar cvs source checkout
+	type 'ant -Ddist.version=mac'
+	this will produce a source archive that you will use to build TuxGuitar.
+	
+unzip source archive and cd into created folder
+get itex and swt libs, place them in a 'lib' folder inside main TuxGuitar-mac-src source folder
+edit build.properties, uncomment mac settings, comment all others
+type 'ant'
+
+------------------------ CoreAudio plugin ---------------------
+cd into TuxGuitar-CoreAudio
+Open build.properties and edit it so it has the right path to the TuxGuitar directory where you built from source.
+type 'ant'
+
+To install, follow above procedure.
