@@ -1,0 +1,84 @@
+diff -Naur src-orig/org/eclipse/swt/internal/gtk/OS.java src-updated/org/eclipse/swt/internal/gtk/OS.java
+--- src-orig/org/eclipse/swt/internal/gtk/OS.java	2007-05-31 18:04:38.000000000 -0300
++++ src-updated/org/eclipse/swt/internal/gtk/OS.java	2007-10-12 15:13:09.000000000 -0300
+@@ -6145,6 +6145,15 @@
+ 		lock.unlock();
+ 	}
+ }
++public static final native int _gtk_paper_size_free(int paper_size);
++public static final int gtk_paper_size_free(int paper_size) {
++	lock.lock();
++	try {
++		return _gtk_paper_size_free(paper_size);
++	} finally {
++		lock.unlock();
++	}
++}
+ public static final native int /*long*/ _gtk_paper_size_get_name(int /*long*/ size);
+ public static final int /*long*/ gtk_paper_size_get_name(int /*long*/ size) {
+ 	lock.lock();
+diff -Naur src-orig/org/eclipse/swt/printing/Printer.java src-updated/org/eclipse/swt/printing/Printer.java
+--- src-orig/org/eclipse/swt/printing/Printer.java	2007-05-31 18:04:28.000000000 -0300
++++ src-updated/org/eclipse/swt/printing/Printer.java	2007-10-12 15:14:23.000000000 -0300
+@@ -691,7 +691,7 @@
+ 			paper_size = OS.gtk_paper_size_new(name);
+ 		}
+ 		OS.gtk_page_setup_set_paper_size(pageSetup, paper_size);
+-		OS.g_free(paper_size);
++		OS.gtk_paper_size_free(paper_size);
+ 	}
+ 	
+ 	/* Set values of settings from PrinterData. */
+diff -Naur src-orig/os.c src-updated/os.c
+--- src-orig/os.c	2007-04-26 14:03:00.000000000 -0300
++++ src-updated/os.c	2007-10-12 14:57:59.000000000 -0300
+@@ -10321,6 +10321,16 @@
+ }
+ #endif
+ 
++#ifndef NO__1gtk_1paper_1size_1free
++JNIEXPORT void JNICALL OS_NATIVE(_1gtk_1paper_1size_1free)
++	(JNIEnv *env, jclass that, jint arg0)
++{
++	OS_NATIVE_ENTER(env, that, _1gtk_1paper_1size_1free_FUNC);
++	gtk_paper_size_free( (GtkPaperSize *)arg0 );
++	OS_NATIVE_EXIT(env, that, _1gtk_1paper_1size_1free_FUNC);
++}
++#endif
++
+ #ifndef NO__1gtk_1plug_1get_1id
+ JNIEXPORT jint JNICALL OS_NATIVE(_1gtk_1plug_1get_1id)
+ 	(JNIEnv *env, jclass that, jint arg0)
+diff -Naur src-orig/os_custom.h src-updated/os_custom.h
+--- src-orig/os_custom.h	2007-05-31 18:04:22.000000000 -0300
++++ src-updated/os_custom.h	2007-10-12 14:27:50.000000000 -0300
+@@ -133,6 +133,7 @@
+ #define gtk_paper_size_new_LIB "libgtk-x11-2.0.so.0"
+ #define gtk_paper_size_new_custom_LIB "libgtk-x11-2.0.so.0"
+ #define gtk_paper_size_new_from_ppd_LIB "libgtk-x11-2.0.so.0"
++#define gtk_paper_size_free_LIB "libgtk-x11-2.0.so.0"
+ #define gtk_print_job_get_printer_LIB "libgtk-x11-2.0.so.0"
+ #define gtk_print_job_get_settings_LIB "libgtk-x11-2.0.so.0"
+ #define gtk_print_job_get_status_LIB "libgtk-x11-2.0.so.0"
+diff -Naur src-orig/os_stats.c src-updated/os_stats.c
+--- src-orig/os_stats.c	2007-04-26 14:03:00.000000000 -0300
++++ src-updated/os_stats.c	2007-10-12 14:22:08.000000000 -0300
+@@ -725,6 +725,7 @@
+ 	"_1gtk_1paper_1size_1new",
+ 	"_1gtk_1paper_1size_1new_1custom",
+ 	"_1gtk_1paper_1size_1new_1from_1ppd",
++	"_1gtk_1paper_1size_1free",
+ 	"_1gtk_1plug_1get_1id",
+ 	"_1gtk_1plug_1new",
+ 	"_1gtk_1print_1job_1get_1printer",
+diff -Naur src-orig/os_stats.h src-updated/os_stats.h
+--- src-orig/os_stats.h	2007-04-26 14:03:00.000000000 -0300
++++ src-updated/os_stats.h	2007-10-12 14:20:47.000000000 -0300
+@@ -733,6 +733,7 @@
+ 	_1gtk_1paper_1size_1new_FUNC,
+ 	_1gtk_1paper_1size_1new_1custom_FUNC,
+ 	_1gtk_1paper_1size_1new_1from_1ppd_FUNC,
++	_1gtk_1paper_1size_1free_FUNC,
+ 	_1gtk_1plug_1get_1id_FUNC,
+ 	_1gtk_1plug_1new_FUNC,
+ 	_1gtk_1print_1job_1get_1printer_FUNC,

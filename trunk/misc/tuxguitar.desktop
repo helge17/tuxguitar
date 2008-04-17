@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=tuxguitar
+Comment=Edit, playback guitar tablatures
+Comment[fr]=Edite et joue des tablatures de guitare
+Exec=tuxguitar
+Icon=tuxguitar
+Terminal=false
+Type=Application
+Categories=AudioVideo;Audio;
+MimeType=audio/midi;
+
+#eof "$Id: tuxguitar.desktop,v 1.2 2008/03/22 23:32:25 rzr Exp $"
