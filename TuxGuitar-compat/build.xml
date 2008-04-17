@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar-compat" basedir="." default="all">
+    <description>
+    	TuxGuitar file format compatibility
+    </description>
+		
+	<property file="build.properties" />
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />	
+	<property name="build.jar" value="tuxguitar-compat.jar" />
+	
+	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
+	<property name="service.provider" value="org.herac.tuxguitar.io.tg.TGPluginListImpl" />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar}"/>
+		<pathelement location="${path.swt}"/>
+    </path >
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="build" depends="init">		
+        <echo>+-------------------------------------------------+</echo>
+        <echo>|          B U I L D I N G   P L U G I N          |</echo>
+        <echo>+-------------------------------------------------+</echo>		
+	    
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="false" >
+	    	<classpath refid="class.path"/>
+	    	<include name="**/*.java"/>
+	    </javac>
+		
+		<mkdir dir="${build.dir}/META-INF/services" />
+		<echo file="${build.dir}/META-INF/services/${service.class}" append="false">${service.provider}</echo>
+		
+        <echo>+-----------------------------------------------+</echo>
+        <echo>|        P A C K A G I N G   P L U G I N        |</echo>
+        <echo>+-----------------------------------------------+</echo>
+	
+		<jar destfile="${build.jar}" basedir="${build.dir}" />
+		<delete quiet="true" dir="${build.dir}" />
+	</target>
+		
+	<target name="clean">
+		<delete quiet="true" dir="${build.dir}" />
+		<delete quiet="true" file="${build.jar}" />
+	</target>
+	
+	<target name="all" depends="build" />	
+</project>
