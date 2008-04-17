@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Tux Guitar" basedir="." >
+    <description>
+        Tux-Guitar
+    </description>
+
+	<property name="file.script" value="tuxguitar.bat" />
+	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
+	<property name="file.description" value="${build.path}${file.separator}about_description.dist" />
+	
+	<path id="class.path">
+		<fileset file="${lib.janel-ant.jar}" />
+    </path >	
+		
+	<target name="clean" >	
+		<delete quiet="true" file="${file.script}" />
+		<delete quiet="true" file="tuxguitar.exe" />
+		<delete quiet="true" file="tuxguitar.lap" />		
+	</target>	
+	
+	<target name="install" >	
+		<mkdir dir="${dist.dst.path}${dist.bin.path}" />
+		<copy todir="${dist.dst.path}${dist.bin.path}">
+			<fileset file="${file.script}"/>
+		    <fileset file="tuxguitar.exe"/>
+		    <fileset file="tuxguitar.lap"/>	
+		</copy>	
+	</target>
+	
+	
+	<target name="build" >
+		<echo file="${file.properties}" append="false">font.default=Times New Roman,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Small Fonts,6,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Arial,10,1${line.separator}</echo>				
+		<echo file="${file.properties}" append="true">font.printer.default=Times New Roman,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.note=Small Fonts,5,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Arial,8,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">browser.lines-visible=false${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=Real Time Sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
+
+		
+		<echo file="${file.description}" append="true">${line.separator}</echo>
+		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
+		
+		<echo file="${file.script}" append="false">cd "."${line.separator}</echo>	
+		<echo file="${file.script}" append="true">javaw -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>	
+		<chmod file="${file.script}" perm="755"/>		
+				
+		<available property="janel.enabled" classname="net.sf.janel.ant.JanelTask" classpathref="class.path" />
+		<antcall target="janel.build" />
+	</target>		
+
+	<target name="janel.build" if="janel.enabled">				
+		<taskdef name="janel" classpathref="class.path" classname="net.sf.janel.ant.JanelTask"/>
+		<janel exeType="windows" 
+			   exe="tuxguitar.exe" 
+			   smallIcon="${share.dir}${file.separator}skins${file.separator}Lavender${file.separator}icon-16x16.png" 
+			   bigIcon="${share.dir}${file.separator}skins${file.separator}Lavender${file.separator}icon-96x96.png"
+		/>	
+		<echo file="tuxguitar.lap" append="false">-Djava.class.path=${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path}${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># Java class to call, ex. mypackage.Start or mypackage/Start${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">janel.main.class=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># the minimum version of the JVM, ex. 1.4.1${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">janel.min.java.version=1.4.2${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># the path to be added to Java system property java.library.path. which is used to locate native DLLs. Multiple${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># instances of this property may be used.${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">janel.library.path.dir=${lib.swt.jni}${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># overrides the default error text ("Error in Java launcher.") with a custom error message.${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">janel.error.default.text=Error in TuxGuitar${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># allows the detailed error messages to be disabled (true/false, yes/no - defaults to true). If true, the default${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># error message will be displayed followed by the details.${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">janel.error.show.detail=true${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true"># sets the max memory via -Xmx as percent of total physical memory. See above for percent explanation.${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
+		<echo file="tuxguitar.lap" append="true">janel.memory.max.total.percent=50${line.separator}</echo>
+	</target>	
+	
+	<target name="package" />
+	
+</project>

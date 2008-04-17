@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scales>
+	<scale name="Major Scale" keys="1,3,5,6,8,10,12" />
+	<scale name="Pentatonic Major Scale" keys="1,3,5,8,10" />
+	<scale name="Blues Major Scale" keys="1,4,6,7,8,10" />
+	<scale name="Minor Scale" keys="1,3,4,6,8,9,11" />
+	<scale name="Melodic Minor Scale" keys="1,3,4,6,8,10,12" />
+	<scale name="Harmonic Minor Scale" keys="1,3,4,6,8,9,12" />
+	<scale name="Pentatonic Minor Scale" keys="1,4,6,8,11" />
+	<scale name="Blues Minor Scale" keys="1,4,6,7,8,11" />
+	<scale name="Augmented Scale" keys="1,4,5,8,9,12" />
+	<scale name="Be-Bop Scale" keys="1,3,5,6,8,10,11,12" />
+	<scale name="Chromatic Scale" keys="1,2,3,4,5,6,7,8,9,10,11,12" />
+	<scale name="Whole-Half Scale" keys="1,3,4,6,7,9,10,12" />
+	<scale name="Half-Whole Scale" keys="1,2,4,5,7,8,10,11" />
+	<scale name="Whole Tone Scale" keys="1,3,5,7,9,11" />
+	<scale name="Augmented fifth Scale" keys="1,3,5,6,8,9,10,12" />
+	<scale name="Algerian Scale" keys="1,3,4,7,8,9,12"  />
+	<scale name="Arabian Scale" keys="1,3,5,6,7,9,11" />
+	<scale name="Balinese Scale" keys="1,2,4,8,9" />
+	<scale name="Bartok Scale" keys="1,3,5,7,8,10,11" />
+	<scale name="Byzantine Scale" keys="1,2,5,6,8,9,12" />
+	<scale name="Chinese Scale" keys="1,3,5,8,10" />
+	<scale name="Egyptian Scale" keys="1,3,6,8,11" />
+	<scale name="Enigmatic Scale" keys="1,2,5,7,9,11,12" />
+	<scale name="Spanish Scale" keys="1,2,5,6,8,9,11" />
+	<scale name="Spanish 8 Tone Scale" keys="1,2,4,5,6,7,9,11" />
+	<scale name="Ethiopian Scale" keys="1,3,4,6,8,9,11" />
+	<scale name="Gypsy Scale" keys="1,2,5,6,8,10,11" />
+	<scale name="Hungarian Gypsy Scale" keys="1,3,4,7,8,9,11" />
+	<scale name="Hindu Scale" keys="1,3,5,6,8,9,11" />
+	<scale name="Iwato Scale" keys="1,2,6,7,11" />
+	<scale name="Japanese Scale" keys="1,2,6,8,9" />
+	<scale name="Javanese Scale" keys="1,2,4,6,8,10,11" />
+	<scale name="Jewish Scale" keys="1,2,5,6,8,9,11" />
+	<scale name="Hawaiian Scale" keys="1,3,4,6,8,10,12" />
+	<scale name="Hirajoshi Scale" keys="1,3,4,8,9" />
+	<scale name="Hungarian Minor Scale" keys="1,3,4,7,8,9,12" />
+	<scale name="Hungarian Major Scale" keys="1,4,5,7,8,10,11" />
+	<scale name="Kumoi Scale" keys="1,2,6,8,9" />
+	<scale name="Leading Whole Tone Scale" keys="1,3,5,7,9,11,12" />
+	<scale name="Mohammedan Scale" keys="1,3,4,6,8,9,12" />
+	<scale name="Mongolian Scale" keys="1,3,5,8,10" />
+	<scale name="Neapolitan Minor Scale" keys="1,2,4,6,8,9,12" />
+	<scale name="Neapolitan Major Scale" keys="1,2,4,6,8,10,12" />
+	<scale name="Oriental Scale" keys="1,2,5,6,7,10,11" />
+	<scale name="Overtone Scale" keys="1,3,5,7,8,10,11" />
+	<scale name="Pelog Scale" keys="1,2,4,8,11" />
+	<scale name="Persian Scale" keys="1,2,5,6,7,9,12" />
+	<scale name="Ionian Mode" keys="1,3,5,6,8,10,12" />
+	<scale name="Dorian Mode" keys="1,3,4,6,8,10,11" />
+	<scale name="Phrygian Mode" keys="1,2,4,6,8,9,11" />
+	<scale name="Lydian Mode" keys="1,3,5,7,8,10,12" />
+	<scale name="Mixolydian Mode" keys="1,3,5,6,8,10,11" />
+	<scale name="Aeolian Mode" keys="1,3,4,6,8,9,11" />
+	<scale name="Locrian Mode" keys="1,2,4,6,7,9,11" />
+	<scale name="Ionian Harmonic Mode" keys="1,3,4,6,8,9,12" />
+	<scale name="Locrian Nat 6 Mode" keys="1,2,4,6,7,10,11" />
+	<scale name="Major Sharp 5 Mode" keys="1,3,5,6,9,10,12" />
+	<scale name="Dorian Sharp 4 Mode" keys="1,3,4,7,8,10,11" />
+	<scale name="Phrygian Major Mode" keys="1,2,5,6,8,9,11" />
+	<scale name="Lydian Sharp 2 mode" keys="1,4,5,7,8,10,12" />
+	<scale name="Superlocrian Double Flat 7 Mode" keys="1,2,4,5,7,9,10" />
+	<scale name="Jazz Minor Mode" keys="1,3,4,6,8,10,12" />
+	<scale name="Dorian b2 Minor Mode" keys="1,2,4,6,8,10,12" />
+	<scale name="Lydian Augmented Minor Mode" keys="1,3,5,7,9,10,12" />
+	<scale name="Lydian Flat 7 Minor Mode" keys="1,3,5,7,8,10,11" />
+	<scale name="Mixolydian Flat 6 Minor Mode" keys="1,3,5,6,8,9,11" />
+	<scale name="Locrian Sharp 2 Minor Mode" keys="1,3,4,6,7,9,11" />
+	<scale name="Superlocrian Minor Mode" keys="1,2,4,5,7,9,11" />
+	<scale name="Pentatonic Majeur Mode" keys="1,3,5,8,10" />
+	<scale name="Pentatonic Mode 2" keys="1,3,6,8,11" />
+	<scale name="Pentatonic Mode 3" keys="1,4,6,9,11" />
+	<scale name="Pentatonic Mode 4" keys="1,3,6,8,10" />
+	<scale name="Pentatonic Dominant Mode" keys="1,3,5,8,11" />
+	<scale name="Pentatonic Minor Mode" keys="1,4,6,8,11" />
+	<scale name="Altered Pentatonic Mode" keys="1,2,5,8,10" />
+	<scale name="Blues Mode" keys="1,4,6,7,8,10" />
+	<scale name="Major Arpeggio" keys="1,5,8" />
+	<scale name="Minor Arpeggio" keys="1,4,8" />
+	<scale name="Major 7th Major Arpeggio" keys="1,5,8,12" />
+	<scale name="Major 7th Minor Arpeggio" keys="1,5,8,11" />
+	<scale name="Minor 7th Major Arpeggio" keys="1,4,8,12" />
+	<scale name="Minor 7th Minor Arpeggio" keys="1,4,8,11" />
+	<scale name="Major 9th Arpeggio" keys="1,3,5,8,11" />
+	<scale name="Minor 9th Arpeggio" keys="1,3,4,8,11" />
+	<scale name="Major 11th Arpeggio" keys="1,3,5,6,8,11" />
+	<scale name="Minor 11th Arpeggio" keys="1,3,4,6,8,11" />
+	<scale name="Major 13th Arpeggio" keys="1,3,5,6,8,10,11" />
+	<scale name="Minor 13th Arpeggio" keys="1,3,4,6,8,10,11" />
+	<scale name="Augmented Arpeggio" keys="1,5,9" />
+	<scale name="Diminished Arpeggio" keys="1,4,7,10" />
+</scales>

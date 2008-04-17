@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+
+	<item name="Introduction">
+		<!--item name="Description" url="html/introduction.html" / -->
+		<item name="About the project" url="html/about.html" />
+		<item name="License and Copyright" url="html/license.html" />
+		<item name="What's new" url="html/whatsnew.html" />
+	</item>
+	
+	
+	<item name="Getting started">
+
+		<item name="The First Steps" url="html/start_first_steps.html" />
+		<item name="Toolbars" url="html/start_toolbars.html" />
+		<item name="Playing a song" url="html/start_playing.html" />
+	
+	</item>
+
+	<item name="Making and editing a song">
+		
+		<item name="Editing a track" url="html/editing_track.html" />
+		<item name="Editing a whole song" url="html/editing_song.html" />
+		<item name="Note effects" url="html/edit_effects.html" />
+		<item name="Chord edit dialog" url="html/edit_chord.html" />
+		<item name="Matrix editor" url="html/edit_matrix.html" />
+		
+	</item>
+	
+	<item name="Tools and settings">
+		
+		<item name="Default shortcuts" url="html/tools_shortcuts.html" />
+		<item name="Shortcut editor" url="html/tools_keybinding.html" />
+		<item name="Changing the skin" url="html/tools_skin.html" />
+		<item name="Plugins dialog" url="html/tools_plugins.html" />
+		<item name="Sound in TuxGuitar" url="html/tools_sound.html" />
+	</item>
+	<!--
+	<item name="Problems and solutions">
+		<item name="Unavailable Soundbank error" url="html/unavailable_soundbank.html" />
+	</item>
+	-->
+	<item name="Supported file formats" url="html/file_formats.html" />
+	
+</items>

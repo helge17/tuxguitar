@@ -1,0 +1,7 @@
+skin=Lavender
+midi.port=Java Sound Synthesizer
+midi.sequencer=Real Time Sequencer
+
+
+## Needed for MacOs releases
+#painter.force-os-defaults=true
