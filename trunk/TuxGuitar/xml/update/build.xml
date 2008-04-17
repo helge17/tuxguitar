@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Tux Guitar CVS" basedir="." default="all">
+    <description>
+        Tux-Guitar CVS
+    </description>
+
+	<!-- BUILD PROPERTIES -->
+	<property name="temp.path" value="./" />
+	
+	<property name="lib.swt.jni" value="lib${file.separator}"/>
+	<property name="lib.swt.jar" value="lib${file.separator}swt.jar"/>
+	<property name="dist.version" value="cvs"/>
+	<property name="dist.jar.path" value=""/>
+	<property name="dist.bin.path" value=""/>
+	<property name="dist.share.path" value="share${file.separator}"/>
+	<property name="dist.doc.path" value="doc${file.separator}"/>
+	
+	<!-- CVS PROPERTIES -->
+	<property name="cvs.dir" value="${temp.path}${file.separator}CVS" />
+	<property name="cvs.tuxguitar.root" value=":pserver:anonymous@tuxguitar.cvs.sourceforge.net:/cvsroot/tuxguitar" />
+	<property name="cvs.tuxguitar.module" value="TuxGuitar" />
+	<property name="cvs.tuxguitar.dest" value="${cvs.dir}" />
+	<property name="cvs.swt.root" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse" />
+	<property name="cvs.swt.module" value="org.eclipse.swt" />		
+	<property name="cvs.swt.dest" value="${cvs.dir}" />
+	
+	<!-- OS PROPERTIES -->
+	<condition property="dist.os" value="linux" ><os family="unix" /></condition>
+	<condition property="dist.os" value="mac" ><os family="mac" /></condition>
+	<condition property="dist.os" value="windows" ><os family="windows" /></condition>
+	<condition property="os.lib.extension" value="so" ><os family="unix" /></condition>
+	<condition property="os.lib.extension" value="jnilib" ><os family="mac" /></condition>
+	<condition property="os.lib.extension" value="dll" ><os family="windows" /></condition>	
+	<condition property="cvs.swt.module.os" value="org.eclipse.swt.gtk.linux.x86" ><os family="unix" /></condition>
+	<condition property="cvs.swt.module.os" value="org.eclipse.swt.carbon.macos" ><os family="mac" /></condition>
+	<condition property="cvs.swt.module.os" value="org.eclipse.swt.win32.win32.x86" ><os family="windows" /></condition>
+	
+	<target name="checkout" >
+        <echo>+--------------------------------------------------------------------+</echo>
+        <echo>|                C H E C K I N G   O U T   T U X G U I T A R         |</echo>
+        <echo>+--------------------------------------------------------------------+</echo>
+		<cvs cvsRoot="${cvs.tuxguitar.root}"				
+             package="${cvs.tuxguitar.module}"
+       	     dest="${cvs.tuxguitar.dest}"
+		/>
+        <echo>+--------------------------------------------------------------------+</echo>
+        <echo>|                C H E C K I N G   O U T   S W T                     |</echo>
+        <echo>+--------------------------------------------------------------------+</echo>
+		<cvs cvsRoot="${cvs.swt.root}"				
+             package="${cvs.swt.module}"
+	       	 dest="${cvs.swt.dest}"
+		/>
+		<cvs cvsRoot="${cvs.swt.root}"				
+             package="${cvs.swt.module.os}"
+	       	 dest="${cvs.swt.dest}"
+		/>
+	</target>
+	
+	
+
+	<target name="build" >
+        <echo>+--------------------------------------------------------------------+</echo>
+        <echo>|                B U I L D I N G   S W T                             |</echo>
+        <echo>+--------------------------------------------------------------------+</echo>			    
+		<ant dir="${cvs.swt.dest}${file.separator}${cvs.swt.module.os}" />
+		<copy todir="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}lib">
+		    <fileset file="${cvs.swt.dest}${file.separator}${cvs.swt.module.os}${file.separator}swt.jar"/>
+		    <fileset file="${cvs.swt.dest}${file.separator}${cvs.swt.module.os}${file.separator}*.${os.lib.extension}"/>
+		</copy>
+
+        <echo>+--------------------------------------------------------------------+</echo>
+        <echo>|                C O N F I G U R I N G   T U X G U I T A R           |</echo>
+        <echo>+--------------------------------------------------------------------+</echo>
+
+       	<delete quiet="true" file="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}build.xml" />
+    	<delete quiet="true" file="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}build-${dist.os}.xml" />		
+		<copy todir="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}/">
+		    <fileset file="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}xml${file.separator}build.xml"/>
+		    <fileset file="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}xml${file.separator}build-${dist.os}.xml"/>
+		</copy>
+		<ant dir="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}" />
+
+        <echo>+--------------------------------------------------------------------+</echo>
+        <echo>|                M O V I N G   F I L E S                             |</echo>
+        <echo>+--------------------------------------------------------------------+</echo>
+				
+		<copy todir="${temp.path}${file.separator}tuxguitar-${dist.version}" >
+			<fileset file="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}tuxguitar*"/>
+		</copy>	
+		<copy todir="${temp.path}${file.separator}tuxguitar-${dist.version}${file.separator}lib" >
+   			<fileset dir="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}lib" excludes="**/CVS/**"/>
+		</copy>
+		<copy todir="${temp.path}${file.separator}tuxguitar-${dist.version}${file.separator}share">
+   			<fileset dir="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}share" excludes="**/CVS/**,**/last_addeds,**/toutf.*,**/META-INF/**"/>
+		</copy>
+		<copy todir="${temp.path}${file.separator}tuxguitar-${dist.version}${file.separator}doc">
+   			<fileset dir="${cvs.tuxguitar.dest}${file.separator}${cvs.tuxguitar.module}${file.separator}doc" excludes="**/CVS/**"/>
+		</copy>
+	</target>
+		
+	<target name="all" >
+		<antcall target="checkout" />
+		<antcall target="build" />
+	</target>	
+</project>

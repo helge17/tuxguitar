@@ -1,0 +1,35 @@
+TuxGuitar 1.0 changes:
+
+-> Final Release:
+* File format converter plugin
+* Dutch translation
+* Russian translation
+* Ukrainian translation
+
+-> Release Candidate 3:
+*Fix a several GTP exporter bug
+*Fix a printer bug
+*Fix other minor bugs
+
+-> Release Candidate 2:
+*Fix some translation bugs
+*Fix duplicated beat/string notes on MIDI importer
+*Fix a GTP importer bug
+*Fix a PTB importer bug
+*Better Guitar/Bass synchronization on PTB importer
+*Documentation contents added
+
+-> Release Candidate 1:
+*Play mode option: ( Normal | Loop | Speed-Trainer )
+*Alternative endings added
+*Insert text
+*Show chords on the tab
+*Better chord editor
+*Open file from URL
+*Matrix editor
+*A song collection browser
+*Skin support was added
+*Better plugin support
+*Tabledit importer plugin
+*Lilypond exporter plugin
+*MusicXml exporter plugin  

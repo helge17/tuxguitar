@@ -1,0 +1,103 @@
+========================================================= VERSION 1 =========================================================
+*[hecho] Soporte para skins
+
+*[hecho] Compatibilidad con GCJ
+
+*[hecho] Play mode setup: Speed-Trainer (http://www.tuxguitar.com.ar/rd.php/message_boards/forum_posts.do?fid=4&tid=131)
+
+*[hecho] Mejorar soporte de plugins
+
+*[hecho] Tempo BUG (http://www.tuxguitar.com.ar/rd.php/message_boards/forum_posts.do?fid=5&tid=132)
+
+*[hecho] Revisar harmonics (http://www.tuxguitar.com.ar/rd.php/message_boards/forum_posts.do?fid=5&tid=139)
+
+*[hecho] Metronome (http://www.tuxguitar.com.ar/rd.php/message_boards/forum_posts.do?fid=5&tid=162)
+
+*[hecho] Reparar bug en el ancho de compase cuando no es multipista.
+
+*[hecho] Finales alternativos
+
+*[hecho] Txt
+
+*[hecho] Soporte para multi idioma en notas y acordes (Do, Re, Mi, etc)
+
+*[hecho] Configurar color de notas en "fretboard y piano"
+
+*[hecho] Scrollbars:  en algunos sistemas, el scroll con el mouse es lento; mejorar el autoscroll cuando se esta reproduciendo
+
+*[hecho] Matrix Editor
+
+*[hecho] Song Library browser
+
+*[hecho] Mostrar acordes en la tablatura
+
+* new file format plugins. (lilypond, rosegarden, noteedit, kguitar, xml.. etc)
+
+* MIDI import: permitir abrir el archivo en distintas octavas.
+
+TRANSLATIONS:
+
+*[hecho] messages_en.properties
+*[hecho] messages_es.properties
+*[hecho] messages_sr.properties
+*[hecho] messages_sv.properties
+*[hecho] messages_fr.properties
+*[hecho] messages_pl.properties
+*[hecho] messages_pt.properties
+
+*[falta] messages_cs.properties
+*[falta] messages_de.properties
+*[falta] messages_hu.properties
+*[falta] messages_it.properties
+*[falta] messages_zh.properties
+========================================================= VERSION 2 =========================================================
+
+* Add more things to Song Properties: e.g: "Transcribed By"
+
+* Copy measure in another track (same tunning, different tunning)
+
+* Soporte para multivoice
+
+* Let ring effect
+
+* Soporte para cambio de instrumento en la pista.
+
+* Change the instrument in the middle of the song :)
+
+* Partitura de percusion
+      @see gui.editors.tab.TGNoteImpl - painter
+
+* "Preview" of bend and Tremolo bar effects 
+
+* Tremolo Bar: deberia aplicarse a todas las cuerdas.
+
+* Upstrum/Downstrum effect
+
+* pickstroke direction symbol
+
+* clear measures [range]
+
+* Think about piano players, they are not supported the best way 
+1) merging the tracks, separate keys...
+2) octave higher? - http://tuxguitar.com.ar/forum_posts.html?fid=4&tid=514&view=NEW#2552
+
+* diff update: Palm Muting display like in GP ???
+http://tuxguitar.com.ar/forum_posts.html?fid=6&tid=517&view=NEW
+
+* diff update: Show all measure notes on the fretboard
+http://tuxguitar.com.ar/forum_posts.html?fid=6&tid=485&view=NEW
+
+* TAB exporter - more symbols
+
+* Lilypond exporter, more work :)
+http://tuxguitar.com.ar/forum_posts.html?fid=6&tid=478&view=NEW
+
+* MusicXML importer
+
+* Lilypond importer
+
+* TablEdit format
+
+*[hecho] Convertor plugin
+
+* Tuner plugin

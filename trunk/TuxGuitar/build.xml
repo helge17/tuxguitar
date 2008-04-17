@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar" basedir="." default="all">
+	<description>
+		TuxGuitar
+	</description>
+
+	<property file="build.properties" />
+	<property name="build.src.path" value="src${file.separator}" />
+	<property name="build.share.path" value="share${file.separator}" />
+	<property name="build.doc.path" value="doc${file.separator}" />
+	<property name="build.dist.path" value="dist${file.separator}" />
+	<property name="build.path" value="build${file.separator}" />
+	<property name="build.jar" value="tuxguitar.jar" />
+
+	<property name="dist.dst.path" value="" />
+	<property name="dist.file" value="" />
+	<property name="dist.jar.path" value="." />
+	<property name="dist.share.path" value="${build.share.path}" />
+	<property name="dist.doc.path" value="${build.doc.path}" />
+	
+	<available file="${dist.file}" type="file" property="dist.available"/>
+
+	<path id="class.path">
+		<fileset file="${lib.swt.jar}" />
+	</path >
+
+	<target name="all">
+		<antcall target="clean" />
+		<antcall target="build" />
+		<antcall target="package" />
+	</target>
+
+	<target name="clean">
+		<delete quiet="true" dir="${build.path}" />
+		<delete quiet="true" file="${build.jar}" />
+
+		<antcall target="dist-clean" />
+	</target>
+
+	<target name="build">
+		<echo>+--------------------------------------------------------------------+</echo>
+		<echo>|                B U I L D I N G   T U X G U I T A R                 |</echo>
+		<echo>+--------------------------------------------------------------------+</echo>		
+
+		<mkdir dir="${build.path}" />
+
+		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<classpath refid="class.path"/>
+			<include name="**/*.java"/>
+		</javac>
+
+		<copy todir="${build.path}">
+			<fileset dir="${build.dist.path}"/>
+		</copy>
+		
+		<antcall target="dist-build" />
+	</target>
+
+	<target name="package">
+		<echo>+--------------------------------------------------------------------+</echo>
+		<echo>|              P A C K A G I N G   T U X G U I T A R                 |</echo>
+		<echo>+--------------------------------------------------------------------+</echo>
+
+		<jar destfile="${build.jar}">
+			<fileset dir="${build.path}" />
+			<manifest>
+				<attribute name="Class-Path" value="${lib.swt.jar} ${dist.share.path}"/>            	
+				<attribute name="Main-Class" value="org.herac.tuxguitar.gui.TGMain"/>
+			</manifest>
+		</jar>
+
+		<antcall target="dist-package" />
+	</target>
+	
+	<target name="install">
+		<echo>+--------------------------------------------------------------------+</echo>
+		<echo>|              I N S T A L L I N G   T U X G U I T A R           	   |</echo>
+		<echo>+--------------------------------------------------------------------+</echo>
+		
+		<mkdir dir="${dist.dst.path}${dist.jar.path}" />
+		<copy todir="${dist.dst.path}${dist.jar.path}">
+			<fileset file="${build.jar}"/>
+		</copy>		
+
+		<mkdir dir="${dist.dst.path}${dist.share.path}" />
+		<copy todir="${dist.dst.path}${dist.share.path}">
+			<fileset dir="${build.share.path}"/>
+		</copy>		
+
+		<mkdir dir="${dist.dst.path}${dist.doc.path}" />
+		<copy todir="${dist.dst.path}${dist.doc.path}">
+			<fileset dir="${build.doc.path}"/>
+		</copy>			
+
+		<antcall target="dist-install" />
+	</target>		
+
+	<target name="dist-build" if="dist.available">
+		<ant antfile="${dist.file}" target="build"/>	
+	</target>
+
+	<target name="dist-package" if="dist.available">
+		<ant antfile="${dist.file}" target="package"/>
+	</target>
+
+	<target name="dist-clean" if="dist.available">
+		<ant antfile="${dist.file}" target="clean"/>		
+	</target>
+
+	<target name="dist-install" if="dist.available">
+		<ant antfile="${dist.file}" target="install"/>
+	</target>
+
+</project>

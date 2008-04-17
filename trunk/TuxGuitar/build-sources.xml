@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar" basedir="." default="package">
+
+	<description>
+    	TuxGuitar Source Package
+    </description>
+	
+	<target name="init" >
+		<fail unless="dist.version">Usage: ant -Ddist.version=[VERSION]</fail>		
+	</target>	
+		
+	<target name="package" depends="init">
+		<property name="src.dir" value="src"/>
+		<property name="doc.dir" value="doc"/>
+		<property name="share.dir" value="share"/>
+		<property name="subant.dir" value="xml"/>
+		<property name="dist.dir" value="dist"/>		
+		<property name="package.name" value="TuxGuitar-${dist.version}-src" />		
+		
+		<tar destfile="${package.name}.tar.gz" compression="gzip" >
+
+			<tarfileset dir="${src.dir}" prefix="${package.name}/src/" >
+				<include name="**/*.java"/>
+			</tarfileset>
+
+			<tarfileset dir="${dist.dir}" prefix="${package.name}/dist" >
+				<include name="config.dist"/>
+				<include name="about_license.dist"/>
+				<include name="about_authors.dist"/>
+				<include name="about_description.dist"/>
+			</tarfileset>
+			
+			<tarfileset dir="." prefix="${package.name}/" >
+				<include name="GNUmakefile"/>
+			</tarfileset>
+			
+			<tarfileset dir="." prefix="${package.name}/" >
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</tarfileset>
+			
+			<tarfileset dir="${subant.dir}" prefix="${package.name}/xml" >
+				<include name="build-linux.xml"/>
+				<include name="build-ubuntu.xml"/>
+				<include name="build-freebsd.xml"/>
+				<include name="build-windows.xml"/>
+				<include name="build-mac.xml"/>
+			</tarfileset>		
+
+			<tarfileset dir="${share.dir}/lang" prefix="${package.name}/share/lang" >
+				<include name="messages.properties"/>
+				<include name="messages_*.properties"/>
+			</tarfileset>
+
+			<tarfileset dir="${share.dir}/scales" prefix="${package.name}/share/scales" >
+				<include name="scales.xml"/>
+			</tarfileset>
+
+			<tarfileset dir="${share.dir}/help" prefix="${package.name}/share/help" >
+				<include name="contents.xml"/>
+				<include name="html/**/*.css"/>
+				<include name="html/**/*.html"/>
+				<include name="images/**/*.png"/>
+			</tarfileset>
+			
+			<tarfileset dir="${share.dir}/skins" prefix="${package.name}/share/skins" >
+				<include name="**/skin.properties" />
+				<include name="**/*.icns" />
+				<include name="**/*.png" />
+			</tarfileset>
+			
+			<tarfileset dir="${doc.dir}" prefix="${package.name}/doc/" >
+				<include name="LICENSE"/>
+				<include name="AUTHORS"/>
+				<include name="CHANGES"/>
+				<include name="README"/>
+			</tarfileset>
+			
+	  	</tar>
+
+		<echo>+-------------------------------------------------------------------------------------+</echo>
+		<echo>${package.name}.tar.gz was created. Now you can use that package to build binary files.</echo>
+		<echo>+-------------------------------------------------------------------------------------+</echo>
+	</target>
+
+</project>
