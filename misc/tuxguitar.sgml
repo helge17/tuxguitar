@@ -1,0 +1,136 @@
+<!doctype refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+
+<!-- Process this file with docbook-to-man to generate an nroff manual
+     page: `docbook-to-man manpage.sgml > manpage.1'.  You may view
+     the manual page with: `docbook-to-man manpage.sgml | nroff -man |
+     less'.  A typical entry in a Makefile or Makefile.am is:
+
+manpage.1: manpage.sgml
+	docbook-to-man $< > $@
+
+    
+	The docbook-to-man binary is found in the docbook-to-man package.
+	Please remember that if you create the nroff version in one of the
+	debian/rules file targets (such as build), you will need to include
+	docbook-to-man in your Build-Depends control field.
+
+  -->
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Philippe</firstname>">
+  <!ENTITY dhsurname   "<surname>Coval</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>July 12, 2006</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>rzr@users.sf.net</email>">
+  <!ENTITY dhusername  "Philippe Coval">
+  <!ENTITY dhucpackage "<refentrytitle>TUXGUITAR</refentrytitle>">
+  <!ENTITY dhpackage   "tuxguitar">
+
+  <!ENTITY debian      "<productname>Debian</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+  <!ENTITY gpl         "&gnu; <acronym>GPL</acronym>">
+]>
+
+
+
+
+
+<refentry>
+  <refentryinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2003</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </refentryinfo>
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>program to do edit and playback guitar tablature</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+ <command>&dhpackage;</command> 
+
+
+ <arg>
+ <option>-h</option> | <option>--help</option>
+ </arg>
+
+ <arg>
+ <option>-v</option> | <option>--version</option>
+ </arg>
+
+ <arg>
+ <option>-i</option> | <option>--system-info</option>
+ </arg>
+
+ <arg>
+ <option>-D<replaceable>name</replaceable>=<replaceable>value</replaceable></option>
+ </arg>
+
+ <arg>
+  <replaceable>SONG.tg</replaceable>
+ </arg>
+
+</cmdsynopsis>
+</refsynopsisdiv>
+
+
+
+
+
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>
+&dhpackage; supports guitar pro format and exports to pdf and midi.
+</para>
+
+    <para>This manual page was written for the &debian; distribution
+      because the original program does not have a manual page.
+</para>
+
+
+  </refsect1>
+
+<refsect1>
+<title>WWW</title>
+
+<para>
+http://www.tuxguitar.com.ar
+</para>
+</refsect1>
+
+   <refsect1>
+    <title>AUTHOR</title>
+
+    <para>This manual page was written by &dhusername; &dhemail; for
+      the &debian; system (but may be used by others).  Permission is
+      granted to copy, distribute and/or modify this document under
+      the terms of the &gnu; General Public License, Version 2 any 
+	  later version published by the Free Software Foundation.
+    </para>
+	<para>
+	  On Debian systems, the complete text of the GNU General Public
+	  License can be found in /usr/share/common-licenses/GPL.
+	</para>
+  </refsect1>
+</refentry>
+
