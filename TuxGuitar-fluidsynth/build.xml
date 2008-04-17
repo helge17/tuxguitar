@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="tuxguitar-fluidsynth" basedir="." default="all">
+    <description>
+        TuxGuitar Fluidsynth
+    </description>
+		
+	<property file="build.properties" />
+	<property name="src.dir" value="src" />
+	<property name="jni.dir" value="jni" />
+	<property name="build.dir" value="build" />
+	<property name="build.jar" value="tuxguitar-fluidsynth.jar" />
+		
+	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
+	<property name="service.provider" value="org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiPortProviderPlugin" />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar}"/>
+		<pathelement location="${path.swt}"/>
+    </path >
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="clean">
+		<delete quiet="true" dir="${build.dir}" />
+		<delete quiet="true" file="${build.jar}" />
+	</target>
+	
+	<target name="build" depends="init">
+		
+        <echo>+--------------------------------------------------------------------+</echo>
+        <echo>|    B U I L D I N G   T U X G U I T A R  -  F L U I D S Y N T H     |</echo>
+        <echo>+--------------------------------------------------------------------+</echo>		
+	    
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="false" >
+	    	<classpath refid="class.path"/>
+	    	<include name="**/*.java"/>
+	    </javac>
+		
+		<mkdir dir="${build.dir}${file.separator}lang" />
+		<copy todir="${build.dir}${file.separator}lang">
+		    <fileset dir="${src.dir}${file.separator}lang"/>
+		</copy>
+		
+		<mkdir dir="${build.dir}/META-INF/services" />
+		<echo file="${build.dir}/META-INF/services/${service.class}" append="false">${service.provider}</echo>
+
+        <echo>+----------------------------------------------------------------------+</echo>
+        <echo>|    P A C K A G I N G   T U X G U I T A R  -  F L U I D S Y N T H     |</echo>
+        <echo>+----------------------------------------------------------------------+</echo>
+		
+        <jar destfile="${build.jar}" basedir="${build.dir}" />
+		<delete quiet="true" dir="${build.dir}" />
+	</target>
+
+	<target name="all" depends="build" />	
+</project>
