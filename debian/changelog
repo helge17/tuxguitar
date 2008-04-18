@@ -1,0 +1,133 @@
+tuxguitar-snapshot (0.0.20080416-0ubuntu0~ppa110) hardy; urgency=low
+
+  * jni build
+  * FIX: updated SCM snapshot
+  * WIP: todo add converter plugin, gcj; java-gcj-compat-dev
+  * WIP: rzr.online.fr/q/tuxguitar
+  * TODO: Song example (.gp3) ,jsa, dist, browser
+  * NEW: SCM snapshot
+  * FIX: desktop (LP: #197367)
+  * ADD: Merged with debian (LP: #176979)
+  * FIX: java paths (LP: #212207)
+  * WIP: about to upload to mentors	
+
+ -- Philippe Coval <rzr@users.sf.net>  Thu, 17 Apr 2008 23:09:18 +0200
+
+tuxguitar (0.9.99~1.0rc2-2) unstable; urgency=low
+
+  * ADD: support compilers and jvm's based on classpath
+  * FIX: arch vs indep for non i386 arch (closes: #474410)
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed, 16 Apr 2008 19:19:52 +0200
+
+tuxguitar (0.9.99~1.0rc2-1ubuntu0~ppa14) hardy; urgency=low
+
+  * FIX: arch vs indep for non i386 arch (closes: #474410)
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed, 16 Apr 2008 19:19:52 +0200
+
+tuxguitar (0.9.99~1.0rc3-1) unstable; urgency=low
+
+  * ADD: New Upstream release (1.0-rc3 retitled to 0.9.99~1.0rc3)
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed, 26 Mar 2008 20:07:41 +0100
+
+tuxguitar (0.9.99~1.0rc2-1) unstable; urgency=low
+
+  * ADD: New Upstream release (1.0-rc2 retitled to 0.9.99~1.0rc2)
+  * FIX: Only on sun-java6 supported (Closes: #466986)
+  * FIX: Compile in 1.4 format (Closes: #466038)
+  * ADD: plugins ALSA and OSS (natives JNI) (Closes: #439669)
+
+ -- Philippe Coval <rzr@users.sf.net>  Mon, 17 Mar 2008 19:37:27 +0100
+
+tuxguitar (0.9.1-4) unstable; urgency=low
+
+  * Merged Ubuntu changes (closes: #457342)
+  * Changed maintainer to myself
+  * Added desktop and icon
+
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 25 Jan 2008 21:33:37 +0100
+
+tuxguitar (0.9.1-3ubuntu1) hardy; urgency=low
+
+  * Modified debian/control and GNUmakefile to make building work (LP: #176736)
+  * changed mantainer to Ubuntu MOTU Developers.
+
+ -- Teemu Heinamaki (Hippu) <teemu.heinamaki@gmail.com>  Sun, 16 Dec 2007 00:02:48 +0200
+
+tuxguitar (0.9.1-3) unstable; urgency=low
+
+  * Add generic wrapper script (closes: #434181)
+
+ -- Philippe Coval <rzr@users.sf.net>  Mon, 23 Jul 2007 08:56:56 +0200
+
+tuxguitar (0.9.1-2) unstable; urgency=low
+
+  * Fix depend bug (closes: #427340)
+  * Fix classpath (closes: #433821)
+  * Fix makefile for faster build (sync upstream)
+
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 20 Jul 2007 00:20:17 +0200
+
+tuxguitar (0.9.1-1) unstable; urgency=low
+
+  * New upstream release
+  * added support for java6 too (closes: #409543)
+  * Fix swt bug (closes: #406122)
+	
+ -- Philippe Coval <rzr@users.sf.net>  Sun,  4 Feb 2007 01:41:23 +0100
+
+tuxguitar (0.9-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Philippe Coval <rzr@users.sf.net>  Tue, 30 Jan 2007 19:05:13 +0100
+
+tuxguitar (0.8dfsg-1) testing-proposed-updates; urgency=medium
+
+  * removed janel-ant (closes: #405295)
+  * use sun's javac path to compile
+  * installed german locale (closes: #398972)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat,  6 Jan 2007 12:17:31 +0100
+
+tuxguitar (0.8.1-1) unstable; urgency=low
+
+  * New upstream release (closes: #405295 , #398972)
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed,  3 Jan 2007 22:08:53 +0100
+
+tuxguitar (0.8-3) unstable; urgency=low
+
+  * classpath now includes swt-gtk-3.2.1 (closes: #397368)
+  * removed unecessary dependency on libswt-gtk-3.2-jni (closes: #396591)
+  * package architecture is now "all"
+
+ -- Philippe Coval <rzr@users.sf.net>  Tue,  7 Nov 2006 21:40:45 +0100
+
+tuxguitar (0.8-2) unstable; urgency=low
+
+  * suppport command line arguments
+
+ -- Philippe Coval <rzr@users.sf.net>  Sun,  3 Sep 2006 11:45:09 +0200
+
+tuxguitar (0.8-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Philippe Coval <rzr@users.sf.net>  Mon, 28 Aug 2006 21:37:59 +0200
+
+tuxguitar (0.7-1) unstable; urgency=low
+
+  * New upstream release
+  * updated from libswt-gtk-3.1-java to libswt-gtk-3.2-java
+
+ -- Philippe Coval <rzr@users.sf.net>  Thu,  3 Aug 2006 22:19:50 +0200
+
+tuxguitar (0.6-1) unstable; urgency=low
+
+  * Initial release (Closes: #374287) 
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat, 17 Jun 2006 13:19:36 +0200
+

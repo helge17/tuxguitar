@@ -1,0 +1,14 @@
+tuxguitar for Debian
+--------------------
+
+The package has been splited into several part, the core is still tuxguitar
+but the sound plugins are optional.
+
+Sun Java 6 is recommanded JVM, but other ones may be supported too.
+
+Please not that some JVM may miss JSA API.
+
+Note that, other JSA Sound banks can be downloaded at :
+  http://java.sun.com/products/java-media/sound/soundbanks.html
+
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 07 Mar 2008 21:16:53 +0100

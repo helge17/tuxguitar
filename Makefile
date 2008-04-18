@@ -208,4 +208,31 @@ help:
 	which java
 #	java -version
 
+version=$(shell date +%Y%m%d)
+scmroot?=https://${PACKAGE}.svn.sourceforge.net/svnroot/${PACKAGE}/trunk
+
+package_version?=0.0.${version}
+snapshot_dir?=${PACKAGE}-snapshot-${package_version}
+release_dir?=${PACKAGE}-${package_version}
+
+dist tarball: snapshot
+
+
+snapshot: ../${snapshot_dir}.tar.gz 
+
+../${snapshot_dir}.tar.gz: ../${snapshot_dir}
+	cd ${@D} && tar czf ${@F}.tar.gz \
+	 --exclude="debian" \
+	 ${@D}
+
+release:  ../${release_dir}.tar.gz 
+
+../${release_dir}.tar.gz: ../${release_dir}
+	cd ${@D} && tar czf ${@F}.tar.gz \
+	 --exclude="debian" --exclude "CVS" --exclude ".svn"\
+	 ${@D}
+
+../${snapshot_dir} ../${release_dir}:
+	svn co ${scmroot} $@
+
 #eof "$Id: Makefile,v 1.19 2008/04/17 20:06:22 rzr Exp $"
