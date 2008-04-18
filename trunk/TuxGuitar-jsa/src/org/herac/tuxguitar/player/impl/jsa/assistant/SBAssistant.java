@@ -37,6 +37,7 @@ public class SBAssistant {
 				TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
 					public void run() {
 						ConfirmDialog dialog = new ConfirmDialog(TuxGuitar.getProperty("jsa.soundbank-assistant.confirm-message"));
+						dialog.setDefaultStatus( ConfirmDialog.STATUS_NO );
 						if (dialog.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO , ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_YES){
 							open();
 						}		
