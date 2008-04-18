@@ -1,5 +1,5 @@
 CC?=gcc
-CFLAGS?=-fPIC -I$(shell gcj -print-file-name=include/)
+CFLAGS+=-fPIC -I$(shell gcj -print-file-name=include/)
 LDFLAGS?=
 LDLIBS?=
 LDPATH?=
