@@ -82,7 +82,7 @@ public class ChangeClefAction extends Action{
             //------------------BUTTONS--------------------------            
             Composite buttons = new Composite(dialog, SWT.NONE);
             buttons.setLayout(new GridLayout(2,false));
-            buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));    	
+            buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));    	
             
             final Button buttonOK = new Button(buttons, SWT.PUSH);
             buttonOK.setText(TuxGuitar.getProperty("ok"));

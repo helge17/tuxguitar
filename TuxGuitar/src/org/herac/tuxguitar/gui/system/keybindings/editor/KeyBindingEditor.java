@@ -54,9 +54,9 @@ public class KeyBindingEditor {
 	    this.table.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(MouseEvent e) {
 				TableItem item = getSelectedItem();
-				if(item != null){	
+				if(item != null){
 					KeyBindingAction itemData = (KeyBindingAction)item.getData();
-					KeyBindingSelector selector = new KeyBindingSelector(KeyBindingEditor.this,itemData.getKeyBinding());
+					KeyBindingSelector selector = new KeyBindingSelector(KeyBindingEditor.this,itemData);
 					KeyBinding kb = selector.select(KeyBindingEditor.this.dialog.getShell());
 					removeKeyBindingAction(kb);
 					itemData.setKeyBinding(kb);
@@ -109,7 +109,7 @@ public class KeyBindingEditor {
 		
 		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
-
+	
 	protected int adjustWidth(TableColumn column, int defaultWidth){
 	    column.pack();
 	    int width = column.getWidth();
@@ -222,5 +222,13 @@ public class KeyBindingEditor {
 		}
 		TuxGuitar.instance().getkeyBindingManager().reset(list);
 		TuxGuitar.instance().getkeyBindingManager().saveKeyBindings();
+	}
+
+	public Shell getDialog(){
+		return this.dialog;
+	}
+	
+	public boolean isDisposed(){
+		return (this.dialog == null || this.dialog.isDisposed() );
 	}
 }
