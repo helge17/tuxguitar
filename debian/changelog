@@ -1,11 +1,10 @@
-tuxguitar-snapshot (0.0.20080416-0ubuntu0~ppa110) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080418-0ubuntu0~ppa121) hardy; urgency=low
 
   * jni build
   * FIX: updated SCM snapshot
   * WIP: todo add converter plugin, gcj; java-gcj-compat-dev
   * WIP: rzr.online.fr/q/tuxguitar
-  * TODO: Song example (.gp3) ,jsa, dist, browser
-  * NEW: SCM snapshot
+  * TODO: Song example (.gp3) ,jsa, dist, browser, ftp
   * FIX: desktop (LP: #197367)
   * ADD: Merged with debian (LP: #176979)
   * FIX: java paths (LP: #212207)

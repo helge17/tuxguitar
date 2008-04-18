@@ -43,6 +43,8 @@ subdirs?=\
  TuxGuitar-lilypond \
 \
  TuxGuitar-jsa \
+\
+ TuxGuitar-tuner \
  #}subdirs
 
 subdirs_jni?=\
@@ -66,6 +68,8 @@ out_java?=\
  ./TuxGuitar-tray/tuxguitar-tray.jar \
  ./TuxGuitar-ptb/tuxguitar-ptb.jar \
  ./TuxGuitar-musicxml/tuxguitar-musicxml.jar \
+ ./TuxGuitar-converter/tuxguitar-converter.jar \
+ ./TuxGuitar-tuner/tuxguitar-tuner.jar \
  #}out_java
 
 out_jsa?=TuxGuitar-jsa/tuxguitar-jsa.jar
@@ -137,7 +141,7 @@ all-sun: ${out_sun}
 	cd ${@D} && ant -v -d ${ANT_FLAGS} all
 
 %.so:
-	${MAKE} -C ${@D}/../jni/../ ${@F}
+	${MAKE} -C ${@D}/../jni/ ${@F}
 
 #%.native:
 #	 make -C $$t  ${MAKE_FLAGS} library_jni
@@ -181,7 +185,7 @@ install: ${all}
 
 install-linux:
 	install -d ${INSTALL_LIB_DIR}
-	install -s TuxGuitar*/lib*.so ${INSTALL_LIB_DIR}
+	install -s TuxGuitar*/jni/lib*.so ${INSTALL_LIB_DIR}
 
 clean:
 	find . -iname "*.class" -exec rm -fv "{}" \;

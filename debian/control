@@ -6,7 +6,6 @@ Uploaders: tony mancill <tmancill@debian.org>
 Build-Depends: debhelper (>= 5.0.0), ant, libswt-gtk-3.3-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, gcj, java-gcj-compat-dev | icedtea-java7-jdk | sun-java6-jdk | sun-java5-jdk | java-compiler
 Standards-Version: 3.7.3
 Homepage: http://www.tuxguitar.com.ar
-XS-Vcs-CVS::pserver:anonymous@tuxguitar.cvs.sourceforge.net:/cvsroot/tuxguitar
 
 Package: tuxguitar-snapshot
 Architecture: all
