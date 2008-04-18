@@ -1,0 +1,49 @@
+Source: tuxguitar-snapshot
+Section: contrib/sound
+Priority: optional
+Maintainer: Philippe Coval <rzr@users.sf.net>
+Uploaders: tony mancill <tmancill@debian.org>
+Build-Depends: debhelper (>= 5.0.0), ant, libswt-gtk-3.3-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, gcj, java-gcj-compat-dev | icedtea-java7-jdk | sun-java6-jdk | sun-java5-jdk | java-compiler
+Standards-Version: 3.7.3
+Homepage: http://www.tuxguitar.com.ar
+XS-Vcs-CVS::pserver:anonymous@tuxguitar.cvs.sourceforge.net:/cvsroot/tuxguitar
+
+Package: tuxguitar-snapshot
+Architecture: all
+Section: contrib/sound
+Depends: libitext-java, icedtea-java7-jre | sun-java6-jre | java-virtual-machine, libswt-gtk-3.3-java, libswt-cairo-gtk-3.3, iceweasel | firefox
+Conflicts: tuxguitar
+Replaces: tuxguitar
+Recommends: tuxguitar-snapshot-alsa (= ${binary:Version}) , tuxguitar-snapshot-oss (= ${binary:Version}) , sun-java6-jre
+Suggests: tuxguitar-snapshot-jsa (= ${binary:Version}) , lilypond
+Description: Multitrack guitar tablature editor and player (gp3 to gp5)
+ TuxGuitar is a multitrack Guitar tablature editor and player.
+ It can open GP3, GP4, and GP5 files and exports in MIDI and PDF.
+
+Package: tuxguitar-snapshot-jsa
+Architecture: all
+Section: contrib/sound
+Depends: tuxguitar-snapshot  (= ${binary:Version}), sun-java6-jre
+Conflicts: tuxguitar-jsa
+Description: tuxguitar plugin for sound playback using Java Sound API
+ Use Tuxguitar along this plugin if unsure, other sounds can be used too.
+
+Package: tuxguitar-snapshot-alsa
+Architecture: any
+Section: contrib/sound
+Depends: tuxguitar-snapshot  (= ${binary:Version}) , libasound2, libc6
+Suggests: timidity, fluidsynth
+Replaces: tuxguitar-alsa
+Description: tuxguitar plugin for sound playback using ALSA
+ Use Tuxguitar along this plugin if your Sound Device is supported by ALSA.
+ A MIDI expander is requiered Hardware or Software
+
+Package: tuxguitar-snapshot-oss
+Architecture: any
+Section: contrib/sound
+Depends: tuxguitar-snapshot  (= ${binary:Version}), oss-compat, libc6
+Replaces: tuxguitar-oss
+Suggests: timidity, fluidsynth
+Description: tuxguitar plugin for sound playback using OSS
+ Use Tuxguitar along this plugin if your Sound Device is supported by OSS.
+ A MIDI expander is requiered Hardware or Software.

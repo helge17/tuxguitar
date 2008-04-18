@@ -1,0 +1,79 @@
+#! /usr/bin/make -f
+# -*- makefile -*-
+export DH_VERBOSE=1
+MAINPACKAGE?=$(shell dpkg-parsechangelog | sed -n 's/Source: \(.*\)/\1/p')
+PACKAGE?=tuxguitar
+
+JAVA_HOME?=$(shell echo ` \
+    ( t=/usr/lib/jvm/java-gcj && test -e $$t/bin/javac  && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-6-sun && test -e $$t/bin/javac && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-1.5.0-sun && test -d $$t/bin/javac  && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-6-openjdk && test -d $$t/bin/javac t && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-1.4.2-gcj-4.1-1.4.2.0 && test -d $$t/bin/javac  && echo $$t ) \
+` )
+
+JAVA?=${JAVA_HOME}/jre/bin/java
+JAVAC?=${JAVA_HOME}/bin/javac
+export JAVAC JAVA JAVA_HOME
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	${MAKE} clean
+	${MAKE}
+	docbook-to-man misc/${PACKAGE}.sgml > misc/${PACKAGE}.1
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	${MAKE} -k distclean $@ || echo "missing"
+	-${RM} -f build-stamp configure-stamp
+	-${RM} -f misc/${PACKAGE}.1 ./TuxGuitar/tuxguitar 
+	-${RM} -rf TuxGuitar/build
+	dh_clean
+
+DEB_DESTDIR?=${CURDIR}/debian/${MAINPACKAGE}
+DEB_DESTDIR_TMP?=${CURDIR}/debian/tmp/${MAINPACKAGE}
+
+install: build 
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+	${MAKE} $@ DESTDIR=${DEB_DESTDIR}
+	${MAKE} $@-linux DESTDIR=${DEB_DESTDIR_TMP} # TODO
+	install -d ${DEB_DESTDIR}/usr/bin/
+	-${MAKE} -f ./debian/snapshot.mk deb-fix snapshot-install # TODO
+	dh_install
+
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs 
+	dh_installdocs
+	dh_installexamples
+	dh_install
+	dh_installmenu
+	dh_installman
+	dh_desktop
+#	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep: build install
+	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+
+# Build architecture dependant packages using the common target.
+binary-arch: build install
+	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
+
+binary: binary-arch binary-indep
+.PHONY: build clean binary-indep binary-arch binary install configure
+
+#eof "$Id: rules,v 1.14 2008/04/17 20:06:34 rzr Exp $"
