@@ -46,7 +46,9 @@ public class MessageDialog {
     public static void infoMessage(final Shell shell,final String title,final String message){
         new SyncThread(new Runnable() {
             public void run() {		    	
-            	new MessageDialog(title,message,SWT.ICON_INFORMATION).show(shell);
+            	if(!shell.isDisposed()){
+            		new MessageDialog(title,message,SWT.ICON_INFORMATION).show(shell);
+            	}
             }
         }).start();
     }    

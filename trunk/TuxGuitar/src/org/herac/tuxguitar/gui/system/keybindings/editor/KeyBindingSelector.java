@@ -14,10 +14,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBinding;
+import org.herac.tuxguitar.gui.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBindingReserveds;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.DialogUtils;
@@ -28,18 +30,27 @@ public class KeyBindingSelector {
 	protected Shell dialog;
 	protected KeyBindingEditor editor;
 	protected KeyBinding keyBinding;
+	protected String action;
 	
-	public KeyBindingSelector(KeyBindingEditor editor,KeyBinding keyBinding){
+	public KeyBindingSelector(KeyBindingEditor editor,KeyBindingAction keyBindingAction){
 		this.editor = editor;
-		this.keyBinding = keyBinding;
+		this.keyBinding = keyBindingAction.getKeyBinding();
+		this.action = keyBindingAction.getAction();
 	}
 	
 	public KeyBinding select(Shell parent){			
 		this.dialog = DialogUtils.newDialog(parent,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout());
+		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
 		
-		final Composite composite = new Composite(this.dialog,SWT.NONE);
-		composite.setLayout(new GridLayout());
+        Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);            
+        group.setLayout(new GridLayout());
+        group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+        group.setText(TuxGuitar.getProperty(this.action));
+		
+		final Composite composite = new Composite(group,SWT.NONE);
+		composite.setLayout(new GridLayout(2,false));
 		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		composite.setFocus();
 		composite.addKeyListener(new KeyAdapter() {
@@ -51,19 +62,23 @@ public class KeyBindingSelector {
 					}
 					KeyBindingSelector.this.keyBinding.setKey(kb.getKey());
 					KeyBindingSelector.this.keyBinding.setMask(kb.getMask());
-					KeyBindingSelector.this.dialog.dispose();
-				}else{
-					composite.setFocus();
 				}
+				KeyBindingSelector.this.dialog.dispose();
 			}
 		});
-		final Font font = new Font(this.dialog.getDisplay(),"Sans", 15, SWT.BOLD);
-		Label label = new Label(composite,SWT.LEFT);
-		label.setFont(font);
-		label.setText(TuxGuitar.getProperty("key-bindings-editor-push-a-key"));		
-		label.addDisposeListener(new DisposeListener() {
+		
+		Label iconLabel = new Label(composite, SWT.CENTER );
+		iconLabel.setImage(iconLabel.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
+		iconLabel.setLayoutData(new GridData(SWT.CENTER,SWT.CENTER,false,true));
+		
+		final Font textFont = new Font(this.dialog.getDisplay(),"Sans", 15, SWT.BOLD);
+		Label textLabel = new Label(composite,SWT.CENTER);
+		textLabel.setLayoutData(new GridData(SWT.CENTER,SWT.CENTER,false,true));
+		textLabel.setFont(textFont);
+		textLabel.setText(TuxGuitar.getProperty("key-bindings-editor-push-a-key"));
+		textLabel.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent arg0) {
-				font.dispose();
+				textFont.dispose();
 			}
 		});
         //------------------BUTTONS--------------------------            
@@ -110,11 +125,15 @@ public class KeyBindingSelector {
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
 		return data;
-	}	
+	}
 	
 	protected boolean isValid(KeyBinding kb){
 		if(KeyBindingReserveds.isReserved(kb)){
-			MessageDialog.infoMessage(this.dialog,TuxGuitar.getProperty("key-bindings-editor-reserved-title"),TuxGuitar.getProperty("key-bindings-editor-reserved-message"));
+			if(!this.editor.isDisposed()){
+				String title = TuxGuitar.getProperty("key-bindings-editor-reserved-title");
+				String message = TuxGuitar.getProperty("key-bindings-editor-reserved-message");
+				MessageDialog.infoMessage(this.editor.getDialog(),title,message);
+			}
 			return false;
 		}
 		if(this.editor.exists(kb)){
