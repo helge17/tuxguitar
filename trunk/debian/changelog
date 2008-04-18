@@ -1,4 +1,4 @@
-tuxguitar-snapshot (0.0.20080418-0ubuntu0~ppa121) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080418-0ubuntu0~ppa126) hardy; urgency=low
 
   * jni build
   * FIX: updated SCM snapshot
