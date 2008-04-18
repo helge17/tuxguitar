@@ -39,6 +39,7 @@ public class DisposeAction extends Action {
     		
     		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
     			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
+    			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
     			int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
     			if(status == ConfirmDialog.STATUS_CANCEL){
     				return AUTO_UNLOCK;

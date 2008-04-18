@@ -42,21 +42,20 @@ public class KeyBindingSelector {
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		composite.setFocus();
-		composite.addKeyListener(new KeyAdapter() {			
-			public void keyReleased(KeyEvent e) {					
+		composite.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
 				KeyBinding kb = new KeyBinding(e.keyCode,e.stateMask);
 				if(kb.equals(KeyBindingSelector.this.keyBinding) || isValid(kb)){
 					if(KeyBindingSelector.this.keyBinding == null){
 						KeyBindingSelector.this.keyBinding = new KeyBinding();
-					}						
+					}
 					KeyBindingSelector.this.keyBinding.setKey(kb.getKey());
 					KeyBindingSelector.this.keyBinding.setMask(kb.getMask());
 					KeyBindingSelector.this.dialog.dispose();
-				}
-				else{
+				}else{
 					composite.setFocus();
 				}
-			}					
+			}
 		});
 		final Font font = new Font(this.dialog.getDisplay(),"Sans", 15, SWT.BOLD);
 		Label label = new Label(composite,SWT.LEFT);
@@ -100,7 +99,7 @@ public class KeyBindingSelector {
             	KeyBindingSelector.this.dialog.dispose();
             }
         });		
-		
+        
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
         
         return this.keyBinding;
@@ -120,11 +119,11 @@ public class KeyBindingSelector {
 		}
 		if(this.editor.exists(kb)){
 			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("key-bindings-editor-override"));
+			confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
 			if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_NO) == ConfirmDialog.STATUS_NO){
 				return false;
 			}
 		}
 		return true;
 	}
-	
 }

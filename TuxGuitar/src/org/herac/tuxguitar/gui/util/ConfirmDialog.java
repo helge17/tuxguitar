@@ -70,7 +70,6 @@ public class ConfirmDialog {
 		return this.status;
 	}
 
-	
 	private void addCloseButton(String text,final int value,Composite parent, boolean defaultButton){
         Button button = new Button(parent, SWT.PUSH);
         button.setLayoutData(getButtonData());
@@ -91,6 +90,10 @@ public class ConfirmDialog {
         data.minimumWidth = 80;
         data.minimumHeight = 25;    	
         return data;
+	}
+	
+	public void setDefaultStatus(int status){
+		this.status = status;
 	}
 	
 }
