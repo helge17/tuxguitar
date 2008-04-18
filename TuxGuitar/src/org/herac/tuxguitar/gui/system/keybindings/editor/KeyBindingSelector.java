@@ -10,6 +10,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -69,18 +70,23 @@ public class KeyBindingSelector {
 		
 		Label iconLabel = new Label(composite, SWT.CENTER );
 		iconLabel.setImage(iconLabel.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
-		iconLabel.setLayoutData(new GridData(SWT.CENTER,SWT.CENTER,false,true));
+		iconLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
 		
-		final Font textFont = new Font(this.dialog.getDisplay(),"Sans", 15, SWT.BOLD);
 		Label textLabel = new Label(composite,SWT.CENTER);
-		textLabel.setLayoutData(new GridData(SWT.CENTER,SWT.CENTER,false,true));
-		textLabel.setFont(textFont);
+		textLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
 		textLabel.setText(TuxGuitar.getProperty("key-bindings-editor-push-a-key"));
-		textLabel.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent arg0) {
-				textFont.dispose();
-			}
-		});
+
+		FontData[] fd = textLabel.getFont().getFontData();
+		if(fd != null && fd.length > 0){
+			final Font font = new Font(textLabel.getDisplay(),new FontData( fd[0].getName(), 14 , SWT.BOLD) );
+			textLabel.setFont(font);
+			textLabel.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent arg0) {
+					font.dispose();
+				}
+			});
+		}
+		
         //------------------BUTTONS--------------------------            
         Composite buttons = new Composite(this.dialog, SWT.NONE);
         buttons.setLayout(new GridLayout(2,false));
