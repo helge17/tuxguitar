@@ -173,9 +173,9 @@ apt:
 
 update:
 #	rm -f TuxGuitar/dist/config* TuxGuitar/build.*
-	ssh-add
-	-cvs $@ .
-	-cvs diff > tmp.diff
+	-ssh-add
+	-svn $@ .
+	-svn diff > tmp.diff
 	diffstat  tmp.diff
 
 snapshot-clean:
@@ -184,7 +184,7 @@ snapshot-clean:
 commit: snapshot-clean clean distclean update help
 	~/bin/vc.sh changed
 	less tmp.diff
-	cvs commit
+	svn commit
 
 #~rzr:} various debian hack to be removed
 
