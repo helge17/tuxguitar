@@ -84,6 +84,7 @@ public class TGConfigEditor{
                 dispose();
                 setDefaults();
                 ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("settings.config.apply-changes-question"));
+                confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
                 if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
                 	TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
                 	TGActionLock.unlock();
@@ -103,6 +104,7 @@ public class TGConfigEditor{
                 updateOptions();
                 dispose();
                 ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("settings.config.apply-changes-question"));
+                confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
                 if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
                 	TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
                 	TGActionLock.unlock();
