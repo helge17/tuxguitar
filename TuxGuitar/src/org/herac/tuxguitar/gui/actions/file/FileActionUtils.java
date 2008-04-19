@@ -75,7 +75,7 @@ public class FileActionUtils {
 		boolean canWrite = true;
 		File file = new File(fileName);
 		if (file.exists()) {
-			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("replace-file-question"));
+			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.overwrite-question"));
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
 			if (confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO , ConfirmDialog.BUTTON_NO ) == ConfirmDialog.STATUS_NO) {
 				canWrite = false;
