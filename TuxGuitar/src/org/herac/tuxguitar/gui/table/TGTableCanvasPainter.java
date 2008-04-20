@@ -27,6 +27,8 @@ public class TGTableCanvasPainter implements PaintListener{
 	
 	protected void paintTrack(TGPainter painter){		
 		if(!TGSongLock.isLocked()){
+			TGSongLock.lock();
+			
 			int x = -this.viewer.getHScrollSelection();
 			int y = 0;		
 			int size = this.viewer.getTable().getRowHeight();
@@ -65,6 +67,8 @@ public class TGTableCanvasPainter implements PaintListener{
 				x += size;
 			}
 			trackColor.dispose();
+			
+			TGSongLock.unlock();
 		}
 	}
 	

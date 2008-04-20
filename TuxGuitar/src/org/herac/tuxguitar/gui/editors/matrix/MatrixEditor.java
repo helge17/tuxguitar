@@ -710,13 +710,19 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	
 	public void redraw(){
 		if(!isDisposed() && !TGSongLock.isLocked()){
+			TGSongLock.lock();
+			
 			this.editor.redraw();
 			this.loadDurationImage(false);
+			
+			TGSongLock.unlock();
 		}
 	}
 	
 	public void redrawPlayingMode(){
 		if(!isDisposed() && !TGSongLock.isLocked() && TuxGuitar.instance().getPlayer().isRunning() && !this.paintLock.isLocked()){			
+			TGSongLock.lock();
+			
 			TGMeasure measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			TGBeat beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
 			if(measure != null && beat != null){
@@ -741,6 +747,8 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 				this.playedTrack = currentTrack;
 				this.playedBeat = beat;
 			}
+			
+			TGSongLock.unlock();
 		}
 	}
 	
