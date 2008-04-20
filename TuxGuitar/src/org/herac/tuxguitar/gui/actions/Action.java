@@ -32,10 +32,12 @@ public abstract class Action extends ActionAdapter{
 	
 	protected static final int DISABLE_ON_PLAYING = 0x10;
 	
+	protected static boolean processing = false;
+	
 	private String name;    
 	
 	private int flags;
-
+	
     public Action(String name, int flags){
     	this.name = name;
     	this.flags = flags;
@@ -43,25 +45,20 @@ public abstract class Action extends ActionAdapter{
 
     protected abstract int execute(TypedEvent e);
 
-    public synchronized void process(final TypedEvent e){        
-    	if(!TGActionLock.isLocked() && !TGSongLock.isLocked()){
+    public synchronized void process(final TypedEvent e){
+    	if(!processing && !TGActionLock.isLocked() && !TGSongLock.isLocked()){
     		final int flags = getFlags();
-    		
     		if( (flags & DISABLE_ON_PLAYING) != 0 && TuxGuitar.instance().getPlayer().isRunning()){
     			TuxGuitar.instance().updateCache( ((flags & AUTO_UPDATE) != 0 ) );
     			return;
     		}
-    		/*
-    		if( (flags & AUTO_LOCK) != 0 ){
-    			TGActionLock.lock();
-    		}
-    		*/
+    		processing = true;
     		new Thread(new Runnable() {
 				public void run() {
 					if(!TuxGuitar.isDisposed()){
 			    		if( (flags & AUTO_LOCK) != 0 ){
 			    			TGActionLock.lock();
-			    		}						
+			    		}
 						TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
 							public void run() {
 								if(!TuxGuitar.isDisposed()){
@@ -73,6 +70,7 @@ public abstract class Action extends ActionAdapter{
 										TGActionLock.unlock();
 									}
 								}
+								processing = false;
 							}
 						});
 					}
