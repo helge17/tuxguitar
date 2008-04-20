@@ -371,17 +371,17 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		gotoMeasure(header,false);
 	}	
 	
-	protected void gotoMeasure(TGMeasureHeader header,boolean moveCaret){					
+	protected void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
 		if(header != null && this.position != header.getNumber()){
 			TuxGuitar.instance().getPlayer().setTickPosition(MidiTickUtil.getTick(header.getStart()));
 			if(moveCaret){
 				TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
 				TuxGuitar.instance().updateCache(true);
-			}			
+			}
 			redraw();
 		}
 	}
-		
+	
 	private void checkPosition(){
 		TGMeasure measure = null;
 		if(TuxGuitar.instance().getPlayer().isRunning()){
