@@ -235,6 +235,7 @@ public class TGTableViewer implements LanguageLoader{
 	
 	public void redraw(){
 		if(!isDisposed() && !TGSongLock.isLocked()){
+			TGSongLock.lock();
 			this.updateTable();
 			this.table.getColumnCanvas().setTitle(TuxGuitar.instance().getSongManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
@@ -248,11 +249,13 @@ public class TGTableViewer implements LanguageLoader{
 				this.followScroll = false;
 			}
 			getComposite().redraw();
+			TGSongLock.unlock();
 		}
 	}
 	
 	public void redrawPlayingMode(){     
 		if(!isDisposed() && !TGSongLock.isLocked()){
+			TGSongLock.lock();
 			TGMeasure measure =  TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
@@ -265,6 +268,7 @@ public class TGTableViewer implements LanguageLoader{
 				this.selectedTrack = selectedTrack;
 				this.selectedMeasure = selectedMeasure;
 			}
+			TGSongLock.unlock();
 		}
 		
 	}

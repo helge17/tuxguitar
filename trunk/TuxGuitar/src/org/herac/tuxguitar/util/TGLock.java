@@ -1,34 +1,30 @@
 package org.herac.tuxguitar.util;
 
 public class TGLock {
-	
-	private boolean locked;
-	
-	public TGLock(){
-		this.locked = false;
-	}
+
+	private Thread lock;
 	
 	public void lock(){
-		this.locked = true;
+		this.lock = Thread.currentThread();
 	}
-	
+
 	public void unlock(){
-		this.locked = false;
+		this.lock = null;
 	}
 	
 	public boolean isLocked(){
-		return this.locked;
+		return (this.lock != null && this.lock != Thread.currentThread());
 	}
 	
-	public void waitFor(){
+    public void waitFor(){
 		try {
 			while(isLocked()){
-				synchronized(this) {
-					this.wait(1);
+				synchronized(this.lock) {
+					this.lock.wait(1);
 				}
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+    }
 }

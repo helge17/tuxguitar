@@ -109,8 +109,9 @@ public class Tablature extends Composite {
     	this.caret.update(1,TGDuration.QUARTER_TIME,1);
     }
 
-    public synchronized void paintTablature(TGPainter painter){      
+    public synchronized void paintTablature(TGPainter painter){
     	if(!TGSongLock.isLocked()){
+    		TGSongLock.lock();
     		this.lock();
     		try{
     			this.checkScroll();
@@ -144,6 +145,7 @@ public class Tablature extends Composite {
     			throwable.printStackTrace();
     		}
     		this.unlock();
+    		TGSongLock.unlock();
     	}
     }
 
@@ -222,9 +224,13 @@ public class Tablature extends Composite {
     
     public void redrawPlayingMode(){
     	if(!super.isDisposed() && !TGSongLock.isLocked()){
+    		TGSongLock.lock();
+    		
     		TGPainter painter = new TGPainter(new GC(this));
     		redrawPlayingMode(painter,false);
     		painter.dispose();
+    		
+    		TGSongLock.unlock();
     	}
     }
 

@@ -218,7 +218,7 @@ public class TuxGuitar {
 						}
 					}).start();
 				}
-			}).start();			
+			}).start();
 		}
 	}
 	
@@ -555,10 +555,13 @@ public class TuxGuitar {
 	
 	public void updateCache(final boolean updateItems){
 		if(!TGSongLock.isLocked()){
+			TGSongLock.lock();
 			getEditorCache().updateEditMode();
+			TGSongLock.unlock();
 			new SyncThread(new Runnable() {
 				public void run() {
 					if(!isDisposed() && !TGSongLock.isLocked()){
+						TGSongLock.lock();
 						if(updateItems){
 							getItemManager().updateItems();
 							getTransport().updateItems();
@@ -567,24 +570,31 @@ public class TuxGuitar {
 							getTable().updateItems();
 						}
 						redraw();
+						TGSongLock.unlock();
 					}
 				}
-			}).start();		
+			}).start();
 		}
 	}
 
 	protected void redraw(){
 		if(!isDisposed() && !TGSongLock.isLocked()){
-	    	this.getTablatureEditor().getTablature().redraw();	    	
+			TGSongLock.lock();
+			
+			this.getTablatureEditor().getTablature().redraw();	    	
 	        this.getFretBoardEditor().redraw();
 	        this.getPianoEditor().redraw();
 	        this.getTable().redraw();	   	        
 	        this.getMatrixEditor().redraw();
+	        
+	        TGSongLock.unlock();
 	    }
 	}
 	
 	public void redrawPayingMode(){
 	    if(!isDisposed() && !TGSongLock.isLocked()){
+	    	TGSongLock.lock();
+	    	
 	    	this.getEditorCache().updatePlayMode();
 	    	if(this.getEditorCache().shouldRedraw()){
 	    		this.getTablatureEditor().getTablature().redrawPlayingMode();
@@ -594,6 +604,8 @@ public class TuxGuitar {
 	    		this.getMatrixEditor().redrawPlayingMode();
 	    	}
 	    	this.getTransport().redrawPlayingMode();
+	    	
+	    	TGSongLock.unlock();
 	    }
 	}
 
@@ -622,15 +634,26 @@ public class TuxGuitar {
 	}
 
 	public void loadLanguage(){
-		getLanguageManager().setLanguage(getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE));		
+		TGSongLock.waitFor();
+		TGSongLock.lock();
+		
+		getLanguageManager().setLanguage(getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE));
+		
+		TGSongLock.unlock();
 	}
 
 	public void loadToolBars(){
+		TGSongLock.waitFor();
+		TGSongLock.lock();
+		
 		getItemManager().createCoolbar();		
 		getShell().layout(true);
+		
+		TGSongLock.unlock();
 	}
 
 	public void loadStyles(){
+		TGSongLock.waitFor();
 		TGSongLock.lock();
 		
 		getTablatureEditor().getTablature().reloadStyles();
@@ -639,7 +662,12 @@ public class TuxGuitar {
 	}	    
 
 	public void loadSkin(){
+		TGSongLock.waitFor();
+		TGSongLock.lock();
+		
 		getIconManager().reloadIcons();
+		
+		TGSongLock.unlock();
 		//getShell().setImage(getIconManager().getAppIcon());
 		//getShell().layout(true);
 	}
@@ -649,6 +677,7 @@ public class TuxGuitar {
 	}
 	
     public void fireNewSong(TGSong song,URL url){            	        
+    	TGSongLock.waitFor();
     	TGSongLock.lock();
     	
     	TuxGuitar.instance().getSongManager().setSong(song);
@@ -664,27 +693,29 @@ public class TuxGuitar {
         getMixer().update();
         getLyricEditor().update();
         MarkerList.instance().update();
-        
-        TGSongLock.unlock();
-        
+
         updateCache(true);
         showTitle();
+        
+        TGSongLock.unlock();
     }
 	
     public void fireSaveSong(URL url){            	        
+    	TGSongLock.waitFor();
     	TGSongLock.lock();
     	
     	getFileHistory().reset(url);
     	getEditorCache().reset();    	
     	getUndoableManager().discardAllEdits();
-    	
-    	TGSongLock.unlock();
-    	
+
         updateCache(true);
         showTitle();
+        
+        TGSongLock.unlock();
     }
 	
 	public void fireUpdate(){
+		TGSongLock.waitFor();
 		TGSongLock.lock();
 		
 		this.getEditorCache().reset();

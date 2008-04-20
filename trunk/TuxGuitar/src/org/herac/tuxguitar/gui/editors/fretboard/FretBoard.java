@@ -435,11 +435,13 @@ public class FretBoard extends Composite {
 	
 	protected void paintEditor(TGPainter painter) {	    
 		if(!TGSongLock.isLocked()){
+			TGSongLock.lock();
 			this.updateEditor();
 			if (this.frets.length > 0 && this.strings.length > 0) {
 				paintFretBoard(painter);
 				paintNotes(painter);
 			}
+			TGSongLock.unlock();
 		}
 	}
 

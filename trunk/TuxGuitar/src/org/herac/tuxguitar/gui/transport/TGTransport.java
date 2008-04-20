@@ -430,6 +430,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	
 	public void redrawPlayingMode(){		
 		if(!TGSongLock.isLocked()){
+			TGSongLock.lock();
 			this.checkPosition();
 			if(!isDisposed()){
 				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){				
@@ -442,6 +443,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 					}
 				}			
 			}
+			TGSongLock.unlock();
 		}
 	}
 }

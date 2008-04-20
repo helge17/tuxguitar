@@ -9,7 +9,6 @@ package org.herac.tuxguitar.gui.actions;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
-import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.lock.TGActionLock;
 import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.undo.UndoableEdit;
@@ -52,21 +51,30 @@ public abstract class Action extends ActionAdapter{
     			TuxGuitar.instance().updateCache( ((flags & AUTO_UPDATE) != 0 ) );
     			return;
     		}
-    		
+    		/*
     		if( (flags & AUTO_LOCK) != 0 ){
     			TGActionLock.lock();
     		}
-    		
-    		new SyncThread(new Runnable() {
+    		*/
+    		new Thread(new Runnable() {
 				public void run() {
 					if(!TuxGuitar.isDisposed()){
-						int result = execute(e);
+			    		if( (flags & AUTO_LOCK) != 0 ){
+			    			TGActionLock.lock();
+			    		}						
+						TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
+							public void run() {
+								if(!TuxGuitar.isDisposed()){
+									int result = execute(e);
 
-						TuxGuitar.instance().updateCache( (((flags | result) & AUTO_UPDATE) != 0 ) );
+									TuxGuitar.instance().updateCache( (((flags | result) & AUTO_UPDATE) != 0 ) );
 
-						if( ( (flags | result) & AUTO_UNLOCK) != 0 ){
-							TGActionLock.unlock();
-						}
+									if( ( (flags | result) & AUTO_UNLOCK) != 0 ){
+										TGActionLock.unlock();
+									}
+								}
+							}
+						});
 					}
 				}
 			}).start();

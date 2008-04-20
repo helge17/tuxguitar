@@ -485,7 +485,7 @@ public class Piano extends Composite{
 		
 		public void paintControl(PaintEvent e) {
 			if(!TGSongLock.isLocked()){
-			
+				TGSongLock.lock();
 				updateEditor();
 				
 				TGPainter painter = new TGPainter(e.gc);
@@ -499,6 +499,7 @@ public class Piano extends Composite{
 						paintNote(painter,note.getRealValue());
 					}
 				}
+				TGSongLock.unlock();
 			}
 		}
 		
