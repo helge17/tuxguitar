@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.ActionManager;
 import org.herac.tuxguitar.gui.actions.file.FileActionUtils;
 import org.herac.tuxguitar.gui.actions.system.DisposeAction;
@@ -47,8 +48,6 @@ import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.icons.IconManager;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.gui.system.language.LanguageManager;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginManager;
 import org.herac.tuxguitar.gui.table.TGTableViewer;
 import org.herac.tuxguitar.gui.tools.browser.dialog.TGBrowserDialog;
@@ -64,6 +63,7 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGLock;
 
 /**
  * @author julian
@@ -78,6 +78,8 @@ public class TuxGuitar {
 	
 	private static TuxGuitar instance;
 
+	private TGLock lock;
+	
 	private Display display;
 
 	private Shell shell;
@@ -133,7 +135,7 @@ public class TuxGuitar {
 	protected Composite sashComposite;			
 
 	public TuxGuitar() {
-		super();
+		this.lock = new TGLock();
 	}
 
 	public static TuxGuitar instance() {
@@ -144,7 +146,7 @@ public class TuxGuitar {
 		}
 		return instance;
 	}
-
+	
 	public void displayGUI(String[] args) {		
 		//checkeo los argumentos
 		ArgumentParser argumentParser = new ArgumentParser(args);
@@ -204,7 +206,7 @@ public class TuxGuitar {
 	private void startSong(final ArgumentParser parser){
 		final URL url = parser.getURL();
 		if(url != null){
-			TGActionLock.lock();
+			ActionLock.lock();
 			new SyncThread(new Runnable() {
 				public void run() {
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
@@ -213,7 +215,7 @@ public class TuxGuitar {
 							if(!TuxGuitar.isDisposed()){
 								FileActionUtils.open(url);
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-								TGActionLock.unlock();
+								ActionLock.unlock();
 							}
 						}
 					}).start();
@@ -554,14 +556,14 @@ public class TuxGuitar {
 	}
 	
 	public void updateCache(final boolean updateItems){
-		if(!TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!this.isLocked()){
+			this.lock();
 			getEditorCache().updateEditMode();
-			TGSongLock.unlock();
+			this.unlock();
 			new SyncThread(new Runnable() {
 				public void run() {
-					if(!isDisposed() && !TGSongLock.isLocked()){
-						TGSongLock.lock();
+					if(!isDisposed() && !isLocked()){
+						lock();
 						if(updateItems){
 							getItemManager().updateItems();
 							getTransport().updateItems();
@@ -570,7 +572,7 @@ public class TuxGuitar {
 							getTable().updateItems();
 						}
 						redraw();
-						TGSongLock.unlock();
+						unlock();
 					}
 				}
 			}).start();
@@ -578,8 +580,8 @@ public class TuxGuitar {
 	}
 
 	protected void redraw(){
-		if(!isDisposed() && !TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!isDisposed() && !this.isLocked()){
+			this.lock();
 			
 			this.getTablatureEditor().getTablature().redraw();	    	
 	        this.getFretBoardEditor().redraw();
@@ -587,13 +589,13 @@ public class TuxGuitar {
 	        this.getTable().redraw();	   	        
 	        this.getMatrixEditor().redraw();
 	        
-	        TGSongLock.unlock();
+	        this.unlock();
 	    }
 	}
 	
 	public void redrawPayingMode(){
-	    if(!isDisposed() && !TGSongLock.isLocked()){
-	    	TGSongLock.lock();
+	    if(!isDisposed() && !this.isLocked()){
+	    	this.lock();
 	    	
 	    	this.getEditorCache().updatePlayMode();
 	    	if(this.getEditorCache().shouldRedraw()){
@@ -605,7 +607,7 @@ public class TuxGuitar {
 	    	}
 	    	this.getTransport().redrawPlayingMode();
 	    	
-	    	TGSongLock.unlock();
+	    	this.unlock();
 	    }
 	}
 
@@ -634,42 +636,40 @@ public class TuxGuitar {
 	}
 
 	public void loadLanguage(){
-		TGSongLock.waitFor();
-		TGSongLock.lock();
+		this.waitFor();
+		this.lock();
 		
 		getLanguageManager().setLanguage(getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE));
 		
-		TGSongLock.unlock();
+		this.unlock();
 	}
 
 	public void loadToolBars(){
-		TGSongLock.waitFor();
-		TGSongLock.lock();
+		this.waitFor();
+		this.lock();
 		
 		getItemManager().createCoolbar();		
 		getShell().layout(true);
 		
-		TGSongLock.unlock();
+		this.unlock();
 	}
 
 	public void loadStyles(){
-		TGSongLock.waitFor();
-		TGSongLock.lock();
+		this.waitFor();
+		this.lock();
 		
 		getTablatureEditor().getTablature().reloadStyles();
 		
-		TGSongLock.unlock();
+		this.unlock();
 	}	    
 
 	public void loadSkin(){
-		TGSongLock.waitFor();
-		TGSongLock.lock();
+		this.waitFor();
+		this.lock();
 		
 		getIconManager().reloadIcons();
 		
-		TGSongLock.unlock();
-		//getShell().setImage(getIconManager().getAppIcon());
-		//getShell().layout(true);
+		this.unlock();
 	}
 	
 	public void newSong(){
@@ -677,8 +677,8 @@ public class TuxGuitar {
 	}
 	
     public void fireNewSong(TGSong song,URL url){            	        
-    	TGSongLock.waitFor();
-    	TGSongLock.lock();
+    	this.waitFor();
+    	this.lock();
     	
     	TuxGuitar.instance().getSongManager().setSong(song);
     	
@@ -697,12 +697,12 @@ public class TuxGuitar {
         updateCache(true);
         showTitle();
         
-        TGSongLock.unlock();
+        this.unlock();
     }
 	
-    public void fireSaveSong(URL url){            	        
-    	TGSongLock.waitFor();
-    	TGSongLock.lock();
+    public void fireSaveSong(URL url){
+    	this.waitFor();
+    	this.lock();
     	
     	getFileHistory().reset(url);
     	getEditorCache().reset();    	
@@ -711,20 +711,20 @@ public class TuxGuitar {
         updateCache(true);
         showTitle();
         
-        TGSongLock.unlock();
+        this.unlock();
     }
 	
 	public void fireUpdate(){
-		TGSongLock.waitFor();
-		TGSongLock.lock();
+		this.waitFor();
+		this.lock();
 		
 		this.getEditorCache().reset();
 		this.getTablatureEditor().getTablature().updateTablature();
 		this.getTable().fireUpdate(false);
 		this.getLyricEditor().update();
 		
-		TGSongLock.unlock();
-	}    
+		this.unlock();
+	}
     
     public void loadCursor(int style){
     	this.loadCursor(getShell(),style);
@@ -738,5 +738,21 @@ public class TuxGuitar {
 				}
 			}
 		});
+    }
+
+	public void lock(){
+		this.lock.lock();
+	}
+
+	public void unlock(){
+		this.lock.unlock();
+	}
+	
+	public boolean isLocked(){
+		return this.lock.isLocked();
+	}
+	
+    public void waitFor(){
+    	this.lock.waitFor();
     }
 }

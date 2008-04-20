@@ -27,7 +27,6 @@ import org.herac.tuxguitar.gui.actions.tools.ScaleAction;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -435,7 +434,7 @@ public class Piano extends Composite{
 	}
 	
 	public void redraw() {
-	    if(!super.isDisposed() && !TGSongLock.isLocked()){	    	
+	    if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){	    	
 	        super.redraw();
 	        this.pianoComposite.redraw();
 	        this.loadDurationImage(false);
@@ -443,7 +442,7 @@ public class Piano extends Composite{
 	}
 
 	public void redrawPlayingMode(){     
-		if(!super.isDisposed() && !TGSongLock.isLocked()){
+		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
 	        this.pianoComposite.redraw();
 		}
 	 }
@@ -484,8 +483,8 @@ public class Piano extends Composite{
 		}
 		
 		public void paintControl(PaintEvent e) {
-			if(!TGSongLock.isLocked()){
-				TGSongLock.lock();
+			if(!TuxGuitar.instance().isLocked()){
+				TuxGuitar.instance().lock();
 				updateEditor();
 				
 				TGPainter painter = new TGPainter(e.gc);
@@ -499,7 +498,7 @@ public class Piano extends Composite{
 						paintNote(painter,note.getRealValue());
 					}
 				}
-				TGSongLock.unlock();
+				TuxGuitar.instance().unlock();
 			}
 		}
 		

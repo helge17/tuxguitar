@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.config.items.LanguageOption;
@@ -32,7 +33,6 @@ import org.herac.tuxguitar.gui.system.config.items.SkinOption;
 import org.herac.tuxguitar.gui.system.config.items.SoundOption;
 import org.herac.tuxguitar.gui.system.config.items.StylesOption;
 import org.herac.tuxguitar.gui.system.config.items.ToolBarsOption;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
@@ -87,7 +87,7 @@ public class TGConfigEditor{
                 confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
                 if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
                 	TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-                	TGActionLock.unlock();
+                	ActionLock.unlock();
                     return;
                 }
                 applyConfig(true);
@@ -107,7 +107,7 @@ public class TGConfigEditor{
                 confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
                 if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
                 	TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-                	TGActionLock.unlock();
+                	ActionLock.unlock();
                     return;
                 }
                 applyConfig(false);		         
@@ -130,7 +130,7 @@ public class TGConfigEditor{
         DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
         
         if(!this.accepted){
-        	TGActionLock.unlock();
+        	ActionLock.unlock();
         }
     }
 
@@ -271,7 +271,7 @@ public class TGConfigEditor{
 								TuxGuitar.instance().fireUpdate();
 								TuxGuitar.instance().updateCache(true);
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-								TGActionLock.unlock();
+								ActionLock.unlock();
 							}
 						}).start();
 					}

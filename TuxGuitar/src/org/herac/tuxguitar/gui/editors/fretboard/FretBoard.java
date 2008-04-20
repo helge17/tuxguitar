@@ -37,7 +37,6 @@ import org.herac.tuxguitar.gui.actions.tools.ScaleAction;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -434,14 +433,14 @@ public class FretBoard extends Composite {
 	}	
 	
 	protected void paintEditor(TGPainter painter) {	    
-		if(!TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!TuxGuitar.instance().isLocked()){
+			TuxGuitar.instance().lock();
 			this.updateEditor();
 			if (this.frets.length > 0 && this.strings.length > 0) {
 				paintFretBoard(painter);
 				paintNotes(painter);
 			}
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 
@@ -563,7 +562,7 @@ public class FretBoard extends Composite {
 	}
 	
 	public void redraw() {
-	    if(!super.isDisposed() && !TGSongLock.isLocked()){	    	
+	    if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){	    	
 	        super.redraw();
 	        this.fretBoardComposite.redraw();
 	        this.loadDurationImage(false);
@@ -571,7 +570,7 @@ public class FretBoard extends Composite {
 	}
 
 	public void redrawPlayingMode(){     
-		if(!super.isDisposed() && !TGSongLock.isLocked()){
+		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
 	        this.fretBoardComposite.redraw();
 		}
 	 }

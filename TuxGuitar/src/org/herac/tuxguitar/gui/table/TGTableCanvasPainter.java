@@ -7,7 +7,6 @@ import org.eclipse.swt.graphics.Color;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGTableCanvasPainter implements PaintListener{
@@ -26,8 +25,8 @@ public class TGTableCanvasPainter implements PaintListener{
 	}
 	
 	protected void paintTrack(TGPainter painter){		
-		if(!TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!TuxGuitar.instance().isLocked()){
+			TuxGuitar.instance().lock();
 			
 			int x = -this.viewer.getHScrollSelection();
 			int y = 0;		
@@ -68,7 +67,7 @@ public class TGTableCanvasPainter implements PaintListener{
 			}
 			trackColor.dispose();
 			
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 	

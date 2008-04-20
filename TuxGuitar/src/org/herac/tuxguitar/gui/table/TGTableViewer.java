@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.composition.ChangeInfoAction;
 import org.herac.tuxguitar.gui.actions.track.GoToTrackAction;
 import org.herac.tuxguitar.gui.actions.track.TrackPropertiesAction;
@@ -19,8 +20,6 @@ import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -178,7 +177,7 @@ public class TGTableViewer implements LanguageLoader{
 						public void mouseDoubleClick(final MouseEvent e) {
 							new Thread(new Runnable() {
 								public void run() {
-									TGActionLock.waitFor();
+									ActionLock.waitFor();
 									TuxGuitar.instance().getAction(TrackPropertiesAction.NAME).process(e);							
 								}
 							}).start();
@@ -234,8 +233,8 @@ public class TGTableViewer implements LanguageLoader{
 	}
 	
 	public void redraw(){
-		if(!isDisposed() && !TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+			TuxGuitar.instance().lock();
 			this.updateTable();
 			this.table.getColumnCanvas().setTitle(TuxGuitar.instance().getSongManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
@@ -249,13 +248,13 @@ public class TGTableViewer implements LanguageLoader{
 				this.followScroll = false;
 			}
 			getComposite().redraw();
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 	
 	public void redrawPlayingMode(){     
-		if(!isDisposed() && !TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+			TuxGuitar.instance().lock();
 			TGMeasure measure =  TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
@@ -268,7 +267,7 @@ public class TGTableViewer implements LanguageLoader{
 				this.selectedTrack = selectedTrack;
 				this.selectedMeasure = selectedMeasure;
 			}
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 		
 	}

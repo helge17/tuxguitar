@@ -16,7 +16,6 @@ import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.marker.MarkerList;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.config.TGConfigManager;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.table.TGTableViewer;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 
@@ -69,7 +68,7 @@ public class DisposeAction extends Action {
     }
 
     protected void exit(){
-    	TGSongLock.lock();
+    	TuxGuitar.instance().lock();
     	new SyncThread(new Runnable() {
 			public void run() {
 		    	closeModules();

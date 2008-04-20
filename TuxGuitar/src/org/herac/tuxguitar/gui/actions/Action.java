@@ -9,8 +9,7 @@ package org.herac.tuxguitar.gui.actions;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
+import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.undo.UndoableEdit;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 
@@ -31,13 +30,11 @@ public abstract class Action extends ActionAdapter{
 	protected static final int KEY_BINDING_AVAILABLE = 0x08;
 	
 	protected static final int DISABLE_ON_PLAYING = 0x10;
-	
-	protected static boolean processing = false;
-	
+
 	private String name;    
 	
 	private int flags;
-	
+
     public Action(String name, int flags){
     	this.name = name;
     	this.flags = flags;
@@ -45,34 +42,29 @@ public abstract class Action extends ActionAdapter{
 
     protected abstract int execute(TypedEvent e);
 
-    public synchronized void process(final TypedEvent e){
-    	if(!processing && !TGActionLock.isLocked() && !TGSongLock.isLocked()){
+    public synchronized void process(final TypedEvent e){        
+    	if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
     		final int flags = getFlags();
+    		
     		if( (flags & DISABLE_ON_PLAYING) != 0 && TuxGuitar.instance().getPlayer().isRunning()){
     			TuxGuitar.instance().updateCache( ((flags & AUTO_UPDATE) != 0 ) );
     			return;
     		}
-    		processing = true;
-    		new Thread(new Runnable() {
+    		
+    		if( (flags & AUTO_LOCK) != 0 ){
+    			ActionLock.lock();
+    		}
+    		
+    		new SyncThread(new Runnable() {
 				public void run() {
 					if(!TuxGuitar.isDisposed()){
-			    		if( (flags & AUTO_LOCK) != 0 ){
-			    			TGActionLock.lock();
-			    		}
-						TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-							public void run() {
-								if(!TuxGuitar.isDisposed()){
-									int result = execute(e);
+						int result = execute(e);
 
-									TuxGuitar.instance().updateCache( (((flags | result) & AUTO_UPDATE) != 0 ) );
+						TuxGuitar.instance().updateCache( (((flags | result) & AUTO_UPDATE) != 0 ) );
 
-									if( ( (flags | result) & AUTO_UNLOCK) != 0 ){
-										TGActionLock.unlock();
-									}
-								}
-								processing = false;
-							}
-						});
+						if( ( (flags | result) & AUTO_UNLOCK) != 0 ){
+							ActionLock.unlock();
+						}
 					}
 				}
 			}).start();

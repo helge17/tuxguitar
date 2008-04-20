@@ -9,7 +9,7 @@ package org.herac.tuxguitar.gui.actions.file;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 
 /**
  * @author julian
@@ -24,7 +24,7 @@ public class ExitAction extends Action {
 	}
 
 	protected int execute(TypedEvent e){
-		TGActionLock.unlock();
+		ActionLock.unlock();
 		TuxGuitar.instance().getShell().close();
 		return 0;
 	}

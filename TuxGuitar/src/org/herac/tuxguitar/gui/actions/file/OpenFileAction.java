@@ -13,8 +13,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.helper.SyncThread;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.FileChooser;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
@@ -74,7 +74,7 @@ public class OpenFileAction extends Action {
     protected void openFile(Object data){
 		final URL url = getOpenFileName(data);
 		if(url == null){
-			TGActionLock.unlock();
+			ActionLock.unlock();
 			return;
 		}
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
@@ -83,7 +83,7 @@ public class OpenFileAction extends Action {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.open(url);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					TGActionLock.unlock();
+					ActionLock.unlock();
 				}
 			}
 		}).start();

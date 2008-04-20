@@ -41,7 +41,6 @@ import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
@@ -301,7 +300,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}	
 
 	protected void paintEditor(TGPainter painter){
-		if(!TGSongLock.isLocked() && !this.paintLock.isLocked()){
+		if(!TuxGuitar.instance().isLocked() && !this.paintLock.isLocked()){
 			this.paintLock.lock();
 
 			if(!TuxGuitar.instance().getPlayer().isRunning()){
@@ -709,19 +708,19 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}
 	
 	public void redraw(){
-		if(!isDisposed() && !TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+			TuxGuitar.instance().lock();
 			
 			this.editor.redraw();
 			this.loadDurationImage(false);
 			
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TGSongLock.isLocked() && TuxGuitar.instance().getPlayer().isRunning() && !this.paintLock.isLocked()){			
-			TGSongLock.lock();
+		if(!isDisposed() && !TuxGuitar.instance().isLocked() && TuxGuitar.instance().getPlayer().isRunning() && !this.paintLock.isLocked()){			
+			TuxGuitar.instance().lock();
 			
 			TGMeasure measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			TGBeat beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
@@ -748,7 +747,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 				this.playedBeat = beat;
 			}
 			
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 	
