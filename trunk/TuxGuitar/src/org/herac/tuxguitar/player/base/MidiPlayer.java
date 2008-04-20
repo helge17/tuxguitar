@@ -523,7 +523,7 @@ public class MidiPlayer{
 		try{
 			if(this.portKey != null && !isMidiPortOpen(this.portKey)){
 				if(this.isRunning()){
-					this.reset();
+					this.stop();
 				}
 				getMidiPort().close();
 				for(int i = 0; i < ports.size(); i ++){
@@ -558,7 +558,7 @@ public class MidiPlayer{
 		try{
 			if(this.sequencerKey != null && !isSequencerOpen(this.sequencerKey)){
 				if(this.isRunning()){
-					this.reset();
+					this.stop();
 				}
 				for(int i = 0; i < sequencers.size(); i ++){
 					MidiSequencer sequencer = (MidiSequencer)sequencers.get(i);
@@ -609,7 +609,7 @@ public class MidiPlayer{
 	
 	public void closeSequencer() throws MidiPlayerException{
 		try{
-			this.reset();
+			this.stop();
 			if(this.lock.isLocked()){
 				this.lock.waitFor();
 			}
@@ -624,7 +624,7 @@ public class MidiPlayer{
 	
 	public void closePort(){
 		try{
-			this.reset();
+			this.stop();
 			if(this.lock.isLocked()){
 				this.lock.waitFor();
 			}
