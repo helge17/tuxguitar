@@ -10,9 +10,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.helper.SyncThread;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 
 /**
  * @author julian
@@ -71,8 +70,8 @@ public class MessageDialog {
         	new SyncThread(new Runnable() {
         		public void run() {		    	
         			if(!shell.isDisposed()){
-        				TGActionLock.unlock();
-        				TGSongLock.unlock();
+        				ActionLock.unlock();
+        				TuxGuitar.instance().unlock();
         				shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
         				new MessageDialog(TuxGuitar.getProperty("error"),message,SWT.ICON_ERROR).show(shell);
         			}

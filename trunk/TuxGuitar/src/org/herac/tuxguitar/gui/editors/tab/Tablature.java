@@ -22,7 +22,6 @@ import org.herac.tuxguitar.gui.editors.tab.layout.LinearViewLayout;
 import org.herac.tuxguitar.gui.editors.tab.layout.PageViewLayout;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.util.TGLock;
@@ -110,8 +109,8 @@ public class Tablature extends Composite {
     }
 
     public synchronized void paintTablature(TGPainter painter){
-    	if(!TGSongLock.isLocked()){
-    		TGSongLock.lock();
+    	if(!TuxGuitar.instance().isLocked()){
+    		TuxGuitar.instance().lock();
     		this.lock();
     		try{
     			this.checkScroll();
@@ -145,7 +144,7 @@ public class Tablature extends Composite {
     			throwable.printStackTrace();
     		}
     		this.unlock();
-    		TGSongLock.unlock();
+    		TuxGuitar.instance().unlock();
     	}
     }
 
@@ -214,7 +213,7 @@ public class Tablature extends Composite {
     }
 
 	public void redraw(){
-        if(!super.isDisposed() && !TGSongLock.isLocked()){        	
+        if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){        	
         	this.lock();        	        	        
         	this.playedBeat = null;
         	this.playedMeasure = null;
@@ -223,19 +222,19 @@ public class Tablature extends Composite {
     }
     
     public void redrawPlayingMode(){
-    	if(!super.isDisposed() && !TGSongLock.isLocked()){
-    		TGSongLock.lock();
+    	if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+    		TuxGuitar.instance().lock();
     		
     		TGPainter painter = new TGPainter(new GC(this));
     		redrawPlayingMode(painter,false);
     		painter.dispose();
     		
-    		TGSongLock.unlock();
+    		TuxGuitar.instance().unlock();
     	}
     }
 
 	private void redrawPlayingMode(TGPainter painter,boolean force){
-		if(!super.isDisposed() && (force || !isLocked()) && !TGSongLock.isLocked()){
+		if(!super.isDisposed() && (force || !isLocked()) && !TuxGuitar.instance().isLocked()){
         	this.lock();
         	try{
         		TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();

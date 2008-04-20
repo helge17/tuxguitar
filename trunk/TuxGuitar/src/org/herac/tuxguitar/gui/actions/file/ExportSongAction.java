@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.io.base.TGSongExporter;
 
 /**
@@ -47,7 +47,7 @@ public class ExportSongAction extends Action {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.exportSong(exporter, fileName);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					TGActionLock.unlock();
+					ActionLock.unlock();
 				}
 			}
 		}).start();

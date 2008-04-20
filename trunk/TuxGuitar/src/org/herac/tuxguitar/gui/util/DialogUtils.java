@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.system.lock.TGActionLock;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 
 public class DialogUtils {
 
@@ -52,7 +52,7 @@ public class DialogUtils {
 
 		if((style & OPEN_STYLE_WAIT) != 0){
 			if( (dialog.getStyle() & SWT.APPLICATION_MODAL) == 0 ){
-				TGActionLock.unlock();
+				ActionLock.unlock();
 			}
 			while (!display.isDisposed() && !dialog.isDisposed()) {
 				if (!display.readAndDispatch()) {

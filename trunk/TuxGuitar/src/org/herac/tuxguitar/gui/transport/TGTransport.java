@@ -27,13 +27,12 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.transport.TransportMetronomeAction;
-import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportModeAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -406,12 +405,12 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	}	
 
 	public void redraw(){		
-		if(!TGSongLock.isLocked()){
+		if(!TuxGuitar.instance().isLocked()){
 			this.checkPosition();
 			if(!isDisposed()){			
 				new SyncThread(new Runnable() {
 					public void run() {
-						if(!isDisposed() && !TGSongLock.isLocked()){			
+						if(!isDisposed() && !TuxGuitar.instance().isLocked()){			
 							if(isEditingTickScale()){
 								TGTransport.this.label.setText(Long.toString(TGTransport.this.tickProgress.getSelection()));
 							}	
@@ -429,8 +428,8 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	}	
 	
 	public void redrawPlayingMode(){		
-		if(!TGSongLock.isLocked()){
-			TGSongLock.lock();
+		if(!TuxGuitar.instance().isLocked()){
+			TuxGuitar.instance().lock();
 			this.checkPosition();
 			if(!isDisposed()){
 				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){				
@@ -443,7 +442,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 					}
 				}			
 			}
-			TGSongLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 }

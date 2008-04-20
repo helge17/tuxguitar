@@ -4,15 +4,15 @@ public class TGLock {
 
 	private Thread lock;
 	
-	public void lock(){
+	public synchronized void lock(){
 		this.lock = Thread.currentThread();
 	}
 
-	public void unlock(){
+	public synchronized void unlock(){
 		this.lock = null;
 	}
 	
-	public boolean isLocked(){
+	public synchronized boolean isLocked(){
 		return (this.lock != null && this.lock != Thread.currentThread());
 	}
 	

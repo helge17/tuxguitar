@@ -7,7 +7,6 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.piano.Piano;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
 public class PianoEditor implements IconLoader,LanguageLoader{
@@ -55,13 +54,13 @@ public class PianoEditor implements IconLoader,LanguageLoader{
     }
 	
 	public void redraw(){
-		if(!isDisposed() && !TGSongLock.isLocked()){
+		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
 			getPiano().redraw();
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TGSongLock.isLocked()){
+		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
 			getPiano().redrawPlayingMode();
 		}
 	}

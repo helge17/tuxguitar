@@ -7,7 +7,6 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.fretboard.FretBoard;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
-import org.herac.tuxguitar.gui.system.lock.TGSongLock;
 
 public class FretBoardEditor implements IconLoader,LanguageLoader{
 
@@ -59,13 +58,13 @@ public class FretBoardEditor implements IconLoader,LanguageLoader{
 	}
 	
 	public void redraw(){
-		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TGSongLock.isLocked()){
+		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TuxGuitar.instance().isLocked()){
 			getFretBoard().redraw();
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TGSongLock.isLocked()){
+		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TuxGuitar.instance().isLocked()){
 			getFretBoard().redrawPlayingMode();
 		}
 	}
