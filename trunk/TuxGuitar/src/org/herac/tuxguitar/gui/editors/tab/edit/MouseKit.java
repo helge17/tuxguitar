@@ -41,10 +41,10 @@ public class MouseKit {
     }
     
     public void tryBack(){
-    	if(!this.kit.getTablature().isLocked()){
+    	if(!TuxGuitar.instance().isLocked() && !this.kit.getTablature().isPainting()){
     		TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
 			if(this.back != null && !this.back.isDisposed()){
-				painter.drawImage(this.back,this.lastx,this.lasty);					
+				painter.drawImage(this.back,this.lastx,this.lasty);
 			}
 			painter.dispose();
     	}
@@ -58,58 +58,37 @@ public class MouseKit {
 	}
 	
 	public void mouseMove(MouseEvent e) {
-		tryBack();
-
-		TGTrackImpl track = this.kit.findSelectedTrack(e.y);
-       	if (track != null) {
-       		TGMeasureImpl measure = this.kit.findSelectedMeasure(track,e.x,e.y);
+		this.tryBack();
+		if(!TuxGuitar.instance().isLocked() && !this.kit.getTablature().isPainting()){
+		
+			TGTrackImpl track = this.kit.findSelectedTrack(e.y);
+			if (track != null) {
+				TGMeasureImpl measure = this.kit.findSelectedMeasure(track,e.x,e.y);
        		
-			if(measure != null && measure.getTs() != null){				
-				float scale = this.kit.getTablature().getViewLayout().getScale();
-				int minValue = track.getString(track.stringCount()).getValue();
-				int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
-				int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
-				int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing();
-				int width = (int)(10.0f * scale);
-				int topHeight = measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				int bottomHeight = (measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_DOWN_LINES));	
+				if(measure != null && measure.getTs() != null){				
+					float scale = this.kit.getTablature().getViewLayout().getScale();
+					int minValue = track.getString(track.stringCount()).getValue();
+					int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
+					int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
+					int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing();
+					int width = (int)(10.0f * scale);
+					int topHeight = measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+					int bottomHeight = (measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_DOWN_LINES));	
 
-				int x1 = (int)(e.x - (width / 2.0f));
-				int x2 = (int)(e.x + (width / 2.0f));
-				int y1 = (measure.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));
-				int y2 = (y1 + (lineSpacing * 5));
+					int x1 = (int)(e.x - (width / 2.0f));
+					int x2 = (int)(e.x + (width / 2.0f));
+					int y1 = (measure.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+					int y2 = (y1 + (lineSpacing * 5));
 				
-				if(e.y < (y1 + 3) && e.y >= (y1 - topHeight)){				
-					this.back = new Image(TuxGuitar.instance().getDisplay(),width + 1,topHeight + 1);
-					TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
-					painter.copyArea(this.back,x1, (y1 - topHeight));
-					painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
-					for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
-						tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
-						tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
-						if(y < e.y - 5 || tempValue > maxValue){
-							break;
-						}
-						painter.initPath();
-						painter.moveTo(x1, y);
-						painter.lineTo(x2, y);
-						painter.closePath();
-					}
-					painter.dispose();
-					
-					this.lastx = x1;
-					this.lasty = (y1 - topHeight);
-				}else if(e.y > (y2 - 3) && e.y  < y2 + bottomHeight){
-					this.back = new Image(TuxGuitar.instance().getDisplay(),width + 1,bottomHeight + 1);
-					TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
-					painter.copyArea(this.back,x1, y2);	
-					painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
-					tempValue -= 14;					
-					for(int y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
-						if(tempValue > 0){	
-							tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
-							tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
-							if(y > e.y + 5 || tempValue < minValue){
+					if(e.y < (y1 + 3) && e.y >= (y1 - topHeight)){				
+						this.back = new Image(TuxGuitar.instance().getDisplay(),width + 1,topHeight + 1);
+						TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
+						painter.copyArea(this.back,x1, (y1 - topHeight));
+						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
+						for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
+							tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
+							tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
+							if(y < e.y - 5 || tempValue > maxValue){
 								break;
 							}
 							painter.initPath();
@@ -117,14 +96,37 @@ public class MouseKit {
 							painter.lineTo(x2, y);
 							painter.closePath();
 						}
-					}
-					painter.dispose();			
+						painter.dispose();
 					
-					this.lastx = x1;
-					this.lasty = y2;					
+						this.lastx = x1;
+						this.lasty = (y1 - topHeight);
+					}else if(e.y > (y2 - 3) && e.y  < y2 + bottomHeight){
+						this.back = new Image(TuxGuitar.instance().getDisplay(),width + 1,bottomHeight + 1);
+						TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
+						painter.copyArea(this.back,x1, y2);	
+						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
+						tempValue -= 14;					
+						for(int y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
+							if(tempValue > 0){	
+								tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
+								tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
+								if(y > e.y + 5 || tempValue < minValue){
+									break;
+								}
+								painter.initPath();
+								painter.moveTo(x1, y);
+								painter.lineTo(x2, y);
+								painter.closePath();
+							}
+						}
+						painter.dispose();			
+					
+						this.lastx = x1;
+						this.lasty = y2;					
+					}
 				}
-			}						
-       	}
+			}
+		}
 	}
 
 	public void mouseUp(MouseEvent e) {

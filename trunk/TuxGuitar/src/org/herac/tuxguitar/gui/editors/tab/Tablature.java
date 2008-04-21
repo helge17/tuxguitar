@@ -24,7 +24,6 @@ import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.util.TGLock;
 /**
  * @author julian
  * 
@@ -35,7 +34,6 @@ public class Tablature extends Composite {
 	private static final int SCROLL_DELAY = 15;
 	private static final int SCROLL_INCREMENT = 50;
 	
-	private TGLock lock;
 	private TGSongManager songManager;
     private Caret caret;
     private int width;
@@ -52,13 +50,14 @@ public class Tablature extends Composite {
     protected long lastVScrollTime;
     protected long lastHScrollTime;
     
+    private boolean painting;
+    
     public Tablature(final Composite parent) {
     	this(parent,SWT.NONE);
     }
     
     public Tablature(final Composite parent,int style) {
         super(parent, style);
-        this.lock = new TGLock();
         this.editorKit = new EditorKit(this);
     }    
                 
@@ -111,7 +110,7 @@ public class Tablature extends Composite {
     public synchronized void paintTablature(TGPainter painter){
     	if(!TuxGuitar.instance().isLocked()){
     		TuxGuitar.instance().lock();
-    		this.lock();
+    		this.setPainting(true);
     		try{
     			this.checkScroll();
     			
@@ -143,7 +142,7 @@ public class Tablature extends Composite {
     		}catch(Throwable throwable){
     			throwable.printStackTrace();
     		}
-    		this.unlock();
+    		this.setPainting(false);
     		TuxGuitar.instance().unlock();
     	}
     }
@@ -213,29 +212,32 @@ public class Tablature extends Composite {
     }
 
 	public void redraw(){
-        if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){        	
-        	this.lock();        	        	        
+        if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
         	this.playedBeat = null;
         	this.playedMeasure = null;
-            super.redraw();                        
+        	this.editorKit.tryBack();
+        	this.setPainting(true);
+        	super.redraw();
         }
     }
     
     public void redrawPlayingMode(){
-    	if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+    	if(!super.isDisposed() && !isPainting() && !TuxGuitar.instance().isLocked()){
     		TuxGuitar.instance().lock();
+    		this.editorKit.tryBack();
+    		this.setPainting(true);
     		
     		TGPainter painter = new TGPainter(new GC(this));
     		redrawPlayingMode(painter,false);
     		painter.dispose();
     		
+    		this.setPainting(false);
     		TuxGuitar.instance().unlock();
     	}
     }
 
 	private void redrawPlayingMode(TGPainter painter,boolean force){
-		if(!super.isDisposed() && (force || !isLocked()) && !TuxGuitar.instance().isLocked()){
-        	this.lock();
+		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
         	try{
         		TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
         		TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
@@ -243,10 +245,10 @@ public class Tablature extends Composite {
         			if(!moveScrollTo(measure) || force){
         				boolean paintMeasure = (force || this.playedMeasure == null || !this.playedMeasure.equals(measure));	    		
         				if(this.playedMeasure != null && this.playedBeat != null && !this.playedMeasure.isOutOfBounds() && this.playedMeasure.hasTrack(getCaret().getTrack().getNumber())){
-        					getViewLayout().paintPlayMode(painter, this.playedMeasure, this.playedBeat,paintMeasure/*,false*/);
+        					getViewLayout().paintPlayMode(painter, this.playedMeasure, this.playedBeat,paintMeasure);
         				}
         				if(!measure.isOutOfBounds()){
-        					getViewLayout().paintPlayMode(painter, measure, beat,paintMeasure/*,true*/);
+        					getViewLayout().paintPlayMode(painter, measure, beat,paintMeasure);
         				}
         				this.playedBeat = beat;
         				this.playedMeasure =  measure;
@@ -255,23 +257,17 @@ public class Tablature extends Composite {
         	}catch(Throwable throwable){
         		throwable.printStackTrace();
         	}
-			this.unlock();
         }
     }
 	
-	private void lock(){
-		this.editorKit.tryBack();
-		this.lock.lock();
+    public boolean isPainting() {
+		return this.painting;
 	}
 
-	private void unlock(){
-		this.lock.unlock();
+    public void setPainting(boolean painting) {
+    	this.painting = painting;
 	}
 	
-	public boolean isLocked(){
-		return this.lock.isLocked();
-	}
-	   
     public Caret getCaret(){
         return this.caret;
     }
