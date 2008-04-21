@@ -571,8 +571,8 @@ public class TuxGuitar {
 							getLyricEditor().updateItems();
 							getTable().updateItems();
 						}
-						redraw();
 						unlock();
+						redraw();
 					}
 				}
 			}).start();
@@ -583,10 +583,10 @@ public class TuxGuitar {
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
 			
-			this.getTablatureEditor().getTablature().redraw();	    	
+			this.getTablatureEditor().getTablature().redraw();
 	        this.getFretBoardEditor().redraw();
 	        this.getPianoEditor().redraw();
-	        this.getTable().redraw();	   	        
+	        this.getTable().redraw();
 	        this.getMatrixEditor().redraw();
 	        
 	        this.unlock();
@@ -676,7 +676,6 @@ public class TuxGuitar {
     	this.lock();
     	
     	TuxGuitar.instance().getSongManager().setSong(song);
-    	
     	getFileHistory().reset(url);
     	getPlayer().reset();
     	getEditorCache().reset();
@@ -689,10 +688,10 @@ public class TuxGuitar {
         getLyricEditor().update();
         MarkerList.instance().update();
         
+        this.unlock();
+
         updateCache(true);
         showTitle();
-        
-        this.unlock();
     }
 	
     public void fireSaveSong(URL url){
@@ -702,10 +701,10 @@ public class TuxGuitar {
     	getEditorCache().reset();    	
     	getUndoableManager().discardAllEdits();
 
+    	this.unlock();
+    	
         updateCache(true);
         showTitle();
-        
-        this.unlock();
     }
 	
 	public void fireUpdate(){
