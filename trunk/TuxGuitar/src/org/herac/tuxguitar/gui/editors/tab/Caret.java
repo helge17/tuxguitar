@@ -121,10 +121,8 @@ public class Caret {
     
     public synchronized void goToTickPosition(){    
     	long start = MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition());
-    	if(!getSongManager().isAtPosition(this.selectedMeasure.getHeader(),start)){
-    		this.update(this.selectedTrack.getNumber(),start,this.string);
-    		this.setChanges(true);
-    	}
+    	this.update(this.selectedTrack.getNumber(),start,this.string);
+    	this.setChanges(true);
     }    
     
     public void paintCaret(ViewLayout layout,TGPainter painter) {
