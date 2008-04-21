@@ -111,7 +111,7 @@ public class Tablature extends Composite {
     	if(!TuxGuitar.instance().isLocked()){
     		TuxGuitar.instance().lock();
     		this.setPainting(true);
-    		try{
+    		try{    			
     			this.checkScroll();
     			
     			Rectangle area = getClientArea();
@@ -224,14 +224,16 @@ public class Tablature extends Composite {
     public void redrawPlayingMode(){
     	if(!super.isDisposed() && !isPainting() && !TuxGuitar.instance().isLocked()){
     		TuxGuitar.instance().lock();
-    		this.editorKit.tryBack();
-    		this.setPainting(true);
+    		if(TuxGuitar.instance().getPlayer().isRunning()){
+    			this.editorKit.tryBack();
+    			this.setPainting(true);
     		
-    		TGPainter painter = new TGPainter(new GC(this));
-    		redrawPlayingMode(painter,false);
-    		painter.dispose();
+    			TGPainter painter = new TGPainter(new GC(this));
+    			redrawPlayingMode(painter,false);
+    			painter.dispose();
     		
-    		this.setPainting(false);
+    			this.setPainting(false);
+    		}
     		TuxGuitar.instance().unlock();
     	}
     }

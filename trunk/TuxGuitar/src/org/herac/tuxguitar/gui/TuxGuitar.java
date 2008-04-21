@@ -636,7 +636,6 @@ public class TuxGuitar {
 	}
 
 	public void loadLanguage(){
-		this.waitFor();
 		this.lock();
 		
 		getLanguageManager().setLanguage(getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE));
@@ -645,7 +644,6 @@ public class TuxGuitar {
 	}
 
 	public void loadToolBars(){
-		this.waitFor();
 		this.lock();
 		
 		getItemManager().createCoolbar();		
@@ -655,7 +653,6 @@ public class TuxGuitar {
 	}
 
 	public void loadStyles(){
-		this.waitFor();
 		this.lock();
 		
 		getTablatureEditor().getTablature().reloadStyles();
@@ -664,7 +661,6 @@ public class TuxGuitar {
 	}	    
 
 	public void loadSkin(){
-		this.waitFor();
 		this.lock();
 		
 		getIconManager().reloadIcons();
@@ -676,8 +672,7 @@ public class TuxGuitar {
 		TuxGuitar.instance().fireNewSong(TuxGuitar.instance().getSongManager().newSong(),null);
 	}
 	
-    public void fireNewSong(TGSong song,URL url){            	        
-    	this.waitFor();
+    public void fireNewSong(TGSong song,URL url){
     	this.lock();
     	
     	TuxGuitar.instance().getSongManager().setSong(song);
@@ -693,7 +688,7 @@ public class TuxGuitar {
         getMixer().update();
         getLyricEditor().update();
         MarkerList.instance().update();
-
+        
         updateCache(true);
         showTitle();
         
@@ -701,7 +696,6 @@ public class TuxGuitar {
     }
 	
     public void fireSaveSong(URL url){
-    	this.waitFor();
     	this.lock();
     	
     	getFileHistory().reset(url);
@@ -715,7 +709,6 @@ public class TuxGuitar {
     }
 	
 	public void fireUpdate(){
-		this.waitFor();
 		this.lock();
 		
 		this.getEditorCache().reset();
@@ -751,8 +744,4 @@ public class TuxGuitar {
 	public boolean isLocked(){
 		return this.lock.isLocked();
 	}
-	
-    public void waitFor(){
-    	this.lock.waitFor();
-    }
 }
