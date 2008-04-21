@@ -1,4 +1,4 @@
-tuxguitar-snapshot (0.0.20080418-0ubuntu0~ppa126) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080419-0ubuntu0~ppa~gutsy143) gutsy; urgency=low
 
   * jni build
   * FIX: updated SCM snapshot
@@ -15,12 +15,6 @@ tuxguitar-snapshot (0.0.20080418-0ubuntu0~ppa126) hardy; urgency=low
 tuxguitar (0.9.99~1.0rc2-2) unstable; urgency=low
 
   * ADD: support compilers and jvm's based on classpath
-  * FIX: arch vs indep for non i386 arch (closes: #474410)
-
- -- Philippe Coval <rzr@users.sf.net>  Wed, 16 Apr 2008 19:19:52 +0200
-
-tuxguitar (0.9.99~1.0rc2-1ubuntu0~ppa14) hardy; urgency=low
-
   * FIX: arch vs indep for non i386 arch (closes: #474410)
 
  -- Philippe Coval <rzr@users.sf.net>  Wed, 16 Apr 2008 19:19:52 +0200
