@@ -19,6 +19,7 @@ import org.herac.tuxguitar.gui.editors.tab.painters.TGClefPainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGKeySignaturePainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGTempoPainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGTripletFeelPainter;
+import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -1084,12 +1085,16 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	public void dispose(){
-		getBuffer().dispose();
-		Iterator it = getBeats().iterator();
-		while(it.hasNext()){
-			TGBeatImpl beat = (TGBeatImpl)it.next();
-			beat.dispose();
-		}
+		new SyncThread( new Runnable() {
+			public void run() {
+				getBuffer().dispose();
+				Iterator it = getBeats().iterator();
+				while(it.hasNext()){
+					TGBeatImpl beat = (TGBeatImpl)it.next();
+					beat.dispose();
+				}
+			}
+		} ).start();
 	}
 	
 	public boolean isDisposed(){
