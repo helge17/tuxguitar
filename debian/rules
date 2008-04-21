@@ -5,11 +5,11 @@ MAINPACKAGE?=$(shell dpkg-parsechangelog | sed -n 's/Source: \(.*\)/\1/p')
 PACKAGE?=tuxguitar
 
 JAVA_HOME?=$(shell echo ` \
-    ( t=/usr/lib/jvm/java-gcj && test -e $$t/bin/javac  && echo $$t ) \
+    ( t=/usr/lib/jvm/java-gcj && test -e $$t/bin/javac && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-6-openjdk && test -d $$t/bin/javac && echo $$t ) \
  || ( t=/usr/lib/jvm/java-6-sun && test -e $$t/bin/javac && echo $$t ) \
- || ( t=/usr/lib/jvm/java-1.5.0-sun && test -d $$t/bin/javac  && echo $$t ) \
- || ( t=/usr/lib/jvm/java-6-openjdk && test -d $$t/bin/javac t && echo $$t ) \
- || ( t=/usr/lib/jvm/java-1.4.2-gcj-4.1-1.4.2.0 && test -d $$t/bin/javac  && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-1.5.0-sun && test -d $$t/bin/javac && echo $$t ) \
+ || ( t=/usr/lib/jvm/java-1.4.2-gcj-4.1-1.4.2.0 && test -d $$t/bin/javac && echo $$t ) \
 ` )
 
 JAVA?=${JAVA_HOME}/jre/bin/java

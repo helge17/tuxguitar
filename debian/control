@@ -3,7 +3,7 @@ Section: contrib/sound
 Priority: optional
 Maintainer: Philippe Coval <rzr@users.sf.net>
 Uploaders: tony mancill <tmancill@debian.org>
-Build-Depends: debhelper (>= 5.0.0), ant, libswt-gtk-3.3-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, gcj, java-gcj-compat-dev | icedtea-java7-jdk | sun-java6-jdk | sun-java5-jdk | java-compiler
+Build-Depends: debhelper (>= 5.0.0),  libswt-gtk-3.3-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, ant, java-compiler | java-gcj-compat-dev | sun-java6-jdk | sun-java5-jdk | icedtea-java7-jdk 
 Standards-Version: 3.7.3
 Homepage: http://www.tuxguitar.com.ar
 
