@@ -610,13 +610,12 @@ public class MidiPlayer{
 	public void closeSequencer() throws MidiPlayerException{
 		try{
 			this.stop();
-			if(this.lock.isLocked()){
-				this.lock.waitFor();
-			}
+			this.lock.lock();
 			if (this.sequencer != null) {
 				this.sequencer.close();
 				this.sequencer = null;
 			}
+			this.lock.unlock();
 		}catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}
@@ -625,13 +624,12 @@ public class MidiPlayer{
 	public void closePort(){
 		try{
 			this.stop();
-			if(this.lock.isLocked()){
-				this.lock.waitFor();
-			}
+			this.lock.lock();
 			if (this.port != null) {
 				this.port.close();
 				this.port = null;
 			}
+			this.lock.unlock();
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}

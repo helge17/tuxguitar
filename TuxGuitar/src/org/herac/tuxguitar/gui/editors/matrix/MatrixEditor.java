@@ -54,7 +54,6 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.util.TGLock;
 
 public class MatrixEditor implements IconLoader,LanguageLoader{
 	
@@ -64,7 +63,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	private static final MidiPercussion[] PERCUSSIONS = TuxGuitar.instance().getPlayer().getPercussions();
 	protected static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
-	private TGLock paintLock;
+	//private TGLock paintLock;
 	
 	private Shell dialog;
 	private Composite composite;
@@ -99,7 +98,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	private int duration;
 	
 	public MatrixEditor(){
-		this.paintLock = new TGLock();
+		//this.paintLock = new TGLock();
 		this.grids = this.loadGrids();
 		
 		TuxGuitar.instance().getIconManager().addLoader(this);
@@ -300,8 +299,9 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}	
 
 	protected void paintEditor(TGPainter painter){
-		if(!TuxGuitar.instance().isLocked() && !this.paintLock.isLocked()){
-			this.paintLock.lock();
+		if(!TuxGuitar.instance().isLocked()/* && !this.paintLock.isLocked()*/){
+			TuxGuitar.instance().lock();
+			//this.paintLock.lock();
 
 			if(!TuxGuitar.instance().getPlayer().isRunning()){
 				this.resetPlayed();	
@@ -325,7 +325,8 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 			
 			this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
 			
-			this.paintLock.unlock();
+			//this.paintLock.unlock();
+			TuxGuitar.instance().unlock();
 		}
 	}
 
@@ -719,7 +720,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}
 	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked() && TuxGuitar.instance().getPlayer().isRunning() && !this.paintLock.isLocked()){			
+		if(!isDisposed() && !TuxGuitar.instance().isLocked() && TuxGuitar.instance().getPlayer().isRunning()/* && !this.paintLock.isLocked()*/){			
 			TuxGuitar.instance().lock();
 			
 			TGMeasure measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
