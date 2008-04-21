@@ -14,7 +14,7 @@ import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 
 /**
  * @author julian
@@ -38,13 +38,9 @@ public class TransportPlayAction extends Action {
     		}catch(MidiPlayerException exception){
     			MessageDialog.errorMessage(exception);
     		}
-    	}else{    	    
-    		TGMeasure measure = getSongManager().getTrackManager().getMeasureAt(getSongManager().getFirstTrack(),MidiTickUtil.getStart(player.getTickPosition()));
+    	}else{
     		player.pause();
-    		if(measure != null){
-    			player.setTickPosition(MidiTickUtil.getTick(measure.getStart()));
-    		}
-    		getEditor().getTablature().getCaret().goToTickPosition();
+    		updateTickPosition();
     	}
         return 0;
     }   
@@ -60,8 +56,8 @@ public class TransportPlayAction extends Action {
         };
         final Runnable finish = new Runnable() {
             public void run() {
+            	updateTickPosition();
             	TuxGuitar.instance().updateCache(true);
-            	getEditor().getTablature().getCaret().goToTickPosition();
             }
         };
         new Thread(new Runnable() {
@@ -83,5 +79,14 @@ public class TransportPlayAction extends Action {
 				}
             }
         }).start();
+    }
+    
+    protected void updateTickPosition(){
+		MidiPlayer player = TuxGuitar.instance().getPlayer();
+    	TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		if(header != null){
+			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
+		}
+		getEditor().getTablature().getCaret().goToTickPosition();
     }
 }
