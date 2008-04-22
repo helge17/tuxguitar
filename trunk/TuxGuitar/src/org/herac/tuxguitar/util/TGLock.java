@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.util;
 
 public class TGLock {
-
+	
 	private Thread lock;
 	private long lockId;
 	private long lockCount;
@@ -43,7 +43,7 @@ public class TGLock {
 			this.lock = null;
 		}
 	}
-
+	
 	public boolean isLocked(Thread thread){
 		return (this.lock != null && this.lock != thread);
 	}

@@ -558,20 +558,20 @@ public class TuxGuitar {
 	public void updateCache(final boolean updateItems){
 		if(!this.isLocked()){
 			this.lock();
-			getEditorCache().updateEditMode();
+			this.getEditorCache().updateEditMode();
 			this.unlock();
 			new SyncThread(new Runnable() {
 				public void run() {
 					if(!isDisposed() && !isLocked()){
-						lock();
 						if(updateItems){
+							lock();
 							getItemManager().updateItems();
 							getTransport().updateItems();
 							getMixer().updateItems();
 							getLyricEditor().updateItems();
 							getTable().updateItems();
+							unlock();
 						}
-						unlock();
 						redraw();
 					}
 				}
@@ -582,13 +582,11 @@ public class TuxGuitar {
 	protected void redraw(){
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
-			
 			this.getTablatureEditor().getTablature().redraw();
 	        this.getFretBoardEditor().redraw();
 	        this.getPianoEditor().redraw();
 	        this.getTable().redraw();
 	        this.getMatrixEditor().redraw();
-	        
 	        this.unlock();
 	    }
 	}
@@ -596,7 +594,6 @@ public class TuxGuitar {
 	public void redrawPayingMode(){
 	    if(!isDisposed() && !this.isLocked()){
 	    	this.lock();
-	    	
 	    	this.getEditorCache().updatePlayMode();
 	    	if(this.getEditorCache().shouldRedraw()){
 	    		this.getTablatureEditor().getTablature().redrawPlayingMode();
@@ -606,7 +603,6 @@ public class TuxGuitar {
 	    		this.getMatrixEditor().redrawPlayingMode();
 	    	}
 	    	this.getTransport().redrawPlayingMode();
-	    	
 	    	this.unlock();
 	    }
 	}
