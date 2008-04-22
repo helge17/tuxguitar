@@ -75,7 +75,6 @@ public class FileChooser {
     }    
 
     private String openDialog(FileDialog dialog){
-    	System.out.println(dialog.getFilterPath() + "  " + dialog.getFileName() );
     	String file = dialog.open();
     	if(file != null){
     		TuxGuitar.instance().getFileHistory().setChooserPath( new File(file).getParent() );
