@@ -92,6 +92,7 @@ public class OpenFileAction extends Action {
     protected URL getOpenFileName(Object data){
     	try{
     		if(data instanceof URL){
+    			TuxGuitar.instance().getFileHistory().setChooserPath( (URL)data );
     			return (URL)data;
     		}
     		String path = FileChooser.instance().open(TuxGuitar.instance().getShell(),TGFileFormatManager.instance().getInputFormats());

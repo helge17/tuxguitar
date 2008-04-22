@@ -53,7 +53,7 @@ public class FileChooser {
     public String open(Shell parent,List formats) {    	
     	FilterList filter = new FilterList(formats);    	
     	FileDialog dialog = new FileDialog(parent,SWT.OPEN);
-    	dialog.setFileName((TuxGuitar.instance().getFileHistory().isLocalFile()?getFileName(formats,DEFAULT_OPEN_FILENAME):null));
+    	dialog.setFileName((TuxGuitar.instance().getFileHistory().isLocalFile()?getFileName(formats, DEFAULT_OPEN_FILENAME, false):null));
     	dialog.setFilterPath(TuxGuitar.instance().getFileHistory().getOpenPath());
         dialog.setFilterNames(filter.getFilterNames());        
         dialog.setFilterExtensions(filter.getFilterExtensions());                
@@ -67,7 +67,7 @@ public class FileChooser {
     public String save(Shell parent,List formats) {    	
     	FilterList filter = new FilterList(formats);
     	FileDialog dialog = new FileDialog(parent,SWT.SAVE);
-        dialog.setFileName(getFileName(formats,DEFAULT_SAVE_FILENAME));
+        dialog.setFileName(getFileName(formats, DEFAULT_SAVE_FILENAME, true));
         dialog.setFilterPath(TuxGuitar.instance().getFileHistory().getSavePath());
         dialog.setFilterNames(filter.getFilterNames());
         dialog.setFilterExtensions(filter.getFilterExtensions());        
@@ -75,6 +75,7 @@ public class FileChooser {
     }    
 
     private String openDialog(FileDialog dialog){
+    	System.out.println(dialog.getFilterPath() + "  " + dialog.getFileName() );
     	String file = dialog.open();
     	if(file != null){
     		TuxGuitar.instance().getFileHistory().setChooserPath( new File(file).getParent() );
@@ -82,9 +83,9 @@ public class FileChooser {
     	return file;
     }
 
-    private String getFileName(List formats,String defaultName){
+    private String getFileName(List formats, String defaultName, boolean replaceExtension){
     	if(formats == null || formats.isEmpty()){
-    		return null;
+    		return defaultName;
     	}
     	String file = TuxGuitar.instance().getFileHistory().getCurrentFileName(defaultName);
     	if(file != null && file.length() > 0){    	
@@ -106,12 +107,14 @@ public class FileChooser {
         				}        				
     				}
     			}
-    			TGFileFormat format = (TGFileFormat)formats.get(0);
-    			if(format.getSupportedFormats() != null){
-    				String[] extensions = format.getSupportedFormats().split(TGFileFormat.EXTENSION_SEPARATOR);
-    				if(extensions != null && extensions.length > 0){    					
-    					if(extensions[0].length() > 1){
-    						return (fileName + extensions[0].substring(1));
+    			if( replaceExtension ){
+    				TGFileFormat format = (TGFileFormat)formats.get(0);
+    				if(format.getSupportedFormats() != null){
+    					String[] extensions = format.getSupportedFormats().split(TGFileFormat.EXTENSION_SEPARATOR);
+    					if(extensions != null && extensions.length > 0){
+    						if(extensions[0].length() > 1){
+    							return (fileName + extensions[0].substring(1));
+    						}
     					}
     				}
     			}
