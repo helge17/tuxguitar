@@ -26,7 +26,12 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 /**
  * @author julian
@@ -290,9 +295,33 @@ public class GP5OutputStream extends GTPOutputStream {
     
     private void writeBeat(TGBeat beat, TGMeasure measure, TGTempo tempo) throws IOException {
         TGDuration duration = beat.getDuration();
+        TGNoteEffect effect = getFactory().newEffect();
+        for (int i = 0; i < beat.countNotes(); i++) {
+            TGNote playedNote = beat.getNote(i);
+            
+            if(playedNote.getEffect().isFadeIn()){
+            	effect.setFadeIn(true);
+            }
+            if(playedNote.getEffect().isTremoloBar()){
+            	effect.setTremoloBar(playedNote.getEffect().getTremoloBar().clone(getFactory()));
+            }        	
+            if(playedNote.getEffect().isTapping()){
+            	effect.setTapping(true);
+            }
+            if(playedNote.getEffect().isSlapping()){
+            	effect.setSlapping(true);
+            }
+            if(playedNote.getEffect().isPopping()){
+            	effect.setPopping(true);
+            }
+        }
+        
         int flags = 0;
         if (duration.isDotted() || duration.isDoubleDotted()) {
         	flags |= 0x01;
+        }
+        if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
+        	flags |= 0x08;
         }
         if (measure.getTempo().getValue() != tempo.getValue()) {
         	flags |= 0x10;
@@ -312,6 +341,11 @@ public class GP5OutputStream extends GTPOutputStream {
         if ((flags & 0x20) != 0) {
             writeInt(duration.getTupleto().getEnters());
         }
+        
+        if ((flags & 0x08) != 0) {
+        	writeBeatEffects(effect);
+        }
+        
         if ((flags & 0x10) != 0) {
             writeMixChange(measure.getTempo());
             tempo.setValue(measure.getTempo().getValue());
@@ -342,6 +376,20 @@ public class GP5OutputStream extends GTPOutputStream {
 
     private void writeNote(TGNote note) throws IOException {
         int flags = 0x20;
+        
+        if (note.getEffect().isVibrato()        || 
+           	note.getEffect().isBend()           ||  
+           	note.getEffect().isSlide()          || 
+           	note.getEffect().isHammer()         ||
+           	note.getEffect().isPalmMute()       ||
+           	note.getEffect().isStaccato()       ||
+           	note.getEffect().isTrill()          ||
+           	note.getEffect().isGrace()          ||
+           	note.getEffect().isHarmonic()       ||
+           	note.getEffect().isTremoloPicking() ) {
+           	flags |= 0x08;
+        }
+        
         writeUnsignedByte(flags);
 
         if ((flags & 0x20) != 0) {
@@ -390,6 +438,36 @@ public class GP5OutputStream extends GTPOutputStream {
         return value;
     }
 
+    private void writeBeatEffects(TGNoteEffect effect) throws IOException{
+        int flags1 = 0;
+        int flags2 = 0;
+        
+        if(effect.isFadeIn()){
+        	flags1 |= 0x10;
+        }
+        if(effect.isTapping() || effect.isSlapping() || effect.isPopping()){
+        	flags1 |= 0x20;
+        }
+        if(effect.isTremoloBar()){
+        	flags2 |= 0x04;
+        }
+        writeUnsignedByte(flags1);
+        writeUnsignedByte(flags2);
+        
+        if ((flags1 & 0x20) != 0) {
+        	if(effect.isTapping()){
+        		writeUnsignedByte(1);
+        	}else if(effect.isSlapping()){
+        		writeUnsignedByte(2);
+        	}else if(effect.isPopping()){
+        		writeUnsignedByte(3);
+        	}        	        	            
+        }
+        if ((flags2 & 0x04) != 0) {        	
+            writeTremoloBar(effect.getTremoloBar());
+        }    	
+    }
+    
     private void writeNoteEffects(TGNoteEffect effect) throws IOException {
         int flags1 = 0;
         int flags2 = 0;
@@ -399,20 +477,56 @@ public class GP5OutputStream extends GTPOutputStream {
         if (effect.isHammer()) {
         	flags1 |= 0x02;
         }
+        if (effect.isGrace()) {
+        	flags1 |= 0x10;
+        }
+        if (effect.isStaccato()) {
+        	flags2 |= 0x01;
+        }
+        if (effect.isPalmMute()) {
+        	flags2 |= 0x02;
+        }
+        if (effect.isTremoloPicking()) {
+        	flags2 |= 0x04;
+        }
         if (effect.isSlide()) {
         	flags2 |= 0x08;
         }
+        if (effect.isHarmonic()) {
+        	flags2 |= 0x10;
+        }
+        if (effect.isTrill()) {
+        	flags2 |= 0x20;
+        }
         if (effect.isVibrato()) {
         	flags2 |= 0x40;
-        }        
+        }
         writeUnsignedByte(flags1);
         writeUnsignedByte(flags2);
         if ((flags1 & 0x01) != 0) {
             writeBend(effect.getBend());
         }
-        if ((flags2 & 0x08) != 0) {
-            writeByte((byte)0);
+
+        if ((flags1 & 0x10) != 0) {
+        	writeGrace(effect.getGrace());
         }
+        
+        if ((flags2 & 0x04) != 0) {
+        	writeTremoloPicking(effect.getTremoloPicking());
+        }
+
+        if ((flags2 & 0x08) != 0) {
+            writeByte((byte)1);
+        }
+        
+        if ((flags2 & 0x10) != 0) {
+        	writeByte((byte)1);
+        }
+        
+        if ((flags2 & 0x20) != 0) {
+        	writeTrill(effect.getTrill());
+        }
+        
     }
 
     private void writeBend(TGEffectBend bend) throws IOException {
@@ -421,13 +535,66 @@ public class GP5OutputStream extends GTPOutputStream {
         writeInt(0);
         writeInt(points);
         for (int i = 0; i < points; i++) {
-            TGEffectBend.BendPoint point = (TGEffectBend.BendPoint) bend.getPoints().get(i);            
+            TGEffectBend.BendPoint point = (TGEffectBend.BendPoint) bend.getPoints().get(i); 
             writeInt( (point.getPosition() * GP_BEND_POSITION / TGEffectBend.MAX_POSITION_LENGTH) );
             writeInt( (point.getValue() * GP_BEND_SEMITONE / TGEffectBend.SEMITONE_LENGTH) );
             writeByte((byte) 0);
         }
     }
 
+    private void writeTremoloBar(TGEffectTremoloBar tremoloBar) throws IOException {
+    	int points = tremoloBar.getPoints().size();
+    	writeByte((byte) 1);
+        writeInt(0);
+        writeInt(points);
+        for (int i = 0; i < points; i++) {
+        	TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint) tremoloBar.getPoints().get(i);
+            writeInt( (point.getPosition() * GP_BEND_POSITION / TGEffectBend.MAX_POSITION_LENGTH) );
+            writeInt( (point.getValue() * (GP_BEND_SEMITONE * 2)) );
+            writeByte((byte) 0);
+        }
+    }
+    
+    private void writeGrace(TGEffectGrace grace) throws IOException {
+    	writeUnsignedByte(grace.getFret());
+    	writeUnsignedByte(((grace.getDynamic() - TGVelocities.MIN_VELOCITY) / TGVelocities.VELOCITY_INCREMENT) + 1);
+    	if(grace.getTransition() == TGEffectGrace.TRANSITION_NONE){
+    		writeUnsignedByte(0);
+    	}
+    	else if(grace.getTransition() == TGEffectGrace.TRANSITION_SLIDE){
+    		writeUnsignedByte(1);
+    	}
+    	else if(grace.getTransition() == TGEffectGrace.TRANSITION_BEND){
+    		writeUnsignedByte(2);
+    	}
+    	else if(grace.getTransition() == TGEffectGrace.TRANSITION_HAMMER){
+    		writeUnsignedByte(3);
+    	}
+    	writeUnsignedByte(grace.getDuration());
+    	writeUnsignedByte( (grace.isDead() ? 0x01 : 0) | (grace.isOnBeat() ? 0x02 : 0) );
+    }
+    
+    private void writeTrill(TGEffectTrill trill) throws IOException {
+        writeByte((byte)trill.getFret());
+		if(trill.getDuration().getValue() == TGDuration.SIXTEENTH){
+			writeByte((byte)1);		
+		}else if(trill.getDuration().getValue() == TGDuration.THIRTY_SECOND){
+			writeByte((byte)2);
+		}else if(trill.getDuration().getValue() == TGDuration.SIXTY_FOURTH){
+			writeByte((byte)3);
+		}
+    }
+    
+    private void writeTremoloPicking(TGEffectTremoloPicking tremoloPicking) throws IOException{
+    	if(tremoloPicking.getDuration().getValue() == TGDuration.EIGHTH){
+    		writeByte((byte)1);
+		}else if(tremoloPicking.getDuration().getValue() == TGDuration.SIXTEENTH){
+			writeByte((byte)2);
+		}else if(tremoloPicking.getDuration().getValue() == TGDuration.THIRTY_SECOND){
+			writeByte((byte)3);
+		}
+	}
+    
     private void writeMixChange(TGTempo tempo) throws IOException {
     	writeByte((byte) 0xff);
     	for(int i = 0; i < 16; i++){

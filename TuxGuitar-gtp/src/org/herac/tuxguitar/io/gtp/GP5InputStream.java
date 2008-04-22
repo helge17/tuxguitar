@@ -468,13 +468,69 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
         } 
     }
     
+    private void readBeatEffects(TGNoteEffect noteEffect) throws IOException {
+        int flags1 = readUnsignedByte();
+        int flags2 = readUnsignedByte();
+        noteEffect.setFadeIn(((flags1 & 0x10) != 0));        
+        noteEffect.setVibrato(((flags1  & 0x02) != 0));        
+        if ((flags1 & 0x20) != 0) {
+            int effect = readUnsignedByte();            
+            noteEffect.setTapping(effect == 1);
+            noteEffect.setSlapping(effect == 2);
+            noteEffect.setPopping(effect == 3);            
+        }
+        if ((flags2 & 0x04) != 0) {        	
+            readTremoloBar(noteEffect);
+        }
+        if ((flags1 & 0x40) != 0) {
+            readByte();
+            readByte();
+        }
+        if ((flags2 & 0x02) != 0) {
+            readByte();
+        }
+    }
+    
+    private void readNoteEffects(TGNoteEffect noteEffect) throws IOException {
+        int flags1 = readUnsignedByte();
+        int flags2 = readUnsignedByte();
+        if ((flags1 & 0x01) != 0) {
+            readBend(noteEffect);
+        }
+        if ((flags1 & 0x10) != 0) {
+        	readGrace(noteEffect);
+        }
+        if ((flags2 & 0x04) != 0) {
+        	readTremoloPicking(noteEffect);
+        }
+        if ((flags2 & 0x08) != 0) {
+            noteEffect.setSlide(true);
+            readByte();            
+        }
+        if ((flags2 & 0x10) != 0) {
+        	readArtificialHarmonic(noteEffect);
+        }
+        if ((flags2 & 0x20) != 0) {
+            readTrill(noteEffect);
+        }        
+        noteEffect.setHammer(((flags1 & 0x02) != 0));
+        noteEffect.setVibrato(((flags2 & 0x40) != 0) || noteEffect.isVibrato());
+       	noteEffect.setPalmMute(((flags2 & 0x02) != 0));
+       	noteEffect.setStaccato(((flags2 & 0x01) != 0));
+    }
+    
     private void readGrace(TGNoteEffect effect) throws IOException {    	
     	int fret = readUnsignedByte();
-    	TGEffectGrace grace = getFactory().newEffectGrace();
-    	grace.setDead( (fret == 255) );
-    	grace.setFret( ((!grace.isDead())?fret:0) );
-    	grace.setDynamic( (TGVelocities.MIN_VELOCITY + (TGVelocities.VELOCITY_INCREMENT * readUnsignedByte())) - TGVelocities.VELOCITY_INCREMENT );
+    	int dynamic = readUnsignedByte();
     	int transition = readByte();
+    	int duration = readUnsignedByte();
+    	int flags = readUnsignedByte();
+    	TGEffectGrace grace = getFactory().newEffectGrace();
+    	grace.setFret( fret );
+    	grace.setDynamic( (TGVelocities.MIN_VELOCITY + (TGVelocities.VELOCITY_INCREMENT * dynamic)) - TGVelocities.VELOCITY_INCREMENT );
+    	grace.setDuration(duration);
+    	grace.setDead( (flags & 0x01) != 0 );
+    	grace.setOnBeat( (flags & 0x02) != 0 );
     	if(transition == 0){
     		grace.setTransition(TGEffectGrace.TRANSITION_NONE);
     	}
@@ -487,8 +543,6 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
     	else if(transition == 3){
     		grace.setTransition(TGEffectGrace.TRANSITION_HAMMER);
     	}
-    	grace.setDuration(readUnsignedByte());
-    	grace.setOnBeat((readByte() > 0));
     	effect.setGrace(grace);    	        
     }    
 
@@ -528,70 +582,62 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
         }        
     }    
     
-    private void readNoteEffects(TGNoteEffect noteEffect) throws IOException {
-        int flags1 = readUnsignedByte();
-        int flags2 = readUnsignedByte();
-        if ((flags1 & 0x01) != 0) {
-            readBend(noteEffect);
-        }
-        if ((flags1 & 0x10) != 0) {
-        	readGrace(noteEffect);
-        }
-        if ((flags2 & 0x04) != 0) {
-        	readTremoloPicking(noteEffect);
-        }
-        if ((flags2 & 0x08) != 0) {
-            noteEffect.setSlide(true);
-            readByte();            
-        }
-        if ((flags2 & 0x10) != 0) {
-        	readArtificialHarmonic(noteEffect);
-        }
-        if ((flags2 & 0x20) != 0) {
-            byte fret = readByte();
-            byte period = readByte();
-            TGEffectTrill trill = getFactory().newEffectTrill();
-            trill.setFret(fret);
-    		if(period == 1){
-    			trill.getDuration().setValue(TGDuration.SIXTEENTH);
-    			noteEffect.setTrill(trill);		
-    		}else if(period == 2){
-    			trill.getDuration().setValue(TGDuration.THIRTY_SECOND);
-    			noteEffect.setTrill(trill);
-    		}else if(period == 3){
-    			trill.getDuration().setValue(TGDuration.SIXTY_FOURTH);
-    			noteEffect.setTrill(trill);
-    		}	            
-        }        
-        noteEffect.setHammer(((flags1 & 0x02) != 0));
-        noteEffect.setVibrato(((flags2 & 0x40) != 0) || noteEffect.isVibrato());
-       	noteEffect.setPalmMute(((flags2 & 0x02) != 0));
-       	noteEffect.setStaccato(((flags2 & 0x01) != 0));
+    private void readTrill(TGNoteEffect effect) throws IOException{
+        byte fret = readByte();
+        byte period = readByte();
+        TGEffectTrill trill = getFactory().newEffectTrill();
+        trill.setFret(fret);
+		if(period == 1){
+			trill.getDuration().setValue(TGDuration.SIXTEENTH);
+			effect.setTrill(trill);		
+		}else if(period == 2){
+			trill.getDuration().setValue(TGDuration.THIRTY_SECOND);
+			effect.setTrill(trill);
+		}else if(period == 3){
+			trill.getDuration().setValue(TGDuration.SIXTY_FOURTH);
+			effect.setTrill(trill);
+		}
     }
-
-    private void readBeatEffects(TGNoteEffect noteEffect) throws IOException {
-        int flags1 = readUnsignedByte();
-        int flags2 = readUnsignedByte();
-        noteEffect.setFadeIn(((flags1 & 0x10) != 0));        
-        noteEffect.setVibrato(((flags1  & 0x02) != 0));        
-        if ((flags1 & 0x20) != 0) {
-            int effect = readUnsignedByte();            
-            noteEffect.setTapping(effect == 1);
-            noteEffect.setSlapping(effect == 2);
-            noteEffect.setPopping(effect == 3);            
-        }
-        if ((flags2 & 0x04) != 0) {        	
-            readTremoloBar(noteEffect);
-        }
-        if ((flags1 & 0x40) != 0) {
-            readByte();
-            readByte();
-        }
-        if ((flags2 & 0x02) != 0) {
-            readByte();
-        }
+    
+    private void readArtificialHarmonic(TGNoteEffect effect) throws IOException{    	
+    	int type = readByte();    	
+    	TGEffectHarmonic harmonic = getFactory().newEffectHarmonic();
+    	harmonic.setData(0);
+    	if(type == 1){
+    		harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
+    		effect.setHarmonic(harmonic); 
+    	}else if(type == 2){
+    		skip(3);
+    		harmonic.setType(TGEffectHarmonic.TYPE_ARTIFICIAL);
+    		effect.setHarmonic(harmonic);    		
+    	}else if(type == 3){
+    		skip(1);
+    		harmonic.setType(TGEffectHarmonic.TYPE_TAPPED);
+    		effect.setHarmonic(harmonic);
+    	}else if(type == 4){
+    		harmonic.setType(TGEffectHarmonic.TYPE_PINCH);
+    		effect.setHarmonic(harmonic);  
+    	}else if(type == 5){
+    		harmonic.setType(TGEffectHarmonic.TYPE_SEMI);
+    		effect.setHarmonic(harmonic);  
+    	}
     }
-
+    
+    public void readTremoloPicking(TGNoteEffect effect) throws IOException{		
+    	int value = readUnsignedByte();    	
+    	TGEffectTremoloPicking tp = getFactory().newEffectTremoloPicking();
+    	if(value == 1){
+    		tp.getDuration().setValue(TGDuration.EIGHTH);
+    		effect.setTremoloPicking(tp);
+		}else if(value == 2){
+			tp.getDuration().setValue(TGDuration.SIXTEENTH);
+			effect.setTremoloPicking(tp);
+		}else if(value == 3){
+			tp.getDuration().setValue(TGDuration.THIRTY_SECOND);
+			effect.setTremoloPicking(tp);
+		}
+	}
+    
     private void readMixChange(TGTempo tempo) throws IOException { 
     	readByte(); //instrument
     	
@@ -636,45 +682,6 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
     		readStringByteSizeOfInteger();
     	}
     }
-    
-    private void readArtificialHarmonic(TGNoteEffect effect) throws IOException{    	
-    	int type = readByte();    	
-    	TGEffectHarmonic harmonic = getFactory().newEffectHarmonic();
-    	harmonic.setData(0);
-    	if(type == 1){
-    		harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
-    		effect.setHarmonic(harmonic); 
-    	}else if(type == 2){
-    		skip(3);
-    		harmonic.setType(TGEffectHarmonic.TYPE_ARTIFICIAL);
-    		effect.setHarmonic(harmonic);    		
-    	}else if(type == 3){
-    		skip(1);
-    		harmonic.setType(TGEffectHarmonic.TYPE_TAPPED);
-    		effect.setHarmonic(harmonic);
-    	}else if(type == 4){
-    		harmonic.setType(TGEffectHarmonic.TYPE_PINCH);
-    		effect.setHarmonic(harmonic);  
-    	}else if(type == 5){
-    		harmonic.setType(TGEffectHarmonic.TYPE_SEMI);
-    		effect.setHarmonic(harmonic);  
-    	}
-    }
-    
-    public void readTremoloPicking(TGNoteEffect effect) throws IOException{		
-    	int value = readUnsignedByte();    	
-    	TGEffectTremoloPicking tp = getFactory().newEffectTremoloPicking();
-    	if(value == 1){
-    		tp.getDuration().setValue(TGDuration.EIGHTH);
-    		effect.setTremoloPicking(tp);
-		}else if(value == 2){
-			tp.getDuration().setValue(TGDuration.SIXTEENTH);
-			effect.setTremoloPicking(tp);
-		}else if(value == 3){
-			tp.getDuration().setValue(TGDuration.THIRTY_SECOND);
-			effect.setTremoloPicking(tp);
-		}
-	}    
     
     private short toChannelShort(byte b){
     	short value = (short)(( b * 8 ) - 1);
