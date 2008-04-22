@@ -1083,19 +1083,6 @@ public class TGMeasureImpl extends TGMeasure{
 	public boolean isPaintKeySignature() {
 		return this.paintKeySignature;
 	}
-
-	public void dispose(){
-		new SyncThread( new Runnable() {
-			public void run() {
-				getBuffer().dispose();
-				Iterator it = getBeats().iterator();
-				while(it.hasNext()){
-					TGBeatImpl beat = (TGBeatImpl)it.next();
-					beat.dispose();
-				}
-			}
-		} ).start();
-	}
 	
 	public boolean isDisposed(){
 		return getBuffer().isDisposed();
@@ -1106,5 +1093,20 @@ public class TGMeasureImpl extends TGMeasure{
 			this.buffer = new TGMeasureBuffer(TuxGuitar.instance().getDisplay());
 		}
 		return this.buffer;
+	}
+	
+	public void dispose(){
+		new SyncThread( new Runnable() {
+			public void run() {
+				if(!TuxGuitar.isDisposed()){
+					getBuffer().dispose();
+					Iterator it = getBeats().iterator();
+					while(it.hasNext()){
+						TGBeatImpl beat = (TGBeatImpl)it.next();
+						beat.dispose();
+					}
+				}
+			}
+		} ).start();
 	}
 }
