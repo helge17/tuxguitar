@@ -13,6 +13,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -23,6 +24,7 @@ import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
@@ -320,6 +322,12 @@ public class GP5OutputStream extends GTPOutputStream {
         if (duration.isDotted() || duration.isDoubleDotted()) {
         	flags |= 0x01;
         }
+        if (beat.isChordBeat()) {
+        	flags |= 0x02;
+        }
+        if (beat.isTextBeat()) {
+        	flags |= 0x04;
+        }
         if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
         	flags |= 0x08;
         }
@@ -340,6 +348,14 @@ public class GP5OutputStream extends GTPOutputStream {
         writeByte(parseDuration(duration));
         if ((flags & 0x20) != 0) {
             writeInt(duration.getTupleto().getEnters());
+        }
+
+        if ((flags & 0x02) != 0) {
+            writeChord(beat.getChord());
+        }
+        
+        if ((flags & 0x04) != 0) {
+            writeText(beat.getText());
         }
         
         if ((flags & 0x08) != 0) {
@@ -389,7 +405,15 @@ public class GP5OutputStream extends GTPOutputStream {
            	note.getEffect().isTremoloPicking() ) {
            	flags |= 0x08;
         }
-        
+        if( note.getEffect().isGhostNote() ){
+        	flags |= 0x04;
+        }
+        if( note.getEffect().isHeavyAccentuatedNote() ){
+        	flags |= 0x02;
+        }
+        if( note.getEffect().isAccentuatedNote() ){
+        	flags |= 0x40;
+        }
         writeUnsignedByte(flags);
 
         if ((flags & 0x20) != 0) {
@@ -438,6 +462,17 @@ public class GP5OutputStream extends GTPOutputStream {
         return value;
     }
 
+    private void writeChord(TGChord chord) throws IOException{
+    	this.writeBytes( new byte[] {1,1,0,0,0,12,0,0,-1,-1,-1,-1,0,0,0,0,0} );
+        writeStringByte( chord.getName(), 21);
+        skipBytes(4);
+        writeInt( chord.getFirstFret() );
+        for (int i = 0; i < 7; i++) {
+        	writeInt( (i < chord.countStrings() ? chord.getFretValue(i) : -1 ) ) ;
+        }
+        this.skipBytes(32);
+    }
+    
     private void writeBeatEffects(TGNoteEffect effect) throws IOException{
         int flags1 = 0;
         int flags2 = 0;
@@ -594,6 +629,10 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeByte((byte)3);
 		}
 	}
+    
+    private void writeText(TGText text) throws IOException {
+    	writeStringByteSizeOfInteger(text.getValue());
+    }
     
     private void writeMixChange(TGTempo tempo) throws IOException {
     	writeByte((byte) 0xff);

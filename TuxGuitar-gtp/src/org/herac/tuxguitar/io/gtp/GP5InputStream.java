@@ -452,8 +452,8 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
     
     private void readChord(int strings,TGBeat beat) throws IOException{
     	TGChord chord = getFactory().newChord(strings);
-        this.skip(18);
-        chord.setName(readString(21));
+        this.skip(17);
+        chord.setName(readStringByte(21));
         this.skip(4);
         chord.setFirstFret(readInt());
         for (int i = 0; i < 7; i++) {

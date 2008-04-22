@@ -431,10 +431,10 @@ public class GP4InputStream extends GTPInputStream implements TGInputStreamBase 
             }
     	}
     	else{
-    		skip(17);
-    		chord.setName(readString(21));
+    		skip(16);
+    		chord.setName(readStringByte(21));
     		skip(4);
-    		chord.setFirstFret(readInt());        
+    		chord.setFirstFret(readInt());
     		for (int i = 0; i < 7; i++) {
     			int fret = readInt();
     			if(i < chord.countStrings()){
@@ -445,7 +445,7 @@ public class GP4InputStream extends GTPInputStream implements TGInputStreamBase 
     	}
         if(chord.countNotes() > 0){
         	beat.setChord(chord);
-        }        
+        }
     }
 
     private void readGrace(TGNoteEffect effect) throws IOException {

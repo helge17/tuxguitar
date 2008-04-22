@@ -53,7 +53,7 @@ public abstract class GTPOutputStream implements TGOutputStreamBase{
     		this.outputStream.write( chars[ i ] );
     	}
     }
-
+    
     protected void writeStringInteger(String string) throws IOException {
     	char[] chars = string.toCharArray();
     	this.writeInt( chars.length );
