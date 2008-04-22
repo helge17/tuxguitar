@@ -41,24 +41,16 @@ public class FileHistory {
 	private String chooserPath;
 
     public FileHistory(){
-    	//this.clearFile();
-    	this.reset(null);
+    	this.urls = new ArrayList();
     	this.loadHistory();
+    	this.reset(null);
     }
-  /*  	
-	public void clearFile() {
-		this.newFile = true;
-		this.localFile = false;
-		this.unsavedFile = false;
-	}           
-*/
+    
 	public void reset(URL url) {
 		this.unsavedFile = false;
 		this.newFile = (url == null);
 		this.localFile = (url != null && isLocalFile(url));
-		if(url != null){
-			this.addURL(url);
-		}
+		this.addURL(url);
 	}
 	
 	public boolean isNewFile(){
@@ -80,6 +72,13 @@ public class FileHistory {
 	public void setChooserPath(String chooserPath){
 		this.chooserPath = chooserPath;
 	}
+
+	public void setChooserPath(URL url){
+		String path = getFilePath(url);
+		if( path != null ){
+			this.setChooserPath( path );
+		}
+	}
 	
 	public String getCurrentFileName(String defaultName) {
 		if(!this.isNewFile()){
@@ -92,14 +91,16 @@ public class FileHistory {
 	}	
 
 	public String getCurrentFilePath() {
-		URL url = getCurrentURL();
-		if(url != null){
-			String file = getFilePath(url);
-			if(file != null){
-				return decode(file);
+		if(!this.isNewFile()){
+			URL url = getCurrentURL();
+			if(url != null){
+				String file = getFilePath(url);
+				if(file != null){
+					return decode(file);
+				}
 			}
 		}
-		return null;
+		return this.chooserPath;
 	}
 	
 	public String getSavePath() {
@@ -144,33 +145,15 @@ public class FileHistory {
 		}
 		return null;
 	}
-	/*
-	public void setFile(String fileName) {
-		File file = new File(fileName);
-		if(file.exists()){
-			try {
-				setURL(file.toURI().toURL());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	*//*
-	public void setURL(URL url) {
-		this.newFile = false;
-		this.localFile = isLocalFile(url);
-		this.unsavedFile = false;
-		this.addURL(url);
-	}	
-*/
+	
     public void addURL(URL url){
     	if(url != null){
     		removeURL(url);
-    		this.urls.add(0,url);    		
+    		this.urls.add(0,url);
        		checkLimit();
-       		saveHistory();
        		setChanged(true);
     	}
+    	saveHistory();
     }
     
     public List getURLs(){
@@ -203,7 +186,7 @@ public class FileHistory {
 
 	public void loadHistory() {       
         try {              
-        	this.urls = new ArrayList();
+        	this.urls.clear();
         	if(new File(getHistoryFileName()).exists()){        	
         		InputStream inputStream = new FileInputStream(getHistoryFileName());                        
         		Properties properties = new Properties();
