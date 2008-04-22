@@ -12,29 +12,24 @@ public class TGLock {
 	}
 	
 	public void lock(){
-		try {
-			Thread thread = Thread.currentThread();
+		Thread thread = Thread.currentThread();
+		
+		// Only if it isn't already locked
+		if( this.lock != thread){
 			
-			// Only if it isn't already locked
-			if( this.lock != thread){
-				
-				long lockId = this.lockId ++;
-				
-				while( lockId != this.lockCount && thread != this.lock){
-					Thread.sleep(1);
-				}
-				
-				while( isLocked(thread) ){
-					Thread.sleep(1);
-				}
-				
-				synchronized( this ){
-					this.lock = thread;
-					this.lockCount ++ ;
-				}
+			long lockId = this.lockId ++;
+			while( lockId != this.lockCount && thread != this.lock){
+				Thread.yield();
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			
+			while( isLocked(thread) ){
+				Thread.yield();
+			}
+			
+			synchronized( this ){
+				this.lock = thread;
+				this.lockCount ++ ;
+			}
 		}
 	}
 	
@@ -45,7 +40,9 @@ public class TGLock {
 	}
 	
 	public boolean isLocked(Thread thread){
-		return (this.lock != null && this.lock != thread);
+		synchronized( this ){
+			return (this.lock != null && this.lock != thread);
+		}
 	}
 	
 	public boolean isLocked(){
