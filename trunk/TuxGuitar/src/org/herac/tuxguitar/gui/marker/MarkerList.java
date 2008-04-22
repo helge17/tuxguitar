@@ -172,7 +172,9 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		if(!isDisposed()){
 			new SyncThread(new Runnable() {
 				public void run() {
-					loadTableItems(keepSelection);
+					if(!isDisposed()){
+						loadTableItems(keepSelection);
+					}
 				}
 			}).start();
 		}
