@@ -68,12 +68,13 @@ public class DisposeAction extends Action {
     }
 
     protected void exit(){
-    	TuxGuitar.instance().lock();
     	new SyncThread(new Runnable() {
 			public void run() {
-		    	closeModules();
+				TuxGuitar.instance().lock();
+				closeModules();
 		    	saveConfig();
 				dispose();
+				TuxGuitar.instance().unlock();
 			}
 		}).start();
     }
