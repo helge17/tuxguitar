@@ -117,9 +117,6 @@ public class GP4InputStream extends GTPInputStream implements TGInputStreamBase 
         for (int i = 0; i < measures; i++) {
             TGMeasureHeader header = song.getMeasureHeader(i);
             header.setStart(start);
-            if(i == 94){
-            	System.out.println();
-            }
             for (int j = 0; j < tracks; j++) {
                 TGTrack track = song.getTrack(j);
                 TGMeasure measure = getFactory().newMeasure(header);
