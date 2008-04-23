@@ -16,47 +16,47 @@ public class UndoableAddMeasure implements UndoableEdit{
 		super();
 	}
 	
-	public void redo() throws CannotRedoException {	
+	public void redo() throws CannotRedoException {
 		if(!canRedo()){
 			throw new CannotRedoException();
-		}        
+		}
 		TuxGuitar.instance().getSongManager().addNewMeasure(this.number);
 		TuxGuitar.instance().fireUpdate();
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
 	}
-
+	
 	public void undo() throws CannotUndoException {
 		if(!canUndo()){
 			throw new CannotUndoException();
-		}	
+		}
 		TuxGuitar.instance().getSongManager().removeMeasure(this.number);
 		TuxGuitar.instance().fireUpdate();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
 	}
-
-    public boolean canRedo() {
-        return (this.doAction == REDO_ACTION);
-    }
-
-    public boolean canUndo() {
-        return (this.doAction == UNDO_ACTION);
-    }
-      
-    public static UndoableAddMeasure startUndo(int number){
-    	UndoableAddMeasure undoable = new UndoableAddMeasure(); 	
-    	undoable.undoCaret = new UndoableCaretHelper();
-    	undoable.doAction = UNDO_ACTION;	
-    	undoable.number = number;
-    	return undoable;
-    }
-    
-    public UndoableAddMeasure endUndo(){
-    	this.redoCaret = new UndoableCaretHelper();
-    	return this;
-    }
-
+	
+	public boolean canRedo() {
+		return (this.doAction == REDO_ACTION);
+	}
+	
+	public boolean canUndo() {
+		return (this.doAction == UNDO_ACTION);
+	}
+	
+	public static UndoableAddMeasure startUndo(int number){
+		UndoableAddMeasure undoable = new UndoableAddMeasure();
+		undoable.undoCaret = new UndoableCaretHelper();
+		undoable.doAction = UNDO_ACTION;
+		undoable.number = number;
+		return undoable;
+	}
+	
+	public UndoableAddMeasure endUndo(){
+		this.redoCaret = new UndoableCaretHelper();
+		return this;
+	}
+	
 }

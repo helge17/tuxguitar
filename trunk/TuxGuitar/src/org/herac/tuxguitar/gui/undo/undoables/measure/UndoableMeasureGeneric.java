@@ -14,7 +14,7 @@ public class UndoableMeasureGeneric implements UndoableEdit{
 	private int doAction;
 	private int trackNumber;
 	private UndoableCaretHelper undoCaret;
-	private UndoableCaretHelper redoCaret;		
+	private UndoableCaretHelper redoCaret;
 	private TGMeasure undoMeasure;
 	private TGMeasure redoMeasure;
 	
@@ -22,62 +22,60 @@ public class UndoableMeasureGeneric implements UndoableEdit{
 		super();
 	}
 	
-	public void redo() throws CannotRedoException {	
+	public void redo() throws CannotRedoException {
 		if(!canRedo()){
 			throw new CannotRedoException();
-		}        
-		this.replace(this.redoMeasure);	
+		}
+		this.replace(this.redoMeasure);
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
-
+	
 	public void undo() throws CannotUndoException {
 		if(!canUndo()){
 			throw new CannotUndoException();
-		}		        
-		this.replace(this.undoMeasure);		
+		}
+		this.replace(this.undoMeasure);
 		this.undoCaret.update();
 		this.doAction = REDO_ACTION;
 	}
-
-    public boolean canRedo() {
-        return (this.doAction == REDO_ACTION);
-    }
-
-    public boolean canUndo() {
-        return (this.doAction == UNDO_ACTION);
-    }
-   
-    private void replace(TGMeasure replace){
-		TGTrack track = TuxGuitar.instance().getSongManager().getTrack(this.trackNumber);    
+	
+	public boolean canRedo() {
+		return (this.doAction == REDO_ACTION);
+	}
+	
+	public boolean canUndo() {
+		return (this.doAction == UNDO_ACTION);
+	}
+	
+	private void replace(TGMeasure replace){
+		TGTrack track = TuxGuitar.instance().getSongManager().getTrack(this.trackNumber);
 		if(track != null && replace != null){
 			TGMeasureHeader header = TuxGuitar.instance().getSongManager().getMeasureHeader(replace.getNumber());
 			TGMeasure measure = replace.clone(TuxGuitar.instance().getSongManager().getFactory(),header);
 			measure = TuxGuitar.instance().getSongManager().getTrackManager().replaceMeasure(track,measure);
-			TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure.getNumber());    			
-		}	
-    }
-    
-    public static UndoableMeasureGeneric startUndo(){
-    	UndoableMeasureGeneric undoable = new UndoableMeasureGeneric();
-    	Caret caret = getCaret();    	    	
-    	undoable.doAction = UNDO_ACTION;
-    	undoable.trackNumber = caret.getTrack().getNumber();
-    	undoable.undoCaret = new UndoableCaretHelper();    	
-    	undoable.undoMeasure = caret.getMeasure().clone(TuxGuitar.instance().getSongManager().getFactory(),caret.getMeasure().getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));    	    	
-    	return undoable;
-    }
-    
-    public UndoableMeasureGeneric endUndo(){    
-    	Caret caret = getCaret(); 
-    	this.redoCaret = new UndoableCaretHelper();
-    	this.redoMeasure = caret.getMeasure().clone(TuxGuitar.instance().getSongManager().getFactory(),caret.getMeasure().getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));	
+			TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure.getNumber());
+		}
+	}
+	
+	public static UndoableMeasureGeneric startUndo(){
+		UndoableMeasureGeneric undoable = new UndoableMeasureGeneric();
+		Caret caret = getCaret();
+		undoable.doAction = UNDO_ACTION;
+		undoable.trackNumber = caret.getTrack().getNumber();
+		undoable.undoCaret = new UndoableCaretHelper();
+		undoable.undoMeasure = caret.getMeasure().clone(TuxGuitar.instance().getSongManager().getFactory(),caret.getMeasure().getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));
+		return undoable;
+	}
+	
+	public UndoableMeasureGeneric endUndo(){
+		Caret caret = getCaret();
+		this.redoCaret = new UndoableCaretHelper();
+		this.redoMeasure = caret.getMeasure().clone(TuxGuitar.instance().getSongManager().getFactory(),caret.getMeasure().getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));
 		return this;
-    }
-    
-    
-    private static Caret getCaret(){
-    	return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
-    }
-   
+	}
+	
+	private static Caret getCaret(){
+		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+	}
 }
