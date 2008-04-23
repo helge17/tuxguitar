@@ -535,6 +535,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
     
 	protected void hit(float x, float y){
 		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+			ActionLock.lock();
 			TGMeasure measure = getMeasure();
 			int value = getValueAt(y);
 			long start = getStartAt(x);
@@ -556,6 +557,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 					play(value);
 				}
 			}
+			ActionLock.unlock();
 		}
 	}
 
