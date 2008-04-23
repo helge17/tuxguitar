@@ -31,11 +31,11 @@ public class TGBrowserManager {
 	}
 	
 	public static TGBrowserManager instance(){
-    	if(instance == null){
-    		instance = new TGBrowserManager();
-    	}
-    	return instance;
-    }	
+		if(instance == null){
+			instance = new TGBrowserManager();
+		}
+		return instance;
+	}
 	
 	public void setFactoryHandler(TGBrowserFactoryHandler handler){
 		this.handler = handler;
@@ -44,7 +44,7 @@ public class TGBrowserManager {
 	public Iterator getFactories(){
 		return this.factories.iterator();
 	}
-
+	
 	public TGBrowserFactory getFactory(String type){
 		Iterator factories = getFactories();
 		while(factories.hasNext()){
@@ -55,7 +55,7 @@ public class TGBrowserManager {
 		}
 		return null;
 	}
-
+	
 	public void addFactory(TGBrowserFactory factory){
 		this.factories.add(factory);
 		
@@ -63,10 +63,10 @@ public class TGBrowserManager {
 		while(it.hasNext()){
 			TGBrowserCollectionInfo info = (TGBrowserCollectionInfo)it.next();
 			if(info.getType().equals(factory.getType())){
-        		TGBrowserCollection collection = new TGBrowserCollection();
-        		collection.setType(factory.getType());
-        		collection.setData(factory.parseData(info.getData()));
-        		addCollection(collection);
+				TGBrowserCollection collection = new TGBrowserCollection();
+				collection.setType(factory.getType());
+				collection.setData(factory.parseData(info.getData()));
+				addCollection(collection);
 			}
 		}
 		
@@ -91,7 +91,7 @@ public class TGBrowserManager {
 			this.handler.notifyRemoved();
 		}
 	}
-
+	
 	public void addInfo(TGBrowserCollectionInfo info){
 		this.collectionInfos.add(info);
 	}
@@ -99,10 +99,10 @@ public class TGBrowserManager {
 	public Iterator getCollections(){
 		return this.collections.iterator();
 	}
-
+	
 	public int countCollections(){
 		return this.collections.size();
-	}	
+	}
 	
 	public void addCollection(TGBrowserCollection collection){
 		if(collection.getData() != null){
@@ -114,14 +114,14 @@ public class TGBrowserManager {
 	public void removeCollection(TGBrowserCollection collection){
 		this.collections.remove(collection);
 		this.changes = true;
-	}	
+	}
 	
 	public TGBrowserCollection getCollection(int index){
 		if(index >= 0 && index < countCollections()){
 			return (TGBrowserCollection)this.collections.get(index);
 		}
 		return null;
-	}	
+	}
 	
 	public void readCollections(){
 		new TGBrowserReader().loadCollections(this,new File(getCollectionsFileName()));
@@ -135,11 +135,11 @@ public class TGBrowserManager {
 		this.changes = false;
 	}
 	
-    private String getCollectionsFileName(){
-    	return TGFileUtils.PATH_USER_CONFIG + File.separator + "browser-collections.xml";
-    }
-    
-    private void addDefaultFactory(){
-    	this.addFactory(new TGBrowserFactoryImpl());
-    }
+	private String getCollectionsFileName(){
+		return TGFileUtils.PATH_USER_CONFIG + File.separator + "browser-collections.xml";
+	}
+	
+	private void addDefaultFactory(){
+		this.addFactory(new TGBrowserFactoryImpl());
+	}
 }

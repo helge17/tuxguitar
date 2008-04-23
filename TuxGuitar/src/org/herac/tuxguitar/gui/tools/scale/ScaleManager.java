@@ -11,7 +11,6 @@ import org.herac.tuxguitar.gui.util.TGFileUtils;
 import org.herac.tuxguitar.song.models.TGScale;
 
 public class ScaleManager {
-	//private static final String[] KEY_NAMES = new String[]{"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 	private static final String[] KEY_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_SCALE);
 	
 	private static final String KEY_SEPARATOR = ",";
@@ -33,25 +32,25 @@ public class ScaleManager {
 		this.selectionIndex = NONE_SELECTION;
 		this.loadScales();
 	}
-			
+	
 	public TGScale getScale() {
 		return this.scale;
-	}		
-
+	}
+	
 	public void selectScale(int index,int key){
 		if(index == NONE_SELECTION){
 			getScale().clear();
 		}
-		else if(index >= 0 && index < this.scales.size()){		
+		else if(index >= 0 && index < this.scales.size()){
 			getScale().clear();
 			ScaleInfo info = (ScaleInfo)this.scales.get(index);
-			String[] keys = info.getKeys().split(KEY_SEPARATOR);						
+			String[] keys = info.getKeys().split(KEY_SEPARATOR);
 			for (int i = 0; i < keys.length; i ++){
 				int note = (Integer.parseInt(keys[i]) - 1);
 				if(note >= 0 && note < 12){
 					getScale().setNote(note,true);
 				}
-			}					
+			}
 			getScale().setKey(key);
 		}
 		this.selectionIndex = index;
@@ -66,7 +65,7 @@ public class ScaleManager {
 		}
 		return names;
 	}
-
+	
 	public String[] getKeyNames(){
 		return KEY_NAMES;
 	}
@@ -74,11 +73,11 @@ public class ScaleManager {
 	public int getSelectionIndex() {
 		return this.selectionIndex;
 	}
-
+	
 	public int getSelectionKey() {
 		return this.selectionKey;
 	}
-
+	
 	private void loadScales(){
 		try{
 			new ScaleReader().loadScales(this.scales,getScalesFileName());
@@ -87,7 +86,7 @@ public class ScaleManager {
 		} 
 	}
 	
-    private String getScalesFileName(){
-    	return TGFileUtils.PATH_SCALES + File.separator + "scales.xml";
-    }	
+	private String getScalesFileName(){
+		return TGFileUtils.PATH_SCALES + File.separator + "scales.xml";
+	}
 }

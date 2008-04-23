@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TGCustomToolManager {
-
+	
 	private static TGCustomToolManager instance;
 	
 	private List tools;
@@ -15,22 +15,22 @@ public class TGCustomToolManager {
 	}
 	
 	public static TGCustomToolManager instance(){
-    	if(instance == null){
-    		instance = new TGCustomToolManager();
-    	}
-    	return instance;
-    }	
-
+		if(instance == null){
+			instance = new TGCustomToolManager();
+		}
+		return instance;
+	}
+	
 	public void addCustomTool(TGCustomTool tool){
 		this.tools.add(tool);
-	}	
+	}
 	
 	public void removeCustomTool(TGCustomTool tool){
 		this.tools.remove(tool);
-	}		
+	}
 	
 	public Iterator getCustomTools(){
 		return this.tools.iterator();
-	}	
+	}
 	
 }

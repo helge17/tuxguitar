@@ -9,31 +9,30 @@ import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserFactory;
 
 public abstract class TGBrowserBar implements LanguageLoader{
 	private TGBrowserDialog browser;
-
+	
 	public TGBrowserBar(TGBrowserDialog browser){
-		this.browser = browser;					
+		this.browser = browser;
 	}
-		
+	
 	public abstract void init(Shell shell);
-
+	
 	public abstract void updateItems();
 	
 	public abstract void updateCollections(TGBrowserCollection selection);
 	
-	
 	protected TGBrowserDialog getBrowser(){
 		return this.browser;
-	}	
+	}
 	
-	protected void newCollection(String type){				
+	protected void newCollection(String type){
 		TGBrowserFactory factory = TGBrowserManager.instance().getFactory(type);
-		if(factory != null){			
+		if(factory != null){
 			TGBrowserData data = factory.dataDialog(getBrowser().getShell());
-			if(data != null){				
+			if(data != null){
 				openCollection(addCollection(factory, data, true));
 			}
 		}
-	}	
+	}
 	
 	protected TGBrowserCollection addCollection(TGBrowserFactory factory,String data){
 		return this.addCollection(factory,factory.parseData(data),false);
@@ -42,9 +41,9 @@ public abstract class TGBrowserBar implements LanguageLoader{
 	protected TGBrowserCollection addCollection(TGBrowserFactory factory,TGBrowserData data,boolean reload){
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(factory.getType());
-		collection.setData(data);		
-		TGBrowserManager.instance().addCollection(collection);			
-		if(reload){			
+		collection.setData(data);
+		TGBrowserManager.instance().addCollection(collection);
+		if(reload){
 			getBrowser().updateCollections(collection);
 		}
 		return collection;
@@ -54,13 +53,13 @@ public abstract class TGBrowserBar implements LanguageLoader{
 		getBrowser().setCollection(collection);
 		getBrowser().openCollection();
 	}
-
+	
 	protected void removeCollection(TGBrowserCollection collection){
 		getBrowser().removeCollection(collection);
-	}	
-
+	}
+	
 	protected void closeCollection(){
 		getBrowser().closeCollection();
-	}	
-
+	}
+	
 }

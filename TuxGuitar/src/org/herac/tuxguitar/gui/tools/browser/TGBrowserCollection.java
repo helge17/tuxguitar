@@ -3,11 +3,11 @@ package org.herac.tuxguitar.gui.tools.browser;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
 
 public class TGBrowserCollection {
-
+	
 	private String type;
 	private TGBrowserData data;
 	
-	public TGBrowserCollection(){		
+	public TGBrowserCollection(){
 		super();
 	}
 	
