@@ -13,19 +13,22 @@ package org.herac.tuxguitar.gui.undo;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CannotUndoException extends Exception{
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	public CannotUndoException() {
-        super();
-    }
-    public CannotUndoException(String message) {
-        super(message);
-    }
-    public CannotUndoException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public CannotUndoException(Throwable cause) {
-        super(cause);
-    }
+		super();
+	}
+	
+	public CannotUndoException(String message) {
+		super(message);
+	}
+	
+	public CannotUndoException(String message, Throwable cause) {
+		super(message, cause);
+	}
+	
+	public CannotUndoException(Throwable cause) {
+		super(cause);
+	}
 }
