@@ -25,7 +25,7 @@ snapshot_dir?=${package}-snapshot-${snapshot_version}
 snapshot: ../${snapshot_dir} 
 
 ../${snapshot_dir}:
-	svn co ${scmroot_user} $@
+	svn co ${scmroot} $@
 	cd .. && tar czf ${snapshot_dir}.tar.gz --exclude="debian" ${snapshot_dir}
 	cd ../${snapshot_dir} && find . > 00index.txt
 	cd .. && ln -fs ${snapshot_dir}.tar.gz ${package}-snapshot_${snapshot_version}.orig.tar.gz 
@@ -84,15 +84,15 @@ cvsrelease:
 fetch:
 	mkdir -p ../${tarball_name}
 	cd  ../${tarball_name} && \
-	 cvs -d$(scmroot) login  && \
-	 cvs -d$(scmroot) co .
+	 cvs -d${scmroot} login  && \
+	 cvs -d${scmroot} co .
 	echo "cd ../${tarball_name}"
 
-test-help: ${CURDIR}
-	echo "$<"
-	echo "${<F}"
-	echo "${<N}"
-	echo "${<D}"
+#test-help: ${CURDIR}
+#	echo "$<"
+#	echo "${<F}"
+#	echo "${<N}"
+#	echo "${<D}"
 
 sf:
 	lynx -dump "http://sourceforge.net/project/showfiles.php?group_id=155855&package_id=173684&release_id=580322" | grep filename | sed -e 's|.* http:.*filename=\(.*\)|http://heanet.dl.sourceforge.net/sourceforge/tuxguitar/\1|g' | xargs -n 1 wget -nc
@@ -103,11 +103,11 @@ sf:
 install_plugins: ${modules_plugins}
 	install $</$<.jar ${INSTALL_SHARE_DIR}
 
-snapshot-test: ${CURDIR}
-	echo ${<:%-1.0.0=%}
-	echo ${<:%-1.0.0=%-snapshot}
-	echo ${<:%-%=%-snapshot}
-	echo ${<:%-1.0.0=%-snapshot}
+#snapshot-test: ${CURDIR}
+#	echo ${<:%-1.0.0=%}
+#	echo ${<:%-1.0.0=%-snapshot}
+#	echo ${<:%-%=%-snapshot}
+#	echo ${<:%-1.0.0=%-snapshot}
 
 install-libs: ${modules_jni}
 	echo ${^:TuxGuitar-%=tuxguitar-%} 
@@ -125,20 +125,22 @@ tuxguitar-install:
 	-cp -rfa ./TuxGuitar/share/services ${INSTALL_SHARE_DIR} # TODO
 	-cp -rfa ./TuxGuitar/share/themes ${INSTALL_SHARE_DIR} # TODO
 
-tarball:  ${CURDIR}
-	find . -type l -exec file {} \; | sed -e "s|\(.*\): symbolic link to \`\(.*\)'|rm \1; cp -fa \2 \1|g"
-	find . -iname "*.jar"
-	rm ./README; cp -fa TuxGuitar/doc/README ./README
-	rm ./ChangeLog; cp -fa TuxGuitar/doc/CHANGES ./ChangeLog
-	rm ./COPYING; cp -fa TuxGuitar/doc/LICENSE ./COPYING
-	rm ./AUTHORS; cp -fa TuxGuitar/doc/AUTHORS ./AUTHORS
-	cd .. && tar cvfz  ${<F}.tar.gz \
-	 --exclude="debian" \
-	 --exclude "CVS" --exclude "CVSROOT" --exclude ".cvsignore" \
-	 --exclude="tmp.*" --exclude "build-stamp" \
-	 --exclude="changed*.diff"	 \
-	 ${<F}/*
-	ls -l ../${<F}.tar.gz
+CURDIR?=$(shell pwd)
+
+#tarball:$(shell pwd)
+#	find . -type l -exec file {} \; | sed -e "s|\(.*\): symbolic link to \`\(.*\)'|rm \1; cp -fa \2 \1|g"
+#	find . -iname "*.jar"
+#	rm ./README; cp -fa TuxGuitar/doc/README ./README
+#	rm ./ChangeLog; cp -fa TuxGuitar/doc/CHANGES ./ChangeLog
+#	rm ./COPYING; cp -fa TuxGuitar/doc/LICENSE ./COPYING
+#	rm ./AUTHORS; cp -fa TuxGuitar/doc/AUTHORS ./AUTHORS
+#	cd .. && tar cvfz  ${<F}.tar.gz \
+##	 --exclude="debian" \
+#	 --exclude "CVS" --exclude "CVSROOT" --exclude ".cvsignore" \
+#	 --exclude="tmp.*" --exclude "build-stamp" \
+#	 --exclude="changed*.diff"	 \
+#	 ${<F}/*
+#	ls -l ../${<F}.tar.gz
 #	cd .. && ln -fs ${tarball_name}.tar.gz ${package}_${pkg_ver}.orig.tar.gz
 
 debsrc: clean update
