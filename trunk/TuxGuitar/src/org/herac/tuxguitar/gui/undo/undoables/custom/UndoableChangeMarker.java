@@ -11,7 +11,7 @@ import org.herac.tuxguitar.song.models.TGMarker;
 public class UndoableChangeMarker implements UndoableEdit{
 	private int doAction;
 	private UndoableCaretHelper undoCaret;
-	private UndoableCaretHelper redoCaret;	
+	private UndoableCaretHelper redoCaret;
 	private TGMarker undoMarker;
 	private TGMarker redoMarker;
 	
@@ -19,10 +19,10 @@ public class UndoableChangeMarker implements UndoableEdit{
 		super();
 	}
 	
-	public void redo() throws CannotRedoException {	
+	public void redo() throws CannotRedoException {
 		if(!canRedo()){
 			throw new CannotRedoException();
-		}        
+		}
 		if(this.redoMarker != null){
 			TuxGuitar.instance().getSongManager().updateMarker(this.redoMarker.clone(TuxGuitar.instance().getSongManager().getFactory()));
 			MarkerList.instance().update(true);
@@ -33,11 +33,11 @@ public class UndoableChangeMarker implements UndoableEdit{
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
-
+	
 	public void undo() throws CannotUndoException {
 		if(!canUndo()){
 			throw new CannotUndoException();
-		}		        
+		}
 		if(this.undoMarker != null){
 			TuxGuitar.instance().getSongManager().updateMarker(this.undoMarker.clone(TuxGuitar.instance().getSongManager().getFactory()));
 			MarkerList.instance().update(true);
@@ -48,29 +48,27 @@ public class UndoableChangeMarker implements UndoableEdit{
 		this.undoCaret.update();
 		this.doAction = REDO_ACTION;
 	}
-
-    public boolean canRedo() {
-        return (this.doAction == REDO_ACTION);
-    }
-
-    public boolean canUndo() {
-        return (this.doAction == UNDO_ACTION);
-    }
-   
-    
-    public static UndoableChangeMarker startUndo(TGMarker marker){
-    	UndoableChangeMarker undoable = new UndoableChangeMarker();	    	
-    	undoable.doAction = UNDO_ACTION;
-    	undoable.undoCaret = new UndoableCaretHelper();
-    	undoable.undoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.instance().getSongManager().getFactory());
-    	
-    	return undoable;
-    }
-    
-    public UndoableChangeMarker endUndo(TGMarker marker){    
-    	this.redoCaret = new UndoableCaretHelper();    	
-    	this.redoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.instance().getSongManager().getFactory());
+	
+	public boolean canRedo() {
+		return (this.doAction == REDO_ACTION);
+	}
+	
+	public boolean canUndo() {
+		return (this.doAction == UNDO_ACTION);
+	}
+	
+	public static UndoableChangeMarker startUndo(TGMarker marker){
+		UndoableChangeMarker undoable = new UndoableChangeMarker();
+		undoable.doAction = UNDO_ACTION;
+		undoable.undoCaret = new UndoableCaretHelper();
+		undoable.undoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.instance().getSongManager().getFactory());
+		
+		return undoable;
+	}
+	
+	public UndoableChangeMarker endUndo(TGMarker marker){
+		this.redoCaret = new UndoableCaretHelper();
+		this.redoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.instance().getSongManager().getFactory());
 		return this;
-    }
-    
+	}
 }
