@@ -65,7 +65,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	protected ToolItem previous;
 	protected ToolItem next;
 	protected ToolItem stop;
-	protected ToolItem play;	
+	protected ToolItem play;
 	protected boolean editingTickScale;
 	protected long redrawTime;
 	protected int status;
@@ -77,13 +77,13 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);		
+		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
 		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setText(TuxGuitar.getProperty("transport"));
 		this.initComposites();
-		this.initToolBar();		
-		this.redraw();				
+		this.initToolBar();
+		this.redraw();
 		
 		TuxGuitar.instance().updateCache(true);
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
@@ -103,8 +103,8 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		initOptions(composite);
 		initProgress(composite);
 	}
-
-	private void initOptions(Composite parent){								
+	
+	private void initOptions(Composite parent){
 		Composite composite = new Composite(parent,SWT.NONE);
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.LEFT,SWT.FILL,false,true));
@@ -118,7 +118,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		this.mode.addSelectionListener(TuxGuitar.instance().getAction(TransportModeAction.NAME));
 		
 		this.loadOptionIcons();
-	}	
+	}
 	
 	private void initProgress(Composite parent){
 		Composite composite = new Composite(parent,SWT.NONE);
@@ -129,10 +129,10 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		initScale(composite);
 	}
 	
-	private void initLabel(Composite parent){				
+	private void initLabel(Composite parent){
 		final Font font = new Font(parent.getDisplay(),"Minisystem",36,SWT.NORMAL);
 		this.label = new Label(parent,SWT.RIGHT);
-		this.label.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));	
+		this.label.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.label.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 		this.label.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 		this.label.setFont(font);
@@ -151,33 +151,33 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		this.tickProgress.setCursor(this.tickProgress.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		this.tickProgress.setLayoutData(data);
 		this.tickProgress.setSelection((int)TGDuration.QUARTER_TIME);
-		this.tickProgress.addMouseListener(new MouseAdapter() {		
+		this.tickProgress.addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent e) {
 				setEditingTickScale(true);
-				updateProgressBar(e.x);				
-			}		
+				updateProgressBar(e.x);
+			}
 			public void mouseUp(MouseEvent e) {
 				gotoMeasure(getSongManager().getMeasureHeaderAt(TGTransport.this.tickProgress.getSelection()),true);
 				setEditingTickScale(false);
-			}			
+			}
 		});
-		this.tickProgress.addMouseMoveListener(new MouseMoveListener() {		
+		this.tickProgress.addMouseMoveListener(new MouseMoveListener() {
 			public void mouseMove(MouseEvent e) {
-				updateProgressBar(e.x);				
-			}		
+				updateProgressBar(e.x);
+			}
 		});
 	}
 	
 	protected void updateProgressBar(int x){
 		if(isEditingTickScale()){
-			int selection = (this.tickProgress.getMinimum() + (( x * (this.tickProgress.getMaximum() - this.tickProgress.getMinimum())) / this.tickProgress.getSize().x) );		
+			int selection = (this.tickProgress.getMinimum() + (( x * (this.tickProgress.getMaximum() - this.tickProgress.getMinimum())) / this.tickProgress.getSize().x) );
 			this.tickProgress.setSelection(Math.max((int)TGDuration.QUARTER_TIME,selection));
 			this.redraw();
 		}
 	}
 	
 	private void initToolBar(){
-		if(this.toolBar != null){    
+		if(this.toolBar != null){
 			this.toolBar.dispose();
 		}
 		this.toolBar = new ToolBar(this.dialog,SWT.FLAT);
@@ -186,43 +186,43 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		this.first.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				gotoFirst();
-			}		
+			}
 		});
 		
 		this.previous = new ToolItem(this.toolBar,SWT.PUSH);
 		this.previous.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				gotoPrevious();
-			}		
+			}
 		});
-
+		
 		this.stop = new ToolItem(this.toolBar,SWT.PUSH);
 		this.stop.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				stop(e);
-			}		
-		});				
+			}
+		});
 		
-		this.play = new ToolItem(this.toolBar,SWT.PUSH);	
+		this.play = new ToolItem(this.toolBar,SWT.PUSH);
 		this.play.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				play(e);
-			}		
-		});		
+			}
+		});
 		
 		this.next = new ToolItem(this.toolBar,SWT.PUSH);
 		this.next.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				gotoNext();
-			}		
+			}
 		});
 		
 		this.last = new ToolItem(this.toolBar,SWT.PUSH);
 		this.last.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				gotoLast();
-			}		
-		});				
+			}
+		});
 		
 		this.updateItems(true);
 		this.loadProperties();
@@ -231,11 +231,11 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	public int getStatus() {
 		return this.status;
 	}
-
+	
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
+	
 	public void updateItems(){
 		this.updateItems(false);
 	}
@@ -245,12 +245,12 @@ public class TGTransport implements IconLoader,LanguageLoader{
 			int lastStatus = getStatus();
 			
 			if(TuxGuitar.instance().getPlayer().isRunning()){
-				setStatus(STATUS_RUNNING);			
+				setStatus(STATUS_RUNNING);
 			}else if(TuxGuitar.instance().getPlayer().isPaused()){
 				setStatus(STATUS_PAUSED);
 			}else{
 				setStatus(STATUS_STOPPED);
-			}		
+			}
 			
 			if(force || lastStatus != getStatus()){
 				if(getStatus() == STATUS_RUNNING){
@@ -276,7 +276,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 					this.play.setImage(TuxGuitar.instance().getIconManager().getTransportPlay1());
 				}
 				this.loadPlayText();
-			}			
+			}
 			TGMeasureHeader first = getSongManager().getFirstMeasureHeader();
 			TGMeasureHeader last = getSongManager().getLastMeasureHeader();
 			this.tickProgress.setMinimum((int)first.getStart());
@@ -284,7 +284,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 			this.metronome.setSelection(TuxGuitar.instance().getPlayer().isMetronomeEnabled());
 			
 			this.redraw();
-		}		
+		}
 	}
 	
 	public void loadProperties(){
@@ -300,7 +300,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 			this.loadPlayText();
 		}
 	}
-
+	
 	public void loadPlayText(){
 		String property = TuxGuitar.getProperty( (getStatus() == STATUS_RUNNING ? "transport.pause" : "transport.start") );
 		this.play.setToolTipText(property);
@@ -308,7 +308,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	
 	public void loadIcons(){
 		if(!isDisposed()){
-			this.initToolBar();		
+			this.initToolBar();
 			this.loadOptionIcons();
 			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 			this.dialog.layout(true);
@@ -326,19 +326,19 @@ public class TGTransport implements IconLoader,LanguageLoader{
 			this.dialog.dispose();
 		}
 	}
-
+	
 	public boolean isDisposed() {
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
-
+	
 	public boolean isEditingTickScale() {
 		return this.editingTickScale;
 	}
-
+	
 	public void setEditingTickScale(boolean editingTickScale) {
 		this.editingTickScale = editingTickScale;
 	}
-
+	
 	protected TGSongManager getSongManager(){
 		return TuxGuitar.instance().getSongManager();
 	}
@@ -348,7 +348,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	}
 	
 	public void gotoLast(){
-		gotoMeasure(getSongManager().getLastMeasureHeader(),true) ;		
+		gotoMeasure(getSongManager().getLastMeasureHeader(),true) ;
 	}
 	
 	public void gotoNext(){
@@ -364,12 +364,12 @@ public class TGTransport implements IconLoader,LanguageLoader{
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			gotoMeasure(getSongManager().getPrevMeasureHeader(header),true);
-		}		
-	}	
+		}
+	}
 	
 	public void gotoMeasure(TGMeasureHeader header){
 		gotoMeasure(header,false);
-	}	
+	}
 	
 	protected void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
 		if(header != null && this.position != header.getNumber()){
@@ -402,22 +402,22 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	
 	public void stop(TypedEvent e){
 		TuxGuitar.instance().getAction(TransportStopAction.NAME).process(e);
-	}	
-
-	public void redraw(){		
+	}
+	
+	public void redraw(){
 		if(!TuxGuitar.instance().isLocked()){
 			this.checkPosition();
-			if(!isDisposed()){			
+			if(!isDisposed()){
 				new SyncThread(new Runnable() {
 					public void run() {
-						if(!isDisposed() && !TuxGuitar.instance().isLocked()){			
+						if(!isDisposed() && !TuxGuitar.instance().isLocked()){
 							if(isEditingTickScale()){
 								TGTransport.this.label.setText(Long.toString(TGTransport.this.tickProgress.getSelection()));
-							}	
-							else if(!TuxGuitar.instance().getPlayer().isRunning()){		
+							}
+							else if(!TuxGuitar.instance().getPlayer().isRunning()){
 								long tickPosition = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getPosition();
-						
-								TGTransport.this.label.setText(Long.toString(tickPosition));				
+								
+								TGTransport.this.label.setText(Long.toString(tickPosition));
 								TGTransport.this.tickProgress.setSelection((int)tickPosition);
 							}
 						}
@@ -425,22 +425,22 @@ public class TGTransport implements IconLoader,LanguageLoader{
 				}).start();
 			}
 		}
-	}	
+	}
 	
-	public void redrawPlayingMode(){		
+	public void redrawPlayingMode(){
 		if(!TuxGuitar.instance().isLocked()){
 			TuxGuitar.instance().lock();
 			this.checkPosition();
 			if(!isDisposed()){
-				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){				
+				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){
 					long time = System.currentTimeMillis();
-					if(time > this.redrawTime + PLAY_MODE_DELAY){										
-						long position = (TuxGuitar.instance().getEditorCache().getPlayStart() + (TuxGuitar.instance().getPlayer().getTickPosition() - TuxGuitar.instance().getEditorCache().getPlayTick()));										
+					if(time > this.redrawTime + PLAY_MODE_DELAY){
+						long position = (TuxGuitar.instance().getEditorCache().getPlayStart() + (TuxGuitar.instance().getPlayer().getTickPosition() - TuxGuitar.instance().getEditorCache().getPlayTick()));
 						this.label.setText(Long.toString(position));
 						this.tickProgress.setSelection((int)position);
 						this.redrawTime = time;
 					}
-				}			
+				}
 			}
 			TuxGuitar.instance().unlock();
 		}
