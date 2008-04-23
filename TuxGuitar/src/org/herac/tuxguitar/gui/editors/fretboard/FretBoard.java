@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
@@ -443,8 +444,7 @@ public class FretBoard extends Composite {
 			TuxGuitar.instance().unlock();
 		}
 	}
-
-
+	
 	protected void hit(int x, int y) {
 		int fretIndex = getFretIndex(x);
 		int stringIndex = getStringIndex(y);
@@ -645,7 +645,7 @@ public class FretBoard extends Composite {
 		}
 		
 		public void mouseUp(MouseEvent e) {
-			if(!TuxGuitar.instance().getPlayer().isRunning()){
+			if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
 				getFretBoardComposite().setFocus();
 				if(e.button == 1){
 					hit(e.x, e.y);

@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
@@ -91,12 +92,16 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		this.buttonAdd.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonAdd.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
-				TGMarker marker = TuxGuitar.instance().getSongManager().getFactory().newMarker();
-				marker.setMeasure(caret.getMeasure().getNumber());
-				if(new MarkerEditor(marker,MarkerEditor.STATUS_NEW).open(MarkerList.this.dialog)){
-					TuxGuitar.instance().updateCache(true);
-					loadTableItems(true);
+				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					ActionLock.lock();
+					Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+					TGMarker marker = TuxGuitar.instance().getSongManager().getFactory().newMarker();
+					marker.setMeasure(caret.getMeasure().getNumber());
+					if(new MarkerEditor(marker,MarkerEditor.STATUS_NEW).open(MarkerList.this.dialog)){
+						TuxGuitar.instance().updateCache(true);
+						loadTableItems(true);
+					}
+					ActionLock.unlock();
 				}
 			}
 		});
@@ -105,31 +110,39 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		this.buttonEdit.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonEdit.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				TGMarker marker = getSelectedMarker();
-				if(marker != null){
-					if(new MarkerEditor(marker,MarkerEditor.STATUS_EDIT).open(MarkerList.this.dialog)){
-						TuxGuitar.instance().updateCache(true);
-						loadTableItems(true);
+				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					ActionLock.lock();
+					TGMarker marker = getSelectedMarker();
+					if(marker != null){
+						if(new MarkerEditor(marker,MarkerEditor.STATUS_EDIT).open(MarkerList.this.dialog)){
+							TuxGuitar.instance().updateCache(true);
+							loadTableItems(true);
+						}
 					}
+					ActionLock.unlock();
 				}
 			}
-		});			
+		});
 		
 		this.buttonDelete = new Button(this.compositeButtons, SWT.PUSH);
 		this.buttonDelete.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonDelete.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				TGMarker marker = getSelectedMarker();
-				// comienza el undoable
-				UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(marker);
+				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					ActionLock.lock();
+					TGMarker marker = getSelectedMarker();
+					// comienza el undoable
+					UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(marker);
 				
-				TuxGuitar.instance().getSongManager().removeMarker(marker);
+					TuxGuitar.instance().getSongManager().removeMarker(marker);
 				
-				// termia el undoable
-				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(null));
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
-				TuxGuitar.instance().updateCache(true);
-				loadTableItems(true);
+					// termia el undoable
+					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(null));
+					TuxGuitar.instance().getFileHistory().setUnsavedFile();
+					TuxGuitar.instance().updateCache(true);
+					loadTableItems(true);
+					ActionLock.unlock();
+				}
 			}
 		});			
 		
@@ -137,8 +150,12 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		this.buttonGo.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,true));
 		this.buttonGo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
-				TuxGuitar.instance().updateCache(true);
+				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					ActionLock.lock();
+					new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
+					TuxGuitar.instance().updateCache(true);
+					ActionLock.unlock();
+				}
 			}
 		});		
 		

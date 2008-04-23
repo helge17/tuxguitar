@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
@@ -251,10 +252,8 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		});
 		this.editor.addMouseListener(new MouseAdapter() {
 			public void mouseUp(MouseEvent e) {
-				if(!TuxGuitar.instance().getPlayer().isRunning()){
-					getEditor().setFocus();
-					hit(e.x,e.y);
-				}
+				getEditor().setFocus();
+				hit(e.x,e.y);
 			}		
 		});
 		this.editor.addMouseMoveListener(new MouseMoveListener() {		
@@ -480,8 +479,8 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}
 	
 	protected void paintSelection(TGPainter painter, float fromX, float fromY){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
-			selectionFinish();	
+		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+			selectionFinish();
 			if(this.selection >= 0 ){
 				int x = Math.round( fromX );
 				int y = Math.round( fromY + ((this.maxNote - this.selection) * this.lineHeight)  );
@@ -502,7 +501,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}
 	
 	protected void updateSelection(float y){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
 			int selection = getValueAt(y);
 			
 			if(this.selection != selection){
@@ -535,25 +534,27 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
     }
     
 	protected void hit(float x, float y){
-		TGMeasure measure = getMeasure();
-		int value = getValueAt(y);
-		long start = getStartAt(x);
+		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+			TGMeasure measure = getMeasure();
+			int value = getValueAt(y);
+			long start = getStartAt(x);
 			
-		if(start >= measure.getStart() && start < (measure.getStart() + measure.getLength())){
-			Caret caret = getCaret();
-			caret.update(caret.getTrack().getNumber(),start,caret.getStringNumber());
-			TuxGuitar.instance().updateCache(true);
-		}
-		if(value >= this.minNote || value <= this.maxNote){
-			if(start >= measure.getStart()){
-				TGBeat beat = TuxGuitar.instance().getSongManager().getMeasureManager().getBeatIn(measure, start);
-				if( beat != null ){
-					if(!removeNote(beat, value)){
-						addNote(beat, start, value);
+			if(start >= measure.getStart() && start < (measure.getStart() + measure.getLength())){
+				Caret caret = getCaret();
+				caret.update(caret.getTrack().getNumber(),start,caret.getStringNumber());
+				TuxGuitar.instance().updateCache(true);
+			}
+			if(value >= this.minNote || value <= this.maxNote){
+				if(start >= measure.getStart()){
+					TGBeat beat = TuxGuitar.instance().getSongManager().getMeasureManager().getBeatIn(measure, start);
+					if( beat != null ){
+						if(!removeNote(beat, value)){
+							addNote(beat, start, value);
+						}
 					}
+				}else{
+					play(value);
 				}
-			}else{
-				play(value);
 			}
 		}
 	}
@@ -759,12 +760,14 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}	
 	
 	private void layout(){
-		this.toolbar.layout();
-		this.editor.layout();
-		this.composite.layout(true,true);
+		if( !isDisposed() ){
+			this.toolbar.layout();
+			this.editor.layout();
+			this.composite.layout(true,true);
+		}
 	}
 
-    public void loadIcons(){    	
+    public void loadIcons(){
     	if( !isDisposed() ){
     		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
         	this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());

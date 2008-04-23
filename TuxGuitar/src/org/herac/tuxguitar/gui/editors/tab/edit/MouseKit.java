@@ -8,6 +8,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
@@ -41,7 +42,7 @@ public class MouseKit {
     }
     
     public void tryBack(){
-    	if(!TuxGuitar.instance().isLocked() && !this.kit.getTablature().isPainting()){
+    	if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
     		TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
 			if(this.back != null && !this.back.isDisposed()){
 				painter.drawImage(this.back,this.lastx,this.lasty);
@@ -59,7 +60,7 @@ public class MouseKit {
 	
 	public void mouseMove(MouseEvent e) {
 		this.tryBack();
-		if(!TuxGuitar.instance().isLocked() && !this.kit.getTablature().isPainting()){
+		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
 		
 			TGTrackImpl track = this.kit.findSelectedTrack(e.y);
 			if (track != null) {
@@ -130,56 +131,59 @@ public class MouseKit {
 	}
 
 	public void mouseUp(MouseEvent e) {
-		ViewLayout.TrackPosition pos = getTrackPosition(e.y) ;  
+		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
 		
-		if(pos != null){		
-			TGTrackImpl track = this.kit.getTablature().getCaret().getTrack();
-			TGMeasureImpl measure = this.kit.getTablature().getCaret().getMeasure();
-			if(measure.getTs() != null){	
-				int minValue = track.getString(track.stringCount()).getValue();
-				int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
+			ViewLayout.TrackPosition pos = getTrackPosition(e.y) ;  
+		
+			if(pos != null){		
+				TGTrackImpl track = this.kit.getTablature().getCaret().getTrack();
+				TGMeasureImpl measure = this.kit.getTablature().getCaret().getMeasure();
+				if(measure.getTs() != null){	
+					int minValue = track.getString(track.stringCount()).getValue();
+					int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
 				
-				int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing(); 		
+					int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing(); 		
 				
-				int topHeight = measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				int bottomHeight = (measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_DOWN_LINES));	
+					int topHeight = measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+					int bottomHeight = (measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_DOWN_LINES));	
 
-				int y1 = (pos.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));	
-				int y2 = (y1 + (lineSpacing * 5));		
+					int y1 = (pos.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));	
+					int y2 = (y1 + (lineSpacing * 5));		
 			
-				if(e.y >= (y1 - topHeight) && e.y  < (y2 + bottomHeight)){
-			
-					int value = 0;
-					int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
-					double limit = (topHeight / (lineSpacing / 2.00));
-					for(int i = 0;i < limit;i ++){	
-						tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
-					}
+					if(e.y >= (y1 - topHeight) && e.y  < (y2 + bottomHeight)){
+					
+						int value = 0;
+						int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
+						double limit = (topHeight / (lineSpacing / 2.00));
+						for(int i = 0;i < limit;i ++){	
+							tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
+						}
 													
-					float minorDistance = 0;
-					for(float y = (y1 - topHeight); y <= (y2 + bottomHeight); y += (lineSpacing / 2.00)){	                          
-						if(tempValue > 0){
-							float distanceY = Math.abs(e.y - y);
-							if(value == 0 || distanceY < minorDistance){
-								value = tempValue;
-								minorDistance = distanceY;
+						float minorDistance = 0;
+						for(float y = (y1 - topHeight); y <= (y2 + bottomHeight); y += (lineSpacing / 2.00)){	                          
+							if(tempValue > 0){
+								float distanceY = Math.abs(e.y - y);
+								if(value == 0 || distanceY < minorDistance){
+									value = tempValue;
+									minorDistance = distanceY;
+								}
+								tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
 							}
-							tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
-						}
-					}			
-					if(value >= minValue && value <= maxValue){
-						TGBeatImpl beat = findBestBeat(measure, e.x);
-						if(beat != null){
-							value = getRealValue(value);
-							if(!removeNote(value,beat)){
-								makeNote(beat, getRealStart(beat, e.x), value);		
+						}			
+						if(value >= minValue && value <= maxValue){
+							TGBeatImpl beat = findBestBeat(measure, e.x);
+							if(beat != null){
+								value = getRealValue(value);
+								if(!removeNote(value,beat)){
+									makeNote(beat, getRealStart(beat, e.x), value);		
+								}
 							}
+							redrawTablature();
 						}
-						redrawTablature();
 					}
 				}
 			}
-		}						
+		}
 	}
 
 	private long getRealStart(TGBeatImpl beat,int x){
