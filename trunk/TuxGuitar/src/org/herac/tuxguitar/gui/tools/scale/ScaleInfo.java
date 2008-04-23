@@ -8,12 +8,12 @@ public class ScaleInfo {
 		this.name = name;
 		this.keys = keys;
 	}
-
+	
 	public String getKeys() {
 		return this.keys;
 	}
-
+	
 	public String getName() {
 		return this.name;
-	}    	
+	}
 }

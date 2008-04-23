@@ -5,13 +5,13 @@ import java.io.InputStream;
 import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
 
 public abstract class TGBrowserElement {
-
+	
 	private String name;
 	
 	public TGBrowserElement(String name){
 		this.name = name;
 	}
-		
+	
 	public String getName(){
 		return this.name;
 	}

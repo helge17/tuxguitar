@@ -10,7 +10,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.tools.browser.TGBrowserCollection;
 
 public class TGBrowserCollectionCombo {
-
+	
 	private Combo combo;
 	private List collections;
 	
@@ -37,21 +37,21 @@ public class TGBrowserCollectionCombo {
 		}
 		return null;
 	}
-
+	
 	public void addSelectionListener(SelectionListener listener) {
 		this.combo.addSelectionListener(listener);
 	}
-
+	
 	public void setLayoutData(Object layoutData) {
 		this.combo.setLayoutData(layoutData);
 	}
-
+	
 	public void removeAll() {
 		this.combo.removeAll();
 		this.collections.clear();
 		this.addFirstElement();
 	}
-
+	
 	public void select(int index) {
 		this.combo.select( ( index + 1 ) );
 	}

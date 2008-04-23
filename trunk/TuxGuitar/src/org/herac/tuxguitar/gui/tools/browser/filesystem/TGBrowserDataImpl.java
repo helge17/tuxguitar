@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.tools.browser.filesystem;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
 
 public class TGBrowserDataImpl implements TGBrowserData{
-
+	
 	private static final String STRING_SEPARATOR = ";";
 	
 	private String title;
@@ -13,7 +13,7 @@ public class TGBrowserDataImpl implements TGBrowserData{
 		this.title = title;
 		this.path = path;
 	}
-
+	
 	public String getTitle(){
 		return this.title;
 	}
@@ -25,7 +25,7 @@ public class TGBrowserDataImpl implements TGBrowserData{
 	public String toString(){
 		return (getTitle() + STRING_SEPARATOR + getPath());
 	}
-
+	
 	public static TGBrowserData fromString(String string) {
 		String[] data = string.split(STRING_SEPARATOR);
 		if(data.length == 2){

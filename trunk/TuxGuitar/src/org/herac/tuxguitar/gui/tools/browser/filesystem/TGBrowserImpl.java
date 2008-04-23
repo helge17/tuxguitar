@@ -13,7 +13,7 @@ public class TGBrowserImpl extends TGBrowser{
 	private TGBrowserElementImpl element;
 	private TGBrowserDataImpl data;
 	
-	public TGBrowserImpl(TGBrowserDataImpl data){		
+	public TGBrowserImpl(TGBrowserDataImpl data){
 		this.data = data;
 	}
 	
@@ -25,22 +25,22 @@ public class TGBrowserImpl extends TGBrowser{
 		this.root = null;
 	}
 	
-	public void cdElement(TGBrowserElement element) {		
-		this.element = (TGBrowserElementImpl)element;		
+	public void cdElement(TGBrowserElement element) {
+		this.element = (TGBrowserElementImpl)element;
 	}
-
+	
 	public void cdRoot() {
 		this.element = null;
 	}
-
-	public void cdUp() {		
+	
+	public void cdUp() {
 		if(this.element != null){
 			this.element = this.element.getParent();
 		}
 	}
-
+	
 	public List listElements() {
-		List elements = new ArrayList();		
+		List elements = new ArrayList();
 		File file = ((this.element != null)?this.element.getFile():this.root);
 		if(file.exists() && file.isDirectory()){
 			File[] files = file.listFiles();
@@ -50,5 +50,5 @@ public class TGBrowserImpl extends TGBrowser{
 		}
 		return elements;
 	}
-
+	
 }

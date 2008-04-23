@@ -1,12 +1,11 @@
 package org.herac.tuxguitar.gui.tools.browser;
 
-
 public class TGBrowserCollectionInfo {
-
+	
 	private String type;
 	private String data;
 	
-	public TGBrowserCollectionInfo(){		
+	public TGBrowserCollectionInfo(){
 		super();
 	}
 	

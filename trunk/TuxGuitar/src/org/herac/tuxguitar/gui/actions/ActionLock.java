@@ -12,11 +12,10 @@ public class ActionLock {
 		working = true;
 	}
 	
-	
 	public synchronized static void unlock(){
 		working = false;
 	}
-
+	
 	public synchronized static void waitFor(){
 		try {
 			while(isLocked()){

@@ -8,9 +8,9 @@ import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserElement;
 public interface TGBrowserConnectionHandler {
 	
 	public void notifyLockStatusChanged();
-
+	
 	public void notifyOpened(int callId);
-
+	
 	public void notifyClosed(int callId);
 	
 	public void notifyCd(int callId);
