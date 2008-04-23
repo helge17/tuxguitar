@@ -14,7 +14,7 @@ public class ArgumentParser {
 	private String[] arguments;
 	private boolean processAndExit;
 	private URL url;
-
+	
 	public ArgumentParser(String[] arguments){
 		this.arguments = arguments;
 		this.processAndExit = false;
@@ -46,23 +46,23 @@ public class ArgumentParser {
 					print("	-i, --system-info          Show the JVM system information");
 					print("	-D<name>=<value>           Set a JVM system property");
 					
-					this.processAndExit = true;					
+					this.processAndExit = true;
 				}
 			}
 		}
 	}
-
+	
 	private void checkVersion(){
 		for(int i = 0;i < this.arguments.length;i++){
 			for(int j = 0;j < OPTION_VERSION.length;j++){
 				if(this.arguments[i].equals(OPTION_VERSION[j])){
 					print(TuxGuitar.APPLICATION_NAME + " - " + TGVersion.CURRENT.getVersion());
 					
-					this.processAndExit = true;					
+					this.processAndExit = true;
 				}
 			}
 		}
-	}	
+	}
 	
 	private void checkSystemInfo(){
 		for(int i = 0;i < this.arguments.length;i++){
@@ -80,7 +80,7 @@ public class ArgumentParser {
 					print("-> Java-Home:         " + System.getProperty("java.home"));
 					print("-> Java-Class-Path:   " + System.getProperty("java.class.path"));
 					print("-> Java-Library-Path: " + System.getProperty("java.library.path"));
-
+					
 					this.processAndExit = true;
 				}
 			}
@@ -90,14 +90,14 @@ public class ArgumentParser {
 	private void checkProperties(){
 		for(int i = 0;i < this.arguments.length;i++){
 			if(this.arguments[i].indexOf("-D") == 0 && this.arguments[i].indexOf("=") > 0){
-				String[] property = this.arguments[i].substring(2).split("="); 
+				String[] property = this.arguments[i].substring(2).split("=");
 				if( property != null && property.length == 2 ){
 					System.setProperty( property[0],property[1]);
 				}
 			}
 		}
 	}
-
+	
 	private void checkURL(){
 		for(int i = 0;i < this.arguments.length;i++){
 			if(makeURL(this.arguments[i])){
@@ -123,7 +123,7 @@ public class ArgumentParser {
 	public boolean processAndExit(){
 		return this.processAndExit;
 	}
-
+	
 	public URL getURL() {
 		return this.url;
 	}
@@ -131,7 +131,7 @@ public class ArgumentParser {
 	protected void print(String s){
 		print(s, true);
 	}
-		
+	
 	protected void print(String s, boolean ignoreNull){
 		if(!ignoreNull || s != null){
 			System.out.println( s );

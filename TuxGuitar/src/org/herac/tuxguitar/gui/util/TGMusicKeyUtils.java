@@ -14,7 +14,7 @@ public class TGMusicKeyUtils {
 	public static final String PREFIX_FRETBOARD = "fretboard";
 	
 	public static final String PREFIX_MATRIX = "matrix";
-		
+	
 	private static final String[][] DEFAULT_KEY_NAMES = new String[][]{
 		{"C","C#","Cb"},
 		{"D","D#","Db"},
@@ -24,7 +24,7 @@ public class TGMusicKeyUtils {
 		{"A","A#","Ab"},
 		{"B","B#","Bb"}
 	};
-
+	
 	public static String[] getSharpKeyNames(String prefix){
 		return new TGMusicKeyNames(true,prefix).getNames();
 	}
@@ -40,7 +40,7 @@ public class TGMusicKeyUtils {
 			loadFlatKeyNames(names, prefix);
 		}
 	}
-
+	
 	private static void loadSharpKeyNames(String[] names,String prefix){
 		names[0] = getName(prefix,0,0);
 		names[1] = getName(prefix,0,1);
@@ -68,9 +68,9 @@ public class TGMusicKeyUtils {
 		names[8] = getName(prefix,5,2);
 		names[9] = getName(prefix,5,0);
 		names[10] = getName(prefix,6,2);
-		names[11] = getName(prefix,6,0);		
-	}	
-
+		names[11] = getName(prefix,6,0);
+	}
+	
 	private static String getName(String prefix,int key,int signature){
 		String resource = ("key." + prefix + "." + key + "." + signature);
 		return TuxGuitar.instance().getLanguageManager().getProperty(resource,DEFAULT_KEY_NAMES[key][signature]);
@@ -95,7 +95,7 @@ class TGMusicKeyNames implements LanguageLoader{
 	public String[] getNames(){
 		return this.names;
 	}
-
+	
 	public void loadProperties() {
 		TGMusicKeyUtils.loadKeyNames(this.names, this.prefix, this.sharp);
 	}

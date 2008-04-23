@@ -73,17 +73,17 @@ import org.herac.tuxguitar.util.TGLock;
 public class TuxGuitar {
 	
 	public static final String APPLICATION_NAME = "TuxGuitar";
-
+	
 	public static final int MARGIN_WIDTH = 5;
 	
 	private static TuxGuitar instance;
-
+	
 	private TGLock lock;
 	
 	private Display display;
-
+	
 	private Shell shell;
-
+	
 	private MidiPlayer player;
 	
 	private TGSongManager songManager;
@@ -91,7 +91,7 @@ public class TuxGuitar {
 	private TGConfigManager configManager;
 	
 	private LanguageManager languageManager;
-
+	
 	private KeyBindingActionManager keyBindingManager;
 	
 	private IconManager iconManager;
@@ -99,7 +99,7 @@ public class TuxGuitar {
 	private EditorCache editorCache;
 	
 	private TablatureEditor tablatureEditor;
-
+	
 	private TGTableViewer table;
 	
 	private TGMixer songMixer;
@@ -121,23 +121,23 @@ public class TuxGuitar {
 	private ScaleManager scaleManager;
 	
 	private ActionManager actionManager;
-
+	
 	private ItemManager itemManager;
-
+	
 	private CustomChordManager customChordManager;
 	
 	private FileHistory fileHistory;
-
+	
 	private TGPluginManager pluginManager;
 	
 	protected Sash sash;
 	
-	protected Composite sashComposite;			
-
+	protected Composite sashComposite;
+	
 	public TuxGuitar() {
 		this.lock = new TGLock();
 	}
-
+	
 	public static TuxGuitar instance() {
 		if (instance == null) {
 			synchronized (TuxGuitar.class) {
@@ -147,7 +147,7 @@ public class TuxGuitar {
 		return instance;
 	}
 	
-	public void displayGUI(String[] args) {		
+	public void displayGUI(String[] args) {
 		//checkeo los argumentos
 		ArgumentParser argumentParser = new ArgumentParser(args);
 		if(argumentParser.processAndExit()){
@@ -155,22 +155,22 @@ public class TuxGuitar {
 		}
 		
 		TGFileUtils.loadLibraries();
-		TGFileUtils.loadClasspath();		
-
+		TGFileUtils.loadClasspath();
+		
 		this.display = new Display();
-
+		
 		TGSplash.instance().init();
-
-		this.shell = new Shell(getDisplay());		
-		this.shell.setLayout(getShellLayout());		
+		
+		this.shell = new Shell(getDisplay());
+		this.shell.setLayout(getShellLayout());
 		this.shell.setImage(getIconManager().getAppIcon());
-
+		
 		this.createComposites(getShell());
-
+		
 		boolean maximized = getConfig().getBooleanConfigValue(TGConfigKeys.MAXIMIZED);
 		this.shell.setMaximized(maximized);
 		if(!maximized){
-			int width = getConfig().getIntConfigValue(TGConfigKeys.WIDTH); 
+			int width = getConfig().getIntConfigValue(TGConfigKeys.WIDTH);
 			int height = getConfig().getIntConfigValue(TGConfigKeys.HEIGHT);
 			if(width > 0 && height > 0){
 				this.shell.setSize(width,height);
@@ -185,7 +185,7 @@ public class TuxGuitar {
 		
 		TGSplash.instance().finish();
 		
-		this.shell.addShellListener(getAction(DisposeAction.NAME));				
+		this.shell.addShellListener(getAction(DisposeAction.NAME));
 		this.shell.open();
 		this.startSong(argumentParser);
 		while (!getDisplay().isDisposed() && !getShell().isDisposed()) {
@@ -195,7 +195,7 @@ public class TuxGuitar {
 		}
 		getDisplay().dispose();
 	}
-
+	
 	private FormLayout getShellLayout(){
 		FormLayout layout = new FormLayout();
 		layout.marginWidth = MARGIN_WIDTH;
@@ -228,50 +228,50 @@ public class TuxGuitar {
 		this.sashComposite = new Composite(composite,SWT.NONE);
 		this.sashComposite.setLayout(new FormLayout());
 		FormData data = new FormData();
-		data.left = new FormAttachment(0,0); 
-		data.right = new FormAttachment(100,0); 
+		data.left = new FormAttachment(0,0);
+		data.right = new FormAttachment(100,0);
 		data.top = new FormAttachment(getItemManager().getCoolbar(),MARGIN_WIDTH);
 		data.bottom = new FormAttachment(100,0);
 		this.sashComposite.setLayoutData(data);
-				
+		
 		this.sash = new Sash(this.sashComposite, SWT.HORIZONTAL);
-	    data = new FormData();
+		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.bottom = new FormAttachment(100,-150);
 		
 		this.sash.setLayoutData(data);
-	    
-	    getTablatureEditor().showTablature(this.sashComposite); 
-	    data = new FormData();
+		
+		getTablatureEditor().showTablature(this.sashComposite);
+		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.top = new FormAttachment(0,0);
 		data.bottom = new FormAttachment(this.sash, 0);
-		getTablatureEditor().getTablature().setLayoutData(data);	    
-
+		getTablatureEditor().getTablature().setLayoutData(data);
+		
 		getTable().init(this.sashComposite);
-	    data = new FormData();
+		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.top = new FormAttachment(this.sash,10);
 		data.bottom = new FormAttachment(100,0);
 		getTable().getComposite().setLayoutData(data);
-
+		
 		this.sash.addMouseListener(new MouseAdapter() {
-            public void mouseUp(MouseEvent e) {
-                TuxGuitar.this.sashComposite.layout(true,true);	
-            }
-        });
+			public void mouseUp(MouseEvent e) {
+				TuxGuitar.this.sashComposite.layout(true,true);
+			}
+		});
 		this.sash.addSelectionListener(new SelectionAdapter() {
-	        public void widgetSelected(SelectionEvent event) {
-	        	int maximumHeight = (TuxGuitar.this.sashComposite.getBounds().height - TuxGuitar.this.sash.getBounds().height);
-	        	int height = (maximumHeight - event.y);
-	            height = Math.max(height,0);
-	            height = Math.min(height,maximumHeight);
-	            ((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
-	        }
-	      });
+			public void widgetSelected(SelectionEvent event) {
+				int maximumHeight = (TuxGuitar.this.sashComposite.getBounds().height - TuxGuitar.this.sash.getBounds().height);
+				int height = (maximumHeight - event.y);
+				height = Math.max(height,0);
+				height = Math.min(height,maximumHeight);
+				((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
+			}
+		});
 		this.sashComposite.addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event arg0) {
 				FormData data = ((FormData) TuxGuitar.this.sash.getLayoutData());
@@ -282,7 +282,7 @@ public class TuxGuitar {
 				}
 			}
 		});
-	    	    	    
+		
 		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
@@ -291,19 +291,19 @@ public class TuxGuitar {
 		
 		Composite footer = new Composite(composite,SWT.NONE);
 		footer.setLayout(new FormLayout());
-		footer.setLayoutData(data);		
-	    getFretBoardEditor().showFretBoard(footer);
+		footer.setLayoutData(data);
+		getFretBoardEditor().showFretBoard(footer);
 	}
-
-	public void showDefaultControls(){	    	    
+	
+	public void showDefaultControls(){
 		final TGConfigManager config = getConfig();
 		//---Fretboard---
-	    if(config.getBooleanConfigValue(TGConfigKeys.SHOW_FRETBOARD)){
-	    	getFretBoardEditor().showFretBoard();
-	    }else{
-	    	getFretBoardEditor().hideFretBoard();
-	    }
-	    //---Mixer---
+		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_FRETBOARD)){
+			getFretBoardEditor().showFretBoard();
+		}else{
+			getFretBoardEditor().hideFretBoard();
+		}
+		//---Mixer---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MIXER)){
 			new SyncThread(new Runnable() {
 				public void run() {
@@ -311,7 +311,7 @@ public class TuxGuitar {
 				}
 			}).start();
 		}
-	    //---Transport---		
+		//---Transport---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_TRANSPORT)){
 			new SyncThread(new Runnable() {
 				public void run() {
@@ -319,7 +319,7 @@ public class TuxGuitar {
 				}
 			}).start();
 		}
-	    //---Matrix---
+		//---Matrix---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MATRIX)){
 			new SyncThread(new Runnable() {
 				public void run() {
@@ -327,7 +327,7 @@ public class TuxGuitar {
 				}
 			}).start();
 		}
-	    //---Piano---
+		//---Piano---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_PIANO)){
 			new SyncThread(new Runnable() {
 				public void run() {
@@ -335,14 +335,14 @@ public class TuxGuitar {
 				}
 			}).start();
 		}
-	    //---Markers---
+		//---Markers---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MARKERS)){
 			new SyncThread(new Runnable() {
 				public void run() {
 					MarkerList.instance().show();
 				}
 			}).start();
-		}		
+		}
 	}
 	
 	public void setTableHeight(int value){
@@ -352,29 +352,29 @@ public class TuxGuitar {
 		int height = (value + sashHeight + offset);
 		height = Math.max( height,0);
 		height = Math.min( height,maximumHeight);
-        ((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
-        this.sashComposite.layout(true,true);		
+		((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
+		this.sashComposite.layout(true,true);
 	}
-
-	public void updateShellFooter(int offset,int minimunWith,int minimunHeight){		
-	    FormData data = ((FormData)this.sashComposite.getLayoutData());
-	    data.bottom.offset = -offset;
-	    getShell().setMinimumSize(Math.max(640,minimunWith),Math.max(480,minimunHeight));
-	    getShell().layout();
-	}	
-
+	
+	public void updateShellFooter(int offset,int minimunWith,int minimunHeight){
+		FormData data = ((FormData)this.sashComposite.getLayoutData());
+		data.bottom.offset = -offset;
+		getShell().setMinimumSize(Math.max(640,minimunWith),Math.max(480,minimunHeight));
+		getShell().layout();
+	}
+	
 	public TGTableViewer getTable(){
 		if(this.table == null){
 			this.table = new TGTableViewer();
 		}
 		return this.table;
 	}
-		
+	
 	public TablatureEditor getTablatureEditor(){
-	    if(this.tablatureEditor == null){
-	    	this.tablatureEditor = new TablatureEditor();
-	    }
-	    return this.tablatureEditor;
+		if(this.tablatureEditor == null){
+			this.tablatureEditor = new TablatureEditor();
+		}
+		return this.tablatureEditor;
 	}
 	
 	public FretBoardEditor getFretBoardEditor(){
@@ -382,22 +382,22 @@ public class TuxGuitar {
 			this.fretBoardEditor = new FretBoardEditor();
 		}
 		return this.fretBoardEditor;
-	}		
-
+	}
+	
 	public PianoEditor getPianoEditor(){
 		if(this.pianoEditor == null){
 			this.pianoEditor = new PianoEditor();
 		}
 		return this.pianoEditor;
-	}		
+	}
 	
 	public MatrixEditor getMatrixEditor(){
 		if(this.matrixEditor == null){
 			this.matrixEditor = new MatrixEditor();
 		}
 		return this.matrixEditor;
-	}			
-
+	}
+	
 	public TGSongManager getSongManager(){
 		if(this.songManager == null){
 			this.songManager = new TGSongManager(new TGFactoryImpl());
@@ -418,8 +418,8 @@ public class TuxGuitar {
 			this.songTransport = new TGTransport();
 		}
 		return this.songTransport;
-	}	
-
+	}
+	
 	public EditorCache getEditorCache(){
 		if(this.editorCache == null){
 			this.editorCache = new EditorCache();
@@ -433,7 +433,7 @@ public class TuxGuitar {
 		}
 		return this.lyricEditor;
 	}
-
+	
 	public TGBrowserDialog getBrowser(){
 		if(this.browser == null){
 			this.browser = new TGBrowserDialog();
@@ -470,7 +470,7 @@ public class TuxGuitar {
 					getShell().setImage(getIconManager().getAppIcon());
 					getShell().layout(true);
 				}
-			} );			
+			});
 		}
 		return this.iconManager;
 	}
@@ -481,21 +481,21 @@ public class TuxGuitar {
 		}
 		return this.customChordManager;
 	}
-
+	
 	public ItemManager getItemManager() {
 		if(this.itemManager == null){
 			this.itemManager = new ItemManager();
 		}
 		return this.itemManager;
 	}
-
+	
 	public ActionManager getActionManager() {
 		if(this.actionManager == null){
 			this.actionManager = new ActionManager();
 		}
 		return this.actionManager;
 	}
-
+	
 	public LanguageManager getLanguageManager() {
 		if(this.languageManager == null){
 			this.languageManager = new LanguageManager();
@@ -503,22 +503,22 @@ public class TuxGuitar {
 		}
 		return this.languageManager;
 	}
-
+	
 	public TGConfigManager getConfig(){
-	    if(this.configManager == null){
-	    	this.configManager = new TGConfigManagerImpl();
-	    	this.configManager.init();
-	    }
-	    return this.configManager;
+		if(this.configManager == null){
+			this.configManager = new TGConfigManagerImpl();
+			this.configManager.init();
+		}
+		return this.configManager;
 	}
-
+	
 	public KeyBindingActionManager getkeyBindingManager(){
 		if(this.keyBindingManager == null){
 			this.keyBindingManager = new KeyBindingActionManager();
 		}
 		return this.keyBindingManager;
 	}
-
+	
 	public FileHistory getFileHistory(){
 		if(this.fileHistory == null){
 			this.fileHistory = new FileHistory();
@@ -533,14 +533,14 @@ public class TuxGuitar {
 			try {
 				//check midi sequencer
 				getPlayer().openSequencer(getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER));
-
+				
 				//check midi port
 				getPlayer().openPort(getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT));
-
+				
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());
 			} catch (MidiPlayerException e) {
 				e.printStackTrace();
-			}				
+			}
 		}
 		return this.player;
 	}
@@ -552,7 +552,7 @@ public class TuxGuitar {
 					getShell().setText(WindowTitleUtil.parseTitle());
 				}
 			}
-		}).start();		
+		}).start();
 	}
 	
 	public void updateCache(final boolean updateItems){
@@ -578,59 +578,59 @@ public class TuxGuitar {
 			}).start();
 		}
 	}
-
+	
 	protected void redraw(){
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
 			this.getTablatureEditor().getTablature().redraw();
-	        this.getFretBoardEditor().redraw();
-	        this.getPianoEditor().redraw();
-	        this.getTable().redraw();
-	        this.getMatrixEditor().redraw();
-	        this.unlock();
-	    }
+			this.getFretBoardEditor().redraw();
+			this.getPianoEditor().redraw();
+			this.getTable().redraw();
+			this.getMatrixEditor().redraw();
+			this.unlock();
+		}
 	}
 	
 	public void redrawPayingMode(){
-	    if(!isDisposed() && !this.isLocked()){
-	    	this.lock();
-	    	this.getEditorCache().updatePlayMode();
-	    	if(this.getEditorCache().shouldRedraw()){
-	    		this.getTablatureEditor().getTablature().redrawPlayingMode();
-	    		this.getFretBoardEditor().redrawPlayingMode();
-	    		this.getPianoEditor().redrawPlayingMode();
-	    		this.getTable().redrawPlayingMode();
-	    		this.getMatrixEditor().redrawPlayingMode();
-	    	}
-	    	this.getTransport().redrawPlayingMode();
-	    	this.unlock();
-	    }
+		if(!isDisposed() && !this.isLocked()){
+			this.lock();
+			this.getEditorCache().updatePlayMode();
+			if(this.getEditorCache().shouldRedraw()){
+				this.getTablatureEditor().getTablature().redrawPlayingMode();
+				this.getFretBoardEditor().redrawPlayingMode();
+				this.getPianoEditor().redrawPlayingMode();
+				this.getTable().redrawPlayingMode();
+				this.getMatrixEditor().redrawPlayingMode();
+			}
+			this.getTransport().redrawPlayingMode();
+			this.unlock();
+		}
 	}
-
+	
 	public Display getDisplay(){
-	    return this.display;
+		return this.display;
 	}
 	
 	public Shell getShell(){
-	    return this.shell;
+		return this.shell;
 	}
-
+	
 	public Action getAction(String name) {
 		return this.getActionManager().getAction(name);
 	}
-		
+	
 	public static String getProperty(String key) {
 		return TuxGuitar.instance().getLanguageManager().getProperty(key);
 	}
-
+	
 	public static String getProperty(String key,String[] arguments) {
 		return  TuxGuitar.instance().getLanguageManager().getProperty(key,arguments);
-	}	
+	}
 	
 	public static boolean isDisposed(){
-	    return (TuxGuitar.instance().getDisplay().isDisposed() || TuxGuitar.instance().getShell().isDisposed());
+		return (TuxGuitar.instance().getDisplay().isDisposed() || TuxGuitar.instance().getShell().isDisposed());
 	}
-
+	
 	public void loadLanguage(){
 		this.lock();
 		
@@ -638,24 +638,24 @@ public class TuxGuitar {
 		
 		this.unlock();
 	}
-
+	
 	public void loadToolBars(){
 		this.lock();
 		
-		getItemManager().createCoolbar();		
+		getItemManager().createCoolbar();
 		getShell().layout(true);
 		
 		this.unlock();
 	}
-
+	
 	public void loadStyles(){
 		this.lock();
 		
 		getTablatureEditor().getTablature().reloadStyles();
 		
 		this.unlock();
-	}	    
-
+	}
+	
 	public void loadSkin(){
 		this.lock();
 		
@@ -668,40 +668,40 @@ public class TuxGuitar {
 		TuxGuitar.instance().fireNewSong(TuxGuitar.instance().getSongManager().newSong(),null);
 	}
 	
-    public void fireNewSong(TGSong song,URL url){
-    	this.lock();
-    	
-    	TuxGuitar.instance().getSongManager().setSong(song);
-    	getFileHistory().reset(url);
-    	getPlayer().reset();
-    	getEditorCache().reset();
-    	getUndoableManager().discardAllEdits();
-        getTablatureEditor().getTablature().updateTablature();
-        getTablatureEditor().getTablature().resetScroll();
-        getTablatureEditor().getTablature().initCaret();
-        getTable().fireUpdate(true);
-        getMixer().update();
-        getLyricEditor().update();
-        MarkerList.instance().update();
-        
-        this.unlock();
-
-        updateCache(true);
-        showTitle();
-    }
+	public void fireNewSong(TGSong song,URL url){
+		this.lock();
+		
+		TuxGuitar.instance().getSongManager().setSong(song);
+		getFileHistory().reset(url);
+		getPlayer().reset();
+		getEditorCache().reset();
+		getUndoableManager().discardAllEdits();
+		getTablatureEditor().getTablature().updateTablature();
+		getTablatureEditor().getTablature().resetScroll();
+		getTablatureEditor().getTablature().initCaret();
+		getTable().fireUpdate(true);
+		getMixer().update();
+		getLyricEditor().update();
+		MarkerList.instance().update();
+		
+		this.unlock();
+		
+		updateCache(true);
+		showTitle();
+	}
 	
-    public void fireSaveSong(URL url){
-    	this.lock();
-    	
-    	getFileHistory().reset(url);
-    	getEditorCache().reset();    	
-    	getUndoableManager().discardAllEdits();
-
-    	this.unlock();
-    	
-        updateCache(true);
-        showTitle();
-    }
+	public void fireSaveSong(URL url){
+		this.lock();
+		
+		getFileHistory().reset(url);
+		getEditorCache().reset();
+		getUndoableManager().discardAllEdits();
+		
+		this.unlock();
+		
+		updateCache(true);
+		showTitle();
+	}
 	
 	public void fireUpdate(){
 		this.lock();
@@ -713,25 +713,25 @@ public class TuxGuitar {
 		
 		this.unlock();
 	}
-    
-    public void loadCursor(int style){
-    	this.loadCursor(getShell(),style);
-    }
-    
-    public void loadCursor(final Control control,final int style){
-    	getDisplay().syncExec(new Runnable() {
+	
+	public void loadCursor(int style){
+		this.loadCursor(getShell(),style);
+	}
+	
+	public void loadCursor(final Control control,final int style){
+		getDisplay().syncExec(new Runnable() {
 			public void run() {
 				if(!control.isDisposed()){
 					control.setCursor(getDisplay().getSystemCursor(style));
 				}
 			}
 		});
-    }
-
+	}
+	
 	public void lock(){
 		this.lock.lock();
 	}
-
+	
 	public void unlock(){
 		this.lock.unlock();
 	}
