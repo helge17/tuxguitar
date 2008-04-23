@@ -253,7 +253,9 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		this.editor.addMouseListener(new MouseAdapter() {
 			public void mouseUp(MouseEvent e) {
 				getEditor().setFocus();
-				hit(e.x,e.y);
+				if(e.button == 1){
+					hit(e.x,e.y);
+				}
 			}		
 		});
 		this.editor.addMouseMoveListener(new MouseMoveListener() {		
