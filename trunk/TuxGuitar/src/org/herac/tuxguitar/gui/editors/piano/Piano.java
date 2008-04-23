@@ -504,14 +504,16 @@ public class Piano extends Composite{
 		}
 		
 		public void mouseUp(MouseEvent e) {
-			if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
-				getPianoComposite().setFocus();
-				if(e.button == 1){
+			getPianoComposite().setFocus();
+			if(e.button == 1){
+				if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+					ActionLock.lock();
 					hit(e.x, e.y);
 					afterAction();
-				}else{
-					TuxGuitar.instance().getAction(GoRightAction.NAME).process(e);
+					ActionLock.unlock();
 				}
+			}else{
+				TuxGuitar.instance().getAction(GoRightAction.NAME).process(e);
 			}
 		}
 		
