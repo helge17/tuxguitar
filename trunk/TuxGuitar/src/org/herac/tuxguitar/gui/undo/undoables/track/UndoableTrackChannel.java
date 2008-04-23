@@ -16,7 +16,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 public class UndoableTrackChannel implements UndoableEdit{
 	private int doAction;
 	private UndoableCaretHelper undoCaret;
-	private UndoableCaretHelper redoCaret;		
+	private UndoableCaretHelper redoCaret;
 	private List undoChannels;
 	private List redoChannels;
 	private int undoVolume;
@@ -26,90 +26,90 @@ public class UndoableTrackChannel implements UndoableEdit{
 		super();
 	}
 	
-	public void redo() throws CannotRedoException {	
+	public void redo() throws CannotRedoException {
 		if(!canRedo()){
 			throw new CannotRedoException();
-		}   
+		}
 		TGSong song = TuxGuitar.instance().getSongManager().getSong();
 		song.setVolume(this.redoVolume);
-    	for( int i = 0; i < this.redoChannels.size(); i ++){
-    		TGChannel channel = (TGChannel)this.redoChannels.get(i);
-    		TGTrack track = song.getTrack(i);
-    		channel.copy( track.getChannel() );
-    	}
-    	TuxGuitar.instance().getMixer().updateValues();
-    	TuxGuitar.instance().updateCache(true);
+		for( int i = 0; i < this.redoChannels.size(); i ++){
+			TGChannel channel = (TGChannel)this.redoChannels.get(i);
+			TGTrack track = song.getTrack(i);
+			channel.copy( track.getChannel() );
+		}
+		TuxGuitar.instance().getMixer().updateValues();
+		TuxGuitar.instance().updateCache(true);
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();			
-		}    	
-    	
-		this.redoCaret.update();	
+			TuxGuitar.instance().getPlayer().updateControllers();
+		}
+		
+		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
-
+	
 	public void undo() throws CannotUndoException {
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
 		TGSong song = TuxGuitar.instance().getSongManager().getSong();
 		song.setVolume(this.undoVolume);
-    	for( int i = 0; i < this.undoChannels.size(); i ++){
-    		TGChannel channel = (TGChannel)this.undoChannels.get(i);
-    		TGTrack track = song.getTrack(i);
-    		channel.copy( track.getChannel() );
-    	}
-    	TuxGuitar.instance().getMixer().updateValues();
-    	TuxGuitar.instance().updateCache(true);
+		for( int i = 0; i < this.undoChannels.size(); i ++){
+			TGChannel channel = (TGChannel)this.undoChannels.get(i);
+			TGTrack track = song.getTrack(i);
+			channel.copy( track.getChannel() );
+		}
+		TuxGuitar.instance().getMixer().updateValues();
+		TuxGuitar.instance().updateCache(true);
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();			
+			TuxGuitar.instance().getPlayer().updateControllers();
 		}
 		
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
 	}
-
-    public boolean canRedo() {
-        return (this.doAction == REDO_ACTION);
-    }
-
-    public boolean canUndo() {
-        return (this.doAction == UNDO_ACTION);
-    }
-      
-    public static UndoableTrackChannel startUndo(){
-    	TGSong song = TuxGuitar.instance().getSongManager().getSong();
-    	TGFactory factory = TuxGuitar.instance().getSongManager().getFactory();
-    	int tracks = song.countTracks();
-    	
-    	UndoableTrackChannel undoable = new UndoableTrackChannel();
-    	undoable.doAction = UNDO_ACTION;
-    	undoable.undoCaret = new UndoableCaretHelper();
-    	undoable.undoChannels = new ArrayList();
-    	undoable.undoVolume = song.getVolume();
-
-    	for( int i = 0; i < tracks; i ++){
-    		TGTrack track = song.getTrack(i);
-    		undoable.undoChannels.add( track.getChannel().clone(factory) );
-    	}
-    	
-    	return undoable;
-    }
-    
-    public UndoableTrackChannel endUndo(){
-    	TGSong song = TuxGuitar.instance().getSongManager().getSong();
-    	TGFactory factory = TuxGuitar.instance().getSongManager().getFactory();
-    	int tracks = song.countTracks();
-    	
-    	this.redoCaret = new UndoableCaretHelper();	    	    	
-    	this.redoChannels = new ArrayList();
-    	this.redoVolume = song.getVolume();
-
-    	for( int i = 0; i < tracks; i ++){
-    		TGTrack track = song.getTrack(i);
-    		this.redoChannels.add( track.getChannel().clone(factory) );
-    	}
-    	return this;
-    }
-
+	
+	public boolean canRedo() {
+		return (this.doAction == REDO_ACTION);
+	}
+	
+	public boolean canUndo() {
+		return (this.doAction == UNDO_ACTION);
+	}
+	
+	public static UndoableTrackChannel startUndo(){
+		TGSong song = TuxGuitar.instance().getSongManager().getSong();
+		TGFactory factory = TuxGuitar.instance().getSongManager().getFactory();
+		int tracks = song.countTracks();
+		
+		UndoableTrackChannel undoable = new UndoableTrackChannel();
+		undoable.doAction = UNDO_ACTION;
+		undoable.undoCaret = new UndoableCaretHelper();
+		undoable.undoChannels = new ArrayList();
+		undoable.undoVolume = song.getVolume();
+		
+		for( int i = 0; i < tracks; i ++){
+			TGTrack track = song.getTrack(i);
+			undoable.undoChannels.add( track.getChannel().clone(factory) );
+		}
+		
+		return undoable;
+	}
+	
+	public UndoableTrackChannel endUndo(){
+		TGSong song = TuxGuitar.instance().getSongManager().getSong();
+		TGFactory factory = TuxGuitar.instance().getSongManager().getFactory();
+		int tracks = song.countTracks();
+		
+		this.redoCaret = new UndoableCaretHelper();
+		this.redoChannels = new ArrayList();
+		this.redoVolume = song.getVolume();
+		
+		for( int i = 0; i < tracks; i ++){
+			TGTrack track = song.getTrack(i);
+			this.redoChannels.add( track.getChannel().clone(factory) );
+		}
+		return this;
+	}
+	
 }

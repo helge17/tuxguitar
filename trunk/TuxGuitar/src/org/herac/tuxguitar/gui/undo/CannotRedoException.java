@@ -13,19 +13,22 @@ package org.herac.tuxguitar.gui.undo;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CannotRedoException extends Exception{
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	public CannotRedoException() {
-        super();
-    }
-    public CannotRedoException(String message) {
-        super(message);
-    }
-    public CannotRedoException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public CannotRedoException(Throwable cause) {
-        super(cause);
-    }
+		super();
+	}
+	
+	public CannotRedoException(String message) {
+		super(message);
+	}
+	
+	public CannotRedoException(String message, Throwable cause) {
+		super(message, cause);
+	}
+	
+	public CannotRedoException(Throwable cause) {
+		super(cause);
+	}
 }
