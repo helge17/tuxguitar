@@ -6,10 +6,10 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -64,14 +64,13 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	private static final MidiPercussion[] PERCUSSIONS = TuxGuitar.instance().getPlayer().getPercussions();
 	protected static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
-	//private TGLock paintLock;
-	
+	private MatrixConfig config;
+	private MatrixListener listener;
 	private Shell dialog;
 	private Composite composite;
 	private Composite toolbar;
 	private Composite editor;
 	private Rectangle clientArea;
-	private MatrixConfig config;
 	private Image buffer;
 	private BufferDisposer bufferDisposer;
 	private Label durationLabel;
@@ -99,9 +98,8 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	private int duration;
 	
 	public MatrixEditor(){
-		//this.paintLock = new TGLock();
 		this.grids = this.loadGrids();
-		
+		this.listener = new MatrixListener();
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 	}
@@ -232,6 +230,10 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		this.editor.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.editor.setLayout(new FillLayout());
 		this.editor.setFocus();
+		this.editor.addPaintListener(this.listener);
+		this.editor.addMouseListener(this.listener);
+		this.editor.addMouseMoveListener(this.listener);
+		this.editor.addMouseTrackListener(this.listener);
 		this.editor.getHorizontalBar().setIncrement(SCROLL_INCREMENT);
 		this.editor.getHorizontalBar().addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -242,33 +244,6 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		this.editor.getVerticalBar().addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				redraw();
-			}
-		});   		
-		this.editor.addPaintListener(new PaintListener() {		
-			public void paintControl(PaintEvent e) {
-				TGPainter painter = new TGPainter(e.gc);
-				paintEditor(painter);
-			}		
-		});
-		this.editor.addMouseListener(new MouseAdapter() {
-			public void mouseUp(MouseEvent e) {
-				getEditor().setFocus();
-				if(e.button == 1){
-					hit(e.x,e.y);
-				}
-			}		
-		});
-		this.editor.addMouseMoveListener(new MouseMoveListener() {		
-			public void mouseMove(MouseEvent e) {
-				updateSelection(e.y);
-			}		
-		});
-		this.editor.addMouseTrackListener(new MouseTrackAdapter() {		
-			public void mouseEnter(MouseEvent e) {
-				redraw();
-			}			
-			public void mouseExit(MouseEvent e) {
-				updateSelection(-1);
 			}
 		});
 	}
@@ -300,35 +275,27 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}	
 
 	protected void paintEditor(TGPainter painter){
-		if(!TuxGuitar.instance().isLocked()/* && !this.paintLock.isLocked()*/){
-			TuxGuitar.instance().lock();
-			//this.paintLock.lock();
-
-			if(!TuxGuitar.instance().getPlayer().isRunning()){
-				this.resetPlayed();	
-			}
-			this.disposeSelectionBuffer();
-			this.clientArea = this.editor.getClientArea();
-
-			Image buffer = getBuffer();
-
-			this.width = this.bufferWidth;
-			this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
-
-			this.updateScroll();
-			int scrollX = this.editor.getHorizontalBar().getSelection();
-			int scrollY = this.editor.getVerticalBar().getSelection();
-
-			painter.drawImage(buffer,-scrollX,(BORDER_HEIGHT - scrollY));
-			this.paintMeasure(painter,(-scrollX), (BORDER_HEIGHT - scrollY) );
-			this.paintBorders(painter,(-scrollX),0);
-			this.paintPosition(painter,(-scrollX),0);
-			
-			this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
-			
-			//this.paintLock.unlock();
-			TuxGuitar.instance().unlock();
+		if(!TuxGuitar.instance().getPlayer().isRunning()){
+			this.resetPlayed();
 		}
+		this.disposeSelectionBuffer();
+		this.clientArea = this.editor.getClientArea();
+		
+		Image buffer = getBuffer();
+		
+		this.width = this.bufferWidth;
+		this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
+		
+		this.updateScroll();
+		int scrollX = this.editor.getHorizontalBar().getSelection();
+		int scrollY = this.editor.getVerticalBar().getSelection();
+		
+		painter.drawImage(buffer,-scrollX,(BORDER_HEIGHT - scrollY));
+		this.paintMeasure(painter,(-scrollX), (BORDER_HEIGHT - scrollY) );
+		this.paintBorders(painter,(-scrollX),0);
+		this.paintPosition(painter,(-scrollX),0);
+		
+		this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
 	}
 
 	protected Image getBuffer(){
@@ -481,7 +448,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}
 	
 	protected void paintSelection(TGPainter painter, float fromX, float fromY){
-		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			selectionFinish();
 			if(this.selection >= 0 ){
 				int x = Math.round( fromX );
@@ -503,7 +470,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	}
 	
 	protected void updateSelection(float y){
-		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			int selection = getValueAt(y);
 			
 			if(this.selection != selection){
@@ -536,8 +503,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
     }
     
 	protected void hit(float x, float y){
-		if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
-			ActionLock.lock();
+		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			TGMeasure measure = getMeasure();
 			int value = getValueAt(y);
 			long start = getStartAt(x);
@@ -559,7 +525,6 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 					play(value);
 				}
 			}
-			ActionLock.unlock();
 		}
 	}
 
@@ -859,6 +824,63 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	protected class DisposeListenerImpl implements DisposeListener{
 		public void widgetDisposed(DisposeEvent e) {
 			disposeAll();
+		}
+	}
+	
+	protected class MatrixListener implements PaintListener,MouseListener,MouseMoveListener,MouseTrackListener {
+
+		public MatrixListener(){
+			super();
+		}
+				
+		public void paintControl(PaintEvent e) {
+			if(!TuxGuitar.instance().isLocked()){
+				TuxGuitar.instance().lock();
+				TGPainter painter = new TGPainter(e.gc);
+				paintEditor(painter);
+				TuxGuitar.instance().unlock();
+			}
+		}
+
+		public void mouseUp(MouseEvent e) {
+			getEditor().setFocus();
+			if(e.button == 1){
+				if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+					ActionLock.lock();
+					hit(e.x,e.y);
+					ActionLock.unlock();
+				}
+			}
+		}
+		
+		public void mouseMove(MouseEvent e) {
+			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+				updateSelection(e.y);
+			}
+		}
+		
+		public void mouseExit(MouseEvent e) {
+			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+				updateSelection(-1);
+			}
+		}
+		
+		public void mouseEnter(MouseEvent e) {
+			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+				redraw();
+			}
+		}
+		
+		public void mouseDoubleClick(MouseEvent e) {
+			// TODO Auto-generated method stub
+		}
+		
+		public void mouseDown(MouseEvent e) {
+			// TODO Auto-generated method stub
+		}
+		
+		public void mouseHover(MouseEvent e) {
+			// TODO Auto-generated method stub
 		}
 	}
 }
