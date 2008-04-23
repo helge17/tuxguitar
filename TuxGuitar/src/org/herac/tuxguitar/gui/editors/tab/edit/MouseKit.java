@@ -132,9 +132,9 @@ public class MouseKit {
 
 	public void mouseUp(MouseEvent e) {
 		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
-		
-			ViewLayout.TrackPosition pos = getTrackPosition(e.y) ;  
-		
+			ActionLock.lock();
+			
+			ViewLayout.TrackPosition pos = getTrackPosition(e.y) ;
 			if(pos != null){		
 				TGTrackImpl track = this.kit.getTablature().getCaret().getTrack();
 				TGMeasureImpl measure = this.kit.getTablature().getCaret().getMeasure();
@@ -183,6 +183,7 @@ public class MouseKit {
 					}
 				}
 			}
+			ActionLock.unlock();
 		}
 	}
 
