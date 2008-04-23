@@ -24,7 +24,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 		super();
 	}
 	
-	public void redo() throws CannotRedoException {	
+	public void redo() throws CannotRedoException {
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
@@ -34,45 +34,45 @@ public class UndoableChangeInfo implements UndoableEdit{
 		
 		this.doAction = UNDO_ACTION;
 	}
-
+	
 	public void undo() throws CannotUndoException {
 		if(!canUndo()){
 			throw new CannotUndoException();
-		}	
+		}
 		TuxGuitar.instance().getSongManager().setProperties(this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor);
 		TuxGuitar.instance().showTitle();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
 	}
-
-    public boolean canRedo() {
-        return (this.doAction == REDO_ACTION);
-    }
-
-    public boolean canUndo() {
-        return (this.doAction == UNDO_ACTION);
-    }
-      
-    public static UndoableChangeInfo startUndo(){
-    	TGSong song = TuxGuitar.instance().getSongManager().getSong();
-    	UndoableChangeInfo undoable = new UndoableChangeInfo();
-    	undoable.doAction = UNDO_ACTION;
-    	undoable.undoCaret = new UndoableCaretHelper();
-    	undoable.undoName = song.getName();
-    	undoable.undoArtist = song.getArtist();
-    	undoable.undoAlbum = song.getAlbum();
-    	undoable.undoAuthor = song.getAuthor();
-    	return undoable;
-    }
-    
-    public UndoableChangeInfo endUndo(){
-    	TGSong song = TuxGuitar.instance().getSongManager().getSong();
-    	this.redoCaret = new UndoableCaretHelper();
-    	this.redoName = song.getName();
-    	this.redoArtist = song.getArtist();
-    	this.redoAlbum = song.getAlbum();
-    	this.redoAuthor = song.getAuthor();    	
-    	return this;
-    }
+	
+	public boolean canRedo() {
+		return (this.doAction == REDO_ACTION);
+	}
+	
+	public boolean canUndo() {
+		return (this.doAction == UNDO_ACTION);
+	}
+	
+	public static UndoableChangeInfo startUndo(){
+		TGSong song = TuxGuitar.instance().getSongManager().getSong();
+		UndoableChangeInfo undoable = new UndoableChangeInfo();
+		undoable.doAction = UNDO_ACTION;
+		undoable.undoCaret = new UndoableCaretHelper();
+		undoable.undoName = song.getName();
+		undoable.undoArtist = song.getArtist();
+		undoable.undoAlbum = song.getAlbum();
+		undoable.undoAuthor = song.getAuthor();
+		return undoable;
+	}
+	
+	public UndoableChangeInfo endUndo(){
+		TGSong song = TuxGuitar.instance().getSongManager().getSong();
+		this.redoCaret = new UndoableCaretHelper();
+		this.redoName = song.getName();
+		this.redoArtist = song.getArtist();
+		this.redoAlbum = song.getAlbum();
+		this.redoAuthor = song.getAuthor();
+		return this;
+	}
 }
