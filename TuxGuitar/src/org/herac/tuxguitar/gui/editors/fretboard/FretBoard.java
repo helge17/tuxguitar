@@ -656,7 +656,7 @@ public class FretBoard extends Composite {
 			}else{
 				TuxGuitar.instance().getAction(GoRightAction.NAME).process(e);
 			}
-		}			
+		}
 
 		public void mouseDown(MouseEvent e) {
 			//Not implemented
