@@ -26,7 +26,7 @@ public abstract class TGToolItemPlugin extends TGPluginAdapter{
 		this.removePlugin();
 	}
 	
-	protected void addPlugin(){		
+	protected void addPlugin(){
 		if(!this.loaded){
 			TuxGuitar.instance().getActionManager().addAction(this.toolAction);
 			TGCustomToolManager.instance().addCustomTool(this.tool);
@@ -35,7 +35,7 @@ public abstract class TGToolItemPlugin extends TGPluginAdapter{
 		}
 	}
 	
-	protected void removePlugin(){		
+	protected void removePlugin(){
 		if(this.loaded){
 			TGCustomToolManager.instance().removeCustomTool(this.tool);
 			TuxGuitar.instance().getActionManager().removeAction(this.tool.getAction());
@@ -50,14 +50,14 @@ public abstract class TGToolItemPlugin extends TGPluginAdapter{
 		}else{
 			removePlugin();
 		}
-	}	
+	}
 	
 	protected class TGCustomToolAction extends Action{
-
+		
 		public TGCustomToolAction(String name) {
 			super(name, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 		}
-
+		
 		protected int execute(TypedEvent e) {
 			doAction();
 			return 0;

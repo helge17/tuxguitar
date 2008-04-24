@@ -4,7 +4,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 
 public abstract class TGInputStreamPlugin extends TGPluginAdapter{
-
+	
 	private boolean loaded;
 	private TGInputStreamBase stream;
 	
@@ -25,19 +25,19 @@ public abstract class TGInputStreamPlugin extends TGPluginAdapter{
 		}
 	}
 	
-	protected void removePlugin(){		
+	protected void removePlugin(){
 		if(this.loaded){
 			TGFileFormatManager.instance().removeInputStream(this.stream);
 			this.loaded = false;
 		}
 	}
-
+	
 	public void setEnabled(boolean enabled) {
 		if(enabled){
 			addPlugin();
 		}else{
 			removePlugin();
 		}
-	}		
+	}
 	
 }

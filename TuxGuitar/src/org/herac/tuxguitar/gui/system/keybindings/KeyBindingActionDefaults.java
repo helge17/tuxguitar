@@ -67,78 +67,78 @@ public class KeyBindingActionDefaults {
 		
 		//Save File: 'Ctrl + S'
 		list.add(new KeyBindingAction(SaveFileAction.NAME,new KeyBinding(115,KeyBindingConstants.CONTROL)));
-
+		
 		//Save File As: 'F12'
 		list.add(new KeyBindingAction(SaveAsFileAction.NAME,new KeyBinding(KeyBindingConstants.F12,0)));
-
+		
 		//Exit: 'Alt + F4'
 		list.add(new KeyBindingAction(ExitAction.NAME,new KeyBinding(KeyBindingConstants.F4,KeyBindingConstants.ALT)));
 		
 		//Print: 'Ctrl + P'
-		list.add(new KeyBindingAction(PrintAction.NAME,new KeyBinding(112,KeyBindingConstants.CONTROL)));		
+		list.add(new KeyBindingAction(PrintAction.NAME,new KeyBinding(112,KeyBindingConstants.CONTROL)));
 		
 		//Undo: 'Ctrl + Z'
 		list.add(new KeyBindingAction(UndoAction.NAME,new KeyBinding(122,KeyBindingConstants.CONTROL)));
 		
-		//Redo: 'Ctrl + Y'				 
+		//Redo: 'Ctrl + Y'
 		list.add(new KeyBindingAction(RedoAction.NAME,new KeyBinding(121,KeyBindingConstants.CONTROL)));
-
-		//Copy Measure: 'Ctrl + C'				 
+		
+		//Copy Measure: 'Ctrl + C'
 		list.add(new KeyBindingAction(CopyMeasureAction.NAME,new KeyBinding(99,KeyBindingConstants.CONTROL)));
-
+		
 		//Paste Measure: 'Ctrl + P'
 		list.add(new KeyBindingAction(PasteMeasureAction.NAME,new KeyBinding(118,KeyBindingConstants.CONTROL)));
-
+		
 		//Song Properties: 'F5'
-		list.add(new KeyBindingAction(ChangeInfoAction.NAME,new KeyBinding(KeyBindingConstants.F5,0)));		
+		list.add(new KeyBindingAction(ChangeInfoAction.NAME,new KeyBinding(KeyBindingConstants.F5,0)));
 		
 		//Go Next Measure: 'Ctrl + RIGHT'
 		list.add(new KeyBindingAction(GoNextMeasureAction.NAME,new KeyBinding(KeyBindingConstants.RIGHT,KeyBindingConstants.CONTROL)));
-
+		
 		//Go Previous Measure: 'Ctrl + LEFT'
 		list.add(new KeyBindingAction(GoPreviousMeasureAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.CONTROL)));
-
+		
 		//Go First Measure: 'Ctrl + SHIFT + RIGHT'
-		list.add(new KeyBindingAction(GoFirstMeasureAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.CONTROL + KeyBindingConstants.SHIFT)));		
+		list.add(new KeyBindingAction(GoFirstMeasureAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.CONTROL + KeyBindingConstants.SHIFT)));
 		
 		//Go Last Measure: 'Ctrl + SHIFT + RIGHT'
 		list.add(new KeyBindingAction(GoLastMeasureAction.NAME,new KeyBinding(KeyBindingConstants.RIGHT,KeyBindingConstants.CONTROL + KeyBindingConstants.SHIFT)));
 		
 		//Add Track: 'Ctrl + SHIFT + INSERT'
 		list.add(new KeyBindingAction(AddTrackAction.NAME,new KeyBinding(KeyBindingConstants.INSERT,KeyBindingConstants.CONTROL + KeyBindingConstants.SHIFT)));
-
+		
 		//Remove Track: 'Ctrl + SHIFT + DELETE'
-		list.add(new KeyBindingAction(RemoveTrackAction.NAME,new KeyBinding(KeyBindingConstants.DELETE,KeyBindingConstants.CONTROL + KeyBindingConstants.SHIFT)));		
+		list.add(new KeyBindingAction(RemoveTrackAction.NAME,new KeyBinding(KeyBindingConstants.DELETE,KeyBindingConstants.CONTROL + KeyBindingConstants.SHIFT)));
 		
 		//Go Next Track: 'Ctrl + DOWN'
 		list.add(new KeyBindingAction(GoNextTrackAction.NAME,new KeyBinding(KeyBindingConstants.DOWN,KeyBindingConstants.CONTROL)));
-
+		
 		//Go Previous Track: 'Ctrl + UP'
-		list.add(new KeyBindingAction(GoPreviousTrackAction.NAME,new KeyBinding(KeyBindingConstants.UP,KeyBindingConstants.CONTROL)));		
-
+		list.add(new KeyBindingAction(GoPreviousTrackAction.NAME,new KeyBinding(KeyBindingConstants.UP,KeyBindingConstants.CONTROL)));
+		
 		//Go First Track: 'Ctrl + UP'
-		list.add(new KeyBindingAction(GoFirstTrackAction.NAME,new KeyBinding(KeyBindingConstants.UP,KeyBindingConstants.CONTROL | KeyBindingConstants.SHIFT)));		
-				
+		list.add(new KeyBindingAction(GoFirstTrackAction.NAME,new KeyBinding(KeyBindingConstants.UP,KeyBindingConstants.CONTROL | KeyBindingConstants.SHIFT)));
+		
 		//Go Last Track: 'Ctrl + DOWN'
-		list.add(new KeyBindingAction(GoLastTrackAction.NAME,new KeyBinding(KeyBindingConstants.DOWN,KeyBindingConstants.CONTROL | KeyBindingConstants.SHIFT)));		
-				
+		list.add(new KeyBindingAction(GoLastTrackAction.NAME,new KeyBinding(KeyBindingConstants.DOWN,KeyBindingConstants.CONTROL | KeyBindingConstants.SHIFT)));
+		
 		//Add Marker: 'SHIFT + INSERT'
 		list.add(new KeyBindingAction(AddMarkerAction.NAME,new KeyBinding(KeyBindingConstants.INSERT,KeyBindingConstants.SHIFT)));
-
+		
 		//Go Next Marker: 'Alt + RIGHT'
-		list.add(new KeyBindingAction(GoNextMarkerAction.NAME,new KeyBinding(KeyBindingConstants.RIGHT,KeyBindingConstants.ALT)));		
-
+		list.add(new KeyBindingAction(GoNextMarkerAction.NAME,new KeyBinding(KeyBindingConstants.RIGHT,KeyBindingConstants.ALT)));
+		
 		//Go Previous Marker: 'Alt + LEFT'
-		list.add(new KeyBindingAction(GoPreviousMarkerAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.ALT)));		
+		list.add(new KeyBindingAction(GoPreviousMarkerAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.ALT)));
 		
 		//Play-Pause: 'Space'
 		list.add(new KeyBindingAction(TransportPlayAction.NAME,new KeyBinding(KeyBindingConstants.SPACE,0)));
-
+		
 		//Play Mode: 'F9'
-		list.add(new KeyBindingAction(TransportModeAction.NAME,new KeyBinding(KeyBindingConstants.F9,0)));		
+		list.add(new KeyBindingAction(TransportModeAction.NAME,new KeyBinding(KeyBindingConstants.F9,0)));
 		
 		//Clean Beat: 'Ctrl + DELETE'
-		list.add(new KeyBindingAction(CleanBeatAction.NAME,new KeyBinding(KeyBindingConstants.DELETE,KeyBindingConstants.CONTROL)));		
+		list.add(new KeyBindingAction(CleanBeatAction.NAME,new KeyBinding(KeyBindingConstants.DELETE,KeyBindingConstants.CONTROL)));
 		
 		//Shift Up:  'SHIFT + UP'
 		list.add(new KeyBindingAction(ShiftNoteUpAction.NAME,new KeyBinding(KeyBindingConstants.UP,KeyBindingConstants.SHIFT)));
@@ -150,17 +150,17 @@ public class KeyBindingActionDefaults {
 		list.add(new KeyBindingAction(IncrementNoteSemitoneAction.NAME,new KeyBinding(KeyBindingConstants.RIGHT,KeyBindingConstants.SHIFT)));
 		
 		//Decrement semitone: 'SHIFT + LEFT'
-		list.add(new KeyBindingAction(DecrementNoteSemitoneAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.SHIFT)));		
+		list.add(new KeyBindingAction(DecrementNoteSemitoneAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,KeyBindingConstants.SHIFT)));
 		
 		//Dotted Duration: '*'
 		list.add(new KeyBindingAction(ChangeDottedDurationAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_MULTIPLY,0)));
-
+		
 		//Tupleto Duration: '/'
 		list.add(new KeyBindingAction(ChangeTupletoDurationAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_DIVIDE,0)));
 		
 		//Tied note: 'L'
 		list.add(new KeyBindingAction(ChangeTiedNoteAction.NAME,new KeyBinding(108,0)));
-
+		
 		//Insert Chord: 'A'
 		list.add(new KeyBindingAction(InsertChordAction.NAME,new KeyBinding(97,0)));
 		
@@ -187,27 +187,27 @@ public class KeyBindingActionDefaults {
 		
 		//Palm mute: 'P'
 		list.add(new KeyBindingAction(ChangePalmMuteAction.NAME,new KeyBinding(112,0)));
-
+		
 		//Grace note: 'G'
-		list.add(new KeyBindingAction(ChangeGraceNoteAction.NAME,new KeyBinding(103,0)));		
+		list.add(new KeyBindingAction(ChangeGraceNoteAction.NAME,new KeyBinding(103,0)));
 		
 		//Fade in: 'F'
 		list.add(new KeyBindingAction(ChangeFadeInAction.NAME,new KeyBinding(102,0)));
-
+		
 		//Browser: 'Ctrl + B'
-		list.add(new KeyBindingAction(TGBrowserAction.NAME,new KeyBinding(98,KeyBindingConstants.CONTROL)));		
-
+		list.add(new KeyBindingAction(TGBrowserAction.NAME,new KeyBinding(98,KeyBindingConstants.CONTROL)));
+		
 		//Show Mixer: 'Ctrl + M'
-		list.add(new KeyBindingAction(ShowMixerAction.NAME,new KeyBinding(109,KeyBindingConstants.CONTROL)));		
-
+		list.add(new KeyBindingAction(ShowMixerAction.NAME,new KeyBinding(109,KeyBindingConstants.CONTROL)));
+		
 		//Show Transport: 'Ctrl + T'
-		list.add(new KeyBindingAction(ShowTransportAction.NAME,new KeyBinding(116,KeyBindingConstants.CONTROL)));		
+		list.add(new KeyBindingAction(ShowTransportAction.NAME,new KeyBinding(116,KeyBindingConstants.CONTROL)));
 		
 		//Show Settings: 'F1'
-		list.add(new KeyBindingAction(EditConfigAction.NAME,new KeyBinding(KeyBindingConstants.F7,0)));		
+		list.add(new KeyBindingAction(EditConfigAction.NAME,new KeyBinding(KeyBindingConstants.F7,0)));
 		
 		//Show Help: 'F1'
-		list.add(new KeyBindingAction(ShowDocAction.NAME,new KeyBinding(KeyBindingConstants.F1,0)));		
+		list.add(new KeyBindingAction(ShowDocAction.NAME,new KeyBinding(KeyBindingConstants.F1,0)));
 		
 		return list;
 	}

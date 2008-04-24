@@ -39,16 +39,16 @@ public class KeyBindingSelector {
 		this.action = keyBindingAction.getAction();
 	}
 	
-	public KeyBinding select(Shell parent){			
+	public KeyBinding select(Shell parent){
 		this.dialog = DialogUtils.newDialog(parent,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
 		
-        Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);            
-        group.setLayout(new GridLayout());
-        group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-        group.setText(TuxGuitar.getProperty(this.action));
+		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
+		group.setLayout(new GridLayout());
+		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		group.setText(TuxGuitar.getProperty(this.action));
 		
 		final Composite composite = new Composite(group,SWT.NONE);
 		composite.setLayout(new GridLayout(2,false));
@@ -75,7 +75,7 @@ public class KeyBindingSelector {
 		Label textLabel = new Label(composite,SWT.CENTER);
 		textLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
 		textLabel.setText(TuxGuitar.getProperty("key-bindings-editor-push-a-key"));
-
+		
 		FontData[] fd = textLabel.getFont().getFontData();
 		if(fd != null && fd.length > 0){
 			final Font font = new Font(textLabel.getDisplay(),new FontData( fd[0].getName(), 14 , SWT.BOLD) );
@@ -87,45 +87,45 @@ public class KeyBindingSelector {
 			});
 		}
 		
-        //------------------BUTTONS--------------------------            
-        Composite buttons = new Composite(this.dialog, SWT.NONE);
-        buttons.setLayout(new GridLayout(2,false));
-        buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
-      
-        final Button buttonClean = new Button(buttons, SWT.PUSH);
-        buttonClean.setText(TuxGuitar.getProperty("clean"));
-        buttonClean.setLayoutData(getButtonData());
-        buttonClean.addMouseListener(new MouseAdapter() {
+		//------------------BUTTONS--------------------------
+		Composite buttons = new Composite(this.dialog, SWT.NONE);
+		buttons.setLayout(new GridLayout(2,false));
+		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		
+		final Button buttonClean = new Button(buttons, SWT.PUSH);
+		buttonClean.setText(TuxGuitar.getProperty("clean"));
+		buttonClean.setLayoutData(getButtonData());
+		buttonClean.addMouseListener(new MouseAdapter() {
 			public void mouseUp(MouseEvent e) {
 				composite.setFocus();
 			}
 		});
-        buttonClean.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
-            	KeyBindingSelector.this.keyBinding = null;
-            	KeyBindingSelector.this.dialog.dispose();
-            }
-        });
-
-        Button buttonCancel = new Button(buttons, SWT.PUSH);
-        buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-        buttonCancel.setLayoutData(getButtonData());
-        buttonCancel.addMouseListener(new MouseAdapter() {
+		buttonClean.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				KeyBindingSelector.this.keyBinding = null;
+				KeyBindingSelector.this.dialog.dispose();
+			}
+		});
+		
+		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+		buttonCancel.setLayoutData(getButtonData());
+		buttonCancel.addMouseListener(new MouseAdapter() {
 			public void mouseUp(MouseEvent e) {
 				composite.setFocus();
 			}
 		});
-        buttonCancel.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
-            	KeyBindingSelector.this.dialog.dispose();
-            }
-        });		
-        
+		buttonCancel.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				KeyBindingSelector.this.dialog.dispose();
+			}
+		});
+		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-        
-        return this.keyBinding;
-	}				
-
+		
+		return this.keyBinding;
+	}
+	
 	private GridData getButtonData(){
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.minimumWidth = 80;
