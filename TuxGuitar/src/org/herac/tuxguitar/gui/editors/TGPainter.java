@@ -9,7 +9,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 public class TGPainter {
-
+	
 	public static final int PATH_DRAW = 0x01;
 	
 	public static final int PATH_FILL = 0x02;
@@ -21,7 +21,7 @@ public class TGPainter {
 	private GC gc;
 	
 	private Path path;
-
+	
 	public TGPainter(){
 		super();
 	}
@@ -29,11 +29,11 @@ public class TGPainter {
 	public TGPainter(GC gc){
 		this.init(gc);
 	}
-
+	
 	public TGPainter(Image image){
 		this.init(image);
 	}
-
+	
 	public void init(Image image){
 		this.init(new GC(image));
 	}
@@ -54,7 +54,7 @@ public class TGPainter {
 	public void initPath(){
 		this.initPath( PATH_DRAW );
 	}
-
+	
 	public void closePath(){
 		if(this.pathEmpty){
 			System.out.println("Warning: Empty Path!");
@@ -84,27 +84,27 @@ public class TGPainter {
 	public void setBackground(Color arg0) {
 		this.gc.setBackground(arg0);
 	}
-
+	
 	public void setFont(Font arg0) {
 		this.gc.setFont(arg0);
 	}
-
+	
 	public void setForeground(Color arg0) {
 		this.gc.setForeground(arg0);
 	}
-
+	
 	public void setLineStyle(int arg0) {
 		this.gc.setLineStyle(arg0);
 	}
-
+	
 	public void setLineWidth(int arg0) {
 		this.gc.setLineWidth(arg0);
 	}
-
+	
 	public void setAlpha(int alpha) {
 		this.gc.setAlpha(alpha);
-	}	
-
+	}
+	
 	public void copyArea(Image image, int x, int y) {
 		this.gc.copyArea(image, x, y);
 	}
@@ -113,31 +113,31 @@ public class TGPainter {
 		TGPainterUtils.beforeString(this.gc);
 		return this.gc.stringExtent(string);
 	}
-
+	
 	public void drawString(String string, int x, int y) {
 		TGPainterUtils.beforeString(this.gc);
 		this.gc.drawString(string, x, y);
 	}
-
+	
 	public void drawString(String string, int x, int y, boolean isTransparent) {
 		TGPainterUtils.beforeString(this.gc);
 		this.gc.drawString(string, x, y, isTransparent);
-	}	
+	}
 	
 	public void drawImage(Image image, int srcX, int srcY, int srcWidth, int srcHeight, int destX, int destY, int destWidth, int destHeight) {
 		TGPainterUtils.beforeImage(this.gc);
 		this.gc.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
 	}
-
+	
 	public void drawImage(Image image, int x, int y) {
 		TGPainterUtils.beforeImage(this.gc);
 		this.gc.drawImage(image, x, y);
-	}	
+	}
 	
 	public void drawPolygon(int[] arg0) {
 		this.gc.drawPolygon(arg0);
 	}
-
+	
 	public void fillPolygon(int[] arg0) {
 		this.gc.fillPolygon(arg0);
 	}
@@ -146,37 +146,37 @@ public class TGPainter {
 		this.path.cubicTo(arg0, arg1, arg2, arg3, arg4, arg5);
 		this.pathEmpty = false;
 	}
-
+	
 	public void lineTo(float arg0, float arg1) {
 		this.path.lineTo(arg0, arg1);
 		this.pathEmpty = false;
 	}
-
+	
 	public void moveTo(float arg0, float arg1) {
 		this.path.moveTo(arg0, arg1);
 		this.pathEmpty = false;
-	}	
-
+	}
+	
 	public void addString(String arg0, float arg1, float arg2, Font arg3) {
 		this.path.addString(arg0, arg1, arg2, arg3);
 		this.pathEmpty = false;
 	}
-
+	
 	public void addArc(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
 		this.path.addArc(arg0, arg1, arg2, arg3, arg4, arg5);
 		this.pathEmpty = false;
 	}
-
+	
 	public void addOval(float arg0, float arg1, float arg2, float arg3) {
 		this.path.addArc(arg0, arg1, arg2, arg3, 0, 360);
 		this.pathEmpty = false;
-	}	
-
+	}
+	
 	public void addRectangle(float x,float y,float width,float height) {
 		this.path.addRectangle(x, y, width, height);
 		this.pathEmpty = false;
 	}
-
+	
 	public void addRectangle(Rectangle rectangle) {
 		this.path.addRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
 		this.pathEmpty = false;

@@ -18,24 +18,24 @@ public class TGLyricImpl extends TGLyric{
 		super.setFrom(from);
 		this.update();
 	}
-
+	
 	public void setLyrics(String lyrics) {
 		super.setLyrics(lyrics);
 		this.update();
-	}	
+	}
 	
 	private void update(){
 		this.height = (this.isEmpty()?0:10);
 	}
-	   
+	
 	public void start(){
 		this.start(0);
 	}
-
+	
 	public void start(int index){
 		this.nextIndex = index;
 	}
-
+	
 	public void setCurrentMeasure(TGMeasureImpl measure){
 		if(measure.getNumber() >= getFrom()){
 			measure.setLyricBeatIndex(this.nextIndex);
@@ -45,9 +45,9 @@ public class TGLyricImpl extends TGLyric{
 			this.start();
 		}
 	}
-
+	
 	public void paintCurrentNoteBeats(TGPainter painter,ViewLayout layout,TGMeasureImpl currentMeasure ,int fromX,int fromY){
-		int from = currentMeasure.getLyricBeatIndex();		
+		int from = currentMeasure.getLyricBeatIndex();
 		String[] beats = getLyricBeats();
 		if(beats != null && from >= 0 && from < beats.length){
 			int beatIndex = 0;
@@ -67,9 +67,8 @@ public class TGLyricImpl extends TGLyric{
 			}
 		}
 	}
-
+	
 	public int getHeight(){
 		return this.height;
 	}
 }
-

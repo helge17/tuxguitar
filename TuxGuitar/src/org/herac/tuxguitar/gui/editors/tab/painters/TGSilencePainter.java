@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.editors.tab.painters;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 
 public class TGSilencePainter {
-
+	
 	public static void paintWhole(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.04681015f * scale)),(y + (0.046812057f * scale)));
 		painter.lineTo((x + (0.1170311f * scale)),(y + (0.0f * scale)));
@@ -23,7 +23,7 @@ public class TGSilencePainter {
 		painter.lineTo((x + (0.0f * scale)),(y + (0.11703062f * scale)));
 		painter.lineTo((x + (0.04681015f * scale)),(y + (0.046812057f * scale)));
 	}
-
+	
 	public static void paintHalf(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.04681015f * scale)),(y + (0.046812057f * scale)));
 		painter.lineTo((x + (0.1170311f * scale)),(y + (0.0f * scale)));
@@ -79,7 +79,7 @@ public class TGSilencePainter {
 		painter.cubicTo((x + (2.2215881f * scale)),(y + (0.8035486f * scale)),(x + (1.9616127f * scale)),(y + (0.49630952f * scale)),(x + (1.9379692f * scale)),(y + (0.44904137f * scale)));
 		painter.cubicTo((x + (1.8670654f * scale)),(y + (0.30723906f * scale)),(x + (1.9379692f * scale)),(y + (0.11816859f * scale)),(x + (2.1034088f * scale)),(y + (0.047267675f * scale)));
 	}
-
+	
 	public static void paintEighth(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (1.6779978f * scale)),(y + (0.070901394f * scale)));
 		painter.cubicTo((x + (2.1979408f * scale)),(y + (0.0f * scale)),(x + (2.6469831f * scale)),(y + (0.14180231f * scale)),(x + (3.0014887f * scale)),(y + (0.47267532f * scale)));
@@ -141,7 +141,7 @@ public class TGSilencePainter {
 		painter.cubicTo((x + (2.197935f * scale)),(y + (2.8833203f * scale)),(x + (1.8434324f * scale)),(y + (1.6779971f * scale)),(x + (2.43427f * scale)),(y + (0.77991486f * scale)));
 		painter.cubicTo((x + (2.69425f * scale)),(y + (0.4254074f * scale)),(x + (3.096015f * scale)),(y + (0.14180231f * scale)),(x + (3.5214243f * scale)),(y + (0.070901394f * scale)));
 	}
-					   
+	
 	public static void paintThirtySecond(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (4.939474f * scale)),(y + (0.070901155f * scale)));
 		painter.cubicTo((x + (5.459408f * scale)),(y + (0.0f * scale)),(x + (5.9084606f * scale)),(y + (0.14180207f * scale)),(x + (6.2629623f * scale)),(y + (0.4726758f * scale)));
@@ -190,7 +190,7 @@ public class TGSilencePainter {
 		painter.cubicTo((x + (3.6159801f * scale)),(y + (2.88332f * scale)),(x + (3.2614594f * scale)),(y + (1.6779974f * scale)),(x + (3.8523216f * scale)),(y + (0.7799146f * scale)));
 		painter.cubicTo((x + (4.112276f * scale)),(y + (0.4254074f * scale)),(x + (4.5140667f * scale)),(y + (0.14180207f * scale)),(x + (4.939474f * scale)),(y + (0.070901155f * scale)));
 	}
-
+	
 	public static void paintSixtyFourth(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (5.908436f * scale)),(y + (0.07090092f * scale)));
 		painter.cubicTo((x + (6.4283676f * scale)),(y + (0.0f * scale)),(x + (6.8774185f * scale)),(y + (0.14180303f * scale)),(x + (7.231926f * scale)),(y + (0.4726758f * scale)));
@@ -249,9 +249,6 @@ public class TGSilencePainter {
 		painter.cubicTo((x + (7.8227615f * scale)),(y + (3.4977987f * scale)),(x + (7.066494f * scale)),(y + (3.6396005f * scale)),(x + (6.4992714f * scale)),(y + (3.6159666f * scale)));
 		painter.cubicTo((x + (6.168415f * scale)),(y + (3.592333f * scale)),(x + (5.908436f * scale)),(y + (3.5214326f * scale)),(x + (5.624836f * scale)),(y + (3.379629f * scale)));
 		painter.cubicTo((x + (4.5849457f * scale)),(y + (2.8833196f * scale)),(x + (4.230446f * scale)),(y + (1.6779983f * scale)),(x + (4.8212814f * scale)),(y + (0.7799144f * scale)));
-		painter.cubicTo((x + (5.0812607f * scale)),(y + (0.42540812f * scale)),(x + (5.4830284f * scale)),(y + (0.14180303f * scale)),(x + (5.908436f * scale)),(y + (0.07090092f * scale))); 
+		painter.cubicTo((x + (5.0812607f * scale)),(y + (0.42540812f * scale)),(x + (5.4830284f * scale)),(y + (0.14180303f * scale)),(x + (5.908436f * scale)),(y + (0.07090092f * scale)));
 	}
-	
-	
-
 }

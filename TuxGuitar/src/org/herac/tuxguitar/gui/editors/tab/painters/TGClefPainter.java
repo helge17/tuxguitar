@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.editors.tab.painters;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 
 public class TGClefPainter {
-
+	
 	public static void paintTreble(TGPainter painter, int x, int y,float scale){
 		painter.moveTo((x + (0.9706216f * scale)),(y + (-0.9855771f * scale)));
 		painter.cubicTo((x + (0.99023926f * scale)),(y + (-0.99538594f * scale)),(x + (0.99350905f * scale)),(y + (-0.99538594f * scale)),(x + (1.0131269f * scale)),(y + (-0.99538594f * scale)));
@@ -142,7 +142,7 @@ public class TGClefPainter {
 		painter.cubicTo((x + (2.155162f * scale)),(y + (1.338248f * scale)),(x + (2.171151f * scale)),(y + (1.3958068f * scale)),(x + (2.155162f * scale)),(y + (1.4469718f * scale)));
 		painter.cubicTo((x + (2.1391733f * scale)),(y + (1.5205193f * scale)),(x + (2.0784159f * scale)),(y + (1.5684855f * scale)),(x + (2.0048683f * scale)),(y + (1.5684855f * scale)));
 		painter.cubicTo((x + (1.9153309f * scale)),(y + (1.5684855f * scale)),(x + (1.8449808f * scale)),(y + (1.4981354f * scale)),(x + (1.8449808f * scale)),(y + (1.4117955f * scale)));
-		painter.cubicTo((x + (1.8449808f * scale)),(y + (1.338248f * scale)),(x + (1.8929471f * scale)),(y + (1.2774905f * scale)),(x + (1.9632971f * scale)),(y + (1.2583042f * scale)));		
+		painter.cubicTo((x + (1.8449808f * scale)),(y + (1.338248f * scale)),(x + (1.8929471f * scale)),(y + (1.2774905f * scale)),(x + (1.9632971f * scale)),(y + (1.2583042f * scale)));
 	}
 	
 	public static void paintAlto(TGPainter painter, int x, int y,float scale){
@@ -340,7 +340,6 @@ public class TGClefPainter {
 		painter.cubicTo((x + (0.57471186f * scale)),(y + (2.4975975f * scale)),(x + (0.57471186f * scale)),(y + (2.386765f * scale)),(x + (0.57471186f * scale)),(y + (1.03582f * scale)));
 		painter.lineTo((x + (0.5777081f * scale)),(y + (-0.42895374f * scale)));
 		painter.lineTo((x + (0.58369815f * scale)),(y + (-0.43793997f * scale)));
-		painter.cubicTo((x + (0.5896894f * scale)),(y + (-0.44392997f * scale)),(x + (0.59568065f * scale)),(y + (-0.44992122f * scale)),(x + (0.6016719f * scale)),(y + (-0.45291623f * scale)));		
-	}	
-	
+		painter.cubicTo((x + (0.5896894f * scale)),(y + (-0.44392997f * scale)),(x + (0.59568065f * scale)),(y + (-0.44992122f * scale)),(x + (0.6016719f * scale)),(y + (-0.45291623f * scale)));
+	}
 }

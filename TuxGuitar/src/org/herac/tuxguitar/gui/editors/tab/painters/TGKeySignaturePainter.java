@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.editors.tab.painters;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 
 public class TGKeySignaturePainter {
-
+	
 	public static void paintSharp(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.4330491f * scale)),(y + (-0.7961011300329119f * scale)));
 		painter.cubicTo((x + (0.44892004f * scale)),(y + (-0.8051702223718167f * scale)),(x + (0.47386006f * scale)),(y + (-0.7983684030594305f * scale)),(x + (0.48292914f * scale)),(y + (-0.7779629465192557f * scale)));
@@ -107,7 +107,7 @@ public class TGKeySignaturePainter {
 		painter.cubicTo((x + (0.36307228f * scale)),(y + (0.12994362831115724f * scale)),(x + (0.39078343f * scale)),(y + (0.07729246139526369f * scale)),(x + (0.40186784f * scale)),(y + (0.03849699020385744f * scale)));
 		painter.cubicTo((x + (0.41849452f * scale)),(y + (-0.02523873329162596f * scale)),(x + (0.41018116f * scale)),(y + (-0.09728751659393309f * scale)),(x + (0.38524118f * scale)),(y + (-0.1527098226547241f * scale)));
 		painter.cubicTo((x + (0.37138563f * scale)),(y + (-0.18042085647583006f * scale)),(x + (0.35475895f * scale)),(y + (-0.19981859207153319f * scale)),(x + (0.32981896f * scale)),(y + (-0.21090314865112303f * scale)));
-	}	
+	}
 	
 	public static void paintNatural(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.038880464f * scale)),(y + (-0.99784582760185f * scale)));
