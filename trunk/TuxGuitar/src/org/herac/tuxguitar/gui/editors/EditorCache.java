@@ -11,7 +11,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class EditorCache {
-
+	
 	//Modo edition
 	private boolean editUpdate;
 	private TGBeatImpl editBeat;
@@ -21,15 +21,15 @@ public class EditorCache {
 	private long playTick;
 	private long playStart;
 	private long playBeatEnd;
-	private boolean playChanges;	
+	private boolean playChanges;
 	private boolean playUpdate;
 	private TGBeatImpl playBeat;
 	private TGMeasureImpl playMeasure;
 	
-	public EditorCache(){		
+	public EditorCache(){
 		this.reset();
 	}
-		
+	
 	public void reset(){
 		this.resetEditMode();
 		this.resetPlayMode();
@@ -49,14 +49,14 @@ public class EditorCache {
 		this.playTick = 0;
 		this.playStart = 0;
 		this.playBeatEnd = 0;
-	}	
+	}
 	
 	public void updateEditMode(){
 		this.editUpdate = true;
 		this.resetPlayMode();
 		this.getEditBeat();
 	}
-
+	
 	public void updatePlayMode(){
 		this.playUpdate = true;
 		this.resetEditMode();
@@ -74,9 +74,9 @@ public class EditorCache {
 	public TGBeatImpl getPlayBeat(){
 		if(this.playUpdate){
 			this.playChanges = false;
-
+			
 			TGSongManager manager = TuxGuitar.instance().getSongManager();
-			if(TuxGuitar.instance().getPlayer().isRunning()){							
+			if(TuxGuitar.instance().getPlayer().isRunning()){
 				Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
 				TGTrack track = caret.getTrack();
 				
@@ -84,21 +84,21 @@ public class EditorCache {
 				long start = this.playStart + (tick - this.playTick);
 				if(this.playMeasure == null || start < this.playMeasure.getStart() || start > (this.playMeasure.getStart() + this.playMeasure.getLength())){
 					this.playMeasure = null;
-					start = MidiTickUtil.getStart(tick);					
+					start = MidiTickUtil.getStart(tick);
 				}
-
+				
 				if(this.playMeasure == null || this.playBeatEnd == 0 || start > this.playBeatEnd || start < this.playStart || track.getNumber() != this.playTrack){
 					this.playBeat = null;
 					this.playBeatEnd = 0;
 					this.playChanges = true;
-
+					
 					if(this.playMeasure == null || !this.playMeasure.hasTrack(track.getNumber())  || !isPlaying(this.playMeasure)){
 						this.playMeasure = (TGMeasureImpl)manager.getTrackManager().getMeasureAt(track,start);
 					}
 					if (this.playMeasure != null) {
 						this.playBeat = (TGBeatImpl)manager.getMeasureManager().getBeatIn(this.playMeasure, start);
 						if(this.playBeat != null){
-			            	this.playBeatEnd = (this.playBeat.getStart() + this.playBeat.getDuration().getTime());
+							this.playBeatEnd = (this.playBeat.getStart() + this.playBeat.getDuration().getTime());
 						}
 					}
 				}
@@ -106,34 +106,32 @@ public class EditorCache {
 				this.playTick = tick;
 				this.playStart = start;
 			}
-
 			this.playUpdate = false;
 		}
 		return this.playBeat;
-	}	
-
+	}
+	
 	public long getPlayTick(){
 		return this.playTick;
-	}	
-
+	}
+	
 	public long getPlayStart(){
 		return this.playStart;
-	}	
+	}
 	
 	public TGMeasureImpl getPlayMeasure(){
 		return this.playMeasure;
 	}
-		
+	
 	public boolean shouldRedraw(){
 		return this.playChanges;
 	}
-		
+	
 	public boolean isPlaying(TGMeasure measure){
 		return (TuxGuitar.instance().getPlayer().isRunning() && this.playMeasure != null && measure.equals(this.playMeasure));
 	}
 	
 	public boolean isPlaying(TGMeasure measure,TGBeat b){
 		return (isPlaying(measure) && this.playStart >= b.getStart() && this.playStart < (b.getStart() + b.getDuration().getTime()));
-	}	
-
+	}
 }

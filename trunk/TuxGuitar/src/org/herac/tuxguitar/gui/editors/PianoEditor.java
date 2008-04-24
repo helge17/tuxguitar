@@ -18,26 +18,24 @@ public class PianoEditor implements IconLoader,LanguageLoader{
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 	}
-
-    public void show() {
-		Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);		
+	
+	public void show() {
+		Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("piano.editor"));
 		
 		this.piano = new Piano(dialog,SWT.NONE);
 		
-		TuxGuitar.instance().updateCache(true);		
+		TuxGuitar.instance().updateCache(true);
 		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);		
+		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
 		TuxGuitar.instance().updateCache(true);
-    }
-
+	}
 	
 	private Piano getPiano(){
 		return this.piano;
 	}
-    
 	
 	public void setScaleChanges(){
 		if(!isDisposed()){
@@ -45,13 +43,12 @@ public class PianoEditor implements IconLoader,LanguageLoader{
 		}
 	}
 	
-    public void dispose(){
-    	if(!isDisposed()){
-    		getPiano().getShell().dispose();
-    		getPiano().dispose();
-    		
-    	}
-    }
+	public void dispose(){
+		if(!isDisposed()){
+			getPiano().getShell().dispose();
+			getPiano().dispose();
+		}
+	}
 	
 	public void redraw(){
 		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
@@ -64,11 +61,11 @@ public class PianoEditor implements IconLoader,LanguageLoader{
 			getPiano().redrawPlayingMode();
 		}
 	}
-
+	
 	public boolean isDisposed() {
 		return (this.getPiano() == null || getPiano().isDisposed());
 	}
-
+	
 	public void loadProperties(){
 		if(!isDisposed()){
 			getPiano().loadProperties();
@@ -80,6 +77,5 @@ public class PianoEditor implements IconLoader,LanguageLoader{
 		if(!isDisposed()){
 			getPiano().loadIcons();
 		}
-	}		
-	
+	}
 }

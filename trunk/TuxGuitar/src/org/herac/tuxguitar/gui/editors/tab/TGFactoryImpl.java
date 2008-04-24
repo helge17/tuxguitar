@@ -11,11 +11,11 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGFactoryImpl extends TGFactory{
-
+	
 	public TGFactoryImpl(){
 		super();
 	}
-
+	
 	public TGMeasureHeader newHeader(){
 		return new TGMeasureHeaderImpl(this);
 	}
@@ -35,16 +35,16 @@ public class TGFactoryImpl extends TGFactory{
 	public TGBeat newBeat(){
 		return new TGBeatImpl(this);
 	}
-
+	
 	public TGLyric newLyric(){
 		return new TGLyricImpl();
 	}
 	
 	public TGChord newChord(int length){
 		return new TGChordImpl(length);
-	}	
+	}
 	
 	public TGText newText(){
 		return new TGTextImpl();
-	}	
+	}
 }

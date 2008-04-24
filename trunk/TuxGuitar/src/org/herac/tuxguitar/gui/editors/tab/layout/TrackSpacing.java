@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.editors.tab.layout;
 public class TrackSpacing {
 	public static final int SCORE = 0x01;
 	public static final int TABLATURE = 0x02;
-
+	
 	/***     POSITIONS ARRAY INDICES     ***/
 	public static final int POSITION_TOP = 0;
 	public static final int POSITION_TEXT = 1;
@@ -24,7 +24,7 @@ public class TrackSpacing {
 	public static final int POSITION_TABLATURE = 16;
 	public static final int POSITION_LYRIC = 17;
 	public static final int POSITION_BOTTOM = 18;
-
+	
 	private static final int[][] POSITIONS = new int[][]{
 		/** SCORE **/
 		new int[]{
@@ -48,7 +48,7 @@ public class TrackSpacing {
 				17, //POSITION_LYRIC
 				18, //POSITION_BOTTOM
 			},
-
+			
 		/** TABLATURE **/
 		new int[]{
 				0,  //POSITION_TOP
@@ -71,7 +71,7 @@ public class TrackSpacing {
 				14, //POSITION_LYRIC
 				15, //POSITION_BOTTOM
 			},
-
+			
 		/** SCORE | TABLATURE **/
 		new int[]{
 				0,  //POSITION_TOP
@@ -95,21 +95,21 @@ public class TrackSpacing {
 				18, //POSITION_BOTTOM
 			},
 	};
-
+	
 	private int flags;
 	private int[] spacing;
-
+	
 	public TrackSpacing(ViewLayout layout){
 		this.flags = 0;
 		this.flags |= ((layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0?SCORE:0);
 		this.flags |= ((layout.getStyle() & ViewLayout.DISPLAY_TABLATURE) != 0 ?TABLATURE:0);
 		this.spacing = new int[18];
 	}
-
+	
 	public void setSize(int index,int size){
 		this.spacing[ POSITIONS [this.flags -1] [index] ] = size;
 	}
-
+	
 	public int getSize(){
 		int spacing = 0;
 		for(int i = 0;i < this.spacing.length; i ++){
@@ -117,7 +117,7 @@ public class TrackSpacing {
 		}
 		return spacing;
 	}
-
+	
 	public int getPosition(int index){
 		int spacing = 0;
 		for(int i = 0;i < POSITIONS[this.flags -1][index]; i ++){

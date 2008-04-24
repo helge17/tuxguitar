@@ -17,13 +17,13 @@ import org.herac.tuxguitar.gui.editors.TGPainter;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TablaturePaintListener implements PaintListener{
-    private Tablature tablature;
-    
-    public TablaturePaintListener(Tablature tablature){
-        this.tablature = tablature;        
-    }
-
-    public void paintControl(PaintEvent e) {
-    	this.tablature.paintTablature( new TGPainter(e.gc) );
-    }
+	private Tablature tablature;
+	
+	public TablaturePaintListener(Tablature tablature){
+		this.tablature = tablature;
+	}
+	
+	public void paintControl(PaintEvent e) {
+		this.tablature.paintTablature( new TGPainter(e.gc) );
+	}
 }
