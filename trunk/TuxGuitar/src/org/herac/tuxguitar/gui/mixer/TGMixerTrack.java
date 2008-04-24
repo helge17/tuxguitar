@@ -21,20 +21,20 @@ import org.herac.tuxguitar.song.models.TGTrack;
 public class TGMixerTrack {
 	protected TGTrack track;
 	protected TGMixer mixer;
-	protected TGMixerTrackChannel mixerChannel;	
+	protected TGMixerTrackChannel mixerChannel;
 	protected Button soloCheckBox;
 	protected Button muteCheckBox;
 	protected Scale balanceScale;
 	protected Scale volumeScale;
 	private Text volumeText;
-    private Label volumeLabel;
-    
-    protected String tipVolume;
-    protected String tipBalance;
-    
-    protected UndoableTrackChannel undoableVolume;
-    protected UndoableTrackChannel undoableBalance;
-    
+	private Label volumeLabel;
+	
+	protected String tipVolume;
+	protected String tipBalance;
+	
+	protected UndoableTrackChannel undoableVolume;
+	protected UndoableTrackChannel undoableBalance;
+	
 	public TGMixerTrack(TGMixer mixer,TGTrack track){
 		this.mixer = mixer;
 		this.track = track;
@@ -44,13 +44,13 @@ public class TGMixerTrack {
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, true));
 		composite.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
-				
+		
 		this.mixerChannel = new TGMixerTrackChannel(this);
 		this.mixerChannel.init(composite);
 		
 		this.soloCheckBox = new Button(composite,SWT.CHECK);
 		this.soloCheckBox.setSelection(TGMixerTrack.this.track.getChannel().isSolo());
-		this.soloCheckBox.addSelectionListener(new SelectionAdapter() {	
+		this.soloCheckBox.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				UndoableTrackChannel undoable = UndoableTrackChannel.startUndo();
 				
@@ -66,19 +66,19 @@ public class TGMixerTrack {
 		});
 		this.muteCheckBox = new Button(composite,SWT.CHECK);
 		this.muteCheckBox.setSelection(TGMixerTrack.this.track.getChannel().isMute());
-		this.muteCheckBox.addSelectionListener(new SelectionAdapter() {	
+		this.muteCheckBox.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				UndoableTrackChannel undoable = UndoableTrackChannel.startUndo();
 				
 				TGMixerTrack.this.track.getChannel().setMute(TGMixerTrack.this.muteCheckBox.getSelection());
 				if(TGMixerTrack.this.track.getChannel().isMute()){
 					TGMixerTrack.this.track.getChannel().setSolo(false);
-				}				
+				}
 				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.MUTE);
 				
 				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
 				TuxGuitar.instance().updateCache(true);
-			}		
+			}
 		});
 		
 		this.balanceScale = new Scale(composite, SWT.HORIZONTAL);
@@ -86,7 +86,7 @@ public class TGMixerTrack {
 		this.balanceScale.setMinimum(0);
 		this.balanceScale.setIncrement(1);
 		this.balanceScale.setPageIncrement(64);
-		this.balanceScale.setLayoutData(getBalanceScaleData());				
+		this.balanceScale.setLayoutData(getBalanceScaleData());
 		
 		this.volumeLabel = new Label(composite, SWT.NULL);
 		this.volumeScale = new Scale(composite, SWT.VERTICAL);
@@ -94,12 +94,12 @@ public class TGMixerTrack {
 		this.volumeScale.setMinimum(0);
 		this.volumeScale.setIncrement(1);
 		this.volumeScale.setPageIncrement(16);
-		this.volumeScale.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));		
+		this.volumeScale.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
 		
 		this.volumeText = new Text(composite, SWT.BORDER | SWT.SINGLE | SWT.CENTER);
 		this.volumeText.setEditable(false);
 		this.volumeText.setLayoutData(getVolumeTextData());
-
+		
 		this.balanceScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				TGMixerTrack.this.track.getChannel().setBalance((short)TGMixerTrack.this.balanceScale.getSelection());
@@ -110,7 +110,7 @@ public class TGMixerTrack {
 		this.balanceScale.addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent arg0) {
 				TGMixerTrack.this.undoableBalance = UndoableTrackChannel.startUndo();
-			}			
+			}
 			public void mouseUp(MouseEvent arg0) {
 				if(TGMixerTrack.this.undoableBalance != null){
 					TuxGuitar.instance().getUndoableManager().addEdit(TGMixerTrack.this.undoableBalance.endUndo());
@@ -131,7 +131,7 @@ public class TGMixerTrack {
 		this.volumeScale.addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent arg0) {
 				TGMixerTrack.this.undoableVolume = UndoableTrackChannel.startUndo();
-			}			
+			}
 			public void mouseUp(MouseEvent arg0) {
 				if(TGMixerTrack.this.undoableVolume != null){
 					TuxGuitar.instance().getUndoableManager().addEdit(TGMixerTrack.this.undoableVolume.endUndo());
@@ -140,22 +140,22 @@ public class TGMixerTrack {
 					TGMixerTrack.this.undoableVolume = null;
 				}
 			}
-		});		
-
-		this.balanceScale.setSelection(this.track.getChannel().getBalance());		
+		});
+		
+		this.balanceScale.setSelection(this.track.getChannel().getBalance());
 		this.volumeScale.setSelection(this.volumeScale.getMaximum() - this.track.getChannel().getVolume());
 		this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 	}
 	
 	private GridData getBalanceScaleData(){
-		GridData data = new GridData(SWT.CENTER,SWT.NONE,false,true);		
+		GridData data = new GridData(SWT.CENTER,SWT.NONE,false,true);
 		data.widthHint = 65;
 		return data;
 	}
 	
 	private GridData getVolumeTextData(){
-		GridData data = new GridData(SWT.CENTER,SWT.NONE,true,false);		
-		data.minimumWidth = 40;		
+		GridData data = new GridData(SWT.CENTER,SWT.NONE,true,false);
+		data.minimumWidth = 40;
 		return data;
 	}
 	
@@ -163,13 +163,13 @@ public class TGMixerTrack {
 		if((type & TGMixer.SOLO) != 0 || (type & TGMixer.MUTE) != 0){
 			this.soloCheckBox.setSelection(this.track.getChannel().isSolo());
 			this.muteCheckBox.setSelection(this.track.getChannel().isMute());
-		}		
+		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.VOLUME) != 0){
 			this.volumeScale.setSelection(this.volumeScale.getMaximum() - this.track.getChannel().getVolume());
 			this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.BALANCE) != 0){
-			this.balanceScale.setSelection(this.track.getChannel().getBalance());					
+			this.balanceScale.setSelection(this.track.getChannel().getBalance());
 		}
 		if((type & TGMixer.CHANNEL) != 0){
 			this.mixerChannel.updateItems(true);

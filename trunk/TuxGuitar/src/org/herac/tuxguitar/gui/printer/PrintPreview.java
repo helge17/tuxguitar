@@ -42,7 +42,7 @@ public class PrintPreview{
 	protected Rectangle bounds;
 	protected List pages;
 	protected int currentPage;
-		
+	
 	public PrintPreview(List pages,Rectangle bounds){
 		this.pages = pages;
 		this.bounds = bounds;
@@ -56,14 +56,14 @@ public class PrintPreview{
 		this.initToolBar();
 		this.initPreviewComposite();
 		this.changePage(0);
-
+		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_MAXIMIZED | DialogUtils.OPEN_STYLE_WAIT);
 	}
-
+	
 	private void initToolBar(){
 		Composite composite = new Composite(this.dialog,SWT.NONE);
 		composite.setLayout(new GridLayout(5,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));		
+		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		
 		this.previous = new Button(composite,SWT.ARROW | SWT.LEFT);
 		this.currentText = new Text(composite,SWT.BORDER);
@@ -84,26 +84,26 @@ public class PrintPreview{
 						changePage(PrintPreview.this.currentPage);
 					}
 				}
-			}				
+			}
 		});
 		this.previous.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if(PrintPreview.this.currentPage >= 0){
 					changePage(PrintPreview.this.currentPage - 1);
 				}
-			}		
+			}
 		});
 		this.next.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if(PrintPreview.this.currentPage >= 0){
 					changePage(PrintPreview.this.currentPage + 1);
 				}
-			}		
+			}
 		});
 		close.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				PrintPreview.this.dialog.dispose();
-			}		
+			}
 		});
 		maxPages.setText(TuxGuitar.getProperty("print.preview.page-of") + " " + this.pages.size());
 		close.setText(TuxGuitar.getProperty("close"));
@@ -125,17 +125,17 @@ public class PrintPreview{
 		this.pageComposite = new Composite(this.previewComposite,SWT.BORDER | SWT.DOUBLE_BUFFERED);
 		this.pageComposite.setLayout(new GridLayout());
 		this.pageComposite.setBackground(this.previewComposite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.pageComposite.addPaintListener(new PaintListener() {		
+		this.pageComposite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				if(PrintPreview.this.currentPage >= 0){
 					updateScroll();
 					
 					int vScroll = PrintPreview.this.previewComposite.getVerticalBar().getSelection();
-
+					
 					TGPainter painter = new TGPainter(e.gc);
 					painter.drawImage((Image)PrintPreview.this.pages.get(PrintPreview.this.currentPage),MARGIN_LEFT,MARGIN_TOP - vScroll);
 				}
-			}		
+			}
 		});
 		GridData pageData = new GridData();
 		pageData.horizontalAlignment = SWT.CENTER;
@@ -146,24 +146,24 @@ public class PrintPreview{
 		pageData.heightHint = (this.bounds.height - this.bounds.y) + (MARGIN_TOP + MARGIN_BOTTOM);
 		this.pageComposite.setLayoutData(pageData);
 		this.previewComposite.getVerticalBar().setIncrement(SCROLL_INCREMENT);
-        this.previewComposite.getVerticalBar().addListener(SWT.Selection, new Listener() {
-          public void handleEvent(Event e) {
-        	  PrintPreview.this.pageComposite.redraw();
-          }
-        });
+		this.previewComposite.getVerticalBar().addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				PrintPreview.this.pageComposite.redraw();
+			}
+		});
 	}
 	
 	protected void updateScroll(){
-		ScrollBar vBar = this.previewComposite.getVerticalBar(); 
+		ScrollBar vBar = this.previewComposite.getVerticalBar();
 		Rectangle client = this.pageComposite.getClientArea();
 		vBar.setMaximum((this.bounds.height - this.bounds.y) + (MARGIN_TOP + MARGIN_BOTTOM));
 		vBar.setThumb(Math.min((this.bounds.height - this.bounds.y) + (MARGIN_TOP + MARGIN_BOTTOM), client.height));
 	}
-
+	
 	protected void changePage(int index){
 		if(!this.pages.isEmpty()){
-			int pageCount = this.pages.size();			
-			if(index >= 0 && index < pageCount){			
+			int pageCount = this.pages.size();
+			if(index >= 0 && index < pageCount){
 				this.currentPage = index;
 				this.currentText.setText(Integer.toString(index + 1));
 				this.pageComposite.redraw();
