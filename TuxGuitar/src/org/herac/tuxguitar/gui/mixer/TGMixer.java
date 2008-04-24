@@ -39,7 +39,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class TGMixer implements IconLoader,LanguageLoader{	
+public class TGMixer implements IconLoader,LanguageLoader{
 	
 	public static final int MUTE = 0x01;
 	public static final int SOLO = 0x02;
@@ -64,19 +64,19 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 	}
-
+	
 	public void show() {
 		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
 		this.loadData();
-
+		
 		TuxGuitar.instance().updateCache(true);
 		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_WAIT);
 		
 		TuxGuitar.instance().updateCache(true);
 	}
-		
-	protected void loadData(){		
+	
+	protected void loadData(){
 		this.trackMixers.clear();
 		Iterator it = TuxGuitar.instance().getSongManager().getSong().getTracks();
 		while (it.hasNext()) {
@@ -88,20 +88,20 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		Composite composite = new Composite(this.dialog, SWT.NONE);
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
-
+		
 		this.volumeLabel = new Label(composite, SWT.NONE);
 		
 		this.volumeScale = new Scale(composite, SWT.VERTICAL);
 		this.volumeScale.setMaximum(10);
 		this.volumeScale.setMinimum(0);
 		this.volumeScale.setIncrement(1);
-		this.volumeScale.setPageIncrement(1);		
+		this.volumeScale.setPageIncrement(1);
 		this.volumeScale.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
 		
-		this.volumeText = new Text(composite, SWT.BORDER | SWT.SINGLE | SWT.CENTER);		
+		this.volumeText = new Text(composite, SWT.BORDER | SWT.SINGLE | SWT.CENTER);
 		this.volumeText.setEditable(false);
 		this.volumeText.setLayoutData(getVolumeTextData());
-
+		
 		this.volumeScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				int volume = (short)(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection());
@@ -111,14 +111,14 @@ public class TGMixer implements IconLoader,LanguageLoader{
 					TGMixer.this.volumeText.setText(Integer.toString(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection()));
 					if (TuxGuitar.instance().getPlayer().isRunning()) {
 						TuxGuitar.instance().getPlayer().updateControllers();
-					}				
+					}
 				}
 			}
 		});
 		this.volumeScale.addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent arg0) {
 				TGMixer.this.undoableVolume = UndoableTrackChannel.startUndo();
-			}			
+			}
 			public void mouseUp(MouseEvent arg0) {
 				if(TGMixer.this.undoableVolume != null){
 					TuxGuitar.instance().getUndoableManager().addEdit(TGMixer.this.undoableVolume.endUndo());
@@ -127,14 +127,14 @@ public class TGMixer implements IconLoader,LanguageLoader{
 					TGMixer.this.undoableVolume = null;
 				}
 			}
-		});	
+		});
 		
-
+		
 		this.loadVolume();
 		this.loadIcons();
-		this.loadProperties();		
+		this.loadProperties();
 		this.dialog.setLayout(new GridLayout(this.dialog.getChildren().length, false));
-		this.dialog.pack();		
+		this.dialog.pack();
 	}
 	
 	private void loadVolume(){
@@ -143,18 +143,18 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	}
 	
 	private GridData getVolumeTextData(){
-		GridData data = new GridData(SWT.CENTER,SWT.NONE,true,false);		
-		data.minimumWidth = 40;		
+		GridData data = new GridData(SWT.CENTER,SWT.NONE,true,false);
+		data.minimumWidth = 40;
 		return data;
 	}
 	
 	protected void clear(){
-        Control[] controls = this.dialog.getChildren();
-        for(int i = 0;i < controls.length;i++){
-            controls[i].dispose();
-        }
+		Control[] controls = this.dialog.getChildren();
+		for(int i = 0;i < controls.length;i++){
+			controls[i].dispose();
+		}
 	}
-
+	
 	public boolean isDisposed() {
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
@@ -175,10 +175,10 @@ public class TGMixer implements IconLoader,LanguageLoader{
 			mixer.fireChanges(type);
 		}
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();			
+			TuxGuitar.instance().getPlayer().updateControllers();
 		}
 	}
-
+	
 	public synchronized void loadProperties(){
 		if(!isDisposed()){
 			Iterator it = this.trackMixers.iterator();
@@ -188,7 +188,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 			}
 			this.volumeLabel.setText(TuxGuitar.getProperty("mixer.volume") + ":");
 			this.tipVolume = TuxGuitar.getProperty("mixer.volume");
-			this.volumeScale.setToolTipText(this.tipVolume + ": " + this.manager.getSong().getVolume());			
+			this.volumeScale.setToolTipText(this.tipVolume + ": " + this.manager.getSong().getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("mixer"));
 			this.dialog.pack();
 		}
@@ -198,7 +198,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 		}
-	}	
+	}
 	
 	public synchronized void updateItems(){
 		if(!isDisposed()){
@@ -209,7 +209,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 			}
 		}
 	}
-
+	
 	public synchronized void updateValues(){
 		if(!isDisposed()){
 			this.loadVolume();
@@ -220,7 +220,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 				mixer.fireChanges(CHANGE_ALL);
 			}
 		}
-	}	
+	}
 	
 	public synchronized void update(){
 		if(!isDisposed()){
