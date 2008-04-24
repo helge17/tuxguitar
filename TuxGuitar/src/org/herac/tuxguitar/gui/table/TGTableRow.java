@@ -11,7 +11,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 public class TGTableRow {
-	private TGTable table;	
+	private TGTable table;
 	private Composite row;
 	private CLabel number;
 	private CLabel name;
@@ -20,9 +20,9 @@ public class TGTableRow {
 	private MouseListener mouseListenerLabel;
 	private MouseListener mouseListenerCanvas;
 	private PaintListener paintListenerCanvas;
-
+	
 	public TGTableRow(TGTable table){
-		this.table = table;		
+		this.table = table;
 		this.init();
 	}
 	
@@ -32,12 +32,12 @@ public class TGTableRow {
 		PaintListener paintListenerCanvas = new PaintListenerCanvas();
 		
 		this.row = new Composite(this.table.getRowControl(),SWT.NONE );
-		this.row.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));		
-
+		this.row.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
+		
 		this.number = new CLabel(this.row,SWT.LEFT);
-		this.number.addMouseListener(mouseListenerLabel);		
+		this.number.addMouseListener(mouseListenerLabel);
 		this.table.addRowItem(this.table.getColumnNumber(),this.number,true);
-
+		
 		this.name = new CLabel(this.row,SWT.LEFT);
 		this.name.addMouseListener(mouseListenerLabel);
 		this.table.addRowItem(this.table.getColumnName(),this.name,true);
@@ -52,7 +52,7 @@ public class TGTableRow {
 		this.table.addRowItem(this.table.getColumnCanvas(),this.painter,false);
 		
 		this.row.pack();
-	}	
+	}
 	
 	public void setBackground(Color background){
 		this.number.setBackground(background);
@@ -63,19 +63,19 @@ public class TGTableRow {
 	public void dispose(){
 		this.row.dispose();
 	}
-
+	
 	public Composite getPainter() {
 		return this.painter;
 	}
-
+	
 	public CLabel getInstrument() {
 		return this.instrument;
 	}
-
+	
 	public CLabel getName() {
 		return this.name;
 	}
-
+	
 	public CLabel getNumber() {
 		return this.number;
 	}
@@ -83,29 +83,29 @@ public class TGTableRow {
 	public MouseListener getMouseListenerLabel() {
 		return this.mouseListenerLabel;
 	}
-
+	
 	public void setMouseListenerLabel(MouseListener mouseListenerLabel) {
 		this.mouseListenerLabel = mouseListenerLabel;
-	}	
+	}
 	
 	public MouseListener getMouseListenerCanvas() {
 		return this.mouseListenerCanvas;
 	}
-
+	
 	public void setMouseListenerCanvas(MouseListener mouseListenerCanvas) {
 		this.mouseListenerCanvas = mouseListenerCanvas;
 	}
-
+	
 	public PaintListener getPaintListenerCanvas() {
 		return this.paintListenerCanvas;
 	}
-
+	
 	public void setPaintListenerCanvas(PaintListener paintListenerCanvas) {
 		this.paintListenerCanvas = paintListenerCanvas;
 	}
 	
 	private class MouseListenerLabel implements MouseListener{
-	
+		
 		public MouseListenerLabel(){
 			super();
 		}
@@ -115,20 +115,20 @@ public class TGTableRow {
 				getMouseListenerLabel().mouseDoubleClick(e);
 			}
 		}
-
+		
 		public void mouseDown(MouseEvent e) {
 			if(getMouseListenerLabel() != null){
 				getMouseListenerLabel().mouseDown(e);
-			}		
+			}
 		}
-
+		
 		public void mouseUp(MouseEvent e) {
 			if(getMouseListenerLabel() != null){
 				getMouseListenerLabel().mouseUp(e);
-			}			
-		}		
+			}
+		}
 	}
-
+	
 	private class MouseListenerCanvas implements MouseListener{
 		
 		public MouseListenerCanvas(){
@@ -140,30 +140,30 @@ public class TGTableRow {
 				getMouseListenerCanvas().mouseDoubleClick(e);
 			}
 		}
-
+		
 		public void mouseDown(MouseEvent e) {
 			if(getMouseListenerCanvas() != null){
 				getMouseListenerCanvas().mouseDown(e);
-			}		
+			}
 		}
-
+		
 		public void mouseUp(MouseEvent e) {
 			if(getMouseListenerCanvas() != null){
 				getMouseListenerCanvas().mouseUp(e);
-			}			
-		}		
+			}
+		}
 	}
-
+	
 	private class PaintListenerCanvas implements PaintListener{
 		
 		public PaintListenerCanvas(){
 			super();
 		}
-
+		
 		public void paintControl(PaintEvent e) {
 			if(getPaintListenerCanvas() != null){
 				getPaintListenerCanvas().paintControl(e);
 			}
-		}	
+		}
 	}
 }

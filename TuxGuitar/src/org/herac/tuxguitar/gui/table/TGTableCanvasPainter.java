@@ -10,10 +10,10 @@ import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGTableCanvasPainter implements PaintListener{
-
+	
 	private TGTableViewer viewer;
 	private TGTrack track;
-		
+	
 	public TGTableCanvasPainter(TGTableViewer viewer,TGTrack track){
 		this.viewer = viewer;
 		this.track = track;
@@ -24,28 +24,28 @@ public class TGTableCanvasPainter implements PaintListener{
 		paintTrack(painter);
 	}
 	
-	protected void paintTrack(TGPainter painter){		
+	protected void paintTrack(TGPainter painter){
 		if(!TuxGuitar.instance().isLocked()){
 			TuxGuitar.instance().lock();
 			
 			int x = -this.viewer.getHScrollSelection();
-			int y = 0;		
+			int y = 0;
 			int size = this.viewer.getTable().getRowHeight();
 			int width = painter.getGC().getDevice().getBounds().width;
 			boolean playing = TuxGuitar.instance().getPlayer().isRunning();
-		
+			
 			painter.setBackground(painter.getGC().getDevice().getSystemColor(SWT.COLOR_GRAY));
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.addRectangle(0,y,width,size);
 			painter.closePath();
-		
+			
 			Color trackColor = new Color(painter.getGC().getDevice(),this.track.getColor().getR(),this.track.getColor().getG(),this.track.getColor().getB());
 			painter.setBackground(trackColor);
 			painter.setForeground(trackColor);
 			
 			int count = this.track.countMeasures();
 			for(int j = 0;j < count;j++){
-				TGMeasureImpl measure = (TGMeasureImpl)this.track.getMeasure(j);				
+				TGMeasureImpl measure = (TGMeasureImpl)this.track.getMeasure(j);
 				if(isRestMeasure(measure)){
 					painter.initPath();
 					painter.addRectangle(x,y,size - 2,size - 1);
@@ -62,7 +62,7 @@ public class TGTableCanvasPainter implements PaintListener{
 					painter.addRectangle(x + 4,y + 4,size - 9,size - 8);
 					painter.closePath();
 					painter.setBackground(trackColor);
-				}				
+				}
 				x += size;
 			}
 			trackColor.dispose();
