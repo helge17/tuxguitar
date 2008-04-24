@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.gui.help.doc;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -20,45 +19,44 @@ public class DocItemReader {
 	private static final String ATTRIBUTE_NAME = "name";
 	private static final String ATTRIBUTE_URL = "url";
 	
-    public void loadHelpItems(List items,File file){	  
-        if (file != null && file.exists()){
+	public void loadHelpItems(List items,File file){
+		if (file != null && file.exists()){
 			try {
 				Document doc = getDocument(file);
 				loadHelpItems(items,doc.getFirstChild());
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
-			}  	
-        }      
-    }
-    
-    private void loadHelpItems(List items,Node node){
-        NodeList listNode = node.getChildNodes();
-        for (int i = 0; i < listNode.getLength(); i++) {
-            Node child = listNode.item(i);
-            String nameNode = child.getNodeName();
-            if (nameNode.equals(ITEM_TAG)) {
-            	NamedNodeMap attributes = child.getAttributes();            	            	            	            	
-            	DocItem item = new DocItem(getAttribute(ATTRIBUTE_NAME,attributes),getAttribute(ATTRIBUTE_URL,attributes));            	
-            	loadHelpItems(item.getChildren(),child);           	
-            	items.add(item);
-            }
-        }
-    }    
-    
-    private String getAttribute(String attribute,NamedNodeMap map){
-    	Node node = map.getNamedItem(attribute);
-    	if(node != null){
-    		return node.getNodeValue();
-    	}
-    	return null;
-    }
-    
-    private Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
-        Document document = null;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();        
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        document = builder.parse(file);        
-        return document;
-    }
-
+			}
+		}
+	}
+	
+	private void loadHelpItems(List items,Node node){
+		NodeList listNode = node.getChildNodes();
+		for (int i = 0; i < listNode.getLength(); i++) {
+			Node child = listNode.item(i);
+			String nameNode = child.getNodeName();
+			if (nameNode.equals(ITEM_TAG)) {
+				NamedNodeMap attributes = child.getAttributes();
+				DocItem item = new DocItem(getAttribute(ATTRIBUTE_NAME,attributes),getAttribute(ATTRIBUTE_URL,attributes));
+				loadHelpItems(item.getChildren(),child);
+				items.add(item);
+			}
+		}
+	}
+	
+	private String getAttribute(String attribute,NamedNodeMap map){
+		Node node = map.getNamedItem(attribute);
+		if(node != null){
+			return node.getNodeValue();
+		}
+		return null;
+	}
+	
+	private Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
+		Document document = null;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		document = builder.parse(file);
+		return document;
+	}
 }

@@ -34,17 +34,17 @@ public class AboutDialog {
 	
 	private static final int IMAGE_WIDTH = 100;
 	private static final int IMAGE_HEIGHT = 100;
-
+	
 	private static final int TAB_ITEM_WIDTH = 640;
-	private static final int TAB_ITEM_HEIGHT = 300;	
+	private static final int TAB_ITEM_HEIGHT = 300;
 	
 	protected Composite imageComposite;
-	protected Image image;	
+	protected Image image;
 	
 	public AboutDialog() {
 		super();
 	}
-
+	
 	public void open(Shell shell) {
 		final Shell dialog = DialogUtils.newDialog(shell,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
@@ -52,11 +52,11 @@ public class AboutDialog {
 		
 		//--------------------HEADER----------------------------------
 		Composite header = new Composite(dialog,SWT.NONE);
-		header.setLayout(new GridLayout(2,false));		
+		header.setLayout(new GridLayout(2,false));
 		header.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true ,true));
-
+		
 		this.image = TuxGuitar.instance().getIconManager().getAboutDescription();
-
+		
 		this.imageComposite = new Composite(header,SWT.NONE);
 		this.imageComposite.setLayoutData(new GridData(IMAGE_WIDTH,IMAGE_HEIGHT));
 		this.imageComposite.addPaintListener(new PaintListener() {
@@ -72,7 +72,7 @@ public class AboutDialog {
 		title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true ,true));
 		title.setFont(titleFont);
 		title.setForeground(dialog.getDisplay().getSystemColor(SWT.COLOR_GRAY));
-		title.setText(RELEASE_NAME);		
+		title.setText(RELEASE_NAME);
 		title.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				titleFont.dispose();
@@ -80,21 +80,21 @@ public class AboutDialog {
 		});
 		
 		//-------------------TABS-----------------------
-        Composite tabs = new Composite(dialog, SWT.NONE);
-        tabs.setLayout(new GridLayout());
-        tabs.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));  
-        
+		Composite tabs = new Composite(dialog, SWT.NONE);
+		tabs.setLayout(new GridLayout());
+		tabs.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		
 		final TabFolder tabFolder = new TabFolder(tabs, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));  
+		tabFolder.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		tabFolder.setLayout(new FormLayout());
-	
-        AboutContentReader docReader = new AboutContentReader();
-        
-        makeTabItem(tabFolder,AboutContentReader.DESCRIPTION,docReader.read(AboutContentReader.DESCRIPTION).toString());
-        makeTabItem(tabFolder,AboutContentReader.AUTHORS,docReader.read(AboutContentReader.AUTHORS).toString());
+		
+		AboutContentReader docReader = new AboutContentReader();
+		
+		makeTabItem(tabFolder,AboutContentReader.DESCRIPTION,docReader.read(AboutContentReader.DESCRIPTION).toString());
+		makeTabItem(tabFolder,AboutContentReader.AUTHORS,docReader.read(AboutContentReader.AUTHORS).toString());
 		makeTabItem(tabFolder,AboutContentReader.LICENSE,docReader.read(AboutContentReader.LICENSE).toString());
-        
-        tabFolder.addSelectionListener(new SelectionAdapter() {		
+		
+		tabFolder.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if(tabFolder.getSelectionIndex() == 0){
 					AboutDialog.this.image = TuxGuitar.instance().getIconManager().getAboutDescription();
@@ -105,14 +105,13 @@ public class AboutDialog {
 				}
 				AboutDialog.this.imageComposite.redraw();
 			}
-		
 		});
-        
-		//------------------BUTTONS--------------------------            
-        Composite buttons = new Composite(dialog, SWT.NONE);
-        buttons.setLayout(new GridLayout());
-        buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));    	
-        
+		
+		//------------------BUTTONS--------------------------
+		Composite buttons = new Composite(dialog, SWT.NONE);
+		buttons.setLayout(new GridLayout());
+		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		
 		Button buttonClose = new Button(buttons, SWT.PUSH);
 		buttonClose.setLayoutData(getButtonData());
 		buttonClose.setText(TuxGuitar.getProperty("close"));
@@ -121,11 +120,11 @@ public class AboutDialog {
 				dialog.dispose();
 			}
 		});
-
-        tabFolder.setSelection(0);
 		
-        dialog.setDefaultButton( buttonClose );
-        
+		tabFolder.setSelection(0);
+		
+		dialog.setDefaultButton( buttonClose );
+		
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
@@ -134,23 +133,22 @@ public class AboutDialog {
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
 		return data;
-	}	
-	
-	private void makeTabItem(TabFolder tabFolder,String itemName,String itemText){		
-        Composite control = new Composite(tabFolder, SWT.NONE);                    
-        control.setLayout(new GridLayout());
-        control.setLayoutData(new FormData(TAB_ITEM_WIDTH,TAB_ITEM_HEIGHT));
-        
-        Text text = new Text(control,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-        text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));  
-        text.setBackground(TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        text.setEditable(false);
-        text.append(itemText);        
-        text.setSelection(0);
-        
-        TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-        tabItem.setText(TuxGuitar.getProperty(PROPERTY_PREFIX + itemName));
-        tabItem.setControl(control);		
 	}
 	
+	private void makeTabItem(TabFolder tabFolder,String itemName,String itemText){
+		Composite control = new Composite(tabFolder, SWT.NONE);
+		control.setLayout(new GridLayout());
+		control.setLayoutData(new FormData(TAB_ITEM_WIDTH,TAB_ITEM_HEIGHT));
+		
+		Text text = new Text(control,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		text.setBackground(TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		text.setEditable(false);
+		text.append(itemText);
+		text.setSelection(0);
+		
+		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText(TuxGuitar.getProperty(PROPERTY_PREFIX + itemName));
+		tabItem.setControl(control);
+	}
 }

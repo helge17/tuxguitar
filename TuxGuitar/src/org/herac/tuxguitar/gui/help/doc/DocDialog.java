@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.gui.help.doc;
 
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,16 +31,16 @@ import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
 
 public class DocDialog implements LanguageLoader,IconLoader{
-
+	
 	private static final String URL_NOT_FOUND = ("<html><body><h2 align=\"center\">URL Not Found!</h2></body></html>");
-
+	
 	private Shell dialog;
-	private SashForm form;	
+	private SashForm form;
 	private Browser browser;
 	private Tree tree;
-
+	
 	public void show(Shell shell) throws DocException{
-		try{			
+		try{
 			this.dialog = DialogUtils.newDialog(shell,SWT.SHELL_TRIM);
 			this.dialog.setLayout(new FillLayout());
 			this.form = new SashForm(this.dialog,SWT.HORIZONTAL | SWT.SMOOTH) ;
@@ -60,12 +59,12 @@ public class DocDialog implements LanguageLoader,IconLoader{
 			throw new DocException(trowable);
 		}
 	}
-
+	
 	protected Tree getTree(){
 		return this.tree;
 	}
 	
-	protected void showUrl(String url){		
+	protected void showUrl(String url){
 		try{
 			String parsedUrl = parseURL(url);
 			if(parsedUrl != null){
@@ -77,7 +76,7 @@ public class DocDialog implements LanguageLoader,IconLoader{
 			throwable.printStackTrace();
 		}
 	}
-
+	
 	protected void initResources(){
 		TuxGuitar.instance().getIconManager().addLoader( this );
 		TuxGuitar.instance().getLanguageManager().addLoader( this );
@@ -100,7 +99,7 @@ public class DocDialog implements LanguageLoader,IconLoader{
 	}
 	
 	protected void initTreeListener(){
-		this.tree.addSelectionListener(new SelectionAdapter() {	
+		this.tree.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				TreeItem item = (TreeItem) e.item;
 				Object data = item.getData();
@@ -112,15 +111,15 @@ public class DocDialog implements LanguageLoader,IconLoader{
 				}
 			}
 		});
-		this.tree.addMouseMoveListener(new MouseMoveListener() {		
+		this.tree.addMouseMoveListener(new MouseMoveListener() {
 			public void mouseMove(MouseEvent e) {
 				TreeItem item = getTree().getItem(new Point(e.x,e.y));
 				if(item != null){
-					getTree().setCursor(getTree().getDisplay().getSystemCursor(SWT.CURSOR_HAND));					
+					getTree().setCursor(getTree().getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 				}else{
-					getTree().setCursor(getTree().getDisplay().getSystemCursor(SWT.CURSOR_ARROW));				
+					getTree().setCursor(getTree().getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
 				}
-			}		
+			}
 		});
 	}
 	
@@ -146,23 +145,23 @@ public class DocDialog implements LanguageLoader,IconLoader{
 			}
 		}
 	}
-
+	
 	protected void initSubItems(DocItem item,TreeItem parent){
 		Iterator it = item.getChildren().iterator();
 		while(it.hasNext()){
-			DocItem child = (DocItem)it.next();			
-			initSubItems(child,subItem(parent ,child));			
+			DocItem child = (DocItem)it.next();
+			initSubItems(child,subItem(parent ,child));
 		}
 	}
 	
 	private void initFirstItem(){
 		this.initFirstItem( this.tree.getItems() );
 	}
-
+	
 	private boolean initFirstItem(TreeItem[] items){
 		for( int i = 0 ; i < items.length; i ++ ){
 			if(items[i].getData() instanceof DocItem){
-				DocItem item = (DocItem)items[i].getData();	
+				DocItem item = (DocItem)items[i].getData();
 				if(item.getName() != null && item.getName().length() > 0 &&  item.getUrl() != null && item.getUrl().length() > 0){
 					this.showUrl( item.getUrl() );
 					this.tree.setSelection( items[i] );
@@ -181,12 +180,12 @@ public class DocDialog implements LanguageLoader,IconLoader{
 		treeItem.setText(item.getName());
 		treeItem.setData(item);
 		return treeItem;
-	}	
+	}
 	
 	protected TreeItem subItem(TreeItem parent,DocItem item){
 		TreeItem treeItem = new TreeItem(parent,SWT.NONE);
 		treeItem.setText(item.getName());
-		treeItem.setData(item);		
+		treeItem.setData(item);
 		return treeItem;
 	}
 	
@@ -223,7 +222,7 @@ public class DocDialog implements LanguageLoader,IconLoader{
 	protected TreeItem findSelectedItem(TreeItem[] items, String browserPath){
 		for( int i = 0 ; i < items.length; i ++ ){
 			if(items[i].getData() instanceof DocItem){
-				DocItem item = (DocItem)items[ i ].getData();	
+				DocItem item = (DocItem)items[ i ].getData();
 				if( item.getUrl() != null ){
 					String path = parseURL( item.getUrl());
 					if(path != null && browserPath.equals( path )){
@@ -238,16 +237,16 @@ public class DocDialog implements LanguageLoader,IconLoader{
 		}
 		return null;
 	}
-
+	
 	private String parseURL(String url){
 		File file = new File(TGFileUtils.PATH_HELP + url);
 		return (file.exists()?file.getAbsolutePath():null);
-	}	
-	
-	private File getContentFile(){		
-		return new File(TGFileUtils.PATH_HELP + "contents.xml");		
 	}
-
+	
+	private File getContentFile(){
+		return new File(TGFileUtils.PATH_HELP + "contents.xml");
+	}
+	
 	public boolean isDisposed(){
 		return (this.dialog == null || this.dialog.isDisposed() );
 	}
@@ -257,11 +256,10 @@ public class DocDialog implements LanguageLoader,IconLoader{
 			this.dialog.setText(TuxGuitar.getProperty("help.doc"));
 		}
 	}
-
+	
 	public void loadIcons() {
 		if(!isDisposed()){
 			this.dialog.setImage( TuxGuitar.instance().getIconManager().getAppIcon() );
 		}
 	}
-	
 }
