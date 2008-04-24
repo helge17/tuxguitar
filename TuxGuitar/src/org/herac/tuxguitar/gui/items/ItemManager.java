@@ -44,7 +44,7 @@ import org.herac.tuxguitar.gui.items.tool.FileToolItems;
 import org.herac.tuxguitar.gui.items.tool.LayoutToolItems;
 import org.herac.tuxguitar.gui.items.tool.MarkerToolItems;
 import org.herac.tuxguitar.gui.items.tool.NoteEffectToolItems;
-import org.herac.tuxguitar.gui.items.tool.NoteToolItems;
+import org.herac.tuxguitar.gui.items.tool.BeatToolItems;
 import org.herac.tuxguitar.gui.items.tool.PropertiesToolItems;
 import org.herac.tuxguitar.gui.items.tool.TrackToolItems;
 import org.herac.tuxguitar.gui.items.tool.TransportToolItems;
@@ -323,7 +323,7 @@ public class ItemManager implements IconLoader,LanguageLoader{
     			initToolItem(new PropertiesToolItems(), true),
     			initToolItem(new TrackToolItems(), true),
     			initToolItem(new DurationToolItems(), true),
-    			initToolItem(new NoteToolItems(), true),
+    			initToolItem(new BeatToolItems(), true),
     			initToolItem(new CompositionToolItems(), true),
     			initToolItem(new TransportToolItems(), true),
     			initToolItem(new MarkerToolItems(), true),
