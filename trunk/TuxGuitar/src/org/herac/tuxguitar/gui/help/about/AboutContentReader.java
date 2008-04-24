@@ -7,7 +7,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.util.TGClassLoader;
 
 public class AboutContentReader {
-
+	
 	private static final String PREFIX = "about_";
 	private static final String EXTENSION = ".dist";
 	
@@ -15,11 +15,11 @@ public class AboutContentReader {
 	public static final String AUTHORS = "authors";
 	public static final String LICENSE = "license";
 	
-	public AboutContentReader(){		
-		super();			
+	public AboutContentReader(){
+		super();
 	}
 	
-	public StringBuffer read(String doc){				
+	public StringBuffer read(String doc){
 		String lang = TuxGuitar.instance().getLanguageManager().getLanguage();
 		InputStream is = TGClassLoader.instance().getClassLoader().getResourceAsStream(PREFIX + doc + "_" + lang + EXTENSION);
 		if(is == null){
@@ -46,5 +46,5 @@ public class AboutContentReader {
 			e.printStackTrace();
 		}
 		return sb;
-	}	
+	}
 }

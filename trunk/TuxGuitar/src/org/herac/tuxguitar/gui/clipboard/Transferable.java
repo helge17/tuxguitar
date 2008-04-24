@@ -13,6 +13,7 @@ package org.herac.tuxguitar.gui.clipboard;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface Transferable {
-
-    public void insertTransfer()throws CannotInsertTransferException;
+	
+	public void insertTransfer()throws CannotInsertTransferException;
+	
 }
