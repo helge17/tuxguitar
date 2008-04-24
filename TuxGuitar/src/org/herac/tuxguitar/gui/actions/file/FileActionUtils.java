@@ -23,7 +23,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class FileActionUtils {
-
+	
 	public static String getFileName(){
 		if (TuxGuitar.instance().getFileHistory().isNewFile() || !TuxGuitar.instance().getFileHistory().isLocalFile()) {
 			return chooseFileName();
@@ -45,7 +45,7 @@ public class FileActionUtils {
 			}
 		}
 		return fileName;
-	}	
+	}
 	
 	public static String chooseFileName(TGFileFormat format){
 		String fileName = FileChooser.instance().save(TuxGuitar.instance().getShell(),format);
@@ -56,20 +56,20 @@ public class FileActionUtils {
 	}
 	
 	public static boolean isSuportedFormat(String path) {
-    	if(path != null){
-    		int index = path.lastIndexOf(".");
-    		if(index > 0){    	
-    			Iterator it = TGFileFormatManager.instance().getOutputStreams();
-    			while(it.hasNext()){
-    				TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
-    				if(writer.isSupportedExtension(path.substring(index))){
-    					return true;
-    				}
-    			}				
-    		}
-    	}
-    	return false;
-	}	
+		if(path != null){
+			int index = path.lastIndexOf(".");
+			if(index > 0){
+				Iterator it = TGFileFormatManager.instance().getOutputStreams();
+				while(it.hasNext()){
+					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
+					if(writer.isSupportedExtension(path.substring(index))){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 	
 	public static boolean canWrite(String fileName){
 		boolean canWrite = true;
@@ -83,7 +83,7 @@ public class FileActionUtils {
 		}
 		return canWrite;
 	}
-
+	
 	public static void open(final String fileName){
 		try {
 			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),new FileInputStream(fileName));
@@ -98,22 +98,22 @@ public class FileActionUtils {
 		try {
 			TGSongManager manager = TuxGuitar.instance().getSongManager();
 			TGFileFormatManager.instance().getWriter().write(manager.getFactory(),manager.getSong(), fileName);
-			TuxGuitar.instance().fireSaveSong(new File(fileName).toURI().toURL());								
+			TuxGuitar.instance().fireSaveSong(new File(fileName).toURI().toURL());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.save.error", new String[]{fileName}),throwable));
-		}		
-	}	
+		}
+	}
 	
 	public static void open(final URL url){
 		try {
 			InputStream stream = (isLocalFile(url) ? url.openStream() : getInputStream(url.openStream()));
-			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream); 
+			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream);
 			TuxGuitar.instance().fireNewSong(song,url);
 		}catch (Throwable throwable) {
 			TuxGuitar.instance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{url.toString()}),throwable));
 		}
-	}	
+	}
 	
 	public static void exportSong(TGSongExporter exporter, String path){
 		try {
@@ -121,8 +121,8 @@ public class FileActionUtils {
 			exporter.exportSong(new FileOutputStream(new File(path)),manager.getSong());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.export.error", new String[]{path}),throwable));
-		}		
-	}	
+		}
+	}
 	
 	public static void importSong(final TGSongImporter importer, String path){
 		try {
@@ -132,8 +132,8 @@ public class FileActionUtils {
 			TuxGuitar.instance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.import.error", new String[]{path}),throwable));
 		}
-	}	
-
+	}
+	
 	private static boolean isLocalFile(URL url){
 		try {
 			if(url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
@@ -142,20 +142,19 @@ public class FileActionUtils {
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
-		return false;	
-	}	
+		return false;
+	}
 	
 	private static InputStream getInputStream(InputStream in)throws Throwable {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		int read = 0;
 		while((read = in.read()) != -1){
-			out.write(read);					
+			out.write(read);
 		}
 		byte[] bytes = out.toByteArray();
 		in.close();
 		out.close();
 		out.flush();
 		return new ByteArrayInputStream(bytes);
-	}	
-	
+	}
 }

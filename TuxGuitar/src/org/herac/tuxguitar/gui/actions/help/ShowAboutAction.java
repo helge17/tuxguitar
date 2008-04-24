@@ -21,16 +21,16 @@ import org.herac.tuxguitar.gui.help.about.AboutDialog;
  */
 public class ShowAboutAction extends Action {
 	public static final String NAME = "action.help.about";
-
+	
 	protected Canvas imageCanvas;
-	protected Image tabImage;	
+	protected Image tabImage;
 	
 	public ShowAboutAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK);
 	}
-
+	
 	protected int execute(TypedEvent e){
-		new AboutDialog().open(TuxGuitar.instance().getShell());		
+		new AboutDialog().open(TuxGuitar.instance().getShell());
 		return 0;
 	}
 }

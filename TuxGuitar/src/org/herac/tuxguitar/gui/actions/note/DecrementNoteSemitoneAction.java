@@ -19,30 +19,29 @@ import org.herac.tuxguitar.song.models.TGNote;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class DecrementNoteSemitoneAction extends Action{
-    public static final String NAME = "action.note.general.decrement-semitone";
-    
-    public DecrementNoteSemitoneAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-    	TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
-    	if(note != null){
-    		//comienza el undoable
-    		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();     
-    	
-    		if(getSongManager().getMeasureManager().moveSemitoneDown(getEditor().getTablature().getCaret().getMeasure(),note.getBeat().getStart(),note.getString())){    			
-    			//termia el undoable
-    			addUndoableEdit(undoable.endUndo());
-    			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-    		}
-    		updateTablature();        
-    	}
-        return 0;
-    }
-    
-    public void updateTablature() {
-        fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
-    }    
-
+	public static final String NAME = "action.note.general.decrement-semitone";
+	
+	public DecrementNoteSemitoneAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
+		if(note != null){
+			//comienza el undoable
+			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+			
+			if(getSongManager().getMeasureManager().moveSemitoneDown(getEditor().getTablature().getCaret().getMeasure(),note.getBeat().getStart(),note.getString())){
+				//termia el undoable
+				addUndoableEdit(undoable.endUndo());
+				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			}
+			updateTablature();
+		}
+		return 0;
+	}
+	
+	public void updateTablature() {
+		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	}
 }

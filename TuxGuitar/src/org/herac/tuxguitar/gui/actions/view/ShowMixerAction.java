@@ -17,20 +17,18 @@ import org.herac.tuxguitar.gui.actions.Action;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ShowMixerAction extends Action{
-    public static final String NAME = "action.view.show-mixer";
-    
-    public ShowMixerAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-    	if(TuxGuitar.instance().getMixer().isDisposed()){
-    		TuxGuitar.instance().getMixer().show();
-    	}else{
-    		TuxGuitar.instance().getMixer().dispose();
-    	}
-	    return 0;
-    }
-
-    
+	public static final String NAME = "action.view.show-mixer";
+	
+	public ShowMixerAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		if(TuxGuitar.instance().getMixer().isDisposed()){
+			TuxGuitar.instance().getMixer().show();
+		}else{
+			TuxGuitar.instance().getMixer().dispose();
+		}
+		return 0;
+	}
 }

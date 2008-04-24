@@ -19,66 +19,65 @@ import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 import org.herac.tuxguitar.gui.table.TGTableViewer;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 
-
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class DisposeAction extends Action {
-    public static final String NAME = "action.system.dispose";
-
-    public DisposeAction() {
-    	super(NAME, AUTO_LOCK);
-    }
-
-    protected int execute(TypedEvent e){
-    	if(e instanceof ShellEvent){
-    		TuxGuitar.instance().getPlayer().reset();
-    		
-    		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
-    			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
-    			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
-    			int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
-    			if(status == ConfirmDialog.STATUS_CANCEL){
-    				return AUTO_UNLOCK;
-    			}
-    			if(status == ConfirmDialog.STATUS_YES){
-    				final String fileName = FileActionUtils.getFileName();
-    				if(fileName == null){
-    					return AUTO_UNLOCK;
-    				}
-    				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-   					new Thread(new Runnable() {
-   						public void run() {
-   							if(!TuxGuitar.isDisposed()){
-   								FileActionUtils.save(fileName);
-   								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-   								
-   								exit();
-   							}
-   						}
-   	        		}).start();
-       				return 0;
-    			}
-    		}
-    		exit();
-    	}
-        return 0;
-    }
-
-    protected void exit(){
-    	new SyncThread(new Runnable() {
+	public static final String NAME = "action.system.dispose";
+	
+	public DisposeAction() {
+		super(NAME, AUTO_LOCK);
+	}
+	
+	protected int execute(TypedEvent e){
+		if(e instanceof ShellEvent){
+			TuxGuitar.instance().getPlayer().reset();
+			
+			if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
+				ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
+				confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
+				int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
+				if(status == ConfirmDialog.STATUS_CANCEL){
+					return AUTO_UNLOCK;
+				}
+				if(status == ConfirmDialog.STATUS_YES){
+					final String fileName = FileActionUtils.getFileName();
+					if(fileName == null){
+						return AUTO_UNLOCK;
+					}
+					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+					new Thread(new Runnable() {
+						public void run() {
+							if(!TuxGuitar.isDisposed()){
+								FileActionUtils.save(fileName);
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								
+								exit();
+							}
+						}
+					}).start();
+					return 0;
+				}
+			}
+			exit();
+		}
+		return 0;
+	}
+	
+	protected void exit(){
+		new SyncThread(new Runnable() {
 			public void run() {
 				TuxGuitar.instance().lock();
 				closeModules();
-		    	saveConfig();
+				saveConfig();
 				dispose();
 				TuxGuitar.instance().unlock();
 			}
 		}).start();
-    }
-    
+	}
+	
 	protected void saveConfig(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		
@@ -86,32 +85,31 @@ public class DisposeAction extends Action {
 		config.setProperty(TGConfigKeys.LAYOUT_STYLE,getEditor().getTablature().getViewLayout().getStyle());
 		config.setProperty(TGConfigKeys.SHOW_PIANO,!TuxGuitar.instance().getPianoEditor().isDisposed());
 		config.setProperty(TGConfigKeys.SHOW_MATRIX,!TuxGuitar.instance().getMatrixEditor().isDisposed());
-		config.setProperty(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.instance().getFretBoardEditor().isVisible());		
+		config.setProperty(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.instance().getFretBoardEditor().isVisible());
 		config.setProperty(TGConfigKeys.SHOW_MIXER,!TuxGuitar.instance().getMixer().isDisposed());
-		config.setProperty(TGConfigKeys.SHOW_TRANSPORT,!TuxGuitar.instance().getTransport().isDisposed());        
+		config.setProperty(TGConfigKeys.SHOW_TRANSPORT,!TuxGuitar.instance().getTransport().isDisposed());
 		config.setProperty(TGConfigKeys.SHOW_MARKERS,!MarkerList.instance().isDisposed());
 		config.setProperty(TGConfigKeys.MAXIMIZED,TuxGuitar.instance().getShell().getMaximized());
 		config.setProperty(TGConfigKeys.WIDTH,TuxGuitar.instance().getShell().getClientArea().width);
-		config.setProperty(TGConfigKeys.HEIGHT,TuxGuitar.instance().getShell().getClientArea().height);                
+		config.setProperty(TGConfigKeys.HEIGHT,TuxGuitar.instance().getShell().getClientArea().height);
 		config.setProperty(TGConfigKeys.EDITOR_MOUSE_MODE,getEditor().getTablature().getEditorKit().getMouseMode());
 		config.setProperty(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.instance().getMatrixEditor().getGrids());
 		
-        TuxGuitar.instance().getConfig().save();
+		TuxGuitar.instance().getConfig().save();
 	}
-
+	
 	protected void closeModules(){
 		TuxGuitar.instance().getPlayer().close();
 		TuxGuitar.instance().getPluginManager().closePLugins();
 	}
 	
 	protected void dispose(){
-    	TGTableViewer.disposeColors();
-    	TuxGuitar.instance().getSongManager().clearSong();
-    	TuxGuitar.instance().getFretBoardEditor().dispose();
-    	TuxGuitar.instance().getTablatureEditor().getTablature().dispose();
-    	TuxGuitar.instance().getIconManager().disposeIcons();
+		TGTableViewer.disposeColors();
+		TuxGuitar.instance().getSongManager().clearSong();
+		TuxGuitar.instance().getFretBoardEditor().dispose();
+		TuxGuitar.instance().getTablatureEditor().getTablature().dispose();
+		TuxGuitar.instance().getIconManager().disposeIcons();
 		TuxGuitar.instance().getShell().dispose();
 		TuxGuitar.instance().getDisplay().dispose();
-    }
-	
+	}
 }

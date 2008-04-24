@@ -18,19 +18,17 @@ import org.herac.tuxguitar.gui.tools.scale.ScaleEditor;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ScaleAction extends Action{
-    public static final String NAME = "action.tools.scale";
-    
-    public ScaleAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
-    }
-
-    protected int execute(TypedEvent e){
-    	new ScaleEditor().show();
-    	TuxGuitar.instance().getFretBoardEditor().setScaleChanges();
-    	TuxGuitar.instance().getPianoEditor().setScaleChanges();
-    	
-	    return 0;
-    }
-
-    
+	public static final String NAME = "action.tools.scale";
+	
+	public ScaleAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
+	}
+	
+	protected int execute(TypedEvent e){
+		new ScaleEditor().show();
+		TuxGuitar.instance().getFretBoardEditor().setScaleChanges();
+		TuxGuitar.instance().getPianoEditor().setScaleChanges();
+		
+		return 0;
+	}
 }

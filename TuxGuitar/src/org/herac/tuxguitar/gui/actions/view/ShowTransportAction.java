@@ -17,20 +17,18 @@ import org.herac.tuxguitar.gui.actions.Action;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ShowTransportAction extends Action{
-    public static final String NAME = "action.view.show-transport";
-    
-    public ShowTransportAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK |  AUTO_UPDATE | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-    	if(TuxGuitar.instance().getTransport().isDisposed()){
-    		TuxGuitar.instance().getTransport().show();
-    	}else{
-    		TuxGuitar.instance().getTransport().dispose();
-    	}
-    	return 0;
-    }
-
-    
+	public static final String NAME = "action.view.show-transport";
+	
+	public ShowTransportAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK |  AUTO_UPDATE | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		if(TuxGuitar.instance().getTransport().isDisposed()){
+			TuxGuitar.instance().getTransport().show();
+		}else{
+			TuxGuitar.instance().getTransport().dispose();
+		}
+		return 0;
+	}
 }

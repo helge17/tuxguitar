@@ -18,22 +18,20 @@ import org.herac.tuxguitar.gui.undo.CannotUndoException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class UndoAction extends Action{
-    public static final String NAME = "action.edit.undo";
-    
-    public UndoAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-    	try {
-    		if(TuxGuitar.instance().getUndoableManager().canUndo()){
-    			TuxGuitar.instance().getUndoableManager().undo();
-    		}
+	public static final String NAME = "action.edit.undo";
+	
+	public UndoAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		try {
+			if(TuxGuitar.instance().getUndoableManager().canUndo()){
+				TuxGuitar.instance().getUndoableManager().undo();
+			}
 		} catch (CannotUndoException e1) {
 			e1.printStackTrace();
 		}
-        return 0;
-    }
-
-
+		return 0;
+	}
 }

@@ -35,70 +35,70 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class PrintPreviewAction extends Action{
-    public static final String NAME = "action.file.print-preview";
-    
-    public PrintPreviewAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
-    }    
-    
-    protected int execute(TypedEvent e){
-    	try{
-    		final PrintStyles data = PrintStylesDialog.open(TuxGuitar.instance().getShell());
-    		if(data != null){
-    			TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-    			
-    			this.printPreview(data);
-    		}
-    	}catch(Throwable throwable){
+	public static final String NAME = "action.file.print-preview";
+	
+	public PrintPreviewAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		try{
+			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.instance().getShell());
+			if(data != null){
+				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				
+				this.printPreview(data);
+			}
+		}catch(Throwable throwable){
 			MessageDialog.errorMessage(throwable);
-    	}
-    	return 0;
-    }
-    
+		}
+		return 0;
+	}
+	
 	public void printPreview(final PrintStyles data){
 		new Thread(new Runnable() {
 			public void run() {
 				try{
 					final TGSongManager manager = new TGSongManager();
 					manager.setFactory(new TGFactoryImpl());
-					manager.setSong(getSongManager().getSong().clone(manager.getFactory()));		
+					manager.setSong(getSongManager().getSong().clone(manager.getFactory()));
 				
 					printPreview(manager,data);
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
-				}				
+				}
 			}
 		}).start();
-	}    
-    
-	public void printPreview(final TGSongManager manager, final PrintStyles data){	
+	}
+	
+	public void printPreview(final TGSongManager manager, final PrintStyles data){
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
 					Tablature tablature = new Tablature(getEditor().getTablature());
-					tablature.setSongManager(manager);        
-		        
+					tablature.setSongManager(manager);
+					
 					PrinterViewLayout layout = new PrinterViewLayout(tablature,data, 1f);
-
+					
 					printPreview( layout );
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
 			}
-		}).start();  		        
+		}).start();
 	}
-
-	public void printPreview(final PrinterViewLayout layout){	
+	
+	public void printPreview(final PrinterViewLayout layout){
 		new Thread(new Runnable() {
 			public void run() {
-				try{	
+				try{
 					layout.getTablature().updateTablature();
 					layout.makeDocument(new PrintDocumentImpl(layout, new Rectangle(0,0,850,1050)));
 					//new SyncThread(new Runnable() {
 					//	public void run() {
 					//		layout.makeDocument(new PrintDocumentImpl(layout, new Rectangle(0,0,850,1050)));
 					//	}
-					//}).start(); 
+					//}).start();
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
@@ -107,7 +107,7 @@ public class PrintPreviewAction extends Action{
 	}
 	
 	private class PrintDocumentImpl implements PrintDocument{
-
+		
 		private PrinterViewLayout layout;
 		private TGPainter painter;
 		private Rectangle bounds;
@@ -123,7 +123,7 @@ public class PrintPreviewAction extends Action{
 		public TGPainter getPainter() {
 			return this.painter;
 		}
-
+		
 		public Rectangle getBounds(){
 			return this.bounds;
 		}
@@ -133,7 +133,7 @@ public class PrintPreviewAction extends Action{
 			this.painter.init( page );
 			this.pages.add( page );
 		}
-
+		
 		public void pageFinish() {
 			this.painter.dispose();
 		}
@@ -141,7 +141,7 @@ public class PrintPreviewAction extends Action{
 		public void start() {
 			// Not implemented
 		}
-
+		
 		public void finish() {
 			final Tablature tablature = this.layout.getTablature();
 			final Rectangle bounds = this.bounds;
@@ -159,9 +159,9 @@ public class PrintPreviewAction extends Action{
 				}
 			});
 		}
-
+		
 		public boolean isPaintable(int page) {
 			return true;
 		}
-	}	
+	}
 }

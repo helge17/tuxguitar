@@ -20,11 +20,11 @@ import org.herac.tuxguitar.gui.actions.ActionLock;
 public class SaveAsFileAction extends Action {
 	public static final String NAME = "action.file.save-as";
 	
-    public SaveAsFileAction() {
-        super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE );       
-    }
+	public SaveAsFileAction() {
+		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE );
+	}
 	
-    protected int execute(TypedEvent e){
+	protected int execute(TypedEvent e){
 		final String fileName = FileActionUtils.chooseFileName();
 		if(fileName == null){
 			return AUTO_UNLOCK;
@@ -38,8 +38,8 @@ public class SaveAsFileAction extends Action {
 					ActionLock.unlock();
 				}
 			}
-		}).start();    	
-    	
-    	return 0;
-    }
+		}).start();
+		
+		return 0;
+	}
 }

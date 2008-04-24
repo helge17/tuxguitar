@@ -18,22 +18,20 @@ import org.herac.tuxguitar.gui.actions.Action;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ShowFretBoardAction extends Action{
-    public static final String NAME = "action.view.show-fretboard";
-    
-    public ShowFretBoardAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-    	TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-    	if(TuxGuitar.instance().getFretBoardEditor().isVisible()){
-    		TuxGuitar.instance().getFretBoardEditor().hideFretBoard();
-    	}else{
-    		TuxGuitar.instance().getFretBoardEditor().showFretBoard();
-    	}    	
-    	TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-	    return 0;
-    }
-
-    
+	public static final String NAME = "action.view.show-fretboard";
+	
+	public ShowFretBoardAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		if(TuxGuitar.instance().getFretBoardEditor().isVisible()){
+			TuxGuitar.instance().getFretBoardEditor().hideFretBoard();
+		}else{
+			TuxGuitar.instance().getFretBoardEditor().showFretBoard();
+		}
+		TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+		return 0;
+	}
 }

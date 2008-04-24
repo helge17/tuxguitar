@@ -21,11 +21,11 @@ import org.herac.tuxguitar.gui.util.MessageDialog;
  */
 public class ShowDocAction extends Action {
 	public static final String NAME = "action.help.doc";
-
+	
 	public ShowDocAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | KEY_BINDING_AVAILABLE );
 	}
-
+	
 	protected int execute(TypedEvent e){
 		try {
 			new DocDialog().show(TuxGuitar.instance().getShell());
@@ -33,5 +33,5 @@ public class ShowDocAction extends Action {
 			MessageDialog.errorMessage(throwable);
 		}
 		return 0;
-	}	
+	}
 }

@@ -20,39 +20,38 @@ import org.herac.tuxguitar.song.models.TGBeat;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class RemoveNoteAction extends Action{
-    public static final String NAME = "action.note.general.remove";
-    
-    public RemoveNoteAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING);
-    }
-
-    protected int execute(TypedEvent e){
-        //comienza el undoable
-        UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();     
-        TuxGuitar.instance().getFileHistory().setUnsavedFile();
-        
-        Caret caret = getEditor().getTablature().getCaret();
-        TGBeat beat = caret.getSelectedBeat();
-        if(beat.isRestBeat()){                               
-            if(beat.isTextBeat()){
-            	getSongManager().getMeasureManager().removeText(beat);
-            }else{
-            	getSongManager().getMeasureManager().removeBeat( beat ,true);
-            }
-        }else{
-            int string = caret.getSelectedString().getNumber();       
-            getSongManager().getMeasureManager().removeNote(caret.getMeasure(),beat.getStart(), string);
-        }   
-        
-        //termia el undoable
-        addUndoableEdit(undoable.endUndo());                    
-        updateTablature();          
-        
-        return 0;
-    }
-    
-    public void updateTablature() {
-        fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
-    }    
-
+	public static final String NAME = "action.note.general.remove";
+	
+	public RemoveNoteAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING);
+	}
+	
+	protected int execute(TypedEvent e){
+		//comienza el undoable
+		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		
+		Caret caret = getEditor().getTablature().getCaret();
+		TGBeat beat = caret.getSelectedBeat();
+		if(beat.isRestBeat()){
+			if(beat.isTextBeat()){
+				getSongManager().getMeasureManager().removeText(beat);
+			}else{
+				getSongManager().getMeasureManager().removeBeat( beat ,true);
+			}
+		}else{
+			int string = caret.getSelectedString().getNumber();
+			getSongManager().getMeasureManager().removeNote(caret.getMeasure(),beat.getStart(), string);
+		}
+		
+		//termia el undoable
+		addUndoableEdit(undoable.endUndo());
+		updateTablature();
+		
+		return 0;
+	}
+	
+	public void updateTablature() {
+		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	}
 }
