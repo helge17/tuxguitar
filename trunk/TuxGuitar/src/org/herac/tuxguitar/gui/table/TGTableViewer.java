@@ -25,18 +25,17 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-
-public class TGTableViewer implements LanguageLoader{    
-
+public class TGTableViewer implements LanguageLoader{
+	
 	public static final Color[] BACKGROUNDS = new Color[]{
 		new Color(TuxGuitar.instance().getDisplay(),255,255,255),
 		new Color(TuxGuitar.instance().getDisplay(),238,238,238),
 		new Color(TuxGuitar.instance().getDisplay(),192,192,192)
-	};	
-
+	};
+	
 	private Composite composite;
 	private ScrollBar hSroll;
-	private TGTable table;		
+	private TGTable table;
 	private int selectedTrack;
 	private int selectedMeasure;
 	private int trackCount = 0;
@@ -46,14 +45,14 @@ public class TGTableViewer implements LanguageLoader{
 	
 	public TGTableViewer() {
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
-    }
+	}
 	
 	public void init(Composite parent){
-        this.composite = new Composite(parent,SWT.H_SCROLL);
-        this.addLayout();
-        this.addTable();
-        this.addHScroll();
-        this.loadConfig();
+		this.composite = new Composite(parent,SWT.H_SCROLL);
+		this.addLayout();
+		this.addTable();
+		this.addHScroll();
+		this.loadConfig();
 	}
 	
 	private void addLayout(){
@@ -66,15 +65,15 @@ public class TGTableViewer implements LanguageLoader{
 	}
 	
 	private void addHScroll(){
-        this.hSroll = getComposite().getHorizontalBar();
-        this.hSroll.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(Event e) {
-                redraw();
-            }
-        });
+		this.hSroll = getComposite().getHorizontalBar();
+		this.hSroll.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				redraw();
+			}
+		});
 	}
 	
-	private void addTable(){		
+	private void addTable(){
 		MouseListener listener = mouseFocusListener();
 		this.table = new TGTable(getComposite());
 		this.table.getColumnNumber().getControl().addMouseListener(listener);
@@ -85,11 +84,11 @@ public class TGTableViewer implements LanguageLoader{
 			public void mouseDoubleClick(MouseEvent e) {
 				TuxGuitar.instance().getAction(ChangeInfoAction.NAME).process(e);
 			}
-		});		
+		});
 		this.fireUpdate(true);
 		this.loadProperties();
 	}
-
+	
 	public void loadProperties() {
 		this.table.getColumnNumber().setTitle(TuxGuitar.getProperty("track.number"));
 		this.table.getColumnName().setTitle(TuxGuitar.getProperty("track.name"));
@@ -102,18 +101,18 @@ public class TGTableViewer implements LanguageLoader{
 			this.trackCount = 0;
 		}
 	}
-
+	
 	public void updateItems(){
 		this.followScroll = true;
 	}
 	
-    public void updateHScroll(){
-        int width = (getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());        
-        this.hSroll.setIncrement(this.table.getScrollIncrement());
-        this.hSroll.setMaximum(width);
-        this.hSroll.setThumb(Math.min(width ,this.table.getColumnCanvas().getControl().getClientArea().width));        
-    }
-
+	public void updateHScroll(){
+		int width = (getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());
+		this.hSroll.setIncrement(this.table.getScrollIncrement());
+		this.hSroll.setMaximum(width);
+		this.hSroll.setThumb(Math.min(width ,this.table.getColumnCanvas().getControl().getClientArea().width));
+	}
+	
 	public TGTable getTable(){
 		return this.table;
 	}
@@ -121,11 +120,11 @@ public class TGTableViewer implements LanguageLoader{
 	public int getHScrollSelection(){
 		return this.hSroll.getSelection();
 	}
-
+	
 	public TablatureEditor getEditor(){
 		return TuxGuitar.instance().getTablatureEditor();
 	}
-
+	
 	private String getInstrument(TGTrack track){
 		if(track.isPercussionTrack()){
 			return TuxGuitar.getProperty("track.name.default-percussion-name");
@@ -136,53 +135,53 @@ public class TGTableViewer implements LanguageLoader{
 			return list[index].getName();
 		}
 		return new String();
-	}	
-
+	}
+	
 	private void updateTable(){
 		if(this.update){
 			int count = TuxGuitar.instance().getSongManager().getSong().countTracks();
 			this.table.removeRowsAfter(count);
-			for(int i = this.table.getRowCount(); i < count; i ++){			
+			for(int i = this.table.getRowCount(); i < count; i ++){
 				this.table.newRow();
 			}
-		
+			
 			for(int i = 0; i < count; i ++){
 				final TGTrack track = TuxGuitar.instance().getSongManager().getSong().getTrack(i);
 				final TGTableRow row = this.table.getRow(i);
-				if(row != null){				
+				if(row != null){
 					//Number
 					row.getNumber().setText(Integer.toString(track.getNumber()));
 					row.getNumber().setData(track);
-
-					//Name				
+					
+					//Name
 					row.getName().setText(track.getName());
 					row.getName().setData(track);
-				
+					
 					//Instrument
 					row.getInstrument().setText(getInstrument(track));
 					row.getInstrument().setData(track);
-				
+					
 					row.setMouseListenerLabel(new MouseAdapter() {
-
+						
 						public void mouseUp(MouseEvent e) {
 							row.getPainter().setFocus();
 						}
 						
-						public void mouseDown(MouseEvent e) {	
+						public void mouseDown(MouseEvent e) {
 							if(track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber()){
 								TuxGuitar.instance().getAction(GoToTrackAction.NAME).process(e);
 							}
 						}
-
+						
 						public void mouseDoubleClick(final MouseEvent e) {
 							new Thread(new Runnable() {
 								public void run() {
 									ActionLock.waitFor();
-									TuxGuitar.instance().getAction(TrackPropertiesAction.NAME).process(e);							
+									TuxGuitar.instance().getAction(TrackPropertiesAction.NAME).process(e);
 								}
 							}).start();
-						}			
-					});				
+						}
+					});
 					row.setMouseListenerCanvas(new MouseAdapter() {
 						
 						public void mouseUp(MouseEvent e) {
@@ -190,7 +189,7 @@ public class TGTableViewer implements LanguageLoader{
 						}
 						
 						public void mouseDown(MouseEvent e) {
-							int index = ((e.x + getHScrollSelection())/ getTable().getRowHeight());				   
+							int index = ((e.x + getHScrollSelection())/ getTable().getRowHeight());
 							if(index >= 0 && index < track.countMeasures()){
 								TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(index);
 								TGBeat beat = TuxGuitar.instance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
@@ -201,7 +200,7 @@ public class TGTableViewer implements LanguageLoader{
 							}
 						}
 					});
-					row.setPaintListenerCanvas(new TGTableCanvasPainter(this,track));				
+					row.setPaintListenerCanvas(new TGTableCanvasPainter(this,track));
 				}
 			}
 			this.table.update();
@@ -216,7 +215,7 @@ public class TGTableViewer implements LanguageLoader{
 		}
 		this.update = false;
 	}
-
+	
 	private int getHeight(){
 		return ( this.table.getMinHeight() + getComposite().getHorizontalBar().getSize().y);
 	}
@@ -242,7 +241,7 @@ public class TGTableViewer implements LanguageLoader{
 			this.selectedTrack = selectedTrack;
 			this.selectedMeasure = 0;
 			this.updateHScroll();
-
+			
 			if(this.followScroll){
 				this.followHorizontalScroll(getEditor().getTablature().getCaret().getMeasure().getNumber());
 				this.followScroll = false;
@@ -252,14 +251,14 @@ public class TGTableViewer implements LanguageLoader{
 		}
 	}
 	
-	public void redrawPlayingMode(){     
+	public void redrawPlayingMode(){
 		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
 			TuxGuitar.instance().lock();
 			TGMeasure measure =  TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
 				int selectedTrack = measure.getTrack().getNumber();
-				int selectedMeasure = measure.getNumber();		
+				int selectedMeasure = measure.getNumber();
 				if(this.selectedTrack != selectedTrack || this.selectedMeasure != selectedMeasure){
 					this.redrawRows(selectedTrack);
 					this.followHorizontalScroll(selectedMeasure);
@@ -269,7 +268,6 @@ public class TGTableViewer implements LanguageLoader{
 			}
 			TuxGuitar.instance().unlock();
 		}
-		
 	}
 	
 	private void followHorizontalScroll(int selectedMeasure){
@@ -291,7 +289,7 @@ public class TGTableViewer implements LanguageLoader{
 	
 	public static void disposeColors(){
 		for(int i = 0;i < BACKGROUNDS.length;i++){
-			BACKGROUNDS[i].dispose();	
+			BACKGROUNDS[i].dispose();
 		}
 	}
 	
@@ -313,7 +311,7 @@ public class TGTableViewer implements LanguageLoader{
 	protected int getSelectedTrack(){
 		return this.selectedTrack;
 	}
-
+	
 	private MouseListener mouseFocusListener(){
 		return new MouseAdapter() {
 			public void mouseUp(MouseEvent e) {
@@ -327,5 +325,4 @@ public class TGTableViewer implements LanguageLoader{
 			}
 		};
 	}
-	
 }
