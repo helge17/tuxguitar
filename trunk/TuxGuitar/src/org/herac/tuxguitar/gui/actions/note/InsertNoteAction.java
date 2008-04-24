@@ -20,36 +20,34 @@ import org.herac.tuxguitar.song.models.TGBeat;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class InsertNoteAction extends Action{
-    public static final String NAME = "action.note.general.insert";
-    
-    public InsertNoteAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING);
-    }
-
-    protected int execute(TypedEvent e){
-    	Caret caret = getEditor().getTablature().getCaret();
-    	TGBeat beat = caret.getSelectedBeat();
-    	if(beat != null){
-    		//comienza el undoable
-    		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo(); 	
-    		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-    		
-    		long start = beat.getStart();
-    		long length = beat.getDuration().getTime();
-    		getSongManager().getMeasureManager().moveBeats(caret.getMeasure(),start,length, beat.getDuration());
-
-    		//termia el undoable
-    		addUndoableEdit(undoable.endUndo());           
-        
-    		updateTablature();
-
-    	}
-    	return 0;
-    }
-    
-    public void updateTablature() {
-        fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
-    }
-
-
+	public static final String NAME = "action.note.general.insert";
+	
+	public InsertNoteAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING);
+	}
+	
+	protected int execute(TypedEvent e){
+		Caret caret = getEditor().getTablature().getCaret();
+		TGBeat beat = caret.getSelectedBeat();
+		if(beat != null){
+			//comienza el undoable
+			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			
+			long start = beat.getStart();
+			long length = beat.getDuration().getTime();
+			getSongManager().getMeasureManager().moveBeats(caret.getMeasure(),start,length, beat.getDuration());
+			
+			//termia el undoable
+			addUndoableEdit(undoable.endUndo());
+			
+			updateTablature();
+			
+		}
+		return 0;
+	}
+	
+	public void updateTablature() {
+		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	}
 }

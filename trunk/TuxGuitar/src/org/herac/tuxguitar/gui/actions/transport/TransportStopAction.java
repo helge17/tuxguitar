@@ -20,24 +20,24 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TransportStopAction extends Action{
-    public static final String NAME = "action.transport.stop";
-    
-    public TransportStopAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);   
-    }
-   
-    protected int execute(TypedEvent e){
-    	TuxGuitar.instance().getPlayer().reset();
-    	updateTickPosition();
-        return 0;
-    }
-    
-    protected void updateTickPosition(){
+	public static final String NAME = "action.transport.stop";
+	
+	public TransportStopAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		TuxGuitar.instance().getPlayer().reset();
+		updateTickPosition();
+		return 0;
+	}
+	
+	protected void updateTickPosition(){
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
-    	TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
 		}
 		getEditor().getTablature().getCaret().goToTickPosition();
-    }
+	}
 }

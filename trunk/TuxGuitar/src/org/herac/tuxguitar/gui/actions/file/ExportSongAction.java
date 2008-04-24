@@ -20,11 +20,11 @@ import org.herac.tuxguitar.io.base.TGSongExporter;
  */
 public class ExportSongAction extends Action {
 	public static final String NAME = "action.file.export";
-
+	
 	public ExportSongAction() {
-		super(NAME, AUTO_LOCK | AUTO_UPDATE );    
+		super(NAME, AUTO_LOCK | AUTO_UPDATE );
 	}
-
+	
 	protected int execute(TypedEvent e){
 		Object data = e.widget.getData(); 
 		if(! (data instanceof TGSongExporter) ){
@@ -35,7 +35,7 @@ public class ExportSongAction extends Action {
 		if(!exporter.configure(false)){
 			return AUTO_UNLOCK;
 		}
-
+		
 		final String fileName = FileActionUtils.chooseFileName(exporter.getFileFormat());
 		if(fileName == null){
 			return AUTO_UNLOCK;
@@ -54,5 +54,4 @@ public class ExportSongAction extends Action {
 		
 		return 0;
 	}
-
 }

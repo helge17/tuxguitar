@@ -20,38 +20,37 @@ import org.herac.tuxguitar.song.models.TGDuration;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SetEighthDurationAction extends Action{
-    public static final String NAME = "action.note.duration.set-eighth";    
-    public static final int VALUE = TGDuration.EIGHTH;
-    
-    public SetEighthDurationAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-    	if(getSelectedDuration().getValue() != VALUE){    	
-    		//comienza el undoable
-    		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo(); 
-        
-    		getSelectedDuration().setValue(VALUE);
-        	getSelectedDuration().setDotted(false);
-        	getSelectedDuration().setDoubleDotted(false);
-        	setDurations();
-        
-        	//termia el undoable
-        	addUndoableEdit(undoable.endUndo()); 
-    	}
-        return 0;
-    }
-    
-    private void setDurations() {
-        Caret caret = getEditor().getTablature().getCaret();            
-        caret.changeDuration(getSelectedDuration().clone(getSongManager().getFactory()));
-        TuxGuitar.instance().getFileHistory().setUnsavedFile();
-        fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
-    }
-    
-    public TGDuration getSelectedDuration(){
-        return getEditor().getTablature().getCaret().getDuration();
-    }     
-
+	public static final String NAME = "action.note.duration.set-eighth";
+	public static final int VALUE = TGDuration.EIGHTH;
+	
+	public SetEighthDurationAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		if(getSelectedDuration().getValue() != VALUE){
+			//comienza el undoable
+			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+			
+			getSelectedDuration().setValue(VALUE);
+			getSelectedDuration().setDotted(false);
+			getSelectedDuration().setDoubleDotted(false);
+			setDurations();
+			
+			//termia el undoable
+			addUndoableEdit(undoable.endUndo());
+		}
+		return 0;
+	}
+	
+	private void setDurations() {
+		Caret caret = getEditor().getTablature().getCaret();
+		caret.changeDuration(getSelectedDuration().clone(getSongManager().getFactory()));
+		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	}
+	
+	public TGDuration getSelectedDuration(){
+		return getEditor().getTablature().getCaret().getDuration();
+	}
 }

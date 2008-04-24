@@ -17,19 +17,18 @@ import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class GoToTrackAction extends Action{
-    public static final String NAME = "action.track.goto";
-    
-    public GoToTrackAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
-    }
-
-    protected int execute(TypedEvent e){
-    	Object data = e.widget.getData();
-    	if(data instanceof TGTrackImpl){     
-    		TGTrackImpl track = (TGTrackImpl)data;    		
-    		getEditor().getTablature().getCaret().update(track.getNumber());
-    	}
-	    return 0;
-    }
-
+	public static final String NAME = "action.track.goto";
+	
+	public GoToTrackAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
+	}
+	
+	protected int execute(TypedEvent e){
+		Object data = e.widget.getData();
+		if(data instanceof TGTrackImpl){
+			TGTrackImpl track = (TGTrackImpl)data;
+			getEditor().getTablature().getCaret().update(track.getNumber());
+		}
+		return 0;
+	}
 }

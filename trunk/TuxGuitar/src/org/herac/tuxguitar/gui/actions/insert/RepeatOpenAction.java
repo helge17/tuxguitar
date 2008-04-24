@@ -19,30 +19,28 @@ import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeOpenRepeat;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class RepeatOpenAction extends Action{
-    public static final String NAME = "action.insert.open-repeat";
-    
-    public RepeatOpenAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
-    }
-
-    protected int execute(TypedEvent e){
-        //comienza el undoable
-    	UndoableChangeOpenRepeat undoable = UndoableChangeOpenRepeat.startUndo(); 
-    	TuxGuitar.instance().getFileHistory().setUnsavedFile();
-    	
-        TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
-        getSongManager().changeOpenRepeat(measure.getStart());
-        updateTablature();     
-        
-        //termia el undoable
-        addUndoableEdit(undoable.endUndo());
-        
-        return 0;
-    }
-
-    public void updateTablature() {
-        fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
-    }    
-
-
+	public static final String NAME = "action.insert.open-repeat";
+	
+	public RepeatOpenAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		//comienza el undoable
+		UndoableChangeOpenRepeat undoable = UndoableChangeOpenRepeat.startUndo();
+		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		
+		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
+		getSongManager().changeOpenRepeat(measure.getStart());
+		updateTablature();
+		
+		//termia el undoable
+		addUndoableEdit(undoable.endUndo());
+		
+		return 0;
+	}
+	
+	public void updateTablature() {
+		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	}
 }

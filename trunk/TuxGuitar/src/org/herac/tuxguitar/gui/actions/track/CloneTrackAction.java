@@ -19,27 +19,26 @@ import org.herac.tuxguitar.gui.undo.undoables.track.UndoableCloneTrack;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CloneTrackAction extends Action{
-    public static final String NAME = "action.track.clone";
-    
-    public CloneTrackAction() {
-    	super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);     
-    }
-
-    protected int execute(TypedEvent e){    	                
-        //comienza el undoable
-        UndoableCloneTrack undoable = UndoableCloneTrack.startUndo(); 	
-        TuxGuitar.instance().getFileHistory().setUnsavedFile();
-        
-        Caret caret = getEditor().getTablature().getCaret();
-        
-	    getSongManager().cloneTrack(caret.getTrack());	    
-	    updateTablature();        	    
-	    TuxGuitar.instance().getMixer().update();
-	    
-        //termia el undoable
-	    addUndoableEdit(undoable.endUndo()); 
-	    
-	    return 0;
-    }
-
+	public static final String NAME = "action.track.clone";
+	
+	public CloneTrackAction() {
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
+	}
+	
+	protected int execute(TypedEvent e){
+		//comienza el undoable
+		UndoableCloneTrack undoable = UndoableCloneTrack.startUndo();
+		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		
+		Caret caret = getEditor().getTablature().getCaret();
+		
+		getSongManager().cloneTrack(caret.getTrack());
+		updateTablature();
+		TuxGuitar.instance().getMixer().update();
+		
+		//termia el undoable
+		addUndoableEdit(undoable.endUndo());
+		
+		return 0;
+	}
 }
