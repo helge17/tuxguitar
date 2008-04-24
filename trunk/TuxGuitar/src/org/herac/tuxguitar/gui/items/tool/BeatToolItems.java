@@ -28,14 +28,14 @@ import org.herac.tuxguitar.song.models.TGChord;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class NoteToolItems  extends ToolItems{
-    public static final String NAME = "note.items";
+public class BeatToolItems  extends ToolItems{
+    public static final String NAME = "beat.items";
     
     protected ToolBar toolBar;   
     private ToolItem tiedNote;
     private ChordMenuItem chordItems;
     
-    public NoteToolItems(){    
+    public BeatToolItems(){    
     	super(NAME);
     }
    
@@ -76,7 +76,7 @@ public class NoteToolItems  extends ToolItems{
         private MenuItem[] subMenuItems;
         
         public ChordMenuItem() {
-            this.item = new ToolItem(NoteToolItems.this.toolBar, SWT.DROP_DOWN);                                               
+            this.item = new ToolItem(BeatToolItems.this.toolBar, SWT.DROP_DOWN);                                               
             this.item.addSelectionListener(this);                    
             this.subMenu = new Menu(this.item.getParent().getShell());
         }
