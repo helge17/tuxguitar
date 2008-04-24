@@ -50,9 +50,9 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 	private boolean updated;
 	private int lastTrack;
 	private int lastMeasuseCount;
-	private String lastTrackName;	
+	private String lastTrackName;
 	
-	public LyricEditor(){		
+	public LyricEditor(){
 		this.listener = new LyricModifyListener(this);
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
@@ -62,7 +62,7 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(getDialogLayout());
 		this.dialog.setSize(EDITOR_WIDTH,EDITOR_HEIGHT);
-
+		
 		this.track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
 		this.loadComposites();
 		this.loadProperties();
@@ -73,8 +73,8 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		
 		this.track = null;
 		this.label = null;
-		this.text = null;		
-		this.dialog = null;				
+		this.text = null;
+		this.dialog = null;
 	}
 	
 	private GridLayout getDialogLayout(){
@@ -89,8 +89,8 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		loadToolBar(this.dialog);
 		loadLyricText(this.dialog);
 	}
-
-	private void loadToolBar(Composite parent){		
+	
+	private void loadToolBar(Composite parent){
 		final Composite composite = new Composite(parent,SWT.NONE);
 		composite.setLayout(new GridLayout(5,false));
 		composite.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
@@ -101,10 +101,10 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		this.label = new Label(composite,SWT.NONE);
 		this.label.setText(this.track.getName());
 		this.label.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
-				
+		
 		this.fromLabel = new Label(composite,SWT.NONE);
 		this.fromLabel.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
-
+		
 		this.from = new Spinner(composite,SWT.BORDER);
 		this.from.setLayoutData(new GridData(50,SWT.DEFAULT));
 		
@@ -114,22 +114,21 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		this.from.setEnabled(this.track.countMeasures() > 1);
 		this.from.addModifyListener(this.listener);
 		
-		
 		this.previous.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				TuxGuitar.instance().getAction(GoPreviousTrackAction.NAME).process(e);
 				composite.layout();
-			}		
-		});		
+			}
+		});
 		this.next.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				TuxGuitar.instance().getAction(GoNextTrackAction.NAME).process(e);
 				composite.layout();
-			}		
+			}
 		});
 	}
-
-	private void loadLyricText(Composite parent){		
+	
+	private void loadLyricText(Composite parent){
 		Composite composite = new Composite(parent,SWT.NONE);
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -137,7 +136,7 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		this.text = new Text(composite,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		this.text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.text.setFocus();
-		this.text.setText(this.track.getLyrics().getLyrics());		
+		this.text.setText(this.track.getLyrics().getLyrics());
 		this.text.addModifyListener(this.listener);
 		this.text.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent event) {
@@ -172,7 +171,7 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 			}
 			if(/*this.text != null && !this.text.isDisposed() && */isTrackChanged()){
 				this.text.setText(this.track.getLyrics().getLyrics());
-				this.text.setSelection( (this.caretPosition >= 0 ? this.caretPosition : this.text.getCharCount()));				
+				this.text.setSelection( (this.caretPosition >= 0 ? this.caretPosition : this.text.getCharCount()));
 			}
 			/*
 			this.previous.setEnabled( enabled );
@@ -187,8 +186,8 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 			this.listener.setEnabled( enabled );
 			this.updated = false;
 		}
-	}	
-
+	}
+	
 	private boolean isTrackChanged(){
 		int current = this.track.getNumber();
 		if(current != this.lastTrack){
@@ -197,7 +196,7 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		}
 		return false;
 	}
-
+	
 	private boolean isTrackNameChanged(){
 		String current = this.track.getName();
 		if(this.lastTrackName == null || !current.equals( this.lastTrackName ) ){
@@ -214,16 +213,16 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 			return true;
 		}
 		return false;
-	}	
+	}
 	
 	public void update(){
 		this.updated = true;
 	}
-
+	
 	public void setCaretPosition(int caretPosition) {
 		this.caretPosition = caretPosition;
 	}
-
+	
 	public TGTrack getTrack(){
 		return this.track;
 	}
@@ -240,15 +239,14 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 		}
 	}
-		
+	
 	public boolean isDisposed() {
 		return (this.dialog == null || this.dialog.isDisposed());
-	}	
-
+	}
+	
 	public void dispose(){
 		if(!isDisposed()){
 			this.dialog.dispose();
 		}
 	}
-	
 }

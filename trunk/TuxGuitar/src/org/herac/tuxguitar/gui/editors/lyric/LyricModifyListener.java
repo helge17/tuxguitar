@@ -9,7 +9,7 @@ import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackLyric;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class LyricModifyListener implements ModifyListener{
-
+	
 	private boolean enabled;
 	private LyricEditor editor;
 	private int lastPosition;
@@ -20,7 +20,7 @@ public class LyricModifyListener implements ModifyListener{
 	
 	public void modifyText(ModifyEvent e) {
 		if(isEnabled() && !TuxGuitar.instance().getPlayer().isRunning()){
-		
+			
 			if(e.widget instanceof Text){
 				TGTrack track = this.editor.getTrack();
 				Text text = (Text)e.widget;
@@ -44,11 +44,11 @@ public class LyricModifyListener implements ModifyListener{
 			TuxGuitar.instance().updateCache(true);
 		}
 	}
-
+	
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-
+	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}

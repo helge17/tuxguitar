@@ -36,26 +36,26 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 
 public class Piano extends Composite{
-
+	
 	private static final boolean TYPE_NOTES[] = new boolean[]{true,false,true,false,true,true,false,true,false,true,false,true};
 	private static final int NATURAL_NOTES = 7;
 	private static final int MAX_OCTAVES = 8;
 	private static final int NATURAL_WIDTH = 15;
 	private static final int SHARP_WIDTH = 8;
 	private static final int NATURAL_HEIGHT = 60;
-	private static final int SHARP_HEIGHT = 40;				
-
+	private static final int SHARP_HEIGHT = 40;
+	
 	private int duration;
 	private boolean changes;
 	private PianoListener listener;
 	private PianoConfig config;
 	private Composite pianoComposite;
 	private Composite toolComposite;
-	private Label durationLabel;	
+	private Label durationLabel;
 	private Button scale;
 	private Button settings;
 	protected TGBeat beat;
-	protected Image image;			
+	protected Image image;
 	
 	public Piano(Composite parent, int style) {
 		super(parent, style);
@@ -69,9 +69,9 @@ public class Piano extends Composite{
 		this.loadIcons();
 		
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolComposite);
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.pianoComposite);		
+		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.pianoComposite);
 	}
-
+	
 	private void initToolBar() {
 		GridLayout layout = new GridLayout();
 		layout.makeColumnsEqualWidth = false;
@@ -79,10 +79,10 @@ public class Piano extends Composite{
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		
-	    this.toolComposite = new Composite(this, SWT.NONE);	    
-	    	    
+		this.toolComposite = new Composite(this, SWT.NONE);
+		
 		// position
-	    layout.numColumns ++;
+		layout.numColumns ++;
 		Button goLeft = new Button(this.toolComposite, SWT.ARROW | SWT.LEFT);
 		goLeft.addSelectionListener(TuxGuitar.instance().getAction(GoLeftAction.NAME));
 		
@@ -90,15 +90,15 @@ public class Piano extends Composite{
 		Button goRight = new Button(this.toolComposite, SWT.ARROW | SWT.RIGHT);
 		goRight.addSelectionListener(TuxGuitar.instance().getAction(GoRightAction.NAME));
 		
-		// separator		
+		// separator
 		layout.numColumns ++;
 		makeToolSeparator(this.toolComposite);
 		
-		// duration 
+		// duration
 		layout.numColumns ++;
 		Button decrement = new Button(this.toolComposite, SWT.ARROW | SWT.MIN);
 		decrement.addSelectionListener(TuxGuitar.instance().getAction(DecrementDurationAction.NAME));
-
+		
 		layout.numColumns ++;
 		this.durationLabel = new Label(this.toolComposite, SWT.BORDER);
 		
@@ -114,8 +114,8 @@ public class Piano extends Composite{
 		layout.numColumns ++;
 		this.scale = new Button(this.toolComposite, SWT.PUSH);
 		this.scale.setText(TuxGuitar.getProperty("scale"));
-		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));		
-
+		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));
+		
 		// settings
 		layout.numColumns ++;
 		this.settings = new Button(this.toolComposite, SWT.PUSH);
@@ -126,18 +126,17 @@ public class Piano extends Composite{
 			public void widgetSelected(SelectionEvent e) {
 				configure();
 			}
-		});	
+		});
 		
-		this.toolComposite.setLayout(layout);	    
+		this.toolComposite.setLayout(layout);
 		this.toolComposite.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
-	}	
+	}
 	
-
 	private void makeToolSeparator(Composite parent){
 		Label separator = new Label(parent,SWT.SEPARATOR);
 		separator.setLayoutData(new GridData(20,20));
 	}
-
+	
 	private void loadDurationImage(boolean force) {
 		int duration = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getDuration().getValue();
 		if(force || this.duration != duration){
@@ -146,16 +145,16 @@ public class Piano extends Composite{
 		}
 	}
 	
-	private void makePiano(){		
-		this.image = makePianoImage();		
-		this.pianoComposite = new Composite(this,SWT.BORDER | SWT.DOUBLE_BUFFERED);		
+	private void makePiano(){
+		this.image = makePianoImage();
+		this.pianoComposite = new Composite(this,SWT.BORDER | SWT.DOUBLE_BUFFERED);
 		this.pianoComposite.setLayout(new GridLayout());
 		this.pianoComposite.setLayoutData(new GridData((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT));
-		this.pianoComposite.addPaintListener(this.listener);		
+		this.pianoComposite.addPaintListener(this.listener);
 		this.pianoComposite.addMouseListener(this.listener);
 		this.pianoComposite.setFocus();
 	}
-
+	
 	/**
 	 * Crea la imagen del piano
 	 *
@@ -164,9 +163,9 @@ public class Piano extends Composite{
 	private Image makePianoImage(){
 		Image image = new Image(getDisplay(),(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
 		TGPainter painter = new TGPainter(new GC(image));
-				
+		
 		int x = 0;
-		int y = 0;		
+		int y = 0;
 		painter.setBackground(this.config.getColorNatural());
 		painter.initPath(TGPainter.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
@@ -180,11 +179,11 @@ public class Piano extends Composite{
 				painter.closePath();
 				x += NATURAL_WIDTH;
 			}else{
-				painter.setBackground(this.config.getColorNotNatural());							
+				painter.setBackground(this.config.getColorNotNatural());
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.addRectangle(x - (SHARP_WIDTH / 2),y,SHARP_WIDTH,SHARP_HEIGHT);
 				painter.closePath();
-			}			
+			}
 		}
 		paintScale(painter);
 		
@@ -198,14 +197,14 @@ public class Piano extends Composite{
 	 * @param gc
 	 * @param value
 	 */
-	private void paintScale(TGPainter painter){		
+	private void paintScale(TGPainter painter){
 		painter.setBackground(this.config.getColorScale());
-		painter.setForeground(this.config.getColorScale());	
+		painter.setForeground(this.config.getColorScale());
 		int posX = 0;
 		
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){			
+		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
 			int width = 0;
-
+			
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
 				width = NATURAL_WIDTH;
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
@@ -213,13 +212,13 @@ public class Piano extends Composite{
 				}
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
 					width -= ((SHARP_WIDTH / 2));
-				}			
+				}
 			}else{
 				width = SHARP_WIDTH;
 			}
-						
-			if(TuxGuitar.instance().getScaleManager().getScale().getNote(i)){			
-				if(TYPE_NOTES[i % TYPE_NOTES.length] ){					
+			
+			if(TuxGuitar.instance().getScaleManager().getScale().getNote(i)){
+				if(TYPE_NOTES[i % TYPE_NOTES.length] ){
 					int x = posX;
 					if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
 						x -= ((SHARP_WIDTH / 2));
@@ -235,12 +234,10 @@ public class Piano extends Composite{
 					painter.closePath();
 				}
 			}
-						
+			
 			posX += width;
 		}
-			
-	}	
-		
+	}
 	
 	/**
 	 * Pinta la nota a partir del indice
@@ -249,13 +246,13 @@ public class Piano extends Composite{
 	 * @param value
 	 */
 	protected void paintNote(TGPainter painter,int value){
-		painter.setBackground(this.config.getColorNote());		
+		painter.setBackground(this.config.getColorNote());
 		int posX = 0;
 		int y = 0;
 		
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){			
+		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
 			int width = 0;
-
+			
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
 				width = NATURAL_WIDTH;
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
@@ -263,13 +260,13 @@ public class Piano extends Composite{
 				}
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
 					width -= ((SHARP_WIDTH / 2));
-				}			
+				}
 			}else{
 				width = SHARP_WIDTH;
 			}
-						
+			
 			if(i == value){
-				if(TYPE_NOTES[i % TYPE_NOTES.length]){					
+				if(TYPE_NOTES[i % TYPE_NOTES.length]){
 					painter.initPath(TGPainter.PATH_FILL);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT);
 					
@@ -283,14 +280,13 @@ public class Piano extends Composite{
 					painter.initPath(TGPainter.PATH_FILL);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
 					painter.closePath();
-				}									
+				}
 				
 			}
-						
+			
 			posX += width;
 		}
-			
-	}	
+	}
 	
 	/**
 	 * Retorna el indice de la nota seleccionada
@@ -298,12 +294,12 @@ public class Piano extends Composite{
 	 * @param point
 	 * @return
 	 */
-	private int getSelection(Point point){		
+	private int getSelection(Point point){
 		int posX = 0;
-
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){			
+		
+		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
 			int width = 0;
-
+			
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
 				width = NATURAL_WIDTH;
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
@@ -311,29 +307,28 @@ public class Piano extends Composite{
 				}
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
 					width -= ((SHARP_WIDTH / 2));
-				}			
+				}
 			}else{
 				width = SHARP_WIDTH;
 			}
 			
-			if(point.x >= posX && point.x < (posX + width)  ){			
-				return i;								
+			if(point.x >= posX && point.x < (posX + width)  ){
+				return i;
 			}
-						
+			
 			posX += width;
 		}
-		return -1;	
-	}		
-
+		return -1;
+	}
 	
 	protected void hit(int x, int y) {
 		int value = getSelection(new Point(x,y));
 		
 		if (!removeNote(value)) {
-			addNote(value);					
+			addNote(value);
 		}
 	}
-
+	
 	private boolean removeNote(int value) {
 		if(this.beat != null){
 			Iterator it = this.beat.getNotes().iterator();
@@ -341,13 +336,13 @@ public class Piano extends Composite{
 				TGNoteImpl note = (TGNoteImpl) it.next();
 				if (note.getRealValue() == value) {
 					//comienza el undoable
-					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();     
+					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 					
-					TGSongManager manager = TuxGuitar.instance().getSongManager(); 
+					TGSongManager manager = TuxGuitar.instance().getSongManager();
 					manager.getMeasureManager().removeNote(note);
 					
 					//termia el undoable
-					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());   					
+					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
 					TuxGuitar.instance().getFileHistory().setUnsavedFile();
 					
 					return true;
@@ -355,7 +350,7 @@ public class Piano extends Composite{
 			}
 		}
 		return false;
-	}	
+	}
 	
 	private boolean addNote(int value) {
 		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
@@ -382,36 +377,36 @@ public class Piano extends Composite{
 					//comienza el undoable
 					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 					
-			        TGNote note = manager.getFactory().newNote();
-			    	note.setValue((value - string.getValue()));
-			    	note.setVelocity(caret.getVelocity());
-			    	note.setString(string.getNumber());
-
+					TGNote note = manager.getFactory().newNote();
+					note.setValue((value - string.getValue()));
+					note.setVelocity(caret.getVelocity());
+					note.setString(string.getNumber());
+					
 					TGDuration duration = manager.getFactory().newDuration();
-					caret.getDuration().copy(duration);					
+					caret.getDuration().copy(duration);
 					
-					manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration);					
+					manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration);
 					
-			        //termia el undoable
+					//termia el undoable
 					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
 					TuxGuitar.instance().getFileHistory().setUnsavedFile();
 					
-			        //reprodusco las notas en el pulso
-			        caret.getSelectedBeat().play();
+					//reprodusco las notas en el pulso
+					caret.getSelectedBeat().play();
 					
 					return true;
 				}
 			}
 		}
 		return false;
-	}	
+	}
 	
-	protected void afterAction() {		
+	protected void afterAction() {
 		int measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getNumber();
 		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure);
 		TuxGuitar.instance().updateCache(true);
 	}
-
+	
 	public boolean hasChanges(){
 		return this.changes;
 	}
@@ -435,18 +430,18 @@ public class Piano extends Composite{
 	}
 	
 	public void redraw() {
-	    if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){	    	
-	        super.redraw();
-	        this.pianoComposite.redraw();
-	        this.loadDurationImage(false);
-	    }
-	}
-
-	public void redrawPlayingMode(){     
 		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
-	        this.pianoComposite.redraw();
+			super.redraw();
+			this.pianoComposite.redraw();
+			this.loadDurationImage(false);
 		}
-	 }
+	}
+	
+	public void redrawPlayingMode(){
+		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+			this.pianoComposite.redraw();
+		}
+	}
 	
 	public void dispose(){
 		super.dispose();
@@ -454,31 +449,31 @@ public class Piano extends Composite{
 		this.config.dispose();
 	}
 	
-    public void loadProperties(){
-	    this.scale.setText(TuxGuitar.getProperty("scale"));
-	    this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
-	    this.layout(true,true);
-    }	
+	public void loadProperties(){
+		this.scale.setText(TuxGuitar.getProperty("scale"));
+		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
+		this.layout(true,true);
+	}
 	
-    public void loadIcons(){    	
-    	this.getShell().setImage(TuxGuitar.instance().getIconManager().getAppIcon());
-    	this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
-    	this.loadDurationImage(true);
-    	this.layout(true,true);
-    }
-    
+	public void loadIcons(){
+		this.getShell().setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+		this.loadDurationImage(true);
+		this.layout(true,true);
+	}
+	
 	protected void configure(){
 		this.config.configure(getShell());
 		this.setChanges(true);
 		this.redraw();
 	}
-    
+	
 	public Composite getPianoComposite() {
 		return this.pianoComposite;
 	}
 	
 	private class PianoListener implements PaintListener,MouseListener {
-
+		
 		public PianoListener(){
 			super();
 		}
@@ -490,7 +485,7 @@ public class Piano extends Composite{
 				
 				TGPainter painter = new TGPainter(e.gc);
 				painter.drawImage(Piano.this.image,0,0);
-			
+				
 				//pinto notas
 				if(Piano.this.beat != null){
 					Iterator it = Piano.this.beat.getNotes().iterator();
@@ -520,7 +515,7 @@ public class Piano extends Composite{
 		public void mouseDoubleClick(MouseEvent e) {
 			//Not implemented
 		}
-
+		
 		public void mouseDown(MouseEvent e) {
 			//Not implemented
 		}

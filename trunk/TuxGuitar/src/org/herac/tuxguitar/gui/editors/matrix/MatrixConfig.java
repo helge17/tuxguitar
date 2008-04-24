@@ -29,7 +29,7 @@ import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
 public class MatrixConfig {
-
+	
 	private Font font;
 	private Color[] colorLines;
 	private Color colorForeground;
@@ -41,40 +41,39 @@ public class MatrixConfig {
 	public MatrixConfig(){
 		super();
 	}
-
+	
 	public Font getFont() {
 		return this.font;
 	}
-
+	
 	public Color getColorForeground() {
 		return this.colorForeground;
 	}
-
+	
 	public Color getColorBorder() {
 		return this.colorBorder;
 	}
-
+	
 	public Color getColorPosition() {
 		return this.colorPosition;
 	}
-
+	
 	public Color getColorNote() {
 		return this.colorNote;
 	}
-
+	
 	public Color getColorPlay() {
 		return this.colorPlay;
 	}
-
+	
 	public Color[] getColorLines() {
 		return this.colorLines;
 	}
-
+	
 	public Color getColorLine(int index) {
 		return this.colorLines[index];
 	}
-
-
+	
 	public void load(){
 		Display display = TuxGuitar.instance().getDisplay();
 		TGConfigManager config = TuxGuitar.instance().getConfig();
@@ -90,12 +89,12 @@ public class MatrixConfig {
 				new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_3)),
 		};
 	}
-
+	
 	public void defaults(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		Properties defaults = config.getDefaults();
 		config.setProperty(TGConfigKeys.MATRIX_FONT,defaults.getProperty(TGConfigKeys.MATRIX_FONT));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND));		
+		config.setProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_BORDER,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_BORDER));
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_POSITION,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_POSITION));
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_NOTE,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_NOTE));
@@ -103,7 +102,7 @@ public class MatrixConfig {
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_1,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_LINE_1));
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_2,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_LINE_2));
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_3,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_LINE_3));
-	}	
+	}
 	
 	public void save(FontData fontData,
 					 RGB rgbForeground,
@@ -113,9 +112,9 @@ public class MatrixConfig {
 					 RGB rgbPlay,
 					 RGB rgbLines[]){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-
+		
 		config.setProperty(TGConfigKeys.MATRIX_FONT,fontData);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND,rgbForeground);		
+		config.setProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND,rgbForeground);
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_BORDER,rgbBorder);
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_POSITION,rgbPosition);
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_NOTE,rgbNote);
@@ -123,7 +122,7 @@ public class MatrixConfig {
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_1,rgbLines[0]);
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_2,rgbLines[1]);
 		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_3,rgbLines[2]);
-	}	
+	}
 	
 	public void dispose(){
 		dispose(this.font);
@@ -141,41 +140,41 @@ public class MatrixConfig {
 				dispose(resources[i]);
 			}
 		}
-	}	
+	}
 	
 	protected void dispose(Resource resource){
 		if(resource != null){
 			resource.dispose();
 		}
-	}	
-
-	private static final int MINIMUN_CONTROL_WIDTH = 180;    
-    private static final int MINIMUN_BUTTON_WIDTH = 80;
-    private static final int MINIMUN_BUTTON_HEIGHT = 25;	
+	}
+	
+	private static final int MINIMUN_CONTROL_WIDTH = 180;
+	private static final int MINIMUN_BUTTON_WIDTH = 80;
+	private static final int MINIMUN_BUTTON_HEIGHT = 25;
 	
 	public void configure(Shell shell) {
 		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("matrix.settings"));
-
+		
 		// ----------------------------------------------------------------------
 		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		group.setLayout(new GridLayout(2, false));
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		group.setText(TuxGuitar.getProperty("matrix.settings"));
-
+		
 		// fonts
 		final FontData fontData = getFontChooser(group,TuxGuitar.getProperty("matrix.font"),this.font.getFontData()[0]);
 		
 		// colors
 		final RGB rgbForeground = getColorChooser(group,TuxGuitar.getProperty("matrix.foreground-color"), this.colorForeground.getRGB());
-
+		
 		final RGB rgbLines[] = new RGB[]{
 				getColorChooser(group,TuxGuitar.getProperty("matrix.line-color-1"), this.colorLines[0].getRGB()),
 				getColorChooser(group,TuxGuitar.getProperty("matrix.line-color-2"), this.colorLines[1].getRGB()),
 				getColorChooser(group,TuxGuitar.getProperty("matrix.line-color-over"), this.colorLines[2].getRGB()),
 		};
-
+		
 		final RGB rgbBorder = getColorChooser(group,TuxGuitar.getProperty("matrix.border-color"), this.colorBorder.getRGB());
 		final RGB rgbPosition = getColorChooser(group,TuxGuitar.getProperty("matrix.position-color"), this.colorPosition.getRGB());
 		final RGB rgbNote = getColorChooser(group,TuxGuitar.getProperty("matrix.note-color"), this.colorNote.getRGB());
@@ -185,7 +184,7 @@ public class MatrixConfig {
 		Composite buttons = new Composite(dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(3, false));
 		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
-
+		
 		final Button buttonDefaults = new Button(buttons, SWT.PUSH);
 		buttonDefaults.setText(TuxGuitar.getProperty("defaults"));
 		buttonDefaults.setLayoutData(getButtonData());
@@ -196,7 +195,7 @@ public class MatrixConfig {
 				applyChanges();
 			}
 		});
-
+		
 		final Button buttonOK = new Button(buttons, SWT.PUSH);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setLayoutData(getButtonData());
@@ -204,10 +203,10 @@ public class MatrixConfig {
 			public void widgetSelected(SelectionEvent arg0) {
 				dialog.dispose();
 				save(fontData, rgbForeground, rgbBorder, rgbPosition, rgbNote, rgbPlay, rgbLines);
-				applyChanges();				
+				applyChanges();
 			}
 		});
-
+		
 		Button buttonCancel = new Button(buttons, SWT.PUSH);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.setLayoutData(getButtonData());
@@ -216,11 +215,11 @@ public class MatrixConfig {
 				dialog.dispose();
 			}
 		});
-
+		
 		dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-	}	
+	}
 	
 	protected GridData getButtonData(){
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -231,7 +230,7 @@ public class MatrixConfig {
 	
 	protected void applyChanges(){
 		this.dispose();
-		this.load();		
+		this.load();
 	}
 	
 	private RGB getColorChooser(final Composite parent,String title,RGB rgb){
@@ -243,7 +242,7 @@ public class MatrixConfig {
 		
 		final Button button = new Button(parent, SWT.PUSH);
 		button.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
-		button.addPaintListener(new PaintListener() {		
+		button.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				Color color = new Color(parent.getDisplay(), selection);
 				TGPainter painter = new TGPainter(e.gc);
@@ -251,9 +250,9 @@ public class MatrixConfig {
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.addRectangle(5,5,button.getSize().x - 10,button.getSize().y - 10);
 				painter.closePath();
-		        color.dispose();
-			}		
-		});		
+				color.dispose();
+			}
+		});
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				ColorDialog dlg = new ColorDialog(parent.getShell());
@@ -264,11 +263,11 @@ public class MatrixConfig {
 					selection.red = rgb.red;
 					selection.green = rgb.green;
 					selection.blue = rgb.blue;
-					button.redraw();					
+					button.redraw();
 				}
 			}
 		});
-
+		
 		return selection;
 	}
 	
@@ -277,12 +276,12 @@ public class MatrixConfig {
 		
 		Label label = new Label(parent, SWT.NULL);
 		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
-		label.setText(title);		
+		label.setText(title);
 		
 		Button button = new Button(parent, SWT.PUSH);
 		button.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
 		button.setText(TuxGuitar.getProperty("choose"));
-		button.addSelectionListener(new SelectionAdapter() {			
+		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				Font font = new Font(parent.getDisplay(),selection);
 				FontDialog fontDialog = new FontDialog(parent.getShell());
@@ -294,18 +293,18 @@ public class MatrixConfig {
 					selection.setStyle( fd.getStyle() );
 				}
 				font.dispose();
-			}			
+			}
 		});
 		return selection;
 	}
 	
-    private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
-    	GridData data = new GridData();
-    	data.minimumWidth = minimumWidth;
-    	data.horizontalAlignment = horizontalAlignment;
-    	data.verticalAlignment = SWT.DEFAULT;
-    	data.grabExcessHorizontalSpace = true;
-    	data.grabExcessVerticalSpace = true;
-    	return data;
-    }
+	private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
+		GridData data = new GridData();
+		data.minimumWidth = minimumWidth;
+		data.horizontalAlignment = horizontalAlignment;
+		data.verticalAlignment = SWT.DEFAULT;
+		data.grabExcessHorizontalSpace = true;
+		data.grabExcessVerticalSpace = true;
+		return data;
+	}
 }
