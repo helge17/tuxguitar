@@ -7,7 +7,7 @@ public interface ItemBase {
 	public void update();
 	/**
 	 * Actualiza los textos
-	 */	
-    public void loadProperties();
-
+	 */
+	public void loadProperties();
+	
 }

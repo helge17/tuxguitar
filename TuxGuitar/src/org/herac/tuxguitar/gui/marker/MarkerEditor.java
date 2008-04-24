@@ -29,35 +29,35 @@ public class MarkerEditor {
 	public static final int STATUS_NEW = 1;
 	public static final int STATUS_EDIT = 2;
 	
-	private static final int MINIMUN_CONTROL_WIDTH = 180;    
-    private static final int MINIMUN_BUTTON_WIDTH = 80;
-    private static final int MINIMUN_BUTTON_HEIGHT = 25;	
+	private static final int MINIMUN_CONTROL_WIDTH = 180;
+	private static final int MINIMUN_BUTTON_WIDTH = 80;
+	private static final int MINIMUN_BUTTON_HEIGHT = 25;
 	
 	private int status;
 	protected TGMarker marker;
-	protected Shell dialog;	
+	protected Shell dialog;
 	protected Spinner measureSpinner;
 	protected Text titleText;
-	protected Button colorButton;	
+	protected Button colorButton;
 	
-	protected boolean accepted; 
+	protected boolean accepted;
 	
 	public MarkerEditor(TGMarker marker) {
 		this(marker,STATUS_NEW);
-	}	
+	}
 	
 	public MarkerEditor(TGMarker marker,int status) {
 		this.marker = marker.clone(TuxGuitar.instance().getSongManager().getFactory());
 		this.status = status;
-	}		
-
+	}
+	
 	public boolean open(Shell shell) {
 		this.accepted = false;
 		
 		this.dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setText(TuxGuitar.getProperty("marker"));
-
+		
 		// ----------------------------------------------------------------------
 		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
 		group.setLayout(new GridLayout(2, false));
@@ -69,7 +69,7 @@ public class MarkerEditor {
 		Label measureLabel = new Label(group, SWT.NULL);
 		measureLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true,true));
 		measureLabel.setText(TuxGuitar.getProperty("measure"));
-
+		
 		this.measureSpinner = new Spinner(group, SWT.BORDER);
 		this.measureSpinner.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
 		this.measureSpinner.setMinimum(1);
@@ -85,7 +85,7 @@ public class MarkerEditor {
 				}
 			}
 		});
-
+		
 		// Title
 		Label titleLabel = new Label(group, SWT.NULL);
 		titleLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
@@ -93,7 +93,7 @@ public class MarkerEditor {
 		this.titleText = new Text(group, SWT.BORDER);
 		this.titleText.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
 		this.titleText.setText(this.marker.getTitle());
-
+		
 		// Color
 		Label colorLabel = new Label(group, SWT.NULL);
 		colorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
@@ -109,12 +109,12 @@ public class MarkerEditor {
 				if (rgb != null) {
 					MarkerEditor.this.marker.getColor().setR(rgb.red);
 					MarkerEditor.this.marker.getColor().setG(rgb.green);
-					MarkerEditor.this.marker.getColor().setB(rgb.blue);       
-					MarkerEditor.this.colorButton.redraw();					
+					MarkerEditor.this.marker.getColor().setB(rgb.blue);
+					MarkerEditor.this.colorButton.redraw();
 				}
 			}
-		});		
-		this.colorButton.addPaintListener(new PaintListener() {		
+		});
+		this.colorButton.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				Color color = new Color(MarkerEditor.this.dialog.getDisplay(), MarkerEditor.this.marker.getColor().getR(), MarkerEditor.this.marker.getColor().getG(), MarkerEditor.this.marker.getColor().getB());
 				TGPainter painter = new TGPainter(e.gc);
@@ -122,18 +122,18 @@ public class MarkerEditor {
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.addRectangle(5,5,MarkerEditor.this.colorButton.getSize().x - 10,MarkerEditor.this.colorButton.getSize().y - 10);
 				painter.closePath();
-		        color.dispose();
-			}		
-		});		
+				color.dispose();
+			}
+		});
 		// ------------------BUTTONS--------------------------
 		Composite buttons = new Composite(this.dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2, false));
 		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
-
+		
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.minimumWidth = MINIMUN_BUTTON_WIDTH;
 		data.minimumHeight = MINIMUN_BUTTON_HEIGHT;
-
+		
 		final Button buttonOK = new Button(buttons, SWT.PUSH);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setLayoutData(data);
@@ -144,7 +144,7 @@ public class MarkerEditor {
 				MarkerEditor.this.dialog.dispose();
 			}
 		});
-
+		
 		Button buttonCancel = new Button(buttons, SWT.PUSH);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.setLayoutData(data);
@@ -153,25 +153,25 @@ public class MarkerEditor {
 				MarkerEditor.this.dialog.dispose();
 			}
 		});
-
+		
 		this.dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
 		return this.accepted;
 	}
-
-    private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
-    	GridData data = new GridData();
-    	data.minimumWidth = minimumWidth;
-    	data.horizontalAlignment = horizontalAlignment;
-    	data.verticalAlignment = SWT.DEFAULT;
-    	data.grabExcessHorizontalSpace = true;
-    	data.grabExcessVerticalSpace = true;
-    	return data;
-    }	
-
-	protected void updateMarker() {	
+	
+	private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
+		GridData data = new GridData();
+		data.minimumWidth = minimumWidth;
+		data.horizontalAlignment = horizontalAlignment;
+		data.verticalAlignment = SWT.DEFAULT;
+		data.grabExcessHorizontalSpace = true;
+		data.grabExcessVerticalSpace = true;
+		return data;
+	}
+	
+	protected void updateMarker() {
 		int oldMeasure = this.marker.getMeasure();
 		this.marker.setMeasure(this.measureSpinner.getSelection());
 		this.marker.setTitle(this.titleText.getText());
@@ -183,14 +183,14 @@ public class MarkerEditor {
 		UndoableJoined joinedUndoable = new UndoableJoined();
 		
 		if(this.status == STATUS_EDIT && oldMeasure != this.marker.getMeasure()){
-			UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(manager.getMarker(oldMeasure));			
-			TuxGuitar.instance().getSongManager().removeMarker(oldMeasure);			
+			UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(manager.getMarker(oldMeasure));
+			TuxGuitar.instance().getSongManager().removeMarker(oldMeasure);
 			joinedUndoable.addUndoableEdit(undoable.endUndo(null));
 		}
-		UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(manager.getMarker(this.marker.getMeasure()));		
+		UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(manager.getMarker(this.marker.getMeasure()));
 		TuxGuitar.instance().getSongManager().updateMarker(this.marker);
 		joinedUndoable.addUndoableEdit(undoable.endUndo(this.marker));
-
+		
 		// termia el undoable
 		TuxGuitar.instance().getUndoableManager().addEdit(joinedUndoable.endUndo());
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();

@@ -26,76 +26,74 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class MarkerMenuItem implements MenuItems{
-    private MenuItem markerMenuItem;
-    private Menu menu;
-    private MenuItem add;
-    private MenuItem list;
-    private MenuItem first;
-    private MenuItem last;
-    private MenuItem next;
-    private MenuItem previous;    
-    
-    public MarkerMenuItem(Shell shell,Menu parent, int style) {
-        this.markerMenuItem = new MenuItem(parent, style);
-        this.menu = new Menu(shell, SWT.DROP_DOWN);
-    }
-    
-    public void showItems(){  
-        //--ADD--
-        this.add = new MenuItem(this.menu, SWT.PUSH);
-        this.add.addSelectionListener(TuxGuitar.instance().getAction(AddMarkerAction.NAME));
-
-        //--LIST--
-        this.list = new MenuItem(this.menu, SWT.PUSH);
-        this.list.addSelectionListener(TuxGuitar.instance().getAction(ListMarkersAction.NAME));        
-        
-        //--SEPARATOR--
-        new MenuItem(this.menu, SWT.SEPARATOR);        
-        
-        //--FIRST--
-        this.first = new MenuItem(this.menu, SWT.PUSH);
-        this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstMarkerAction.NAME));        
-
-        //--PREVIOUS--
-        this.previous = new MenuItem(this.menu, SWT.PUSH);
-        this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousMarkerAction.NAME));        
-        
-        //--PREVIOUS--
-        this.next = new MenuItem(this.menu, SWT.PUSH);
-        this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextMarkerAction.NAME));        
-        
-        //--LAST--
-        this.last = new MenuItem(this.menu, SWT.PUSH);
-        this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastMarkerAction.NAME));               
-        
-        this.markerMenuItem.setMenu(this.menu);      
-        
-        this.loadIcons();
-        this.loadProperties();
-    }
-
-    
-    public void update(){
-    	//Nothing to do
-    }
-    
-    public void loadProperties(){
-        this.markerMenuItem.setText(TuxGuitar.getProperty("marker"));        
-        this.add.setText(TuxGuitar.getProperty("marker.add"));
-        this.list.setText(TuxGuitar.getProperty("marker.list"));
-        this.first.setText(TuxGuitar.getProperty("marker.first"));
-        this.last.setText(TuxGuitar.getProperty("marker.last"));
-        this.previous.setText(TuxGuitar.getProperty("marker.previous"));
-        this.next.setText(TuxGuitar.getProperty("marker.next"));
-    }        
-    
-    public void loadIcons(){
-        this.add.setImage(TuxGuitar.instance().getIconManager().getMarkerAdd());
-        this.list.setImage(TuxGuitar.instance().getIconManager().getMarkerList());
-        this.first.setImage(TuxGuitar.instance().getIconManager().getMarkerFirst());
-        this.previous.setImage(TuxGuitar.instance().getIconManager().getMarkerPrevious());
-        this.next.setImage(TuxGuitar.instance().getIconManager().getMarkerNext());
-        this.last.setImage(TuxGuitar.instance().getIconManager().getMarkerLast());    
-    }                
-    
+	private MenuItem markerMenuItem;
+	private Menu menu;
+	private MenuItem add;
+	private MenuItem list;
+	private MenuItem first;
+	private MenuItem last;
+	private MenuItem next;
+	private MenuItem previous;
+	
+	public MarkerMenuItem(Shell shell,Menu parent, int style) {
+		this.markerMenuItem = new MenuItem(parent, style);
+		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	}
+	
+	public void showItems(){
+		//--ADD--
+		this.add = new MenuItem(this.menu, SWT.PUSH);
+		this.add.addSelectionListener(TuxGuitar.instance().getAction(AddMarkerAction.NAME));
+		
+		//--LIST--
+		this.list = new MenuItem(this.menu, SWT.PUSH);
+		this.list.addSelectionListener(TuxGuitar.instance().getAction(ListMarkersAction.NAME));
+		
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		//--FIRST--
+		this.first = new MenuItem(this.menu, SWT.PUSH);
+		this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstMarkerAction.NAME));
+		
+		//--PREVIOUS--
+		this.previous = new MenuItem(this.menu, SWT.PUSH);
+		this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousMarkerAction.NAME));
+		
+		//--PREVIOUS--
+		this.next = new MenuItem(this.menu, SWT.PUSH);
+		this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextMarkerAction.NAME));
+		
+		//--LAST--
+		this.last = new MenuItem(this.menu, SWT.PUSH);
+		this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastMarkerAction.NAME));
+		
+		this.markerMenuItem.setMenu(this.menu);
+		
+		this.loadIcons();
+		this.loadProperties();
+	}
+	
+	public void update(){
+		//Nothing to do
+	}
+	
+	public void loadProperties(){
+		this.markerMenuItem.setText(TuxGuitar.getProperty("marker"));
+		this.add.setText(TuxGuitar.getProperty("marker.add"));
+		this.list.setText(TuxGuitar.getProperty("marker.list"));
+		this.first.setText(TuxGuitar.getProperty("marker.first"));
+		this.last.setText(TuxGuitar.getProperty("marker.last"));
+		this.previous.setText(TuxGuitar.getProperty("marker.previous"));
+		this.next.setText(TuxGuitar.getProperty("marker.next"));
+	}
+	
+	public void loadIcons(){
+		this.add.setImage(TuxGuitar.instance().getIconManager().getMarkerAdd());
+		this.list.setImage(TuxGuitar.instance().getIconManager().getMarkerList());
+		this.first.setImage(TuxGuitar.instance().getIconManager().getMarkerFirst());
+		this.previous.setImage(TuxGuitar.instance().getIconManager().getMarkerPrevious());
+		this.next.setImage(TuxGuitar.instance().getIconManager().getMarkerNext());
+		this.last.setImage(TuxGuitar.instance().getIconManager().getMarkerLast());
+	}
 }

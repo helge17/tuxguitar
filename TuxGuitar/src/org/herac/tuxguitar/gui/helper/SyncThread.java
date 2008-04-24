@@ -14,16 +14,16 @@ import org.herac.tuxguitar.gui.TuxGuitar;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class SyncThread extends Thread {
-    
+	
 	private Runnable runnable;
-    
-    public SyncThread(Runnable runnable) {
-        this.runnable = runnable;
-    }
-
-    public void run() {
-        if(!TuxGuitar.isDisposed()){
-        	TuxGuitar.instance().getDisplay().syncExec(this.runnable);
-        }
-    }
+	
+	public SyncThread(Runnable runnable) {
+		this.runnable = runnable;
+	}
+	
+	public void run() {
+		if(!TuxGuitar.isDisposed()){
+			TuxGuitar.instance().getDisplay().syncExec(this.runnable);
+		}
+	}
 }
