@@ -25,18 +25,18 @@ public abstract class TGOutputStreamPlugin extends TGPluginAdapter{
 		}
 	}
 	
-	protected void removePlugin(){		
+	protected void removePlugin(){
 		if(this.loaded){
 			TGFileFormatManager.instance().removeOutputStream(this.stream);
 			this.loaded = false;
-		}			
+		}
 	}
-
+	
 	public void setEnabled(boolean enabled) {
 		if(enabled){
 			addPlugin();
 		}else{
 			removePlugin();
 		}
-	}	
+	}
 }

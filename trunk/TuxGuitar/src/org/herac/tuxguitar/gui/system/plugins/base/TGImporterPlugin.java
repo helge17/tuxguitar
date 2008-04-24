@@ -5,7 +5,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGSongImporter;
 
 public abstract class TGImporterPlugin extends TGPluginAdapter{
-
+	
 	private boolean loaded;
 	private TGSongImporter importer;
 	
@@ -24,15 +24,15 @@ public abstract class TGImporterPlugin extends TGPluginAdapter{
 			TGFileFormatManager.instance().addImporter(this.importer);
 			TuxGuitar.instance().getItemManager().createMenu();
 			this.loaded = true;
-		}				
+		}
 	}
 	
-	protected void removePlugin(){		
+	protected void removePlugin(){
 		if(this.loaded){
 			TGFileFormatManager.instance().removeImporter(this.importer);
 			TuxGuitar.instance().getItemManager().createMenu();
 			this.loaded = false;
-		}		
+		}
 	}
 	
 	public void setEnabled(boolean enabled) {

@@ -19,7 +19,7 @@ public class KeyBindingActionManager {
 	private List keyBindingsActions;
 	private KeyBindingListener listener;
 	
-	public KeyBindingActionManager(){ 
+	public KeyBindingActionManager(){
 		this.keyBindingsActions = new ArrayList();
 		this.init();
 	}
@@ -29,62 +29,60 @@ public class KeyBindingActionManager {
 		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings()) );
 		this.listener = new KeyBindingListener();
 	}
-
-    private String getUserFileName(){
-    	return TGFileUtils.PATH_USER_CONFIG + File.separator + "keybindings.xml";
-    }
-    
-    public Action getActionForKeyBinding(KeyBinding kb){
-    	Action action = KeyBindingReserveds.getActionForKeyBinding(kb);
-    	if(action != null){
-    		return action;
-    	}
-    	Iterator it = this.keyBindingsActions.iterator();
-    	while(it.hasNext()){
-    		KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
-    		if(kb.equals( keyBindingAction.getKeyBinding() )){
-    			return TuxGuitar.instance().getAction(keyBindingAction.getAction());
-    		}
-    	}
-    	return null;
-    }
-
-    
-    public KeyBinding getKeyBindingForAction(String action){
-    	KeyBinding kb = KeyBindingReserveds.getKeyBindingForAction(action);
-    	if(kb != null){
-    		return kb;
-    	}
-    	Iterator it = this.keyBindingsActions.iterator();
-    	while(it.hasNext()){
-    		KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
-    		if(action.equals( keyBindingAction.getAction() )){
-    			return keyBindingAction.getKeyBinding();
-    		}
-    	}
-    	return null;
-    }
-    
-    
-    public void reset(List keyBindings){
-    	this.keyBindingsActions.clear();
-    	this.keyBindingsActions.addAll(keyBindings);
-    }
-    
-    public List getKeyBindingActions(){
-    	return this.keyBindingsActions;
-    }
-    
-    public void saveKeyBindings(){
-    	KeyBindingWriter.setBindings(getKeyBindingActions(),getUserFileName());
-    }
-    
-    public void appendListenersTo(Control control){
-    	control.addKeyListener(this.listener);
-    }
-
-    protected class KeyBindingListener implements KeyListener {
-
+	
+	private String getUserFileName(){
+		return TGFileUtils.PATH_USER_CONFIG + File.separator + "keybindings.xml";
+	}
+	
+	public Action getActionForKeyBinding(KeyBinding kb){
+		Action action = KeyBindingReserveds.getActionForKeyBinding(kb);
+		if(action != null){
+			return action;
+		}
+		Iterator it = this.keyBindingsActions.iterator();
+		while(it.hasNext()){
+			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
+			if(kb.equals( keyBindingAction.getKeyBinding() )){
+				return TuxGuitar.instance().getAction(keyBindingAction.getAction());
+			}
+		}
+		return null;
+	}
+	
+	public KeyBinding getKeyBindingForAction(String action){
+		KeyBinding kb = KeyBindingReserveds.getKeyBindingForAction(action);
+		if(kb != null){
+			return kb;
+		}
+		Iterator it = this.keyBindingsActions.iterator();
+		while(it.hasNext()){
+			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
+			if(action.equals( keyBindingAction.getAction() )){
+				return keyBindingAction.getKeyBinding();
+			}
+		}
+		return null;
+	}
+	
+	public void reset(List keyBindings){
+		this.keyBindingsActions.clear();
+		this.keyBindingsActions.addAll(keyBindings);
+	}
+	
+	public List getKeyBindingActions(){
+		return this.keyBindingsActions;
+	}
+	
+	public void saveKeyBindings(){
+		KeyBindingWriter.setBindings(getKeyBindingActions(),getUserFileName());
+	}
+	
+	public void appendListenersTo(Control control){
+		control.addKeyListener(this.listener);
+	}
+	
+	protected class KeyBindingListener implements KeyListener {
+		
 		public void keyPressed(KeyEvent event) {
 			KeyBinding kb = new KeyBinding();
 			kb.setKey(event.keyCode);
@@ -94,9 +92,9 @@ public class KeyBindingActionManager {
 				action.process(event);
 			}
 		}
-
+		
 		public void keyReleased(KeyEvent evt) {
 			//not implemented
 		}
-    }
+	}
 }

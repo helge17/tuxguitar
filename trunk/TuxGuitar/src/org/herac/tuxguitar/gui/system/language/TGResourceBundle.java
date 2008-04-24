@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class TGResourceBundle {
-
+	
 	private Locale locale;
 	private Properties properties;
 	
@@ -19,11 +19,11 @@ public class TGResourceBundle {
 	public Locale getLocale() {
 		return this.locale;
 	}
-
+	
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
-
+	
 	public String getString(String key) {
 		return this.properties.getProperty(key);
 	}
@@ -43,7 +43,7 @@ public class TGResourceBundle {
 			bundleName += locale.getLanguage();
 			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties, loader);
 		}
-
+		
 		// load country
 		bundleName += "_";
 		if(locale.getCountry() != null && locale.getCountry().length() > 0){
@@ -56,7 +56,7 @@ public class TGResourceBundle {
 		if(locale.getVariant() != null && locale.getVariant().length() > 0){
 			bundleName += locale.getVariant();
 			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties, loader);
-		}		
+		}
 		
 		return new TGResourceBundle(locale, properties);
 	}
@@ -74,5 +74,4 @@ public class TGResourceBundle {
 			e.printStackTrace();
 		}
 	}
-	
 }

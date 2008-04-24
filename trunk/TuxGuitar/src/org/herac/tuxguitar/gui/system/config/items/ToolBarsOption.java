@@ -17,21 +17,21 @@ import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.items.ToolItems;
 import org.herac.tuxguitar.gui.system.config.TGConfigEditor;
 
-public class ToolBarsOption extends Option{	
+public class ToolBarsOption extends Option{
 	protected boolean initialized;
-
+	
 	protected Table table;
 	protected TableColumn column;
 	protected Button moveUp;
-	protected Button moveDown;    
-
-    public ToolBarsOption(TGConfigEditor configEditor,ToolBar toolBar,final Composite parent){
-        super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.toolbars"), SWT.FILL,SWT.FILL); 
-        this.initialized = false;
-    }
-
+	protected Button moveDown;
+	
+	public ToolBarsOption(TGConfigEditor configEditor,ToolBar toolBar,final Composite parent){
+		super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.toolbars"), SWT.FILL,SWT.FILL);
+		this.initialized = false;
+	}
+	
 	public void createOption() {
-		getToolItem().setText(TuxGuitar.getProperty("settings.config.toolbars"));	
+		getToolItem().setText(TuxGuitar.getProperty("settings.config.toolbars"));
 		getToolItem().setImage(TuxGuitar.instance().getIconManager().getOptionToolbars());
 		getToolItem().addSelectionListener(this);
 		
@@ -51,16 +51,16 @@ public class ToolBarsOption extends Option{
 		this.column.pack();
 		
 		Composite buttons = new Composite(getComposite(), SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));	
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.BOTTOM,true,false));  		
+		buttons.setLayout(new GridLayout(2,false));
+		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.BOTTOM,true,false));
 		
-		this.moveUp = new Button(buttons,SWT.PUSH);	
+		this.moveUp = new Button(buttons,SWT.PUSH);
 		this.moveUp.setLayoutData(getButtonData());
 		this.moveUp.setText(TuxGuitar.getProperty("settings.config.toolbars.move-up"));
 		this.moveUp.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				moveUp();
-			}		
+			}
 		});
 		
 		this.moveDown = new Button(buttons,SWT.PUSH);
@@ -69,8 +69,8 @@ public class ToolBarsOption extends Option{
 		this.moveDown.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				moveDown();
-			}		
-		});		
+			}
+		});
 		
 		this.loadConfig();
 	}
@@ -80,8 +80,8 @@ public class ToolBarsOption extends Option{
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
 		return data;
-	}  
-
+	}
+	
 	protected void moveUp(){
 		if(this.initialized){
 			int count = this.table.getItemCount();
@@ -93,8 +93,8 @@ public class ToolBarsOption extends Option{
 				this.table.setSelection(index - 1);
 			}
 		}
-	}		
-
+	}
+	
 	protected void moveDown(){
 		if(this.initialized){
 			int count = this.table.getItemCount();
@@ -112,22 +112,22 @@ public class ToolBarsOption extends Option{
 		ToolItems data1 = (ToolItems)item1.getData();
 		ToolItems data2 = (ToolItems)item2.getData();
 		loadItem(item1, data2);
-		loadItem(item2, data1);		
+		loadItem(item2, data1);
 	}
-
+	
 	protected void loadItem(TableItem item, ToolItems data){
 		item.setText( TuxGuitar.getProperty( data.getName() ));
 		item.setChecked( data.isEnabled() );
 		item.setData( data );
 	}
 	
-    protected void loadConfig(){
-    	new Thread(new Runnable() {		
+	protected void loadConfig(){
+		new Thread(new Runnable() {
 			public void run() {
 				final ToolItems[] items = TuxGuitar.instance().getItemManager().getToolBars();
-				new SyncThread(new Runnable() {					
+				new SyncThread(new Runnable() {
 					public void run() {
-						if(!isDisposed()){							
+						if(!isDisposed()){
 							for(int i = 0;i < items.length; i ++){
 								loadItem(new TableItem(ToolBarsOption.this.table, SWT.NONE), items[i]);
 							}
@@ -135,11 +135,11 @@ public class ToolBarsOption extends Option{
 							ToolBarsOption.this.column.pack();
 							ToolBarsOption.this.pack();
 						}
-					}						
+					}
 				}).start();
-			}		
+			}
 		}).start();
-    }   	
+	}
 	
 	public void updateConfig() {
 		if(this.initialized){
@@ -151,25 +151,25 @@ public class ToolBarsOption extends Option{
 			TuxGuitar.instance().getItemManager().writeToolBars();
 		}
 	}
-
+	
 	public void updateDefaults() {
 		if(this.initialized){
 			TuxGuitar.instance().getItemManager().setDefaultToolBars();
 			TuxGuitar.instance().getItemManager().writeToolBars();
 		}
-	}	
+	}
 	
-    public void applyConfig(boolean force){
-    	if(force || (this.initialized && TuxGuitar.instance().getItemManager().shouldReloadToolBars())){
-    		addSyncThread(new Runnable() {
+	public void applyConfig(boolean force){
+		if(force || (this.initialized && TuxGuitar.instance().getItemManager().shouldReloadToolBars())){
+			addSyncThread(new Runnable() {
 				public void run() {
 					TuxGuitar.instance().loadToolBars();
 				}
-    		});
-    	}
-    }
-
-    public Point computeSize(){
-    	return this.computeSize(SWT.DEFAULT,SWT.NONE);
-    }
+			});
+		}
+	}
+	
+	public Point computeSize(){
+		return this.computeSize(SWT.DEFAULT,SWT.NONE);
+	}
 }

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.gui.system.keybindings;
 import org.eclipse.swt.SWT;
 
 public class KeyBindingConstants{
-
+	
 	public static final int F1 = SWT.F1;
 	
 	public static final int F2 = SWT.F2;
@@ -58,7 +58,7 @@ public class KeyBindingConstants{
 	
 	public static final int KEYPAD_DIVIDE = SWT.KEYPAD_DIVIDE;
 	
-	public static final int KEYPAD_DECIMAL = SWT.KEYPAD_DECIMAL;	
+	public static final int KEYPAD_DECIMAL = SWT.KEYPAD_DECIMAL;
 	
 	public static final int BACKSPACE = SWT.BS;
 	

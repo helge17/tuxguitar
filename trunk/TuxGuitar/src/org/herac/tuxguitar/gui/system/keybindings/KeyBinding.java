@@ -21,16 +21,19 @@ public class KeyBinding {
 	public KeyBinding(){
 		this(0,0);
 	}
-		
+	
 	public int getKey() {
 		return this.key;
 	}
+	
 	public void setKey(int key) {
 		this.key = key;
 	}
+	
 	public int getMask() {
 		return this.mask;
 	}
+	
 	public void setMask(int mask) {
 		this.mask = mask;
 	}
@@ -75,25 +78,22 @@ public class KeyBinding {
 	
 	private static int getSpecialKeyCode(String key){
 		for(int i = 0; i < KeyConversion.relations.length; i++){
-			if (key.equals(KeyConversion.relations[i].key)){
-				return KeyConversion.relations[i].code;
+			if (key.equals(KeyConversion.relations[i].getKey())){
+				return KeyConversion.relations[i].getCode();
 			}
 		}
 		
 		return 0;
 	}
 	
-	
-	
 	public boolean equals(Object obj) {
-		if (obj == null)
+		if (!(obj instanceof KeyBinding)){
 			return false;
-		if (!(obj instanceof KeyBinding))
-			return false;
+		}
 		
 		KeyBinding kb = (KeyBinding)obj;
 		
-		return this.key == kb.key && this.mask == kb.mask;
+		return (this.key == kb.key && this.mask == kb.mask);
 	}
 	
 	public int hashCode() {
@@ -106,61 +106,62 @@ public class KeyBinding {
 	 * @return
 	 */
 	private static int getMaskCode(String mask){
-		if (mask.equals(ALT_STRING))
+		if (mask.equals(ALT_STRING)){
 			return SWT.ALT;
-		else if (mask.equals(SHIFT_STRING))
+		}
+		else if (mask.equals(SHIFT_STRING)){
 			return SWT.SHIFT;
-		else if (mask.equals(CONTROL_STRING))
+		}
+		else if (mask.equals(CONTROL_STRING)){
 			return SWT.CTRL;
+		}
 		return 0;
 	}
 	
 	private String getMaskString(){
 		String maskstring = "";
 		
-		if ((this.mask & SWT.ALT) == SWT.ALT)
+		if ((this.mask & SWT.ALT) == SWT.ALT){
 			maskstring += ALT_STRING+"+";
-		
-		if ((this.mask & SWT.SHIFT) == SWT.SHIFT)
+		}
+		if ((this.mask & SWT.SHIFT) == SWT.SHIFT){
 			maskstring += SHIFT_STRING+"+";
-			
-		if ((this.mask & SWT.CTRL) == SWT.CTRL)
+		}
+		if ((this.mask & SWT.CTRL) == SWT.CTRL){
 			maskstring += CONTROL_STRING+"+";
-
+		}
 		return maskstring;
 	}
 	
 	public String toString(){
 		String s = getMaskString();
-		
 		String sp = getSpecialKey();
-		if (sp != null)
-			s+= sp;
-		else
-			s+= (char)this.key;
-		
+		if (sp != null){
+			s += sp;
+		}else{
+			s += (char)this.key;
+		}
 		return s;
 	}
 	
 	private String getSpecialKey(){
 		for(int i = 0; i < KeyConversion.relations.length; i++){
-			if (this.key == KeyConversion.relations[i].code){
-				return KeyConversion.relations[i].key;
+			if (this.key == KeyConversion.relations[i].getCode()){
+				return KeyConversion.relations[i].getKey();
 			}
 		}
 		
 		return null;
 	}
 	
-
 	public Object clone(){
 		return new KeyBinding(getKey(),getMask());
 	}
-	
 }
 
 class KeyConversion {
-	static final KeyConversion[] relations = new KeyConversion[]{
+	
+	protected static final KeyConversion[] relations = new KeyConversion[]{
 		new KeyConversion("F1",KeyBindingConstants.F1),
 		new KeyConversion("F2",KeyBindingConstants.F2),
 		new KeyConversion("F3",KeyBindingConstants.F3),
@@ -183,9 +184,9 @@ class KeyConversion {
 		new KeyConversion("PgDn",KeyBindingConstants.PAGE_DOWN),
 		new KeyConversion("End",KeyBindingConstants.END),
 		new KeyConversion("Up",KeyBindingConstants.UP),
-		new KeyConversion("Down",KeyBindingConstants.DOWN),		
+		new KeyConversion("Down",KeyBindingConstants.DOWN),
 		new KeyConversion("Left",KeyBindingConstants.LEFT),
-		new KeyConversion("Right",KeyBindingConstants.RIGHT),	
+		new KeyConversion("Right",KeyBindingConstants.RIGHT),
 		new KeyConversion("Alt",KeyBindingConstants.ALT),
 		new KeyConversion("Control",KeyBindingConstants.CONTROL),
 		new KeyConversion("Shift",KeyBindingConstants.SHIFT),
@@ -194,13 +195,22 @@ class KeyConversion {
 		new KeyConversion("Enter",KeyBindingConstants.ENTER),
 		new KeyConversion("*",KeyBindingConstants.KEYPAD_MULTIPLY),
 		new KeyConversion("/",KeyBindingConstants.KEYPAD_DIVIDE),
-		new KeyConversion(".",KeyBindingConstants.KEYPAD_DECIMAL),		
+		new KeyConversion(".",KeyBindingConstants.KEYPAD_DECIMAL),
 	};
 	
-	String key;
-	int code;
-	KeyConversion(String key,int code){
+	private String key;
+	private int code;
+	
+	private KeyConversion(String key,int code){
 		this.key = key;
 		this.code = code;
+	}
+	
+	public String getKey(){
+		return this.key;
+	}
+	
+	public int getCode(){
+		return this.code;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.Properties;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
 
 public class TGConfigManagerImpl extends TGConfigManager{
-
+	
 	public TGConfigManagerImpl(){
 		super();
 	}
@@ -14,11 +14,11 @@ public class TGConfigManagerImpl extends TGConfigManager{
 	public String getName() {
 		return "System Configuration";
 	}
-		
+	
 	public String getFileName(){
-    	return TGFileUtils.PATH_USER_CONFIG + File.separator + "config.properties";
-    }
-
+		return TGFileUtils.PATH_USER_CONFIG + File.separator + "config.properties";
+	}
+	
 	public Properties getDefaults() {
 		return new TGConfigDefaults().getProperties();
 	}
