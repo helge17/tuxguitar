@@ -32,108 +32,106 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TrackMenuItem implements MenuItems{
-    private MenuItem trackMenuItem;
-    private Menu menu; 
-    private MenuItem first;
-    private MenuItem last;
-    private MenuItem next;
-    private MenuItem previous;    
-    private MenuItem addTrack;
-    private MenuItem cloneTrack;
-    private MenuItem removeTrack;
-    private MenuItem moveUp;
-    private MenuItem moveDown;
-    private MenuItem lyrics;
-    private MenuItem properties;
-    
-    public TrackMenuItem(Shell shell,Menu parent, int style) {
-        this.trackMenuItem = new MenuItem(parent, style);
-        this.menu = new Menu(shell, SWT.DROP_DOWN);
-    }
-
-    
-    public void showItems(){  
-        //--First--
-        this.first = new MenuItem(this.menu, SWT.PUSH);
-        this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstTrackAction.NAME));
-        //--previous--
-        this.previous = new MenuItem(this.menu, SWT.PUSH);
-        this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousTrackAction.NAME));        
-        //--next--
-        this.next = new MenuItem(this.menu, SWT.PUSH);
-        this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextTrackAction.NAME));        
-        //--last--
-        this.last = new MenuItem(this.menu, SWT.PUSH);
-        this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastTrackAction.NAME));          
-        //--SEPARATOR
-        new MenuItem(this.menu, SWT.SEPARATOR);          
-        //--ADD TRACK--
-        this.addTrack = new MenuItem(this.menu, SWT.PUSH);
-        this.addTrack.addSelectionListener(TuxGuitar.instance().getAction(AddTrackAction.NAME));
-        //--CLONE TRACK--
-        this.cloneTrack = new MenuItem(this.menu, SWT.PUSH);
-        this.cloneTrack.addSelectionListener(TuxGuitar.instance().getAction(CloneTrackAction.NAME));        
-        //--REMOVE TRACK--
-        this.removeTrack = new MenuItem(this.menu, SWT.PUSH);  
-        this.removeTrack.addSelectionListener(TuxGuitar.instance().getAction(RemoveTrackAction.NAME)); 
-        //--SEPARATOR
-        new MenuItem(this.menu, SWT.SEPARATOR);
-        //--MOVE UP--
-        this.moveUp = new MenuItem(this.menu, SWT.PUSH);  
-        this.moveUp.addSelectionListener(TuxGuitar.instance().getAction(MoveTrackUpAction.NAME));
-        //--MOVE DOWN--        
-        this.moveDown = new MenuItem(this.menu, SWT.PUSH);  
-        this.moveDown.addSelectionListener(TuxGuitar.instance().getAction(MoveTrackDownAction.NAME));        
-        //--SEPARATOR
-        new MenuItem(this.menu, SWT.SEPARATOR);
-        
-        //--LYRICS--
-        this.lyrics = new MenuItem(this.menu, SWT.PUSH);                  
-        this.lyrics.addSelectionListener(TuxGuitar.instance().getAction(EditLyricsAction.NAME));        
-        //--PROPERTIES--
-        this.properties = new MenuItem(this.menu, SWT.PUSH);                  
-        this.properties.addSelectionListener(TuxGuitar.instance().getAction(TrackPropertiesAction.NAME));  
-                
-        this.trackMenuItem.setMenu(this.menu);      
-        
-        this.loadIcons();
-        this.loadProperties();
-    }
-    
-    public void loadProperties(){
-        this.trackMenuItem.setText(TuxGuitar.getProperty("track"));        
-        this.first.setText(TuxGuitar.getProperty("track.first"));
-        this.last.setText(TuxGuitar.getProperty("track.last"));
-        this.previous.setText(TuxGuitar.getProperty("track.previous"));
-        this.next.setText(TuxGuitar.getProperty("track.next"));        
-        this.addTrack.setText(TuxGuitar.getProperty("track.add"));
-        this.cloneTrack.setText(TuxGuitar.getProperty("track.clone"));
-        this.removeTrack.setText(TuxGuitar.getProperty("track.remove"));
-        this.moveUp.setText(TuxGuitar.getProperty("track.move-up"));
-        this.moveDown.setText(TuxGuitar.getProperty("track.move-down"));
-        this.lyrics.setText(TuxGuitar.getProperty("track.lyrics"));
-        this.properties.setText(TuxGuitar.getProperty("track.properties"));        
-    }        
-
-    public void update(){
-        TGTrackImpl track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
-    	int tracks = track.getSong().countTracks();
-        boolean isFirst = (track.getNumber() == 1);
-        boolean isLast = (track.getNumber() == tracks);
-        boolean running = TuxGuitar.instance().getPlayer().isRunning();
-        this.addTrack.setEnabled(!running);
-        this.cloneTrack.setEnabled(!running);
-        this.removeTrack.setEnabled(!running);
-        this.moveUp.setEnabled(!running && tracks > 1);
-        this.moveDown.setEnabled(!running && tracks > 1);
-        this.first.setEnabled(!isFirst);
-        this.previous.setEnabled(!isFirst);
-        this.next.setEnabled(!isLast);
-        this.last.setEnabled(!isLast);
-        this.properties.setEnabled(!running);
-    }
-    
-    public void loadIcons(){	
-    	//Nothing to do
-    }    
+	private MenuItem trackMenuItem;
+	private Menu menu;
+	private MenuItem first;
+	private MenuItem last;
+	private MenuItem next;
+	private MenuItem previous;
+	private MenuItem addTrack;
+	private MenuItem cloneTrack;
+	private MenuItem removeTrack;
+	private MenuItem moveUp;
+	private MenuItem moveDown;
+	private MenuItem lyrics;
+	private MenuItem properties;
+	
+	public TrackMenuItem(Shell shell,Menu parent, int style) {
+		this.trackMenuItem = new MenuItem(parent, style);
+		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	}
+	
+	public void showItems(){
+		//--First--
+		this.first = new MenuItem(this.menu, SWT.PUSH);
+		this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstTrackAction.NAME));
+		//--previous--
+		this.previous = new MenuItem(this.menu, SWT.PUSH);
+		this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousTrackAction.NAME));
+		//--next--
+		this.next = new MenuItem(this.menu, SWT.PUSH);
+		this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextTrackAction.NAME));
+		//--last--
+		this.last = new MenuItem(this.menu, SWT.PUSH);
+		this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastTrackAction.NAME));
+		//--SEPARATOR
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		//--ADD TRACK--
+		this.addTrack = new MenuItem(this.menu, SWT.PUSH);
+		this.addTrack.addSelectionListener(TuxGuitar.instance().getAction(AddTrackAction.NAME));
+		//--CLONE TRACK--
+		this.cloneTrack = new MenuItem(this.menu, SWT.PUSH);
+		this.cloneTrack.addSelectionListener(TuxGuitar.instance().getAction(CloneTrackAction.NAME));
+		//--REMOVE TRACK--
+		this.removeTrack = new MenuItem(this.menu, SWT.PUSH);
+		this.removeTrack.addSelectionListener(TuxGuitar.instance().getAction(RemoveTrackAction.NAME));
+		//--SEPARATOR
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		//--MOVE UP--
+		this.moveUp = new MenuItem(this.menu, SWT.PUSH);
+		this.moveUp.addSelectionListener(TuxGuitar.instance().getAction(MoveTrackUpAction.NAME));
+		//--MOVE DOWN--
+		this.moveDown = new MenuItem(this.menu, SWT.PUSH);
+		this.moveDown.addSelectionListener(TuxGuitar.instance().getAction(MoveTrackDownAction.NAME));
+		//--SEPARATOR
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		//--LYRICS--
+		this.lyrics = new MenuItem(this.menu, SWT.PUSH);
+		this.lyrics.addSelectionListener(TuxGuitar.instance().getAction(EditLyricsAction.NAME));
+		//--PROPERTIES--
+		this.properties = new MenuItem(this.menu, SWT.PUSH);
+		this.properties.addSelectionListener(TuxGuitar.instance().getAction(TrackPropertiesAction.NAME));
+		
+		this.trackMenuItem.setMenu(this.menu);
+		
+		this.loadIcons();
+		this.loadProperties();
+	}
+	
+	public void loadProperties(){
+		this.trackMenuItem.setText(TuxGuitar.getProperty("track"));
+		this.first.setText(TuxGuitar.getProperty("track.first"));
+		this.last.setText(TuxGuitar.getProperty("track.last"));
+		this.previous.setText(TuxGuitar.getProperty("track.previous"));
+		this.next.setText(TuxGuitar.getProperty("track.next"));
+		this.addTrack.setText(TuxGuitar.getProperty("track.add"));
+		this.cloneTrack.setText(TuxGuitar.getProperty("track.clone"));
+		this.removeTrack.setText(TuxGuitar.getProperty("track.remove"));
+		this.moveUp.setText(TuxGuitar.getProperty("track.move-up"));
+		this.moveDown.setText(TuxGuitar.getProperty("track.move-down"));
+		this.lyrics.setText(TuxGuitar.getProperty("track.lyrics"));
+		this.properties.setText(TuxGuitar.getProperty("track.properties"));
+	}
+	
+	public void update(){
+		TGTrackImpl track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+		int tracks = track.getSong().countTracks();
+		boolean isFirst = (track.getNumber() == 1);
+		boolean isLast = (track.getNumber() == tracks);
+		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		this.addTrack.setEnabled(!running);
+		this.cloneTrack.setEnabled(!running);
+		this.removeTrack.setEnabled(!running);
+		this.moveUp.setEnabled(!running && tracks > 1);
+		this.moveDown.setEnabled(!running && tracks > 1);
+		this.first.setEnabled(!isFirst);
+		this.previous.setEnabled(!isFirst);
+		this.next.setEnabled(!isLast);
+		this.last.setEnabled(!isLast);
+		this.properties.setEnabled(!running);
+	}
+	
+	public void loadIcons(){
+		//Nothing to do
+	}
 }

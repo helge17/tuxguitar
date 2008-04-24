@@ -30,7 +30,7 @@ public class MarkerList implements IconLoader,LanguageLoader{
 	
 	private static MarkerList instance;
 	
-	protected Shell dialog;	
+	protected Shell dialog;
 	private Table table;
 	private List markers;
 	
@@ -56,11 +56,11 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 	}
-
+	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM /*| SWT.APPLICATION_MODAL*/);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout(2,false));
-		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));  
+		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		// ----------------------------------------------------------------------
 		this.compositeTable = new Composite(this.dialog, SWT.NONE);
 		this.compositeTable.setLayout(new GridLayout());
@@ -70,11 +70,11 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		this.table.setLayoutData(new GridData(250,200));
 		this.table.setHeaderVisible(true);
 		this.table.addListener (SWT.MouseDoubleClick, new Listener() {
-        	public void handleEvent (Event event) {        		        		
-        		new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
-        		TuxGuitar.instance().updateCache(true);
-        	}
-        });		
+			public void handleEvent (Event event) {
+				new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
+				TuxGuitar.instance().updateCache(true);
+			}
+		});
 		this.measureColumn = new TableColumn(this.table, SWT.LEFT);
 		this.measureColumn.setWidth(70);
 		
@@ -86,8 +86,8 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		// ------------------BUTTONS--------------------------
 		this.compositeButtons = new Composite(this.dialog, SWT.NONE);
 		this.compositeButtons.setLayout(new GridLayout(1,false));
-		this.compositeButtons.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));    	
-
+		this.compositeButtons.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		
 		this.buttonAdd = new Button(this.compositeButtons, SWT.PUSH);
 		this.buttonAdd.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonAdd.addSelectionListener(new SelectionAdapter() {
@@ -105,7 +105,7 @@ public class MarkerList implements IconLoader,LanguageLoader{
 				}
 			}
 		});
-
+		
 		this.buttonEdit = new Button(this.compositeButtons, SWT.PUSH);
 		this.buttonEdit.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonEdit.addSelectionListener(new SelectionAdapter() {
@@ -133,9 +133,9 @@ public class MarkerList implements IconLoader,LanguageLoader{
 					TGMarker marker = getSelectedMarker();
 					// comienza el undoable
 					UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(marker);
-				
+					
 					TuxGuitar.instance().getSongManager().removeMarker(marker);
-				
+					
 					// termia el undoable
 					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(null));
 					TuxGuitar.instance().getFileHistory().setUnsavedFile();
@@ -144,7 +144,7 @@ public class MarkerList implements IconLoader,LanguageLoader{
 					ActionLock.unlock();
 				}
 			}
-		});			
+		});
 		
 		this.buttonGo = new Button(this.compositeButtons, SWT.PUSH);
 		this.buttonGo.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,true));
@@ -157,7 +157,7 @@ public class MarkerList implements IconLoader,LanguageLoader{
 					ActionLock.unlock();
 				}
 			}
-		});		
+		});
 		
 		this.buttonClose = new Button(this.compositeButtons, SWT.PUSH);
 		this.buttonClose.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,false));
@@ -166,13 +166,13 @@ public class MarkerList implements IconLoader,LanguageLoader{
 				MarkerList.this.dialog.dispose();
 			}
 		});
-
+		
 		this.loadIcons();
 		this.loadProperties(false);
-
+		
 		this.dialog.setDefaultButton( this.buttonGo );
 		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK /*| DialogUtils.OPEN_STYLE_WAIT*/);
+		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	public void dispose(){
@@ -204,11 +204,11 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = grabExcessVerticalSpace;
 		data.minimumWidth = 80;
-		data.minimumHeight = 25;	
+		data.minimumHeight = 25;
 		
 		return data;
 	}
-
+	
 	protected void loadTableItems(boolean keepSelection){
 		int itemSelected = (keepSelection ? this.table.getSelectionIndex() : -1 );
 		
@@ -218,15 +218,15 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		Iterator it = this.markers.iterator();
 		while (it.hasNext()) {
 			TGMarker marker = (TGMarker) it.next();
-
+			
 			TableItem item = new TableItem(this.table, SWT.NONE);
 			item.setText(new String[] { Integer.toString(marker.getMeasure()),marker.getTitle() });
-		}		
+		}
 		
 		if(itemSelected >= 0 && itemSelected < this.markers.size()){
 			this.table.select(itemSelected);
 		}
-	}	
+	}
 	
 	protected TGMarker getSelectedMarker(){
 		int itemSelected = this.table.getSelectionIndex();
@@ -239,13 +239,13 @@ public class MarkerList implements IconLoader,LanguageLoader{
 	public boolean isDisposed(){
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
-
+	
 	public void loadIcons() {
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 		}
 	}
-
+	
 	public void loadProperties() {
 		this.loadProperties(true);
 	}
@@ -269,5 +269,5 @@ public class MarkerList implements IconLoader,LanguageLoader{
 			}
 		}
 	}
-
+	
 }
