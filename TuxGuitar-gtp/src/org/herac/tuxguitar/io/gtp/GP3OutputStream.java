@@ -23,6 +23,7 @@ import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
@@ -208,6 +209,9 @@ public class GP3OutputStream extends GTPOutputStream{
 		if (!duration.getTupleto().isEqual(TGTupleto.NORMAL)) {
 			flags |= 0x20;
 		}
+		if(beat.isTextBeat()){
+			flags |= 0x04;
+		}
 		if (measure.getTempo().getValue() != songTempo.getValue()) {
 			flags |= 0x10;
 		}
@@ -235,6 +239,9 @@ public class GP3OutputStream extends GTPOutputStream{
 		writeByte(parseDuration(duration));
 		if ((flags & 0x20) != 0) {
 			writeInt(duration.getTupleto().getEnters());
+		}
+		if ((flags & 0x04) != 0) {
+			writeText(beat.getText());
 		}
 		if ((flags & 0x08) != 0) {
 			writeBeatEffects(effect);
@@ -319,6 +326,10 @@ public class GP3OutputStream extends GTPOutputStream{
 			break;
 		}
 		return value;
+	}
+	
+	private void writeText(TGText text) throws IOException {
+		writeStringByteSizeOfInteger(text.getValue());
 	}
 	
 	private void writeBeatEffects(TGNoteEffect noteEffect) throws IOException {
