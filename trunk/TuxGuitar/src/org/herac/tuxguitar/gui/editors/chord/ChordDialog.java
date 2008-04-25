@@ -86,7 +86,9 @@ public class ChordDialog {
         
         //---------------EDITOR--------------------------------            
         this.editor = new ChordEditor(this, topComposite, DEFAULT_STYLE,(short)tuning.length);
-        this.editor.pack();                this.editor.setCurrentTrack(measure.getTrack());
+        this.editor.pack();
+        
+        this.editor.setCurrentTrack(measure.getTrack());
         
         //---------------RECOGNIZER------------------------------------
         this.recognizer = new ChordRecognizer(this, topComposite, DEFAULT_STYLE);
