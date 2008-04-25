@@ -13,6 +13,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -23,6 +24,7 @@ import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
@@ -249,6 +251,12 @@ public class GP4OutputStream extends GTPOutputStream{
 		if (duration.isDotted() || duration.isDoubleDotted() ) {
 			flags |= 0x01;
 		}
+		if(beat.isChordBeat()){
+			flags |= 0x02;
+		}
+		if(beat.isTextBeat()){
+			flags |= 0x04;
+		}
 		if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
 			flags |= 0x08;
 		}
@@ -269,6 +277,12 @@ public class GP4OutputStream extends GTPOutputStream{
 		writeByte(parseDuration(duration));
 		if ((flags & 0x20) != 0) {
 			writeInt(duration.getTupleto().getEnters());
+		}
+		if ((flags & 0x02) != 0) {
+			writeChord(beat.getChord());
+		}
+		if ((flags & 0x04) != 0) {
+			writeText(beat.getText());
 		}
 		if ((flags & 0x08) != 0) {
 			writeBeatEffects(effect);
@@ -369,6 +383,22 @@ public class GP4OutputStream extends GTPOutputStream{
 			break;
 		}
 		return value;
+	}
+	
+	private void writeText(TGText text) throws IOException{
+		writeStringByteSizeOfInteger(text.getValue());
+	}
+	
+	private void writeChord(TGChord chord) throws IOException{
+		writeUnsignedByte( 0x01 );
+		skipBytes(16);
+		writeStringByte(chord.getName(),21);
+		skipBytes(4);
+		writeInt(chord.getFirstFret());
+		for (int i = 0; i < 7; i++) {
+			writeInt( (i < chord.countStrings() ? chord.getFretValue(i) : -1 ) ) ;
+		}
+		skipBytes(32);
 	}
 	
 	private void writeBeatEffects(TGNoteEffect effect) throws IOException{
