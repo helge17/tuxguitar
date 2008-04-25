@@ -21,54 +21,38 @@ import org.herac.tuxguitar.gui.util.DialogUtils;
  * @author Nikola Kolarovic
  *
  */
-/*
- * Dialog design:
- * [x] Open chords
- * 
- * Chord form (combo):
- *  - normal (current)
- *  - close-voiced chords (subsequent is big, smaller BasicChordTheory than)
- *  - open voicings (subsequent is very small, loose on theory and bassInBass)
- *  - inversions (negative bass in bass)
- *  
- *  Search frets:
- *  Min: 0   Max: 15
- *  
- *  Chords to display: 30
- * http://tagliarino.blogspot.com/2007/09/open-vs-close-voiced-chords.html
- */
 public class ChordSettingsDialog {
 	
-	private boolean updated;	
-	private Shell dialog;	
+	private boolean updated;
+	private Shell dialog;
 	private Button emptyStringChords = null;
 	private Spinner chordsToDisplay = null;
 	private Combo typeCombo = null;
 	private Spinner minFret = null;
 	private Spinner maxFret = null;
 	
-	public ChordSettingsDialog() {		
+	public ChordSettingsDialog() {
 		super();
-	}	
+	}
 	
 	public boolean open(Shell parent){
 		this.updated = false;
 		
 		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());        
+		this.dialog.setLayout(new GridLayout());
 		this.dialog.setText(TuxGuitar.getProperty("settings"));
-        this.init();
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);		
+		this.init();
+		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
 		return this.updated;
 	}
 	
-	protected void init() {				
-		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);            
+	protected void init() {
+		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		group.setText(TuxGuitar.getProperty("chord.settings.tip"));
-
+		
 		Composite composite = new Composite(group,SWT.NONE);
 		composite.setLayout(new GridLayout(2,false));
 		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -77,31 +61,31 @@ public class ChordSettingsDialog {
 		initChordsToDisplay(composite);
 		initEmptyStringChords(composite);
 		initFretSearch(composite);
-
-        //------------------BUTTONS--------------------------            
-        Composite buttons = new Composite(this.dialog, SWT.NONE);
-        buttons.setLayout(new GridLayout(2,false));
-        buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));    	
-        
-        final Button buttonOK = new Button(buttons, SWT.PUSH);
-        buttonOK.setText(TuxGuitar.getProperty("ok"));
-        buttonOK.setLayoutData(getButtonData());
-        buttonOK.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
-            	dispose(true);
-            }
-        });
-
-        Button buttonCancel = new Button(buttons, SWT.PUSH);
-        buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-        buttonCancel.setLayoutData(getButtonData());
-        buttonCancel.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {            	
-            	dispose(false);
-            }
-        });
-        
-        this.dialog.setDefaultButton( buttonOK );
+		
+		//------------------BUTTONS--------------------------
+		Composite buttons = new Composite(this.dialog, SWT.NONE);
+		buttons.setLayout(new GridLayout(2,false));
+		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		
+		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		buttonOK.setText(TuxGuitar.getProperty("ok"));
+		buttonOK.setLayoutData(getButtonData());
+		buttonOK.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				dispose(true);
+			}
+		});
+		
+		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+		buttonCancel.setLayoutData(getButtonData());
+		buttonCancel.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				dispose(false);
+			}
+		});
+		
+		this.dialog.setDefaultButton( buttonOK );
 	}
 	
 	private GridData getGridData(int minimumWidth, int minimumHeight){
@@ -109,8 +93,8 @@ public class ChordSettingsDialog {
 		data.minimumWidth = minimumWidth;
 		data.minimumHeight = minimumHeight;
 		return data;
-	}	
-
+	}
+	
 	private GridData getGridData(){
 		return getGridData(125,0);
 	}
@@ -121,16 +105,16 @@ public class ChordSettingsDialog {
 	
 	private Spinner makeSpinner(Composite parent,String label,int value, int min, int max){
 		this.newLabel(parent,label);
-		Spinner spinner = new Spinner(parent,SWT.BORDER);		
+		Spinner spinner = new Spinner(parent,SWT.BORDER);
 		spinner.setMinimum(min);
-		spinner.setMaximum(max);		
+		spinner.setMaximum(max);
 		spinner.setSelection(value);
 		spinner.setLayoutData(getGridData());
 		return spinner;
-	}	
+	}
 	
 	private Label newLabel(Composite parent,String text){
-		Label label = new Label(parent,SWT.HORIZONTAL);		
+		Label label = new Label(parent,SWT.HORIZONTAL);
 		label.setText(text);
 		return label;
 	}
@@ -163,20 +147,20 @@ public class ChordSettingsDialog {
 		group.setLayout(new GridLayout(4,false));
 		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,2,1));
 		group.setText(TuxGuitar.getProperty("chord.settings.search-frets"));
-        this.minFret = makeSpinner(group,TuxGuitar.getProperty("chord.settings.minimum-fret"),ChordSettings.instance().getFindChordsMin(),0,15);
-        this.maxFret = makeSpinner(group,TuxGuitar.getProperty("chord.settings.maximum-fret"),ChordSettings.instance().getFindChordsMax(),2,25);
-        this.minFret.addSelectionListener(new SelectionAdapter() {		
+		this.minFret = makeSpinner(group,TuxGuitar.getProperty("chord.settings.minimum-fret"),ChordSettings.instance().getFindChordsMin(),0,15);
+		this.maxFret = makeSpinner(group,TuxGuitar.getProperty("chord.settings.maximum-fret"),ChordSettings.instance().getFindChordsMax(),2,25);
+		this.minFret.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				checkMinimumFretValue();
 			}
 		});
-        this.maxFret.addSelectionListener(new SelectionAdapter() {
+		this.maxFret.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				checkMaximunFretValue();
 			}
 		});
 	}
-
+	
 	protected void checkMinimumFretValue(){
 		int maxSelection = this.maxFret.getSelection();
 		int minSelection = this.minFret.getSelection();
@@ -191,10 +175,10 @@ public class ChordSettingsDialog {
 		if(maxSelection < minSelection){
 			this.maxFret.setSelection(minSelection);
 		}
-	}	
+	}
 	
 	private void update(){
-    	ChordSettings.instance().setChordTypeIndex(this.typeCombo.getSelectionIndex());
+		ChordSettings.instance().setChordTypeIndex(this.typeCombo.getSelectionIndex());
 		ChordSettings.instance().setEmptyStringChords(this.emptyStringChords.getSelection());
 		ChordSettings.instance().setChordsToDisplay(this.chordsToDisplay.getSelection() );
 		ChordSettings.instance().setFindChordsMax(this.maxFret.getSelection());

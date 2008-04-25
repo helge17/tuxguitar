@@ -14,12 +14,12 @@ public class ChordDatabase {
 	 * 
 	 * If you want to change it, please contact me on
 	 * nikola.kolarovic@gmail.com
-	 */	
+	 */
 	private static final ChordInfo[] data = new ChordInfo[]{
-
+		
 		// Major--------------------------
 		new ChordInfo("M",new int[]{ 1, 5, 8 }),
-
+		
 		// 7--------------------------
 		new ChordInfo("7",new int[]{ 1, 5, 8, 11 }),
 		
@@ -67,38 +67,38 @@ public class ChordDatabase {
 		new ChordInfo("aug",new int[]{ 1, 5, 9 }),
 		
 		// 5--------------------------
-		// index <last> hard-coded in ChordRecognizer line 220, so it is not so unusual		
+		// index <last> hard-coded in ChordRecognizer line 220, so it is not so unusual
 		new ChordInfo("5",new int[]{ 1, 8 }),
-
+		
 	};
 	
 	public static int length(){
 		return data.length;
 	}
-
+	
 	public static ChordInfo get(int index){
 		return data[index];
 	}
-
+	
 	/** chord data structure, contains all info for chord formation **/
 	public static class ChordInfo {
-
+		
 		private String name;
 		private int[] requiredNotes;
-
+		
 		public ChordInfo(String name,int[] requiredNotes){
 			this.name = name;
 			this.requiredNotes = requiredNotes;
 		}
-
+		
 		public String getName() {
 			return this.name;
 		}
-
+		
 		public int[] getRequiredNotes() {
 			return this.requiredNotes;
 		}
-
+		
 		public int[] cloneRequireds() {
 			int[] requiredNotes = new int[this.requiredNotes.length];
 			for(int i = 0; i < requiredNotes.length; i ++){

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.gui.editors.chord;
 
 public class ChordSettings {
-
+	
 	private static ChordSettings instance;
 	
 	private boolean emptyStringChords;
@@ -38,67 +38,67 @@ public class ChordSettings {
 		}
 		return instance;
 	}
-
+	
 	public float getBassGrade() {
 		return this.bassGrade;
 	}
-
+	
 	public void setBassGrade(float bassGrade) {
 		this.bassGrade = bassGrade;
 	}
-
+	
 	public int getChordsToDisplay() {
 		return this.chordsToDisplay;
 	}
-
+	
 	public void setChordsToDisplay(int chordsToDisplay) {
 		this.chordsToDisplay = chordsToDisplay;
 	}
-
+	
 	public boolean isEmptyStringChords() {
 		return this.emptyStringChords;
 	}
-
+	
 	public void setEmptyStringChords(boolean emptyStringChords) {
 		this.emptyStringChords = emptyStringChords;
 	}
-
+	
 	public float getFingeringGrade() {
 		return this.fingeringGrade;
 	}
-
+	
 	public void setFingeringGrade(float fingeringGrade) {
 		this.fingeringGrade = fingeringGrade;
 	}
-
+	
 	public float getGoodChordSemanticsGrade() {
 		return this.goodChordSemanticsGrade;
 	}
-
+	
 	public void setGoodChordSemanticsGrade(float goodChordSemanticsGrade) {
 		this.goodChordSemanticsGrade = goodChordSemanticsGrade;
 	}
-
+	
 	public float getManyStringsGrade() {
 		return this.manyStringsGrade;
 	}
-
+	
 	public void setManyStringsGrade(float manyStringsGrade) {
 		this.manyStringsGrade = manyStringsGrade;
 	}
-
+	
 	public float getRequiredBasicsGrade() {
 		return this.requiredBasicsGrade;
 	}
-
+	
 	public void setRequiredBasicsGrade(float requiredBasicsGrade) {
 		this.requiredBasicsGrade = requiredBasicsGrade;
 	}
-
+	
 	public float getSubsequentGrade() {
 		return this.subsequentGrade;
 	}
-
+	
 	public void setSubsequentGrade(float subsequentGrade) {
 		this.subsequentGrade = subsequentGrade;
 	}
@@ -106,7 +106,7 @@ public class ChordSettings {
 	public int getIncompleteChords() {
 		return this.howManyIncompleteChords;
 	}
-
+	
 	public void setIncompleteChords(int incomplete) {
 		this.howManyIncompleteChords = incomplete;
 	}
@@ -118,7 +118,7 @@ public class ChordSettings {
 	public void setFindChordsMin(int min) {
 		this.findChordsMin = min;
 	}
-
+	
 	public int getFindChordsMax() {
 		return this.findChordsMax;
 	}
@@ -139,7 +139,7 @@ public class ChordSettings {
 					this.subsequentGrade = 200.0f;
 					this.requiredBasicsGrade = 150.0f;
 					this.manyStringsGrade = 100.0f;
-					this.goodChordSemanticsGrade = 200.0f;					
+					this.goodChordSemanticsGrade = 200.0f;
 				    break;
 			case 1 : // inversions
 					this.bassGrade = -100.0f;
@@ -168,5 +168,4 @@ public class ChordSettings {
 		}
 		this.chordTypeIndex = index;
 	}
-	
 }
