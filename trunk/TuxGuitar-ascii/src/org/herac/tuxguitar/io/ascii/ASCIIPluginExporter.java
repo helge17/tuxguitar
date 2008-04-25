@@ -12,17 +12,16 @@ public class ASCIIPluginExporter extends TGExporterPlugin{
 	public String getAuthor() {
 		return "Julian Casadesus <julian@casadesus.com.ar>";
 	}
-
-	public String getDescription() {		
+	
+	public String getDescription() {
 		return "ASCII tab exporter";
 	}
-
+	
 	public String getName() {
 		return "ASCII tab exporter";
 	}
-
+	
 	public String getVersion() {
 		return "1.0-rc3";
 	}
-
 }

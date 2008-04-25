@@ -39,5 +39,4 @@ public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin implements 
 		}
 		return this.provider;
 	}
-	
 }

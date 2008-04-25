@@ -15,10 +15,10 @@ import org.herac.tuxguitar.io.base.TGFileFormatException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class GTPFormatException extends TGFileFormatException {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	public GTPFormatException(String s) {
-        super(s);
-    }
+		super(s);
+	}
 }

@@ -12,7 +12,7 @@ import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 
 public class TGTray implements IconLoader,LanguageLoader{
-
+	
 	private boolean visible;
 	private Display display;
 	private Tray tray;
@@ -57,7 +57,7 @@ public class TGTray implements IconLoader,LanguageLoader{
 				}
 			});
 			this.icon.setItem(item);
-			this.loadIcons();			
+			this.loadIcons();
 		}
 	}
 	
@@ -66,9 +66,9 @@ public class TGTray implements IconLoader,LanguageLoader{
 		this.menu.loadIcons();
 	}
 	
-    public void loadProperties(){
-        this.menu.loadProperties();
-    }
+	public void loadProperties(){
+		this.menu.loadProperties();
+	}
 	
 	protected void setVisible(){
 		this.setVisible(!this.visible);
@@ -83,7 +83,7 @@ public class TGTray implements IconLoader,LanguageLoader{
 			this.visible = visible;
 		}
 	}
-
+	
 	protected void showMenu(){
 		this.menu.show();
 	}

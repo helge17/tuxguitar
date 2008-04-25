@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.tef.base;
 
 public class TEComponentNote extends TEComponent{
-
+	
 	private int fret;
 	
 	private int duration;
@@ -9,7 +9,7 @@ public class TEComponentNote extends TEComponent{
 	private int dynamic;
 	
 	private int effect;
-
+	
 	public TEComponentNote(int position,int measure, int string, int fret, int duration, int dynamic, int effect) {
 		super(position, measure, string);
 		this.fret = fret;
@@ -21,19 +21,19 @@ public class TEComponentNote extends TEComponent{
 	public int getDuration() {
 		return this.duration;
 	}
-
+	
 	public int getDynamic() {
 		return this.dynamic;
 	}
-
+	
 	public int getEffect() {
 		return this.effect;
 	}
-
+	
 	public int getFret() {
 		return this.fret;
 	}
-
+	
 	public String toString(){
 		String string = new String("[NOTE]");
 		string += "\n     Measure:   " + getMeasure();
@@ -41,7 +41,6 @@ public class TEComponentNote extends TEComponent{
 		string += "\n     String:    " + getString();
 		string += "\n     Fret:      " + getFret();
 		
-		return string;		
+		return string;
 	}
-	
 }

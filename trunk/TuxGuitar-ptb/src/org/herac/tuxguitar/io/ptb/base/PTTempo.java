@@ -8,7 +8,7 @@ public class PTTempo implements PTComponent{
 		this.tempo = tempo;
 		this.tripletFeel = tripletFeel;
 	}
-
+	
 	public int getTempo() {
 		return this.tempo;
 	}

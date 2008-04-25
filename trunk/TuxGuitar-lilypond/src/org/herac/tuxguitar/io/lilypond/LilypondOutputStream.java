@@ -28,8 +28,8 @@ public class LilypondOutputStream {
 	private static final String INDENT = new String("   ");
 	
 	private TGSongManager manager;
-
-	private PrintWriter writer;	
+	
+	private PrintWriter writer;
 	
 	private LilypondSettings settings;
 	
@@ -41,7 +41,7 @@ public class LilypondOutputStream {
 		this.settings = settings;
 	}
 	
-	public void writeSong(TGSong song){		
+	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
 		this.manager.setSong(song);
 		
@@ -54,17 +54,17 @@ public class LilypondOutputStream {
 		this.writer.flush();
 		this.writer.close();
 	}
-
+	
 	private void addVersion(){
 		this.writer.println("\\version \"" + LILYPOND_VERSION + "\"");
-	}	
+	}
 	
 	private void addHeader(TGSong song){
 		this.writer.println("\\header {");
 		this.writer.println(indent(1) + "title = \"" + song.getName() + "\" ");
 		this.writer.println(indent(1) + "composer = \"" + song.getAuthor() + "\" ");
 		this.writer.println("}");
-	}	
+	}
 	
 	private void addLayout(){
 		this.writer.println("\\layout {");
@@ -114,19 +114,19 @@ public class LilypondOutputStream {
 		}else{
 			this.writer.println("}");
 		}
-	}	
+	}
 	
 	private void addMusic(TGTrack track,String id){
 		this.writer.println(id + "Music = #(define-music-function (parser location inTab) (boolean?)");
 		this.writer.println("#{");
-		TGMeasure previous = null;		
+		TGMeasure previous = null;
 		int count = track.countMeasures();
 		for(int i = 0; i < count; i ++){
 			TGMeasure measure = track.getMeasure(i);
 			int measureFrom = this.settings.getMeasureFrom();
 			int measureTo = this.settings.getMeasureTo();
 			if((measureFrom <= measure.getNumber() || measureFrom == LilypondSettings.FIRST_MEASURE) && (measureTo >= measure.getNumber() || measureTo == LilypondSettings.LAST_MEASURE )){
-				this.addMeasure(measure,previous,1,(i == (count - 1)));				
+				this.addMeasure(measure,previous,1,(i == (count - 1)));
 				previous = measure;
 			}
 		}
@@ -134,15 +134,15 @@ public class LilypondOutputStream {
 	}
 	
 	private void addStaff(String id){
-	    this.writer.println(id + "Staff = \\new Staff {");
-	    this.writer.println(indent(1) + "\\" + id + "Music ##f");
+		this.writer.println(id + "Staff = \\new Staff {");
+		this.writer.println(indent(1) + "\\" + id + "Music ##f");
 		this.writer.println("}");
 	}
 	
 	private void addTabStaff(TGTrack track,String id){
-	    this.writer.println(id + "TabStaff = \\new TabStaff {");
-	    this.addTuning(track,1);
-	    this.writer.println(indent(1) + "\\" + id + "Music ##t");
+		this.writer.println(id + "TabStaff = \\new TabStaff {");
+		this.addTuning(track,1);
+		this.writer.println(indent(1) + "\\" + id + "Music ##t");
 		this.writer.println("}");
 	}
 	
@@ -179,14 +179,14 @@ public class LilypondOutputStream {
 		if(previous == null || measure.getKeySignature() != previous.getKeySignature()){
 			this.addKeySignature(measure.getKeySignature(),indent);
 		}
-			
+		
 		if(previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature())){
 			this.addTimeSignature(measure.getTimeSignature(),indent);
-		}		
+		}
 		if(measure.isRepeatOpen()){
 			this.addRepeatOpen(indent);
 		}
-
+		
 		this.addMeasureComponents(measure,indent);
 		
 		if(measure.getRepeatClose() > 0 || isLast){
@@ -207,8 +207,8 @@ public class LilypondOutputStream {
 			this.writer.println(indent(indent) + "}");
 		}
 		this.temp.setRepeatOpen(false);
-	}	
-
+	}
+	
 	private void addTempo(TGTempo tempo,int indent){
 		this.writer.println(indent(indent) + "\\tempo 4=" + tempo.getValue());
 	}
@@ -221,7 +221,7 @@ public class LilypondOutputStream {
 		if(keySignature >= 0 && keySignature < LILYPOND_KEY_SIGNATURES.length){
 			this.writer.println(indent(indent) + "\\key " + LILYPOND_KEY_SIGNATURES[keySignature] + " \\major");
 		}
-	}	
+	}
 	
 	private void addClef(int clef,int indent){
 		String clefName = "";
@@ -265,19 +265,19 @@ public class LilypondOutputStream {
 				this.writer.print("\\times " + tupleto.getTimes() + "/" + tupleto.getEnters() + " {");
 				this.temp.setTupletOpen(true);
 			}
-
+			
 			addBeat(key, beat);
 			
 			previous = beat;
 		}
 		
-
+		
 		if(this.temp.isTupletOpen()){
 			this.writer.print("} ");
 			this.temp.setTupletOpen(false);
-		}	
-	}	
-
+		}
+	}
+	
 	private void addBeat(int key,TGBeat beat){
 		if(beat.isRestBeat()){
 			this.writer.print("r");
@@ -291,30 +291,30 @@ public class LilypondOutputStream {
 			}
 			for(int i = 0 ; i < size ; i ++){
 				TGNote note = beat.getNote(i);
-
+				
 				int note_value = (note.getBeat().getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
 				this.addKey(key, note_value);
 				if(!(size > 1)){
-				    this.addDuration( beat.getDuration() );
+					this.addDuration( beat.getDuration() );
 				}
 				this.addString(note.getString());
 				if(this.noteIsTiedTo(note)){
 					this.writer.print("~");
 				}
-			
+				
 				if(size > 1){
 					this.writer.print(" ");
 				}
 			}
-				
+			
 			if(size > 1){
 				this.writer.print(">");
 				this.addDuration( beat.getDuration() );
 			}
 			this.writer.print(" ");
 		}
-	}	
-
+	}
+	
 	private void addKey(int key,int value){
 		String[] LILYPOND_NOTES;
 		if(key <= 7)
@@ -372,15 +372,15 @@ public class LilypondOutputStream {
 			indent += INDENT;
 		}
 		return indent;
-	}	
-
+	}
+	
 	private String toBase26(int value){
 		String s = "";
 		int i = value;
 		while(i > 25){
-		    int r = i % 26;
-		    i = i / 26 - 1;
-		    s = (char)(r + 'A') + s;
+			int r = i % 26;
+			i = i / 26 - 1;
+			s = (char)(r + 'A') + s;
 		}
 		s = (char)(i + 'A') + s;
 		return s;
@@ -396,27 +396,27 @@ public class LilypondOutputStream {
 	}
 	
 	protected class LilypondTempData{
-
+		
 		private boolean repeatOpen;
-		private boolean tupletOpen;		
+		private boolean tupletOpen;
 		
 		protected LilypondTempData(){
 			this.repeatOpen = false;
 			this.tupletOpen = false;
 		}
-
+		
 		public boolean isRepeatOpen() {
 			return this.repeatOpen;
 		}
-
+		
 		public void setRepeatOpen(boolean repeatOpen) {
 			this.repeatOpen = repeatOpen;
 		}
-
+		
 		public boolean isTupletOpen() {
 			return this.tupletOpen;
 		}
-
+		
 		public void setTupletOpen(boolean tupletOpen) {
 			this.tupletOpen = tupletOpen;
 		}

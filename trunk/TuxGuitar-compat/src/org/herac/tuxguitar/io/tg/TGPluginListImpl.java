@@ -8,7 +8,7 @@ import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 
 public class TGPluginListImpl extends TGPluginList{
-
+	
 	protected List getPlugins() {
 		List plugins = new ArrayList();
 		plugins.add(new TGInputStreamPlugin() {
@@ -28,21 +28,20 @@ public class TGPluginListImpl extends TGPluginList{
 		});
 		return plugins;
 	}
-
+	
 	public String getAuthor() {
 		return "Julian Casadesus <julian@casadesus.com.ar>";
 	}
-
+	
 	public String getName() {
 		return "TuxGuitar file format compatibility";
 	}
-
-	public String getDescription() {		
+	
+	public String getDescription() {
 		return "This plugin, provides support for other tuxguitar file format versions.";
 	}
-		
+	
 	public String getVersion() {
 		return "1.0-rc3";
-	}	
-	
+	}
 }

@@ -6,7 +6,7 @@ import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserElementImpl extends TGBrowserElement{
-
+	
 	private TGBrowserImpl browser;
 	private String path;
 	private String info;
@@ -17,12 +17,12 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 		this.info = info;
 		this.path = path;
 	}
-
+	
 	public boolean isFolder(){
 		return (this.info != null && this.info.length() > 0 && this.info.charAt(0) == 'd');
 	}
-
-	public InputStream getInputStream()throws TGBrowserException {		
+	
+	public InputStream getInputStream()throws TGBrowserException {
 		return this.browser.getInputStream(this.path,this);
 	}
 	

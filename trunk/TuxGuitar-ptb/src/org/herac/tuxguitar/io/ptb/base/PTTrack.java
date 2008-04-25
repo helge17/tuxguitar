@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PTTrack {
-
-	private List sections;		
-	private List infos;	
+	
+	private List sections;
+	private List infos;
 	
 	public PTTrack(){
 		this.sections = new ArrayList();
 		this.infos = new ArrayList();
 	}
-
+	
 	public List getInfos(){
 		return this.infos;
 	}
@@ -27,7 +27,7 @@ public class PTTrack {
 		}
 		return (PTSection)getSections().get(index);
 	}
-
+	
 	public PTTrackInfo getInfo(int number){
 		for(int i = 0; i < getInfos().size(); i++){
 			PTTrackInfo info = (PTTrackInfo)getInfos().get(i);
@@ -37,7 +37,7 @@ public class PTTrack {
 		}
 		return null;
 	}
-
+	
 	public PTTrackInfo getDefaultInfo(){
 		PTTrackInfo defaultInfo = null;
 		for(int i = 0; i < getInfos().size(); i++){

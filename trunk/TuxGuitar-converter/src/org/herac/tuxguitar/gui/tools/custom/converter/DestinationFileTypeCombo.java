@@ -13,19 +13,17 @@ public class DestinationFileTypeCombo {
 	
 	/** the combo box of available output formats */
 	protected Combo comboBox = null;
-
+	
 	/** index of the last OutputStream plugin, the rest are exporters and treated differently */
 	protected int lastOutputStreamIndex = -1;
 	
-	
 	/** instantiates a combo */
 	public DestinationFileTypeCombo(Composite parent) {
-
+		
 		this.comboBox = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.init();
 		
 	}
-	
 	
 	/** initializes combo box */
 	private void init() {
@@ -46,10 +44,8 @@ public class DestinationFileTypeCombo {
 		
 		if (this.lastOutputStreamIndex!=-1) // first one is default
 			this.comboBox.select(0);
-	
-	
+		
 	}
-
 	
 	/** Gets the destination file extension */
 	String getExtension() {
@@ -60,12 +56,11 @@ public class DestinationFileTypeCombo {
 			index = extension.length();
 		
 		// remove * and multiple extensions (first is good enough)
-		extension = extension.substring(extension.indexOf("."),	index );
+		extension = extension.substring(extension.indexOf("."), index );
 		return extension;
 	}
 	
 	public void setLayoutData(Object layoutData){
 		this.comboBox.setLayoutData( layoutData );
 	}
-	
 }

@@ -31,34 +31,34 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
 
 public class TESongImporter implements TGSongImporter{
-
+	
 	private static final int[][] PERCUSSION_TUNINGS = new int[][]{
 		new int[]{ 49, 41, 32 },
 		new int[]{ 49, 51, 42, 50 },
-		new int[]{ 49, 42, 50, 37, 32  },
-		new int[]{ 49, 51, 42, 50, 45, 37  },
-		new int[]{ 49, 51, 42, 50, 45, 37, 41  },
+		new int[]{ 49, 42, 50, 37, 32 },
+		new int[]{ 49, 51, 42, 50, 45, 37 },
+		new int[]{ 49, 51, 42, 50, 45, 37, 41 },
 	};
 	
 	protected TGSongManager manager;
 	
-	public TESongImporter(){		
+	public TESongImporter(){
 		super();
 	}
 	
 	public TGFileFormat getFileFormat() {
 		return new TGFileFormat("Tef","*.tef");
-	}	
-
+	}
+	
 	public String getImportName() {
 		return "Tef";
 	}
-
+	
 	public boolean configure(boolean setDefaults){
 		return true;
 	}
 	
-	public TGSong importSong(TGFactory factory,InputStream stream) throws TGFileFormatException {				
+	public TGSong importSong(TGFactory factory,InputStream stream) throws TGFileFormatException {
 		try {
 			this.manager = new TGSongManager(factory);
 			return this.parseSong(new TEInputStream(stream).readSong());
@@ -67,14 +67,14 @@ public class TESongImporter implements TGSongImporter{
 		}
 		throw new TGFileFormatException();
 	}
-
+	
 	private TGSong parseSong(TESong song){
 		this.sortComponents(song);
 		this.newTGSong(song.getTracks().length,song.getMeasures(),song.getTempo().getValue());
 		this.addMeasureValues(song);
 		this.addTrackValues(song.getTracks());
 		this.addComponents(song);
-
+		
 		return new TGSongAdjuster(this.manager).process();
 	}
 	
@@ -112,16 +112,16 @@ public class TESongImporter implements TGSongImporter{
 			}
 			track.getStrings().clear();
 			int strings[] = tracks[i].getStrings();
-
+			
 			for(int j = 0; j < strings.length;j ++){
-	        	if(j >= 7){
-	        		break;
-	        	}
+				if(j >= 7){
+					break;
+				}
 				TGString string = this.manager.getFactory().newString();
-	        	string.setNumber( (j + 1) );
-	        	string.setValue( (tracks[i].isPercussion() ?0:(96 - strings[j])) );
-	        	track.getStrings().add(string);
-	        }
+				string.setNumber( (j + 1) );
+				string.setValue( (tracks[i].isPercussion() ?0:(96 - strings[j])) );
+				track.getStrings().add(string);
+			}
 		}
 	}
 	
@@ -129,9 +129,9 @@ public class TESongImporter implements TGSongImporter{
 		Iterator it = song.getComponents().iterator();
 		while(it.hasNext()){
 			TEComponent component = (TEComponent)it.next();
-
+			
 			if(component.getMeasure() >= 0 && component.getMeasure() < this.manager.getSong().countMeasureHeaders()){
-				int offset = 0;			
+				int offset = 0;
 				TETrack[] tracks = song.getTracks();
 				for(int i = 0; i < tracks.length; i ++){
 					int strings = tracks[i].getStrings().length;
@@ -139,7 +139,7 @@ public class TESongImporter implements TGSongImporter{
 					if( string >= 0 && string <  strings && string < 7){
 						TGTrack tgTrack = this.manager.getSong().getTrack(i);
 						TGMeasure tgMeasure = tgTrack.getMeasure(component.getMeasure());
-						if(component instanceof TEComponentNote){							
+						if(component instanceof TEComponentNote){
 							addNote(tracks[i], (TEComponentNote)component,string,strings,tgMeasure);
 						}
 						else if(component instanceof TEComponentChord){
@@ -170,7 +170,7 @@ public class TESongImporter implements TGSongImporter{
 		long start = ((long) (measure.getStart() + ( (fixedPosition * TGDuration.QUARTER_TIME)  / 64)) );
 		
 		return start;
-	}	
+	}
 	
 	private TGDuration getDuration(int duration){
 		TGDuration tgDuration = this.manager.getFactory().newDuration();
@@ -190,7 +190,7 @@ public class TESongImporter implements TGSongImporter{
 		tgDuration.setValue(value);
 		
 		return tgDuration;
-	}	
+	}
 	
 	private void addNote(TETrack track,TEComponentNote note,int string,int strings,TGMeasure tgMeasure){
 		int value = note.getFret();
@@ -200,22 +200,22 @@ public class TESongImporter implements TGSongImporter{
 				value += PERCUSSION_TUNINGS[tuning][string];
 			}
 		}
-				
+		
 		TGNote tgNote = this.manager.getFactory().newNote();
 		tgNote.setString( string + 1 );
 		tgNote.setValue( value );
 		
 		TGDuration tgDuration = getDuration( note.getDuration() );
 		TGBeat tgBeat = getBeat(tgMeasure, getStart(tgDuration, tgMeasure, note.getPosition()));
-		tgDuration.copy(tgBeat.getDuration());		
+		tgDuration.copy(tgBeat.getDuration());
 		tgBeat.addNote(tgNote);
 	}
-
+	
 	private void addChord(TEChord[] chords,TEComponentChord component,TGTrack tgTrack,TGMeasure tgMeasure){
 		if(component.getChord() >= 0 && component.getChord() < chords.length){
 			TEChord chord = chords[component.getChord()];
 			byte[] strings = chord.getStrings();
-
+			
 			TGChord tgChord = this.manager.getFactory().newChord(tgTrack.stringCount());
 			tgChord.setName(chord.getName());
 			for(int i = 0; i < tgChord.countStrings(); i ++){
@@ -228,7 +228,7 @@ public class TESongImporter implements TGSongImporter{
 			}
 		}
 	}
-
+	
 	public void sortComponents(TESong song){
 		Collections.sort(song.getComponents(),new Comparator() {
 			public int compare(Object o1, Object o2) {
@@ -253,15 +253,13 @@ public class TESongImporter implements TGSongImporter{
 					}
 					if(  ( c2 instanceof TEComponentNote ) && !( c1 instanceof TEComponentNote ) ){
 						return 1;
-					}		
+					}
 				}
 				return 0;
 			}
 		});
-	}	
-	
+	}
 }
-
 
 class TGSongAdjuster{
 	
@@ -298,11 +296,11 @@ class TGSongAdjuster{
 		for(int i = 0;i < measure.countBeats();i++){
 			TGBeat beat = measure.getBeat( i );
 			long beatStart = beat.getStart();
-			long beatLength = beat.getDuration().getTime();		
+			long beatLength = beat.getDuration().getTime();
 			if(previous != null){
 				long previousStart = previous.getStart();
 				long previousLength = previous.getDuration().getTime();
-
+				
 				// check for a chord in a rest beat
 				if( beat.isRestBeat() && beat.isChordBeat() ){
 					TGBeat candidate = null;
@@ -343,7 +341,7 @@ class TGSongAdjuster{
 				}
 				TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (measureEnd - beatStart) );
 				duration.copy( beat.getDuration() );
-			}			
+			}
 			previous = beat;
 		}
 		if(!finish){

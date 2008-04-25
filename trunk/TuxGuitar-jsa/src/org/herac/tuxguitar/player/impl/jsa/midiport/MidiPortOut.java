@@ -11,9 +11,9 @@ import org.herac.tuxguitar.player.base.MidiPort;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiMessageUtils;
 
 public class MidiPortOut extends MidiPort{
-
+	
 	private MidiOutImpl out;
-
+	
 	public MidiPortOut(MidiDevice device){
 		super(device.getDeviceInfo().getName(),device.getDeviceInfo().getName());
 		this.out = new MidiOutImpl(device);
@@ -37,18 +37,18 @@ public class MidiPortOut extends MidiPort{
 		} catch (Throwable throwable) {
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}
-	}	
+	}
 }
 
 class MidiOutImpl implements MidiOut{
 	
 	private MidiDevice device;
 	private Receiver receiver;
-
+	
 	public MidiOutImpl(MidiDevice device){
-		this.device = device;		
+		this.device = device;
 	}
-
+	
 	protected synchronized void open() throws MidiUnavailableException{
 		if(!this.device.isOpen()){
 			this.device.open();
@@ -57,7 +57,7 @@ class MidiOutImpl implements MidiOut{
 			this.receiver = this.device.getReceiver();
 		}
 	}
-
+	
 	protected synchronized void close(){
 		if(this.receiver != null){
 			this.receiver.close();
@@ -76,7 +76,7 @@ class MidiOutImpl implements MidiOut{
 		}
 		return this.receiver;
 	}
-
+	
 	public void sendSystemReset(){
 		if(getReceiver() != null){
 			getReceiver().send(MidiMessageUtils.systemReset(),-1);
@@ -94,7 +94,7 @@ class MidiOutImpl implements MidiOut{
 	public void sendNoteOn(int channel, int key, int velocity) {
 		if(getReceiver() != null){
 			getReceiver().send(MidiMessageUtils.noteOn(channel, key, velocity),-1);
-		}		
+		}
 	}
 	
 	public void sendNoteOff(int channel, int key, int velocity) {
@@ -102,18 +102,19 @@ class MidiOutImpl implements MidiOut{
 			getReceiver().send(MidiMessageUtils.noteOff(channel, key, velocity),-1);
 		}
 	}
-
+	
 	public void sendControlChange(int channel, int controller, int value) {
 		if(getReceiver() != null){
 			getReceiver().send(MidiMessageUtils.controlChange(channel,controller, value),-1);
-		}	
+		}
 	}
 	
 	public void sendProgramChange(int channel, int value) {
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.programChange(channel, value),-1);			
-		}	
+			getReceiver().send(MidiMessageUtils.programChange(channel, value),-1);
+		}
 	}
+	
 	public void sendPitchBend(int channel, int value) {
 		if(getReceiver() != null){
 			getReceiver().send(MidiMessageUtils.pitchBend(channel, value),-1);

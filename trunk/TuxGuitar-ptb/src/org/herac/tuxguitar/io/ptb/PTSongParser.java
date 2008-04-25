@@ -29,18 +29,18 @@ public class PTSongParser {
 	
 	private TGSongManager manager;
 	private TrackHelper helper;
-
-	public PTSongParser(TGFactory factory){		
+	
+	public PTSongParser(TGFactory factory){
 		this.manager = new TGSongManager(factory);
 		this.helper = new TrackHelper();
 	}
-
+	
 	public TGSong parseSong(PTSong src){
 		PTSong song = new PTSong();
 		PTSongSynchronizerUtil.synchronizeTracks(src, song);
-
+		
 		this.manager.setSong(this.manager.getFactory().newSong());
-
+		
 		this.parseTrack(song.getTrack1());
 		this.parseTrack(song.getTrack2());
 		
@@ -54,17 +54,17 @@ public class PTSongParser {
 		for( int sIndex = 0; sIndex < track.getSections().size(); sIndex ++){
 			PTSection section = (PTSection) track.getSections().get(sIndex);
 			section.sort();
-
+			
 			//calculo el siguiente start del compas
 			this.helper.getStartHelper().init(section.getNumber(),section.getStaffs());
 			this.helper.getStartHelper().initVoices(start);
-
+			
 			//parseo las posiciones
 			for( int pIndex = 0; pIndex < section.getPositions().size(); pIndex ++){
 				PTPosition position = (PTPosition)section.getPositions().get(pIndex);
 				parsePosition(track,position/*,number*/);
 			}
-
+			
 			//Calculo el start para la proxima seccion
 			start = this.helper.getStartHelper().getMaxStart();
 		}
@@ -81,7 +81,7 @@ public class PTSongParser {
 			}
 			else if(component instanceof PTTempo){
 				parseTempo((PTTempo)component);
-			}			
+			}
 			else if(component instanceof PTBeat){
 				parseBeat((PTBeat)component);
 			}
@@ -90,22 +90,22 @@ public class PTSongParser {
 	
 	private void parseBar(PTBar bar){
 		this.helper.getStartHelper().initVoices( this.helper.getStartHelper().getMaxStart() );
-
+		
 		if(bar.getNumerator() > 0 && bar.getDenominator() > 0 ){
 			this.helper.getStartHelper().setBarStart( this.helper.getStartHelper().getMaxStart() );
 			this.helper.getStartHelper().setBarLength((long)(bar.getNumerator() *( TGDuration.QUARTER_TIME * ( 4.0f / bar.getDenominator()))));
 		}
 	}
-
+	
 	private void parseGuitarIn(PTTrack track,PTGuitarIn guitarIn){
 		PTTrackInfo info = track.getInfo(guitarIn.getTrackInfo());
 		if(info != null){
-
+			
 			// Remove used tracks after guitarIn staff.
 			while( this.helper.getInfoHelper().countStaffTracks() > guitarIn.getStaff() ){
 				this.helper.getInfoHelper().removeStaffTrack( this.helper.getInfoHelper().countStaffTracks() - 1 );
 			}
-
+			
 			// If track was already created, but it's not in use
 			Iterator it = this.manager.getSong().getTracks();
 			while( it.hasNext() ){
@@ -116,7 +116,7 @@ public class PTSongParser {
 						TGTrack existent = this.helper.getInfoHelper().getStaffTrack(i);
 						if(existent != null && existent.getNumber() == tgTrack.getNumber() ){
 							exists = true;
-						}								
+						}
 					}
 					if(!exists){
 						this.helper.getInfoHelper().addStaffTrack( tgTrack );
@@ -124,7 +124,7 @@ public class PTSongParser {
 					}
 				}
 			}
-				
+			
 			// Create track if not exists.
 			this.createTrack(info);
 		}
@@ -159,11 +159,11 @@ public class PTSongParser {
 		tgBeat.getDuration().setDoubleDotted(beat.isDoubleDotted());
 		tgBeat.getDuration().getTupleto().setTimes(beat.getTimes());
 		tgBeat.getDuration().getTupleto().setEnters(beat.getEnters());
-
+		
 		//si no hay notas, igualmente que se cree el compas
-		TGMeasure measure = getMeasure( getStaffTrack(beat.getStaff()) , tgBeat.getStart() );			
+		TGMeasure measure = getMeasure( getStaffTrack(beat.getStaff()) , tgBeat.getStart() );
 		measure.addBeat(tgBeat);
-			
+		
 		Iterator it = beat.getNotes().iterator();
 		while(it.hasNext()){
 			PTNote ptNote = (PTNote)it.next();
@@ -180,25 +180,25 @@ public class PTSongParser {
 				tgBeat.addNote(note);
 			}
 		}
-
+		
 		this.helper.getStartHelper().checkBeat( tgBeat.isRestBeat() );
 		
 		// If it's a rest measure, duration must fill the measure.
 		long duration = tgBeat.getDuration().getTime();
-
+		
 		if(tgBeat.isRestBeat() && tgBeat.getStart() == this.helper.getStartHelper().getBarStart() && duration > this.helper.getStartHelper().getBarLength()){
 			duration = this.helper.getStartHelper().getBarLength();
 		}
 		this.helper.getStartHelper().setVoiceStart(beat.getStaff(),beat.getVoice(),(tgBeat.getStart() + duration));
 	}
-
+	
 	private TGEffectBend makeBend(int value){
 		if(value >= 1 && value <= 8){
 			TGEffectBend bend = this.manager.getFactory().newEffectBend();
 			if(value == 1){
 				bend.addPoint(0,0);
 				bend.addPoint(6,(TGEffectBend.SEMITONE_LENGTH * 4));
-				bend.addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));               
+				bend.addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));
 			}
 			else if(value == 2){
 				bend.addPoint(0,0);
@@ -207,12 +207,12 @@ public class PTSongParser {
 				bend.addPoint(9,0);
 				bend.addPoint(12,0);
 			}
-			else if(value == 3){	      
+			else if(value == 3){
 				bend.addPoint(0,0);
 				bend.addPoint(6,(TGEffectBend.SEMITONE_LENGTH * 4));
-				bend.addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));         
+				bend.addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));
 			}
-			else if(value == 4){	                
+			else if(value == 4){
 				bend.addPoint(0,(TGEffectBend.SEMITONE_LENGTH * 4));
 				bend.addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));
 			}
@@ -232,7 +232,7 @@ public class PTSongParser {
 				bend.addPoint(8,0);
 				bend.addPoint(12,0);
 			}
-			else if(value == 8){            
+			else if(value == 8){
 				bend.addPoint(0,(TGEffectBend.SEMITONE_LENGTH * 4));
 				bend.addPoint(4,(TGEffectBend.SEMITONE_LENGTH * 4));
 				bend.addPoint(8,0);
@@ -241,7 +241,7 @@ public class PTSongParser {
 			return bend;
 		}
 		return null;
-	}	
+	}
 	
 	private TGMeasure getMeasure(int trackNumber,long start){
 		return getMeasure( getTrack(trackNumber) , start);
@@ -253,7 +253,7 @@ public class PTSongParser {
 			this.manager.addNewMeasureBeforeEnd();
 		}
 		return measure;
-	}	
+	}
 	
 	private TGTrack getTrack(int number){
 		TGTrack track = null;
@@ -262,7 +262,7 @@ public class PTSongParser {
 		}
 		return track;
 	}
-
+	
 	public TGTrack getStaffTrack(int staff){
 		TGTrack track = this.helper.getInfoHelper().getStaffTrack( staff );
 		return ( track != null ? track : createTrack() );
@@ -271,7 +271,7 @@ public class PTSongParser {
 	private TGTrack createTrack(){
 		return createTrack(this.helper.getInfoHelper().getDefaultInfo());
 	}
-
+	
 	private TGTrack createTrack(PTTrackInfo info){
 		TGTrack track = this.manager.createTrack();
 		this.helper.getInfoHelper().addStaffTrack( track );
@@ -315,8 +315,7 @@ public class PTSongParser {
 			}
 		}
 		return true;
-	}	
-	
+	}
 }
 
 class TGSongAdjuster{
@@ -355,7 +354,7 @@ class TGSongAdjuster{
 		for(int i = 0;i < measure.countBeats();i++){
 			TGBeat beat = measure.getBeat( i );
 			long beatStart = beat.getStart();
-			long beatLength = beat.getDuration().getTime();			
+			long beatLength = beat.getDuration().getTime();
 			if(previous != null){
 				long previousStart = previous.getStart();
 				long previousLength = previous.getDuration().getTime();
@@ -366,27 +365,27 @@ class TGSongAdjuster{
 						TGNote note = beat.getNote( n );
 						previous.addNote( note );
 					}
-
+					
 					// add beat chord to previous
 					if(!previous.isChordBeat() && beat.isChordBeat()){
 						previous.setChord( beat.getChord() );
 					}
-				
+					
 					// add beat text to previous
 					if(!previous.isTextBeat() && beat.isTextBeat()){
 						previous.setText( beat.getText() );
 					}
-				
+					
 					// set the best duration
 					if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
 						beat.getDuration().copy(previous.getDuration());
 					}
-
+					
 					measure.removeBeat(beat);
 					finish = false;
 					break;
 				}
-			
+				
 				else if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
 					if(beat.isRestBeat()){
 						measure.removeBeat(beat);
@@ -405,7 +404,7 @@ class TGSongAdjuster{
 				}
 				TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (measureEnd - beatStart) );
 				duration.copy( beat.getDuration() );
-			}			
+			}
 			previous = beat;
 		}
 		if(!finish){

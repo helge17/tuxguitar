@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.tef.base;
 
 public class TETimeSignature {
-
+	
 	private int numerator;
 	private int denominator;
 	
@@ -17,5 +17,4 @@ public class TETimeSignature {
 	public int getNumerator() {
 		return this.numerator;
 	}
-
 }

@@ -15,7 +15,7 @@ import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 
 public class MidiSequencerProviderImpl implements MidiSequencerProvider{
-
+	
 	public MidiSequencerProviderImpl(){
 		super();
 	}
@@ -49,9 +49,8 @@ public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.unknown"),t);
 		}
 	}
-
+	
 	public void closeAll() throws MidiPlayerException {
 		// Not implemented
-	}	
-	
+	}
 }
