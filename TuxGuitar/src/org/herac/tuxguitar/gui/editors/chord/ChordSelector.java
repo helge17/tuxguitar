@@ -21,7 +21,12 @@ import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 
 /**
- * @author julian * @author Nikola Kolarovic * *    WIDGET SET that allows complex chord choosing<br> *    Chord theory according to <a href="http://www.jazzguitar.be/quick_crd_ref.html">http://www.jazzguitar.be/quick_crd_ref.html</a>. */
+ * @author julian
+ * @author Nikola Kolarovic
+ *
+ *    WIDGET SET that allows complex chord choosing<br>
+ *    Chord theory according to <a href="http://www.jazzguitar.be/quick_crd_ref.html">http://www.jazzguitar.be/quick_crd_ref.html</a>.
+ */
 public class ChordSelector extends Composite{
     
 	public static final String[][] KEY_NAMES = new String[][]{
@@ -41,25 +46,56 @@ public class ChordSelector extends Composite{
     private List plusMinusList;
     private List _5List;
     private List _9List;
-    private List _11List;        private boolean refresh;
+    private List _11List;
+    
+    private boolean refresh;
 
 	public ChordSelector(ChordDialog dialog,Composite parent,int style,int[] tuning) {        
         super(parent,style);
         this.setLayout(new GridLayout(3,false));
         this.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
         this.dialog = dialog;
-        this.tuning = tuning;                this.refresh = true;
+        this.tuning = tuning;
+        
+        this.refresh = true;
         this.init();
     }
 
     
     public void init(){    	
-    	Composite tonicComposite = new Composite(this,SWT.NONE);    	tonicComposite.setLayout(this.dialog.gridLayout(1,false,0,0));    	tonicComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+    	Composite tonicComposite = new Composite(this,SWT.NONE);
+    	tonicComposite.setLayout(this.dialog.gridLayout(1,false,0,0));
+    	tonicComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
     	
-    	this.tonicList = new List(tonicComposite,SWT.BORDER);    	this.tonicList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+    	this.tonicList = new List(tonicComposite,SWT.BORDER);
+    	this.tonicList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
     	
-        // sharp & flat buttons        Composite buttonsComposite = new Composite(tonicComposite,SWT.NONE);        buttonsComposite.setLayout(this.dialog.gridLayout(2,true,0,0));        GridData buttonGd = new GridData(SWT.FILL,SWT.TOP,true,false);        buttonGd.heightHint = 28;        buttonGd.widthHint = 28;        this.sharpButton = new Button(buttonsComposite,SWT.TOGGLE);        this.sharpButton.setLayoutData(buttonGd);        this.flatButton = new Button(buttonsComposite,SWT.TOGGLE);        this.flatButton.setLayoutData(buttonGd);        // TODO: maybe put an image instead of #,b        this.sharpButton.setText("#");                 this.flatButton.setText("b");        this.chordList = new List(this,SWT.BORDER);        this.chordList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));                        Label separator = new Label(tonicComposite,SWT.SEPARATOR | SWT.HORIZONTAL);
-        separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));        Button customizeButton = new Button(tonicComposite,SWT.PUSH);        customizeButton.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));        customizeButton.setText(TuxGuitar.getProperty("settings"));                        customizeButton.addSelectionListener(new SelectionAdapter() {        	public void widgetSelected(SelectionEvent arg0) {        		
+        // sharp & flat buttons
+        Composite buttonsComposite = new Composite(tonicComposite,SWT.NONE);
+        buttonsComposite.setLayout(this.dialog.gridLayout(2,true,0,0));
+        GridData buttonGd = new GridData(SWT.FILL,SWT.TOP,true,false);
+        buttonGd.heightHint = 28;
+        buttonGd.widthHint = 28;
+        this.sharpButton = new Button(buttonsComposite,SWT.TOGGLE);
+        this.sharpButton.setLayoutData(buttonGd);
+        this.flatButton = new Button(buttonsComposite,SWT.TOGGLE);
+        this.flatButton.setLayoutData(buttonGd);
+        // TODO: maybe put an image instead of #,b
+        this.sharpButton.setText("#");         
+        this.flatButton.setText("b");
+        this.chordList = new List(this,SWT.BORDER);
+        this.chordList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+        
+        
+        Label separator = new Label(tonicComposite,SWT.SEPARATOR | SWT.HORIZONTAL);
+        separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));
+        Button customizeButton = new Button(tonicComposite,SWT.PUSH);
+        customizeButton.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+        customizeButton.setText(TuxGuitar.getProperty("settings"));
+        
+        
+        customizeButton.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(SelectionEvent arg0) {        		
         		if(new ChordSettingsDialog().open(ChordSelector.this.getShell())){
         			new SyncThread(new Runnable() {				
         				public void run() {
@@ -67,47 +103,260 @@ public class ChordSelector extends Composite{
         					getChordList().redraw();
         				}
         			}).start();
-        		}        	}        });        
+        		}
+        	}
+        });
+        
 
         initChordWidgets();
 
-        // fill the List widgets with text        insertTonicNames(true);
+        // fill the List widgets with text
+        insertTonicNames(true);
         
         for(int i = 0 ; i < ChordDatabase.length(); i ++) {
         	this.chordList.add( ChordDatabase.get(i).getName() );
         }
-        /*        Iterator chordInfo = ChordCreatorUtil.getChordData().getChords().iterator();        while(chordInfo.hasNext()) {        	this.chordList.add( ((ChordDatabase.ChordInfo)chordInfo.next()).getName() );        }        */
-                this.chordList.setSelection(0);                String[] alterationNames = getAlterationNames();        for(int i = 0;i < alterationNames.length;i++){            this.alterationList.add(alterationNames[i]);        }                this.alterationList.setSelection(0);                        String[] plusMinus = this.getPlusMinus("");        for(int i = 0;i < plusMinus.length;i++){            this.plusMinusList.add(plusMinus[i]);        }                this.plusMinusList.setSelection(0);                        String[] plus5Minus = this.getPlusMinus("/5");        for(int i = 0;i < plus5Minus.length;i++){            this._5List.add(plus5Minus[i]);        }                this._5List.setSelection(0);                String[] plus9Minus = this.getPlusMinus("/9");        for(int i = 0;i < plus9Minus.length;i++){            this._9List.add(plus9Minus[i]);        }                this._9List.setSelection(0);                String[] plus11Minus = this.getPlusMinus("/11");        for(int i = 0;i < plus11Minus.length;i++){            this._11List.add(plus11Minus[i]);        }                this._11List.setSelection(0);                        // LISTENERS                this.tonicList.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {            	if (ChordSelector.this.getRefresh()) {	                if(getDialog().getEditor() != null && getDialog().getList() != null){	                	// FIXME: this isn't called when clicked... it's not about getRefresh() for sure	                	// FIXME: as I can remember, that didn't happen on Linux. Maybe only in Win32 version...	                	getBassCombo().select(getTonicList().getSelectionIndex());	                    showChord();	                    //ChordSelector.this.getShell().redraw();	                }            	}            }        });  
-
-        this.bassCombo.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {            	if (ChordSelector.this.getRefresh()) {	                if(getDialog().getEditor() != null && getDialog().getList() != null){	                    showChord();	                }            	}            }        });          
-        this.chordList.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {                if(getDialog().getEditor() != null && getDialog().getList() != null){
-                	adjustWidgetAvailability();
-                	                	if (ChordSelector.this.getRefresh()) {	                	showChord();                	}                }            }        });         
-
-        this.alterationList.addSelectionListener(new SelectionAdapter() {        	public void widgetSelected(SelectionEvent e) {                if(getDialog().getEditor() != null && getDialog().getList() != null){                                 	                	ChordSelector.this.adjustWidgetAvailability();                	if (ChordSelector.this.getRefresh()) {	                	showChord();	                    //ChordSelector.this.dialog.getList().redraw();                	}                }            }        });
-                        this.addCheck.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent arg0) {                if(getDialog().getEditor() != null && getDialog().getList() != null){                 	            	ChordSelector.this.adjustWidgetAvailability();
-	            	/*	            	if (getAddCheck().getSelection()) {	            		updateWidget(get_9List(), false);	            		updateWidget(get_11List(), false);	            	}
-	            	*/                	if (ChordSelector.this.getRefresh()) {	                	showChord();	                    //ChordSelector.this.dialog.getList().redraw();                	}                }            	            }        });                this._5List.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {                if(getDialog().getEditor() != null && getDialog().getList() != null){                                 	if (ChordSelector.this.getRefresh()) {	                	showChord();	                    //ChordSelector.this.dialog.getList().redraw();                	}                }            }        });                this._9List.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {                if(getDialog().getEditor() != null && getDialog().getList() != null){                                 	if (ChordSelector.this.getRefresh()) {	                	showChord();	                	//ChordSelector.this.dialog.getList().redraw();                	}                }            }        });                this._11List.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {                if(getDialog().getEditor() != null && getDialog().getList() != null){                                 	if (ChordSelector.this.getRefresh()) {	                	showChord();	                	//ChordSelector.this.dialog.getList().redraw();                	}                }            }        });                this.plusMinusList.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent e) {                if(getDialog().getEditor() != null && getDialog().getList() != null){                                 	if (ChordSelector.this.getRefresh()) {	                	showChord();	                	//ChordSelector.this.dialog.getList().redraw();                	}                }            }        });        this.sharpButton.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent arg0) {            	insertTonicNames(true);            }        });        this.flatButton.addSelectionListener(new SelectionAdapter() {            public void widgetSelected(SelectionEvent arg0) {            	insertTonicNames(false);            }        });
-        /*        updateWidget(this._11List,false);        updateWidget(this._9List,false);        updateWidget(this.plusMinusList,false);
+        /*
+        Iterator chordInfo = ChordCreatorUtil.getChordData().getChords().iterator();
+        while(chordInfo.hasNext()) {
+        	this.chordList.add( ((ChordDatabase.ChordInfo)chordInfo.next()).getName() );
+        }
         */
-        this.adjustWidgetAvailability();    }
+        
+        this.chordList.setSelection(0);
+        
+        String[] alterationNames = getAlterationNames();
+        for(int i = 0;i < alterationNames.length;i++){
+            this.alterationList.add(alterationNames[i]);
+        }        
+        this.alterationList.setSelection(0);        
+        
+        String[] plusMinus = this.getPlusMinus("");
+        for(int i = 0;i < plusMinus.length;i++){
+            this.plusMinusList.add(plusMinus[i]);
+        }        
+        this.plusMinusList.setSelection(0);        
+        
+        String[] plus5Minus = this.getPlusMinus("/5");
+        for(int i = 0;i < plus5Minus.length;i++){
+            this._5List.add(plus5Minus[i]);
+        }        
+        this._5List.setSelection(0);        
+        String[] plus9Minus = this.getPlusMinus("/9");
+        for(int i = 0;i < plus9Minus.length;i++){
+            this._9List.add(plus9Minus[i]);
+        }        
+        this._9List.setSelection(0);        
+        String[] plus11Minus = this.getPlusMinus("/11");
+        for(int i = 0;i < plus11Minus.length;i++){
+            this._11List.add(plus11Minus[i]);
+        }        
+        this._11List.setSelection(0);        
+
+
+        
+        // LISTENERS
+        
+        this.tonicList.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(SelectionEvent e) {
+            	if (ChordSelector.this.getRefresh()) {
+	                if(getDialog().getEditor() != null && getDialog().getList() != null){
+	                	// FIXME: this isn't called when clicked... it's not about getRefresh() for sure
+	                	// FIXME: as I can remember, that didn't happen on Linux. Maybe only in Win32 version...
+	                	getBassCombo().select(getTonicList().getSelectionIndex());
+	                    showChord();
+	                    //ChordSelector.this.getShell().redraw();
+	                }
+            	}
+            }
+
+        });  
+
+        this.bassCombo.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(SelectionEvent e) {
+            	if (ChordSelector.this.getRefresh()) {
+	                if(getDialog().getEditor() != null && getDialog().getList() != null){
+	                    showChord();
+	                }
+            	}
+            }
+
+        });  
+        
+        this.chordList.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(SelectionEvent e) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){
+
+                	adjustWidgetAvailability();
+                	
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+                	}
+
+                }
+            }
+
+        });         
+
+        this.alterationList.addSelectionListener(new SelectionAdapter() {
+
+        	public void widgetSelected(SelectionEvent e) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){                 
+                	
+                	ChordSelector.this.adjustWidgetAvailability();
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+	                    //ChordSelector.this.dialog.getList().redraw();
+                	}
+                }
+
+            }
+
+        });
+        
+        
+        this.addCheck.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent arg0) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){                 
+
+	            	ChordSelector.this.adjustWidgetAvailability();
+	            	/*
+	            	if (getAddCheck().getSelection()) {
+	            		updateWidget(get_9List(), false);
+	            		updateWidget(get_11List(), false);
+	            	}
+	            	*/
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+	                    //ChordSelector.this.dialog.getList().redraw();
+                	}
+                }
+            	
+            }
+        });
+        
+
+        this._5List.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){                 
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+	                    //ChordSelector.this.dialog.getList().redraw();
+                	}
+                }
+            }
+        });
+        
+
+        this._9List.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){                 
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+	                	//ChordSelector.this.dialog.getList().redraw();
+                	}
+                }
+            }
+        });
+
+        
+
+        this._11List.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){                 
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+	                	//ChordSelector.this.dialog.getList().redraw();
+                	}
+                }
+            }
+        });
+
+        
+
+        this.plusMinusList.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                if(getDialog().getEditor() != null && getDialog().getList() != null){                 
+                	if (ChordSelector.this.getRefresh()) {
+	                	showChord();
+	                	//ChordSelector.this.dialog.getList().redraw();
+                	}
+                }
+            }
+        });
+
+
+        this.sharpButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent arg0) {
+            	insertTonicNames(true);
+            }
+        });
+
+        this.flatButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent arg0) {
+            	insertTonicNames(false);
+            }
+        });
+        /*
+        updateWidget(this._11List,false);
+        updateWidget(this._9List,false);
+        updateWidget(this.plusMinusList,false);
+        */
+        this.adjustWidgetAvailability();
+    }
     
     //-======================================================    
     //-======================================================
     protected void initChordWidgets() {
-    	Composite alterationComposite = new Composite(this,SWT.NONE);    	alterationComposite.setLayout(this.dialog.gridLayout(1,true,0,0));    	alterationComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-    	Composite aboveComposite = new Composite(alterationComposite,SWT.NONE);    	aboveComposite.setLayout(this.dialog.gridLayout(2,true,0,0));    	aboveComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-    	Composite firstComposite = new Composite(aboveComposite,SWT.NONE);    	firstComposite.setLayout(this.dialog.gridLayout(1,false,0,0));    	firstComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-        this.alterationList = new List(firstComposite,SWT.BORDER);        this.alterationList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-        this.plusMinusList = new List(firstComposite,SWT.BORDER);        this.plusMinusList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+    	Composite alterationComposite = new Composite(this,SWT.NONE);
+    	alterationComposite.setLayout(this.dialog.gridLayout(1,true,0,0));
+    	alterationComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+    	Composite aboveComposite = new Composite(alterationComposite,SWT.NONE);
+    	aboveComposite.setLayout(this.dialog.gridLayout(2,true,0,0));
+    	aboveComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+    	Composite firstComposite = new Composite(aboveComposite,SWT.NONE);
+    	firstComposite.setLayout(this.dialog.gridLayout(1,false,0,0));
+    	firstComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+        this.alterationList = new List(firstComposite,SWT.BORDER);
+        this.alterationList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+        this.plusMinusList = new List(firstComposite,SWT.BORDER);
+        this.plusMinusList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 
     	
-    	Composite secondComposite = new Composite(aboveComposite,SWT.NONE);    	secondComposite.setLayout(this.dialog.gridLayout(1,false,0,0));    	secondComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-        this._5List = new List(secondComposite,SWT.BORDER);        this._5List.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));        this._9List = new List(secondComposite,SWT.BORDER);        this._9List.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));        this._11List = new List(secondComposite,SWT.BORDER);        this._11List.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-                Composite bassComposite = new Composite(alterationComposite,SWT.NONE);        bassComposite.setLayout(this.dialog.gridLayout(1,true,0,0));        bassComposite.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));  
-        this.addCheck = new Button(bassComposite, SWT.CHECK | SWT.LEFT);        this.addCheck.setText("add");        //this.addCheck.setSelection(false);        //this.addCheck.setEnabled(false);        this.addCheck.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));                  Label separator = new Label(bassComposite,SWT.SEPARATOR | SWT.HORIZONTAL );        separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));        
-        Label bText = new Label(bassComposite,SWT.LEFT);        bText.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));        bText.setText(TuxGuitar.getProperty("chord.bass"));
-        this.bassCombo = new Combo(bassComposite, SWT.DROP_DOWN | SWT.READ_ONLY);        this.bassCombo.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+    	Composite secondComposite = new Composite(aboveComposite,SWT.NONE);
+    	secondComposite.setLayout(this.dialog.gridLayout(1,false,0,0));
+    	secondComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+        this._5List = new List(secondComposite,SWT.BORDER);
+        this._5List.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+
+        this._9List = new List(secondComposite,SWT.BORDER);
+        this._9List.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+
+        this._11List = new List(secondComposite,SWT.BORDER);
+        this._11List.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+
+        
+        Composite bassComposite = new Composite(alterationComposite,SWT.NONE);
+        bassComposite.setLayout(this.dialog.gridLayout(1,true,0,0));
+        bassComposite.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));  
+        this.addCheck = new Button(bassComposite, SWT.CHECK | SWT.LEFT);
+        this.addCheck.setText("add");
+        //this.addCheck.setSelection(false);
+        //this.addCheck.setEnabled(false);
+        this.addCheck.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));  
+        
+        Label separator = new Label(bassComposite,SWT.SEPARATOR | SWT.HORIZONTAL );
+        separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));
+
+        
+        Label bText = new Label(bassComposite,SWT.LEFT);
+        bText.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+        bText.setText(TuxGuitar.getProperty("chord.bass"));
+        this.bassCombo = new Combo(bassComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        this.bassCombo.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
     }
     
     protected void insertTonicNames(boolean sharp){
@@ -189,7 +438,18 @@ public class ChordSelector extends Composite{
                                    this._11List.getSelectionIndex(),
                                    this.bassCombo.getSelectionIndex(),
                                    this.tonicList.getSelectionIndex(),
-                                   this.sharpButton.getSelection());    }        ///////////////////////////////////////////////////////////    /**     * disables widget and sets selection to first element     *//*    protected void disableWidget(List widget) {    	widget.setEnabled(false);    	widget.setSelection(0);    }
+                                   this.sharpButton.getSelection());
+    }
+    
+    ///////////////////////////////////////////////////////////
+    /**
+     * disables widget and sets selection to first element
+     *//*
+    protected void disableWidget(List widget) {
+    	widget.setEnabled(false);
+    	widget.setSelection(0);
+    }
+
     */
     
     protected void updateWidget(List widget, boolean enabled) {
@@ -205,7 +465,9 @@ public class ChordSelector extends Composite{
     		widget.setSelection(false);
     	}
     }        
-            ///////////////////////////////////////////////////////////
+    
+    
+    ///////////////////////////////////////////////////////////
     
     
     
@@ -233,7 +495,11 @@ public class ChordSelector extends Composite{
     }    
     
     
-        /**     * adjusts the widgets availability according to chord theory options     */    protected void adjustWidgetAvailability() {
+    
+    /**
+     * adjusts the widgets availability according to chord theory options
+     */
+    protected void adjustWidgetAvailability() {
     	String chordName = ChordDatabase.get(getChordList().getSelectionIndex()).getName();
     	if (chordName.equals("dim") || chordName.equals("dim7") || chordName.equals("aug") || chordName.equals("5") ) {
     		updateWidget(getAlterationList(),false);
@@ -257,10 +523,35 @@ public class ChordSelector extends Composite{
     	}    	
     	
     	if(this.alterationList.isEnabled()){
-    		int currentIndex = this.alterationList.getSelectionIndex();    		// handle the +- list and ADD checkbox    		// handle the 9 and 11 list   			updateWidget(this.plusMinusList,(currentIndex > 0));   			updateWidget(this.addCheck,(currentIndex > 0));
+    		int currentIndex = this.alterationList.getSelectionIndex();
+    		// handle the +- list and ADD checkbox
+    		// handle the 9 and 11 list
+   			updateWidget(this.plusMinusList,(currentIndex > 0));
+   			updateWidget(this.addCheck,(currentIndex > 0));
    			updateWidget(this._9List, (currentIndex >= 2 && !this.addCheck.getSelection() ) );
    			updateWidget(this._11List, (currentIndex >= 3 && !this.addCheck.getSelection() ) );
-    	}    }    ///////////////////////////////////////////////////////////       public boolean getRefresh() {    	return this.refresh;    }    public void setRefresh(boolean refresh) {    	this.refresh = refresh;    }        public void setTuning(int[] tuning){        this.tuning = tuning;    }        public int[] getTuning(){        return this.tuning;    }    
+    	}
+    }
+
+
+    ///////////////////////////////////////////////////////////
+   
+    public boolean getRefresh() {
+    	return this.refresh;
+    }
+
+    public void setRefresh(boolean refresh) {
+    	this.refresh = refresh;
+    }
+    
+    public void setTuning(int[] tuning){
+        this.tuning = tuning;
+    }
+    
+    public int[] getTuning(){
+        return this.tuning;
+    }
+    
     protected ChordDialog getDialog() {
 		return this.dialog;
 	}
@@ -309,4 +600,4 @@ public class ChordSelector extends Composite{
 		return this._11List;
 	}    
 }
-
+
