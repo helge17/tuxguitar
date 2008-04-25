@@ -463,7 +463,7 @@ public class ChordEditor extends Composite {
 		new Thread(new Runnable() {
 			public void run() {
 				int playedStrings = 0;
-				int stringCount = chord.countStrings();
+				int stringCount = Math.min( getMaxStrings(), chord.countStrings() );
 				for (int i = 0; i < stringCount; i++) {
 					if (chord.getFretValue( i ) != -1) {
 						playedStrings ++;
