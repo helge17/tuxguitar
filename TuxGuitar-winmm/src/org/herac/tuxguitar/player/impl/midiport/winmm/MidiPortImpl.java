@@ -4,10 +4,10 @@ import org.herac.tuxguitar.player.base.MidiOut;
 import org.herac.tuxguitar.player.base.MidiPort;
 
 public class MidiPortImpl extends MidiPort{
-
+	
 	private final int device;
 	private final MidiOutImpl midiOut;
-
+	
 	public MidiPortImpl(MidiSystem midiSystem,String name,int device){
 		super(MidiPortImpl.toString(device),name);
 		this.device = device;
@@ -36,9 +36,8 @@ public class MidiPortImpl extends MidiPort{
 	public int getDevice() {
 		return this.device;
 	}
-
+	
 	public static String toString(int device){
 		return (Integer.toString(device));
 	}
-	
 }

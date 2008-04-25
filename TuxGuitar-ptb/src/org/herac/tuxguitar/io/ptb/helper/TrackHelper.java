@@ -4,7 +4,7 @@ import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
 
 
 public class TrackHelper {
-
+	
 	private TrackInfoHelper infoHelper;
 	private TrackStartHelper startHelper;
 	
@@ -12,7 +12,7 @@ public class TrackHelper {
 		this.infoHelper = new TrackInfoHelper();
 		this.startHelper = new TrackStartHelper();
 	}
-
+	
 	public void reset(PTTrackInfo defaultInfo){
 		this.infoHelper.reset(defaultInfo);
 	}
@@ -20,9 +20,8 @@ public class TrackHelper {
 	public TrackInfoHelper getInfoHelper() {
 		return this.infoHelper;
 	}
-
+	
 	public TrackStartHelper getStartHelper() {
 		return this.startHelper;
 	}
-	
 }

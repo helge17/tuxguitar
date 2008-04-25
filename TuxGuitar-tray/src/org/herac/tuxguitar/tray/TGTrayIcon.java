@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.TrayItem;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
 
 public class TGTrayIcon {
-
+	
 	private Image image;
 	private TrayItem item;
 	
@@ -16,7 +16,7 @@ public class TGTrayIcon {
 	public void setItem(TrayItem item){
 		this.item = item;
 	}
-
+	
 	public void loadImage(){
 		this.dispose();
 		if(this.item != null && !this.item.isDisposed()){

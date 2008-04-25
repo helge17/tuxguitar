@@ -25,7 +25,7 @@ public class MidiPortSynthesizer extends MidiPort{
 	
 	public MidiPortSynthesizer(Synthesizer synthesizer){
 		super(synthesizer.getDeviceInfo().getName(),synthesizer.getDeviceInfo().getName());
-		this.synthesizer = synthesizer;		
+		this.synthesizer = synthesizer;
 		this.out = new MidiSynthesizer(this);
 	}
 	
@@ -51,7 +51,7 @@ public class MidiPortSynthesizer extends MidiPort{
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.unavailable"));
 		}
 	}
-
+	
 	public Synthesizer getSynthesizer() {
 		try {
 			if(!this.synthesizer.isOpen()){
@@ -76,8 +76,8 @@ public class MidiPortSynthesizer extends MidiPort{
 			throwable.printStackTrace();
 		}
 		return this.synthesizer;
-	}	
-
+	}
+	
 	public boolean loadSoundbank(File file){
 		try {
 			return loadSoundbank( MidiSystem.getSoundbank(file) );
@@ -87,8 +87,8 @@ public class MidiPortSynthesizer extends MidiPort{
 		return false;
 	}
 	
-    public boolean loadSoundbank(Soundbank sb) {
-		try {			
+	public boolean loadSoundbank(Soundbank sb) {
+		try {
 			if (sb != null && getSynthesizer().isSoundbankSupported(sb)){
 				this.soundbankLoaded = false;
 				
@@ -108,21 +108,21 @@ public class MidiPortSynthesizer extends MidiPort{
 				}
 				
 				//load all soundbank instruments
-				this.soundbankLoaded = getSynthesizer().loadAllInstruments(sb);				
+				this.soundbankLoaded = getSynthesizer().loadAllInstruments(sb);
 			}
 		}catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
 		return this.soundbankLoaded;
-    }
- 
-    public boolean isSynthesizerLoaded(){
-    	return this.synthesizerLoaded;
-    }    
-    
-    public boolean isSoundbankLoaded(){
-    	return this.soundbankLoaded;
-    }
+	}
+	
+	public boolean isSynthesizerLoaded(){
+		return this.synthesizerLoaded;
+	}
+	
+	public boolean isSoundbankLoaded(){
+		return this.soundbankLoaded;
+	}
 }
 
 class MidiSynthesizer implements MidiOut{
@@ -131,7 +131,7 @@ class MidiSynthesizer implements MidiOut{
 	private MidiChannel[] channels;
 	
 	public MidiSynthesizer(MidiPortSynthesizer port){
-		this.port = port;		
+		this.port = port;
 	}
 	
 	private MidiChannel[] getChannels(){
@@ -140,7 +140,7 @@ class MidiSynthesizer implements MidiOut{
 		}
 		return this.channels;
 	}
-
+	
 	public void sendSystemReset(){
 		if(getChannels() != null){
 			for(int i = 0;i < getChannels().length; i ++){
@@ -154,13 +154,13 @@ class MidiSynthesizer implements MidiOut{
 			for(int channel = 0;channel < getChannels().length;channel ++){
 				sendControlChange(channel, MidiControllers.ALL_NOTES_OFF,0);
 			}
-		}		
+		}
 	}
 	
 	public void sendNoteOn(int channel, int key, int velocity){
 		if(getChannels() != null && channel >= 0 && channel < getChannels().length){
 			getChannels()[channel].noteOn(key, velocity);
-		}		
+		}
 	}
 	
 	public void sendNoteOff(int channel, int key, int velocity){
@@ -168,19 +168,19 @@ class MidiSynthesizer implements MidiOut{
 			getChannels()[channel].noteOff(key, velocity);
 		}
 	}
-
+	
 	public void sendControlChange(int channel, int controller, int value){
 		if(getChannels() != null && channel >= 0 && channel < getChannels().length){
 			getChannels()[channel].controlChange(controller, value);
-		}	
+		}
 	}
 	
 	public void sendProgramChange(int channel, int value){
-		if(getChannels() != null && channel >= 0 && channel < getChannels().length){	
+		if(getChannels() != null && channel >= 0 && channel < getChannels().length){
 			getChannels()[channel].programChange(value);
-		}	
+		}
 	}
-
+	
 	public void sendPitchBend(int channel, int value){
 		if(getChannels() != null && channel >= 0 && channel < getChannels().length){
 			getChannels()[channel].setPitchBend( (value * 128) );

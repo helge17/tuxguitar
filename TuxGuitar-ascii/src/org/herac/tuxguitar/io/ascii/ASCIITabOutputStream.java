@@ -17,21 +17,21 @@ import org.herac.tuxguitar.song.models.TGTrack;
 
 public class ASCIITabOutputStream {
 	
-	private static final String[] TONIC_NAMES = new String[]{"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"}; 
+	private static final String[] TONIC_NAMES = new String[]{"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 	
 	private static final int MAX_LINE_LENGTH = 80;
 	
 	private TGSongManager manager;
 	private PrintStream stream;
 	private ASCIIOutputStream out;
-		
+	
 	public ASCIITabOutputStream(PrintStream stream){
 		this.stream = stream;
 	}
-
+	
 	public ASCIITabOutputStream(OutputStream stream){
 		this(new PrintStream(stream));
-	}	
+	}
 	
 	public ASCIITabOutputStream(String fileName) throws FileNotFoundException{
 		this(new FileOutputStream(fileName));
@@ -40,14 +40,14 @@ public class ASCIITabOutputStream {
 	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
 		this.manager.setSong(song);
-		this.out = new ASCIIOutputStream(this.stream);		
-		this.drawSong();		
+		this.out = new ASCIIOutputStream(this.stream);
+		this.drawSong();
 		this.out.flush();
 		this.out.close();
 	}
 	
 	private void drawSong(){
-		TGSong song = this.manager.getSong();	
+		TGSong song = this.manager.getSong();
 		
 		//Propiedades de cancion
 		this.out.drawStringLine("Title: " + song.getName());
@@ -57,11 +57,11 @@ public class ASCIITabOutputStream {
 		
 		Iterator it = song.getTracks();
 		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();			
+			TGTrack track = (TGTrack)it.next();
 			this.out.nextLine();
 			drawTrack(track);
-			this.out.nextLine();					
-		}				
+			this.out.nextLine();
+		}
 	}
 	
 	private void drawTrack(TGTrack track){
@@ -71,34 +71,34 @@ public class ASCIITabOutputStream {
 		
 		//Obtengo los nombres de la afinacion, y el ancho maximo que ocupa
 		String[] tuning = new String[track.getStrings().size()];
-		int maxTuningLength = 1;		
+		int maxTuningLength = 1;
 		for(int i = 0; i < track.getStrings().size();i++){
 			TGString string = (TGString)track.getStrings().get(i);
 			tuning[i] = TONIC_NAMES[(string.getValue() % TONIC_NAMES.length)];
 			maxTuningLength = Math.max(maxTuningLength,tuning[i].length());
 		}
 		
-		int nextMeasure = 0;		
+		int nextMeasure = 0;
 		boolean eof = false;
-		while(!eof){			
+		while(!eof){
 			this.out.nextLine();
 			int index = nextMeasure;
 			for(int i = 0; i < track.getStrings().size();i++){
 				TGString string = (TGString)track.getStrings().get(i);
-			
+				
 				//Dibujo la afinacion de la cuerda
 				this.out.drawTuneSegment(tuning[i],maxTuningLength);
 				int measureCount = track.countMeasures();
 				for(int j = index; j < measureCount; j++){
-					TGMeasure measure = track.getMeasure(j);				
+					TGMeasure measure = track.getMeasure(j);
 					drawMeasure(measure,string);
 					nextMeasure = (j + 1);
 					
 					//Calculo si era el ultimo compas
-					eof = (this.manager.getTrackManager().isLastMeasure(measure));										
+					eof = (this.manager.getTrackManager().isLastMeasure(measure));
 					
 					//Si se supero el ancho maximo, bajo de linea
-					if(this.out.getPosX() > MAX_LINE_LENGTH){						
+					if(this.out.getPosX() > MAX_LINE_LENGTH){
 						break;
 					}
 				}
@@ -127,20 +127,20 @@ public class ASCIITabOutputStream {
 			}
 			//dejo el espacio
 			else{
-				this.out.drawStringSegments(1);	
+				this.out.drawStringSegments(1);
 			}
 			
 			//Agrego espacios correspondientes hasta el proximo pulso.
 			this.out.drawStringSegments(getDurationScaping(beat.getDuration()) - outLength);
-
+			
 			beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
 		}
 		
 	}
-
+	
 	private int getDurationScaping(TGDuration duration){
 		int spacing = 1;
-
+		
 		if(duration.getValue() >= TGDuration.SIXTEENTH){
 			spacing = 2;
 		}
@@ -152,10 +152,10 @@ public class ASCIITabOutputStream {
 		}
 		else if(duration.getValue() >= TGDuration.HALF){
 			spacing = 5;
-		}		
+		}
 		else if(duration.getValue() >= TGDuration.WHOLE){
 			spacing = 6;
-		}		
+		}
 		return spacing;
 	}
 	

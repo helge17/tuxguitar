@@ -23,8 +23,8 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class PDFSongExporter implements TGSongExporter{
-
-	private static final int PAGE_WIDTH = 550;	
+	
+	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
 	
 	private PrintStyles styles;
@@ -32,16 +32,16 @@ public class PDFSongExporter implements TGSongExporter{
 	public String getExportName() {
 		return "PDF";
 	}
-
+	
 	public TGFileFormat getFileFormat() {
 		return new TGFileFormat("PDF","*.pdf");
-	}	
+	}
 	
 	public boolean configure(boolean setDefaults) {
 		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.instance().getShell()) : null );
 		return ( this.styles != null || setDefaults );
 	}
-
+	
 	public PrintStyles getDefaultStyles(TGSong song){
 		PrintStyles styles = new PrintStyles();
 		styles.setStyle(ViewLayout.DISPLAY_TABLATURE);
@@ -51,51 +51,51 @@ public class PDFSongExporter implements TGSongExporter{
 		return styles;
 	}
 	
-	public void exportSong(OutputStream stream, TGSong song) {		
-    	try{
-    		this.export(stream,song, (this.styles != null ? this.styles : getDefaultStyles(song)) );
-    	}catch(Throwable throwable){
-    		return;
-    	}
+	public void exportSong(OutputStream stream, TGSong song) {
+		try{
+			this.export(stream,song, (this.styles != null ? this.styles : getDefaultStyles(song)) );
+		}catch(Throwable throwable){
+			return;
+		}
 	}
-
+	
 	public void export(final OutputStream stream,final TGSong song,final PrintStyles data){
 		new Thread(new Runnable() {
 			public void run() {
 				try{
 					TGSongManager manager = new TGSongManager();
 					manager.setFactory(new TGFactoryImpl());
-					manager.setSong(song.clone(manager.getFactory()));	
-				
+					manager.setSong(song.clone(manager.getFactory()));
+					
 					export(stream,manager,data);
-				}catch(Throwable throwable){
-					MessageDialog.errorMessage(throwable);
-				}				
-			}
-		}).start();
-	}    
-    
-	public void export(final OutputStream stream,final TGSongManager manager, final PrintStyles data){	
-		new SyncThread(new Runnable() {
-			public void run() {
-				try{
-					Tablature tablature = new Tablature(TuxGuitar.instance().getShell());
-			        tablature.setSongManager(manager);
-		        
-			        PrinterViewLayout layout = new PrinterViewLayout(tablature,data, 1f);
-				
-			        export(stream, layout);
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
 			}
-		}).start();  		        
+		}).start();
 	}
-
-	public void export(final OutputStream stream, final PrinterViewLayout layout){	
+	
+	public void export(final OutputStream stream,final TGSongManager manager, final PrintStyles data){
+		new SyncThread(new Runnable() {
+			public void run() {
+				try{
+					Tablature tablature = new Tablature(TuxGuitar.instance().getShell());
+					tablature.setSongManager(manager);
+					
+					PrinterViewLayout layout = new PrinterViewLayout(tablature,data, 1f);
+					
+					export(stream, layout);
+				}catch(Throwable throwable){
+					MessageDialog.errorMessage(throwable);
+				}
+			}
+		}).start();
+	}
+	
+	public void export(final OutputStream stream, final PrinterViewLayout layout){
 		new Thread(new Runnable() {
 			public void run() {
-				try{	
+				try{
 					layout.getTablature().updateTablature();
 					layout.makeDocument(new PrintDocumentImpl(layout,new Rectangle(0,0,PAGE_WIDTH,PAGE_HEIGHT), stream));
 					//new SyncThread(new Runnable() {
@@ -107,18 +107,18 @@ public class PDFSongExporter implements TGSongExporter{
 					MessageDialog.errorMessage(throwable);
 				}
 			}
-		}).start();  		
+		}).start();
 	}
 	
 	private class PrintDocumentImpl implements PrintDocument{
-
+		
 		private PrinterViewLayout layout;
 		private TGPainter painter;
 		private Rectangle bounds;
 		private OutputStream stream;
 		private Image buffer;
 		private List pages;
-
+		
 		public PrintDocumentImpl(PrinterViewLayout layout, Rectangle bounds, OutputStream stream){
 			this.layout = layout;
 			this.bounds = bounds;
@@ -130,7 +130,7 @@ public class PDFSongExporter implements TGSongExporter{
 		public TGPainter getPainter() {
 			return this.painter;
 		}
-
+		
 		public Rectangle getBounds(){
 			return this.bounds;
 		}
@@ -139,7 +139,7 @@ public class PDFSongExporter implements TGSongExporter{
 			this.buffer = new Image(this.layout.getTablature().getDisplay(),this.bounds.width - this.bounds.x, this.bounds.height - this.bounds.y);
 			this.painter.init( this.buffer );
 		}
-
+		
 		public void pageFinish() {
 			this.pages.add( this.buffer.getImageData() );
 			this.painter.dispose();
@@ -149,7 +149,7 @@ public class PDFSongExporter implements TGSongExporter{
 		public void start() {
 			// Not implemented
 		}
-
+		
 		public void finish() {
 			this.layout.getTablature().getDisplay().syncExec(new Runnable() {
 				public void run() {
@@ -158,7 +158,7 @@ public class PDFSongExporter implements TGSongExporter{
 			});
 			this.write(); 
 		}
-
+		
 		public boolean isPaintable(int page) {
 			return true;
 		}
@@ -174,5 +174,5 @@ public class PDFSongExporter implements TGSongExporter{
 		protected void dispose(){
 			this.layout.getTablature().dispose();
 		}
-	}	
+	}
 }

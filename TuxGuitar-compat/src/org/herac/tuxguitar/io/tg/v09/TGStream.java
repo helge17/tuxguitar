@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.io.tg.v09;
 
 public class TGStream {
-		
-	protected static final String TG_VERSION = ("TuxGuitar File Format - 0.9");	
+	
+	protected static final String TG_VERSION = ("TuxGuitar File Format - 0.9");
 	
 	protected static final int TRACK_LYRICS = 0x01;
 	
@@ -45,7 +45,7 @@ public class TGStream {
 	protected static final int DURATION_DOUBLE_DOTTED = 0x02;
 	
 	protected static final int DURATION_TUPLETO = 0x04;
-					
+	
 	protected static final int EFFECT_BEND = 0x01;
 	
 	protected static final int EFFECT_TREMOLO_BAR = 0x02;
@@ -60,7 +60,7 @@ public class TGStream {
 	
 	protected static final int EFFECT_VIBRATO = 0x040;
 	
-	protected static final int EFFECT_DEAD = 0x080;	
+	protected static final int EFFECT_DEAD = 0x080;
 	
 	protected static final int EFFECT_SLIDE = 0x0100;
 	
@@ -83,7 +83,7 @@ public class TGStream {
 	protected static final int EFFECT_POPPING = 0x020000;
 	
 	protected static final int EFFECT_FADE_IN = 0x040000;
-			
+	
 	protected static final int GRACE_FLAG_DEAD = 0x01;
 	
 	protected static final int GRACE_FLAG_ON_BEAT = 0x02;

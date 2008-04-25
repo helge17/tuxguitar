@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.tef.base;
 
 public class TEPercussion {
-
+	
 	private String name;
 	private int volume;
 	
@@ -9,11 +9,11 @@ public class TEPercussion {
 		this.name = name;
 		this.volume = volume;
 	}
-
+	
 	public String getName() {
 		return this.name;
 	}
-
+	
 	public int getVolume() {
 		return this.volume;
 	}
@@ -23,5 +23,5 @@ public class TEPercussion {
 		string += "\n     Name:       " + getName();
 		string += "\n     Volume:     " + getVolume();
 		return string;
-	}	
+	}
 }

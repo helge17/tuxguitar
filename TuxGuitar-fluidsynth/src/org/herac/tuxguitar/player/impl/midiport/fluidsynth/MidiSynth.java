@@ -45,13 +45,13 @@ public class MidiSynth {
 			this.loadedPort = null;
 		}
 	}
-
+	
 	public void sendSystemReset() {
 		if(isInitialized()){
 			this.systemReset(this.instance);
 		}
 	}
-
+	
 	public void sendNoteOn(int channel, int key, int velocity) {
 		if(isInitialized()){
 			this.noteOn(this.instance,channel, key, velocity);
@@ -101,5 +101,5 @@ public class MidiSynth {
 	private native void programChange(long instance,int channel,int program);
 	
 	private native void pitchBend(long instance,int channel,int value);
-
+	
 }

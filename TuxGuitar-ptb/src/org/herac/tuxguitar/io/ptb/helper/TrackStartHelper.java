@@ -3,7 +3,7 @@ package org.herac.tuxguitar.io.ptb.helper;
 import org.herac.tuxguitar.song.models.TGDuration;
 
 public class TrackStartHelper {
-
+	
 	private int section;
 	private long[][] voices;
 	private boolean measureEmpty;
@@ -15,7 +15,7 @@ public class TrackStartHelper {
 	public TrackStartHelper(){
 		super();
 	}
-
+	
 	public void init(int section,int staffs){
 		this.section = section;
 		this.voices = new long[staffs][2];
@@ -31,10 +31,10 @@ public class TrackStartHelper {
 	
 	public void initVoices(long start){
 		for(int i = 0; i < this.voices.length; i ++){
-			for(int j = 0; j < this.voices[i].length; j ++){	
+			for(int j = 0; j < this.voices[i].length; j ++){
 				this.voices[i][j] = fixValue(start);
 			}
-		}	
+		}
 		this.measureEmpty = true;
 		this.measureRest = false;
 	}
@@ -42,11 +42,11 @@ public class TrackStartHelper {
 	public long getMaxStart(){
 		long result = TGDuration.QUARTER_TIME;
 		for(int i = 0; i < this.voices.length; i ++){
-			for(int j = 0; j < this.voices[i].length; j ++){	
+			for(int j = 0; j < this.voices[i].length; j ++){
 				result = Math.max(result,this.voices[i][j] );
 			}
 		}
-		// checkRestMeasures	
+		// checkRestMeasures
 		if( this.measureRest && this.measureEmpty ){
 			result = Math.max(result, (this.barStart + this.barLength));
 		}
@@ -60,23 +60,23 @@ public class TrackStartHelper {
 	public void setVoiceStart(int staff,int voice,long start){
 		this.voices[staff][voice] = fixValue(start);
 	}
-
+	
 	public long getBarStart() {
 		return this.barStart;
 	}
-
+	
 	public void setBarStart(long barStart) {
 		this.barStart = barStart;
 	}
-
+	
 	public long getBarLength() {
 		return this.barLength;
 	}
-
+	
 	public void setBarLength(long barLength) {
 		this.barLength = barLength;
 	}
-
+	
 	public void checkBeat( boolean rest ){
 		this.measureEmpty = (this.measureEmpty && rest );
 		this.measureRest = true;
@@ -84,6 +84,5 @@ public class TrackStartHelper {
 	
 	public long fixValue(long value){
 		return (((value % (TGDuration.QUARTER_TIME / 2)) + 10  > (TGDuration.QUARTER_TIME / 2))?(value + ((TGDuration.QUARTER_TIME / 2) - (value % (TGDuration.QUARTER_TIME / 2)))):value);
-	}	
-	
+	}
 }

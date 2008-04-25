@@ -10,7 +10,7 @@ import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 
 public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
-
+	
 	private static final int TICK_MOVE = 1;
 	
 	private Sequencer sequencer;
@@ -20,7 +20,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	public MidiSequencerImpl(Sequencer sequencer){
 		this.sequencer = sequencer;
 	}
-
+	
 	public synchronized void open() {
 		try {
 			if(!this.sequencer.isOpen()){
@@ -31,7 +31,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
-	}	
+	}
 	
 	public synchronized void close() {
 		try {
@@ -41,7 +41,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
-		}			
+		}
 	}
 	
 	public void openTransmitter(){
@@ -63,23 +63,23 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			throwable.printStackTrace();
 		}
 	}
-
-	protected Sequencer getSequencer() {    	
+	
+	protected Sequencer getSequencer() {
 		this.open();
-        return this.sequencer;
-    }
+		return this.sequencer;
+	}
 	
 	public MidiSequenceHandler createSequence(int tracks) {
 		return new MidiSequenceHandlerImpl(this,tracks);
 	}
-
+	
 	public MidiPort getMidiPort() {
 		if(this.midiPort == null){
 			this.midiPort = new MidiPortEmpty();
 		}
 		return this.midiPort;
 	}
-
+	
 	public void setMidiPort(MidiPort port) {
 		this.midiPort = port;
 	}
@@ -92,7 +92,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		}
 		return 0;
 	}
-
+	
 	public long getTickPosition() {
 		try {
 			return (getSequencer().getTickPosition() + TICK_MOVE);
@@ -101,7 +101,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		}
 		return 0;
 	}
-
+	
 	public void setTickPosition(long tickPosition) {
 		try {
 			this.getSequencer().setTickPosition(tickPosition - TICK_MOVE);
@@ -119,7 +119,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		}
 		return false;
 	}
-
+	
 	public void setMute(int index, boolean mute) {
 		try {
 			getSequencer().setTrackMute(index, mute);
@@ -127,7 +127,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			throwable.printStackTrace();
 		}
 	}
-
+	
 	public void setSolo(int index, boolean solo) {
 		try {
 			getSequencer().setTrackSolo(index, solo);
@@ -135,7 +135,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			throwable.printStackTrace();
 		}
 	}
-
+	
 	public void setSequence(Sequence sequence){
 		try {
 			getSequencer().setSequence(sequence);
@@ -145,13 +145,13 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	}
 	
 	public void start() {
-		try {				
+		try {
 			getSequencer().start();
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
 	}
-
+	
 	public void stop() {
 		try {
 			this.getSequencer().stop();
@@ -160,7 +160,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			throwable.printStackTrace();
 		}
 	}
-
+	
 	public void reset(boolean systemReset){
 		try {
 			this.getMidiPort().out().sendAllNotesOff();
@@ -174,12 +174,12 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			throwable.printStackTrace();
 		}
 	}
-
+	
 	public String getKey() {
 		return this.sequencer.getDeviceInfo().getName();
 	}
-
+	
 	public String getName() {
 		return this.sequencer.getDeviceInfo().getName();
-	}	
+	}
 }

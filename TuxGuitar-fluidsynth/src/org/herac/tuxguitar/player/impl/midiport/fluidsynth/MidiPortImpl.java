@@ -7,7 +7,7 @@ import org.herac.tuxguitar.player.base.MidiPort;
 import org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiOutImpl;
 
 public class MidiPortImpl extends MidiPort{
-
+	
 	private MidiSynth synth;
 	private MidiOutImpl midiOut;
 	private String soundFont;

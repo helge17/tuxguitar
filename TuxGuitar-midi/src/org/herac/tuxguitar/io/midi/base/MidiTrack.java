@@ -6,24 +6,23 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MidiTrack {
-
+	
 	private long ticks;
 	private List events = new ArrayList();
 	
-	
-    public void add(MidiEvent event) {
-    	this.events.add(event);
-    	this.ticks = Math.max(this.ticks,event.getTick());
+	public void add(MidiEvent event) {
+		this.events.add(event);
+		this.ticks = Math.max(this.ticks,event.getTick());
 	}
-    
-    public MidiEvent get(int index){
-    	return (MidiEvent)this.events.get(index);
-    }
+	
+	public MidiEvent get(int index){
+		return (MidiEvent)this.events.get(index);
+	}
 	
 	public int size(){
 		return this.events.size();
 	}
-
+	
 	public long ticks(){
 		return this.ticks;
 	}
@@ -44,5 +43,4 @@ public class MidiTrack {
 		};
 		Collections.sort(this.events,comparator);
 	}
-	
 }

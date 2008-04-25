@@ -3,7 +3,7 @@ package org.herac.tuxguitar.player.impl.midiport.alsa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MidiSystem{	
+public class MidiSystem{
 	
 	private static final String JNI_LIBRARY_NAME = new String("tuxguitar-alsa-jni");
 	
@@ -31,7 +31,7 @@ public class MidiSystem{
 			this.instance = 0;
 		}
 	}
-
+	
 	public void open(){
 		if(this.instance != 0 && !this.open){
 			this.open(this.instance);
@@ -77,7 +77,7 @@ public class MidiSystem{
 			this.noteOff(this.instance, channel, note, velocity);
 		}
 	}
-
+	
 	public void controlChange(int channel,int control,int value){
 		if(this.instance != 0 && this.open){
 			this.controlChange(this.instance, channel, control, value);
@@ -95,18 +95,18 @@ public class MidiSystem{
 			this.pitchBend(this.instance, channel, value);
 		}
 	}
-
+	
 	protected void addPort(String name,int client,int port){
 		this.ports.add(new MidiPortImpl(this,name,client,port));
-	}	
-
+	}
+	
 	private native long malloc();
 	
 	private native void free(long instance);
 	
 	private native void open(long instance);
 	
-	private native void close(long instance);	
+	private native void close(long instance);
 	
 	private native void findPorts(long instance);
 	
@@ -117,7 +117,7 @@ public class MidiSystem{
 	private native void noteOn(long instance,int channel,int note,int velocity);
 	
 	private native void noteOff(long instance,int channel,int note,int velocity);
-
+	
 	private native void controlChange(long instance,int channel,int control,int value);
 	
 	private native void programChange(long instance,int channel,int program);

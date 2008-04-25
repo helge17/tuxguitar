@@ -12,17 +12,16 @@ public class MusicXMLPluginExporter extends TGExporterPlugin{
 	public String getAuthor() {
 		return "Julian Casadesus <julian@casadesus.com.ar>";
 	}
-
-	public String getDescription() {		
+	
+	public String getDescription() {
 		return "MusicXML exporter plugin";
 	}
-
+	
 	public String getName() {
 		return "MusicXML exporter";
 	}
-
+	
 	public String getVersion() {
 		return "1.0-rc3";
 	}
-
 }

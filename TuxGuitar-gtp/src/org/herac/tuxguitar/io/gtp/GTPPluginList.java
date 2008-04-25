@@ -10,7 +10,7 @@ import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 
 public class GTPPluginList extends TGPluginList{
-
+	
 	protected List getPlugins() {
 		List plugins = new ArrayList();
 		plugins.add(new TGInputStreamPlugin() {
@@ -27,12 +27,12 @@ public class GTPPluginList extends TGPluginList{
 			protected TGInputStreamBase getInputStream() {
 				return new GP3InputStream();
 			}
-		});		
+		});
 		plugins.add(new TGInputStreamPlugin() {
 			protected TGInputStreamBase getInputStream() {
 				return new GP2InputStream();
 			}
-		});		
+		});
 		plugins.add(new TGInputStreamPlugin() {
 			protected TGInputStreamBase getInputStream() {
 				return new GP1InputStream();
@@ -55,21 +55,20 @@ public class GTPPluginList extends TGPluginList{
 		});
 		return plugins;
 	}
-
+	
 	public String getAuthor() {
 		return "Julian Casadesus <julian@casadesus.com.ar>";
 	}
-
+	
 	public String getName() {
 		return "GPx File Format plugin";
 	}
-
-	public String getDescription() {		
+	
+	public String getDescription() {
 		return "GPx File Format plugin for TuxGuitar";
 	}
-		
+	
 	public String getVersion() {
 		return "1.0-rc3";
-	}	
-	
+	}
 }

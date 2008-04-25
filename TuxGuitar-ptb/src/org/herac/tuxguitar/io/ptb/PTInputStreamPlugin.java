@@ -12,17 +12,16 @@ public class PTInputStreamPlugin extends TGInputStreamPlugin{
 	public String getAuthor() {
 		return "Julian Casadesus <julian@casadesus.com.ar>";
 	}
-
+	
 	public String getDescription() {
 		return "PTB File Format plugin";
 	}
-
+	
 	public String getName() {
 		return "PTB File Format plugin";
 	}
-
+	
 	public String getVersion() {
 		return "1.0-rc3";
 	}
-
 }

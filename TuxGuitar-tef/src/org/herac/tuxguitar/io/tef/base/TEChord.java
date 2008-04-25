@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.tef.base;
 
 public class TEChord {
-
+	
 	private byte[] strings;
 	private String name;
 	
@@ -9,16 +9,14 @@ public class TEChord {
 		this.strings = strings;
 		this.name = name;
 	}
-
+	
 	public String getName() {
 		return this.name;
 	}
-
+	
 	public byte[] getStrings() {
 		return this.strings;
 	}
-	
-	
 	
 	public String toString(){
 		String string = new String("[CHORD]");
@@ -30,5 +28,4 @@ public class TEChord {
 		}
 		return string;
 	}
-	
 }

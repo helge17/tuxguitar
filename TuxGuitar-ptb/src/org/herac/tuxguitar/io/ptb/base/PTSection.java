@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PTSection {
-
+	
 	private int number;
 	private int staffs;
 	private List positions;
@@ -22,11 +22,11 @@ public class PTSection {
 	public int getStaffs() {
 		return this.staffs;
 	}
-
+	
 	public void setStaffs(int staffs) {
 		this.staffs = staffs;
 	}
-
+	
 	public List getPositions(){
 		return this.positions;
 	}
@@ -38,7 +38,7 @@ public class PTSection {
 			if(p.getPosition() == position){
 				return p;
 			}
-		}		
+		}
 		PTPosition p = new PTPosition(position);
 		getPositions().add(p);
 		return p;
@@ -54,18 +54,18 @@ public class PTSection {
 		return next;
 	}
 	
-    public void sort(){
-        int count = getPositions().size();
-    	for(int i = 0;i < count;i++){
-    		PTPosition minimun = null;
-            for(int j = i;j < count;j++){
-            	PTPosition position = (PTPosition)getPositions().get(j);
-                if(minimun == null || position.getPosition() < minimun.getPosition()){
-                	minimun = position;
-                }
-            }
-            getPositions().remove(minimun);
-            getPositions().add(i,minimun);
-        }
-    }	
+	public void sort(){
+		int count = getPositions().size();
+		for(int i = 0;i < count;i++){
+			PTPosition minimun = null;
+			for(int j = i;j < count;j++){
+				PTPosition position = (PTPosition)getPositions().get(j);
+				if(minimun == null || position.getPosition() < minimun.getPosition()){
+					minimun = position;
+				}
+			}
+			getPositions().remove(minimun);
+			getPositions().add(i,minimun);
+		}
+	}
 }

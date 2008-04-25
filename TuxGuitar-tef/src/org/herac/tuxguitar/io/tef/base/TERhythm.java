@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.tef.base;
 
 public class TERhythm {
-
+	
 	private String name;
 	private int volume;
 	private int instrument;
@@ -11,15 +11,15 @@ public class TERhythm {
 		this.volume = volume;
 		this.instrument = instrument;
 	}
-
+	
 	public int getInstrument() {
 		return this.instrument;
 	}
-
+	
 	public String getName() {
 		return this.name;
 	}
-
+	
 	public int getVolume() {
 		return this.volume;
 	}
@@ -30,5 +30,5 @@ public class TERhythm {
 		string += "\n     Volume:     " + getVolume();
 		string += "\n     Instrument: " + getInstrument();
 		return string;
-	}	
+	}
 }

@@ -8,14 +8,14 @@ public class PTGuitarIn implements PTComponent{
 		this.staff = staff;
 		this.trackInfo = trackInfo;
 	}
-
+	
 	public int getStaff() {
 		return this.staff;
 	}
-
+	
 	public int getTrackInfo() {
 		return this.trackInfo;
-	}   
+	}
 	
 	public PTComponent getClone(){
 		return new PTGuitarIn( getStaff(), getTrackInfo() );

@@ -5,7 +5,7 @@ import org.herac.tuxguitar.gui.tools.browser.ftp.utils.Base64Decoder;
 import org.herac.tuxguitar.gui.tools.browser.ftp.utils.Base64Encoder;
 
 public class TGBrowserDataImpl implements TGBrowserData{
-
+	
 	private static final String STRING_SEPARATOR = ";";
 	
 	private String host;
@@ -19,11 +19,11 @@ public class TGBrowserDataImpl implements TGBrowserData{
 		this.username = username;
 		this.password = password;
 	}
-
+	
 	public String getHost() {
 		return this.host;
 	}
-
+	
 	public String getPath() {
 		return this.path;
 	}
@@ -31,11 +31,11 @@ public class TGBrowserDataImpl implements TGBrowserData{
 	public String getPassword() {
 		return ((this.username != null && this.username.length() > 0)?this.password:"anonymous");
 	}
-
+	
 	public String getUsername() {
 		return ((this.username != null && this.username.length() > 0)?this.username:"anonymous");
 	}
-
+	
 	public String getTitle(){
 		return (getHost() + ":" + getPath());
 	}
@@ -45,7 +45,7 @@ public class TGBrowserDataImpl implements TGBrowserData{
 		String password = new String( Base64Encoder.encode( getPassword().getBytes() ) );
 		return getHost() + STRING_SEPARATOR + getPath() + STRING_SEPARATOR + username + STRING_SEPARATOR + password;
 	}
-
+	
 	public static TGBrowserData fromString(String string) {
 		String[] data = string.split(STRING_SEPARATOR);
 		if(data.length == 4){

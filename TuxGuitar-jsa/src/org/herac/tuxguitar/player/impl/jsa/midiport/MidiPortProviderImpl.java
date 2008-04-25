@@ -16,17 +16,17 @@ import org.herac.tuxguitar.player.base.MidiPort;
 import org.herac.tuxguitar.player.base.MidiPortProvider;
 
 public class MidiPortProviderImpl implements MidiPortProvider{
-
+	
 	public MidiPortProviderImpl(){
 		super();
 	}
 	
 	public List listPorts() throws MidiPlayerException{
 		try {
-			List ports = new ArrayList();		
+			List ports = new ArrayList();
 			MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
-			for(int i = 0; i < infos.length; i++){			
-				try {				
+			for(int i = 0; i < infos.length; i++){
+				try {
 					Iterator it = ports.iterator();
 					boolean exists = false;
 					while(it.hasNext()){
@@ -39,7 +39,7 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 						MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
 						if(device.getMaxReceivers() == 0 || device instanceof Sequencer){
 							continue;
-						}			
+						}
 						if(device instanceof Synthesizer){
 							ports.add(new MidiPortSynthesizer((Synthesizer)device));
 						}
@@ -56,9 +56,8 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.unknown"),t);
 		}
 	}
-
+	
 	public void closeAll() {
-		// Not implemented	
+		// Not implemented
 	}
-
 }

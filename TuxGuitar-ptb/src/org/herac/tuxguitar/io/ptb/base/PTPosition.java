@@ -6,19 +6,19 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PTPosition {
-
-	private int position;	
+	
+	private int position;
 	private List components;
 	
 	public PTPosition(int position){
 		this.position = position;
 		this.components = new ArrayList();
 	}
-
+	
 	public int getPosition() {
 		return this.position;
 	}
-
+	
 	public List getComponents() {
 		return this.components;
 	}
@@ -27,9 +27,8 @@ public class PTPosition {
 		this.components.add(component);
 	}
 	
-    public void sort(){
-        Collections.sort( getComponents(), new Comparator() {
-		
+	public void sort(){
+		Collections.sort( getComponents(), new Comparator() {
 			public int compare(Object o1, Object o2) {
 				if( o1 instanceof PTDirection ){
 					return 1;
@@ -40,5 +39,5 @@ public class PTPosition {
 				return 0;
 			}
 		});
-    }
+	}
 }

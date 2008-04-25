@@ -9,7 +9,7 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiPortProvider;
 
 public class MidiPortProviderImpl implements MidiPortProvider{
-
+	
 	private MidiSynth synth;
 	private MidiPortSettings settings;
 	

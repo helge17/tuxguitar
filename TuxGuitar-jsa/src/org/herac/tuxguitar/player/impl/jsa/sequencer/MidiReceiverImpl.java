@@ -8,13 +8,13 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 
 public class MidiReceiverImpl implements Receiver{
-
+	
 	private MidiSequencer sequencer;
 	
 	public MidiReceiverImpl(MidiSequencer sequencer){
-		this.sequencer = sequencer;		
+		this.sequencer = sequencer;
 	}
-
+	
 	public void send(MidiMessage message, long timeStamp) {
 		try {
 			parseMessage(message.getMessage());
@@ -22,50 +22,50 @@ public class MidiReceiverImpl implements Receiver{
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void close(){
 		//not implemented
 	}
 	
-	private void parseMessage(byte[] data) throws MidiPlayerException{		
-		int length = data.length;	
+	private void parseMessage(byte[] data) throws MidiPlayerException{
+		int length = data.length;
 		
 		//NOTE ON
-		if((((length > 0)?(data[0] & 0xFF):0) & 0xF0) == ShortMessage.NOTE_ON){			
+		if((((length > 0)?(data[0] & 0xFF):0) & 0xF0) == ShortMessage.NOTE_ON){
 			parseNoteOn(data);
 		}
-		//NOTE OFF		
+		//NOTE OFF
 		else if((((length > 0)?(data[0] & 0xFF):0) & 0xF0) == ShortMessage.NOTE_OFF){
 			parseNoteOff(data);
 		}
-		//PROGRAM CHANGE		
+		//PROGRAM CHANGE
 		else if((((length > 0)?(data[0] & 0xFF):0) & 0xF0) == ShortMessage.PROGRAM_CHANGE){
 			parseProgramChange(data);
 		}
-		//CONTROL CHANGE		
+		//CONTROL CHANGE
 		else if((((length > 0)?(data[0] & 0xFF):0) & 0xF0) == ShortMessage.CONTROL_CHANGE){
 			parseControlChange(data);
-		}		
-		//PITCH BEND		
+		}
+		//PITCH BEND
 		else if((((length > 0)?(data[0] & 0xFF):0) & 0xF0) == ShortMessage.PITCH_BEND){
 			parsePitchBend(data);
-		}			
+		}
 	}
 	
-	private void parseNoteOn(byte[] data) throws MidiPlayerException{				
-		int length = data.length;		
+	private void parseNoteOn(byte[] data) throws MidiPlayerException{
+		int length = data.length;
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		int velocity = (length > 2)?(data[2] & 0xFF):0;
 		
 		if(velocity == 0){
 			parseNoteOff(data);
-		}else if(value > 0){			
+		}else if(value > 0){
 			this.sequencer.getMidiPort().out().sendNoteOn(channel,value,velocity);
 		}
 	}
 	
-	private void parseNoteOff(byte[] data) throws MidiPlayerException{		
+	private void parseNoteOff(byte[] data) throws MidiPlayerException{
 		int length = data.length;
 		
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
@@ -73,34 +73,33 @@ public class MidiReceiverImpl implements Receiver{
 		int velocity = (length > 2)?(data[2] & 0xFF):0;
 		
 		this.sequencer.getMidiPort().out().sendNoteOff(channel,value,velocity);
-	}	
-
-	private void parseProgramChange(byte[] data) throws MidiPlayerException{		
-		int length = data.length;		
+	}
+	
+	private void parseProgramChange(byte[] data) throws MidiPlayerException{
+		int length = data.length;
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int instrument = (length > 1)?(data[1] & 0xFF):-1;
 		if(channel != -1 && instrument != -1){
 			this.sequencer.getMidiPort().out().sendProgramChange(channel,instrument);
 		}
-	}		
-
-	private void parseControlChange(byte[] data) throws MidiPlayerException{				
-		int length = data.length;		
+	}
+	
+	private void parseControlChange(byte[] data) throws MidiPlayerException{
+		int length = data.length;
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int control = (length > 1)?(data[1] & 0xFF):-1;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
 		if(channel != -1 && control != -1 && value != -1){
 			this.sequencer.getMidiPort().out().sendControlChange(channel,control,value);
 		}
-	}	
+	}
 	
-	private void parsePitchBend(byte[] data) throws MidiPlayerException{				
-		int length = data.length;		
+	private void parsePitchBend(byte[] data) throws MidiPlayerException{
+		int length = data.length;
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
 		if(channel != -1 && value != -1){
 			this.sequencer.getMidiPort().out().sendPitchBend(channel,value);
 		}
 	}
-	
 }

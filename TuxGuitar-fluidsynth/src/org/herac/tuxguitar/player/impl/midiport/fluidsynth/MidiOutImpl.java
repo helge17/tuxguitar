@@ -18,7 +18,7 @@ public class MidiOutImpl implements MidiOut{
 	public void sendNoteOn(int channel, int key, int velocity) {
 		this.synth.sendNoteOn(channel, key, velocity);
 	}
-		
+	
 	public void sendNoteOff(int channel, int key, int velocity) {
 		this.synth.sendNoteOff(channel, key, velocity);
 	}
@@ -30,11 +30,11 @@ public class MidiOutImpl implements MidiOut{
 	public void sendProgramChange(int channel, int value) {
 		this.synth.sendProgramChange(channel, value);
 	}
-
+	
 	public void sendPitchBend(int channel, int value) {
 		this.synth.sendPitchBend(channel, value);
 	}
-		
+	
 	public void sendAllNotesOff() {
 		for(int i = 0; i < 16; i ++){
 			this.sendControlChange(i,MidiControllers.ALL_NOTES_OFF,0);

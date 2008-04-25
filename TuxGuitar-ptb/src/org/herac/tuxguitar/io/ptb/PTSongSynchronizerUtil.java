@@ -15,7 +15,7 @@ import org.herac.tuxguitar.io.ptb.base.PTTrack;
 import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
 
 public class PTSongSynchronizerUtil {
-
+	
 	public static void synchronizeTracks(PTSong src, PTSong dst){
 		synchronizeTrack( src.getTrack1(), dst.getTrack1() );
 		synchronizeTrack( src.getTrack2(), dst.getTrack2() );
@@ -33,31 +33,31 @@ public class PTSongSynchronizerUtil {
 			dst.getInfos().add( srcInfo.getClone() );
 		}
 	}
-
+	
 	private static void applyRepeats(PTTrack src, PTTrack dst){
 		applyRepeats(src, dst, new PTIndex(0,0,0), new PTSongSynchronizerData(), new ArrayList() );
 	}
 	
 	private static void applyRepeats(PTTrack src, PTTrack dst, PTIndex index, PTSongSynchronizerData rd, List useds){
-
+		
 		for( int s = index.s; s < src.getSections().size(); s ++){
 			PTSection srcSection = (PTSection) src.getSections().get(s);
 			srcSection.sort();
-
+			
 			PTSection dstSection = new PTSection( srcSection.getNumber() );
 			dstSection.setStaffs( srcSection.getStaffs() );
 			dst.getSections().add( dstSection );
-
+			
 			for( int p = (s == index.s ? index.p : 0); p < srcSection.getPositions().size(); p ++){
 				PTPosition srcPosition = (PTPosition)srcSection.getPositions().get(p);
 				srcPosition.sort();
 				
 				PTPosition dstPosition = new PTPosition(srcPosition.getPosition() );
 				dstSection.getPositions().add( dstPosition );
-
+				
 				for(int c = (s == index.s && p == index.p ? index.c : 0); c < srcPosition.getComponents().size(); c ++){
 					PTComponent component = (PTComponent)srcPosition.getComponents().get(c);
-				
+					
 					if(!rd.skip){
 						dstPosition.addComponent( component.getClone() );
 					}
@@ -87,9 +87,9 @@ public class PTSongSynchronizerUtil {
 							rd.repeatInProgress = false;
 						}
 					}
-
+					
 					// ------------------------------ PTSymbol ------------------------------//
-					else if(component instanceof PTSymbol){						
+					else if(component instanceof PTSymbol){
 						PTSymbol symbol = (PTSymbol)component;
 						
 						rd.skip = false;
@@ -102,18 +102,18 @@ public class PTSongSynchronizerUtil {
 							rd.repeatAlternative =  true;
 						}
 					}
-
+					
 					// ------------------------------ PTDirection ------------------------------//
 					else if(component instanceof PTDirection){
 						
 						PTDirection direction = (PTDirection)component;
-
+						
 						boolean validRepeat = (direction.getRepeat() == 0 || (rd.repeatStart != null && (rd.repeatNumber + 1) == direction.getRepeat()));
 						boolean validDirection = ( direction.getActiveSymbol() == rd.findActiveSymbol );
 						
 						if ( validDirection && validRepeat ){
 							rd.findActiveSymbol = 0;
-
+							
 							if( direction.getDirection() == PTDirection.DIRECTION_FINE ){
 								// Used to mark when to stop playing (usually the end of the score)
 								if ( canUseDirection(direction, useds) ){
@@ -128,7 +128,7 @@ public class PTSongSynchronizerUtil {
 									return;
 								}
 							}
-						
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DAL_SEGNO ){
 								// Go back to the Segno and play from there
 								if ( canUseDirection(direction, useds) ){
@@ -150,7 +150,7 @@ public class PTSongSynchronizerUtil {
 									}
 								}
 							}
-
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_TO_CODA ){
 								// Go to the Coda sign and play from there. Used in conjunction with D.C./D.S. al Coda signs.
 								if ( canUseDirection(direction, useds) ){
@@ -161,7 +161,7 @@ public class PTSongSynchronizerUtil {
 									}
 								}
 							}
-
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_TO_DOUBLE_CODA ){
 								// Go to the Double Coda and play from there. Used in conjunction with D.C./D.S. al Double Coda signs.
 								if ( canUseDirection(direction, useds) ){
@@ -172,9 +172,9 @@ public class PTSongSynchronizerUtil {
 									}
 								}
 							}
-						
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DA_CAPO_AL_CODA ){
-								// Go back to the beginning of the score and play from there until the To Coda sign is reached, 
+								// Go back to the beginning of the score and play from there until the To Coda sign is reached,
 								// then jump to the Coda sign.
 								if( canUseDirection(direction, useds)  ){
 									rd.findActiveSymbol = PTDirection.ACTIVE_SYMBOL_DC;
@@ -183,7 +183,7 @@ public class PTSongSynchronizerUtil {
 								}
 							
 							}
-						
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DA_CAPO_AL_DOUBLE_CODA ){
 								// Go back to the beginning of the score and play from there until the To Double Coda sign is reached,
 								// then jump to the Double Coda sign.
@@ -193,7 +193,7 @@ public class PTSongSynchronizerUtil {
 									return;
 								}
 							}
-						
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DAL_SEGNO_AL_CODA ){
 								// Go back to the Segno sign and play from there until the To Coda sign is reached,
 								// then jump to the Coda sign.
@@ -206,7 +206,7 @@ public class PTSongSynchronizerUtil {
 									}
 								}
 							}
-
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DAL_SEGNO_AL_DOUBLE_CODA ){
 								// Go back to the Segno sign and play from there until the To Double Coda sign is reached,
 								// then jump to the Double Coda sign.
@@ -219,7 +219,7 @@ public class PTSongSynchronizerUtil {
 									}
 								}
 							}
-
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DAL_SEGNO_SEGNO_AL_CODA ){
 								// Go back to the Segno Segno sign and play from there until the To Coda sign is reached,
 								// then jump to the Coda sign.
@@ -245,7 +245,7 @@ public class PTSongSynchronizerUtil {
 									}
 								}
 							}
-
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DA_CAPO_AL_FINE ){
 								// Go back to the beginning and play until the Fine sign is reached.
 								if( canUseDirection(direction, useds)  ){
@@ -254,7 +254,7 @@ public class PTSongSynchronizerUtil {
 									return;
 								}
 							}
-
+							
 							else if( direction.getDirection() == PTDirection.DIRECTION_DAL_SEGNO_AL_FINE ){
 								// Go back to the Segno sign and play until the Fine sign is reached.
 								PTIndex segno = findUnusedDirection(src, useds, PTDirection.DIRECTION_SEGNO, s, p );
@@ -280,7 +280,7 @@ public class PTSongSynchronizerUtil {
 			}
 		}
 	}
-
+	
 	private static boolean canUseDirection(PTDirection direction, List useds){
 		boolean inUse = false;
 		for( int i = 0 ; i < useds.size() && !inUse; i ++ ){
@@ -319,7 +319,7 @@ public class PTSongSynchronizerUtil {
 		}
 		return null;
 	}
-
+	
 	private static class PTIndex{
 		/** Index Of Section **/
 		protected int s;
@@ -354,6 +354,6 @@ public class PTSongSynchronizerUtil {
 			this.repeatNumber = 0;
 			this.repeatAlternative = false;
 			this.skip = false;
-		}		
+		}
 	}
 }

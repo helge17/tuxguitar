@@ -7,12 +7,12 @@ public class ASCIIOutputStream {
 	private PrintWriter writer;
 	private int x;
 	private int y;
-
+	
 	public ASCIIOutputStream(PrintStream stream){
 		this.writer = new PrintWriter(stream);
 	}
 	
-	public void drawNote(int fret){		
+	public void drawNote(int fret){
 		movePoint(getPosX() + ((fret >=10 )?2:1),getPosY());
 		this.writer.print(fret);
 	}
@@ -23,25 +23,25 @@ public class ASCIIOutputStream {
 			this.writer.print("-");
 		}
 	}
-
+	
 	public void drawTuneSegment(String tune,int maxLength){
 		for(int i = tune.length();i < maxLength;i ++){
 			drawSpace();
 		}
 		movePoint(getPosX() + tune.length(),getPosY());
-		this.writer.print(tune);		
+		this.writer.print(tune);
 	}
 	
 	public void drawBarSegment(){
 		movePoint(getPosX() + 1,getPosY());
-		this.writer.print("|");		
+		this.writer.print("|");
 	}
 	
 	public void nextLine(){
 		movePoint(0,getPosY() + 1);
 		this.writer.println("");
 	}
-
+	
 	public void drawStringLine(String s){
 		movePoint(0,getPosY() + 1);
 		this.writer.println(s);
@@ -49,9 +49,9 @@ public class ASCIIOutputStream {
 	
 	public void drawSpace(){
 		movePoint(getPosX() + 1,getPosY());
-		this.writer.print(" ");		
+		this.writer.print(" ");
 	}
-		
+	
 	private void movePoint(int x,int y){
 		this.x = x;
 		this.y = y;
@@ -60,7 +60,7 @@ public class ASCIIOutputStream {
 	public int getPosX(){
 		return this.x;
 	}
-
+	
 	public int getPosY(){
 		return this.y;
 	}
@@ -68,9 +68,8 @@ public class ASCIIOutputStream {
 	public void flush(){
 		this.writer.flush();
 	}
-
+	
 	public void close(){
 		this.writer.close();
 	}
-			
 }

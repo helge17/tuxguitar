@@ -5,11 +5,11 @@ import org.herac.tuxguitar.player.base.MidiPort;
 import org.herac.tuxguitar.player.impl.midiport.alsa.MidiOutImpl;
 
 public class MidiPortImpl extends MidiPort{
-
+	
 	private final int port;
 	private final int client;
 	private final MidiOutImpl midiOut;
-
+	
 	public MidiPortImpl(MidiSystem midiSystem,String name,int client,int port){
 		super(MidiPortImpl.getUniqueKey(client, port),MidiPortImpl.getUniqueName(name, client, port));
 		this.client = client;
@@ -39,15 +39,15 @@ public class MidiPortImpl extends MidiPort{
 	public int getPort() {
 		return this.port;
 	}
-
+	
 	public int getClient() {
 		return this.client;
 	}
-
+	
 	public static String getUniqueKey(int client,int port){
 		return ("tuxguitar-alsa_" + client + "-" + port);
 	}
-
+	
 	public static String getUniqueName(String name,int client,int port){
 		return (name +" [" + client + ":" + port + "]");
 	}

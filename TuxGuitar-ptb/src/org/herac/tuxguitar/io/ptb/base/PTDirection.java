@@ -9,7 +9,7 @@ public class PTDirection implements PTComponent{
 	public static final int DIRECTION_FINE = 4;
 	public static final int DIRECTION_DA_CAPO = 5;
 	public static final int DIRECTION_DAL_SEGNO = 6;
-	public static final int DIRECTION_DAL_SEGNO_SEGNO = 7;	
+	public static final int DIRECTION_DAL_SEGNO_SEGNO = 7;
 	public static final int DIRECTION_TO_CODA = 8;
 	public static final int DIRECTION_TO_DOUBLE_CODA = 9;
 	public static final int DIRECTION_DA_CAPO_AL_CODA = 10;
@@ -39,15 +39,15 @@ public class PTDirection implements PTComponent{
 	public int getDirection() {
 		return this.direction;
 	}
-
+	
 	public int getActiveSymbol() {
 		return this.activeSymbol;
 	}
-
+	
 	public int getRepeat() {
 		return this.repeat;
 	}
-
+	
 	public PTComponent getClone(){
 		return new PTDirection( getDirection() , getActiveSymbol(), getRepeat() );
 	}

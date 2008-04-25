@@ -17,7 +17,7 @@ import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
 public class MidiPluginList extends TGPluginList implements TGPluginSetup{
 	
 	protected List getPlugins() {
-		List plugins = new ArrayList();	
+		List plugins = new ArrayList();
 		plugins.add(new TGMidiPortProviderPlugin() {
 			protected MidiPortProvider getProvider() {
 				return new MidiPortProviderImpl();
@@ -30,7 +30,7 @@ public class MidiPluginList extends TGPluginList implements TGPluginSetup{
 		});
 		return plugins;
 	}
-
+	
 	public void setupDialog(Shell parent) {
 		MidiConfigUtils.setupDialog(parent);
 	}
@@ -38,16 +38,16 @@ public class MidiPluginList extends TGPluginList implements TGPluginSetup{
 	public String getAuthor() {
 		return "Julian Casadesus <julian@casadesus.com.ar>";
 	}
-
-	public String getDescription() {		
+	
+	public String getDescription() {
 		return "Java Sound Api plugin";
 	}
-
+	
 	public String getName() {
 		return "Java Sound Api plugin";
 	}
-
+	
 	public String getVersion() {
 		return "1.0-rc3";
-	}	
+	}
 }
