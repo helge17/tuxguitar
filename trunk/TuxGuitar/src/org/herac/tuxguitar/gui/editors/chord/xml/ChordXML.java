@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.gui.editors.chord.xml;
 
 public class ChordXML {
-
+	
 	public static final String CHORD_LIST_TAG = "chords";
 	public static final String CHORD_TAG = "chord";
 	public static final String CHORD_NAME_ATTRIBUTE = "name";
