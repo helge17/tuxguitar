@@ -204,7 +204,7 @@ public class MusicXMLWriter {
 	}
 	
 	private void writeDirection(Node parent, TGMeasure measure, TGMeasure previous){
-		boolean tempoChanges = (previous == null || measure.getTempo().getValue() != measure.getTempo().getValue());
+		boolean tempoChanges = (previous == null || measure.getTempo().getValue() != previous.getTempo().getValue());
 		
 		if(tempoChanges){
 			Node direction = this.addAttribute(this.addNode(parent,"direction"),"placement","above");
