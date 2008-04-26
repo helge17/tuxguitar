@@ -31,9 +31,27 @@ import org.w3c.dom.Node;
 
 public class MusicXMLWriter {
 	
-	private static final String[] NATURAL_NOTES = new String[]{"C","C","D","D","E","F","F","G","G","A","A","B"};
+	private static final String[] NOTE_NAMES = new String[]{"C","D","E","F","G","A","B"};
 	
-	private static final boolean[] ACCIDENTAL_NOTES = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
+	private static final int NOTE_SHARPS[] = new int[]{0,0,1,1,2,3,3,4,4,5,5,6};
+	
+	private static final int NOTE_FLATS[] = new int[]{0,1,1,2,2,3,4,4,5,5,6,6};
+	
+	private static final boolean[] NOTE_ALTERATIONS = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
+	
+	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
+	
+	private static final int DURATION_DIVISIONS = (int)TGDuration.QUARTER_TIME;
+	
+	private static final int[] DURATION_VALUES = new int[]{
+		DURATION_DIVISIONS * 4, // WHOLE
+		DURATION_DIVISIONS * 2, // HALF
+		DURATION_DIVISIONS * 1, // QUARTER
+		DURATION_DIVISIONS / 2, // EIGHTH
+		DURATION_DIVISIONS / 4, // SIXTEENTH
+		DURATION_DIVISIONS / 8, // THIRTY_SECOND
+		DURATION_DIVISIONS / 16, // SIXTY_FOURTH
+	};
 	
 	private TGSongManager manager;
 	
@@ -61,50 +79,6 @@ public class MusicXMLWriter {
 		}catch(Throwable throwable){
 			throw new TGFileFormatException("Could not write song!.",throwable);
 		}
-	}
-	
-	public Document newDocument() {
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.newDocument();
-			return document;
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return null;
-	}
-	
-	public void saveDocument() {
-		try {
-			TransformerFactory xformFactory = TransformerFactory.newInstance();
-			Transformer idTransform = xformFactory.newTransformer();
-			Source input = new DOMSource(this.document);
-			Result output = new StreamResult(this.stream);
-			idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
-			idTransform.transform(input, output);
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-	}
-	
-	private Node addAttribute(Node node, String name, String value){
-		Attr attribute = this.document.createAttribute(name);
-		attribute.setNodeValue(value);
-		node.getAttributes().setNamedItem(attribute);
-		return node;
-	}
-	
-	private Node addNode(Node parent, String name){
-		Node node = this.document.createElement(name);
-		parent.appendChild(node);
-		return node;
-	}
-	
-	private Node addNode(Node parent, String name, String content){
-		Node node = this.addNode(parent, name);
-		node.setTextContent(content);
-		return node;
 	}
 	
 	private void writeHeaders(Node parent){
@@ -179,10 +153,10 @@ public class MusicXMLWriter {
 		if(divisionChanges || keyChanges || clefChanges || timeSignatureChanges){
 			Node measureAttributes = this.addNode(parent,"attributes");
 			if(divisionChanges){
-				this.addNode(measureAttributes,"divisions",Integer.toString(TGDuration.SIXTY_FOURTH));
+				this.addNode(measureAttributes,"divisions",Integer.toString(DURATION_DIVISIONS));
 			}
 			if(keyChanges){
-				this.writeKeySignature(measureAttributes, /*measure.getKeySignature()*/ 0);
+				this.writeKeySignature(measureAttributes, measure.getKeySignature());
 			}
 			if(clefChanges){
 				this.writeClef(measureAttributes,measure.getClef());
@@ -243,6 +217,7 @@ public class MusicXMLWriter {
 	}
 	
 	private void writeBeats(Node parent, TGMeasure measure){
+		int ks = measure.getKeySignature();
 		int beatCount = measure.countBeats();
 		for(int b = 0; b < beatCount; b ++){
 			TGBeat beat = measure.getBeat( b );
@@ -260,17 +235,20 @@ public class MusicXMLWriter {
 					
 					Node noteNode = this.addNode(parent,"note");
 					int value = (note.getBeat().getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
-					Node pitchNode = this.addNode(noteNode,"pitch");
-					this.addNode(pitchNode,"step",NATURAL_NOTES[value % 12]);
-					this.addNode(pitchNode,"octave",Integer.toString(value / 12));
 					
-					if(ACCIDENTAL_NOTES[value % 12]){
-						this.addNode(noteNode,"accidental","sharp");
+					Node pitchNode = this.addNode(noteNode,"pitch");
+					this.addNode(pitchNode,"step",NOTE_NAMES[ (ks <= 7 ? NOTE_SHARPS[value % 12] : NOTE_FLATS[value % 12] )]);
+					this.addNode(pitchNode,"octave",Integer.toString(value / 12));
+					if(NOTE_ALTERATIONS[ value % 12 ]){
+						this.addNode(pitchNode,"alter", ( ks <= 7 ? "1" : "-1" ) );
 					}
 					
 					this.addNode(noteNode,"voice","1");
 					this.writeDuration(noteNode, beat.getDuration());
 					
+					if(note.isTiedNote()){
+						this.addAttribute(this.addNode(noteNode,"tie"),"type","stop");
+					}
 					if(n > 0){
 						this.addNode(noteNode,"chord");
 					}
@@ -280,44 +258,76 @@ public class MusicXMLWriter {
 	}
 	
 	private void writeDuration(Node parent, TGDuration duration){
-		this.addNode(parent,"duration",Integer.toString(duration.getValue()));
-		if(duration.getValue() == TGDuration.WHOLE){
-			this.addNode(parent,"type","quarter");
+		int index = duration.getIndex();
+		if( index >=0 && index <= 6 ){
+			int value = (DURATION_VALUES[ index ] * duration.getTupleto().getTimes() / duration.getTupleto().getEnters());
+			if(duration.isDotted()){
+				value += (value / 2);
+			}
+			else if(duration.isDoubleDotted()){
+				value += ((value / 4) * 3);
+			}
+			
+			this.addNode(parent,"duration",Integer.toString(value));
+			this.addNode(parent,"type",DURATION_NAMES[ index ]);
+			
+			if(duration.isDotted()){
+				this.addNode(parent,"dot");
+			}
+			else if(duration.isDoubleDotted()){
+				this.addNode(parent,"dot");
+				this.addNode(parent,"dot");
+			}
+			
+			if(!duration.getTupleto().isEqual(TGTupleto.NORMAL)){
+				Node tupleto = this.addNode(parent,"time-modification");
+				this.addNode(tupleto,"actual-notes",Integer.toString(duration.getTupleto().getEnters()));
+				this.addNode(tupleto,"normal-notes",Integer.toString(duration.getTupleto().getTimes()));
+			}
 		}
-		else if(duration.getValue() == TGDuration.WHOLE){
-			this.addNode(parent,"type","whole");
+	}
+	
+	private Node addAttribute(Node node, String name, String value){
+		Attr attribute = this.document.createAttribute(name);
+		attribute.setNodeValue(value);
+		node.getAttributes().setNamedItem(attribute);
+		return node;
+	}
+	
+	private Node addNode(Node parent, String name){
+		Node node = this.document.createElement(name);
+		parent.appendChild(node);
+		return node;
+	}
+	
+	private Node addNode(Node parent, String name, String content){
+		Node node = this.addNode(parent, name);
+		node.setTextContent(content);
+		return node;
+	}
+	
+	private Document newDocument() {
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.newDocument();
+			return document;
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
 		}
-		else if(duration.getValue() == TGDuration.HALF){
-			this.addNode(parent,"type","half");
-		}
-		else if(duration.getValue() == TGDuration.QUARTER){
-			this.addNode(parent,"type","quarter");
-		}
-		else if(duration.getValue() == TGDuration.EIGHTH){
-			this.addNode(parent,"type","eighth");
-		}
-		else if(duration.getValue() == TGDuration.SIXTEENTH){
-			this.addNode(parent,"type","16th");
-		}
-		else if(duration.getValue() == TGDuration.THIRTY_SECOND){
-			this.addNode(parent,"type","32nd");
-		}
-		else if(duration.getValue() == TGDuration.SIXTY_FOURTH){
-			this.addNode(parent,"type","64th");
-		}
-		
-		if(duration.isDotted()){
-			this.addNode(parent,"dot");
-		}
-		else if(duration.isDoubleDotted()){
-			this.addNode(parent,"dot");
-			this.addNode(parent,"dot");
-		}
-		
-		if(!duration.getTupleto().isEqual(TGTupleto.NORMAL)){
-			Node tupleto = this.addNode(parent,"time-modification");
-			this.addNode(tupleto,"actual-notes",Integer.toString(duration.getTupleto().getEnters()));
-			this.addNode(tupleto,"normal-notes",Integer.toString(duration.getTupleto().getTimes()));
+		return null;
+	}
+	
+	private void saveDocument() {
+		try {
+			TransformerFactory xformFactory = TransformerFactory.newInstance();
+			Transformer idTransform = xformFactory.newTransformer();
+			Source input = new DOMSource(this.document);
+			Result output = new StreamResult(this.stream);
+			idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
+			idTransform.transform(input, output);
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
 		}
 	}
 }
