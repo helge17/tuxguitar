@@ -163,7 +163,7 @@ public class MusicXMLWriter {
 				
 				this.writeMeasureAttributes(measureNode, measure, previous);
 				this.writeDirection(measureNode, measure, previous);
-				this.writeNotes(measureNode, measure);
+				this.writeBeats(measureNode, measure);
 				
 				previous = measure;
 			}
@@ -242,7 +242,7 @@ public class MusicXMLWriter {
 		this.addAttribute(this.addNode(parent,"sound"),"tempo",Integer.toString(tempo.getValue()));
 	}
 	
-	private void writeNotes(Node parent, TGMeasure measure){
+	private void writeBeats(Node parent, TGMeasure measure){
 		int beatCount = measure.countBeats();
 		for(int b = 0; b < beatCount; b ++){
 			TGBeat beat = measure.getBeat( b );
