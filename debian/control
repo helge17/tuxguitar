@@ -3,14 +3,14 @@ Section: contrib/sound
 Priority: optional
 Maintainer: Philippe Coval <rzr@users.sf.net>
 Uploaders: tony mancill <tmancill@debian.org>
-Build-Depends: debhelper (>= 5.0.0),  libswt-gtk-3.3-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, ant, gcj, openjdk-6-jdk | java-compiler | java-gcj-compat-dev | sun-java6-jdk | sun-java5-jdk | icedtea-java7-jdk 
+Build-Depends: debhelper (>= 5.0.0), libswt3.2-gtk-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, ant, gcj, java-gcj-compat-dev , java-compiler | sun-java6-jdk | sun-java5-jdk | openjdk-6-jdk | icedtea-java7-jdk 
 Standards-Version: 3.7.3
 Homepage: http://www.tuxguitar.com.ar
 
 Package: tuxguitar-snapshot
 Architecture: all
 Section: contrib/sound
-Depends: libitext-java, icedtea-java7-jre | sun-java6-jre | java-virtual-machine, libswt-gtk-3.3-java, libswt-cairo-gtk-3.3, iceweasel | firefox
+Depends: libitext-java, java-virtual-machine | sun-java6-jre | sun-java5-jre | openjdk-6-jdk | icedtea-java7-jre, libswt3.2-gtk-java, iceweasel | firefox
 Conflicts: tuxguitar
 Replaces: tuxguitar
 Recommends: tuxguitar-snapshot-alsa (= ${binary:Version}) , tuxguitar-snapshot-oss (= ${binary:Version}) , sun-java6-jre
@@ -22,7 +22,7 @@ Description: Multitrack guitar tablature editor and player (gp3 to gp5)
 Package: tuxguitar-snapshot-jsa
 Architecture: all
 Section: contrib/sound
-Depends: tuxguitar-snapshot  (= ${binary:Version}), sun-java6-jre
+Depends: tuxguitar-snapshot  (= ${binary:Version}), sun-java6-jre | sun-java5-jre 
 Conflicts: tuxguitar-jsa
 Description: tuxguitar plugin for sound playback using Java Sound API
  Use Tuxguitar along this plugin if unsure, other sounds can be used too.

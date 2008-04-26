@@ -14,10 +14,10 @@ JAVA_VERS?=1.4
 
 ITEXT_JAR?=/usr/share/java/itext.jar
 
-# debian/3.3
-SWT_JAR?=/usr/share/java/swt.jar
-# ubuntu/3.2
-#SWT_JAR?=/usr/lib/java/swt.jar
+SWT_JAR?=$(shell echo ` \
+    ( t=/usr/share/java/swt.jar && test -r "$$t" && echo $$t ) \
+ || ( t=/usr/lib/java/swt.jar && test -r "$$t" && echo $$t ) \
+` )
 SWT_PATH?=${SWT_JAR}
 
 PACKAGE_JAR?=${CURDIR}/TuxGuitar/${PACKAGE}.jar
