@@ -3,18 +3,18 @@ Section: contrib/sound
 Priority: optional
 Maintainer: Philippe Coval <rzr@users.sf.net>
 Uploaders: tony mancill <tmancill@debian.org>
-Build-Depends: debhelper (>= 5.0.0), libswt3.2-gtk-java, libitext-java,  libasound2-dev,  docbook-to-man , docbook-utils, ant, gcj, java-gcj-compat-dev , java-compiler | sun-java6-jdk | sun-java5-jdk | openjdk-6-jdk | icedtea-java7-jdk 
+Build-Depends: debhelper (>= 5.0.0), libswt3.2-gtk-java, libitext-java, libasound2-dev,  docbook-to-man , docbook-utils, ant, gcj, java-gcj-compat-dev, java-gcj-compat-dev | java-compiler | sun-java6-jdk | sun-java5-jdk | openjdk-6-jdk | icedtea-java7-jdk 
 Standards-Version: 3.7.3
 Homepage: http://www.tuxguitar.com.ar
 
 Package: tuxguitar-snapshot
 Architecture: all
 Section: contrib/sound
-Depends: libitext-java, java-virtual-machine | sun-java6-jre | sun-java5-jre | openjdk-6-jdk | icedtea-java7-jre, libswt3.2-gtk-java, iceweasel | firefox
+Depends: java-gcj-compat | sun-java6-jre | java-virtual-machine , libswt3.2-gtk-java, libitext-java
 Conflicts: tuxguitar
 Replaces: tuxguitar
-Recommends: tuxguitar-snapshot-alsa (= ${binary:Version}) , tuxguitar-snapshot-oss (= ${binary:Version}) , sun-java6-jre
-Suggests: tuxguitar-snapshot-jsa (= ${binary:Version}) , lilypond
+Recommends: tuxguitar-snapshot-alsa (= ${source:Version}), tuxguitar-snapshot-oss (= ${source:Version}), iceweasel | firefox
+Suggests: tuxguitar-snapshot-jsa (= ${source:Version}), lilypond
 Description: Multitrack guitar tablature editor and player (gp3 to gp5)
  TuxGuitar is a multitrack Guitar tablature editor and player.
  It can open GP3, GP4, and GP5 files and exports in MIDI and PDF.
@@ -22,7 +22,7 @@ Description: Multitrack guitar tablature editor and player (gp3 to gp5)
 Package: tuxguitar-snapshot-jsa
 Architecture: all
 Section: contrib/sound
-Depends: tuxguitar-snapshot  (= ${binary:Version}), sun-java6-jre | sun-java5-jre 
+Depends: tuxguitar-snapshot  (= ${source:Version}), sun-java6-jre | sun-java5-jre 
 Conflicts: tuxguitar-jsa
 Description: tuxguitar plugin for sound playback using Java Sound API
  Use Tuxguitar along this plugin if unsure, other sounds can be used too.
@@ -30,19 +30,19 @@ Description: tuxguitar plugin for sound playback using Java Sound API
 Package: tuxguitar-snapshot-alsa
 Architecture: any
 Section: contrib/sound
-Depends: tuxguitar-snapshot  (= ${binary:Version}) , libasound2, libc6
+Depends: tuxguitar-snapshot  (= ${source:Version}) , libasound2, libc6
 Suggests: timidity, fluidsynth
 Replaces: tuxguitar-alsa
 Description: tuxguitar plugin for sound playback using ALSA
  Use Tuxguitar along this plugin if your Sound Device is supported by ALSA.
- A MIDI expander is requiered Hardware or Software
+ A MIDI expander is required (Hardware or Software).
 
 Package: tuxguitar-snapshot-oss
 Architecture: any
 Section: contrib/sound
-Depends: tuxguitar-snapshot  (= ${binary:Version}), oss-compat, libc6
+Depends: tuxguitar-snapshot  (= ${source:Version}), oss-compat, libc6
 Replaces: tuxguitar-oss
 Suggests: timidity, fluidsynth
 Description: tuxguitar plugin for sound playback using OSS
  Use Tuxguitar along this plugin if your Sound Device is supported by OSS.
- A MIDI expander is requiered Hardware or Software.
+ A MIDI expander is required (Hardware or Software).

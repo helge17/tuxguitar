@@ -1,4 +1,4 @@
-tuxguitar-snapshot (0.0.20080419-0ubuntu0~ppa197) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080426-0ubuntu0~ppa208) feisty; urgency=low
 
   * jni build
   * FIX: updated SCM snapshot
@@ -11,6 +11,12 @@ tuxguitar-snapshot (0.0.20080419-0ubuntu0~ppa197) hardy; urgency=low
   * WIP: about to upload to mentors	
 
  -- Philippe Coval <rzr@users.sf.net>  Thu, 17 Apr 2008 23:09:18 +0200
+
+tuxguitar (0.9.99~1.0rc2-3) unstable; urgency=low
+
+   * FIX: build with gcj by default not openjdk (Closes: #474410)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat, 19 Apr 2008 12:16:00 +0200
 
 tuxguitar (0.9.99~1.0rc2-2) unstable; urgency=low
 
