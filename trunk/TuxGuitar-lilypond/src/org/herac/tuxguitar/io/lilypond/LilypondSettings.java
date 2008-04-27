@@ -18,6 +18,10 @@ public class LilypondSettings {
 	
 	private boolean trackGroupEnabled;
 	
+	private boolean scoreEnabled;
+	
+	private boolean tablatureEnabled;
+	
 	public LilypondSettings(){
 		super();
 	}
@@ -62,6 +66,29 @@ public class LilypondSettings {
 		this.trackNameEnabled = trackNameEnabled;
 	}
 	
+	public boolean isScoreEnabled() {
+		return this.scoreEnabled;
+	}
+	
+	public void setScoreEnabled(boolean scoreEnabled) {
+		this.scoreEnabled = scoreEnabled;
+	}
+	
+	public boolean isTablatureEnabled() {
+		return this.tablatureEnabled;
+	}
+	
+	public void setTablatureEnabled(boolean tablatureEnabled) {
+		this.tablatureEnabled = tablatureEnabled;
+	}
+	
+	public void check(){
+		if(!this.isScoreEnabled() && !this.isTrackGroupEnabled()){
+			this.setScoreEnabled( true );
+			this.setTablatureEnabled( true );
+		}
+	}
+	
 	public static LilypondSettings getDefaults(){
 		LilypondSettings settings = new LilypondSettings();
 		settings.setTrack(ALL_TRACKS);
@@ -69,6 +96,8 @@ public class LilypondSettings {
 		settings.setMeasureTo(LAST_MEASURE);
 		settings.setTrackGroupEnabled(true);
 		settings.setTrackNameEnabled(false);
+		settings.setScoreEnabled(true);
+		settings.setTablatureEnabled(true);
 		return settings;
 	}
 }
