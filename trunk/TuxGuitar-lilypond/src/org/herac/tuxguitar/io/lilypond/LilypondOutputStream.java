@@ -321,15 +321,7 @@ public class LilypondOutputStream {
 	}
 	
 	private void addKey(int key,int value){
-		String[] LILYPOND_NOTES;
-		if(key <= 7)
-		{
-			LILYPOND_NOTES = LILYPOND_SHARP_NOTES;
-		}
-		else
-		{
-			LILYPOND_NOTES = LILYPOND_FLAT_NOTES;
-		}
+		String[] LILYPOND_NOTES = (key <= 7 ? LILYPOND_SHARP_NOTES : LILYPOND_FLAT_NOTES );
 		this.writer.print(LILYPOND_NOTES[ value % 12 ]);
 		for(int i = 4; i < (value / 12); i ++){
 			this.writer.print("'");
