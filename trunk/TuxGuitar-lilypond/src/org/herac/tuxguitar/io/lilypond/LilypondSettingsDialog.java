@@ -25,27 +25,26 @@ public class LilypondSettingsDialog {
 	
 	protected int status;
 	
-	protected LilypondSettings settings;
-	
 	public LilypondSettingsDialog(){
-		this.settings = new LilypondSettings();
+		super();
 	}
 	
 	public LilypondSettings open() {
 		this.status = STATUS_NONE;
+		final LilypondSettings settings = LilypondSettings.getDefaults();
 		
 		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
-		dialog.setText("Options");
+		dialog.setText(TuxGuitar.getProperty("lilypond.options"));
 		
 		//------------------TRACK SELECTION------------------
 		Group trackGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		trackGroup.setLayout(new GridLayout(2,false));
 		trackGroup.setLayoutData(getGroupData());
-		trackGroup.setText("Track Selection");
+		trackGroup.setText(TuxGuitar.getProperty("lilypond.options.select-track.tip"));
 		
 		final Label trackLabel = new Label(trackGroup, SWT.NULL);
-		trackLabel.setText("Export track:");
+		trackLabel.setText(TuxGuitar.getProperty("lilypond.options.select-track") + ":");
 		
 		final Combo trackCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		trackCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -56,32 +55,34 @@ public class LilypondSettingsDialog {
 		
 		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
 		trackAllCheck.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true,2,1));
-		trackAllCheck.setText("Export all tracks");
+		trackAllCheck.setText(TuxGuitar.getProperty("lilypond.options.select-all-tracks"));
 		
 		//------------------LAYOUT OPTIONS------------------
 		Group layoutGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		layoutGroup.setLayout(new GridLayout());
 		layoutGroup.setLayoutData(getGroupData());
-		layoutGroup.setText("Layout Options");
+		layoutGroup.setText(TuxGuitar.getProperty("lilypond.options.layout.tip"));
 		
 		final Button scoreCheck = new Button(layoutGroup,SWT.CHECK);
 		scoreCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		scoreCheck.setText("Show score");
-		scoreCheck.setSelection(true);
+		scoreCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-score"));
+		scoreCheck.setSelection(settings.isScoreEnabled());
 		
 		final Button tablatureCheck = new Button(layoutGroup,SWT.CHECK);
 		tablatureCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		tablatureCheck.setText("Show tablature");
-		tablatureCheck.setSelection(true);
+		tablatureCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-tablature"));
+		tablatureCheck.setSelection(settings.isTablatureEnabled());
 		
 		final Button trackGroupCheck = new Button(layoutGroup,SWT.CHECK);
 		trackGroupCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		trackGroupCheck.setText("Show grouped tracks");
+		trackGroupCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-track-groups"));
+		trackGroupCheck.setSelection(settings.isTrackGroupEnabled());
 		trackGroupCheck.setEnabled(false);
 		
 		final Button trackNameCheck = new Button(layoutGroup,SWT.CHECK);
 		trackNameCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		trackNameCheck.setText("Show track names");
+		trackNameCheck.setSelection(settings.isTrackNameEnabled());
+		trackNameCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-track-names"));
 		
 		tablatureCheck.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
@@ -109,13 +110,13 @@ public class LilypondSettingsDialog {
 		Group measureGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		measureGroup.setLayout(new GridLayout(2,false));
 		measureGroup.setLayoutData(getGroupData());
-		measureGroup.setText("Measure range");
+		measureGroup.setText(TuxGuitar.getProperty("lilypond.options.measure-range.tip"));
 		
 		final int minSelection = 1;
 		final int maxSelection = TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders();
 		
 		Label measureFromLabel = new Label(measureGroup, SWT.NULL);
-		measureFromLabel.setText("From");
+		measureFromLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.from"));
 		final Spinner measureFromSpinner = new Spinner(measureGroup, SWT.BORDER);
 		measureFromSpinner.setLayoutData(getSpinnerData());
 		measureFromSpinner.setMaximum(maxSelection);
@@ -123,7 +124,7 @@ public class LilypondSettingsDialog {
 		measureFromSpinner.setSelection(minSelection);
 		
 		Label measureToLabel = new Label(measureGroup, SWT.NULL);
-		measureToLabel.setText("To");
+		measureToLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.to"));
 		final Spinner measureToSpinner = new Spinner(measureGroup, SWT.BORDER);
 		measureToSpinner.setLayoutData(getSpinnerData());
 		measureToSpinner.setMinimum(minSelection);
@@ -170,14 +171,14 @@ public class LilypondSettingsDialog {
 			public void widgetSelected(SelectionEvent arg0) {
 				LilypondSettingsDialog.this.status = STATUS_ACCEPTED;
 				
-				LilypondSettingsDialog.this.settings.setTrack( trackAllCheck.getSelection()?LilypondSettings.ALL_TRACKS:trackCombo.getSelectionIndex() + 1);
-				LilypondSettingsDialog.this.settings.setTrackGroupEnabled( trackAllCheck.getSelection()? trackGroupCheck.getSelection() : false);
-				LilypondSettingsDialog.this.settings.setTrackNameEnabled( trackNameCheck.getSelection() );
-				LilypondSettingsDialog.this.settings.setMeasureFrom(measureFromSpinner.getSelection());
-				LilypondSettingsDialog.this.settings.setMeasureTo(measureToSpinner.getSelection());
-				LilypondSettingsDialog.this.settings.setScoreEnabled(scoreCheck.getSelection());
-				LilypondSettingsDialog.this.settings.setTablatureEnabled(tablatureCheck.getSelection());
-				LilypondSettingsDialog.this.settings.check();
+				settings.setTrack( trackAllCheck.getSelection()?LilypondSettings.ALL_TRACKS:trackCombo.getSelectionIndex() + 1);
+				settings.setTrackGroupEnabled( trackAllCheck.getSelection()? trackGroupCheck.getSelection() : false);
+				settings.setTrackNameEnabled( trackNameCheck.getSelection() );
+				settings.setMeasureFrom(measureFromSpinner.getSelection());
+				settings.setMeasureTo(measureToSpinner.getSelection());
+				settings.setScoreEnabled(scoreCheck.getSelection());
+				settings.setTablatureEnabled(tablatureCheck.getSelection());
+				settings.check();
 				
 				dialog.dispose();
 			}
@@ -197,7 +198,7 @@ public class LilypondSettingsDialog {
 		
 		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
-		return ((this.status == STATUS_ACCEPTED)?LilypondSettingsDialog.this.settings:null);
+		return ( ( this.status == STATUS_ACCEPTED )? settings : null );
 	}
 	
 	private GridData getSpinnerData(){
