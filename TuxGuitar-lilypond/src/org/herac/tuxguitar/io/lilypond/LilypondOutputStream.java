@@ -98,7 +98,7 @@ public class LilypondOutputStream {
 	}
 	
 	private void addSong(TGSong song){
-		if(this.settings.isTrackGroupEnabled()){
+		if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS && this.settings.isTrackGroupEnabled()){
 			this.writer.println("<<");
 		}else{
 			this.writer.println("{");
@@ -109,7 +109,7 @@ public class LilypondOutputStream {
 				this.writer.println(indent(1) + "\\" + this.trackID(track.getName(),i,"StaffGroup"));
 			}
 		}
-		if(this.settings.isTrackGroupEnabled()){
+		if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS && this.settings.isTrackGroupEnabled()){
 			this.writer.println(">>");
 		}else{
 			this.writer.println("}");
