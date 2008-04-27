@@ -90,7 +90,7 @@ out_windows?=TuxGuitar-winmm/tuxguitar-winmm.jar
 
 out_macos?=TuxGuitar-CoreAudio/tuxguitar-coreaudio.jar
 
-#all?=${out_java} out_${JNI_OS} ${out_jsa} ${out_sun} 
+#all?=${out_java} out_${JNI_OS} ${out_jsa} ${out_sun}  # TODO
 all?=${out_java} ${out_${JNI_OS}} ${out_jsa} 
 
 ###
