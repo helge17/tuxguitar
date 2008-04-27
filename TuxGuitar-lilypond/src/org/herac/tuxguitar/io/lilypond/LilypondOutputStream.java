@@ -73,12 +73,12 @@ public class LilypondOutputStream {
 		this.writer.println(indent(1) + "}");
 		this.writer.println(indent(1) + "\\context { \\Staff");
 		this.writer.println(indent(2) + "\\override TimeSignature #'style = #'numbered");
-		this.writer.println(indent(2) + "\\override StringNumber #'transparent = ##t");
+		this.writer.println(indent(2) + "\\override StringNumber #'transparent = #" + getLilypondBoolean(true));
 		this.writer.println(indent(1) + "}");
 		this.writer.println(indent(1) + "\\context { \\TabStaff");
 		this.writer.println(indent(2) + "\\override TimeSignature #'style = #'numbered");
-		this.writer.println(indent(2) + "\\override Stem #'transparent = ##t");
-		this.writer.println(indent(2) + "\\override Beam #'transparent = ##t");
+		this.writer.println(indent(2) + "\\override Stem #'transparent = #" + getLilypondBoolean(this.settings.isScoreEnabled()));
+		this.writer.println(indent(2) + "\\override Beam #'transparent = #" + getLilypondBoolean(this.settings.isScoreEnabled()));
 		this.writer.println(indent(1) + "}");
 		this.writer.println(indent(1) + "\\context { \\StaffGroup");
 		this.writer.println(indent(2) + "\\consists \"Instrument_name_engraver\"");
@@ -130,19 +130,20 @@ public class LilypondOutputStream {
 				previous = measure;
 			}
 		}
+		this.writer.println(indent(1) + "\\break");
 		this.writer.println("#})");
 	}
 	
 	private void addStaff(String id){
 		this.writer.println(id + "Staff = \\new Staff {");
-		this.writer.println(indent(1) + "\\" + id + "Music ##f");
+		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean(false));
 		this.writer.println("}");
 	}
 	
 	private void addTabStaff(TGTrack track,String id){
 		this.writer.println(id + "TabStaff = \\new TabStaff {");
 		this.addTuning(track,1);
-		this.writer.println(indent(1) + "\\" + id + "Music ##t");
+		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean(true));
 		this.writer.println("}");
 	}
 	
@@ -163,8 +164,12 @@ public class LilypondOutputStream {
 		if(this.settings.isTrackNameEnabled()){
 			this.writer.println(indent(1) + "\\set StaffGroup.instrumentName = #\"" + track.getName()  + "\"");
 		}
-		this.writer.println(indent(1) + "\\" + id + "Staff");
-		this.writer.println(indent(1) + "\\" + id + "TabStaff");
+		if(this.settings.isScoreEnabled()){
+			this.writer.println(indent(1) + "\\" + id + "Staff");
+		}
+		if(this.settings.isTablatureEnabled()){
+			this.writer.println(indent(1) + "\\" + id + "TabStaff");
+		}
 		this.writer.println(">>");
 	}
 	
@@ -372,6 +377,10 @@ public class LilypondOutputStream {
 			indent += INDENT;
 		}
 		return indent;
+	}
+	
+	private String getLilypondBoolean(boolean value){
+		return (value ? "#t" : "#f");
 	}
 	
 	private String toBase26(int value){

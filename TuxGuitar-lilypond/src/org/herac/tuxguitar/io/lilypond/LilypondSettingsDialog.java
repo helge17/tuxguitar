@@ -42,7 +42,7 @@ public class LilypondSettingsDialog {
 		Group trackGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		trackGroup.setLayout(new GridLayout(2,false));
 		trackGroup.setLayoutData(getGroupData());
-		trackGroup.setText("Track options");
+		trackGroup.setText("Track Selection");
 		
 		final Label trackLabel = new Label(trackGroup, SWT.NULL);
 		trackLabel.setText("Export track:");
@@ -58,15 +58,45 @@ public class LilypondSettingsDialog {
 		trackAllCheck.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true,2,1));
 		trackAllCheck.setText("Export all tracks");
 		
-		final Button trackGroupCheck = new Button(trackGroup,SWT.CHECK);
-		trackGroupCheck.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true,2,1));
-		trackGroupCheck.setText("Export grouped tracks");
+		//------------------LAYOUT OPTIONS------------------
+		Group layoutGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+		layoutGroup.setLayout(new GridLayout());
+		layoutGroup.setLayoutData(getGroupData());
+		layoutGroup.setText("Layout Options");
+		
+		final Button scoreCheck = new Button(layoutGroup,SWT.CHECK);
+		scoreCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		scoreCheck.setText("Show score");
+		scoreCheck.setSelection(true);
+		
+		final Button tablatureCheck = new Button(layoutGroup,SWT.CHECK);
+		tablatureCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		tablatureCheck.setText("Show tablature");
+		tablatureCheck.setSelection(true);
+		
+		final Button trackGroupCheck = new Button(layoutGroup,SWT.CHECK);
+		trackGroupCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		trackGroupCheck.setText("Show grouped tracks");
 		trackGroupCheck.setEnabled(false);
 		
-		final Button trackNameCheck = new Button(trackGroup,SWT.CHECK);
-		trackNameCheck.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true,2,1));
-		trackNameCheck.setText("Export track names");
+		final Button trackNameCheck = new Button(layoutGroup,SWT.CHECK);
+		trackNameCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		trackNameCheck.setText("Show track names");
 		
+		tablatureCheck.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				if(!tablatureCheck.getSelection()){
+					scoreCheck.setSelection(true);
+				}
+			}
+		});
+		scoreCheck.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				if(!scoreCheck.getSelection()){
+					tablatureCheck.setSelection(true);
+				}
+			}
+		});
 		trackAllCheck.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				trackLabel.setEnabled( !trackAllCheck.getSelection() );
@@ -145,6 +175,9 @@ public class LilypondSettingsDialog {
 				LilypondSettingsDialog.this.settings.setTrackNameEnabled( trackNameCheck.getSelection() );
 				LilypondSettingsDialog.this.settings.setMeasureFrom(measureFromSpinner.getSelection());
 				LilypondSettingsDialog.this.settings.setMeasureTo(measureToSpinner.getSelection());
+				LilypondSettingsDialog.this.settings.setScoreEnabled(scoreCheck.getSelection());
+				LilypondSettingsDialog.this.settings.setTablatureEnabled(tablatureCheck.getSelection());
+				LilypondSettingsDialog.this.settings.check();
 				
 				dialog.dispose();
 			}
