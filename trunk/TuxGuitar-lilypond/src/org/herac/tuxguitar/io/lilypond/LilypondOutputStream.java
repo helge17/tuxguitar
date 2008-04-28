@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -136,6 +137,7 @@ public class LilypondOutputStream {
 	
 	private void addStaff(String id){
 		this.writer.println(id + "Staff = \\new Staff {");
+		this.addStaffTags(1);
 		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean(false));
 		this.writer.println("}");
 	}
@@ -143,6 +145,7 @@ public class LilypondOutputStream {
 	private void addTabStaff(TGTrack track,String id){
 		this.writer.println(id + "TabStaff = \\new TabStaff {");
 		this.addTuning(track,1);
+		this.addStaffTags(1);
 		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean(true));
 		this.writer.println("}");
 	}
@@ -157,6 +160,11 @@ public class LilypondOutputStream {
 			this.writer.print(value + " ");
 		}
 		this.writer.println(")");
+	}
+	
+	private void addStaffTags(int indent){
+		this.writer.println(indent(indent) + "\\removeWithTag #'chords");
+		this.writer.println(indent(indent) + "\\removeWithTag #'texts");
 	}
 	
 	private void addStaffGroup(TGTrack track,String id){
@@ -316,6 +324,19 @@ public class LilypondOutputStream {
 				this.writer.print(">");
 				this.addDuration( beat.getDuration() );
 			}
+			
+			if(beat.isChordBeat()){
+				this.writer.print("-\\tag #'chords ^\\markup \\fret-diagram #\"");
+				TGChord chord = beat.getChord();
+				for( int i = 0; i < chord.countStrings(); i ++){
+					this.writer.print((i + 1) + "-" + getLilypondChordFret(chord.getFretValue( i )) + ";");
+				}
+				this.writer.print("\"");
+			}
+			if(beat.isTextBeat()){
+				this.writer.print("-\\tag #'texts ^\\markup {" + beat.getText().getValue() + "}");
+			}
+			
 			this.writer.print(" ");
 		}
 	}
@@ -373,6 +394,16 @@ public class LilypondOutputStream {
 	
 	private String getLilypondBoolean(boolean value){
 		return (value ? "#t" : "#f");
+	}
+	
+	private String getLilypondChordFret(int value){
+		if(value < 0){
+			return ("x");
+		}
+		if(value == 0){
+			return ("o");
+		}
+		return Integer.toString(value);
 	}
 	
 	private String toBase26(int value){
