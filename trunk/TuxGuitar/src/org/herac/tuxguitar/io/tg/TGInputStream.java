@@ -258,31 +258,31 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		int header = readHeader();
 		
 		//leo el canal
-		channel.setChannel((short)readByte());
+		channel.setChannel(readByte());
 		
 		//leo el canal de efectos
-		channel.setEffectChannel((short)readByte());
+		channel.setEffectChannel(readByte());
 		
 		//leo el instrumento
-		channel.setInstrument((short)readByte());
+		channel.setInstrument(readByte());
 		
 		//leo el volumen
-		channel.setVolume((short)readByte());
+		channel.setVolume(readByte());
 		
 		//leo el balance
-		channel.setBalance((short)readByte());
+		channel.setBalance(readByte());
 		
 		//leo el chorus
-		channel.setChorus((short)readByte());
+		channel.setChorus(readByte());
 		
 		//leo el reverb
-		channel.setReverb((short)readByte());
+		channel.setReverb(readByte());
 		
 		//leo el phaser
-		channel.setPhaser((short)readByte());
+		channel.setPhaser(readByte());
 		
 		//leo el tremolo
-		channel.setTremolo((short)readByte());
+		channel.setTremolo(readByte());
 		
 		//leo el solo
 		channel.setSolo((header & CHANNEL_SOLO) != 0);
@@ -641,9 +641,9 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		lyrics.setLyrics(readIntegerString());
 	}
 	
-	private int readByte(){
+	private byte readByte(){
 		try {
-			return this.dataInputStream.read();
+			return (byte)this.dataInputStream.read();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -706,5 +706,4 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		}
 		return null;
 	}
-	
 }
