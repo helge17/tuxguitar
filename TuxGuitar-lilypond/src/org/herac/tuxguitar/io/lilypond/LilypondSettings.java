@@ -83,7 +83,7 @@ public class LilypondSettings {
 	}
 	
 	public void check(){
-		if(!this.isScoreEnabled() && !this.isTrackGroupEnabled()){
+		if(!this.isScoreEnabled() && !this.isTablatureEnabled()){
 			this.setScoreEnabled( true );
 			this.setTablatureEnabled( true );
 		}
