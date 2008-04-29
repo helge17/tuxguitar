@@ -9,18 +9,16 @@ public class LilypondSettings {
 	public static final int LAST_MEASURE = -1;
 	
 	private int track;
-	
-	private int measureFrom;
-	
+	private int measureFrom;	
 	private int measureTo;
-	
-	private boolean trackNameEnabled;
-	
+
 	private boolean trackGroupEnabled;
-	
+	private boolean trackNameEnabled;
 	private boolean scoreEnabled;
-	
 	private boolean tablatureEnabled;
+	private boolean lyricsEnabled;
+	private boolean chordDiagramEnabled;
+	private boolean textEnabled;
 	
 	public LilypondSettings(){
 		super();
@@ -82,6 +80,30 @@ public class LilypondSettings {
 		this.tablatureEnabled = tablatureEnabled;
 	}
 	
+	public boolean isLyricsEnabled() {
+		return this.lyricsEnabled;
+	}
+	
+	public void setLyricsEnabled(boolean lyricsEnabled) {
+		this.lyricsEnabled = lyricsEnabled;
+	}
+	
+	public boolean isChordDiagramEnabled() {
+		return this.chordDiagramEnabled;
+	}
+	
+	public void setChordDiagramEnabled(boolean chordDiagramEnabled) {
+		this.chordDiagramEnabled = chordDiagramEnabled;
+	}
+	
+	public boolean isTextEnabled() {
+		return this.textEnabled;
+	}
+	
+	public void setTextEnabled(boolean textEnabled) {
+		this.textEnabled = textEnabled;
+	}
+
 	public void check(){
 		if(!this.isScoreEnabled() && !this.isTablatureEnabled()){
 			this.setScoreEnabled( true );
@@ -98,6 +120,9 @@ public class LilypondSettings {
 		settings.setTrackNameEnabled(false);
 		settings.setScoreEnabled(true);
 		settings.setTablatureEnabled(true);
+		settings.setTextEnabled(false);
+		settings.setLyricsEnabled(false);
+		settings.setChordDiagramEnabled(false);
 		return settings;
 	}
 }
