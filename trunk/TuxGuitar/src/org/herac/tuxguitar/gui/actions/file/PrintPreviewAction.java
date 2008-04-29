@@ -75,7 +75,7 @@ public class PrintPreviewAction extends Action{
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
-					Tablature tablature = new Tablature(getEditor().getTablature());
+					Tablature tablature = new Tablature(TuxGuitar.instance().getShell());
 					tablature.setSongManager(manager);
 					
 					PrinterViewLayout layout = new PrinterViewLayout(tablature,data, 1f);
