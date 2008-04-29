@@ -163,9 +163,9 @@ public class TGChordImpl extends TGChord {
 	
 	public void paint(ViewLayout layout, TGPainter painter, int fromX, int fromY) {
 		layout.setChordStyle(painter,this);
-		this.posY = (fromY + getPaintPosition(TrackSpacing.POSITION_CHORD));
+		this.setPosY(getPaintPosition(TrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
-		this.update(painter.getGC().getDevice());
+		this.update(painter);
 		this.paint(painter,getBeatImpl().getSpacing() + fromX, fromY);
 	}
 	
@@ -173,45 +173,41 @@ public class TGChordImpl extends TGChord {
 		int x = (fromX + getPosX()) + 4;
 		int y = (fromY + getPosY());
 		if( (this.style & ViewLayout.DISPLAY_CHORD_DIAGRAM) != 0 ){
-			//painter.drawImage(this.diagram,x - (this.diagramWidth / 2) ,y);
 			painter.drawImage(this.diagram,x - ( (this.diagramWidth - getFirstFretSpacing()) / 2) - getFirstFretSpacing() ,y);
 		}
 		if( (this.style & ViewLayout.DISPLAY_CHORD_NAME) != 0 && getName() != null && getName().length() > 0){
 			painter.drawString(getName(),x - (this.nameWidth / 2) , y + (this.height - this.nameHeight ) );
-			//painter.drawString(getName(),x - (this.nameWidth / 2) + 4, y + (this.height - this.nameHeight ) );
 		}
 	}
 	
-	public void update(Device device) {
+	public void update(TGPainter painter) {
 		this.width = 0;
 		this.height = 0;
 		if(getFirstFret() <= 0 ){
 			this.calculateFirstFret();
 		}
 		if( (this.style & ViewLayout.DISPLAY_CHORD_NAME) != 0 ){
-			this.updateName(device);
+			this.updateName(painter);
 			this.width = Math.max(this.width,this.nameWidth);
 			this.height += this.nameHeight;
 		}
 		if( (this.style & ViewLayout.DISPLAY_CHORD_DIAGRAM) != 0 ){
-			this.updateDiagram(device);
+			this.updateDiagram(painter.getGC().getDevice());
 			this.width = Math.max(this.width,this.diagramWidth);
 			this.height += this.diagramHeight;
 		}
 	}
 	
-	protected void updateName(Device device){
+	protected void updateName(TGPainter painter){
 		String name = getName();
-		if(name == null || name.length() == 0){
+		if(painter == null || name == null || name.length() == 0){
 			this.nameWidth = 0;
 			this.nameHeight = 0;
 			return;
 		}
-		TGPainter painter = new TGPainter(new GC(device));
 		Point point = painter.getStringExtent(name);
 		this.nameWidth = point.x;
 		this.nameHeight = point.y;
-		painter.dispose();
 	}
 	
 	protected void updateDiagram(Device device){

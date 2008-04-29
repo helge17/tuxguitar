@@ -143,7 +143,7 @@ public class ChordList extends Composite {
 			chord.setNoteSize(CHORD_NOTE_SIZE);
 			chord.setFirstFretFont(getFont(painter.getGC()));
 			chord.setStyle(ViewLayout.DISPLAY_CHORD_DIAGRAM);
-			chord.update(getDisplay());
+			chord.update(painter);
 			if(fromX + chord.getWidth() >= ((getBounds().x + getBounds().width) - 20)){
 				fromX = 10;
 				fromY += chord.getHeight() + 10;
