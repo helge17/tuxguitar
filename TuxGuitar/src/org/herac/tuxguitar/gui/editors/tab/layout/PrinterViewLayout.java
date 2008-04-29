@@ -41,7 +41,7 @@ public class PrinterViewLayout extends ViewLayout{
 	private static final int DEFAULT_FIRST_TRACK_SPACING = DEFAULT_TRACK_SPACING;
 	private static final int DEFAULT_MIN_BUFFER_SEPARATOR = 15;
 	private static final int DEFAULT_MIN_TOP_SPACING = 20;
-	private static final int CHORD_FRET_INDEX_SPACING = 7;
+	private static final int CHORD_FRET_INDEX_SPACING = 8;
 	private static final int CHORD_STRING_SPACING = 4;
 	private static final int CHORD_FRET_SPACING = 5;
 	
@@ -69,10 +69,10 @@ public class PrinterViewLayout extends ViewLayout{
 		this.setFirstTrackSpacing( getScaledValue(scale ,  DEFAULT_FIRST_TRACK_SPACING ) );
 		this.setTrackSpacing( getScaledValue(scale ,  DEFAULT_TRACK_SPACING ) );
 		this.setStringSpacing( getScaledValue(scale ,  DEFAULT_STRING_SPACING  , 4) );
-		this.setChordFretIndexSpacing( getScaledValue(scale ,  CHORD_FRET_INDEX_SPACING ) );
-		this.setChordStringSpacing( getScaledValue(scale ,  CHORD_STRING_SPACING ) );
-		this.setChordFretSpacing( getScaledValue(scale ,  CHORD_FRET_SPACING ) );
-		this.setChordNoteSize(getScaledValue(scale ,  4 ));
+		this.setChordFretIndexSpacing( getScaledValue(scale ,  CHORD_FRET_INDEX_SPACING, 2 ) );
+		this.setChordStringSpacing( getScaledValue(scale ,  CHORD_STRING_SPACING, 2 ) );
+		this.setChordFretSpacing( getScaledValue(scale ,  CHORD_FRET_SPACING , 2 ) );
+		this.setChordNoteSize(getScaledValue(scale ,  3 , 2 ));
 		this.setRepeatEndingSpacing( getScaledValue(scale ,  20 ) );
 		this.setTextSpacing( getScaledValue( scale, 15 ) );
 		this.setTupletoSpacing( getScaledValue( scale,  10 ) );
@@ -390,8 +390,8 @@ public class PrinterViewLayout extends ViewLayout{
 		chord.setFretSpacing(getChordFretSpacing());
 		chord.setStringSpacing(getChordStringSpacing());
 		chord.setNoteSize(getChordNoteSize());
-		chord.setFirstFretSpacing(0);
-		chord.setFirstFretFont(null);
+		chord.setFirstFretSpacing(getChordFretIndexSpacing());
+		chord.setFirstFretFont(getResources().getChordFretFont());
 	}
 	
 	public int getMaxWidth(){

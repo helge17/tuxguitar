@@ -125,7 +125,7 @@ public class ChordList extends Composite {
 	
 	protected void paintChords(TGPainter painter) {
 		int maxHeight = 0;
-		int fromX = 5;
+		int fromX = 15;
 		int fromY = 10;
 		int vScroll = this.composite.getVerticalBar().getSelection();
 		Iterator it = this.graphicChords.iterator();
@@ -143,9 +143,9 @@ public class ChordList extends Composite {
 			chord.setNoteSize(CHORD_NOTE_SIZE);
 			chord.setFirstFretFont(getFont(painter.getGC()));
 			chord.setStyle(ViewLayout.DISPLAY_CHORD_DIAGRAM);
-			chord.update(painter);
+			chord.update(painter, true);
 			if(fromX + chord.getWidth() >= ((getBounds().x + getBounds().width) - 20)){
-				fromX = 10;
+				fromX = 15;
 				fromY += chord.getHeight() + 10;
 			}
 			chord.setEditing(true);
