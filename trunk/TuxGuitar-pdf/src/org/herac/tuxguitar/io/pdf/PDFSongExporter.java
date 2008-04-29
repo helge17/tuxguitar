@@ -156,7 +156,7 @@ public class PDFSongExporter implements TGSongExporter{
 					dispose();
 				}
 			});
-			this.write(); 
+			this.write();
 		}
 		
 		public boolean isPaintable(int page) {
