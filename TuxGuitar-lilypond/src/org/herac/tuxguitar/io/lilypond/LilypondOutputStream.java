@@ -2,7 +2,9 @@ package org.herac.tuxguitar.io.lilypond;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -91,8 +93,10 @@ public class LilypondOutputStream {
 		for(int i = 0; i < song.countTracks(); i ++){
 			TGTrack track = song.getTrack(i);
 			String id = this.trackID(track.getName(),i,"");
+			this.temp.reset();
 			this.addMusic(track,id);
-			this.addStaff(id);
+			this.addLyrics(track,id);
+			this.addScoreStaff(track,id);
 			this.addTabStaff(track,id);
 			this.addStaffGroup(track,id);
 		}
@@ -135,18 +139,61 @@ public class LilypondOutputStream {
 		this.writer.println("#})");
 	}
 	
-	private void addStaff(String id){
-		this.writer.println(id + "Staff = \\new Staff {");
-		this.addStaffTags(1);
-		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean(false));
-		this.writer.println("}");
+	private void addScoreStaff(TGTrack track,String id){
+		boolean addLyrics = (this.settings.isLyricsEnabled() && !this.settings.isTablatureEnabled() && !track.getLyrics().isEmpty());
+		boolean addChordDiagrams = this.settings.isChordDiagramEnabled();
+		boolean addTexts = this.settings.isTextEnabled();
+		
+		this.writer.println(id + "Staff = \\new " + (addLyrics ? "Voice = \"" + id + "Staff\" <<" : "Staff {"));
+		
+		if(!addChordDiagrams){
+			this.writer.println(indent(1) + "\\removeWithTag #'chords");
+		}
+		if(!addTexts){
+			this.writer.println(indent(1) + "\\removeWithTag #'texts");
+		}
+		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean( false ));
+		if(addLyrics){
+			this.writer.println(indent(1) + "\\new Lyrics \\lyricsto \"" + id + "Staff\" \\" + id + "Lyrics");
+		}
+		this.writer.println( (addLyrics ? ">>" : "}" ) );
 	}
 	
 	private void addTabStaff(TGTrack track,String id){
-		this.writer.println(id + "TabStaff = \\new TabStaff {");
+		boolean addLyrics = (this.settings.isLyricsEnabled() && !track.getLyrics().isEmpty());
+		boolean addChordDiagrams = (this.settings.isChordDiagramEnabled() && !this.settings.isScoreEnabled());
+		boolean addTexts = (this.settings.isTextEnabled() && !this.settings.isScoreEnabled());
+		
+		this.writer.println(id + "TabStaff = \\new " + (addLyrics ? "TabVoice = \"" + id + "TabStaff\" <<" : "TabStaff {" ));
+		
 		this.addTuning(track,1);
-		this.addStaffTags(1);
-		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean(true));
+		
+		if(!addChordDiagrams){
+			this.writer.println(indent(1) + "\\removeWithTag #'chords");
+		}
+		if(!addTexts){
+			this.writer.println(indent(1) + "\\removeWithTag #'texts");
+		}
+		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean( true ));
+		if(addLyrics){
+			this.writer.println(indent(1) + "\\new Lyrics \\lyricsto \"" + id + "TabStaff\" \\" + id + "Lyrics");
+		}
+		this.writer.println( (addLyrics ? ">>" : "}" ) );
+	}
+	
+	private void addLyrics(TGTrack track,String id){
+		this.writer.println(id + "Lyrics = \\lyricmode {");
+		this.writer.println(indent(1) + "\\set ignoreMelismata = #" + getLilypondBoolean(true));
+		int skippedCount = this.temp.getSkippedLyricBeats().size();
+		if(skippedCount > 0){
+			this.writer.print(indent(1));
+			for(int i = 0 ; i <  skippedCount ; i ++){
+				this.writer.print("\\skip " + ((String)this.temp.getSkippedLyricBeats().get(i)) + " ");
+			}
+			this.writer.println();
+		}
+		this.writer.println(indent(1) + track.getLyrics().getLyrics());
+		this.writer.println(indent(1) + "\\unset ignoreMelismata");
 		this.writer.println("}");
 	}
 	
@@ -156,15 +203,9 @@ public class LilypondOutputStream {
 		while(strings.hasNext()){
 			TGString string = (TGString)strings.next();
 			//Lilypond relates string tuning to MIDI middle C (note 60)
-			int value = string.getValue() - 60;
-			this.writer.print(value + " ");
+			this.writer.print( (string.getValue() - 60) + " ");
 		}
 		this.writer.println(")");
-	}
-	
-	private void addStaffTags(int indent){
-		this.writer.println(indent(indent) + "\\removeWithTag #'chords");
-		this.writer.println(indent(indent) + "\\removeWithTag #'texts");
 	}
 	
 	private void addStaffGroup(TGTrack track,String id){
@@ -279,6 +320,10 @@ public class LilypondOutputStream {
 				this.temp.setTupletOpen(true);
 			}
 			
+			if(measure.getTrack().getLyrics().getFrom() > measure.getNumber() && !beat.isRestBeat() ){
+				this.temp.addSkippedLyricBeat( getLilypondDuration(beat.getDuration()));
+			}
+			
 			addBeat(key, beat);
 			
 			previous = beat;
@@ -357,13 +402,7 @@ public class LilypondOutputStream {
 	}
 	
 	private void addDuration(TGDuration duration){
-		this.writer.print(duration.getValue());
-		if(duration.isDotted()){
-			this.writer.print(".");
-		}
-		else if(duration.isDoubleDotted()){
-			this.writer.print("..");
-		}
+		this.writer.print(getLilypondDuration(duration));
 	}
 	
 	private boolean noteIsTiedTo(TGNote note){
@@ -394,6 +433,17 @@ public class LilypondOutputStream {
 	
 	private String getLilypondBoolean(boolean value){
 		return (value ? "#t" : "#f");
+	}
+	
+	private String getLilypondDuration(TGDuration value){
+		String duration = Integer.toString(value.getValue());
+		if(value.isDotted()){
+			duration += (".");
+		}
+		else if(value.isDoubleDotted()){
+			duration += ("..");
+		}
+		return duration;
 	}
 	
 	private String getLilypondChordFret(int value){
@@ -431,10 +481,17 @@ public class LilypondOutputStream {
 		
 		private boolean repeatOpen;
 		private boolean tupletOpen;
+		private List skippedLyricBeats;
 		
 		protected LilypondTempData(){
+			this.skippedLyricBeats = new ArrayList();
+			this.reset();
+		}
+		
+		public void reset(){
 			this.repeatOpen = false;
 			this.tupletOpen = false;
+			this.skippedLyricBeats.clear();
 		}
 		
 		public boolean isRepeatOpen() {
@@ -451,6 +508,14 @@ public class LilypondOutputStream {
 		
 		public void setTupletOpen(boolean tupletOpen) {
 			this.tupletOpen = tupletOpen;
+		}
+		
+		public void addSkippedLyricBeat( String duration ){
+			this.skippedLyricBeats.add( duration );
+		}
+		
+		public List getSkippedLyricBeats(){
+			return this.skippedLyricBeats;
 		}
 	}
 }
