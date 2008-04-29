@@ -37,11 +37,13 @@ public class TGChordImpl extends TGChord {
 	private int nameWidth;
 	private int nameHeight;
 	private Image diagram;
+	private Color foregroundColor;
 	private Color backgroundColor;
 	private Color noteColor;
 	private Color tonicColor;
 	private Color color;
 	private Font font;
+	private Font firstFretFont;
 	private int firstFretSpacing;
 	private int stringSpacing;
 	private int fretSpacing;
@@ -79,6 +81,14 @@ public class TGChordImpl extends TGChord {
 	
 	public int getHeight(){
 		return this.height;
+	}
+	
+	public Color getForegroundColor() {
+		return this.foregroundColor;
+	}
+	
+	public void setForegroundColor(Color foregroundColor) {
+		this.foregroundColor = foregroundColor;
 	}
 	
 	public Color getBackgroundColor() {
@@ -145,12 +155,20 @@ public class TGChordImpl extends TGChord {
 		this.stringSpacing = stringSpacing;
 	}
 	
-	public Font getFirstFretFont() {
+	public Font getFont() {
 		return this.font;
 	}
 	
-	public void setFirstFretFont(Font font) {
+	public void setFont(Font font) {
 		this.font = font;
+	}
+	
+	public Font getFirstFretFont() {
+		return this.firstFretFont;
+	}
+	
+	public void setFirstFretFont(Font firstFretFont) {
+		this.firstFretFont = firstFretFont;
 	}
 	
 	public boolean isEditing() {
@@ -162,7 +180,7 @@ public class TGChordImpl extends TGChord {
 	}
 	
 	public void paint(ViewLayout layout, TGPainter painter, int fromX, int fromY) {
-		layout.setChordStyle(painter,this);
+		layout.setChordStyle(this);
 		this.setPosY(getPaintPosition(TrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
 		this.update(painter, layout.isBufferEnabled());
@@ -180,6 +198,9 @@ public class TGChordImpl extends TGChord {
 			}
 		}
 		if( (this.style & ViewLayout.DISPLAY_CHORD_NAME) != 0 && getName() != null && getName().length() > 0){
+			painter.setFont(getFont());
+			painter.setForeground(getForegroundColor());
+			painter.setBackground(getBackgroundColor());
 			painter.drawString(getName(),x - (this.nameWidth / 2) , y + (this.height - this.nameHeight ) );
 		}
 	}
