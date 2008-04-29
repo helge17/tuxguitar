@@ -378,11 +378,10 @@ public class PrinterViewLayout extends ViewLayout{
 		painter.setFont(getResources().getPrinterDefaultFont());
 	}
 	
-	public void setChordStyle(TGPainter painter,TGChordImpl chord){
-		painter.setFont(getResources().getPrinterChordFont());
-		painter.setBackground(getResources().getBackgroundColor());
-		painter.setForeground(getResources().getColorBlack());
+	public void setChordStyle(TGChordImpl chord){
 		chord.setStyle(getStyle());
+		chord.setFont(getResources().getPrinterChordFont());
+		chord.setForegroundColor(getResources().getColorBlack());
 		chord.setBackgroundColor(getResources().getBackgroundColor());
 		chord.setColor(getResources().getLineColor());
 		chord.setNoteColor(getResources().getTabNoteColor());

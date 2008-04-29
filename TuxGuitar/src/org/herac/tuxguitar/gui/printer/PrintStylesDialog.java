@@ -102,6 +102,14 @@ public class PrintStylesDialog {
 		scoreEnabled.setText(TuxGuitar.getProperty("export.score-enabled"));
 		scoreEnabled.setSelection(true);
 		
+		final Button chordNameEnabled = new Button(options,SWT.CHECK);
+		chordNameEnabled.setText(TuxGuitar.getProperty("export.chord-name-enabled"));
+		chordNameEnabled.setSelection(true);
+		
+		final Button chordDiagramEnabled = new Button(options,SWT.CHECK);
+		chordDiagramEnabled.setText(TuxGuitar.getProperty("export.chord-diagram-enabled"));
+		chordDiagramEnabled.setSelection(true);
+		
 		tablatureEnabled.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				if(!tablatureEnabled.getSelection()){
@@ -130,6 +138,8 @@ public class PrintStylesDialog {
 				int style = 0;
 				style |= (scoreEnabled.getSelection() ? ViewLayout.DISPLAY_SCORE : 0);
 				style |= (tablatureEnabled.getSelection() ? ViewLayout.DISPLAY_TABLATURE : 0);
+				style |= (chordNameEnabled.getSelection() ? ViewLayout.DISPLAY_CHORD_NAME : 0);
+				style |= (chordDiagramEnabled.getSelection() ? ViewLayout.DISPLAY_CHORD_DIAGRAM : 0);
 				styles.setTrackNumber(tracks.getSelectionIndex() + 1);
 				styles.setFromMeasure(fromSpinner.getSelection());
 				styles.setToMeasure(toSpinner.getSelection());

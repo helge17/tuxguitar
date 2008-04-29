@@ -483,10 +483,9 @@ public abstract class ViewLayout {
 		painter.setFont(getResources().getDefaultFont());
 	}
 	
-	public void setChordStyle(TGPainter painter,TGChordImpl chord){
-		painter.setFont(getResources().getChordFont());
-		painter.setBackground(getResources().getBackgroundColor());
-		painter.setForeground(getResources().getColorBlack());
+	public void setChordStyle(TGChordImpl chord){
+		chord.setFont(getResources().getChordFont());
+		chord.setForegroundColor(getResources().getColorBlack());
 		chord.setBackgroundColor(getResources().getBackgroundColor());
 		chord.setColor(getResources().getLineColor());
 		chord.setNoteColor(getResources().getTabNoteColor());
