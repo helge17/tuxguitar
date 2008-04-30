@@ -11,6 +11,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
@@ -245,22 +246,49 @@ public class LilypondOutputStream {
 		if(previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature())){
 			this.addTimeSignature(measure.getTimeSignature(),indent);
 		}
+		
+		// Open repeat
 		if(measure.isRepeatOpen()){
-			this.addRepeatOpen(indent);
+			this.addRepeatOpen(measure.getHeader(),indent);
+		}
+		// If is first measure, and it don't have a repeat-open,
+		// We check on next measures if should open it.
+		else if(measure.getNumber() == 1){
+			this.checkRepeatCount( measure.getHeader() );
+			if(this.temp.getRepeatCount() > 0 ){
+				this.addRepeatOpen(measure.getHeader(),indent);
+			}
+		}
+		// Open a repeat alternative only if this measure isn't who openned the repeat.
+		if(!measure.isRepeatOpen() && measure.getHeader().getRepeatAlternative() > 0){
+			this.addRepeatAlternativeOpen(indent);
 		}
 		
-		this.addMeasureComponents(measure,indent);
+		this.addMeasureComponents(measure,(this.temp.isRepeatOpen() || this.temp.isRepeatAlternativeOpen() ? (indent + 1): indent));
 		
-		if(measure.getRepeatClose() > 0 || isLast){
+		// If is last alternative, we can close it now
+		if(this.temp.isRepeatAlternativeOpen() && this.temp.getRepeatAlternativeNumber() >= this.temp.getRepeatCount()){
 			this.addRepeatClose(indent);
+			this.addRepeatAlternativeClose(indent);
+		}
+		// Close repeat
+		if(measure.getRepeatClose() > 0){
+			this.addRepeatClose(indent);
+		}
+		// If is last, we close any openned repeat
+		if(isLast){
+			this.addRepeatClose(indent);
+			this.addRepeatAlternativeClose(indent);
 		}
 	}
 	
-	private void addRepeatOpen(int indent){
-		if(this.temp.isRepeatOpen()){
-			this.writer.print(" }");
-		}
-		this.writer.println(indent(indent) + "\\repeat volta 2 {");
+	private void addRepeatOpen(TGMeasureHeader measure,int indent){
+		// Close any existent first
+		this.addRepeatClose(indent);
+		this.addRepeatAlternativeClose(indent);
+		
+		this.checkRepeatCount(measure);
+		this.writer.println(indent(indent) + "\\repeat volta " + this.temp.getRepeatCount() + " {");
 		this.temp.setRepeatOpen(true);
 	}
 	
@@ -269,6 +297,38 @@ public class LilypondOutputStream {
 			this.writer.println(indent(indent) + "}");
 		}
 		this.temp.setRepeatOpen(false);
+		if(!this.temp.isRepeatAlternativeOpen()){
+			this.temp.setRepeatCount( 0 );
+		}
+	}
+	
+	private void addRepeatAlternativeOpen( int indent){
+		if(this.temp.isRepeatOpen() && !this.temp.isRepeatAlternativeOpen()){
+			this.temp.setRepeatAlternativeOpen( true );
+			this.addRepeatClose(indent);
+			this.writer.println(indent(indent) + "\\alternative {");
+		}
+		if(this.temp.isRepeatAlternativeOpen()){
+			if(this.temp.getRepeatAlternativeNumber() > 0){
+				this.writer.println(indent(indent) + "}");
+			}
+			this.writer.println(indent(indent) + "{");
+			this.temp.setRepeatAlternativeNumber( this.temp.getRepeatAlternativeNumber() + 1 );
+		}
+	}
+	
+	private void addRepeatAlternativeClose(int indent){
+		if(this.temp.isRepeatAlternativeOpen()){
+			if(this.temp.getRepeatAlternativeNumber() > 0){
+				this.writer.println(indent(indent) + "}");
+			}
+			this.writer.println(indent(indent) + "}");
+		}
+		this.temp.setRepeatAlternativeOpen(false);
+		this.temp.setRepeatAlternativeNumber( 0 );
+		if(!this.temp.isRepeatOpen()){
+			this.temp.setRepeatCount( 0 );
+		}
 	}
 	
 	private void addTempo(TGTempo tempo,int indent){
@@ -328,15 +388,10 @@ public class LilypondOutputStream {
 				this.temp.setTupletOpen(true);
 			}
 			
-			if(measure.getTrack().getLyrics().getFrom() > measure.getNumber() && !beat.isRestBeat() ){
-				this.temp.addSkippedLyricBeat( getLilypondDuration(beat.getDuration()));
-			}
-			
-			addBeat(key, beat);
+			this.addBeat(key, beat);
 			
 			previous = beat;
 		}
-		
 		
 		if(this.temp.isTupletOpen()){
 			this.writer.print("} ");
@@ -350,7 +405,6 @@ public class LilypondOutputStream {
 			this.addDuration( beat.getDuration() );
 		}
 		else{
-			
 			int size = beat.countNotes();
 			if(size > 1){
 				this.writer.print("<");
@@ -372,7 +426,6 @@ public class LilypondOutputStream {
 					this.writer.print(" ");
 				}
 			}
-			
 			if(size > 1){
 				this.writer.print(">");
 				this.addDuration( beat.getDuration() );
@@ -386,8 +439,13 @@ public class LilypondOutputStream {
 				}
 				this.writer.print("\"");
 			}
+			
 			if(beat.isTextBeat()){
 				this.writer.print("-\\tag #'texts ^\\markup {" + beat.getText().getValue() + "}");
+			}
+			
+			if(beat.getMeasure().getTrack().getLyrics().getFrom() > beat.getMeasure().getNumber()){
+				this.temp.addSkippedLyricBeat( getLilypondDuration(beat.getDuration()));
 			}
 			
 			this.writer.print(" ");
@@ -413,12 +471,30 @@ public class LilypondOutputStream {
 		this.writer.print(getLilypondDuration(duration));
 	}
 	
+	private void checkRepeatCount(TGMeasureHeader header){
+		boolean alternativePresent = false;
+		TGMeasureHeader next = header;
+		while( next != null ){
+			if( next.isRepeatOpen() && next.getNumber() != header.getNumber()){
+				break;
+			}
+			if(next.getNumber() > header.getNumber() && next.getRepeatAlternative() > 0){
+				alternativePresent = true;
+				this.temp.setRepeatCount( (this.temp.getRepeatCount() + 1 ) );
+			}else if(!alternativePresent && next.getRepeatClose() > 0){
+				this.temp.setRepeatCount( (next.getRepeatClose() + 1 ));
+				break;
+			}
+			next = this.manager.getNextMeasureHeader(next);
+		}
+	}
+	
 	private boolean isAnyTiedTo(TGNote note){
 		TGMeasure measure = note.getBeat().getMeasure();
 		TGBeat beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), note.getBeat());
 		while( measure != null){
 			while( beat != null ){
-				// If is a rest beat, all voice sounds must be stopped.  
+				// If is a rest beat, all voice sounds must be stopped.
 				if(beat.isRestBeat()){
 					return false;
 				}
@@ -496,7 +572,10 @@ public class LilypondOutputStream {
 	
 	protected class LilypondTempData{
 		
+		private int repeatCount;
+		private int repeatAlternativeNumber;
 		private boolean repeatOpen;
+		private boolean repeatAlternativeOpen;
 		private boolean tupletOpen;
 		private List skippedLyricBeats;
 		
@@ -506,9 +585,18 @@ public class LilypondOutputStream {
 		}
 		
 		public void reset(){
+			this.repeatCount = 0;
 			this.repeatOpen = false;
 			this.tupletOpen = false;
 			this.skippedLyricBeats.clear();
+		}
+		
+		public int getRepeatCount() {
+			return this.repeatCount;
+		}
+		
+		public void setRepeatCount(int repeatCount) {
+			this.repeatCount = repeatCount;
 		}
 		
 		public boolean isRepeatOpen() {
@@ -517,6 +605,22 @@ public class LilypondOutputStream {
 		
 		public void setRepeatOpen(boolean repeatOpen) {
 			this.repeatOpen = repeatOpen;
+		}
+		
+		public int getRepeatAlternativeNumber() {
+			return this.repeatAlternativeNumber;
+		}
+		
+		public void setRepeatAlternativeNumber(int repeatAlternativeNumber) {
+			this.repeatAlternativeNumber = repeatAlternativeNumber;
+		}
+		
+		public boolean isRepeatAlternativeOpen() {
+			return this.repeatAlternativeOpen;
+		}
+		
+		public void setRepeatAlternativeOpen(boolean repeatAlternativeOpen) {
+			this.repeatAlternativeOpen = repeatAlternativeOpen;
 		}
 		
 		public boolean isTupletOpen() {
