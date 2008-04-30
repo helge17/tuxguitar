@@ -49,6 +49,7 @@ public class LilypondOutputStream {
 		this.manager.setSong(song);
 		
 		this.addVersion();
+		this.addPaper();
 		this.addHeader(song);
 		this.addLayout();
 		this.addSongDefinitions(song);
@@ -60,6 +61,13 @@ public class LilypondOutputStream {
 	
 	private void addVersion(){
 		this.writer.println("\\version \"" + LILYPOND_VERSION + "\"");
+	}
+	
+	private void addPaper(){
+		//this.writer.println("\\paper {");
+		//this.writer.println(indent(1) + "ragged-right = #" + getLilypondBoolean(false));
+		//this.writer.println(indent(1) + "ragged-bottom = #" + getLilypondBoolean(true));
+		//this.writer.println("}");
 	}
 	
 	private void addHeader(TGSong song){
@@ -356,7 +364,7 @@ public class LilypondOutputStream {
 					this.addDuration( beat.getDuration() );
 				}
 				this.addString(note.getString());
-				if(this.noteIsTiedTo(note)){
+				if(this.isAnyTiedTo(note)){
 					this.writer.print("~");
 				}
 				
@@ -405,19 +413,28 @@ public class LilypondOutputStream {
 		this.writer.print(getLilypondDuration(duration));
 	}
 	
-	private boolean noteIsTiedTo(TGNote note){
+	private boolean isAnyTiedTo(TGNote note){
 		TGMeasure measure = note.getBeat().getMeasure();
-		TGTrack track = measure.getTrack();
-		TGNote next = null;
-		next = this.manager.getMeasureManager().getNextNote(measure, note.getBeat().getStart(), note.getString());
-		if(next != null){
-			return next.isTiedNote();
-		}
-		measure = this.manager.getTrackManager().getMeasure(track,measure.getNumber() + 1);
-		if(measure != null){
-			next = this.manager.getMeasureManager().getNextNote(measure, note.getBeat().getStart(), note.getString());
-			if(next != null){
-				return next.isTiedNote();
+		TGBeat beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), note.getBeat());
+		while( measure != null){
+			while( beat != null ){
+				// If is a rest beat, all voice sounds must be stopped.  
+				if(beat.isRestBeat()){
+					return false;
+				}
+				// Check if is there any note at same string.
+				Iterator it = beat.getNotes().iterator();
+				while( it.hasNext() ){
+					TGNote current = (TGNote) it.next();
+					if(current.getString() == note.getString()){
+						return current.isTiedNote();
+					}
+				}
+				beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), beat);
+			}
+			measure = this.manager.getTrackManager().getNextMeasure(measure);
+			if( measure != null ){
+				beat = this.manager.getMeasureManager().getFirstBeat( measure.getBeats() );
 			}
 		}
 		return false;
