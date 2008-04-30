@@ -50,8 +50,7 @@ public class LilypondOutputStream {
 		this.manager.setSong(song);
 		
 		this.addVersion();
-		this.addPaper();
-		this.addHeader(song);
+		this.addPaper(song);
 		this.addLayout();
 		this.addSongDefinitions(song);
 		this.addSong(song);
@@ -64,18 +63,24 @@ public class LilypondOutputStream {
 		this.writer.println("\\version \"" + LILYPOND_VERSION + "\"");
 	}
 	
-	private void addPaper(){
-		//this.writer.println("\\paper {");
-		//this.writer.println(indent(1) + "ragged-right = #" + getLilypondBoolean(false));
-		//this.writer.println(indent(1) + "ragged-bottom = #" + getLilypondBoolean(true));
-		//this.writer.println("}");
+	private void addPaper(TGSong song){
+		this.writer.println("\\paper {");
+		
+		this.writer.println(indent(1) + "indent = #" + (this.addTrackTitleOnGroup(song) ? 30 : 0));
+		this.writer.println(indent(1) + "printallheaders = #" + getLilypondBoolean(true));
+		this.writer.println(indent(1) + "ragged-right = #" + getLilypondBoolean(false));
+		this.writer.println(indent(1) + "ragged-bottom = #" + getLilypondBoolean(true));
+		this.writer.println("}");
 	}
 	
-	private void addHeader(TGSong song){
-		this.writer.println("\\header {");
-		this.writer.println(indent(1) + "title = \"" + song.getName() + "\" ");
-		this.writer.println(indent(1) + "composer = \"" + song.getAuthor() + "\" ");
-		this.writer.println("}");
+	private void addHeader(TGSong song, String instrument, int indent){
+		this.writer.println(indent(indent) + "\\header {");
+		this.writer.println(indent(indent + 1) + "title = \"" + song.getName() + "\" ");
+		this.writer.println(indent(indent + 1) + "composer = \"" + song.getAuthor() + "\" ");
+		if(this.settings.isTrackNameEnabled() && !this.addTrackTitleOnGroup(song) && instrument != null){
+			this.writer.println(indent(indent + 1) + "instrument = \"" + instrument + "\" ");
+		}
+		this.writer.println(indent(indent) + "}");
 	}
 	
 	private void addLayout(){
@@ -112,20 +117,33 @@ public class LilypondOutputStream {
 	}
 	
 	private void addSong(TGSong song){
-		if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS && this.settings.isTrackGroupEnabled()){
-			this.writer.println("<<");
-		}else{
-			this.writer.println("{");
-		}
-		for(int i = 0; i < song.countTracks(); i ++){
-			TGTrack track = song.getTrack(i);
-			if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS || this.settings.getTrack() == track.getNumber()){
-				this.writer.println(indent(1) + "\\" + this.trackID(track.getName(),i,"StaffGroup"));
+		int trackCount = song.countTracks();
+		if(this.settings.isTrackGroupEnabled() && trackCount > 1){
+			this.writer.println("\\score {");
+			if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS){
+				this.writer.println(indent(1) + "<<");
 			}
 		}
-		if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS && this.settings.isTrackGroupEnabled()){
-			this.writer.println(">>");
-		}else{
+		
+		for(int i = 0; i < trackCount; i ++){
+			TGTrack track = song.getTrack(i);
+			if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS || this.settings.getTrack() == track.getNumber()){
+				if(!this.settings.isTrackGroupEnabled() || trackCount == 1){
+					this.writer.println("\\score {");
+				}
+				this.writer.println(indent(1) + "\\" + this.trackID(track.getName(),i,"StaffGroup"));
+				if(!this.settings.isTrackGroupEnabled() || trackCount == 1){
+					this.addHeader(song,track.getName(), 1);
+					this.writer.println("}");
+				}
+			}
+		}
+		
+		if(this.settings.isTrackGroupEnabled() && trackCount > 1){
+			if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS){
+				this.writer.println(indent(1) + ">>");
+			}
+			this.addHeader(song, null, 1);
 			this.writer.println("}");
 		}
 	}
@@ -144,7 +162,7 @@ public class LilypondOutputStream {
 				previous = measure;
 			}
 		}
-		this.writer.println(indent(1) + "\\break");
+		this.writer.println(indent(1) + "\\pageBreak");
 		this.writer.println("#})");
 	}
 	
@@ -219,7 +237,7 @@ public class LilypondOutputStream {
 	
 	private void addStaffGroup(TGTrack track,String id){
 		this.writer.println(id + "StaffGroup = \\new StaffGroup <<");
-		if(this.settings.isTrackNameEnabled()){
+		if(this.addTrackTitleOnGroup(track.getSong())){
 			this.writer.println(indent(1) + "\\set StaffGroup.instrumentName = #\"" + track.getName()  + "\"");
 		}
 		if(this.settings.isScoreEnabled()){
@@ -487,6 +505,15 @@ public class LilypondOutputStream {
 			}
 			next = this.manager.getNextMeasureHeader(next);
 		}
+	}
+	
+	private boolean addTrackTitleOnGroup(TGSong song){
+		if(this.settings.isTrackNameEnabled() && this.settings.isTrackGroupEnabled()){
+			if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS && song.countTracks() > 1){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private boolean isAnyTiedTo(TGNote note){
