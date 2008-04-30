@@ -51,10 +51,15 @@ public class FileChooser {
 	}
 	
 	public String open(Shell parent,List formats) {
+		String currentPath = TuxGuitar.instance().getFileHistory().getCurrentFilePath();
+		String chooserPath = TuxGuitar.instance().getFileHistory().getOpenPath();
+		boolean localFile = TuxGuitar.instance().getFileHistory().isLocalFile();
+		boolean existentFile = (localFile && currentPath != null && chooserPath != null && currentPath.equals(chooserPath));
+		
 		FilterList filter = new FilterList(formats);
 		FileDialog dialog = new FileDialog(parent,SWT.OPEN);
-		dialog.setFileName((TuxGuitar.instance().getFileHistory().isLocalFile()?getFileName(formats, DEFAULT_OPEN_FILENAME, false):null));
-		dialog.setFilterPath(TuxGuitar.instance().getFileHistory().getOpenPath());
+		dialog.setFileName((existentFile ? getFileName(formats, DEFAULT_OPEN_FILENAME, false) : null ));
+		dialog.setFilterPath(chooserPath);
 		dialog.setFilterNames(filter.getFilterNames());
 		dialog.setFilterExtensions(filter.getFilterExtensions());
 		return openDialog(dialog);
@@ -65,10 +70,12 @@ public class FileChooser {
 	}
 	
 	public String save(Shell parent,List formats) {
+		String chooserPath = TuxGuitar.instance().getFileHistory().getSavePath();
+		
 		FilterList filter = new FilterList(formats);
 		FileDialog dialog = new FileDialog(parent,SWT.SAVE);
 		dialog.setFileName(getFileName(formats, DEFAULT_SAVE_FILENAME, true));
-		dialog.setFilterPath(TuxGuitar.instance().getFileHistory().getSavePath());
+		dialog.setFilterPath(chooserPath);
 		dialog.setFilterNames(filter.getFilterNames());
 		dialog.setFilterExtensions(filter.getFilterExtensions());
 		return openDialog(dialog);
