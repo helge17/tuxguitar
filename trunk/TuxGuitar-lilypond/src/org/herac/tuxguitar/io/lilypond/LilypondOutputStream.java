@@ -106,7 +106,7 @@ public class LilypondOutputStream {
 	private void addSongDefinitions(TGSong song){
 		for(int i = 0; i < song.countTracks(); i ++){
 			TGTrack track = song.getTrack(i);
-			String id = this.trackID(track.getName(),i,"");
+			String id = this.trackID(i,"");
 			this.temp.reset();
 			this.addMusic(track,id);
 			this.addLyrics(track,id);
@@ -131,7 +131,7 @@ public class LilypondOutputStream {
 				if(!this.settings.isTrackGroupEnabled() || trackCount == 1){
 					this.writer.println("\\score {");
 				}
-				this.writer.println(indent(1) + "\\" + this.trackID(track.getName(),i,"StaffGroup"));
+				this.writer.println(indent(1) + "\\" + this.trackID(i,"StaffGroup"));
 				if(!this.settings.isTrackGroupEnabled() || trackCount == 1){
 					this.addHeader(song,track.getName(), 1);
 					this.writer.println("}");
@@ -577,24 +577,18 @@ public class LilypondOutputStream {
 	}
 	
 	private String toBase26(int value){
-		String s = "";
-		int i = value;
-		while(i > 25){
-			int r = i % 26;
-			i = i / 26 - 1;
-			s = (char)(r + 'A') + s;
+		String result = new String();
+		int base = value;
+		while(base > 25){
+			result = ( (char)( (base % 26) + 'A') + result);
+			base = base / 26 - 1;
 		}
-		s = (char)(i + 'A') + s;
-		return s;
+		return ((char)(base + 'A') + result);
 	}
 	
-	private String stripNonAscii(String s){
-		return s.replaceAll("[^A-Za-z]+","");
-	}
-	
-	private String trackID(String name, int index, String suffix){
+	private String trackID(int index, String suffix){
 		//Lilypond identifiers must be alphabetic. Base26 of the track index is used for uniqueness.
-		return this.stripNonAscii(name) + this.toBase26(index) + this.stripNonAscii(suffix);
+		return ("Track" + this.toBase26(index) + suffix);
 	}
 	
 	protected class LilypondTempData{
