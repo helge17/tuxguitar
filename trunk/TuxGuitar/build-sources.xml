@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <project name="TuxGuitar" basedir="." default="package">
-
+	
 	<description>
-    	TuxGuitar Source Package
-    </description>
+		TuxGuitar Source Package
+	</description>
 	
 	<target name="init" >
-		<fail unless="dist.version">Usage: ant -Ddist.version=[VERSION]</fail>		
-	</target>	
-		
+		<fail unless="dist.version">Usage: ant -Ddist.version=[VERSION]</fail>
+	</target>
+	
 	<target name="package" depends="init">
 		<property name="src.dir" value="src"/>
 		<property name="doc.dir" value="doc"/>
 		<property name="share.dir" value="share"/>
 		<property name="subant.dir" value="xml"/>
 		<property name="dist.dir" value="dist"/>		
-		<property name="package.name" value="TuxGuitar-${dist.version}-src" />		
+		<property name="package.name" value="TuxGuitar-${dist.version}-src" />
 		
 		<tar destfile="${package.name}.tar.gz" compression="gzip" >
-
+			
 			<tarfileset dir="${src.dir}" prefix="${package.name}/src/" >
 				<include name="**/*.java"/>
 			</tarfileset>
-
+			
 			<tarfileset dir="${dist.dir}" prefix="${package.name}/dist" >
 				<include name="config.dist"/>
 				<include name="about_license.dist"/>
@@ -46,17 +46,17 @@
 				<include name="build-freebsd.xml"/>
 				<include name="build-windows.xml"/>
 				<include name="build-mac.xml"/>
-			</tarfileset>		
-
+			</tarfileset>
+			
 			<tarfileset dir="${share.dir}/lang" prefix="${package.name}/share/lang" >
 				<include name="messages.properties"/>
 				<include name="messages_*.properties"/>
 			</tarfileset>
-
+			
 			<tarfileset dir="${share.dir}/scales" prefix="${package.name}/share/scales" >
 				<include name="scales.xml"/>
 			</tarfileset>
-
+			
 			<tarfileset dir="${share.dir}/help" prefix="${package.name}/share/help" >
 				<include name="contents.xml"/>
 				<include name="html/**/*.css"/>
@@ -77,11 +77,11 @@
 				<include name="README"/>
 			</tarfileset>
 			
-	  	</tar>
-
+		</tar>
+		
 		<echo>+-------------------------------------------------------------------------------------+</echo>
 		<echo>${package.name}.tar.gz was created. Now you can use that package to build binary files.</echo>
 		<echo>+-------------------------------------------------------------------------------------+</echo>
 	</target>
-
+	
 </project>
