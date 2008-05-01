@@ -114,10 +114,10 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
 	private void readMeasureHeaders(TGSong song, int count) throws IOException{
 		TGTimeSignature timeSignature = getFactory().newTimeSignature();
 		for (int i = 0; i < count; i++) {
-		   	if(i > 0 ){
-		   		skip(1);
-		   	}
-		   	song.addMeasureHeader(readMeasureHeader(i,timeSignature));
+			if(i > 0 ){
+				skip(1);
+			}
+			song.addMeasureHeader(readMeasureHeader(i,timeSignature));
 		}
 	}
 	
