@@ -391,19 +391,20 @@ public class GP5OutputStream extends GTPOutputStream {
 	}
 	
 	private void writeNote(TGNote note) throws IOException {
-		int flags = 0x20;
+		//int flags = 0x20;
+		int flags = ( 0x20 | 0x10 );
 		
 		if (note.getEffect().isVibrato()  ||
-		   	note.getEffect().isBend()     ||
-		   	note.getEffect().isSlide()    ||
-		   	note.getEffect().isHammer()   ||
-		   	note.getEffect().isPalmMute() ||
-		   	note.getEffect().isStaccato() ||
-		   	note.getEffect().isTrill()    ||
-		   	note.getEffect().isGrace()    ||
-		   	note.getEffect().isHarmonic() ||
-		   	note.getEffect().isTremoloPicking()) {
-		   	flags |= 0x08;
+		    note.getEffect().isBend()     ||
+		    note.getEffect().isSlide()    ||
+		    note.getEffect().isHammer()   ||
+		    note.getEffect().isPalmMute() ||
+		    note.getEffect().isStaccato() ||
+		    note.getEffect().isTrill()    ||
+		    note.getEffect().isGrace()    ||
+		    note.getEffect().isHarmonic() ||
+		    note.getEffect().isTremoloPicking()) {
+		    flags |= 0x08;
 		}
 		if( note.getEffect().isGhostNote() ){
 			flags |= 0x04;
@@ -424,6 +425,9 @@ public class GP5OutputStream extends GTPOutputStream {
 				typeHeader = 0x03;
 			}
 			writeUnsignedByte(typeHeader);
+		}
+		if ((flags & 0x10) != 0) {
+			writeByte((byte)(((note.getVelocity() - TGVelocities.MIN_VELOCITY) / TGVelocities.VELOCITY_INCREMENT) + 1));
 		}
 		if ((flags & 0x20) != 0) {
 			writeByte((byte) note.getValue());
