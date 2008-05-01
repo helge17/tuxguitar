@@ -6,11 +6,14 @@
  */
 package org.herac.tuxguitar.gui.actions.note;
 
+import java.util.Iterator;
+
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -65,6 +68,33 @@ public class ChangeTiedNoteAction extends Action{
 	
 	private void setTiedNoteValue(TGNote note,Caret caret){
 		TGMeasure measure = caret.getMeasure();
+		TGBeat beat = getSongManager().getMeasureManager().getPreviousBeat( measure.getBeats(), caret.getSelectedBeat());
+		while( measure != null){
+			while( beat != null ){
+				if(beat.isRestBeat()){
+					note.setValue(0);
+					return;
+				}
+				// Check if is there any note at same string.
+				Iterator it = beat.getNotes().iterator();
+				while( it.hasNext() ){
+					TGNote current = (TGNote) it.next();
+					if(current.getString() == note.getString()){
+						note.setValue( current.getValue() );
+						return;
+					}
+				}
+				beat = getSongManager().getMeasureManager().getPreviousBeat( measure.getBeats(), beat);
+			}
+			measure = getSongManager().getTrackManager().getPrevMeasure(measure);
+			if( measure != null ){
+				beat = getSongManager().getMeasureManager().getLastBeat( measure.getBeats() );
+			}
+		}
+	}
+	/*
+	private void setTiedNoteValue(TGNote note,Caret caret){
+		TGMeasure measure = caret.getMeasure();
 		TGNote previous = null;
 		while(measure != null){
 			previous = getSongManager().getMeasureManager().getPreviousNote(measure,caret.getPosition(),caret.getSelectedString().getNumber());
@@ -75,6 +105,7 @@ public class ChangeTiedNoteAction extends Action{
 			measure = getSongManager().getTrackManager().getPrevMeasure(measure);
 		}
 	}
+	*/
 	
 	public void updateTablature() {
 		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());

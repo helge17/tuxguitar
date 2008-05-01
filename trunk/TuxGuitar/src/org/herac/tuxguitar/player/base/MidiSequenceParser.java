@@ -358,6 +358,7 @@ public class MidiSequenceParser {
 		if(note.getEffect().isDeadNote()){
 			return DEFAULT_DEAD_NOTE_DURATION;
 		}
+		long lastEnd = (note.getBeat().getStart() + note.getBeat().getDuration().getTime());
 		long realDuration = duration;
 		int nextBIndex = (bIndex + 1);
 		int measureCount = track.countMeasures();
@@ -375,7 +376,8 @@ public class MidiSequenceParser {
 					if (!nextNote.equals(note)) {
 						if (nextNote.getString() == note.getString()) {
 							if (nextNote.isTiedNote()) {
-								realDuration += nextNote.getBeat().getDuration().getTime();
+								realDuration += (beat.getStart() - lastEnd) + (nextNote.getBeat().getDuration().getTime());
+								lastEnd = (beat.getStart() + beat.getDuration().getTime());
 							} else {
 								return applyDurationEffects(note,realDuration);
 							}
