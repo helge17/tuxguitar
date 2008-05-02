@@ -331,7 +331,7 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
 			header.setRepeatAlternative(readUnsignedByte());
 		}
 		if ((flags & 0x40) != 0) {
-			readByte(); 
+			readByte();
 			readByte();
 		}
 		if ((flags & 0x10) == 0) {
