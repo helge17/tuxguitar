@@ -87,8 +87,8 @@ public class MouseKit {
 						painter.copyArea(this.back,x1, (y1 - topHeight));
 						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
 						for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
-							tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
-							tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
+							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
+							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
 							if(y < e.y - 5 || tempValue > maxValue){
 								break;
 							}
@@ -109,8 +109,8 @@ public class MouseKit {
 						tempValue -= 14;
 						for(int y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
 							if(tempValue > 0){
-								tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
-								tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
+								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
+								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
 								if(y > e.y + 5 || tempValue < minValue){
 									break;
 								}
@@ -156,7 +156,7 @@ public class MouseKit {
 						int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
 						double limit = (topHeight / (lineSpacing / 2.00));
 						for(int i = 0;i < limit;i ++){
-							tempValue += (TGNoteImpl.NO_NATURAL_NOTES[(tempValue + 1) % 12])?2:1;
+							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
 						}
 						
 						float minorDistance = 0;
@@ -167,7 +167,7 @@ public class MouseKit {
 									value = tempValue;
 									minorDistance = distanceY;
 								}
-								tempValue -= (TGNoteImpl.NO_NATURAL_NOTES[(tempValue - 1) % 12])?2:1;
+								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
 							}
 						}
 						if(value >= minValue && value <= maxValue){
@@ -203,20 +203,20 @@ public class MouseKit {
 		int realValue = value;
 		int key = this.kit.getTablature().getCaret().getMeasure().getKeySignature();
 		if(key <= 7){
-			if(TGNoteImpl.KEY_SIGNATURES[key][TGNoteImpl.SCORE_SHARP_NOTES[realValue % 12]] == TGNoteImpl.SHARP && this.kit.isNatural()){
+			if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_SHARP_NOTES[realValue % 12]] == TGMeasureImpl.SHARP && this.kit.isNatural()){
 				realValue ++;
 			}
-			else if(TGNoteImpl.KEY_SIGNATURES[key][TGNoteImpl.SCORE_SHARP_NOTES[realValue % 12]] != TGNoteImpl.SHARP && !this.kit.isNatural()){
-				if(TGNoteImpl.NO_NATURAL_NOTES[(realValue + 1) % 12]){
+			else if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_SHARP_NOTES[realValue % 12]] != TGMeasureImpl.SHARP && !this.kit.isNatural()){
+				if(TGMeasureImpl.ACCIDENTAL_NOTES[(realValue + 1) % 12]){
 					realValue ++;
 				}
 			}
 		}else if(key > 7 ){
-			if(TGNoteImpl.KEY_SIGNATURES[key][TGNoteImpl.SCORE_FLAT_NOTES[realValue % 12]] == TGNoteImpl.FLAT && this.kit.isNatural()){
+			if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_FLAT_NOTES[realValue % 12]] == TGMeasureImpl.FLAT && this.kit.isNatural()){
 				realValue --;
 			}
-			else if(TGNoteImpl.KEY_SIGNATURES[key][TGNoteImpl.SCORE_FLAT_NOTES[realValue % 12]] != TGNoteImpl.FLAT && !this.kit.isNatural()){
-				if(TGNoteImpl.NO_NATURAL_NOTES[(realValue - 1) % 12]){
+			else if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_FLAT_NOTES[realValue % 12]] != TGMeasureImpl.FLAT && !this.kit.isNatural()){
+				if(TGMeasureImpl.ACCIDENTAL_NOTES[(realValue - 1) % 12]){
 					realValue --;
 				}
 			}

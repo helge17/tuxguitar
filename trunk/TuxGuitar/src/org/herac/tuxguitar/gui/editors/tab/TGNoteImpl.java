@@ -28,46 +28,6 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class TGNoteImpl extends TGNote {
-	public static final int NATURAL = 0;
-	public static final int SHARP = 1;
-	public static final int FLAT = 2;
-	
-	public static final int KEY_SIGNATURES[][] = new int[][]{
-		//------------NATURAL------------------------------------
-		{NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL}, // NATURAL
-		//------------SHARPS------------------------------------
-		{NATURAL,NATURAL,NATURAL,SHARP,NATURAL,NATURAL,NATURAL}, // 1 SHARP
-		{SHARP,NATURAL,NATURAL,SHARP,NATURAL,NATURAL,NATURAL}, // 2 SHARPS
-		{SHARP,NATURAL,NATURAL,SHARP,SHARP,NATURAL,NATURAL}, // 3 SHARPS
-		{SHARP,SHARP,NATURAL,SHARP,SHARP,NATURAL,NATURAL}, // 4 SHARPS
-		{SHARP,SHARP,NATURAL,SHARP,SHARP,SHARP,NATURAL}, // 5 SHARPS
-		{SHARP,SHARP,SHARP,SHARP,SHARP,SHARP,NATURAL}, // 6 SHARPS
-		{SHARP,SHARP,SHARP,SHARP,SHARP,SHARP,SHARP}, // 7 SHARPS
-		//------------FLATS------------------------------------
-		{NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,FLAT}, // 1 FLAT
-		{NATURAL,NATURAL,FLAT,NATURAL,NATURAL,NATURAL,FLAT}, // 2 FLATS
-		{NATURAL,NATURAL,FLAT,NATURAL,NATURAL,FLAT,FLAT}, // 3 FLATS
-		{NATURAL,FLAT,FLAT,NATURAL,NATURAL,FLAT,FLAT}, // 4 FLATS
-		{NATURAL,FLAT,FLAT,NATURAL,FLAT,FLAT,FLAT}, // 5 FLATS
-		{FLAT,FLAT,FLAT,NATURAL,FLAT,FLAT,FLAT}, // 6 FLATS
-		{FLAT,FLAT,FLAT,FLAT,FLAT,FLAT,FLAT}, // 7 FLATS
-	};
-	
-	public static final int SCORE_SHARP_NOTES[] = new int[]{0,0,1,1,2,3,3,4,4,5,5,6};
-	public static final int SCORE_FLAT_NOTES[] = new int[]{0,1,1,2,2,3,4,4,5,5,6,6};
-	/**
-	 * Notas que tienen sostenido
-	 */
-	public static final boolean NO_NATURAL_NOTES[] = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
-	
-	/**
-	 * Valor real de la nota, sumado a el valor de la cuerda
-	 */
-	//private int realValue;
-	/**
-	 * Beat al que pertenece la nota
-	 */
-	//private TGBeatImpl beat;
 	/**
 	 * Grupo al que pertenece este beat
 	 */
@@ -79,9 +39,10 @@ public class TGNoteImpl extends TGNote {
 	
 	private int scorePosY;
 	
+	private int accidental;
+	
 	public TGNoteImpl(TGFactory factory) {
 		super(factory);
-		//this.realValue = -1;
 		this.noteOrientation = new Rectangle(0,0,0,0);
 	}
 	
@@ -89,7 +50,7 @@ public class TGNoteImpl extends TGNote {
 	 * Actualiza los valores para dibujar
 	 */
 	public void update(ViewLayout layout) {
-		//this.realValue = -1;
+		this.accidental = getMeasureImpl().getNoteAccidental( getRealValue() );
 		this.tabPosY = ( (getString() * layout.getStringSpacing()) - layout.getStringSpacing() );
 		this.scorePosY = this.group.getY1(layout,this,getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
 	}
@@ -106,26 +67,23 @@ public class TGNoteImpl extends TGNote {
 		paintTablatureNote(layout, painter, fromX, fromY + getPaintPosition(TrackSpacing.POSITION_TABLATURE),spacing);
 	}
 	
-	private void paintOfflineEffects(ViewLayout layout,TGPainter painter,/*GC painter,*/ int fromX, int fromY, int spacing){
+	private void paintOfflineEffects(ViewLayout layout,TGPainter painter,int fromX, int fromY, int spacing){
 		TGNoteEffect effect = getEffect();
 		
 		layout.setOfflineEffectStyle(painter);
 		if(effect.isAccentuatedNote()){
 			int x = fromX + getPosX() + spacing;
 			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_ACCENTUATED_EFFECT));
-			//painter.drawString(">",x, y);
 			paintAccentuated(layout, painter, x, y);
 		}
 		else if(effect.isHeavyAccentuatedNote()){
 			int x = fromX + getPosX() + spacing;
 			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_ACCENTUATED_EFFECT));
-			//painter.drawString("^",x, y);
 			paintHeavyAccentuated(layout, painter, x, y);
 		}
 		if(effect.isFadeIn()){
 			int x = fromX + getPosX() + spacing;
 			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_FADE_IN));
-			//painter.drawString("<",x, y);
 			paintFadeIn(layout, painter, x, y);
 		}
 		if(effect.isHarmonic() && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 ){
@@ -257,7 +215,6 @@ public class TGNoteImpl extends TGNote {
 			int direction = this.group.getDirection();
 			int key = getMeasureImpl().getKeySignature();
 			int clef = getMeasureImpl().getClef();
-			int noteValue = getRealValue();
 			
 			int x = ( fromX + getPosX() + spacing );
 			int y1 = ( fromY + getScorePosY() ) ;
@@ -288,32 +245,20 @@ public class TGNoteImpl extends TGNote {
 				painter.closePath();
 			}
 			//----------sostenido--------------------------------------
-			boolean isSharpKey = KEY_SIGNATURES[key][SCORE_SHARP_NOTES[noteValue % 12]] == SHARP;
-			boolean isFlatKey = KEY_SIGNATURES[key][SCORE_FLAT_NOTES[noteValue % 12]] == FLAT;
-			boolean isNoNaturalNote = NO_NATURAL_NOTES[noteValue % 12];
-			
-			if(key <= 7){
-				if(isNoNaturalNote && !isSharpKey){
-					painter.initPath(TGPainter.PATH_FILL);
-					TGKeySignaturePainter.paintSharp(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
-					painter.closePath();
-				}
-				if(isSharpKey && !isNoNaturalNote){
-					painter.initPath(TGPainter.PATH_FILL);
-					TGKeySignaturePainter.paintNatural(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
-					painter.closePath();
-				}
-			}else{
-				if(isNoNaturalNote && !isFlatKey){
-					painter.initPath(TGPainter.PATH_FILL);
-					TGKeySignaturePainter.paintFlat(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
-					painter.closePath();
-				}
-				if(isFlatKey && !isNoNaturalNote){
-					painter.initPath(TGPainter.PATH_FILL);
-					TGKeySignaturePainter.paintNatural(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
-					painter.closePath();
-				}
+			if(this.accidental == TGMeasureImpl.NATURAL){
+				painter.initPath(TGPainter.PATH_FILL);
+				TGKeySignaturePainter.paintNatural(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
+				painter.closePath();
+			}
+			else if(this.accidental == TGMeasureImpl.SHARP){
+				painter.initPath(TGPainter.PATH_FILL);
+				TGKeySignaturePainter.paintSharp(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
+				painter.closePath();
+			}
+			else if(this.accidental == TGMeasureImpl.FLAT){
+				painter.initPath(TGPainter.PATH_FILL);
+				TGKeySignaturePainter.paintFlat(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
+				painter.closePath();
 			}
 			//----------fin sostenido--------------------------------------
 			if(getEffect().isHarmonic()){
@@ -448,11 +393,9 @@ public class TGNoteImpl extends TGNote {
 			painter.drawString(value, (this.noteOrientation.x - gracePoint.x - 2), this.noteOrientation.y );
 		}
 		if(effect.isBend()){
-			//painter.drawImage(TuxGuitar.instance().getIconManager().getPaintableBend(),(this.noteOrientation.x + this.noteOrientation.width),this.noteOrientation.y - (TuxGuitar.instance().getIconManager().getPaintableBend().getBounds().height /2));
 			paintBend(layout, painter,(this.noteOrientation.x + this.noteOrientation.width), y);
 		}else if(effect.isTremoloBar()){
 			paintTremoloBar(layout, painter,(this.noteOrientation.x + this.noteOrientation.width), y);
-			//painter.drawImage(TuxGuitar.instance().getIconManager().getPaintableTremoloBar(),(this.noteOrientation.x + this.noteOrientation.width),this.noteOrientation.y + (this.noteOrientation.height / 2));
 		}else if(effect.isSlide() || effect.isHammer()){
 			int nextFromX = fromX;
 			TGNoteImpl nextNote = (TGNoteImpl)layout.getSongManager().getMeasureManager().getNextNote(getMeasureImpl(),getBeat().getStart(),getString());
@@ -678,12 +621,6 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	public int getRealValue(){
-		/*
-		if(this.realValue < 0){
-			this.realValue = (getValue() + getMeasureImpl().getTrack().getString(getString()).getValue());
-		}
-		return this.realValue;
-		*/
 		return (getValue() + getMeasureImpl().getTrack().getString(getString()).getValue());
 	}
 	

@@ -36,6 +36,35 @@ import org.herac.tuxguitar.song.models.TGTupleto;
  */
 public class TGMeasureImpl extends TGMeasure{
 	
+	public static final int NATURAL = 1;
+	public static final int SHARP = 2;
+	public static final int FLAT = 3;
+	
+	public static final int KEY_SIGNATURES[][] = new int[][]{
+		//------------NATURAL------------------------------------
+		{NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL}, // NATURAL
+		//------------SHARPS------------------------------------
+		{NATURAL,NATURAL,NATURAL,SHARP,NATURAL,NATURAL,NATURAL},   // 1 SHARP
+		{SHARP,NATURAL,NATURAL,SHARP,NATURAL,NATURAL,NATURAL},     // 2 SHARPS
+		{SHARP,NATURAL,NATURAL,SHARP,SHARP,NATURAL,NATURAL},       // 3 SHARPS
+		{SHARP,SHARP,NATURAL,SHARP,SHARP,NATURAL,NATURAL},         // 4 SHARPS
+		{SHARP,SHARP,NATURAL,SHARP,SHARP,SHARP,NATURAL},           // 5 SHARPS
+		{SHARP,SHARP,SHARP,SHARP,SHARP,SHARP,NATURAL},             // 6 SHARPS
+		{SHARP,SHARP,SHARP,SHARP,SHARP,SHARP,SHARP},               // 7 SHARPS
+		//------------FLATS------------------------------------
+		{NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,FLAT},    // 1 FLAT
+		{NATURAL,NATURAL,FLAT,NATURAL,NATURAL,NATURAL,FLAT},       // 2 FLATS
+		{NATURAL,NATURAL,FLAT,NATURAL,NATURAL,FLAT,FLAT},          // 3 FLATS
+		{NATURAL,FLAT,FLAT,NATURAL,NATURAL,FLAT,FLAT},             // 4 FLATS
+		{NATURAL,FLAT,FLAT,NATURAL,FLAT,FLAT,FLAT},                // 5 FLATS
+		{FLAT,FLAT,FLAT,NATURAL,FLAT,FLAT,FLAT},                   // 6 FLATS
+		{FLAT,FLAT,FLAT,FLAT,FLAT,FLAT,FLAT},                      // 7 FLATS
+	};
+	
+	public static final int ACCIDENTAL_SHARP_NOTES[] = new int[]{0,0,1,1,2,3,3,4,4,5,5,6};
+	public static final int ACCIDENTAL_FLAT_NOTES [] = new int[]{0,1,1,2,2,3,4,4,5,5,6,6};
+	public static final boolean ACCIDENTAL_NOTES[] = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
+	
 	public static final int SCORE_KEY_OFFSETS[] = new int[]{30,18,22,24};
 	
 	public static final int SCORE_KEY_SHARP_POSITIONS[] = new int[]{ 1 , 4, 0, 3, 6, 2 , 5 };
@@ -101,8 +130,6 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private int widthBeats = 0;
 	
-	//private List beats;
-	
 	private List beatGroups;
 	
 	private TGMeasureBuffer buffer;
@@ -122,9 +149,12 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean tupleto;
 	private boolean fadeIn;
 	
+	private boolean[][] registeredAccidentals;
+	
 	public TGMeasureImpl(TGMeasureHeader header) {
 		super(header);
 		this.beatGroups = new ArrayList();
+		this.registeredAccidentals = new boolean[11][7];
 	}
 	
 	/**
@@ -136,6 +166,7 @@ public class TGMeasureImpl extends TGMeasure{
 		this.autoCompleteSilences(layout.getSongManager());
 		this.orderBeats(layout.getSongManager());
 		this.checkCompactMode(layout);
+		this.clearRegisteredAccidentals();
 		this.calculateBeats(layout);
 		this.calculateWidth(layout);
 		this.setFirstOfLine(false);
@@ -156,6 +187,14 @@ public class TGMeasureImpl extends TGMeasure{
 			compactMode = (layout.getSongManager().getSong().countTracks() == 1);
 		}
 		this.compactMode = compactMode;
+	}
+	
+	private void clearRegisteredAccidentals(){
+		for( int i = 0 ; i < 11 ; i ++ ){
+			for( int n = 0 ; n < 7 ; n ++ ){
+				this.registeredAccidentals[i][n] = false;
+			}
+		}
 	}
 	
 	public void calculateWidth(ViewLayout layout) {
@@ -351,6 +390,29 @@ public class TGMeasureImpl extends TGMeasure{
 			checkValue(layout,group.getMinNote(),group.getDirection());
 			checkValue(layout,group.getMaxNote(),group.getDirection());
 		}
+	}
+	
+	public int getNoteAccidental(int noteValue){
+		if( noteValue >= 0 && noteValue < 128 ){
+			int key = getKeySignature();
+			int note = (noteValue % 12);
+			int octave = (noteValue / 12);
+			int accidentalValue = (key <= 7 ? SHARP : FLAT );
+			int [] accidentalNotes = (key <= 7 ? ACCIDENTAL_SHARP_NOTES : ACCIDENTAL_FLAT_NOTES );
+			boolean isAccidentalNote = ACCIDENTAL_NOTES[ note ];
+			boolean isAccidentalKey = KEY_SIGNATURES[key][accidentalNotes[ note ]] == accidentalValue;
+			
+			if(isAccidentalKey != isAccidentalNote && !this.registeredAccidentals[ octave ][ accidentalNotes[ note ] ]){
+				this.registeredAccidentals[ octave ][ accidentalNotes[note ]  ] = true;
+				return (isAccidentalNote ? accidentalValue : NATURAL);
+			}
+			
+			if(isAccidentalKey == isAccidentalNote && this.registeredAccidentals[ octave ][ accidentalNotes[ note ] ]){
+				this.registeredAccidentals[ octave ][ accidentalNotes[ note ]  ] = false;
+				return (isAccidentalNote ? accidentalValue : NATURAL);
+			}
+		}
+		return 0;
 	}
 	
 	private void checkValue(ViewLayout layout,TGNoteImpl note,int direction){
@@ -916,7 +978,6 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Retorna el ancho del Compas
 	 */
 	public int getWidth(ViewLayout layout) {
-		//return ((layout.getTablature().getViewLayout().isMultitrack())?this.getHeaderImpl().getMaxWidth():this.width);//this.width;
 		return ((layout.getStyle() & ViewLayout.DISPLAY_MULTITRACK) != 0 ?this.getHeaderImpl().getMaxWidth():this.width);
 	}
 	
@@ -994,7 +1055,6 @@ public class TGMeasureImpl extends TGMeasure{
 	/**
 	 * Retorna el spacing de negras
 	 */
-	
 	private int getQuarterSpacing(){
 		return this.quarterSpacing;
 	}
