@@ -21,6 +21,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -149,7 +150,7 @@ public class MusicXMLWriter {
 		boolean keyChanges = (previous == null || measure.getKeySignature() != previous.getKeySignature());
 		boolean clefChanges = (previous == null || measure.getClef() != previous.getClef());
 		boolean timeSignatureChanges = (previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature()));
-		
+		boolean tuningChanges = (measure.getNumber() == 1);
 		if(divisionChanges || keyChanges || clefChanges || timeSignatureChanges){
 			Node measureAttributes = this.addNode(parent,"attributes");
 			if(divisionChanges){
@@ -164,6 +165,21 @@ public class MusicXMLWriter {
 			if(timeSignatureChanges){
 				this.writeTimeSignature(measureAttributes,measure.getTimeSignature());
 			}
+			if(tuningChanges){
+				this.writeTuning(measureAttributes, measure.getTrack());
+			}
+		}
+	}
+	
+	private void writeTuning(Node parent, TGTrack track){
+		Node staffDetailsNode = this.addNode(parent,"staff-details");
+		this.addNode(staffDetailsNode, "staff-lines", Integer.toString( track.stringCount() ));
+		for( int i = track.stringCount() ; i > 0 ; i --){
+			TGString string = track.getString( i );
+			Node stringNode = this.addNode(staffDetailsNode, "staff-tuning");
+			this.addAttribute(stringNode, "line", Integer.toString( (track.stringCount() - string.getNumber()) + 1 ) );
+			this.addNode(stringNode, "tuning-step", NOTE_NAMES[ NOTE_SHARPS[ (string.getValue() % 12) ] ] );
+			this.addNode(stringNode, "tuning-octave", Integer.toString(string.getValue() / 12) );
 		}
 	}
 	
@@ -242,6 +258,10 @@ public class MusicXMLWriter {
 					if(NOTE_ALTERATIONS[ value % 12 ]){
 						this.addNode(pitchNode,"alter", ( ks <= 7 ? "1" : "-1" ) );
 					}
+					
+					Node technicalNode = this.addNode(this.addNode(noteNode, "notations"), "technical");
+					this.addNode(technicalNode,"fret", Integer.toString( note.getValue() ));
+					this.addNode(technicalNode,"string", Integer.toString( note.getString() ));
 					
 					this.addNode(noteNode,"voice","1");
 					this.writeDuration(noteNode, beat.getDuration());
