@@ -15,7 +15,7 @@
 		<property name="doc.dir" value="doc"/>
 		<property name="share.dir" value="share"/>
 		<property name="subant.dir" value="xml"/>
-		<property name="dist.dir" value="dist"/>		
+		<property name="dist.dir" value="dist"/>
 		<property name="package.name" value="TuxGuitar-${dist.version}-src" />
 		
 		<tar destfile="${package.name}.tar.gz" compression="gzip" >
