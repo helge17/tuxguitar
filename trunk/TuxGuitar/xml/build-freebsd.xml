@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <project name="Tux Guitar" basedir="." >
-    <description>
-        Tux-Guitar
-    </description>
+	<description>
+		Tux-Guitar
+	</description>
 	
 	<property name="file.script" value="tuxguitar" />
 	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
 	
-	<target name="clean" >	
+	<target name="clean" >
 		<delete quiet="true" file="tuxguitar" />
-	</target>		
+	</target>
 	
-	<target name="install" >	
+	<target name="install" >
 		<mkdir dir="${dist.dst.path}${dist.bin.path}" />
 		<copy todir="${dist.dst.path}${dist.bin.path}">
-		    <fileset file="${file.script}"/>
-		</copy>		
+			<fileset file="${file.script}"/>
+		</copy>
 		<chmod file="${dist.dst.path}${dist.bin.path}/${file.script}" perm="755"/>
-	</target>			
+	</target>
 	
-	<target name="build"  >	
+	<target name="build"  >
 		<echo file="${file.properties}" append="false">font.default=Sans,6,2${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.note=Sans,7,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,3${line.separator}</echo>				
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,3${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,2${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,12,3${line.separator}</echo>
@@ -31,8 +31,7 @@
 		<echo file="${file.properties}" append="true">midi.port=Java Sound Synthesizer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
 		
-		
-		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>			
+		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>
 		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
 		<echo file="${file.script}" append="true">DIR_NAME=`dirname "$0"`${line.separator}</echo>
 		<echo file="${file.script}" append="true">DIR_NAME=`cd "$DIR_NAME"; pwd`${line.separator}</echo>
@@ -56,8 +55,8 @@
 		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
 		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
 		<chmod file="${file.script}" perm="755"/>
-	</target>		
+	</target>
 	
-	<target name="package" />	
+	<target name="package" />
 	
 </project>

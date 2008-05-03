@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <project name="Tux Guitar" basedir="." >
-    <description>
-        Tux-Guitar
-    </description>
-
+	<description>
+		Tux-Guitar
+	</description>
+	
 	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
-
-	<target name="clean" >	
+	
+	<target name="clean" >
 		<delete quiet="true" file="build.sh" />
-		<delete quiet="true" file="tuxguitar-${dist.version}.deb" />		
+		<delete quiet="true" file="tuxguitar-${dist.version}.deb" />
 		<delete quiet="true" dir="tuxguitar-${dist.version}" />
-	</target>		
-
-	<target name="install" depends="package" />	
-
-	<target name="build"  >
+	</target>
+	
+	<target name="install" depends="package" />
+	
+	<target name="build" >
 		<echo file="${file.properties}" append="false">font.default=Sans,6,2${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.note=Sans,7,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,3${line.separator}</echo>				
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,3${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,2${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,12,3${line.separator}</echo>
@@ -27,34 +27,38 @@
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
 	</target>
 	
-	<target name="package"  >
-		<mkdir dir="tuxguitar-${dist.version}/DEBIAN" />		
+	<target name="package" >
+		<mkdir dir="tuxguitar-${dist.version}/DEBIAN" />
 		<mkdir dir="tuxguitar-${dist.version}${dist.jar.path}" />
 		<mkdir dir="tuxguitar-${dist.version}${dist.bin.path}" />
+		<mkdir dir="tuxguitar-${dist.version}${dist.lib.path}" />
 		<mkdir dir="tuxguitar-${dist.version}${dist.share.path}" />
 		<mkdir dir="tuxguitar-${dist.version}${dist.doc.path}" />
 		<mkdir dir="tuxguitar-${dist.version}/usr/share/applications" />
 		
 		<copy todir="tuxguitar-${dist.version}${dist.jar.path}">
-		    <fileset file="${build.jar}"/>
-		</copy>			
+			<fileset file="${build.jar}"/>
+		</copy>
+		<copy todir="tuxguitar-${dist.version}${dist.lib.path}">
+			<fileset dir="${build.lib.path}"/>
+		</copy>
 		<copy todir="tuxguitar-${dist.version}${dist.share.path}">
-		    <fileset dir="${share.dir}"/>
-		</copy>		
+			<fileset dir="${build.share.path}"/>
+		</copy>
 		<copy todir="tuxguitar-${dist.version}${dist.doc.path}">
-		    <fileset dir="${doc.dir}"/>
-		</copy>				
-
+			<fileset dir="${build.doc.path}"/>
+		</copy>
+		
 		<property name="file.control" value="tuxguitar-${dist.version}/DEBIAN/control" />
 		<echo file="${file.control}" append="false">Package: tuxguitar${line.separator}</echo>
 		<echo file="${file.control}" append="true">Version: ${dist.version}${line.separator}</echo>
 		<echo file="${file.control}" append="true">Architecture: i386${line.separator}</echo>
-		<echo file="${file.control}" append="true">Depends: sun-java6-jre | sun-java5-jre | icedtea-java7-jre | gij | cacao | jamvm ,libswt3.2-gtk-java | libswt3.1-gtk-java, libitext-java ${line.separator}</echo>
+		<echo file="${file.control}" append="true">Depends: sun-java6-jre | sun-java5-jre | openjdk-6-jre | icedtea-java7-jre | gij | cacao | jamvm ,libswt-gtk-3.3-java | libswt3.2-gtk-java , libitext-java ${line.separator}</echo>
 		<echo file="${file.control}" append="true">Priority: optional${line.separator}</echo>
 		<echo file="${file.control}" append="true">Section: Multimedia${line.separator}</echo>
 		<echo file="${file.control}" append="true">Maintainer: Julian Casadesus julian@casadesus.com.ar${line.separator}</echo>
 		<echo file="${file.control}" append="true">Description: TuxGuitar is a multitrack guitar tablature editor and player${line.separator}</echo>
-
+		
 		<property name="file.desktop" value="tuxguitar-${dist.version}/usr/share/applications/tuxguitar.desktop" />
 		<echo file="${file.desktop}" append="false">[Desktop Entry]${line.separator}</echo>
 		<echo file="${file.desktop}" append="true">Name=TuxGuitar${line.separator}</echo>
@@ -68,7 +72,7 @@
 		<echo file="${file.desktop}" append="true">Terminal=false${line.separator}</echo>
 		<echo file="${file.desktop}" append="true">StartupNotify=false${line.separator}</echo>
 		<echo file="${file.desktop}" append="true">GenericName=${line.separator}</echo>
-
+		
 		<property name="file.script" value="tuxguitar-${dist.version}${dist.bin.path}tuxguitar" />
 		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>
 		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
@@ -91,6 +95,7 @@
 		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib/iceweasel${line.separator}</echo>
 		<echo file="${file.script}" append="true">fi${line.separator}</echo>
 		<echo file="${file.script}" append="true">##LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${dist.lib.path}${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${lib.swt.jni}${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib${line.separator}</echo>
@@ -109,14 +114,14 @@
 		<echo file="${file.script}" append="true">export MOZILLA_FIVE_HOME${line.separator}</echo>
 		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
 		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.share.path="${dist.share.path}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
-
+		
 		<chmod file="tuxguitar-${dist.version}${dist.bin.path}tuxguitar" perm="755"/>
-
+		
 		<exec executable="dpkg">
 			<arg value="--build"/>
 			<arg value="tuxguitar-${dist.version}"/>
-		</exec>		
-
-	</target>		
-
+		</exec>
+		
+	</target>
+	
 </project>

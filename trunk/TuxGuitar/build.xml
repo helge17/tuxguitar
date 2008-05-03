@@ -7,6 +7,7 @@
 	
 	<property file="build.properties" />
 	<property name="build.src.path" value="src${file.separator}" />
+	<property name="build.lib.path" value="lib${file.separator}" />
 	<property name="build.share.path" value="share${file.separator}" />
 	<property name="build.doc.path" value="doc${file.separator}" />
 	<property name="build.dist.path" value="dist${file.separator}" />
