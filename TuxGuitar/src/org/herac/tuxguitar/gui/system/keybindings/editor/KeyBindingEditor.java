@@ -176,7 +176,7 @@ public class KeyBindingEditor {
 				TableItem item = (TableItem) it.next();
 				if(item.getData() instanceof KeyBindingAction){
 					KeyBindingAction itemData = (KeyBindingAction)item.getData();
-					if(kb.equals(itemData.getKeyBinding())){
+					if(kb.isSameAs(itemData.getKeyBinding())){
 						itemData.setKeyBinding(null);
 						loadTableItemLabel(item);
 					}
@@ -200,7 +200,7 @@ public class KeyBindingEditor {
 			TableItem item = (TableItem) it.next();
 			if(item.getData() instanceof KeyBindingAction){
 				KeyBindingAction itemData = (KeyBindingAction)item.getData();
-				if(kb.equals(itemData.getKeyBinding())){
+				if(itemData.getKeyBinding() != null && kb.isSameAs(itemData.getKeyBinding())){
 					return true;
 				}
 			}

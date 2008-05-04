@@ -42,7 +42,7 @@ public class KeyBindingActionManager {
 		Iterator it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
-			if(kb.equals( keyBindingAction.getKeyBinding() )){
+			if(keyBindingAction.getKeyBinding() != null && kb.isSameAs( keyBindingAction.getKeyBinding() )){
 				return TuxGuitar.instance().getAction(keyBindingAction.getAction());
 			}
 		}
