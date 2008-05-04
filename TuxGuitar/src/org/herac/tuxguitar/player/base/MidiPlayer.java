@@ -91,8 +91,10 @@ public class MidiPlayer{
 	 */
 	public void reset(){
 		this.stop();
+		this.lock.lock();
 		this.tickPosition = TGDuration.QUARTER_TIME;
 		this.setChangeTickPosition(false);
+		this.lock.unlock();
 	}
 	
 	/**
@@ -143,10 +145,9 @@ public class MidiPlayer{
 	 */
 	public synchronized void play() throws MidiPlayerException{
 		try {
-			if( this.isRunning() ){
-				return;
-			}
 			this.setStarting(true);
+			this.stop();
+			this.lock.lock();
 			this.getMidiPort().check();
 			this.systemReset();
 			this.addSecuence();
@@ -159,10 +160,12 @@ public class MidiPlayer{
 			this.getSequencer().start();
 			new Thread(new Runnable() {
 				public synchronized void run() {
-					MidiPlayer.this.lock.lock();
 					try {
+						MidiPlayer.this.lock.lock();
+						
 						setStarting(false);
 						
+						MidiPlayer.this.tickPosition = getSequencer().getTickPosition();
 						while (getSequencer().isRunning() && isRunning()) {
 							synchronized(getSequencer()) {
 								if (isChangeTickPosition()) {
@@ -186,14 +189,17 @@ public class MidiPlayer{
 						setStarting(false);
 						reset();
 						throwable.printStackTrace();
+					}finally{
+						MidiPlayer.this.lock.unlock();
 					}
-					MidiPlayer.this.lock.unlock();
 				}
 			}).start();
 		}catch (Throwable throwable) {
 			this.setStarting(false);
 			this.reset();
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
+		}finally{
+			this.lock.unlock();
 		}
 	}
 	
