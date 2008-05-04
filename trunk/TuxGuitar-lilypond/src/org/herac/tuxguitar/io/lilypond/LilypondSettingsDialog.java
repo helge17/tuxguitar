@@ -61,10 +61,12 @@ public class LilypondSettingsDialog {
 			trackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
 		}
 		trackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		trackCombo.setEnabled( settings.getTrack() != LilypondSettings.ALL_TRACKS );
 		
 		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
 		trackAllCheck.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true,2,1));
 		trackAllCheck.setText(TuxGuitar.getProperty("lilypond.options.select-all-tracks"));
+		trackAllCheck.setSelection( settings.getTrack() == LilypondSettings.ALL_TRACKS );
 		
 		//------------------MEASURE RANGE------------------
 		Group measureGroup = new Group(columnLeft,SWT.SHADOW_ETCHED_IN);
@@ -139,7 +141,7 @@ public class LilypondSettingsDialog {
 		trackGroupCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		trackGroupCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-track-groups"));
 		trackGroupCheck.setSelection(settings.isTrackGroupEnabled());
-		trackGroupCheck.setEnabled(false);
+		trackGroupCheck.setEnabled(settings.getTrack() == LilypondSettings.ALL_TRACKS);
 		
 		final Button trackNameCheck = new Button(layoutGroup,SWT.CHECK);
 		trackNameCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -153,12 +155,12 @@ public class LilypondSettingsDialog {
 
 		final Button textsCheck = new Button(layoutGroup,SWT.CHECK);
 		textsCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		textsCheck.setSelection(settings.isLyricsEnabled());
+		textsCheck.setSelection(settings.isTextEnabled());
 		textsCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-texts"));
 		
 		final Button chordDiagramsCheck = new Button(layoutGroup,SWT.CHECK);
 		chordDiagramsCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		chordDiagramsCheck.setSelection(settings.isLyricsEnabled());
+		chordDiagramsCheck.setSelection(settings.isChordDiagramEnabled());
 		chordDiagramsCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-chord-diagrams"));
 		
 		tablatureCheck.addSelectionListener(new SelectionAdapter() {

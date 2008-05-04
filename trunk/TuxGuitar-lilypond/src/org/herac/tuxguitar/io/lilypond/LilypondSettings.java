@@ -116,13 +116,13 @@ public class LilypondSettings {
 		settings.setTrack(ALL_TRACKS);
 		settings.setMeasureFrom(FIRST_MEASURE);
 		settings.setMeasureTo(LAST_MEASURE);
-		settings.setTrackGroupEnabled(false);
-		settings.setTrackNameEnabled(true);
 		settings.setScoreEnabled(true);
 		settings.setTablatureEnabled(true);
-		settings.setTextEnabled(false);
-		settings.setLyricsEnabled(false);
-		settings.setChordDiagramEnabled(false);
+		settings.setTextEnabled(true);
+		settings.setLyricsEnabled(true);
+		settings.setChordDiagramEnabled(true);
+		settings.setTrackNameEnabled(true);
+		settings.setTrackGroupEnabled(false);
 		return settings;
 	}
 }
