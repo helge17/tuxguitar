@@ -57,7 +57,7 @@ public class KeyBindingSelector {
 		composite.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				KeyBinding kb = new KeyBinding(e.keyCode,e.stateMask);
-				if(kb.equals(KeyBindingSelector.this.keyBinding) || isValid(kb)){
+				if(kb.isSameAs(KeyBindingSelector.this.keyBinding) || isValid(kb)){
 					if(KeyBindingSelector.this.keyBinding == null){
 						KeyBindingSelector.this.keyBinding = new KeyBinding();
 					}

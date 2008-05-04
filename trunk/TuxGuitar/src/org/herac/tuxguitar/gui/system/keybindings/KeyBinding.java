@@ -2,12 +2,8 @@ package org.herac.tuxguitar.gui.system.keybindings;
 
 import java.util.StringTokenizer;
 
-import org.eclipse.swt.SWT;
-
 public class KeyBinding {
-	public static final String ALT_STRING = "Alt";
-	public static final String SHIFT_STRING = "Shift";
-	public static final String CONTROL_STRING = "Control";
+	
 	public static final String MASK_SEPARATOR = "+";
 	
 	private int mask;
@@ -38,21 +34,58 @@ public class KeyBinding {
 		this.mask = mask;
 	}
 	
-	public static KeyBinding parse(String keystring){
-		String key=keystring;
+	private String getSpecialKey(){
+		for(int i = 0; i < KeyConversion.relations.length; i++){
+			if (this.key == KeyConversion.relations[i].getCode()){
+				return KeyConversion.relations[i].getKey();
+			}
+		}
+		
+		return null;
+	}
+	
+	private String getSpecialMask(){
+		String mask = new String();
+		for(int i = 0; i < KeyConversion.relations.length; i++){
+			if ( (this.mask & KeyConversion.relations[i].getCode()) == KeyConversion.relations[i].getCode()){
+				mask += KeyConversion.relations[i].getKey() + MASK_SEPARATOR;
+			}
+		}
+		return mask;
+	}
+	
+	public boolean isSameAs(KeyBinding kb){
+		if( kb != null ){
+			return (this.key == kb.key && this.mask == kb.mask);
+		}
+		return false;
+	}
+	
+	public String toString(){
+		String mask = getSpecialMask();
+		String key = getSpecialKey();
+		return (key != null ? (mask + key) : (mask + (char)this.key) );
+	}
+	
+	public Object clone(){
+		return new KeyBinding(getKey(),getMask());
+	}
+	
+	public static KeyBinding parse(String keyString){
 		KeyBinding keybinding = new KeyBinding();
-		int mask=0;
 		
 		// process mask
-		if (keystring.indexOf(MASK_SEPARATOR)!= -1){
-			StringTokenizer st = new StringTokenizer(keystring,MASK_SEPARATOR);
+		int maskCode=0;
+		String key = keyString;
+		if (keyString.indexOf(MASK_SEPARATOR)!= -1){
+			StringTokenizer st = new StringTokenizer(keyString,MASK_SEPARATOR);
 			while(st.hasMoreTokens()){
 				String token = st.nextToken();
 				
 				// only process if this is not the last token
 				if (st.hasMoreTokens()){
 					// add the mask
-					mask |= getMaskCode(token);
+					maskCode |= getSpecialCode(token);
 				}
 				else {
 					key = token;
@@ -60,10 +93,10 @@ public class KeyBinding {
 			}
 		}
 		
-		keybinding.setMask(mask);
+		keybinding.setMask(maskCode);
 		
 		// process key
-		int keycode = getSpecialKeyCode(key);
+		int keycode = getSpecialCode(key);
 		if (keycode == 0)
 			keycode = getKeyCode(key);
 		
@@ -76,87 +109,15 @@ public class KeyBinding {
 		return key.charAt(0);
 	}
 	
-	private static int getSpecialKeyCode(String key){
+	private static int getSpecialCode(String key){
 		for(int i = 0; i < KeyConversion.relations.length; i++){
-			if (key.equals(KeyConversion.relations[i].getKey())){
+			if (KeyConversion.relations[i].getKey().equals(key)){
 				return KeyConversion.relations[i].getCode();
 			}
 		}
-		
 		return 0;
 	}
 	
-	public boolean equals(Object obj) {
-		if (!(obj instanceof KeyBinding)){
-			return false;
-		}
-		
-		KeyBinding kb = (KeyBinding)obj;
-		
-		return (this.key == kb.key && this.mask == kb.mask);
-	}
-	
-	public int hashCode() {
-		return new Integer(this.key + this.mask).hashCode();
-	}
-	
-	/**
-	 * get the mask code for this string
-	 * @param mask
-	 * @return
-	 */
-	private static int getMaskCode(String mask){
-		if (mask.equals(ALT_STRING)){
-			return SWT.ALT;
-		}
-		else if (mask.equals(SHIFT_STRING)){
-			return SWT.SHIFT;
-		}
-		else if (mask.equals(CONTROL_STRING)){
-			return SWT.CTRL;
-		}
-		return 0;
-	}
-	
-	private String getMaskString(){
-		String maskstring = "";
-		
-		if ((this.mask & SWT.ALT) == SWT.ALT){
-			maskstring += ALT_STRING+"+";
-		}
-		if ((this.mask & SWT.SHIFT) == SWT.SHIFT){
-			maskstring += SHIFT_STRING+"+";
-		}
-		if ((this.mask & SWT.CTRL) == SWT.CTRL){
-			maskstring += CONTROL_STRING+"+";
-		}
-		return maskstring;
-	}
-	
-	public String toString(){
-		String s = getMaskString();
-		String sp = getSpecialKey();
-		if (sp != null){
-			s += sp;
-		}else{
-			s += (char)this.key;
-		}
-		return s;
-	}
-	
-	private String getSpecialKey(){
-		for(int i = 0; i < KeyConversion.relations.length; i++){
-			if (this.key == KeyConversion.relations[i].getCode()){
-				return KeyConversion.relations[i].getKey();
-			}
-		}
-		
-		return null;
-	}
-	
-	public Object clone(){
-		return new KeyBinding(getKey(),getMask());
-	}
 }
 
 class KeyConversion {
@@ -187,9 +148,9 @@ class KeyConversion {
 		new KeyConversion("Down",KeyBindingConstants.DOWN),
 		new KeyConversion("Left",KeyBindingConstants.LEFT),
 		new KeyConversion("Right",KeyBindingConstants.RIGHT),
-		new KeyConversion("Alt",KeyBindingConstants.ALT),
 		new KeyConversion("Control",KeyBindingConstants.CONTROL),
 		new KeyConversion("Shift",KeyBindingConstants.SHIFT),
+		new KeyConversion("Alt",KeyBindingConstants.ALT),
 		new KeyConversion("Tab",KeyBindingConstants.TAB),
 		new KeyConversion("Space",KeyBindingConstants.SPACE),
 		new KeyConversion("Enter",KeyBindingConstants.ENTER),

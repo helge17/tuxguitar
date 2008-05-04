@@ -43,9 +43,8 @@ public class ChangeNoteAction extends Action {
 	
 	protected int execute(TypedEvent e){
 		if (e instanceof KeyEvent) {
-			KeyEvent keyEvent = (KeyEvent) e;
 			int value = getValueOf(((KeyEvent) e).keyCode);
-			if (value >= 0 && keyEvent.stateMask == 0) {
+			if (value >= 0) {
 				Caret caret = getEditor().getTablature().getCaret();
 				TGMeasureImpl measure = caret.getMeasure();
 				TGDuration duration = caret.getDuration();
