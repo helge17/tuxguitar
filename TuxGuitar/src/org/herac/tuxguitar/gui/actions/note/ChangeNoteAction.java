@@ -12,6 +12,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
+import org.herac.tuxguitar.gui.system.keybindings.KeyBindingConstants;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -97,35 +98,35 @@ public class ChangeNoteAction extends Action {
 	
 	private int getValueOf(int keyCode){
 		switch(keyCode){
-		case 48:
-		case 16777264:
+		case KeyBindingConstants.NUMBER_0:
+		case KeyBindingConstants.KEYPAD_0:
 			return 0;
-		case 49:
-		case 16777265:
+		case KeyBindingConstants.NUMBER_1:
+		case KeyBindingConstants.KEYPAD_1:
 			return 1;
-		case 50:
-		case 16777266:
+		case KeyBindingConstants.NUMBER_2:
+		case KeyBindingConstants.KEYPAD_2:
 			return 2;
-		case 51:
-		case 16777267:
+		case KeyBindingConstants.NUMBER_3:
+		case KeyBindingConstants.KEYPAD_3:
 			return 3;
-		case 52:
-		case 16777268:
+		case KeyBindingConstants.NUMBER_4:
+		case KeyBindingConstants.KEYPAD_4:
 			return 4;
-		case 53:
-		case 16777269:
+		case KeyBindingConstants.NUMBER_5:
+		case KeyBindingConstants.KEYPAD_5:
 			return 5;
-		case 54:
-		case 16777270:
+		case KeyBindingConstants.NUMBER_6:
+		case KeyBindingConstants.KEYPAD_6:
 			return 6;
-		case 55:
-		case 16777271:
+		case KeyBindingConstants.NUMBER_7:
+		case KeyBindingConstants.KEYPAD_7:
 			return 7;
-		case 56:
-		case 16777272:
+		case KeyBindingConstants.NUMBER_8:
+		case KeyBindingConstants.KEYPAD_8:
 			return 8;
-		case 57:
-		case 16777273:
+		case KeyBindingConstants.NUMBER_9:
+		case KeyBindingConstants.KEYPAD_9:
 			return 9;
 		}
 		return -1;

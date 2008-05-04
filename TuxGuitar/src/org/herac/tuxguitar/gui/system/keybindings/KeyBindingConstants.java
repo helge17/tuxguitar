@@ -54,12 +54,6 @@ public class KeyBindingConstants{
 	
 	public static final int TAB = SWT.TAB;
 	
-	public static final int KEYPAD_MULTIPLY = SWT.KEYPAD_MULTIPLY;
-	
-	public static final int KEYPAD_DIVIDE = SWT.KEYPAD_DIVIDE;
-	
-	public static final int KEYPAD_DECIMAL = SWT.KEYPAD_DECIMAL;
-	
 	public static final int BACKSPACE = SWT.BS;
 	
 	public static final int SPACE = 32;
@@ -74,4 +68,49 @@ public class KeyBindingConstants{
 	
 	public static final int RIGHT = 16777220;
 	
+	public static final int NUMBER_0 = 48;
+	
+	public static final int NUMBER_1 = 49;
+	
+	public static final int NUMBER_2 = 50;
+	
+	public static final int NUMBER_3 = 51;
+	
+	public static final int NUMBER_4 = 52;
+	
+	public static final int NUMBER_5 = 53;
+	
+	public static final int NUMBER_6 = 54;
+	
+	public static final int NUMBER_7 = 55;
+	
+	public static final int NUMBER_8 = 56;
+	
+	public static final int NUMBER_9 = 57;
+	
+	public static final int KEYPAD_0 = SWT.KEYPAD_0;
+	
+	public static final int KEYPAD_1 = SWT.KEYPAD_1;
+	
+	public static final int KEYPAD_2 = SWT.KEYPAD_2;
+	
+	public static final int KEYPAD_3 = SWT.KEYPAD_3;
+	
+	public static final int KEYPAD_4 = SWT.KEYPAD_4;
+	
+	public static final int KEYPAD_5 = SWT.KEYPAD_5;
+	
+	public static final int KEYPAD_6 = SWT.KEYPAD_6;
+	
+	public static final int KEYPAD_7 = SWT.KEYPAD_7;
+	
+	public static final int KEYPAD_8 = SWT.KEYPAD_8;
+	
+	public static final int KEYPAD_9 = SWT.KEYPAD_9;
+	
+	public static final int KEYPAD_MULTIPLY = SWT.KEYPAD_MULTIPLY;
+	
+	public static final int KEYPAD_DIVIDE = SWT.KEYPAD_DIVIDE;
+	
+	public static final int KEYPAD_DECIMAL = SWT.KEYPAD_DECIMAL;
 }
