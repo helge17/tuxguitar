@@ -56,8 +56,8 @@
 		<taskdef name="janel" classpathref="class.path" classname="net.sf.janel.ant.JanelTask"/>
 		<janel exeType="windows"
 		       exe="tuxguitar.exe"
-		       smallIcon="${share.dir}${file.separator}skins${file.separator}Lavender${file.separator}icon-16x16.png"
-		       bigIcon="${share.dir}${file.separator}skins${file.separator}Lavender${file.separator}icon-96x96.png"
+		       smallIcon="${build.share.path}${file.separator}skins${file.separator}Lavender${file.separator}icon-16x16.png"
+		       bigIcon="${build.share.path}${file.separator}skins${file.separator}Lavender${file.separator}icon-96x96.png"
 		/>
 		<echo file="tuxguitar.lap" append="false">-Djava.class.path=${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path}${line.separator}</echo>
 		<echo file="tuxguitar.lap" append="true"># Java class to call, ex. mypackage.Start or mypackage/Start${line.separator}</echo>
