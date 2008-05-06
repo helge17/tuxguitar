@@ -78,7 +78,7 @@ public class TGTunerQueue {
 		
 		
 		
-		
+/*		
 		int test=(this.head+1)%this.QUEUE_SIZE;
 		System.out.print(Math.floor(queue[head])+ " ");
 		while (test!=this.head) {
@@ -87,7 +87,7 @@ public class TGTunerQueue {
 		
 		}
 		System.out.println(" =  "+queue[maxIndex]%110+" **");
-
+*/
 		
 		return queue[maxIndex];
 		
