@@ -76,8 +76,7 @@ public class TGTunerRoughWidget extends Composite {
 		if (this.currentFrequency!=-1) {
 			painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 			painter.initPath();
-			int markerPos = (int)Math.round(((compositeSize.x-this.startA-this.endAb) / 110.0) * (this.currentFrequency%110.0));
-			System.out.println(markerPos+", "+this.currentFrequency);
+			int markerPos = this.startA+(int)Math.round(((compositeSize.x-this.startA-this.endAb) / 110.0) * (this.currentFrequency%110.0));
 			painter.moveTo(markerPos, compositeSize.y/2-this.markerHeight/2);
 			painter.setLineWidth(this.markerWidth);
 			painter.lineTo(markerPos, compositeSize.y/2+this.markerHeight/2);
