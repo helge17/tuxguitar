@@ -105,14 +105,16 @@ public class TGTunerDialog implements TGTunerListener {
 
 	
 	public void fireFrequency(final double freq) {
+		if (!this.dialog.isDisposed()) {
 			TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
 				public void run() {
-					if (!TGTunerDialog.this.dialog.isDisposed())
+					if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed())
 						TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
 						TGTunerDialog.this.roughTuner.setCurrentFrequency((int)Math.round(freq));
 						TGTunerDialog.this.roughTuner.redraw();
 				}
 			});
+		}
 	}
 
 	
