@@ -24,6 +24,7 @@ public class TGTuner extends Thread {
 	protected boolean paused;
 	protected TGTunerSettings settings;
 	protected TargetDataLine dataLine;
+	protected TGTunerQueue queue;
 	
 	static final int LOG2_FFTSIZE = 14;
 	protected int FFT_SIZE; 
@@ -32,6 +33,7 @@ public class TGTuner extends Thread {
 	protected double[] ai;
 	protected byte[] data;
 	protected double rate;
+	
 	protected double maximumFrequency;
 	protected double minimumFrequency;
 	protected double wantedFrequency;
@@ -40,6 +42,7 @@ public class TGTuner extends Thread {
 		this.mainWindow = mainWindow;
 		this.canceled = false;
 		this.paused = false;
+		this.queue = new TGTunerQueue();
 		try {
 			this.settings = TGTunerSettings.loadTuxGuitarSettings();
 			this.dataLine = TGTunerSettings.getDataLine(this.settings);
@@ -76,11 +79,12 @@ public class TGTuner extends Thread {
 						this.ai[i] = 0.0f;
 					}
 					
-					// TODO: if buffer size is smaller than FFT_SIZE 
-					/*for (int i=this.settings.getBufferSize(); i<this.FFT_SIZE; i++) {
+					// when buffer size is smaller than FFT_SIZE 
+					for (int i=this.settings.getBufferSize(); i<this.FFT_SIZE; i++) {
 						this.ar[i] = 0.0f;
 						this.ai[i] = 0.0f;
-					}*/
+					}
+					
 					/////////////////////////////////////////////////////////////
 					// TODO: look at the benchmark, uncoment the other one and comment the first one
 					// TODO: The second one is a lot faster here (3 times), maybe because it is in the local class?
@@ -96,7 +100,7 @@ public class TGTuner extends Thread {
 					
 					// ------ determine the dominant frequency -------
 					double frequency = -1;
-					double maxAmplitude = 0.1; // frequency noise gate can be defined here 0.01 is OK
+					double maxAmplitude = this.settings.getTreshold(); // frequency noise gate can be defined here 0.01 is OK
 					
 					
 					// TODO: maybe to analyze only the data around the area of interest
@@ -104,7 +108,6 @@ public class TGTuner extends Thread {
 					// start has to be at least 1, because we want to skip the DC component!
 					for (int i=(int)Math.round(this.minimumFrequency / this.rate); i < Math.round(this.maximumFrequency / this.rate); i++) {
 						double curFreq = i * this.rate;
-						System.out.println(curFreq);
 						// z = x*i + y*j
 						// power = |z| = sqrt(x^2 + y^2)
 						double power = Math.sqrt(Math.pow(this.ar[i], 2) + Math.pow(this.ai[i], 2));
@@ -120,8 +123,11 @@ public class TGTuner extends Thread {
 					// TODO: or to put short range of frequencies tested.
 					//System.out.println("Max Amplitude: "+maxAmplitude);
 					
+					//** buffer the frequency
+					this.queue.add(frequency);
+					
 					// fire the frequency event on GUI
-					this.mainWindow.fireFrequency(frequency);
+					this.mainWindow.fireFrequency(this.queue.getFreqApproximation());
 					
 					// flush the dataline, so the new data is received
 					this.dataLine.flush();
@@ -138,7 +144,7 @@ public class TGTuner extends Thread {
 			}
 			*/
 			try {
-				Thread.sleep(200);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {}
 		}
 		
@@ -162,16 +168,10 @@ public class TGTuner extends Thread {
 				this.minimumFrequency = getNoteFrequency(tuning[tuning.length-1]-3); // 3 frets lower that the thickest string
 				
 				
-				System.out.println(" Minimal freq diff = "+this.getMinimalFrequencyDiff());
-				System.out.println(" Time to fill the buffer = "+ this.getTimeToFillBuffer());
+				System.out.println(" Minimal freq diff = "+this.settings.getMinimalFrequencyDiff());
+				System.out.println(" Time to fill the buffer = "+ this.settings.getTimeToFillBuffer());
 		}
 	}
-
-
-	private float getTimeToFillBuffer() {
-		return this.settings.getBufferSize() / this.settings.getSampleRate();
-	}
-
 
 	public void setCanceled(boolean canceled) {
 			this.canceled = canceled;
@@ -185,6 +185,7 @@ public class TGTuner extends Thread {
 	public void resumeFromPause() {
 			this.openDataLine();
 			this.paused = false;
+			this.queue.clear();
 	}
 
 
@@ -236,11 +237,6 @@ public class TGTuner extends Thread {
 	}
 	
 	
-	public double getMinimalFrequencyDiff() {
-		return this.rate;
-	}
-	
-
 	 public static void computeFFT(int sign, int n, double[] ar, double[] ai)
 	   {
 	      double scale = 2.0 / (double)n;
