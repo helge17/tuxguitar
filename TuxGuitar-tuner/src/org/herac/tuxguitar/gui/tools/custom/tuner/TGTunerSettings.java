@@ -16,8 +16,9 @@ public class TGTunerSettings {
 	protected int sampleSize;
 	protected float sampleRate;
 	protected String deviceName;
+	protected double treshold;
 	protected int bufferSize;
-	static final int DEFAULT_BUFFER_SIZE = (1 << TGTuner.LOG2_FFTSIZE); // was /4
+	static final int DEFAULT_BUFFER_SIZE = (1 << (TGTuner.LOG2_FFTSIZE-4)); // was /4
 	static final int CHANNELS_NUMBER = 1;
 	
 	
@@ -29,6 +30,7 @@ public class TGTunerSettings {
 		retValue.setSampleRate(22050);
 		retValue.setSampleSize(16);
 		retValue.setBufferSize(DEFAULT_BUFFER_SIZE);
+		retValue.setTreshold(0.6);
 		return retValue;
 	}
 
@@ -93,6 +95,15 @@ public class TGTunerSettings {
 	public float getSampleRate() {
 		return this.sampleRate;
 	}
+	
+	public double getTreshold() {
+		return this.treshold;
+	}
+	
+	public void setTreshold(double nt) {
+		this.treshold = nt;
+	}
+	
 	public void setSampleRate(float sampleRate) {
 		this.sampleRate = sampleRate;
 	}
@@ -110,6 +121,22 @@ public class TGTunerSettings {
 		return TGTunerSettings.getDefaults();
 		//return null;
 	}
+
+	
+	
+	
+	
+	public double getMinimalFrequencyDiff() {
+		return ((double) this.getSampleRate()) / (1 << TGTuner.LOG2_FFTSIZE);
+	}
+	
+	public double getTimeToFillBuffer() {
+		return this.getBufferSize() / this.getSampleRate();
+	}
+
+
+	
+	
 	
 	/* MAYBE USEFUL CODE
 	 * 
