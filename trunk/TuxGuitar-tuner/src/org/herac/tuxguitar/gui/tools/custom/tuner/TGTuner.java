@@ -144,7 +144,7 @@ public class TGTuner extends Thread {
 			}
 			*/
 			try {
-				Thread.sleep(100);
+				Thread.sleep(this.settings.getWaitPeriod());
 			} catch (InterruptedException e) {}
 		}
 		

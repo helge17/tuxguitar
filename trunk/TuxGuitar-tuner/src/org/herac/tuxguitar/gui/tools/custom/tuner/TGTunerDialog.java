@@ -25,7 +25,7 @@ public class TGTunerDialog implements TGTunerListener {
 	protected int[] tuning = null;
 	protected Label currentFrequency = null;
 	protected Shell dialog = null;
-	
+	protected TGTunerRoughWidget roughTuner = null;
 	
 	TGTunerDialog(int[] tuning) {
 		this.tuning = tuning;
@@ -59,6 +59,8 @@ public class TGTunerDialog implements TGTunerListener {
 		}
 		tunLabel.setText(tunLabelText);
 		/////// to delete
+
+		this.roughTuner = new TGTunerRoughWidget(group);
 		
 		Composite btnComposite = new Composite(group,SWT.NONE);
 		btnComposite.setLayout(new GridLayout(2,false));
@@ -107,6 +109,8 @@ public class TGTunerDialog implements TGTunerListener {
 				public void run() {
 					if (!TGTunerDialog.this.dialog.isDisposed())
 						TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
+						TGTunerDialog.this.roughTuner.setCurrentFrequency((int)Math.round(freq));
+						TGTunerDialog.this.roughTuner.redraw();
 				}
 			});
 	}

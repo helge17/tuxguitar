@@ -18,6 +18,7 @@ public class TGTunerSettings {
 	protected String deviceName;
 	protected double treshold;
 	protected int bufferSize;
+	protected int waitPeriod;
 	static final int DEFAULT_BUFFER_SIZE = (1 << (TGTuner.LOG2_FFTSIZE-4)); // was /4
 	static final int CHANNELS_NUMBER = 1;
 	
@@ -31,6 +32,7 @@ public class TGTunerSettings {
 		retValue.setSampleSize(16);
 		retValue.setBufferSize(DEFAULT_BUFFER_SIZE);
 		retValue.setTreshold(0.6);
+		retValue.setWaitPeriod(100);
 		return retValue;
 	}
 
@@ -114,6 +116,12 @@ public class TGTunerSettings {
 		this.sampleSize = sampleSize;
 	}
 
+	public int getWaitPeriod() {
+		return this.waitPeriod;
+	}
+	public void setWaitPeriod(int time) {
+		this.waitPeriod = time;
+	}
 
 
 	public static TGTunerSettings loadTuxGuitarSettings() throws TGTuner.TGTunerException {
