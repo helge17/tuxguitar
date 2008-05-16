@@ -29,7 +29,7 @@ public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin implements 
 	}
 	
 	public String getVersion() {
-		return "1.0-rc3";
+		return "1.0";
 	}
 	
 	public void setupDialog(Shell parent) {

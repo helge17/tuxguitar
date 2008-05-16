@@ -54,6 +54,6 @@ public class TGTrayPlugin extends TGPluginAdapter {
 	}
 	
 	public String getVersion() {
-		return "1.0-rc3";
+		return "1.0";
 	}
 }

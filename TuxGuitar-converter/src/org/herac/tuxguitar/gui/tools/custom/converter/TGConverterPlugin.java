@@ -24,6 +24,6 @@ public class TGConverterPlugin extends org.herac.tuxguitar.gui.system.plugins.ba
 	}
 	
 	public String getVersion() {
-		return "0.2b";
+		return "1.0";
 	}
 }
