@@ -22,6 +22,6 @@ public class MusicXMLPluginExporter extends TGExporterPlugin{
 	}
 	
 	public String getVersion() {
-		return "1.0-rc3";
+		return "1.0";
 	}
 }

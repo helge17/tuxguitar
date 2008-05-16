@@ -22,7 +22,7 @@ public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin{
 	}
 	
 	public String getVersion() {
-		return "1.0-rc3";
+		return "1.0";
 	}
 	
 }
