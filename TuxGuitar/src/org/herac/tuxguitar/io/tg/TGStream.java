@@ -10,7 +10,7 @@ public class TGStream {
 	
 	public static final String TG_FORMAT_NAME = ("TuxGuitar File Format");
 	
-	public static final String TG_FORMAT_VERSION = (TG_FORMAT_NAME + " - " + /*TGVersion.CURRENT*/new TGVersion(1,0,0,0).getVersion() );
+	public static final String TG_FORMAT_VERSION = (TG_FORMAT_NAME + " - " + TGVersion.CURRENT.getVersion() );
 	
 	public static final String TG_FORMAT_EXTENSION = (".tg");
 	
