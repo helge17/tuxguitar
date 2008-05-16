@@ -1,13 +1,12 @@
 package org.herac.tuxguitar.gui.tools.custom.tuner;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 
 /**
