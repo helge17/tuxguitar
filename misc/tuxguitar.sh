@@ -111,21 +111,22 @@ tuxguitar_()
     t="/usr/share/java/itext.jar"
     [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
     JAVA_FLAGS=${JAVA_FLAGS:="-Xms128m -Xmx128m"}
-    JAVA_FLAGS="${JAVA_FLAGS}\
+    JAVA_FLAGS="\
+${JAVA_FLAGS} \
  -Djava.library.path=${PACKAGE_LIB} \
+ -D${PACKAGE}.share.path=/usr/share/${PACKAGE} \
  -cp ${CLASSPATH}:${PACKAGE_CLASSPATH}"
 # run java
     args="$@"
     t="/usr/share/tuxguitar/tuxguitar.tg"
-    [ -z $1 ] && args=$t
+    [ -z "$1" ] && args="$t"
     [ ! -z ${DEBUG} ] && ${JAVA} -version
     [ ! -z ${DEBUG} ] && ${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} --version
     [ ! -z ${DEBUG} ] && echo "# ${JAVA} ${JAVA_FLAGS} ${MAINCLASS} $args"
-    ${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} $args
 }
 
 # main
 env_
 tuxguitar_ "$@"
-
+${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} $args "$@"
 #eof "$Id: tuxguitar.sh,v 1.3 2008/04/16 17:04:50 rzr Exp $"
