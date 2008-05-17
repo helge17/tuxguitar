@@ -2,12 +2,12 @@
 Version=1.0
 Name=tuxguitar
 Comment=Edit, playback guitar tablatures
-Comment[fr]=Edite et joue des tablatures de guitare
+Comment[fr]=Edite, joue des tablatures de guitare
+Comment[es]=Edita, reproduce tablaturas de guitarra
 Exec=tuxguitar
 Icon=tuxguitar
 Terminal=false
 Type=Application
 Categories=AudioVideo;Audio;
-MimeType=audio/midi;
-
+MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb;audio/midi;
 #eof "$Id: tuxguitar.desktop,v 1.2 2008/03/22 23:32:25 rzr Exp $"
