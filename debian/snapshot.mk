@@ -1,3 +1,10 @@
+#! /usr/bin/make -f
+# -*- makefile -*-
+#ident "$Id: Makefile,v 1.19 2008/04/17 20:06:22 rzr Exp $"
+#@author: created by www.philippe.coval.online.fr -- revision: $Author: rzr $
+#licence: LGPL
+#------------------------------------------------------------------------------
+
 default: deb
 
 package?=tuxguitar
@@ -77,8 +84,8 @@ release: tarball
 	echo "../${tarball_name}.tar.gz"
 
 cvsrelease:
-	${make} fetch
-	${make} -C ../${tarball_name} clean tarball
+	${MAKE} fetch
+	${MAKE} -C ../${tarball_name} clean tarball
 	ls -l ../${tarball_name}.tar.gz
 
 fetch:
@@ -147,8 +154,13 @@ debsrc: clean update
 	debuild && sudo debi && dpkg -L ${package}
 	debuild -S | grep "_source.changes"
 
-deb: update
+remove:
 	-sudo aptitude -y remove ${package} ${package}-snapshot
+
+install: remove
+	debi || sudo debi
+
+deb: update remove
 	dch -i # -a "WIP:"
 	-fakeroot ./debian/rules clean
 	make clean 
@@ -157,7 +169,8 @@ deb: update
 	sudo debi
 	make clean
 	debuild -sa -S
-	dput ppa  ../${DEBPACKAGE}*${DEBPACKAGE_VERSION}*source.changes
+	debrelease -S --dput ppa
+#	dput ppa  ../${DEBPACKAGE}*${DEBPACKAGE_VERSION}*source.changes
 
 merge:
 	-diff Makefile ../tuxguitar-snapshot-*/Makefile 
@@ -175,7 +188,7 @@ apt:
 
 update:
 #	rm -f TuxGuitar/dist/config* TuxGuitar/build.*
-	-ssh-add
+#	-ssh-add
 	-svn $@ .
 	-svn diff > tmp.diff
 	diffstat  tmp.diff
@@ -184,7 +197,7 @@ snapshot-clean:
 	-rm -rf TuxGuitar/build* AUTHORS COPYING ChangeLog LICENSE README
 
 commit: snapshot-clean clean distclean update help
-	~/bin/vc.sh changed
+	${HOME}/bin/vc.sh changed
 	less tmp.diff
 	svn commit
 
@@ -192,6 +205,7 @@ commit: snapshot-clean clean distclean update help
 
 #all: clean fix jar jni
 help:
+	@echo "${scmroot}"
 	@echo "TODO: MOZILLA_FIVE_HOME, libc ver, plugins, jsa"
 	echo "FIX: (LP: #176979) ; oef dist"
 	@echo "TODO: timidity or fluidsynth installed ?"
@@ -241,4 +255,4 @@ get-snapshot-source: ../${snapshot_dir}
 build-gcj:
 	${MAKE} build ANT_FLAGS="build.compiler=gcj" 
 
-#eof "$Id: snapshot.mk,v 1.7 2008/04/17 20:06:34 rzr Exp $"
+#eof "$Id:"

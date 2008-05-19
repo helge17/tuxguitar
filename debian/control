@@ -6,11 +6,13 @@ Uploaders: tony mancill <tmancill@debian.org>
 Build-Depends: debhelper (>= 5.0.0), libswt3.2-gtk-java, libitext-java, libasound2-dev,  docbook-to-man , docbook-utils, ant, gcj, java-gcj-compat-dev, java-gcj-compat-dev | java-compiler | sun-java6-jdk | sun-java5-jdk | openjdk-6-jdk | icedtea-java7-jdk 
 Standards-Version: 3.7.3
 Homepage: http://www.tuxguitar.com.ar
+XS-Vcs-svn: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
+XS-Vcs-Browser: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
 
 Package: tuxguitar-snapshot
 Architecture: all
 Section: contrib/sound
-Depends: java-gcj-compat | sun-java6-jre | java-virtual-machine , libswt3.2-gtk-java, libitext-java
+Depends: java-gcj-compat | sun-java6-jre | java-virtual-machine, libswt3.2-gtk-java, libitext-java, 
 Conflicts: tuxguitar
 Replaces: tuxguitar
 Recommends: tuxguitar-snapshot-alsa (= ${source:Version}), tuxguitar-snapshot-oss (= ${source:Version}), iceweasel | firefox
