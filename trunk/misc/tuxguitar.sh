@@ -55,6 +55,23 @@ fi
     [ -d "$d" ] && echo "$d"
 }
 
+swt_guess_()
+{
+    t="/usr/lib/java/swt.jar"
+    [ -r $t ] && f="$t"
+
+    t="/usr/share/java/swt.jar"
+    [ -r $t ] && f="$t"
+
+    t="/etc/alternatives/swt.jar"
+    [ -r $t ] && f="$t"
+
+    t="/usr/lib/java/swt3.2-gtk.jar"
+    [ -r $t ] && f="$t"
+
+    [ $(file -L "$f") ] && echo "$f"
+}
+
 #/// org.eclipse.swt.SWTError: No more handles
 #/// [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
 mozilla_guess_()
@@ -95,10 +112,10 @@ env_()
 
 tuxguitar_()
 {
-    PACKAGE=${PACKAGE:=tuxguitar}
-    PACKAGE_HOME=${PACKAGE_HOME:=/usr/share/${PACKAGE}/}
-    PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.gui.TGMain}
-    PACKAGE_LIB=${PACKAGE_LIB:=/usr/lib/jni}
+    local PACKAGE=${PACKAGE:=tuxguitar}
+    local PACKAGE_HOME=${PACKAGE_HOME:=/usr/share/${PACKAGE}/}
+    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.gui.TGMain}
+    local PACKAGE_LIB=${PACKAGE_LIB:=/usr/lib/jni}
 # java env
     JAVA=${JAVA:=java}
     CLASSPATH=${CLASSPATH}
@@ -106,31 +123,28 @@ tuxguitar_()
     [ -d $t ] && CLASSPATH=${CLASSPATH}:$t
     t="${PACKAGE_HOME}/${PACKAGE}.jar"
     [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
-    t="/usr/share/java/swt.jar"
-    [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
     t="/usr/share/java/itext.jar"
     [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
+    t=$(swt_guess_)
+    [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
+
     JAVA_FLAGS=${JAVA_FLAGS:="-Xms128m -Xmx128m"}
     JAVA_FLAGS="\
 ${JAVA_FLAGS} \
  -Djava.library.path=${PACKAGE_LIB} \
  -D${PACKAGE}.share.path=/usr/share/${PACKAGE} \
  -cp ${CLASSPATH}:${PACKAGE_CLASSPATH}"
+    local arg=""
+    [ -z "$1" ] && arg="/usr/share/tuxguitar/tuxguitar.tg"
 # run java
-
     [ ! -z ${DEBUG} ] && ${JAVA} -version
     [ ! -z ${DEBUG} ] && ${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} --version
 
-    if [ -z "$1" ] ; then
-	local arg="/usr/share/tuxguitar/tuxguitar.tg"
-	${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} "$arg"
-    else
-	${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} "$@"
-    fi
+    ${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} $arg "$@"
 }
 
 # main
 env_
 tuxguitar_ "$@"
 
-#eof "$Id: tuxguitar.sh,v 1.3 2008/04/16 17:04:50 rzr Exp $"
+#eof

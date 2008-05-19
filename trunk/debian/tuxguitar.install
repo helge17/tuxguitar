@@ -12,3 +12,4 @@ TuxGuitar/share/plugins/tuxguitar-tray.jar usr/share/tuxguitar/plugins/
 
 ./misc/tuxguitar.xpm usr/share/pixmaps/
 ./misc/tuxguitar.desktop usr/share/applications/
+./misc/tuxguitar.xml usr/share/mime/packages/
