@@ -1,4 +1,4 @@
-tuxguitar-snapshot (0.0.20080514-0ubuntu0~ppa254) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080514-0ubuntu0~rzr257) hardy; urgency=low
 
   * FIX: hardcoded path ( Closes: #481728)
 
