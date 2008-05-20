@@ -69,7 +69,7 @@ swt_guess_()
     t="/usr/lib/java/swt3.2-gtk.jar"
     [ -r $t ] && f="$t"
 
-    [ $(file -L "$f") ] && echo "$f"
+    file -L "$f" && echo "$f"
 }
 
 #/// org.eclipse.swt.SWTError: No more handles
