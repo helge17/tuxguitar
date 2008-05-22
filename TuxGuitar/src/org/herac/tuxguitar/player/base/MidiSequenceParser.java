@@ -671,13 +671,13 @@ public class MidiSequenceParser {
 			for (int b = nextBIndex; b < beatCount; b++) {
 				TGBeat beat = measure.getBeat( b );
 				int noteCount = beat.countNotes();
-				for (int n = 0; n < noteCount; b++) {
+				for (int n = 0; n < noteCount; n++) {
 					TGNote currNote = beat.getNote( n );
 					if(currNote.getString() == note.getString()){
 						return currNote;
 					}
-					return null;
 				}
+				return null;
 			}
 			nextBIndex = 0;
 		}
