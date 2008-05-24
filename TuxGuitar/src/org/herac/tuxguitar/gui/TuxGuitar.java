@@ -360,7 +360,7 @@ public class TuxGuitar {
 		FormData data = ((FormData)this.sashComposite.getLayoutData());
 		data.bottom.offset = -offset;
 		getShell().setMinimumSize(Math.max(640,minimunWith),Math.max(480,minimunHeight));
-		getShell().layout();
+		getShell().layout(true,true);
 	}
 	
 	public TGTableViewer getTable(){
