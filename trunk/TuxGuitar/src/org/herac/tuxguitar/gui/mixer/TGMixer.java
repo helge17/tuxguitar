@@ -191,6 +191,8 @@ public class TGMixer implements IconLoader,LanguageLoader{
 			this.volumeScale.setToolTipText(this.tipVolume + ": " + this.manager.getSong().getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("mixer"));
 			this.dialog.pack();
+			this.dialog.layout(true,true);
+			this.dialog.redraw();
 		}
 	}
 	
@@ -229,7 +231,8 @@ public class TGMixer implements IconLoader,LanguageLoader{
 					if(!isDisposed()){
 						TGMixer.this.clear();
 						TGMixer.this.loadData();
-						TGMixer.this.dialog.layout();
+						TGMixer.this.dialog.layout(true,true);
+						TGMixer.this.dialog.redraw();
 					}
 				}
 			}).start();

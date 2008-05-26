@@ -361,6 +361,7 @@ public class TuxGuitar {
 		data.bottom.offset = -offset;
 		getShell().setMinimumSize(Math.max(640,minimunWith),Math.max(480,minimunHeight));
 		getShell().layout(true,true);
+		getShell().redraw();
 	}
 	
 	public TGTableViewer getTable(){
