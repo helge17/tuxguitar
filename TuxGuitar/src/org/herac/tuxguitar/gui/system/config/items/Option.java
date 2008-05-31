@@ -66,6 +66,7 @@ public abstract class Option extends SelectionAdapter{
 		this.toolItem.setSelection(visible);
 		this.group.setVisible(visible);
 		this.group.setFocus();
+		this.group.redraw();
 	}
 	
 	public void dispose(){
