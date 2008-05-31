@@ -531,7 +531,7 @@ public class MidiPlayer{
 				if(this.isRunning()){
 					this.stop();
 				}
-				getMidiPort().close();
+				this.closePort();
 				for(int i = 0; i < ports.size(); i ++){
 					MidiPort port = (MidiPort)ports.get(i);
 					if(port.getKey().equals(this.portKey)){
