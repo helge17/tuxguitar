@@ -2,6 +2,7 @@ package org.herac.tuxguitar.player.impl.jsa.sequencer;
 
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
 import javax.sound.midi.Transmitter;
 
 import org.herac.tuxguitar.player.base.MidiPort;
@@ -70,6 +71,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	}
 	
 	public MidiSequenceHandler createSequence(int tracks) {
+		this.resetTracks();
 		return new MidiSequenceHandlerImpl(this,tracks);
 	}
 	
@@ -169,6 +171,24 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 			}
 			if( systemReset ){
 				this.getMidiPort().out().sendSystemReset();
+			}
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+	}
+	
+	public void resetTracks(){
+		try {
+			Sequence sequence = this.getSequencer().getSequence();
+			if(sequence != null){
+				Track[] tracks = sequence.getTracks();
+				if( tracks != null ){
+					int count = tracks.length;
+					for( int i = 0 ; i < count; i++ ){
+						this.setSolo( i , false );
+						this.setMute( i , false );
+					}
+				}
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
