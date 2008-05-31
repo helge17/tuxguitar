@@ -527,15 +527,15 @@ public class MidiPlayer{
 	
 	public void openPort(List ports, boolean tryFirst) {
 		try{
-			if(this.portKey != null && !isMidiPortOpen(this.portKey)){
-				if(this.isRunning()){
-					this.stop();
-				}
+			if(this.portKey != null && !this.isMidiPortOpen(this.portKey)){
+				//if(this.isRunning()){
+				//	this.stop();
+				//}
 				this.closePort();
 				for(int i = 0; i < ports.size(); i ++){
 					MidiPort port = (MidiPort)ports.get(i);
 					if(port.getKey().equals(this.portKey)){
-						if(loadPort(port)){
+						if(this.loadPort(port)){
 							return;
 						}
 					}
@@ -543,7 +543,7 @@ public class MidiPlayer{
 			}
 			
 			if(getMidiPort() instanceof MidiPortEmpty && !ports.isEmpty() && tryFirst){
-				loadPort( (MidiPort)ports.get(0) );
+				this.loadPort( (MidiPort)ports.get(0) );
 			}
 			
 		}catch(Throwable throwable){
@@ -562,14 +562,15 @@ public class MidiPlayer{
 	
 	public void openSequencer(List sequencers ,boolean tryFirst) throws MidiPlayerException {
 		try{
-			if(this.sequencerKey != null && !isSequencerOpen(this.sequencerKey)){
-				if(this.isRunning()){
-					this.stop();
-				}
+			if(this.sequencerKey != null && !this.isSequencerOpen(this.sequencerKey)){
+				//if(this.isRunning()){
+				//	this.stop();
+				//}
+				this.closeSequencer();
 				for(int i = 0; i < sequencers.size(); i ++){
 					MidiSequencer sequencer = (MidiSequencer)sequencers.get(i);
 					if(sequencer.getKey().equals(this.sequencerKey)){
-						if(loadSequencer(sequencer)){
+						if(this.loadSequencer(sequencer)){
 							return;
 						}
 					}
@@ -577,7 +578,7 @@ public class MidiPlayer{
 			}
 			
 			if(getSequencer() instanceof MidiSequencerEmpty && !sequencers.isEmpty() && tryFirst){
-				loadSequencer( (MidiSequencer) sequencers.get(0));
+				this.loadSequencer( (MidiSequencer) sequencers.get(0));
 			}
 			
 		}catch(Throwable throwable){
@@ -615,7 +616,9 @@ public class MidiPlayer{
 	
 	public void closeSequencer() throws MidiPlayerException{
 		try{
-			this.stop();
+			if(this.isRunning()){
+				this.stop();
+			}
 			this.lock.lock();
 			if (this.sequencer != null) {
 				this.sequencer.close();
@@ -629,7 +632,9 @@ public class MidiPlayer{
 	
 	public void closePort(){
 		try{
-			this.stop();
+			if(this.isRunning()){
+				this.stop();
+			}
 			this.lock.lock();
 			if (this.port != null) {
 				this.port.close();
