@@ -274,9 +274,9 @@ public class MidiPlayer{
 	public void setTickPosition(long position) {
 		this.tickPosition = position;
 		this.setChangeTickPosition(true);
-		if(!isRunning()){
-			this.changeTickPosition();
-		}
+		//if(!isRunning()){
+		//	this.changeTickPosition();
+		//}
 	}
 	
 	/**
