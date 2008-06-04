@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.player.impl.jsa.midiport;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 
 import org.herac.tuxguitar.player.base.MidiControllers;
@@ -9,6 +8,7 @@ import org.herac.tuxguitar.player.base.MidiOut;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiPort;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiMessageUtils;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MidiPortOut extends MidiPort{
 	
@@ -19,16 +19,20 @@ public class MidiPortOut extends MidiPort{
 		this.out = new MidiOutImpl(device);
 	}
 	
+	public MidiOut out(){
+		return this.out;
+	}
+	
 	public void open(){
 		this.out.getReceiver();
 	}
 	
-	public void close(){
-		this.out.close();
-	}
-	
-	public MidiOut out(){
-		return this.out;
+	public void close() throws MidiPlayerException{
+		try {
+			this.out.close();
+		} catch (Throwable throwable) {
+			throw new MidiPlayerException(throwable.getMessage(),throwable);
+		}
 	}
 	
 	public void check() throws MidiPlayerException{
@@ -48,7 +52,7 @@ class MidiOutImpl implements MidiOut{
 	public MidiOutImpl(MidiDevice device){
 		this.device = device;
 	}
-	
+	/*
 	protected synchronized void open() throws MidiUnavailableException{
 		if(!this.device.isOpen()){
 			this.device.open();
@@ -66,6 +70,49 @@ class MidiOutImpl implements MidiOut{
 		if(this.device.isOpen()){
 			this.device.close();
 		}
+	}
+	*/
+	protected synchronized void open() throws Throwable{
+		if(!this.device.isOpen()){
+			final MidiDevice device = this.device;
+			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					device.open();
+				}
+			});
+		}
+		if(this.receiver == null){
+			final MidiDevice device = this.device;
+			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					setReceiver(device.getReceiver());
+				}
+			});
+		}
+	}
+	
+	protected synchronized void close() throws Throwable{
+		if(this.receiver != null){
+			final Receiver receiver = this.receiver;
+			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					receiver.close();
+					setReceiver(null);
+				}
+			});
+		}
+		if(this.device.isOpen()){
+			final MidiDevice device = this.device;
+			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					device.close();
+				}
+			});
+		}
+	}
+	
+	protected void setReceiver(Receiver receiver){
+		this.receiver = receiver;
 	}
 	
 	protected Receiver getReceiver(){

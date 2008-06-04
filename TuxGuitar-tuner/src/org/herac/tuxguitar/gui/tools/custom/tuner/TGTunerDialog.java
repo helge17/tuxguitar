@@ -8,11 +8,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.MessageDialog;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
@@ -106,14 +107,19 @@ public class TGTunerDialog implements TGTunerListener {
 	
 	public void fireFrequency(final double freq) {
 		if (!this.dialog.isDisposed()) {
-			TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed())
-						TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
-						TGTunerDialog.this.roughTuner.setCurrentFrequency((int)Math.round(freq));
-						TGTunerDialog.this.roughTuner.redraw();
-				}
-			});
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()){
+							TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
+							TGTunerDialog.this.roughTuner.setCurrentFrequency((int)Math.round(freq));
+							TGTunerDialog.this.roughTuner.redraw();
+						}
+					}
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -125,16 +131,18 @@ public class TGTunerDialog implements TGTunerListener {
 	public int[] getTuning() {
 		return this.tuning;
 	}
-
-
+	
 	public void fireException(final Exception ex) {
-			TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
+		try {
+			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
 				public void run() {
-					if (!TGTunerDialog.this.dialog.isDisposed())
+					if (!TGTunerDialog.this.dialog.isDisposed()){
 						MessageDialog.errorMessage(ex);
+					}
 				}
 			});
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
-
-	
 }

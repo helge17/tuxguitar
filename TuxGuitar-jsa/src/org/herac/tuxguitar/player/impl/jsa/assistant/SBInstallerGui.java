@@ -22,6 +22,7 @@ import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class SBInstallerGui implements SBInstallerlistener{
 
@@ -126,38 +127,50 @@ public class SBInstallerGui implements SBInstallerlistener{
 	
 	public void notifyProcess(final String process){
 		if(!isDisposed()){
-			TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed()){
-						getProgressLabel().setText(process);
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed()){
+							getProgressLabel().setText(process);
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void notifyFinish(){
 		if(!isDisposed()){
-			TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed()){
-						getDialog().dispose();
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed()){
+							getDialog().dispose();
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void notifyFailed(final Throwable throwable){
 		if(!isDisposed()){
-			TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed()){
-						getDialog().dispose();
-						MessageDialog.errorMessage( throwable );
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed()){
+							getDialog().dispose();
+							MessageDialog.errorMessage( throwable );
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}	
 
@@ -176,5 +189,4 @@ public class SBInstallerGui implements SBInstallerlistener{
 	public SBInstaller getInstaller() {
 		return this.installer;
 	}
-
 }
