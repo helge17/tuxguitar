@@ -27,6 +27,7 @@ import org.herac.tuxguitar.gui.printer.PrintStyles;
 import org.herac.tuxguitar.gui.printer.PrintStylesDialog;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -188,11 +189,15 @@ public class PrintAction extends Action{
 			if(this.started){
 				this.printer.endJob();
 				this.started = false;
-				this.layout.getTablature().getDisplay().syncExec(new Runnable() {
-					public void run() {
-						dispose();
-					}
-				});
+				try {
+					TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable(){
+						public void run() {
+							dispose();
+						}
+					});
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 				TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 			}
 		}

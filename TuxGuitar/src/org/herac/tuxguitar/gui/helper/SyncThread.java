@@ -6,7 +6,7 @@
  */
 package org.herac.tuxguitar.gui.helper;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -15,15 +15,25 @@ import org.herac.tuxguitar.gui.TuxGuitar;
  */
 public class SyncThread extends Thread {
 	
-	private Runnable runnable;
+	private TGSynchronizer.TGRunnable runnable;
 	
-	public SyncThread(Runnable runnable) {
+	public SyncThread(TGSynchronizer.TGRunnable runnable) {
 		this.runnable = runnable;
 	}
 	
+	public SyncThread(final Runnable runnable) {
+		this(new TGSynchronizer.TGRunnable() {
+			public void run() throws Throwable {
+				runnable.run();
+			}
+		});
+	}
+	
 	public void run() {
-		if(!TuxGuitar.isDisposed()){
-			TuxGuitar.instance().getDisplay().syncExec(this.runnable);
+		try {
+			TGSynchronizer.instance().addRunnable(this.runnable);
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 	}
 }

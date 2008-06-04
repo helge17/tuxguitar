@@ -64,6 +64,7 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -147,6 +148,21 @@ public class TuxGuitar {
 		return instance;
 	}
 	
+	private void initSynchronizer(){
+		TGSynchronizer.instance().setController(new TGSynchronizer.TGSynchronizerController() {
+			public void excecute(final TGSynchronizer.TGSynchronizerTask task) {
+				final Display display = getDisplay();
+				if(display != null && !display.isDisposed()){
+					display.syncExec(new Runnable() {
+						public void run() {
+							task.run();
+						}
+					});
+				}
+			}
+		});
+	}
+	
 	public void displayGUI(String[] args) {
 		//checkeo los argumentos
 		ArgumentParser argumentParser = new ArgumentParser(args);
@@ -158,6 +174,7 @@ public class TuxGuitar {
 		TGFileUtils.loadClasspath();
 		
 		this.display = new Display();
+		this.initSynchronizer();
 		
 		TGSplash.instance().init();
 		
@@ -720,13 +737,17 @@ public class TuxGuitar {
 	}
 	
 	public void loadCursor(final Control control,final int style){
-		getDisplay().syncExec(new Runnable() {
-			public void run() {
-				if(!control.isDisposed()){
-					control.setCursor(getDisplay().getSystemCursor(style));
+		try {
+			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					if(!control.isDisposed()){
+						control.setCursor(getDisplay().getSystemCursor(style));
+					}
 				}
-			}
-		});
+			});
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void lock(){

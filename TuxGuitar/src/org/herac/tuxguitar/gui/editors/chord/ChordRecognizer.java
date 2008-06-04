@@ -12,8 +12,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
-import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author Nikola Kolarovic
@@ -116,13 +116,17 @@ public class ChordRecognizer extends Composite {
 					
 					if (params == null) { // could not recognize anything!?
 						if (isValidProcess(processId) && setChordName) {
-							TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-								public void run() {
-									if(!getDialog().isDisposed() && isValidProcess(processId)){
-										getDialog().getEditor().setChordName("");
+							try {
+								TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+									public void run() {
+										if(!getDialog().isDisposed() && isValidProcess(processId)){
+											getDialog().getEditor().setChordName("");
+										}
 									}
-								}
-							});
+								});
+							} catch (Throwable e) {
+								e.printStackTrace();
+							}
 						}
 						return;
 					}
@@ -131,23 +135,31 @@ public class ChordRecognizer extends Composite {
 					
 					// Sets all the ChordSelector fields into recognized chord (tonic, bass, chord, alterations)
 					if (isValidProcess(processId) && redecorate) {
-						TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-							public void run() {
-								if(!getDialog().isDisposed()){
-									redecorate(params);
+						try {
+							TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+								public void run() {
+									if(!getDialog().isDisposed()){
+										redecorate(params);
+									}
 								}
-							}
-						});
+							});
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
 					}
 					
 					if (isValidProcess(processId) && setChordName) {
-						TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-							public void run() {
-								if(!getDialog().isDisposed()){
-									getDialog().getEditor().setChordName( (chordName != null ? chordName : "" ) );
+						try {
+							TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+								public void run() {
+									if(!getDialog().isDisposed()){
+										getDialog().getEditor().setChordName( (chordName != null ? chordName : "" ) );
+									}
 								}
-							}
-						});
+							});
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -339,13 +351,17 @@ public class ChordRecognizer extends Composite {
 				firstNegative=current.unusualGrade;
 			
 			if (current.unusualGrade > (firstNegative>=0 ? 0 : firstNegative)-60){
-				TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-					public void run() {
-						if(!getDialog().isDisposed() && isValidProcess(processId)){
-							addProposal(current.params, getChordName(current.params,sharp)+" ("+Math.round(100+current.dontHaveGrade*7/10)+"%)" );
+				try {
+					TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+						public void run() {
+							if(!getDialog().isDisposed() && isValidProcess(processId)){
+								addProposal(current.params, getChordName(current.params,sharp)+" ("+Math.round(100+current.dontHaveGrade*7/10)+"%)" );
+							}
 						}
-					}
-				});
+					});
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		if (this.proposalParameters.size()==0)
