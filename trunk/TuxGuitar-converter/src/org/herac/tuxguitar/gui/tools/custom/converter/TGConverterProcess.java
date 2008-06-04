@@ -19,6 +19,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGConverterProcess implements TGConverterListener,LanguageLoader,IconLoader{
 	
@@ -154,57 +155,73 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 	
 	public void notifyFileProcess(final String filename) {
 		if(!isDisposed() ){
-			this.dialog.getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed() ){
-						TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
-						TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed() ){
+							TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
+							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void notifyFileResult(final String filename, final int errorCode) {
 		if(!isDisposed() ){
-			this.dialog.getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed() ){
-						TGConverterProcess.this.appendLogMessage(errorCode, filename);
-						TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed() ){
+							TGConverterProcess.this.appendLogMessage(errorCode, filename);
+							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void notifyStart() {
 		if(!isDisposed() ){
-			this.dialog.getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed() ){
-						TGConverterProcess.this.finished = false;
-						TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
-						TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
-						TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed() ){
+							TGConverterProcess.this.finished = false;
+							TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
+							TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
+							TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void notifyFinish() {
 		if(!isDisposed() ){
-			this.dialog.getDisplay().syncExec(new Runnable() {
-				public void run() {
-					if(!isDisposed() ){
-						TGConverterProcess.this.finished = true;
-						TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
-						TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
-						TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						if(!isDisposed() ){
+							TGConverterProcess.this.finished = true;
+							TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
+							TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
+							TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

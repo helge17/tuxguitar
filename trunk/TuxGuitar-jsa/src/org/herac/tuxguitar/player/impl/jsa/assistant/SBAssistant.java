@@ -16,6 +16,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class SBAssistant {
 
@@ -34,15 +35,19 @@ public class SBAssistant {
 	public void process(){
 		new Thread(new Runnable() {
 			public void run() {
-				TuxGuitar.instance().getDisplay().syncExec(new Runnable() {
-					public void run() {
-						ConfirmDialog dialog = new ConfirmDialog(TuxGuitar.getProperty("jsa.soundbank-assistant.confirm-message"));
-						dialog.setDefaultStatus( ConfirmDialog.STATUS_NO );
-						if (dialog.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO , ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_YES){
-							open();
-						}		
-					}
-				});
+				try {
+					TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+						public void run() {
+							ConfirmDialog dialog = new ConfirmDialog(TuxGuitar.getProperty("jsa.soundbank-assistant.confirm-message"));
+							dialog.setDefaultStatus( ConfirmDialog.STATUS_NO );
+							if (dialog.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO , ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_YES){
+								open();
+							}		
+						}
+					});
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}

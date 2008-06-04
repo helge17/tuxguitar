@@ -21,6 +21,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGSongExporter;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class PDFSongExporter implements TGSongExporter{
 	
@@ -151,11 +152,15 @@ public class PDFSongExporter implements TGSongExporter{
 		}
 		
 		public void finish() {
-			this.layout.getTablature().getDisplay().syncExec(new Runnable() {
-				public void run() {
-					dispose();
-				}
-			});
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
+					public void run() {
+						dispose();
+					}
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 			this.write();
 		}
 		
