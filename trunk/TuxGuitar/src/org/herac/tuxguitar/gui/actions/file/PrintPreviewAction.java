@@ -22,11 +22,12 @@ import org.herac.tuxguitar.gui.editors.tab.Tablature;
 import org.herac.tuxguitar.gui.editors.tab.layout.PrinterViewLayout;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.printer.PrintDocument;
-import org.herac.tuxguitar.gui.printer.PrintStyles;
 import org.herac.tuxguitar.gui.printer.PrintPreview;
+import org.herac.tuxguitar.gui.printer.PrintStyles;
 import org.herac.tuxguitar.gui.printer.PrintStylesDialog;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -146,18 +147,22 @@ public class PrintPreviewAction extends Action{
 			final Tablature tablature = this.layout.getTablature();
 			final Rectangle bounds = this.bounds;
 			final List pages = this.pages;
-			tablature.getDisplay().syncExec(new Runnable() {
-				public void run() {
-					tablature.dispose();
-					PrintPreview preview = new PrintPreview(pages,bounds);
-					preview.showPreview(getEditor().getTablature().getShell());
-					Iterator it = pages.iterator();
-					while(it.hasNext()){
-						Image image = (Image)it.next();
-						image.dispose();
+			try {
+				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable(){
+					public void run() {
+						tablature.dispose();
+						PrintPreview preview = new PrintPreview(pages,bounds);
+						preview.showPreview(getEditor().getTablature().getShell());
+						Iterator it = pages.iterator();
+						while(it.hasNext()){
+							Image image = (Image)it.next();
+							image.dispose();
+						}
 					}
-				}
-			});
+				});
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public boolean isPaintable(int page) {

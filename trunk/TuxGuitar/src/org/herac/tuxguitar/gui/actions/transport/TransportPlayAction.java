@@ -15,6 +15,7 @@ import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -47,14 +48,14 @@ public class TransportPlayAction extends Action {
 	
 	protected void playThread() {
 		final Display display = TuxGuitar.instance().getDisplay();
-		final Runnable playing = new Runnable() {
+		final TGSynchronizer.TGRunnable playing = new TGSynchronizer.TGRunnable() {
 			public void run() {
 				if(TuxGuitar.instance().getPlayer().isRunning()){
 					TuxGuitar.instance().redrawPayingMode();
 				}
 			}
 		};
-		final Runnable finish = new Runnable() {
+		final TGSynchronizer.TGRunnable finish = new TGSynchronizer.TGRunnable() {
 			public void run() {
 				updateTickPosition();
 				TuxGuitar.instance().updateCache(true);
@@ -64,15 +65,13 @@ public class TransportPlayAction extends Action {
 			public void run() {
 				try {
 					while (TuxGuitar.instance().getPlayer().isRunning()) {
-						if(!display.isDisposed()){
-							synchronized(display){
-								display.syncExec(playing);
-								display.wait(25);
-							}
+						synchronized(playing){
+							TGSynchronizer.instance().addRunnable(playing);
+							playing.wait(25);
 						}
 					}
 					if(!display.isDisposed()){
-						display.syncExec(finish);
+						TGSynchronizer.instance().addRunnable(finish);
 					}
 				} catch (Throwable throwable) {
 					throwable.printStackTrace();
