@@ -11,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -27,9 +25,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
-import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackChannel;
 import org.herac.tuxguitar.gui.util.DialogUtils;
-import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGTrack;
 
@@ -49,18 +45,15 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	public static final int CHANGE_ALL = (MUTE | SOLO | VOLUME | BALANCE | CHANNEL);
 	
 	protected Shell dialog;
-	protected TGSongManager manager;
-	protected Scale volumeScale;
-	protected Text volumeText;
+	private List tracks;
+	private Scale volumeScale;
+	private Text volumeText;
 	private Label volumeLabel;
-	private List trackMixers;
-	protected String tipVolume;
-	
-	protected UndoableTrackChannel undoableVolume;
+	private String volumeTip;
+	private int volumeValue;
 	
 	public TGMixer() {
-		this.manager = TuxGuitar.instance().getSongManager();
-		this.trackMixers = new ArrayList();
+		this.tracks = new ArrayList();
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 	}
@@ -77,17 +70,19 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	}
 	
 	protected void loadData(){
-		this.trackMixers.clear();
+		this.tracks.clear();
 		Iterator it = TuxGuitar.instance().getSongManager().getSong().getTracks();
 		while (it.hasNext()) {
 			TGTrack track = (TGTrack) it.next();
 			TGMixerTrack trackMixer = new TGMixerTrack(this,track);
 			trackMixer.init(this.dialog);
-			this.trackMixers.add(trackMixer);
+			this.tracks.add(trackMixer);
 		}
 		Composite composite = new Composite(this.dialog, SWT.NONE);
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
+		
+		this.volumeValue = -1;
 		
 		this.volumeLabel = new Label(composite, SWT.NONE);
 		
@@ -104,31 +99,9 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		
 		this.volumeScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				int volume = (short)(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection());
-				if(volume != TGMixer.this.manager.getSong().getVolume()){
-					TGMixer.this.manager.getSong().setVolume(volume);
-					TGMixer.this.volumeScale.setToolTipText(TGMixer.this.tipVolume + ": " + TGMixer.this.manager.getSong().getVolume());
-					TGMixer.this.volumeText.setText(Integer.toString(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection()));
-					if (TuxGuitar.instance().getPlayer().isRunning()) {
-						TuxGuitar.instance().getPlayer().updateControllers();
-					}
-				}
+				changeVolume();
 			}
 		});
-		this.volumeScale.addMouseListener(new MouseAdapter() {
-			public void mouseDown(MouseEvent arg0) {
-				TGMixer.this.undoableVolume = UndoableTrackChannel.startUndo();
-			}
-			public void mouseUp(MouseEvent arg0) {
-				if(TGMixer.this.undoableVolume != null){
-					TuxGuitar.instance().getUndoableManager().addEdit(TGMixer.this.undoableVolume.endUndo());
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
-					TuxGuitar.instance().updateCache(true);
-					TGMixer.this.undoableVolume = null;
-				}
-			}
-		});
-		
 		
 		this.loadVolume();
 		this.loadIcons();
@@ -137,9 +110,23 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		this.dialog.pack();
 	}
 	
-	private void loadVolume(){
-		this.volumeScale.setSelection(this.volumeScale.getMaximum() - this.manager.getSong().getVolume());
-		this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+	protected void changeVolume(){
+		int volume = (short)(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection());
+		if(volume != TuxGuitar.instance().getPlayer().getVolume()){
+			TuxGuitar.instance().getPlayer().setVolume(volume);
+			this.volumeScale.setToolTipText(TGMixer.this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
+			this.volumeText.setText(Integer.toString(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection()));
+			this.volumeValue = volume;
+		}
+	}
+	
+	protected void loadVolume(){
+		int volume = TuxGuitar.instance().getPlayer().getVolume();
+		if(this.volumeValue != volume){
+			this.volumeScale.setSelection(this.volumeScale.getMaximum() - TuxGuitar.instance().getPlayer().getVolume());
+			this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+			this.volumeValue = volume;
+		}
 	}
 	
 	private GridData getVolumeTextData(){
@@ -160,7 +147,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	}
 	
 	public synchronized void fireChanges(TGChannel channel,int type){
-		Iterator it = this.trackMixers.iterator();
+		Iterator it = this.tracks.iterator();
 		while(it.hasNext()){
 			TGMixerTrack mixer = (TGMixerTrack)it.next();
 			if(mixer.getTrack().getChannel().getChannel() == channel.getChannel()){
@@ -181,14 +168,14 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	
 	public synchronized void loadProperties(){
 		if(!isDisposed()){
-			Iterator it = this.trackMixers.iterator();
+			Iterator it = this.tracks.iterator();
 			while(it.hasNext()){
 				TGMixerTrack mixer = (TGMixerTrack)it.next();
 				mixer.loadProperties();
 			}
 			this.volumeLabel.setText(TuxGuitar.getProperty("mixer.volume") + ":");
-			this.tipVolume = TuxGuitar.getProperty("mixer.volume");
-			this.volumeScale.setToolTipText(this.tipVolume + ": " + this.manager.getSong().getVolume());
+			this.volumeTip = TuxGuitar.getProperty("mixer.volume");
+			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("mixer"));
 			this.dialog.pack();
 			this.dialog.layout(true,true);
@@ -204,7 +191,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	
 	public synchronized void updateItems(){
 		if(!isDisposed()){
-			Iterator it = this.trackMixers.iterator();
+			Iterator it = this.tracks.iterator();
 			while(it.hasNext()){
 				TGMixerTrack mixer = (TGMixerTrack)it.next();
 				mixer.updateItems();
@@ -216,7 +203,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		if(!isDisposed()){
 			this.loadVolume();
 			
-			Iterator it = this.trackMixers.iterator();
+			Iterator it = this.tracks.iterator();
 			while(it.hasNext()){
 				TGMixerTrack mixer = (TGMixerTrack)it.next();
 				mixer.fireChanges(CHANGE_ALL);

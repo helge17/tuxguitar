@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.sound.midi.MidiUnavailableException;
+
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -15,6 +17,8 @@ import org.herac.tuxguitar.util.TGLock;
 public class MidiPlayer{
 	
 	private static final int MAX_CHANNELS = 16;
+	
+	public static final int MAX_VOLUME = 10;
 	
 	private static final int TIMER_DELAY = 10;
 	
@@ -33,6 +37,8 @@ public class MidiPlayer{
 	private List portProviders;
 	
 	private List sequencerProviders;
+	
+	private int volume;
 	
 	private boolean running;
 	
@@ -56,6 +62,7 @@ public class MidiPlayer{
 	
 	public MidiPlayer() {
 		this.lock = new TGLock();
+		this.volume = MAX_VOLUME;
 	}
 	
 	/**
@@ -218,6 +225,17 @@ public class MidiPlayer{
 		}
 	}
 	
+	public int getVolume() {
+		return this.volume;
+	}
+	
+	public void setVolume(int volume) {
+		this.volume = volume;
+		if (this.isRunning()) {
+			this.updateControllers();
+		}
+	}
+	
 	protected boolean isStarting() {
 		return this.starting;
 	}
@@ -361,14 +379,14 @@ public class MidiPlayer{
 			percusionUpdated = (percusionUpdated || track.isPercussionTrack());
 		}
 		if(!percusionUpdated && isMetronomeEnabled()){
-			updateController(9,(int)((this.songManager.getSong().getVolume() / 10.00) * TGChannel.DEFAULT_VOLUME),TGChannel.DEFAULT_BALANCE);
+			updateController(9,(int)((this.getVolume() / 10.00) * TGChannel.DEFAULT_VOLUME),TGChannel.DEFAULT_BALANCE);
 		}
 		this.afterUpdate();
 	}
 	
 	private void updateController(TGTrack track) {
 		try{
-			int volume = (int)((this.songManager.getSong().getVolume() / 10.00) * track.getChannel().getVolume());
+			int volume = (int)((this.getVolume() / 10.00) * track.getChannel().getVolume());
 			int balance = track.getChannel().getBalance();
 			
 			updateController(track.getChannel().getChannel(),volume,balance);
@@ -417,7 +435,7 @@ public class MidiPlayer{
 	public void playBeat(final TGTrack track,final List notes) {
 		int channel = track.getChannel().getChannel();
 		int program = track.getChannel().getInstrument();
-		int volume = (int)((this.songManager.getSong().getVolume() / 10.00) * track.getChannel().getVolume());
+		int volume = (int)((this.getVolume() / 10.00) * track.getChannel().getVolume());
 		int balance = track.getChannel().getBalance();
 		int chorus = track.getChannel().getChorus();
 		int reverb = track.getChannel().getReverb();
@@ -709,6 +727,5 @@ public class MidiPlayer{
 				}
 			}
 		}
-	}
-	
+	}	
 }

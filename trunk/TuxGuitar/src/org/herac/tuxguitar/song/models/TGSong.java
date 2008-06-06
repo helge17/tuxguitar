@@ -19,7 +19,6 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGSong {
-	public static final int MAX_VOLUME = 10;
 	
 	private String name;
 	private String artist;
@@ -27,7 +26,6 @@ public abstract class TGSong {
 	private String author;
 	private List tracks;
 	private List measureHeaders;
-	private int volume;
 	
 	public TGSong() {
 		this.name = new String();
@@ -36,7 +34,6 @@ public abstract class TGSong {
 		this.author = new String();
 		this.tracks = new ArrayList();
 		this.measureHeaders = new ArrayList();
-		this.volume = MAX_VOLUME;
 	}
 	
 	public String getName() {
@@ -69,14 +66,6 @@ public abstract class TGSong {
 	
 	public void setArtist(String artist) {
 		this.artist = artist;
-	}
-	
-	public int getVolume() {
-		return this.volume;
-	}
-	
-	public void setVolume(int volume) {
-		this.volume = volume;
 	}
 	
 	public int countMeasureHeaders(){
@@ -162,7 +151,6 @@ public abstract class TGSong {
 		song.setArtist(getArtist());
 		song.setAlbum(getAlbum());
 		song.setAuthor(getAuthor());
-		song.setVolume(getVolume());
 		Iterator headers = getMeasureHeaders();
 		while(headers.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)headers.next();
@@ -174,5 +162,4 @@ public abstract class TGSong {
 			song.addTrack(track.clone(factory, song));
 		}
 	}
-	
 }
