@@ -33,16 +33,22 @@ public class TGSynchronizer {
 	}
 	
 	public class TGSynchronizerTask{
+		private long threadId;
 		private Throwable throwable;
 		private TGRunnable runnable;
 		
 		public TGSynchronizerTask(TGRunnable runnable){
+			this.threadId = Thread.currentThread().getId();
 			this.runnable = runnable;
 			this.throwable = null;
 		}
 		
 		public Throwable getThrowable(){
 			return this.throwable;
+		}
+		
+		public long getThreadId(){
+			return this.threadId;
 		}
 		
 		public void run(){
