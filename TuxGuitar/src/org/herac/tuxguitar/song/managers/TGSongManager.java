@@ -842,6 +842,7 @@ public class TGSongManager {
 			header.getMarker().getColor().setR(color.getR());
 			header.getMarker().getColor().setG(color.getG());
 			header.getMarker().getColor().setB(color.getB());
+			return header.getMarker(); 
 		}
 		return null;
 	}
