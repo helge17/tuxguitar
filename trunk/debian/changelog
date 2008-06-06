@@ -1,15 +1,16 @@
-tuxguitar-snapshot (0.0.20080514-0ubuntu0~rzr257) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080601-0ubuntu0~rzr307) hardy; urgency=low
 
-  * FIX: hardcoded path ( Closes: #481728)
-
- -- Philippe Coval <rzr@users.sf.net>  Sun, 18 May 2008 20:39:25 +0200
-
-tuxguitar-snapshot (0.0.20080514-0ubuntu0~ppa250) intrepid; urgency=low
-
-  * WIP: rzr.online.fr/q/tuxguitar
+  * WIP
   * FIX: desktop (LP: #197367)
   * ADD: Merged with debian (LP: #176979)
   * FIX: java paths (LP: #212207)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sun, 01 Jun 2008 12:49:07 +0200
+
+tuxguitar-snapshot (0.0.20080514-0ubuntu0~ppa250) intrepid; urgency=low
+
+  * FIX: hardcoded path ( Closes: #481728)
+  * WIP: rzr.online.fr/q/tuxguitar
   * WIP: todo add converter plugin, gcj; java-gcj-compat-dev
   * TODO: browser, ftp
 

@@ -5,7 +5,7 @@
 #licence: LGPL
 #------------------------------------------------------------------------------
 
-default: deb
+default: debsrc
 
 package?=tuxguitar
 package?=${PACKAGE}
@@ -45,7 +45,7 @@ fix-release: overide
 	-cp TuxGuitar/scripts/tuxguitar.xpm  ./
 	-cp TuxGuitar/scripts/tuxguitar.gp3  ./
 
-snapshot-distclean:
+clean/snapshot:
 	rm -f *.tg *.gp3
 #}
 
@@ -150,7 +150,7 @@ CURDIR?=$(shell pwd)
 #	ls -l ../${<F}.tar.gz
 #	cd .. && ln -fs ${tarball_name}.tar.gz ${package}_${pkg_ver}.orig.tar.gz
 
-debsrc: clean update
+debsrc: clean/snapshot update
 	debuild && sudo debi && dpkg -L ${package}
 	debuild -S | grep "_source.changes"
 
@@ -160,10 +160,19 @@ remove:
 install: remove
 	debi || sudo debi
 
+
+debsrc:  update remove
+	dch -i # -a "WIP:"
+	-fakeroot ./debian/rules clean
+	-make clean 
+	debuild -sa -S
+	debrelease -S --dput ppa
+
+
 deb: update remove
 	dch -i # -a "WIP:"
 	-fakeroot ./debian/rules clean
-	make clean 
+	-make clean 
 	debuild -sa -S
 	debuild -sa 
 	sudo debi
