@@ -55,18 +55,11 @@ public class TGMixerTrackChannel {
 					channel.setChannel((short)idx);
 					channel.setEffectChannel(channel.getChannel());
 				}else{
-					TGChannel tempChannel = TuxGuitar.instance().getSongManager().getUsedChannel(idx);
-					channel.setChannel(tempChannel.getChannel());
-					channel.setEffectChannel(tempChannel.getEffectChannel());
-					channel.setVolume(tempChannel.getVolume());
-					channel.setBalance(tempChannel.getBalance());
-					channel.setChorus(tempChannel.getChorus());
-					channel.setInstrument(tempChannel.getInstrument());
-					channel.setPhaser(tempChannel.getPhaser());
-					channel.setReverb(tempChannel.getReverb());
-					channel.setTremolo(tempChannel.getTremolo());
-					channel.setSolo(tempChannel.isSolo());
-					channel.setMute(tempChannel.isMute());
+					boolean solo = channel.isSolo();
+					boolean mute = channel.isMute();
+					TuxGuitar.instance().getSongManager().getUsedChannel(idx).copy(channel);
+					channel.setSolo( solo );
+					channel.setMute( mute );
 				}
 				fireChannelChange(channel);
 				

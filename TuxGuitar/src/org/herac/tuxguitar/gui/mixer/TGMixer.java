@@ -151,13 +151,11 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		while(it.hasNext()){
 			TGMixerTrack mixer = (TGMixerTrack)it.next();
 			if(mixer.getTrack().getChannel().getChannel() == channel.getChannel()){
-				mixer.getTrack().getChannel().setEffectChannel(channel.getEffectChannel());
-				mixer.getTrack().getChannel().setVolume(channel.getVolume());
-				mixer.getTrack().getChannel().setBalance(channel.getBalance());
-				mixer.getTrack().getChannel().setChorus(channel.getChorus());
-				mixer.getTrack().getChannel().setReverb(channel.getReverb());
-				mixer.getTrack().getChannel().setPhaser(channel.getPhaser());
-				mixer.getTrack().getChannel().setTremolo(channel.getTremolo());
+				boolean solo = mixer.getTrack().getChannel().isSolo();
+				boolean mute = mixer.getTrack().getChannel().isMute();
+				channel.copy(mixer.getTrack().getChannel());
+				mixer.getTrack().getChannel().setSolo(solo);
+				mixer.getTrack().getChannel().setMute(mute);
 			}
 			mixer.fireChanges(type);
 		}
