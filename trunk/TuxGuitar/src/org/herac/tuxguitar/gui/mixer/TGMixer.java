@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
@@ -47,8 +46,8 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	protected Shell dialog;
 	private List tracks;
 	private Scale volumeScale;
-	private Text volumeText;
-	private Label volumeLabel;
+	private Label volumeValueLabel;
+	private Label volumeValueTitleLabel;
 	private String volumeTip;
 	private int volumeValue;
 	
@@ -78,13 +77,11 @@ public class TGMixer implements IconLoader,LanguageLoader{
 			trackMixer.init(this.dialog);
 			this.tracks.add(trackMixer);
 		}
-		Composite composite = new Composite(this.dialog, SWT.NONE);
+		Composite composite = new Composite(this.dialog, SWT.BORDER);
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
 		
 		this.volumeValue = -1;
-		
-		this.volumeLabel = new Label(composite, SWT.NONE);
 		
 		this.volumeScale = new Scale(composite, SWT.VERTICAL);
 		this.volumeScale.setMaximum(10);
@@ -93,9 +90,16 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		this.volumeScale.setPageIncrement(1);
 		this.volumeScale.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
 		
-		this.volumeText = new Text(composite, SWT.BORDER | SWT.SINGLE | SWT.CENTER);
-		this.volumeText.setEditable(false);
-		this.volumeText.setLayoutData(getVolumeTextData());
+		Label separator = new Label(composite, SWT.HORIZONTAL | SWT.SEPARATOR);
+		separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+		
+		Composite volumeValueComposite = new Composite(composite, SWT.NONE);
+		volumeValueComposite.setLayout(new GridLayout(2,false));
+		
+		this.volumeValueTitleLabel = new Label(volumeValueComposite, SWT.NONE);
+		
+		this.volumeValueLabel = new Label(volumeValueComposite, SWT.CENTER);
+		this.volumeValueLabel.setLayoutData(getVolumeValueLabelData());
 		
 		this.volumeScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -106,8 +110,16 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		this.loadVolume();
 		this.loadIcons();
 		this.loadProperties();
-		this.dialog.setLayout(new GridLayout(this.dialog.getChildren().length, false));
+		
+		this.dialog.setLayout(getLayout(this.dialog.getChildren().length));
 		this.dialog.pack();
+	}
+	
+	private GridLayout getLayout(int columns){
+		GridLayout layout = new GridLayout(columns, false);
+		layout.verticalSpacing = 1;
+		layout.horizontalSpacing = 1;
+		return layout;
 	}
 	
 	protected void changeVolume(){
@@ -115,7 +127,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		if(volume != TuxGuitar.instance().getPlayer().getVolume()){
 			TuxGuitar.instance().getPlayer().setVolume(volume);
 			this.volumeScale.setToolTipText(TGMixer.this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
-			this.volumeText.setText(Integer.toString(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection()));
+			this.volumeValueLabel.setText(Integer.toString(TGMixer.this.volumeScale.getMaximum() - TGMixer.this.volumeScale.getSelection()));
 			this.volumeValue = volume;
 		}
 	}
@@ -124,12 +136,12 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		int volume = TuxGuitar.instance().getPlayer().getVolume();
 		if(this.volumeValue != volume){
 			this.volumeScale.setSelection(this.volumeScale.getMaximum() - TuxGuitar.instance().getPlayer().getVolume());
-			this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 			this.volumeValue = volume;
 		}
 	}
 	
-	private GridData getVolumeTextData(){
+	private GridData getVolumeValueLabelData(){
 		GridData data = new GridData(SWT.CENTER,SWT.NONE,true,false);
 		data.minimumWidth = 40;
 		return data;
@@ -171,7 +183,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 				TGMixerTrack mixer = (TGMixerTrack)it.next();
 				mixer.loadProperties();
 			}
-			this.volumeLabel.setText(TuxGuitar.getProperty("mixer.volume") + ":");
+			this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("mixer.volume") + ":");
 			this.volumeTip = TuxGuitar.getProperty("mixer.volume");
 			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("mixer"));

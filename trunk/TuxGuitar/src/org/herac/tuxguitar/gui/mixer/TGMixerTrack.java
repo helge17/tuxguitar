@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackChannel;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -26,8 +25,8 @@ public class TGMixerTrack {
 	protected Button muteCheckBox;
 	protected Scale balanceScale;
 	protected Scale volumeScale;
-	private Text volumeText;
-	private Label volumeLabel;
+	private Label volumeValueLabel;
+	private Label volumeValueTitleLabel;
 	
 	protected String tipVolume;
 	protected String tipBalance;
@@ -41,7 +40,7 @@ public class TGMixerTrack {
 	}
 	
 	public void init(final Composite parent) {
-		final Composite composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.BORDER);
 		composite.setLayout(new GridLayout(1, true));
 		composite.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
 		
@@ -88,7 +87,6 @@ public class TGMixerTrack {
 		this.balanceScale.setPageIncrement(64);
 		this.balanceScale.setLayoutData(getBalanceScaleData());
 		
-		this.volumeLabel = new Label(composite, SWT.NULL);
 		this.volumeScale = new Scale(composite, SWT.VERTICAL);
 		this.volumeScale.setMaximum(127);
 		this.volumeScale.setMinimum(0);
@@ -96,9 +94,16 @@ public class TGMixerTrack {
 		this.volumeScale.setPageIncrement(16);
 		this.volumeScale.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
 		
-		this.volumeText = new Text(composite, SWT.BORDER | SWT.SINGLE | SWT.CENTER);
-		this.volumeText.setEditable(false);
-		this.volumeText.setLayoutData(getVolumeTextData());
+		Label separator = new Label(composite, SWT.HORIZONTAL | SWT.SEPARATOR);
+		separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+		
+		Composite volumeValueComposite = new Composite(composite, SWT.NONE);
+		volumeValueComposite.setLayout(new GridLayout(2,false));
+		
+		this.volumeValueTitleLabel = new Label(volumeValueComposite, SWT.LEFT);
+		
+		this.volumeValueLabel = new Label(volumeValueComposite, SWT.CENTER);
+		this.volumeValueLabel.setLayoutData(getVolumeValueLabelData());
 		
 		this.balanceScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -144,7 +149,7 @@ public class TGMixerTrack {
 		
 		this.balanceScale.setSelection(this.track.getChannel().getBalance());
 		this.volumeScale.setSelection(this.volumeScale.getMaximum() - this.track.getChannel().getVolume());
-		this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+		this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 	}
 	
 	private GridData getBalanceScaleData(){
@@ -153,7 +158,7 @@ public class TGMixerTrack {
 		return data;
 	}
 	
-	private GridData getVolumeTextData(){
+	private GridData getVolumeValueLabelData(){
 		GridData data = new GridData(SWT.CENTER,SWT.NONE,true,false);
 		data.minimumWidth = 40;
 		return data;
@@ -166,7 +171,7 @@ public class TGMixerTrack {
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.VOLUME) != 0){
 			this.volumeScale.setSelection(this.volumeScale.getMaximum() - this.track.getChannel().getVolume());
-			this.volumeText.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.BALANCE) != 0){
 			this.balanceScale.setSelection(this.track.getChannel().getBalance());
@@ -179,7 +184,7 @@ public class TGMixerTrack {
 	public void loadProperties(){
 		this.soloCheckBox.setText(TuxGuitar.getProperty("mixer.track.solo"));
 		this.muteCheckBox.setText(TuxGuitar.getProperty("mixer.track.mute"));
-		this.volumeLabel.setText(TuxGuitar.getProperty("mixer.channel.volume") + ":");
+		this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("mixer.channel.volume") + ":");
 		this.tipVolume = TuxGuitar.getProperty("mixer.channel.volume");
 		this.tipBalance = TuxGuitar.getProperty("mixer.channel.balance");
 		
