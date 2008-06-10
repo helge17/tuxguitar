@@ -161,24 +161,19 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 				this.lastMeasuseCount = 0;
 			}
 			this.track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
-			if(/*this.label != null && !this.label.isDisposed() && */isTrackNameChanged()){
+			if( isTrackNameChanged() ){
 				this.label.setText(this.track.getName());
 			}
-			if(/*this.from != null && !this.from.isDisposed() && */isMeasureCountChanged()){
+			if( isMeasureCountChanged() ){
 				this.from.setMaximum(this.track.countMeasures());
-				this.from.setSelection(this.track.getLyrics().getFrom());
-				this.from.setEnabled(this.track.countMeasures() > 1);
 			}
-			if(/*this.text != null && !this.text.isDisposed() && */isTrackChanged()){
+			if( isTrackChanged() ){
+				this.from.setSelection(this.track.getLyrics().getFrom());
 				this.text.setText(this.track.getLyrics().getLyrics());
 				this.text.setSelection( (this.caretPosition >= 0 ? this.caretPosition : this.text.getCharCount()));
 			}
-			/*
-			this.previous.setEnabled( enabled );
-			this.next.setEnabled( enabled );
-			this.label.setEnabled( enabled );
-			*/
-			this.from.setEnabled( enabled );
+			
+			this.from.setEnabled( enabled && (this.track.countMeasures() > 1) );
 			this.text.setEnabled( enabled );
 			
 			this.setCaretPosition(-1);
