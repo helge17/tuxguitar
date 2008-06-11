@@ -52,26 +52,7 @@ class MidiOutImpl implements MidiOut{
 	public MidiOutImpl(MidiDevice device){
 		this.device = device;
 	}
-	/*
-	protected synchronized void open() throws MidiUnavailableException{
-		if(!this.device.isOpen()){
-			this.device.open();
-		}
-		if(this.receiver == null){
-			this.receiver = this.device.getReceiver();
-		}
-	}
 	
-	protected synchronized void close(){
-		if(this.receiver != null){
-			this.receiver.close();
-			this.receiver = null;
-		}
-		if(this.device.isOpen()){
-			this.device.close();
-		}
-	}
-	*/
 	protected synchronized void open() throws Throwable{
 		if(!this.device.isOpen()){
 			final MidiDevice device = this.device;
