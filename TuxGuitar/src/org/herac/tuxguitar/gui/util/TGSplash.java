@@ -36,7 +36,7 @@ public class TGSplash {
 			this.shell.setLayout(new FillLayout());
 			this.shell.setBounds(getBounds(image));
 			this.shell.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
-			this.shell.setText(TuxGuitar.getProperty("tuxguitar.title"));
+			this.shell.setText(TuxGuitar.APPLICATION_NAME);
 			this.shell.addPaintListener(new PaintListener() {
 				public void paintControl(PaintEvent e) {
 					TGPainter painter = new TGPainter(e.gc);
