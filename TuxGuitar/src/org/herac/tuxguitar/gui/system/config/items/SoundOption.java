@@ -64,18 +64,27 @@ public class SoundOption extends Option{
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				SoundOption.this.msList = TuxGuitar.instance().getPlayer().listSequencers();
-				SoundOption.this.msCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER);
 				SoundOption.this.mpList = TuxGuitar.instance().getPlayer().listPorts();
+				SoundOption.this.msList = TuxGuitar.instance().getPlayer().listSequencers();
+				
 				SoundOption.this.mpCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT);
+				SoundOption.this.msCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER);
+				
+				final String mpLoaded = TuxGuitar.instance().getPlayer().getMidiPort().getKey();
+				final String msLoaded = TuxGuitar.instance().getPlayer().getSequencer().getKey();
+				
 				new SyncThread(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							//---Midi Sequencer---//
+							String loadedSequencer = msLoaded;
 							for (int i = 0; i < SoundOption.this.msList.size(); i++) {
 								MidiSequencer sequencer = (MidiSequencer)SoundOption.this.msList.get(i);
 								SoundOption.this.msCombo.add(sequencer.getName());
-								if(sequencer.getKey().equals(SoundOption.this.msCurrentKey)){
+								if(SoundOption.this.msCurrentKey != null && SoundOption.this.msCurrentKey.equals(sequencer.getKey())){
+									SoundOption.this.msCombo.select(i);
+									loadedSequencer = null;
+								}else if(loadedSequencer != null && loadedSequencer.equals(sequencer.getKey())){
 									SoundOption.this.msCombo.select(i);
 								}
 							}
@@ -84,10 +93,14 @@ public class SoundOption extends Option{
 							}
 							
 							//---Midi Port---//
+							String loadedPort = mpLoaded;
 							for (int i = 0; i < SoundOption.this.mpList.size(); i++) {
 								MidiPort port = (MidiPort)SoundOption.this.mpList.get(i);
 								SoundOption.this.mpCombo.add(port.getName());
-								if(port.getKey().equals(SoundOption.this.mpCurrentKey)){
+								if(SoundOption.this.mpCurrentKey != null && SoundOption.this.mpCurrentKey.equals(port.getKey())){
+									SoundOption.this.mpCombo.select(i);
+									loadedPort = null;
+								}else if(loadedPort != null && loadedPort.equals(port.getKey())){
 									SoundOption.this.mpCombo.select(i);
 								}
 							}
