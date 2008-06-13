@@ -93,8 +93,10 @@ public class ItemManager implements IconLoader,LanguageLoader{
 	}
 	
 	public void createCoolbar() {
+		boolean initialized = (this.coolBar != null && !this.coolBar.isDisposed());
+		
 		this.layout_locked = true;
-		if(this.coolBar == null || this.coolBar.isDisposed()){
+		if( !initialized ){
 			this.coolBar = new CoolBar(TuxGuitar.instance().getShell(),SWT.FLAT);
 			FormData coolData = new FormData();
 			coolData.left = new FormAttachment(0);
@@ -109,7 +111,12 @@ public class ItemManager implements IconLoader,LanguageLoader{
 			TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.coolBar);
 		}
 		this.makeCoolItems();
+		
 		this.layout_locked = false;
+		
+		if( initialized ){
+			this.layoutCoolBar();
+		}
 	}
 	
 	private void clearCoolBar(){
@@ -156,6 +163,7 @@ public class ItemManager implements IconLoader,LanguageLoader{
 		coolItem.setControl(toolBar);
 		Point size = toolBar.computeSize( SWT.DEFAULT,SWT.DEFAULT);
 		Point coolSize = coolItem.computeSize(size.x, COOL_ITEM_HEIGHT);
+		//Point coolSize = coolItem.computeSize(size.x, size.y);
 		coolItem.setMinimumSize(coolSize);
 		coolItem.setSize(coolSize);
 	}

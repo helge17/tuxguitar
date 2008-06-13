@@ -661,7 +661,6 @@ public class TuxGuitar {
 		this.lock();
 		
 		getItemManager().createCoolbar();
-		getShell().layout(true);
 		
 		this.unlock();
 	}
