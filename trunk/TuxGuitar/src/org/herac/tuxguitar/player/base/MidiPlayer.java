@@ -500,7 +500,7 @@ public class MidiPlayer{
 	/**
 	 * Retorna el Sequenciador 
 	 */
-	protected MidiSequencer getSequencer(){
+	public MidiSequencer getSequencer(){
 		if (this.sequencer == null) {
 			this.sequencer = new MidiSequencerEmpty();
 		}
