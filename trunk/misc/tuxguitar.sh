@@ -120,13 +120,13 @@ tuxguitar_()
     JAVA=${JAVA:=java}
     CLASSPATH=${CLASSPATH}
     t="${PACKAGE_HOME}"
-    [ -d $t ] && CLASSPATH=${CLASSPATH}:$t
+    [ -d "$t" ] && CLASSPATH=${CLASSPATH}:$t
     t="${PACKAGE_HOME}/${PACKAGE}.jar"
-    [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
+    [ -r "$t" ] && CLASSPATH=${CLASSPATH}:$t
     t="/usr/share/java/itext.jar"
-    [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
+    [ -r "$t" ] && CLASSPATH=${CLASSPATH}:$t
     t=$(swt_guess_)
-    [ -r $t ] && CLASSPATH=${CLASSPATH}:$t
+    [ -r "$t" ] && CLASSPATH=${CLASSPATH}:$t
 
     JAVA_FLAGS=${JAVA_FLAGS:="-Xms128m -Xmx128m"}
     JAVA_FLAGS="\
