@@ -188,8 +188,8 @@ public class IconManager {
 		this.fileSaveAs = loadIcon("save-as.png");
 		this.filePrint = loadIcon("print.png");
 		this.filePrintPreview = loadIcon("print-preview.png");
-		this.editUndo = loadIcon("undo.png");
-		this.editRedo = loadIcon("redo.png");
+		this.editUndo = loadIcon("edit_undo.png");
+		this.editRedo = loadIcon("edit_redo.png");
 		this.editModeSelection = loadIcon("edit_mode_selection.png");
 		this.editModeEdition = loadIcon("edit_mode_edition.png");
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
