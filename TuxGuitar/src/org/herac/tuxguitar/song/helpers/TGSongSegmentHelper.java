@@ -110,6 +110,7 @@ public class TGSongSegmentHelper {
 			Iterator it = measures.iterator();
 			while(it.hasNext()){
 				TGMeasure measure = (TGMeasure)it.next();
+				this.sm.getMeasureManager().removeNotesAfterString(measure, track.stringCount());
 				this.sm.getTrackManager().addMeasure(track,(measure.getNumber() - 1),measure);
 			}
 		}
@@ -142,6 +143,7 @@ public class TGSongSegmentHelper {
 				for(int i = 0;i < tSegment.getMeasures().size();i++){
 					TGMeasure measure = (TGMeasure)tSegment.getMeasures().get(i);
 					measure.setHeader((TGMeasureHeader)measureHeaders.get(i));
+					this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());
 					this.sm.getMeasureManager().moveAllBeats(measure,move);
 					this.sm.getTrackManager().replaceMeasure(currTrack,measure);
 				}
