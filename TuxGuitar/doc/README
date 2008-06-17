@@ -11,7 +11,7 @@ INSTALL:
 Extract TuxGuitar-*.tar.gz in your favorite location
 $tar xfz TuxGuitar-*.tar.gz
 $mv TuxGuitar-* /home/*/install_dir
-       
+
 RUN:
 Run "tuxguitar" script.
 $/home/*/install_dir/TuxGuitar-*/tuxguitar
