@@ -1,5 +1,12 @@
 TuxGuitar 1.0 changes:
 
+-> Final Release:
+* Fixed native MIDI Port connection bug under windows
+* Fixed mute/solo mixer bug
+* ﻿Fixed copy/paste measure beetween tracks with different strings count
+* Fixed other minor bugs
+* Vietnamese translation
+
 -> Release Candidate 4:
 * Bug Fixeds
 * File format converter plugin
