@@ -1,4 +1,3 @@
-CC?=/usr/bin/i586-mingw32msvc-gcc
 CFLAGS?=-mno-cygwin -I$(shell gcj -print-file-name=include/)
 LDFLAGS?=-mno-cygwin -Wl,--kill-at
 LDLIBS?=-lwinmm

@@ -1,5 +1,5 @@
-CC?=gcc
-CFLAGS+=-fPIC -I$(shell gcj -print-file-name=include/)
+CFLAGS?=-I$(shell gcj -print-file-name=include/)
+CFLAGS+=-fPIC
 LDFLAGS?=
 LDLIBS?=-lfluidsynth
 LDPATH?=-L/usr/lib
