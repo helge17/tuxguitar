@@ -1,5 +1,5 @@
-CC?=gcc
-CFLAGS+=-fPIC -I$(shell gcj -print-file-name=include/)
+CFLAGS?=-I$(shell gcj -print-file-name=include/)
+CFLAGS+=-fPIC
 LDFLAGS?=
 LDLIBS?=-lasound
 LDPATH?=-L/usr/lib
@@ -20,3 +20,5 @@ $(LIBRARY):	$(OBJECTS)
 
 clean: 
 	rm -f $(OBJECTS) $(LIBRARY)
+
+#eof "$Id: GNUmakefile,v 1.10 2008/04/17 20:06:34 rzr Exp $"

@@ -2,7 +2,7 @@
 # -*- makefile -*-
 #ident "$Id: Makefile,v 1.19 2008/04/17 20:06:22 rzr Exp $"
 #@author: created by www.philippe.coval.online.fr -- revision: $Author: rzr $
-#licence: LGPL
+#licence: LGPL-2.1
 #------------------------------------------------------------------------------
 default: build
 
@@ -17,6 +17,7 @@ ITEXT_JAR?=/usr/share/java/itext.jar
 SWT_JAR?=$(shell echo ` \
     ( t=/usr/share/java/swt.jar && test -r "$$t" && echo $$t ) \
  || ( t=/usr/lib/java/swt.jar && test -r "$$t" && echo $$t ) \
+ || ( t=/etc/alternatives/swt.jar && test -r "$$t" && echo $$t ) \
 ` )
 SWT_PATH?=${SWT_JAR}
 
@@ -43,13 +44,12 @@ subdirs?=\
  TuxGuitar-lilypond \
 \
  TuxGuitar-jsa \
-\
- TuxGuitar-tuner \
- #}subdirs
+#}subdirs
 
 subdirs_jni?=\
  TuxGuitar-alsa \
  TuxGuitar-oss \
+ TuxGuitar-fluidsynth \
  #}subdirs_jni
 
 #  TuxGuitar-converter # TODO
@@ -69,7 +69,6 @@ out_java?=\
  ./TuxGuitar-ptb/tuxguitar-ptb.jar \
  ./TuxGuitar-musicxml/tuxguitar-musicxml.jar \
  ./TuxGuitar-converter/tuxguitar-converter.jar \
- ./TuxGuitar-tuner/tuxguitar-tuner.jar \
  #}out_java
 
 out_jsa?=TuxGuitar-jsa/tuxguitar-jsa.jar
@@ -84,6 +83,8 @@ out_linux?=\
  ./TuxGuitar-alsa/jni/libtuxguitar-alsa-jni.so \
  ./TuxGuitar-oss/tuxguitar-oss.jar \
  ./TuxGuitar-oss/jni/libtuxguitar-oss-jni.so \
+ ./TuxGuitar-fluidsynth/tuxguitar-fluidsynth.jar \
+ ./TuxGuitar-fluidsynth/jni/libtuxguitar-fluidsynth-jni.so \
  #}out_linux
 
 out_windows?=TuxGuitar-winmm/tuxguitar-winmm.jar
@@ -110,12 +111,19 @@ ANT_FLAGS?=\
  -lib ${CURDIR}/TuxGuitar \
  #}ANT_FLAGS
 
+CFLAGS?=\
+ -I$(shell gcj -print-file-name=include/)
+
+CFLAGS+= \
+-I${JAVA_HOME}/include/ \
+-I${JAVA_HOME}/include/${JNI_OS}
+
 MAKE_FLAGS+=\
  SWT_PATH=${SWT_PATH} \
  JAVA_HOME=${JAVA_HOME} \
  JNILIB_SUFFIX=${JNILIB_SUFFIX} \
  JNILIB_PREFIX=${JNILIB_PREFIX} \
- CFLAGS="-I${JAVA_HOME}/include/ -I${JAVA_HOME}/include/${JNI_OS}" \
+ CFLAGS=${CFLAGS}
  #} MAKE_FLAGS
 
 PREFIX?=${DESTDIR}/usr
@@ -208,11 +216,12 @@ help:
 	@echo "# JAVA_HOME=${JAVA_HOME}"
 	@echo "# JAVA=${JAVA}"
 	@echo "# JAVAC=${JAVAC}"
-	which javac
-	which java
+	@echo "# SWT_JAR=${SWT_JAR}"
+	-which javac
+	-which java
 #	java -version
 
-version=$(shell date +%Y%m%d)
+version?=$(shell date +%Y%m%d)
 scmroot?=https://${PACKAGE}.svn.sourceforge.net/svnroot/${PACKAGE}/trunk
 
 package_version?=0.0.${version}
