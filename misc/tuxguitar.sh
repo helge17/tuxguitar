@@ -57,19 +57,18 @@ fi
 
 swt_guess_()
 {
-    t="/usr/lib/java/swt.jar"
-    [ -r $t ] && f="$t"
-
-    t="/usr/share/java/swt.jar"
-    [ -r $t ] && f="$t"
-
+    t="/usr/lib/eclipse/plugins/org.eclipse.swt.gtk.linux.*.jar"
+    [ -r "$t" ] && f="$t"
     t="/etc/alternatives/swt.jar"
-    [ -r $t ] && f="$t"
-
+    [ -r "$t" ] && f="$t"
+    t="/usr/share/java/swt.jar"
+    [ -r "$t" ] && f="$t"
+    t="/usr/lib/java/swt.jar"
+    [ -r "$t" ] && f="$t"
     t="/usr/lib/java/swt3.2-gtk.jar"
-    [ -r $t ] && f="$t"
-
-    file -L "$f" && echo "$f"
+    [ -r "$t" ] && f="$t"
+    file -L "$f" || f=""
+    echo "$f"
 }
 
 #/// org.eclipse.swt.SWTError: No more handles
