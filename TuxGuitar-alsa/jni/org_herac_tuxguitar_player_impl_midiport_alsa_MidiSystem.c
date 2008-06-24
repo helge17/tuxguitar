@@ -76,8 +76,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_alsa_MidiSy
 		snd_seq_port_info_alloca(&port_info);
 		snd_seq_client_info_set_client(client_info, -1);
 		while (snd_seq_query_next_client(handle->seq, client_info) >= 0) {
-			int client = snd_seq_client_info_get_client(client_info);
-			snd_seq_port_info_set_client(port_info, client);
+			snd_seq_port_info_set_client(port_info, snd_seq_client_info_get_client(client_info));
 			snd_seq_port_info_set_port(port_info, -1);
 			while (snd_seq_query_next_port(handle->seq, port_info) >= 0) {
 				if ( (snd_seq_port_info_get_capability(port_info) & bits ) == bits ){
