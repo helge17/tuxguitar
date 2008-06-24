@@ -109,7 +109,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		
 		this.loadVolume();
 		this.loadIcons();
-		this.loadProperties();
+		this.loadProperties(false);
 		
 		this.dialog.setLayout(getLayout(this.dialog.getChildren().length));
 		this.dialog.pack();
@@ -177,6 +177,10 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	}
 	
 	public synchronized void loadProperties(){
+		this.loadProperties(true);
+	}
+	
+	public synchronized void loadProperties(boolean pack){
 		if(!isDisposed()){
 			Iterator it = this.tracks.iterator();
 			while(it.hasNext()){
@@ -187,9 +191,11 @@ public class TGMixer implements IconLoader,LanguageLoader{
 			this.volumeTip = TuxGuitar.getProperty("mixer.volume");
 			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("mixer"));
-			this.dialog.pack();
-			this.dialog.layout(true,true);
-			this.dialog.redraw();
+			if( pack ){
+				this.dialog.pack();
+				this.dialog.layout(true,true);
+				this.dialog.redraw();
+			}
 		}
 	}
 	
