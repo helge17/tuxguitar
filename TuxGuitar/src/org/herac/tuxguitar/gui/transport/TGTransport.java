@@ -107,7 +107,7 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	private void initOptions(Composite parent){
 		Composite composite = new Composite(parent,SWT.NONE);
 		composite.setLayout(new GridLayout());
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,false,true));
 		
 		this.metronome = new Button(composite,SWT.TOGGLE);
 		this.metronome.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
