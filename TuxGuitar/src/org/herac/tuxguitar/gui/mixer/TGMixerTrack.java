@@ -108,7 +108,6 @@ public class TGMixerTrack {
 		this.balanceScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				TGMixerTrack.this.track.getChannel().setBalance((short)TGMixerTrack.this.balanceScale.getSelection());
-				TGMixerTrack.this.balanceScale.setToolTipText(TGMixerTrack.this.tipBalance + ": " + TGMixerTrack.this.track.getChannel().getBalance());
 				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.BALANCE);
 			}
 		});
@@ -129,7 +128,6 @@ public class TGMixerTrack {
 		this.volumeScale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				TGMixerTrack.this.track.getChannel().setVolume((short)(TGMixerTrack.this.volumeScale.getMaximum() - TGMixerTrack.this.volumeScale.getSelection()));
-				TGMixerTrack.this.volumeScale.setToolTipText(TGMixerTrack.this.tipVolume + ": " + TGMixerTrack.this.track.getChannel().getVolume());
 				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.VOLUME);
 			}
 		});
@@ -170,11 +168,20 @@ public class TGMixerTrack {
 			this.muteCheckBox.setSelection(this.track.getChannel().isMute());
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.VOLUME) != 0){
-			this.volumeScale.setSelection(this.volumeScale.getMaximum() - this.track.getChannel().getVolume());
-			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+			int value = this.track.getChannel().getVolume();
+			int maximum = this.volumeScale.getMaximum();
+			if( this.volumeScale.getSelection() != (maximum - value) ){
+				this.volumeScale.setSelection( (maximum - value) );
+			}
+			this.volumeScale.setToolTipText(this.tipVolume + ": " + value);
+			this.volumeValueLabel.setText(Integer.toString( value ));
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.BALANCE) != 0){
-			this.balanceScale.setSelection(this.track.getChannel().getBalance());
+			int value = this.track.getChannel().getBalance();
+			if( this.balanceScale.getSelection() != value){
+				this.balanceScale.setSelection(value);
+			}
+			this.balanceScale.setToolTipText(this.tipBalance + ": " + value);
 		}
 		if((type & TGMixer.CHANNEL) != 0){
 			this.mixerChannel.updateItems(true);
@@ -188,7 +195,7 @@ public class TGMixerTrack {
 		this.tipVolume = TuxGuitar.getProperty("mixer.channel.volume");
 		this.tipBalance = TuxGuitar.getProperty("mixer.channel.balance");
 		
-		this.volumeScale.setToolTipText(this.tipVolume + ": " + this.track.getChannel().getBalance());
+		this.volumeScale.setToolTipText(this.tipVolume + ": " + this.track.getChannel().getVolume());
 		this.balanceScale.setToolTipText(this.tipBalance + ": " + this.track.getChannel().getBalance());
 		
 		this.mixerChannel.updateItems(true);
