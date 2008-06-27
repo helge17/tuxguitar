@@ -98,8 +98,7 @@ public abstract class Action extends ActionAdapter {
 	}
 	
 	public void fireUpdate(int measureNumber) {
-		this.getEditor().getTablature().getViewLayout().fireUpdate(
-				measureNumber);
+		this.getEditor().getTablature().getViewLayout().fireUpdate(measureNumber);
 	}
 	
 	public void addUndoableEdit(UndoableEdit anEdit) {

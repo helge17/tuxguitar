@@ -35,6 +35,7 @@ public class UndoableTrackChannel implements UndoableEdit{
 			channel.copy( track.getChannel() );
 		}
 		TuxGuitar.instance().getMixer().updateValues();
+		TuxGuitar.instance().getTable().fireUpdate(false);
 		TuxGuitar.instance().updateCache(true);
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
 			TuxGuitar.instance().getPlayer().updateControllers();
@@ -55,6 +56,7 @@ public class UndoableTrackChannel implements UndoableEdit{
 			channel.copy( track.getChannel() );
 		}
 		TuxGuitar.instance().getMixer().updateValues();
+		TuxGuitar.instance().getTable().fireUpdate(false);
 		TuxGuitar.instance().updateCache(true);
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
 			TuxGuitar.instance().getPlayer().updateControllers();

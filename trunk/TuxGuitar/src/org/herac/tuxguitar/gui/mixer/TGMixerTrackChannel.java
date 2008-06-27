@@ -65,6 +65,7 @@ public class TGMixerTrackChannel {
 				
 				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
 				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.instance().getTable().fireUpdate(false);
 				TuxGuitar.instance().updateCache(true);
 			}
 		});
