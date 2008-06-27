@@ -97,11 +97,12 @@ public class ItemManager implements IconLoader,LanguageLoader{
 		
 		this.layout_locked = true;
 		if( !initialized ){
-			this.coolBar = new CoolBar(TuxGuitar.instance().getShell(),SWT.FLAT);
 			FormData coolData = new FormData();
 			coolData.left = new FormAttachment(0);
 			coolData.right = new FormAttachment(100);
 			coolData.top = new FormAttachment(0,0);
+			
+			this.coolBar = new CoolBar(TuxGuitar.instance().getShell(),SWT.HORIZONTAL | SWT.FLAT);
 			this.coolBar.setLayoutData(coolData);
 			this.coolBar.addListener(SWT.Resize, new Listener() {
 				public void handleEvent(Event event) {
@@ -152,16 +153,16 @@ public class ItemManager implements IconLoader,LanguageLoader{
 	}
 	
 	private void makeToolBar(ToolItems item){
-		ToolBar toolBar = new ToolBar(this.coolBar,SWT.FLAT | SWT.WRAP);
+		ToolBar toolBar = new ToolBar(this.coolBar,SWT.HORIZONTAL | SWT.FLAT /*| SWT.WRAP*/);
 		item.showItems(toolBar);
 		makeCoolItem(toolBar); 
 		this.loadedToolItems.add(item);
 	}
 	
 	private void makeCoolItem(ToolBar toolBar){
-		CoolItem coolItem = new CoolItem(this.coolBar,SWT.NONE);
+		CoolItem coolItem = new CoolItem(this.coolBar, SWT.NONE);
 		coolItem.setControl(toolBar);
-		Point size = toolBar.computeSize( SWT.DEFAULT,SWT.DEFAULT);
+		Point size = toolBar.computeSize( SWT.DEFAULT,SWT.DEFAULT );
 		//Point coolSize = coolItem.computeSize(size.x, COOL_ITEM_HEIGHT);
 		Point coolSize = coolItem.computeSize(size.x, size.y);
 		coolItem.setMinimumSize(coolSize);

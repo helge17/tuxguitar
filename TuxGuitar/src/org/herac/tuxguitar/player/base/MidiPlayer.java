@@ -377,7 +377,13 @@ public class MidiPlayer{
 			percusionUpdated = (percusionUpdated || track.isPercussionTrack());
 		}
 		if(!percusionUpdated && isMetronomeEnabled()){
-			updateController(9,(int)((this.getVolume() / 10.00) * TGChannel.DEFAULT_VOLUME),TGChannel.DEFAULT_BALANCE);
+			int volume = (int)((this.getVolume() / 10.00) * TGChannel.DEFAULT_VOLUME);
+			int balance = TGChannel.DEFAULT_BALANCE;
+			int chorus = TGChannel.DEFAULT_CHORUS;
+			int reverb = TGChannel.DEFAULT_REVERB;
+			int phaser = TGChannel.DEFAULT_PHASER;
+			int tremolo = TGChannel.DEFAULT_TREMOLO;
+			updateController(9,volume,balance,chorus,reverb,phaser,tremolo);
 		}
 		this.afterUpdate();
 	}
@@ -386,10 +392,14 @@ public class MidiPlayer{
 		try{
 			int volume = (int)((this.getVolume() / 10.00) * track.getChannel().getVolume());
 			int balance = track.getChannel().getBalance();
+			int chorus = track.getChannel().getChorus();
+			int reverb = track.getChannel().getReverb();
+			int phaser = track.getChannel().getPhaser();
+			int tremolo = track.getChannel().getTremolo();
 			
-			updateController(track.getChannel().getChannel(),volume,balance);
+			updateController(track.getChannel().getChannel(),volume,balance,chorus,reverb,phaser,tremolo);
 			if(track.getChannel().getChannel() != track.getChannel().getEffectChannel()){
-				updateController(track.getChannel().getEffectChannel(),volume,balance);
+				updateController(track.getChannel().getEffectChannel(),volume,balance,chorus,reverb,phaser,tremolo);
 			}
 			getSequencer().setMute(track.getNumber(),track.getChannel().isMute());
 			getSequencer().setSolo(track.getNumber(),track.getChannel().isSolo());
@@ -398,10 +408,14 @@ public class MidiPlayer{
 		}
 	}
 	
-	private void updateController(int channel,int volume,int balance) {
+	private void updateController(int channel,int volume,int balance,int chorus, int reverb,int phaser, int tremolo) {
 		try{
 			getMidiPort().out().sendControlChange(channel,MidiControllers.VOLUME,volume);
 			getMidiPort().out().sendControlChange(channel,MidiControllers.BALANCE,balance);
+			getMidiPort().out().sendControlChange(channel,MidiControllers.CHORUS,chorus);
+			getMidiPort().out().sendControlChange(channel,MidiControllers.REVERB,reverb);
+			getMidiPort().out().sendControlChange(channel,MidiControllers.PHASER,phaser);
+			getMidiPort().out().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}

@@ -277,11 +277,12 @@ public class TrackPropertiesAction extends Action {
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				updateTrackProperties();
-				//--------------update and redraw------------------------------------------------------
+				// update and redraw
 				new SyncThread(new Runnable() {
 					public void run() {
 						if(!TuxGuitar.isDisposed()){
 							updateTablature();
+							TuxGuitar.instance().getMixer().updateValues();
 							TrackPropertiesAction.this.dialog.dispose();
 						}
 					}

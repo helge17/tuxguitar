@@ -29,7 +29,7 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.redoInstrument,this.redoPercusion);
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
+		TuxGuitar.instance().getMixer().updateValues();
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
 			TuxGuitar.instance().getPlayer().updatePrograms();
 		}
@@ -44,7 +44,7 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.undoInstrument,this.undoPercusion);
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
+		TuxGuitar.instance().getMixer().updateValues();
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
 			TuxGuitar.instance().getPlayer().updatePrograms();
 		}

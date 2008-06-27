@@ -40,8 +40,13 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	public static final int SOLO = 0x02;
 	public static final int VOLUME = 0x04;
 	public static final int BALANCE = 0x08;
-	public static final int CHANNEL = 0x10;
-	public static final int CHANGE_ALL = (MUTE | SOLO | VOLUME | BALANCE | CHANNEL);
+	public static final int CHORUS = 0x10;
+	public static final int REVERB = 0x20;
+	public static final int PHASER = 0x40;
+	public static final int TREMOLO = 0x80;
+	public static final int CHANNEL = 0x100;
+	
+	public static final int CHANGE_ALL = (MUTE | SOLO | VOLUME | BALANCE | CHORUS | REVERB | PHASER | TREMOLO | CHANNEL);
 	
 	protected Shell dialog;
 	private List tracks;
