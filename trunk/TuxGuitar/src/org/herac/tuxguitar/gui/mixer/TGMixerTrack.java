@@ -5,6 +5,10 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -13,11 +17,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackChannel;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGMixerTrack {
+	
 	protected TGTrack track;
 	protected TGMixer mixer;
 	protected TGMixerTrackChannel mixerChannel;
@@ -27,20 +33,13 @@ public class TGMixerTrack {
 	
 	private TGMixerScale scaleVolume;
 	private TGMixerScale scaleBalance;
-	private TGMixerScale scaleChorus;
-	private TGMixerScale scaleReverb;
-	private TGMixerScale scalePhaser;
-	private TGMixerScale scaleTremolo;
+	private TGMixerScalePopup scaleChorus;
+	private TGMixerScalePopup scaleReverb;
+	private TGMixerScalePopup scalePhaser;
+	private TGMixerScalePopup scaleTremolo;
 	
 	private Label volumeValueLabel;
 	private Label volumeValueTitleLabel;
-	
-	private String tipVolume;
-	private String tipBalance;
-	private String tipChorus;
-	private String tipReverb;
-	private String tipPhaser;
-	private String tipTremolo;
 	
 	public TGMixerTrack(TGMixer mixer,TGTrack track){
 		this.mixer = mixer;
@@ -90,20 +89,23 @@ public class TGMixerTrack {
 		
 		new Label(composite, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
 		
-		Composite compositeEffects = new Composite(composite, SWT.NONE);
-		compositeEffects.setLayout(new GridLayout(4,false));
+		Composite effects = new Composite(composite, SWT.NONE);
+		effects.setLayout(new GridLayout(4,false));
+		effects.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		this.scaleChorus = new TGMixerScale(compositeEffects, SWT.VERTICAL, 64, TGMixer.CHORUS, getVerticalScaleData());
+		this.scaleChorus = new TGMixerScalePopup(effects, SWT.VERTICAL, 64, TGMixer.CHORUS, getVerticalScaleData());
 		this.scaleChorus.setSelection(  this.track.getChannel().getChorus());
 		
-		this.scaleReverb = new TGMixerScale(compositeEffects, SWT.VERTICAL, 64, TGMixer.REVERB, getVerticalScaleData());
+		this.scaleReverb = new TGMixerScalePopup(effects, SWT.VERTICAL, 64, TGMixer.REVERB, getVerticalScaleData());
 		this.scaleReverb.setSelection(  this.track.getChannel().getReverb());
 		
-		this.scalePhaser = new TGMixerScale(compositeEffects, SWT.VERTICAL, 64, TGMixer.PHASER, getVerticalScaleData());
+		this.scalePhaser = new TGMixerScalePopup(effects, SWT.VERTICAL, 64, TGMixer.PHASER, getVerticalScaleData());
 		this.scalePhaser.setSelection(  this.track.getChannel().getPhaser());
 		
-		this.scaleTremolo = new TGMixerScale(compositeEffects, SWT.VERTICAL, 64, TGMixer.TREMOLO, getVerticalScaleData());
+		this.scaleTremolo = new TGMixerScalePopup(effects, SWT.VERTICAL, 64, TGMixer.TREMOLO, getVerticalScaleData());
 		this.scaleTremolo.setSelection(  this.track.getChannel().getTremolo());
+		
+		new Label(composite, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
 		
 		this.scaleBalance = new TGMixerScale(composite, SWT.HORIZONTAL, 64, TGMixer.BALANCE, getHorizontalScaleData());
 		this.scaleBalance.setSelection(this.track.getChannel().getBalance());
@@ -149,33 +151,27 @@ public class TGMixerTrack {
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.VOLUME) != 0){
 			int value = this.track.getChannel().getVolume();
 			this.scaleVolume.setSelection( ( value) );
-			this.scaleVolume.setToolTipText(this.tipVolume + ": " + value);
 			this.volumeValueLabel.setText(Integer.toString( value ));
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.BALANCE) != 0){
 			int value = this.track.getChannel().getBalance();
 			this.scaleBalance.setSelection(value);
-			this.scaleBalance.setToolTipText(this.tipBalance + ": " + value);
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.CHORUS) != 0){
 			int value = this.track.getChannel().getChorus();
 			this.scaleChorus.setSelection( ( value) );
-			this.scaleChorus.setToolTipText(this.tipChorus + ": " + value);
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.REVERB) != 0){
 			int value = this.track.getChannel().getReverb();
 			this.scaleReverb.setSelection( ( value) );
-			this.scaleReverb.setToolTipText(this.tipReverb + ": " + value);
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.PHASER) != 0){
 			int value = this.track.getChannel().getPhaser();
 			this.scalePhaser.setSelection( ( value) );
-			this.scalePhaser.setToolTipText(this.tipPhaser + ": " + value);
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.TREMOLO) != 0){
 			int value = this.track.getChannel().getTremolo();
 			this.scaleTremolo.setSelection( ( value) );
-			this.scaleTremolo.setToolTipText(this.tipTremolo + ": " + value);
 		}
 		if((type & TGMixer.CHANNEL) != 0){
 			this.mixerChannel.updateItems(true);
@@ -183,22 +179,16 @@ public class TGMixerTrack {
 	}
 	
 	public void loadProperties(){
-		this.tipVolume = TuxGuitar.getProperty("mixer.channel.volume");
-		this.tipBalance = TuxGuitar.getProperty("mixer.channel.balance");
-		this.tipChorus = TuxGuitar.getProperty("mixer.channel.chorus");
-		this.tipReverb = TuxGuitar.getProperty("mixer.channel.reverb");
-		this.tipPhaser = TuxGuitar.getProperty("mixer.channel.phaser");
-		this.tipTremolo = TuxGuitar.getProperty("mixer.channel.tremolo");
 		this.checkSolo.setText(TuxGuitar.getProperty("mixer.track.solo"));
 		this.checkMute.setText(TuxGuitar.getProperty("mixer.track.mute"));
 		this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("mixer.channel.volume") + ":");
 		
-		this.scaleVolume.setToolTipText(this.tipVolume + ": " + this.track.getChannel().getVolume());
-		this.scaleBalance.setToolTipText(this.tipBalance + ": " + this.track.getChannel().getBalance());
-		this.scaleChorus.setToolTipText(this.tipChorus + ": " + this.track.getChannel().getChorus());
-		this.scaleReverb.setToolTipText(this.tipReverb + ": " + this.track.getChannel().getReverb());
-		this.scalePhaser.setToolTipText(this.tipPhaser + ": " + this.track.getChannel().getPhaser());
-		this.scaleTremolo.setToolTipText(this.tipTremolo + ": " + this.track.getChannel().getTremolo());
+		this.scaleVolume.setText(TuxGuitar.getProperty("mixer.channel.volume"));
+		this.scaleBalance.setText(TuxGuitar.getProperty("mixer.channel.balance"));
+		this.scaleChorus.setText(TuxGuitar.getProperty("mixer.channel.chorus"));
+		this.scaleReverb.setText(TuxGuitar.getProperty("mixer.channel.reverb"));
+		this.scalePhaser.setText(TuxGuitar.getProperty("mixer.channel.phaser"));
+		this.scaleTremolo.setText(TuxGuitar.getProperty("mixer.channel.tremolo"));
 		
 		this.mixerChannel.updateItems(true);
 	}
@@ -239,13 +229,18 @@ public class TGMixerTrack {
 	
 	private class TGMixerScale {
 		
-		protected int type;
-		protected int value;
-		protected boolean inverted;
-		protected Scale scale;
+		private int type;
+		private int value;
+		private boolean inverted;
+		private Scale scale;
+		private String text;
 		protected UndoableTrackChannel undoable;
 		
 		public TGMixerScale(Composite parent, int style, int pageIncrement, int type, Object layoutData){
+			this.init(parent, style, pageIncrement, type, layoutData);
+		}
+		
+		public void init(Composite parent, int style, int pageIncrement, int type, Object layoutData){
 			this.scale = new Scale(parent, style);
 			this.scale.setMaximum(127);
 			this.scale.setMinimum(0);
@@ -262,7 +257,7 @@ public class TGMixerTrack {
 			this.scale.addListener(SWT.Selection, new Listener() {
 				public synchronized void handleEvent(Event event) {
 					TGMixerScale.this.updateValue();
-					TGMixerTrack.this.updateChannelValue(TGMixerScale.this.type, getSelection());
+					TGMixerTrack.this.updateChannelValue(getType(), getSelection());
 				}
 			});
 			this.scale.addMouseListener(new MouseAdapter() {
@@ -282,7 +277,11 @@ public class TGMixerTrack {
 		
 		public void updateValue(){
 			this.setSelection( ( this.inverted ? 127 - this.scale.getSelection() : this.scale.getSelection() ) );
-		}		
+		}
+		
+		public int getType(){
+			return this.type;
+		}
 		
 		public int getSelection(){
 			if(this.value < 0){
@@ -295,11 +294,101 @@ public class TGMixerTrack {
 			if(value != this.value){
 				this.value = value;
 				this.scale.setSelection( ( this.inverted ? 127 - this.value : this.value ) );
+				this.updateToolTipValue();
 			}
 		}
 		
-		public void setToolTipText(String text){
-			this.scale.setToolTipText( text );
+		public void updateToolTipValue(){
+			if(this.text != null){
+				this.scale.setToolTipText( this.text + ": " + this.value );
+			}
+		}
+		
+		public void setText(String text){
+			this.text = text;
+			this.updateToolTipValue();
+		}
+		
+		public String getText(){
+			return this.text;
+		}
+	}
+	
+	private class TGMixerScalePopup extends TGMixerScale{
+		
+		private Shell shell;
+		private Composite composite;
+		private Button item;
+		
+		public TGMixerScalePopup(Composite parent, int style, int pageIncrement, int type, Object layoutData){
+			super(parent, style, pageIncrement, type, layoutData);
+		}
+		
+		public void init(Composite parent, int style, int pageIncrement, int type, Object layoutData){
+			this.shell = new Shell( parent.getShell(), SWT.NO_TRIM);
+			this.shell.setVisible(false);
+			this.shell.setLayout(getGridLayout());
+			this.shell.addShellListener(new ShellAdapter() {
+				public void shellDeactivated(ShellEvent e) {
+					onShellDeactivated();
+				}
+			});
+			
+			this.composite = new Composite(this.shell, SWT.BORDER);
+			this.composite.setLayout(getGridLayout());
+			this.composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			
+			this.item = new Button(parent, SWT.PUSH);
+			this.item.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					onItemSelect();
+				}
+			});
+			
+			super.init(this.composite, style, pageIncrement, type, layoutData);
+		}
+		
+		private GridLayout getGridLayout(){
+			GridLayout layout = new GridLayout();
+			layout.horizontalSpacing = 0;
+			layout.verticalSpacing = 0;
+			layout.marginWidth = 0;
+			layout.marginHeight = 0;
+			layout.marginTop = 0;
+			layout.marginBottom = 0;
+			layout.marginLeft = 0;
+			layout.marginHeight = 0;
+			return layout;
+		}
+		
+		public void updateToolTipValue(){
+			super.updateToolTipValue();
+			if(this.getText() != null){
+				this.item.setToolTipText( this.getText() + ": " + this.getSelection() );
+			}
+		}
+		
+		public void setText(String text){
+			super.setText(text);
+			if(this.getText() != null && this.getText().length() > 0){
+				this.item.setText( this.getText().substring(0,1) );
+			}
+		}
+		
+		public void onItemSelect() {
+			if(!this.shell.isVisible()){
+				Rectangle bounds = this.item.getBounds();
+				Point location = this.item.getParent().toDisplay(new Point(bounds.x, bounds.y));
+				
+				this.shell.pack();
+				this.shell.setLocation( (location.x + (bounds.width / 2)) - (this.shell.getSize().x / 2), location.y + bounds.height);
+				this.shell.setVisible(true);
+				this.shell.setActive();
+			}
+		}
+		
+		public void onShellDeactivated() {
+			this.shell.setVisible(false);
 		}
 	}
 }
