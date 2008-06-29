@@ -109,6 +109,12 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 	private void writeTrack(TGTrack track){
 		//header
 		int header = 0;
+		if (track.isSolo()) {
+			header |= TRACK_SOLO;
+		}
+		if (track.isMute()) {
+			header |= TRACK_MUTE;
+		}
 		if(!track.getLyrics().isEmpty()){
 			header |= TRACK_LYRICS;
 		}
@@ -249,11 +255,6 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 	}
 	
 	private void writeChannel(TGChannel channel){
-		int header = 0;
-		header = (channel.isSolo())?header |= CHANNEL_SOLO:header;
-		header = (channel.isMute())?header |= CHANNEL_MUTE:header;
-		writeHeader(header);
-		
 		//escribo el canal
 		writeByte(channel.getChannel());
 		

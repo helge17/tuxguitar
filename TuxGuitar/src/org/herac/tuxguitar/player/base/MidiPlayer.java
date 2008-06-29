@@ -373,7 +373,7 @@ public class MidiPlayer{
 		while(it.hasNext()){
 			TGTrack track = (TGTrack)it.next();
 			this.updateController(track);
-			this.anySolo = ((!this.anySolo)?track.getChannel().isSolo():this.anySolo);
+			this.anySolo = ((!this.anySolo)?track.isSolo():this.anySolo);
 			percusionUpdated = (percusionUpdated || track.isPercussionTrack());
 		}
 		if(!percusionUpdated && isMetronomeEnabled()){
@@ -401,8 +401,8 @@ public class MidiPlayer{
 			if(track.getChannel().getChannel() != track.getChannel().getEffectChannel()){
 				updateController(track.getChannel().getEffectChannel(),volume,balance,chorus,reverb,phaser,tremolo);
 			}
-			getSequencer().setMute(track.getNumber(),track.getChannel().isMute());
-			getSequencer().setSolo(track.getNumber(),track.getChannel().isSolo());
+			getSequencer().setMute(track.getNumber(),track.isMute());
+			getSequencer().setSolo(track.getNumber(),track.isSolo());
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}

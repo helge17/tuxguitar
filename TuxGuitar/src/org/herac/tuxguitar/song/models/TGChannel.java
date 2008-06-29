@@ -12,8 +12,6 @@ public abstract class TGChannel {
 	public static final short DEFAULT_REVERB = 0;
 	public static final short DEFAULT_PHASER = 0;
 	public static final short DEFAULT_TREMOLO = 0;
-	public static final boolean DEFAULT_SOLO = false;
-	public static final boolean DEFAULT_MUTE = false;
 	
 	private short channel;
 	private short effectChannel;
@@ -24,8 +22,6 @@ public abstract class TGChannel {
 	private short reverb;
 	private short phaser;
 	private short tremolo;
-	private boolean solo;
-	private boolean mute;
 	
 	public TGChannel() {
 		this.channel = 0;
@@ -37,8 +33,6 @@ public abstract class TGChannel {
 		this.reverb = DEFAULT_REVERB;
 		this.phaser = DEFAULT_PHASER;
 		this.tremolo = DEFAULT_TREMOLO;
-		this.solo = DEFAULT_SOLO;
-		this.mute = DEFAULT_MUTE;
 	}
 	
 	public short getBalance() {
@@ -113,22 +107,6 @@ public abstract class TGChannel {
 		this.volume = volume;
 	}
 	
-	public boolean isMute() {
-		return this.mute;
-	}
-	
-	public void setMute(boolean mute) {
-		this.mute = mute;
-	}
-	
-	public boolean isSolo() {
-		return this.solo;
-	}
-	
-	public void setSolo(boolean solo) {
-		this.solo = solo;
-	}
-	
 	public boolean isPercussionChannel(){
 		return TGChannel.isPercussionChannel(this.getChannel());
 	}
@@ -164,8 +142,5 @@ public abstract class TGChannel {
 		channel.setReverb(getReverb());
 		channel.setPhaser(getPhaser());
 		channel.setTremolo(getTremolo());
-		channel.setSolo(isSolo());
-		channel.setMute(isMute());
 	}
-	
 }
