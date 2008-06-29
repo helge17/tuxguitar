@@ -310,7 +310,7 @@ public class GP1InputStream extends GTPInputStream implements TGInputStreamBase 
 		if (getVersionIndex() > 2) {
 			readInt(); // Number of frets
 			track.setName(readStringByteSizeOfByte());
-			track.getChannel().setSolo(readBoolean());
+			track.setSolo(readBoolean());
 			track.getChannel().setVolume((short)readInt());
 			track.getChannel().setBalance((short)readInt());
 			track.getChannel().setChorus((short)readInt());

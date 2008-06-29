@@ -13,6 +13,11 @@ public class TGPluginListImpl extends TGPluginList{
 		List plugins = new ArrayList();
 		plugins.add(new TGInputStreamPlugin() {
 			protected TGInputStreamBase getInputStream() {
+				return new org.herac.tuxguitar.io.tg.v10.TGInputStream();
+			}
+		});
+		plugins.add(new TGInputStreamPlugin() {
+			protected TGInputStreamBase getInputStream() {
 				return new org.herac.tuxguitar.io.tg.v09.TGInputStream();
 			}
 		});

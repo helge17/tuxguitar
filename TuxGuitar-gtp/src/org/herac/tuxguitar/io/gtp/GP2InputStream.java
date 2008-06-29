@@ -323,7 +323,7 @@ public class GP2InputStream extends GTPInputStream implements TGInputStreamBase 
 		track.getChannel().setInstrument((short)readInt());
 		readInt(); // Number of frets
 		track.setName(readStringByteSizeOfByte());
-		track.getChannel().setSolo(readBoolean());
+		track.setSolo(readBoolean());
 		track.getChannel().setVolume((short)readInt());
 		track.getChannel().setBalance((short)readInt());
 		track.getChannel().setChorus((short)readInt());

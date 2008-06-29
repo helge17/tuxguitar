@@ -595,8 +595,6 @@ public class GP4OutputStream extends GTPOutputStream{
 			channels[i].setReverb((short)0);
 			channels[i].setPhaser((short)0);
 			channels[i].setTremolo((short)0);
-			channels[i].setSolo(false);
-			channels[i].setMute(false);
 		}
 		
 		Iterator it = song.getTracks();
