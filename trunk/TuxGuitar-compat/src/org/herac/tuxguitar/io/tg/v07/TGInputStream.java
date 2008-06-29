@@ -15,7 +15,6 @@ import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -127,7 +126,7 @@ public class TGInputStream implements TGInputStreamBase{
 		track.setName(readString());
 		
 		//leo el canal
-		readChannel(track.getChannel());
+		readChannel(track);
 		
 		//leo la cantidad de compases
 		int measureCount = readInt();
@@ -244,39 +243,39 @@ public class TGInputStream implements TGInputStreamBase{
 		return beat;
 	}
 	
-	private void readChannel(TGChannel channel){
+	private void readChannel(TGTrack track){
 		//leo el canal
-		channel.setChannel(readShort());
+		track.getChannel().setChannel(readShort());
 		
 		//leo el canal de efectos
-		channel.setEffectChannel(readShort());
+		track.getChannel().setEffectChannel(readShort());
 		
 		//leo el instrumento
-		channel.setInstrument(readShort());
+		track.getChannel().setInstrument(readShort());
 		
 		//leo el volumen
-		channel.setVolume(readShort());
+		track.getChannel().setVolume(readShort());
 		
 		//leo el balance
-		channel.setBalance(readShort());
+		track.getChannel().setBalance(readShort());
 		
 		//leo el chorus
-		channel.setChorus(readShort());
+		track.getChannel().setChorus(readShort());
 		
 		//leo el reverb
-		channel.setReverb(readShort());
+		track.getChannel().setReverb(readShort());
 		
 		//leo el phaser
-		channel.setPhaser(readShort());
+		track.getChannel().setPhaser(readShort());
 		
 		//leo el tremolo
-		channel.setTremolo(readShort());
+		track.getChannel().setTremolo(readShort());
 		
 		//leo el solo
-		channel.setSolo(readBoolean());
+		track.setSolo(readBoolean());
 		
 		//leo el mute
-		channel.setMute(readBoolean());
+		track.setMute(readBoolean());
 	}
 	
 	private TGBeat readSilence(TGMeasure measure, TGBeat previous){

@@ -92,8 +92,6 @@ public class GP3InputStream extends GTPInputStream implements TGInputStreamBase 
 			channel.setReverb(toChannelShort(readByte()));
 			channel.setPhaser(toChannelShort(readByte()));
 			channel.setTremolo(toChannelShort(readByte()));
-			channel.setSolo(false);
-			channel.setMute(false);
 			channels.add(channel);
 			skip(2);
 		}
