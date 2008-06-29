@@ -55,11 +55,7 @@ public class TGMixerTrackChannel {
 					channel.setChannel((short)idx);
 					channel.setEffectChannel(channel.getChannel());
 				}else{
-					boolean solo = channel.isSolo();
-					boolean mute = channel.isMute();
 					TuxGuitar.instance().getSongManager().getUsedChannel(idx).copy(channel);
-					channel.setSolo( solo );
-					channel.setMute( mute );
 				}
 				fireChannelChange(channel);
 				

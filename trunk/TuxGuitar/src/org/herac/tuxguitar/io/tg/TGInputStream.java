@@ -147,6 +147,12 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		//leo el nombre
 		track.setName(readUnsignedByteString());
 		
+		//leo el solo
+		track.setSolo((header & TRACK_SOLO) != 0);
+		
+		//leo el mute
+		track.setMute((header & TRACK_MUTE) != 0);
+		
 		//leo el canal
 		readChannel(track.getChannel());
 		
@@ -255,8 +261,6 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	}
 	
 	private void readChannel(TGChannel channel){
-		int header = readHeader();
-		
 		//leo el canal
 		channel.setChannel(readByte());
 		
@@ -283,12 +287,6 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		//leo el tremolo
 		channel.setTremolo(readByte());
-		
-		//leo el solo
-		channel.setSolo((header & CHANNEL_SOLO) != 0);
-		
-		//leo el mute
-		channel.setMute((header & CHANNEL_MUTE) != 0);
 	}
 	
 	private void readBeats(TGMeasure measure,TGBeatData data){

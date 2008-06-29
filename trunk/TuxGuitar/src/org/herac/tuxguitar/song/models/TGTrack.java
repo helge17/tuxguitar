@@ -22,7 +22,9 @@ public abstract class TGTrack {
 	public static final int MIN_OFFSET = -24;
 	
 	private int number;
-	private int offset;	
+	private int offset;
+	private boolean solo;
+	private boolean mute;
 	private String name;
 	private List measures;
 	private List strings;
@@ -34,6 +36,8 @@ public abstract class TGTrack {
 	public TGTrack(TGFactory factory) {
 		this.number = 0;
 		this.offset = 0;
+		this.solo = false;
+		this.mute = false;
 		this.name = new String();
 		this.measures = new ArrayList();
 		this.strings = new ArrayList();
@@ -117,6 +121,22 @@ public abstract class TGTrack {
 	
 	public void setOffset(int offset) {
 		this.offset = offset;
+	}
+	
+	public boolean isSolo() {
+		return this.solo;
+	}
+	
+	public void setSolo(boolean solo) {
+		this.solo = solo;
+	}
+	
+	public boolean isMute() {
+		return this.mute;
+	}
+	
+	public void setMute(boolean mute) {
+		this.mute = mute;
 	}
 	
 	public TGLyric getLyrics() {

@@ -14,11 +14,11 @@ public class TGStream {
 	
 	public static final String TG_FORMAT_EXTENSION = (".tg");
 	
-	protected static final int TRACK_LYRICS = 0x01;
+	protected static final int TRACK_SOLO = 0x01;
 	
-	protected static final int CHANNEL_SOLO = 0x01;
+	protected static final int TRACK_MUTE = 0x02;
 	
-	protected static final int CHANNEL_MUTE = 0x02;
+	protected static final int TRACK_LYRICS = 0x04;
 	
 	protected static final int MEASURE_HEADER_TIMESIGNATURE = 0x01;
 	

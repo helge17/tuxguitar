@@ -55,14 +55,14 @@ public class TGMixerTrack {
 		this.mixerChannel.init(composite);
 		
 		this.checkSolo = new Button(composite,SWT.CHECK);
-		this.checkSolo.setSelection(TGMixerTrack.this.track.getChannel().isSolo());
+		this.checkSolo.setSelection(TGMixerTrack.this.track.isSolo());
 		this.checkSolo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				UndoableTrackChannel undoable = UndoableTrackChannel.startUndo();
 				
-				TGMixerTrack.this.track.getChannel().setSolo(TGMixerTrack.this.checkSolo.getSelection());
-				if(TGMixerTrack.this.track.getChannel().isSolo()){
-					TGMixerTrack.this.track.getChannel().setMute(false);
+				TGMixerTrack.this.track.setSolo(TGMixerTrack.this.checkSolo.getSelection());
+				if(TGMixerTrack.this.track.isSolo()){
+					TGMixerTrack.this.track.setMute(false);
 				}
 				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.SOLO);
 				
@@ -71,14 +71,14 @@ public class TGMixerTrack {
 			}
 		});
 		this.checkMute = new Button(composite,SWT.CHECK);
-		this.checkMute.setSelection(TGMixerTrack.this.track.getChannel().isMute());
+		this.checkMute.setSelection(TGMixerTrack.this.track.isMute());
 		this.checkMute.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				UndoableTrackChannel undoable = UndoableTrackChannel.startUndo();
 				
-				TGMixerTrack.this.track.getChannel().setMute(TGMixerTrack.this.checkMute.getSelection());
-				if(TGMixerTrack.this.track.getChannel().isMute()){
-					TGMixerTrack.this.track.getChannel().setSolo(false);
+				TGMixerTrack.this.track.setMute(TGMixerTrack.this.checkMute.getSelection());
+				if(TGMixerTrack.this.track.isMute()){
+					TGMixerTrack.this.track.setSolo(false);
 				}
 				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.MUTE);
 				
@@ -145,8 +145,8 @@ public class TGMixerTrack {
 	
 	public void fireChanges(int type){
 		if((type & TGMixer.SOLO) != 0 || (type & TGMixer.MUTE) != 0){
-			this.checkSolo.setSelection(this.track.getChannel().isSolo());
-			this.checkMute.setSelection(this.track.getChannel().isMute());
+			this.checkSolo.setSelection(this.track.isSolo());
+			this.checkMute.setSelection(this.track.isMute());
 		}
 		if((type & TGMixer.CHANNEL) != 0 || (type & TGMixer.VOLUME) != 0){
 			int value = this.track.getChannel().getVolume();
