@@ -1,19 +1,18 @@
-tuxguitar-snapshot (0.0.20080614-0ubuntu0~rzr14) hardy; urgency=low
+tuxguitar-snapshot (0.0.20080625-0ubuntu0~rzr7) intrepid; urgency=low
 
-  * FIX: desktop (LP: #197367)
-  * ADD: Merged with debian (LP: #176979)
-  * FIX: java paths (LP: #212207)
+  * Updating from scm
   * WIP: rzr.online.fr/q/tuxguitar
   * WIP: todo add converter plugin, gcj; java-gcj-compat-dev
-  * TODO: browser, ftp
+  * FIX: desktop (LP: #197367)
+  * TODO: browser, ftp, convert
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed, 25 Jun 2008 20:32:04 +0200
 
 tuxguitar (1.0-1) unstable; urgency=low
 
   * New upstream release (Closes: #481728) also (LP: #176979, #212207)
 
  -- Philippe Coval <rzr@users.sf.net>  Thu, 19 Jun 2008 00:30:30 +0200
-
- -- Philippe Coval <rzr@users.sf.net>  Sat, 19 Apr 2008 12:30:00 +0200
 
 tuxguitar (0.9.99~1.0rc4-1) unstable; urgency=low
 
@@ -22,24 +21,20 @@ tuxguitar (0.9.99~1.0rc4-1) unstable; urgency=low
 
  -- Philippe Coval <rzr@users.sf.net>  Sat, 17 May 2008 01:19:00 +0200
 
-tuxguitar (0.9.99~1.0rc2-3) unstable; urgency=low
+tuxguitar (0.9.99~1.0rc3-1) unstable; urgency=low
 
-   * FIX: build with gcj by default not openjdk (Closes: #474410)
+  * New Upstream release (1.0-rc3 retitled to 0.9.99~1.0rc3)
+  * Updated startup script from upstream
+  * debian/control now build with gcj by default not openjdk (Closes: #474410)
 
- -- Philippe Coval <rzr@users.sf.net>  Sat, 19 Apr 2008 12:16:00 +0200
+ -- Philippe Coval <rzr@users.sf.net>  Sat, 01 May 2008 12:16:00 +0200
 
 tuxguitar (0.9.99~1.0rc2-2) unstable; urgency=low
 
-  * ADD: support compilers and jvm's based on classpath
+  * ADD: Support compilers and jvm's based on classpath
   * FIX: arch vs indep for non i386 arch (closes: #474410)
 
  -- Philippe Coval <rzr@users.sf.net>  Wed, 16 Apr 2008 19:19:52 +0200
-
-tuxguitar (0.9.99~1.0rc3-1) unstable; urgency=low
-
-  * ADD: New Upstream release (1.0-rc3 retitled to 0.9.99~1.0rc3)
-
- -- Philippe Coval <rzr@users.sf.net>  Wed, 26 Mar 2008 20:07:41 +0100
 
 tuxguitar (0.9.99~1.0rc2-1) unstable; urgency=low
 
