@@ -6,8 +6,8 @@ Uploaders: tony mancill <tmancill@debian.org>
 Build-Depends: debhelper (>= 5.0.0), docbook-to-man , docbook-utils, ant, java-compiler | sun-java6-jdk | sun-java5-jdk | openjdk-6-jdk | icedtea-java7-jdk , gcj, java-gcj-compat-dev, libswt3.2-gtk-java, libitext-java, libasound2-dev, libfluidsynth-dev
 Standards-Version: 3.7.3
 Homepage: http://www.tuxguitar.com.ar
-XS-Vcs-svn: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
-XS-Vcs-Browser: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
+XS-Vcs-svn: svn://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
+XS-Vcs-Browser: http://jabbin.svn.sourceforge.net/viewvc/jabbin/
 
 Package: tuxguitar-snapshot
 Architecture: all

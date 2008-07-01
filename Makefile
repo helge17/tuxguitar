@@ -44,6 +44,8 @@ subdirs?=\
  TuxGuitar-lilypond \
 \
  TuxGuitar-jsa \
+\
+ TuxGuitar-converter \
 #}subdirs
 
 subdirs_jni?=\
@@ -52,7 +54,7 @@ subdirs_jni?=\
  TuxGuitar-fluidsynth \
  #}subdirs_jni
 
-#  TuxGuitar-converter # TODO
+#  
 export PACKAGE_JAR 
 ###
 
