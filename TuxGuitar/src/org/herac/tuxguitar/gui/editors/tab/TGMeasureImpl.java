@@ -1185,7 +1185,6 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		if(this.markerColor == null || this.markerColor.isDisposed()){
 			this.markerColor = new Color(TuxGuitar.instance().getDisplay(), color.getR(),color.getG(),color.getB());
-			System.out.println("Marker Color Created");
 		}
 		return this.markerColor;
 	}
