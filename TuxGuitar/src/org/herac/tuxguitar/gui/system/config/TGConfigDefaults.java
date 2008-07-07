@@ -72,6 +72,7 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.FONT_CHORD, (DEFAULT_FONT_NAME + ",7,2"));
 		this.loadProperty(TGConfigKeys.FONT_CHORD_FRET, (DEFAULT_FONT_NAME + ",5,0"));
 		this.loadProperty(TGConfigKeys.FONT_GRACE, (DEFAULT_FONT_NAME + ",6,0"));
+		this.loadProperty(TGConfigKeys.FONT_MARKER, (DEFAULT_FONT_NAME + ",7,0"));
 		this.loadProperty(TGConfigKeys.FONT_PRINTER_DEFAULT, (DEFAULT_FONT_NAME + ",6,0"));
 		this.loadProperty(TGConfigKeys.FONT_PRINTER_NOTE, (DEFAULT_FONT_NAME + ",6,0"));
 		this.loadProperty(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE, (DEFAULT_FONT_NAME + ",10,3"));

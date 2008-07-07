@@ -75,6 +75,7 @@ public class PrinterViewLayout extends ViewLayout{
 		this.setChordNoteSize(getScaledValue(scale ,  3 , 2 ));
 		this.setRepeatEndingSpacing( getScaledValue(scale ,  20 ) );
 		this.setTextSpacing( getScaledValue( scale, 15 ) );
+		this.setMarkerSpacing( getScaledValue( scale, 15 ) );
 		this.setTupletoSpacing( getScaledValue( scale,  10 ) );
 		this.setEffectSpacing( getScaledValue(scale ,  8 ) );
 		this.setScale( checkScale() );
@@ -282,7 +283,7 @@ public class PrinterViewLayout extends ViewLayout{
 				line.minY = (measure.getMinY() < line.minY)?measure.getMinY():line.minY;
 				
 				line.addMeasure(measureIdx);
-				measure.registerEffects(this,ts);
+				measure.registerSpacing(this,ts);
 			}
 		}
 		

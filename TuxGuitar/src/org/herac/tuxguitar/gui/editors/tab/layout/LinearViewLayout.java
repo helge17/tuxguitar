@@ -64,7 +64,7 @@ public class LinearViewLayout extends ViewLayout{
 					TGMeasureImpl measure = (TGMeasureImpl)measures.next();
 					maxY = (measure.getMaxY() > maxY)?measure.getMaxY():maxY;
 					minY = (measure.getMinY() < minY)?measure.getMinY():minY;
-					measure.registerEffects(this,ts);
+					measure.registerSpacing(this,ts);
 				}
 				ts.setSize(TrackSpacing.POSITION_SCORE_UP_LINES, ( (style & DISPLAY_SCORE) != 0 ?Math.abs(minY):0));
 				if((style & DISPLAY_SCORE) != 0 && maxY + getMinScoreTabSpacing() > getScoreSpacing()){
