@@ -37,6 +37,7 @@ public class TGResources {
 	private Font timeSignatureFont;
 	private Font lyricFont;
 	private Font textFont;
+	private Font markerFont;
 	private Font graceFont;
 	private Font chordFont;
 	private Font chordFretFont;
@@ -99,6 +100,10 @@ public class TGResources {
 	
 	public Font getTextFont(){
 		return this.textFont;
+	}
+	
+	public Font getMarkerFont(){
+		return this.markerFont;
 	}
 	
 	public Font getChordFont(){
@@ -218,6 +223,7 @@ public class TGResources {
 		this.timeSignatureFont = getFont(TGConfigKeys.FONT_TIME_SIGNATURE, scale);
 		this.lyricFont = getFont(TGConfigKeys.FONT_LYRIC, scale);
 		this.textFont =  getFont(TGConfigKeys.FONT_TEXT, scale);
+		this.markerFont =  getFont(TGConfigKeys.FONT_MARKER, scale);
 		this.graceFont = getFont(TGConfigKeys.FONT_GRACE, scale);
 		this.chordFont = getFont(TGConfigKeys.FONT_CHORD, scale);
 		this.chordFretFont = getFont(TGConfigKeys.FONT_CHORD_FRET, scale);

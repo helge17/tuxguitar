@@ -190,7 +190,7 @@ public class PageViewLayout extends ViewLayout{
 			line.minY = (measure.getMinY() < line.minY)?measure.getMinY():line.minY;
 			
 			line.addMeasure(measureIdx);
-			measure.registerEffects(this,ts);
+			measure.registerSpacing(this,ts);
 		}
 		
 		return line;

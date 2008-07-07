@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
@@ -23,6 +25,7 @@ import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -136,6 +139,8 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private boolean bufferCreated;
 	
+	private Color markerColor;
+	
 	private int lyricBeatIndex;
 	private int width;
 	
@@ -162,7 +167,7 @@ public class TGMeasureImpl extends TGMeasure{
 	 */
 	public void create(ViewLayout layout) {
 		this.divisionLength = TGSongManager.getDivisionLength(getHeader());
-		this.resetEffects();
+		this.resetSpacing();
 		this.autoCompleteSilences(layout.getSongManager());
 		this.orderBeats(layout.getSongManager());
 		this.checkCompactMode(layout);
@@ -454,7 +459,7 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
-	private void resetEffects(){
+	private void resetSpacing(){
 		this.text = false;
 		this.chord = false;
 		this.tupleto = false;
@@ -466,7 +471,10 @@ public class TGMeasureImpl extends TGMeasure{
 		this.vibrato = false;
 	}
 	
-	public void registerEffects(ViewLayout layout,TrackSpacing ts){
+	public void registerSpacing(ViewLayout layout,TrackSpacing ts){
+		if(this.hasMarker()){
+			ts.setSize(TrackSpacing.POSITION_MARKER,layout.getMarkerSpacing());
+		}
 		if(this.chord){
 			ts.setSize(TrackSpacing.POSITION_CHORD,layout.getDefaultChordSpacing());
 		}
@@ -528,6 +536,7 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.setBackground(layout.getResources().getBackgroundColor());
 			getBuffer().paintImage(painter,getPosX(),getPosY(),getTs().getPosition(TrackSpacing.POSITION_BUFFER_SEPARATOR));
 		}
+		this.paintMarker(layout, painter);
 		this.paintTexts(layout,painter);
 		this.paintTempo(layout,painter);
 		this.paintTripletFeel(layout,painter);
@@ -919,6 +928,17 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
+	private void paintMarker(ViewLayout layout,TGPainter painter){
+		if( this.hasMarker() ){
+			int x = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
+			int y = (getPosY() + getTs().getPosition(TrackSpacing.POSITION_MARKER));
+			
+			layout.setMarkerStyle(painter);
+			painter.setForeground( getMarkerColor() );
+			painter.drawString(getMarker().getTitle(), x, y);
+		}
+	}
+	
 	private void paintTexts(ViewLayout layout,TGPainter painter){
 		Iterator it = getBeats().iterator();
 		while(it.hasNext()){
@@ -1155,11 +1175,34 @@ public class TGMeasureImpl extends TGMeasure{
 		return this.buffer;
 	}
 	
+	public Color getMarkerColor(){
+		TGColor color = getMarker().getColor();
+		if(this.markerColor != null && !this.markerColor.isDisposed()){
+			RGB rgb = this.markerColor.getRGB();
+			if( rgb.red != color.getR() || rgb.green != color.getG() ||  rgb.blue != color.getB()){
+				this.disposeMarkerColor();
+			}
+		}
+		if(this.markerColor == null || this.markerColor.isDisposed()){
+			this.markerColor = new Color(TuxGuitar.instance().getDisplay(), color.getR(),color.getG(),color.getB());
+			System.out.println("Marker Color Created");
+		}
+		return this.markerColor;
+	}
+
+	public void disposeMarkerColor(){
+		if(this.markerColor != null && !this.markerColor.isDisposed()){
+			this.markerColor.dispose();
+			this.markerColor = null;
+		}
+	}
+	
 	public void dispose(){
 		new SyncThread( new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					getBuffer().dispose();
+					disposeMarkerColor();
 					Iterator it = getBeats().iterator();
 					while(it.hasNext()){
 						TGBeatImpl beat = (TGBeatImpl)it.next();

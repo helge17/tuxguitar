@@ -39,6 +39,7 @@ public class TGConfigKeys {
 	public static final String FONT_GRACE = "font.grace";
 	public static final String FONT_LYRIC = "font.lyric";
 	public static final String FONT_TEXT = "font.text";
+	public static final String FONT_MARKER = "font.marker";
 	public static final String FONT_PRINTER_DEFAULT = "font.printer.default";
 	public static final String FONT_PRINTER_NOTE = "font.printer.note";
 	public static final String FONT_PRINTER_TIME_SIGNATURE = "font.printer.time-signature";

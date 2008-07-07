@@ -71,6 +71,7 @@ public abstract class ViewLayout {
 	private int effectSpacing;
 	private int tupletoSpacing;
 	private int textSpacing;
+	private int markerSpacing;
 	private boolean bufferEnabled;
 	private boolean playModeEnabled;
 	
@@ -115,6 +116,7 @@ public abstract class ViewLayout {
 		this.setChordNoteSize( Math.round( 4f * getScale() ) );
 		this.setRepeatEndingSpacing( Math.round( 20f * getScale() ) );
 		this.setTextSpacing( Math.round( 15f * getScale() ) );
+		this.setMarkerSpacing( Math.round( 15f * getScale() ) );
 		this.setTupletoSpacing( Math.round( 10f * getScale() ) );
 		this.setEffectSpacing( Math.round( 8f * getScale() ) );
 	}
@@ -383,6 +385,11 @@ public abstract class ViewLayout {
 		painter.setFont(getResources().getLyricFont());
 		painter.setBackground(getResources().getBackgroundColor());
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getResources().getColorBlack()) );
+	}
+
+	public void setMarkerStyle(TGPainter painter){
+		painter.setFont(getResources().getMarkerFont());
+		painter.setBackground(getResources().getBackgroundColor());
 	}
 	
 	public void setTextStyle(TGPainter painter){
@@ -708,6 +715,14 @@ public abstract class ViewLayout {
 	
 	public void setTextSpacing(int textSpacing) {
 		this.textSpacing = textSpacing;
+	}
+	
+	public int getMarkerSpacing() {
+		return this.markerSpacing;
+	}
+	
+	public void setMarkerSpacing(int markerSpacing) {
+		this.markerSpacing = markerSpacing;
 	}
 	
 	public int getEffectSpacing() {
