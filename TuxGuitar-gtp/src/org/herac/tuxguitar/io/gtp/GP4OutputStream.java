@@ -46,8 +46,8 @@ public class GP4OutputStream extends GTPOutputStream{
 	private static final int GP_BEND_SEMITONE = 25;
 	private static final int GP_BEND_POSITION = 60;
 	
-	public GP4OutputStream(){
-		super();
+	public GP4OutputStream(GTPSettings settings){
+		super(settings);
 	}
 	
 	public TGFileFormat getFileFormat(){
@@ -64,7 +64,7 @@ public class GP4OutputStream extends GTPOutputStream{
 				throw new TGFileFormatException("Empty Song!!!");
 			}
 			TGMeasureHeader header = song.getMeasureHeader(0);
-			writeStringByte(GP4_VERSION, 30);
+			writeStringByte(GP4_VERSION, 30, DEFAULT_VERSION_CHARSET);
 			writeInfo(song);
 			writeBoolean( (header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH) );
 			writeLyrics(song);

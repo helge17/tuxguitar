@@ -60,8 +60,8 @@ public class GP5OutputStream extends GTPOutputStream {
 		"Moderate",
 	};
 	
-	public GP5OutputStream() {
-		super();
+	public GP5OutputStream(GTPSettings settings) {
+		super(settings);
 	}
 	
 	public TGFileFormat getFileFormat(){
@@ -78,7 +78,7 @@ public class GP5OutputStream extends GTPOutputStream {
 				throw new TGFileFormatException("Empty Song!!!");
 			}
 			TGMeasureHeader header = song.getMeasureHeader(0);
-			writeStringByte(GP5_VERSION, 30);
+			writeStringByte(GP5_VERSION, 30, DEFAULT_VERSION_CHARSET);
 			writeInfo(song);
 			writeLyrics(song);
 			writePageSetup();

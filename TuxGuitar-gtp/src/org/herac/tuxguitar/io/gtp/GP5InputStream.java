@@ -37,8 +37,8 @@ public class GP5InputStream extends GTPInputStream implements TGInputStreamBase 
 	private static final float GP_BEND_SEMITONE = 25f;
 	private static final float GP_BEND_POSITION = 60f;
 	
-	public GP5InputStream() {
-		super(supportedVersions);
+	public GP5InputStream(GTPSettings settings) {
+		super(settings, supportedVersions);
 	}
 	
 	public TGFileFormat getFileFormat(){

@@ -6,20 +6,20 @@ import java.io.InputStream;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 
-public abstract class GTPInputStream implements TGInputStreamBase{
+public abstract class GTPInputStream extends GTPFileFormat implements TGInputStreamBase{
 	
 	private int versionIndex;
 	private String version;
 	private String[] versions;
-	private TGFactory factory;
 	private InputStream stream;
 	
-	public GTPInputStream(String[] versions){
+	public GTPInputStream(GTPSettings settings, String[] versions){
+		super(settings);
 		this.versions = versions;
 	}
 	
 	public void init(TGFactory factory,InputStream stream) {
-		this.factory = factory;
+		super.init(factory);
 		this.stream = stream;
 		this.version = null;
 	}
@@ -30,10 +30,6 @@ public abstract class GTPInputStream implements TGInputStreamBase{
 	
 	protected int getVersionIndex(){
 		return this.versionIndex;
-	}
-	
-	protected TGFactory getFactory(){
-		return this.factory;
 	}
 	
 	public boolean isSupportedVersion(String version) {
@@ -60,7 +56,7 @@ public abstract class GTPInputStream implements TGInputStreamBase{
 	protected void readVersion(){
 		try {
 			if(this.version == null){
-				this.version = readStringByte(30);
+				this.version = readStringByte(30, DEFAULT_VERSION_CHARSET);
 			}
 		} catch (IOException e) {
 			this.version = "NOT_SUPPORTED";
@@ -108,38 +104,59 @@ public abstract class GTPInputStream implements TGInputStreamBase{
 			   ((long) (bytes[3] & 0xff) << 24) | ((long) (bytes[2] & 0xff) << 16) | ((long) (bytes[1] & 0xff) << 8) | (bytes[0] & 0xff);
 	}
 	
-	protected String readString(int size, int len) throws IOException{
+	protected String readString(int size, int len, String charset) throws IOException{
 		byte[] bytes = new byte[ (size > 0?size:len) ];
 		this.stream.read(bytes);
-		return newString(bytes,(len >= 0?len:size));
+		return newString(bytes,(len >= 0?len:size), charset);
+	}
+	
+	protected String readString(int length, String charset) throws IOException{
+		return readString(length, length, charset);
 	}
 	
 	protected String readString(int length) throws IOException{
-		return readString(length, length);
+		return readString(length, getSettings().getCharset());
+	}
+	
+	protected String readStringInteger(String charset) throws IOException {
+		return readString( readInt(), charset);
 	}
 	
 	protected String readStringInteger() throws IOException {
-		return readString( readInt() );
+		return readStringInteger( getSettings().getCharset() );
+	}
+	
+	protected String readStringByte(int size, String charset) throws IOException {
+		return readString( size, readUnsignedByte(), charset);
 	}
 	
 	protected String readStringByte(int size) throws IOException {
-		return readString( size, readUnsignedByte() );
+		return readStringByte( size, getSettings().getCharset() );
+	}
+	
+	protected String readStringByteSizeOfByte(String charset) throws IOException {
+		return readStringByte( (readUnsignedByte() - 1), charset);
 	}
 	
 	protected String readStringByteSizeOfByte() throws IOException {
-		return readStringByte( (readUnsignedByte() - 1) );
+		return readStringByteSizeOfByte( getSettings().getCharset() );
+	}
+	
+	protected String readStringByteSizeOfInteger(String charset) throws IOException {
+		return readStringByte( (readInt() - 1), charset);
 	}
 	
 	protected String readStringByteSizeOfInteger() throws IOException {
-		return readStringByte( (readInt() - 1) );
+		return readStringByteSizeOfInteger( getSettings().getCharset() );
 	}
 	
-	private String newString(byte[] bytes, int length) {
-		char[] chars = new char[length];
-		for(int i = 0; i < chars.length; i++){
-			chars[i] = (char) (bytes[i] & 0xff);
+	private String newString(byte[] bytes, int length, String charset) {
+		try {
+			return new String(new String(bytes, 0, length, charset).getBytes(DEFAULT_TG_CHARSET), DEFAULT_TG_CHARSET);
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
-		return new String(chars);
+		return new String(bytes, 0, length);
 	}
 	
 	protected void close() throws IOException{

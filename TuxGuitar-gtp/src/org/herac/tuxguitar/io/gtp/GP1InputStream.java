@@ -47,8 +47,8 @@ public class GP1InputStream extends GTPInputStream implements TGInputStreamBase 
 	
 	private int trackCount;
 	
-	public GP1InputStream(){
-		super(SUPPORTED_VERSIONS);
+	public GP1InputStream(GTPSettings settings){
+		super(settings, SUPPORTED_VERSIONS);
 	}
 	
 	public TGFileFormat getFileFormat(){
