@@ -68,16 +68,16 @@ public class GTPSettingsUtil {
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
-		dialog.setText("Configuration");
+		dialog.setText(TuxGuitar.getProperty("gtp.settings.title"));
 		
 		//------------------DEVICE-----------------------
 		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		group.setLayout(new GridLayout(2,false));
 		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		group.setText("Charset Configuration");
+		group.setText(TuxGuitar.getProperty("gtp.settings.charset.tip"));
 		
 		final Label label = new Label(group,SWT.LEFT);
-		label.setText("Charset:");
+		label.setText(TuxGuitar.getProperty("gtp.settings.charset.select") + ":");
 		
 		final Combo value = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
 		value.setLayoutData(new GridData(250,SWT.DEFAULT));
