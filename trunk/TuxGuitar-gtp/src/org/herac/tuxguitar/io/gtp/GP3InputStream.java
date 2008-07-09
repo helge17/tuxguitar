@@ -41,8 +41,8 @@ public class GP3InputStream extends GTPInputStream implements TGInputStreamBase 
 	
 	private int tripletFeel;
 	
-	public GP3InputStream(){
-		super(SUPPORTED_VERSIONS);
+	public GP3InputStream(GTPSettings settings){
+		super(settings, SUPPORTED_VERSIONS);
 	}
 	
 	public TGFileFormat getFileFormat(){

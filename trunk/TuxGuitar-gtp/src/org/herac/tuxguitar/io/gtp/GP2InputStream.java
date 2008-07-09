@@ -46,8 +46,8 @@ public class GP2InputStream extends GTPInputStream implements TGInputStreamBase 
 		new short[]{9,9},
 	};
 	
-	public GP2InputStream(){
-		super(SUPPORTED_VERSIONS);
+	public GP2InputStream(GTPSettings settings){
+		super(settings, SUPPORTED_VERSIONS);
 	}
 	
 	public TGFileFormat getFileFormat(){

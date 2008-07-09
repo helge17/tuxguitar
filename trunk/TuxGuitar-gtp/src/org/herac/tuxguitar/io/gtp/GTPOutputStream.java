@@ -6,18 +6,17 @@ import java.io.OutputStream;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 
-public abstract class GTPOutputStream implements TGOutputStreamBase{
+public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputStreamBase{
 	
-	private TGFactory factory;
 	private OutputStream outputStream;
 	
-	public void init(TGFactory factory,OutputStream stream) {
-		this.factory = factory;
-		this.outputStream = stream;
+	public GTPOutputStream(GTPSettings settings){
+		super(settings);
 	}
 	
-	protected TGFactory getFactory(){
-		return this.factory;
+	public void init(TGFactory factory,OutputStream stream) {
+		super.init(factory);
+		this.outputStream = stream;
 	}
 	
 	protected void skipBytes(int count) throws IOException {
@@ -47,30 +46,42 @@ public abstract class GTPOutputStream implements TGOutputStreamBase{
 		this.outputStream.write(bytes);
 	}
 	
-	protected void writeString(char[] chars, int maximumLength) throws IOException {
-		int length = (maximumLength == 0 || maximumLength > chars.length ? chars.length : maximumLength );
+	protected void writeString(byte[] bytes, int maximumLength) throws IOException {
+		int length = (maximumLength == 0 || maximumLength > bytes.length ? bytes.length : maximumLength );
 		for(int i = 0 ; i < length; i ++){
-			this.outputStream.write( chars[ i ] );
+			this.outputStream.write( bytes[ i ] );
 		}
 	}
 	
-	protected void writeStringInteger(String string) throws IOException {
-		char[] chars = string.toCharArray();
-		this.writeInt( chars.length );
-		this.writeString( chars , 0 );
+	protected void writeStringInteger(String string, String charset) throws IOException {
+		byte[] bytes = string.getBytes(charset);
+		this.writeInt( bytes.length );
+		this.writeString( bytes , 0 );
 	}
 	
-	protected void writeStringByte(String string,int size) throws IOException {
-		char[] chars = string.toCharArray();
-		this.writeByte( (byte)( size == 0 || size > chars.length ? chars.length : size ));
-		this.writeString( chars , size );
-		this.skipBytes( size - chars.length );
+	protected void writeStringInteger(String string) throws IOException {
+		this.writeStringInteger(string, getSettings().getCharset());
+	}
+	
+	protected void writeStringByte(String string, int size, String charset) throws IOException {
+		byte[] bytes = string.getBytes(charset);
+		this.writeByte( (byte)( size == 0 || size > bytes.length ? bytes.length : size ));
+		this.writeString( bytes , size );
+		this.skipBytes( size - bytes.length );
+	}
+	
+	protected void writeStringByte(String string, int size) throws IOException {
+		this.writeStringByte(string, size, getSettings().getCharset());
+	}
+	
+	protected void writeStringByteSizeOfInteger(String string, String charset) throws IOException {
+		byte[] bytes = string.getBytes(charset);
+		this.writeInt( (bytes.length + 1) );
+		this.writeStringByte(string, bytes.length, charset);
 	}
 	
 	protected void writeStringByteSizeOfInteger(String string) throws IOException {
-		char[] chars = string.toCharArray();
-		this.writeInt( (chars.length + 1) );
-		this.writeStringByte(string,chars.length);
+		writeStringByteSizeOfInteger(string, getSettings().getCharset());
 	}
 	
 	protected void close() throws IOException{
