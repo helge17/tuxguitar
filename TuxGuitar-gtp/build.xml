@@ -7,7 +7,9 @@
 		
 	<property file="build.properties" />
 	<property name="build.src.path" value="src${file.separator}" />
+	<property name="build.share.path" value="share${file.separator}" />
 	<property name="build.path" value="build${file.separator}" />
+	<property name="build.cfg" value="tuxguitar-gtp.cfg" />
 	<property name="build.jar" value="tuxguitar-gtp.jar" />
 	
 	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
@@ -32,8 +34,15 @@
 			<include name="**/*.java"/>
 		</javac>
 		
+		<mkdir dir="${build.path}${file.separator}lang" />
+		<copy todir="${build.path}${file.separator}lang">
+			<fileset dir="${build.share.path}${file.separator}lang"/>
+		</copy>
+		
 		<mkdir dir="${build.path}/META-INF/services" />
 		<echo file="${build.path}/META-INF/services/${service.class}" append="false">${service.provider}</echo>
+		
+		<echo file="${build.path}/${build.cfg}" append="false">charset=${gtp.charset.default}</echo>
 		
 		<echo>+-----------------------------------------------+</echo>
 		<echo>|        P A C K A G I N G   P L U G I N        |</echo>
