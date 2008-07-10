@@ -128,7 +128,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeInt((lyricTrack == null)?0:lyricTrack.getLyrics().getFrom());
 		writeStringInteger((lyricTrack == null)?"":lyricTrack.getLyrics().getLyrics());
 		for (int i = 0; i < 4; i++) {
-			writeInt(0);
+			writeInt((lyricTrack == null)?0:1);
 			writeStringInteger("");
 		}
 	}
