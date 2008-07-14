@@ -29,11 +29,11 @@ public class TGBrowserDataImpl implements TGBrowserData{
 	}
 	
 	public String getPassword() {
-		return ((this.username != null && this.username.length() > 0)?this.password:"anonymous");
+		return ((this.username != null && this.username.length() > 0)?this.password:TGBrowserFTPClient.DEFAULT_USER_PASSWORD);
 	}
 	
 	public String getUsername() {
-		return ((this.username != null && this.username.length() > 0)?this.username:"anonymous");
+		return ((this.username != null && this.username.length() > 0)?this.username:TGBrowserFTPClient.DEFAULT_USER_NAME);
 	}
 	
 	public String getTitle(){
