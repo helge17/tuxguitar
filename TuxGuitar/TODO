@@ -52,6 +52,8 @@ TRANSLATIONS:
 *[falta] messages_zh.properties
 ========================================================= VERSION 2 =========================================================
 
+* Different "color chooser" buttons design. (they look horrible on MacOS )
+
 * Add more things to Song Properties: e.g: "Transcribed By"
 
 * Copy measure in another track (same tunning, different tunning)
