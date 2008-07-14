@@ -25,6 +25,14 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    loadDriver
+ * Signature: (JLjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_loadDriver
+  (JNIEnv *, jobject, jlong, jstring);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
  * Method:    loadFont
  * Signature: (JLjava/lang/String;)V
  */

@@ -27,6 +27,12 @@ public class MidiSynth {
 		}
 	}
 	
+	public void loadDriver(String name){
+		if(isInitialized()){
+			this.loadDriver(this.instance, name);
+		}
+	}
+	
 	public boolean isConnected(MidiPortImpl port){
 		return (port != null && this.loadedPort != null && this.loadedPort.equals( port ) );
 	}
@@ -85,6 +91,8 @@ public class MidiSynth {
 	private native long malloc();
 	
 	private native void free(long instance);
+	
+	private native void loadDriver(long instance, String driver);
 	
 	private native void loadFont(long instance, String path);
 	
