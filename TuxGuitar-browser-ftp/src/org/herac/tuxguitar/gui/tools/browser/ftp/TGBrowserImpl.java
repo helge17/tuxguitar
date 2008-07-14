@@ -1,8 +1,6 @@
 package org.herac.tuxguitar.gui.tools.browser.ftp;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +9,12 @@ import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserElement;
 
-import sun.net.ftp.FtpClient;
-
 public class TGBrowserImpl extends TGBrowser{
 	
 	private TGBrowserDataImpl data;
 	private String root; 
 	private String path; 
-	private FtpClient client;
+	private TGBrowserFTPClient client;
 	
 	public TGBrowserImpl(TGBrowserDataImpl data){
 		this.data = data;
@@ -29,6 +25,9 @@ public class TGBrowserImpl extends TGBrowser{
 			this.root = "/";
 			if(this.data.getPath() != null && this.data.getPath().length() > 0){
 				this.root = this.data.getPath();
+				if(this.root.indexOf("/") != 0){
+					this.root = ("/" + this.root);
+				}
 			}
 		}
 		return this.root;
@@ -36,8 +35,8 @@ public class TGBrowserImpl extends TGBrowser{
 	
 	public void open() throws TGBrowserException{
 		try {
-			this.client = new FtpClient();
-			this.client.openServer(this.data.getHost());
+			this.client = new TGBrowserFTPClient();
+			this.client.open(this.data.getHost(), TGBrowserFTPClient.DEFAULT_PORT);
 			this.client.login(this.data.getUsername(),this.data.getPassword());
 			this.cdRoot();
 		} catch (Throwable throwable) {
@@ -47,7 +46,7 @@ public class TGBrowserImpl extends TGBrowser{
 	
 	public void close() throws TGBrowserException{
 		try {
-			this.client.closeServer();
+			this.client.close();
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);
 		}
@@ -84,8 +83,9 @@ public class TGBrowserImpl extends TGBrowser{
 		List elements = new ArrayList();
 		try {
 			this.client.ascii();
-			String[] names = parseString(this.client.nameList(this.path)).split("\n");
-			String[] infos = parseString(this.client.list()).split("\n");
+			String[] names = this.client.listNames();
+			String[] infos = this.client.listDetails();
+			
 			if(names.length > 0 && infos.length > 0){
 				for(int i = 0;i < names.length;i++){
 					String name = names[i].trim();
@@ -114,7 +114,7 @@ public class TGBrowserImpl extends TGBrowser{
 			this.client.cd(path);
 			this.client.binary();
 			
-			byte[] bytes = getByteBuffer( this.client.get(element.getName()) , false );
+			byte[] bytes = this.client.get(element.getName());
 			
 			this.client.ascii();
 			
@@ -122,37 +122,5 @@ public class TGBrowserImpl extends TGBrowser{
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);
 		}
-	}
-	
-	private String parseString(InputStream in) throws TGBrowserException{
-		try {
-			byte[] bytes = getByteBuffer(in, true);
-			
-			return new String( bytes );
-		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
-		}
-	}
-	
-	private byte[] getByteBuffer(InputStream in, boolean checkAvailable) throws IOException{
-		if(!checkAvailable || in.available() > 0){
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			
-			int read = 0;
-			while((read = in.read()) != -1){
-				out.write(read);
-			}
-			
-			byte[] bytes = out.toByteArray();
-			
-			in.close();
-			out.close();
-			out.flush();
-			
-			return bytes;
-		}
-		in.close();
-		
-		return new byte[0];
 	}
 }
