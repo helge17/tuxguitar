@@ -36,6 +36,10 @@ public class MidiPortSettings {
 		return config;
 	}
 	
+	public String getDriver(){
+		return getConfig().getStringConfigValue("audio.driver");
+	}
+	
 	public List getSoundfonts(){
 		List ports = new ArrayList();
 		TGConfigManager config = getConfig();

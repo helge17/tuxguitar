@@ -19,7 +19,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth
 	
 	handle->settings = new_fluid_settings();
 	handle->synth = new_fluid_synth(handle->settings);
-	handle->driver = new_fluid_audio_driver(handle->settings,handle->synth);
+	handle->driver = NULL;
 	handle->soundfont_id = 0;
 	
 	fluid_synth_set_gain( handle->synth, 1.0 );
@@ -34,10 +34,33 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
-		delete_fluid_audio_driver(handle->driver);
-		delete_fluid_synth(handle->synth);
-		delete_fluid_settings(handle->settings);
+		if( handle->driver != NULL ){
+			delete_fluid_audio_driver(handle->driver);
+		}
+		if( handle->synth != NULL ){
+			delete_fluid_synth(handle->synth);
+		}
+		if( handle->settings != NULL ){
+			delete_fluid_settings(handle->settings);
+		}
 		free ( handle );
+	}
+}
+
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_loadDriver(JNIEnv* env, jobject obj, jlong ptr, jstring name)
+{
+	fluid_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL && handle->synth != NULL){
+		if( handle->driver != NULL ){
+			delete_fluid_audio_driver(handle->driver);
+		}
+		if( name != NULL ){
+			const jbyte *driver = (*env)->GetStringUTFChars(env, name, NULL);
+			fluid_settings_setstr(handle->settings, "audio.driver", (char*)driver);
+			(*env)->ReleaseStringUTFChars(env, name, driver);
+		}
+		handle->driver = new_fluid_audio_driver(handle->settings,handle->synth);
 	}
 }
 

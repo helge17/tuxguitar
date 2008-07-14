@@ -21,6 +21,7 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 		try{
 			if(this.synth == null || !this.synth.isInitialized()){
 				this.synth = new MidiSynth();
+				this.synth.loadDriver(getSettings().getDriver());
 			}
 			List ports = new ArrayList();
 			Iterator it = getSettings().getSoundfonts().iterator();
