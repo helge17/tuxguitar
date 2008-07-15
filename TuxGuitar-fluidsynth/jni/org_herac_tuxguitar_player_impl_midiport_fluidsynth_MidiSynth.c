@@ -68,7 +68,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 {
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
-	if(handle != NULL && handle->synth != NULL && handle->soundfont_id == 0){
+	if(handle != NULL && handle->synth != NULL && handle->soundfont_id <= 0){
 		const jbyte *font = (*env)->GetStringUTFChars(env, path, NULL);
 		handle->soundfont_id = fluid_synth_sfload(handle->synth, font, 1);
 		(*env)->ReleaseStringUTFChars(env, path, font);
@@ -139,5 +139,38 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->synth != NULL){
 		fluid_synth_pitch_bend(handle->synth, channel,  ((value * 128)));
+	}
+}
+
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_findDrivers(JNIEnv* env, jobject obj, jlong ptr)
+{
+	fluid_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL && handle->synth != NULL){
+		
+		typedef struct{
+			JNIEnv* env;
+			jobject obj;
+		}fluid_settings_foreach_option_data;
+		
+		void fluid_settings_foreach_option_callback(void *data, char *name, char *option)
+		{
+			fluid_settings_foreach_option_data* handle = (fluid_settings_foreach_option_data *)data;
+			
+			jstring driver = (*handle->env)->NewStringUTF(handle->env, option);
+			
+			//Add a new driver option to the java class
+			jclass cl = (*handle->env)->GetObjectClass(handle->env, handle->obj);
+			jmethodID mid = (*handle->env)->GetMethodID(handle->env, cl, "addDriver", "(Ljava/lang/String;)V");
+			if (mid != 0){
+				(*env)->CallVoidMethod(handle->env, handle->obj, mid,driver);
+			}
+		}
+		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc(sizeof(fluid_settings_foreach_option_data*));
+		data->env = env;
+		data->obj = obj;
+		
+		fluid_settings_foreach_option(handle->settings,"audio.driver", data, fluid_settings_foreach_option_callback );
+		free ( data );
 	}
 }
