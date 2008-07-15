@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MidiSynth {
 	
 	private static final String JNI_LIBRARY_NAME = new String("tuxguitar-fluidsynth-jni");
@@ -9,10 +12,12 @@ public class MidiSynth {
 	}
 	
 	private long instance;
+	private List drivers;
 	private MidiPortImpl loadedPort;
 	
 	public MidiSynth(){
 		this.instance = malloc();
+		this.drivers = new ArrayList();
 		this.loadedPort = null;
 	}
 	
@@ -25,6 +30,14 @@ public class MidiSynth {
 			this.free(this.instance);
 			this.instance = 0;
 		}
+	}
+	
+	public List getDrivers(){
+		this.drivers.clear();
+		if(isInitialized()){
+			this.findDrivers(this.instance);
+		}
+		return this.drivers;
 	}
 	
 	public void loadDriver(String name){
@@ -88,9 +101,15 @@ public class MidiSynth {
 		}
 	}
 	
+	protected void addDriver(String name){
+		this.drivers.add(name);
+	}
+	
 	private native long malloc();
 	
 	private native void free(long instance);
+	
+	private native void findDrivers(long instance);
 	
 	private native void loadDriver(long instance, String driver);
 	

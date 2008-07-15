@@ -19,17 +19,13 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 	
 	public List listPorts() throws MidiPlayerException {
 		try{
-			if(this.synth == null || !this.synth.isInitialized()){
-				this.synth = new MidiSynth();
-				this.synth.loadDriver(getSettings().getDriver());
-			}
 			List ports = new ArrayList();
 			Iterator it = getSettings().getSoundfonts().iterator();
 			while(it.hasNext()){
 				String path = (String)it.next();
 				File soundfont = new File( path );
 				if( soundfont.exists() && !soundfont.isDirectory() ){
-					ports.add( new MidiPortImpl(this.synth, soundfont ) );
+					ports.add( new MidiPortImpl( getSynth(), soundfont ) );
 				}
 			}
 			return ports;
@@ -49,9 +45,17 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 		}
 	}
 	
+	public MidiSynth getSynth(){
+		if(this.synth == null || !this.synth.isInitialized()){
+			this.synth = new MidiSynth();
+			this.synth.loadDriver(getSettings().getDriver());
+		}
+		return this.synth;
+	}
+	
 	public MidiPortSettings getSettings(){
 		if(this.settings == null){
-			this.settings = new MidiPortSettings();
+			this.settings = new MidiPortSettings( this );
 		}
 		return this.settings;
 	}
