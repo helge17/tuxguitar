@@ -162,6 +162,7 @@ public class LilypondOutputStream {
 				previous = measure;
 			}
 		}
+		this.writer.println(indent(1) + "\\bar \"|.\"");
 		this.writer.println(indent(1) + "\\pageBreak");
 		this.writer.println("#})");
 	}
