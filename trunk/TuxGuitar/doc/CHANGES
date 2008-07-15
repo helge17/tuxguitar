@@ -1,6 +1,7 @@
 TuxGuitar changes:
 
 * Fix jre1.4 support bug
-* Fix Mixer bug
+* Fix mixer bug
+* Display markers on the score 
 * Encoding option on GTP Plugin added
 * Support for non-sun JVM on FTP Browser plugin added
