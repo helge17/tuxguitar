@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.gui.marker;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.undo.undoables.UndoableJoined;
 import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeMarker;
 import org.herac.tuxguitar.gui.util.DialogUtils;
@@ -39,6 +38,7 @@ public class MarkerEditor {
 	protected Spinner measureSpinner;
 	protected Text titleText;
 	protected Button colorButton;
+	protected Color colorButtonValue;
 	
 	protected boolean accepted;
 	
@@ -100,6 +100,7 @@ public class MarkerEditor {
 		colorLabel.setText(TuxGuitar.getProperty("color"));
 		this.colorButton = new Button(group, SWT.PUSH);
 		this.colorButton.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
+		this.colorButton.setText(TuxGuitar.getProperty("choose"));
 		this.colorButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				ColorDialog dlg = new ColorDialog(MarkerEditor.this.dialog);
@@ -110,21 +111,17 @@ public class MarkerEditor {
 					MarkerEditor.this.marker.getColor().setR(rgb.red);
 					MarkerEditor.this.marker.getColor().setG(rgb.green);
 					MarkerEditor.this.marker.getColor().setB(rgb.blue);
-					MarkerEditor.this.colorButton.redraw();
+					MarkerEditor.this.setButtonColor();
 				}
 			}
 		});
-		this.colorButton.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				Color color = new Color(MarkerEditor.this.dialog.getDisplay(), MarkerEditor.this.marker.getColor().getR(), MarkerEditor.this.marker.getColor().getG(), MarkerEditor.this.marker.getColor().getB());
-				TGPainter painter = new TGPainter(e.gc);
-				painter.setBackground(color);
-				painter.initPath(TGPainter.PATH_FILL);
-				painter.addRectangle(5,5,MarkerEditor.this.colorButton.getSize().x - 10,MarkerEditor.this.colorButton.getSize().y - 10);
-				painter.closePath();
-				color.dispose();
+		this.colorButton.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				MarkerEditor.this.disposeButtonColor();
 			}
 		});
+		this.setButtonColor();
+		
 		// ------------------BUTTONS--------------------------
 		Composite buttons = new Composite(this.dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2, false));
@@ -169,6 +166,21 @@ public class MarkerEditor {
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
 		return data;
+	}
+	
+	protected void setButtonColor(){
+		Color color = new Color(this.dialog.getDisplay(), this.marker.getColor().getR(), this.marker.getColor().getG(), this.marker.getColor().getB());
+		
+		this.colorButton.setForeground( color );
+		this.disposeButtonColor();
+		this.colorButtonValue = color;
+	}
+	
+	protected void disposeButtonColor(){
+		if(this.colorButtonValue != null && !this.colorButtonValue.isDisposed()){
+			this.colorButtonValue.dispose();
+			this.colorButtonValue = null;
+		}
 	}
 	
 	protected void updateMarker() {

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TypedEvent;
@@ -30,13 +30,12 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.undo.undoables.UndoableJoined;
+import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackGeneric;
 import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackInfo;
 import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackInstrument;
-import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackGeneric;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.player.base.MidiInstrument;
@@ -72,6 +71,7 @@ public class TrackPropertiesAction extends Action {
 	protected int stringCount;
 	protected Combo instrumentCombo;
 	protected Button percussionCheckBox;
+	protected Color colorButtonValue;
 	
 	public TrackPropertiesAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
@@ -169,6 +169,7 @@ public class TrackPropertiesAction extends Action {
 		
 		final Button colorButton = new Button(bottom, SWT.PUSH);
 		colorButton.setLayoutData(getAlignmentData(MINIMUN_LEFT_CONTROLS_WIDTH,SWT.FILL));
+		colorButton.setText(TuxGuitar.getProperty("choose"));
 		colorButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				ColorDialog dlg = new ColorDialog(TrackPropertiesAction.this.dialog);
@@ -179,22 +180,16 @@ public class TrackPropertiesAction extends Action {
 					TrackPropertiesAction.this.trackColor.setR(rgb.red);
 					TrackPropertiesAction.this.trackColor.setG(rgb.green);
 					TrackPropertiesAction.this.trackColor.setB(rgb.blue);
-					colorButton.redraw();
+					TrackPropertiesAction.this.setButtonColor(colorButton);
 				}
 			}
 		});
-		colorButton.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				Color color = new Color(TrackPropertiesAction.this.dialog.getDisplay(), TrackPropertiesAction.this.trackColor.getR(), TrackPropertiesAction.this.trackColor.getG(), TrackPropertiesAction.this.trackColor.getB());
-				TGPainter painter = new TGPainter(e.gc);
-				painter.setBackground(color);
-				painter.initPath(TGPainter.PATH_FILL);
-				painter.addRectangle(5,5,colorButton.getSize().x - 10,colorButton.getSize().y - 10);
-				painter.closePath();
-				color.dispose();
+		colorButton.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				TrackPropertiesAction.this.disposeButtonColor();
 			}
 		});
-		
+		this.setButtonColor(colorButton);
 	}
 	
 	private void initTuningInfo(Composite composite,TGTrackImpl track) {
@@ -451,6 +446,20 @@ public class TrackPropertiesAction extends Action {
 	
 	protected boolean hasInstrumentChanges(TGTrackImpl track,int instrument,boolean percussion){
 		return ((track.getChannel().getInstrument() != instrument) || (track.isPercussionTrack() != percussion));
+	}
+	
+	protected void setButtonColor(Button button){
+		Color color = new Color(this.dialog.getDisplay(), this.trackColor.getR(), this.trackColor.getG(), this.trackColor.getB());
+		button.setForeground( color );
+		this.disposeButtonColor();
+		this.colorButtonValue = color;
+	}
+	
+	protected void disposeButtonColor(){
+		if(this.colorButtonValue != null && !this.colorButtonValue.isDisposed()){
+			this.colorButtonValue.dispose();
+			this.colorButtonValue = null;
+		}
 	}
 	
 	protected void updateTuningGroup(boolean enabled) {

@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.gui.system.config.items;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -17,14 +17,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.config.TGConfigEditor;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 
 public class StylesOption extends Option{
 	private static final int BUTTON_WIDTH = 200;
-	private static final int BUTTON_HEIGHT =0;// 25;
+	private static final int BUTTON_HEIGHT = 0;
 	
 	protected boolean initialized;
 	protected FontData defaultFontData;
@@ -38,11 +37,6 @@ public class StylesOption extends Option{
 	protected FontData printerTextFontData;
 	protected FontData printerLyricFontData;
 	
-	protected RGB scoreNoteRGB;
-	protected RGB tabNoteRGB;
-	protected RGB playNoteRGB;
-	protected RGB linesRGB;
-	
 	protected Button defaultFontButton;
 	protected Button noteFontButton;
 	protected Button timeSignatureFontButton;
@@ -55,10 +49,10 @@ public class StylesOption extends Option{
 	protected Button printerTextFontButton;
 	protected Button printerLyricFontButton;
 	
-	protected Button scoreNoteColorButton;
-	protected Button tabNoteColorButton;
-	protected Button playNoteColorButton;
-	protected Button linesColorButton;
+	protected ButtonColor scoreNoteColorButton;
+	protected ButtonColor tabNoteColorButton;
+	protected ButtonColor playNoteColorButton;
+	protected ButtonColor linesColorButton;
 	
 	public StylesOption(TGConfigEditor configEditor,ToolBar toolBar,final Composite parent){
 		super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.styles"));
@@ -73,10 +67,6 @@ public class StylesOption extends Option{
 		this.printerTSFontData = new FontData();
 		this.printerTextFontData = new FontData();
 		this.printerLyricFontData = new FontData();
-		this.scoreNoteRGB = new RGB(0,0,0);
-		this.tabNoteRGB = new RGB(0,0,0);
-		this.playNoteRGB = new RGB(0,0,0);
-		this.linesRGB = new RGB(0,0,0);
 	}
 	
 	public void createOption(){
@@ -117,24 +107,16 @@ public class StylesOption extends Option{
 		this.addFontButtonListeners(this.timeSignatureFontButton,this.timeSignatureFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.score-note"));
-		this.scoreNoteColorButton = new Button(composite, SWT.PUSH);
-		this.scoreNoteColorButton.setLayoutData(makeButtonData());
-		addColorButtonListeners(this.scoreNoteColorButton, this.scoreNoteRGB);
+		this.scoreNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.tab-note"));
-		this.tabNoteColorButton = new Button(composite, SWT.PUSH);
-		this.tabNoteColorButton.setLayoutData(makeButtonData());
-		addColorButtonListeners(this.tabNoteColorButton, this.tabNoteRGB);
+		this.tabNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.play-note"));
-		this.playNoteColorButton = new Button(composite, SWT.PUSH);
-		this.playNoteColorButton.setLayoutData(makeButtonData());
-		addColorButtonListeners(this.playNoteColorButton, this.playNoteRGB);
+		this.playNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.lines"));
-		this.linesColorButton = new Button(composite, SWT.PUSH);
-		this.linesColorButton.setLayoutData(makeButtonData());
-		addColorButtonListeners(this.linesColorButton, this.linesRGB);
+		this.linesColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
 		
 		//=================================================== PRINTER STYLES ===================================================//
 		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.styles.printer"));
@@ -189,41 +171,13 @@ public class StylesOption extends Option{
 		});
 	}
 	
-	private void addColorButtonListeners(final Button button, final RGB rgb){
-		button.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				Color color = new Color(getDisplay(), rgb);
-				TGPainter painter = new TGPainter(e.gc);
-				painter.setBackground(color);
-				painter.initPath(TGPainter.PATH_FILL);
-				painter.addRectangle(5,5,button.getSize().x - 10,button.getSize().y - 10);
-				painter.closePath();
-				color.dispose();
-			}
-		});
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				if(StylesOption.this.initialized){
-					ColorDialog dlg = new ColorDialog(getShell());
-					dlg.setRGB(rgb);
-					dlg.setText(TuxGuitar.getProperty("choose-color"));
-					RGB result = dlg.open();
-					if (result != null) {
-						loadColor(result, rgb, button);
-					}
-				}
-			}
-		});
-	}
-	
 	protected void loadFontData(FontData src, FontData dst, Button button){
 		copyFontData(src, dst);
 		setButtonFontData(button, dst);
 	}
 	
-	protected void loadColor(RGB src, RGB dst, Button button){
-		copyRGB(src, dst);
-		button.redraw();
+	protected void loadColor(ButtonColor button, RGB rgb){
+		button.loadColor(rgb);
 	}
 	
 	protected void setButtonFontData(Button button,FontData fontData) {
@@ -280,11 +234,10 @@ public class StylesOption extends Option{
 							loadFontData(printerTSFontData,StylesOption.this.printerTSFontData,StylesOption.this.printerTSFontButton);
 							loadFontData(printerTextFontData,StylesOption.this.printerTextFontData,StylesOption.this.printerTextFontButton);
 							loadFontData(printerLyricFontData,StylesOption.this.printerLyricFontData,StylesOption.this.printerLyricFontButton);
-							loadColor(scoreNoteRGB, StylesOption.this.scoreNoteRGB, StylesOption.this.scoreNoteColorButton);
-							loadColor(tabNoteRGB, StylesOption.this.tabNoteRGB, StylesOption.this.tabNoteColorButton);
-							loadColor(playNoteRGB, StylesOption.this.playNoteRGB, StylesOption.this.playNoteColorButton);
-							loadColor(linesRGB, StylesOption.this.linesRGB, StylesOption.this.linesColorButton);
-							
+							StylesOption.this.scoreNoteColorButton.loadColor(scoreNoteRGB);
+							StylesOption.this.tabNoteColorButton.loadColor(tabNoteRGB);
+							StylesOption.this.playNoteColorButton.loadColor(playNoteRGB);
+							StylesOption.this.linesColorButton.loadColor(linesRGB);
 							StylesOption.this.initialized = true;
 							StylesOption.this.pack();
 						}
@@ -313,10 +266,10 @@ public class StylesOption extends Option{
 			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE,this.printerTSFontData);
 			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_TEXT,this.printerTextFontData);
 			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_LYRIC,this.printerLyricFontData);
-			getConfig().setProperty(TGConfigKeys.COLOR_SCORE_NOTE,this.scoreNoteRGB);
-			getConfig().setProperty(TGConfigKeys.COLOR_TAB_NOTE,this.tabNoteRGB);
-			getConfig().setProperty(TGConfigKeys.COLOR_PLAY_NOTE,this.playNoteRGB);
-			getConfig().setProperty(TGConfigKeys.COLOR_LINE,this.linesRGB);
+			getConfig().setProperty(TGConfigKeys.COLOR_SCORE_NOTE,this.scoreNoteColorButton.getValue());
+			getConfig().setProperty(TGConfigKeys.COLOR_TAB_NOTE,this.tabNoteColorButton.getValue());
+			getConfig().setProperty(TGConfigKeys.COLOR_PLAY_NOTE,this.playNoteColorButton.getValue());
+			getConfig().setProperty(TGConfigKeys.COLOR_LINE,this.linesColorButton.getValue());
 		}
 	}
 	
@@ -346,6 +299,63 @@ public class StylesOption extends Option{
 					TuxGuitar.instance().loadStyles();
 				}
 			});
+		}
+	}
+	
+	private class ButtonColor {
+		protected Button button;
+		protected Color color;
+		protected RGB value;
+		
+		public ButtonColor(Composite parent, int style, Object layoutData, String text){
+			this.value = new RGB(0,0,0);
+			this.button = new Button(parent, style);
+			this.button.setLayoutData(layoutData);
+			this.button.setText(text);
+			this.addListeners();
+		}
+		
+		protected void loadColor(RGB rgb){
+			this.value.red = rgb.red;
+			this.value.green = rgb.green;
+			this.value.blue = rgb.blue;
+			
+			Color color = new Color(this.button.getDisplay(), this.value);
+			this.button.setForeground(color);
+			this.disposeColor();
+			this.color = color;
+		}
+		
+		protected void disposeColor(){
+			if(this.color != null && !this.color.isDisposed()){
+				this.color.dispose();
+				this.color = null;
+			}
+		}
+		
+		private void addListeners(){
+			this.button.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent event) {
+					if(StylesOption.this.initialized){
+						ColorDialog dlg = new ColorDialog(getShell());
+						dlg.setRGB(ButtonColor.this.value);
+						dlg.setText(TuxGuitar.getProperty("choose-color"));
+						RGB result = dlg.open();
+						if (result != null) {
+							ButtonColor.this.loadColor(result);
+						}
+					}
+				}
+			});
+			this.button.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					ButtonColor.this.disposeColor();
+				}
+			});
+		}
+		
+		protected RGB getValue(){
+			return this.value;
 		}
 	}
 }
