@@ -3,8 +3,8 @@ package org.herac.tuxguitar.gui.editors.fretboard;
 import java.util.Properties;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 import org.herac.tuxguitar.gui.util.DialogUtils;
@@ -216,41 +215,15 @@ public class FretBoardConfig {
 	}
 	
 	private RGB getColorChooser(final Composite parent,String title,RGB rgb){
-		final RGB selection = new RGB(rgb.red,rgb.green,rgb.blue);
-		
 		Label label = new Label(parent, SWT.NULL);
 		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
 		label.setText(title);
 		
-		final Button button = new Button(parent, SWT.PUSH);
+		ButtonColor button = new ButtonColor(parent, SWT.PUSH, TuxGuitar.getProperty("choose"));
 		button.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
-		button.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				Color color = new Color(parent.getDisplay(), selection);
-				TGPainter painter = new TGPainter(e.gc);
-				painter.setBackground(color);
-				painter.initPath(TGPainter.PATH_FILL);
-				painter.addRectangle(5,5,button.getSize().x - 10,button.getSize().y - 10);
-				painter.closePath();
-				color.dispose();
-			}
-		});
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				ColorDialog dlg = new ColorDialog(parent.getShell());
-				dlg.setRGB(selection);
-				dlg.setText(TuxGuitar.getProperty("choose-color"));
-				RGB rgb = dlg.open();
-				if (rgb != null) {
-					selection.red = rgb.red;
-					selection.green = rgb.green;
-					selection.blue = rgb.blue;
-					button.redraw();
-				}
-			}
-		});
+		button.loadColor(rgb);
 		
-		return selection;
+		return button.getValue();
 	}
 	
 	private FontData getFontChooser(final Composite parent,String title,FontData fontData){
@@ -288,5 +261,63 @@ public class FretBoardConfig {
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
 		return data;
+	}
+	
+	private class ButtonColor {
+		protected Button button;
+		protected Color color;
+		protected RGB value;
+		
+		public ButtonColor(Composite parent, int style, String text){
+			this.value = new RGB(0,0,0);
+			this.button = new Button(parent, style);			
+			this.button.setText(text);
+			this.addListeners();
+		}
+		
+		protected void setLayoutData(Object layoutData){
+			this.button.setLayoutData(layoutData);
+		}
+		
+		protected void loadColor(RGB rgb){
+			this.value.red = rgb.red;
+			this.value.green = rgb.green;
+			this.value.blue = rgb.blue;
+			
+			Color color = new Color(this.button.getDisplay(), this.value);
+			this.button.setForeground(color);
+			this.disposeColor();
+			this.color = color;
+		}
+		
+		protected void disposeColor(){
+			if(this.color != null && !this.color.isDisposed()){
+				this.color.dispose();
+				this.color = null;
+			}
+		}
+		
+		private void addListeners(){
+			this.button.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent event) {
+					ColorDialog dlg = new ColorDialog(ButtonColor.this.button.getShell());
+					dlg.setRGB(ButtonColor.this.value);
+					dlg.setText(TuxGuitar.getProperty("choose-color"));
+					RGB result = dlg.open();
+					if (result != null) {
+						ButtonColor.this.loadColor(result);
+					}
+				}
+			});
+			this.button.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					ButtonColor.this.disposeColor();
+				}
+			});
+		}
+		
+		protected RGB getValue(){
+			return this.value;
+		}
 	}
 }
