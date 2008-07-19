@@ -26,7 +26,7 @@ type 'ant -Ddist.version=mac
 
 ------------------------ CoreAudio plugin ---------------------
 cd into TuxGuitar-CoreAudio
-Open build.properties and edit it so it has the right path to the TuxGuitar directory where you built from source.
+Open build.properties and edit it so it has the right path to the TuxGuitar directory where you built from source (from SVN checkout no edit necessary).
 type 'ant'
 
 To install, follow above procedure.
