@@ -330,7 +330,11 @@ public class TGMixerTrack {
 			this.shell.setLayout(getGridLayout());
 			this.shell.addShellListener(new ShellAdapter() {
 				public void shellDeactivated(ShellEvent e) {
-					onShellDeactivated();
+					hideShell();
+				}
+				public void shellClosed(ShellEvent e) {
+					e.doit = false;
+					hideShell();
 				}
 			});
 			
@@ -341,7 +345,7 @@ public class TGMixerTrack {
 			this.item = new Button(parent, SWT.PUSH);
 			this.item.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
-					onItemSelect();
+					showSelect();
 				}
 			});
 			
@@ -375,7 +379,7 @@ public class TGMixerTrack {
 			}
 		}
 		
-		public void onItemSelect() {
+		public void showSelect() {
 			if(!this.shell.isVisible()){
 				Rectangle bounds = this.item.getBounds();
 				Point location = this.item.getParent().toDisplay(new Point(bounds.x, bounds.y));
@@ -387,7 +391,7 @@ public class TGMixerTrack {
 			}
 		}
 		
-		public void onShellDeactivated() {
+		public void hideShell() {
 			this.shell.setVisible(false);
 		}
 	}
