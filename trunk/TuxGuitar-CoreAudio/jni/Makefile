@@ -13,10 +13,10 @@ FILENAME = org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI.cp
 
 all:	$(LIBRARY)
 
-$(LIBRARY):	$(OBJECT)
+$(LIBRARY):	clean
 	g++ $(INCLUDES) -isysroot $(SDK) -arch ppc $(LIBRARIES) -msse -dynamiclib -o ppc_$(LIBRARY) $(FILENAME)
 	g++ $(INCLUDES) -isysroot $(SDK) -arch i386 $(LIBRARIES) -msse -dynamiclib -o intel_$(LIBRARY) $(FILENAME)
 	lipo -create ppc_$(LIBRARY) intel_$(LIBRARY) -output $(LIBRARY)
-	rm ppc_$(LIBRARY) intel_$(LIBRARY)
 
 clean:
+	rm -f ppc_$(LIBRARY) intel_$(LIBRARY) $(LIBRARY)
