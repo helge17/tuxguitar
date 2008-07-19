@@ -21,8 +21,9 @@ open menu 'Tools > Settings' and select midi port 'CoreAudio' in the 'Sound' sec
 ----------------------- Building TuxGuitar itself -----------------------
 
 get itext and swt libs, place them in a 'lib' folder
+edit 'build.properties' to have mac settings and not linux settings
 cd into TuxGuitar source
-type 'ant -Ddist.version=mac
+type 'ant'
 
 ------------------------ CoreAudio plugin ---------------------
 cd into TuxGuitar-CoreAudio
