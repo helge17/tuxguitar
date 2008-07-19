@@ -5,8 +5,9 @@
 //#include <CoreServices/CoreServices.h> //for file stuff
 #include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h> //for AUGraph
+#include <Carbon/Carbon.h>
 
-//#include <iostream>
+#include <iostream>
 
 // ------------------------------------------------------------------------------------------------
 
@@ -127,12 +128,13 @@ home:
 
 void controlChange(int channel, int controller, int value)
 {
+    /*
 	// ignore these values, they mess up playback. i have no idea why TuxGuitar sends them or what they are supposed to do.
 	if(controller==100 or controller==101)
 	{
 		return;
 	}
-	
+	*/
 	OSStatus result;
 	UInt32 controlChange = kMidiMessage_ControlChange << 4 | channel;
 	
@@ -144,15 +146,10 @@ home:
 
 void pitchBend(int channel, short value)
 {
-	value+=(short)0x2000;	// center value
-    unsigned char byte1=(unsigned char)(value & 0x7f); // 7 bit bytes
-    unsigned char byte2=(unsigned char)( (value >> 7 ) & 0x7f );
-	
 	OSStatus result;
 	UInt32 pitchChange = kMidiMessage_PitchBend << 4 | channel;
-	
-	require_noerr (result = MusicDeviceMIDIEvent(synthUnit, pitchChange, byte1, byte2, 0), home);
-	
+
+	require_noerr (result = MusicDeviceMIDIEvent(synthUnit, pitchChange, 0, value, 0), home);
 home:
 		return;
 }
@@ -245,6 +242,6 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_M
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_pitchBend(JNIEnv* env, jobject ojb, jint channel, jint value)
 {
-	pitchBend(channel, ((value * 127) - 8191));
+	pitchBend(channel, value);
 
 }
