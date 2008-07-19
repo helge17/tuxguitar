@@ -1,12 +1,18 @@
-tuxguitar-snapshot (0.0.20080625-0ubuntu0~rzr7) intrepid; urgency=low
+tuxguitar-snapshot (0.0.20080704-0ubuntu0~rzr10) gutsy; urgency=low
 
+  * WIP: rzr.online.fr/q/tuxguitar
+
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 18 Jul 2008 01:30:45 +0200
+
+tuxguitar-snapshot (0.0.20080704-0ubuntu0~rzr1) intrepid; urgency=low
+	
   * Updating from scm
   * WIP: rzr.online.fr/q/tuxguitar
   * WIP: todo add converter plugin, gcj; java-gcj-compat-dev
   * FIX: desktop (LP: #197367)
   * TODO: browser, ftp, convert
 
- -- Philippe Coval <rzr@users.sf.net>  Wed, 25 Jun 2008 20:32:04 +0200
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 04 Jul 2008 23:46:30 +0200
 
 tuxguitar (1.0-1) unstable; urgency=low
 
