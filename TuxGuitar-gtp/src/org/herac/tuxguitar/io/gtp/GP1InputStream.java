@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -28,7 +27,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class GP1InputStream extends GTPInputStream implements TGInputStreamBase {
+public class GP1InputStream extends GTPInputStream {
 	
 	private static final String SUPPORTED_VERSIONS[] = new String[]{
 		"FICHIER GUITARE PRO v1", "FICHIER GUITARE PRO v1.01","FICHIER GUITARE PRO v1.02", "FICHIER GUITARE PRO v1.03","FICHIER GUITARE PRO v1.04"

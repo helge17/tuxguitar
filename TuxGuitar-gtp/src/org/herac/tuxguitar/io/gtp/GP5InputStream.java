@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -32,7 +31,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
-public class GP5InputStream extends GTPInputStream implements TGInputStreamBase {
+public class GP5InputStream extends GTPInputStream {
 	private static final String supportedVersions[] = { "FICHIER GUITAR PRO v5.00","FICHIER GUITAR PRO v5.10"};
 	private static final float GP_BEND_SEMITONE = 25f;
 	private static final float GP_BEND_POSITION = 60f;
