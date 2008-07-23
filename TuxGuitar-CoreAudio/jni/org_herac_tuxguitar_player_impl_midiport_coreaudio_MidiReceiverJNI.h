@@ -25,14 +25,6 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_M
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_alsa_MidiReceiverJNI
- * Method:    findDevices
- * Signature: ()V
- */
-//JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_findDevices
-//  (JNIEnv *, jobject);
-
-/*
- * Class:     org_herac_tuxguitar_player_impl_midiport_alsa_MidiReceiverJNI
  * Method:    openDevice
  * Signature: (II)V
  */
