@@ -82,7 +82,7 @@ public class TGBrowserImpl extends TGBrowser{
 	public List listElements() throws TGBrowserException {
 		List elements = new ArrayList();
 		try {
-			this.client.ascii();
+			this.client.binary();
 			String[] names = this.client.listNames();
 			String[] infos = this.client.listDetails();
 			
@@ -90,15 +90,19 @@ public class TGBrowserImpl extends TGBrowser{
 				for(int i = 0;i < names.length;i++){
 					String name = names[i].trim();
 					
-					if(name.indexOf(this.path) == 0 && name.length() > (this.path.length() + 2)){
-						name = name.substring(this.path.length() + 1);
+					if(name.indexOf(this.path) == 0 && name.length() > this.path.length()){
+						name = name.substring(this.path.length());
 					}
-					
-					for(int j = 0;j < infos.length;j++){
-						String info = infos[j].trim();
-						if(info.indexOf(name) > 0){
-							elements.add(new TGBrowserElementImpl(this,name,info,this.path));
-							break;
+					while(name.indexOf("/") == 0){
+						name = name.substring(1);
+					}
+					if( name.length() > 0 ){
+						for(int j = 0;j < infos.length;j++){
+							String info = infos[j].trim();
+							if(info.indexOf(name) > 0){
+								elements.add(new TGBrowserElementImpl(this,name,info,this.path));
+								break;
+							}
 						}
 					}
 				}
@@ -115,8 +119,6 @@ public class TGBrowserImpl extends TGBrowser{
 			this.client.binary();
 			
 			byte[] bytes = this.client.get(element.getName());
-			
-			this.client.ascii();
 			
 			return new ByteArrayInputStream( bytes );
 		} catch (Throwable throwable) {
