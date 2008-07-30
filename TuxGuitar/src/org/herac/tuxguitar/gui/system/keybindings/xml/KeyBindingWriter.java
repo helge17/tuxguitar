@@ -22,10 +22,11 @@ import org.w3c.dom.Node;
 
 public class KeyBindingWriter {
 	
-	private static final String SHORTCUTS_TAG = "shortcuts";
+	private static final String SHORTCUT_ROOT = "shortcuts";
 	private static final String SHORTCUT_TAG = "shortcut";
-	private static final String ACTION_ATTRIBUTE = "action";
-	private static final String KEYS_ATTRIBUTE = "keys";
+	private static final String SHORTCUT_ATTRIBUTE_ACTION = "action";
+	private static final String SHORTCUT_ATTRIBUTE_KEY = "key";
+	private static final String SHORTCUT_ATTRIBUTE_MASK = "mask";
 	
 	public static void setBindings(List list,String fileName) {
 		try{
@@ -73,7 +74,7 @@ public class KeyBindingWriter {
 	 * @return
 	 */
 	private static void setBindings(List list,Document document){
-		Node shortcutsNode = document.createElement(SHORTCUTS_TAG);
+		Node shortcutsNode = document.createElement(SHORTCUT_ROOT);
 		
 		Iterator it = list.iterator();
 		while(it.hasNext()){
@@ -82,14 +83,17 @@ public class KeyBindingWriter {
 			Node node = document.createElement(SHORTCUT_TAG);
 			shortcutsNode.appendChild(node);
 			
-			Attr keyAttr = document.createAttribute(KEYS_ATTRIBUTE);
-			Attr ActionAttr = document.createAttribute(ACTION_ATTRIBUTE);
+			Attr attrKey = document.createAttribute(SHORTCUT_ATTRIBUTE_KEY);
+			Attr attrMask = document.createAttribute(SHORTCUT_ATTRIBUTE_MASK);
+			Attr attrAction = document.createAttribute(SHORTCUT_ATTRIBUTE_ACTION);
 			
-			keyAttr.setNodeValue(keyBindingAction.getKeyBinding().toString());
-			ActionAttr.setNodeValue(keyBindingAction.getAction());
+			attrKey.setNodeValue(Integer.toString(keyBindingAction.getKeyBinding().getKey()));
+			attrMask.setNodeValue(Integer.toString(keyBindingAction.getKeyBinding().getMask()));
+			attrAction.setNodeValue(keyBindingAction.getAction());
 			
-			node.getAttributes().setNamedItem(keyAttr);
-			node.getAttributes().setNamedItem(ActionAttr);
+			node.getAttributes().setNamedItem(attrKey);
+			node.getAttributes().setNamedItem(attrMask);
+			node.getAttributes().setNamedItem(attrAction);
 		}
 		document.appendChild(shortcutsNode);
 	}
