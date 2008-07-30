@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.gui.system.keybindings;
 
-import java.util.StringTokenizer;
-
 public class KeyBinding {
 	
 	public static final String MASK_SEPARATOR = "+";
@@ -40,7 +38,6 @@ public class KeyBinding {
 				return KeyConversion.relations[i].getKey();
 			}
 		}
-		
 		return null;
 	}
 	
@@ -70,54 +67,6 @@ public class KeyBinding {
 	public Object clone(){
 		return new KeyBinding(getKey(),getMask());
 	}
-	
-	public static KeyBinding parse(String keyString){
-		KeyBinding keybinding = new KeyBinding();
-		
-		// process mask
-		int maskCode=0;
-		String key = keyString;
-		if (keyString.indexOf(MASK_SEPARATOR)!= -1){
-			StringTokenizer st = new StringTokenizer(keyString,MASK_SEPARATOR);
-			while(st.hasMoreTokens()){
-				String token = st.nextToken();
-				
-				// only process if this is not the last token
-				if (st.hasMoreTokens()){
-					// add the mask
-					maskCode |= getSpecialCode(token);
-				}
-				else {
-					key = token;
-				}
-			}
-		}
-		
-		keybinding.setMask(maskCode);
-		
-		// process key
-		int keycode = getSpecialCode(key);
-		if (keycode == 0)
-			keycode = getKeyCode(key);
-		
-		keybinding.setKey(keycode);
-		
-		return keybinding;
-	}
-	
-	private static int getKeyCode(String key){
-		return key.charAt(0);
-	}
-	
-	private static int getSpecialCode(String key){
-		for(int i = 0; i < KeyConversion.relations.length; i++){
-			if (KeyConversion.relations[i].getKey().equals(key)){
-				return KeyConversion.relations[i].getCode();
-			}
-		}
-		return 0;
-	}
-	
 }
 
 class KeyConversion {

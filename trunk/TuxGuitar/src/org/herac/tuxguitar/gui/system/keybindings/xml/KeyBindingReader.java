@@ -19,8 +19,9 @@ import org.xml.sax.SAXException;
 
 public class KeyBindingReader {
 	private static final String SHORTCUT_TAG = "shortcut";
-	private static final String ACTION_ATTRIBUTE = "action";
-	private static final String KEYS_ATTRIBUTE = "keys";
+	private static final String SHORTCUT_ATTRIBUTE_ACTION = "action";
+	private static final String SHORTCUT_ATTRIBUTE_KEY = "key";
+	private static final String SHORTCUT_ATTRIBUTE_MASK = "mask";
 	
 	public static List getKeyBindings(String fileName) {
 		try{
@@ -67,14 +68,18 @@ public class KeyBindingReader {
 			if (nodeName.equals(SHORTCUT_TAG)) {
 				NamedNodeMap params = child.getAttributes();
 				
-				String key = params.getNamedItem(KEYS_ATTRIBUTE).getNodeValue();
-				String action = params.getNamedItem(ACTION_ATTRIBUTE).getNodeValue();
-				
-				if (key == null || action == null || key.trim().equals("") || action.trim().equals("")){
-					throw new RuntimeException("Invalid KeyBinding file format.");
+				Node nodeKey = params.getNamedItem(SHORTCUT_ATTRIBUTE_KEY);
+				Node nodeMask = params.getNamedItem(SHORTCUT_ATTRIBUTE_MASK);
+				Node nodeAction = params.getNamedItem(SHORTCUT_ATTRIBUTE_ACTION);
+				if( nodeKey != null && nodeMask != null && nodeAction != null){
+					String key = nodeKey.getNodeValue();
+					String mask = nodeMask.getNodeValue();
+					String action = nodeAction.getNodeValue();
+					
+					if (key != null && mask != null && action != null){
+						list.add(new KeyBindingAction(action, new KeyBinding(Integer.parseInt(key), Integer.parseInt(mask)) ));
+					}
 				}
-				
-				list.add(new KeyBindingAction(action, KeyBinding.parse(key)));
 			}
 		}
 		return list;

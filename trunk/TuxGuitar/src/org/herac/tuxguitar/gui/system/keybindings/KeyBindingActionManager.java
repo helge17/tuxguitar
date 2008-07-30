@@ -31,7 +31,7 @@ public class KeyBindingActionManager {
 	}
 	
 	private String getUserFileName(){
-		return TGFileUtils.PATH_USER_CONFIG + File.separator + "keybindings.xml";
+		return TGFileUtils.PATH_USER_CONFIG + File.separator + "shortcuts.xml";
 	}
 	
 	public Action getActionForKeyBinding(KeyBinding kb){
