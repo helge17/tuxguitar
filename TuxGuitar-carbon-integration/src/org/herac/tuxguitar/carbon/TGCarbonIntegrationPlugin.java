@@ -1,22 +1,28 @@
 package org.herac.tuxguitar.carbon;
 
+import org.herac.tuxguitar.carbon.opendoc.OpenDocListener;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.gui.system.plugins.base.TGPluginAdapter;
 
 public class TGCarbonIntegrationPlugin extends TGPluginAdapter {
 	
-	public void close() throws TGPluginException {
-		// TODO Auto-generated method stub
-	}
-
+	private OpenDocListener openDocListener;
+	
 	public void init() throws TGPluginException {
-		// TODO Auto-generated method stub
+		// Nothing todo
 	}
-
+	
+	public void close() throws TGPluginException {
+		// Nothing todo
+	}
+	
 	public void setEnabled(boolean enabled) throws TGPluginException {
-		// TODO Auto-generated method stub
-		if( enabled ){
-			new org.herac.tuxguitar.carbon.opendoc.OpenDocListener();
+		if( this.openDocListener != null ){
+			this.openDocListener.setEnabled(enabled);
+		}else if(enabled){
+			this.openDocListener = new OpenDocListener();
+			this.openDocListener.setEnabled(true);
+			this.openDocListener.init();
 		}
 	}
 
