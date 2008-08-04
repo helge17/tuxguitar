@@ -25,54 +25,53 @@ public class OpenDocListener {
  	
 	private static final int typeText = ('T' << 24) + ('E' << 16) + ('X' << 8) + 'T';
  	
-	private Object target;
+	//private Object target;
+	private boolean enabled;
 	
 	public OpenDocListener() {
-		this.target = new OpenDocCallback();
-		this.registerFile();
+		//this.target = new OpenDocCallback();
+		super();
 	}
- 	
-	private void registerFile() {
-		Callback openDocCallback = new Callback(target, "openDocProc", 3);
+	
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public void init() {
+		Callback openDocCallback = new Callback(this, "openDocProc", 3);
 		int openDocProc = openDocCallback.getAddress();
 		if (openDocProc == 0) {
-			System.err.println("OSX: Could not find Callback 'openDocProc'");
 			openDocCallback.dispose();
 			return;
 		}
-		
-		int result;
-		result = OS.AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments,openDocProc, 0, false);
-		if (result != OS.noErr) {
-			System.err.println("OSX: Could Install OpenDocs Event Handler. Error: " + result);
+		if (OS.AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments,openDocProc, 0, false) != OS.noErr) {
 			return;
 		}
-		
-		result = OS.AEInstallEventHandler(kURLEventClass, kURLEventClass,openDocProc, 0, false);
-		if (result != OS.noErr) {
-			System.err.println("OSX: Could Install OpenDocs Event Handler. Error: " + result);
+		if (OS.AEInstallEventHandler(kURLEventClass, kURLEventClass,openDocProc, 0, false) != OS.noErr) {
 			return;
 		}
-		
 		int appTarget = OS.GetApplicationEventTarget();
 		Callback appleEventCallback = new Callback(this, "appleEventProc", 3);
 		int appleEventProc = appleEventCallback.getAddress();
 		int[] mask3 = new int[] { OS.kEventClassAppleEvent, OS.kEventAppleEvent, kURLEventClass, };
-		result = OS.InstallEventHandler(appTarget, appleEventProc,mask3.length / 2, mask3, 0, null);
-		if (result != OS.noErr) {
-			System.err.println("OSX: Could Install Event Handler. Error: " + result);
-			return;
-		}
+		OS.InstallEventHandler(appTarget, appleEventProc,mask3.length / 2, mask3, 0, null);
 	}
 	
 	public int appleEventProc(int nextHandler, int theEvent, int userData) {
+		if(!this.isEnabled()){
+			return OS.noErr;
+		}
 		int eventClass = OS.GetEventClass(theEvent);
 		if (eventClass == OS.kEventClassAppleEvent) {
 			int[] aeEventID = new int[1];
 			if (OS.GetEventParameter(theEvent, OS.kEventParamAEEventID, OS.typeType, null, 4, null, aeEventID) != OS.noErr) {
 				return OS.eventNotHandledErr;
 			}
-			// System.out.println("EventID = " + OSXtoString(aeEventID[0]));
+			
 			if (aeEventID[0] != kAEOpenDocuments && aeEventID[0] != kURLEventClass) {
 				return OS.eventNotHandledErr;
 			}
@@ -87,6 +86,65 @@ public class OpenDocListener {
 		return OS.eventNotHandledErr;
 	}
 	
+	public int openDocProc(int theAppleEvent, int reply, int handlerRefcon) {
+		if(!this.isEnabled()){
+			return OS.noErr;
+		}
+		AEDesc aeDesc = new AEDesc();
+		EventRecord eventRecord = new EventRecord();
+		OS.ConvertEventRefToEventRecord(theAppleEvent, eventRecord);
+		try {
+			int result = OpenDocJNI.AEGetParamDesc(theAppleEvent,OS.kEventParamDirectObject, typeAEList, aeDesc);
+			if (result != OS.noErr) {
+				System.err.println("OSX: Could call AEGetParamDesc. Error: " + result);
+				return OS.noErr;
+			}
+		} catch (java.lang.UnsatisfiedLinkError e) {
+			System.err.println("OSX: AEGetParamDesc not available.  Can't open sent file");
+			return OS.noErr;
+		}
+		int[] count = new int[1];
+		OS.AECountItems(aeDesc, count);
+		
+		if (count[0] > 0) {
+			String[] fileNames = new String[count[0]];
+			int maximumSize = 80; // size of FSRef
+			int dataPtr = OS.NewPtr(maximumSize);
+			int[] aeKeyword = new int[1];
+			int[] typeCode = new int[1];
+			int[] actualSize = new int[1];
+			for (int i = 0; i < count[0]; i++) {
+				if (OS.AEGetNthPtr(aeDesc, i + 1, OS.typeFSRef, aeKeyword,typeCode, dataPtr, maximumSize, actualSize) == OS.noErr) {
+					byte[] fsRef = new byte[actualSize[0]];
+					OS.memmove(fsRef, dataPtr, actualSize[0]);
+					int dirUrl = OS.CFURLCreateFromFSRef(OS.kCFAllocatorDefault, fsRef);
+					int dirString = OS.CFURLCopyFileSystemPath(dirUrl,OS.kCFURLPOSIXPathStyle);
+					OS.CFRelease(dirUrl);
+					int length = OS.CFStringGetLength(dirString);
+					char[] buffer = new char[length];
+					CFRange range = new CFRange();
+					range.length = length;
+					OS.CFStringGetCharacters(dirString, range, buffer);
+					OS.CFRelease(dirString);
+					fileNames[i] = new String(buffer);
+				}
+				
+				if (OS.AEGetNthPtr(aeDesc, i + 1, typeText, aeKeyword,typeCode, dataPtr, maximumSize, actualSize) == OS.noErr) {
+					byte[] urlRef = new byte[actualSize[0]];
+					OS.memmove(urlRef, dataPtr, actualSize[0]);
+					fileNames[i] = new String(urlRef);
+				}
+			}
+			
+			if( fileNames != null && fileNames.length > 0 ){
+				OpenDocAction.saveAndOpen( fileNames[0] );
+			}
+		}
+		
+		return OS.noErr;
+	}
+	
+	/*
 	private class OpenDocCallback{
 		
 		public OpenDocCallback(){
@@ -148,4 +206,5 @@ public class OpenDocListener {
 			return OS.noErr;
 		}
 	};
+	*/
 }
