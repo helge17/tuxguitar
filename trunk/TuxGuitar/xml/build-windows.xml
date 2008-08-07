@@ -9,22 +9,24 @@
 	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
 	<property name="file.description" value="${build.path}${file.separator}about_description.dist" />
 	
+	<property name="janel.name" value="tuxguitar" />
+	
 	<path id="class.path">
 		<fileset file="${lib.janel-ant.jar}" />
 	</path >
 	
 	<target name="clean" >
 		<delete quiet="true" file="${file.script}" />
-		<delete quiet="true" file="tuxguitar.exe" />
-		<delete quiet="true" file="tuxguitar.lap" />
+		<delete quiet="true" file="${janel.name}.exe" />
+		<delete quiet="true" file="${janel.name}.lap" />
 	</target>
 	
 	<target name="install" >
 		<mkdir dir="${dist.dst.path}${dist.bin.path}" />
 		<copy todir="${dist.dst.path}${dist.bin.path}">
 			<fileset file="${file.script}"/>
-			<fileset file="tuxguitar.exe"/>
-			<fileset file="tuxguitar.lap"/>
+			<fileset file="${janel.name}.exe"/>
+			<fileset file="${janel.name}.lap"/>
 		</copy>
 	</target>
 	
@@ -48,41 +50,37 @@
 		<echo file="${file.script}" append="true">javaw -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>
 		<chmod file="${file.script}" perm="755"/>
 		
-		<available property="janel.enabled" classname="net.sf.janel.ant.JanelTask" classpathref="class.path" />
+		<available property="janel.enabled" file="${janel.exe}" />
 		<antcall target="janel.build" />
 	</target>
 	
 	<target name="janel.build" if="janel.enabled">
-		<taskdef name="janel" classpathref="class.path" classname="net.sf.janel.ant.JanelTask"/>
-		<janel exeType="windows"
-		       exe="tuxguitar.exe"
-		       smallIcon="${build.share.path}${file.separator}skins${file.separator}Lavender${file.separator}icon-16x16.png"
-		       bigIcon="${build.share.path}${file.separator}skins${file.separator}Lavender${file.separator}icon-96x96.png"
-		/>
-		<echo file="tuxguitar.lap" append="false">-Djava.class.path=${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path}${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># Java class to call, ex. mypackage.Start or mypackage/Start${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">janel.main.class=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># the minimum version of the JVM, ex. 1.4.1${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">janel.min.java.version=1.4.2${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># the path to be added to Java system property java.library.path. which is used to locate native DLLs. Multiple${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># instances of this property may be used.${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">janel.library.path.dir=${lib.swt.jni}${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># overrides the default error text ("Error in Java launcher.") with a custom error message.${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">janel.error.default.text=Error in TuxGuitar${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># allows the detailed error messages to be disabled (true/false, yes/no - defaults to true). If true, the default${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># error message will be displayed followed by the details.${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">janel.error.show.detail=true${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true"># sets the max memory via -Xmx as percent of total physical memory. See above for percent explanation.${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">#${line.separator}</echo>
-		<echo file="tuxguitar.lap" append="true">janel.memory.max.total.percent=50${line.separator}</echo>
+		<copy file="${janel.exe}" tofile="${janel.name}.exe"/>
+		
+		<echo file="${janel.name}.lap" append="false">-Djava.class.path=${janel.lap.prefix}${dist.jar.path}${build.jar};${janel.lap.prefix}${lib.swt.jar};${janel.lap.prefix}${lib.itext.jar};${janel.lap.prefix}${dist.share.path}${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># Java class to call, ex. mypackage.Start or mypackage/Start${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">janel.main.class=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># the minimum version of the JVM, ex. 1.4.1${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">janel.min.java.version=1.4.2${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># the path to be added to Java system property java.library.path. which is used to locate native DLLs. Multiple${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># instances of this property may be used.${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">#${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">janel.library.path.dir=${janel.lap.prefix}${lib.swt.jni}${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># overrides the default error text ("Error in Java launcher.") with a custom error message.${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">#${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">janel.error.default.text=Error in TuxGuitar${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># allows the detailed error messages to be disabled (true/false, yes/no - defaults to true). If true, the default${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># error message will be displayed followed by the details.${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">#${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">janel.error.show.detail=true${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true"># sets the max memory via -Xmx as percent of total physical memory. See above for percent explanation.${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">#${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="true">janel.memory.max.total.percent=50${line.separator}</echo>
 	</target>
 	
 	<target name="package" />

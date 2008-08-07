@@ -66,8 +66,10 @@
 			
 			<tarfileset dir="${share.dir}/skins" prefix="${package.name}/share/skins" >
 				<include name="**/skin.properties" />
-				<include name="**/*.icns" />
 				<include name="**/*.png" />
+				<include name="**/*.xpm" />
+				<include name="**/*.ico" />
+				<include name="**/*.icns" />
 			</tarfileset>
 			
 			<tarfileset dir="${doc.dir}" prefix="${package.name}/doc/" >
