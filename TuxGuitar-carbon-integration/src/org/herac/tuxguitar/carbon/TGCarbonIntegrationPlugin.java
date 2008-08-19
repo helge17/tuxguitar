@@ -1,29 +1,26 @@
 package org.herac.tuxguitar.carbon;
 
-import org.herac.tuxguitar.carbon.opendoc.OpenDocListener;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGCarbonIntegrationPlugin extends TGPluginAdapter {
+import org.herac.tuxguitar.carbon.menu.MacMenuPlugin;
+import org.herac.tuxguitar.carbon.opendoc.OpenDocPlugin;
+import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
+
+public class TGCarbonIntegrationPlugin extends TGPluginList {
+
+	private List plugins; 
 	
-	private OpenDocListener openDocListener;
-	
-	public void init() throws TGPluginException {
-		// Nothing todo
-	}
-	
-	public void close() throws TGPluginException {
-		// Nothing todo
-	}
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		if( this.openDocListener != null ){
-			this.openDocListener.setEnabled(enabled);
-		}else if(enabled){
-			this.openDocListener = new OpenDocListener();
-			this.openDocListener.setEnabled(true);
-			this.openDocListener.init();
+	protected List getPlugins() {
+		if( this.plugins == null ){
+			this.plugins = new ArrayList();
+			
+			this.plugins.add(new OpenDocPlugin());
+			this.plugins.add(new MacMenuPlugin());
 		}
+		return this.plugins;
 	}
+	
+	
 
 }
