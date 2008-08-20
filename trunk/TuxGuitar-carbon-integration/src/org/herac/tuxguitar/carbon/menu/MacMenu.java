@@ -20,7 +20,7 @@ public class MacMenu {
 	
 	private static final int kHIQuitServices = ('q' << 24) + ('u' << 16) + ('i' << 8) + 't';
 	
-	private static final String ABOUT_NAME = "About";
+	private static final String ABOUT_NAME = "About TuxGuitar";
 	
 	private boolean enabled;
 	
@@ -108,7 +108,7 @@ public class MacMenu {
 	
 	public int handleQuitCommand(){
 		TuxGuitar.instance().getAction(ExitAction.NAME).process(null);
-		return OS.eventNotHandledErr; // Let SWT Close it
+		return OS.noErr;
 	}
 	
 	public int handleAboutCommand(){
