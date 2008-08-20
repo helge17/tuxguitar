@@ -173,6 +173,8 @@ public class TuxGuitar {
 		TGFileUtils.loadLibraries();
 		TGFileUtils.loadClasspath();
 		
+		Display.setAppName(APPLICATION_NAME);
+		
 		this.display = new Display();
 		this.initSynchronizer();
 		
