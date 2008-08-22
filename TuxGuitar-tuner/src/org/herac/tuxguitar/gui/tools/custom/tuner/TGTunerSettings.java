@@ -18,8 +18,10 @@ public class TGTunerSettings {
 	protected String deviceName;
 	protected double treshold;
 	protected int bufferSize;
+	protected int fftSize;
 	protected int waitPeriod;
-	static final int DEFAULT_BUFFER_SIZE = (1 << (TGTuner.LOG2_FFTSIZE-4)); // was /4
+	static final int DEFAULT_BUFFER_SIZE = 1024; // 2^10
+	static final int DEFAULT_FFT_SIZE = 16384; // 2^14
 	static final int CHANNELS_NUMBER = 1;
 	
 	
@@ -27,10 +29,10 @@ public class TGTunerSettings {
 	/** default settings, if faild to load from properties */
 	public static TGTunerSettings getDefaults() {
 		TGTunerSettings retValue = new TGTunerSettings();
-//		retValue.setDeviceName(null);
 		retValue.setSampleRate(22050);
 		retValue.setSampleSize(16);
 		retValue.setBufferSize(DEFAULT_BUFFER_SIZE);
+		retValue.setFFTSize(DEFAULT_FFT_SIZE);
 		retValue.setTreshold(0.6);
 		retValue.setWaitPeriod(100);
 		return retValue;
@@ -94,6 +96,16 @@ public class TGTunerSettings {
 		// TODO: adjust size in TGTuner also then
 		this.bufferSize = bufferSize;
 	}
+	
+	public int getFFTSize() {
+		return this.fftSize;
+	}
+	public void setFFTSize(int size) {
+		this.fftSize = size;
+	}
+	
+	
+	
 	public float getSampleRate() {
 		return this.sampleRate;
 	}
@@ -129,19 +141,6 @@ public class TGTunerSettings {
 		return TGTunerSettings.getDefaults();
 		//return null;
 	}
-
-	
-	
-	
-	
-	public double getMinimalFrequencyDiff() {
-		return ((double) this.getSampleRate()) / (1 << TGTuner.LOG2_FFTSIZE);
-	}
-	
-	public double getTimeToFillBuffer() {
-		return this.getBufferSize() / this.getSampleRate();
-	}
-
 
 	
 	
