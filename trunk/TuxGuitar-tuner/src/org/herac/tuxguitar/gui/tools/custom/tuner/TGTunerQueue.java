@@ -12,9 +12,9 @@ package org.herac.tuxguitar.gui.tools.custom.tuner;
 public class TGTunerQueue {
 	
 	/** size of the queue */
-	protected final int QUEUE_SIZE = 5;
+	int QUEUE_SIZE = 5;
 	
-	/** pointer to index of the oldest element */
+	/** pointer to index of the newest element */
 	protected int head = 0;
 	
 	/** the frequency queue itself */
@@ -24,8 +24,8 @@ public class TGTunerQueue {
 	
 	
 	// TODO: tweak the tollerances
-	private final double upperTollerance = 1.05;
-	private final double lowerTollerance = 0.95;
+	private final double upperTollerance = 1.05; // +5%
+	private final double lowerTollerance = 0.95; // -5%
 	
 	
 	public TGTunerQueue() {
@@ -36,8 +36,8 @@ public class TGTunerQueue {
 
 	/** add new frequency to a queue */
 	public void add(double newValue) {
-		this.queue[head] = newValue;
 		this.head = (++this.head) % this.QUEUE_SIZE;
+		this.queue[this.head] = newValue;
 	}
 	
 	/** 
@@ -47,7 +47,7 @@ public class TGTunerQueue {
 	public double getFreqApproximation() {
 		
 		for (int i=0; i<this.QUEUE_SIZE; i++)
-			similars[i]=-2; // -2, because it will always find 1 exact frequency when i==j
+			this.similars[i]=-2; // -2, because it will always find 1 exact frequency when i==j
 		
 		for (int i=0; i<this.QUEUE_SIZE; i++) {
 			if (this.queue[i]!=-1)
@@ -55,17 +55,17 @@ public class TGTunerQueue {
 					// exact frequency with tollerance
 					if (this.queue[i] > (this.queue[j]*this.lowerTollerance) && 
 						this.queue[i] < (this.queue[j]*this.upperTollerance) )
-							similars[i]=similars[i]+2;
+							this.similars[i]=this.similars[i]+2;
 					
 					// half frequency with tollerance
 					if (this.queue[i]/2 > (this.queue[j]*this.lowerTollerance) &&
 						this.queue[i]/2 < (this.queue[j]*this.upperTollerance) )
-							similars[i]++;
+							this.similars[i]++;
 					
 					// double frequency with tollerance
 					if (this.queue[i]*2 > (this.queue[j]*this.lowerTollerance) &&
 						this.queue[i]*2 < (this.queue[j]*this.upperTollerance) )
-							similars[i]++;
+							this.similars[i]++;
 				}
 		}
 		
@@ -73,7 +73,7 @@ public class TGTunerQueue {
 		// find one with max similars
 		int maxIndex = 0;
 		for (int i=1; i<this.QUEUE_SIZE; i++)
-			if (similars[i]>similars[maxIndex])
+			if (this.similars[i]>=this.similars[maxIndex])
 				maxIndex=i;
 		
 		
@@ -89,7 +89,8 @@ public class TGTunerQueue {
 		System.out.println(" =  "+queue[maxIndex]%110+" **");
 */
 		
-		return queue[maxIndex];
+		return this.queue[maxIndex];
+		//return this.queue[head];
 		
 	}
 	

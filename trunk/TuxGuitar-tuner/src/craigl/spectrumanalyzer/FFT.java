@@ -51,7 +51,7 @@ public class FFT {
 				if ((i & (1 << j)) != 0)
 					k++;
 			}
-			bitreverse[i] = k;
+			this.bitreverse[i] = k;
 		}
 	}
 
@@ -68,12 +68,12 @@ public class FFT {
 		int n, n2, i, k, kn2, l, p;
 		double ang, s, c, tr, ti;
 
-		n2 = (n = (1 << bits)) / 2;
+		n2 = (n = (1 << this.bits)) / 2;
 
-		for (l = 0; l < bits; ++l) {
+		for (l = 0; l < this.bits; ++l) {
 			for (k = 0; k < n; k += n2) {
 				for (i = 0; i < n2; ++i, ++k) {
-					p = bitreverse[k / n2];
+					p = this.bitreverse[k / n2];
 					ang = TWOPI * p / n;
 					c = Math.cos(ang);
 					s = Math.sin(ang);
@@ -95,7 +95,7 @@ public class FFT {
 		}
 
 		for (k = 0; k < n; k++) {
-			if ((i = bitreverse[k]) <= k)
+			if ((i = this.bitreverse[k]) <= k)
 				continue;
 
 			tr = xr[k];

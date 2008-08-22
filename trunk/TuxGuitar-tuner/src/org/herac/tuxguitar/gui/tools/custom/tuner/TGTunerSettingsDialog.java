@@ -11,7 +11,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.MessageDialog;
@@ -28,6 +30,11 @@ public class TGTunerSettingsDialog {
 	// protected Combo deviceCombo = null;
 	protected Combo sampleRateCombo = null;
 	protected Combo sampleSizeCombo = null;
+	protected Combo bufferSizeCombo = null;
+	protected Combo FFTSizeCombo = null;
+	protected Scale noiseGate = null;
+	protected Label noiseGateValue = null;
+	protected Text settingsInfo = null;
 	protected boolean updated;
 	
 	public TGTunerSettingsDialog(TGTunerDialog dialog) {
@@ -53,15 +60,7 @@ public class TGTunerSettingsDialog {
 		this.deviceCombo.addSelectionListener(new UpdatedListener());
 */
 		
-		Group formatGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);            
-		formatGroup.setLayout(new GridLayout());
-		formatGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		formatGroup.setText(TuxGuitar.getProperty("tuner.sound-format"));
-		
-		
-		Composite sampleComposite = new Composite(formatGroup,SWT.NONE);
-		sampleComposite.setLayout(new GridLayout(2,false));
-		sampleComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		Composite sampleComposite = this.createGroup(TuxGuitar.getProperty("tuner.sound-format"), dialog);
 
 		
 		new Label(sampleComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sample-rate"));
@@ -81,8 +80,54 @@ public class TGTunerSettingsDialog {
 		this.sampleSizeCombo.add("16");
 		this.sampleSizeCombo.add("8");
 		this.sampleSizeCombo.addSelectionListener(new UpdatedListener());
-		
 
+
+		Composite analyzeComposite = this.createGroup(TuxGuitar.getProperty("tuner.sampling-and-analyze"), dialog);
+
+		// buffer size
+		new Label(analyzeComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sampling-buffer-size"));
+		this.bufferSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN);
+		this.bufferSizeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
+		this.bufferSizeCombo.add(new Integer(512).toString());
+		this.bufferSizeCombo.add(new Integer(1024).toString());
+		this.bufferSizeCombo.add(new Integer(2048).toString());
+		this.bufferSizeCombo.add(new Integer(4096).toString());
+		this.bufferSizeCombo.add(new Integer(8192).toString());
+		this.bufferSizeCombo.add(new Integer(16348).toString());
+		this.bufferSizeCombo.addSelectionListener(new UpdatedListener());
+
+		
+		// FFT buffer size
+		new Label(analyzeComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.fourier-buffer-size"));
+		this.FFTSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.FFTSizeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
+		this.FFTSizeCombo.add(new Integer(1024).toString());
+		this.FFTSizeCombo.add(new Integer(2048).toString());
+		this.FFTSizeCombo.add(new Integer(4096).toString());
+		this.FFTSizeCombo.add(new Integer(8192).toString());
+		this.FFTSizeCombo.add(new Integer(16384).toString());
+		this.FFTSizeCombo.add(new Integer(32768).toString());
+		this.FFTSizeCombo.addSelectionListener(new UpdatedListener());
+		
+		Composite noiseGateComposite = this.createGroup(TuxGuitar.getProperty("tuner.noise-gate"), dialog);
+		this.noiseGate = new Scale(noiseGateComposite, SWT.BORDER);
+		this.noiseGate.setMaximum(100);
+		this.noiseGate.setIncrement(5);
+		this.noiseGate.setPageIncrement(10);
+		this.noiseGate.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				TGTunerSettingsDialog.this.noiseGateValue.setText(
+						new Integer(TGTunerSettingsDialog.this.noiseGate.getSelection()).toString()+"%");
+			}
+		});
+		this.noiseGate.addSelectionListener(new UpdatedListener());
+		this.noiseGate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
+		this.noiseGateValue = new Label(noiseGateComposite,SWT.LEFT);
+		this.noiseGateValue.setText("                       ");
+		
+		Composite infoComposite = this.createGroup(TuxGuitar.getProperty("tuner.info"), dialog);
+		this.settingsInfo = new Text(infoComposite, SWT.READ_ONLY | SWT.MULTI );
+		
 		//// buttons ok/cancel
 		Composite btnComposite = new Composite(dialog,SWT.NONE);
 		btnComposite.setLayout(new GridLayout(2,false));
@@ -110,8 +155,6 @@ public class TGTunerSettingsDialog {
         DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 
-	
-	
 
 	protected void loadSettings(TGTunerSettings settings, Shell dialog) {
 		
@@ -144,10 +187,24 @@ public class TGTunerSettingsDialog {
 				}
 				i++;
 			}
+
 			i=0; found=false;
+			while (!found) {
+				if ( Integer.parseInt(this.FFTSizeCombo.getItem(i)) == settings.getFFTSize()  ) {
+							this.FFTSizeCombo.select(i);
+							found=true;
+				}
+				i++;
+			}
+			
+			this.bufferSizeCombo.setText(new Integer(settings.getBufferSize()).toString());
+			this.noiseGate.setSelection((int)Math.round(settings.getTreshold()*100));
+			this.noiseGateValue.setText(new Integer(this.noiseGate.getSelection()).toString()+"%");
+
+/*			i=0; found=false;
 			if (settings.deviceName==null)
 				found=true;
-/*			while (!found) {
+			while (!found) {
 				if ( this.deviceCombo.getItem(i).equals(settings.getDeviceName())  ) {
 							this.deviceCombo.select(i);
 							found=true;
@@ -185,34 +242,90 @@ public class TGTunerSettingsDialog {
 
 */	
 	protected void dispose(Shell dialog, boolean saveWanted) {
-		if (updated & saveWanted) {
-			TGTunerSettings settings = new TGTunerSettings();
-			settings.setBufferSize(TGTunerSettings.DEFAULT_BUFFER_SIZE);
-			settings.setSampleRate(Float.parseFloat(this.sampleRateCombo.getItem(this.sampleRateCombo.getSelectionIndex())));
-			settings.setSampleSize(Integer.parseInt(this.sampleSizeCombo.getItem(this.sampleSizeCombo.getSelectionIndex())));
-			
-/*			if (this.deviceCombo.getSelectionIndex()<0) {
-				MessageDialog.errorMessage(dialog,"You didn't set the input device.");
-				return;
+		try {
+			if (this.updated & saveWanted) {
+				TGTunerSettings settings = new TGTunerSettings();
+				settings.setSampleRate(this.getSampleRate());
+				settings.setSampleSize(Integer.parseInt(this.sampleSizeCombo.getItem(this.sampleSizeCombo.getSelectionIndex())));
+	
+				settings.setBufferSize(this.getBufferSize());
+				settings.setFFTSize(this.getFFTSize());
+				settings.setTreshold((float)this.noiseGate.getSelection()/100);
+				settings.setWaitPeriod(100); // TODO: hard coded?
+				
+				this.checkBufferValues(settings); // check if they are divisable with buffer size
+				
+	
+	/*			if (this.deviceCombo.getSelectionIndex()<0) {
+					MessageDialog.errorMessage(dialog,"You didn't set the input device.");
+					return;
+				}
+				settings.setDeviceName(this.deviceCombo.getItem(this.deviceCombo.getSelectionIndex()));
+	*/			
+				this.tunerDialog.getTuner().setSettings(settings);
+				// TODO: save the settings in the system
 			}
-			settings.setDeviceName(this.deviceCombo.getItem(this.deviceCombo.getSelectionIndex()));
-*/			
-			this.tunerDialog.getTuner().setSettings(settings);
-			// TODO: save the settings in the system
+			
+	    	this.tunerDialog.getTuner().resumeFromPause();
+			dialog.dispose();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			MessageDialog.errorMessage(dialog,ex.getMessage());
 		}
-		
-    	this.tunerDialog.getTuner().resumeFromPause();
-		dialog.dispose();
 	}
 	
+	
+	
+	
+	private float getSampleRate() {
+		return Float.parseFloat(this.sampleRateCombo.getItem(this.sampleRateCombo.getSelectionIndex()));
+	}
+	private int getFFTSize() {
+		return Integer.parseInt(this.FFTSizeCombo.getItem(this.FFTSizeCombo.getSelectionIndex()));
+	}
+	private int getBufferSize() {
+		return Integer.parseInt(this.bufferSizeCombo.getText());
+	}
 	
 	
 
 	/** adapter class which sets update flag */
 	protected class UpdatedListener extends SelectionAdapter {
 		public void widgetSelected(SelectionEvent arg0) {
-        	TGTunerSettingsDialog.this.updated=true;;
+        	TGTunerSettingsDialog.this.updated=true;
+        	TGTunerSettingsDialog.this.settingsInfo.setText(" Minimal freq diff = "+this.getMinimalFrequencyDiff()+"Hz   \n Time to fill the buffer = "+ this.getTimeToFillBuffer()+" sec");
         }
+		
+    	private double getMinimalFrequencyDiff() {
+    		return ((double) TGTunerSettingsDialog.this.getSampleRate()) / TGTunerSettingsDialog.this.getFFTSize();
+    	}
+    	
+    	private double getTimeToFillBuffer() {
+    		return TGTunerSettingsDialog.this.getBufferSize() / TGTunerSettingsDialog.this.getSampleRate();
+    	}
+
 	}
+	
+	
+	
+
+	/** because there are many groups */
+	protected Composite createGroup(String groupCaption, Composite parent) {
+		Group tempGroup = new Group(parent,SWT.SHADOW_ETCHED_IN);            
+		tempGroup.setLayout(new GridLayout());
+		tempGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		tempGroup.setText(groupCaption);
+		Composite groupComposite = new Composite(tempGroup,SWT.NONE);
+		groupComposite.setLayout(new GridLayout(2,false));
+		groupComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		return groupComposite;
+	}
+	
+	protected void checkBufferValues(TGTunerSettings settings) throws Exception {
+		if (settings.bufferSize % settings.sampleSize != 0 ||
+			settings.bufferSize > settings.fftSize	)
+			throw new Exception("Invalid sampling buffer size");
+	}
+
 
 }

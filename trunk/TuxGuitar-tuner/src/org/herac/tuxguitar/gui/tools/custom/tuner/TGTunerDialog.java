@@ -1,6 +1,11 @@
 package org.herac.tuxguitar.gui.tools.custom.tuner;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -8,8 +13,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.MessageDialog;
@@ -27,6 +32,8 @@ public class TGTunerDialog implements TGTunerListener {
 	protected Label currentFrequency = null;
 	protected Shell dialog = null;
 	protected TGTunerRoughWidget roughTuner = null;
+	protected ArrayList allStringButtons = null;
+	protected TGTunerFineWidget fineTuner = null;
 	
 	TGTunerDialog(int[] tuning) {
 		this.tuning = tuning;
@@ -34,6 +41,12 @@ public class TGTunerDialog implements TGTunerListener {
 
 
 	public void show() {
+		// TODO: RESIZE!!!!!!!!!!
+		// TODO: RESIZE!!!!!!!!!!
+		// TODO: RESIZE!!!!!!!!!!
+		// TODO: RESIZE!!!!!!!!!!
+		// TODO: RESIZE!!!!!!!!!!
+		// TODO: RESIZE!!!!!!!!!!
 		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
@@ -44,6 +57,20 @@ public class TGTunerDialog implements TGTunerListener {
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		group.setText(TuxGuitar.getProperty("tuner.tuner"));
+		
+		Composite specialComposite = new Composite(group,SWT.NONE);
+		specialComposite.setLayout(new GridLayout(2,false));
+		specialComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.allStringButtons = new ArrayList(this.tuning.length);
+		
+		this.fineTuner = new TGTunerFineWidget(specialComposite);
+		
+		
+		Composite buttonsComposite = new Composite (specialComposite,SWT.NONE);
+		buttonsComposite.setLayout(new GridLayout(1,false));
+		buttonsComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		for (int i=0; i<this.tuning.length; i++)
+			createTuningString(this.tuning[i],buttonsComposite);
 
 		Composite tunComposite = new Composite(group,SWT.NONE);
 		tunComposite.setLayout(new GridLayout(1,false));
@@ -52,15 +79,6 @@ public class TGTunerDialog implements TGTunerListener {
 		this.currentFrequency = new Label(tunComposite,SWT.LEFT);
 		this.currentFrequency.setText("temppppppppppppppppppppppppppppppp");		
 		
-		//////// to delete
-		final Label tunLabel = new Label(tunComposite,SWT.LEFT);
-		String tunLabelText = new String();
-		for (int i=0; i<this.tuning.length; i++) {
-			tunLabelText=tunLabelText+this.tuning[i]+" ";
-		}
-		tunLabel.setText(tunLabelText);
-		/////// to delete
-
 		this.roughTuner = new TGTunerRoughWidget(group);
 		
 		Composite btnComposite = new Composite(group,SWT.NONE);
@@ -86,8 +104,15 @@ public class TGTunerDialog implements TGTunerListener {
             	TGTunerDialog.this.dialog.dispose();
             }
         });
+
         
-        // TODO: if closed on [X], set this.tuner.setCanceled(true);
+        // if closed on [X], set this.tuner.setCanceled(true);
+        this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent arg0) {
+            	TGTunerDialog.this.getTuner().setCanceled(true);
+            	TGTunerDialog.this.dialog.dispose();
+			}
+        });
 
         DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 
@@ -107,19 +132,21 @@ public class TGTunerDialog implements TGTunerListener {
 	
 	public void fireFrequency(final double freq) {
 		if (!this.dialog.isDisposed()) {
-			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
-						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()){
+			 try {
+				 TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {				
+					 public void run() {
+						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()) {
 							TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
-							TGTunerDialog.this.roughTuner.setCurrentFrequency((int)Math.round(freq));
-							TGTunerDialog.this.roughTuner.redraw();
+							TGTunerDialog.this.roughTuner.setCurrentFrequency(freq);
 						}
-					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.fineTuner.isDisposed()
+								&& freq> 0)
+							TGTunerDialog.this.fineTuner.setCurrentFrequency(freq);
+					 }
+				 });
+			 } catch (Throwable e) {
+				 e.printStackTrace();
+			 }
 		}
 	}
 
@@ -131,18 +158,47 @@ public class TGTunerDialog implements TGTunerListener {
 	public int[] getTuning() {
 		return this.tuning;
 	}
-	
+
+
 	public void fireException(final Exception ex) {
 		try {
 			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
 				public void run() {
-					if (!TGTunerDialog.this.dialog.isDisposed()){
+					if (!TGTunerDialog.this.dialog.isDisposed())
 						MessageDialog.errorMessage(ex);
-					}
 				}
 			});
 		} catch (Throwable e) {
-			e.printStackTrace();
+			 e.printStackTrace();
 		}
 	}
+
+	
+	public void fireCurrentString(final int string) {
+		this.tuner.pause();
+		this.tuner.setWantedNote(string);
+		this.fineTuner.setWantedTone(string);
+		this.tuner.resumeFromPause();
+	}
+	
+	
+	
+	protected void createTuningString(int midiNote, Composite parent) {
+		TGTuningString tempString = new TGTuningString(midiNote,parent,this);
+		this.allStringButtons.add(tempString);
+		tempString.getStringButton().addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				// disable all others
+				TGTunerDialog.this.fineTuner.setCurrentFrequency(-1);
+				Iterator it = TGTunerDialog.this.allStringButtons.iterator();
+				while (it.hasNext()) {
+					TGTuningString tmp = (TGTuningString)it.next();
+					tmp.getStringButton().setSelection(false);
+				}
+			}
+		});
+		tempString.addListener();
+		
+	}
+	
 }
