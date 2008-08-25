@@ -7,7 +7,7 @@ INCLUDES = -I $(JAVA_FRAMEWORK)/Headers/
 
 LIBRARIES = -framework CoreAudio -framework JavaVM -framework AudioUnit -framework AudioToolbox -framework Carbon
 
-LIBRARY = tuxguitar-coreaudio-jni.jnilib
+LIBRARY = libtuxguitar-coreaudio-jni.jnilib
 
 FILENAME = org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI.cpp
 
