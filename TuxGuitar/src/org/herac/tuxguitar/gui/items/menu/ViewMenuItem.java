@@ -35,7 +35,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ViewMenuItem implements MenuItems{
+public class ViewMenuItem extends MenuItems{
 	
 	private Menu menu;
 	private Menu chordMenu;
@@ -147,21 +147,21 @@ public class ViewMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.layoutMenuItem.setText(TuxGuitar.getProperty("view"));
-		this.showMixer.setText(TuxGuitar.getProperty("view.show-mixer"));
-		this.showTransport.setText(TuxGuitar.getProperty("view.show-transport"));
-		this.showFretBoard.setText(TuxGuitar.getProperty("view.show-fretboard"));
-		this.showPiano.setText(TuxGuitar.getProperty("view.show-piano"));
-		this.showMatrix.setText(TuxGuitar.getProperty("view.show-matrix"));
-		this.pageLayout.setText(TuxGuitar.getProperty("view.layout.page"));
-		this.linearLayout.setText(TuxGuitar.getProperty("view.layout.linear"));
-		this.multitrack.setText(TuxGuitar.getProperty("view.layout.multitrack"));
-		this.scoreEnabled.setText(TuxGuitar.getProperty("view.layout.score-enabled"));
-		this.tablatureEnabled.setText(TuxGuitar.getProperty("view.layout.tablature-enabled"));
-		this.compact.setText(TuxGuitar.getProperty("view.layout.compact"));
-		this.chordMenuItem.setText(TuxGuitar.getProperty("view.layout.chord-style"));
-		this.chordName.setText(TuxGuitar.getProperty("view.layout.chord-name"));
-		this.chordDiagram.setText(TuxGuitar.getProperty("view.layout.chord-diagram"));
+		setMenuItemTextAndAccelerator(this.layoutMenuItem, "view", null);
+		setMenuItemTextAndAccelerator(this.showMixer, "view.show-mixer", ShowMixerAction.NAME);
+		setMenuItemTextAndAccelerator(this.showTransport, "view.show-transport", ShowTransportAction.NAME);
+		setMenuItemTextAndAccelerator(this.showFretBoard, "view.show-fretboard", ShowFretBoardAction.NAME);
+		setMenuItemTextAndAccelerator(this.showPiano, "view.show-piano", ShowPianoAction.NAME);
+		setMenuItemTextAndAccelerator(this.showMatrix, "view.show-matrix", ShowMatrixAction.NAME);
+		setMenuItemTextAndAccelerator(this.pageLayout, "view.layout.page", SetPageLayoutAction.NAME);
+		setMenuItemTextAndAccelerator(this.linearLayout, "view.layout.linear", SetLinearLayoutAction.NAME);
+		setMenuItemTextAndAccelerator(this.multitrack, "view.layout.multitrack", SetMultitrackViewAction.NAME);
+		setMenuItemTextAndAccelerator(this.scoreEnabled, "view.layout.score-enabled", SetScoreEnabledAction.NAME);
+		setMenuItemTextAndAccelerator(this.tablatureEnabled, "view.layout.tablature-enabled", SetTablatureEnabledAction.NAME);
+		setMenuItemTextAndAccelerator(this.compact, "view.layout.compact", SetCompactViewAction.NAME);
+		setMenuItemTextAndAccelerator(this.chordMenuItem, "view.layout.chord-style", null);
+		setMenuItemTextAndAccelerator(this.chordName, "view.layout.chord-name", SetChordNameEnabledAction.NAME);
+		setMenuItemTextAndAccelerator(this.chordDiagram, "view.layout.chord-diagram", SetChordDiagramEnabledAction.NAME);
 	}
 	
 	public void loadIcons(){

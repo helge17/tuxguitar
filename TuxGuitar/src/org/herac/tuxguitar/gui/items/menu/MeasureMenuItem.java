@@ -29,7 +29,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class MeasureMenuItem implements MenuItems{
+public class MeasureMenuItem extends MenuItems{
 	
 	private MenuItem measureMenuItem;
 	private Menu menu; 
@@ -107,16 +107,16 @@ public class MeasureMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.measureMenuItem.setText(TuxGuitar.getProperty("measure"));
-		this.first.setText(TuxGuitar.getProperty("measure.first"));
-		this.last.setText(TuxGuitar.getProperty("measure.last"));
-		this.previous.setText(TuxGuitar.getProperty("measure.previous"));
-		this.next.setText(TuxGuitar.getProperty("measure.next"));
-		this.addMeasure.setText(TuxGuitar.getProperty("measure.add"));
-		this.cleanMeasure.setText(TuxGuitar.getProperty("measure.clean"));
-		this.removeMeasure.setText(TuxGuitar.getProperty("measure.remove"));
-		this.copyMeasure.setText(TuxGuitar.getProperty("measure.copy"));
-		this.pasteMeasure.setText(TuxGuitar.getProperty("measure.paste"));
+		setMenuItemTextAndAccelerator(this.measureMenuItem, "measure", null);
+		setMenuItemTextAndAccelerator(this.first, "measure.first", GoFirstMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.last, "measure.last", GoLastMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.previous, "measure.previous", GoPreviousMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.next, "measure.next", GoNextMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.addMeasure, "measure.add", AddMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.cleanMeasure, "measure.clean", CleanMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.removeMeasure, "measure.remove", RemoveMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.copyMeasure, "measure.copy", CopyMeasureAction.NAME);
+		setMenuItemTextAndAccelerator(this.pasteMeasure, "measure.paste", PasteMeasureAction.NAME);
 	}
 	
 	public void loadIcons(){

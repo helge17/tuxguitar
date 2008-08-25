@@ -21,8 +21,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.system.keybindings.KeyBindingAction;
+import org.herac.tuxguitar.gui.actions.ActionManager;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBinding;
+import org.herac.tuxguitar.gui.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBindingActionDefaults;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
@@ -138,7 +139,7 @@ public class KeyBindingEditor {
 	
 	protected void loadAvailableActionKeyBindings(){
 		List list = TuxGuitar.instance().getActionManager().getAvailableKeyBindingActions();
-		Collections.sort(list); 
+		Collections.sort(list, ActionManager.ACTION_NAME_COMPARTOR);
 		Iterator it = list.iterator();
 		while (it.hasNext()) {
 			String action = (String) it.next();
@@ -222,6 +223,7 @@ public class KeyBindingEditor {
 		}
 		TuxGuitar.instance().getkeyBindingManager().reset(list);
 		TuxGuitar.instance().getkeyBindingManager().saveKeyBindings();
+		TuxGuitar.instance().loadLanguage();
 	}
 	
 	public Shell getDialog(){

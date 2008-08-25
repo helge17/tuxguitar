@@ -98,6 +98,7 @@ class KeyConversion {
 		new KeyConversion("Left",KeyBindingConstants.LEFT),
 		new KeyConversion("Right",KeyBindingConstants.RIGHT),
 		new KeyConversion("Control",KeyBindingConstants.CONTROL),
+		new KeyConversion("\u2318",KeyBindingConstants.COMMAND),
 		new KeyConversion("Shift",KeyBindingConstants.SHIFT),
 		new KeyConversion("Alt",KeyBindingConstants.ALT),
 		new KeyConversion("Tab",KeyBindingConstants.TAB),

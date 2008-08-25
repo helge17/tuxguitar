@@ -31,7 +31,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrackMenuItem implements MenuItems{
+public class TrackMenuItem extends MenuItems{
 	private MenuItem trackMenuItem;
 	private Menu menu;
 	private MenuItem first;
@@ -99,18 +99,18 @@ public class TrackMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.trackMenuItem.setText(TuxGuitar.getProperty("track"));
-		this.first.setText(TuxGuitar.getProperty("track.first"));
-		this.last.setText(TuxGuitar.getProperty("track.last"));
-		this.previous.setText(TuxGuitar.getProperty("track.previous"));
-		this.next.setText(TuxGuitar.getProperty("track.next"));
-		this.addTrack.setText(TuxGuitar.getProperty("track.add"));
-		this.cloneTrack.setText(TuxGuitar.getProperty("track.clone"));
-		this.removeTrack.setText(TuxGuitar.getProperty("track.remove"));
-		this.moveUp.setText(TuxGuitar.getProperty("track.move-up"));
-		this.moveDown.setText(TuxGuitar.getProperty("track.move-down"));
-		this.lyrics.setText(TuxGuitar.getProperty("track.lyrics"));
-		this.properties.setText(TuxGuitar.getProperty("track.properties"));
+		setMenuItemTextAndAccelerator(this.trackMenuItem, "track", null);
+		setMenuItemTextAndAccelerator(this.first, "track.first", GoFirstTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.last, "track.last", GoLastTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.previous, "track.previous", GoPreviousTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.next, "track.next", GoNextTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.addTrack, "track.add", AddTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.cloneTrack, "track.clone", CloneTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.removeTrack, "track.remove", RemoveTrackAction.NAME);
+		setMenuItemTextAndAccelerator(this.moveUp, "track.move-up", MoveTrackUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.moveDown, "track.move-up", MoveTrackDownAction.NAME);
+		setMenuItemTextAndAccelerator(this.lyrics, "track.lyrics", EditLyricsAction.NAME);
+		setMenuItemTextAndAccelerator(this.properties, "track.properties", TrackPropertiesAction.NAME);
 	}
 	
 	public void update(){

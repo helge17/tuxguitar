@@ -25,7 +25,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class EditMenuItem implements MenuItems{
+public class EditMenuItem extends MenuItems{
 	
 	private MenuItem editMenuItem;
 	private Menu menu; 
@@ -80,12 +80,12 @@ public class EditMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.editMenuItem.setText(TuxGuitar.getProperty("edit.menu"));
-		this.undo.setText(TuxGuitar.getProperty("edit.undo"));
-		this.redo.setText(TuxGuitar.getProperty("edit.redo"));
-		this.modeSelection.setText(TuxGuitar.getProperty("edit.mouse-mode-selection"));
-		this.modeEdition.setText(TuxGuitar.getProperty("edit.mouse-mode-edition"));
-		this.notNaturalKey.setText(TuxGuitar.getProperty("edit.not-natural-key"));
+		setMenuItemTextAndAccelerator(this.editMenuItem, "edit.menu", null);
+		setMenuItemTextAndAccelerator(this.undo, "edit.undo", UndoAction.NAME);
+		setMenuItemTextAndAccelerator(this.redo, "edit.redo", RedoAction.NAME);
+		setMenuItemTextAndAccelerator(this.modeSelection, "edit.mouse-mode-selection", SetMouseModeSelectionAction.NAME);
+		setMenuItemTextAndAccelerator(this.modeEdition, "edit.mouse-mode-edition", SetMouseModeEditionAction.NAME);
+		setMenuItemTextAndAccelerator(this.notNaturalKey, "edit.not-natural-key", SetNaturalKeyAction.NAME);
 	}
 	
 	public void loadIcons(){

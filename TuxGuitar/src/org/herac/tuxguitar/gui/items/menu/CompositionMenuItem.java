@@ -28,7 +28,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class CompositionMenuItem implements MenuItems{
+public class CompositionMenuItem extends MenuItems{
 	private MenuItem compositionMenuItem;
 	private Menu menu;
 	private MenuItem timeSignature;
@@ -100,16 +100,16 @@ public class CompositionMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.compositionMenuItem.setText(TuxGuitar.getProperty("composition"));
-		this.timeSignature.setText(TuxGuitar.getProperty("composition.timesignature"));
-		this.tempo.setText(TuxGuitar.getProperty("composition.tempo"));
-		this.clef.setText(TuxGuitar.getProperty("composition.clef"));
-		this.keySignature.setText(TuxGuitar.getProperty("composition.keysignature"));
-		this.tripletFeel.setText(TuxGuitar.getProperty("composition.tripletfeel"));
-		this.repeatOpen.setText(TuxGuitar.getProperty("repeat.open"));
-		this.repeatClose.setText(TuxGuitar.getProperty("repeat.close"));
-		this.repeatAlternative.setText(TuxGuitar.getProperty("repeat.alternative"));
-		this.properties.setText(TuxGuitar.getProperty("composition.properties"));
+		setMenuItemTextAndAccelerator(this.compositionMenuItem, "composition", null);		
+		setMenuItemTextAndAccelerator(this.timeSignature, "composition.timesignature", ChangeTimeSignatureAction.NAME);
+		setMenuItemTextAndAccelerator(this.tempo, "composition.tempo", ChangeTempoAction.NAME);
+		setMenuItemTextAndAccelerator(this.clef, "composition.clef", ChangeClefAction.NAME);
+		setMenuItemTextAndAccelerator(this.keySignature, "composition.keysignature", ChangeKeySignatureAction.NAME);
+		setMenuItemTextAndAccelerator(this.tripletFeel, "composition.tripletfeel", ChangeTripletFeelAction.NAME);
+		setMenuItemTextAndAccelerator(this.repeatOpen, "repeat.open", RepeatOpenAction.NAME);
+		setMenuItemTextAndAccelerator(this.repeatClose, "repeat.close", RepeatCloseAction.NAME);
+		setMenuItemTextAndAccelerator(this.repeatAlternative, "repeat.alternative", RepeatAlternativeAction.NAME);
+		setMenuItemTextAndAccelerator(this.properties, "composition.properties", ChangeInfoAction.NAME);
 	}
 	
 	public void loadIcons() {

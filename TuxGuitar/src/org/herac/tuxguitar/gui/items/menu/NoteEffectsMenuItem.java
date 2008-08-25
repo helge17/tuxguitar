@@ -39,7 +39,7 @@ import org.herac.tuxguitar.song.models.TGNote;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class NoteEffectsMenuItem implements MenuItems{
+public class NoteEffectsMenuItem extends MenuItems{
 	
 	private MenuItem noteEffectsMenuItem;
 	private Menu menu; 
@@ -211,26 +211,26 @@ public class NoteEffectsMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.noteEffectsMenuItem.setText(TuxGuitar.getProperty("effects"));
-		this.vibrato.setText(TuxGuitar.getProperty("effects.vibrato"));
-		this.bend.setText(TuxGuitar.getProperty("effects.bend"));
-		this.tremoloBar.setText(TuxGuitar.getProperty("effects.tremolo-bar"));
-		this.deadNote.setText(TuxGuitar.getProperty("effects.deadnote"));
-		this.slide.setText(TuxGuitar.getProperty("effects.slide"));
-		this.hammer.setText(TuxGuitar.getProperty("effects.hammer"));
-		this.ghostNote.setText(TuxGuitar.getProperty("effects.ghostnote"));
-		this.accentuatedNote.setText(TuxGuitar.getProperty("effects.accentuatednote"));
-		this.heavyAccentuatedNote.setText(TuxGuitar.getProperty("effects.heavyaccentuatednote"));
-		this.harmonicNote.setText(TuxGuitar.getProperty("effects.harmonic"));
-		this.graceNote.setText(TuxGuitar.getProperty("effects.grace"));
-		this.trill.setText(TuxGuitar.getProperty("effects.trill"));
-		this.tremoloPicking.setText(TuxGuitar.getProperty("effects.tremolo-picking"));
-		this.palmMute.setText(TuxGuitar.getProperty("effects.palm-mute"));
-		this.staccato.setText(TuxGuitar.getProperty("effects.staccato"));
-		this.tapping.setText(TuxGuitar.getProperty("effects.tapping"));
-		this.slapping.setText(TuxGuitar.getProperty("effects.slapping"));
-		this.popping.setText(TuxGuitar.getProperty("effects.popping"));
-		this.fadeIn.setText(TuxGuitar.getProperty("effects.fade-in"));
+		setMenuItemTextAndAccelerator(this.noteEffectsMenuItem, "effects", null);
+		setMenuItemTextAndAccelerator(this.vibrato, "effects.vibrato", ChangeVibratoNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.bend, "effects.bend", ChangeBendNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.tremoloBar, "effects.tremolo-bar", ChangeTremoloBarAction.NAME);
+		setMenuItemTextAndAccelerator(this.deadNote, "effects.deadnote", ChangeDeadNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.slide, "effects.slide", ChangeSlideNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.hammer, "effects.hammer", ChangeHammerNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.ghostNote, "effects.ghostnote", ChangeGhostNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.accentuatedNote, "effects.accentuatednote", ChangeAccentuatedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.heavyAccentuatedNote, "effects.heavyaccentuatednote", ChangeHeavyAccentuatedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.harmonicNote, "effects.harmonic", ChangeHarmonicNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.graceNote, "effects.grace", ChangeGraceNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.trill, "effects.trill", ChangeTrillNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.tremoloPicking, "effects.tremolo-picking", ChangeTremoloPickingAction.NAME);
+		setMenuItemTextAndAccelerator(this.palmMute, "effects.palm-mute", ChangePalmMuteAction.NAME);
+		setMenuItemTextAndAccelerator(this.staccato, "effects.staccato", ChangeStaccatoAction.NAME);
+		setMenuItemTextAndAccelerator(this.tapping, "effects.tapping", ChangeTappingAction.NAME);
+		setMenuItemTextAndAccelerator(this.slapping, "effects.slapping", ChangeSlappingAction.NAME);
+		setMenuItemTextAndAccelerator(this.popping, "effects.popping", ChangePoppingAction.NAME);
+		setMenuItemTextAndAccelerator(this.fadeIn, "effects.fade-in", ChangeFadeInAction.NAME);
 	}
 	
 	public void loadIcons(){

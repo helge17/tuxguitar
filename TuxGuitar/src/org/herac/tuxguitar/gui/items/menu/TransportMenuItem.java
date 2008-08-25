@@ -23,7 +23,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TransportMenuItem implements MenuItems{
+public class TransportMenuItem extends MenuItems{
 	private static final int STATUS_STOPPED = 1;
 	private static final int STATUS_PAUSED = 2;
 	private static final int STATUS_RUNNING = 3;
@@ -79,11 +79,11 @@ public class TransportMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.transportMenuItem.setText(TuxGuitar.getProperty("transport"));
-		this.play.setText(TuxGuitar.getProperty("transport.start"));
-		this.stop.setText(TuxGuitar.getProperty("transport.stop"));
-		this.mode.setText(TuxGuitar.getProperty("transport.mode"));
-		this.metronome.setText(TuxGuitar.getProperty("transport.metronome"));
+		setMenuItemTextAndAccelerator(this.transportMenuItem, "transport", null);
+		setMenuItemTextAndAccelerator(this.play, "transport.start", null);
+		setMenuItemTextAndAccelerator(this.stop, "transport.stop", null);
+		setMenuItemTextAndAccelerator(this.mode, "transport.mode", TransportModeAction.NAME);
+		setMenuItemTextAndAccelerator(this.metronome, "transport.metronome", TransportMetronomeAction.NAME);
 	}
 	
 	public void loadIcons(){

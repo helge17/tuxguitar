@@ -2,6 +2,7 @@ package org.herac.tuxguitar.gui.system.keybindings.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,34 @@ public class KeyBindingReader {
 		}
 		return null;
 	}
+	
+	public static List getKeyBindings(InputStream is) {
+		try{
+			if (is!=null){
+				return getBindings(getDocument(is).getFirstChild());
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static Document getDocument(InputStream is) {
+		Document document = null;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			document = builder.parse(is);
+		} catch (SAXException sxe) {
+			sxe.printStackTrace();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		return document;
+	}
+	
 	
 	private static Document getDocument(File file) {
 		Document document = null;

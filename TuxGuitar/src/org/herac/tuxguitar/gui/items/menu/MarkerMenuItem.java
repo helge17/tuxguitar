@@ -25,7 +25,7 @@ import org.herac.tuxguitar.gui.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class MarkerMenuItem implements MenuItems{
+public class MarkerMenuItem extends MenuItems{
 	private MenuItem markerMenuItem;
 	private Menu menu;
 	private MenuItem add;
@@ -79,13 +79,13 @@ public class MarkerMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.markerMenuItem.setText(TuxGuitar.getProperty("marker"));
-		this.add.setText(TuxGuitar.getProperty("marker.add"));
-		this.list.setText(TuxGuitar.getProperty("marker.list"));
-		this.first.setText(TuxGuitar.getProperty("marker.first"));
-		this.last.setText(TuxGuitar.getProperty("marker.last"));
-		this.previous.setText(TuxGuitar.getProperty("marker.previous"));
-		this.next.setText(TuxGuitar.getProperty("marker.next"));
+		setMenuItemTextAndAccelerator(this.markerMenuItem, "marker", null);
+		setMenuItemTextAndAccelerator(this.add, "marker.add", AddMarkerAction.NAME);
+		setMenuItemTextAndAccelerator(this.list, "marker.list", ListMarkersAction.NAME);
+		setMenuItemTextAndAccelerator(this.first, "marker.first", GoFirstMarkerAction.NAME);
+		setMenuItemTextAndAccelerator(this.last, "marker.last", GoLastMarkerAction.NAME);
+		setMenuItemTextAndAccelerator(this.previous, "marker.previous", GoPreviousMarkerAction.NAME);
+		setMenuItemTextAndAccelerator(this.next, "marker.next", GoNextMarkerAction.NAME);
 	}
 	
 	public void loadIcons(){
