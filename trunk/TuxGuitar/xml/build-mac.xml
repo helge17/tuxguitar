@@ -59,7 +59,7 @@
 		<copy todir="${contents.macos}${file.separator}${build.lib.dir}">
 			<fileset file="${lib.itext.jar}"/>
 			<fileset file="${lib.swt.jar}"/>
-			<fileset file="${lib.swt.jni}${file.separator}*"/>
+			<fileset dir="${build.lib.path}" includes="*.jnilib" />
 		</copy>
 		<copy todir="${contents.macos}${file.separator}${dist.share.path}">
 			<fileset dir="${build.share.path}"/>
