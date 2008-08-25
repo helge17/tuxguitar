@@ -7,13 +7,11 @@
 package org.herac.tuxguitar.gui.actions;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.caret.GoDownAction;
 import org.herac.tuxguitar.gui.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
@@ -147,8 +145,6 @@ import org.herac.tuxguitar.gui.actions.view.ShowTransportAction;
 public class ActionManager {
 	
 	private Map actions;
-	
-	public static final ActionNameComparator ACTION_NAME_COMPARTOR = new ActionNameComparator();
 	
 	public ActionManager(){
 		this.actions = new HashMap();
@@ -338,12 +334,5 @@ public class ActionManager {
 			}
 		}
 		return availableKeyBindingActions;
-	}
-	
-	protected static class ActionNameComparator implements Comparator {
-
-		public int compare(Object o1, Object o2) {
-			return TuxGuitar.getProperty((String) o1).compareTo(TuxGuitar.getProperty((String) o2));
-		}
 	}
 }
