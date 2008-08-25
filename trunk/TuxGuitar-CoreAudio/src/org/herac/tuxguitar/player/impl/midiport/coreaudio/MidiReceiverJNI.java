@@ -5,8 +5,8 @@ public abstract class MidiReceiverJNI{
 	private static final String JNI_LIBRARY_NAME = new String("tuxguitar-coreaudio-jni");
 	
 	static{
-		JNILibraryLoader.loadLibrary(JNI_LIBRARY_NAME);
-	}		
+		System.loadLibrary (JNI_LIBRARY_NAME);
+	}
 	
 	public MidiReceiverJNI() {
 		super();
