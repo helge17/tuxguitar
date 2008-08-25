@@ -29,7 +29,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class DurationMenuItem  implements MenuItems{
+public class DurationMenuItem  extends MenuItems{
 	private MenuItem durationMenuItem;
 	private Menu menu;
 	private MenuItem whole;
@@ -106,17 +106,17 @@ public class DurationMenuItem  implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.durationMenuItem.setText(TuxGuitar.getProperty("duration"));
-		this.whole.setText(TuxGuitar.getProperty("duration.whole"));
-		this.half.setText(TuxGuitar.getProperty("duration.half"));
-		this.quarter.setText(TuxGuitar.getProperty("duration.quarter"));
-		this.eighth.setText(TuxGuitar.getProperty("duration.eighth"));
-		this.sixteenth.setText(TuxGuitar.getProperty("duration.sixteenth"));
-		this.thirtySecond.setText(TuxGuitar.getProperty("duration.thirtysecond"));
-		this.sixtyFourth.setText(TuxGuitar.getProperty("duration.sixtyfourth"));
-		this.dotted.setText(TuxGuitar.getProperty("duration.dotted"));
-		this.doubleDotted.setText(TuxGuitar.getProperty("duration.doubledotted"));
-		this.tupleto.setText(TuxGuitar.getProperty("duration.tupleto"));
+		setMenuItemTextAndAccelerator(this.durationMenuItem, "duration", null);
+		setMenuItemTextAndAccelerator(this.whole, "duration.whole", SetWholeDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.half, "duration.half", SetHalfDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.quarter, "duration.quarter", SetQuarterDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.eighth, "duration.eighth", SetEighthDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.sixteenth, "duration.sixteenth", SetSixteenthDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.thirtySecond, "duration.thirtysecond", SetThirtySecondDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.sixtyFourth, "duration.sixtyfourth", SetSixtyFourthDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.dotted, "duration.dotted", ChangeDottedDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.doubleDotted, "duration.doubledotted", ChangeDoubleDottedDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.tupleto, "duration.tupleto", ChangeTupletoDurationAction.NAME);
 	}
 	
 	public void loadIcons() {

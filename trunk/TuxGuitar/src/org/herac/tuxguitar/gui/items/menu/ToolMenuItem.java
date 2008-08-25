@@ -27,7 +27,7 @@ import org.herac.tuxguitar.gui.tools.custom.TGCustomToolManager;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ToolMenuItem implements MenuItems {
+public class ToolMenuItem extends MenuItems {
 	private MenuItem settingsMenuItem;
 	private Menu menu;
 	private MenuItem scale;
@@ -78,12 +78,12 @@ public class ToolMenuItem implements MenuItems {
 	}
 	
 	public void loadProperties(){
-		this.settingsMenuItem.setText(TuxGuitar.getProperty("tools"));
-		this.scale.setText(TuxGuitar.getProperty("tools.scale"));
-		this.browser.setText(TuxGuitar.getProperty("tools.browser"));
-		this.plugins.setText(TuxGuitar.getProperty("tools.plugins"));
-		this.keyBindings.setText(TuxGuitar.getProperty("tools.shortcuts"));
-		this.config.setText(TuxGuitar.getProperty("tools.settings"));
+		setMenuItemTextAndAccelerator(this.settingsMenuItem, "tools", null);
+		setMenuItemTextAndAccelerator(this.scale, "tools.scale", ScaleAction.NAME);
+		setMenuItemTextAndAccelerator(this.browser, "tools.browser", TGBrowserAction.NAME);
+		setMenuItemTextAndAccelerator(this.plugins, "tools.plugins", EditPluginsAction.NAME);
+		setMenuItemTextAndAccelerator(this.keyBindings, "tools.shortcuts", EditKeyBindingsAction.NAME);
+		setMenuItemTextAndAccelerator(this.config, "tools.settings", EditConfigAction.NAME);
 	}
 	
 	public void loadIcons(){

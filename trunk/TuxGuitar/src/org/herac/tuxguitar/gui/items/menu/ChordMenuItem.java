@@ -13,7 +13,7 @@ import org.herac.tuxguitar.gui.actions.insert.InsertChordAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
 import org.herac.tuxguitar.song.models.TGChord;
 
-public class ChordMenuItem implements MenuItems{
+public class ChordMenuItem extends MenuItems{
 	private MenuItem chordMenuItem;
 	private Menu menu;
 	private MenuItem insertChord;
@@ -86,8 +86,8 @@ public class ChordMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties() {
-		this.chordMenuItem.setText(TuxGuitar.getProperty("chord"));
-		this.insertChord.setText(TuxGuitar.getProperty("insert.chord"));
+		setMenuItemTextAndAccelerator(this.chordMenuItem, "chord", null);
+		setMenuItemTextAndAccelerator(this.insertChord, "insert.chord", InsertChordAction.NAME);
 	}
 	
 	public void loadIcons() {

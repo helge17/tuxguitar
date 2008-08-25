@@ -50,6 +50,8 @@ public class KeyBindingConstants{
 	
 	public static final int CONTROL = SWT.CONTROL;
 	
+	public static final int COMMAND = SWT.COMMAND;
+	
 	public static final int SHIFT = SWT.SHIFT;
 	
 	public static final int TAB = SWT.TAB;

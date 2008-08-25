@@ -38,7 +38,7 @@ import org.herac.tuxguitar.io.base.TGSongImporter;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class FileMenuItem implements MenuItems {
+public class FileMenuItem extends MenuItems {
 	private MenuItem fileMenuItem;
 	private Menu menu;
 	private Menu importMenu; 
@@ -185,18 +185,19 @@ public class FileMenuItem implements MenuItems {
 	}
 	
 	public void loadProperties(){
-		this.fileMenuItem.setText(TuxGuitar.getProperty("file"));
-		this.newSong.setText(TuxGuitar.getProperty("file.new"));
-		this.open.setText(TuxGuitar.getProperty("file.open"));
-		this.openURL.setText(TuxGuitar.getProperty("file.open-url"));
-		this.save.setText(TuxGuitar.getProperty("file.save"));
-		this.saveAs.setText(TuxGuitar.getProperty("file.save-as"));
-		this.importItem.setText(TuxGuitar.getProperty("file.import"));
-		this.exportItem.setText(TuxGuitar.getProperty("file.export"));
-		this.printPreview.setText(TuxGuitar.getProperty("file.print-preview"));
-		this.print.setText(TuxGuitar.getProperty("file.print"));
-		this.historyItem.setText(TuxGuitar.getProperty("file.history"));
-		this.exit.setText(TuxGuitar.getProperty("file.exit"));
+
+		setMenuItemTextAndAccelerator(this.fileMenuItem, "file", null);
+		setMenuItemTextAndAccelerator(this.newSong, "file.new", NewFileAction.NAME);
+		setMenuItemTextAndAccelerator(this.open, "file.open", OpenFileAction.NAME);
+		setMenuItemTextAndAccelerator(this.openURL, "file.open-url", OpenURLAction.NAME);
+		setMenuItemTextAndAccelerator(this.save, "file.save", SaveFileAction.NAME);
+		setMenuItemTextAndAccelerator(this.saveAs, "file.save-as", SaveAsFileAction.NAME);
+		setMenuItemTextAndAccelerator(this.importItem, "file.import", ImportSongAction.NAME);
+		setMenuItemTextAndAccelerator(this.exportItem, "file.export", ExportSongAction.NAME);
+		setMenuItemTextAndAccelerator(this.printPreview, "file.print-preview", PrintPreviewAction.NAME);
+		setMenuItemTextAndAccelerator(this.print, "file.print", PrintAction.NAME);
+		setMenuItemTextAndAccelerator(this.historyItem, "file.history", null);
+		setMenuItemTextAndAccelerator(this.exit, "file.exit", ExitAction.NAME);
 		
 		Iterator importItems = this.importItems.iterator();
 		while(importItems.hasNext()){

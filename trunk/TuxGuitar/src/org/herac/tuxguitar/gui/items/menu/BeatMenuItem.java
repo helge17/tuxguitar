@@ -27,7 +27,7 @@ import org.herac.tuxguitar.song.models.TGNote;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class BeatMenuItem implements MenuItems{
+public class BeatMenuItem extends MenuItems{
 	
 	private MenuItem noteMenuItem;
 	private Menu menu;
@@ -124,18 +124,21 @@ public class BeatMenuItem implements MenuItems{
 	}
 	
 	public void loadProperties(){
-		this.noteMenuItem.setText(TuxGuitar.getProperty("beat"));
-		this.cleanBeat.setText(TuxGuitar.getProperty("beat.clean"));
-		this.tiedNote.setText(TuxGuitar.getProperty("note.tiednote"));
-		this.semitoneUp.setText(TuxGuitar.getProperty("note.semitone-up"));
-		this.semitoneDown.setText(TuxGuitar.getProperty("note.semitone-down"));
-		this.shiftUp.setText(TuxGuitar.getProperty("note.shift-up"));
-		this.shiftDown.setText(TuxGuitar.getProperty("note.shift-down"));
-		this.insertText.setText(TuxGuitar.getProperty("text.insert"));
+		
+		setMenuItemTextAndAccelerator(this.noteMenuItem, "beat", null);
+		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", CleanBeatAction.NAME);
+		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", ChangeTiedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.semitoneUp, "note.semitone-up", IncrementNoteSemitoneAction.NAME);
+		setMenuItemTextAndAccelerator(this.semitoneDown, "note.semitone-down", DecrementNoteSemitoneAction.NAME);
+		setMenuItemTextAndAccelerator(this.shiftUp, "note.shift-up", ShiftNoteUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.shiftDown, "note.shift-down", ShiftNoteDownAction.NAME);
+		setMenuItemTextAndAccelerator(this.insertText, "text.insert", InsertTextAction.NAME);
+		
 		this.durationMenuItem.loadProperties();
 		this.chordMenuItem.loadProperties();
 		this.effectMenuItem.loadProperties();
 		this.dynamicMenuItem.loadProperties();
+		
 	}
 	
 	public void loadIcons(){

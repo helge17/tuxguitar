@@ -55,6 +55,7 @@
 		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
 		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
 		<chmod file="${file.script}" perm="755"/>
+		<copy file="${build.dist.path}/shortcuts/shortcuts-freebsd-default.xml" tofile="${build.path}/shortcuts-default.xml"/>
 	</target>
 	
 	<target name="package" />
