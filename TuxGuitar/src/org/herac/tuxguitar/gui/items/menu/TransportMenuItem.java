@@ -7,14 +7,14 @@
 package org.herac.tuxguitar.gui.items.menu;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportModeAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
 
 /**
@@ -44,18 +44,10 @@ public class TransportMenuItem extends MenuItems{
 	
 	public void showItems(){
 		this.play = new MenuItem(this.menu,SWT.PUSH);
-		this.play.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().play(e);
-			}
-		});
+		this.play.addSelectionListener(TuxGuitar.instance().getAction(TransportPlayAction.NAME));
 		
 		this.stop = new MenuItem(this.menu, SWT.PUSH);
-		this.stop.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().stop(e);
-			}
-		});
+		this.stop.addSelectionListener(TuxGuitar.instance().getAction(TransportStopAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
@@ -80,8 +72,8 @@ public class TransportMenuItem extends MenuItems{
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.transportMenuItem, "transport", null);
-		setMenuItemTextAndAccelerator(this.play, "transport.start", null);
-		setMenuItemTextAndAccelerator(this.stop, "transport.stop", null);
+		setMenuItemTextAndAccelerator(this.play, "transport.start", TransportPlayAction.NAME);
+		setMenuItemTextAndAccelerator(this.stop, "transport.stop", TransportStopAction.NAME);
 		setMenuItemTextAndAccelerator(this.mode, "transport.mode", TransportModeAction.NAME);
 		setMenuItemTextAndAccelerator(this.metronome, "transport.metronome", TransportMetronomeAction.NAME);
 	}

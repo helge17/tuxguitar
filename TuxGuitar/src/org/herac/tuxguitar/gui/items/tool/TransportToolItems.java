@@ -12,6 +12,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.items.ToolItems;
 /**
  * @author julian
@@ -54,18 +56,10 @@ public class TransportToolItems  extends ToolItems{
 		});
 		
 		this.stop = new ToolItem(toolBar,SWT.PUSH);
-		this.stop.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().stop(e);
-			}
-		});
+		this.stop.addSelectionListener(TuxGuitar.instance().getAction(TransportStopAction.NAME));
 		
 		this.play = new ToolItem(toolBar,SWT.PUSH);
-		this.play.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().play(e);
-			}
-		});
+		this.play.addSelectionListener(TuxGuitar.instance().getAction(TransportPlayAction.NAME));
 		
 		this.next = new ToolItem(toolBar,SWT.PUSH);
 		this.next.addSelectionListener(new SelectionAdapter() {
