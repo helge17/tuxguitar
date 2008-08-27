@@ -105,7 +105,6 @@ public class TGTunerRoughWidget extends Composite {
 	 */
 	protected int getTone(float frequency) {
 		float midiTone = (float)(45+12*(Math.log(frequency/110)/Math.log(2)));
-		System.out.println(" freq: "+frequency+" midi: "+(midiTone%12));
 		return Math.round(  20 *   (midiTone % 12));
 	}
 	
