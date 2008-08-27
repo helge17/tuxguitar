@@ -139,9 +139,8 @@ public class TGTunerDialog implements TGTunerListener {
 							TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
 							TGTunerDialog.this.roughTuner.setCurrentFrequency(freq);
 						}
-						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.fineTuner.isDisposed()
-								&& freq> 0)
-							TGTunerDialog.this.fineTuner.setCurrentFrequency(freq);
+						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.fineTuner.isDisposed())
+								TGTunerDialog.this.fineTuner.setCurrentFrequency(freq);
 					 }
 				 });
 			 } catch (Throwable e) {
@@ -176,8 +175,14 @@ public class TGTunerDialog implements TGTunerListener {
 	
 	public void fireCurrentString(final int string) {
 		this.tuner.pause();
-		this.tuner.setWantedNote(string);
-		this.fineTuner.setWantedTone(string);
+		if (string == 0) { // TODO: it never happens
+			this.tuner.setWantedRange();
+			this.fineTuner.setEnabled(false);
+		}
+		else {
+			this.tuner.setWantedNote(string);
+			this.fineTuner.setWantedTone(string);
+		}
 		this.tuner.resumeFromPause();
 	}
 	

@@ -20,7 +20,7 @@ public class TGTunerSettings {
 	protected int bufferSize;
 	protected int fftSize;
 	protected int waitPeriod;
-	static final int DEFAULT_BUFFER_SIZE = 1024; // 2^10
+	static final int DEFAULT_BUFFER_SIZE = 4096; // 2^12
 	static final int DEFAULT_FFT_SIZE = 16384; // 2^14
 	static final int CHANNELS_NUMBER = 1;
 	
@@ -29,11 +29,11 @@ public class TGTunerSettings {
 	/** default settings, if faild to load from properties */
 	public static TGTunerSettings getDefaults() {
 		TGTunerSettings retValue = new TGTunerSettings();
-		retValue.setSampleRate(22050);
-		retValue.setSampleSize(16);
+		retValue.setSampleRate(11025);
+		retValue.setSampleSize(8);
 		retValue.setBufferSize(DEFAULT_BUFFER_SIZE);
 		retValue.setFFTSize(DEFAULT_FFT_SIZE);
-		retValue.setTreshold(0.6);
+		retValue.setTreshold(0.03);
 		retValue.setWaitPeriod(100);
 		return retValue;
 	}
@@ -71,15 +71,16 @@ public class TGTunerSettings {
 
 	/** creates AudioFormat based on settings */
 	public AudioFormat getAudioFormat() {
-		//return new AudioFormat(8000.0F,8,1,true,false);
-		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, // PCM encoding
+		return new AudioFormat(this.getSampleRate(),this.getSampleSize(),1,true,false);
+		// TODO: this is changed!!!!
+		/* return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, // PCM encoding
 				this.getSampleRate(), // sample rate
 				this.getSampleSize(), // sample size (8-bit, 16-bit)
 				1, // mono
 				this.getFrameSize(), // 16-bit frame (was:4)
 				this.getSampleRate(), // frame rate
 				false // big-endian
-				);
+				); */
 	}
 
 	

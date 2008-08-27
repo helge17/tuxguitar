@@ -80,7 +80,7 @@ public class TGTunerRoughWidget extends Composite {
 		if (this.currentFrequency>0) {
 			painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 			painter.initPath();
-			int markerPos = this.startA+(int)Math.round(((compositeSize.x-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
+			int markerPos = this.markerWidth/2 + this.startA+(int)Math.round(((compositeSize.x-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
 			painter.moveTo(markerPos, compositeSize.y/2-this.markerHeight/2);
 			painter.setLineWidth(this.markerWidth);
 			painter.lineTo(markerPos, compositeSize.y/2+this.markerHeight/2);
@@ -104,8 +104,8 @@ public class TGTunerRoughWidget extends Composite {
 	 * in fact, it's inverse formula of inverse of TGTuner::getNoteFrequency() 
 	 */
 	protected int getTone(float frequency) {
-//		System.out.println("frequency: "+frequency+"   midi tone: "+(45+12*(Math.log(frequency/110)/Math.log(2))));
 		float midiTone = (float)(45+12*(Math.log(frequency/110)/Math.log(2)));
+		System.out.println(" freq: "+frequency+" midi: "+(midiTone%12));
 		return Math.round(  20 *   (midiTone % 12));
 	}
 	

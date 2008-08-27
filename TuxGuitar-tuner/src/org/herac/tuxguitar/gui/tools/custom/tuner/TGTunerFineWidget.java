@@ -32,6 +32,7 @@ public class TGTunerFineWidget extends Composite {
 	protected int currentNoteValue = -1;
 	protected double currentFrequency = 0.0f;
 	protected Font letterFont = null;
+	protected final float FINE_TUNING_RANGE = 1.5f;
 
 	public TGTunerFineWidget(Composite parent) {
 		super(parent, SWT.NONE);
@@ -91,9 +92,11 @@ public class TGTunerFineWidget extends Composite {
 			painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 			painter.setFont(this.letterFont);
 			painter.drawString(this.currentNoteString, compositeSize.x*12/15, 10);
+
+			// pointer
 			if (this.currentFrequency!=-1) {
-				painter.setLineWidth(5);
-				painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+				painter.setLineWidth(3);
+				painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
 				painter.initPath();
 				painter.moveTo(compositeSize.x/2, compositeSize.y-this.bottomY);
 				painter.lineTo((float)(compositeSize.x/2 + height*Math.cos(this.getAngleRad())),(float)( compositeSize.y-this.bottomY-height*Math.sin(this.getAngleRad())));
@@ -126,12 +129,21 @@ public class TGTunerFineWidget extends Composite {
 	}
 	
 	protected double getAngleRad() {
-		return Math.PI*(  1  -  (this.getTone(this.currentFrequency) - this.currentNoteValue + 3  )/6    );
+		return Math.PI*( 1 - (this.stickDistance(this.getTone(this.currentFrequency) - this.currentNoteValue) + this.FINE_TUNING_RANGE  )/(2*this.FINE_TUNING_RANGE) );
 	}
 
 	
 	private float getTone(double frequency) {
 		return (float)(45+12*(Math.log(frequency/110)/Math.log(2)));
+	}
+	
+	private double stickDistance(double diff) {
+		if (Math.abs(diff) > this.FINE_TUNING_RANGE)
+			if (diff > 0)
+				return this.FINE_TUNING_RANGE;
+			else
+				return -this.FINE_TUNING_RANGE;
+		return diff;
 	}
 
 	
