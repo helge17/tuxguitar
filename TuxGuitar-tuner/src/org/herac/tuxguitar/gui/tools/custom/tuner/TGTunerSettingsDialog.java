@@ -43,7 +43,7 @@ public class TGTunerSettingsDialog {
 	}
 
 	public void show() {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
 		dialog.setLayout(new GridLayout());
 		dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuner.settings"));
@@ -119,6 +119,7 @@ public class TGTunerSettingsDialog {
 		this.noiseGate.addSelectionListener(new UpdatedListener());
 		this.noiseGate.setLayoutData(new GridData(SWT.None, SWT.NONE, true,false,1,1));
 		((GridData)this.noiseGate.getLayoutData()).widthHint=270;
+		((GridData)this.noiseGate.getLayoutData()).grabExcessHorizontalSpace=true;
 		this.noiseGateValue = new Label(noiseGateComposite,SWT.LEFT);
 		this.noiseGateValue.setText("                       ");
 		
@@ -127,6 +128,8 @@ public class TGTunerSettingsDialog {
 		this.settingsInfo = new Text(infoComposite, SWT.READ_ONLY | SWT.MULTI );
 		this.settingsInfo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
 		((GridData)this.settingsInfo.getLayoutData()).heightHint=30;
+		((GridData)this.settingsInfo.getLayoutData()).grabExcessHorizontalSpace=true;
+		((GridData)this.settingsInfo.getLayoutData()).grabExcessVerticalSpace=true;
 		((GridData)this.settingsInfo.getLayoutData()).widthHint=300;
 		//// buttons ok/cancel
 		Composite btnComposite = new Composite(dialog,SWT.NONE);
