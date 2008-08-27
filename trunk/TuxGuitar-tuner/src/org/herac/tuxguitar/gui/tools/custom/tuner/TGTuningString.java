@@ -34,8 +34,8 @@ public class TGTuningString {
 	void addListener() {
 		this.stringButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				TGTuningString.this.stringButton.setSelection(true);
-				TGTuningString.this.listener.fireCurrentString(TGTuningString.this.string);
+					TGTuningString.this.stringButton.setSelection(true);
+					TGTuningString.this.listener.fireCurrentString(TGTuningString.this.string);
 			}
 			
 		});

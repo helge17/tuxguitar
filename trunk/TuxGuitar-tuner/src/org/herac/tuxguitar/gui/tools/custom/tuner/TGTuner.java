@@ -49,12 +49,7 @@ public class TGTuner extends Thread {
 			this.mainWindow.fireException(ex);
 		}
 
-		int[] tuning = this.mainWindow.getTuning();
-		
-		// TODO: maybe to restrict only to 1 or 2 octaves!!!!!!!!!
-		
-		this.maximumFrequency = getNoteFrequency(tuning[0]+3); // 3 frets higher that the thiniest string
-		this.minimumFrequency = getNoteFrequency(tuning[tuning.length-1]-3); // 3 frets lower that the thickest string
+		this.setWantedRange();
 		
 	}
 
@@ -95,9 +90,9 @@ public class TGTuner extends Thread {
 					cycles++;
 					long startTime = System.currentTimeMillis();
 					
-					//if (this.fft!=null)
-					//	this.fft.doFFT(this.ar, this.ai, false);
-					TGTuner.computeFFT(1, this.settings.getFFTSize(), this.ar, this.ai);
+					if (this.fft!=null)
+						this.fft.doFFT(this.ar, this.ai, false);
+					//TGTuner.computeFFT(1, this.settings.getFFTSize(), this.ar, this.ai);
 					
 					timePassed+=System.currentTimeMillis()-startTime;
 					/////////////////////////////////////////////////////////////
@@ -170,7 +165,7 @@ public class TGTuner extends Thread {
 				this.ai = new double[this.settings.getFFTSize()]; // create imaginary array for FFT
 				
 				// TODO: rate is maybe not the best /2 ?
-				this.rate = ((double) this.settings.getSampleRate()) / this.settings.getFFTSize() /2;
+				this.rate = ((double) this.settings.getSampleRate()) / this.settings.getFFTSize();
 		}
 	}
 
@@ -211,6 +206,13 @@ public class TGTuner extends Thread {
 		// TODO: maybe too restrictive? But eliminates fifths harmonics...
 		this.minimumFrequency = getNoteFrequency(note-3);
 		this.maximumFrequency = getNoteFrequency(note+3);
+	}
+	
+	public void setWantedRange() {
+		// TODO: maybe to restrict only to 1 or 2 octaves!!!!!!!!!
+		int[] tuning = this.mainWindow.getTuning();
+		this.maximumFrequency = getNoteFrequency(tuning[0]+3); // 3 frets higher that the thiniest string
+		this.minimumFrequency = getNoteFrequency(tuning[tuning.length-1]-3); // 3 frets lower that the thickest string
 	}
 	
 	

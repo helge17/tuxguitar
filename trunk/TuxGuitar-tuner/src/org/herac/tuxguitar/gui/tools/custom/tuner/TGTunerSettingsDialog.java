@@ -60,12 +60,11 @@ public class TGTunerSettingsDialog {
 		this.deviceCombo.addSelectionListener(new UpdatedListener());
 */
 		
-		Composite sampleComposite = this.createGroup(TuxGuitar.getProperty("tuner.sound-format"), dialog);
+		Composite sampleComposite = this.createGroup(TuxGuitar.getProperty("tuner.sound-format"), group);
 
 		
 		new Label(sampleComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sample-rate"));
 		this.sampleRateCombo = new Combo(sampleComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.sampleRateCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
 		this.sampleRateCombo.add("48000");
 		this.sampleRateCombo.add("44100");
 		this.sampleRateCombo.add("22050");
@@ -76,18 +75,16 @@ public class TGTunerSettingsDialog {
 		
 		new Label(sampleComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sample-size"));
 		this.sampleSizeCombo = new Combo(sampleComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.sampleSizeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
 		this.sampleSizeCombo.add("16");
 		this.sampleSizeCombo.add("8");
 		this.sampleSizeCombo.addSelectionListener(new UpdatedListener());
 
 
-		Composite analyzeComposite = this.createGroup(TuxGuitar.getProperty("tuner.sampling-and-analyze"), dialog);
+		Composite analyzeComposite = this.createGroup(TuxGuitar.getProperty("tuner.sampling-and-analyze"), group);
 
 		// buffer size
 		new Label(analyzeComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sampling-buffer-size"));
-		this.bufferSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN);
-		this.bufferSizeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
+		this.bufferSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.bufferSizeCombo.add(new Integer(512).toString());
 		this.bufferSizeCombo.add(new Integer(1024).toString());
 		this.bufferSizeCombo.add(new Integer(2048).toString());
@@ -100,7 +97,6 @@ public class TGTunerSettingsDialog {
 		// FFT buffer size
 		new Label(analyzeComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.fourier-buffer-size"));
 		this.FFTSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.FFTSizeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
 		this.FFTSizeCombo.add(new Integer(1024).toString());
 		this.FFTSizeCombo.add(new Integer(2048).toString());
 		this.FFTSizeCombo.add(new Integer(4096).toString());
@@ -109,7 +105,7 @@ public class TGTunerSettingsDialog {
 		this.FFTSizeCombo.add(new Integer(32768).toString());
 		this.FFTSizeCombo.addSelectionListener(new UpdatedListener());
 		
-		Composite noiseGateComposite = this.createGroup(TuxGuitar.getProperty("tuner.noise-gate"), dialog);
+		Composite noiseGateComposite = this.createGroup(TuxGuitar.getProperty("tuner.noise-gate"), group);
 		this.noiseGate = new Scale(noiseGateComposite, SWT.BORDER);
 		this.noiseGate.setMaximum(100);
 		this.noiseGate.setIncrement(5);
@@ -121,13 +117,17 @@ public class TGTunerSettingsDialog {
 			}
 		});
 		this.noiseGate.addSelectionListener(new UpdatedListener());
-		this.noiseGate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
+		this.noiseGate.setLayoutData(new GridData(SWT.None, SWT.NONE, true,false,1,1));
+		((GridData)this.noiseGate.getLayoutData()).widthHint=270;
 		this.noiseGateValue = new Label(noiseGateComposite,SWT.LEFT);
 		this.noiseGateValue.setText("                       ");
 		
-		Composite infoComposite = this.createGroup(TuxGuitar.getProperty("tuner.info"), dialog);
-		this.settingsInfo = new Text(infoComposite, SWT.READ_ONLY | SWT.MULTI );
+		Composite infoComposite = this.createGroup(TuxGuitar.getProperty("tuner.info"), group);
 		
+		this.settingsInfo = new Text(infoComposite, SWT.READ_ONLY | SWT.MULTI );
+		this.settingsInfo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
+		((GridData)this.settingsInfo.getLayoutData()).heightHint=30;
+		((GridData)this.settingsInfo.getLayoutData()).widthHint=300;
 		//// buttons ok/cancel
 		Composite btnComposite = new Composite(dialog,SWT.NONE);
 		btnComposite.setLayout(new GridLayout(2,false));
