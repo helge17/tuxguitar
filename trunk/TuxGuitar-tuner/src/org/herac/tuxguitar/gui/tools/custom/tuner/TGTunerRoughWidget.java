@@ -36,6 +36,7 @@ public class TGTunerRoughWidget extends Composite {
 	public void init() {
 		this.setLayout(new GridLayout(1,true));
 		this.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		((GridData)this.getLayoutData()).widthHint = 600;
 		
 		
 		this.composite = new Composite(this,SWT.BORDER | SWT.DOUBLE_BUFFERED);
@@ -72,7 +73,7 @@ public class TGTunerRoughWidget extends Composite {
 			painter.moveTo(i,compositeSize.y/2-this.boundaryHeight/2);
 			painter.lineTo(i, compositeSize.y/2+this.boundaryHeight/2);
 			painter.closePath();
-			painter.drawString(TONESSTRING[currentTone], i, compositeSize.y/2-this.boundaryHeight/2-20);
+			painter.drawString(TONESSTRING[currentTone%12], i, compositeSize.y/2-this.boundaryHeight/2-20);
 			currentTone++;
 		}
 		

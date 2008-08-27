@@ -26,7 +26,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  */
 public class TGTunerDialog implements TGTunerListener {
 	
-	private static final int SHELL_WIDTH = 700;
+	private static final int SHELL_WIDTH = 400;
 	protected TGTuner tuner = null;
 	protected int[] tuning = null;
 	protected Label currentFrequency = null;
@@ -41,17 +41,13 @@ public class TGTunerDialog implements TGTunerListener {
 
 
 	public void show() {
-		// TODO: RESIZE!!!!!!!!!!
-		// TODO: RESIZE!!!!!!!!!!
-		// TODO: RESIZE!!!!!!!!!!
-		// TODO: RESIZE!!!!!!!!!!
-		// TODO: RESIZE!!!!!!!!!!
-		// TODO: RESIZE!!!!!!!!!!
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM);
+
+		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
 		this.dialog.setText(TuxGuitar.getProperty("tuner.instrument-tuner"));
 		this.dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
+		this.dialog.setSize(700, 400);
 		
 		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);            
 		group.setLayout(new GridLayout());
@@ -77,7 +73,7 @@ public class TGTunerDialog implements TGTunerListener {
 		tunComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
 		this.currentFrequency = new Label(tunComposite,SWT.LEFT);
-		this.currentFrequency.setText("temppppppppppppppppppppppppppppppp");		
+		this.currentFrequency.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
 		this.roughTuner = new TGTunerRoughWidget(group);
 		
