@@ -166,7 +166,7 @@ public class TGBrowserFTPClient {
 	
 	private String getResponse(int expectedCode) throws IOException{
 		String response = this.getResponse();
-		while( response != null && response.indexOf(expectedCode + "-") == 0){
+		while( response != null && response.indexOf(expectedCode) == 0){
 			response = this.getResponse();
 		}
 		return response; 
