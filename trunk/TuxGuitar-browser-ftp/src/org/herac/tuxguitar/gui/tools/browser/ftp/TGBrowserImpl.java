@@ -2,8 +2,11 @@ package org.herac.tuxguitar.gui.tools.browser.ftp;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowser;
@@ -35,6 +38,7 @@ public class TGBrowserImpl extends TGBrowser{
 	
 	public void open() throws TGBrowserException{
 		try {
+			checkForProxy();
 			this.client = new TGBrowserFTPClient();
 			this.client.open(this.data.getHost(), TGBrowserFTPClient.DEFAULT_PORT);
 			this.client.login(this.data.getUsername(),this.data.getPassword());
@@ -43,9 +47,11 @@ public class TGBrowserImpl extends TGBrowser{
 			throw new TGBrowserException(throwable);
 		}
 	}
+
 	
 	public void close() throws TGBrowserException{
 		try {
+			closeProxy();
 			this.client.close();
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);
@@ -54,7 +60,9 @@ public class TGBrowserImpl extends TGBrowser{
 	
 	public void cdElement(TGBrowserElement element) throws TGBrowserException {
 		try {
-			this.client.cd(element.getName());
+			boolean isCDSuccess = this.client.cd(element.getName());
+			if(!isCDSuccess)
+				throw new TGBrowserException("could not cd to "+element.getName());
 			this.path = this.client.pwd();
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);
@@ -123,6 +131,40 @@ public class TGBrowserImpl extends TGBrowser{
 			return new ByteArrayInputStream( bytes );
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);
+		}
+	}
+	
+	private void checkForProxy() {
+		if (data.getProxyHost() != null && data.getProxyPort() > 0) {
+			System.setProperty("socksProxyHost", data.getProxyHost());
+			System.setProperty("socksProxyPort", String.valueOf(data.getProxyPort()));
+			if (data.getProxyUser() != null && data.getProxyUser().trim().length() > 0) {
+				System.setProperty("java.net.socks.username", data.getProxyUser());
+				System.setProperty("java.net.socks.password", data.getProxyPwd());
+				Authenticator.setDefault(new ProxyAuthenticator(data.getProxyUser(), data.getProxyPwd()));
+			}
+		} else {
+			closeProxy();
+		}
+	}
+
+	private void closeProxy() {
+		Properties sysProperties = System.getProperties();
+		sysProperties.remove("socksProxyHost");
+		sysProperties.remove("socksProxyPort");
+		sysProperties.remove("java.net.socks.username");
+		sysProperties.remove("java.net.socks.password");
+	}
+
+	private final class ProxyAuthenticator extends Authenticator {
+		private PasswordAuthentication auth;
+
+		private ProxyAuthenticator(String user, String pass) {
+			auth = new PasswordAuthentication(user, pass.toCharArray());
+		}
+
+		protected PasswordAuthentication getPasswordAuthentication() {
+			return auth;
 		}
 	}
 }

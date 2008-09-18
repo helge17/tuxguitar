@@ -8,16 +8,30 @@ public class TGBrowserDataImpl implements TGBrowserData{
 	
 	private static final String STRING_SEPARATOR = ";";
 	
+	private String name;
 	private String host;
 	private String path;
 	private String username;
 	private String password;
+	private String proxyUser;
+	private String proxyPwd;
+	private String proxyHost;
+	private int proxyPort;
 	
-	public TGBrowserDataImpl(String host,String path,String username,String password){
+	public TGBrowserDataImpl(String name, String host, String path, String username, String password, String proxyUser, String proxyPwd, String proxyHost, int proxyPort) {
+		this.name = name;
 		this.host = host;
 		this.path = path;
 		this.username = username;
 		this.password = password;
+		this.proxyUser = proxyUser;
+		this.proxyPwd = proxyPwd;
+		this.proxyHost = proxyHost;
+		this.proxyPort = proxyPort;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	public String getHost() {
@@ -37,21 +51,46 @@ public class TGBrowserDataImpl implements TGBrowserData{
 	}
 	
 	public String getTitle(){
-		return (getHost() + ":" + getPath());
+		return getName();
 	}
 	
+	public String getProxyHost() {
+		return proxyHost;
+	}
+
+	public int getProxyPort() {
+		return proxyPort;
+	}
+
+	public String getProxyUser() {
+		return proxyUser;
+	}
+
+	public String getProxyPwd() {
+		return proxyPwd;
+	}
+
 	public String toString(){
 		String username = new String( Base64Encoder.encode( getUsername().getBytes() ) );
 		String password = new String( Base64Encoder.encode( getPassword().getBytes() ) );
-		return getHost() + STRING_SEPARATOR + getPath() + STRING_SEPARATOR + username + STRING_SEPARATOR + password;
+		String	proxyUser = new String( Base64Encoder.encode( getProxyUser().getBytes() ));
+		String	proxyPwd = new String( Base64Encoder.encode( getProxyPwd().getBytes() ));
+		
+		return getName() + STRING_SEPARATOR + getHost() + STRING_SEPARATOR
+				+ getPath() + STRING_SEPARATOR + username + STRING_SEPARATOR
+				+ password + STRING_SEPARATOR + proxyUser + STRING_SEPARATOR
+				+ proxyPwd + STRING_SEPARATOR + getProxyHost()
+				+ STRING_SEPARATOR + String.valueOf(getProxyPort());
 	}
 	
 	public static TGBrowserData fromString(String string) {
 		String[] data = string.split(STRING_SEPARATOR);
-		if(data.length == 4){
-			String username = new String( Base64Decoder.decode( data[2].getBytes() ) );
-			String password = new String( Base64Decoder.decode( data[3].getBytes() ) );
-			return new TGBrowserDataImpl(data[0],data[1],username,password);
+		if(data.length == 9){
+			String username = new String( Base64Decoder.decode( data[3].getBytes() ) );
+			String password = new String( Base64Decoder.decode( data[4].getBytes() ) );
+			String proxyUser = new String( Base64Decoder.decode( data[5].getBytes() ));
+			String proxyPwd = new String( Base64Decoder.decode( data[6].getBytes() ) );
+			return new TGBrowserDataImpl(data[0], data[1], data[2], username, password,  proxyUser, proxyPwd, data[7], Integer.parseInt(data[8]));
 		}
 		return null;
 	}

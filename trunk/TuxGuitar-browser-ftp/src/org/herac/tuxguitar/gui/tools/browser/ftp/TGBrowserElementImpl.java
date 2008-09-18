@@ -22,6 +22,10 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 		return (this.info != null && this.info.length() > 0 && this.info.charAt(0) == 'd');
 	}
 	
+	public boolean isSymLink() {
+		return (this.info != null && this.info.length() > 0 && this.info.charAt(0) == 'l');
+	}
+	
 	public InputStream getInputStream()throws TGBrowserException {
 		return this.browser.getInputStream(this.path,this);
 	}

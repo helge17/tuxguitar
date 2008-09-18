@@ -149,7 +149,8 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 							while(it.hasNext()){
 								TGBrowserElement element = (TGBrowserElement)it.next();
 								TableItem item = new TableItem(TGBrowserDialog.this.table, SWT.NONE);
-								item.setImage(element.isFolder()?TuxGuitar.instance().getIconManager().getBrowserFolder():TuxGuitar.instance().getIconManager().getBrowserFile());
+								item.setImage(element.isFolder()?TuxGuitar.instance().getIconManager().getBrowserFolder():
+									element.isSymLink()?TuxGuitar.instance().getIconManager().getBrowserSymLink():TuxGuitar.instance().getIconManager().getBrowserFile());
 								item.setText(element.getName());
 							}
 						}

@@ -130,6 +130,7 @@ public class IconManager {
 	private Image browserNew;
 	private Image browserFile;
 	private Image browserFolder;
+	private Image browserSymLink;
 	private Image browserRoot;
 	private Image browserBack;
 	private Image browserRefresh;
@@ -287,6 +288,7 @@ public class IconManager {
 		this.browserNew = loadIcon("browser_new.png");
 		this.browserFile = loadIcon("browser_file.png");
 		this.browserFolder = loadIcon("browser_folder.png");
+		this.browserSymLink = loadIcon("browser_symlink.png");
 		this.browserRoot = loadIcon("browser_root.png");
 		this.browserBack = loadIcon("browser_back.png");
 		this.browserRefresh = loadIcon("browser_refresh.png");
@@ -792,6 +794,10 @@ public class IconManager {
 	
 	public Image getBrowserFolder() {
 		return this.browserFolder;
+	}
+	
+	public Image getBrowserSymLink() {
+		return this.browserSymLink;
 	}
 	
 	public Image getBrowserRefresh() {

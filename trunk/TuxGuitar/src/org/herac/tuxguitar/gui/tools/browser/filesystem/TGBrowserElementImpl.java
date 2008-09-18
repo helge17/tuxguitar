@@ -41,5 +41,9 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 		}
 		return null;
 	}
+
+	public boolean isSymLink() {
+		return false;
+	}
 	
 }
