@@ -207,8 +207,8 @@ public class TESongImporter implements TGSongImporter{
 		
 		TGDuration tgDuration = getDuration( note.getDuration() );
 		TGBeat tgBeat = getBeat(tgMeasure, getStart(tgDuration, tgMeasure, note.getPosition()));
-		tgDuration.copy(tgBeat.getDuration());
-		tgBeat.addNote(tgNote);
+		tgDuration.copy(tgBeat.getVoice(0).getDuration());
+		tgBeat.getVoice(0).addNote(tgNote);
 	}
 	
 	private void addChord(TEChord[] chords,TEComponentChord component,TGTrack tgTrack,TGMeasure tgMeasure){
@@ -296,20 +296,20 @@ class TGSongAdjuster{
 		for(int i = 0;i < measure.countBeats();i++){
 			TGBeat beat = measure.getBeat( i );
 			long beatStart = beat.getStart();
-			long beatLength = beat.getDuration().getTime();
+			long beatLength = beat.getVoice(0).getDuration().getTime();
 			if(previous != null){
 				long previousStart = previous.getStart();
-				long previousLength = previous.getDuration().getTime();
+				long previousLength = previous.getVoice(0).getDuration().getTime();
 				
 				// check for a chord in a rest beat
-				if( beat.isRestBeat() && beat.isChordBeat() ){
+				if( beat.getVoice(0).isRestVoice() && beat.isChordBeat() ){
 					TGBeat candidate = null;
 					TGBeat next = this.manager.getMeasureManager().getFirstBeat( measure.getBeats() );
 					while( next != null ){
 						if( candidate != null && next.getStart() > beat.getStart() ){
 							break;
 						}
-						if(! next.isRestBeat() && !next.isChordBeat() ){
+						if(! next.getVoice(0).isRestVoice() && !next.isChordBeat() ){
 							candidate = next;
 						}
 						next = this.manager.getMeasureManager().getNextBeat(measure.getBeats(), next);
@@ -324,23 +324,23 @@ class TGSongAdjuster{
 				
 				// check the duration
 				if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
-					if(beat.isRestBeat()){
+					if(beat.getVoice(0).isRestVoice()){
 						measure.removeBeat(beat);
 						finish = false;
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (beatStart - previousStart) );
-					duration.copy( previous.getDuration() );
+					duration.copy( previous.getVoice(0).getDuration() );
 				}
 			}
 			if( (beatStart + beatLength) > measureEnd ){
-				if(beat.isRestBeat()){
+				if(beat.getVoice(0).isRestVoice()){
 					measure.removeBeat(beat);
 					finish = false;
 					break;
 				}
 				TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (measureEnd - beatStart) );
-				duration.copy( beat.getDuration() );
+				duration.copy( beat.getVoice(0).getDuration() );
 			}
 			previous = beat;
 		}
