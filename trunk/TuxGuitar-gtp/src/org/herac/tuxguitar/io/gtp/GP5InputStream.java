@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -24,6 +23,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -157,13 +157,14 @@ public class GP5InputStream extends GTPInputStream {
 		return lyric;
 	}
 	
-	private long readBeat(long start, TGMeasure measure, TGTrack track, TGTempo tempo) throws IOException{
+	private long readBeat(long start, TGMeasure measure, TGTrack track, TGTempo tempo, int voiceIndex) throws IOException{
 		int flags = readUnsignedByte();
 		if((flags & 0x40) != 0){
 			readUnsignedByte();
 		}
 		
-		TGBeat beat = getFactory().newBeat();
+		TGBeat beat = getBeat(measure, start);
+		TGVoice voice = beat.getVoice(voiceIndex);
 		TGDuration duration = readDuration(flags);
 		TGNoteEffect effect = getFactory().newEffect();
 		if ((flags & 0x02) != 0) {
@@ -183,8 +184,9 @@ public class GP5InputStream extends GTPInputStream {
 			if ((stringFlags & (1 << i)) != 0 && (6 - i) < track.stringCount()) {
 				TGString string = track.getString( (6 - i) + 1 ).clone(getFactory());
 				TGNote note = readNote(string,track,effect.clone(getFactory()));
-				beat.addNote(note);
+				voice.addNote(note);
 			}
+			duration.copy(voice.getDuration());
 		}
 		
 		skip(1);
@@ -194,9 +196,7 @@ public class GP5InputStream extends GTPInputStream {
 			skip(1);
 		}
 		
-		beat.setStart(start);
-		duration.copy(beat.getDuration());
-		measure.addBeat(beat);
+		voice.setEmpty(false);
 		
 		return duration.getTime();
 	}
@@ -277,10 +277,15 @@ public class GP5InputStream extends GTPInputStream {
 				TGMeasure measure = track.getMeasure( m );
 				for (int b = measure.countBeats() - 1; b >= 0; b--) {
 					TGBeat beat = measure.getBeat( b );
-					for (int n = 0; n < beat.countNotes(); n ++) {
-						TGNote note = beat.getNote( n );
-						if (note.getString() == string) {
-							return note.getValue();
+					for (int v = 0; v < beat.countVoices(); v ++) {
+						TGVoice voice = beat.getVoice(v);
+						if(!voice.isEmpty()){
+							for (int n = 0; n < voice.countNotes(); n ++) {
+								TGNote note = voice.getNote( n );
+								if (note.getString() == string) {
+									return note.getValue();
+								}
+							}
 						}
 					}
 				}
@@ -353,18 +358,18 @@ public class GP5InputStream extends GTPInputStream {
 		long start = measure.getStart();
 		int beats = readInt();
 		for (int i = 0; i < beats; i++) {
-			start += readBeat(start, measure, track, tempo);
+			start += readBeat(start, measure, track, tempo, 0);
 		}
 		
 		//voice 2
 		start = measure.getStart();
 		beats = readInt();
 		for (int i = 0; i < beats; i++) {
-			start += readBeat(start, measure, track, tempo);
+			start += readBeat(start, measure, track, tempo, 1);
 		}
 		
 		//join voices
-		new JoinVoicesHelper(getFactory(),measure).process();
+		//new JoinVoicesHelper(getFactory(),measure).process();
 	}
 	
 	private TGNote readNote(TGString string,TGTrack track,TGNoteEffect effect)throws IOException {
@@ -684,98 +689,18 @@ public class GP5InputStream extends GTPInputStream {
 		short value = (short)(( b * 8 ) - 1);
 		return (short)Math.max(value,0);
 	}
-}
-class JoinVoicesHelper{
-	private TGFactory factory;
-	private TGMeasure measure;
 	
-	public JoinVoicesHelper(TGFactory factory,TGMeasure measure){
-		this.factory = factory;
-		this.measure = measure;
-	}
-	
-	public void process(){
-		orderBeats();
-		joinBeats();
-	}
-	
-	public void joinBeats(){
-		TGBeat previous = null;
-		boolean finish = true;
-		
-		long measureStart = this.measure.getStart();
-		long measureEnd = (measureStart + this.measure.getLength());
-		for(int i = 0;i < this.measure.countBeats();i++){
-			TGBeat beat = this.measure.getBeat( i );
-			long beatStart = beat.getStart();
-			long beatLength = beat.getDuration().getTime();
-			if(previous != null){
-				long previousStart = previous.getStart();
-				long previousLength = previous.getDuration().getTime();
-				
-				if(previousStart == beatStart){
-					// add beat notes to previous
-					for(int n = 0;n < beat.countNotes();n++){
-						TGNote note = beat.getNote( n );
-						previous.addNote( note );
-					}
-					
-					// add beat chord to previous
-					if(!previous.isChordBeat() && beat.isChordBeat()){
-						previous.setChord( beat.getChord() );
-					}
-					
-					// add beat text to previous
-					if(!previous.isTextBeat() && beat.isTextBeat()){
-						previous.setText( beat.getText() );
-					}
-					
-					// set the best duration
-					if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
-						beat.getDuration().copy(previous.getDuration());
-					}
-					
-					this.measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				
-				else if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
-					if(beat.isRestBeat()){
-						this.measure.removeBeat(beat);
-						finish = false;
-						break;
-					}
-					TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-					duration.copy( previous.getDuration() );
-				}
+	private TGBeat getBeat(TGMeasure measure, long start){
+		int count = measure.countBeats();
+		for(int i = 0 ; i < count ; i ++ ){
+			TGBeat beat = measure.getBeat( i );
+			if( beat.getStart() == start ){
+				return beat;
 			}
-			if( (beatStart + beatLength) > measureEnd ){
-				if(beat.isRestBeat()){
-					this.measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-				duration.copy( beat.getDuration() );
-			}
-			previous = beat;
 		}
-		if(!finish){
-			joinBeats();
-		}
-	}
-	
-	public void orderBeats(){
-		for(int i = 0;i < this.measure.countBeats();i++){
-			TGBeat minBeat = null;
-			for(int j = i;j < this.measure.countBeats();j++){
-				TGBeat beat = this.measure.getBeat(j);
-				if(minBeat == null || beat.getStart() < minBeat.getStart()){
-					minBeat = beat;
-				}
-			}
-			this. measure.moveBeat(i, minBeat);
-		}
+		TGBeat beat = getFactory().newBeat();
+		beat.setStart(start);
+		measure.addBeat(beat);
+		return beat;
 	}
 }

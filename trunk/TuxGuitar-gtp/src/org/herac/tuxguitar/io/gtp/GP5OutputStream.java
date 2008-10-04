@@ -29,6 +29,7 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
@@ -286,6 +287,7 @@ public class GP5OutputStream extends GTPOutputStream {
 	}
 	
 	private void writeMeasure(TGMeasure measure, TGTempo tempo) throws IOException {
+		/*
 		int beatCount = measure.countBeats();
 		writeInt(beatCount);
 		for (int i = 0; i < beatCount; i++) {
@@ -293,13 +295,39 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeBeat(beat, measure, tempo);
 		}
 		writeInt(0);
+		*/
+		int[] voiceCount = new int[2];
+		for(int i = 0; i < measure.countBeats() ; i ++ ){
+			TGBeat beat = measure.getBeat( i );
+			for(int v = 0; v < beat.countVoices() ; v ++ ){
+				if( v < 2 ){
+					TGVoice voice = beat.getVoice(v);
+					if(!voice.isEmpty()){
+						voiceCount[v] ++;
+					}
+				}
+			}
+		}
+		
+		for(int v = 0; v < voiceCount.length ; v ++){
+			writeInt( voiceCount[v] );
+			for (int m = 0; m < measure.countBeats(); m ++) {
+				TGBeat beat = measure.getBeat( m );
+				if( v < beat.countVoices() ){
+					TGVoice voice = beat.getVoice( v );
+					if(!voice.isEmpty()){
+						writeBeat(voice, beat, measure, tempo);
+					}
+				}
+			}
+		}
 	}
 	
-	private void writeBeat(TGBeat beat, TGMeasure measure, TGTempo tempo) throws IOException {
-		TGDuration duration = beat.getDuration();
+	private void writeBeat(TGVoice voice, TGBeat beat, TGMeasure measure, TGTempo tempo) throws IOException {
+		TGDuration duration = voice.getDuration();
 		TGNoteEffect effect = getFactory().newEffect();
-		for (int i = 0; i < beat.countNotes(); i++) {
-			TGNote playedNote = beat.getNote(i);
+		for (int i = 0; i < voice.countNotes(); i++) {
+			TGNote playedNote = voice.getNote(i);
 			
 			if(playedNote.getEffect().isFadeIn()){
 				effect.setFadeIn(true);
@@ -322,10 +350,10 @@ public class GP5OutputStream extends GTPOutputStream {
 		if (duration.isDotted() || duration.isDoubleDotted()) {
 			flags |= 0x01;
 		}
-		if (beat.isChordBeat()) {
+		if (voice.getIndex() == 0 && beat.isChordBeat()) {
 			flags |= 0x02;
 		}
-		if (beat.isTextBeat()) {
+		if (voice.getIndex() == 0 && beat.isTextBeat()) {
 			flags |= 0x04;
 		}
 		if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
@@ -337,7 +365,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		if (!duration.getTupleto().isEqual(TGTupleto.NORMAL)) {
 			flags |= 0x20;
 		}
-		if (beat.isRestBeat()) {
+		if (voice.isRestVoice()) {
 			flags |= 0x40;
 		}
 		writeUnsignedByte(flags);
@@ -367,9 +395,9 @@ public class GP5OutputStream extends GTPOutputStream {
 			tempo.setValue(measure.getTempo().getValue());
 		}
 		int stringFlags = 0;
-		if (!beat.isRestBeat()) {
-			for (int i = 0; i < beat.countNotes(); i++) {
-				TGNote playedNote = beat.getNote(i);
+		if (!voice.isRestVoice()) {
+			for (int i = 0; i < voice.countNotes(); i++) {
+				TGNote playedNote = voice.getNote(i);
 				int string = (7 - playedNote.getString());
 				stringFlags |= (1 << string);
 			}
@@ -377,8 +405,8 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeUnsignedByte(stringFlags);
 		for (int i = 6; i >= 0; i--) {
 			if ((stringFlags & (1 << i)) != 0 ) {
-				for( int n = 0; n < beat.countNotes(); n ++){
-					TGNote playedNote = beat.getNote( n );
+				for( int n = 0; n < voice.countNotes(); n ++){
+					TGNote playedNote = voice.getNote( n );
 					if( playedNote.getString() == (6 - i + 1) ){
 						writeNote(playedNote);
 						break;

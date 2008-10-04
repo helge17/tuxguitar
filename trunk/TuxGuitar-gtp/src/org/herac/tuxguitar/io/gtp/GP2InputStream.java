@@ -20,6 +20,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 
@@ -177,6 +178,7 @@ public class GP2InputStream extends GTPInputStream {
 		readInt();
 		
 		TGBeat beat = getFactory().newBeat();
+		TGVoice voice = beat.getVoice(0);
 		TGDuration duration = readDuration();
 		TGNoteEffect effect = getFactory().newEffect();
 		
@@ -218,7 +220,8 @@ public class GP2InputStream extends GTPInputStream {
 			if(lastReadedStart < start){
 				TGBeat previousBeat = getBeat(track, measure, lastReadedStart);
 				if(previousBeat != null){
-					Iterator it = previousBeat.getNotes().iterator();
+					TGVoice previousVoice = previousBeat.getVoice(0);
+					Iterator it = previousVoice.getNotes().iterator();
 					while(it.hasNext()){
 						TGNote previous = (TGNote)it.next();
 						TGNote note = getFactory().newNote();
@@ -227,7 +230,7 @@ public class GP2InputStream extends GTPInputStream {
 						note.setVelocity(previous.getVelocity());
 						note.setTiedNote(true);
 						
-						beat.addNote(note);
+						voice.addNote(note);
 					}
 				}
 			}
@@ -252,7 +255,7 @@ public class GP2InputStream extends GTPInputStream {
 					note.setEffect(effect.clone(getFactory()));
 					note.getEffect().setDeadNote(  (fret < 0 || fret >= 100)  );
 					
-					beat.addNote(note);
+					voice.addNote(note);
 				}
 				
 				// Grace note
@@ -263,7 +266,8 @@ public class GP2InputStream extends GTPInputStream {
 		}
 		
 		beat.setStart(start);
-		duration.copy(beat.getDuration());
+		voice.setEmpty(false);
+		duration.copy(voice.getDuration());
 		measure.addBeat(beat);
 		
 		return duration.getTime();

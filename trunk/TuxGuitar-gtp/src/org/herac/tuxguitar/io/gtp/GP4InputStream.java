@@ -24,6 +24,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -164,6 +165,7 @@ public class GP4InputStream extends GTPInputStream {
 		}
 		
 		TGBeat beat = getFactory().newBeat();
+		TGVoice voice = beat.getVoice(0);
 		TGDuration duration = readDuration(flags);
 		TGNoteEffect effect = getFactory().newEffect();
 		if ((flags & 0x02) != 0) {
@@ -183,11 +185,12 @@ public class GP4InputStream extends GTPInputStream {
 			if ((stringFlags & (1 << i)) != 0 && (6 - i) < track.stringCount()) {
 				TGString string = track.getString( (6 - i) + 1 ).clone(getFactory());
 				TGNote note = readNote(string, track,effect.clone(getFactory()));
-				beat.addNote(note);
+				voice.addNote(note);
 			}
 		}
 		beat.setStart(start);
-		duration.copy(beat.getDuration());
+		voice.setEmpty(false);
+		duration.copy(voice.getDuration());
 		measure.addBeat(beat);
 		
 		return duration.getTime();
@@ -250,8 +253,9 @@ public class GP4InputStream extends GTPInputStream {
 				TGMeasure measure = track.getMeasure( m );
 				for (int b = measure.countBeats() - 1; b >= 0; b--) {
 					TGBeat beat = measure.getBeat( b );
-					for (int n = 0; n < beat.countNotes(); n ++) {
-						TGNote note = beat.getNote( n );
+					TGVoice voice = beat.getVoice(0);  
+					for (int n = 0; n < voice.countNotes(); n ++) {
+						TGNote note = voice.getNote( n );
 						if (note.getString() == string) {
 							return note.getValue();
 						}
