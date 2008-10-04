@@ -166,7 +166,9 @@ public class TGBrowserFTPClient {
 	
 	private String getResponse(int expectedCode) throws IOException{
 		String response = this.getResponse();
-		while( response != null && response.indexOf(expectedCode) == 0){
+		// Some FTP Servers appends comments like "[CODE_NUMBER]-".
+		// This while tries to skip all comments before response.
+		while( response != null && response.indexOf(expectedCode + "-") == 0){
 			response = this.getResponse();
 		}
 		return response; 
