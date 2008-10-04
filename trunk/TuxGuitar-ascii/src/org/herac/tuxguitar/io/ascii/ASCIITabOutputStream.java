@@ -130,14 +130,22 @@ public class ASCIITabOutputStream {
 				this.out.drawStringSegments(1);
 			}
 			
-			//Agrego espacios correspondientes hasta el proximo pulso.
-			this.out.drawStringSegments(getDurationScaping(beat.getDuration()) - outLength);
+			TGBeat nextBeat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
 			
-			beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
+			long length = (nextBeat != null ? nextBeat.getStart() - beat.getStart() : (measure.getStart() + measure.getLength()) - beat.getStart());
+			//Agrego espacios correspondientes hasta el proximo pulso.
+			this.out.drawStringSegments(getDurationScaping(length) - outLength);
+			
+			beat = nextBeat;
+			
+			//Agrego espacios correspondientes hasta el proximo pulso.
+			//this.out.drawStringSegments(getDurationScaping(beat.getDuration()) - outLength);
+			
+			//beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
 		}
 		
 	}
-	
+	/*
 	private int getDurationScaping(TGDuration duration){
 		int spacing = 1;
 		
@@ -158,5 +166,24 @@ public class ASCIITabOutputStream {
 		}
 		return spacing;
 	}
-	
+	*/
+	private int getDurationScaping(long length){
+		int spacing = 6;
+		if(length <= (TGDuration.QUARTER_TIME / 8)){
+			spacing = 1;
+		}
+		else if(length <= (TGDuration.QUARTER_TIME / 4)){
+			spacing = 2;
+		}
+		else if(length <= (TGDuration.QUARTER_TIME / 2)){
+			spacing = 3;
+		}
+		else if(length <= TGDuration.QUARTER_TIME){
+			spacing = 4;
+		}
+		else if(length <= (TGDuration.QUARTER_TIME * 2)){
+			spacing = 5;
+		}
+		return spacing;
+	}
 }
