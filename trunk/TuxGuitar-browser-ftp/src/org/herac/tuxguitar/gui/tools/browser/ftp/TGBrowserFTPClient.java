@@ -38,9 +38,18 @@ public class TGBrowserFTPClient {
 	private static final int RESPONSE_CODE_PASV = 227;
 	private static final int RESPONSE_CODE_PASV_CONNECTION = 150;
 	
+	private boolean open;
 	private Socket socket = null;
 	private BufferedWriter request = null;
 	private BufferedReader response = null;
+	
+	public boolean isOpen() {
+		return this.open;
+	}
+	
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
 	
 	public synchronized void open(String host, int port) throws IOException {
 		this.socket = new Socket(host, port);
@@ -51,12 +60,16 @@ public class TGBrowserFTPClient {
 		if (!isExpectedResponse(response, RESPONSE_CODE_CONNECT)) {
 			throw new IOException(response);
 		}
+		this.setOpen( true );
 	}
 	
 	public synchronized void close() throws IOException {
-		this.setRequest(REQUEST_EXIT);
-		this.socket.close();
-		this.socket = null;
+		if( this.isOpen() ){
+			this.setRequest(REQUEST_EXIT);
+			this.socket.close();
+			this.socket = null;
+		}
+		this.setOpen( false );
 	}
 	
 	public synchronized void login(String user, String password) throws IOException {
