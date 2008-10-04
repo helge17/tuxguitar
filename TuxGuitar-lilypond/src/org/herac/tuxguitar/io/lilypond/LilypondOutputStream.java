@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -19,6 +20,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class LilypondOutputStream {
 	
@@ -154,7 +156,10 @@ public class LilypondOutputStream {
 		TGMeasure previous = null;
 		int count = track.countMeasures();
 		for(int i = 0; i < count; i ++){
-			TGMeasure measure = track.getMeasure(i);
+			// TODO: Add multivoice support.
+			TGMeasure srcMeasure = track.getMeasure(i);
+			TGMeasure measure = new TGVoiceJoiner(this.manager.getFactory(),srcMeasure).process();
+			
 			int measureFrom = this.settings.getMeasureFrom();
 			int measureTo = this.settings.getMeasureTo();
 			if((measureFrom <= measure.getNumber() || measureFrom == LilypondSettings.FIRST_MEASURE) && (measureTo >= measure.getNumber() || measureTo == LilypondSettings.LAST_MEASURE )){
@@ -395,9 +400,10 @@ public class LilypondOutputStream {
 		
 		for(int i = 0 ; i < measure.countBeats() ; i ++){
 			TGBeat beat = measure.getBeat( i );
-			TGTupleto tupleto = beat.getDuration().getTupleto();
+			TGVoice voice = beat.getVoice(0);
+			TGTupleto tupleto = voice.getDuration().getTupleto();
 			
-			if(previous != null && this.temp.isTupletOpen() && !tupleto.isEqual( previous.getDuration().getTupleto() )){
+			if(previous != null && this.temp.isTupletOpen() && !tupleto.isEqual( previous.getVoice(0).getDuration().getTupleto() )){
 				this.writer.print("} ");
 				this.temp.setTupletOpen(false);
 			}
@@ -419,22 +425,23 @@ public class LilypondOutputStream {
 	}
 	
 	private void addBeat(int key,TGBeat beat){
-		if(beat.isRestBeat()){
+		TGVoice voice = beat.getVoice(0);
+		if(voice.isRestVoice()){
 			this.writer.print("r");
-			this.addDuration( beat.getDuration() );
+			this.addDuration( voice.getDuration() );
 		}
 		else{
-			int size = beat.countNotes();
+			int size = voice.countNotes();
 			if(size > 1){
 				this.writer.print("<");
 			}
 			for(int i = 0 ; i < size ; i ++){
-				TGNote note = beat.getNote(i);
+				TGNote note = voice.getNote(i);
 				
-				int note_value = (note.getBeat().getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
+				int note_value = (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
 				this.addKey(key, note_value);
 				if(!(size > 1)){
-					this.addDuration( beat.getDuration() );
+					this.addDuration( voice.getDuration() );
 				}
 				this.addString(note.getString());
 				if(this.isAnyTiedTo(note)){
@@ -447,7 +454,7 @@ public class LilypondOutputStream {
 			}
 			if(size > 1){
 				this.writer.print(">");
-				this.addDuration( beat.getDuration() );
+				this.addDuration( voice.getDuration() );
 			}
 			
 			if(beat.isChordBeat()){
@@ -464,7 +471,7 @@ public class LilypondOutputStream {
 			}
 			
 			if(beat.getMeasure().getTrack().getLyrics().getFrom() > beat.getMeasure().getNumber()){
-				this.temp.addSkippedLyricBeat( getLilypondDuration(beat.getDuration()));
+				this.temp.addSkippedLyricBeat( getLilypondDuration(voice.getDuration()));
 			}
 			
 			this.writer.print(" ");
@@ -518,16 +525,18 @@ public class LilypondOutputStream {
 	}
 	
 	private boolean isAnyTiedTo(TGNote note){
-		TGMeasure measure = note.getBeat().getMeasure();
-		TGBeat beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), note.getBeat());
+		TGMeasure measure = note.getVoice().getBeat().getMeasure();
+		TGBeat beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), note.getVoice().getBeat());
 		while( measure != null){
 			while( beat != null ){
+				TGVoice voice = beat.getVoice(0);
+				
 				// If is a rest beat, all voice sounds must be stopped.
-				if(beat.isRestBeat()){
+				if(voice.isRestVoice()){
 					return false;
 				}
 				// Check if is there any note at same string.
-				Iterator it = beat.getNotes().iterator();
+				Iterator it = voice.getNotes().iterator();
 				while( it.hasNext() ){
 					TGNote current = (TGNote) it.next();
 					if(current.getString() == note.getString()){
@@ -661,4 +670,117 @@ public class LilypondOutputStream {
 			return this.skippedLyricBeats;
 		}
 	}
+	
+	private static class TGVoiceJoiner {
+		private TGFactory factory;
+		private TGMeasure measure;
+		
+		public TGVoiceJoiner(TGFactory factory,TGMeasure measure){
+			this.factory = factory;
+			this.measure = measure.clone(factory, measure.getHeader());
+		}
+		
+		public TGMeasure process(){
+			this.orderBeats();
+			this.joinBeats();
+			return this.measure;
+		}
+		
+		public void joinBeats(){
+			TGBeat previous = null;
+			boolean finish = true;
+			
+			long measureStart = this.measure.getStart();
+			long measureEnd = (measureStart + this.measure.getLength());
+			for(int i = 0;i < this.measure.countBeats();i++){
+				TGBeat beat = this.measure.getBeat( i );
+				TGVoice voice = beat.getVoice(0);
+				for(int v = 1; v < beat.countVoices(); v++ ){
+					TGVoice currentVoice = beat.getVoice(v);
+					if(!currentVoice.isEmpty()){
+						for(int n = 0 ; n < currentVoice.countNotes() ; n++ ){
+							TGNote note = currentVoice.getNote( n );
+							voice.addNote( note );
+						}
+					}
+				}
+				if( voice.isEmpty() ){
+					this.measure.removeBeat(beat);
+					finish = false;
+					break;
+				}
+				
+				long beatStart = beat.getStart();
+				if(previous != null){
+					long previousStart = previous.getStart();
+					
+					TGDuration previousBestDuration = null;
+					for(int v = 1; v < previous.countVoices(); v++ ){
+						TGVoice previousVoice = previous.getVoice(v);
+						if(!previousVoice.isEmpty()){
+							long length = previousVoice.getDuration().getTime();
+							if( (previousStart + length) <= beatStart){
+								if( previousBestDuration == null || length > previousBestDuration.getTime() ){
+									previousBestDuration = previousVoice.getDuration();
+								}
+							}
+						}
+					}
+					
+					if(previousBestDuration != null){
+						previousBestDuration.copy( previous.getVoice(0).getDuration() );
+					}else{
+						if(voice.isRestVoice()){
+							this.measure.removeBeat(beat);
+							finish = false;
+							break;
+						}
+						TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
+						duration.copy( previous.getVoice(0).getDuration() );
+					}
+				}
+				
+				TGDuration beatBestDuration = null;
+				for(int v = 1; v < beat.countVoices(); v++ ){
+					TGVoice currentVoice = beat.getVoice(v);
+					if(!currentVoice.isEmpty()){
+						long length = currentVoice.getDuration().getTime();
+						if( (beatStart + length) <= measureEnd ){
+							if( beatBestDuration == null || length > beatBestDuration.getTime() ){
+								beatBestDuration = currentVoice.getDuration();
+							}
+						}
+					}
+				}
+				
+				if(beatBestDuration == null){
+					if(voice.isRestVoice()){
+						this.measure.removeBeat(beat);
+						finish = false;
+						break;
+					}
+					TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
+					duration.copy( voice.getDuration() );
+				}
+				previous = beat;
+			}
+			if(!finish){
+				joinBeats();
+			}
+		}
+		
+		public void orderBeats(){
+			for(int i = 0;i < this.measure.countBeats();i++){
+				TGBeat minBeat = null;
+				for(int j = i;j < this.measure.countBeats();j++){
+					TGBeat beat = this.measure.getBeat(j);
+					if(minBeat == null || beat.getStart() < minBeat.getStart()){
+						minBeat = beat;
+					}
+				}
+				this.measure.moveBeat(i, minBeat);
+			}
+		}
+	}
+
 }
