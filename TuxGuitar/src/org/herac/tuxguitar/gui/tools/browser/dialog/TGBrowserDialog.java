@@ -39,6 +39,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnectionHandler,IconLoader,LanguageLoader{
+	
 	private static final int SHELL_WIDTH = 500;
 	private static final int SHELL_HEIGHT = 350;
 	
@@ -149,8 +150,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 							while(it.hasNext()){
 								TGBrowserElement element = (TGBrowserElement)it.next();
 								TableItem item = new TableItem(TGBrowserDialog.this.table, SWT.NONE);
-								item.setImage(element.isFolder()?TuxGuitar.instance().getIconManager().getBrowserFolder():
-									element.isSymLink()?TuxGuitar.instance().getIconManager().getBrowserSymLink():TuxGuitar.instance().getIconManager().getBrowserFile());
+								item.setImage(element.isFolder()?TuxGuitar.instance().getIconManager().getBrowserFolder():TuxGuitar.instance().getIconManager().getBrowserFile());
 								item.setText(element.getName());
 							}
 						}
