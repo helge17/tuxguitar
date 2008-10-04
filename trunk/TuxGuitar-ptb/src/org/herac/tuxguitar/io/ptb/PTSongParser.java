@@ -23,6 +23,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
 public class PTSongParser {
@@ -44,7 +45,10 @@ public class PTSongParser {
 		this.parseTrack(song.getTrack1());
 		this.parseTrack(song.getTrack2());
 		
-		return new TGSongAdjuster(this.manager).process();
+		this.manager.orderBeats();
+		
+		//return new TGSongAdjuster(this.manager).process();
+		return this.manager.getSong();
 	}
 	
 	private void parseTrack(PTTrack track){
@@ -152,17 +156,17 @@ public class PTSongParser {
 			return ;
 		}
 		
-		TGBeat tgBeat = this.manager.getFactory().newBeat();
-		tgBeat.setStart(this.helper.getStartHelper().getVoiceStart(beat.getStaff(),beat.getVoice()));
-		tgBeat.getDuration().setValue(beat.getDuration());
-		tgBeat.getDuration().setDotted(beat.isDotted());
-		tgBeat.getDuration().setDoubleDotted(beat.isDoubleDotted());
-		tgBeat.getDuration().getTupleto().setTimes(beat.getTimes());
-		tgBeat.getDuration().getTupleto().setEnters(beat.getEnters());
+		long start = this.helper.getStartHelper().getVoiceStart(beat.getStaff(),beat.getVoice());
 		
-		//si no hay notas, igualmente que se cree el compas
-		TGMeasure measure = getMeasure( getStaffTrack(beat.getStaff()) , tgBeat.getStart() );
-		measure.addBeat(tgBeat);
+		TGMeasure measure = getMeasure( getStaffTrack(beat.getStaff()) , start );
+		TGBeat tgBeat = getBeat(measure, start);
+		TGVoice tgVoice = tgBeat.getVoice(beat.getVoice());
+		tgVoice.setEmpty(false);
+		tgVoice.getDuration().setValue(beat.getDuration());
+		tgVoice.getDuration().setDotted(beat.isDotted());
+		tgVoice.getDuration().setDoubleDotted(beat.isDoubleDotted());
+		tgVoice.getDuration().getTupleto().setTimes(beat.getTimes());
+		tgVoice.getDuration().getTupleto().setEnters(beat.getEnters());
 		
 		Iterator it = beat.getNotes().iterator();
 		while(it.hasNext()){
@@ -177,16 +181,16 @@ public class PTSongParser {
 				note.getEffect().setHammer( ptNote.isHammer() );
 				note.getEffect().setSlide( ptNote.isSlide() );
 				note.getEffect().setBend( makeBend(ptNote.getBend()));
-				tgBeat.addNote(note);
+				tgVoice.addNote(note);
 			}
 		}
 		
-		this.helper.getStartHelper().checkBeat( tgBeat.isRestBeat() );
+		this.helper.getStartHelper().checkBeat( tgVoice.isRestVoice() );
 		
 		// If it's a rest measure, duration must fill the measure.
-		long duration = tgBeat.getDuration().getTime();
+		long duration = tgVoice.getDuration().getTime();
 		
-		if(tgBeat.isRestBeat() && tgBeat.getStart() == this.helper.getStartHelper().getBarStart() && duration > this.helper.getStartHelper().getBarLength()){
+		if(tgVoice.isRestVoice() && tgBeat.getStart() == this.helper.getStartHelper().getBarStart() && duration > this.helper.getStartHelper().getBarLength()){
 			duration = this.helper.getStartHelper().getBarLength();
 		}
 		this.helper.getStartHelper().setVoiceStart(beat.getStaff(),beat.getVoice(),(tgBeat.getStart() + duration));
@@ -316,8 +320,22 @@ public class PTSongParser {
 		}
 		return true;
 	}
+	
+	private TGBeat getBeat(TGMeasure measure, long start){
+		int count = measure.countBeats();
+		for(int i = 0 ; i < count ; i ++ ){
+			TGBeat beat = measure.getBeat( i );
+			if( beat.getStart() == start ){
+				return beat;
+			}
+		}
+		TGBeat beat = this.manager.getFactory().newBeat();
+		beat.setStart(start);
+		measure.addBeat(beat);
+		return beat;
+	}
 }
-
+/*
 class TGSongAdjuster{
 	
 	protected TGSongManager manager;
@@ -412,3 +430,4 @@ class TGSongAdjuster{
 		}
 	}
 }
+*/
