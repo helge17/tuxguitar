@@ -374,14 +374,14 @@ public class MidiSongImporter implements TGSongImporter{
 			
 			TGMeasure measure = getMeasure(getTrack(track),tempNote.getTick());
 			TGBeat beat = getBeat(measure, nStart);
-			nDuration.copy(beat.getDuration());
+			nDuration.copy(beat.getVoice(0).getDuration());
 			
 			TGNote note = this.factory.newNote();
 			note.setValue(nValue);
 			note.setString(nString);
 			note.setVelocity(nVelocity);
 			
-			beat.addNote(note);
+			beat.getVoice(0).addNote(note);
 		}
 	}
 	
@@ -707,17 +707,17 @@ class SongAdjuster{
 		for(int i = 0;i < measure.countBeats();i++){
 			TGBeat beat = measure.getBeat( i );
 			long beatStart = beat.getStart();
-			long beatLength = beat.getDuration().getTime();
+			long beatLength = beat.getVoice(0).getDuration().getTime();
 			if(previous != null){
 				long previousStart = previous.getStart();
-				long previousLength = previous.getDuration().getTime();
+				long previousLength = previous.getVoice(0).getDuration().getTime();
 				
 				//if(previousStart == beatStart){
 				if(beatStart >= previousStart && (previousStart + this.minDurationTime) > beatStart ){
 					// add beat notes to previous
-					for(int n = 0;n < beat.countNotes();n++){
-						TGNote note = beat.getNote( n );
-						previous.addNote( note );
+					for(int n = 0;n < beat.getVoice(0).countNotes();n++){
+						TGNote note = beat.getVoice(0).getNote( n );
+						previous.getVoice(0).addNote( note );
 					}
 					
 					// add beat chord to previous
@@ -732,7 +732,7 @@ class SongAdjuster{
 					
 					// set the best duration
 					if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
-						beat.getDuration().copy(previous.getDuration());
+						beat.getVoice(0).getDuration().copy(previous.getVoice(0).getDuration());
 					}
 					
 					measure.removeBeat(beat);
@@ -741,23 +741,23 @@ class SongAdjuster{
 				}
 				
 				else if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
-					if(beat.isRestBeat()){
+					if(beat.getVoice(0).isRestVoice()){
 						measure.removeBeat(beat);
 						finish = false;
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-					duration.copy( previous.getDuration() );
+					duration.copy( previous.getVoice(0).getDuration() );
 				}
 			}
 			if( (beatStart + beatLength) > measureEnd ){
-				if(beat.isRestBeat()){
+				if(beat.getVoice(0).isRestVoice()){
 					measure.removeBeat(beat);
 					finish = false;
 					break;
 				}
 				TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-				duration.copy( beat.getDuration() );
+				duration.copy( beat.getVoice(0).getDuration() );
 			}
 			
 			previous = beat;
@@ -793,7 +793,7 @@ class SongAdjuster{
 		List notesToRemove = new ArrayList();
 		
 		//ajusto las cuerdas
-		Iterator it = beat.getNotes().iterator();
+		Iterator it = beat.getVoice(0).getNotes().iterator();
 		while(it.hasNext()){
 			TGNote note = (TGNote)it.next();
 			
@@ -816,7 +816,7 @@ class SongAdjuster{
 		
 		// Remove notes
 		while( notesToRemove.size() > 0 ){
-			beat.removeNote( (TGNote)notesToRemove.get( 0 ) );
+			beat.getVoice(0).removeNote( (TGNote)notesToRemove.get( 0 ) );
 			notesToRemove.remove( 0 );
 		}
 	}
