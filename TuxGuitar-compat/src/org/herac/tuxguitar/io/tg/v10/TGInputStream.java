@@ -31,6 +31,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -300,8 +301,10 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	
 	private void readBeat(int header, TGMeasure measure,TGBeatData data){
 		TGBeat beat = this.factory.newBeat();
+		TGVoice voice = beat.getVoice(0);
 		
 		beat.setStart(data.getStart());
+		voice.setEmpty( false );
 		
 		//leo la duracion
 		if(((header & BEAT_NEXT_DURATION) != 0)){
@@ -323,7 +326,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 			readText(beat);
 		}
 		
-		data.getDuration().copy(beat.getDuration());
+		data.getDuration().copy(voice.getDuration());
 		
 		measure.addBeat(beat);
 		
@@ -340,6 +343,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	
 	private void readNote(int header,TGBeat beat,TGBeatData data){
 		TGNote note = this.factory.newNote();
+		TGVoice voice = beat.getVoice(0);
 		
 		//leo el valor
 		note.setValue(readByte());
@@ -361,7 +365,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 			readNoteEffect(note.getEffect());
 		}
 		
-		beat.addNote(note);
+		voice.addNote(note);
 	}
 	
 	private void readChord(TGBeat beat){

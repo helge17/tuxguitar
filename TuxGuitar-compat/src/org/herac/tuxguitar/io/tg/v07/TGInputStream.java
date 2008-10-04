@@ -27,6 +27,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
 /**
@@ -219,9 +220,11 @@ public class TGInputStream implements TGInputStreamBase{
 			beat.setStart(start);
 			measure.addBeat(beat);
 		}
+		TGVoice voice = beat.getVoice(0);
+		voice.setEmpty( false );
 		
 		//leo la duracion
-		readDuration(beat.getDuration());
+		readDuration(voice.getDuration());
 		
 		TGNote note = this.factory.newNote();
 		
@@ -239,7 +242,7 @@ public class TGInputStream implements TGInputStreamBase{
 		//leo los efectos
 		readNoteEffect(note.getEffect());
 		
-		beat.addNote(note);
+		voice.addNote(note);
 		return beat;
 	}
 	
@@ -288,8 +291,11 @@ public class TGInputStream implements TGInputStreamBase{
 			beat.setStart(start);
 			measure.addBeat(beat);
 		}
+		TGVoice voice = beat.getVoice(0);
+		voice.setEmpty( false );
+		
 		//leo la duracion
-		readDuration(beat.getDuration());
+		readDuration(voice.getDuration());
 		
 		return beat;
 	}
