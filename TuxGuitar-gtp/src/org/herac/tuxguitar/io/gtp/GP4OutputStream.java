@@ -29,6 +29,7 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -214,7 +215,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		writeColor(track.getColor());
 	}
 	
-	private void writeMeasure(TGMeasure measure, TGTempo tempo) throws IOException {
+	private void writeMeasure(TGMeasure srcMeasure, TGTempo tempo) throws IOException {
+		TGMeasure measure = new GTPVoiceJoiner(getFactory(),srcMeasure).process();
+		
 		int beatCount = measure.countBeats();
 		writeInt(beatCount);
 		for (int i = 0; i < beatCount; i++) {
@@ -225,10 +228,11 @@ public class GP4OutputStream extends GTPOutputStream{
 	}
 	
 	private void writeBeat(TGBeat beat, TGMeasure measure, TGTempo songTempo) throws IOException {
-		TGDuration duration = beat.getDuration();
+		TGVoice voice = beat.getVoice(0);
+		TGDuration duration = voice.getDuration();
 		TGNoteEffect effect = getFactory().newEffect();
-		for (int i = 0; i < beat.countNotes(); i++) {
-			TGNote playedNote = beat.getNote(i);
+		for (int i = 0; i < voice.countNotes(); i++) {
+			TGNote playedNote = voice.getNote(i);
 			
 			if(playedNote.getEffect().isFadeIn()){
 				effect.setFadeIn(true);
@@ -266,7 +270,7 @@ public class GP4OutputStream extends GTPOutputStream{
 		if (measure.getTempo().getValue() != songTempo.getValue()) {
 			flags |= 0x10;
 		}
-		if (beat.isRestBeat()) {
+		if (voice.isRestVoice()) {
 			flags |= 0x40;
 		}
 		writeUnsignedByte(flags);
@@ -291,9 +295,9 @@ public class GP4OutputStream extends GTPOutputStream{
 			writeMixChange(measure.getTempo());
 		}
 		int stringFlags = 0;
-		if (!beat.isRestBeat()) {
-			for (int i = 0; i < beat.countNotes(); i++) {
-				TGNote playedNote = beat.getNote(i);
+		if (!voice.isRestVoice()) {
+			for (int i = 0; i < voice.countNotes(); i++) {
+				TGNote playedNote = voice.getNote(i);
 				int string = (7 - playedNote.getString());
 				stringFlags |= (1 << string);
 			}
@@ -301,8 +305,8 @@ public class GP4OutputStream extends GTPOutputStream{
 		writeUnsignedByte(stringFlags);
 		for (int i = 6; i >= 0; i--) {
 			if ((stringFlags & (1 << i)) != 0 ) {
-				for( int n = 0; n < beat.countNotes(); n ++){
-					TGNote playedNote = beat.getNote( n );
+				for( int n = 0; n < voice.countNotes(); n ++){
+					TGNote playedNote = voice.getNote( n );
 					if( playedNote.getString() == (6 - i + 1) ){
 						writeNote(playedNote);
 						break;
