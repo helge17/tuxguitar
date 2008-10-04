@@ -135,13 +135,13 @@ public class TGBrowserImpl extends TGBrowser{
 	}
 	
 	private void checkForProxy() {
-		if (data.getProxyHost() != null && data.getProxyPort() > 0) {
-			System.setProperty("socksProxyHost", data.getProxyHost());
-			System.setProperty("socksProxyPort", String.valueOf(data.getProxyPort()));
-			if (data.getProxyUser() != null && data.getProxyUser().trim().length() > 0) {
-				System.setProperty("java.net.socks.username", data.getProxyUser());
-				System.setProperty("java.net.socks.password", data.getProxyPwd());
-				Authenticator.setDefault(new ProxyAuthenticator(data.getProxyUser(), data.getProxyPwd()));
+		if (this.data.getProxyHost() != null && this.data.getProxyPort() > 0) {
+			System.setProperty("socksProxyHost", this.data.getProxyHost());
+			System.setProperty("socksProxyPort", String.valueOf(this.data.getProxyPort()));
+			if (this.data.getProxyUser() != null && this.data.getProxyUser().trim().length() > 0) {
+				System.setProperty("java.net.socks.username", this.data.getProxyUser());
+				System.setProperty("java.net.socks.password", this.data.getProxyPwd());
+				Authenticator.setDefault(new ProxyAuthenticator(this.data.getProxyUser(), this.data.getProxyPwd()));
 			}
 		} else {
 			closeProxy();
@@ -159,12 +159,12 @@ public class TGBrowserImpl extends TGBrowser{
 	private final class ProxyAuthenticator extends Authenticator {
 		private PasswordAuthentication auth;
 
-		private ProxyAuthenticator(String user, String pass) {
-			auth = new PasswordAuthentication(user, pass.toCharArray());
+		protected ProxyAuthenticator(String user, String pass) {
+			this.auth = new PasswordAuthentication(user, pass.toCharArray());
 		}
 
 		protected PasswordAuthentication getPasswordAuthentication() {
-			return auth;
+			return this.auth;
 		}
 	}
 }
