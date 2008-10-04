@@ -55,19 +55,19 @@ public class TGBrowserDataImpl implements TGBrowserData{
 	}
 	
 	public String getProxyHost() {
-		return proxyHost;
+		return this.proxyHost;
 	}
 
 	public int getProxyPort() {
-		return proxyPort;
+		return this.proxyPort;
 	}
 
 	public String getProxyUser() {
-		return proxyUser;
+		return this.proxyUser;
 	}
 
 	public String getProxyPwd() {
-		return proxyPwd;
+		return this.proxyPwd;
 	}
 
 	public String toString(){
