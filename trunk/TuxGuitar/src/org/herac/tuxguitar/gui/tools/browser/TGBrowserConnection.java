@@ -147,33 +147,6 @@ public class TGBrowserConnection {
 		}
 	}
 	
-	public void openSymLink(final int callId,final TGBrowserElement element){
-		if(!isLocked()){
-			this.lock();
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						if(isOpen()){
-							try {
-								getBrowser().cdElement(element);
-								notifyCd(callId);
-							} catch (TGBrowserException e) {
-								InputStream stream = element.getInputStream();
-								notifyStream(callId,stream,element);
-							}
-							
-						}else{
-							notifyClosed(callId);
-						}
-					} catch (TGBrowserException e) {
-						notifyError(callId,e);
-						e.printStackTrace();
-					}
-				}
-			}).start();
-		}
-	}
-	
 	public void listElements(final int callId){
 		if(!isLocked()){
 			this.lock();
@@ -208,9 +181,6 @@ public class TGBrowserConnection {
 						if(element.isFolder()){
 							release();
 							cd(callId,element);
-						}else if (element.isSymLink()){
-							release();
-							openSymLink(callId, element);
 						}
 						else{
 							InputStream stream = element.getInputStream();

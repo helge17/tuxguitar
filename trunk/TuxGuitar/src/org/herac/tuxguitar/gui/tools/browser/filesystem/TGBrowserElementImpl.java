@@ -31,7 +31,7 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 		return getFile().isDirectory();
 	}
 	
-	public InputStream getInputStream()throws TGBrowserException {
+	public InputStream getInputStream() throws TGBrowserException {
 		if(!isFolder()){
 			try {
 				return new FileInputStream(getFile());
@@ -40,10 +40,6 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 			}
 		}
 		return null;
-	}
-
-	public boolean isSymLink() {
-		return false;
 	}
 	
 }

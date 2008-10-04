@@ -18,8 +18,6 @@ public abstract class TGBrowserElement {
 	
 	public abstract boolean isFolder();
 	
-	public abstract boolean isSymLink();
-	
-	public abstract InputStream getInputStream()throws TGBrowserException;
+	public abstract InputStream getInputStream() throws TGBrowserException;
 	
 }
