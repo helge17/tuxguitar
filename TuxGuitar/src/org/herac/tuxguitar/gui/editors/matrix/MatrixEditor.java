@@ -55,6 +55,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class MatrixEditor implements IconLoader,LanguageLoader{
 	
@@ -391,25 +392,28 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		int minimunY = BORDER_HEIGHT;
 		int maximunY = (this.clientArea.height - BORDER_HEIGHT);
 		
-		for( int i = 0 ; i < beat.countNotes() ; i ++){
-			TGNoteImpl note = (TGNoteImpl)beat.getNote(i);
-			float x1 = (fromX + this.leftSpacing + (((note.getBeat().getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength()) + 1);
-			float y1 = (fromY + (((this.maxNote - this.minNote) - (note.getRealValue() - this.minNote)) * this.lineHeight) + 1 );
-			float x2 = (x1 + ((note.getBeat().getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime()) - 2 );
-			float y2 = (y1 + this.lineHeight - 2 );
-			
-			if( y1 >= maximunY || y2 <= minimunY){
-				continue;
-			}
-			
-			y1 = ( y1 < minimunY ? minimunY : y1 );
-			y2 = ( y2 > maximunY ? maximunY : y2 );
-			
-			if((x2 - x1) > 0 && (y2 - y1) > 0){
-				painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );
-				painter.initPath(TGPainter.PATH_FILL);
-				painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
-				painter.closePath();
+		for( int v = 0; v < beat.countVoices(); v ++ ){
+			TGVoice voice = beat.getVoice(v);
+			for( int i = 0 ; i < voice.countNotes() ; i ++){
+				TGNoteImpl note = (TGNoteImpl)voice.getNote(i);
+				float x1 = (fromX + this.leftSpacing + (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength()) + 1);
+				float y1 = (fromY + (((this.maxNote - this.minNote) - (note.getRealValue() - this.minNote)) * this.lineHeight) + 1 );
+				float x2 = (x1 + ((voice.getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime()) - 2 );
+				float y2 = (y1 + this.lineHeight - 2 );
+				
+				if( y1 >= maximunY || y2 <= minimunY){
+					continue;
+				}
+				
+				y1 = ( y1 < minimunY ? minimunY : y1 );
+				y2 = ( y2 > maximunY ? maximunY : y2 );
+				
+				if((x2 - x1) > 0 && (y2 - y1) > 0){
+					painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );
+					painter.initPath(TGPainter.PATH_FILL);
+					painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
+					painter.closePath();
+				}
 			}
 		}
 	}
@@ -428,11 +432,12 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	
 	protected void paintPosition(TGPainter painter,float fromX, float fromY){
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
+			Caret caret = getCaret();
 			TGMeasure measure = getMeasure();
-			TGBeat beat = getCaret().getSelectedBeat();
+			TGBeat beat = caret.getSelectedBeat();
 			if(beat != null){
 				float x = (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength());
-				float width = ((beat.getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime());
+				float width = ((beat.getVoice(caret.getVoice()).getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime());
 				painter.setBackground(this.config.getColorPosition());
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.addRectangle(fromX + (this.leftSpacing + x),fromY , width,BORDER_HEIGHT);
@@ -503,20 +508,20 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	protected void hit(float x, float y){
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			TGMeasure measure = getMeasure();
+			Caret caret = getCaret();
 			int value = getValueAt(y);
 			long start = getStartAt(x);
 			
 			if(start >= measure.getStart() && start < (measure.getStart() + measure.getLength())){
-				Caret caret = getCaret();
 				caret.update(caret.getTrack().getNumber(),start,caret.getStringNumber());
 				TuxGuitar.instance().updateCache(true);
 			}
 			if(value >= this.minNote || value <= this.maxNote){
 				if(start >= measure.getStart()){
-					TGBeat beat = TuxGuitar.instance().getSongManager().getMeasureManager().getBeatIn(measure, start);
-					if( beat != null ){
-						if(!removeNote(beat, value)){
-							addNote(beat, start, value);
+					TGVoice voice = TuxGuitar.instance().getSongManager().getMeasureManager().getVoiceIn(measure, start, caret.getVoice());
+					if( voice != null ){
+						if(!removeNote(voice.getBeat(), value)){
+							addNote(voice.getBeat(), start, value);
 						}
 					}
 				}else{
@@ -529,25 +534,29 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 	private boolean removeNote(TGBeat beat,int value) {
 		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
 		TGMeasure measure = getMeasure();
-		Iterator it = beat.getNotes().iterator();
-		while (it.hasNext()) {
-			TGNoteImpl note = (TGNoteImpl) it.next();
-			if (note.getRealValue() == value) {
-				caret.update(measure.getTrack().getNumber(),beat.getStart(),note.getString());
-				
-				//comienza el undoable
-				UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-				
-				TGSongManager manager = TuxGuitar.instance().getSongManager();
-				manager.getMeasureManager().removeNote(note);
-				
-				//termia el undoable
-				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
-				
-				this.afterAction();
-				
-				return true;
+		
+		for(int v = 0; v < beat.countVoices(); v ++){
+			TGVoice voice = beat.getVoice( v );
+			Iterator it = voice.getNotes().iterator();
+			while (it.hasNext()) {
+				TGNoteImpl note = (TGNoteImpl) it.next();
+				if (note.getRealValue() == value) {
+					caret.update(measure.getTrack().getNumber(),beat.getStart(),note.getString());
+					
+					//comienza el undoable
+					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+					
+					TGSongManager manager = TuxGuitar.instance().getSongManager();
+					manager.getMeasureManager().removeNote(note);
+					
+					//termia el undoable
+					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+					TuxGuitar.instance().getFileHistory().setUnsavedFile();
+					
+					this.afterAction();
+					
+					return true;
+				}
 			}
 		}
 		return false;
@@ -564,12 +573,15 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 				if(value >= string.getValue()){
 					boolean emptyString = true;
 					
-					Iterator it = beat.getNotes().iterator();
-					while (it.hasNext()) {
-						TGNoteImpl note = (TGNoteImpl) it.next();
-						if (note.getString() == string.getNumber()) {
-							emptyString = false;
-							break;
+					for(int v = 0; v < beat.countVoices(); v ++){
+						TGVoice voice = beat.getVoice( v );
+						Iterator it = voice.getNotes().iterator();
+						while (it.hasNext()) {
+							TGNoteImpl note = (TGNoteImpl) it.next();
+							if (note.getString() == string.getNumber()) {
+								emptyString = false;
+								break;
+							}
 						}
 					}
 					if(emptyString){
@@ -586,9 +598,9 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 						TGDuration duration = manager.getFactory().newDuration();
 						caret.getDuration().copy(duration);
 						
-						manager.getMeasureManager().addNote(beat,note,duration,start);
+						manager.getMeasureManager().addNote(beat,note,duration,start,caret.getVoice());
 						
-						caret.moveTo(caret.getTrack(),caret.getMeasure(),note.getBeat(),note.getString());
+						caret.moveTo(caret.getTrack(),caret.getMeasure(),note.getVoice().getBeat(),note.getString());
 						
 						//termia el undoable
 						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());

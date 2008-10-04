@@ -6,9 +6,6 @@
  */
 package org.herac.tuxguitar.song.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.herac.tuxguitar.song.factory.TGFactory;
 
 /**
@@ -17,34 +14,21 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGBeat {
-	private long start;
-	private TGDuration duration;
-	private TGMeasure measure;
 	
-	private List notes;
+	public static final int MAX_VOICES = 2;
+	
+	private long start;
+	private TGMeasure measure;
 	private TGChord chord;
 	private TGText text;
+	private TGVoice[] voices;
 	
 	public TGBeat(TGFactory factory) {
 		this.start = TGDuration.QUARTER_TIME;
-		this.duration = factory.newDuration();
-		this.notes = new ArrayList();
-	}
-	
-	public long getStart() {
-		return this.start;
-	}
-	
-	public void setStart(long start) {
-		this.start = start;
-	}
-	
-	public TGDuration getDuration() {
-		return this.duration;
-	}
-	
-	public void setDuration(TGDuration duration) {
-		this.duration = duration;
+		this.voices = new TGVoice[ MAX_VOICES ];
+		for( int i = 0 ; i < MAX_VOICES ; i ++ ){
+			this.setVoice(i, factory.newVoice(i));
+		}
 	}
 	
 	public TGMeasure getMeasure() {
@@ -55,33 +39,30 @@ public abstract class TGBeat {
 		this.measure = measure;
 	}
 	
-	public List getNotes() {
-		return this.notes;
+	public long getStart() {
+		return this.start;
 	}
 	
-	public void addNote(TGNote note){
-		note.setBeat(this);
-		this.notes.add(note);
+	public void setStart(long start) {
+		this.start = start;
 	}
 	
-	public void moveNote(int index,TGNote note){
-		getNotes().remove(note);
-		getNotes().add(index,note);
+	public void setVoice(int index, TGVoice voice){
+		if( index >= 0 && index < this.voices.length ){
+			this.voices[index] = voice;
+			this.voices[index].setBeat( this );
+		}
 	}
 	
-	public void removeNote(TGNote note){
-		this.notes.remove(note);
-	}
-	
-	public TGNote getNote(int index){
-		if(index >= 0 && index < countNotes()){
-			return (TGNote)this.notes.get(index);
+	public TGVoice getVoice(int index){
+		if( index >= 0 && index < this.voices.length ){
+			return this.voices[index];
 		}
 		return null;
 	}
 	
-	public int countNotes(){
-		return this.notes.size();
+	public int countVoices(){
+		return this.voices.length;
 	}
 	
 	public void setChord(TGChord chord) {
@@ -110,10 +91,6 @@ public abstract class TGBeat {
 		this.text = null;
 	}
 	
-	public boolean isRestBeat(){
-		return this.notes.isEmpty();
-	}
-	
 	public boolean isChordBeat(){
 		return ( this.chord != null );
 	}
@@ -122,14 +99,22 @@ public abstract class TGBeat {
 		return ( this.text != null );
 	}
 	
+	public boolean isRestBeat(){
+		for(int v = 0; v < this.countVoices() ; v ++ ){
+			TGVoice voice = this.getVoice( v );
+			if( !voice.isEmpty() && !voice.isRestVoice() ){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public TGBeat clone(TGFactory factory){
 		TGBeat beat = factory.newBeat();
 		beat.setStart(getStart());
-		getDuration().copy(beat.getDuration());
 		
-		for(int i = 0;i < countNotes();i++){
-			TGNote note = (TGNote)this.notes.get(i);
-			beat.addNote(note.clone(factory));
+		for( int i = 0 ; i < this.voices.length ; i ++ ){
+			beat.setVoice(i, this.voices[i].clone(factory));
 		}
 		if(this.chord != null){
 			beat.setChord( this.chord.clone(factory));
@@ -139,5 +124,4 @@ public abstract class TGBeat {
 		}
 		return beat;
 	}
-	
 }

@@ -42,7 +42,7 @@ public class ChangeDeadNoteAction extends Action{
 			TGDuration duration = getSongManager().getFactory().newDuration();
 			caret.getDuration().copy(duration);
 			
-			getSongManager().getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration);
+			getSongManager().getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration,caret.getVoice());
 		}
 		getSongManager().getMeasureManager().changeDeadNote(note);
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();

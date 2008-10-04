@@ -15,6 +15,8 @@ import org.herac.tuxguitar.gui.actions.edit.RedoAction;
 import org.herac.tuxguitar.gui.actions.edit.SetMouseModeEditionAction;
 import org.herac.tuxguitar.gui.actions.edit.SetMouseModeSelectionAction;
 import org.herac.tuxguitar.gui.actions.edit.SetNaturalKeyAction;
+import org.herac.tuxguitar.gui.actions.edit.SetVoice1Action;
+import org.herac.tuxguitar.gui.actions.edit.SetVoice2Action;
 import org.herac.tuxguitar.gui.actions.edit.UndoAction;
 import org.herac.tuxguitar.gui.editors.tab.edit.EditorKit;
 import org.herac.tuxguitar.gui.items.MenuItems;
@@ -34,6 +36,9 @@ public class EditMenuItem extends MenuItems{
 	private MenuItem modeSelection;
 	private MenuItem modeEdition;
 	private MenuItem notNaturalKey;
+	
+	private MenuItem voice1;
+	private MenuItem voice2;
 	
 	public EditMenuItem(Shell shell,Menu parent, int style) {
 		this.editMenuItem = new MenuItem(parent, style);
@@ -59,6 +64,14 @@ public class EditMenuItem extends MenuItems{
 		//--NATURAL NOTES
 		this.notNaturalKey = new MenuItem(this.menu, SWT.CHECK);
 		this.notNaturalKey.addSelectionListener(TuxGuitar.instance().getAction(SetNaturalKeyAction.NAME));
+		//--SEPARATOR
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		//--VOICE 1
+		this.voice1 = new MenuItem(this.menu, SWT.RADIO);
+		this.voice1.addSelectionListener(TuxGuitar.instance().getAction(SetVoice1Action.NAME));
+		//--VOICE 2
+		this.voice2 = new MenuItem(this.menu, SWT.RADIO);
+		this.voice2.addSelectionListener(TuxGuitar.instance().getAction(SetVoice2Action.NAME));
 		
 		this.editMenuItem.setMenu(this.menu);
 		
@@ -77,6 +90,8 @@ public class EditMenuItem extends MenuItems{
 		this.modeEdition.setEnabled(!running);
 		this.notNaturalKey.setSelection(!kit.isNatural());
 		this.notNaturalKey.setEnabled(!running && kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
+		this.voice1.setSelection(kit.getTablature().getCaret().getVoice() == 0);
+		this.voice2.setSelection(kit.getTablature().getCaret().getVoice() == 1);
 	}
 	
 	public void loadProperties(){
@@ -86,6 +101,8 @@ public class EditMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.modeSelection, "edit.mouse-mode-selection", SetMouseModeSelectionAction.NAME);
 		setMenuItemTextAndAccelerator(this.modeEdition, "edit.mouse-mode-edition", SetMouseModeEditionAction.NAME);
 		setMenuItemTextAndAccelerator(this.notNaturalKey, "edit.not-natural-key", SetNaturalKeyAction.NAME);
+		setMenuItemTextAndAccelerator(this.voice1, "edit.voice-1", SetVoice1Action.NAME);
+		setMenuItemTextAndAccelerator(this.voice2, "edit.voice-2", SetVoice2Action.NAME);
 	}
 	
 	public void loadIcons(){

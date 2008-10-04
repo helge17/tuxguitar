@@ -86,7 +86,8 @@ public class ChangeNoteAction extends Action {
 		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();
 		
-		getSongManager().getMeasureManager().addNote(measure,start,note,duration.clone(getSongManager().getFactory()) );
+		//getSongManager().getMeasureManager().addNote(measure,start,note,duration.clone(getSongManager().getFactory()) );
+		getSongManager().getMeasureManager().addNote(measure,start,note,duration.clone(getSongManager().getFactory()), getEditor().getTablature().getCaret().getVoice() );
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());

@@ -46,6 +46,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -386,24 +387,27 @@ public class FretBoard extends Composite {
 		if(this.beat != null){
 			TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
 			
-			Iterator it = this.beat.getNotes().iterator();
-			while (it.hasNext()) {
-				TGNote note = (TGNote) it.next();
-				int fretIndex = note.getValue();
-				int stringIndex = note.getString() - 1;
-				if (fretIndex >= 0 && fretIndex < this.frets.length && stringIndex >= 0 && stringIndex < this.strings.length) {
-					int x = this.frets[fretIndex];
-					if (fretIndex > 0) {
-						x -= ((this.frets[fretIndex] - this.frets[fretIndex - 1]) / 2);
-					}
-					int y = this.strings[stringIndex];
-					
-					if( (this.config.getStyle() & FretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
-						int realValue = track.getString(note.getString()).getValue() + note.getValue();
-						paintKeyText(painter,this.config.getColorNote(), x, y, NOTE_NAMES[ (realValue % 12) ]);
-					}
-					else{
-						paintKeyOval(painter,this.config.getColorNote(), x, y);
+			for(int v = 0; v < this.beat.countVoices(); v ++){
+				TGVoice voice = this.beat.getVoice( v );
+				Iterator it = voice.getNotes().iterator();
+				while (it.hasNext()) {
+					TGNote note = (TGNote) it.next();
+					int fretIndex = note.getValue();
+					int stringIndex = note.getString() - 1;
+					if (fretIndex >= 0 && fretIndex < this.frets.length && stringIndex >= 0 && stringIndex < this.strings.length) {
+						int x = this.frets[fretIndex];
+						if (fretIndex > 0) {
+							x -= ((this.frets[fretIndex] - this.frets[fretIndex - 1]) / 2);
+						}
+						int y = this.strings[stringIndex];
+						
+						if( (this.config.getStyle() & FretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
+							int realValue = track.getString(note.getString()).getValue() + note.getValue();
+							paintKeyText(painter,this.config.getColorNote(), x, y, NOTE_NAMES[ (realValue % 12) ]);
+						}
+						else{
+							paintKeyOval(painter,this.config.getColorNote(), x, y);
+						}
 					}
 				}
 			}
@@ -490,21 +494,24 @@ public class FretBoard extends Composite {
 	
 	private boolean removeNote(int fret, int string) {
 		if(this.beat != null){
-			Iterator it = this.beat.getNotes().iterator();
-			while (it.hasNext()) {
-				TGNote note = (TGNote) it.next();
-				if (note.getValue() == fret && note.getString() == string) {
-					//comienza el undoable
-					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-					
-					TGSongManager manager = TuxGuitar.instance().getSongManager();
-					manager.getMeasureManager().removeNote(note);
-					
-					//termia el undoable
-					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
-					
-					return true;
+			for(int v = 0; v < this.beat.countVoices(); v ++){
+				TGVoice voice = this.beat.getVoice( v );
+				Iterator it = voice.getNotes().iterator();
+				while (it.hasNext()) {
+					TGNote note = (TGNote) it.next();
+					if (note.getValue() == fret && note.getString() == string) {
+						//comienza el undoable
+						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+						
+						TGSongManager manager = TuxGuitar.instance().getSongManager();
+						manager.getMeasureManager().removeNote(note);
+						
+						//termia el undoable
+						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+						TuxGuitar.instance().getFileHistory().setUnsavedFile();
+						
+						return true;
+					}
 				}
 			}
 		}
@@ -535,7 +542,7 @@ public class FretBoard extends Composite {
 		TGDuration duration = manager.getFactory().newDuration();
 		caret.getDuration().copy(duration);
 		
-		manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration);
+		manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration, caret.getVoice());
 		
 		//termia el undoable
 		TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());

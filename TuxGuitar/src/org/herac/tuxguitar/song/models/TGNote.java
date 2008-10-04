@@ -19,7 +19,7 @@ public abstract class TGNote {
 	private int string;
 	private boolean tiedNote;
 	private TGNoteEffect effect;
-	private TGBeat beat;
+	private TGVoice voice;
 	
 	public TGNote(TGFactory factory) {
 		this.value = 0;
@@ -69,12 +69,12 @@ public abstract class TGNote {
 		this.effect = effect;
 	}
 	
-	public TGBeat getBeat() {
-		return this.beat;
+	public TGVoice getVoice() {
+		return this.voice;
 	}
 	
-	public void setBeat(TGBeat beat) {
-		this.beat = beat;
+	public void setVoice(TGVoice voice) {
+		this.voice = voice;
 	}
 	
 	public TGNote clone(TGFactory factory){
@@ -86,5 +86,4 @@ public abstract class TGNote {
 		note.setEffect(getEffect().clone(factory));
 		return note;
 	}
-	
 }

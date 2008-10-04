@@ -32,6 +32,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -302,42 +303,70 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		beat.setStart(data.getStart());
 		
-		//leo la duracion
-		if(((header & BEAT_NEXT_DURATION) != 0)){
-			readDuration(data.getDuration());
+		readVoices(header, beat, data);
+		
+		//leo los componentes
+		if(((header & BEAT_HAS_COMPONENTS) != 0)){
+			readBeatComponents(beat);
 		}
 		
-		//leo las notas
-		if(((header & BEAT_HAS_NOTES) != 0)){
-			readNotes(beat, data);
+		long minimumLength = -1;
+		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
+			if(!beat.getVoice(i).isEmpty()){
+				data.getVoice(i).getDuration().copy(beat.getVoice(i).getDuration());
+				long length = data.getVoice(i).getDuration().getTime();
+				if(minimumLength < 0 || length < minimumLength){
+					minimumLength = length;
+				}
+			}
 		}
+		
+		measure.addBeat(beat);
+		
+		data.setStart(data.getStart() + minimumLength);
+	}
+	
+	private void readBeatComponents(TGBeat beat){
+		int header = readHeader();
 		
 		//leo el acorde
-		if(((header & BEAT_HAS_CHORD) != 0)){
+		if(((header & BEAT_COMPONENT_CHORD) != 0)){
 			readChord(beat);
 		}
 		
 		//leo el texto
-		if(((header & BEAT_HAS_TEXT) != 0)){
+		if(((header & BEAT_COMPONENT_TEXT) != 0)){
 			readText(beat);
 		}
-		
-		data.getDuration().copy(beat.getDuration());
-		
-		measure.addBeat(beat);
-		
-		data.setStart(data.getStart() + data.getDuration().getTime());
 	}
 	
-	private void readNotes(TGBeat beat,TGBeatData data){
+	private void readVoices(int header, TGBeat beat, TGBeatData data){
+		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
+			int shift = ((i * 3 ) + 1);
+			
+			//leo la duracion
+			if((((header >> shift ) & BEAT_VOICE_NEXT_DURATION) != 0)){
+				readDuration(data.getVoice(i).getDuration());
+			}
+			
+			//leo las notas
+			if((((header >> shift ) & BEAT_VOICE_HAS_NOTES) != 0)){
+				readNotes(beat.getVoice(i), data);
+			}else if((((header >> shift ) & BEAT_VOICE_HAS_SILENCE) != 0)){
+				beat.getVoice(i).setEmpty(false);
+			}
+		}
+	}
+	
+	private void readNotes(TGVoice voice,TGBeatData data){
 		int header = NOTE_HAS_NEXT;
 		while(((header & NOTE_HAS_NEXT) != 0)){
 			header = readHeader();
-			readNote(header, beat, data);
+			readNote(header, voice, data);
 		}
 	}
 	
-	private void readNote(int header,TGBeat beat,TGBeatData data){
+	private void readNote(int header,TGVoice voice,TGBeatData data){
 		TGNote note = this.factory.newNote();
 		
 		//leo el valor
@@ -351,16 +380,16 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		//leo el velocity
 		if(((header & NOTE_VELOCITY) != 0)){
-			data.setVelocity(readByte());
+			data.getVoice(voice.getIndex()).setVelocity(readByte());
 		}
-		note.setVelocity(data.getVelocity());
+		note.setVelocity(data.getVoice(voice.getIndex()).getVelocity());
 		
 		//leo los efectos
 		if(((header & NOTE_EFFECT) != 0)){
 			readNoteEffect(note.getEffect());
 		}
 		
-		beat.addNote(note);
+		voice.addNote(note);
 	}
 	
 	private void readChord(TGBeat beat){

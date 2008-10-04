@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.io.tg;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGVelocities;
@@ -40,13 +41,17 @@ public class TGStream {
 	
 	protected static final int BEAT_HAS_NEXT = 0x01;
 	
-	protected static final int BEAT_NEXT_DURATION = 0x02;
+	protected static final int BEAT_VOICE_HAS_NOTES = 0x01;
 	
-	protected static final int BEAT_HAS_NOTES = 0x04;
+	protected static final int BEAT_VOICE_HAS_SILENCE = 0x02;
 	
-	protected static final int BEAT_HAS_CHORD = 0x08;
+	protected static final int BEAT_VOICE_NEXT_DURATION = 0x04;
 	
-	protected static final int BEAT_HAS_TEXT = 0x10;
+	protected static final int BEAT_HAS_COMPONENTS = 0x80;
+
+	protected static final int BEAT_COMPONENT_CHORD = 0x01;
+	
+	protected static final int BEAT_COMPONENT_TEXT = 0x02;
 	
 	protected static final int NOTE_HAS_NEXT = 0x01;
 	
@@ -106,8 +111,7 @@ public class TGStream {
 	
 	protected class TGBeatData {
 		private long start;
-		private int velocity;
-		private TGDuration duration;
+		private TGVoiceData[] voices;
 		
 		protected TGBeatData(TGMeasure measure){
 			this.init(measure);
@@ -115,6 +119,34 @@ public class TGStream {
 		
 		private void init(TGMeasure measure){
 			this.setStart(measure.getStart());
+			this.voices = new TGVoiceData[TGBeat.MAX_VOICES];
+			for(int i = 0 ; i < this.voices.length ; i ++ ){
+				this.voices[i] = new TGVoiceData();
+			}
+		}
+		
+		protected TGVoiceData getVoice(int index){
+			return this.voices[index];
+		}
+		
+		public long getStart() {
+			return this.start;
+		}
+		
+		public void setStart(long start) {
+			this.start = start;
+		}
+	}
+	
+	protected class TGVoiceData {
+		private int velocity;
+		private TGDuration duration;
+		
+		protected TGVoiceData(){
+			this.init();
+		}
+		
+		private void init(){
 			this.setVelocity(TGVelocities.DEFAULT);
 			this.setDuration(new TGFactory().newDuration());
 		}
@@ -125,14 +157,6 @@ public class TGStream {
 		
 		public void setDuration(TGDuration duration) {
 			this.duration = duration;
-		}
-		
-		public long getStart() {
-			return this.start;
-		}
-		
-		public void setStart(long start) {
-			this.start = start;
 		}
 		
 		public int getVelocity() {

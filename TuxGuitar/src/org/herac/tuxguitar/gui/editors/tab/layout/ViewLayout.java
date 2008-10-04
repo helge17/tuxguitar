@@ -22,6 +22,7 @@ import org.herac.tuxguitar.gui.editors.tab.TGMeasureHeaderImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGResources;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.gui.editors.tab.TGVoiceImpl;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.config.TGConfigManager;
@@ -29,6 +30,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -315,9 +317,36 @@ public abstract class ViewLayout {
 	/**
 	 * Calcula el Espacio que ocupara el pulso
 	 */
-	public float getBeatWidth(TGBeatImpl beat){
+	public float getBeatWidth(TGVoice voice){
 		float scale = getScale();
-		TGDuration duration = beat.getDuration();
+		TGDuration duration = voice.getDuration();
+		if(duration != null){
+			switch(duration.getValue()){
+				case TGDuration.WHOLE:
+					return (30.0f * scale);
+				case TGDuration.HALF:
+					return (25.0f * scale);
+				case TGDuration.QUARTER:
+					return (21.0f * scale);
+				case TGDuration.EIGHTH:
+					return (20.0f * scale);
+				case TGDuration.SIXTEENTH:
+					return (19.0f * scale);
+				case TGDuration.THIRTY_SECOND:
+					return (18.0f * scale);
+				default:
+					return (17.0f * scale);
+			}
+		}
+		return (20.0f * scale);
+	}
+	
+	/**
+	 * Calcula el Espacio que ocupara el pulso
+	 */
+	public float getVoiceWidth(TGVoiceImpl voice){
+		float scale = getScale();
+		TGDuration duration = voice.getDuration();
 		if(duration != null){
 			switch(duration.getValue()){
 				case TGDuration.WHOLE:
@@ -417,8 +446,12 @@ public abstract class ViewLayout {
 		painter.setForeground(getResources().getLineColor());
 	}
 	
-	public void setCaretStyle(TGPainter painter){
-		painter.setForeground(getResources().getLineColor());
+	public void setCaretStyle(TGPainter painter, boolean expectedVoice){
+		if( expectedVoice ){
+			painter.setForeground(getResources().getLineColor());
+		}else{
+			painter.setForeground( getResources().getColorRed());
+		}
 	}
 	
 	public void setScoreSilenceStyle(TGPainter painter,boolean playMode){

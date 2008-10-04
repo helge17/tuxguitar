@@ -31,7 +31,7 @@ public class ShiftNoteDownAction extends Action{
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			
-			int nextString = getSongManager().getMeasureManager().shiftNoteDown(getEditor().getTablature().getCaret().getMeasure(),note.getBeat().getStart(),note.getString());
+			int nextString = getSongManager().getMeasureManager().shiftNoteDown(getEditor().getTablature().getCaret().getMeasure(),note.getVoice().getBeat().getStart(),note.getString());
 			if(nextString > 0){
 				getEditor().getTablature().getCaret().setStringNumber(nextString);
 				

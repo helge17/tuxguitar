@@ -7,12 +7,14 @@ public class TGBeatGroup {
 	private static final int SCORE_SHARP_POSITIONS[] = new int[]{7,7,6,6,5,4,4,3,3,2,2,1};
 	private static final int SCORE_FLAT_POSITIONS[] = new int[]{7,6,6,5,5,4,3,3,2,2,1,1};
 	
+	public static final int DIRECTION_NOT_SETTED = 0;
 	public static final int DIRECTION_UP = 1;
 	public static final int DIRECTION_DOWN = 2;
 	
 	private static final int UP_OFFSET = 28;
 	private static final int DOWN_OFFSET = 35;
 	
+	private int voice;
 	private int direction;
 	private TGNoteImpl firstMinNote;
 	private TGNoteImpl firstMaxNote;
@@ -21,8 +23,9 @@ public class TGBeatGroup {
 	private TGNoteImpl maxNote;
 	private TGNoteImpl minNote;
 	
-	public TGBeatGroup(){
-		this.direction = DIRECTION_UP;
+	public TGBeatGroup(int voice){
+		this.voice = voice;
+		this.direction = DIRECTION_NOT_SETTED;
 		this.firstMinNote = null;
 		this.firstMaxNote = null;
 		this.lastMinNote = null;
@@ -31,38 +34,38 @@ public class TGBeatGroup {
 		this.minNote = null;
 	}
 	
-	public void check(TGNoteImpl note,int clef){
+	public void check(TGNoteImpl note){
 		int value = note.getRealValue();
 		
 		//FIRST MIN NOTE
-		if(this.firstMinNote == null || note.getBeat().getStart() < this.firstMinNote.getBeat().getStart()){
+		if(this.firstMinNote == null || note.getVoice().getBeat().getStart() < this.firstMinNote.getVoice().getBeat().getStart()){
 			this.firstMinNote = note;
-		}else if(note.getBeat().getStart() == this.firstMinNote.getBeat().getStart()){
+		}else if(note.getVoice().getBeat().getStart() == this.firstMinNote.getVoice().getBeat().getStart()){
 			if(note.getRealValue() < this.firstMinNote.getRealValue()){
 				this.firstMinNote = note;
 			}
 		}
 		//FIRST MAX NOTE
-		if(this.firstMaxNote == null || note.getBeat().getStart() < this.firstMaxNote.getBeat().getStart()){
+		if(this.firstMaxNote == null || note.getVoice().getBeat().getStart() < this.firstMaxNote.getVoice().getBeat().getStart()){
 			this.firstMaxNote = note;
-		}else if(note.getBeat().getStart() == this.firstMaxNote.getBeat().getStart()){
+		}else if(note.getVoice().getBeat().getStart() == this.firstMaxNote.getVoice().getBeat().getStart()){
 			if(note.getRealValue() > this.firstMaxNote.getRealValue()){
 				this.firstMaxNote = note;
 			}
 		}
 		
 		//LAST MIN NOTE
-		if(this.lastMinNote == null || note.getBeat().getStart() > this.lastMinNote.getBeat().getStart()){
+		if(this.lastMinNote == null || note.getVoice().getBeat().getStart() > this.lastMinNote.getVoice().getBeat().getStart()){
 			this.lastMinNote = note;
-		}else if(note.getBeat().getStart() == this.lastMinNote.getBeat().getStart()){
+		}else if(note.getVoice().getBeat().getStart() == this.lastMinNote.getVoice().getBeat().getStart()){
 			if(note.getRealValue() < this.lastMinNote.getRealValue()){
 				this.lastMinNote = note;
 			}
 		}
 		//LAST MIN NOTE
-		if(this.lastMaxNote == null || note.getBeat().getStart() > this.lastMaxNote.getBeat().getStart()){
+		if(this.lastMaxNote == null || note.getVoice().getBeat().getStart() > this.lastMaxNote.getVoice().getBeat().getStart()){
 			this.lastMaxNote = note;
-		}else if(note.getBeat().getStart() == this.lastMaxNote.getBeat().getStart()){
+		}else if(note.getVoice().getBeat().getStart() == this.lastMaxNote.getVoice().getBeat().getStart()){
 			if(note.getRealValue() > this.lastMaxNote.getRealValue()){
 				this.lastMaxNote = note;
 			}
@@ -74,13 +77,23 @@ public class TGBeatGroup {
 		if(this.minNote == null || value < this.minNote.getRealValue()){
 			this.minNote = note;
 		}
-		
-		int max = Math.abs(this.minNote.getRealValue() - (SCORE_MIDDLE_KEYS[clef - 1] + 100));
-		int min = Math.abs(this.maxNote.getRealValue() - (SCORE_MIDDLE_KEYS[clef - 1] - 100));
-		if(max > min){
-			this.direction = DIRECTION_UP;
-		}else{
-			this.direction = DIRECTION_DOWN;
+	}
+	
+	public void finish(ViewLayout layout, TGMeasureImpl measure){
+		if( this.direction == DIRECTION_NOT_SETTED ){
+			if (measure.getNotEmptyVoices() > 1 ){
+				this.direction = this.voice == 0 ? DIRECTION_UP : DIRECTION_DOWN;
+			}else if ( (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 ){
+				this.direction = DIRECTION_DOWN;
+			}else{
+				int max = Math.abs(this.minNote.getRealValue() - (SCORE_MIDDLE_KEYS[measure.getClef() - 1] + 100));
+				int min = Math.abs(this.maxNote.getRealValue() - (SCORE_MIDDLE_KEYS[measure.getClef() - 1] - 100));
+				if(max > min){
+					this.direction = DIRECTION_UP;
+				}else{
+					this.direction = DIRECTION_DOWN;
+				}
+			}
 		}
 	}
 	

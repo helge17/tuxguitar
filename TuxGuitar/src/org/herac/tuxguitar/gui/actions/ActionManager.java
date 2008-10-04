@@ -38,6 +38,8 @@ import org.herac.tuxguitar.gui.actions.edit.RedoAction;
 import org.herac.tuxguitar.gui.actions.edit.SetMouseModeEditionAction;
 import org.herac.tuxguitar.gui.actions.edit.SetMouseModeSelectionAction;
 import org.herac.tuxguitar.gui.actions.edit.SetNaturalKeyAction;
+import org.herac.tuxguitar.gui.actions.edit.SetVoice1Action;
+import org.herac.tuxguitar.gui.actions.edit.SetVoice2Action;
 import org.herac.tuxguitar.gui.actions.edit.UndoAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeAccentuatedNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeBendNoteAction;
@@ -106,6 +108,7 @@ import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.InsertNoteAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveNoteAction;
+import org.herac.tuxguitar.gui.actions.note.RemoveVoiceAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteDownAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteUpAction;
 import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
@@ -170,6 +173,8 @@ public class ActionManager {
 		addAction(new SetMouseModeSelectionAction());
 		addAction(new SetMouseModeEditionAction());
 		addAction(new SetNaturalKeyAction());
+		addAction(new SetVoice1Action());
+		addAction(new SetVoice2Action());
 		
 		//layout actions
 		addAction(new SetPageLayoutAction());
@@ -225,6 +230,7 @@ public class ActionManager {
 		addAction(new ChangeNoteAction());
 		addAction(new InsertNoteAction());
 		addAction(new RemoveNoteAction());
+		addAction(new RemoveVoiceAction());
 		addAction(new CleanBeatAction());
 		addAction(new ChangeTiedNoteAction());
 		addAction(new ChangeVelocityAction());

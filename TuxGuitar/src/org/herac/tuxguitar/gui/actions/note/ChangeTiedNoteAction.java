@@ -13,10 +13,10 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
-import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -56,7 +56,7 @@ public class ChangeTiedNoteAction extends Action{
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			
-			getSongManager().getMeasureManager().addNote(caret.getSelectedBeat(),note,duration);
+			getSongManager().getMeasureManager().addNote(caret.getSelectedBeat(),note,duration, caret.getVoice());
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
@@ -68,15 +68,15 @@ public class ChangeTiedNoteAction extends Action{
 	
 	private void setTiedNoteValue(TGNote note,Caret caret){
 		TGMeasure measure = caret.getMeasure();
-		TGBeat beat = getSongManager().getMeasureManager().getPreviousBeat( measure.getBeats(), caret.getSelectedBeat());
+		TGVoice voice = getSongManager().getMeasureManager().getPreviousVoice( measure.getBeats(), caret.getSelectedBeat(), caret.getVoice());
 		while( measure != null){
-			while( beat != null ){
-				if(beat.isRestBeat()){
+			while( voice != null ){
+				if(voice.isRestVoice()){
 					note.setValue(0);
 					return;
 				}
 				// Check if is there any note at same string.
-				Iterator it = beat.getNotes().iterator();
+				Iterator it = voice.getNotes().iterator();
 				while( it.hasNext() ){
 					TGNote current = (TGNote) it.next();
 					if(current.getString() == note.getString()){
@@ -84,28 +84,14 @@ public class ChangeTiedNoteAction extends Action{
 						return;
 					}
 				}
-				beat = getSongManager().getMeasureManager().getPreviousBeat( measure.getBeats(), beat);
+				voice = getSongManager().getMeasureManager().getPreviousVoice( measure.getBeats(), voice.getBeat(), caret.getVoice());
 			}
 			measure = getSongManager().getTrackManager().getPrevMeasure(measure);
 			if( measure != null ){
-				beat = getSongManager().getMeasureManager().getLastBeat( measure.getBeats() );
+				voice = getSongManager().getMeasureManager().getLastVoice( measure.getBeats() , caret.getVoice());
 			}
 		}
 	}
-	/*
-	private void setTiedNoteValue(TGNote note,Caret caret){
-		TGMeasure measure = caret.getMeasure();
-		TGNote previous = null;
-		while(measure != null){
-			previous = getSongManager().getMeasureManager().getPreviousNote(measure,caret.getPosition(),caret.getSelectedString().getNumber());
-			if(previous != null){
-				note.setValue(previous.getValue());
-				break;
-			}
-			measure = getSongManager().getTrackManager().getPrevMeasure(measure);
-		}
-	}
-	*/
 	
 	public void updateTablature() {
 		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());

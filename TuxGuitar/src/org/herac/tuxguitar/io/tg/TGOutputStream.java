@@ -32,6 +32,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -295,58 +296,83 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		int header = hasNext ? BEAT_HAS_NEXT : 0;
 		
 		//Berifico si hay cambio de duracion
-		if(!beat.getDuration().isEqual(data.getDuration())){
-			header |= BEAT_NEXT_DURATION;
-			data.setDuration(beat.getDuration());
+		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
+			int shift = ((i * 3 ) + 1);
+			if(!beat.getVoice(i).isEmpty()){
+				header |= ( beat.getVoice(i).isRestVoice() ? ( BEAT_VOICE_HAS_SILENCE << shift ) : ( BEAT_VOICE_HAS_NOTES << shift ) );
+				if(!beat.getVoice(i).getDuration().isEqual(data.getVoice(i).getDuration())){
+					header |= ( BEAT_VOICE_NEXT_DURATION << shift );
+					data.getVoice(i).setDuration(beat.getVoice(i).getDuration());
+				}
+			}
 		}
 		
-		//Berifico si tiene notas
-		if(!beat.isRestBeat()){
-			header |= BEAT_HAS_NOTES;
-		}
-		
-		//Berifico si tiene acorde
-		if(beat.getChord() != null){
-			header |= BEAT_HAS_CHORD;
-		}
-		
-		//Berifico si tiene texto
-		if(beat.getText() != null){
-			header |= BEAT_HAS_TEXT;
+		//Berifico si tiene otros componentes
+		if(beat.getChord() != null || beat.getText() != null){
+			header |= BEAT_HAS_COMPONENTS;
 		}
 		
 		// escribo la cabecera
 		writeHeader(header);
 		
-		//escribo la duracion
-		if(((header & BEAT_NEXT_DURATION) != 0)){
-			writeDuration(beat.getDuration());
-		}
-		
-		//escribo las notas
-		if(((header & BEAT_HAS_NOTES) != 0)){
-			writeNotes(beat, data);
-		}
+		writeVoices(header, beat, data);
 		
 		//escribo el acorde
-		if(((header & BEAT_HAS_CHORD) != 0)){
+		if(((header & BEAT_HAS_COMPONENTS) != 0)){
+			writeBeatComponents(beat);
+		}
+	}
+	
+	private void writeBeatComponents(TGBeat beat){
+		int header = 0;
+		
+		//Berifico si tiene acorde
+		if(beat.getChord() != null){
+			header |= BEAT_COMPONENT_CHORD;
+		}
+		//Berifico si tiene texto
+		if(beat.getText() != null){
+			header |= BEAT_COMPONENT_TEXT;
+		}
+		
+		// escribo la cabecera
+		writeHeader(header);
+		
+		//escribo el acorde
+		if(((header & BEAT_COMPONENT_CHORD) != 0)){
 			writeChord(beat.getChord());
 		}
 		
 		//escribo el texto
-		if(((header & BEAT_HAS_TEXT) != 0)){
+		if(((header & BEAT_COMPONENT_TEXT) != 0)){
 			writeText(beat.getText());
 		}
 	}
 	
-	private void writeNotes(TGBeat beat,TGBeatData data){
-		for( int i = 0 ; i < beat.countNotes() ; i ++){
-			TGNote note = beat.getNote(i);
+	private void writeVoices(int header, TGBeat beat,TGBeatData data){
+		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
+			int shift = ((i * 3 ) + 1);
 			
-			int header = ( i + 1 < beat.countNotes() ? NOTE_HAS_NEXT : 0 );
+			//escribo la duracion
+			if((((header >> shift ) & BEAT_VOICE_NEXT_DURATION) != 0)){
+				writeDuration(beat.getVoice(i).getDuration());
+			}
+			
+			//escribo las notas
+			if((((header >> shift ) & BEAT_VOICE_HAS_NOTES) != 0)){
+				writeNotes(beat.getVoice(i), data);
+			}
+		}
+	}
+	
+	private void writeNotes(TGVoice voice,TGBeatData data){
+		for( int i = 0 ; i < voice.countNotes() ; i ++){
+			TGNote note = voice.getNote(i);
+			
+			int header = ( i + 1 < voice.countNotes() ? NOTE_HAS_NEXT : 0 );
 			header = (note.isTiedNote())?header |= NOTE_TIED:header;
-			if(note.getVelocity() != data.getVelocity()){
-				data.setVelocity(note.getVelocity());
+			if(note.getVelocity() != data.getVoice(voice.getIndex()).getVelocity()){
+				data.getVoice(voice.getIndex()).setVelocity(note.getVelocity());
 				header |= NOTE_VELOCITY;
 			}
 			header = (note.getEffect().hasAnyEffect())?header |= NOTE_EFFECT:header;

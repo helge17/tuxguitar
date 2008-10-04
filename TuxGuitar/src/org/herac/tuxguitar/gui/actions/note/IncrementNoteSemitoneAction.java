@@ -31,7 +31,7 @@ public class IncrementNoteSemitoneAction extends Action{
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			
-			if(getSongManager().getMeasureManager().moveSemitoneUp(getEditor().getTablature().getCaret().getMeasure(),note.getBeat().getStart(),note.getString())){
+			if(getSongManager().getMeasureManager().moveSemitoneUp(getEditor().getTablature().getCaret().getMeasure(),note.getVoice().getBeat().getStart(),note.getString())){
 				//termia el undoable
 				addUndoableEdit(undoable.endUndo());
 				TuxGuitar.instance().getFileHistory().setUnsavedFile();
