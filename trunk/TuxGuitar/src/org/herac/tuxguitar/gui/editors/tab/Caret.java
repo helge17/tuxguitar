@@ -21,6 +21,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -35,6 +36,7 @@ public class Caret {
 	private TGDuration selectedDuration;
 	private long position;
 	private int string;
+	private int voice;
 	private boolean changes;
 	private int velocity;
 	
@@ -111,7 +113,10 @@ public class Caret {
 		TGBeat beat = null;
 		if(measure != null){
 			TGMeasureManager manager = getSongManager().getMeasureManager();
-			beat = manager.getBeatIn(measure, position);
+			TGVoice voice = manager.getVoiceIn(measure, position, getVoice());
+			if( voice != null ){
+				beat = voice.getBeat();
+			}
 			if (beat == null) {
 				beat = manager.getFirstBeat(measure.getBeats());
 			}
@@ -128,16 +133,16 @@ public class Caret {
 	public void paintCaret(ViewLayout layout,TGPainter painter) {
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && this.selectedBeat instanceof TGBeatImpl) {
-				
 				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & ViewLayout.DISPLAY_TABLATURE) != 0){
+					boolean expectedVoice = (getSelectedNote() == null || getSelectedNote().getVoice().getIndex() == getVoice());
 					int stringSpacing = this.tablature.getViewLayout().getStringSpacing();
 					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					int x = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - 5;
 					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
 					int width = 14;
 					int height = 14;
-					layout.setCaretStyle(painter);
+					layout.setCaretStyle(painter, expectedVoice);
 					painter.initPath();
 					painter.addRectangle(x, y, width, height);
 					painter.closePath();
@@ -150,7 +155,7 @@ public class Caret {
 					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TrackSpacing.POSITION_BOTTOM);
-					layout.setCaretStyle(painter);
+					layout.setCaretStyle(painter, true);
 					painter.initPath();
 					painter.moveTo(x1, y1);
 					painter.lineTo(x1 + ((x2 - x1) / 2f), y1 + (line / 2f));
@@ -167,16 +172,23 @@ public class Caret {
 	public boolean moveRight() {
 		if (getSelectedBeat() != null) {
 			TGMeasureImpl measure = getMeasure();
-			TGBeat beat = getSongManager().getMeasureManager().getNextBeat(measure.getBeats(),getSelectedBeat());
+			TGVoice voice = getSongManager().getMeasureManager().getNextVoice(measure.getBeats(),getSelectedBeat(), getVoice());
+			TGBeat beat = (voice != null ? voice.getBeat() : null );
 			if (beat == null){
 				//si no habia mas componentes. busco el siguiente compas
 				measure = (TGMeasureImpl)getSongManager().getTrackManager().getNextMeasure(getMeasure());
 				if (measure == null) {
 					return false;
 				}
-				beat = getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+				voice = getSongManager().getMeasureManager().getFirstVoice(measure.getBeats(), getVoice());
+				beat = (voice != null ? voice.getBeat() : null );
+				if( beat == null ){
+					beat = getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+				}
 			}
-			moveTo(getTrack(), measure, beat, getStringNumber());
+			if(beat != null){
+				moveTo(getTrack(), measure, beat, getStringNumber());
+			}
 		}
 		return true;
 	}
@@ -184,16 +196,23 @@ public class Caret {
 	public void moveLeft() {
 		if (getSelectedBeat() != null) {
 			TGMeasureImpl measure = getMeasure();
-			TGBeat beat = getSongManager().getMeasureManager().getPreviousBeat(measure.getBeats(),getSelectedBeat());
+			TGVoice voice = getSongManager().getMeasureManager().getPreviousVoice(measure.getBeats(),getSelectedBeat(), getVoice());
+			TGBeat beat = (voice != null ? voice.getBeat() : null );
 			if (beat == null) {
 				//si no habia mas componentes. busco el compas anterior
 				measure = (TGMeasureImpl)getSongManager().getTrackManager().getPrevMeasure(getMeasure());
 				if (measure == null) {
 					return;
 				}
-				beat = getSongManager().getMeasureManager().getLastBeat(measure.getBeats());
+				voice = getSongManager().getMeasureManager().getLastVoice(measure.getBeats(), getVoice());
+				beat = (voice != null ? voice.getBeat() : null );
+				if( beat == null ){
+					beat = getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+				}
 			}
-			moveTo(getTrack(), measure, beat, getStringNumber());
+			if(beat != null){
+				moveTo(getTrack(), measure, beat, getStringNumber());
+			}
 		}
 	}
 	
@@ -201,39 +220,14 @@ public class Caret {
 	 * Luego de mover el Caret. cambia la duracion seleccionada por la del componente. solo si lo que resta del compas no esta vacio
 	 */
 	private void updateDuration() {
+		if (this.selectedBeat != null && !this.selectedBeat.getVoice(getVoice()).isRestVoice()) {
+			this.selectedBeat.getVoice(getVoice()).getDuration().copy(this.selectedDuration);
+		}
+		/*
 		if (this.selectedBeat != null && !this.selectedBeat.isRestBeat()) {
 			this.selectedBeat.getDuration().copy(this.selectedDuration);
-			/*
-			boolean hasNotes = false;
-			Iterator it = getMeasure().getComponentsBeforeEnd(getSelectedComponent().getStart()).iterator();
-			while (it.hasNext()) {
-				TGDurationable component = (TGDurationable) it.next();
-				if (component instanceof TGNoteImpl) {
-					hasNotes = true;
-					break;
-				}
-			}
-			if (hasNotes) {
-				if(this.selectedComponent instanceof TGSilenceImpl){
-					long length = this.selectedComponent.getDuration().getTime();
-					
-					List components = getMeasure().getComponents(TGMeasure.C_LIST_NOTATION);
-					TGDurationable nextComponent =  getSongManager().getMeasureManager().getNextComponent(components,getSelectedComponent());
-					
-					while(nextComponent != null && nextComponent instanceof TGSilenceImpl){
-						length += nextComponent.getDuration().getTime();
-						nextComponent =  getSongManager().getMeasureManager().getNextComponent(components,nextComponent);
-					}
-					
-					if(this.selectedDuration.getTime() > length){
-						this.selectedComponent.getDuration().copy(this.selectedDuration);
-					}
-				}else{
-					this.selectedComponent.getDuration().copy(this.selectedDuration);
-				}
-			}
-			*/
 		}
+		*/
 	}
 	
 	public void moveUp() {
@@ -290,7 +284,7 @@ public class Caret {
 	}
 	
 	public void changeDuration(TGDuration duration){
-		getSongManager().getMeasureManager().changeDuration(getMeasure(),getSelectedBeat(),duration, true);
+		getSongManager().getMeasureManager().changeDuration(getMeasure(),getSelectedBeat(),duration,getVoice(), true);
 		setChanges(true);
 	}
 	
@@ -342,5 +336,14 @@ public class Caret {
 	
 	public TGSongManager getSongManager(){
 		return this.tablature.getSongManager();
+	}
+
+	public int getVoice() {
+		return this.voice;
+	}
+
+	public void setVoice(int voice) {
+		this.voice = voice;
+		this.update();
 	}
 }

@@ -34,10 +34,14 @@ public class InsertNoteAction extends Action{
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			TuxGuitar.instance().getFileHistory().setUnsavedFile();
 			
-			long start = beat.getStart();
-			long length = beat.getDuration().getTime();
-			getSongManager().getMeasureManager().moveBeats(caret.getMeasure(),start,length, beat.getDuration());
-			
+			if(beat.getVoice(caret.getVoice()).isEmpty()){
+				getSongManager().getMeasureManager().addSilence(beat, caret.getDuration().clone(getSongManager().getFactory()), caret.getVoice());
+			}
+			else{
+				long start = beat.getStart();
+				long length = beat.getVoice(caret.getVoice()).getDuration().getTime();
+				getSongManager().getMeasureManager().moveVoices(caret.getMeasure(),start,length,caret.getVoice(),beat.getVoice(caret.getVoice()).getDuration());
+			}
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
 			

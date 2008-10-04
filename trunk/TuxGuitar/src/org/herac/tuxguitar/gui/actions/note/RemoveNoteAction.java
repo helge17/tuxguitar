@@ -12,6 +12,7 @@ import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -33,15 +34,14 @@ public class RemoveNoteAction extends Action{
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		TGBeat beat = caret.getSelectedBeat();
-		if(beat.isRestBeat()){
-			if(beat.isTextBeat()){
-				getSongManager().getMeasureManager().removeText(beat);
-			}else{
-				getSongManager().getMeasureManager().removeBeat( beat ,true);
-			}
+		TGVoice voice = beat.getVoice( caret.getVoice() );
+		if( beat.isTextBeat() && beat.isRestBeat() ){
+			getSongManager().getMeasureManager().removeText(beat);
+		}else if(voice.isRestVoice()){
+			getSongManager().getMeasureManager().removeVoice(voice ,true);
 		}else{
 			int string = caret.getSelectedString().getNumber();
-			getSongManager().getMeasureManager().removeNote(caret.getMeasure(),beat.getStart(), string);
+			getSongManager().getMeasureManager().removeNote(caret.getMeasure(),beat.getStart(), caret.getVoice(), string);
 		}
 		
 		//termia el undoable

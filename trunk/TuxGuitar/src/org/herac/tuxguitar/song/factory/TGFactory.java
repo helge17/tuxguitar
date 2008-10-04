@@ -19,6 +19,7 @@ import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
@@ -114,7 +115,13 @@ public class TGFactory {
 	
 	public TGBeat newBeat(){
 		return new TGBeat(this){
-			//TGSilence Implementation
+			//TGBeat Implementation
+		};
+	}
+	
+	public TGVoice newVoice(int index){
+		return new TGVoice(this, index){
+			//TGVoice Implementation
 		};
 	}
 	

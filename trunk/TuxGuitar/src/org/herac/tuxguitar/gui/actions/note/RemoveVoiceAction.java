@@ -9,8 +9,8 @@ package org.herac.tuxguitar.gui.actions.note;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
-import org.herac.tuxguitar.song.models.TGNote;
 
 /**
  * @author julian
@@ -18,24 +18,24 @@ import org.herac.tuxguitar.song.models.TGNote;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class DecrementNoteSemitoneAction extends Action{
-	public static final String NAME = "action.note.general.decrement-semitone";
+public class RemoveVoiceAction extends Action{
+	public static final String NAME = "action.note.general.remove-voice";
 	
-	public DecrementNoteSemitoneAction() {
+	public RemoveVoiceAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(TypedEvent e){
-		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
-		if(note != null){
+		Caret caret = getEditor().getTablature().getCaret();
+		if( caret.getMeasure() != null){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+			TuxGuitar.instance().getFileHistory().setUnsavedFile();
 			
-			if(getSongManager().getMeasureManager().moveSemitoneDown(getEditor().getTablature().getCaret().getMeasure(),note.getVoice().getBeat().getStart(),note.getString())){
-				//termia el undoable
-				addUndoableEdit(undoable.endUndo());
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			}
+			getSongManager().getMeasureManager().removeMeasureVoices( caret.getMeasure(), caret.getVoice());
+			
+			//termia el undoable
+			addUndoableEdit(undoable.endUndo());
 			updateTablature();
 		}
 		return 0;

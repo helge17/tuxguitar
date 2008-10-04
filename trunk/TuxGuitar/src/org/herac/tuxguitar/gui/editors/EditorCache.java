@@ -7,6 +7,7 @@ import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
@@ -98,7 +99,13 @@ public class EditorCache {
 					if (this.playMeasure != null) {
 						this.playBeat = (TGBeatImpl)manager.getMeasureManager().getBeatIn(this.playMeasure, start);
 						if(this.playBeat != null){
-							this.playBeatEnd = (this.playBeat.getStart() + this.playBeat.getDuration().getTime());
+							TGBeat next = manager.getMeasureManager().getNextBeat(this.playMeasure.getBeats(), this.playBeat);
+							if( next != null ){
+								this.playBeatEnd = next.getStart();
+							}else{
+								TGDuration duration = manager.getMeasureManager().getMinimumDuration(this.playBeat);
+								this.playBeatEnd = (this.playBeat.getStart() + duration.getTime());
+							}
 						}
 					}
 				}
@@ -132,6 +139,8 @@ public class EditorCache {
 	}
 	
 	public boolean isPlaying(TGMeasure measure,TGBeat b){
-		return (isPlaying(measure) && this.playStart >= b.getStart() && this.playStart < (b.getStart() + b.getDuration().getTime()));
+		//TGDuration duration = TuxGuitar.instance().getSongManager().getMeasureManager().getMinimumDuration(b);
+		//return (isPlaying(measure) && this.playStart >= b.getStart() && this.playStart < (b.getStart() + duration.getTime()));
+		return (isPlaying(measure) && this.playBeat != null && this.playBeat.getStart() == b.getStart());
 	}
 }

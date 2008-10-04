@@ -129,17 +129,23 @@ public class EditorKit implements MouseListener,MouseMoveListener,MouseTrackList
 	}
 	
 	public TGBeatImpl findSelectedBeat(TGMeasureImpl measure, int x){
+		int voice = getTablature().getCaret().getVoice();
 		int posX = measure.getHeaderImpl().getLeftSpacing(getTablature().getViewLayout()) + measure.getPosX();
 		int bestDiff = -1;
 		TGBeatImpl bestBeat = null;
 		Iterator it = measure.getBeats().iterator();
 		while(it.hasNext()){
 			TGBeatImpl beat = (TGBeatImpl)it.next();
-			int diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing())));
-			if(bestDiff == -1 || diff < bestDiff){
-				bestBeat = beat;
-				bestDiff = diff;
+			if(!beat.getVoice(voice).isEmpty()){
+				int diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing())));
+				if(bestDiff == -1 || diff < bestDiff){
+					bestBeat = beat;
+					bestDiff = diff;
+				}
 			}
+		}
+		if( bestBeat == null ){
+			bestBeat = (TGBeatImpl)getTablature().getViewLayout().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
 		}
 		return bestBeat;
 	}

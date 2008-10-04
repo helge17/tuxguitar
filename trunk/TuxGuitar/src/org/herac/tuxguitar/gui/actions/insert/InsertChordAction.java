@@ -22,6 +22,7 @@ import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -44,7 +45,7 @@ public class InsertChordAction extends Action {
 			//Si el acorde llego en el data del widget solo lo agrego
 			if(e.widget.getData() instanceof TGChord){
 				TGChord chord = ((TGChord)e.widget.getData()).clone(getSongManager().getFactory());
-				insertChord(chord, track, measure, beat);
+				insertChord(chord, track, measure, beat, caret.getVoice());
 			}
 			//sino muestro el editor de acordes
 			else{
@@ -53,7 +54,7 @@ public class InsertChordAction extends Action {
 				
 				int result =dialog.open(shell, measure,beat, caret.getPosition());
 				if( result == ChordDialog.RESULT_SAVE ){
-					insertChord(dialog.getChord(), track, measure, beat);
+					insertChord(dialog.getChord(), track, measure, beat, caret.getVoice());
 				}
 				else if( result == ChordDialog.RESULT_CLEAN ){
 					removeChord( measure, beat);
@@ -63,15 +64,17 @@ public class InsertChordAction extends Action {
 		return 0;
 	}
 	
-	protected void insertChord(TGChord chord, TGTrackImpl track, TGMeasureImpl measure, TGBeat beat) {
-		if(!beat.isRestBeat() || chord.countNotes() > 0 ) {
+	protected void insertChord(TGChord chord, TGTrackImpl track, TGMeasureImpl measure, TGBeat beat, int voiceIndex) {
+		boolean restBeat = beat.isRestBeat();
+		if(!restBeat || chord.countNotes() > 0 ) {
 			
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			
 			// Add the chord notes to the tablature
 			// Only if this is a "rest" beat
-			if( beat.isRestBeat() ){
+			TGVoice voice = beat.getVoice(voiceIndex);
+			if( restBeat ){
 				
 				Iterator it = track.getStrings().iterator();
 				while (it.hasNext()) {
@@ -85,9 +88,9 @@ public class InsertChordAction extends Action {
 						note.setString(string.getNumber());
 						
 						TGDuration duration = getSongManager().getFactory().newDuration();
-						beat.getDuration().copy(duration);
+						voice.getDuration().copy(duration);
 						
-						getSongManager().getMeasureManager().addNote(beat,note,duration);
+						getSongManager().getMeasureManager().addNote(beat,note,duration,voice.getIndex());
 					}
 				}
 			}

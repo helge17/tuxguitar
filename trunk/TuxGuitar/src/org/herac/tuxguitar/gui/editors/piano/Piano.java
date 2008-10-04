@@ -34,6 +34,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class Piano extends Composite{
 	
@@ -331,21 +332,24 @@ public class Piano extends Composite{
 	
 	private boolean removeNote(int value) {
 		if(this.beat != null){
-			Iterator it = this.beat.getNotes().iterator();
-			while (it.hasNext()) {
-				TGNoteImpl note = (TGNoteImpl) it.next();
-				if (note.getRealValue() == value) {
-					//comienza el undoable
-					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-					
-					TGSongManager manager = TuxGuitar.instance().getSongManager();
-					manager.getMeasureManager().removeNote(note);
-					
-					//termia el undoable
-					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
-					
-					return true;
+			for(int v = 0; v < this.beat.countVoices(); v ++){
+				TGVoice voice = this.beat.getVoice( v );
+				Iterator it = voice.getNotes().iterator();
+				while (it.hasNext()) {
+					TGNoteImpl note = (TGNoteImpl) it.next();
+					if (note.getRealValue() == value) {
+						//comienza el undoable
+						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+						
+						TGSongManager manager = TuxGuitar.instance().getSongManager();
+						manager.getMeasureManager().removeNote(note);
+						
+						//termia el undoable
+						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+						TuxGuitar.instance().getFileHistory().setUnsavedFile();
+						
+						return true;
+					}
 				}
 			}
 		}
@@ -362,12 +366,15 @@ public class Piano extends Composite{
 				boolean emptyString = true;
 				
 				if(this.beat != null){
-					Iterator it = this.beat.getNotes().iterator();
-					while (it.hasNext()) {
-						TGNoteImpl note = (TGNoteImpl) it.next();
-						if (note.getString() == string.getNumber()) {
-							emptyString = false;
-							break;
+					for(int v = 0; v < this.beat.countVoices(); v ++){
+						TGVoice voice = this.beat.getVoice( v );
+						Iterator it = voice.getNotes().iterator();
+						while (it.hasNext()) {
+							TGNoteImpl note = (TGNoteImpl) it.next();
+							if (note.getString() == string.getNumber()) {
+								emptyString = false;
+								break;
+							}
 						}
 					}
 				}
@@ -385,7 +392,7 @@ public class Piano extends Composite{
 					TGDuration duration = manager.getFactory().newDuration();
 					caret.getDuration().copy(duration);
 					
-					manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration);
+					manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration,caret.getVoice());
 					
 					//termia el undoable
 					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
@@ -488,10 +495,13 @@ public class Piano extends Composite{
 				
 				//pinto notas
 				if(Piano.this.beat != null){
-					Iterator it = Piano.this.beat.getNotes().iterator();
-					while(it.hasNext()){
-						TGNoteImpl note = (TGNoteImpl)it.next();
-						paintNote(painter,note.getRealValue());
+					for(int v = 0; v < Piano.this.beat.countVoices(); v ++){
+						TGVoice voice = Piano.this.beat.getVoice( v );
+						Iterator it = voice.getNotes().iterator();
+						while(it.hasNext()){
+							TGNoteImpl note = (TGNoteImpl)it.next();
+							paintNote(painter,note.getRealValue());
+						}
 					}
 				}
 				TuxGuitar.instance().unlock();

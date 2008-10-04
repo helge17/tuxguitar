@@ -1,17 +1,15 @@
 package org.herac.tuxguitar.gui.editors.tab;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.painters.TGNotePainter;
-import org.herac.tuxguitar.gui.editors.tab.painters.TGSilencePainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGBeatImpl extends TGBeat{
 	/**
@@ -56,7 +54,7 @@ public class TGBeatImpl extends TGBeat{
 		this.posX = posX;
 	}
 	
-	public int getWidth() {
+	public int getMinimumWidth() {
 		return this.width;
 	}
 	
@@ -115,14 +113,22 @@ public class TGBeatImpl extends TGBeat{
 		this.joinedType = joinedType;
 	}
 	
-	public void setPreviousBeat(TGBeatImpl previous){
+	public TGBeatImpl getPreviousBeat() {
+		return this.previous;
+	}
+
+	public void setPreviousBeat(TGBeatImpl previous) {
 		this.previous = previous;
 	}
-	
-	public void setNextBeat(TGBeatImpl next){
+
+	public TGBeatImpl getNextBeat() {
+		return this.next;
+	}
+
+	public void setNextBeat(TGBeatImpl next) {
 		this.next = next;
 	}
-	
+
 	public TGBeatGroup getBeatGroup() {
 		return this.group;
 	}
@@ -137,6 +143,14 @@ public class TGBeatImpl extends TGBeat{
 	
 	public boolean isPlaying(ViewLayout layout){
 		return (getMeasureImpl().isPlaying(layout) && TuxGuitar.instance().getEditorCache().isPlaying(getMeasure(),this));
+	}
+	
+	public TGVoiceImpl getVoiceImpl(int index){
+		TGVoice voice = super.getVoice(index);
+		if(voice instanceof TGVoiceImpl){
+			return (TGVoiceImpl)voice;
+		}
+		return null;
 	}
 	
 	public void reset(){
@@ -161,12 +175,16 @@ public class TGBeatImpl extends TGBeat{
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			new Thread(new Runnable() {
 				public void run() {
-					TuxGuitar.instance().getPlayer().playBeat(getMeasure().getTrack(),getNotes());
+					List notes = new ArrayList();
+					for( int v = 0; v < countVoices(); v ++){
+						notes.addAll( getVoice(v).getNotes() );
+					}
+					TuxGuitar.instance().getPlayer().playBeat(getMeasure().getTrack(),notes);
 				}
 			}).start();
 		}
 	}
-	
+	/*
 	public void update(ViewLayout layout) {
 		if(!isRestBeat()){
 			this.joinedType = JOINED_TYPE_NONE_RIGHT;
@@ -179,7 +197,7 @@ public class TGBeatImpl extends TGBeat{
 			
 			//trato de unir con el componente anterior
 			if (this.previous != null && !this.previous.isRestBeat()) {
-				if (getMeasureImpl().canJoin(layout.getSongManager(),this, this.previous)) {
+				if (getMeasureImpl().canJoin(layout.getSongManager(),this.getVoiceImpl(0), this.previous.getVoiceImpl(0))) {
 					withPrev = true;
 					if (this.previous.getDuration().getValue() >= getDuration().getValue()) {
 						this.setJoin1(this.previous);
@@ -195,7 +213,7 @@ public class TGBeatImpl extends TGBeat{
 			
 			//trato de unir con el componente que le sigue
 			if (this.next != null && !this.next.isRestBeat() ) {
-				if (getMeasureImpl().canJoin(layout.getSongManager(),this, this.next)) {
+				if (getMeasureImpl().canJoin(layout.getSongManager(),this.getVoiceImpl(0), this.next.getVoiceImpl(0))) {
 					if (this.next.getDuration().getValue() >= getDuration().getValue()) {
 						this.setJoin2(this.next);
 						if (this.previous == null || this.previous.isRestBeat() || this.previous.getDuration().getValue() < getDuration().getValue()) {
@@ -215,13 +233,26 @@ public class TGBeatImpl extends TGBeat{
 				this.joinedType = JOINED_TYPE_NONE_LEFT;
 			}
 		}
-	}
+	}*/
 	/*
 	public void paint(ViewLayout layout,TGPainter painter, int fromX, int fromY) {
 		paint(layout, painter, fromX, fromY, false);
 	}*/
 	
 	public void paint(ViewLayout layout,TGPainter painter, int fromX, int fromY/*,boolean playMode*/) {
+		if(!layout.isPlayModeEnabled() && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 ){
+			paintExtraLines(painter, layout,fromX, fromY);
+		}
+		for(int v = 0; v < TGBeat.MAX_VOICES; v ++){
+			getVoiceImpl(v).paint(layout, painter, fromX, fromY);
+		}
+		if(!layout.isPlayModeEnabled()){
+			if(isChordBeat()){
+				TGChordImpl chord = (TGChordImpl)getChord();
+				chord.paint(layout,painter,fromX,fromY);
+			}
+		}
+		/*
 		if(!layout.isPlayModeEnabled() && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 ){
 			paintExtraLines(painter, layout,fromX, fromY);
 		}
@@ -244,8 +275,9 @@ public class TGBeatImpl extends TGBeat{
 				}
 			}
 		}
+		*/
 	}
-	
+	/*
 	//----silence
 	public void paintSilence(ViewLayout layout,TGPainter painter, int fromX, int fromY) {
 		int style = layout.getStyle();
@@ -325,7 +357,7 @@ public class TGBeatImpl extends TGBeat{
 			}
 		}
 	}
-	
+	*//*
 	public void setStyle(ViewLayout layout, TGPainter painter, boolean playMode){
 		if((layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 ){
 			layout.setScoreSilenceStyle(painter, playMode);
@@ -333,7 +365,7 @@ public class TGBeatImpl extends TGBeat{
 			layout.setTabSilenceStyle(painter, playMode);
 		}
 	}
-	
+	*/
 	public void paintExtraLines(TGPainter painter,ViewLayout layout,int fromX, int fromY){
 		if(!isRestBeat()){
 			int scoreY = (fromY + getMeasureImpl().getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));
@@ -368,7 +400,7 @@ public class TGBeatImpl extends TGBeat{
 			}
 		}
 	}
-	
+	/*
 	public void paintBeat(ViewLayout layout,TGPainter painter, int fromX, int fromY){
 		if(!isRestBeat() ){
 			int style = layout.getStyle();
@@ -555,7 +587,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 		painter.closePath();
 	}
-	
+	*/
 	public int getPaintPosition(int index){
 		return getMeasureImpl().getTs().getPosition(index);
 	}

@@ -9,6 +9,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGFactoryImpl extends TGFactory{
 	
@@ -34,6 +35,10 @@ public class TGFactoryImpl extends TGFactory{
 	
 	public TGBeat newBeat(){
 		return new TGBeatImpl(this);
+	}
+	
+	public TGVoice newVoice(int index){
+		return new TGVoiceImpl(this, index);
 	}
 	
 	public TGLyric newLyric(){
