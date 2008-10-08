@@ -60,12 +60,14 @@ public class MidiSequencerImpl implements MidiSequencer{
 		return this.running;
 	}
 	
-	public synchronized void setRunning(boolean running) {
+	public synchronized void setRunning(boolean running) throws MidiPlayerException {
 		this.running = running;
 		if(this.running){
 			this.setTempo(120);
 			this.setTickPosition( this.getTickPosition() );
 			new MidiTimer(this).start();
+		}else{
+			this.process();
 		}
 	}
 	
@@ -130,7 +132,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 		}
 	}
 	
-	public synchronized MidiSequenceHandler createSequence(int tracks){
+	public synchronized MidiSequenceHandler createSequence(int tracks) throws MidiPlayerException{
 		return new MidiSequenceHandlerImpl(this,tracks);
 	}
 	
