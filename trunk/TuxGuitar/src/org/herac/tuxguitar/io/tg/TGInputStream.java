@@ -305,9 +305,14 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		readVoices(header, beat, data);
 		
-		//leo los componentes
-		if(((header & BEAT_HAS_COMPONENTS) != 0)){
-			readBeatComponents(beat);
+		//leo el acorde
+		if(((header & BEAT_HAS_CHORD) != 0)){
+			readChord(beat);
+		}
+		
+		//leo el texto
+		if(((header & BEAT_HAS_TEXT) != 0)){
+			readText(beat);
 		}
 		
 		long minimumLength = -1;
@@ -326,33 +331,37 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		data.setStart(data.getStart() + minimumLength);
 	}
 	
-	private void readBeatComponents(TGBeat beat){
-		int header = readHeader();
-		
-		//leo el acorde
-		if(((header & BEAT_COMPONENT_CHORD) != 0)){
-			readChord(beat);
-		}
-		
-		//leo el texto
-		if(((header & BEAT_COMPONENT_TEXT) != 0)){
-			readText(beat);
-		}
-	}
-	
 	private void readVoices(int header, TGBeat beat, TGBeatData data){
 		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
-			int shift = ((i * 3 ) + 1);
+			int shift = ((i * 2 ) + 1);
 			
-			//leo la duracion
-			if((((header >> shift ) & BEAT_VOICE_NEXT_DURATION) != 0)){
-				readDuration(data.getVoice(i).getDuration());
-			}
+			beat.getVoice(i).setEmpty(true);
 			
-			//leo las notas
-			if((((header >> shift ) & BEAT_VOICE_HAS_NOTES) != 0)){
-				readNotes(beat.getVoice(i), data);
-			}else if((((header >> shift ) & BEAT_VOICE_HAS_SILENCE) != 0)){
+			if((((header >> shift ) & BEAT_HAS_VOICE) != 0)){
+				if((((header >> shift ) & BEAT_HAS_VOICE_CHANGES) != 0)){
+					data.getVoice(i).setFlags( readHeader() );
+				}
+				
+				int flags = data.getVoice(i).getFlags();
+				
+				//leo la duracion
+				if(((flags & VOICE_NEXT_DURATION) != 0)){
+					readDuration(data.getVoice(i).getDuration());
+				}
+				
+				//leo las notas
+				if(((flags & VOICE_HAS_NOTES) != 0)){
+					readNotes(beat.getVoice(i), data);
+				}
+				
+				//leo la direccion
+				if(((flags & VOICE_DIRECTION_UP) != 0)){
+					beat.getVoice(i).setDirection( TGVoice.DIRECTION_UP );
+				}
+				else if(((flags & VOICE_DIRECTION_DOWN) != 0)){
+					beat.getVoice(i).setDirection( TGVoice.DIRECTION_DOWN );
+				}
+				
 				beat.getVoice(i).setEmpty(false);
 			}
 		}
