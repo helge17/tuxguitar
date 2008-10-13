@@ -18,10 +18,15 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  */
 public abstract class TGVoice {
 	
+	public static final int DIRECTION_NONE = 0;
+	public static final int DIRECTION_UP = 1;
+	public static final int DIRECTION_DOWN = 2;
+	
 	private TGBeat beat;
 	private TGDuration duration;
 	private List notes;
 	private int index;
+	private int direction;
 	private boolean empty;
 	
 	public TGVoice(TGFactory factory, int index) {
@@ -29,6 +34,7 @@ public abstract class TGVoice {
 		this.notes = new ArrayList();
 		this.index = index;
 		this.empty = true;
+		this.direction = DIRECTION_NONE;
 	}
 	
 	public int getIndex() {
@@ -45,6 +51,14 @@ public abstract class TGVoice {
 	
 	public void setEmpty(boolean empty) {
 		this.empty = empty;
+	}
+	
+	public int getDirection() {
+		return this.direction;
+	}
+	
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 	
 	public TGDuration getDuration() {
@@ -100,6 +114,7 @@ public abstract class TGVoice {
 	public TGVoice clone(TGFactory factory){
 		TGVoice voice = factory.newVoice(getIndex());
 		voice.setEmpty(isEmpty());
+		voice.setDirection( getDirection() );
 		getDuration().copy(voice.getDuration());
 		for(int i = 0;i < countNotes();i++){
 			TGNote note = (TGNote)this.notes.get(i);

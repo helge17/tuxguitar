@@ -1,6 +1,10 @@
 package org.herac.tuxguitar.gui.editors.tab;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGBeatGroup {
 	private static final int SCORE_MIDDLE_KEYS[] = new int[]{55,40,40,50};
@@ -16,6 +20,7 @@ public class TGBeatGroup {
 	
 	private int voice;
 	private int direction;
+	private List voices;
 	private TGNoteImpl firstMinNote;
 	private TGNoteImpl firstMaxNote;
 	private TGNoteImpl lastMinNote;
@@ -25,6 +30,7 @@ public class TGBeatGroup {
 	
 	public TGBeatGroup(int voice){
 		this.voice = voice;
+		this.voices = new ArrayList();
 		this.direction = DIRECTION_NOT_SETTED;
 		this.firstMinNote = null;
 		this.firstMaxNote = null;
@@ -34,7 +40,21 @@ public class TGBeatGroup {
 		this.minNote = null;
 	}
 	
-	public void check(TGNoteImpl note){
+	public void check(TGVoiceImpl voice){
+		this.check(voice.getMaxNote());
+		this.check(voice.getMinNote());
+		this.voices.add( voice );
+		if( voice.getDirection() != TGVoice.DIRECTION_NONE ){
+			if( voice.getDirection() == TGVoice.DIRECTION_UP ){
+				this.direction = DIRECTION_UP;
+			}
+			else if( voice.getDirection() == TGVoice.DIRECTION_DOWN ){
+				this.direction = DIRECTION_DOWN;
+			}
+		}
+	}
+	
+	private void check(TGNoteImpl note){
 		int value = note.getRealValue();
 		
 		//FIRST MIN NOTE
@@ -95,6 +115,10 @@ public class TGBeatGroup {
 				}
 			}
 		}
+	}
+	
+	public List getVoices(){
+		return this.voices;
 	}
 	
 	public int getY1(ViewLayout layout,TGNoteImpl note,int key,int clef){
