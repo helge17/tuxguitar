@@ -291,8 +291,7 @@ public class TGMeasureImpl extends TGMeasure{
 							groups[v] = new TGBeatGroup(v);
 							this.voiceGroups[v].add(groups[v]);
 						}
-						groups[v].check(voice.getMaxNote());
-						groups[v].check(voice.getMinNote());
+						groups[v].check(voice);
 					}else{
 						for( int v2 = 0; v2 < TGBeat.MAX_VOICES; v2 ++){
 							if(v2 != voice.getIndex()){

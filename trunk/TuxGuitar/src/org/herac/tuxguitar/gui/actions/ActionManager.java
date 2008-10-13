@@ -109,6 +109,9 @@ import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.InsertNoteAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveNoteAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveVoiceAction;
+import org.herac.tuxguitar.gui.actions.note.SetVoiceAutoAction;
+import org.herac.tuxguitar.gui.actions.note.SetVoiceDownAction;
+import org.herac.tuxguitar.gui.actions.note.SetVoiceUpAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteDownAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteUpAction;
 import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
@@ -280,6 +283,9 @@ public class ActionManager {
 		addAction(new ChangePoppingAction());
 		addAction(new ChangeTremoloBarAction());
 		addAction(new ChangeFadeInAction());
+		addAction(new SetVoiceAutoAction());
+		addAction(new SetVoiceUpAction());
+		addAction(new SetVoiceDownAction());
 		
 		//marker actions
 		addAction(new AddMarkerAction());

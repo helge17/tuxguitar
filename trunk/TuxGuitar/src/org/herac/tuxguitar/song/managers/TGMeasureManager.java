@@ -1589,6 +1589,10 @@ public class TGMeasureManager {
 		}
 	}
 	
+	public void changeVoiceDirection( TGVoice voice , int direction){
+		voice.setDirection( direction );
+	}
+	
 	public void changeDuration(TGMeasure measure,TGBeat beat,TGDuration duration,int voice, boolean tryMove){
 		//obtengo la duracion vieja
 		TGDuration oldDuration = beat.getVoice(voice).getDuration().clone(getSongManager().getFactory());
