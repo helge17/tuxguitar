@@ -336,11 +336,11 @@ public class GP5InputStream extends GTPInputStream {
 			readByte();
 			readByte();
 		}
-		if ((flags & 0x10) == 0) {
-			skip(1);	
-		}
 		if ((flags & 0x01) != 0) {
 			skip(4);
+		}
+		if ((flags & 0x10) == 0) {
+			skip(1);
 		}
 		int tripletFeel = readByte();
 		if(tripletFeel == 1){
