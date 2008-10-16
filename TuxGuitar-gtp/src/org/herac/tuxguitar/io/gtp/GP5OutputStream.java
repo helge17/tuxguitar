@@ -187,12 +187,18 @@ public class GP5OutputStream extends GTPOutputStream {
 		if(measure.getNumber() == 1){
 			flags |= 0x40;
 		}
+		if (measure.getNumber() == 1 || !measure.getTimeSignature().isEqual(timeSignature)) {
+			flags |= 0x01;
+			flags |= 0x02;
+		}
+		/*
 		if (measure.getNumber() == 1 || measure.getTimeSignature().getNumerator() != timeSignature.getNumerator()) {
 			flags |= 0x01;
 		}
 		if (measure.getNumber() == 1 || measure.getTimeSignature().getDenominator().getValue() != timeSignature.getDenominator().getValue()) {
 			flags |= 0x02;
 		}
+		*/
 		if (measure.isRepeatOpen()) {
 			flags |= 0x04;
 		}
@@ -225,11 +231,11 @@ public class GP5OutputStream extends GTPOutputStream {
 		if ((flags & 0x40) != 0) {
 			skipBytes(2);
 		}
+		if ((flags & 0x01) != 0) {
+			writeBytes( makeBeamEighthNoteBytes( measure.getTimeSignature() ));
+		}
 		if((flags & 0x10) == 0){
 			writeByte((byte)0);
-		}
-		if ((flags & 0x01) != 0) {
-			skipBytes(4);
 		}
 		if(measure.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE){
 			writeByte((byte)0);
@@ -725,6 +731,23 @@ public class GP5OutputStream extends GTPOutputStream {
 		}
 		
 		return channels;
+	}
+	
+	private byte[] makeBeamEighthNoteBytes(TGTimeSignature ts){
+		byte[] bytes = new byte[]{0,0,0,0};
+		if( ts.getDenominator().getValue() <= TGDuration.EIGHTH ){
+			int eighthsInDenominator = (TGDuration.EIGHTH / ts.getDenominator().getValue());
+			int total = (eighthsInDenominator * ts.getNumerator());
+			int byteValue = ( total / 4 );
+			int missingValue = ( total - (4 * byteValue) );
+			for( int i = 0 ; i < bytes.length; i ++ ){
+				bytes[i] = (byte)byteValue;
+			}
+			if( missingValue > 0 ){
+				bytes[0] += missingValue;
+			}
+		}
+		return bytes;
 	}
 	
 	private byte toChannelByte(short s){
