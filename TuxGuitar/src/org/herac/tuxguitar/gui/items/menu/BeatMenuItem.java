@@ -16,6 +16,9 @@ import org.herac.tuxguitar.gui.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
+import org.herac.tuxguitar.gui.actions.note.SetVoiceAutoAction;
+import org.herac.tuxguitar.gui.actions.note.SetVoiceDownAction;
+import org.herac.tuxguitar.gui.actions.note.SetVoiceUpAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteDownAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteUpAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
@@ -34,6 +37,9 @@ public class BeatMenuItem extends MenuItems{
 	private MenuItem tiedNote;
 	private MenuItem cleanBeat;
 	private MenuItem insertText;
+	private MenuItem voiceAuto;
+	private MenuItem voiceUp;
+	private MenuItem voiceDown;
 	private MenuItem shiftUp;
 	private MenuItem shiftDown;
 	private MenuItem semitoneUp;
@@ -82,6 +88,21 @@ public class BeatMenuItem extends MenuItems{
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
+		//--Semitone Down
+		this.voiceAuto = new MenuItem(this.menu, SWT.PUSH);
+		this.voiceAuto.addSelectionListener(TuxGuitar.instance().getAction(SetVoiceAutoAction.NAME));
+		
+		//--Semitone Up
+		this.voiceUp = new MenuItem(this.menu, SWT.PUSH);
+		this.voiceUp.addSelectionListener(TuxGuitar.instance().getAction(SetVoiceUpAction.NAME));
+		
+		//--Semitone Down
+		this.voiceDown = new MenuItem(this.menu, SWT.PUSH);
+		this.voiceDown.addSelectionListener(TuxGuitar.instance().getAction(SetVoiceDownAction.NAME));
+		
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
 		//--Semitone Up
 		this.semitoneUp = new MenuItem(this.menu, SWT.PUSH);
 		this.semitoneUp.addSelectionListener(TuxGuitar.instance().getAction(IncrementNoteSemitoneAction.NAME));
@@ -112,6 +133,9 @@ public class BeatMenuItem extends MenuItems{
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
+		this.voiceAuto.setEnabled(!running);
+		this.voiceUp.setEnabled(!running);
+		this.voiceDown.setEnabled(!running);
 		this.semitoneUp.setEnabled(!running && note != null);
 		this.semitoneDown.setEnabled(!running && note != null);
 		this.shiftUp.setEnabled(!running && note != null);
@@ -124,10 +148,12 @@ public class BeatMenuItem extends MenuItems{
 	}
 	
 	public void loadProperties(){
-		
 		setMenuItemTextAndAccelerator(this.noteMenuItem, "beat", null);
 		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", CleanBeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", ChangeTiedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.voiceAuto, "note.voice-auto", SetVoiceAutoAction.NAME);
+		setMenuItemTextAndAccelerator(this.voiceUp, "note.voice-up", SetVoiceUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.voiceDown, "note.voice-down", SetVoiceDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneUp, "note.semitone-up", IncrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneDown, "note.semitone-down", DecrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.shiftUp, "note.shift-up", ShiftNoteUpAction.NAME);
