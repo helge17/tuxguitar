@@ -469,21 +469,25 @@ public class TGVoiceImpl extends TGVoice{
 	
 	public void paintTablatureBeat(ViewLayout layout,TGPainter painter, int fromX, int fromY, int spacing){
 		if(!isRestVoice() ){
-			int xMove = 2;
+			float scale = layout.getScale();
+			float xMove = (2 * scale);
+			float x = ( fromX + getPosX() + spacing + xMove );
+			float y1 = 0;
+			float y2 = 0;
+			float verticalLineWidth = scale;
+			float horizontalLineWidth = (2 * scale);
 			int stringSpacing = layout.getStringSpacing();
-			int x = ( fromX + getPosX() + spacing + xMove );
-			int y1 = 0;
-			int y2 = 0;
 			if( getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ){
 				y1 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
 				y2 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
 			}else{
-				y1 = (fromY - (stringSpacing / 2));
-				y2 = (fromY - ((stringSpacing / 2) * 5));				
+				y1 = (fromY - (stringSpacing / 2) - horizontalLineWidth);
+				y2 = (fromY - ((stringSpacing / 2) * 5));
 			}
 			if (getDuration().getValue() >= TGDuration.QUARTER) {
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath();
+				painter.setLineWidth( (int)verticalLineWidth );
 				/*
 				boolean painting = false;
 				boolean[] usedStrings = getUsedStrings();
@@ -503,14 +507,14 @@ public class TGVoiceImpl extends TGVoice{
 				painter.lineTo(x, y2);
 				painter.closePath();
 				if (getDuration().getValue() >= TGDuration.EIGHTH) {
-					int x1 = 0;
-					int x2 = 0;
+					float x1 = 0;
+					float x2 = 0;
 					int joinedType = getJoinedType();
 					if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
 						x1 = getPosX() + xMove + spacing;
-						x2 = getPosX() + xMove + spacing + 6;
+						x2 = getPosX() + xMove + spacing + (6 * scale);
 					}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
-						x1 = getPosX() + xMove + spacing - 5;
+						x1 = getPosX() + xMove + spacing - (5 * scale);
 						x2 = getPosX() + xMove + spacing;
 					}else{
 						x1 = getJoin1().getPosX() + xMove + getJoin1().getBeatImpl().getSpacing();
@@ -518,13 +522,13 @@ public class TGVoiceImpl extends TGVoice{
 					}
 					int index = ( getDuration().getIndex() - 2);
 					if(index > 0){
-						int scale = (layout.getStringSpacing() / 2);
+						int height = (layout.getStringSpacing() / 2);
 						int direction = (getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
-						painter.setLineWidth(2);
+						painter.setLineWidth( (int)horizontalLineWidth );
 						painter.initPath();
 						for(int i = index; i > 0 ;i --){
-							painter.moveTo(fromX + x1, y2 + ((scale - (i * scale)) * direction));
-							painter.lineTo(fromX + x2, y2 + ((scale - (i * scale)) * direction));
+							painter.moveTo(fromX + x1, y2 + ((height - (i * height)) * direction));
+							painter.lineTo(fromX + x2, y2 + ((height - (i * height)) * direction));
 						}
 						painter.closePath();
 						painter.setLineWidth(1);
@@ -533,6 +537,7 @@ public class TGVoiceImpl extends TGVoice{
 			} else if (getDuration().getValue() == TGDuration.HALF) {
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath();
+				painter.setLineWidth( (int)verticalLineWidth );
 				painter.moveTo(x, (y1 + ((y2 - y1) / 2)));
 				painter.lineTo(x, y2);
 				painter.closePath();
@@ -542,7 +547,7 @@ public class TGVoiceImpl extends TGVoice{
 			if (getDuration().isDotted() || getDuration().isDoubleDotted()) {
 				int joinedType = getJoinedType();
 				
-				float scale = (stringSpacing / 10.0f);
+				//float scale = (stringSpacing / 10.0f);
 				float posX = ((getDuration().getValue() > TGDuration.WHOLE)?((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT || joinedType == TGVoiceImpl.JOINED_TYPE_RIGHT)?(x+ (4.0f * scale)):(x- (5.0f * scale))):x);
 				float posY = (y2 - ((getDuration().getValue() >= TGDuration.EIGHTH)? ((stringSpacing / 2) * (getDuration().getIndex() - 2)):(1.0f * scale)));
 				paintDot(layout, painter, posX, posY,scale);
@@ -551,7 +556,7 @@ public class TGVoiceImpl extends TGVoice{
 			//-------------tresillo--------------------------------------
 			if (!getDuration().getTupleto().isEqual(TGTupleto.NORMAL)) {
 				layout.setTupletoStyle(painter);
-				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()), x - 3,((fromY - getPaintPosition(TrackSpacing.POSITION_TABLATURE)) + getPaintPosition(TrackSpacing.POSITION_TUPLETO)));
+				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()), (int)(x - 3),((fromY - getPaintPosition(TrackSpacing.POSITION_TABLATURE)) + getPaintPosition(TrackSpacing.POSITION_TUPLETO)));
 			}
 		}
 	}
