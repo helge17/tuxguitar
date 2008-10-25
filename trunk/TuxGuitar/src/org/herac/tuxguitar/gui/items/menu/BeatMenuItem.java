@@ -16,6 +16,7 @@ import org.herac.tuxguitar.gui.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
+import org.herac.tuxguitar.gui.actions.note.RemoveVoiceAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceAutoAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceDownAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceUpAction;
@@ -36,6 +37,7 @@ public class BeatMenuItem extends MenuItems{
 	private Menu menu;
 	private MenuItem tiedNote;
 	private MenuItem cleanBeat;
+	private MenuItem removeVoice;
 	private MenuItem insertText;
 	private MenuItem voiceAuto;
 	private MenuItem voiceUp;
@@ -59,9 +61,13 @@ public class BeatMenuItem extends MenuItems{
 		this.tiedNote = new MenuItem(this.menu, SWT.PUSH);
 		this.tiedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeTiedNoteAction.NAME));
 		
-		//--Tied Note
+		//--Clean Beat
 		this.cleanBeat = new MenuItem(this.menu, SWT.PUSH);
 		this.cleanBeat.addSelectionListener(TuxGuitar.instance().getAction(CleanBeatAction.NAME));
+		
+		//--Remove Voice
+		this.removeVoice = new MenuItem(this.menu, SWT.PUSH);
+		this.removeVoice.addSelectionListener(TuxGuitar.instance().getAction(RemoveVoiceAction.NAME));
 		
 		//--Duration--
 		this.durationMenuItem = new DurationMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
@@ -133,6 +139,7 @@ public class BeatMenuItem extends MenuItems{
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
+		this.removeVoice.setEnabled(!running);
 		this.voiceAuto.setEnabled(!running);
 		this.voiceUp.setEnabled(!running);
 		this.voiceDown.setEnabled(!running);
@@ -150,6 +157,7 @@ public class BeatMenuItem extends MenuItems{
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.noteMenuItem, "beat", null);
 		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", CleanBeatAction.NAME);
+		setMenuItemTextAndAccelerator(this.removeVoice, "beat.voice.remove", RemoveVoiceAction.NAME);
 		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", ChangeTiedNoteAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceAuto, "note.voice-auto", SetVoiceAutoAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceUp, "note.voice-up", SetVoiceUpAction.NAME);
