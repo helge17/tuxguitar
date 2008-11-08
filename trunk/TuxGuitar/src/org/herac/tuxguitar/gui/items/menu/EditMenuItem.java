@@ -36,7 +36,6 @@ public class EditMenuItem extends MenuItems{
 	private MenuItem modeSelection;
 	private MenuItem modeEdition;
 	private MenuItem notNaturalKey;
-	
 	private MenuItem voice1;
 	private MenuItem voice2;
 	
