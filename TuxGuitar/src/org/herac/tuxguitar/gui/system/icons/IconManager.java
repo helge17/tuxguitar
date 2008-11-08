@@ -19,6 +19,8 @@ public class IconManager {
 	private Image[] durations;
 	private Image editUndo;
 	private Image editRedo;
+	private Image editVoice1;
+	private Image editVoice2;
 	private Image editModeSelection;
 	private Image editModeEdition;
 	private Image editModeEditionNotNatural;
@@ -189,6 +191,8 @@ public class IconManager {
 		this.filePrintPreview = loadIcon("print-preview.png");
 		this.editUndo = loadIcon("edit_undo.png");
 		this.editRedo = loadIcon("edit_redo.png");
+		this.editVoice1 = loadIcon("edit_voice_1.png");
+		this.editVoice2 = loadIcon("edit_voice_2.png");
 		this.editModeSelection = loadIcon("edit_mode_selection.png");
 		this.editModeEdition = loadIcon("edit_mode_edition.png");
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
@@ -451,6 +455,14 @@ public class IconManager {
 	
 	public Image getEditUndo() {
 		return this.editUndo;
+	}
+	
+	public Image getEditVoice1() {
+		return this.editVoice1;
+	}
+	
+	public Image getEditVoice2() {
+		return this.editVoice2;
 	}
 	
 	public Image getEffectAccentuated() {
