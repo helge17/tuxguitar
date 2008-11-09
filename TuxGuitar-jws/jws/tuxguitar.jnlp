@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://200.85.107.106/TuxGuitar-jws/jws" href="tuxguitar.jnlp">
+	<information>
+  		<title>TuxGuitar</title>
+  		<vendor>Herac Modern Solutions 2</vendor>
+  		<homepage href="http://www.herac.com.ar" />
+		<offline-allowed/>
+	</information>
+
+	<security>
+		<all-permissions />
+	</security>
+	
+	<resources>
+		<j2se version="1.5+" />
+		<jar href="files/tuxguitar-jws.jar" />
+		<jar href="files/tuxguitar-share.jar" />
+	</resources>
+	
+	<resources os="Linux">
+		<jar href="files/swt-linux-x86.jar" />
+		<jar href="files/tuxguitar-alsa.jar" />
+		<nativelib href="files/tuxguitar-alsa-jni.jar" />
+	</resources>
+	
+	<resources os="Windows">
+		<jar href="files/swt-win-x86.jar" />
+	</resources>
+	
+	<application-desc main-class="org.herac.tuxguitar.jws.TuxGuitarJWS" />
+</jnlp>
