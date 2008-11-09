@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://200.85.107.106/TuxGuitar-jws/jws" href="tuxguitar.jnlp">
+<jnlp spec="1.0+" href="tuxguitar.jnlp">
 	<information>
   		<title>TuxGuitar</title>
   		<vendor>Herac Modern Solutions 2</vendor>
