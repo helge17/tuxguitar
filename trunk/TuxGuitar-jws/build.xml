@@ -56,7 +56,6 @@
 	
 	<target name="clean">
 		<delete quiet="true" dir="${build.dir}" />
-		<delete quiet="true" file="${build.jar}" />
 	</target>
 	
 	<target name="keystore" depends="build">
@@ -80,7 +79,9 @@
 	    <jar destfile="share.jar">
     	    <fileset dir="${path.tuxguitar.share}" includes="**/*"/>
 	    </jar>
-	</target>	
+	</target>
 	
-	<target name="all" depends="signjars" />
+	<target name="all" depends="signjars" >
+		<antcall target="clean" />
+	</target>
 </project>
