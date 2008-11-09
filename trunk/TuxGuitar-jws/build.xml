@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar-jws" basedir="." default="all">
+    <description>
+        TuxGuitar JWS
+    </description>
+		
+	<property file="build.properties" />
+	
+	<property name="src.dir" value="./src:${tuxguitar.path}:${tuxguitar-ascii.path}:${tuxguitar-compat.path}:${tuxguitar-converter.path}:${tuxguitar-gtp.path}:${tuxguitar-jsa.path}:${tuxguitar-lilypond.path}:${tuxguitar-midi.path}:${tuxguitar-musicxml.path}:${tuxguitar-ptb.path}:${tuxguitar-tef.path}" />
+	
+	<property name="build.dir" value="build" />	
+	<property name="build.jar" value="./jws/files/tuxguitar-jws.jar" />
+	
+	<property name="plugin.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
+	
+	<path id="class.path">
+		<pathelement location="${path.swt}"/>
+    </path >
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="build" depends="init">		
+        <echo>+------------------------------------------------------------------+</echo>
+        <echo>|          B U I L D I N G   T U X G U I T A R  -  J W S           |</echo>
+        <echo>+------------------------------------------------------------------+</echo>	
+		
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="false" >
+	    	<classpath refid="class.path"/>
+	    	<include name="**/*.java"/>
+	    </javac>
+		
+		<mkdir dir="${build.dir}/META-INF/services" />
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="false">#Default Plugins${line.separator}</echo>
+		
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-ascii.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-compat.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-converter.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-gtp.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-jsa.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-lilypond.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-midi.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-musicxml.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-ptb.class}${line.separator}</echo>
+		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-tef.class}${line.separator}</echo>
+		
+        <echo>+------------------------------------------------------------------+</echo>
+        <echo>|        P A C K A G I N G   T U X G U I T A R  -  J W S           |</echo>
+        <echo>+------------------------------------------------------------------+</echo>
+		
+		<jar destfile="${build.jar}" basedir="${build.dir}" />
+		
+	</target>
+	
+	<target name="clean">
+		<delete quiet="true" dir="${build.dir}" />
+		<delete quiet="true" file="${build.jar}" />
+	</target>
+	
+	<target name="keystore" depends="build">
+		<genkey alias="tuxguitar" storepass="tuxguitar" keystore="${build.dir}/tuxguitar-keystore" >
+			<dname>
+				<param name="CN" value="TuxGuitar"/>
+				<param name="OU" value="TuxGuitar"/>
+				<param name="O"  value="Herac"/>
+				<param name="C"  value="AR"/>
+			</dname>
+		</genkey>
+	</target>
+	
+	<target name="signjars" depends="keystore">
+		<signjar alias="tuxguitar" keystore="${build.dir}/tuxguitar-keystore" storepass="tuxguitar" keypass="tuxguitar">
+			<fileset dir="./jws/files" includes="*.jar" />
+		</signjar>
+	</target>
+	
+	<target name="share">
+	    <jar destfile="share.jar">
+    	    <fileset dir="${path.tuxguitar.share}" includes="**/*"/>
+	    </jar>
+	</target>	
+	
+	<target name="all" depends="signjars" />
+</project>
