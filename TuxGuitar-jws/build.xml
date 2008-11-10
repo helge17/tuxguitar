@@ -7,7 +7,7 @@
 		
 	<property file="build.properties" />
 	
-	<property name="src.dir" value="./src:${tuxguitar.path}:${tuxguitar-ascii.path}:${tuxguitar-compat.path}:${tuxguitar-converter.path}:${tuxguitar-gtp.path}:${tuxguitar-jsa.path}:${tuxguitar-lilypond.path}:${tuxguitar-midi.path}:${tuxguitar-musicxml.path}:${tuxguitar-ptb.path}:${tuxguitar-tef.path}" />
+	<property name="src.dir" value="./src" />
 	
 	<property name="build.dir" value="build" />	
 	<property name="build.jar" value="./jws/files/tuxguitar-jws.jar" />
@@ -15,36 +15,59 @@
 	<property name="plugin.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
 	
 	<path id="class.path">
+		<pathelement location="${build.dir}"/>
 		<pathelement location="${path.swt}"/>
+		<pathelement location="/usr/share/ant/lib/ant-contrib.jar"/>
     </path >
-
+	
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath refid="class.path"/>
+	</taskdef>
+	
 	<target name="init" depends="clean">
 		<mkdir dir="${build.dir}" />
 	</target>
 	
 	<target name="build" depends="init">		
+		<echo>+------------------------------------------------------------------+</echo>
+        <echo>|          B U I L D I N G   T U X G U I T A R                     |</echo>
         <echo>+------------------------------------------------------------------+</echo>
-        <echo>|          B U I L D I N G   T U X G U I T A R  -  J W S           |</echo>
-        <echo>+------------------------------------------------------------------+</echo>	
-		
-		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="false" >
+		<javac srcdir="${tuxguitar.path}" destdir="${build.dir}" debug="false" >
 	    	<classpath refid="class.path"/>
 	    	<include name="**/*.java"/>
 	    </javac>
 		
+		<echo>+------------------------------------------------------------------+</echo>
+		<echo>|          B U I L D I N G   T U X G U I T A R  -  J W S           |</echo>
+		<echo>+------------------------------------------------------------------+</echo>
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="false" >
+			<classpath refid="class.path"/>
+			<include name="**/*.java"/>
+		</javac>
+		
+		<echo>+------------------------------------------------------------------+</echo>
+        <echo>|          B U I L D I N G   T U X G U I T A R  -  P L U G I N S   |</echo>
+        <echo>+------------------------------------------------------------------+</echo>
+		<propertyselector property="plugin.sources.list" delimiter="," match="tuxguitar\-.*\.path" select="\0" />
+		<for list="${plugin.sources.list}" param="plugin.sources" >
+		    <sequential>
+			    <propertycopy property="plugin.sources" from="@{plugin.sources}" override="true" />
+				<javac srcdir="${plugin.sources}" destdir="${build.dir}" debug="false" >
+					<classpath refid="class.path"/>
+					<include name="**/*.java"/>
+				</javac>
+		    </sequential>
+		</for>
+		
 		<mkdir dir="${build.dir}/META-INF/services" />
 		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="false">#Default Plugins${line.separator}</echo>
-		
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-ascii.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-compat.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-converter.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-gtp.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-jsa.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-lilypond.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-midi.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-musicxml.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-ptb.class}${line.separator}</echo>
-		<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${tuxguitar-tef.class}${line.separator}</echo>
+		<propertyselector property="plugin.classes.list" delimiter="," match="tuxguitar\-.*\.class" select="\0" />
+		<for list="${plugin.classes.list}" param="plugin.classes" >
+		    <sequential>
+			    <propertycopy property="plugin.classes" from="@{plugin.classes}" override="true" />
+		    	<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${plugin.classes}${line.separator}</echo>
+		    </sequential>
+		</for>
 		
         <echo>+------------------------------------------------------------------+</echo>
         <echo>|        P A C K A G I N G   T U X G U I T A R  -  J W S           |</echo>
@@ -84,4 +107,5 @@
 	<target name="all" depends="signjars" >
 		<antcall target="clean" />
 	</target>
+	
 </project>
