@@ -14,7 +14,6 @@
 	<resources>
 		<j2se version="1.5+" />
 		<jar href="files/tuxguitar-jws.jar" />
-		<jar href="files/tuxguitar-share.jar" />
 	</resources>
 	
 	<resources os="Linux">
@@ -27,5 +26,5 @@
 		<jar href="files/swt-win-x86.jar" />
 	</resources>
 	
-	<application-desc main-class="org.herac.tuxguitar.jws.TuxGuitarJWS" />
+	<application-desc main-class="org.herac.tuxguitar.gui.TGMain" >
 </jnlp>
