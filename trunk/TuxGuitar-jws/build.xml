@@ -38,14 +38,6 @@
 	    </javac>
 		
 		<echo>+------------------------------------------------------------------+</echo>
-		<echo>|          B U I L D I N G   T U X G U I T A R  -  J W S           |</echo>
-		<echo>+------------------------------------------------------------------+</echo>
-		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="false" >
-			<classpath refid="class.path"/>
-			<include name="**/*.java"/>
-		</javac>
-		
-		<echo>+------------------------------------------------------------------+</echo>
         <echo>|          B U I L D I N G   T U X G U I T A R  -  P L U G I N S   |</echo>
         <echo>+------------------------------------------------------------------+</echo>
 		<propertyselector property="plugin.sources.list" delimiter="," match="tuxguitar\-.*\.path" select="\0" />
@@ -68,6 +60,41 @@
 		    	<echo file="${build.dir}/META-INF/services/${plugin.class}" append="true" >${plugin.classes}${line.separator}</echo>
 		    </sequential>
 		</for>
+		
+		<!-- Share Files -->
+		<mkdir dir="${build.dir}/lang" />
+		<copy todir="${build.dir}/lang">
+			<fileset dir="${tuxguitar.share.path}/lang"/>
+		</copy>
+		<touch file="${build.dir}/lang/list.properties"/>
+		<for param="file">
+			<path>
+				<fileset dir="${build.dir}/lang" includes="*.properties" />
+			</path>
+			<sequential>
+				<propertyregex property="filename" input="@{file}" regexp=".*/([^\.]*)" replace="\1" casesensitive="true" override="true"/>
+				<echo file="${build.dir}/lang/list.properties" append="true">${filename}${line.separator}</echo>
+			</sequential>
+		</for>
+		
+		<mkdir dir="${build.dir}/skins" />
+		<copy todir="${build.dir}/skins">
+			<fileset dir="${tuxguitar.share.path}/skins"/>
+		</copy>
+		<touch file="${build.dir}/skins/list.properties"/>
+		<echo file="${build.dir}/skins/list.properties" append="true">Lavender${line.separator}</echo>
+		<echo file="${build.dir}/skins/list.properties" append="true">blue_serious${line.separator}</echo>
+		<echo file="${build.dir}/skins/list.properties" append="true">ersplus${line.separator}</echo>
+		
+		<mkdir dir="${build.dir}/help" />
+		<copy todir="${build.dir}/help">
+			<fileset dir="${tuxguitar.share.path}/help"/>
+		</copy>
+		
+		<mkdir dir="${build.dir}/scales" />
+		<copy todir="${build.dir}/scales">
+			<fileset dir="${tuxguitar.share.path}/scales"/>
+		</copy>
 		
         <echo>+------------------------------------------------------------------+</echo>
         <echo>|        P A C K A G I N G   T U X G U I T A R  -  J W S           |</echo>
