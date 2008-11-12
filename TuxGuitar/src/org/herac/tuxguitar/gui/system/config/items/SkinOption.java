@@ -1,9 +1,6 @@
 package org.herac.tuxguitar.gui.system.config.items;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -90,62 +87,56 @@ public class SkinOption extends Option{
 		new Thread(new Runnable() {
 			public void run() {
 				SkinOption.this.skins = new ArrayList();
-				String skinPath = TGFileUtils.PATH_SKINS;
-				if(skinPath != null){
-					File skinfolder = new File(skinPath);
-					if(skinfolder.exists() && skinfolder.isDirectory()){
-						String[] skinNames = skinfolder.list();
-						for(int i = 0;i < skinNames.length;i++){
-							Properties properties = new Properties();
-							try {
-								File skinInfoFile = new File(skinPath + File.separator + skinNames[i] + File.separator + "skin.properties");
-								if(skinInfoFile.exists()){
-									properties.load(new FileInputStream(skinInfoFile));
-								}
-							}catch (FileNotFoundException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
+				String[] skinNames = TGFileUtils.getFileNames("skins");
+				if( skinNames != null ){
+					for(int i = 0;i < skinNames.length;i++){
+						Properties properties = new Properties();
+						try {
+							InputStream skinInfo = TGFileUtils.getResourceAsStream("skins/" + skinNames[i] + "/skin.properties");
+							if( skinInfo != null ){
+								properties.load( skinInfo );
 							}
-							SkinInfo info = new SkinInfo(skinNames[i]);
-							info.setName(properties.getProperty("name",info.getSkin()));
-							info.setAuthor(properties.getProperty("author","Not available."));
-							info.setVersion(properties.getProperty("version","Not available."));
-							info.setDescription(properties.getProperty("description","Not available."));
-							info.setDate(properties.getProperty("date",null));
-							info.setPreview(properties.getProperty("preview",null));
-							SkinOption.this.skins.add(info);
+						}catch (Throwable throwable) {
+							throwable.printStackTrace();
 						}
-						new SyncThread(new Runnable() {
-							public void run() {
-								if(!isDisposed()){
-									for(int i = 0;i < SkinOption.this.skins.size();i++){
-										SkinInfo info = (SkinInfo)SkinOption.this.skins.get(i);
-										SkinOption.this.combo.add(info.getName());
-										if(info.getSkin().equals(getConfig().getStringConfigValue(TGConfigKeys.SKIN))){
-											SkinOption.this.combo.select(i);
-										}
-									}
-									SkinOption.this.combo.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(SelectionEvent e) {
-											int selection = SkinOption.this.combo.getSelectionIndex();
-											if(selection >= 0 && selection < SkinOption.this.skins.size()){
-												showSkinInfo((SkinInfo)SkinOption.this.skins.get(selection));
-											}
-										}
-									});
-									
+						SkinInfo info = new SkinInfo(skinNames[i]);
+						info.setName(properties.getProperty("name",info.getSkin()));
+						info.setAuthor(properties.getProperty("author","Not available."));
+						info.setVersion(properties.getProperty("version","Not available."));
+						info.setDescription(properties.getProperty("description","Not available."));
+						info.setDate(properties.getProperty("date",null));
+						info.setPreview(properties.getProperty("preview",null));
+						SkinOption.this.skins.add(info);
+					}
+				}
+				new SyncThread(new Runnable() {
+					public void run() {
+						if(!isDisposed()){
+							for(int i = 0;i < SkinOption.this.skins.size();i++){
+								SkinInfo info = (SkinInfo)SkinOption.this.skins.get(i);
+								SkinOption.this.combo.add(info.getName());
+								if(info.getSkin().equals(getConfig().getStringConfigValue(TGConfigKeys.SKIN))){
+									SkinOption.this.combo.select(i);
+								}
+							}
+							SkinOption.this.combo.addSelectionListener(new SelectionAdapter() {
+								public void widgetSelected(SelectionEvent e) {
 									int selection = SkinOption.this.combo.getSelectionIndex();
 									if(selection >= 0 && selection < SkinOption.this.skins.size()){
 										showSkinInfo((SkinInfo)SkinOption.this.skins.get(selection));
 									}
-									SkinOption.this.initialized = true;
-									SkinOption.this.pack();
 								}
+							});
+							
+							int selection = SkinOption.this.combo.getSelectionIndex();
+							if(selection >= 0 && selection < SkinOption.this.skins.size()){
+								showSkinInfo((SkinInfo)SkinOption.this.skins.get(selection));
 							}
-						}).start();
+							SkinOption.this.initialized = true;
+							SkinOption.this.pack();
+						}
 					}
-				}
+				}).start();
 			}
 		}).start();
 	}

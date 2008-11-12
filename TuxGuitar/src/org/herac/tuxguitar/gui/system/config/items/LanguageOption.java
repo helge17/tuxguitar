@@ -63,19 +63,21 @@ public class LanguageOption extends Option{
 	
 	protected List getLanguageItems(String[] languages){
 		List list = new ArrayList();
-		for(int i = 0;i < languages.length; i ++){
-			list.add( new LanguageItem(languages[i],TuxGuitar.getProperty("locale." + languages[i] ) ) );
-		}
-		Collections.sort(list, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				if( o1 instanceof LanguageItem && o2 instanceof LanguageItem){
-					LanguageItem l1 = (LanguageItem)o1;
-					LanguageItem l2 = (LanguageItem)o2;
-					return l1.getValue().compareTo( l2.getValue() );
-				}
-				return 0;
+		if( languages != null ){
+			for(int i = 0;i < languages.length; i ++){
+				list.add( new LanguageItem(languages[i],TuxGuitar.getProperty("locale." + languages[i] ) ) );
 			}
-		} );
+			Collections.sort(list, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					if( o1 instanceof LanguageItem && o2 instanceof LanguageItem){
+						LanguageItem l1 = (LanguageItem)o1;
+						LanguageItem l2 = (LanguageItem)o2;
+						return l1.getValue().compareTo( l2.getValue() );
+					}
+					return 0;
+				}
+			} );
+		}
 		return list;
 	}
 	

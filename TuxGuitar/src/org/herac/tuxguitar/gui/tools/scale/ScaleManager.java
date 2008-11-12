@@ -1,13 +1,12 @@
 package org.herac.tuxguitar.gui.tools.scale;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.tools.scale.xml.ScaleReader;
-import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
+import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.models.TGScale;
 
 public class ScaleManager {
@@ -80,13 +79,9 @@ public class ScaleManager {
 	
 	private void loadScales(){
 		try{
-			new ScaleReader().loadScales(this.scales,getScalesFileName());
+			new ScaleReader().loadScales(this.scales, TGFileUtils.getResourceAsStream("scales/scales.xml") );
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} 
-	}
-	
-	private String getScalesFileName(){
-		return TGFileUtils.PATH_SCALES + File.separator + "scales.xml";
 	}
 }

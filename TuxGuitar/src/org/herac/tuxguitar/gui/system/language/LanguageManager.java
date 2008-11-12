@@ -6,8 +6,6 @@
  */
 package org.herac.tuxguitar.gui.system.language;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -138,34 +136,23 @@ public class LanguageManager {
 	 *
 	 */
 	private void loadLanguages(){
-		// we need .properties files only
-		final FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				int prefixIndex = name.indexOf(PREFIX + "_");
-				int extensionIndex = name.indexOf(EXTENSION);
-				return (prefixIndex == 0 && extensionIndex > (PREFIX + "_").length());
-			}
-		};
-		// get the files
-		String langFolderPath = TGFileUtils.PATH_LANGUAGE;
-		if(langFolderPath != null){
-			File langFolder = new File(langFolderPath);
-			if(langFolder.exists() && langFolder.isDirectory()){
-				String[] fileNames = langFolder.list(filter);
-				this.languages = new String[fileNames.length];
-				// now iterate over them
-				for(int i = 0;i < fileNames.length;i++){
-					if (fileNames[i].indexOf("messages_") == 0){
-						//this.languages[i] = fileNames[i].substring(9,11);
-						
-						int prefixIndex = fileNames[i].indexOf(PREFIX + "_");
-						int extensionIndex = fileNames[i].indexOf(EXTENSION);
-						if(prefixIndex == 0 && extensionIndex > (PREFIX + "_").length()){
-							this.languages[i] = fileNames[i].substring( (PREFIX + "_").length() , extensionIndex );
-						}
+		List availableList = new ArrayList();
+		String[] fileNames = TGFileUtils.getFileNames("lang");
+		if( fileNames != null ){
+			// now iterate over them
+			for(int i = 0;i < fileNames.length;i++){
+				if (fileNames[i].indexOf("messages_") == 0){
+					int prefixIndex = fileNames[i].indexOf(PREFIX + "_");
+					int extensionIndex = fileNames[i].indexOf(EXTENSION);
+					if(prefixIndex == 0 && extensionIndex > (PREFIX + "_").length()){
+						availableList.add( fileNames[i].substring( (PREFIX + "_").length() , extensionIndex ) );
 					}
 				}
 			}
+		}
+		this.languages = new String[availableList.size()];
+		for(int i = 0; i < this.languages.length; i++){
+			this.languages[i] = (String) availableList.get( i );
 		}
 	}
 }

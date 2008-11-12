@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.gui.help.doc;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,10 +19,10 @@ public class DocItemReader {
 	private static final String ATTRIBUTE_NAME = "name";
 	private static final String ATTRIBUTE_URL = "url";
 	
-	public void loadHelpItems(List items,File file){
-		if (file != null && file.exists()){
+	public void loadHelpItems(List items, InputStream stream){
+		if (stream != null){
 			try {
-				Document doc = getDocument(file);
+				Document doc = getDocument(stream);
 				loadHelpItems(items,doc.getFirstChild());
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
@@ -52,11 +52,11 @@ public class DocItemReader {
 		return null;
 	}
 	
-	private Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
+	private Document getDocument(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
-		document = builder.parse(file);
+		document = builder.parse(stream);
 		return document;
 	}
 }
