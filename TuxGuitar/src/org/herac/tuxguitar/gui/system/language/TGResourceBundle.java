@@ -6,6 +6,8 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.herac.tuxguitar.gui.util.TGFileUtils;
+
 public class TGResourceBundle {
 	
 	private Locale locale;
@@ -28,42 +30,42 @@ public class TGResourceBundle {
 		return this.properties.getProperty(key);
 	}
 	
-	public static TGResourceBundle getBundle(String baseName, Locale locale,ClassLoader loader){
+	public static TGResourceBundle getBundle(String baseName, Locale locale){
 		Properties properties = new Properties();
 		
 		String bundleName = baseName.replace('.','/');
 		String bundleExtension = ".properties";
 		
 		// load default
-		TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties, loader);
+		TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
 		
 		// load language
 		bundleName += "_";
 		if(locale.getLanguage() != null && locale.getLanguage().length() > 0){
 			bundleName += locale.getLanguage();
-			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties, loader);
+			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
 		}
 		
 		// load country
 		bundleName += "_";
 		if(locale.getCountry() != null && locale.getCountry().length() > 0){
 			bundleName += locale.getCountry();
-			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties, loader);
+			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
 		}
 		
 		// load variant
 		bundleName += "_";
 		if(locale.getVariant() != null && locale.getVariant().length() > 0){
 			bundleName += locale.getVariant();
-			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties, loader);
+			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
 		}
 		
 		return new TGResourceBundle(locale, properties);
 	}
 	
-	private static void loadResources(String name, Properties p, ClassLoader loader){
+	private static void loadResources(String name, Properties p){
 		try {
-			Enumeration enumeration = loader.getResources(name);
+			Enumeration enumeration = TGFileUtils.getResourceUrls(name);
 			while (enumeration.hasMoreElements()) {
 				URL url = (URL) enumeration.nextElement();
 				Properties properties = new Properties();

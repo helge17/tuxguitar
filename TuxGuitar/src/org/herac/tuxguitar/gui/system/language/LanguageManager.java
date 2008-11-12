@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.herac.tuxguitar.gui.util.TGFileUtils;
-import org.herac.tuxguitar.util.TGClassLoader;
 
 /**
  * @author julian
@@ -54,7 +53,7 @@ public class LanguageManager {
 		try {
 			String baseName = (PACKAGE + "." + PREFIX);
 			Locale locale = getLocale(lang);
-			this.resources = TGResourceBundle.getBundle(baseName, locale, TGClassLoader.instance().getClassLoader());
+			this.resources = TGResourceBundle.getBundle(baseName, locale);
 			this.fireChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
