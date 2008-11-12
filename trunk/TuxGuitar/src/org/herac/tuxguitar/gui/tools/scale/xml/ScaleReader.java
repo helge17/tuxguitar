@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.gui.tools.scale.xml;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,11 +20,10 @@ public class ScaleReader {
 	private static final String NAME_ATTRIBUTE = "name";
 	private static final String KEYS_ATTRIBUTE = "keys";
 	
-	public void loadScales(List scales,String fileName){
+	public void loadScales(List scales,InputStream stream){
 		try{
-			File file = new File(fileName);
-			if (file.exists()){
-				Document doc = getDocument(file);
+			if ( stream != null ){
+				Document doc = getDocument(stream);
 				loadScales(scales,doc.getFirstChild());
 			}
 		}catch(Throwable e){
@@ -32,12 +31,12 @@ public class ScaleReader {
 		}
 	}
 	
-	private static Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
+	private static Document getDocument(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		
 		DocumentBuilder builder = factory.newDocumentBuilder();
-		document = builder.parse(file);
+		document = builder.parse(stream);
 		
 		return document;
 	}

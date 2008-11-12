@@ -1,9 +1,14 @@
 package org.herac.tuxguitar.gui.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -17,7 +22,6 @@ public class TGFileUtils {
 	
 	private static final String TG_CONFIG_PATH = "tuxguitar.config.path";
 	private static final String TG_SHARE_PATH = "tuxguitar.share.path";
-	private static final String TG_DOC_PATH = "tuxguitar.doc.path";
 	private static final String TG_CLASS_PATH = "tuxguitar.class.path";
 	private static final String TG_LIBRARY_PATH = "tuxguitar.library.path";
 	private static final String TG_LIBRARY_PREFIX = "tuxguitar.library.prefix";
@@ -25,33 +29,68 @@ public class TGFileUtils {
 	
 	public static final String PATH_USER_CONFIG = getUserConfigDir();
 	public static final String PATH_USER_PLUGINS_CONFIG = getUserPluginsConfigDir();
-	public static final String PATH_SKINS = getSharePath("skins");
-	public static final String PATH_LANGUAGE = getSharePath("lang");
-	public static final String PATH_SCALES = getSharePath("scales");
-	public static final String PATH_HELP = getDocPath("help");
 	
-	public static Image loadImage(String name){
-		return loadImage(TuxGuitar.instance().getConfig().getStringConfigValue(TGConfigKeys.SKIN),name);
-	}
+	public static final String TG_STATIC_SHARED_PATH = System.getProperty(TG_SHARE_PATH);
 	
 	public static Image loadImage(String skin,String name){
-		if(PATH_SKINS != null){
-			String path = (PATH_SKINS + skin + File.separator + name);
-			try{
-				return new Image(TuxGuitar.instance().getDisplay(),new ImageData(path));
-			}catch(Exception e){
-				System.err.println(path + ": not found");
+		try{
+			InputStream stream = getResourceAsStream("skins/" + skin + "/" + name);
+			if(stream != null){			
+				return new Image(TuxGuitar.instance().getDisplay(),new ImageData(stream));
 			}
+			System.err.println(name + ": not found");
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
 		}
 		return new Image(TuxGuitar.instance().getDisplay(),16,16);
 	}
 	
 	public static InputStream getResourceAsStream(String resource) {
-		return TGClassLoader.instance().getClassLoader().getResourceAsStream(resource);
+		try {
+			if(TG_STATIC_SHARED_PATH != null){
+				File file = new File(TG_STATIC_SHARED_PATH + File.separator + resource);
+				if( file.exists() ){
+					return new FileInputStream( file );
+				}
+			}
+			return TGClassLoader.instance().getClassLoader().getResourceAsStream(resource);
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static URL getResourceUrl(String resource) {
+		try {
+			return TGClassLoader.instance().getClassLoader().getResource(resource);
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static String getResourcePath(String resource) {
+		try {
+			String resourcePath = null;
+			if(TG_STATIC_SHARED_PATH != null){
+				resourcePath = (TG_STATIC_SHARED_PATH + File.separator + resource);
+			}else{
+				URL url = TGClassLoader.instance().getClassLoader().getResource(resource);
+				if(url != null){
+					resourcePath = URLDecoder.decode(url.getPath(), "UTF-8");
+				}
+			}
+			if(resourcePath != null){
+				return new File(resourcePath).getAbsolutePath() + File.separator;
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
 	}
 	
 	public static void loadClasspath(){
-		String plugins = getSharePath("plugins");
+		String plugins = getResourcePath("plugins");
 		if(plugins != null){
 			TGClassLoader.instance().addPaths(new File(plugins));
 		}
@@ -106,27 +145,28 @@ public class TGFileUtils {
 		return configPluginsPath;
 	}
 	
-	private static String getSharePath(String resource){
-		return getResourcePath(resource, System.getProperty(TG_SHARE_PATH));
-	}
-	
-	private static String getDocPath(String resource){
-		return getResourcePath(resource, System.getProperty(TG_DOC_PATH));
-	}
-	
-	private static String getResourcePath(String resource,String path) {
+	public static String[] getFileNames( String resource ){
 		try {
-			String resourcePath = null;
-			if(path != null){
-				resourcePath = (path + File.separator + resource);
-			}else{
-				URL url = TGClassLoader.instance().getClassLoader().getResource(resource);
-				if(url != null){
-					resourcePath = URLDecoder.decode(url.getPath(), "UTF-8");
+			String path = getResourcePath(resource);
+			if( path != null ){
+				File file = new File( path );
+				if(file.exists() && file.isDirectory()){
+					return file.list();
 				}
 			}
-			if(resourcePath != null){
-				return new File(resourcePath).getAbsolutePath() + File.separator;
+			InputStream stream = getResourceAsStream(resource + "/list.properties" );
+			if( stream != null ){
+				BufferedReader reader = new BufferedReader( new InputStreamReader(stream) );
+				List fileNameList = new ArrayList();
+				String fileName = null;
+				while( (fileName = reader.readLine()) != null ){
+					fileNameList.add( fileName );
+				}
+				String[] fileNames = new String[ fileNameList.size() ];
+				for (int i = 0 ; i < fileNames.length ; i ++ ){
+					fileNames[ i ] = (String)fileNameList.get( i );
+				}
+				return fileNames;
 			}
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
@@ -134,4 +174,7 @@ public class TGFileUtils {
 		return null;
 	}
 	
+	public static Image loadImage(String name){
+		return loadImage(TuxGuitar.instance().getConfig().getStringConfigValue(TGConfigKeys.SKIN),name);
+	}
 }

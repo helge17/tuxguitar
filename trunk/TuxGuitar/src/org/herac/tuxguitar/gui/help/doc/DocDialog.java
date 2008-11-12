@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.gui.help.doc;
 
-import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -134,10 +134,10 @@ public class DocDialog implements LanguageLoader,IconLoader{
 	}
 	
 	protected void initTreeItems(){
-		File file = getContentFile();
-		if(file != null && file.exists()){
+		InputStream stream = TGFileUtils.getResourceAsStream("help/contents.xml");
+		if( stream != null ){
 			List items = new ArrayList();
-			new DocItemReader().loadHelpItems(items,file);
+			new DocItemReader().loadHelpItems(items,stream);
 			Iterator it = items.iterator();
 			while(it.hasNext()){
 				DocItem item = (DocItem)it.next();
@@ -239,12 +239,8 @@ public class DocDialog implements LanguageLoader,IconLoader{
 	}
 	
 	private String parseURL(String url){
-		File file = new File(TGFileUtils.PATH_HELP + url);
-		return (file.exists()?file.getAbsolutePath():null);
-	}
-	
-	private File getContentFile(){
-		return new File(TGFileUtils.PATH_HELP + "contents.xml");
+		URL resourceUrl = TGFileUtils.getResourceUrl("help/" + url);
+		return ( resourceUrl != null ? resourceUrl.toExternalForm() : null );
 	}
 	
 	public boolean isDisposed(){
