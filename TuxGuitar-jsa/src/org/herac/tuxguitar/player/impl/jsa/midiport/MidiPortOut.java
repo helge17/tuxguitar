@@ -23,8 +23,12 @@ public class MidiPortOut extends MidiPort{
 		return this.out;
 	}
 	
-	public void open(){
-		this.out.getReceiver();
+	public void open() throws MidiPlayerException{
+		try {
+			this.out.open();
+		} catch (Throwable throwable) {
+			throw new MidiPlayerException(throwable.getMessage(),throwable);
+		}
 	}
 	
 	public void close() throws MidiPlayerException{
@@ -97,11 +101,6 @@ class MidiOutImpl implements MidiOut{
 	}
 	
 	protected Receiver getReceiver(){
-		try {
-			this.open();
-		} catch (Throwable throwable) {
-			// Do nothing
-		}
 		return this.receiver;
 	}
 	
