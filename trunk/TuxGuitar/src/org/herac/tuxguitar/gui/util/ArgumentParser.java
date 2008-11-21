@@ -7,6 +7,9 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class ArgumentParser {
+	
+	private static final String TG_DEFAULT_URL = "tuxguitar.default.url";
+	
 	private static final String[] OPTION_HELP = new String[]{"-h","--help"};
 	private static final String[] OPTION_VERSION = new String[]{"-v","--version"};
 	private static final String[] OPTION_JRE_INFO = new String[]{"-i","--system-info"};
@@ -89,16 +92,23 @@ public class ArgumentParser {
 	
 	private void checkProperties(){
 		for(int i = 0;i < this.arguments.length;i++){
-			if(this.arguments[i].indexOf("-D") == 0 && this.arguments[i].indexOf("=") > 0){
-				String[] property = this.arguments[i].substring(2).split("=");
-				if( property != null && property.length == 2 ){
-					System.setProperty( property[0],property[1]);
+			int indexKey = this.arguments[i].indexOf("-D");
+			int indexValue = this.arguments[i].indexOf("=");
+			if(indexKey == 0 && indexValue > indexKey && (indexValue + 1) < this.arguments[i].length() ){
+				String key =  this.arguments[i].substring(2, indexValue);
+				String value =  this.arguments[i].substring( indexValue + 1 );
+				if( key != null && key.length() > 0 && value != null && value.length() > 0){
+					System.setProperty( key, value);
 				}
 			}
 		}
 	}
 	
 	private void checkURL(){
+		String propertyUrl = System.getProperty(TG_DEFAULT_URL);
+		if( propertyUrl != null && makeURL( propertyUrl ) ){
+			return;
+		}
 		for(int i = 0;i < this.arguments.length;i++){
 			if(makeURL(this.arguments[i])){
 				return;
