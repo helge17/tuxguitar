@@ -131,8 +131,6 @@
 	    </jar>
 	</target>
 	
-	<target name="all" depends="signjars" >
-		<antcall target="clean" />
-	</target>
+	<target name="all" depends="signjars" />
 	
 </project>
