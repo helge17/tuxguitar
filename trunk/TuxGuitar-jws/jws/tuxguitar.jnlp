@@ -26,5 +26,5 @@
 		<jar href="files/swt-win-x86.jar" />
 	</resources>
 	
-	<application-desc main-class="org.herac.tuxguitar.gui.TGMain" >
+	<application-desc main-class="org.herac.tuxguitar.gui.TGMain" />
 </jnlp>
