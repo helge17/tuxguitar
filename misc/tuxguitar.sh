@@ -77,17 +77,17 @@ swt_guess_()
 #/// [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
 mozilla_guess_()
 {
-    t="/usr/lib/xulrunner"
-    test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/mozilla"
     test -r "$t/libxpcom.so" && d="$t"
-    t="/usr/lib/icedove/"
-    test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/iceape/"
+    test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/icedove/"
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/firefox/"
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/iceweasel"
+    test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/xulrunner"
     test -r "$t/libxpcom.so" && d="$t"
     echo "$d"
 }
