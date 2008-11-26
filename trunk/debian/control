@@ -13,7 +13,7 @@ Package: tuxguitar-snapshot
 Architecture: all
 Section: sound
 Depends: java-gcj-compat | openjdk-6-jre | sun-java6-jre | sun-java5-jre | java-virtual-machine, libitext-java, libswt-gtk-3.4-java | libswt3.2-gtk-java, libswt-cairo-gtk-3.4-jni | libswt3.2-gtk-java, libswt-mozilla-gtk-3.4-jni | libswt3.2-gtk-java 
-Recommends: tuxguitar-alsa (= ${source:Version}), tuxguitar-oss (= ${source:Version}), iceweasel | firefox | abrowser
+Recommends: tuxguitar-alsa (= ${source:Version}), tuxguitar-oss (= ${source:Version}), libxul0d | iceweasel | firefox | abrowser
 Suggests: tuxguitar-snapshot-jsa (= ${source:Version}), lilypond
 Conflicts: tuxguitar
 Description: Multitrack guitar tablature editor and player (gp3 to gp5)
