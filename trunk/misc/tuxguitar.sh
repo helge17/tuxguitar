@@ -4,7 +4,7 @@
 #@Licence: LGPL
 #@Description: Wrapper script for starting java application tuxguitar
 ###############################################################################
-
+PACKAGE=tuxguitar
 [ ! -z $DEBUG ] && set -e
 [ ! -z $DEBUG ] && set -x
 
@@ -44,11 +44,11 @@ java_guess_()
 if [ -r /etc/debian_version  ]; then
     t="/usr/lib/jvm/java-gcj/jre/bin/../../"
     [ -d "$t" ] && d="$t"
-    t="/usr/lib/jvm/java-6-openjdk/jre/bin/../../"
-    [ -d "$t" ] && d="$t"
     t="/usr/lib/jvm/java-1.5.0-sun/jre/bin/../../"
     [ -d "$t" ] && d="$t"
     t="/usr/lib/jvm/java-6-sun/jre/bin/../../"
+    [ -d "$t" ] && d="$t"
+    t="/usr/lib/jvm/java-6-openjdk/jre/bin/../../"
     [ -d "$t" ] && d="$t"
 fi
 # results
@@ -67,7 +67,9 @@ swt_guess_()
     [ -r "$t" ] && f="$t"
     t="/usr/lib/java/swt3.2-gtk.jar"
     [ -r "$t" ] && f="$t"
-    file -L "$f" || f=""
+    t="/usr/share/java/swt-gtk-3.4.jar"
+    [ -r "$t" ] && f="$t"
+    file -L "$f" >/dev/null 2>&1 || f=""
     echo "$f"
 }
 
@@ -75,7 +77,13 @@ swt_guess_()
 #/// [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
 mozilla_guess_()
 {
+    t="/usr/lib/xulrunner"
+    test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/mozilla"
+    test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/icedove/"
+    test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/iceape/"
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/firefox/"
     test -r "$t/libxpcom.so" && d="$t"
@@ -103,6 +111,8 @@ env_()
     if [ -d "$MOZILLA_FIVE_HOME" ] ; then
         export MOZILLA_FIVE_HOME
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MOZILLA_FIVE_HOME
+    else
+	echo '$MOZILLA_FIVE_HOME not valid : check doc shipped w/ tuxguitar'
     fi
 
     [ ! -z ${DEBUG} ] && echo "# MOZILLA_FIVE_HOME=${MOZILLA_FIVE_HOME}"
