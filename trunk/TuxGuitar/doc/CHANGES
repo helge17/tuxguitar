@@ -1,7 +1,9 @@
-TuxGuitar changes:
+TuxGuitar 1.1 changes:
 
-* Fix jre1.4 support bug
 * Fix mixer bug
-* Display markers on the score 
-* Encoding option on GTP Plugin added
-* Support for non-sun JVM on FTP Browser plugin added
+* Fix jre1.4 support bug
+* 2 Voice support
+* Chorus/Reverb/Phaser/Tremolo MIDI Controls
+* Display markers on the score
+* Encoding option on GTP Plugin
+* FTP Browser plugin now can run on non sun's JVM
