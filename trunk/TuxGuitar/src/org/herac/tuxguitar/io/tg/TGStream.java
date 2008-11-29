@@ -41,13 +41,15 @@ public class TGStream {
 	
 	protected static final int BEAT_HAS_NEXT = 0x01;
 	
-	protected static final int BEAT_HAS_CHORD = 0x02;
+	protected static final int BEAT_HAS_STROKE = 0x02;
 	
-	protected static final int BEAT_HAS_TEXT = 0x04;
+	protected static final int BEAT_HAS_CHORD = 0x04;
 	
-	protected static final int BEAT_HAS_VOICE = 0x08;
+	protected static final int BEAT_HAS_TEXT = 0x08;
 	
-	protected static final int BEAT_HAS_VOICE_CHANGES = 0x10;
+	protected static final int BEAT_HAS_VOICE = 0x10;
+	
+	protected static final int BEAT_HAS_VOICE_CHANGES = 0x20;
 	
 	protected static final int VOICE_HAS_NOTES = 0x01;
 	

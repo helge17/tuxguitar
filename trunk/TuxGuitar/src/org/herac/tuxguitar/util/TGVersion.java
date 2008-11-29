@@ -2,7 +2,7 @@ package org.herac.tuxguitar.util;
 
 public class TGVersion {
 	
-	public static final TGVersion CURRENT = new TGVersion(1,0,20080629);
+	public static final TGVersion CURRENT = new TGVersion(1,0,20081129);
 	
 	private int major;
 	private int minor;

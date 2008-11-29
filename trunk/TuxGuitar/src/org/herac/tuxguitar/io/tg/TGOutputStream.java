@@ -27,6 +27,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
@@ -297,7 +298,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		
 		//Berifico si hay cambios en las voces
 		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
-			int shift = ((i * 2 ) + 1);
+			int shift = (i * 2 );
 			if(!beat.getVoice(i).isEmpty()){
 				header |= ( BEAT_HAS_VOICE << shift ); 
 				
@@ -319,8 +320,12 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 					data.getVoice(i).setFlags( flags );
 				}
 			}
+			
 		}
-		
+		//Berifico si tiene stroke
+		if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
+			header |= BEAT_HAS_STROKE;
+		}
 		//Berifico si tiene acorde
 		if(beat.getChord() != null){
 			header |= BEAT_HAS_CHORD;
@@ -336,6 +341,11 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo las voces
 		writeVoices(header, beat, data);
 		
+		//escribo el stroke
+		if(((header & BEAT_HAS_STROKE) != 0)){
+			writeStroke(beat.getStroke());
+		}
+		
 		//escribo el acorde
 		if(((header & BEAT_HAS_CHORD) != 0)){
 			writeChord(beat.getChord());
@@ -349,10 +359,10 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 	
 	private void writeVoices(int header, TGBeat beat,TGBeatData data){
 		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
-			int shift = ((i * 2 ) + 1);
-			if((((header >> shift ) & BEAT_HAS_VOICE) != 0)){
+			int shift = (i * 2 );
+			if((( header & (BEAT_HAS_VOICE << shift)) != 0)){
 				
-				if((((header >> shift ) & BEAT_HAS_VOICE_CHANGES) != 0)){
+				if(((header & (BEAT_HAS_VOICE_CHANGES << shift)) != 0)){
 					writeHeader( data.getVoice(i).getFlags() );
 				}
 				
@@ -403,6 +413,14 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		if(((header & NOTE_EFFECT) != 0)){
 			writeNoteEffect(note.getEffect());
 		}
+	}
+	
+	private void writeStroke(TGStroke stroke){
+		//escribo la direccion
+		writeByte(stroke.getDirection());
+		
+		//escribo el valor
+		writeByte(stroke.getValue());
 	}
 	
 	private void writeChord(TGChord chord){

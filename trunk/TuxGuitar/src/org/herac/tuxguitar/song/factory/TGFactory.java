@@ -14,6 +14,7 @@ import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGScale;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
@@ -133,6 +134,12 @@ public class TGFactory {
 	
 	public TGString newString(){
 		return new TGString(){
+			//TGString Implementation
+		};
+	}
+	
+	public TGStroke newStroke(){
+		return new TGStroke(){
 			//TGString Implementation
 		};
 	}
