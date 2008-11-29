@@ -16,6 +16,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -152,16 +153,19 @@ public class MidiSequenceParser {
 	}
 	
 	private void makeBeats(MidiSequenceHandler sequence,int track, TGTrack songTrack, TGMeasure measure, int measureIdx, long startMove) {
+		int[] stroke = new int[songTrack.stringCount()];
+		TGBeat previous = null;
 		for (int bIndex = 0; bIndex < measure.countBeats(); bIndex++) {
 			TGBeat beat = measure.getBeat(bIndex);
-			makeNotes(sequence, track, songTrack, beat, measureIdx, bIndex, startMove);
+			makeNotes(sequence, track, songTrack, beat, measureIdx, bIndex, startMove, getStroke(beat, previous, stroke) );
+			previous = beat;
 		}
 	}
 	
 	/**
 	 * Crea las notas del compas
 	 */
-	private void makeNotes(MidiSequenceHandler sequence,int track, TGTrack songTrack, TGBeat beat, int measureIdx,int bIndex, long startMove) {
+	private void makeNotes(MidiSequenceHandler sequence,int track, TGTrack songTrack, TGBeat beat, int measureIdx,int bIndex, long startMove, int[] stroke) {
 		for( int vIndex = 0; vIndex < beat.countVoices(); vIndex ++ ){
 			TGVoice voice = beat.getVoice(vIndex);
 			
@@ -172,8 +176,11 @@ public class MidiSequenceParser {
 					int key = (this.transpose + songTrack.getOffset() + note.getValue() + ((TGString)songTrack.getStrings().get(note.getString() - 1)).getValue());
 					
 					
-					long start = data.getStart() + startMove;
-					long duration = getRealNoteDuration(note,data.getDuration(), songTrack, measureIdx,bIndex);
+					//long start = data.getStart() + startMove;
+					//long duration = getRealNoteDuration(note,data.getDuration(), songTrack, measureIdx,bIndex);
+					long start = applyStrokeStart(note, (data.getStart() + startMove) , stroke);
+					long duration = applyStrokeDuration(note, getRealNoteDuration(note,data.getDuration(), songTrack, measureIdx,bIndex), stroke);
+					
 					int velocity = getRealVelocity(note, songTrack, measureIdx, bIndex);
 					int channel = songTrack.getChannel().getChannel();
 					int effectChannel = songTrack.getChannel().getEffectChannel();
@@ -574,6 +581,51 @@ public class MidiSequenceParser {
 			}
 			sequence.addControlChange(getTick((start + duration)),track,channel, MidiControllers.VOLUME,volume);
 		}
+	}
+	
+	private int[] getStroke(TGBeat beat, TGBeat previous, int[] stroke){
+		int direction = beat.getStroke().getDirection();
+		if( previous == null || !(direction == TGStroke.STROKE_NONE && previous.getStroke().getDirection() == TGStroke.STROKE_NONE)){
+			if( direction == TGStroke.STROKE_NONE ){
+				for( int i = 0 ; i < stroke.length ; i ++ ){
+					stroke[ i ] = 0;
+				}
+			}else{
+				int stringUseds = 0;
+				int stringCount = 0;
+				for( int vIndex = 0; vIndex < beat.countVoices(); vIndex ++ ){
+					TGVoice voice = beat.getVoice(vIndex);
+					for (int nIndex = 0; nIndex < voice.countNotes(); nIndex++) {
+						TGNote note = voice.getNote(nIndex);
+						if( !note.isTiedNote() ){
+							stringUseds |= 0x01 << ( note.getString() - 1 );
+							stringCount ++;
+						}
+					}
+				}
+				if( stringCount > 0 ){
+					int strokeDuration = beat.getStroke().getDuration(beat);
+					int strokeIncrement = ( strokeDuration / (stringCount - 1) );
+					int strokeMove = 0;
+					for( int i = 0 ; i < stroke.length ; i ++ ){
+						int index = ( direction == TGStroke.STROKE_DOWN ? (stroke.length - 1) - i : i );
+						if( (stringUseds & ( 0x01 << index ) ) != 0 ){
+							stroke[ index ] = strokeMove;
+							strokeMove += strokeIncrement;
+						}
+					}
+				}
+			}
+		}
+		return stroke;
+	}
+	
+	private long applyStrokeStart( TGNote note, long start , int[] stroke){
+		return (start + stroke[ note.getString() - 1 ]);
+	}
+	
+	private long applyStrokeDuration( TGNote note, long duration , int[] stroke){
+		return (duration - stroke[ note.getString() - 1 ]);
 	}
 	
 	private BeatData checkTripletFeel(TGVoice voice,int bIndex){

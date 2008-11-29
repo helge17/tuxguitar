@@ -27,6 +27,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
@@ -305,6 +306,11 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		readVoices(header, beat, data);
 		
+		//leo el stroke
+		if(((header & BEAT_HAS_STROKE) != 0)){
+			readStroke(beat.getStroke());
+		}
+		
 		//leo el acorde
 		if(((header & BEAT_HAS_CHORD) != 0)){
 			readChord(beat);
@@ -333,12 +339,12 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	
 	private void readVoices(int header, TGBeat beat, TGBeatData data){
 		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
-			int shift = ((i * 2 ) + 1);
+			int shift = (i * 2 );
 			
 			beat.getVoice(i).setEmpty(true);
 			
-			if((((header >> shift ) & BEAT_HAS_VOICE) != 0)){
-				if((((header >> shift ) & BEAT_HAS_VOICE_CHANGES) != 0)){
+			if(((header & (BEAT_HAS_VOICE << shift)) != 0)){
+				if(((header & (BEAT_HAS_VOICE_CHANGES << shift)) != 0)){
 					data.getVoice(i).setFlags( readHeader() );
 				}
 				
@@ -477,6 +483,14 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		//leo los tiempos
 		tupleto.setTimes(readByte());
+	}
+	
+	private void readStroke(TGStroke stroke){
+		//leo la direccion
+		stroke.setDirection( readByte() );
+		
+		//leo el valor
+		stroke.setValue( readByte() );
 	}
 	
 	private void readNoteEffect(TGNoteEffect effect){

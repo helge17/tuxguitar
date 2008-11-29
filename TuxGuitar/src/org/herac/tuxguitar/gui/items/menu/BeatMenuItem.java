@@ -17,13 +17,17 @@ import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveVoiceAction;
+import org.herac.tuxguitar.gui.actions.note.SetStrokeDownAction;
+import org.herac.tuxguitar.gui.actions.note.SetStrokeUpAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceAutoAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceDownAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceUpAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteDownAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteUpAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGStroke;
 
 /**
  * @author julian
@@ -42,6 +46,8 @@ public class BeatMenuItem extends MenuItems{
 	private MenuItem voiceAuto;
 	private MenuItem voiceUp;
 	private MenuItem voiceDown;
+	private MenuItem strokeUp;
+	private MenuItem strokeDown;
 	private MenuItem shiftUp;
 	private MenuItem shiftDown;
 	private MenuItem semitoneUp;
@@ -110,6 +116,17 @@ public class BeatMenuItem extends MenuItems{
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--Semitone Up
+		this.strokeUp = new MenuItem(this.menu, SWT.CHECK);
+		this.strokeUp.addSelectionListener(TuxGuitar.instance().getAction(SetStrokeUpAction.NAME));
+		
+		//--Semitone Down
+		this.strokeDown = new MenuItem(this.menu, SWT.CHECK);
+		this.strokeDown.addSelectionListener(TuxGuitar.instance().getAction(SetStrokeDownAction.NAME));
+				
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		//--Semitone Up
 		this.semitoneUp = new MenuItem(this.menu, SWT.PUSH);
 		this.semitoneUp.addSelectionListener(TuxGuitar.instance().getAction(IncrementNoteSemitoneAction.NAME));
 		
@@ -135,6 +152,7 @@ public class BeatMenuItem extends MenuItems{
 	}
 	
 	public void update(){
+		TGBeat beat = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedBeat();
 		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
@@ -143,6 +161,10 @@ public class BeatMenuItem extends MenuItems{
 		this.voiceAuto.setEnabled(!running);
 		this.voiceUp.setEnabled(!running);
 		this.voiceDown.setEnabled(!running);
+		this.strokeUp.setEnabled(!running);
+		this.strokeUp.setSelection( beat.getStroke().getDirection() == TGStroke.STROKE_UP );
+		this.strokeDown.setEnabled(!running);
+		this.strokeDown.setSelection( beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
 		this.semitoneUp.setEnabled(!running && note != null);
 		this.semitoneDown.setEnabled(!running && note != null);
 		this.shiftUp.setEnabled(!running && note != null);
@@ -162,6 +184,8 @@ public class BeatMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.voiceAuto, "note.voice-auto", SetVoiceAutoAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceUp, "note.voice-up", SetVoiceUpAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceDown, "note.voice-down", SetVoiceDownAction.NAME);
+		setMenuItemTextAndAccelerator(this.strokeUp, "note.stroke-up", SetStrokeUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.strokeDown, "note.stroke-down", SetStrokeDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneUp, "note.semitone-up", IncrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneDown, "note.semitone-down", DecrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.shiftUp, "note.shift-up", ShiftNoteUpAction.NAME);

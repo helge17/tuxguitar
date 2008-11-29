@@ -9,6 +9,7 @@ import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGBeatImpl extends TGBeat{
@@ -251,6 +252,9 @@ public class TGBeatImpl extends TGBeat{
 				TGChordImpl chord = (TGChordImpl)getChord();
 				chord.paint(layout,painter,fromX,fromY);
 			}
+			if(getStroke().getDirection() != TGStroke.STROKE_NONE){
+				paintStroke(layout, painter, fromX, fromY);
+			}
 		}
 		/*
 		if(!layout.isPlayModeEnabled() && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 ){
@@ -398,6 +402,48 @@ public class TGBeatImpl extends TGBeat{
 				painter.lineTo(x2,i);
 				painter.closePath();
 			}
+		}
+	}
+	
+	public void paintStroke(ViewLayout layout,TGPainter painter, int fromX, int fromY){
+		int style = layout.getStyle();
+		float scale = layout.getScale();
+		float x = (fromX + getPosX() + getSpacing() + ( 12f * scale ));
+		float y1 = 0;
+		float y2 = 0;
+		if((style & ViewLayout.DISPLAY_SCORE) != 0){
+			float y = (fromY + getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES)); 
+			y1 = (y + layout.getScoreLineSpacing());
+			y2 = (y + (getMeasureImpl().getTrackImpl().getScoreHeight() - layout.getScoreLineSpacing()));
+		}
+		if((style & ViewLayout.DISPLAY_TABLATURE) != 0){
+			float y = (fromY + getPaintPosition(TrackSpacing.POSITION_TABLATURE));
+			y1 = (y + layout.getStringSpacing());
+			y2 = (y + (getMeasureImpl().getTrackImpl().getTabHeight() - layout.getStringSpacing()));
+		}
+		else if((style & ViewLayout.DISPLAY_SCORE) != 0){
+			float y = (fromY + getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES)); 
+			y1 = (y + layout.getScoreLineSpacing());
+			y2 = (y + (getMeasureImpl().getTrackImpl().getScoreHeight() - layout.getScoreLineSpacing()));
+		}else{
+			return;
+		}
+		if( getStroke().getDirection() == TGStroke.STROKE_UP ){
+			painter.initPath();
+			painter.moveTo( x, y1 );
+			painter.lineTo( x, y2 );
+			painter.lineTo( x - (2.0f * scale), y2 - (5.0f * scale));
+			painter.moveTo( x , y2 );
+			painter.lineTo( x + (2.0f * scale), y2 - (5.0f * scale));
+			painter.closePath();
+		}else if( getStroke().getDirection() == TGStroke.STROKE_DOWN ){
+			painter.initPath();
+			painter.moveTo( x, y2 );
+			painter.lineTo( x, y1 );
+			painter.lineTo( x - (2.0f * scale), y1 + (3.0f * scale));
+			painter.moveTo( x , y1 );
+			painter.lineTo( x + (2.0f * scale), y1 + (3.0f * scale));
+			painter.closePath();
 		}
 	}
 	/*

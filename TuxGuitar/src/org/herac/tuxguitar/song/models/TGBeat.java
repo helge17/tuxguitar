@@ -22,9 +22,11 @@ public abstract class TGBeat {
 	private TGChord chord;
 	private TGText text;
 	private TGVoice[] voices;
+	private TGStroke stroke;
 	
 	public TGBeat(TGFactory factory) {
 		this.start = TGDuration.QUARTER_TIME;
+		this.stroke = factory.newStroke();
 		this.voices = new TGVoice[ MAX_VOICES ];
 		for( int i = 0 ; i < MAX_VOICES ; i ++ ){
 			this.setVoice(i, factory.newVoice(i));
@@ -99,6 +101,10 @@ public abstract class TGBeat {
 		return ( this.text != null );
 	}
 	
+	public TGStroke getStroke() {
+		return this.stroke;
+	}
+	
 	public boolean isRestBeat(){
 		for(int v = 0; v < this.countVoices() ; v ++ ){
 			TGVoice voice = this.getVoice( v );
@@ -112,7 +118,7 @@ public abstract class TGBeat {
 	public TGBeat clone(TGFactory factory){
 		TGBeat beat = factory.newBeat();
 		beat.setStart(getStart());
-		
+		getStroke().copy( beat.getStroke() );
 		for( int i = 0 ; i < this.voices.length ; i ++ ){
 			beat.setVoice(i, this.voices[i].clone(factory));
 		}

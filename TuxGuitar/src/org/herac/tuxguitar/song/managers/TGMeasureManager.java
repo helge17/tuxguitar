@@ -11,6 +11,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -846,6 +847,19 @@ public class TGMeasureManager {
 	}
 	
 	/**
+	 * Set the beat stroke
+	 */
+	public boolean setStroke(TGMeasure measure,long start,int value, int direction){
+		TGBeat beat = getBeat(measure, start);
+		if( beat != null ){
+			beat.getStroke().setValue(value);
+			beat.getStroke().setDirection(direction);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Verifica si el componente se puede insertar en el compas.
 	 * si no puede, con la opcion removeSilences, verifica si el motivo por el
 	 * cual no entra es que lo siguen silencios. de ser asi los borra. 
@@ -1661,11 +1675,16 @@ public class TGMeasureManager {
 						beat.setText( currentBeat.getText() );
 						currentBeat.removeText();
 				}
-				if( currentBeat.isChordBeat() && isUniqueVoice(voice, true) ){
-					beat.setChord( currentBeat.getChord() );
-					currentBeat.removeChord();
+				if( isUniqueVoice(voice, true) ){
+					if( currentBeat.isChordBeat() ){
+						beat.setChord( currentBeat.getChord() );
+						currentBeat.removeChord();
+					}
+					if( currentBeat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
+						currentBeat.getStroke().copy( beat.getStroke() );
+						currentBeat.getStroke().setDirection(TGStroke.STROKE_NONE);
+					}
 				}
-				
 				// Make sure to remove another voice instance from old beat.
 				TGVoice newVoice = getSongManager().getFactory().newVoice(voice.getIndex());
 				currentBeat.setVoice( voice.getIndex(), newVoice);

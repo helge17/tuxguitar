@@ -41,7 +41,7 @@ public class TGTrackImpl extends TGTrack{
 	 * Calcula el el ancho de la partitura
 	 */
 	public void calculateScoreHeight(ViewLayout layout) {
-		this.scoreHeight = ((layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 ?(layout.getScoreLineSpacing() * 5):0);
+		this.scoreHeight = ((layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 ?(layout.getScoreLineSpacing() * 4):0);
 	}
 	
 	public boolean hasCaret(ViewLayout layout){
