@@ -22,6 +22,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
@@ -231,7 +232,8 @@ public class GP3OutputStream extends GTPOutputStream{
 				effect.isSlapping() ||
 				effect.isPopping() ||
 				effect.isHarmonic() ||
-				effect.isFadeIn()) {
+				effect.isFadeIn() ||
+				beat.getStroke().getDirection() != TGStroke.STROKE_NONE) {
 				flags |= 0x08;
 			}
 		}
@@ -248,7 +250,7 @@ public class GP3OutputStream extends GTPOutputStream{
 			writeText(beat.getText());
 		}
 		if ((flags & 0x08) != 0) {
-			writeBeatEffects(effect);
+			writeBeatEffects(beat,effect);
 		}
 		if ((flags & 0x10) != 0) {
 			writeMixChange(measure.getTempo());
@@ -336,13 +338,16 @@ public class GP3OutputStream extends GTPOutputStream{
 		writeStringByteSizeOfInteger(text.getValue());
 	}
 	
-	private void writeBeatEffects(TGNoteEffect noteEffect) throws IOException {
+	private void writeBeatEffects(TGBeat beat, TGNoteEffect noteEffect) throws IOException {
 		int flags = 0;
 		if (noteEffect.isVibrato()) {
 			flags += 0x01;
 		}
 		if (noteEffect.isTremoloBar() || noteEffect.isTapping() || noteEffect.isSlapping() || noteEffect.isPopping()) {
 			flags += 0x20;
+		}
+		if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
+			flags |= 0x40;
 		}
 		if (noteEffect.isHarmonic() && noteEffect.getHarmonic().getType() == TGEffectHarmonic.TYPE_NATURAL) {
 			flags += 0x04;
@@ -372,6 +377,10 @@ public class GP3OutputStream extends GTPOutputStream{
 				writeUnsignedByte(3);
 				writeInt(0);
 			}
+		}
+		if ((flags & 0x40) != 0) {
+			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_DOWN ? toStrokeValue(beat.getStroke()) : 0 ) );
+			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_UP ? toStrokeValue(beat.getStroke()) : 0 ) );
 		}
 	}
 	
@@ -481,6 +490,25 @@ public class GP3OutputStream extends GTPOutputStream{
 		}
 		
 		return channels;
+	}
+	
+	private int toStrokeValue( TGStroke stroke ){
+		if( stroke.getValue() == TGDuration.SIXTY_FOURTH ){
+			return 2;
+		}
+		if( stroke.getValue() == TGDuration.THIRTY_SECOND ){
+			return 3;
+		}
+		if( stroke.getValue() == TGDuration.SIXTEENTH ){
+			return 4;
+		}
+		if( stroke.getValue() == TGDuration.EIGHTH ){
+			return 5;
+		}
+		if( stroke.getValue() == TGDuration.QUARTER ){
+			return 6;
+		}
+		return 2;
 	}
 	
 	private byte toChannelByte(short s){

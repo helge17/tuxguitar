@@ -23,6 +23,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
@@ -261,7 +262,10 @@ public class GP4OutputStream extends GTPOutputStream{
 		if(beat.isTextBeat()){
 			flags |= 0x04;
 		}
-		if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
+		if ( beat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
+			flags |= 0x08;
+		}
+		else if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
 			flags |= 0x08;
 		}
 		if (!duration.getTupleto().isEqual(TGTupleto.NORMAL)) {
@@ -289,7 +293,7 @@ public class GP4OutputStream extends GTPOutputStream{
 			writeText(beat.getText());
 		}
 		if ((flags & 0x08) != 0) {
-			writeBeatEffects(effect);
+			writeBeatEffects(beat,effect);
 		}
 		if ((flags & 0x10) != 0) {
 			writeMixChange(measure.getTempo());
@@ -405,7 +409,7 @@ public class GP4OutputStream extends GTPOutputStream{
 		skipBytes(32);
 	}
 	
-	private void writeBeatEffects(TGNoteEffect effect) throws IOException{
+	private void writeBeatEffects(TGBeat beat,TGNoteEffect effect) throws IOException{
 		int flags1 = 0;
 		int flags2 = 0;
 		if(effect.isFadeIn()){
@@ -416,6 +420,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		}
 		if(effect.isTremoloBar()){
 			flags2 |= 0x04;
+		}
+		if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
+			flags1 |= 0x40;
 		}
 		writeUnsignedByte(flags1);
 		writeUnsignedByte(flags2);
@@ -431,6 +438,10 @@ public class GP4OutputStream extends GTPOutputStream{
 		}
 		if ((flags2 & 0x04) != 0) {
 			writeTremoloBar(effect.getTremoloBar());
+		}
+		if ((flags1 & 0x40) != 0) {
+			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_DOWN ? toStrokeValue(beat.getStroke()) : 0 ) );
+			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_UP ? toStrokeValue(beat.getStroke()) : 0 ) );
 		}
 	}
 	
@@ -613,6 +624,25 @@ public class GP4OutputStream extends GTPOutputStream{
 		}
 		
 		return channels;
+	}
+	
+	private int toStrokeValue( TGStroke stroke ){
+		if( stroke.getValue() == TGDuration.SIXTY_FOURTH ){
+			return 2;
+		}
+		if( stroke.getValue() == TGDuration.THIRTY_SECOND ){
+			return 3;
+		}
+		if( stroke.getValue() == TGDuration.SIXTEENTH ){
+			return 4;
+		}
+		if( stroke.getValue() == TGDuration.EIGHTH ){
+			return 5;
+		}
+		if( stroke.getValue() == TGDuration.QUARTER ){
+			return 6;
+		}
+		return 2;
 	}
 	
 	private byte toChannelByte(short s){
