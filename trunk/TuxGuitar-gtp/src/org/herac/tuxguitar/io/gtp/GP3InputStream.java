@@ -18,6 +18,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
@@ -280,7 +281,7 @@ public class GP3InputStream extends GTPInputStream {
 			readText(beat);
 		}
 		if ((flags & 0x08) != 0) {
-			readBeatEffects(effect);
+			readBeatEffects(beat,effect);
 		}
 		if ((flags & 0x10) != 0) {
 			readMixChange(tempo);
@@ -493,7 +494,7 @@ public class GP3InputStream extends GTPInputStream {
 		}
 	}
 	
-	private void readBeatEffects(TGNoteEffect effect) throws IOException {
+	private void readBeatEffects(TGBeat beat,TGNoteEffect effect) throws IOException {
 		int flags = readUnsignedByte();
 		effect.setVibrato(((flags & 0x01) != 0) || ((flags & 0x02) != 0));
 		effect.setFadeIn(((flags & 0x10) != 0));
@@ -509,8 +510,15 @@ public class GP3InputStream extends GTPInputStream {
 			}
 		}
 		if ((flags & 0x40) != 0) {
-			readByte();
-			readByte();
+			int strokeDown = readByte();
+			int strokeUp = readByte();
+			if( strokeDown > 0 ){
+				beat.getStroke().setDirection( TGStroke.STROKE_DOWN );
+				beat.getStroke().setValue( toStrokeValue(strokeDown) );
+			}else if( strokeUp > 0 ){
+				beat.getStroke().setDirection( TGStroke.STROKE_UP );
+				beat.getStroke().setValue( toStrokeValue(strokeUp) );
+			}
 		}
 		if ((flags & 0x04) != 0) {
 			TGEffectHarmonic harmonic = getFactory().newEffectHarmonic();
@@ -556,6 +564,25 @@ public class GP3InputStream extends GTPInputStream {
 			tempo.setValue(tempoValue);
 			readByte();
 		}
+	}
+	
+	private int toStrokeValue( int value ){
+		if( value == 1 || value == 2){
+			return TGDuration.SIXTY_FOURTH;
+		}
+		if( value == 3){
+			return TGDuration.THIRTY_SECOND;
+		}
+		if( value == 4){
+			return TGDuration.SIXTEENTH;
+		}
+		if( value == 5){
+			return TGDuration.EIGHTH;
+		}
+		if( value == 6){
+			return TGDuration.QUARTER;
+		}
+		return TGDuration.SIXTY_FOURTH;
 	}
 	
 	private short toChannelShort(byte b){
