@@ -16,6 +16,8 @@ public class PTBeat implements PTComponent{
 	private boolean doubleDotted;
 	private boolean vibrato;
 	private boolean grace;
+	private boolean arpeggioUp;
+	private boolean arpeggioDown;
 	private List notes;
 	
 	public PTBeat(int staff,int voice){
@@ -105,6 +107,22 @@ public class PTBeat implements PTComponent{
 		this.times = times;
 	}
 	
+	public boolean isArpeggioUp() {
+		return this.arpeggioUp;
+	}
+	
+	public void setArpeggioUp(boolean arpeggioUp) {
+		this.arpeggioUp = arpeggioUp;
+	}
+	
+	public boolean isArpeggioDown() {
+		return this.arpeggioDown;
+	}
+	
+	public void setArpeggioDown(boolean arpeggioDown) {
+		this.arpeggioDown = arpeggioDown;
+	}
+	
 	public PTComponent getClone(){
 		PTBeat beat = new PTBeat( getStaff(), getVoice() );
 		beat.setDuration( getDuration() );
@@ -114,7 +132,9 @@ public class PTBeat implements PTComponent{
 		beat.setEnters( getEnters() );
 		beat.setMultiBarRest( getMultiBarRest() );
 		beat.setGrace( isGrace() );
-		beat.setVibrato( isVibrato() ); 
+		beat.setVibrato( isVibrato() );
+		beat.setArpeggioUp( isArpeggioUp() );
+		beat.setArpeggioDown( isArpeggioDown() );
 		Iterator it = getNotes().iterator();
 		while( it.hasNext() ){
 			beat.addNote( ((PTNote)it.next()).getClone() );

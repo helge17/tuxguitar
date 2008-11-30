@@ -285,19 +285,14 @@ public class PTInputStream implements TGInputStreamBase{
 		readByte();
 		readByte();
 		readByte();
-		int itemCount = readHeaderItems();
-		for (int j = 0; j < itemCount; j++) {
-			readPosition(staff,0,section);
-			if (j < itemCount - 1){
-				readShort();
-			}
-		}
-		// Position section 
-		itemCount = readHeaderItems();
-		for (int j = 0; j < itemCount; j++) {
-			readPosition(staff,1,section);
-			if (j < itemCount - 1){
-				readShort();
+		
+		for( int voice = 0 ; voice < 2 ; voice ++ ){
+			int itemCount = readHeaderItems();
+			for (int j = 0; j < itemCount; j++) {
+				readPosition(staff,voice,section);
+				if (j < itemCount - 1){
+					readShort();
+				}
 			}
 		}
 	}
@@ -343,6 +338,8 @@ public class PTInputStream implements TGInputStreamBase{
 		beat.setDuration(durationValue);
 		beat.setDotted((data1 & 0x01) != 0);
 		beat.setDoubleDotted((data1 & 0x02) != 0);
+		beat.setArpeggioUp((data1 & 0x20) != 0);
+		beat.setArpeggioDown((data1 & 0x40) != 0);
 		beat.setEnters(((beaming - (beaming % 8)) / 8) + 1);
 		beat.setTimes((beaming % 8) + 1);
 		
