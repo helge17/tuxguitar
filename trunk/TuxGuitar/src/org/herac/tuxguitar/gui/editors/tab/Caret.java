@@ -32,17 +32,15 @@ public class Caret {
 	private Tablature tablature;
 	private TGTrackImpl selectedTrack;
 	private TGMeasureImpl selectedMeasure;
-	//private TGDurationable selectedComponent;
+	private TGBeat selectedBeat;
+	private TGNote selectedNote;
 	private TGDuration selectedDuration;
 	private long position;
 	private int string;
 	private int voice;
-	private boolean changes;
 	private int velocity;
-	
-	private TGNote selectedNote;
-	
-	private TGBeat selectedBeat;
+	private boolean restBeat;
+	private boolean changes;
 	
 	public Caret(Tablature tablature) {
 		this.tablature = tablature;
@@ -83,7 +81,7 @@ public class Caret {
 		this.string = string;
 		this.updatePosition();
 		this.updateDuration();
-		this.checkString();
+		this.updateString();
 		this.updateNote();
 		this.updateBeat();
 		this.checkTransport();
@@ -292,7 +290,7 @@ public class Caret {
 		this.position = getSelectedBeat().getStart();
 	}
 	
-	private void checkString(){
+	private void updateString(){
 		int stringCount = getTrack().getStrings().size();
 		if(this.string > stringCount){
 			this.string = stringCount;
@@ -327,7 +325,10 @@ public class Caret {
 	}
 	
 	private void updateBeat(){
-		this.selectedBeat = getSongManager().getMeasureManager().getBeat(getMeasure(),getPosition());
+		// TODO: Check why it's setted again. and remove if it's not needed.
+		//this.selectedBeat = getSongManager().getMeasureManager().getBeat(getMeasure(),getPosition());
+		
+		this.restBeat = this.selectedBeat.isRestBeat();
 	}
 	
 	public TGBeatImpl getSelectedBeat(){
@@ -345,5 +346,9 @@ public class Caret {
 	public void setVoice(int voice) {
 		this.voice = voice;
 		this.update();
+	}
+	
+	public boolean isRestBeatSelected(){
+		return this.restBeat;
 	}
 }
