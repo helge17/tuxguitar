@@ -604,9 +604,8 @@ public class MidiSequenceParser {
 					}
 				}
 				if( stringCount > 0 ){
-					int strokeDuration = beat.getStroke().getDuration(beat);
-					int strokeIncrement = (stringCount > 1 ? ( strokeDuration / (stringCount - 1) ) : 0);
 					int strokeMove = 0;
+					int strokeIncrement = beat.getStroke().getIncrementTime(beat);
 					for( int i = 0 ; i < stroke.length ; i ++ ){
 						int index = ( direction == TGStroke.STROKE_DOWN ? (stroke.length - 1) - i : i );
 						if( (stringUseds & ( 0x01 << index ) ) != 0 ){
