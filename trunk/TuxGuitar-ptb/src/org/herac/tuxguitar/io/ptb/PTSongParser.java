@@ -22,6 +22,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -183,6 +184,14 @@ public class PTSongParser {
 				note.getEffect().setBend( makeBend(ptNote.getBend()));
 				tgVoice.addNote(note);
 			}
+		}
+		
+		if( beat.isArpeggioUp() ){
+			tgBeat.getStroke().setDirection( TGStroke.STROKE_DOWN );
+			tgBeat.getStroke().setValue( TGDuration.SIXTEENTH );
+		}else if( beat.isArpeggioDown() ){
+			tgBeat.getStroke().setDirection( TGStroke.STROKE_UP );
+			tgBeat.getStroke().setValue( TGDuration.SIXTEENTH );
 		}
 		
 		this.helper.getStartHelper().checkBeat( tgVoice.isRestVoice() );
