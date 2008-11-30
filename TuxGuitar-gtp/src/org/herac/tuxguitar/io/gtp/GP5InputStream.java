@@ -496,15 +496,15 @@ public class GP5InputStream extends GTPInputStream {
 			readTremoloBar(noteEffect);
 		}
 		if ((flags1 & 0x40) != 0) {
-			int strokeDown = readByte();
 			int strokeUp = readByte();
-			if( strokeDown > 0 ){
-				beat.getStroke().setDirection( TGStroke.STROKE_DOWN );
-				beat.getStroke().setValue( toStrokeValue(strokeDown) );
-			}else if( strokeUp > 0 ){
+			int strokeDown = readByte();
+			if( strokeUp > 0 ){
 				beat.getStroke().setDirection( TGStroke.STROKE_UP );
 				beat.getStroke().setValue( toStrokeValue(strokeUp) );
-			}
+			}else if( strokeDown > 0 ){
+				beat.getStroke().setDirection( TGStroke.STROKE_DOWN );
+				beat.getStroke().setValue( toStrokeValue(strokeDown) );
+			} 
 		}
 		if ((flags2 & 0x02) != 0) {
 			readByte();

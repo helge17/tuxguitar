@@ -542,8 +542,8 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeTremoloBar(effect.getTremoloBar());
 		}
 		if ((flags1 & 0x40) != 0) {
-			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_DOWN ? toStrokeValue(beat.getStroke()) : 0 ) );
 			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_UP ? toStrokeValue(beat.getStroke()) : 0 ) );
+			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_DOWN ? toStrokeValue(beat.getStroke()) : 0 ) );
 		}
 	}
 	
