@@ -39,13 +39,12 @@ public abstract class TGStroke {
 				if( !voice.isEmpty() ){
 					long currentDuration = voice.getDuration().getTime();
 					if(duration == 0 || currentDuration < duration){
-						duration = currentDuration;
+						duration = ( currentDuration <= TGDuration.QUARTER_TIME ? currentDuration : TGDuration.QUARTER_TIME );
 					}
 				}
 			}
 			if( duration > 0 ){
-				float quarterValue = ( (TGDuration.QUARTER_TIME / 10) * ( 4.0f / this.value ) );
-				return Math.round( duration * quarterValue / TGDuration.QUARTER_TIME );
+				return Math.round( ( ( duration / 10 ) * ( 4.0f / this.value ) ) );
 			}
 		}
 		return 0;
