@@ -29,7 +29,7 @@ public class SetStrokeUpAction extends Action{
 	
 	protected int execute(TypedEvent e){
 		TGBeat beat = getEditor().getTablature().getCaret().getSelectedBeat();
-		if(beat != null){
+		if(beat != null && !beat.isRestBeat()){
 			StrokeEditor editor = new StrokeEditor();
 			editor.open(beat);
 			if( editor.getStatus() != StrokeEditor.STATUS_CANCEL ){

@@ -24,6 +24,7 @@ import org.herac.tuxguitar.gui.actions.note.SetVoiceDownAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceUpAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteDownAction;
 import org.herac.tuxguitar.gui.actions.note.ShiftNoteUpAction;
+import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.items.MenuItems;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -152,19 +153,21 @@ public class BeatMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		TGBeat beat = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedBeat();
-		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
+		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		TGBeat beat = caret.getSelectedBeat();
+		TGNote note = caret.getSelectedNote();
+		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
 		this.removeVoice.setEnabled(!running);
-		this.voiceAuto.setEnabled(!running);
-		this.voiceUp.setEnabled(!running);
-		this.voiceDown.setEnabled(!running);
-		this.strokeUp.setEnabled(!running);
-		this.strokeUp.setSelection( beat.getStroke().getDirection() == TGStroke.STROKE_UP );
-		this.strokeDown.setEnabled(!running);
-		this.strokeDown.setSelection( beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
+		this.voiceAuto.setEnabled(!running && !restBeat);
+		this.voiceUp.setEnabled(!running && !restBeat);
+		this.voiceDown.setEnabled(!running && !restBeat);
+		this.strokeUp.setEnabled(!running && !restBeat);
+		this.strokeUp.setSelection( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
+		this.strokeDown.setEnabled(!running && !restBeat);
+		this.strokeDown.setSelection( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
 		this.semitoneUp.setEnabled(!running && note != null);
 		this.semitoneDown.setEnabled(!running && note != null);
 		this.shiftUp.setEnabled(!running && note != null);
