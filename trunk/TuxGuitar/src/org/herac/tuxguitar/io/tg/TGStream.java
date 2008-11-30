@@ -116,7 +116,7 @@ public class TGStream {
 	protected static final int GRACE_FLAG_ON_BEAT = 0x02;
 	
 	protected class TGBeatData {
-		private long start;
+		private long currentStart;
 		private TGVoiceData[] voices;
 		
 		protected TGBeatData(TGMeasure measure){
@@ -124,10 +124,10 @@ public class TGStream {
 		}
 		
 		private void init(TGMeasure measure){
-			this.setStart(measure.getStart());
+			this.currentStart = measure.getStart();
 			this.voices = new TGVoiceData[TGBeat.MAX_VOICES];
 			for(int i = 0 ; i < this.voices.length ; i ++ ){
-				this.voices[i] = new TGVoiceData();
+				this.voices[i] = new TGVoiceData(measure);
 			}
 		}
 		
@@ -135,26 +135,35 @@ public class TGStream {
 			return this.voices[index];
 		}
 		
-		public long getStart() {
-			return this.start;
-		}
-		
-		public void setStart(long start) {
-			this.start = start;
+		public long getCurrentStart(){
+			long minimumStart = -1;
+			for(int i = 0 ; i < this.voices.length ; i ++ ){
+				if( this.voices[i].getStart() > this.currentStart ){
+					if( minimumStart < 0 || this.voices[i].getStart() < minimumStart ){
+						minimumStart = this.voices[i].getStart();
+					}
+				}
+			}
+			if( minimumStart > this.currentStart ){
+				this.currentStart = minimumStart;
+			}
+			return this.currentStart;
 		}
 	}
 	
 	protected class TGVoiceData {
+		private long start;
 		private int velocity;
 		private int flags;
 		private TGDuration duration;
 		
-		protected TGVoiceData(){
-			this.init();
+		protected TGVoiceData(TGMeasure measure){
+			this.init(measure);
 		}
 		
-		private void init(){
+		private void init(TGMeasure measure){
 			this.flags = 0;
+			this.setStart(measure.getStart());
 			this.setVelocity(TGVelocities.DEFAULT);
 			this.setDuration(new TGFactory().newDuration());
 		}
@@ -165,6 +174,14 @@ public class TGStream {
 		
 		public void setDuration(TGDuration duration) {
 			this.duration = duration;
+		}
+		
+		public long getStart() {
+			return this.start;
+		}
+		
+		public void setStart(long start) {
+			this.start = start;
 		}
 		
 		public int getVelocity() {

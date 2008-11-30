@@ -302,7 +302,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	private void readBeat(int header, TGMeasure measure,TGBeatData data){
 		TGBeat beat = this.factory.newBeat();
 		
-		beat.setStart(data.getStart());
+		beat.setStart(data.getCurrentStart());
 		
 		readVoices(header, beat, data);
 		
@@ -321,20 +321,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 			readText(beat);
 		}
 		
-		long minimumLength = -1;
-		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
-			if(!beat.getVoice(i).isEmpty()){
-				data.getVoice(i).getDuration().copy(beat.getVoice(i).getDuration());
-				long length = data.getVoice(i).getDuration().getTime();
-				if(minimumLength < 0 || length < minimumLength){
-					minimumLength = length;
-				}
-			}
-		}
-		
 		measure.addBeat(beat);
-		
-		data.setStart(data.getStart() + minimumLength);
 	}
 	
 	private void readVoices(int header, TGBeat beat, TGBeatData data){
@@ -367,6 +354,8 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 				else if(((flags & VOICE_DIRECTION_DOWN) != 0)){
 					beat.getVoice(i).setDirection( TGVoice.DIRECTION_DOWN );
 				}
+				data.getVoice(i).getDuration().copy(beat.getVoice(i).getDuration());
+				data.getVoice(i).setStart(data.getVoice(i).getStart() + beat.getVoice(i).getDuration().getTime());
 				
 				beat.getVoice(i).setEmpty(false);
 			}
