@@ -31,7 +31,7 @@ public abstract class TGStroke {
 		this.value = value;
 	}
 	
-	public int getDuration( TGBeat beat ){
+	public int getIncrementTime( TGBeat beat ){
 		long duration = 0;
 		if( this.value > 0 ){
 			for(int v = 0; v < beat.countVoices(); v ++){
@@ -44,7 +44,7 @@ public abstract class TGStroke {
 				}
 			}
 			if( duration > 0 ){
-				float quarterValue = ( (TGDuration.QUARTER_TIME / 2) * ( 4.0f / this.value ) );
+				float quarterValue = ( (TGDuration.QUARTER_TIME / 10) * ( 4.0f / this.value ) );
 				return Math.round( duration * quarterValue / TGDuration.QUARTER_TIME );
 			}
 		}
