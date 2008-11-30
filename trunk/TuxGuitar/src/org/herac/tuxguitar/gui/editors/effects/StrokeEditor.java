@@ -46,7 +46,7 @@ public class StrokeEditor extends SelectionAdapter{
 		dialog.setText(TuxGuitar.getProperty("stroke.editor"));
 		
 		//-----defaults-------------------------------------------------
-		int duration = TGDuration.SIXTY_FOURTH;
+		int duration = TGDuration.SIXTEENTH;
 		if( beat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
 			duration = beat.getStroke().getValue();
 		}
