@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.gtp;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
@@ -160,12 +161,13 @@ public class GP5InputStream extends GTPInputStream {
 	
 	private long readBeat(long start, TGMeasure measure, TGTrack track, TGTempo tempo, int voiceIndex) throws IOException{
 		int flags = readUnsignedByte();
-		if((flags & 0x40) != 0){
-			readUnsignedByte();
-		}
 		
 		TGBeat beat = getBeat(measure, start);
 		TGVoice voice = beat.getVoice(voiceIndex);
+		if((flags & 0x40) != 0){
+			int beatType = readUnsignedByte();
+			voice.setEmpty( ( beatType & 0x02 ) == 0 );
+		}
 		TGDuration duration = readDuration(flags);
 		TGNoteEffect effect = getFactory().newEffect();
 		if ((flags & 0x02) != 0) {
@@ -197,9 +199,7 @@ public class GP5InputStream extends GTPInputStream {
 			skip(1);
 		}
 		
-		voice.setEmpty(false);
-		
-		return duration.getTime();
+		return (!voice.isEmpty() ? duration.getTime() : 0 );
 	}
 	
 	private List readChannels() throws IOException{
@@ -355,22 +355,32 @@ public class GP5InputStream extends GTPInputStream {
 	}
 	
 	private void readMeasure(TGMeasure measure, TGTrack track, TGTempo tempo) throws IOException {
-		//voice 1
-		long start = measure.getStart();
-		int beats = readInt();
-		for (int i = 0; i < beats; i++) {
-			start += readBeat(start, measure, track, tempo, 0);
+		for( int voice = 0 ; voice < 2 ; voice ++ ){
+			long start = measure.getStart();
+			int beats = readInt();
+			for (int i = 0; i < beats; i++) {
+				start += readBeat(start, measure, track, tempo, voice);
+			}
 		}
 		
-		//voice 2
-		start = measure.getStart();
-		beats = readInt();
-		for (int i = 0; i < beats; i++) {
-			start += readBeat(start, measure, track, tempo, 1);
+		List emptyBeats = new ArrayList();
+		for( int i = 0 ; i < measure.countBeats() ; i ++ ){
+			TGBeat beat = measure.getBeat( i );
+			boolean empty = true;
+			for( int v = 0 ; v < beat.countVoices() ; v ++ ){
+				if( !beat.getVoice( v ).isEmpty() ){
+					empty = false;
+				}
+			}
+			if( empty ){
+				emptyBeats.add( beat );
+			}
 		}
-		
-		//join voices
-		//new JoinVoicesHelper(getFactory(),measure).process();
+		Iterator it = emptyBeats.iterator();
+		while( it.hasNext() ){
+			TGBeat beat = (TGBeat)it.next();
+			measure.removeBeat( beat );
+		}
 	}
 	
 	private TGNote readNote(TGString string,TGTrack track,TGNoteEffect effect)throws IOException {

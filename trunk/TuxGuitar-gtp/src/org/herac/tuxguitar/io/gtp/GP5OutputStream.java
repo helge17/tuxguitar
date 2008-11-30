@@ -7,7 +7,9 @@
 package org.herac.tuxguitar.io.gtp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
@@ -192,14 +194,6 @@ public class GP5OutputStream extends GTPOutputStream {
 			flags |= 0x01;
 			flags |= 0x02;
 		}
-		/*
-		if (measure.getNumber() == 1 || measure.getTimeSignature().getNumerator() != timeSignature.getNumerator()) {
-			flags |= 0x01;
-		}
-		if (measure.getNumber() == 1 || measure.getTimeSignature().getDenominator().getValue() != timeSignature.getDenominator().getValue()) {
-			flags |= 0x02;
-		}
-		*/
 		if (measure.isRepeatOpen()) {
 			flags |= 0x04;
 		}
@@ -294,27 +288,36 @@ public class GP5OutputStream extends GTPOutputStream {
 	}
 	
 	private void writeMeasure(TGMeasure measure, TGTempo tempo) throws IOException {
-		int[] voiceCount = new int[2];
-		for(int i = 0; i < measure.countBeats() ; i ++ ){
-			TGBeat beat = measure.getBeat( i );
-			for(int v = 0; v < beat.countVoices() ; v ++ ){
-				if( v < 2 ){
-					TGVoice voice = beat.getVoice(v);
-					if(!voice.isEmpty()){
-						voiceCount[v] ++;
-					}
-				}
-			}
-		}
-		
-		for(int v = 0; v < voiceCount.length ; v ++){
-			writeInt( voiceCount[v] );
+		for(int v = 0; v < 2 ; v ++){
+			List voices = new ArrayList();
 			for (int m = 0; m < measure.countBeats(); m ++) {
 				TGBeat beat = measure.getBeat( m );
 				if( v < beat.countVoices() ){
 					TGVoice voice = beat.getVoice( v );
 					if(!voice.isEmpty()){
-						writeBeat(voice, beat, measure, tempo);
+						voices.add( voice );
+					}
+				}
+			}
+			if( voices.size() > 0 ){
+				writeInt( voices.size() );
+				Iterator it = voices.iterator();
+				while( it.hasNext() ){
+					TGVoice voice = (TGVoice)it.next();
+					writeBeat(voice, voice.getBeat(), measure, tempo);
+				}
+			}else{
+				// Fill empty voices.
+				int count = measure.getTimeSignature().getNumerator();
+				TGBeat beat = getFactory().newBeat();
+				if( v < beat.countVoices() ){
+					TGVoice voice = beat.getVoice( v );
+					voice.getDuration().setValue( measure.getTimeSignature().getDenominator().getValue() );
+					voice.setEmpty(true);
+					
+					writeInt( count );
+					for( int i = 0; i < count ; i ++ ){
+						writeBeat(voice, voice.getBeat(), measure, tempo);
 					}
 				}
 			}
@@ -366,13 +369,14 @@ public class GP5OutputStream extends GTPOutputStream {
 		if (!duration.getTupleto().isEqual(TGTupleto.NORMAL)) {
 			flags |= 0x20;
 		}
-		if (voice.isRestVoice()) {
+		if (voice.isEmpty() || voice.isRestVoice()) {
 			flags |= 0x40;
 		}
 		writeUnsignedByte(flags);
 		
 		if ((flags & 0x40) != 0) {
-			writeUnsignedByte(0x02);
+			writeUnsignedByte( (voice.isEmpty() ? 0x00 : 0x02) );
+			
 		}
 		writeByte(parseDuration(duration));
 		if ((flags & 0x20) != 0) {
