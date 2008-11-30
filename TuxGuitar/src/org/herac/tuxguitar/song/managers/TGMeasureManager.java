@@ -1037,6 +1037,12 @@ public class TGMeasureManager {
 			createSilences(measure, measure.getStart(), measure.getLength(), 0);
 			return;
 		}
+		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
+			TGVoice voice = getFirstVoice( measure.getBeats() , v );
+			if( voice != null && voice.getBeat().getStart() > measure.getStart() ){
+				createSilences(measure, measure.getStart(), (voice.getBeat().getStart() - measure.getStart()), v);
+			}
+		}
 		
 		long[] start = new long[beat.countVoices()];
 		long[] uncompletedLength = new long[beat.countVoices()];
