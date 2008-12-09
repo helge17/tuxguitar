@@ -65,9 +65,9 @@ swt_guess_()
     [ -r "$t" ] && f="$t"
     t="/usr/lib/java/swt.jar"
     [ -r "$t" ] && f="$t"
-    t="/usr/lib/java/swt3.2-gtk.jar"
-    [ -r "$t" ] && f="$t"
     t="/usr/share/java/swt-gtk-3.4.jar"
+    [ -r "$t" ] && f="$t"
+    t="/usr/lib/java/swt3.2-gtk.jar"
     [ -r "$t" ] && f="$t"
     file -L "$f" >/dev/null 2>&1 || f=""
     echo "$f"
@@ -89,10 +89,12 @@ mozilla_guess_()
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/xulrunner"
     test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/xulrunner-1.9"
+    test -r "$t/libxpcom.so" && d="$t"
     echo "$d"
 }
 
-# 
+#
 env_()
 {
 # java

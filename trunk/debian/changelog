@@ -1,24 +1,37 @@
-tuxguitar-snapshot (0.0.20081125-0ubuntu0~rzr25) hardy; urgency=low
+tuxguitar-snapshot (0.0.20081209-0ubuntu0~rzr1) intrepid; urgency=low
 
-  * WIP: rzr.online.fr/q/tuxguitar
+  * wip: http://rzr.online.fr/q/tuxguitar
 
- -- Philippe Coval <rzr@users.sf.net>  Tue, 25 Nov 2008 17:51:28 +0100
+ -- Philippe Coval <rzr@gna.org>  Tue, 09 Dec 2008 12:20:11 +0100
 
-tuxguitar-snapshot (0.0.20080704-0ubuntu0~rzr10) gutsy; urgency=low
+tuxguitar-snapshot (0.0.20081209-0) unstable; urgency=low
 
-  * WIP: rzr.online.fr/q/tuxguitar
+  * wip: http://rzr.online.fr/q/tuxguitar
 
- -- Philippe Coval <rzr@users.sf.net>  Fri, 18 Jul 2008 01:30:45 +0200
+ -- Philippe Coval <rzr@gna.org>  Tue, 09 Dec 2008 12:18:37 +0100
 
-tuxguitar-snapshot (0.0.20080704-0ubuntu0~rzr1) intrepid; urgency=low
-	
-  * Updating from scm
-  * WIP: rzr.online.fr/q/tuxguitar
-  * WIP: todo add converter plugin, gcj; java-gcj-compat-dev
-  * FIX: desktop (LP: #197367)
-  * TODO: browser, ftp, convert
+tuxguitar (1.0.dak-1) unstable; urgency=low
 
- -- Philippe Coval <rzr@users.sf.net>  Fri, 04 Jul 2008 23:46:30 +0200
+  * debian/control ; debian/rules :
+    - set to main since openjdk supports sound (Closes: #505612)	
+    - uses ${shlibs:Depends} vs hardcoded libs (Closes: #506883)
+    - depends on at least xulrunner for browsing doc (Closes: #493557)
+
+  * debian/changelog :
+    - merged Ubuntu patch
+
+  * misc/tuxguitar.sh :
+    - update from upstream, Notify when missing mozilla (Closes: #493557)
+
+ -- Philippe Coval <rzr@gna.org>  Mon, 08 Dec 2008 09:00:17 +0100
+
+tuxguitar (1.0-1ubuntu1) intrepid; urgency=low
+
+  * fix LP: #272772: packages that Depend/Recommend/Suggest firefox
+    (meta-package) must alternatively Depend/Recommend/Suggest abrowser
+    - update debian/control
+
+ -- Alexander Sack <asac@ubuntu.com>  Mon, 22 Sep 2008 03:34:37 +0200
 
 tuxguitar (1.0-1) unstable; urgency=low
 
