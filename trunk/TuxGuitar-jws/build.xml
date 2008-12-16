@@ -17,6 +17,7 @@
 	<path id="class.path">
 		<pathelement location="${build.dir}"/>
 		<pathelement location="${path.swt}"/>
+		<pathelement location="${path.ant-contrib}"/>
 		<pathelement location="/usr/share/ant/lib/ant-contrib.jar"/>
     </path >
 	
@@ -90,12 +91,21 @@
 		<copy todir="${build.dir}/help">
 			<fileset dir="${tuxguitar.share.path}/help"/>
 		</copy>
+		<touch file="${build.dir}/help/list.properties"/>
+		<for param="file">
+			<path>
+				<fileset dir="${build.dir}/help" includes="**" />
+			</path>
+			<sequential>
+				<propertyregex property="filename" input="@{file}" regexp="${build.dir}/help/(.*)" select="\1" casesensitive="true" override="true"/>
+				<echo file="${build.dir}/help/list.properties" append="true">${filename}${line.separator}</echo>
+			</sequential>
+		</for>
 		
 		<mkdir dir="${build.dir}/scales" />
 		<copy todir="${build.dir}/scales">
 			<fileset dir="${tuxguitar.share.path}/scales"/>
 		</copy>
-		
         <echo>+------------------------------------------------------------------+</echo>
         <echo>|        P A C K A G I N G   T U X G U I T A R  -  J W S           |</echo>
         <echo>+------------------------------------------------------------------+</echo>
