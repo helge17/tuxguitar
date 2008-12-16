@@ -8,7 +8,7 @@ body {
 }
 
 h1{
-	margin: 10px 0px 10px 0px;
+	margin: 0px 0px 10px 0px;
 	padding: 0px 0px 0px 0px;
 	color: #154374;
 	border-bottom: solid #d4d4d4 1px;
@@ -45,4 +45,13 @@ p{
 a, a:hover {
 	color: #154374;
 	text-decoration: none;
+}
+
+#PageMenu {
+	width: 250px;
+	margin-right: 10px;
+}
+
+#PageContent {
+	margin: 10px 0px 10px 0px;
 }

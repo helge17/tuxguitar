@@ -6,15 +6,21 @@ $(document).ready(function(){
 	loadLink( $(".PageLink:first") );
 });
 
+var lock = false;
+
 function loadLink( link ){
-	$.get(
-		$(link).attr("href"),
-		function(request) {
-			$('#PageContent').html( request );
-			$('#PageContent .PageLink').bind("click", function(e){
-				loadLink( $(this) );
-				return false;
-			});
-		}
-	);
+	if( ! lock ){
+		lock = true;
+		$.get(
+			$(link).attr("href"),
+			function(request) {
+				$('#PageContent').html( request );
+				$('#PageContent .PageLink').bind("click", function(e){
+					loadLink( $(this) );
+					return false;
+				});
+			}
+		);
+		lock = false;
+	}
 }
