@@ -185,6 +185,14 @@ public class TGTrackManager {
 		getSongManager().getMeasureManager().moveAllBeats(measure,theMove);
 	}
 	
+	public void moveOutOfBoundsBeatsToNewMeasure(TGTrack track, long start){
+		Iterator it = getMeasuresBeforeEnd(track,start).iterator();
+		while( it.hasNext() ){
+			TGMeasure measure = (TGMeasure)it.next();
+			getSongManager().getMeasureManager().moveOutOfBoundsBeatsToNewMeasure(measure);
+		}
+	}
+	
 	public void changeKeySignature(TGTrack track,long start,int keySignature,boolean toEnd){
 		changeKeySignature(track,getMeasureAt(track,start),keySignature,toEnd);
 	}

@@ -356,6 +356,38 @@ public class TGSongManager {
 			
 			long theMove = nextStart - nextHeader.getStart();
 			
+			//moveMeasureComponents(nextHeader,theMove);
+			moveMeasureHeader(nextHeader,theMove,0);
+			
+			if(toEnd){
+				timeSignature.copy(nextHeader.getTimeSignature());
+			}
+			nextStart = nextHeader.getStart() + nextHeader.getLength();
+		}
+		moveOutOfBoundsBeatsToNewMeasure(header.getStart());
+	}
+	
+	public void moveOutOfBoundsBeatsToNewMeasure(long start){
+		Iterator it = getSong().getTracks();
+		while( it.hasNext() ){
+			TGTrack track = (TGTrack) it.next();
+			getTrackManager().moveOutOfBoundsBeatsToNewMeasure(track, start);
+		}
+	}
+	
+	/*
+	public void changeTimeSignature(TGMeasureHeader header,TGTimeSignature timeSignature,boolean toEnd){
+		//asigno el nuevo ritmo
+		timeSignature.copy(header.getTimeSignature());
+		
+		long nextStart = header.getStart() + header.getLength();
+		List measures = getMeasureHeadersBeforeEnd(header.getStart() + 1);
+		Iterator it = measures.iterator();
+		while(it.hasNext()){
+			TGMeasureHeader nextHeader = (TGMeasureHeader)it.next();
+			
+			long theMove = nextStart - nextHeader.getStart();
+			
 			moveMeasureComponents(nextHeader,theMove);
 			moveMeasureHeader(nextHeader,theMove,0);
 			
@@ -365,7 +397,7 @@ public class TGSongManager {
 			nextStart = nextHeader.getStart() + nextHeader.getLength();
 		}
 	}
-	
+	*/
 	public void changeTripletFeel(long start,int tripletFeel,boolean toEnd){
 		changeTripletFeel(getMeasureHeaderAt(start),tripletFeel,toEnd);
 	}

@@ -155,7 +155,7 @@ public class ChangeTimeSignatureAction extends Action{
 		updateTablature();
 		
 		//termia el undoable
-		addUndoableEdit(undoable.endUndo(timeSignature,toEnd));
+		addUndoableEdit(undoable.endUndo(timeSignature,measure.getStart(),toEnd));
 	}
 	
 	public TGSongManager getSongManager(){
