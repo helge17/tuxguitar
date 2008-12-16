@@ -7,10 +7,8 @@
 package org.herac.tuxguitar.gui.actions.help;
 
 import org.eclipse.swt.events.TypedEvent;
-import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.help.doc.DocDialog;
-import org.herac.tuxguitar.gui.help.doc.DocException;
+import org.herac.tuxguitar.gui.help.doc.TGDocumentation;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 
 /**
@@ -28,8 +26,8 @@ public class ShowDocAction extends Action {
 	
 	protected int execute(TypedEvent e){
 		try {
-			new DocDialog().show(TuxGuitar.instance().getShell());
-		} catch (DocException throwable) {
+			new TGDocumentation().display();
+		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(throwable);
 		}
 		return 0;
