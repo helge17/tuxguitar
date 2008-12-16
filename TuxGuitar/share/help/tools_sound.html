@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+<body>
+
+
+<h1><a name="sound_in_tuxguitar" id="sound_in_tuxguitar">Sound in TuxGuitar</a></h1>
+
+<ul class="toc">
+<li class="level1"><div class="li"><span class="li"><a href="#sound_in_tuxguitar" class="toc">Sound in TuxGuitar</a></span></div>
+<ul class="toc">
+<li class="level2"><div class="li"><span class="li"><a href="#java_sound" class="toc">Java Sound</a></span></div></li>
+<li class="level2"><div class="li"><span class="li"><a href="#platform-dependant_plugins" class="toc">Platform-dependant plugins</a></span></div></li>
+<li class="level2"><div class="li"><span class="li"><a href="#sequencer" class="toc">Sequencer</a></span></div></li></ul>
+</li></ul>
+
+
+
+<div class="level1">
+
+<p>
+ First to mention, TuxGuitar is written in Java programming language. There is dedicated layer in Java for MIDI sound, which uses &ldquo;soundbanks&rdquo;. In TuxGuitar prior to version 1.0, using the soundbanks was the only way to play the sound, and it was totally independent of your system MIDI settings.
+</p>
+
+<p>
+Since the version 1.0 there are some plugins that enable connection between TuxGuitar and the system MIDI devices. You need the plugin depending on your operating system and audio properties: 
+</p>
+<ul>
+<li class="level2"><div class="li"> Linux (ALSA) - TuxGuitar-alsa</div>
+</li>
+<li class="level2"><div class="li"> Linux (OSS) - TuxGuitar-OSS</div>
+</li>
+<li class="level2"><div class="li"> MacOS - TuxGuitar-CoreAudio</div>
+</li>
+<li class="level2"><div class="li"> Microsoft Windows - <em>integrated in the application</em></div>
+</li>
+</ul>
+
+<p>
+ These plugins are included in your distribution package, so there is no need to download them manually. Just be shure that plugins stay enabled in the <a class="PageLink" href="tools_plugins.html"> plugins dialog</a>.
+</p>
+
+</div>
+
+<h3><a name="java_sound" id="java_sound">Java Sound</a></h3>
+<div class="level3">
+
+<p>
+ Java Sound plugin, relying on the soundbanks, is still available in the form of the &ldquo;Java Sound Api plugin&rdquo;. You can adjust and change the soundbank with <strong>Configure</strong> button in the <a class="PageLink" href="tools_plugins.html"> plugins dialog</a>.
+</p>
+
+<p>
+If the plugin is enabled, in the Sound tab of the Tools&rarr;Settings dialog you can choose &ldquo;Java Sound Synthesizer&rdquo; in the <strong>Midi Port</strong> list. That enables sound output using Java soundbanks.
+</p>
+
+</div>
+
+<h3><a name="platform-dependant_plugins" id="platform-dependant_plugins">Platform-dependant plugins</a></h3>
+<div class="level3">
+
+<p>
+If you have TuxGuitar-alsa, TuxGuitar-OSS, TuxGuitar-CoreAudio plugin enabled or if you are running TuxGuitar on the Windows platform TuxGuitar detects your system MIDI ports (devices).
+</p>
+
+<p>
+So it depends of your system settings, but anyway, if the proper plugin is enabled and working you should see system ports in the <strong>Midi Port</strong> list in the Sound tab of the Tools&rarr;Settings dialog. Choosing the right one enables your native MIDI sound in TuxGuitar.
+</p>
+
+<p>
+If you experience problems using your native MIDI output, consult the help of the plugin you are using.
+</p>
+
+</div>
+
+<h3><a name="sequencer" id="sequencer">Sequencer</a></h3>
+<div class="level3">
+
+<p>
+ Beside MIDI Port sound options in the Tools&rarr;Settings&rarr;Sound tab is also <strong>MIDI Sequencer</strong> options. In general, you should use <strong>&ldquo;Real Time Sequencer&rdquo;</strong> because it&rsquo;s faster, but it needs Java Sound plugin to be enabled, which means it requires Sun Java to be installed. In case you use some other JVM, your only choice is <strong>&ldquo;TuxGuitar Sequencer&rdquo;</strong>. Don&rsquo;t worry, it is not as bad as it sounds. :)
+</p>
+
+</div>
+<br/><br/>
+</body>
+</html>

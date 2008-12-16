@@ -181,7 +181,17 @@ public class TGFileUtils {
 		return new Image(TuxGuitar.instance().getDisplay(),16,16);
 	}
 	
-
+	public static boolean isLocalFile(URL url){
+		try {
+			if(url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
+				return true;
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return false;
+	}
+	
 	private static String getUserConfigDir(){
 		// Look for the system property
 		String configPath = System.getProperty(TG_CONFIG_PATH);
