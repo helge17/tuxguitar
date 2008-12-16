@@ -2,7 +2,7 @@
 <jnlp spec="1.0+" codebase="http://localhost/TuxGuitar-jws/jws/" href="tuxguitar.jnlp">
 	<information>
   		<title>TuxGuitar</title>
-  		<vendor>Herac Modern Solutions 2</vendor>
+  		<vendor>Herac Modern Solutions</vendor>
   		<homepage href="http://www.herac.com.ar" />
 		<offline-allowed/>
 	</information>
@@ -19,7 +19,9 @@
 	<resources os="Linux">
 		<jar href="files/swt-linux-x86.jar" />
 		<jar href="files/tuxguitar-alsa.jar" />
+		<jar href="files/tuxguitar-fluidsynth.jar" />
 		<nativelib href="files/tuxguitar-alsa-jni.jar" />
+		<nativelib href="files/tuxguitar-fluidsynth-jni.jar" />
 	</resources>
 	
 	<resources os="Windows">
