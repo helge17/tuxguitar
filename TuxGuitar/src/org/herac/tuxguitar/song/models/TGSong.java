@@ -138,6 +138,8 @@ public abstract class TGSong {
 			TGTrack track = (TGTrack)tracks.next();
 			track.clear();
 		}
+		this.tracks.clear();
+		this.measureHeaders.clear();
 	}
 	
 	public TGSong clone(TGFactory factory){
@@ -147,6 +149,7 @@ public abstract class TGSong {
 	}
 	
 	public void copy(TGFactory factory,TGSong song){
+		song.clear();
 		song.setName(getName());
 		song.setArtist(getArtist());
 		song.setAlbum(getAlbum());
