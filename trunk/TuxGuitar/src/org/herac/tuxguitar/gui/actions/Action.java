@@ -9,9 +9,9 @@ package org.herac.tuxguitar.gui.actions;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
-import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.undo.UndoableEdit;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -46,8 +46,7 @@ public abstract class Action extends ActionAdapter {
 		if (!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()) {
 			final int flags = getFlags();
 			
-			if ((flags & DISABLE_ON_PLAYING) != 0
-					&& TuxGuitar.instance().getPlayer().isRunning()) {
+			if ((flags & DISABLE_ON_PLAYING) != 0 && TuxGuitar.instance().getPlayer().isRunning()) {
 				TuxGuitar.instance().updateCache(((flags & AUTO_UPDATE) != 0));
 				return;
 			}
@@ -55,14 +54,13 @@ public abstract class Action extends ActionAdapter {
 			if ((flags & AUTO_LOCK) != 0) {
 				ActionLock.lock();
 			}
-			
+			/*
 			new SyncThread(new Runnable() {
 				public void run() {
 					if (!TuxGuitar.isDisposed()) {
 						int result = execute(e);
 						
-						TuxGuitar.instance().updateCache(
-								(((flags | result) & AUTO_UPDATE) != 0));
+						TuxGuitar.instance().updateCache((((flags | result) & AUTO_UPDATE) != 0));
 						
 						if (((flags | result) & AUTO_UNLOCK) != 0) {
 							ActionLock.unlock();
@@ -70,6 +68,24 @@ public abstract class Action extends ActionAdapter {
 					}
 				}
 			}).start();
+			*/
+			try {
+				TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+					public void run() throws Throwable {
+						if (!TuxGuitar.isDisposed()) {
+							int result = execute(e);
+							
+							TuxGuitar.instance().updateCache((((flags | result) & AUTO_UPDATE) != 0));
+							
+							if (((flags | result) & AUTO_UNLOCK) != 0) {
+								ActionLock.unlock();
+							}
+						}
+					}
+				});
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
+			}
 		}
 	}
 	

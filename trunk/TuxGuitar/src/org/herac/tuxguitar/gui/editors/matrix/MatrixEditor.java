@@ -37,6 +37,7 @@ import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.IncrementDurationAction;
 import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGRedrawListener;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
@@ -57,7 +58,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 
-public class MatrixEditor implements IconLoader,LanguageLoader{
+public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
@@ -103,6 +104,7 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		this.listener = new MatrixListener();
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener( this );
 	}
 	
 	public void show(){
@@ -890,6 +892,14 @@ public class MatrixEditor implements IconLoader,LanguageLoader{
 		
 		public void mouseHover(MouseEvent e) {
 			// TODO Auto-generated method stub
+		}
+	}
+	
+	public void doRedraw(int type) {
+		if( type == TGRedrawListener.NORMAL ){
+			this.redraw();
+		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
 		}
 	}
 }

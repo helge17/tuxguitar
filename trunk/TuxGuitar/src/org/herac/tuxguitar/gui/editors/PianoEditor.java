@@ -9,14 +9,14 @@ import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
-public class PianoEditor implements IconLoader,LanguageLoader{
+public class PianoEditor implements TGRedrawListener, IconLoader,LanguageLoader{
 	
 	private Piano piano;
 	
 	public PianoEditor(){
-		super();
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
 	}
 	
 	public void show() {
@@ -76,6 +76,14 @@ public class PianoEditor implements IconLoader,LanguageLoader{
 	public void loadIcons(){
 		if(!isDisposed()){
 			getPiano().loadIcons();
+		}
+	}
+
+	public void doRedraw(int type) {
+		if( type == TGRedrawListener.NORMAL ){
+			this.redraw();
+		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
 		}
 	}
 }

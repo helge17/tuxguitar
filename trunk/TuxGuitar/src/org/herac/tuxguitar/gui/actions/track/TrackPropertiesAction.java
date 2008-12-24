@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.undo.undoables.UndoableJoined;
@@ -43,6 +44,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -272,16 +274,7 @@ public class TrackPropertiesAction extends Action {
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				updateTrackProperties();
-				// update and redraw
-				new SyncThread(new Runnable() {
-					public void run() {
-						if(!TuxGuitar.isDisposed()){
-							updateTablature();
-							TuxGuitar.instance().getMixer().updateValues();
-							TrackPropertiesAction.this.dialog.dispose();
-						}
-					}
-				}).start();
+				TrackPropertiesAction.this.dialog.dispose();
 			}
 		});
 		
@@ -349,62 +342,91 @@ public class TrackPropertiesAction extends Action {
 	}
 	
 	protected void updateTrackProperties() {
-		TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
+		final TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
 		
-		String trackName = this.nameText.getText();
+		final String trackName = this.nameText.getText();
 		
-		List strings = new ArrayList();
+		final List strings = new ArrayList();
 		for (int i = 0; i < this.stringCount; i++) {
 			strings.add(TGSongManager.newString(getSongManager().getFactory(),(i + 1), this.stringCombos[i].getSelectionIndex()));
 		}
 		
-		boolean percussion = this.percussionCheckBox.getSelection();
-		int offset = ((percussion)?0:TGTrack.MIN_OFFSET + this.offsetCombo.getSelectionIndex());
-		int instrument = ((this.instrumentCombo.getSelectionIndex() >= 0)?this.instrumentCombo.getSelectionIndex():0);
+		final boolean percussion = this.percussionCheckBox.getSelection();
+		final int offset = ((percussion)?0:TGTrack.MIN_OFFSET + this.offsetCombo.getSelectionIndex());
+		final int instrument = ((this.instrumentCombo.getSelectionIndex() >= 0)?this.instrumentCombo.getSelectionIndex():0);
 		
-		boolean infoChanges = hasInfoChanges(track,trackName,this.trackColor,offset);
-		boolean tuningChanges = hasTuningChanges(track,strings);
-		boolean instrumentChanges = hasInstrumentChanges(track,instrument,percussion);
+		final TGColor trackColor = this.trackColor;
+		final boolean infoChanges = hasInfoChanges(track,trackName,trackColor,offset);
+		final boolean tuningChanges = hasTuningChanges(track,strings);
+		final boolean instrumentChanges = hasInstrumentChanges(track,instrument,percussion);
 		
-		if(infoChanges || tuningChanges || instrumentChanges){
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			UndoableJoined undoable = new UndoableJoined();
-			
-			UndoableTrackGeneric undoableGeneric = null;
-			if(tuningChanges){
-				undoableGeneric = UndoableTrackGeneric.startUndo(track);
+		try {
+			if(infoChanges || tuningChanges || instrumentChanges){
+				ActionLock.lock();
+				TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+					public void run() throws Throwable {
+						TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+						new Thread( new Runnable() {
+							public void run() {
+								TuxGuitar.instance().getFileHistory().setUnsavedFile();
+								UndoableJoined undoable = new UndoableJoined();
+								
+								UndoableTrackGeneric undoableGeneric = null;
+								if(tuningChanges){
+									undoableGeneric = UndoableTrackGeneric.startUndo(track);
+								}
+								
+								//--------------------------------------info---------------------------------------
+								if(infoChanges){
+									UndoableTrackInfo undoableInfo = null;
+									if(!tuningChanges){
+										undoableInfo = UndoableTrackInfo.startUndo(track);
+									}
+									getSongManager().getTrackManager().changeInfo(track,trackName,trackColor,offset);
+									if(!tuningChanges && undoableInfo != null){
+										undoable.addUndoableEdit(undoableInfo.endUndo(track));
+									}
+								}
+								//--------------------------------------tuning---------------------------------------
+								if(tuningChanges){
+									getSongManager().getTrackManager().changeInstrumentStrings(track,strings);
+								}
+								//-----------------------------instrument----------------------------------------------
+								if(instrumentChanges){
+									UndoableTrackInstrument undoableInstrument = null;
+									if(!tuningChanges){
+										undoableInstrument = UndoableTrackInstrument.startUndo(track);
+									}
+									getSongManager().getTrackManager().changeInstrument(track,instrument,percussion);
+									if(!tuningChanges && undoableInstrument != null){
+										undoable.addUndoableEdit(undoableInstrument.endUndo(track));
+									}
+								}
+								if(tuningChanges && undoableGeneric != null){
+									undoable.addUndoableEdit(undoableGeneric.endUndo(track));
+								}
+								addUndoableEdit(undoable.endUndo());
+								
+								new SyncThread(new Runnable() {
+									public void run() {
+										if(!TuxGuitar.isDisposed()){
+											updateTablature();
+											TuxGuitar.instance().getMixer().updateValues();
+											TuxGuitar.instance().updateCache( true );
+											TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+											ActionLock.unlock();
+										}
+									}
+								}).start();
+							}
+						}).start();
+					}
+				});
 			}
-			
-			//--------------------------------------info---------------------------------------
-			if(infoChanges){
-				UndoableTrackInfo undoableInfo = null;
-				if(!tuningChanges){
-					undoableInfo = UndoableTrackInfo.startUndo(track);
-				}
-				getSongManager().getTrackManager().changeInfo(track,trackName,this.trackColor,offset);
-				if(!tuningChanges && undoableInfo != null){
-					undoable.addUndoableEdit(undoableInfo.endUndo(track));
-				}
-			}
-			//--------------------------------------tuning---------------------------------------
-			if(tuningChanges){
-				getSongManager().getTrackManager().changeInstrumentStrings(track,strings);
-			}
-			//-----------------------------instrument----------------------------------------------
-			if(instrumentChanges){
-				UndoableTrackInstrument undoableInstrument = null;
-				if(!tuningChanges){
-					undoableInstrument = UndoableTrackInstrument.startUndo(track);
-				}
-				getSongManager().getTrackManager().changeInstrument(track,instrument,percussion);
-				if(!tuningChanges && undoableInstrument != null){
-					undoable.addUndoableEdit(undoableInstrument.endUndo(track));
-				}
-			}
-			if(tuningChanges && undoableGeneric != null){
-				undoable.addUndoableEdit(undoableGeneric.endUndo(track));
-			}
-			addUndoableEdit(undoable.endUndo());
+		} catch (Throwable throwable) {
+			TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+			ActionLock.unlock();
+			throwable.printStackTrace();
 		}
 	}
 	

@@ -20,12 +20,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeTimeSignature;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -98,17 +101,28 @@ public class ChangeTimeSignatureAction extends Action{
 			buttonOk.setLayoutData(getButtonData());
 			buttonOk.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					boolean toEndValue = toEnd.getSelection();
-					int numeratorValue = Integer.parseInt(numerator.getText());
-					int denominatorValue = Integer.parseInt(denominator.getText());
-					
-					TGTimeSignature timeSignature = getSongManager().getFactory().newTimeSignature();
-					timeSignature.setNumerator(numeratorValue);
-					timeSignature.getDenominator().setValue(denominatorValue);
-					
-					setTimeSignature(timeSignature,toEndValue);
+					final boolean toEndValue = toEnd.getSelection();
+					final int numeratorValue = Integer.parseInt(numerator.getText());
+					final int denominatorValue = Integer.parseInt(denominator.getText());
 					
 					dialog.dispose();
+					try {
+						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws Throwable {
+								ActionLock.lock();
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								TGTimeSignature timeSignature = getSongManager().getFactory().newTimeSignature();
+								timeSignature.setNumerator(numeratorValue);
+								timeSignature.getDenominator().setValue(denominatorValue);
+								setTimeSignature(timeSignature,toEndValue);
+								TuxGuitar.instance().updateCache( true );
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								ActionLock.unlock();
+							}
+						});
+					} catch (Throwable throwable) {
+						MessageDialog.errorMessage(throwable);
+					}
 				}
 			});
 			

@@ -20,11 +20,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeKeySignature;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -99,10 +102,24 @@ public class ChangeKeySignatureAction extends Action{
 			buttonOK.setLayoutData(getButtonData());
 			buttonOK.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					boolean toEndValue = toEnd.getSelection();
-					setKeySignature(keySignatures.getSelectionIndex(),toEndValue);
+					final boolean toEndValue = toEnd.getSelection();
+					final int keySignature = keySignatures.getSelectionIndex();
 					
 					dialog.dispose();
+					try {
+						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws Throwable {
+								ActionLock.lock();
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								setKeySignature(keySignature,toEndValue);
+								TuxGuitar.instance().updateCache( true );
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								ActionLock.unlock();
+							}
+						});
+					} catch (Throwable throwable) {
+						MessageDialog.errorMessage(throwable);
+					}
 				}
 			});
 			

@@ -18,7 +18,7 @@ import org.herac.tuxguitar.gui.editors.tab.Tablature;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class TablatureEditor {
+public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
 	private Tablature tablature;
 	private ClipBoard clipBoard;
 	
@@ -35,8 +35,14 @@ public class TablatureEditor {
 		this.tablature.updateTablature();
 		this.tablature.initCaret();
 		this.tablature.setFocus();
+		this.initListener();
 		this.initKeyActions();
 		this.initMenu();
+	}
+	
+	private void initListener(){
+		TuxGuitar.instance().getEditorManager().addRedrawListener( this );
+		TuxGuitar.instance().getEditorManager().addUpdateListener( this );
 	}
 	
 	private void initKeyActions(){
@@ -59,5 +65,23 @@ public class TablatureEditor {
 	
 	public ClipBoard getClipBoard(){
 		return this.clipBoard;
+	}
+
+	public void doRedraw(int type) {
+		if( type == TGRedrawListener.NORMAL ){
+			getTablature().redraw();
+		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+			getTablature().redrawPlayingMode();
+		}
+	}
+	
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SONG_UPDATED ){
+			getTablature().updateTablature();
+		}else if( type == TGUpdateListener.SONG_LOADED ){
+			getTablature().updateTablature();
+			getTablature().resetScroll();
+			getTablature().initCaret();
+		}
 	}
 }

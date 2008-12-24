@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.ActionLock;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
@@ -26,7 +27,7 @@ import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeMarker;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGMarker;
 
-public class MarkerList implements IconLoader,LanguageLoader{
+public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 	
 	private static MarkerList instance;
 	
@@ -55,6 +56,7 @@ public class MarkerList implements IconLoader,LanguageLoader{
 	private MarkerList() {
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void show() {
@@ -270,4 +272,9 @@ public class MarkerList implements IconLoader,LanguageLoader{
 		}
 	}
 	
+	public void doUpdate(int type) {
+		if( type ==  TGUpdateListener.SONG_LOADED ){
+			this.update();
+		}
+	}
 }

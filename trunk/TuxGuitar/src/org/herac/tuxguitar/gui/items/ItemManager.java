@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.items.menu.CompositionMenuItem;
 import org.herac.tuxguitar.gui.items.menu.EditMenuItem;
 import org.herac.tuxguitar.gui.items.menu.FileMenuItem;
@@ -61,7 +62,7 @@ import org.herac.tuxguitar.gui.util.TGFileUtils;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ItemManager implements IconLoader,LanguageLoader{
+public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	//private static final int COOL_ITEM_HEIGHT = 32;
 	
 	private Menu menu;
@@ -84,6 +85,7 @@ public class ItemManager implements IconLoader,LanguageLoader{
 		this.loadItems();
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void loadItems(){
@@ -354,5 +356,11 @@ public class ItemManager implements IconLoader,LanguageLoader{
 	
 	private String getCoolItemsFileName(){
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "toolbars.xml";
+	}
+
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SELECTION ){
+			this.updateItems();
+		}
 	}
 }

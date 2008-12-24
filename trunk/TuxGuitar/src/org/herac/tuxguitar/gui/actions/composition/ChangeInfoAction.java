@@ -20,9 +20,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeInfo;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -63,33 +66,33 @@ public class ChangeInfoAction extends Action{
 			nameLabel.setLayoutData(makeLabelData()); 
 			nameLabel.setText(TuxGuitar.getProperty("composition.name") + ":");
 			
-			final Text name = new Text(group, SWT.BORDER);
-			name.setLayoutData(makeTextData());
-			name.setText(song.getName());
+			final Text nameText = new Text(group, SWT.BORDER);
+			nameText.setLayoutData(makeTextData());
+			nameText.setText(song.getName());
 			//-------ARTIST------------------------------------
 			Label artistLabel = new Label(group, SWT.NULL);
 			artistLabel.setLayoutData(makeLabelData());
 			artistLabel.setText(TuxGuitar.getProperty("composition.artist") + ":");
 			
-			final Text artist = new Text(group, SWT.BORDER);
-			artist.setLayoutData(makeTextData());
-			artist.setText(song.getArtist());
+			final Text artistText = new Text(group, SWT.BORDER);
+			artistText.setLayoutData(makeTextData());
+			artistText.setText(song.getArtist());
 			//-------ALBUM------------------------------------
 			Label albumLabel = new Label(group, SWT.NULL);
 			albumLabel.setLayoutData(makeLabelData());
 			albumLabel.setText(TuxGuitar.getProperty("composition.album") + ":");
 			
-			final Text album = new Text(group, SWT.BORDER);
-			album.setLayoutData(makeTextData());
-			album.setText(song.getAlbum());
+			final Text albumText = new Text(group, SWT.BORDER);
+			albumText.setLayoutData(makeTextData());
+			albumText.setText(song.getAlbum());
 			//-------AUTHOR------------------------------------
 			Label authorLabel = new Label(group, SWT.NULL);
 			authorLabel.setLayoutData(makeLabelData());
 			authorLabel.setText(TuxGuitar.getProperty("composition.author") + ":");
 			
-			final Text author = new Text(group, SWT.BORDER);
-			author.setLayoutData(makeTextData());
-			author.setText(song.getAuthor());
+			final Text authorText = new Text(group, SWT.BORDER);
+			authorText.setLayoutData(makeTextData());
+			authorText.setText(song.getAuthor());
 			
 			//------------------BUTTONS--------------------------
 			Composite buttons = new Composite(dialog, SWT.NONE);
@@ -101,8 +104,26 @@ public class ChangeInfoAction extends Action{
 			buttonOK.setLayoutData(getButtonData());
 			buttonOK.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					setProperties(name.getText(),artist.getText(),album.getText(),author.getText());
+					final String name = nameText.getText();
+					final String artist = artistText.getText();
+					final String album = albumText.getText();
+					final String author = authorText.getText();
+					
 					dialog.dispose();
+					try {
+						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws Throwable {
+								ActionLock.lock();
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								setProperties(name,artist,album,author);
+								TuxGuitar.instance().updateCache( true );
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								ActionLock.unlock();
+							}
+						});
+					} catch (Throwable throwable) {
+						MessageDialog.errorMessage(throwable);
+					}
 				}
 			});
 			
