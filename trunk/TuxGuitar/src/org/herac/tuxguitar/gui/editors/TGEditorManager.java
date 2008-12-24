@@ -28,18 +28,26 @@ public class TGEditorManager {
 	}
 	
 	public void addRedrawListener( TGRedrawListener listener){
-		this.redrawListeners.add( listener );
+		if(!this.redrawListeners.contains( listener )){
+			this.redrawListeners.add( listener );
+		}
 	}
 	
 	public void removeRedrawListener( TGRedrawListener listener){
-		this.redrawListeners.remove( listener );
+		if(this.redrawListeners.contains( listener )){
+			this.redrawListeners.remove( listener );
+		}
 	}
 	
 	public void addUpdateListener( TGUpdateListener listener){
-		this.updateListeners.add( listener );
+		if(!this.updateListeners.contains( listener )){
+			this.updateListeners.add( listener );
+		}
 	}
 	
 	public void removeUpdateListener( TGUpdateListener listener){
-		this.updateListeners.remove( listener );
+		if(this.updateListeners.contains( listener )){
+			this.updateListeners.remove( listener );
+		}
 	}
 }

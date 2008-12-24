@@ -34,11 +34,15 @@ public class LanguageManager {
 	}
 	
 	public void addLoader(LanguageLoader loader){
-		this.loaders.add(loader);
+		if( !this.loaders.contains( loader )){
+			this.loaders.add(loader);
+		}
 	}
 	
 	public void removeLoader(LanguageLoader loader){
-		this.loaders.remove(loader);
+		if( this.loaders.contains( loader )){
+			this.loaders.remove(loader);
+		}
 	}
 	
 	private void fireChanges(){

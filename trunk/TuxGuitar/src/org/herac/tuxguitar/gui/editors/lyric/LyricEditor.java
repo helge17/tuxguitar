@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.gui.editors.lyric;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -55,28 +57,46 @@ public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	public LyricEditor(){
 		this.listener = new LyricModifyListener(this);
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void show() {
 		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(getDialogLayout());
 		this.dialog.setSize(EDITOR_WIDTH,EDITOR_HEIGHT);
+		this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				onDispose();
+			}
+		});
 		
 		this.track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
 		this.loadComposites();
 		this.loadProperties();
 		this.loadIcons();
 		this.updateItems();
-		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_WAIT);
-		
+		this.addListeners();
+		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER);
+	}
+	
+	public void addListeners(){
+		TuxGuitar.instance().getIconManager().addLoader(this);
+		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+	}
+	
+	public void onDispose(){
 		this.track = null;
 		this.label = null;
 		this.text = null;
 		this.dialog = null;
+		this.removeListeners();
+		TuxGuitar.instance().updateCache(true);
 	}
 	
 	private GridLayout getDialogLayout(){

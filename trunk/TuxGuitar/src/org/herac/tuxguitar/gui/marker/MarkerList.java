@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -54,9 +56,7 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 	}
 	
 	private MarkerList() {
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		super();
 	}
 	
 	public void show() {
@@ -172,9 +172,27 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 		this.loadIcons();
 		this.loadProperties(false);
 		
+		this.addListeners();
+		this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				removeListeners();
+			}
+		});
 		this.dialog.setDefaultButton( this.buttonGo );
 		
 		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+	}
+	
+	public void addListeners(){
+		TuxGuitar.instance().getIconManager().addLoader(this);
+		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	public void dispose(){

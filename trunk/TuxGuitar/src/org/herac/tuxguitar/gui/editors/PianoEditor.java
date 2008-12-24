@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.gui.editors;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
@@ -14,9 +16,7 @@ public class PianoEditor implements TGRedrawListener, IconLoader,LanguageLoader{
 	private Piano piano;
 	
 	public PianoEditor(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+		super();
 	}
 	
 	public void show() {
@@ -26,11 +26,26 @@ public class PianoEditor implements TGRedrawListener, IconLoader,LanguageLoader{
 		
 		this.piano = new Piano(dialog,SWT.NONE);
 		
-		TuxGuitar.instance().updateCache(true);
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		
-		TuxGuitar.instance().updateCache(true);
+		this.addListeners();
+		dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				removeListeners();
+				TuxGuitar.instance().updateCache(true);
+			}
+		});
+		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+	}
+	
+	public void addListeners(){
+		TuxGuitar.instance().getIconManager().addLoader(this);
+		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
 	}
 	
 	private Piano getPiano(){

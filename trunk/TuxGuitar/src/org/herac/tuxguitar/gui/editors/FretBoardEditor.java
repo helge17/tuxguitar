@@ -16,7 +16,6 @@ public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoa
 	public FretBoardEditor(){
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
 	}
 	
 	private FretBoard getFretBoard(){
@@ -26,12 +25,14 @@ public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoa
 	public void hideFretBoard(){
 		this.visible = false;
 		getFretBoard().setVisible(this.visible);
+		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
 		TuxGuitar.instance().updateShellFooter(0,0,0);
 	}
 	
 	public void showFretBoard(){
 		this.visible = true;
 		getFretBoard().setVisible(this.visible);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
 		TuxGuitar.instance().updateShellFooter(getFretBoard().getHeight(), 730,520);
 	}
 	

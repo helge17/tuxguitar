@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -59,20 +61,32 @@ public class TGMixer implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	public TGMixer() {
 		this.tracks = new ArrayList();
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void show() {
 		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
 		this.loadData();
 		
-		TuxGuitar.instance().updateCache(true);
-		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_WAIT);
-		
-		TuxGuitar.instance().updateCache(true);
+		this.addListeners();
+		this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				removeListeners();
+				TuxGuitar.instance().updateCache(true);
+			}
+		});
+		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER );
+	}
+	
+	public void addListeners(){
+		TuxGuitar.instance().getIconManager().addLoader(this);
+		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	protected void loadData(){

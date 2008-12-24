@@ -143,11 +143,15 @@ public class IconManager {
 	}
 	
 	public void addLoader(IconLoader loader){
-		this.loaders.add(loader);
+		if( !this.loaders.contains( loader )){
+			this.loaders.add(loader);
+		}
 	}
 	
 	public void removeLoader(IconLoader loader){
-		this.loaders.remove(loader);
+		if( this.loaders.contains( loader )){
+			this.loaders.remove(loader);
+		}
 	}
 	
 	private void fireChanges(){
