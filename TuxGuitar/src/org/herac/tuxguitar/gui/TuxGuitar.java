@@ -31,6 +31,9 @@ import org.herac.tuxguitar.gui.actions.system.DisposeAction;
 import org.herac.tuxguitar.gui.editors.EditorCache;
 import org.herac.tuxguitar.gui.editors.FretBoardEditor;
 import org.herac.tuxguitar.gui.editors.PianoEditor;
+import org.herac.tuxguitar.gui.editors.TGEditorManager;
+import org.herac.tuxguitar.gui.editors.TGRedrawListener;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
 import org.herac.tuxguitar.gui.editors.chord.CustomChordManager;
 import org.herac.tuxguitar.gui.editors.lyric.LyricEditor;
@@ -115,6 +118,8 @@ public class TuxGuitar {
 	
 	private LyricEditor lyricEditor;
 	
+	private TGEditorManager editorManager;
+	
 	private TGBrowserDialog browser;
 	
 	private UndoableManager undoableManager;
@@ -154,6 +159,17 @@ public class TuxGuitar {
 				final Display display = getDisplay();
 				if(display != null && !display.isDisposed()){
 					display.syncExec(new Runnable() {
+						public void run() {
+							task.run();
+						}
+					});
+				}
+			}
+			
+			public void excecuteLater(final TGSynchronizer.TGSynchronizerTask task) {
+				final Display display = getDisplay();
+				if(display != null && !display.isDisposed()){
+					display.asyncExec(new Runnable() {
 						public void run() {
 							task.run();
 						}
@@ -447,6 +463,13 @@ public class TuxGuitar {
 		return this.editorCache;
 	}
 	
+	public TGEditorManager getEditorManager(){
+		if(this.editorManager == null){
+			this.editorManager = new TGEditorManager();
+		}
+		return this.editorManager;
+	}
+	
 	public LyricEditor getLyricEditor(){
 		if(this.lyricEditor == null){
 			this.lyricEditor = new LyricEditor();
@@ -585,11 +608,14 @@ public class TuxGuitar {
 					if(!isDisposed() && !isLocked()){
 						if(updateItems){
 							lock();
+							getEditorManager().doUpdate( TGUpdateListener.SELECTION );
+							/*
 							getItemManager().updateItems();
 							getTransport().updateItems();
 							getMixer().updateItems();
 							getLyricEditor().updateItems();
 							getTable().updateItems();
+							*/
 							unlock();
 						}
 						redraw();
@@ -602,11 +628,14 @@ public class TuxGuitar {
 	protected void redraw(){
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
+			this.getEditorManager().doRedraw( TGRedrawListener.NORMAL );
+			/*
 			this.getTablatureEditor().getTablature().redraw();
 			this.getFretBoardEditor().redraw();
 			this.getPianoEditor().redraw();
 			this.getTable().redraw();
 			this.getMatrixEditor().redraw();
+			*/
 			this.unlock();
 		}
 	}
@@ -614,6 +643,9 @@ public class TuxGuitar {
 	public void redrawPayingMode(){
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
+			this.getEditorCache().updatePlayMode();
+			this.getEditorManager().doRedraw( this.getEditorCache().shouldRedraw() ? TGRedrawListener.PLAYING_NEW_BEAT : TGRedrawListener.PLAYING_THREAD );
+			/*
 			this.getEditorCache().updatePlayMode();
 			if(this.getEditorCache().shouldRedraw()){
 				this.getTablatureEditor().getTablature().redrawPlayingMode();
@@ -623,6 +655,7 @@ public class TuxGuitar {
 				this.getMatrixEditor().redrawPlayingMode();
 			}
 			this.getTransport().redrawPlayingMode();
+			*/
 			this.unlock();
 		}
 	}
@@ -695,6 +728,8 @@ public class TuxGuitar {
 		getPlayer().reset();
 		getEditorCache().reset();
 		getUndoableManager().discardAllEdits();
+		getEditorManager().doUpdate( TGUpdateListener.SONG_LOADED );
+		/*
 		getTablatureEditor().getTablature().updateTablature();
 		getTablatureEditor().getTablature().resetScroll();
 		getTablatureEditor().getTablature().initCaret();
@@ -702,7 +737,7 @@ public class TuxGuitar {
 		getMixer().update();
 		getLyricEditor().update();
 		MarkerList.instance().update();
-		
+		*/
 		this.unlock();
 		
 		updateCache(true);
@@ -724,12 +759,13 @@ public class TuxGuitar {
 	
 	public void fireUpdate(){
 		this.lock();
-		
 		this.getEditorCache().reset();
+		this.getEditorManager().doUpdate( TGUpdateListener.SONG_UPDATED );
+		/*
 		this.getTablatureEditor().getTablature().updateTablature();
 		this.getTable().fireUpdate(false);
 		this.getLyricEditor().update();
-		
+		*/
 		this.unlock();
 	}
 	

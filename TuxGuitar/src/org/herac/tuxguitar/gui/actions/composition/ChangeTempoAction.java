@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeTempo;
 import org.herac.tuxguitar.gui.util.DialogUtils;
@@ -27,6 +28,7 @@ import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -100,11 +102,25 @@ public class ChangeTempoAction extends Action{
 			buttonOK.setLayoutData(getButtonData());
 			buttonOK.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					if(update(tempo,applyToAllMeasures,applyToEnd)){
-						dialog.dispose();
-						return;
+					final int tempoValue = tempo.getSelection();
+					final boolean applyToEndValue = applyToEnd.getSelection();
+					final boolean applyToAllMeasuresValue = applyToAllMeasures.getSelection();
+					
+					dialog.dispose();
+					try {
+						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws Throwable {
+								ActionLock.lock();
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								setTempo(tempoValue, applyToAllMeasuresValue, applyToEndValue);
+								TuxGuitar.instance().updateCache( true );
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								ActionLock.unlock();
+							}
+						});
+					} catch (Throwable throwable) {
+						MessageDialog.errorMessage(throwable);
 					}
-					MessageDialog.errorMessage(dialog.getShell(),TuxGuitar.getProperty("composition.tempo.invalid"));
 				}
 			});
 			
@@ -136,14 +152,13 @@ public class ChangeTempoAction extends Action{
 		return data;
 	}
 	
-	protected boolean update(Spinner value,Button applyToAllMeasures,Button applyToEnd){
-		int tempoValue = value.getSelection();
+	protected void setTempo(int tempoValue,boolean applyToAllMeasures,boolean applyToEnd){
 		if(tempoValue >= MIN_TEMPO && MAX_TEMPO <= 320){
 			TGTempo tempo = getSongManager().getFactory().newTempo();
 			tempo.setValue(tempoValue);
 			
-			long start = (applyToAllMeasures.getSelection())?TGDuration.QUARTER_TIME:getEditor().getTablature().getCaret().getMeasure().getStart();
-			boolean toEnd = (applyToAllMeasures.getSelection() || applyToEnd.getSelection());
+			long start = (applyToAllMeasures ? TGDuration.QUARTER_TIME : getEditor().getTablature().getCaret().getMeasure().getStart());
+			boolean toEnd = (applyToAllMeasures || applyToEnd);
 			
 			//comienza el undoable
 			UndoableChangeTempo undoable = UndoableChangeTempo.startUndo();
@@ -157,9 +172,7 @@ public class ChangeTempoAction extends Action{
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
-			return true;
 		}
-		return false;
 	}
 	
 	public TGSongManager getSongManager(){

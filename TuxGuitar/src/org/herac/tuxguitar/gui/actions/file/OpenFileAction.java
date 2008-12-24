@@ -18,6 +18,7 @@ import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.FileChooser;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -78,15 +79,23 @@ public class OpenFileAction extends Action {
 			return;
 		}
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-		new Thread(new Runnable() {
-			public void run() {
-				if(!TuxGuitar.isDisposed()){
-					FileActionUtils.open(url);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+		try {
+			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					new Thread(new Runnable() {
+						public void run() {
+							if(!TuxGuitar.isDisposed()){
+								FileActionUtils.open(url);
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								ActionLock.unlock();
+							}
+						}
+					}).start();
 				}
-			}
-		}).start();
+			});
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 	
 	protected URL getOpenFileName(Object data){

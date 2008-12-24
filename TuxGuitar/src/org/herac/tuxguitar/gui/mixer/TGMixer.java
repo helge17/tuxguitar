@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
@@ -34,7 +35,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class TGMixer implements IconLoader,LanguageLoader{
+public class TGMixer implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	public static final int MUTE = 0x01;
 	public static final int SOLO = 0x02;
@@ -60,6 +61,7 @@ public class TGMixer implements IconLoader,LanguageLoader{
 		this.tracks = new ArrayList();
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void show() {
@@ -246,6 +248,14 @@ public class TGMixer implements IconLoader,LanguageLoader{
 	public synchronized void dispose() {
 		if(!isDisposed()){
 			this.dialog.dispose();
+		}
+	}
+
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SELECTION ){
+			this.updateItems();
+		}else if( type == TGUpdateListener.SONG_LOADED ){
+			this.update();
 		}
 	}
 }

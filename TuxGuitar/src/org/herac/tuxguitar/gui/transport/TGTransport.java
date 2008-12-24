@@ -30,6 +30,8 @@ import org.herac.tuxguitar.gui.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportModeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
+import org.herac.tuxguitar.gui.editors.TGRedrawListener;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
@@ -47,7 +49,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class TGTransport implements IconLoader,LanguageLoader{
+public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoader,LanguageLoader{
 	private static final int PLAY_MODE_DELAY = 250;
 	
 	public static final int STATUS_STOPPED = 1;
@@ -74,6 +76,8 @@ public class TGTransport implements IconLoader,LanguageLoader{
 	public TGTransport() {
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void show() {
@@ -443,6 +447,18 @@ public class TGTransport implements IconLoader,LanguageLoader{
 				}
 			}
 			TuxGuitar.instance().unlock();
+		}
+	}
+
+	public void doRedraw(int type) {
+		if( type == TGRedrawListener.PLAYING_THREAD || type == TGRedrawListener.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
+		}
+	}
+
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SELECTION ){
+			this.updateItems();
 		}
 	}
 }

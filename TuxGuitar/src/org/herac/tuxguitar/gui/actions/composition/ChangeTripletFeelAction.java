@@ -18,11 +18,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
+import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.undo.undoables.custom.UndoableChangeTripletFeel;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -89,17 +92,24 @@ public class ChangeTripletFeelAction extends Action{
 			buttonOk.setLayoutData(getButtonData());
 			buttonOk.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					boolean toEndValue = toEnd.getSelection();
-					int tripletFeel = TGMeasureHeader.TRIPLET_FEEL_NONE;
-					if(tripletFeelNone.getSelection()){
-						tripletFeel = TGMeasureHeader.TRIPLET_FEEL_NONE;
-					}else if(tripletFeelEighth.getSelection()){
-						tripletFeel = TGMeasureHeader.TRIPLET_FEEL_EIGHTH;
-					}else if(tripletFeelSixteenth.getSelection()){
-						tripletFeel = TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH;
-					}
-					setTripletFeel(tripletFeel,toEndValue);
+					final boolean toEndValue = toEnd.getSelection();
+					final int tripletFeel = getSelectedTripletFeel(tripletFeelNone, tripletFeelEighth, tripletFeelSixteenth);
+					
 					dialog.dispose();
+					try {
+						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws Throwable {
+								ActionLock.lock();
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								setTripletFeel(tripletFeel,toEndValue);
+								TuxGuitar.instance().updateCache( true );
+								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								ActionLock.unlock();
+							}
+						});
+					} catch (Throwable throwable) {
+						MessageDialog.errorMessage(throwable);
+					}
 				}
 			});
 			
@@ -123,6 +133,17 @@ public class ChangeTripletFeelAction extends Action{
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
 		return data;
+	}
+	
+	protected int getSelectedTripletFeel(Button tripletFeelNone,Button tripletFeelEighth, Button tripletFeelSixteenth){
+		if(tripletFeelNone.getSelection()){
+			return TGMeasureHeader.TRIPLET_FEEL_NONE;
+		}else if(tripletFeelEighth.getSelection()){
+			return TGMeasureHeader.TRIPLET_FEEL_EIGHTH;
+		}else if(tripletFeelSixteenth.getSelection()){
+			return TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH;
+		}
+		return TGMeasureHeader.TRIPLET_FEEL_NONE;
 	}
 	
 	protected void setTripletFeel(int tripletFeel,boolean toEnd){

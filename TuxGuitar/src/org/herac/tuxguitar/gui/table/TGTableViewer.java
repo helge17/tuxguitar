@@ -15,6 +15,8 @@ import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.composition.ChangeInfoAction;
 import org.herac.tuxguitar.gui.actions.track.GoToTrackAction;
 import org.herac.tuxguitar.gui.actions.track.TrackPropertiesAction;
+import org.herac.tuxguitar.gui.editors.TGRedrawListener;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
@@ -25,7 +27,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-public class TGTableViewer implements LanguageLoader{
+public class TGTableViewer implements TGRedrawListener, TGUpdateListener, LanguageLoader{
 	
 	public static final Color[] BACKGROUNDS = new Color[]{
 		new Color(TuxGuitar.instance().getDisplay(),255,255,255),
@@ -45,6 +47,8 @@ public class TGTableViewer implements LanguageLoader{
 	
 	public TGTableViewer() {
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void init(Composite parent){
@@ -324,5 +328,23 @@ public class TGTableViewer implements LanguageLoader{
 				}
 			}
 		};
+	}
+
+	public void doRedraw(int type) {
+		if( type == TGRedrawListener.NORMAL ){
+			this.redraw();
+		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
+		}
+	}
+	
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SELECTION ){
+			this.updateItems();
+		}else if( type == TGUpdateListener.SONG_UPDATED ){
+			this.fireUpdate( false );
+		}else if( type == TGUpdateListener.SONG_LOADED ){
+			this.fireUpdate( true );
+		}
 	}
 }

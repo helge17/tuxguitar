@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
-import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.config.items.LanguageOption;
 import org.herac.tuxguitar.gui.system.config.items.MainOption;
 import org.herac.tuxguitar.gui.system.config.items.Option;
@@ -35,6 +34,7 @@ import org.herac.tuxguitar.gui.system.config.items.StylesOption;
 import org.herac.tuxguitar.gui.system.config.items.ToolBarsOption;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -250,6 +250,7 @@ public class TGConfigEditor{
 	}
 	
 	protected void applyConfig(final boolean force){
+		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				TGConfigEditor.this.runnables = new ArrayList();
@@ -259,24 +260,31 @@ public class TGConfigEditor{
 					Option option = (Option)it.next();
 					option.applyConfig(force);
 				}
-				
-				new SyncThread( new Runnable() {
-					public void run() {
-						Iterator it = TGConfigEditor.this.runnables.iterator();
-						while(it.hasNext()){
-							Runnable current = (Runnable)it.next();
-							current.run();
-						}
-						new Thread(new Runnable() {
-							public void run() {
-								TuxGuitar.instance().fireUpdate();
-								TuxGuitar.instance().updateCache(true);
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-								ActionLock.unlock();
+				try {
+					TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+						public void run() throws Throwable {
+							Iterator it = TGConfigEditor.this.runnables.iterator();
+							while(it.hasNext()){
+								Runnable current = (Runnable)it.next();
+								current.run();
 							}
-						}).start();
-					}
-				}).start();
+							new Thread(new Runnable() {
+								public void run() {
+									TuxGuitar.instance().fireUpdate();
+									TuxGuitar.instance().updateCache(true);
+									TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+									ActionLock.unlock();
+								}
+							}).start();
+						}
+					});
+				} catch (Throwable throwable) {
+					TuxGuitar.instance().fireUpdate();
+					TuxGuitar.instance().updateCache(true);
+					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					ActionLock.unlock();
+					throwable.printStackTrace();
+				}
 			}
 		}).start();
 	}

@@ -18,6 +18,7 @@ import org.herac.tuxguitar.gui.actions.edit.RedoAction;
 import org.herac.tuxguitar.gui.actions.edit.UndoAction;
 import org.herac.tuxguitar.gui.actions.track.GoNextTrackAction;
 import org.herac.tuxguitar.gui.actions.track.GoPreviousTrackAction;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBindingAction;
@@ -26,7 +27,7 @@ import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-public class LyricEditor implements IconLoader,LanguageLoader{
+public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
 	private static int EDITOR_WIDTH = 450;
 	private static int EDITOR_HEIGHT = 200;
 	
@@ -56,6 +57,7 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 		this.listener = new LyricModifyListener(this);
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void show() {
@@ -242,6 +244,14 @@ public class LyricEditor implements IconLoader,LanguageLoader{
 	public void dispose(){
 		if(!isDisposed()){
 			this.dialog.dispose();
+		}
+	}
+
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SELECTION ){
+			this.updateItems();
+		}else if( type == TGUpdateListener.SONG_UPDATED || type == TGUpdateListener.SONG_LOADED){
+			this.update();
 		}
 	}
 }

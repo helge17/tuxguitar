@@ -8,7 +8,7 @@ import org.herac.tuxguitar.gui.editors.fretboard.FretBoard;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 
-public class FretBoardEditor implements IconLoader,LanguageLoader{
+public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoader{
 	
 	private FretBoard fretBoard;
 	private boolean visible;
@@ -16,6 +16,7 @@ public class FretBoardEditor implements IconLoader,LanguageLoader{
 	public FretBoardEditor(){
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
 	}
 	
 	private FretBoard getFretBoard(){
@@ -82,6 +83,14 @@ public class FretBoardEditor implements IconLoader,LanguageLoader{
 	public void loadIcons(){
 		if(getFretBoard() != null && !getFretBoard().isDisposed()){
 			getFretBoard().loadIcons();
+		}
+	}
+
+	public void doRedraw(int type) {
+		if( type == TGRedrawListener.NORMAL ){
+			this.redraw();
+		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
 		}
 	}
 }
