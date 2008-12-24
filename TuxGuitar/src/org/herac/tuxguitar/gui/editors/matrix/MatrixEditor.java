@@ -102,9 +102,6 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	public MatrixEditor(){
 		this.grids = this.loadGrids();
 		this.listener = new MatrixListener();
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener( this );
 	}
 	
 	public void show(){
@@ -126,12 +123,28 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		this.initEditor();
 		this.loadIcons();
 		
+		this.addListeners();
+		this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				removeListeners();
+				TuxGuitar.instance().updateCache(true);
+			}
+		});
+		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER);
+	}
+	
+	public void addListeners(){
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolbar);
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.editor);
-		
-		TuxGuitar.instance().updateCache(true);
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_WAIT);
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.instance().getIconManager().addLoader(this);
+		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener( this );
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getEditorManager().removeRedrawListener( this );
 	}
 	
 	private void initToolBar() {

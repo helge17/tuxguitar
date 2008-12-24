@@ -74,10 +74,7 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 	protected int position;
 	
 	public TGTransport() {
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		super();
 	}
 	
 	public void show() {
@@ -89,8 +86,28 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 		this.initToolBar();
 		this.redraw();
 		
-		TuxGuitar.instance().updateCache(true);
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		this.addListeners();
+		this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				removeListeners();
+				TuxGuitar.instance().updateCache(true);
+			}
+		});
+		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+	}
+	
+	public void addListeners(){
+		TuxGuitar.instance().getIconManager().addLoader(this);
+		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	private void initComposites(){
