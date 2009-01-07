@@ -182,6 +182,9 @@ public class TGMeasureManager {
 					removeNote(note);
 					
 					if(beat.isRestBeat()){
+						//Anulo un posible stroke
+						beat.getStroke().setDirection( TGStroke.STROKE_NONE );
+						
 						//Borro un posible acorde
 						removeChord(measure, beat.getStart());
 					}
@@ -676,6 +679,7 @@ public class TGMeasureManager {
 	}
 	
 	public void cleanBeat(TGBeat beat){
+		beat.getStroke().setDirection( TGStroke.STROKE_NONE );
 		if( beat.getText() != null ){
 			beat.removeChord();
 		}
