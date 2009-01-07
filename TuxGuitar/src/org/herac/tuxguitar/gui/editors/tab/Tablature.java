@@ -313,14 +313,22 @@ public class Tablature extends Composite {
 	public void reloadViewLayout(){
 		int style =  TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.LAYOUT_STYLE);
 		int mode = TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.LAYOUT_MODE);
-		mode = (mode == 0)?ViewLayout.DEFAULT_MODE:mode;
+		this.loadViewLayout(style, mode);
+	}
+	
+	private void loadViewLayout( int style, int mode ){
 		switch(mode){
 			case ViewLayout.MODE_PAGE:
 				setViewLayout(new PageViewLayout(this,style));
-				break;
+			break;
 			case ViewLayout.MODE_LINEAR:
 				setViewLayout(new LinearViewLayout(this,style));
-				break;
+			break;
+			default:
+				if( mode != ViewLayout.DEFAULT_MODE ){
+					this.loadViewLayout( style, ViewLayout.DEFAULT_MODE );
+				}
+			break;
 		}
 	}
 	
