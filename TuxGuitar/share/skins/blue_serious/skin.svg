@@ -2,7 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
@@ -13,12 +13,19 @@
    height="1052.3622047"
    id="svg4934"
    sodipodi:version="0.32"
-   inkscape:version="0.45.1"
+   inkscape:version="0.46"
    sodipodi:docbase="C:\Documents and Settings\Bruno Preziosi\Desktop"
-   sodipodi:docname="blue_serious.svg"
+   sodipodi:docname="skin.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
      id="defs4936">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective1371" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient34716">
@@ -2894,15 +2901,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.50000001"
-     inkscape:cx="-8.9033707"
-     inkscape:cy="559.6152"
+     inkscape:zoom="1"
+     inkscape:cx="579.49621"
+     inkscape:cy="593.75733"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:window-width="1024"
-     inkscape:window-height="712"
+     inkscape:window-width="1280"
+     inkscape:window-height="931"
      inkscape:window-x="0"
-     inkscape:window-y="22" />
+     inkscape:window-y="33"
+     showgrid="false" />
   <metadata
      id="metadata4939">
     <rdf:RDF>
@@ -4958,30 +4966,6 @@
              y="546.73944">*</tspan></text>
       </g>
     </g>
-    <rect
-       id="rect3499"
-       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-       y="434.31226"
-       x="584.80994"
-       ry="0"
-       rx="0"
-       height="41.334045"
-       width="41.334045"
-       inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/default/button_right.png"
-       inkscape:export-xdpi="35.083145"
-       inkscape:export-ydpi="35.083145" />
-    <rect
-       id="rect3501"
-       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-       y="479.54291"
-       x="584.80994"
-       ry="0"
-       rx="0"
-       height="41.334045"
-       width="41.334045"
-       inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/default/button_down.png"
-       inkscape:export-xdpi="35.083145"
-       inkscape:export-ydpi="35.083145" />
     <rect
        id="rect3503"
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
@@ -8604,5 +8588,52 @@
        inkscape:export-filename="C:\Programmi\tuxguitar-0.9.1-update1\share\files\about_description.png"
        inkscape:export-xdpi="85"
        inkscape:export-ydpi="85" />
+    <rect
+       id="rect6511"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       y="434.30661"
+       x="584.61633"
+       ry="0"
+       rx="0"
+       height="41.334045"
+       width="41.334045"
+       inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/ersplus/edit_voice_1.png"
+       inkscape:export-xdpi="51.581074"
+       inkscape:export-ydpi="51.581074" />
+    <rect
+       id="rect6513"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       y="479.68161"
+       x="584.61633"
+       ry="0"
+       rx="0"
+       height="41.334045"
+       width="41.334045"
+       inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/ersplus/edit_voice_2.png"
+       inkscape:export-xdpi="51.581074"
+       inkscape:export-ydpi="51.581074" />
+    <text
+       xml:space="preserve"
+       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black"
+       x="779.29431"
+       y="358.28033"
+       id="text3736"
+       transform="scale(0.7694351,1.2996548)"
+       inkscape:label="#text3736"><tspan
+         sodipodi:role="line"
+         id="tspan3738"
+         x="779.29431"
+         y="358.28033">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black"
+       x="779.29431"
+       y="393.19342"
+       id="text3740"
+       transform="scale(0.7694351,1.2996548)"><tspan
+         sodipodi:role="line"
+         id="tspan3742"
+         x="779.29431"
+         y="393.19342">2</tspan></text>
   </g>
 </svg>

@@ -65,7 +65,7 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.EDITOR_MOUSE_MODE,EditorKit.MOUSE_MODE_EDITION);
 		this.loadProperty(TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true);
 		this.loadProperty(TGConfigKeys.FONT_DEFAULT, (DEFAULT_FONT_NAME + ",6,0"));
-		this.loadProperty(TGConfigKeys.FONT_NOTE, (DEFAULT_FONT_NAME + ",7,1"));
+		this.loadProperty(TGConfigKeys.FONT_NOTE, (DEFAULT_FONT_NAME + ",7,0"));
 		this.loadProperty(TGConfigKeys.FONT_TIME_SIGNATURE, (DEFAULT_FONT_NAME + ",13,3"));
 		this.loadProperty(TGConfigKeys.FONT_LYRIC, (DEFAULT_FONT_NAME + ",7,2"));
 		this.loadProperty(TGConfigKeys.FONT_TEXT, (DEFAULT_FONT_NAME + ",8,0"));
@@ -82,9 +82,9 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.FONT_PRINTER_GRACE, (DEFAULT_FONT_NAME + ",6,0"));
 		this.loadProperty(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE, (DEFAULT_FONT_NAME + ",36,3"));
 		this.loadProperty(TGConfigKeys.COLOR_BACKGROUND,"255,255,255");
-		this.loadProperty(TGConfigKeys.COLOR_LINE,"150,150,150");
-		this.loadProperty(TGConfigKeys.COLOR_SCORE_NOTE,"0,0,0");
-		this.loadProperty(TGConfigKeys.COLOR_TAB_NOTE,"0,0,0");
+		this.loadProperty(TGConfigKeys.COLOR_LINE,"229,229,229");
+		this.loadProperty(TGConfigKeys.COLOR_SCORE_NOTE,"64,64,64");
+		this.loadProperty(TGConfigKeys.COLOR_TAB_NOTE,"64,64,64");
 		this.loadProperty(TGConfigKeys.COLOR_PLAY_NOTE,"255,0,0");
 		this.loadProperty(TGConfigKeys.MAX_HISTORY_FILES,10);
 		this.loadProperty(TGConfigKeys.MIN_SCORE_TABLATURE_SPACING,20);
