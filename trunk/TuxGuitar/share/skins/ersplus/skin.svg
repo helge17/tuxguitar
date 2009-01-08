@@ -2,7 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,7 @@
    height="297mm"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.45.1"
+   inkscape:version="0.46"
    sodipodi:docname="skin.svg"
    sodipodi:docbase="/home/julian/usr/workspace/TuxGuitar/share/skins/ersplus"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
@@ -30,7 +30,7 @@
     </rdf:RDF>
   </metadata>
   <sodipodi:namedview
-     inkscape:window-height="927"
+     inkscape:window-height="931"
      inkscape:window-width="1280"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -41,16 +41,28 @@
      bordercolor="#666666"
      pagecolor="#ffffff"
      id="base"
-     inkscape:zoom="2"
-     inkscape:cx="402.61239"
-     inkscape:cy="702.64248"
+     inkscape:zoom="1"
+     inkscape:cx="402.19652"
+     inkscape:cy="712.44342"
      inkscape:window-x="0"
-     inkscape:window-y="35"
+     inkscape:window-y="33"
      inkscape:current-layer="svg2"
      showguides="true"
-     inkscape:guide-bbox="true" />
+     inkscape:guide-bbox="true"
+     showgrid="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3751" />
+  </sodipodi:namedview>
   <defs
      id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective1361" />
     <marker
        inkscape:stockid="CurveIn"
        orient="auto"
@@ -8436,28 +8448,28 @@
   </g>
   <rect
      id="rect3499"
-     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-     y="408.82428"
-     x="506.29428"
+     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.54178809999999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+     y="408.77814"
+     x="505"
      ry="0"
      rx="0"
      height="41.334045"
      width="41.334045"
-     inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/default/button_right.png"
-     inkscape:export-xdpi="35.083145"
-     inkscape:export-ydpi="35.083145" />
+     inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/ersplus/edit_voice_1.png"
+     inkscape:export-xdpi="51.581074"
+     inkscape:export-ydpi="51.581074" />
   <rect
      id="rect3501"
-     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-     y="454.05493"
-     x="506.29428"
+     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.54178809999999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+     y="454.15314"
+     x="505"
      ry="0"
      rx="0"
      height="41.334045"
      width="41.334045"
-     inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/default/button_down.png"
-     inkscape:export-xdpi="35.083145"
-     inkscape:export-ydpi="35.083145" />
+     inkscape:export-filename="/home/julian/usr/workspace/TuxGuitar/share/skins/ersplus/edit_voice_2.png"
+     inkscape:export-xdpi="51.581074"
+     inkscape:export-ydpi="51.581074" />
   <rect
      id="rect3503"
      style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#929292;stroke-width:0.5417881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
@@ -8622,4 +8634,27 @@
        d="M 378.09836,426.89402 L 367.79072,416.32036 L 367.79072,420.12094 L 374.57211,426.89402 L 367.79072,433.60342 L 367.79072,437.404 L 378.09836,426.89402 z "
        style="font-size:61.60151672px;font-style:normal;font-weight:normal;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black" />
   </g>
+  <text
+     xml:space="preserve"
+     style="font-size:22px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black"
+     x="675.8205"
+     y="338.63779"
+     id="text3736"
+     transform="scale(0.7694351,1.2996548)"
+     inkscape:label="#text3736"><tspan
+       sodipodi:role="line"
+       id="tspan3738"
+       x="675.8205"
+       y="338.63779">1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:22px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black"
+     x="675.8205"
+     y="373.55087"
+     id="text3740"
+     transform="scale(0.7694351,1.2996548)"><tspan
+       sodipodi:role="line"
+       id="tspan3742"
+       x="675.8205"
+       y="373.55087">2</tspan></text>
 </svg>
