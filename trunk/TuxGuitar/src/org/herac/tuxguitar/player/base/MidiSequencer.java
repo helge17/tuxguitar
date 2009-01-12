@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.player.base;
 
-import org.herac.tuxguitar.player.base.MidiPort;
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 
 public interface MidiSequencer {
 	
@@ -25,9 +23,7 @@ public interface MidiSequencer {
 	
 	public long getTickLength() throws MidiPlayerException;
 	
-	public void setMidiPort(MidiPort port) throws MidiPlayerException;
-	
-	public MidiPort getMidiPort() throws MidiPlayerException;
+	public void setTransmitter( MidiTransmitter transmitter) throws MidiPlayerException;
 	
 	public MidiSequenceHandler createSequence(int tracks) throws MidiPlayerException;
 	

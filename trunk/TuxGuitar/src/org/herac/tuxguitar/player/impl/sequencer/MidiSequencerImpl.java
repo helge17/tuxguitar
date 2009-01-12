@@ -1,16 +1,15 @@
 package org.herac.tuxguitar.player.impl.sequencer;
 
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiPort;
-import org.herac.tuxguitar.player.base.MidiPortEmpty;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.player.base.MidiSequencer;
+import org.herac.tuxguitar.player.base.MidiTransmitter;
 
 public class MidiSequencerImpl implements MidiSequencer{
 	
 	private boolean reset;
 	private boolean running;
-	private MidiPort midiPort;
+	private MidiTransmitter transmitter;
 	private MidiTickPlayer midiTickPlayer;
 	private MidiEventPlayer midiEventPlayer;
 	private MidiEventDispacher midiEventDispacher;
@@ -80,12 +79,12 @@ public class MidiSequencerImpl implements MidiSequencer{
 	}
 	
 	public synchronized void reset(boolean systemReset)  throws MidiPlayerException{
-		this.getMidiPort().out().sendAllNotesOff();
+		this.getTransmitter().sendAllNotesOff();
 		for(int channel = 0; channel < 16;channel ++){
-			this.getMidiPort().out().sendPitchBend(channel, 64);
+			this.getTransmitter().sendPitchBend(channel, 64);
 		}
 		if( systemReset ){
-			this.getMidiPort().out().sendSystemReset();
+			this.getTransmitter().sendSystemReset();
 		}
 	}
 	
@@ -111,15 +110,12 @@ public class MidiSequencerImpl implements MidiSequencer{
 		return running;
 	}
 	
-	public synchronized MidiPort getMidiPort() {
-		if(this.midiPort == null){
-			this.midiPort = new MidiPortEmpty();
-		}
-		return this.midiPort;
+	public synchronized MidiTransmitter getTransmitter() {
+		return this.transmitter;
 	}
 	
-	public synchronized void setMidiPort(MidiPort midiPort) {
-		this.midiPort = midiPort;
+	public synchronized void setTransmitter(MidiTransmitter transmitter) {
+		this.transmitter = transmitter;
 	}
 	
 	public synchronized void open() {

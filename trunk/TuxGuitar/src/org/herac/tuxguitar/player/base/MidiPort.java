@@ -20,9 +20,4 @@ public abstract class MidiPort {
 	public abstract void open() throws MidiPlayerException;
 	
 	public abstract void close() throws MidiPlayerException;
-	
-	public abstract void check() throws MidiPlayerException;
-	
-	public abstract MidiOut out() throws MidiPlayerException;
-	
 }

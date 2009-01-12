@@ -3,13 +3,13 @@ package org.herac.tuxguitar.gui.system.plugins.base;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public abstract class TGMidiPortProviderPlugin extends TGPluginAdapter{
+public abstract class TGMidiOutputPortProviderPlugin extends TGPluginAdapter{
 	private boolean loaded;
-	private MidiPortProvider provider;
+	private MidiOutputPortProvider provider;
 	
-	protected abstract MidiPortProvider getProvider();
+	protected abstract MidiOutputPortProvider getProvider();
 	
 	public void init() {
 		this.provider = getProvider();
@@ -27,7 +27,7 @@ public abstract class TGMidiPortProviderPlugin extends TGPluginAdapter{
 	protected void addPlugin() throws TGPluginException{
 		if(!this.loaded){
 			try {
-				TuxGuitar.instance().getPlayer().addPortProvider(this.provider);
+				TuxGuitar.instance().getPlayer().addOutputPortProvider(this.provider);
 				this.loaded = true;
 			} catch (MidiPlayerException e) {
 				throw new TGPluginException(e.getMessage(),e);
@@ -39,7 +39,7 @@ public abstract class TGMidiPortProviderPlugin extends TGPluginAdapter{
 	protected void removePlugin() throws TGPluginException{
 		if(this.loaded){
 			try {
-				TuxGuitar.instance().getPlayer().removePortProvider(this.provider);
+				TuxGuitar.instance().getPlayer().removeOutputPortProvider(this.provider);
 				this.loaded = false;
 			} catch (MidiPlayerException e) {
 				throw new TGPluginException(e.getMessage(),e);

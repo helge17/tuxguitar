@@ -47,7 +47,7 @@ public class MidiTrackController {
 			checkAnySolo();
 			if(track.isSolo()){
 				setMute(index,false);
-				this.sequencer.getMidiPort().out().sendAllNotesOff();
+				this.sequencer.getTransmitter().sendAllNotesOff();
 			}
 		}
 	}
@@ -58,7 +58,7 @@ public class MidiTrackController {
 			track.setMute(mute);
 			if(track.isMute()){
 				setSolo(index,false);
-				this.sequencer.getMidiPort().out().sendAllNotesOff();
+				this.sequencer.getTransmitter().sendAllNotesOff();
 			}
 		}
 	}

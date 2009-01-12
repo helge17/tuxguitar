@@ -12,7 +12,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.config.TGConfigEditor;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
-import org.herac.tuxguitar.player.base.MidiPort;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 
 public class SoundOption extends Option{
@@ -64,14 +64,17 @@ public class SoundOption extends Option{
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				SoundOption.this.mpList = TuxGuitar.instance().getPlayer().listPorts();
+				SoundOption.this.mpList = TuxGuitar.instance().getPlayer().listOutputPorts();
 				SoundOption.this.msList = TuxGuitar.instance().getPlayer().listSequencers();
 				
 				SoundOption.this.mpCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT);
 				SoundOption.this.msCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER);
 				
-				final String mpLoaded = TuxGuitar.instance().getPlayer().getMidiPort().getKey();
-				final String msLoaded = TuxGuitar.instance().getPlayer().getSequencer().getKey();
+				MidiSequencer sequencer = TuxGuitar.instance().getPlayer().getSequencer();
+				MidiOutputPort outputPort = TuxGuitar.instance().getPlayer().getOutputPort();
+				
+				final String msLoaded = (sequencer != null ? sequencer.getKey() : null ) ;
+				final String mpLoaded = (outputPort != null ? outputPort.getKey() : null );
 				
 				new SyncThread(new Runnable() {
 					public void run() {
@@ -95,7 +98,7 @@ public class SoundOption extends Option{
 							//---Midi Port---//
 							String loadedPort = mpLoaded;
 							for (int i = 0; i < SoundOption.this.mpList.size(); i++) {
-								MidiPort port = (MidiPort)SoundOption.this.mpList.get(i);
+								MidiOutputPort port = (MidiOutputPort)SoundOption.this.mpList.get(i);
 								SoundOption.this.mpCombo.add(port.getName());
 								if(SoundOption.this.mpCurrentKey != null && SoundOption.this.mpCurrentKey.equals(port.getKey())){
 									SoundOption.this.mpCombo.select(i);
@@ -125,7 +128,7 @@ public class SoundOption extends Option{
 			}
 			int mpIndex = this.mpCombo.getSelectionIndex();
 			if(mpIndex >= 0 && mpIndex < this.mpList.size()){
-				MidiPort midiPort = (MidiPort)this.mpList.get(mpIndex);
+				MidiOutputPort midiPort = (MidiOutputPort)this.mpList.get(mpIndex);
 				getConfig().setProperty(TGConfigKeys.MIDI_PORT, midiPort.getKey());
 			}
 		}
@@ -145,8 +148,8 @@ public class SoundOption extends Option{
 				TuxGuitar.instance().getPlayer().openSequencer(midiSequencer);
 			}
 			String midiPort = getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT);
-			if(force || !TuxGuitar.instance().getPlayer().isMidiPortOpen(midiPort)){
-				TuxGuitar.instance().getPlayer().openPort(midiPort);
+			if(force || !TuxGuitar.instance().getPlayer().isOutputPortOpen(midiPort)){
+				TuxGuitar.instance().getPlayer().openOutputPort(midiPort);
 			}
 		}
 	}
