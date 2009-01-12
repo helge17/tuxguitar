@@ -578,7 +578,7 @@ public class TuxGuitar {
 				getPlayer().openSequencer(getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER));
 				
 				//check midi port
-				getPlayer().openPort(getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT));
+				getPlayer().openOutputPort(getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT));
 				
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());
 			} catch (MidiPlayerException e) {

@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.player.base;
 
-public interface MidiOut {
-	
+public interface MidiReceiver {
 	public void sendSystemReset() throws MidiPlayerException;
 	
 	public void sendAllNotesOff() throws MidiPlayerException;
@@ -15,5 +14,4 @@ public interface MidiOut {
 	public void sendControlChange(int channel, int controller, int value) throws MidiPlayerException;
 	
 	public void sendPitchBend(int channel, int value) throws MidiPlayerException;
-	
 }

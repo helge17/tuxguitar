@@ -4,8 +4,6 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiSequencerEmpty implements MidiSequencer{
 	
-	private MidiPort port;
-	
 	public void open() {
 		// Not implemented
 	}	
@@ -51,11 +49,8 @@ public class MidiSequencerEmpty implements MidiSequencer{
 		};
 	}
 	
-	public MidiPort getMidiPort() {
-		if(this.port == null){
-			this.port = new MidiPortEmpty();
-		}
-		return this.port;
+	public void setTransmitter(MidiTransmitter transmitter) throws MidiPlayerException {
+		// Not implemented
 	}
 	
 	public long getTickLength() {
@@ -71,11 +66,6 @@ public class MidiSequencerEmpty implements MidiSequencer{
 	public boolean isRunning() {
 		// Not implemented
 		return false;
-	}
-	
-	public void setMidiPort(MidiPort port) {
-		// Not implemented
-		this.port = port;
 	}
 	
 	public void setMute(int index, boolean mute) {
@@ -104,6 +94,5 @@ public class MidiSequencerEmpty implements MidiSequencer{
 	
 	public String getName() {
 		return null;
-	}
-	
+	}	
 }

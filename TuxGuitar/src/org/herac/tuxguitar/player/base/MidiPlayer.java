@@ -24,15 +24,17 @@ public class MidiPlayer{
 	
 	private MidiSequencer sequencer;
 	
-	private MidiPort port;
+	private MidiTransmitter outputTransmitter;
+	
+	private MidiOutputPort outputPort;
 	
 	private MidiPlayerMode mode;
 	
 	private String sequencerKey;
 	
-	private String portKey;
+	private String outputPortKey;
 	
-	private List portProviders;
+	private List outputPortProviders;
 	
 	private List sequencerProviders;
 	
@@ -70,7 +72,7 @@ public class MidiPlayer{
 	
 	public void init(TGSongManager songManager) {
 		this.songManager = songManager;
-		this.portProviders = new ArrayList();
+		this.outputPortProviders = new ArrayList();
 		this.sequencerProviders = new ArrayList();
 		this.getSequencer();
 		this.getMode();
@@ -109,7 +111,7 @@ public class MidiPlayer{
 	public void close(){
 		try {
 			this.closeSequencer();
-			this.closePort();
+			this.closeOutputPort();
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
@@ -153,7 +155,7 @@ public class MidiPlayer{
 			this.setStarting(true);
 			this.stop();
 			this.lock.lock();
-			this.getMidiPort().check();
+			this.checkOutput();
 			this.systemReset();
 			this.addSecuence();
 			this.updatePrograms();
@@ -220,6 +222,12 @@ public class MidiPlayer{
 			this.reset();
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void checkOutput() throws Throwable {
+		if( getOutputPort() != null ){
+			getOutputPort().check();
 		}
 	}
 	
@@ -290,9 +298,6 @@ public class MidiPlayer{
 	public void setTickPosition(long position) {
 		this.tickPosition = position;
 		this.setChangeTickPosition(true);
-		//if(!isRunning()){
-		//	this.changeTickPosition();
-		//}
 	}
 	
 	/**
@@ -315,7 +320,7 @@ public class MidiPlayer{
 	
 	public void systemReset(){
 		try {
-			this.getMidiPort().out().sendSystemReset();
+			this.getOutputTransmitter().sendSystemReset();
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
@@ -340,10 +345,10 @@ public class MidiPlayer{
 	private void updateDefaultControllers(){
 		try{
 			for(int channel = 0; channel < MAX_CHANNELS;channel ++){
-				getMidiPort().out().sendControlChange(channel,MidiControllers.RPN_MSB,0);
-				getMidiPort().out().sendControlChange(channel,MidiControllers.RPN_LSB,0);
-				getMidiPort().out().sendControlChange(channel,MidiControllers.DATA_ENTRY_MSB,12);
-				getMidiPort().out().sendControlChange(channel,MidiControllers.DATA_ENTRY_LSB, 0);
+				getOutputTransmitter().sendControlChange(channel,MidiControllers.RPN_MSB,0);
+				getOutputTransmitter().sendControlChange(channel,MidiControllers.RPN_LSB,0);
+				getOutputTransmitter().sendControlChange(channel,MidiControllers.DATA_ENTRY_MSB,12);
+				getOutputTransmitter().sendControlChange(channel,MidiControllers.DATA_ENTRY_LSB, 0);
 			}
 		}
 		catch (MidiPlayerException e) {
@@ -356,9 +361,9 @@ public class MidiPlayer{
 			Iterator it = this.songManager.getSong().getTracks();
 			while(it.hasNext()){
 				TGTrack track = (TGTrack)it.next();
-				getMidiPort().out().sendProgramChange(track.getChannel().getChannel(),track.getChannel().getInstrument());
+				getOutputTransmitter().sendProgramChange(track.getChannel().getChannel(),track.getChannel().getInstrument());
 				if(track.getChannel().getChannel() != track.getChannel().getEffectChannel()){
-					getMidiPort().out().sendProgramChange(track.getChannel().getEffectChannel(),track.getChannel().getInstrument());
+					getOutputTransmitter().sendProgramChange(track.getChannel().getEffectChannel(),track.getChannel().getInstrument());
 				}
 			}
 		}catch (MidiPlayerException e) {
@@ -410,12 +415,12 @@ public class MidiPlayer{
 	
 	private void updateController(int channel,int volume,int balance,int chorus, int reverb,int phaser, int tremolo) {
 		try{
-			getMidiPort().out().sendControlChange(channel,MidiControllers.VOLUME,volume);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.BALANCE,balance);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.CHORUS,chorus);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.REVERB,reverb);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.PHASER,phaser);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.VOLUME,volume);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.BALANCE,balance);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.CHORUS,chorus);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.REVERB,reverb);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.PHASER,phaser);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
@@ -469,23 +474,23 @@ public class MidiPlayer{
 	
 	public void playBeat(int channel,int program,int volume,int balance,int chorus, int reverb,int phaser,int tremolo,int[][] beat,long duration,int interval) {
 		try {
-			getMidiPort().out().sendProgramChange(channel,program);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.VOLUME,volume);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.BALANCE,balance);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.CHORUS,chorus);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.REVERB,reverb);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.PHASER,phaser);
-			getMidiPort().out().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
+			getOutputTransmitter().sendProgramChange(channel,program);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.VOLUME,volume);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.BALANCE,balance);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.CHORUS,chorus);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.REVERB,reverb);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.PHASER,phaser);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
 				
 			for(int i = 0; i < beat.length; i ++){
-				getMidiPort().out().sendNoteOn(channel,beat[i][0], beat[i][1]);
+				getOutputTransmitter().sendNoteOn(channel,beat[i][0], beat[i][1]);
 				if(interval > 0){
 					Thread.sleep(interval);
 				}
 			}
 			Thread.sleep(duration);
 			for(int i = 0; i < beat.length; i ++){
-				getMidiPort().out().sendNoteOff(channel,beat[i][0], beat[i][1]);
+				getOutputTransmitter().sendNoteOff(channel,beat[i][0], beat[i][1]);
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
@@ -499,14 +504,18 @@ public class MidiPlayer{
 		return this.mode;
 	}
 	
+	public MidiTransmitter getOutputTransmitter(){
+		if (this.outputTransmitter == null) {
+			this.outputTransmitter = new MidiTransmitter();
+		}
+		return this.outputTransmitter;
+	}
+	
 	/**
 	 * Retorna el Puerto Midi
 	 */
-	public MidiPort getMidiPort(){
-		if (this.port == null) {
-			this.port = new MidiPortEmpty();
-		}
-		return this.port;
+	public MidiOutputPort getOutputPort(){
+		return this.outputPort;
 	}
 	
 	/**
@@ -524,7 +533,7 @@ public class MidiPlayer{
 			this.closeSequencer();
 			this.sequencer = sequencer;
 			this.sequencer.open();
-			this.sequencer.setMidiPort(getMidiPort());
+			this.sequencer.setTransmitter( getOutputTransmitter() );
 		}catch(Throwable throwable){
 			this.sequencer = null;
 			return false;
@@ -532,50 +541,40 @@ public class MidiPlayer{
 		return true;
 	}
 	
-	public boolean loadPort(MidiPort port){
+	public boolean loadOutputPort(MidiOutputPort port){
 		try{
-			this.closePort();
-			this.port = port;
-			this.port.open();
+			this.closeOutputPort();
+			this.outputPort = port;
+			this.outputPort.open();
+			this.getOutputTransmitter().addReceiver(this.outputPort.getKey(), this.outputPort.getReceiver() );
 		}catch(Throwable throwable){
-			this.port = null;
+			this.outputPort = null;
 			return false;
-		}finally{
-			try {
-				this.getSequencer().setMidiPort(getMidiPort());
-			} catch (MidiPlayerException e) {
-				e.printStackTrace();
-			}
 		}
 		return true;
 	}
 	
-	public void openPort(String key) {
-		this.portKey = key;
-		this.openPort(listPorts(),false);
+	public void openOutputPort(String key) {
+		this.outputPortKey = key;
+		this.openOutputPort(listOutputPorts(),false);
 	}
 	
-	public void openPort(List ports, boolean tryFirst) {
+	public void openOutputPort(List ports, boolean tryFirst) {
 		try{
-			if(this.portKey != null && !this.isMidiPortOpen(this.portKey)){
-				//if(this.isRunning()){
-				//	this.stop();
-				//}
-				this.closePort();
+			if(this.outputPortKey != null && !this.isOutputPortOpen(this.outputPortKey)){
+				this.closeOutputPort();
 				for(int i = 0; i < ports.size(); i ++){
-					MidiPort port = (MidiPort)ports.get(i);
-					if(port.getKey().equals(this.portKey)){
-						if(this.loadPort(port)){
+					MidiOutputPort port = (MidiOutputPort)ports.get(i);
+					if(port.getKey().equals(this.outputPortKey)){
+						if(this.loadOutputPort(port)){
 							return;
 						}
 					}
 				}
 			}
-			
-			if(getMidiPort() instanceof MidiPortEmpty && !ports.isEmpty() && tryFirst){
-				this.loadPort( (MidiPort)ports.get(0) );
+			if(getOutputPort() == null && !ports.isEmpty() && tryFirst){
+				this.loadOutputPort( (MidiOutputPort)ports.get(0) );
 			}
-			
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
@@ -593,9 +592,6 @@ public class MidiPlayer{
 	public void openSequencer(List sequencers ,boolean tryFirst) throws MidiPlayerException {
 		try{
 			if(this.sequencerKey != null && !this.isSequencerOpen(this.sequencerKey)){
-				//if(this.isRunning()){
-				//	this.stop();
-				//}
 				this.closeSequencer();
 				for(int i = 0; i < sequencers.size(); i ++){
 					MidiSequencer sequencer = (MidiSequencer)sequencers.get(i);
@@ -616,12 +612,12 @@ public class MidiPlayer{
 		}
 	}
 	
-	public List listPorts() {
+	public List listOutputPorts() {
 		List ports = new ArrayList();
-		Iterator it = this.portProviders.iterator();
+		Iterator it = this.outputPortProviders.iterator();
 		while(it.hasNext()){
 			try{
-				MidiPortProvider provider = (MidiPortProvider)it.next();
+				MidiOutputPortProvider provider = (MidiOutputPortProvider)it.next();
 				ports.addAll(provider.listPorts());
 			}catch(Throwable throwable){
 				throwable.printStackTrace();
@@ -660,15 +656,16 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void closePort(){
+	public void closeOutputPort(){
 		try{
 			if(this.isRunning()){
 				this.stop();
 			}
 			this.lock.lock();
-			if (this.port != null) {
-				this.port.close();
-				this.port = null;
+			if (this.outputPort != null) {
+				this.getOutputTransmitter().removeReceiver(this.outputPort.getKey());
+				this.outputPort.close();
+				this.outputPort = null;
 			}
 			this.lock.unlock();
 		}catch(Throwable throwable){
@@ -687,9 +684,9 @@ public class MidiPlayer{
 		return false;
 	}
 	
-	public boolean isMidiPortOpen(String key){
-		if(key != null){
-			String currentKey = getMidiPort().getKey();
+	public boolean isOutputPortOpen(String key){
+		if(key != null && getOutputPort() != null ){
+			String currentKey = getOutputPort().getKey();
 			if(currentKey == null){
 				return false;
 			}
@@ -698,9 +695,9 @@ public class MidiPlayer{
 		return false;
 	}
 	
-	public void addPortProvider(MidiPortProvider provider) throws MidiPlayerException {
-		this.portProviders.add(provider);
-		this.openPort(provider.listPorts(),true);
+	public void addOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
+		this.outputPortProviders.add(provider);
+		this.openOutputPort(provider.listPorts(),true);
 	}
 	
 	public void addSequencerProvider(MidiSequencerProvider provider) throws MidiPlayerException {
@@ -708,17 +705,16 @@ public class MidiPlayer{
 		this.openSequencer(provider.listSequencers(),true);
 	}
 	
-	public void removePortProvider(MidiPortProvider provider) throws MidiPlayerException {
-		this.portProviders.remove(provider);
+	public void removeOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
+		this.outputPortProviders.remove(provider);
 		
-		MidiPort current = getMidiPort();
-		if(!(current instanceof MidiPortEmpty) && current != null ){
+		MidiOutputPort current = getOutputPort();
+		if( current != null ){
 			Iterator it = provider.listPorts().iterator();
 			while(it.hasNext()){
-				MidiPort port = (MidiPort)it.next();
+				MidiOutputPort port = (MidiOutputPort)it.next();
 				if(port.getKey().equals(current.getKey())){
-					closePort();
-					getSequencer().setMidiPort(getMidiPort());
+					closeOutputPort();
 					break;
 				}
 			}

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.player.base;
 
 import java.util.List;
 
-public interface MidiPortProvider {
+public interface MidiOutputPortProvider {
 	
 	public List listPorts() throws MidiPlayerException;
 	

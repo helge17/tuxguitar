@@ -11,19 +11,19 @@ public class MidiEventDispacher{
 	
 	public void dispatch(MidiEvent event) throws MidiPlayerException{
 		if(event.getType() == MidiEvent.MIDI_EVENT_NOTEON){
-			this.sequencer.getMidiPort().out().sendNoteOn(event.getData()[0],event.getData()[1],event.getData()[2]);
+			this.sequencer.getTransmitter().sendNoteOn(event.getData()[0],event.getData()[1],event.getData()[2]);
 		}
 		else if(event.getType() == MidiEvent.MIDI_EVENT_NOTEOFF){
-			this.sequencer.getMidiPort().out().sendNoteOff(event.getData()[0],event.getData()[1],event.getData()[2]);
+			this.sequencer.getTransmitter().sendNoteOff(event.getData()[0],event.getData()[1],event.getData()[2]);
 		}
 		else if(event.getType() == MidiEvent.MIDI_EVENT_CONTROL_CHANGE){
-			this.sequencer.getMidiPort().out().sendControlChange(event.getData()[0],event.getData()[1],event.getData()[2]);
+			this.sequencer.getTransmitter().sendControlChange(event.getData()[0],event.getData()[1],event.getData()[2]);
 		}
 		else if(event.getType() == MidiEvent.MIDI_EVENT_PROGRAM_CHANGE){
-			this.sequencer.getMidiPort().out().sendProgramChange(event.getData()[0],event.getData()[1]);
+			this.sequencer.getTransmitter().sendProgramChange(event.getData()[0],event.getData()[1]);
 		}
 		else if(event.getType() == MidiEvent.MIDI_EVENT_PITCH_BEND){
-			this.sequencer.getMidiPort().out().sendPitchBend(event.getData()[0],event.getData()[1]);
+			this.sequencer.getTransmitter().sendPitchBend(event.getData()[0],event.getData()[1]);
 		}
 		else if(event.getType() == MidiEvent.MIDI_SYSTEM_EVENT){
 			if(event.getData()[0] == 0x51){
