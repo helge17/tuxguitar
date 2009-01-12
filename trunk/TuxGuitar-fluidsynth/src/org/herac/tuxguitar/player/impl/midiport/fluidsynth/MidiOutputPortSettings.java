@@ -23,15 +23,15 @@ import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
-public class MidiPortSettings {
+public class MidiOutputPortSettings {
 	
 	private static final int TABLE_WIDTH = 350;
 	private static final int TABLE_HEIGHT = 200;
 	
 	private TGConfigManager config;
-	private MidiPortProviderImpl provider;
+	private MidiOutputPortProviderImpl provider;
 	
-	public MidiPortSettings(MidiPortProviderImpl provider){
+	public MidiOutputPortSettings(MidiOutputPortProviderImpl provider){
 		this.provider = provider;
 	}
 	

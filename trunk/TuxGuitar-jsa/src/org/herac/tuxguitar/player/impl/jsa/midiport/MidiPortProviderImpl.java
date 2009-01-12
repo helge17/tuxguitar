@@ -12,10 +12,10 @@ import javax.sound.midi.Synthesizer;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiPort;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderImpl implements MidiPortProvider{
+public class MidiPortProviderImpl implements MidiOutputPortProvider{
 	
 	public MidiPortProviderImpl(){
 		super();
@@ -30,7 +30,7 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 					Iterator it = ports.iterator();
 					boolean exists = false;
 					while(it.hasNext()){
-						if( ((MidiPort)it.next()).getKey().equals(infos[i].getName()) ){
+						if( ((MidiOutputPort)it.next()).getKey().equals(infos[i].getName()) ){
 							exists = true;
 							break;
 						}

@@ -13,7 +13,7 @@ public class MidiSynth {
 	
 	private long instance;
 	private List drivers;
-	private MidiPortImpl loadedPort;
+	private MidiOutputPortImpl loadedPort;
 	
 	public MidiSynth(){
 		this.instance = malloc();
@@ -46,11 +46,11 @@ public class MidiSynth {
 		}
 	}
 	
-	public boolean isConnected(MidiPortImpl port){
+	public boolean isConnected(MidiOutputPortImpl port){
 		return (port != null && this.loadedPort != null && this.loadedPort.equals( port ) );
 	}
 	
-	public void connect(MidiPortImpl port){
+	public void connect(MidiOutputPortImpl port){
 		if(isInitialized()){
 			this.disconnect( this.loadedPort );
 			this.loadFont(this.instance, port.getSoundFont());
@@ -58,7 +58,7 @@ public class MidiSynth {
 		}
 	}
 	
-	public void disconnect(MidiPortImpl port){
+	public void disconnect(MidiOutputPortImpl port){
 		if(isInitialized() && isConnected(port)){
 			this.unloadFont(this.instance);
 			this.loadedPort = null;

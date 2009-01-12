@@ -4,28 +4,28 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Receiver;
 
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOut;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiPort;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiMessageUtils;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class MidiPortOut extends MidiPort{
+public class MidiPortOut extends MidiOutputPort{
 	
-	private MidiOutImpl out;
+	private MidiReceiverImpl receiver;
 	
 	public MidiPortOut(MidiDevice device){
 		super(device.getDeviceInfo().getName(),device.getDeviceInfo().getName());
-		this.out = new MidiOutImpl(device);
+		this.receiver = new MidiReceiverImpl(device);
 	}
 	
-	public MidiOut out(){
-		return this.out;
+	public MidiReceiver getReceiver(){
+		return this.receiver;
 	}
 	
 	public void open() throws MidiPlayerException{
 		try {
-			this.out.open();
+			this.receiver.open();
 		} catch (Throwable throwable) {
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}
@@ -33,7 +33,7 @@ public class MidiPortOut extends MidiPort{
 	
 	public void close() throws MidiPlayerException{
 		try {
-			this.out.close();
+			this.receiver.close();
 		} catch (Throwable throwable) {
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}
@@ -41,19 +41,19 @@ public class MidiPortOut extends MidiPort{
 	
 	public void check() throws MidiPlayerException{
 		try {
-			this.out.open();
+			this.receiver.open();
 		} catch (Throwable throwable) {
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}
 	}
 }
 
-class MidiOutImpl implements MidiOut{
+class MidiReceiverImpl implements MidiReceiver{
 	
 	private MidiDevice device;
 	private Receiver receiver;
 	
-	public MidiOutImpl(MidiDevice device){
+	public MidiReceiverImpl(MidiDevice device){
 		this.device = device;
 	}
 	

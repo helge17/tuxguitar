@@ -97,7 +97,7 @@ public class MidiSystem{
 	}
 	
 	protected void addPort(String name,int client,int port){
-		this.ports.add(new MidiPortImpl(this,name,client,port));
+		this.ports.add(new MidiOutputPortImpl(this,name,client,port));
 	}
 	
 	private native long malloc();

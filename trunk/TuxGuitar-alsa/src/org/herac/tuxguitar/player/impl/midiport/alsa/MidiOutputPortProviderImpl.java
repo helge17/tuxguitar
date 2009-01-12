@@ -2,13 +2,13 @@ package org.herac.tuxguitar.player.impl.midiport.alsa;
 
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderImpl implements MidiPortProvider{
+public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
 	private MidiSystem midiSystem;
 	
-	public MidiPortProviderImpl(){
+	public MidiOutputPortProviderImpl(){
 		super();
 	}
 	

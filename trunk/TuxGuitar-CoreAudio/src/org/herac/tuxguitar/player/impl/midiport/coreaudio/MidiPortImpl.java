@@ -1,45 +1,33 @@
 package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 
-import org.herac.tuxguitar.player.base.MidiOut;
-import org.herac.tuxguitar.player.base.MidiPort;
-import org.herac.tuxguitar.player.impl.midiport.coreaudio.MidiOutImpl;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiPortImpl extends MidiPort{
+public class MidiPortImpl extends MidiOutputPort{
+	
+	private final MidiReceiverImpl receiver;
 
-	//private final int port;
-	//private final int client;
-	private final MidiOutImpl midiOut;
-
-	public MidiPortImpl(MidiOutImpl midiOut,String name,String key){
+	public MidiPortImpl(MidiReceiverImpl midiOut,String name,String key){
         super(key,name);
-		//this.client = client;
-		//this.port = port;
-		this.midiOut = midiOut;		
+		this.receiver = midiOut;		
 	}
 	
 	public void open(){
-		if(!this.midiOut.isConnected()){
-			this.midiOut.connect();
+		if(!this.receiver.isConnected()){
+			this.receiver.connect();
 		}
 	}
 	
 	public void close(){
-		this.midiOut.disconnect();
+		this.receiver.disconnect();
 	}
 	
-	public MidiOut out(){
+	public MidiReceiver getReceiver(){
 		this.open();
-		return this.midiOut;
+		return this.receiver;
 	}
 	
 	public void check(){
 		// Not implemented
 	}
-	
-    /*
-	public static String toString(int client,int port){
-		return (Integer.toString(client) + "-" + Integer.toString(port));
-	}
-     */
-	
 }

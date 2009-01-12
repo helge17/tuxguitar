@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.player.impl.midiport.oss;
+package org.herac.tuxguitar.player.impl.midiport.winmm;
 
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOut;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutImpl implements MidiOut{
+public class MidiReceiverImpl implements MidiReceiver{
 	
 	private boolean connected;
-	private MidiPortImpl midiPort;
+	private MidiOutputPortImpl midiPort;
 	private MidiSystem midiSystem;
 	
-	public MidiOutImpl(MidiPortImpl midiPort, MidiSystem midiSystem){
+	public MidiReceiverImpl(MidiOutputPortImpl midiPort, MidiSystem midiSystem){
 		this.midiPort = midiPort;
 		this.midiSystem = midiSystem;
 		this.connected = false;

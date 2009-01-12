@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiPortProviderPlugin;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.gui.system.plugins.base.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortReaderPlugin extends TGMidiPortProviderPlugin{
+public class MidiPortReaderPlugin extends TGMidiOutputPortProviderPlugin{
 
-	protected MidiPortProvider getProvider() {
+	protected MidiOutputPortProvider getProvider() {
 		return new MidiPortReaderCoreAudio();
 	}
 
