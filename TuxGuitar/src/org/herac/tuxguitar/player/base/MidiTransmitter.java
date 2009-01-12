@@ -11,20 +11,6 @@ public class MidiTransmitter {
 		this.receivers = new ArrayList();
 	}
 	
-	public void addReceiver(String id, MidiReceiver receiver){
-		this.receivers.add( new MidiReceiverItem( id , receiver ) );
-	}
-	
-	public void removeReceiver(String id){
-		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
-			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
-			if( receiver.getId() != null && receiver.getId().equals( id ) ){
-				this.receivers.remove( i );
-				return;
-			}
-		}
-	}
-	
 	public void sendSystemReset() throws MidiPlayerException {
 		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
@@ -72,6 +58,32 @@ public class MidiTransmitter {
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
 			receiver.getReceiver().sendPitchBend(channel, value);
 		}
+	}
+	
+	public void addReceiver(String id, MidiReceiver receiver){
+		MidiReceiverItem item = getReceiver( id );
+		if( item == null ){
+			this.receivers.add( new MidiReceiverItem( id , receiver ) );
+		}
+	}
+	
+	public void removeReceiver(String id){
+		MidiReceiverItem item = getReceiver( id );
+		if( item != null ){
+			this.receivers.remove( item );
+		}
+	}
+	
+	private MidiReceiverItem getReceiver(String id){
+		if( id != null ){
+			for( int i = 0 ; i < this.receivers.size() ; i ++ ){
+				MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
+				if( receiver.getId() != null && receiver.getId().equals( id ) ){
+					return receiver;
+				}
+			}
+		}
+		return null;
 	}
 	
 	private class MidiReceiverItem {
