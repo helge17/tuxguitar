@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.player.impl.midiport.alsa;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiPortProviderPlugin;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.gui.system.plugins.base.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin{
+public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 	
-	protected MidiPortProvider getProvider() {
-		return new MidiPortProviderImpl();
+	protected MidiOutputPortProvider getProvider() {
+		return new MidiOutputPortProviderImpl();
 	}
 	
 	public String getAuthor() {

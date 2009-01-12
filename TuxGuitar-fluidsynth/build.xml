@@ -12,7 +12,7 @@
 	<property name="build.jar" value="tuxguitar-fluidsynth.jar" />
 	
 	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
-	<property name="service.provider" value="org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiPortProviderPlugin" />
+	<property name="service.provider" value="org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiOutputPortProviderPlugin" />
 	
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar}"/>

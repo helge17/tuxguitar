@@ -36,11 +36,11 @@ public class MidiConfigUtils {
 		return config.getStringConfigValue(DEVICE_KEY,DEVICE_DEFAULT);
 	}
 	
-	public static void setupDialog(Shell parent,final MidiPortProviderImpl provider) {
+	public static void setupDialog(Shell parent,final MidiOutputPortProviderImpl provider) {
 		setupDialog(parent,provider,getConfig());
 	}
 	
-	public static void setupDialog(Shell parent,final MidiPortProviderImpl provider,final TGConfigManager config) {
+	public static void setupDialog(Shell parent,final MidiOutputPortProviderImpl provider,final TGConfigManager config) {
 		final String device = getDevice(config);
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);

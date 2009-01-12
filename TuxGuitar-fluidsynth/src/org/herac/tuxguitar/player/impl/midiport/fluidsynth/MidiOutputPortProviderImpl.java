@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderImpl implements MidiPortProvider{
+public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
 	private MidiSynth synth;
-	private MidiPortSettings settings;
+	private MidiOutputPortSettings settings;
 	
-	public MidiPortProviderImpl(){
+	public MidiOutputPortProviderImpl(){
 		super();
 	}
 	
@@ -25,7 +25,7 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 				String path = (String)it.next();
 				File soundfont = new File( path );
 				if( soundfont.exists() && !soundfont.isDirectory() ){
-					ports.add( new MidiPortImpl( getSynth(), soundfont ) );
+					ports.add( new MidiOutputPortImpl( getSynth(), soundfont ) );
 				}
 			}
 			return ports;
@@ -53,9 +53,9 @@ public class MidiPortProviderImpl implements MidiPortProvider{
 		return this.synth;
 	}
 	
-	public MidiPortSettings getSettings(){
+	public MidiOutputPortSettings getSettings(){
 		if(this.settings == null){
-			this.settings = new MidiPortSettings( this );
+			this.settings = new MidiOutputPortSettings( this );
 		}
 		return this.settings;
 	}

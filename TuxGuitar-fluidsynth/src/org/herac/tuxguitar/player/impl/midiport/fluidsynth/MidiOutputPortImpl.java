@@ -2,20 +2,19 @@ package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 
 import java.io.File;
 
-import org.herac.tuxguitar.player.base.MidiOut;
-import org.herac.tuxguitar.player.base.MidiPort;
-import org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiOutImpl;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiPortImpl extends MidiPort{
+public class MidiOutputPortImpl extends MidiOutputPort{
 	
 	private MidiSynth synth;
-	private MidiOutImpl midiOut;
+	private MidiReceiverImpl receiver;
 	private String soundFont;
 	
-	public MidiPortImpl(MidiSynth synth,File soundfont){
+	public MidiOutputPortImpl(MidiSynth synth,File soundfont){
 		super(getUniqueKey(soundfont),getUniqueName(soundfont));
 		this.soundFont = soundfont.getAbsolutePath();
-		this.midiOut = new MidiOutImpl(synth);
+		this.receiver = new MidiReceiverImpl(synth);
 		this.synth = synth;
 	}
 	
@@ -31,9 +30,9 @@ public class MidiPortImpl extends MidiPort{
 		}
 	}
 	
-	public MidiOut out(){
+	public MidiReceiver getReceiver(){
 		this.open();
-		return this.midiOut;
+		return this.receiver;
 	}
 	
 	public void check(){

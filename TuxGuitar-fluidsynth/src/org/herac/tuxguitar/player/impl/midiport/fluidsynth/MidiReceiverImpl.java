@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOut;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutImpl implements MidiOut{
+public class MidiReceiverImpl implements MidiReceiver{
 	
 	private MidiSynth synth;
 	
-	public MidiOutImpl(MidiSynth synth){
+	public MidiReceiverImpl(MidiSynth synth){
 		this.synth = synth;
 	}
 	

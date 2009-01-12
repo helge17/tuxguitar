@@ -1,35 +1,34 @@
 package org.herac.tuxguitar.player.impl.midiport.alsa;
 
-import org.herac.tuxguitar.player.base.MidiOut;
-import org.herac.tuxguitar.player.base.MidiPort;
-import org.herac.tuxguitar.player.impl.midiport.alsa.MidiOutImpl;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiPortImpl extends MidiPort{
+public class MidiOutputPortImpl extends MidiOutputPort{
 	
 	private final int port;
 	private final int client;
-	private final MidiOutImpl midiOut;
+	private final MidiReceiverImpl receiver;
 	
-	public MidiPortImpl(MidiSystem midiSystem,String name,int client,int port){
-		super(MidiPortImpl.getUniqueKey(client, port),MidiPortImpl.getUniqueName(name, client, port));
+	public MidiOutputPortImpl(MidiSystem midiSystem,String name,int client,int port){
+		super(MidiOutputPortImpl.getUniqueKey(client, port),MidiOutputPortImpl.getUniqueName(name, client, port));
 		this.client = client;
 		this.port = port;
-		this.midiOut = new MidiOutImpl(this,midiSystem);
+		this.receiver = new MidiReceiverImpl(this,midiSystem);
 	}
 	
 	public void open(){
-		if(!this.midiOut.isConnected()){
-			this.midiOut.connect();
+		if(!this.receiver.isConnected()){
+			this.receiver.connect();
 		}
 	}
 	
 	public void close(){
-		this.midiOut.disconnect();
+		this.receiver.disconnect();
 	}
 	
-	public MidiOut out(){
+	public MidiReceiver getReceiver(){
 		this.open();
-		return this.midiOut;
+		return this.receiver;
 	}
 	
 	public void check(){

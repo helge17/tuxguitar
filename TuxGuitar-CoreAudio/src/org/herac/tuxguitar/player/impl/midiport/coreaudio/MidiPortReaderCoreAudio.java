@@ -2,12 +2,12 @@ package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiPortProvider;
-import org.herac.tuxguitar.player.impl.midiport.coreaudio.MidiOutImpl;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import org.herac.tuxguitar.player.impl.midiport.coreaudio.MidiReceiverImpl;
 
-public class MidiPortReaderCoreAudio implements MidiPortProvider{
+public class MidiPortReaderCoreAudio implements MidiOutputPortProvider{
 
-	private static final MidiOutImpl midiOut = new MidiOutImpl();
+	private static final MidiReceiverImpl midiOut = new MidiReceiverImpl();
 	
 	public MidiPortReaderCoreAudio(){
 		super();

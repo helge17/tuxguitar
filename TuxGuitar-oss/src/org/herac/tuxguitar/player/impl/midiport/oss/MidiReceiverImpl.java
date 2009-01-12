@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.player.impl.midiport.alsa;
+package org.herac.tuxguitar.player.impl.midiport.oss;
 
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOut;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutImpl implements MidiOut{
+public class MidiReceiverImpl implements MidiReceiver{
 	
 	private boolean connected;
-	private MidiPortImpl midiPort;
+	private MidiOutputPortImpl midiPort;
 	private MidiSystem midiSystem;
 	
-	public MidiOutImpl(MidiPortImpl midiPort, MidiSystem midiSystem){
+	public MidiReceiverImpl(MidiOutputPortImpl midiPort, MidiSystem midiSystem){
 		this.midiPort = midiPort;
 		this.midiSystem = midiSystem;
 		this.connected = false;
@@ -21,7 +21,7 @@ public class MidiOutImpl implements MidiOut{
 	
 	public void connect(){
 		if(!isConnected()){
-			this.midiSystem.openPort(this.midiPort.getClient(),this.midiPort.getPort());
+			this.midiSystem.openPort(this.midiPort);
 			this.connected = true;
 		}
 	}
@@ -35,7 +35,7 @@ public class MidiOutImpl implements MidiOut{
 	
 	public void sendAllNotesOff() {
 		for(int i = 0; i < 16; i ++){
-			this.sendControlChange(i,MidiControllers.ALL_NOTES_OFF,0);
+			sendControlChange(i,MidiControllers.ALL_NOTES_OFF,0);
 		}
 	}
 	

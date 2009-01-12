@@ -2,14 +2,14 @@ package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiPortProviderPlugin;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.gui.system.plugins.base.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin implements TGPluginSetup{
+public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin implements TGPluginSetup{
 	
-	private MidiPortProviderImpl provider;
+	private MidiOutputPortProviderImpl provider;
 	
-	protected MidiPortProvider getProvider() {
+	protected MidiOutputPortProvider getProvider() {
 		return getProviderImpl();
 	}
 	
@@ -33,9 +33,9 @@ public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin implements 
 		getProviderImpl().getSettings().configure(parent);
 	}
 	
-	private MidiPortProviderImpl getProviderImpl() {
+	private MidiOutputPortProviderImpl getProviderImpl() {
 		if(this.provider == null){
-			this.provider = new MidiPortProviderImpl();
+			this.provider = new MidiOutputPortProviderImpl();
 		}
 		return this.provider;
 	}

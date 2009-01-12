@@ -5,13 +5,12 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequencer;
 
 public class MidiReceiverImpl implements Receiver{
 	
-	private MidiSequencer sequencer;
+	private MidiSequencerImpl sequencer;
 	
-	public MidiReceiverImpl(MidiSequencer sequencer){
+	public MidiReceiverImpl(MidiSequencerImpl sequencer){
 		this.sequencer = sequencer;
 	}
 	
@@ -61,7 +60,7 @@ public class MidiReceiverImpl implements Receiver{
 		if(velocity == 0){
 			parseNoteOff(data);
 		}else if(value > 0){
-			this.sequencer.getMidiPort().out().sendNoteOn(channel,value,velocity);
+			this.sequencer.getTransmitter().sendNoteOn(channel,value,velocity);
 		}
 	}
 	
@@ -72,7 +71,7 @@ public class MidiReceiverImpl implements Receiver{
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		int velocity = (length > 2)?(data[2] & 0xFF):0;
 		
-		this.sequencer.getMidiPort().out().sendNoteOff(channel,value,velocity);
+		this.sequencer.getTransmitter().sendNoteOff(channel,value,velocity);
 	}
 	
 	private void parseProgramChange(byte[] data) throws MidiPlayerException{
@@ -80,7 +79,7 @@ public class MidiReceiverImpl implements Receiver{
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int instrument = (length > 1)?(data[1] & 0xFF):-1;
 		if(channel != -1 && instrument != -1){
-			this.sequencer.getMidiPort().out().sendProgramChange(channel,instrument);
+			this.sequencer.getTransmitter().sendProgramChange(channel,instrument);
 		}
 	}
 	
@@ -90,7 +89,7 @@ public class MidiReceiverImpl implements Receiver{
 		int control = (length > 1)?(data[1] & 0xFF):-1;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
 		if(channel != -1 && control != -1 && value != -1){
-			this.sequencer.getMidiPort().out().sendControlChange(channel,control,value);
+			this.sequencer.getTransmitter().sendControlChange(channel,control,value);
 		}
 	}
 	
@@ -99,7 +98,7 @@ public class MidiReceiverImpl implements Receiver{
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
 		if(channel != -1 && value != -1){
-			this.sequencer.getMidiPort().out().sendPitchBend(channel,value);
+			this.sequencer.getTransmitter().sendPitchBend(channel,value);
 		}
 	}
 }

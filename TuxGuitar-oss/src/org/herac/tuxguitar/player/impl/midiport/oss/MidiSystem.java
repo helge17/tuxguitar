@@ -14,7 +14,7 @@ public class MidiSystem{
 	private long instance;
 	private boolean open;
 	private List ports;
-	private MidiPortImpl connection;
+	private MidiOutputPortImpl connection;
 	
 	public MidiSystem() {
 		this.instance = malloc();
@@ -56,7 +56,7 @@ public class MidiSystem{
 		return this.ports;
 	}
 	
-	public void openPort(MidiPortImpl port){
+	public void openPort(MidiOutputPortImpl port){
 		if(this.instance != 0 && this.open){
 			this.openPort(this.instance, port.getDevice());
 			this.connection = port;
@@ -100,12 +100,12 @@ public class MidiSystem{
 		}
 	}
 	
-	public MidiPortImpl getConnection(){
+	public MidiOutputPortImpl getConnection(){
 		return this.connection;
 	}
 	
 	protected void addPort(String name,int device){
-		this.ports.add(new MidiPortImpl(this,name,device));
+		this.ports.add(new MidiOutputPortImpl(this,name,device));
 	}
 	
 	private native long malloc();

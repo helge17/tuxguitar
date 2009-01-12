@@ -2,16 +2,16 @@ package org.herac.tuxguitar.player.impl.midiport.oss;
 
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiPortProviderPlugin;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.gui.system.plugins.base.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin implements TGPluginSetup{
+public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin implements TGPluginSetup{
 	
-	private MidiPortProviderImpl portReader;
+	private MidiOutputPortProviderImpl portReader;
 	
-	protected MidiPortProvider getProvider() {
+	protected MidiOutputPortProvider getProvider() {
 		if(this.portReader == null){
-			this.portReader = new MidiPortProviderImpl();
+			this.portReader = new MidiOutputPortProviderImpl();
 		}
 		return this.portReader;
 	}
@@ -33,6 +33,6 @@ public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin implements 
 	}
 	
 	public void setupDialog(Shell parent) {
-		MidiConfigUtils.setupDialog(parent,(MidiPortProviderImpl)getProvider());
+		MidiConfigUtils.setupDialog(parent,(MidiOutputPortProviderImpl)getProvider());
 	}
 }

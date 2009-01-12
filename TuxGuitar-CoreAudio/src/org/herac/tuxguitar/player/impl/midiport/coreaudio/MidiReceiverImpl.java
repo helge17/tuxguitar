@@ -5,15 +5,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOut;
-import org.herac.tuxguitar.player.impl.midiport.coreaudio.MidiPortImpl;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutImpl extends MidiReceiverJNI implements MidiOut{
+public class MidiReceiverImpl extends MidiReceiverJNI implements MidiReceiver{
 	private boolean open; // unncessary
     private boolean connected;	
 	private List ports;
 	
-	public MidiOutImpl(){
+	public MidiReceiverImpl(){
 		this.ports = new ArrayList();	
         this.connected = false;
 	}
@@ -71,15 +70,9 @@ public class MidiOutImpl extends MidiReceiverJNI implements MidiOut{
 	}
 	
 	public void sendAllNotesOff() {
-
 		for(int i = 0; i < 16; i ++){
 			sendControlChange(i,MidiControllers.ALL_NOTES_OFF,0);		
-		}	
-/*
-		for(int i = 0; i < 16; i ++){
-			sendControlChange(i,120 ,0);		
-		}	
- */
+		}
 	}
 
 	public void sendControlChange(int channel, int controller, int value) {

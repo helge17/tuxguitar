@@ -10,23 +10,23 @@ import javax.sound.midi.Synthesizer;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOut;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiPort;
+import org.herac.tuxguitar.player.base.MidiReceiver;
 import org.herac.tuxguitar.player.impl.jsa.assistant.SBAssistant;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
 
-public class MidiPortSynthesizer extends MidiPort{
+public class MidiPortSynthesizer extends MidiOutputPort{
 	
 	private Synthesizer synthesizer;
-	private MidiOut out;
+	private MidiReceiver receiver;
 	private boolean synthesizerLoaded;
 	private boolean soundbankLoaded;
 	
 	public MidiPortSynthesizer(Synthesizer synthesizer){
 		super(synthesizer.getDeviceInfo().getName(),synthesizer.getDeviceInfo().getName());
 		this.synthesizer = synthesizer;
-		this.out = new MidiSynthesizer(this);
+		this.receiver = new MidiPortSynthesizerReceiver(this);
 	}
 	
 	public void open(){
@@ -39,8 +39,8 @@ public class MidiPortSynthesizer extends MidiPort{
 		}
 	}
 	
-	public MidiOut out(){
-		return this.out;
+	public MidiReceiver getReceiver(){
+		return this.receiver;
 	}
 	
 	public void check() throws MidiPlayerException{
@@ -125,12 +125,12 @@ public class MidiPortSynthesizer extends MidiPort{
 	}
 }
 
-class MidiSynthesizer implements MidiOut{
+class MidiPortSynthesizerReceiver implements MidiReceiver{
 	
 	private MidiPortSynthesizer port;
 	private MidiChannel[] channels;
 	
-	public MidiSynthesizer(MidiPortSynthesizer port){
+	public MidiPortSynthesizerReceiver(MidiPortSynthesizer port){
 		this.port = port;
 	}
 	

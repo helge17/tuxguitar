@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.player.impl.midiport.winmm;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiPortProviderPlugin;
-import org.herac.tuxguitar.player.base.MidiPortProvider;
+import org.herac.tuxguitar.gui.system.plugins.base.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiPortProviderPlugin extends TGMidiPortProviderPlugin{
+public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 	
-	private MidiPortProviderImpl portReader;
+	private MidiOutputPortProviderImpl portReader;
 	
-	protected MidiPortProvider getProvider() {
+	protected MidiOutputPortProvider getProvider() {
 		if(this.portReader == null){
-			this.portReader = new MidiPortProviderImpl();
+			this.portReader = new MidiOutputPortProviderImpl();
 		}
 		return this.portReader;
 	}
