@@ -546,6 +546,11 @@ public class TrackPropertiesAction extends Action {
 				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),3, 33));
 				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),4, 28));
 				break;
+			default:
+				for( int i = 1 ; i <= this.stringCount ; i ++ ){
+					this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),i,0));
+				}
+				break;
 			}
 		}
 	}
