@@ -71,7 +71,6 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 	protected boolean editingTickScale;
 	protected long redrawTime;
 	protected int status;
-	protected int position;
 	
 	public TGTransport() {
 		super();
@@ -392,28 +391,21 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 		gotoMeasure(header,false);
 	}
 	
-	protected void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
-		if(header != null && this.position != header.getNumber()){
-			TuxGuitar.instance().getPlayer().setTickPosition(MidiTickUtil.getTick(header.getStart()));
-			if(moveCaret){
-				TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
-				TuxGuitar.instance().updateCache(true);
+	public void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
+		if(header != null){
+			TGMeasure playingMeasure = null;
+			if( TuxGuitar.instance().getPlayer().isRunning() ){
+				TuxGuitar.instance().getEditorCache().updatePlayMode();
+				playingMeasure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			}
-			redraw();
-		}
-	}
-	
-	private void checkPosition(){
-		TGMeasure measure = null;
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
-		}else{
-			measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
-		}
-		if(measure != null){
-			this.position = measure.getNumber();
-		}else{
-			this.position = 0;
+			if( playingMeasure == null || playingMeasure.getHeader().getNumber() != header.getNumber() ){
+				TuxGuitar.instance().getPlayer().setTickPosition(MidiTickUtil.getTick(header.getStart()));
+				if(moveCaret){
+					TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
+					TuxGuitar.instance().updateCache(true);
+				}
+				redraw();
+			}
 		}
 	}
 	
@@ -427,7 +419,6 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 	
 	public void redraw(){
 		if(!TuxGuitar.instance().isLocked()){
-			this.checkPosition();
 			if(!isDisposed()){
 				new SyncThread(new Runnable() {
 					public void run() {
@@ -451,7 +442,6 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 	public void redrawPlayingMode(){
 		if(!TuxGuitar.instance().isLocked()){
 			TuxGuitar.instance().lock();
-			this.checkPosition();
 			if(!isDisposed()){
 				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){
 					long time = System.currentTimeMillis();

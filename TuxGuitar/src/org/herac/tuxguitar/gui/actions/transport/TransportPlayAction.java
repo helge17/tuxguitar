@@ -41,7 +41,6 @@ public class TransportPlayAction extends Action {
 			}
 		}else{
 			player.pause();
-			updateTickPosition();
 		}
 		return 0;
 	}

@@ -54,6 +54,8 @@ public class MidiPlayer{
 	
 	private boolean anySolo;
 	
+	protected long tickLength;
+	
 	protected long tickPosition;
 	
 	protected boolean starting;
@@ -172,6 +174,7 @@ public class MidiPlayer{
 						
 						setStarting(false);
 						
+						MidiPlayer.this.tickLength = getSequencer().getTickLength();
 						MidiPlayer.this.tickPosition = getSequencer().getTickPosition();
 						while (getSequencer().isRunning() && isRunning()) {
 							synchronized(getSequencer()) {
@@ -186,7 +189,7 @@ public class MidiPlayer{
 						
 						//FINISH
 						if(isRunning()){
-							if(MidiPlayer.this.tickPosition >= (getSequencer().getTickLength() - (TGDuration.QUARTER_TIME / 2) )){
+							if(MidiPlayer.this.tickPosition >= (MidiPlayer.this.tickLength - (TGDuration.QUARTER_TIME / 2) )){
 								finish();
 							}else {
 								stop(isPaused());
