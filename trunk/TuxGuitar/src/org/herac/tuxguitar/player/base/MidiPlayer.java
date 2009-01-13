@@ -176,14 +176,16 @@ public class MidiPlayer{
 						
 						MidiPlayer.this.tickLength = getSequencer().getTickLength();
 						MidiPlayer.this.tickPosition = getSequencer().getTickPosition();
+						
+						Object sequencerLock = new Object();
 						while (getSequencer().isRunning() && isRunning()) {
-							synchronized(getSequencer()) {
+							synchronized(sequencerLock) {
 								if (isChangeTickPosition()) {
 									changeTickPosition();
 								}
 								MidiPlayer.this.tickPosition = getSequencer().getTickPosition();
 								
-								getSequencer().wait( TIMER_DELAY );
+								sequencerLock.wait( TIMER_DELAY );
 							}
 						}
 						
