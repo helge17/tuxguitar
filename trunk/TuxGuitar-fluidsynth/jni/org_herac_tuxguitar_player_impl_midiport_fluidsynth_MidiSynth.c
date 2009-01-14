@@ -23,6 +23,9 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth
 	handle->soundfont_id = 0;
 	
 	fluid_synth_set_gain( handle->synth, 0.5 );
+	fluid_synth_set_chorus_on( handle->synth, 0 );
+	fluid_synth_set_reverb_on( handle->synth, 0 );
+	fluid_synth_set_interp_method( handle->synth, -1, FLUID_INTERP_NONE );
 	
 	memcpy(&ptr, &handle, sizeof( handle ));
 	
