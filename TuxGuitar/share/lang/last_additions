@@ -1,187 +1,22 @@
-close=Close
-note=Note
-print.preview.page-of=Of
+edit.voice-1=Select Voice 1
+edit.voice-2=Select Voice 2
 
+beat.voice.remove-unused=Remove Unused Voice
+beat.voice-up=Stems Up
+beat.voice-down=Stems Down
+beat.voice-auto=Auto Stems
 
-###############################################################################
+beat.stroke-up=Upstroke
+beat.stroke-down=Downstroke
 
+## Shortcut Names
+action.edit.voice-1=Select Voice 1
+action.edit.voice-2=Select Voice 2
 
-text.editor=Text Editor
-text.text=Text
+action.beat.general.remove-unused-voice=Remove Unused Voice
+action.beat.general.voice-up=Set Stems Up
+action.beat.general.voice-down=Set Stems Down
+action.beat.general.voice-auto=Set Auto Stems
 
-composition.tempo.start-to-end=Apply this tempo in the whole song
-composition.tempo.position-to-end=Apply this tempo to the end
-composition.tempo.position-to-next=Apply this tempo to the next tempo marker
-
-help.about.license=License
-help.about.authors=Authors
-help.about.description=Description
-
-browser.collection.fs.name=Name
-browser.collection.fs.path=Folder
-
-transport.metronome=Metronome
-
-###############################################################################
-
-info=Info
-name=Name
-author=Author
-version=Version
-description=Description
-configure=Configure
-
-file.open-url=Open URL
-file.open.error=Cannot Open: {0}
-file.save.error=Cannot Save: {0}
-file.import.error=Cannot Import: {0}
-file.export.error=Cannot Export: {0}
-file.save-changes-question=The song has unsaved changes\nDo you want to save the changes?
-
-midi.port=Midi Port
-midi.sequencer=Midi Sequencer
-
-browser.dialog=Browser
-browser.menu.file=File
-browser.open=Open
-browser.exit=Exit
-browser.menu.collection=Collection
-browser.menu.go=Go
-browser.collection.select=Select Collection
-browser.collection.open=Open
-browser.collection.remove=Remove
-browser.collection.close=Close
-browser.collection.new=New
-browser.go-root=Home
-browser.go-back=Back
-browser.refresh=Refresh
-browser.collection.fs.editor-title=File System Collection
-browser.collection.fs.editor-tip=Choose your collection folder
-browser.collection.fs.invalid-path=Please, select a valid folder
-
-plugin.unknown-value=Not available.
-plugin.column.name=Plugin Name
-plugin.column.enabled=Enabled
-
-layout.compact=Compact
-layout.chord-style=Chord Style
-layout.chord-name=Chord Name
-layout.chord-diagram=Chord Diagram
-layout.tablature-enabled=Show Tablature
-
-show-matrix=Show Matrix
-
-matrix.editor=Matrix Editor
-matrix.grids=Number of Grids
-matrix.border-color=Border Color
-matrix.font=Font
-matrix.foreground-color=Foreground Color
-matrix.line-color-1=Line 1 Color
-matrix.line-color-2=Line 2 Color
-matrix.line-color-over=Color Over
-matrix.note-color=Note Color
-matrix.play-note-color=Play Note Color
-matrix.position-color=Position Color
-matrix.settings=Matrix Settings
-
-help.doc=Documentation
-
-transport.first=First
-transport.last=Last
-transport.previous=Previous
-transport.next=Next
-transport.pause=Pause
-transport.mode=Player Mode
-transport.mode.single=Player Mode Single
-transport.mode.single.tempo-percent=Tempo Percentage
-transport.mode.single.loop=Play Single Loop
-transport.mode.trainer=Training Mode
-transport.mode.trainer.increment-description=Increment by
-
-repeat.alternative
-repeat.alternative.editor=Edit Alternative Repeats
-
-tools=Tools
-tools.scale=Scale list
-tools.browser=Browser
-tools.plugins=Plugins
-tools.shortcuts=Shortcuts
-tools.settings=Settings
-
-text.insert=Insert Text
-
-settings.config.main.table.auto-size.enabled=Enable Automatic Table resizing
-settings.config.styles.general=General Styles
-settings.config.styles.printer=Printer Styles
-settings.config.styles.font.lyric=Lyrics Font
-settings.config.styles.font.text=Text Font
-settings.config.skin=Skins
-settings.config.skin.choose=Choose your skin
-settings.config.toolbars.tip=Customize Your ToolBars
-settings.config.toolbars.list=Available ToolBars
-settings.config.toolbars.move-up=Move Up
-settings.config.toolbars.move-down=Move Down
-
-action.file.open-url=Open URL
-action.file.exit=Exit TuxGuitar
-action.insert.text=Insert Text
-action.insert.repeat-alternative=Repeat Alternative
-action.composition.change-triplet-feel=Change Triplet Feel
-action.note.duration.set-whole=Set Whole Duration
-action.note.duration.set-half=Set Half Duration
-action.note.duration.set-quarter=Set Quarter Duration
-action.note.duration.set-eighth=Set Eighth Duration
-action.note.duration.set-sixteenth=Set Sixteenth Duration
-action.note.duration.set-thirty-second=Set Thirty Second Duration
-action.note.duration.set-sixty-fourth=Set Sixty Fourth Duration
-action.note.duration.decrement-duration=Decrement Duration
-action.note.duration.increment-duration=Increment Duration
-action.track.move-down=Move Down
-action.track.move-up=Move Up
-action.tools.browser=Browser
-action.transport.metronome=Metrononome
-action.transport.mode=Mode
-action.view.show-matrix=Show Matrix
-action.view.layout-set-chord-diagram-enabled=Enable Chord Diagram
-action.view.layout-set-chord-name-enabled=Enable Chord Name
-action.view.layout-set-compact=Show Compact Mode
-action.view.layout-set-tablature-enabled=Show Tablature
-action.marker.add=Add Marker
-action.marker.go-next=Go Next Marker
-action.marker.go-previous=Go Previous Marker
-action.settings.configure=Settings
-action.help.doc=Help
-
-chord.bass=Bass
-chord.custom=Custom Chord
-chord.settings.tip=Custom Settings
-chord.settings.type=Type
-chord.settings.type.most-common=Most Common
-chord.settings.type.inversions=Inversions
-chord.settings.type.close-voiced=Close Voiced
-chord.settings.type.open-voiced=Open Voiced
-chord.settings.open-chords=Open Chords
-chord.settings.chords-to-display=Chords to Display
-chord.settings.search-frets=Search Frets
-chord.settings.minimum-fret=Min
-chord.settings.maximum-fret=Max
-
-fretboard.background-color=Background Color
-fretboard.display-note-text=Display Note Text
-fretboard.display-scale-text=Display Scale Text
-fretboard.font=Font
-fretboard.fretpoint-color=Fret Color
-fretboard.note-color=Note Color
-fretboard.scale-note-color=Scale Note Color
-fretboard.settings=Fretboard Settings
-fretboard.string-color=String Color
-fretboard.settings.options=Options
-
-piano.editor=Piano Editor
-piano.natural-key-color=Natural Key Color
-piano.not-natural-key-color=Unnatural Key Color
-piano.note-color=Note Color
-piano.scale-note-color=Scale Note Color
-piano.settings=Piano Settings
-
-mixer=Mixer
+action.beat.general.set-stroke-up=Set Upstroke
+action.beat.general.set-stroke-down=Set Downstroke

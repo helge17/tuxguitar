@@ -25,7 +25,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SetVoiceAutoAction extends Action{
-	public static final String NAME = "action.note.general.voice-auto";
+	public static final String NAME = "action.beat.general.voice-auto";
 	
 	public SetVoiceAutoAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);

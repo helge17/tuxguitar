@@ -21,7 +21,7 @@ import org.herac.tuxguitar.song.models.TGStroke;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SetStrokeDownAction extends Action{
-	public static final String NAME = "action.note.general.set-stroke-down";
+	public static final String NAME = "action.beat.general.set-stroke-down";
 	
 	public SetStrokeDownAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);

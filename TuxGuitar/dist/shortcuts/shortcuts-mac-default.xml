@@ -22,13 +22,11 @@
 	<shortcut key="16777220" mask="65536" action="action.marker.go-next"/>
 	<shortcut key="16777219" mask="65536" action="action.marker.go-previous"/>
 	<shortcut key="16777219" mask="4325376" action="action.measure.go-first"/>
-	<shortcut key="16777217" mask="4325376" action="action.track.go-first"/>
 	<shortcut key="16777220" mask="4325376" action="action.measure.go-last"/>
-	<shortcut key="16777218" mask="4325376" action="action.track.go-last"/>
 	<shortcut key="16777220" mask="4194304" action="action.measure.go-next"/>
-	<shortcut key="16777218" mask="4194304" action="action.track.go-next"/>
 	<shortcut key="16777219" mask="4194304" action="action.measure.go-previous"/>
-	<shortcut key="16777217" mask="4194304" action="action.track.go-previous"/>
+	<shortcut key="16777217" mask="4325376" action="action.track.go-previous"/>
+	<shortcut key="16777218" mask="4325376" action="action.track.go-next"/>
 	<shortcut key="47" mask="4194304" action="action.help.doc"/>
 	<shortcut key="16777220" mask="131072" action="action.note.general.increment-semitone"/>
 	<shortcut key="97" mask="0" action="action.insert.chord"/>
@@ -49,4 +47,9 @@
 	<shortcut key="109" mask="4194304" action="action.view.show-mixer"/>
 	<shortcut key="116" mask="4194304" action="action.view.show-transport"/>
 	<shortcut key="122" mask="4194304" action="action.edit.undo"/>
+	<shortcut key="16777265" mask="4194304" action="action.edit.voice-1"/>
+	<shortcut key="16777266" mask="4194304" action="action.edit.voice-2"/>
+	<shortcut key="16777217" mask="4194304" action="action.beat.general.voice-up"/>
+	<shortcut key="16777218" mask="4194304" action="action.beat.general.voice-down"/>
+	<shortcut key="97" mask="4194304" action="action.beat.general.voice-auto"/>
 </shortcuts>

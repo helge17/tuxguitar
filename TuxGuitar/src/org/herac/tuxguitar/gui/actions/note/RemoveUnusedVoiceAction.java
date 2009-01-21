@@ -11,6 +11,7 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
+import org.herac.tuxguitar.song.models.TGBeat;
 
 /**
  * @author julian
@@ -18,10 +19,10 @@ import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class RemoveVoiceAction extends Action{
-	public static final String NAME = "action.note.general.remove-voice";
+public class RemoveUnusedVoiceAction extends Action{
+	public static final String NAME = "action.beat.general.remove-unused-voice";
 	
-	public RemoveVoiceAction() {
+	public RemoveUnusedVoiceAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
@@ -32,7 +33,11 @@ public class RemoveVoiceAction extends Action{
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			TuxGuitar.instance().getFileHistory().setUnsavedFile();
 			
-			getSongManager().getMeasureManager().removeMeasureVoices( caret.getMeasure(), caret.getVoice());
+			for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
+				if( caret.getVoice() != v ){
+					getSongManager().getMeasureManager().removeMeasureVoices( caret.getMeasure(), v );
+				}
+			}
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
