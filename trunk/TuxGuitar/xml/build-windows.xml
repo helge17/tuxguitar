@@ -45,7 +45,7 @@
 		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
-		<copy file="${build.dist.path}/shortcuts/shortcuts-windows-default.xml" tofile="${build.path}/shortcuts-default.xml"/>
+		<copy file="${build.dist.path}/shortcuts/shortcuts-default.xml" tofile="${build.path}/shortcuts-default.xml"/>
 		
 		<echo file="${file.script}" append="false">cd "."${line.separator}</echo>
 		<echo file="${file.script}" append="true">javaw -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>

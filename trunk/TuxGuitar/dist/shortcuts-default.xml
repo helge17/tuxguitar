@@ -3,6 +3,8 @@
 	<shortcut key="16777230" mask="0" action="action.composition.change-info"/>
 	<shortcut key="121" mask="262144" action="action.edit.redo"/>
 	<shortcut key="122" mask="262144" action="action.edit.undo"/>
+	<shortcut key="16777265" mask="262144" action="action.edit.voice-1"/>
+	<shortcut key="16777266" mask="262144" action="action.edit.voice-2"/>
 	<shortcut key="16777229" mask="65536" action="action.file.exit"/>
 	<shortcut key="110" mask="262144" action="action.file.new"/>
 	<shortcut key="111" mask="262144" action="action.file.open"/>
@@ -22,7 +24,7 @@
 	<shortcut key="16777219" mask="262144" action="action.measure.go-previous"/>
 	<shortcut key="118" mask="262144" action="action.measure.paste"/>
 	<shortcut key="16777258" mask="0" action="action.note.duration.change-dotted"/>
-	<shortcut key="16777263" mask="0" action="action.note.duration.change-tupleto"/>
+	<shortcut key="16777263" mask="0" action="action.note.duration.change-tupleto"/>	
 	<shortcut key="98" mask="0" action="action.note.effect.change-bend"/>
 	<shortcut key="120" mask="0" action="action.note.effect.change-dead"/>
 	<shortcut key="102" mask="0" action="action.note.effect.change-fade-in"/>
@@ -33,6 +35,9 @@
 	<shortcut key="115" mask="0" action="action.note.effect.change-slide"/>
 	<shortcut key="118" mask="0" action="action.note.effect.change-vibrato"/>
 	<shortcut key="127" mask="262144" action="action.note.general.clean-beat"/>
+	<shortcut key="16777217" mask="262144" action="action.beat.general.voice-up"/>
+	<shortcut key="16777218" mask="262144" action="action.beat.general.voice-down"/>
+	<shortcut key="97" mask="262144" action="action.beat.general.voice-auto"/>
 	<shortcut key="16777219" mask="131072" action="action.note.general.decrement-semitone"/>
 	<shortcut key="16777220" mask="131072" action="action.note.general.increment-semitone"/>
 	<shortcut key="16777218" mask="131072" action="action.note.general.shift-down"/>
@@ -41,10 +46,8 @@
 	<shortcut key="16777232" mask="0" action="action.settings.configure"/>
 	<shortcut key="98" mask="262144" action="action.tools.browser"/>
 	<shortcut key="16777225" mask="393216" action="action.track.add"/>
-	<shortcut key="16777217" mask="393216" action="action.track.go-first"/>
-	<shortcut key="16777218" mask="393216" action="action.track.go-last"/>
-	<shortcut key="16777218" mask="262144" action="action.track.go-next"/>
-	<shortcut key="16777217" mask="262144" action="action.track.go-previous"/>
+	<shortcut key="16777217" mask="393216" action="action.track.go-previous"/>
+	<shortcut key="16777218" mask="393216" action="action.track.go-next"/>
 	<shortcut key="127" mask="393216" action="action.track.remove"/>
 	<shortcut key="16777234" mask="0" action="action.transport.mode"/>
 	<shortcut key="32" mask="0" action="action.transport.play"/>

@@ -16,7 +16,7 @@ import org.herac.tuxguitar.gui.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
-import org.herac.tuxguitar.gui.actions.note.RemoveVoiceAction;
+import org.herac.tuxguitar.gui.actions.note.RemoveUnusedVoiceAction;
 import org.herac.tuxguitar.gui.actions.note.SetStrokeDownAction;
 import org.herac.tuxguitar.gui.actions.note.SetStrokeUpAction;
 import org.herac.tuxguitar.gui.actions.note.SetVoiceAutoAction;
@@ -74,7 +74,7 @@ public class BeatMenuItem extends MenuItems{
 		
 		//--Remove Voice
 		this.removeVoice = new MenuItem(this.menu, SWT.PUSH);
-		this.removeVoice.addSelectionListener(TuxGuitar.instance().getAction(RemoveVoiceAction.NAME));
+		this.removeVoice.addSelectionListener(TuxGuitar.instance().getAction(RemoveUnusedVoiceAction.NAME));
 		
 		//--Duration--
 		this.durationMenuItem = new DurationMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
@@ -182,13 +182,13 @@ public class BeatMenuItem extends MenuItems{
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.noteMenuItem, "beat", null);
 		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", CleanBeatAction.NAME);
-		setMenuItemTextAndAccelerator(this.removeVoice, "beat.voice.remove", RemoveVoiceAction.NAME);
+		setMenuItemTextAndAccelerator(this.removeVoice, "beat.voice.remove-unused", RemoveUnusedVoiceAction.NAME);
 		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", ChangeTiedNoteAction.NAME);
-		setMenuItemTextAndAccelerator(this.voiceAuto, "note.voice-auto", SetVoiceAutoAction.NAME);
-		setMenuItemTextAndAccelerator(this.voiceUp, "note.voice-up", SetVoiceUpAction.NAME);
-		setMenuItemTextAndAccelerator(this.voiceDown, "note.voice-down", SetVoiceDownAction.NAME);
-		setMenuItemTextAndAccelerator(this.strokeUp, "note.stroke-up", SetStrokeUpAction.NAME);
-		setMenuItemTextAndAccelerator(this.strokeDown, "note.stroke-down", SetStrokeDownAction.NAME);
+		setMenuItemTextAndAccelerator(this.voiceAuto, "beat.voice-auto", SetVoiceAutoAction.NAME);
+		setMenuItemTextAndAccelerator(this.voiceUp, "beat.voice-up", SetVoiceUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.voiceDown, "beat.voice-down", SetVoiceDownAction.NAME);
+		setMenuItemTextAndAccelerator(this.strokeUp, "beat.stroke-up", SetStrokeUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.strokeDown, "beat.stroke-down", SetStrokeDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneUp, "note.semitone-up", IncrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneDown, "note.semitone-down", DecrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.shiftUp, "note.shift-up", ShiftNoteUpAction.NAME);
