@@ -120,11 +120,13 @@ public class GP3OutputStream extends GTPOutputStream{
 	
 	private void writeMeasures(TGSong song,TGTempo tempo) throws IOException{
 		for (int i = 0; i < song.countMeasureHeaders(); i++) {
+			TGMeasureHeader header = song.getMeasureHeader(i);
 			for (int j = 0; j < song.countTracks(); j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = track.getMeasure(i);
-				writeMeasure(measure, tempo);
+				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
 			}
+			header.getTempo().copy( tempo );
 		}
 	}
 	
@@ -193,18 +195,18 @@ public class GP3OutputStream extends GTPOutputStream{
 		writeColor(track.getColor());
 	}
 	
-	private void writeMeasure(TGMeasure srcMeasure, TGTempo tempo) throws IOException {
+	private void writeMeasure(TGMeasure srcMeasure, boolean changeTempo) throws IOException {
 		TGMeasure measure = new GTPVoiceJoiner(getFactory(),srcMeasure).process();
 		
 		int beatCount = measure.countBeats();
 		writeInt(beatCount);
 		for (int i = 0; i < beatCount; i++) {
 			TGBeat beat = measure.getBeat( i );
-			writeBeat(beat, measure, tempo);
+			writeBeat(beat, measure, ( changeTempo && i == 0 ) );
 		}
 	}
 	
-	private void writeBeat(TGBeat beat,TGMeasure measure, TGTempo songTempo) throws IOException {
+	private void writeBeat(TGBeat beat,TGMeasure measure, boolean changeTempo) throws IOException {
 		TGVoice voice = beat.getVoice(0);
 		TGDuration duration = voice.getDuration();
 		int flags = 0;
@@ -217,7 +219,7 @@ public class GP3OutputStream extends GTPOutputStream{
 		if(beat.isTextBeat()){
 			flags |= 0x04;
 		}
-		if (measure.getTempo().getValue() != songTempo.getValue()) {
+		if (changeTempo) {
 			flags |= 0x10;
 		}
 		TGNoteEffect effect = null;
