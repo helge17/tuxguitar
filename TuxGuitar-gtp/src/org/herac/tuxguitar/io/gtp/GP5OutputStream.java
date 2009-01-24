@@ -278,16 +278,18 @@ public class GP5OutputStream extends GTPOutputStream {
 	
 	private void writeMeasures(TGSong song, TGTempo tempo) throws IOException{
 		for (int i = 0; i < song.countMeasureHeaders(); i++) {
+			TGMeasureHeader header = song.getMeasureHeader(i);
 			for (int j = 0; j < song.countTracks(); j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = track.getMeasure(i);
-				writeMeasure(measure, tempo);
+				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
 				skipBytes(1);
 			}
+			header.getTempo().copy( tempo );
 		}
 	}
 	
-	private void writeMeasure(TGMeasure measure, TGTempo tempo) throws IOException {
+	private void writeMeasure(TGMeasure measure, boolean changeTempo) throws IOException {
 		for(int v = 0; v < 2 ; v ++){
 			List voices = new ArrayList();
 			for (int m = 0; m < measure.countBeats(); m ++) {
@@ -301,10 +303,9 @@ public class GP5OutputStream extends GTPOutputStream {
 			}
 			if( voices.size() > 0 ){
 				writeInt( voices.size() );
-				Iterator it = voices.iterator();
-				while( it.hasNext() ){
-					TGVoice voice = (TGVoice)it.next();
-					writeBeat(voice, voice.getBeat(), measure, tempo);
+				for( int i = 0; i < voices.size() ; i ++ ){
+					TGVoice voice = (TGVoice) voices.get( i );
+					writeBeat(voice, voice.getBeat(), measure, ( changeTempo && i == 0 ) );					
 				}
 			}else{
 				// Fill empty voices.
@@ -317,14 +318,14 @@ public class GP5OutputStream extends GTPOutputStream {
 					
 					writeInt( count );
 					for( int i = 0; i < count ; i ++ ){
-						writeBeat(voice, voice.getBeat(), measure, tempo);
+						writeBeat(voice, voice.getBeat(), measure, ( changeTempo && i == 0 ));
 					}
 				}
 			}
 		}
 	}
 	
-	private void writeBeat(TGVoice voice, TGBeat beat, TGMeasure measure, TGTempo tempo) throws IOException {
+	private void writeBeat(TGVoice voice, TGBeat beat, TGMeasure measure, boolean changeTempo) throws IOException {
 		TGDuration duration = voice.getDuration();
 		TGNoteEffect effect = getFactory().newEffect();
 		for (int i = 0; i < voice.countNotes(); i++) {
@@ -363,7 +364,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		else if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
 			flags |= 0x08;
 		}
-		if (measure.getTempo().getValue() != tempo.getValue()) {
+		if (changeTempo) {
 			flags |= 0x10;
 		}
 		if (!duration.getTupleto().isEqual(TGTupleto.NORMAL)) {
@@ -397,7 +398,6 @@ public class GP5OutputStream extends GTPOutputStream {
 		
 		if ((flags & 0x10) != 0) {
 			writeMixChange(measure.getTempo());
-			tempo.setValue(measure.getTempo().getValue());
 		}
 		int stringFlags = 0;
 		if (!voice.isRestVoice()) {
