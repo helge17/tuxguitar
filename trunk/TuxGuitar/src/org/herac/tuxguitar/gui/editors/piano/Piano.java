@@ -32,8 +32,10 @@ import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 
 public class Piano extends Composite{
@@ -56,6 +58,7 @@ public class Piano extends Composite{
 	private Button scale;
 	private Button settings;
 	protected TGBeat beat;
+	protected TGBeat externalBeat;
 	protected Image image;
 	
 	public Piano(Composite parent, int style) {
@@ -336,8 +339,8 @@ public class Piano extends Composite{
 				TGVoice voice = this.beat.getVoice( v );
 				Iterator it = voice.getNotes().iterator();
 				while (it.hasNext()) {
-					TGNoteImpl note = (TGNoteImpl) it.next();
-					if (note.getRealValue() == value) {
+					TGNote note = (TGNote) it.next();
+					if (getRealNoteValue(note) == value) {
 						//comienza el undoable
 						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 						
@@ -414,12 +417,43 @@ public class Piano extends Composite{
 		TuxGuitar.instance().updateCache(true);
 	}
 	
+	protected int getRealNoteValue(TGNote note){
+		TGVoice voice = note.getVoice();
+		if( voice != null ){
+			TGBeat beat = voice.getBeat();
+			if( beat != null ){
+				TGMeasure measure = beat.getMeasure();
+				if( measure != null ){
+					TGTrack track = measure.getTrack();
+					if( track != null ){
+						return ( note.getValue() + track.getString( note.getString() ).getValue() );
+					}
+				}
+			}
+		}
+		// If note have no parents, uses current track strings.
+		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		TGTrack track = caret.getTrack();
+		if( track != null ){
+			return ( note.getValue() + track.getString( note.getString() ).getValue() );
+		}
+		return 0;
+	}
+	
 	public boolean hasChanges(){
 		return this.changes;
 	}
 	
 	public void setChanges(boolean changes){
 		this.changes = changes;
+	}
+	
+	public void setExternalBeat(TGBeat externalBeat){
+		this.externalBeat = externalBeat;
+	}
+	
+	public TGBeat getExternalBeat(){
+		return this.externalBeat;
 	}
 	
 	protected void updateEditor(){
@@ -430,6 +464,8 @@ public class Piano extends Composite{
 			}
 			if(TuxGuitar.instance().getPlayer().isRunning()){
 				this.beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
+			}else if(this.externalBeat != null){
+				this.beat = this.externalBeat;
 			}else{
 				this.beat = TuxGuitar.instance().getEditorCache().getEditBeat();
 			}
@@ -499,8 +535,8 @@ public class Piano extends Composite{
 						TGVoice voice = Piano.this.beat.getVoice( v );
 						Iterator it = voice.getNotes().iterator();
 						while(it.hasNext()){
-							TGNoteImpl note = (TGNoteImpl)it.next();
-							paintNote(painter,note.getRealValue());
+							TGNote note = (TGNote)it.next();
+							paintNote(painter, getRealNoteValue( note ) );
 						}
 					}
 				}
@@ -513,7 +549,11 @@ public class Piano extends Composite{
 			if(e.button == 1){
 				if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
 					ActionLock.lock();
-					hit(e.x, e.y);
+					if( getExternalBeat() == null ){
+						hit(e.x, e.y);
+					}else{
+						setExternalBeat( null );
+					}
 					afterAction();
 					ActionLock.unlock();
 				}

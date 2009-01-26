@@ -65,6 +65,7 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -656,6 +657,24 @@ public class TuxGuitar {
 			}
 			this.getTransport().redrawPlayingMode();
 			*/
+			this.unlock();
+		}
+	}
+	
+	public void showExternalBeat( TGBeat beat ){
+		if(!isDisposed() && !this.isLocked()){
+			this.lock();
+			this.getEditorManager().showExternalBeat(beat);
+			this.updateCache(true);
+			this.unlock();
+		}
+	}
+	
+	public void hideExternalBeat(){
+		if(!isDisposed() && !this.isLocked()){
+			this.lock();
+			this.getEditorManager().hideExternalBeat();
+			this.updateCache(true);
 			this.unlock();
 		}
 	}
