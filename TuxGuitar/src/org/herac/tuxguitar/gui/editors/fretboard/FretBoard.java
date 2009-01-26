@@ -43,6 +43,7 @@ import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -72,6 +73,7 @@ public class FretBoard extends Composite {
 	//private List components;
 	
 	private TGBeat beat;
+	private TGBeat externalBeat;
 	
 	private int[] frets;
 	private int[] strings;
@@ -257,6 +259,8 @@ public class FretBoard extends Composite {
 		if(isVisible()){
 			if(TuxGuitar.instance().getPlayer().isRunning()){
 				this.beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
+			}else if(this.externalBeat != null){
+				this.beat = this.externalBeat;
 			}else{
 				this.beat = TuxGuitar.instance().getEditorCache().getEditBeat();
 			}
@@ -356,7 +360,8 @@ public class FretBoard extends Composite {
 	}
 	
 	private void paintScale(TGPainter painter) {
-		TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+		//TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+		TGTrack track = getTrack();
 		
 		for (int i = 0; i < this.strings.length; i++) {
 			TGString string = track.getString(i + 1);
@@ -385,7 +390,8 @@ public class FretBoard extends Composite {
 	
 	private void paintNotes(TGPainter painter) {
 		if(this.beat != null){
-			TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+			//TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+			TGTrack track = getTrack();
 			
 			for(int v = 0; v < this.beat.countVoices(); v ++){
 				TGVoice voice = this.beat.getVoice( v );
@@ -518,8 +524,25 @@ public class FretBoard extends Composite {
 		return false;
 	}
 	
+	private TGTrack getTrack() {
+		if( this.beat != null ){
+			TGMeasure measure = this.beat.getMeasure();
+			if( measure != null ){
+				TGTrack track = measure.getTrack();
+				if( track != null ){
+					return track;
+				}
+			}
+		}
+		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+	}
+	
 	private int getStringCount() {
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getStrings().size();
+		TGTrack track = getTrack();
+		if( track != null ){
+			return track.stringCount();
+		}
+		return 0;
 	}
 	
 	private int getOvalSize(){
@@ -564,6 +587,14 @@ public class FretBoard extends Composite {
 	
 	public void setChanges(boolean changes){
 		this.changes = changes;
+	}
+	
+	public void setExternalBeat(TGBeat externalBeat){
+		this.externalBeat = externalBeat;
+	}
+	
+	public TGBeat getExternalBeat(){
+		return this.externalBeat;
 	}
 	
 	public void redraw() {
@@ -654,7 +685,11 @@ public class FretBoard extends Composite {
 			if(e.button == 1){
 				if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
 					ActionLock.lock();
-					hit(e.x, e.y);
+					if( getExternalBeat() == null ){
+						hit(e.x, e.y);
+					}else{
+						setExternalBeat( null );
+					}
 					afterAction();
 					ActionLock.unlock();
 				}

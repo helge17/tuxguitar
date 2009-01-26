@@ -7,8 +7,9 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.fretboard.FretBoard;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
+import org.herac.tuxguitar.song.models.TGBeat;
 
-public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoader{
+public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader,LanguageLoader{
 	
 	private FretBoard fretBoard;
 	private boolean visible;
@@ -26,6 +27,7 @@ public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoa
 		this.visible = false;
 		getFretBoard().setVisible(this.visible);
 		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().removeBeatViewerListener(this);
 		TuxGuitar.instance().updateShellFooter(0,0,0);
 	}
 	
@@ -33,6 +35,7 @@ public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoa
 		this.visible = true;
 		getFretBoard().setVisible(this.visible);
 		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().addBeatViewerListener(this);
 		TuxGuitar.instance().updateShellFooter(getFretBoard().getHeight(), 730,520);
 	}
 	
@@ -92,6 +95,18 @@ public class FretBoardEditor implements TGRedrawListener, IconLoader,LanguageLoa
 			this.redraw();
 		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
 			this.redrawPlayingMode();
+		}
+	}
+	
+	public void showExternalBeat(TGBeat beat) {
+		if(getFretBoard() != null && !getFretBoard().isDisposed()){
+			getFretBoard().setExternalBeat(beat);
+		}
+	}
+	
+	public void hideExternalBeat() {
+		if(getFretBoard() != null && !getFretBoard().isDisposed()){
+			getFretBoard().setExternalBeat(null);
 		}
 	}
 }

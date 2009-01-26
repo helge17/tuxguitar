@@ -10,8 +10,9 @@ import org.herac.tuxguitar.gui.editors.piano.Piano;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.song.models.TGBeat;
 
-public class PianoEditor implements TGRedrawListener, IconLoader,LanguageLoader{
+public class PianoEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader,LanguageLoader{
 	
 	private Piano piano;
 	
@@ -40,12 +41,14 @@ public class PianoEditor implements TGRedrawListener, IconLoader,LanguageLoader{
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().addBeatViewerListener(this);
 	}
 	
 	public void removeListeners(){
 		TuxGuitar.instance().getIconManager().removeLoader(this);
 		TuxGuitar.instance().getLanguageManager().removeLoader(this);
 		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
+		TuxGuitar.instance().getEditorManager().removeBeatViewerListener(this);
 	}
 	
 	private Piano getPiano(){
@@ -99,6 +102,18 @@ public class PianoEditor implements TGRedrawListener, IconLoader,LanguageLoader{
 			this.redraw();
 		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
 			this.redrawPlayingMode();
+		}
+	}
+	
+	public void showExternalBeat(TGBeat beat) {
+		if(!isDisposed()){
+			getPiano().setExternalBeat(beat);
+		}
+	}
+	
+	public void hideExternalBeat() {
+		if(!isDisposed()){
+			getPiano().setExternalBeat(null);
 		}
 	}
 }
