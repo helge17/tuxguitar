@@ -699,7 +699,7 @@ public class TGOutputStream extends TGStream implements TGSongExporter{
 					long previousStart = previous.getStart();
 					
 					TGDuration previousBestDuration = null;
-					for(int v = 1; v < previous.countVoices(); v++ ){
+					for(int v = /*1*/0; v < previous.countVoices(); v++ ){
 						TGVoice previousVoice = previous.getVoice(v);
 						if(!previousVoice.isEmpty()){
 							long length = previousVoice.getDuration().getTime();
@@ -725,7 +725,7 @@ public class TGOutputStream extends TGStream implements TGSongExporter{
 				}
 				
 				TGDuration beatBestDuration = null;
-				for(int v = 1; v < beat.countVoices(); v++ ){
+				for(int v = /*1*/0; v < beat.countVoices(); v++ ){
 					TGVoice currentVoice = beat.getVoice(v);
 					if(!currentVoice.isEmpty()){
 						long length = currentVoice.getDuration().getTime();
