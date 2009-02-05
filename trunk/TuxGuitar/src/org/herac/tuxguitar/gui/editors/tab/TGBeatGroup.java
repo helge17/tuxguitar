@@ -146,6 +146,7 @@ public class TGBeatGroup {
 				return (int) (getY1(layout,this.minNote,key,clef) + downOffset);
 			}
 			
+			int y = 0;
 			int x1 = this.firstMinNote.getPosX() + this.firstMinNote.getBeatImpl().getSpacing();
 			int x2 = this.lastMinNote.getPosX() + this.lastMinNote.getBeatImpl().getSpacing();
 			int y1 =  (int) (getY1(layout,this.firstMinNote,key,clef) +  downOffset);
@@ -153,11 +154,16 @@ public class TGBeatGroup {
 			
 			if(y1 > y2 && (y1 - y2) > maxDistance) y2 = (y1 - maxDistance);
 			if(y2 > y1 && (y2 - y1) > maxDistance) y1 = (y2 - maxDistance);
-			int y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
+			
+			//int y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
+			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0){
+				y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
+			}
 			return y1 - y;
 		}else if(this.maxNote != this.firstMaxNote && this.maxNote != this.lastMaxNote){
 			return (int)(getY1(layout,this.maxNote,key,clef) - upOffset);
 		}else{
+			int y = 0;
 			int x1 = this.firstMaxNote.getPosX() + this.firstMaxNote.getBeatImpl().getSpacing();
 			int x2 = this.lastMaxNote.getPosX() + this.lastMaxNote.getBeatImpl().getSpacing();
 			int y1 = (int)(getY1(layout,this.firstMaxNote,key,clef) - upOffset);
@@ -165,7 +171,12 @@ public class TGBeatGroup {
 			
 			if(y1 < y2 && (y2 - y1) > maxDistance) y2 = (y1 + maxDistance);
 			if(y2 < y1 && (y1 - y2) > maxDistance) y1 = (y2 + maxDistance);
-			int y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
+
+			//int y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
+			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0){
+				y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
+			}
+			
 			return y1 - y;
 		}
 	}
