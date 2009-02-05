@@ -1940,7 +1940,7 @@ public class TGMeasureManager {
 		// Verifica los silencios a eliminar al principio del compas
 		TGVoice first = getFirstVoice( currentBeats, voiceIndex );
 		while(first != null && first.isRestVoice() && (!first.getBeat().isTextBeat() || !isUniqueVoice(first,false)) && (first.getBeat().getStart() + theMove) < measureStart){
-			currentBeats.remove(first);
+			currentBeats.remove(first.getBeat());
 			voicesToRemove.add(first);
 			first = getNextVoice( currentBeats,first.getBeat(), voiceIndex);
 		}
@@ -1949,7 +1949,7 @@ public class TGMeasureManager {
 		TGVoice last = getLastVoice(currentBeats, voiceIndex);
 		TGDuration lastDuration = (last != null ? last.getDuration() : null);
 		while(last != null && lastDuration != null && last.isRestVoice() && (!last.getBeat().isTextBeat() || !isUniqueVoice(last,false)) && (last.getBeat().getStart() + lastDuration.getTime() + theMove) > measureEnd  ){
-			currentBeats.remove(last);
+			currentBeats.remove(last.getBeat());
 			voicesToRemove.add(last);
 			last = getPreviousVoice(currentBeats,last.getBeat(), voiceIndex);
 			lastDuration = (last != null ? last.getDuration() : null);
