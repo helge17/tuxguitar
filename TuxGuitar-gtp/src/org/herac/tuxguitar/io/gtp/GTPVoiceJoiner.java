@@ -14,6 +14,7 @@ public class GTPVoiceJoiner {
 	public GTPVoiceJoiner(TGFactory factory,TGMeasure measure){
 		this.factory = factory;
 		this.measure = measure.clone(factory, measure.getHeader());
+		this.measure.setTrack( measure.getTrack() );
 	}
 	
 	public TGMeasure process(){

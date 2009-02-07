@@ -467,7 +467,7 @@ public class LilypondOutputStream {
 			}
 			
 			if(beat.isTextBeat()){
-				this.writer.print("-\\tag #'texts ^\\markup {" + beat.getText().getValue() + "}");
+				this.writer.print("-\\tag #'texts ^\\markup {\"" + beat.getText().getValue() + "\"}");
 			}
 			
 			if(beat.getMeasure().getTrack().getLyrics().getFrom() > beat.getMeasure().getNumber()){
@@ -671,13 +671,14 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private static class TGVoiceJoiner {
+	public class TGVoiceJoiner {
 		private TGFactory factory;
 		private TGMeasure measure;
 		
 		public TGVoiceJoiner(TGFactory factory,TGMeasure measure){
 			this.factory = factory;
 			this.measure = measure.clone(factory, measure.getHeader());
+			this.measure.setTrack( measure.getTrack() );
 		}
 		
 		public TGMeasure process(){
@@ -715,7 +716,7 @@ public class LilypondOutputStream {
 					long previousStart = previous.getStart();
 					
 					TGDuration previousBestDuration = null;
-					for(int v = 1; v < previous.countVoices(); v++ ){
+					for(int v = /*1*/0; v < previous.countVoices(); v++ ){
 						TGVoice previousVoice = previous.getVoice(v);
 						if(!previousVoice.isEmpty()){
 							long length = previousVoice.getDuration().getTime();
@@ -741,7 +742,7 @@ public class LilypondOutputStream {
 				}
 				
 				TGDuration beatBestDuration = null;
-				for(int v = 1; v < beat.countVoices(); v++ ){
+				for(int v = /*1*/0; v < beat.countVoices(); v++ ){
 					TGVoice currentVoice = beat.getVoice(v);
 					if(!currentVoice.isEmpty()){
 						long length = currentVoice.getDuration().getTime();
@@ -782,5 +783,4 @@ public class LilypondOutputStream {
 			}
 		}
 	}
-
 }
