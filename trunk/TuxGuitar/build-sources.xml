@@ -16,7 +16,7 @@
 		<property name="share.dir" value="share"/>
 		<property name="subant.dir" value="xml"/>
 		<property name="dist.dir" value="dist"/>
-		<property name="package.name" value="TuxGuitar-${dist.version}-src" />
+		<property name="package.name" value="tuxguitar-src-${dist.version}" />
 		
 		<tar destfile="${package.name}.tar.gz" compression="gzip" >
 			
@@ -26,6 +26,7 @@
 			
 			<tarfileset dir="${dist.dir}" prefix="${package.name}/dist" >
 				<include name="config.dist"/>
+				<include name="shortcuts-default.xml"/>
 				<include name="about_license.dist"/>
 				<include name="about_authors.dist"/>
 				<include name="about_description.dist"/>
@@ -58,10 +59,10 @@
 			</tarfileset>
 			
 			<tarfileset dir="${share.dir}/help" prefix="${package.name}/share/help" >
-				<include name="contents.xml"/>
-				<include name="html/**/*.css"/>
-				<include name="html/**/*.html"/>
-				<include name="images/**/*.png"/>
+				<include name="**/*.js"/>
+				<include name="**/*.css"/>
+				<include name="**/*.html"/>
+				<include name="**/*.png"/>
 			</tarfileset>
 			
 			<tarfileset dir="${share.dir}/skins" prefix="${package.name}/share/skins" >

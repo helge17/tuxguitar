@@ -42,7 +42,8 @@
 		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
-		<copy file="${build.dist.path}/shortcuts/shortcuts-mac-default.xml" tofile="${build.path}/shortcuts-default.xml"/>
+		
+		<replace file="${build.path}/shortcuts-default.xml" token="262144" value="4194304"/>
 	</target>
 	
 	<target name="package" >
@@ -184,4 +185,5 @@
 		<echo file="${file.script}" append="true">exec java ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
 		<chmod file="${file.script}" perm="755"/>
 	</target>
+	
 </project>
