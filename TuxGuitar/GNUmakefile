@@ -36,9 +36,10 @@ SWT_JAR?=$(SWT_PATH)
 SOURCE_PATH?=./src/
 SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 RESOURCE_PATH?=./dist/
-RESOURCES?=$(shell find $(RESOURCE_PATH) -name "*")
+RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
+RESOURCES_DIST?=$(shell find $(RESOURCE_PATH) -name "*.dist")
 DEPENDENCIES?=$(SWT_JAR)
-OBJECTS?=$(SOURCES:%.java=%.o) $(RESOURCES:%.dist=%.o) $(RESOURCES:%.xml=%.o) $(DEPENDENCIES:%.jar=%.o)
+OBJECTS?=$(SOURCES:%.java=%.o) $(RESOURCES_DIST:%.dist=%.o) $(RESOURCES_XML:%.xml=%.o) $(DEPENDENCIES:%.jar=%.o)
 
 # runtime
 MAINCLASS?=org.herac.tuxguitar.gui.TGMain

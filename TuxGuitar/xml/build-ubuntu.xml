@@ -25,7 +25,6 @@
 		<echo file="${file.properties}" append="true">midi.sequencer=Real Time Sequencer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">midi.port=Java Sound Synthesizer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
-		<copy file="${build.dist.path}/shortcuts/shortcuts-default.xml" tofile="${build.path}/shortcuts-default.xml"/>
 	</target>
 	
 	<target name="package" >
