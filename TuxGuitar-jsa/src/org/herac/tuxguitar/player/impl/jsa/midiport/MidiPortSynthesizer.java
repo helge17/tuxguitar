@@ -35,6 +35,7 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 	
 	public void close(){
 		if(this.synthesizer != null && this.synthesizer.isOpen()){
+			this.unloadSoundbank();
 			this.synthesizer.close();
 		}
 	}
@@ -47,7 +48,7 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 		if(!isSynthesizerLoaded()){
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.midi.unavailable"));
 		}
-		if(!isSoundbankLoaded()){
+		if(!isSoundbankLoaded( true )){
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.unavailable"));
 		}
 	}
@@ -56,17 +57,17 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 		try {
 			if(!this.synthesizer.isOpen()){
 				this.synthesizer.open();
-				if(!isSoundbankLoaded()){
+				if(!isSoundbankLoaded( false )){
 					String path = MidiConfigUtils.getSoundbankPath();
 					if(path != null){
 						this.loadSoundbank(new File(path));
 					}
 					
-					if(!isSoundbankLoaded()){
+					if(!isSoundbankLoaded( true )){
 						this.loadSoundbank( this.synthesizer.getDefaultSoundbank() );
 					}
 					
-					if(!isSoundbankLoaded()){
+					if(!isSoundbankLoaded( true )){
 						new SBAssistant(this).process();
 					}
 				}
@@ -90,22 +91,8 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 	public boolean loadSoundbank(Soundbank sb) {
 		try {
 			if (sb != null && getSynthesizer().isSoundbankSupported(sb)){
-				this.soundbankLoaded = false;
-				
-				//unload all instruments
-				Instrument[] available = this.synthesizer.getAvailableInstruments();
-				if(available != null){
-					for(int i = 0; i < available.length; i++){
-						getSynthesizer().unloadInstrument(available[i]);
-					}
-				}
-				
-				Instrument[] loaded = this.synthesizer.getLoadedInstruments();
-				if(loaded != null){
-					for(int i = 0; i < loaded.length; i++){
-						getSynthesizer().unloadInstrument(loaded[i]);
-					}
-				}
+				//unload the old soundbank
+				this.unloadSoundbank();
 				
 				//load all soundbank instruments
 				this.soundbankLoaded = getSynthesizer().loadAllInstruments(sb);
@@ -116,11 +103,40 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 		return this.soundbankLoaded;
 	}
 	
+	public void unloadSoundbank(){
+		try {
+			this.soundbankLoaded = false;
+			
+			//unload all available instruments
+			Instrument[] available = this.synthesizer.getAvailableInstruments();
+			if(available != null){
+				for(int i = 0; i < available.length; i++){
+					getSynthesizer().unloadInstrument(available[i]);
+				}
+			}
+			
+			//unload all loaded instruments
+			Instrument[] loaded = this.synthesizer.getLoadedInstruments();
+			if(loaded != null){
+				for(int i = 0; i < loaded.length; i++){
+					getSynthesizer().unloadInstrument(loaded[i]);
+				}
+			}
+		}catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+	}
+	
 	public boolean isSynthesizerLoaded(){
 		return this.synthesizerLoaded;
 	}
 	
-	public boolean isSoundbankLoaded(){
+	public boolean isSoundbankLoaded(boolean checkSynth){
+		if( checkSynth ){
+			Instrument[] loaded = this.synthesizer.getLoadedInstruments();
+			Instrument[] available = this.synthesizer.getAvailableInstruments();
+			this.soundbankLoaded = ( (loaded != null && loaded.length > 0) || (available != null && available.length > 0) );
+		}
 		return this.soundbankLoaded;
 	}
 }
