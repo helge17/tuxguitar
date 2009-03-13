@@ -83,11 +83,11 @@ public class TGTunerSettings {
 				); */
 	}
 
-	
+	/*
 	private int getFrameSize() {
 		return (this.sampleSize / 8) * CHANNELS_NUMBER;
 	}
-
+	*/
 
 
 	public int getBufferSize() {
