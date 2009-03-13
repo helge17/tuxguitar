@@ -16,16 +16,25 @@
 		<jar href="files/tuxguitar-jws.jar" />
 	</resources>
 	
-	<resources os="Linux">
-		<jar href="files/swt-linux-x86.jar" />
-		<jar href="files/tuxguitar-alsa.jar" />
-		<jar href="files/tuxguitar-fluidsynth.jar" />
-		<nativelib href="files/tuxguitar-alsa-jni.jar" />
-		<nativelib href="files/tuxguitar-fluidsynth-jni.jar" />
+	<resources os="Linux">		
+		<jar href="files/gnu-linux-x86/swt.jar" />
+		<jar href="files/gnu-linux-x86/tuxguitar-dist.jar" />
+		<jar href="files/gnu-linux-x86/tuxguitar-alsa.jar" />
+		<nativelib href="files/gnu-linux-x86/tuxguitar-alsa-jni.jar" />
 	</resources>
 	
 	<resources os="Windows">
-		<jar href="files/swt-win-x86.jar" />
+		<jar href="files/windows-x86/swt.jar" />
+		<jar href="files/windows-x86/tuxguitar-dist.jar" />
+	</resources>
+	
+	<resources os="Mac OS X">
+		<jar href="files/macosx/swt.jar" />
+		<jar href="files/macosx/tuxguitar-dist.jar" />
+		<jar href="files/macosx/tuxguitar-coreaudio.jar" />
+		<jar href="files/macosx/tuxguitar-carbon-integration.jar" />
+		<nativelib href="files/macosx/tuxguitar-coreaudio-jni.jar" />
+		<nativelib href="files/macosx/tuxguitar-carbon-integration-jni.jar" />
 	</resources>
 	
 	<application-desc main-class="org.herac.tuxguitar.gui.TGMain" />
