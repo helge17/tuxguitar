@@ -44,7 +44,7 @@ public abstract class TGStroke {
 				}
 			}
 			if( duration > 0 ){
-				return Math.round( ( ( duration / 10 ) * ( 4.0f / this.value ) ) );
+				return Math.round( ( ( duration / 8.0f ) * ( 4.0f / this.value ) ) );
 			}
 		}
 		return 0;
