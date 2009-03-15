@@ -412,7 +412,7 @@ public class MidiSequenceParser {
 		//palm mute
 		if(note.getEffect().isPalmMute()){
 			return applyStaticDuration(tempo, DEFAULT_DURATION_PM, duration);
-		}		
+		}
 		//staccato
 		if(note.getEffect().isStaccato()){
 			return (long)(duration * 50.00 / 100.00);
