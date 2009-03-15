@@ -6,6 +6,8 @@ public class MidiControllers {
 	
 	public static final int BALANCE = 0x0A;
 	
+	public static final int EXPRESSION = 0x0B;
+	
 	public static final int REVERB = 0x5B;
 	
 	public static final int TREMOLO = 0x5C;

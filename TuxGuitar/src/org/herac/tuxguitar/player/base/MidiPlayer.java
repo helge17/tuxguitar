@@ -393,7 +393,7 @@ public class MidiPlayer{
 			int reverb = TGChannel.DEFAULT_REVERB;
 			int phaser = TGChannel.DEFAULT_PHASER;
 			int tremolo = TGChannel.DEFAULT_TREMOLO;
-			updateController(9,volume,balance,chorus,reverb,phaser,tremolo);
+			updateController(9,volume,balance,chorus,reverb,phaser,tremolo,127);
 		}
 		this.afterUpdate();
 	}
@@ -407,9 +407,9 @@ public class MidiPlayer{
 			int phaser = track.getChannel().getPhaser();
 			int tremolo = track.getChannel().getTremolo();
 			
-			updateController(track.getChannel().getChannel(),volume,balance,chorus,reverb,phaser,tremolo);
+			updateController(track.getChannel().getChannel(),volume,balance,chorus,reverb,phaser,tremolo,127);
 			if(track.getChannel().getChannel() != track.getChannel().getEffectChannel()){
-				updateController(track.getChannel().getEffectChannel(),volume,balance,chorus,reverb,phaser,tremolo);
+				updateController(track.getChannel().getEffectChannel(),volume,balance,chorus,reverb,phaser,tremolo,127);
 			}
 			getSequencer().setMute(track.getNumber(),track.isMute());
 			getSequencer().setSolo(track.getNumber(),track.isSolo());
@@ -418,7 +418,7 @@ public class MidiPlayer{
 		}
 	}
 	
-	private void updateController(int channel,int volume,int balance,int chorus, int reverb,int phaser, int tremolo) {
+	private void updateController(int channel,int volume,int balance,int chorus, int reverb,int phaser, int tremolo, int expression) {
 		try{
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.VOLUME,volume);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.BALANCE,balance);
@@ -426,6 +426,7 @@ public class MidiPlayer{
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.REVERB,reverb);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.PHASER,phaser);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.EXPRESSION,expression);
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
