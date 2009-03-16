@@ -1,6 +1,10 @@
 package org.herac.tuxguitar.gui.tools.browser.ftp;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -169,58 +173,22 @@ class TGBrowserDataDialog{
 				String proxyPortStr = proxyPortText.getText();
 				String proxyUser = proxyUserText.getText();
 				String proxyPwd = proxyPwdText.getText();
-				int proxyPort = -1;
-				String err = null;
-				if (name != null && name.trim().length() > 0) {
-					Iterator it = TGBrowserManager.instance().getCollections();
-					while(it.hasNext()){
-						TGBrowserCollection collection = (TGBrowserCollection)it.next();
-						if("ftp".equals(collection.getType())){
-							if(name.equals(collection.getData().getTitle())){
-								err = "A collection named \""+ name+"\" already exists";
-								break;
-							}
-						}
+				
+				List errors = validate(name, host, proxyHost, proxyPortStr, hasProxy.getSelection());
+				if( !errors.isEmpty() ){
+					StringWriter buffer = new StringWriter();
+					PrintWriter writer = new PrintWriter( buffer );
+					Iterator it = errors.iterator();
+					while( it.hasNext() ){
+						writer.println( "*" + (String)it.next() );
 					}
-					if(err == null){
-						if (host != null && host.trim().length() > 0) {
-							if(hasProxy.getSelection()){
-								if(proxyHost == null || proxyHost.trim().length() == 0){
-									err = "Please enter Proxy Host";
-									proxyHost = null;
-								}
-								if(proxyPortStr == null || proxyPortStr.trim().length() == 0){
-									if(err != null)
-										err += " and ";
-									else
-										err = "Please enter ";
-									err += "Proxy Port";
-								}else{
-									try {
-										proxyPort = Integer.parseInt(proxyPortStr);
-									} catch (NumberFormatException e) {
-										if(err != null)
-											err += System.getProperty("line.separator");
-										else
-											err = "";
-										err += "Proxy Port should be a valid number";
-									}
-								}
-							}
-							if(err == null){
-								TGBrowserDataDialog.this.data = new TGBrowserDataImpl(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort);
-							}
-						}else{
-							err = "Please enter the Host";
-						}
-					}
+					MessageDialog.errorMessage(parent, buffer.getBuffer().toString() );
 				}else{
-					err = "Please enter the Name";
-				}
-				if(err == null)
+					int proxyPort = Integer.parseInt( proxyPortStr );
+					TGBrowserDataDialog.this.data = new TGBrowserDataImpl(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort);
+				
 					dialog.dispose();
-				else
-					MessageDialog.errorMessage(parent, err);
+				}
 			}
 		});
 		
@@ -238,5 +206,46 @@ class TGBrowserDataDialog{
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
 		return this.data;
+	}
+	
+	protected List validate(String name, String host, String pHost, String pPort, boolean pEnabled){
+		List errors = new ArrayList();
+		// Check the Name
+		if (name == null || name.trim().length() == 0) {
+			errors.add("Please enter the Name");
+		}else{
+			Iterator it = TGBrowserManager.instance().getCollections();
+			while(it.hasNext()){
+				TGBrowserCollection collection = (TGBrowserCollection)it.next();
+				if(name.equals(collection.getData().getTitle())){
+					errors.add("A collection named \"" + name + "\" already exists");
+					break;
+				}
+			}
+		}
+		if (host == null || host.trim().length() == 0) {
+			errors.add("Please enter the Host");
+		}
+		if( pEnabled ){
+			if(pHost == null || pHost.trim().length() == 0){
+				errors.add("Please enter Proxy Host");
+			}
+			if(pPort == null || pPort.trim().length() == 0){
+				errors.add("Please enter Proxy Port");
+			}else if(!isNumber(pPort)){
+				errors.add("Proxy Port should be a valid number");
+			}
+		}
+		
+		return errors;
+	}
+	
+	private boolean isNumber( String s ){
+		try {
+			Integer.parseInt(s);
+		} catch (Throwable e) {
+			return false;
+		}
+		return true;
 	}
 }
