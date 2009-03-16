@@ -56,6 +56,24 @@ public class ScaleManager {
 		this.selectionKey = key;
 	}
 	
+	public int countScales() {
+		return this.scales.size();
+	}
+	
+	public String getScaleName(int index) {
+		if(index >= 0 && index < this.scales.size()) {
+			return (((ScaleInfo)this.scales.get(index)).getName());
+		}
+		return null;
+	}
+	
+	public String getScaleKeys(int index) {
+		if(index >= 0 && index < this.scales.size()) {
+			return(((ScaleInfo)this.scales.get(index)).getKeys());
+		}
+		return null;
+	}
+	
 	public String[] getScaleNames(){
 		String[] names = new String[this.scales.size()];
 		for(int i = 0;i < this.scales.size();i ++){
