@@ -80,7 +80,7 @@ public class TGBrowserDataImpl implements TGBrowserData{
 				+ getPath() + STRING_SEPARATOR + username + STRING_SEPARATOR
 				+ password + STRING_SEPARATOR + proxyUser + STRING_SEPARATOR
 				+ proxyPwd + STRING_SEPARATOR + getProxyHost()
-				+ STRING_SEPARATOR + String.valueOf(getProxyPort());
+				+ STRING_SEPARATOR + getProxyPort();
 	}
 	
 	public static TGBrowserData fromString(String string) {
