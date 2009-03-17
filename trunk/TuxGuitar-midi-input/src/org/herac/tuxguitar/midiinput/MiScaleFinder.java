@@ -66,7 +66,7 @@ class MiScaleFinder
 	static public int		findMatchingScale(TreeSet inScale)
 	{
 	ScaleManager	scaleMgr		= TuxGuitar.instance().getScaleManager();
-	int				scalesCount		= scaleMgr.getScalesCount(),
+	int				scalesCount		= scaleMgr.countScales(),
 					minScaleSize	= 12,
 					maxMatches		= 0,
 					scaleIndex		= ScaleManager.NONE_SELECTION;
