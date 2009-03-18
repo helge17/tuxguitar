@@ -55,6 +55,7 @@ public class Piano extends Composite{
 	private Composite pianoComposite;
 	private Composite toolComposite;
 	private Label durationLabel;
+	private Label scaleName;
 	private Button scale;
 	private Button settings;
 	protected TGBeat beat;
@@ -71,6 +72,7 @@ public class Piano extends Composite{
 		this.initToolBar();
 		this.makePiano();
 		this.loadIcons();
+		this.loadProperties();
 		
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolComposite);
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.pianoComposite);
@@ -114,11 +116,15 @@ public class Piano extends Composite{
 		layout.numColumns ++;
 		makeToolSeparator(this.toolComposite);
 		
-		// escala
+		// scale
 		layout.numColumns ++;
 		this.scale = new Button(this.toolComposite, SWT.PUSH);
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));
+		
+		// scale name
+		layout.numColumns ++;
+		this.scaleName = new Label(this.toolComposite, SWT.LEFT);
 		
 		// settings
 		layout.numColumns ++;
@@ -147,6 +153,15 @@ public class Piano extends Composite{
 			this.duration = duration;
 			this.durationLabel.setImage(TuxGuitar.instance().getIconManager().getDuration(this.duration));
 		}
+	}
+	
+	private void loadScaleName() {
+		int scaleKey = TuxGuitar.instance().getScaleManager().getSelectionKey();
+		int scaleIndex = TuxGuitar.instance().getScaleManager().getSelectionIndex();
+		String key = TuxGuitar.instance().getScaleManager().getKeyName( scaleKey );
+		String name = TuxGuitar.instance().getScaleManager().getScaleName( scaleIndex );
+		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
+		this.scaleName.pack();
 	}
 	
 	private void makePiano(){
@@ -495,6 +510,7 @@ public class Piano extends Composite{
 	public void loadProperties(){
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
+		this.loadScaleName();
 		this.layout(true,true);
 	}
 	
@@ -503,6 +519,11 @@ public class Piano extends Composite{
 		this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
 		this.loadDurationImage(true);
 		this.layout(true,true);
+	}
+	
+	public void loadScale(){
+		this.loadScaleName();
+		this.setChanges(true);
 	}
 	
 	protected void configure(){

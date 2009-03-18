@@ -18,6 +18,8 @@ public class ScaleManager {
 	
 	private List scales;
 	
+	private List scaleListeners;
+	
 	private TGScale scale;
 	
 	private int selectionIndex;
@@ -26,14 +28,30 @@ public class ScaleManager {
 	
 	public ScaleManager(){
 		this.scales = new ArrayList();
+		this.scaleListeners = new ArrayList();
 		this.scale = TuxGuitar.instance().getSongManager().getFactory().newScale();
 		this.selectionKey = 0;
 		this.selectionIndex = NONE_SELECTION;
 		this.loadScales();
 	}
 	
-	public TGScale getScale() {
-		return this.scale;
+	public void addListener( ScaleListener listener){
+		if(!this.scaleListeners.contains( listener )){
+			this.scaleListeners.add( listener );
+		}
+	}
+	
+	public void removeListener( ScaleListener listener){
+		if(this.scaleListeners.contains( listener )){
+			this.scaleListeners.remove( listener );
+		}
+	}
+	
+	public void fireListeners(){
+		for(int i = 0; i < this.scaleListeners.size(); i ++){
+			ScaleListener listener = (ScaleListener) this.scaleListeners.get( i );
+			listener.loadScale();
+		}
 	}
 	
 	public void selectScale(int index,int key){
@@ -54,6 +72,11 @@ public class ScaleManager {
 		}
 		this.selectionIndex = index;
 		this.selectionKey = key;
+		this.fireListeners();
+	}
+	
+	public TGScale getScale() {
+		return this.scale;
 	}
 	
 	public int countScales() {
@@ -81,6 +104,13 @@ public class ScaleManager {
 			names[i] = info.getName();
 		}
 		return names;
+	}
+	
+	public String getKeyName(int index){
+		if( index >=0 && index < KEY_NAMES.length){
+			return KEY_NAMES[ index ];
+		}
+		return null;
 	}
 	
 	public String[] getKeyNames(){

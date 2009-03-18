@@ -7,9 +7,10 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.fretboard.FretBoard;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
+import org.herac.tuxguitar.gui.tools.scale.ScaleListener;
 import org.herac.tuxguitar.song.models.TGBeat;
 
-public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader,LanguageLoader{
+public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader, LanguageLoader, ScaleListener{
 	
 	private FretBoard fretBoard;
 	private boolean visible;
@@ -17,6 +18,7 @@ public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerLi
 	public FretBoardEditor(){
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getScaleManager().addListener(this); 
 	}
 	
 	private FretBoard getFretBoard(){
@@ -48,12 +50,6 @@ public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerLi
 		
 		this.fretBoard = new FretBoard(parent);
 		this.fretBoard.setLayoutData(data);
-	}
-	
-	public void setScaleChanges(){
-		if(getFretBoard() != null){
-			getFretBoard().setChanges(true);
-		}
 	}
 	
 	public void dispose(){
@@ -89,7 +85,13 @@ public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerLi
 			getFretBoard().loadIcons();
 		}
 	}
-
+	
+	public void loadScale(){
+		if(getFretBoard() != null){
+			getFretBoard().loadScale();
+		}
+	}
+	
 	public void doRedraw(int type) {
 		if( type == TGRedrawListener.NORMAL ){
 			this.redraw();
