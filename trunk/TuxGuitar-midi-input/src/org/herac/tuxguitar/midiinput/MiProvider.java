@@ -436,8 +436,6 @@ static private	MiProvider	s_Instance;
 					scaleMgr.selectScale(ScaleManager.NONE_SELECTION, 0);
 					}
 
-				TuxGuitar.instance().getFretBoardEditor().setScaleChanges();
-				TuxGuitar.instance().getPianoEditor().setScaleChanges();
 				TuxGuitar.instance().updateCache(true);
 				}
 			};
