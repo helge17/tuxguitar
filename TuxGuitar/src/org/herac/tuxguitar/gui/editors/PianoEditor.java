@@ -9,10 +9,11 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.piano.Piano;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
+import org.herac.tuxguitar.gui.tools.scale.ScaleListener;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGBeat;
 
-public class PianoEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader,LanguageLoader{
+public class PianoEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader, LanguageLoader, ScaleListener{
 	
 	private Piano piano;
 	
@@ -40,6 +41,7 @@ public class PianoEditor implements TGRedrawListener, TGExternalBeatViewerListen
 	public void addListeners(){
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.instance().getScaleManager().addListener(this);
 		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
 		TuxGuitar.instance().getEditorManager().addBeatViewerListener(this);
 	}
@@ -47,18 +49,13 @@ public class PianoEditor implements TGRedrawListener, TGExternalBeatViewerListen
 	public void removeListeners(){
 		TuxGuitar.instance().getIconManager().removeLoader(this);
 		TuxGuitar.instance().getLanguageManager().removeLoader(this);
+		TuxGuitar.instance().getScaleManager().removeListener(this); 
 		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
 		TuxGuitar.instance().getEditorManager().removeBeatViewerListener(this);
 	}
 	
 	private Piano getPiano(){
 		return this.piano;
-	}
-	
-	public void setScaleChanges(){
-		if(!isDisposed()){
-			getPiano().setChanges(true);
-		}
 	}
 	
 	public void dispose(){
@@ -96,7 +93,13 @@ public class PianoEditor implements TGRedrawListener, TGExternalBeatViewerListen
 			getPiano().loadIcons();
 		}
 	}
-
+	
+	public void loadScale(){
+		if(!isDisposed()){
+			getPiano().loadScale();
+		}
+	}
+	
 	public void doRedraw(int type) {
 		if( type == TGRedrawListener.NORMAL ){
 			this.redraw();

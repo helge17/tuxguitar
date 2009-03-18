@@ -67,10 +67,10 @@ public class FretBoard extends Composite {
 	private FretBoardConfig config;
 	private Composite toolComposite;
 	private Label durationLabel;
+	private Label scaleName;
 	private Button scale;
 	private Button settings;
 	private Image fretBoard;
-	//private List components;
 	
 	private TGBeat beat;
 	private TGBeat externalBeat;
@@ -87,13 +87,13 @@ public class FretBoard extends Composite {
 	public FretBoard(Composite parent) {
 		super(parent, SWT.NONE);
 		this.setLayout(new FormLayout());
-		//this.components = new ArrayList();
 		this.listener = new FretBoardListener();
 		this.config = new FretBoardConfig();
 		this.config.load();
 		this.initToolBar();
 		this.initEditor();
 		this.loadIcons();
+		this.loadProperties();
 		
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolComposite);
 		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.fretBoardComposite);
@@ -164,11 +164,15 @@ public class FretBoard extends Composite {
 		layout.numColumns ++;
 		makeToolSeparator(this.toolComposite);
 		
-		// escala
+		// scale
 		layout.numColumns ++;
 		this.scale = new Button(this.toolComposite, SWT.PUSH);
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));
+		
+		// scale name
+		layout.numColumns ++;
+		this.scaleName = new Label(this.toolComposite, SWT.LEFT);
 		
 		// settings
 		layout.numColumns ++;
@@ -213,6 +217,15 @@ public class FretBoard extends Composite {
 			this.duration = duration;
 			this.durationLabel.setImage(TuxGuitar.instance().getIconManager().getDuration(this.duration));
 		}
+	}
+	
+	private void loadScaleName() {
+		int scaleKey = TuxGuitar.instance().getScaleManager().getSelectionKey();
+		int scaleIndex = TuxGuitar.instance().getScaleManager().getSelectionIndex();
+		String key = TuxGuitar.instance().getScaleManager().getKeyName( scaleKey );
+		String name = TuxGuitar.instance().getScaleManager().getScaleName( scaleIndex );
+		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
+		this.scaleName.pack();
 	}
 	
 	private void calculateFretSpacing(int width) {
@@ -623,8 +636,9 @@ public class FretBoard extends Composite {
 		this.handSelector.add(TuxGuitar.getProperty("fretboard.right-mode"));
 		this.handSelector.add(TuxGuitar.getProperty("fretboard.left-mode"));
 		this.handSelector.select(selection);
-		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
+		this.scale.setText(TuxGuitar.getProperty("scale"));
+		this.loadScaleName();
 		this.setChanges(true);
 		this.layout(true,true);
 	}
@@ -634,6 +648,11 @@ public class FretBoard extends Composite {
 		this.loadDurationImage(true);
 		this.layout(true,true);
 		this.layout(getClientArea().width,this.handSelector.getSelectionIndex() + 1);
+	}
+	
+	public void loadScale(){
+		this.loadScaleName();
+		this.setChanges(true);
 	}
 	
 	public int getHeight(){

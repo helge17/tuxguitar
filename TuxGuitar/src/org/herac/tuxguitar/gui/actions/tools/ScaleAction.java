@@ -7,7 +7,6 @@
 package org.herac.tuxguitar.gui.actions.tools;
 
 import org.eclipse.swt.events.TypedEvent;
-import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.tools.scale.ScaleEditor;
 
@@ -26,9 +25,6 @@ public class ScaleAction extends Action{
 	
 	protected int execute(TypedEvent e){
 		new ScaleEditor().show();
-		TuxGuitar.instance().getFretBoardEditor().setScaleChanges();
-		TuxGuitar.instance().getPianoEditor().setScaleChanges();
-		
 		return 0;
 	}
 }
