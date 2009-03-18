@@ -8,6 +8,7 @@ import org.herac.tuxguitar.gui.tools.scale.xml.ScaleReader;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
 import org.herac.tuxguitar.gui.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.models.TGScale;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class ScaleManager {
 	private static final String[] KEY_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_SCALE);
@@ -53,7 +54,7 @@ public class ScaleManager {
 			listener.loadScale();
 		}
 	}
-	
+		
 	public void selectScale(int index,int key){
 		if(index == NONE_SELECTION){
 			getScale().clear();
@@ -72,7 +73,7 @@ public class ScaleManager {
 		}
 		this.selectionIndex = index;
 		this.selectionKey = key;
-		this.fireListeners();
+		this.fireListenersSync();
 	}
 	
 	public TGScale getScale() {
@@ -123,6 +124,18 @@ public class ScaleManager {
 	
 	public int getSelectionKey() {
 		return this.selectionKey;
+	}
+	
+	private void fireListenersSync(){
+		try {
+			TGSynchronizer.instance().addRunnable( new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					fireListeners();
+				}
+			});
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void loadScales(){
