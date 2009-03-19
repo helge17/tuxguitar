@@ -17,48 +17,44 @@ import org.herac.tuxguitar.song.models.TGDuration;
 
 public class MidiToAudioWriter {
 	
-	public static void write(OutputStream out, List events, MidiToAudioSettings settings) {
-		try{
-			MidiToAudioSynth.instance().openSynth();
+	public static void write(OutputStream out, List events, MidiToAudioSettings settings) throws Throwable {
+		MidiToAudioSynth.instance().openSynth();
+		
+		int usqTempo = 60000000 / 120;
+		long previousTick = 0;
+		long timePosition = 0;
+		MidiToAudioWriter.sort(events);
+		Receiver receiver = MidiToAudioSynth.instance().getReceiver();
+		AudioInputStream stream = MidiToAudioSynth.instance().getStream();
+		
+		Iterator it = events.iterator();
+		while(it.hasNext()){
+			MidiEvent event = (MidiEvent)it.next();
+			MidiMessage msg = event.getMessage();
 			
-			int usqTempo = 60000000 / 120;
-			long previousTick = 0;
-			long timePosition = 0;
-			MidiToAudioWriter.sort(events);
-			Receiver receiver = MidiToAudioSynth.instance().getReceiver();
-			AudioInputStream stream = MidiToAudioSynth.instance().getStream();
+			timePosition += ( (event.getTick() - previousTick) * usqTempo) / TGDuration.QUARTER_TIME;
 			
-			Iterator it = events.iterator();
-			while(it.hasNext()){
-				MidiEvent event = (MidiEvent)it.next();
-				MidiMessage msg = event.getMessage();
-				
-				timePosition += ( (event.getTick() - previousTick) * usqTempo) / TGDuration.QUARTER_TIME;
-				
-				if (msg instanceof MetaMessage) {
-					if (((MetaMessage) msg).getType() == 0x51) {
-						byte[] data = ((MetaMessage) msg).getData();
-						usqTempo = ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
-					}
-				} else {
-					receiver.send(msg, timePosition);
+			if (msg instanceof MetaMessage) {
+				if (((MetaMessage) msg).getType() == 0x51) {
+					byte[] data = ((MetaMessage) msg).getData();
+					usqTempo = ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
 				}
-				previousTick = event.getTick();
+			} else {
+				receiver.send(msg, timePosition);
 			}
-			
-			long duration = (long) (stream.getFormat().getFrameRate() * ( (timePosition / 1000000.0) ));
-			
-			AudioInputStream srcStream = new AudioInputStream(stream, stream.getFormat(), duration );
-			AudioInputStream dstStream = AudioSystem.getAudioInputStream(settings.getFormat(), srcStream );
-			AudioSystem.write(new AudioInputStream(dstStream, dstStream.getFormat(), duration ), settings.getType(), out);
-			
-			dstStream.close();
-			srcStream.close();
-			
-			MidiToAudioSynth.instance().closeSynth();
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
+			previousTick = event.getTick();
 		}
+		
+		long duration = (long) (stream.getFormat().getFrameRate() * ( (timePosition / 1000000.0) ));
+		
+		AudioInputStream srcStream = new AudioInputStream(stream, stream.getFormat(), duration );
+		AudioInputStream dstStream = AudioSystem.getAudioInputStream(settings.getFormat(), srcStream );
+		AudioSystem.write(new AudioInputStream(dstStream, dstStream.getFormat(), duration ), settings.getType(), out);
+		
+		dstStream.close();
+		srcStream.close();
+		
+		MidiToAudioSynth.instance().closeSynth();
 	}
 	
 	private static void sort(List events){

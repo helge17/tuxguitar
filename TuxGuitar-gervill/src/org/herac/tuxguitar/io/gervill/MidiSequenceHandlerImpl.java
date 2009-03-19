@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.io.gervill;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +11,9 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	
 	private List events;
-	private OutputStream stream;
-	private MidiToAudioSettings settings;
 	
-	public MidiSequenceHandlerImpl(int tracks, OutputStream stream, MidiToAudioSettings settings ){
+	public MidiSequenceHandlerImpl(int tracks ){
 		super(tracks);
-		this.stream = stream;
-		this.settings = settings;
 		this.events = new ArrayList();
 	}
 	
@@ -51,6 +46,10 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	}
 	
 	public void notifyFinish() {
-		MidiToAudioWriter.write(this.stream, this.events, this.settings );
+		// not implemented
+	}
+	
+	public List getEvents(){
+		return this.events;
 	}
 }
