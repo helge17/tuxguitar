@@ -8,7 +8,6 @@ import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 
 public abstract class TGPluginList extends TGPluginAdapter{
 	
-	private boolean enabled;
 	private List plugins;
 	
 	public TGPluginList(){
@@ -32,24 +31,19 @@ public abstract class TGPluginList extends TGPluginAdapter{
 	}
 	
 	public void setEnabled(boolean enabled) throws TGPluginException {
-		this.enabled = enabled;
 		Iterator it = getIterator();
 		while(it.hasNext()){
 			TGPlugin plugin = (TGPlugin)it.next();
-			plugin.setEnabled(this.enabled);
+			plugin.setEnabled( enabled);
 		}
 	}
 	
-	public boolean isEnabled() {
-		return this.enabled;
-	}
-	
-	private Iterator getIterator(){
+	private Iterator getIterator() throws TGPluginException {
 		if(this.plugins == null){
 			this.plugins = getPlugins();
 		}
 		return this.plugins.iterator();
 	}
 	
-	protected abstract List getPlugins();
+	protected abstract List getPlugins() throws TGPluginException ;
 }

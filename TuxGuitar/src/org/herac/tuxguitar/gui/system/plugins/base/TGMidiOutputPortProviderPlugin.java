@@ -2,56 +2,55 @@ package org.herac.tuxguitar.gui.system.plugins.base;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
 public abstract class TGMidiOutputPortProviderPlugin extends TGPluginAdapter{
 	private boolean loaded;
 	private MidiOutputPortProvider provider;
 	
-	protected abstract MidiOutputPortProvider getProvider();
+	protected abstract MidiOutputPortProvider getProvider() throws TGPluginException;
 	
-	public void init() {
+	public void init() throws TGPluginException {
 		this.provider = getProvider();
 		this.loaded = false;
 	}
 	
-	public void close()throws TGPluginException{
+	public void close() throws TGPluginException {
 		try {
 			this.provider.closeAll();
-		} catch (MidiPlayerException e) {
-			throw new TGPluginException(e.getMessage(),e);
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 	
-	protected void addPlugin() throws TGPluginException{
+	public void setEnabled(boolean enabled) throws TGPluginException {
+		if(enabled){
+			addPlugin();
+		}else{
+			removePlugin();
+		}
+	}
+	
+	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
 			try {
 				TuxGuitar.instance().getPlayer().addOutputPortProvider(this.provider);
 				this.loaded = true;
-			} catch (MidiPlayerException e) {
-				throw new TGPluginException(e.getMessage(),e);
+			} catch (Throwable throwable) {
+				throw new TGPluginException(throwable.getMessage(),throwable);
 			}
 			
 		}
 	}
 	
-	protected void removePlugin() throws TGPluginException{
+	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
 			try {
 				TuxGuitar.instance().getPlayer().removeOutputPortProvider(this.provider);
 				this.loaded = false;
-			} catch (MidiPlayerException e) {
-				throw new TGPluginException(e.getMessage(),e);
+			} catch (Throwable throwable) {
+				throw new TGPluginException(throwable.getMessage(),throwable);
 			}
-		}
-	}
-	
-	public void setEnabled(boolean enabled)throws TGPluginException {
-		if(enabled){
-			addPlugin();
-		}else{
-			removePlugin();
 		}
 	}
 }
