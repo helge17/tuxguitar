@@ -143,7 +143,9 @@ public class TGMeasureManager {
 		//Verifico si entra en el compas
 		if(validateDuration(beat.getMeasure(),beat, voice, duration,true,true)){
 			//Borro lo que haya en la misma posicion
-			removeNote(beat.getMeasure(),beat.getStart(),voice, note.getString());
+			for( int v = 0 ; v < beat.countVoices() ; v ++ ){
+				removeNote(beat.getMeasure(),beat.getStart(), v, note.getString(), false);
+			}
 			
 			duration.copy(beat.getVoice(voice).getDuration());
 			
@@ -168,11 +170,15 @@ public class TGMeasureManager {
 		note.getVoice().removeNote(note);
 	}
 	
+	public void removeNote(TGMeasure measure,long start, int voiceIndex,int string){
+		this.removeNote(measure, start, voiceIndex, string, true);
+	}
+	
 	/**
 	 * Elimina los Componentes que empiecen en Start y esten en la misma cuerda
 	 * Si hay un Silencio lo borra sin importar la cuerda
 	 */
-	public void removeNote(TGMeasure measure,long start, int voiceIndex,int string){
+	public void removeNote(TGMeasure measure,long start, int voiceIndex,int string, boolean checkRestBeat){
 		TGBeat beat = getBeat(measure, start);
 		if(beat != null){
 			TGVoice voice = beat.getVoice(voiceIndex);
@@ -181,7 +187,7 @@ public class TGMeasureManager {
 				if(note.getString() == string){
 					removeNote(note);
 					
-					if(beat.isRestBeat()){
+					if(checkRestBeat && beat.isRestBeat()){
 						//Anulo un posible stroke
 						beat.getStroke().setDirection( TGStroke.STROKE_NONE );
 						
