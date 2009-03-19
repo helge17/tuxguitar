@@ -5,9 +5,6 @@ import javax.sound.midi.Synthesizer;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-import com.sun.media.sound.AudioSynthesizer;
-import com.sun.media.sound.SoftSynthesizer;
-
 public class MidiToAudioSynth {
 	
 	public static final AudioFormat	SRC_FORMAT = MidiToAudioSettings.DEFAULT_FORMAT;
@@ -39,31 +36,33 @@ public class MidiToAudioSynth {
 		return this.stream;
 	}
 	
-	public void openSynth(){
-		try {
-			if( this.synthesizer == null || !this.synthesizer.isOpen() ){
-				this.synthesizer = new SoftSynthesizer();
-				this.receiver = this.synthesizer.getReceiver();
-				this.stream = ((AudioSynthesizer)this.synthesizer).openStream(SRC_FORMAT, null);
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
+	public void openSynth() throws Throwable {
+		if( this.synthesizer == null || !this.synthesizer.isOpen() ){
+			this.synthesizer = new com.sun.media.sound.SoftSynthesizer();
+			this.receiver = this.synthesizer.getReceiver();
+			this.stream = ((com.sun.media.sound.AudioSynthesizer)this.synthesizer).openStream(SRC_FORMAT, null);
 		}
 	}
 	
-	public void closeSynth(){
-		try {
-			if( this.receiver != null ){
-				this.receiver.close();
-			}
-			if( this.synthesizer != null && this.synthesizer.isOpen() ){
-				this.synthesizer.close();
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
+	public void closeSynth() throws Throwable {
+		if( this.receiver != null ){
+			this.receiver.close();
+		}
+		if( this.synthesizer != null && this.synthesizer.isOpen() ){
+			this.synthesizer.close();
 		}
 		this.stream = null;
 		this.receiver = null;
 		this.synthesizer = null;
+	}
+	
+	public boolean isAvailable(){
+		try {
+			Class.forName("com.sun.media.sound.SoftSynthesizer", false, getClass().getClassLoader() );
+			return true;
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

@@ -1,11 +1,15 @@
 package org.herac.tuxguitar.io.gervill;
 
+import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.gui.system.plugins.base.TGExporterPlugin;
 import org.herac.tuxguitar.io.base.TGSongExporter;
 
 public class MidiToAudioPlugin extends TGExporterPlugin{
 	
-	protected TGSongExporter getExporter() {
+	protected TGSongExporter getExporter() throws TGPluginException {
+		if( !MidiToAudioSynth.instance().isAvailable() ){
+			throw new TGPluginException("Gervill Synthesizer is not available");
+		}
 		return new MidiToAudioExporter();
 	}
 	
