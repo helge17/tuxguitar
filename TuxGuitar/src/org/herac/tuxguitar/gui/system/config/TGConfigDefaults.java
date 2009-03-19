@@ -86,6 +86,8 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.COLOR_SCORE_NOTE,"64,64,64");
 		this.loadProperty(TGConfigKeys.COLOR_TAB_NOTE,"64,64,64");
 		this.loadProperty(TGConfigKeys.COLOR_PLAY_NOTE,"255,0,0");
+		this.loadProperty(TGConfigKeys.COLOR_CARET_1,"127,127,127");
+		this.loadProperty(TGConfigKeys.COLOR_CARET_2,"165,42,42");
 		this.loadProperty(TGConfigKeys.MAX_HISTORY_FILES,10);
 		this.loadProperty(TGConfigKeys.MIN_SCORE_TABLATURE_SPACING,20);
 		this.loadProperty(TGConfigKeys.SCORE_LINE_SPACING,8);
