@@ -6,12 +6,14 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.gui.system.plugins.base.TGToolItemPlugin;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 
 public class MidiInputPlugin
 	extends TGToolItemPlugin
 	implements TGPluginSetup
 {
 	public void setEnabled(boolean enabled)
+		throws TGPluginException
 	{
 	if(enabled)
 		{
