@@ -418,8 +418,6 @@ static private	MiProvider	s_Instance;
 				f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
 				//System.out.println("Scale ended");
 
-				ScaleManager	scaleMgr = TuxGuitar.instance().getScaleManager();
-
 				if(f_Buffer.finalize(f_MinVelocity, f_MinDuration * 1000) > 0)
 					{
 					TGBeat		beat		= f_Buffer.toBeat();
@@ -428,12 +426,12 @@ static private	MiProvider	s_Instance;
 								key			= ((Byte)pitches.first()).intValue() % 12;
 
 					TuxGuitar.instance().showExternalBeat(beat);
-					scaleMgr.selectScale(scaleIndex, key);
+					MiScaleFinder.selectScale(scaleIndex, key);
 					}
 				else
 					{
 					TuxGuitar.instance().hideExternalBeat();
-					scaleMgr.selectScale(ScaleManager.NONE_SELECTION, 0);
+					MiScaleFinder.selectScale(ScaleManager.NONE_SELECTION, 0);
 					}
 
 				TuxGuitar.instance().updateCache(true);

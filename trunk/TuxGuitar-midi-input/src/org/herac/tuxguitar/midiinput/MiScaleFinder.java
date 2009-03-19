@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.tools.scale.ScaleManager;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 class MiScaleFinder
 {
@@ -91,5 +92,20 @@ class MiScaleFinder
 		}
 
 	return(scaleIndex);
+	}
+
+
+	static public void		selectScale(final int inIndex, final int inKey)
+	{
+	try	{
+		TGSynchronizer.instance().addRunnable( new TGSynchronizer.TGRunnable() {
+			public void run() throws Throwable {
+				TuxGuitar.instance().getScaleManager().selectScale(inIndex, inKey);
+			}
+		});
+		}
+	catch(Throwable e) {
+		e.printStackTrace();
+		}
 	}
 }
