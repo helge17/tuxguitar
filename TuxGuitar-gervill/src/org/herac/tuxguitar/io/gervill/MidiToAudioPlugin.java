@@ -7,10 +7,14 @@ import org.herac.tuxguitar.io.base.TGSongExporter;
 public class MidiToAudioPlugin extends TGExporterPlugin{
 	
 	protected TGSongExporter getExporter() throws TGPluginException {
-		if( !MidiToAudioSynth.instance().isAvailable() ){
+		return new MidiToAudioExporter();
+	}
+	
+	public void setEnabled( boolean enabled ) throws TGPluginException {
+		if( enabled && !MidiToAudioSynth.instance().isAvailable() ){
 			throw new TGPluginException("Gervill Synthesizer is not available");
 		}
-		return new MidiToAudioExporter();
+		super.setEnabled( enabled );
 	}
 	
 	public String getVersion() {
