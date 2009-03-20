@@ -561,8 +561,12 @@ public class MidiPlayer{
 	}
 	
 	public void openOutputPort(String key) {
+		this.openOutputPort(key, false);
+	}
+	
+	public void openOutputPort(String key, boolean tryFirst) {
 		this.outputPortKey = key;
-		this.openOutputPort(listOutputPorts(),false);
+		this.openOutputPort(listOutputPorts(),tryFirst);
 	}
 	
 	public void openOutputPort(List ports, boolean tryFirst) {
@@ -587,9 +591,13 @@ public class MidiPlayer{
 	}
 	
 	public void openSequencer(String key) {
+		this.openSequencer(key, false);
+	}
+	
+	public void openSequencer(String key, boolean tryFirst) {
 		try{
 			this.sequencerKey = key;
-			this.openSequencer(listSequencers(),false);
+			this.openSequencer(listSequencers(),tryFirst);
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
@@ -702,13 +710,21 @@ public class MidiPlayer{
 	}
 	
 	public void addOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
+		this.addOutputPortProvider(provider, true);
+	}
+	
+	public void addOutputPortProvider(MidiOutputPortProvider provider, boolean tryFirst) throws MidiPlayerException {
 		this.outputPortProviders.add(provider);
-		this.openOutputPort(provider.listPorts(),true);
+		this.openOutputPort(provider.listPorts(),tryFirst);
 	}
 	
 	public void addSequencerProvider(MidiSequencerProvider provider) throws MidiPlayerException {
+		this.addSequencerProvider(provider, true);
+	}
+	
+	public void addSequencerProvider(MidiSequencerProvider provider, boolean tryFirst) throws MidiPlayerException {
 		this.sequencerProviders.add(provider);
-		this.openSequencer(provider.listSequencers(),true);
+		this.openSequencer(provider.listSequencers(), tryFirst);
 	}
 	
 	public void removeOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
