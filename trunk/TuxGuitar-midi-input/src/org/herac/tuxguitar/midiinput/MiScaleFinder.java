@@ -2,6 +2,7 @@ package org.herac.tuxguitar.midiinput;
 
 import java.util.Iterator;
 import java.util.TreeSet;
+//import java.util.Arrays;	// just for debugging
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.tools.scale.ScaleManager;
@@ -9,34 +10,84 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 
 class MiScaleFinder
 {
-	static private int[]	scaleDefToArray(String inScaleDefinition)
+	static class TestScale
 	{
-	String[]	keys		= inScaleDefinition.split(",");
-	int[]		sequence	= new int[keys.length];
-
-	for(int i = 0; i < keys.length; i++)
-		sequence[i] = (Integer.parseInt(keys[i]) - 1);
-
-	return(sequence);
+		int		f_Key;
+		int		f_ScaleSize;
+		int[]	f_Sequence;
 	}
 
 
-	static private int[]	buildReferenceSequence(TreeSet inScale, int inScaleIndex)
+	static private int[]	scaleDefToModel(String inScaleDefinition)
+	{
+	String[]	keys	= inScaleDefinition.split(",");
+	int[]		model	= new int[keys.length];
+
+	for(int i = 0; i < keys.length; i++)
+		model[i] = (Integer.parseInt(keys[i]) - 1);
+
+	return(model);
+	}
+
+
+	static private int[]	scaleModelToIntervals(int[] inModel)
+	{
+	int[]		intervals = new int[inModel.length];
+
+	for(int i = 1; i < inModel.length; i++)
+		intervals[i - 1] = inModel[i] - inModel[i - 1];
+
+	intervals[inModel.length - 1] = 12 - inModel[inModel.length - 1];
+
+	return(intervals);
+	}
+
+
+	static private TestScale[]	buildReferenceSequences(int inLoPitch, int inHiPitch, int inScaleIndex)
 	{
 	ScaleManager	scaleMgr	= TuxGuitar.instance().getScaleManager();
-	int				loPitch		= ((Byte)inScale.first()).intValue(),
-					hiPitch		= ((Byte)inScale.last()).intValue(),
-					scaleSpan	= hiPitch - loPitch;
-	int[]			model		= scaleDefToArray(scaleMgr.getScaleKeys(inScaleIndex));
-	int				modelSpan	= model[model.length - 1],
-					repetitions	= scaleSpan / modelSpan + (scaleSpan % modelSpan > 0 ? 1 : 0);
-	int[]			sequence	= new int[model.length * repetitions];
+	int[]			model		= scaleDefToModel(scaleMgr.getScaleKeys(inScaleIndex));
+	int[]			intervals	= scaleModelToIntervals(model);
+	TestScale[]		sequences	= new TestScale[12];
 
-	for(int r = 0; r < repetitions; r++)
-		for(int i = 0; i < model.length; i++)
-			sequence[model.length * r + i] = loPitch + r * 12 + model[i];
+	//System.out.println();
+	//System.out.println("Scale: "			+ scaleMgr.getScaleName(inScaleIndex));
+	//System.out.println("Lowest Pitch: "	+ inLoPitch);
+	//System.out.println("Highest Pitch: "	+ inHiPitch);
+	//System.out.println("Model: "			+ Arrays.toString(model));
+	//System.out.println("Intervals: "		+ Arrays.toString(intervals));
 
-	return(sequence);
+	// build sequences, backwards, one per key
+	for(int key = 0; key < 12; key++)
+		{
+		// compute sequence length
+		int			sequenceLength = 0;
+
+		for(int pitch = inLoPitch - key, intervalsIndex = 0; pitch <= inHiPitch;)
+			{
+			sequenceLength++;
+			pitch += intervals[intervalsIndex];
+			intervalsIndex = (intervalsIndex + 1 >= intervals.length ? 0 : intervalsIndex + 1);
+			}
+
+		// initialize sequence
+		sequences[key]				= new TestScale();
+		sequences[key].f_Key		= (inLoPitch - key) % 12;
+		sequences[key].f_ScaleSize	= model.length;
+		sequences[key].f_Sequence	= new int[sequenceLength];
+
+		// fill sequence
+		for(int pitch = inLoPitch - key, intervalsIndex = 0, i = 0; pitch <= inHiPitch;)
+			{
+			sequences[key].f_Sequence[i++] = pitch;
+			pitch += intervals[intervalsIndex];
+			intervalsIndex = (intervalsIndex + 1 >= intervals.length ? 0 : intervalsIndex + 1);
+			}
+
+		//System.out.println("key: " + key + ", sequence: " + Arrays.toString(sequences[key].f_Sequence));
+		}
+
+	return(sequences);
 	}
 
 
@@ -70,27 +121,53 @@ class MiScaleFinder
 	int				scalesCount		= scaleMgr.countScales(),
 					minScaleSize	= 12,
 					maxMatches		= 0,
-					scaleIndex		= ScaleManager.NONE_SELECTION;
+					scaleIndex		= ScaleManager.NONE_SELECTION,
+					scaleKey		= 0;
 
 	if(!inScale.isEmpty())
 		{
-		for(int m = 0; m < scalesCount; m++)
+		int		loPitch	= ((Byte)inScale.first()).intValue(),
+				hiPitch	= ((Byte)inScale.last()).intValue();
+
+		//System.out.println("Input: "	+ inScale);
+		//System.out.println("loPitch: "	+ loPitch);
+		//System.out.println("hiPitch: "	+ hiPitch);
+
+		for(int s = 0; s < scalesCount; s++)
 			{
-			int[]	refSequence	= buildReferenceSequence(inScale, m);
-			int		matches		= countMatches(inScale, refSequence);
-	
-			// choose the scale with the maximum number of matches
-			// in case of a draw, choose the smallest scale
-			if(	matches > maxMatches ||
-				(maxMatches > 0 && matches == maxMatches && refSequence.length < minScaleSize))
+			TestScale[]	refSequences = buildReferenceSequences(loPitch, hiPitch, s);
+
+			for(int key = 0; key < 12; key++)
 				{
-				maxMatches		= matches;
-				scaleIndex		= m;
-				minScaleSize	= refSequence.length;
+				int		matches = countMatches(inScale, refSequences[key].f_Sequence);
+
+				if(	matches > maxMatches)
+					{
+					maxMatches		= matches;
+					scaleIndex		= s;
+					scaleKey		= refSequences[key].f_Key;
+					minScaleSize	= refSequences[key].f_ScaleSize;
+
+					//System.out.println();
+					//System.out.println("more matches: " + scaleMgr.getScaleName(scaleIndex));
+					//System.out.println("maxMatches: " + maxMatches + " minScaleSize: " + minScaleSize);
+					}
+				else if(maxMatches > 0 && matches == maxMatches && refSequences[key].f_ScaleSize < minScaleSize)
+					{
+					maxMatches		= matches;
+					scaleIndex		= s;
+					scaleKey		= refSequences[key].f_Key;
+					minScaleSize	= refSequences[key].f_ScaleSize;
+
+					//System.out.println();
+					//System.out.println("smaller scale: " + scaleMgr.getScaleName(scaleIndex));
+					//System.out.println("maxMatches: " + maxMatches + " minScaleSize: " + minScaleSize);
+					}
 				}
 			}
 		}
 
+	selectScale(scaleIndex, scaleKey);
 	return(scaleIndex);
 	}
 
