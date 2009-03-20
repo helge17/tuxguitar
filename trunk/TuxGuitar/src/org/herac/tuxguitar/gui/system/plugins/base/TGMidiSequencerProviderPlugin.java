@@ -34,7 +34,7 @@ public abstract class TGMidiSequencerProviderPlugin extends TGPluginAdapter{
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
 			try {
-				TuxGuitar.instance().getPlayer().addSequencerProvider(this.provider);
+				TuxGuitar.instance().getPlayer().addSequencerProvider(this.provider,TuxGuitar.instance().isInitialized());
 				this.loaded = true;
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);

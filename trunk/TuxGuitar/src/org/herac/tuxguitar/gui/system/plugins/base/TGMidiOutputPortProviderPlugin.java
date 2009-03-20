@@ -34,7 +34,7 @@ public abstract class TGMidiOutputPortProviderPlugin extends TGPluginAdapter{
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
 			try {
-				TuxGuitar.instance().getPlayer().addOutputPortProvider(this.provider);
+				TuxGuitar.instance().getPlayer().addOutputPortProvider(this.provider,TuxGuitar.instance().isInitialized());
 				this.loaded = true;
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);

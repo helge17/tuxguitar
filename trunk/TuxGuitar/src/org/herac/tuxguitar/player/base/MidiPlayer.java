@@ -710,7 +710,7 @@ public class MidiPlayer{
 	}
 	
 	public void addOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
-		this.addOutputPortProvider(provider, true);
+		this.addOutputPortProvider(provider, false);
 	}
 	
 	public void addOutputPortProvider(MidiOutputPortProvider provider, boolean tryFirst) throws MidiPlayerException {
@@ -719,7 +719,7 @@ public class MidiPlayer{
 	}
 	
 	public void addSequencerProvider(MidiSequencerProvider provider) throws MidiPlayerException {
-		this.addSequencerProvider(provider, true);
+		this.addSequencerProvider(provider, false);
 	}
 	
 	public void addSequencerProvider(MidiSequencerProvider provider, boolean tryFirst) throws MidiPlayerException {

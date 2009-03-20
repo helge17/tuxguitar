@@ -83,6 +83,8 @@ public class TuxGuitar {
 	
 	private static TuxGuitar instance;
 	
+	private boolean initialized;
+	
 	private TGLock lock;
 	
 	private Display display;
@@ -143,6 +145,7 @@ public class TuxGuitar {
 	
 	public TuxGuitar() {
 		this.lock = new TGLock();
+		this.initialized = false;
 	}
 	
 	public static TuxGuitar instance() {
@@ -187,9 +190,11 @@ public class TuxGuitar {
 			return;
 		}
 		
+		// Priority 1 ----------------------------------------------//
 		TGFileUtils.loadLibraries();
 		TGFileUtils.loadClasspath();
 		
+		// Priority 2 ----------------------------------------------//
 		Display.setAppName(APPLICATION_NAME);
 		
 		this.display = new Display();
@@ -203,27 +208,20 @@ public class TuxGuitar {
 		
 		this.createComposites(getShell());
 		
-		boolean maximized = getConfig().getBooleanConfigValue(TGConfigKeys.MAXIMIZED);
-		this.shell.setMaximized(maximized);
-		if(!maximized){
-			int width = getConfig().getIntConfigValue(TGConfigKeys.WIDTH);
-			int height = getConfig().getIntConfigValue(TGConfigKeys.HEIGHT);
-			if(width > 0 && height > 0){
-				this.shell.setSize(width,height);
-			}
-		}
-		this.shell.setMinimumSize(640,480);
-		
-		this.showDefaultControls();
+		// Priority 3 ----------------------------------------------//
+		this.getPluginManager().openPlugins();
+		this.restoreControlsConfig();
+		this.restorePlayerConfig();
 		this.updateCache(true);
 		this.showTitle();
-		this.getPluginManager().openPlugins();
 		
 		TGSplash.instance().finish();
 		
+		// Priority 4 ----------------------------------------------//
 		this.shell.addShellListener(getAction(DisposeAction.NAME));
 		this.shell.open();
 		this.startSong(argumentParser);
+		this.setInitialized( true );
 		while (!getDisplay().isDisposed() && !getShell().isDisposed()) {
 			if (!getDisplay().readAndDispatch()) {
 				getDisplay().sleep();
@@ -331,8 +329,20 @@ public class TuxGuitar {
 		getFretBoardEditor().showFretBoard(footer);
 	}
 	
-	public void showDefaultControls(){
+	public void restoreControlsConfig(){
 		final TGConfigManager config = getConfig();
+		
+		//---Main Shell---
+		boolean maximized = config.getBooleanConfigValue(TGConfigKeys.MAXIMIZED);
+		getShell().setMaximized(maximized);
+		if(!maximized){
+			int width = config.getIntConfigValue(TGConfigKeys.WIDTH);
+			int height = config.getIntConfigValue(TGConfigKeys.HEIGHT);
+			if(width > 0 && height > 0){
+				getShell().setSize(width,height);
+			}
+		}
+		getShell().setMinimumSize(640,480);
 		//---Fretboard---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_FRETBOARD)){
 			getFretBoardEditor().showFretBoard();
@@ -575,18 +585,20 @@ public class TuxGuitar {
 			this.player = new MidiPlayer();
 			this.player.init(getSongManager());
 			try {
-				//check midi sequencer
-				getPlayer().openSequencer(getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER));
-				
-				//check midi port
-				getPlayer().openOutputPort(getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT));
-				
-				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());
+				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), false);
 			} catch (MidiPlayerException e) {
 				e.printStackTrace();
 			}
 		}
 		return this.player;
+	}
+	
+	public void restorePlayerConfig(){
+		//check midi sequencer
+		getPlayer().openSequencer(getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER), true);
+		
+		//check midi port
+		getPlayer().openOutputPort(getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT), true);
 	}
 	
 	public void showTitle(){
@@ -610,13 +622,6 @@ public class TuxGuitar {
 						if(updateItems){
 							lock();
 							getEditorManager().doUpdate( TGUpdateListener.SELECTION );
-							/*
-							getItemManager().updateItems();
-							getTransport().updateItems();
-							getMixer().updateItems();
-							getLyricEditor().updateItems();
-							getTable().updateItems();
-							*/
 							unlock();
 						}
 						redraw();
@@ -630,13 +635,6 @@ public class TuxGuitar {
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
 			this.getEditorManager().doRedraw( TGRedrawListener.NORMAL );
-			/*
-			this.getTablatureEditor().getTablature().redraw();
-			this.getFretBoardEditor().redraw();
-			this.getPianoEditor().redraw();
-			this.getTable().redraw();
-			this.getMatrixEditor().redraw();
-			*/
 			this.unlock();
 		}
 	}
@@ -646,17 +644,6 @@ public class TuxGuitar {
 			this.lock();
 			this.getEditorCache().updatePlayMode();
 			this.getEditorManager().doRedraw( this.getEditorCache().shouldRedraw() ? TGRedrawListener.PLAYING_NEW_BEAT : TGRedrawListener.PLAYING_THREAD );
-			/*
-			this.getEditorCache().updatePlayMode();
-			if(this.getEditorCache().shouldRedraw()){
-				this.getTablatureEditor().getTablature().redrawPlayingMode();
-				this.getFretBoardEditor().redrawPlayingMode();
-				this.getPianoEditor().redrawPlayingMode();
-				this.getTable().redrawPlayingMode();
-				this.getMatrixEditor().redrawPlayingMode();
-			}
-			this.getTransport().redrawPlayingMode();
-			*/
 			this.unlock();
 		}
 	}
@@ -748,15 +735,7 @@ public class TuxGuitar {
 		getEditorCache().reset();
 		getUndoableManager().discardAllEdits();
 		getEditorManager().doUpdate( TGUpdateListener.SONG_LOADED );
-		/*
-		getTablatureEditor().getTablature().updateTablature();
-		getTablatureEditor().getTablature().resetScroll();
-		getTablatureEditor().getTablature().initCaret();
-		getTable().fireUpdate(true);
-		getMixer().update();
-		getLyricEditor().update();
-		MarkerList.instance().update();
-		*/
+		
 		this.unlock();
 		
 		updateCache(true);
@@ -780,11 +759,6 @@ public class TuxGuitar {
 		this.lock();
 		this.getEditorCache().reset();
 		this.getEditorManager().doUpdate( TGUpdateListener.SONG_UPDATED );
-		/*
-		this.getTablatureEditor().getTablature().updateTablature();
-		this.getTable().fireUpdate(false);
-		this.getLyricEditor().update();
-		*/
 		this.unlock();
 	}
 	
@@ -804,6 +778,14 @@ public class TuxGuitar {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isInitialized() {
+		return this.initialized;
+	}
+	
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}
 	
 	public void lock(){
