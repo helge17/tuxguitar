@@ -422,11 +422,9 @@ static private	MiProvider	s_Instance;
 					{
 					TGBeat		beat		= f_Buffer.toBeat();
 					TreeSet		pitches		= f_Buffer.toPitchesSet();
-					int			scaleIndex	= MiScaleFinder.findMatchingScale(pitches),
-								key			= ((Byte)pitches.first()).intValue() % 12;
 
+					MiScaleFinder.findMatchingScale(pitches);
 					TuxGuitar.instance().showExternalBeat(beat);
-					MiScaleFinder.selectScale(scaleIndex, key);
 					}
 				else
 					{
