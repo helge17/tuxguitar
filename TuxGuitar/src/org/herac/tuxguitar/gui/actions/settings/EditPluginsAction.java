@@ -32,6 +32,7 @@ import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.system.plugins.TGPlugin;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.gui.util.MessageDialog;
 
 /**
  * @author julian
@@ -94,7 +95,11 @@ public class EditPluginsAction extends Action{
 			public void widgetSelected(SelectionEvent arg0) {
 				TableItem item = table.getItem(table.getSelectionIndex());
 				if(item != null && item.getData() instanceof TGPluginSetup){
-					((TGPluginSetup)item.getData()).setupDialog(dialog);
+					try {
+						((TGPluginSetup)item.getData()).setupDialog(dialog);
+					}catch(Throwable throwable){
+						MessageDialog.errorMessage(dialog, throwable);
+					}
 				}
 			}
 		});
@@ -107,7 +112,11 @@ public class EditPluginsAction extends Action{
 			public void widgetSelected(SelectionEvent arg0) {
 				TableItem item = table.getItem(table.getSelectionIndex());
 				if(item != null && item.getData() instanceof TGPlugin){
-					showInfo(dialog,(TGPlugin)item.getData());
+					try {
+						showInfo(dialog,(TGPlugin)item.getData());
+					}catch(Throwable throwable){
+						MessageDialog.errorMessage(dialog, throwable);
+					}
 				}
 			}
 		});
