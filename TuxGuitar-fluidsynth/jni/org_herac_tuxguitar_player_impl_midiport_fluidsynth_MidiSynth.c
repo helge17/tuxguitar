@@ -166,7 +166,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 			jclass cl = (*handle->env)->GetObjectClass(handle->env, handle->obj);
 			jmethodID mid = (*handle->env)->GetMethodID(handle->env, cl, "addDriver", "(Ljava/lang/String;)V");
 			if (mid != 0){
-				(*env)->CallVoidMethod(handle->env, handle->obj, mid,driver);
+				(*handle->env)->CallVoidMethod(handle->env, handle->obj, mid,driver);
 			}
 		}
 		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc(sizeof(fluid_settings_foreach_option_data*));
