@@ -328,7 +328,7 @@ static private	MiProvider	s_Instance;
 				f_InputTimer = null;
 
 				f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
-			System.out.println("Chord ended");
+				//System.out.println("Chord ended");
 
 				if(f_Buffer.finalize(f_MinVelocity, f_MinDuration * 1000) > 0)
 					{
@@ -391,7 +391,7 @@ static private	MiProvider	s_Instance;
 		
 		if(inVelocity > 0)
 			{
-		System.out.println("New chord");
+			//System.out.println("New chord");
 
 			f_Buffer.startRecording(MiPort.getNotesPortTimeStamp());
 			f_Buffer.addEvent(inString, inFret, inPitch, inVelocity, inTimeStamp);
