@@ -31,6 +31,7 @@ class MiConfig
 	static final	String			KEY_MODE				= "midi.input.mode";
 	static final	String			KEY_ECHO_TIMEOUT		= "midi.input.echo.timeout";
 	static final	String			KEY_INPUT_TIMEOUT		= "midi.input.input.timeout";
+	static final	String			KEY_CHORD_MODE			= "midi.input.chord.mode";
 	// mancano le chiavi per le preferenze di registrazione
 	static private	MiConfig		s_Instance;
 
@@ -49,6 +50,9 @@ class MiConfig
 	static final int	MIN_INPUT_TIMEOUT		=  100;	// minimum allowed value for f_InputTimeOut
 	static final int	MAX_INPUT_TIMEOUT		= 1500;	// maximum allowed value for f_InputTimeOut
 	static final int	DEF_INPUT_TIMEOUT		= 1000;	// default value for f_InputTimeOut
+
+	static final int	CHORD_MODE_DIAGRAM		=    0;	// insert chord diagram only
+	static final int	CHORD_MODE_ALL			=    1;	// insert chord diagram and modify staff
 
 	static final int	MIN_COUNTDOWN_BARS		=    0;	// minimum allowed value for the # of count down bars before recording
 	static final int	MAX_COUNTDOWN_BARS		=   16;	// maximum allowed value for the # of count down bars before recording
@@ -89,6 +93,7 @@ class MiConfig
 	int		getMinDuration()		{ return s_Instance.f_Config.getIntConfigValue(KEY_MIN_DURATION, DEF_DURATION_THRESHOLD); }
 	int		getEchoTimeOut()		{ return s_Instance.f_Config.getIntConfigValue(KEY_ECHO_TIMEOUT, DEF_INPUT_TIMEOUT); }
 	int		getInputTimeOut()		{ return s_Instance.f_Config.getIntConfigValue(KEY_INPUT_TIMEOUT, DEF_INPUT_TIMEOUT); }
+	int		getChordMode()			{ return s_Instance.f_Config.getIntConfigValue(KEY_CHORD_MODE, CHORD_MODE_DIAGRAM); }
 
 
 	void	showDialog(Shell parent)
@@ -101,6 +106,7 @@ class MiConfig
 		final int		currMinDuration		= getMinDuration();
 		final int		currEchoTimeOut		= getEchoTimeOut();
 		final int		currInputTimeOut	= getInputTimeOut();
+		final int		currChordMode		= getChordMode();
 
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
@@ -196,6 +202,18 @@ class MiConfig
 		spnInputTimeOut.setMaximum(MAX_INPUT_TIMEOUT);
 
 		spnInputTimeOut.setSelection(currInputTimeOut);
+
+		//------------------CHORD MODE------------------
+		Label	lblMode = new Label(groupEcho, SWT.LEFT);
+		lblMode.setText(TuxGuitar.getProperty("midiinput.config.label.chordmode") + ":");
+
+		final Combo	cmbChordMode = new Combo(groupEcho, SWT.DROP_DOWN | SWT.READ_ONLY);
+		cmbChordMode.setLayoutData(new GridData(130, SWT.DEFAULT));
+
+		cmbChordMode.add(TuxGuitar.getProperty("midiinput.chordmode.diagram"));
+		cmbChordMode.add(TuxGuitar.getProperty("midiinput.chordmode.all"));
+
+		cmbChordMode.select(MiConfig.instance().getChordMode());
 
 	/* RECORDING
 		// Recording
@@ -313,6 +331,13 @@ class MiConfig
 
 					MiProvider.instance().setInputTimeOut(inputTimeOut);
 					}
+
+				int		chordMode = cmbChordMode.getSelectionIndex();
+
+				s_Instance.f_Config.setProperty(KEY_CHORD_MODE, chordMode);
+				s_Instance.f_Config.save();
+
+				MiProvider.instance().setChordMode(chordMode);
 
 				dialog.dispose();
 				}

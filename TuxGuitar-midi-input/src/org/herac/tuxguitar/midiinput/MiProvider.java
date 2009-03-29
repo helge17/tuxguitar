@@ -31,9 +31,10 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MiProvider
 {
-private final int	DEVICE_CHANNELS_COUNT		= 6;	// number of MIDI channels supported by the input device
+private final int	DEVICE_CHANNELS_COUNT	= 6;	// number of MIDI channels supported by the input device
 
 private int			f_Mode			= MiConfig.MODE_FRETBOARD_ECHO;		// current mode
+private int			f_ChordMode		= MiConfig.CHORD_MODE_DIAGRAM;		// current chord mode
 private int			f_BaseChannel	= 0;								// 0-based MIDI channel corresponding to the first string
 private byte		f_MinVelocity	= MiConfig.DEF_VELOCITY_THRESHOLD;	// notes with velocity lower than this threshold are considered unwanted noise
 private long		f_MinDuration	= MiConfig.DEF_DURATION_THRESHOLD;	// notes with duration lower than this threshold are considered unwanted noise
@@ -81,6 +82,7 @@ static private	MiProvider	s_Instance;
 	public void	setMinDuration	(long inValue)	{ f_MinDuration = inValue; }
 	public void	setEchoTimeOut	(int inValue)	{ f_EchoTimeOut = inValue; }
 	public void	setInputTimeOut	(int inValue)	{ f_InputTimeOut = inValue; }
+	public void	setChordMode	(int inValue)	{ f_ChordMode = inValue; }
 
 
 	public void	echo_ResetNotes()
@@ -326,7 +328,7 @@ static private	MiProvider	s_Instance;
 				f_InputTimer = null;
 
 				f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
-				//System.out.println("Chord ended");
+			System.out.println("Chord ended");
 
 				if(f_Buffer.finalize(f_MinVelocity, f_MinDuration * 1000) > 0)
 					{
@@ -339,16 +341,18 @@ static private	MiProvider	s_Instance;
 						TGBeat			beat	= caret.getSelectedBeat();
 						TGSongManager	songMgr	= TuxGuitar.instance().getSongManager();
 
-						// Add the chord notes to the tablature only if this is a "rest" beat
-						if(beat.isRestBeat())
+						TGChord			chord	= f_Buffer.toChord(measure.getTrack().stringCount());
+						//TGBeat		_beat		= f_Buffer.toBeat();
+
+						// emulates InsertChordAction
+						ActionLock.lock();
+
+						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+
+						if(f_ChordMode == MiConfig.CHORD_MODE_ALL)
 							{
-							TGChord		chord = f_Buffer.toChord(measure.getTrack().stringCount());
+							songMgr.getMeasureManager().cleanBeat(beat);
 
-							// emulate InsertChordAction
-							ActionLock.lock();
-
-							UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-	
 							TGVoice		voice	= beat.getVoice(caret.getVoice());
 							Iterator	it		= track.getStrings().iterator();
 
@@ -370,16 +374,16 @@ static private	MiProvider	s_Instance;
 									songMgr.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
 									}
 								}
-
-							songMgr.getMeasureManager().addChord(beat, chord);
-							TuxGuitar.instance().getFileHistory().setUnsavedFile();
-							editor.getTablature().getViewLayout().fireUpdate(measure.getNumber());
-
-							TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-
-							ActionLock.unlock();
-							TuxGuitar.instance().updateCache(true);
 							}
+							
+						songMgr.getMeasureManager().addChord(beat, chord);
+						TuxGuitar.instance().getFileHistory().setUnsavedFile();
+						editor.getTablature().getViewLayout().fireUpdate(measure.getNumber());
+
+						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+
+						ActionLock.unlock();
+						TuxGuitar.instance().updateCache(true);
 						}
 					}
 				}
@@ -387,7 +391,7 @@ static private	MiProvider	s_Instance;
 		
 		if(inVelocity > 0)
 			{
-			//System.out.println("New chord");
+		System.out.println("New chord");
 
 			f_Buffer.startRecording(MiPort.getNotesPortTimeStamp());
 			f_Buffer.addEvent(inString, inFret, inPitch, inVelocity, inTimeStamp);
