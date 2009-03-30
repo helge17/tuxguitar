@@ -42,6 +42,7 @@
 		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; Gervill (Software Synthesizer): https://gervill.dev.java.net/${line.separator}</echo>
 		
 		<replace file="${build.path}/shortcuts-default.xml" token="262144" value="4194304"/>
 	</target>
@@ -58,6 +59,7 @@
 			<fileset file="${build.jar}"/>
 		</copy>
 		<copy todir="${contents.macos}${file.separator}${build.lib.dir}">
+			<fileset file="${lib.gervill.jar}"/>
 			<fileset file="${lib.itext.jar}"/>
 			<fileset file="${lib.swt.jar}"/>
 			<fileset dir="${build.lib.path}" includes="*.jnilib" />
@@ -168,7 +170,7 @@
 		<echo file="${file.script}" append="true">DIR_NAME=`cd "$DIR_NAME"; pwd`${line.separator}</echo>
 		<echo file="${file.script}" append="true">cd "${DIR_NAME}"${line.separator}</echo>
 		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
-		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${dist.share.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${lib.gervill.jar}:${dist.share.path}${line.separator}</echo>
 		<echo file="${file.script}" append="true">##LIBRARY_PATH${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${lib.swt.jni}${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib${line.separator}</echo>

@@ -45,9 +45,10 @@
 		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; Gervill (Software Synthesizer): https://gervill.dev.java.net/${line.separator}</echo>
 		
 		<echo file="${file.script}" append="false">cd "."${line.separator}</echo>
-		<echo file="${file.script}" append="true">javaw -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>
+		<echo file="${file.script}" append="true">javaw -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${lib.gervill.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>
 		<chmod file="${file.script}" perm="755"/>
 		
 		<available property="janel.enabled" file="${janel.exe}" />
@@ -57,7 +58,7 @@
 	<target name="janel.build" if="janel.enabled">
 		<copy file="${janel.exe}" tofile="${janel.name}.exe"/>
 		
-		<echo file="${janel.name}.lap" append="false">-Djava.class.path=${janel.lap.prefix}${dist.jar.path}${build.jar};${janel.lap.prefix}${lib.swt.jar};${janel.lap.prefix}${lib.itext.jar};${janel.lap.prefix}${dist.share.path}${line.separator}</echo>
+		<echo file="${janel.name}.lap" append="false">-Djava.class.path=${janel.lap.prefix}${dist.jar.path}${build.jar};${janel.lap.prefix}${lib.swt.jar};${janel.lap.prefix}${lib.itext.jar};${janel.lap.prefix}${lib.gervill.jar};${janel.lap.prefix}${dist.share.path}${line.separator}</echo>
 		<echo file="${janel.name}.lap" append="true"># Java class to call, ex. mypackage.Start or mypackage/Start${line.separator}</echo>
 		<echo file="${janel.name}.lap" append="true">janel.main.class=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
 		<echo file="${janel.name}.lap" append="true">${line.separator}</echo>
