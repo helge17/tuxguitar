@@ -7,7 +7,7 @@
 PACKAGE?=tuxguitar-alsa
 LIBRARY?=lib${PACKAGE}.so
 LIBRARY_JNI?=lib${PACKAGE}-jni.so
-LIBRARY_PROVIDER?=org.herac.tuxguitar.player.impl.midiport.alsa.MidiPortProviderPlugin
+LIBRARY_PROVIDER?=org.herac.tuxguitar.player.impl.midiport.alsa.MidiOutputPortProviderPlugin
 
 PREFIX?=/usr
 
