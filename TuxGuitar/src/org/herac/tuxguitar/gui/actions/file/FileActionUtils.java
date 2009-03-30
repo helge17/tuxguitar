@@ -1,11 +1,14 @@
 package org.herac.tuxguitar.gui.actions.file;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -117,8 +120,9 @@ public class FileActionUtils {
 	
 	public static void exportSong(TGSongExporter exporter, String path){
 		try {
+			OutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
 			TGSongManager manager = TuxGuitar.instance().getSongManager();
-			exporter.exportSong(new FileOutputStream(new File(path)),manager.getSong());
+			exporter.exportSong(stream, manager.getSong());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.export.error", new String[]{path}),throwable));
 		}
@@ -126,7 +130,8 @@ public class FileActionUtils {
 	
 	public static void importSong(final TGSongImporter importer, String path){
 		try {
-			TGSong song = importer.importSong(TuxGuitar.instance().getSongManager().getFactory(),new FileInputStream(new File(path)));
+			InputStream stream = new BufferedInputStream(new FileInputStream(new File(path)));
+			TGSong song = importer.importSong(TuxGuitar.instance().getSongManager().getFactory(),stream);
 			TuxGuitar.instance().fireNewSong(song,null);
 		}catch (Throwable throwable) {
 			TuxGuitar.instance().newSong();
