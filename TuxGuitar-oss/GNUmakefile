@@ -7,7 +7,7 @@
 PACKAGE?=tuxguitar-oss
 LIBRARY?=lib${PACKAGE}.so
 LIBRARY_JNI?=lib${PACKAGE}-jni.so
-LIBRARY_PROVIDER?=org.herac.tuxguitar.player.impl.midiport.oss.MidiPortProviderPlugin
+LIBRARY_PROVIDER?=org.herac.tuxguitar.player.impl.midiport.oss.MidiOutputPortProviderPlugin
 
 PREFIX?=/usr
 
