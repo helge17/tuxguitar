@@ -6,6 +6,7 @@
  */
 package org.herac.tuxguitar.io.base;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ public class TGSongWriter {
 			while(it.hasNext()){
 				TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
 				if(isSupportedExtension(writer,path)){
-					writer.init(factory,new FileOutputStream(new File(path)));
+					writer.init(factory,new BufferedOutputStream(new FileOutputStream(new File(path))));
 					writer.writeSong(song);
 					return;
 				}
