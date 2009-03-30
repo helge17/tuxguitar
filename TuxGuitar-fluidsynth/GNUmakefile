@@ -80,7 +80,7 @@ clean:
 	${GCJ} -shared -o $@ -ltuxguitar -L${TG_LIBRARY_PATH} $^
 
 ${LIBRARY_JNI}: ${JNI_OBJECTS}
-	${GCJ} -shared -o $@ -lasound -lpthread $^
+	${GCJ} -shared -o $@ -lfluidsynth $^
 
 meta-inf:
 	echo ${LIBRARY_PROVIDER} > ${TG_SERVICE_CLASS}
