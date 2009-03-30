@@ -4,6 +4,8 @@ TuxGuitar 1.1 changes:
 * Fix jre1.4 support bug
 * 2 Voice support
 * Chorus/Reverb/Phaser/Tremolo MIDI Controls
+* Upstroke/Downstroke support
+* Stems Up/Down/Auto support
 * Display markers on the score
 * Encoding option on GTP Plugin
 * FTP Browser plugin now can run on non sun's JVM
