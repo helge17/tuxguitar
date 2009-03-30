@@ -7,15 +7,6 @@ TuxGuitar is released under the GNU Lesser General Public License.
 REQUIREMENTS:
 Java Runtime Environment 1.4.X or later installed in your system.
 
-INSTALL:    
-Extract TuxGuitar-*.tar.gz in your favorite location
-$tar xfz TuxGuitar-*.tar.gz
-$mv TuxGuitar-* /home/*/install_dir
-
-RUN:
-Run "tuxguitar" script.
-$/home/*/install_dir/TuxGuitar-*/tuxguitar
-
 PROBLEMS:
 
     * SWT:
