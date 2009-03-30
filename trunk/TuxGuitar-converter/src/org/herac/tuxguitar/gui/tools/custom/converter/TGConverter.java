@@ -1,9 +1,12 @@
 package org.herac.tuxguitar.gui.tools.custom.converter;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGFileFormatException;
@@ -71,7 +74,7 @@ public class TGConverter {
 					else {
 						songExporter.configure(true);
 						try {
-							songExporter.exportSong(new FileOutputStream(convertFileName), manager.getSong());
+							songExporter.exportSong(new BufferedOutputStream(new FileOutputStream(convertFileName)), manager.getSong());
 						} catch (FileNotFoundException ex) {
 							this.getListener().notifyFileResult(convertFileName,FILE_COULDNT_WRITE);
 						}
@@ -164,7 +167,7 @@ public class TGConverter {
 			try {
 				currentImporter.configure(true);
 				if (isSupportedExtension(filename,currentImporter)) {
-					FileInputStream input = new FileInputStream(filename);
+					InputStream input = new BufferedInputStream(new FileInputStream(filename));
 					return currentImporter.importSong(factory, input);
 				}
 			} catch (Throwable throwable) {
