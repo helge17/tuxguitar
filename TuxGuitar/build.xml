@@ -65,10 +65,6 @@
 		
 		<jar destfile="${build.jar}">
 			<fileset dir="${build.path}" />
-			<manifest>
-				<attribute name="Class-Path" value="${lib.swt.jar} ${dist.share.path}"/>
-				<attribute name="Main-Class" value="org.herac.tuxguitar.gui.TGMain"/>
-			</manifest>
 		</jar>
 		
 		<antcall target="dist-package" />
