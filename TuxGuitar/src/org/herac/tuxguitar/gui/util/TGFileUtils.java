@@ -69,19 +69,23 @@ public class TGFileUtils {
 	
 	public static Enumeration getResourceUrls(String resource) {
 		try {
+			Vector vector = new Vector();
 			if(TG_STATIC_SHARED_PATHS != null){
-				Vector vector = new Vector();
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
 					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
 					if( file.exists() ){
 						vector.addElement( file.toURI().toURL() );
 					}
 				}
-				if( vector.size() > 0 ){
-					return vector.elements();
+			}
+			Enumeration resources = TGClassLoader.instance().getClassLoader().getResources(resource);
+			while( resources.hasMoreElements() ){
+				URL url = (URL)resources.nextElement();
+				if( !vector.contains(url) ){
+					vector.addElement( url );
 				}
 			}
-			return TGClassLoader.instance().getClassLoader().getResources(resource);
+			return vector.elements();
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
