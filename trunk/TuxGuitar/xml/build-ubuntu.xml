@@ -54,7 +54,7 @@
 		<echo file="${file.control}" append="false">Package: tuxguitar${line.separator}</echo>
 		<echo file="${file.control}" append="true">Version: ${dist.version}${line.separator}</echo>
 		<echo file="${file.control}" append="true">Architecture: i386${line.separator}</echo>
-		<echo file="${file.control}" append="true">Depends: sun-java6-jre | sun-java5-jre | openjdk-6-jre | icedtea-java7-jre | gij | cacao | jamvm ,libswt-gtk-3.3-java | libswt3.2-gtk-java , libitext-java ${line.separator}</echo>
+		<echo file="${file.control}" append="true">Depends: openjdk-6-jre | sun-java6-jre | sun-java5-jre | java-gcj-compat-headless | java-virtual-machine, libitext-java, libswt-gtk-3.4-java | libswt3.2-gtk-java, libswt-cairo-gtk-3.4-jni | libswt3.2-gtk-java, libswt-mozilla-gtk-3.4-jni | libswt3.2-gtk-java ${line.separator}</echo>
 		<echo file="${file.control}" append="true">Priority: optional${line.separator}</echo>
 		<echo file="${file.control}" append="true">Section: Multimedia${line.separator}</echo>
 		<echo file="${file.control}" append="true">Maintainer: Julian Casadesus julian@casadesus.com.ar${line.separator}</echo>

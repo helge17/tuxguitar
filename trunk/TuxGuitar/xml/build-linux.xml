@@ -37,7 +37,6 @@
 		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
 		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
-		<echo file="${file.description}" append="true">-&#62; Gervill (Software Synthesizer): https://gervill.dev.java.net/${line.separator}</echo>
 		
 		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>
 		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
@@ -64,7 +63,7 @@
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}${line.separator}</echo>
 		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
-		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${lib.gervill.jar}:${dist.share.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${dist.share.path}${line.separator}</echo>
 		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
 		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
 		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>

@@ -23,7 +23,7 @@
 	<available file="${dist.file}" type="file" property="dist.available"/>
 	
 	<path id="class.path">
-		<fileset file="${lib.swt.jar}" />
+		<pathelement path="${lib.swt.jar}"/>
 	</path >
 	
 	<target name="all">
