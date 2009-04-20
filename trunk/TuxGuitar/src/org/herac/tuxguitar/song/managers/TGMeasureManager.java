@@ -687,10 +687,10 @@ public class TGMeasureManager {
 	public void cleanBeat(TGBeat beat){
 		beat.getStroke().setDirection( TGStroke.STROKE_NONE );
 		if( beat.getText() != null ){
-			beat.removeChord();
+			beat.removeText();
 		}
 		if( beat.getChord() != null){
-			beat.removeText();
+			beat.removeChord();
 		}
 		
 		this.cleanBeatNotes(beat);
