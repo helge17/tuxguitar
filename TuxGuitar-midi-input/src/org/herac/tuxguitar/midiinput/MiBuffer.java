@@ -10,6 +10,7 @@ import org.herac.tuxguitar.song.managers.TGTrackManager;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -20,8 +21,10 @@ class MiBuffer
 {
 	private ArrayList	f_Notes			= new ArrayList();	// time-ordered list of notes
 	private ArrayList	f_NoteOffMap	= new ArrayList();	// time-ordered map of NOTE_OFF events
-	private	long		f_StartTime		= -1;				// initial MIDI time stamp [microseconds]
-	private	long		f_StopTime		= -1;				// final MIDI time stamp [microseconds]
+	private	long		f_StartTime		= -1;				// first MIDI time stamp [microseconds]
+	private	long		f_StopTime		= -1;				// last MIDI time stamp [microseconds]
+
+	private	boolean		s_TESTING = true;
 
 
 	public void startRecording(long inTimeStamp)
@@ -49,9 +52,9 @@ class MiBuffer
 	}
 
 
-	public void	dump(String inTitle)
+	static void	dump(ArrayList inList, String inTitle)
 	{
-	Iterator	it = f_Notes.iterator();
+	Iterator	it = inList.iterator();
 
 	System.out.println();
 	System.out.println("dumping " + inTitle + "...");
@@ -64,19 +67,137 @@ class MiBuffer
 		MiNote	n = (MiNote)it.next();
 
 		System.out.println(
-				"str: "		+ n.getString() +
-				", fret: "	+ n.getFret() +
-				", pitch: "	+ n.getPitch() +
-				", vel: "	+ n.getVelocity() +
-				", on: "	+ n.getTimeOn() +
-				", off: "	+ n.getTimeOff() +
-				", dur: "	+ n.getDuration());
+			"str: "		+ n.getString() +
+			", fret: "	+ n.getFret() +
+			", pitch: "	+ n.getPitch() +
+			", vel: "	+ n.getVelocity() +
+			", on: "	+ n.getTimeOn() +
+			", off: "	+ n.getTimeOff() +
+			", dur: "	+ n.getDuration());
 		}
 	}
 
 
 	public int	finalize(byte inMinVelocity, long inMinDuration)
 	{
+	if(s_TESTING)
+		{
+		int	tempo = MiRecorder.instance().getTempo();
+
+		f_StartTime	= MiStaff.ticksToTimestamp(tempo, 0);
+		f_StopTime	= MiStaff.ticksToTimestamp(tempo, 15698);
+/*
+		// a very long note
+		addEventDebug(tempo,     0, 4, 50, 81);
+		addEventDebug(tempo, 15698, 4, 50, 0);
+*/
+		// a short piece
+		addEventDebug(tempo,   873, 1, 66, 96);
+		addEventDebug(tempo,  1054, 1, 66, 0);
+		addEventDebug(tempo,  1056, 1, 67, 81);
+		addEventDebug(tempo,  1307, 1, 67, 0);
+		addEventDebug(tempo,  1310, 1, 68, 67);
+		addEventDebug(tempo,  1369, 1, 68, 0);
+		addEventDebug(tempo,  2549, 1, 69, 78);
+		addEventDebug(tempo,  2841, 1, 69, 0);
+
+		addEventDebug(tempo,   852, 2, 62, 106);
+		addEventDebug(tempo,  1301, 2, 62, 0);
+		addEventDebug(tempo,  1304, 2, 61, 32);
+		addEventDebug(tempo,  1389, 2, 61, 0);
+		addEventDebug(tempo,  2545, 2, 62, 81);
+		addEventDebug(tempo,  2765, 2, 62, 0);
+		addEventDebug(tempo,  3418, 2, 65, 78);
+		addEventDebug(tempo,  4172, 2, 65, 0);
+		addEventDebug(tempo,  4281, 2, 67, 56);
+		addEventDebug(tempo,  4433, 2, 67, 0);
+		addEventDebug(tempo,  6027, 2, 59, 79);
+		addEventDebug(tempo,  6627, 2, 59, 0);
+		addEventDebug(tempo,  7657, 2, 60, 114);
+		addEventDebug(tempo,  7879, 2, 60, 0);
+		addEventDebug(tempo,  7881, 2, 59, 81);
+		addEventDebug(tempo,  8434, 2, 59, 0);
+		addEventDebug(tempo,  9780, 2, 62, 103);
+		addEventDebug(tempo, 10072, 2, 62, 0);
+		addEventDebug(tempo, 10074, 2, 63, 40);
+		addEventDebug(tempo, 10146, 2, 63, 0);
+		addEventDebug(tempo, 10266, 2, 66, 107);
+		addEventDebug(tempo, 11002, 2, 66, 0);
+		addEventDebug(tempo, 11535, 2, 64, 76);
+		addEventDebug(tempo, 13661, 2, 64, 0);
+
+		addEventDebug(tempo,   473, 3, 57, 51);
+		addEventDebug(tempo,  1241, 3, 57, 0);
+		addEventDebug(tempo,  1242, 3, 56, 9);
+		addEventDebug(tempo,  1424, 3, 56, 0);
+		addEventDebug(tempo,  2540, 3, 58, 68);
+		addEventDebug(tempo,  2772, 3, 58, 0);
+		addEventDebug(tempo,  3412, 3, 60, 73);
+		addEventDebug(tempo,  4227, 3, 60, 0);
+		addEventDebug(tempo,  6024, 3, 60, 58);
+		addEventDebug(tempo,  6427, 3, 60, 0);
+		addEventDebug(tempo,  6430, 3, 59, 17);
+		addEventDebug(tempo,  6591, 3, 59, 0);
+		addEventDebug(tempo,  6594, 3, 55, 1);
+		addEventDebug(tempo,  6612, 3, 55, 0);
+		addEventDebug(tempo,  7660, 3, 57, 103);
+		addEventDebug(tempo,  8096, 3, 57, 0);
+		addEventDebug(tempo,  8099, 3, 57, 107);
+		addEventDebug(tempo,  8200, 3, 57, 0);
+		addEventDebug(tempo,  8203, 3, 56, 79);
+		addEventDebug(tempo,  8230, 3, 56, 0);
+		addEventDebug(tempo,  8232, 3, 55, 77);
+		addEventDebug(tempo,  8491, 3, 55, 0);
+		addEventDebug(tempo,  9407, 3, 57, 87);
+		addEventDebug(tempo, 10048, 3, 57, 0);
+		addEventDebug(tempo, 10255, 3, 61, 74);
+		addEventDebug(tempo, 10874, 3, 61, 0);
+		addEventDebug(tempo, 10877, 3, 60, 23);
+		addEventDebug(tempo, 10973, 3, 60, 0);
+		addEventDebug(tempo, 10975, 3, 55, 17);
+		addEventDebug(tempo, 11084, 3, 55, 0);
+		addEventDebug(tempo, 11531, 3, 62, 70);
+		addEventDebug(tempo, 13649, 3, 62, 0);
+
+		addEventDebug(tempo,     0, 4, 50, 81);
+		addEventDebug(tempo,  1405, 4, 50, 0);
+		addEventDebug(tempo,  1750, 4, 53, 98);
+		addEventDebug(tempo,  2763, 4, 53, 0);
+		addEventDebug(tempo,  3884, 4, 50, 51);
+		addEventDebug(tempo,  4678, 4, 50, 0);
+		addEventDebug(tempo,  5597, 4, 55, 77);
+		addEventDebug(tempo,  6392, 4, 55, 0);
+		addEventDebug(tempo,  8975, 4, 50, 71);
+		addEventDebug(tempo, 11023, 4, 50, 0);
+		addEventDebug(tempo, 11081, 4, 50, 46);
+		addEventDebug(tempo, 11311, 4, 50, 0);
+		addEventDebug(tempo, 11524, 4, 55, 76);
+		addEventDebug(tempo, 14489, 4, 55, 0);
+
+		addEventDebug(tempo,  4783, 5, 45, 90);
+		addEventDebug(tempo,  8521, 5, 45, 0);
+
+		addEventDebug(tempo,  3430, 6, 46, 94);
+		addEventDebug(tempo,  4506, 6, 46, 0);
+		addEventDebug(tempo,  4509, 6, 40, 17);
+		addEventDebug(tempo,  6680, 6, 40, 0);
+		addEventDebug(tempo,  6868, 6, 41, 99);
+		addEventDebug(tempo,  8180, 6, 41, 0);
+		addEventDebug(tempo,  8182, 6, 40, 83);
+		addEventDebug(tempo,  8486, 6, 40, 0);
+		addEventDebug(tempo,  8587, 6, 43, 95);
+		addEventDebug(tempo, 10010, 6, 43, 0);
+		addEventDebug(tempo, 10275, 6, 46, 99);
+		addEventDebug(tempo, 10302, 6, 46, 0);
+		addEventDebug(tempo, 10304, 6, 47, 99);
+		addEventDebug(tempo, 10943, 6, 47, 0);
+		addEventDebug(tempo, 10946, 6, 40, 51);
+		addEventDebug(tempo, 11350, 6, 40, 0);
+		addEventDebug(tempo, 11492, 6, 45, 114);
+		addEventDebug(tempo, 15698, 6, 45, 0);
+
+		}
+
 	Iterator	onIt;
 
 	// determine notes duration
@@ -192,206 +313,20 @@ class MiBuffer
 	}
 
 
-	private	long	timestampToTicks(int inTempo, long inTimeStamp)
+	private	void	addEventDebug(int inTempo, long inTick, int inString, int inPitch, int inVelocity)
 	{
-	//double	microsecsPerQuarter = ((60.0 / inTempo) * 1000000),
-	//		microsecsPerTick	= microsecsPerQuarter / TGDuration.QUARTER_TIME;
-
-	long	ticks = (inTimeStamp * inTempo * TGDuration.QUARTER_TIME) / 60000000L;
-
-	return(/*(long)microsecsPerTick*/ticks);
+	// to facilitate tests using output from Midi2Mtx
+	addEvent(
+		(byte)inString,
+		(byte)MiProvider.getFret(inPitch, inString),
+		(byte)inPitch,
+		(byte)inVelocity,
+		MiStaff.ticksToTimestamp(inTempo, inTick));
 	}
 
 
-	private	long	noteToTicks(int inNoteType)
+	public void		toTrack(int inTempo, long inStartPosition, String inTrackName)
 	{
-	switch(inNoteType)
-		{
-		case TGDuration.WHOLE:			return(TGDuration.QUARTER_TIME *  4);
-		case TGDuration.HALF:			return(TGDuration.QUARTER_TIME *  2);
-		case TGDuration.QUARTER:		return(TGDuration.QUARTER_TIME);
-		case TGDuration.EIGHTH:			return(TGDuration.QUARTER_TIME /  2);
-		case TGDuration.SIXTEENTH:		return(TGDuration.QUARTER_TIME /  4);
-		case TGDuration.THIRTY_SECOND:	return(TGDuration.QUARTER_TIME /  8);
-		case TGDuration.SIXTY_FOURTH:	return(TGDuration.QUARTER_TIME / 16);
-		default:						return(1L);
-		}
-	}
-
-
-	private	int		durationToNoteType(long inDuration)
-	{
-	// converts duration [ticks] into note type
-		
-	if(inDuration >= noteToTicks(TGDuration.WHOLE))
-		return(TGDuration.WHOLE);
-	else if(inDuration >= noteToTicks(TGDuration.HALF))
-		return(TGDuration.HALF);
-	else if(inDuration >= noteToTicks(TGDuration.QUARTER))
-		return(TGDuration.QUARTER);
-	else if(inDuration >= noteToTicks(TGDuration.EIGHTH))
-		return(TGDuration.EIGHTH);
-	else if(inDuration >= noteToTicks(TGDuration.SIXTEENTH))
-		return(TGDuration.SIXTEENTH);
-	else if(inDuration >= noteToTicks(TGDuration.THIRTY_SECOND))
-		return(TGDuration.THIRTY_SECOND);
-	else
-		return(TGDuration.SIXTY_FOURTH);
-	}
-
-
-	private void	normalize(int inTempo, int inNoteType, long inStartPosition)
-	{
-	// *** TEST ***
-	f_Notes.clear();
-	f_StartTime	= 265910000;
-	f_StopTime	= 274549000;
-
-	MiNote	n;
-
-	n = new MiNote((byte)3, (byte)2, (byte)57, (byte)127, 265910000);	n.setTimeOff(267326000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)3, (byte)62, (byte)108, 267419000);	n.setTimeOff(267587000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)2, (byte)61, (byte) 90, 267651000);	n.setTimeOff(267860000);	f_Notes.add(n);
-	n = new MiNote((byte)3, (byte)2, (byte)57, (byte)127, 267942000);	n.setTimeOff(269615000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)5, (byte)64, (byte)105, 269921000);	n.setTimeOff(270137000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)6, (byte)65, (byte) 95, 270139000);	n.setTimeOff(270338000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)8, (byte)67, (byte)126, 270403000);	n.setTimeOff(271197000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)2, (byte)61, (byte)112, 271443000);	n.setTimeOff(271653000);	f_Notes.add(n);
-	n = new MiNote((byte)2, (byte)3, (byte)62, (byte) 99, 271671000);	n.setTimeOff(271912000);	f_Notes.add(n);
-	n = new MiNote((byte)3, (byte)2, (byte)57, (byte) 95, 271944000);	n.setTimeOff(274549000);	f_Notes.add(n);
-	// *** TEST ***
-
-	long		timeResolution	= noteToTicks(inNoteType);
-	Iterator	it				= f_Notes.iterator();
-	
-	while(it.hasNext())
-		{
-		MiNote	note	= (MiNote)it.next();
-		long	timeOn	= note.getTimeOn(),
-				timeOff	= note.getTimeOff();
-
-		// absolute to relative time stamps
-		timeOn	-= f_StartTime;
-		timeOff	-= f_StartTime;
-
-		// time stamps to ticks
-		timeOn	= inStartPosition + timestampToTicks(inTempo, timeOn);
-		timeOff	= inStartPosition + timestampToTicks(inTempo, timeOff);
-
-		// relative to absolute ticks
-		timeOn	+= inStartPosition;
-		timeOff	+= inStartPosition;
-
-		// force to imposed resolution
-		long	attack	= (timeOn  / timeResolution) * timeResolution,
-				release	= (timeOff / timeResolution) * timeResolution;
-
-		if((timeOn % timeResolution) > timeResolution / 2)
-			attack += timeResolution;
-
-		if((timeOff % timeResolution) > timeResolution / 2)
-			release += timeResolution;
-
-		// update values
-		note.setTimeOn(attack);
-		note.setTimeOff(release);
-		}
-	}
-
-
-	public void		toTrack(int inTempo, int inNoteType, long inStartPosition)
-	{
-		dump("before normalization");
-	normalize(inTempo, inNoteType, inStartPosition);
-		dump("after normalization");
-		System.out.println();
-
-	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
-	TGTrackManager	tgTrackMgr	= tgSongMgr.getTrackManager();
-	TGTrack			tgTrack		= tgSongMgr.createTrack();
-
-	tgTrack.setName("Nuovo input MIDI");
-
-	boolean		firstLoop = true;
-
-	while(!f_Notes.isEmpty())
-		{
-		Iterator	it = f_Notes.iterator();
-
-		while(it.hasNext())
-			{
-			MiNote			note	= (MiNote)it.next();
-			TGMeasureHeader	mh		= tgSongMgr.getMeasureHeaderAt(note.getTimeOn());
-
-			// add measures as needed
-			while(mh == null)
-				{
-				tgSongMgr.addNewMeasure(tgSongMgr.getSong().countMeasureHeaders() + 1);
-				mh = tgSongMgr.getMeasureHeaderAt(note.getTimeOn());
-				}
-
-			TGMeasure	tgMeasure	= tgTrackMgr.getMeasureAt(tgTrack, note.getTimeOn());
-
-			if(tgMeasure != null)
-				{
-				TGBeat		tgBeat		= null;
-				TGNote		tgNote		= tgSongMgr.getFactory().newNote();
-				TGDuration	tgDuration	= tgSongMgr.getFactory().newDuration();
-
-				tgNote.setString	(note.getString());
-				tgNote.setValue		(note.getFret());
-				tgNote.setVelocity	(note.getVelocity());
-
-				// I would prefer using dotted notes instead of legato,
-				// but TuxGuitar does not allow for more than one dot per note...
-				tgNote.setTiedNote	(!firstLoop);
-
-				// look for an existing beat to reuse
-				tgBeat = tgSongMgr.getMeasureManager().getBeat(tgMeasure, note.getTimeOn());
-
-				// create beat if needed
-				if(tgBeat == null)
-					{
-					tgBeat = tgSongMgr.getFactory().newBeat();
-						tgBeat.setStart(note.getTimeOn()
-								// this is bad, but TuxGuitar position seems wrong, start should not be set at first note end
-								- TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getDuration().getTime());
-					tgMeasure.addBeat(tgBeat);
-					}
-
-				// determine note type, update note-on time, update list
-				int		noteType = durationToNoteType(note.getDuration());
-
-				note.setTimeOn(note.getTimeOn() + noteToTicks(noteType));
-
-				if(note.getTimeOn() >= note.getTimeOff())
-					it.remove();
-
-				tgDuration.setValue(noteType);
-
-	System.out.println(
-			"measure: "	+ tgMeasure.getNumber() +
-			", beat: "	+ tgBeat.getStart() +
-			", string: "+ tgNote.getString() +
-			", fret: "	+ tgNote.getValue() +
-			", vel: "	+ tgNote.getVelocity() +
-			", tied: "	+ tgNote.isTiedNote() +
-			", durValue: "	+ tgDuration.getValue() +
-			", durTime: "	+ tgDuration.getTime());
-
-				// here we probably should choose the voice
-				// it would be nice to have one voice for each string...
-				tgBeat.getVoice(0).setDuration(tgDuration);
-				tgBeat.getVoice(0).addNote(tgNote);
-
-			//	tgSongMgr.getMeasureManager().addNote(tgBeat, tgNote, tgDuration, 0);
-			//	tgSongMgr.getMeasureManager().moveVoices(tgMeasure, tgBeat.getStart(), tgBeat.getVoice(/*caret.getVoice()*/0).getDuration().getTime(), /*caret.getVoice()*/0, tgBeat.getVoice(/*caret.getVoice()*/0).getDuration());
-				}
-			}
-
-		firstLoop = false;
-		}
-
-	//tgSongMgr.autoCompleteSilences();
+	MiStaff	staff = new MiStaff(f_Notes, inTempo, f_StartTime, f_StopTime, inStartPosition, inTrackName);
 	}
 }

@@ -39,7 +39,7 @@ class MiPanel
 	f_CmbMode.setEnabled(!MiRecorder.instance().isRecording());
 	f_BtnConfig.setEnabled(!MiRecorder.instance().isRecording());
 
-/* RECORDING
+///* RECORDING
 	if(MiProvider.instance().getMode() != MiConfig.MODE_SONG_RECORDING)
 		{
 		f_BtnRecord.setEnabled(false);
@@ -50,7 +50,7 @@ class MiPanel
 		f_BtnRecord.setEnabled(!MiRecorder.instance().isRecording());
 		f_BtnStop.setEnabled(MiRecorder.instance().isRecording());
 		}
-*/
+//*/
 	}
 
 
@@ -85,9 +85,9 @@ class MiPanel
 			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.echo"));
 			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.chords"));
 			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.scales"));
-		/* RECORDING
+		///* RECORDING
 			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.record"));
-		*/
+		//*/
 			f_CmbMode.select(MiConfig.instance().getMode());
 
 			f_CmbMode.addSelectionListener(new SelectionAdapter() {
@@ -116,7 +116,7 @@ class MiPanel
 				}
 			});
 
-		/* RECORDING
+		///* RECORDING
 			// Recording
 			Group	groupRec = new Group(f_Dialog, SWT.SHADOW_ETCHED_IN);
 			groupRec.setLayout(new GridLayout(2, false));
@@ -146,7 +146,7 @@ class MiPanel
 					updateControls();
 				}
 			});
-		*/
+		//*/
 
 			updateControls();
 			DialogUtils.openDialog(f_Dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);

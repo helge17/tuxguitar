@@ -21,6 +21,17 @@ class MiNote
 	}
 
 
+	public	MiNote(MiNote inNote)
+	{
+	f_String	= inNote.getString();
+	f_Fret		= inNote.getFret();
+	f_Pitch		= inNote.getPitch();
+	f_Velocity	= inNote.getVelocity();
+	f_TimeOn	= inNote.getTimeOn();
+	f_TimeOff	= inNote.getTimeOff();
+	}
+
+
 	byte	getString()		{ return(f_String); }
 	byte	getFret()		{ return(f_Fret); }
 	byte	getPitch()		{ return(f_Pitch); }
