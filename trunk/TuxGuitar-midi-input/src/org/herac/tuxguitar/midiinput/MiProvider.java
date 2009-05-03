@@ -190,7 +190,7 @@ static private	MiProvider	s_Instance;
 	}
 
 
-	private int	getStringFirstPitch(int inString)
+	static int	getStringFirstPitch(int inString)
 	{
 	// returns the note corresponding to the free vibrating string
 	// or -1 if the current track does not have such string
@@ -205,7 +205,7 @@ static private	MiProvider	s_Instance;
 	}
 
 
-	private int	getFret(int inPitch, int inString)
+	static int	getFret(int inPitch, int inString)
 	{
 	// returns the 0-based fret index corresponding to the specified note and string
 	// or -1 if an error occurred

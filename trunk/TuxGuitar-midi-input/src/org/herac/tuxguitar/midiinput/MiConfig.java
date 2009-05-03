@@ -215,7 +215,7 @@ class MiConfig
 
 		cmbChordMode.select(MiConfig.instance().getChordMode());
 
-	/* RECORDING
+	///* RECORDING
 		// Recording
 		Group	groupRec = new Group(dialog, SWT.SHADOW_ETCHED_IN);
 		groupRec.setLayout(new GridLayout(2, false));
@@ -242,7 +242,7 @@ class MiConfig
 		final Button	chkPlayback = new Button(groupRec, SWT.CHECK);
 		chkPlayback.setText(TuxGuitar.getProperty("midiinput.config.label.playback"));
 		chkPlayback.setSelection(true);
-	 */
+	 //*/
 		//------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2, false));
