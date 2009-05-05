@@ -25,19 +25,19 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
- * Method:    findDrivers
+ * Method:    open
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_findDrivers
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_open
   (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
- * Method:    loadDriver
- * Signature: (JLjava/lang/String;)V
+ * Method:    close
+ * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_loadDriver
-  (JNIEnv *, jobject, jlong, jstring);
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_close
+  (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
@@ -102,6 +102,102 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
  */
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_pitchBend
   (JNIEnv *, jobject, jlong, jint, jint);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    setDoubleProperty
+ * Signature: (JLjava/lang/String;D)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_setDoubleProperty
+  (JNIEnv *, jobject, jlong, jstring, jdouble);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    setIntegerProperty
+ * Signature: (JLjava/lang/String;I)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_setIntegerProperty
+  (JNIEnv *, jobject, jlong, jstring, jint);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    setStringProperty
+ * Signature: (JLjava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_setStringProperty
+  (JNIEnv *, jobject, jlong, jstring, jstring);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getDoubleProperty
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/DoubleRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getDoubleProperty
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getIntegerProperty
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/IntegerRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getIntegerProperty
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getStringProperty
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/StringRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getStringProperty
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getDoublePropertyDefault
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/DoubleRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getDoublePropertyDefault
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getIntegerPropertyDefault
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/IntegerRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getIntegerPropertyDefault
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getStringPropertyDefault
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/StringRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getStringPropertyDefault
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getDoublePropertyRange
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/DoubleRef;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/DoubleRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getDoublePropertyRange
+  (JNIEnv *, jobject, jlong, jstring, jobject, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getIntegerPropertyRange
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/IntegerRef;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/IntegerRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getIntegerPropertyRange
+  (JNIEnv *, jobject, jlong, jstring, jobject, jobject);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    getPropertyOptions
+ * Signature: (JLjava/lang/String;Ljava/util/List;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getPropertyOptions
+  (JNIEnv *, jobject, jlong, jstring, jobject);
 
 #ifdef __cplusplus
 }
