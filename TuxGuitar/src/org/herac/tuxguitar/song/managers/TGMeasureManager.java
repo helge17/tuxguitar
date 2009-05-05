@@ -113,7 +113,7 @@ public class TGMeasureManager {
 			this.removeBeat( beat );
 		}
 	}
-	
+		
 	public void removeBeatsBeforeEnd(TGMeasure measure,long fromStart){
 		List beats = getBeatsBeforeEnd( measure.getBeats() , fromStart);
 		Iterator it = beats.iterator();
@@ -1614,6 +1614,31 @@ public class TGMeasureManager {
 		TGBeat beat = getBeat(measure, start);
 		if(beat != null){
 			removeVoice(beat.getVoice(index), moveNextComponents);
+		}
+	}
+	
+	public void removeVoicesOutOfTime(TGMeasure measure){
+		List voicesToRemove = new ArrayList();
+		
+		long mStart = measure.getStart();
+		long mEnd = mStart + measure.getLength();
+		
+		Iterator beats = measure.getBeats().iterator();
+		while(beats.hasNext()){
+			TGBeat beat = (TGBeat)beats.next();
+			for( int v = 0; v < beat.countVoices() ; v ++){
+				TGVoice voice = beat.getVoice( v );
+				if(!voice.isEmpty()){
+					if( beat.getStart() < mStart || (beat.getStart() + voice.getDuration().getTime()) > mEnd){
+						voicesToRemove.add( voice );
+					}
+				}
+			}
+		}
+		Iterator it = voicesToRemove.iterator();
+		while(it.hasNext()){
+			TGVoice voice = (TGVoice)it.next();
+			this.removeVoice( voice );
 		}
 	}
 	
