@@ -117,12 +117,14 @@ public class TGSongSegmentHelper {
 	}
 	
 	public void replaceMeasures(TGSongSegment segment,long move, int track) {
+		boolean replaceHeader = ( track == 0 || this.sm.getSong().countTracks() == 1 );
+		
 		List measureHeaders = new ArrayList();
 		this.sm.moveMeasureHeaders(segment.getHeaders(),move,0,false);
 		Iterator sHeaders = segment.getHeaders().iterator();
 		while(sHeaders.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)sHeaders.next();
-			TGMeasureHeader replace = this.sm.replaceMeasureHeader(header);
+			TGMeasureHeader replace = (replaceHeader ? this.sm.replaceMeasureHeader(header) : this.sm.getMeasureHeaderAt(header.getStart()));
 			
 			Iterator nextHeaders = this.sm.getMeasureHeadersAfter(replace.getNumber()).iterator();
 			long nextStart =  (replace.getStart() + replace.getLength());
@@ -143,8 +145,11 @@ public class TGSongSegmentHelper {
 				for(int i = 0;i < tSegment.getMeasures().size();i++){
 					TGMeasure measure = (TGMeasure)tSegment.getMeasures().get(i);
 					measure.setHeader((TGMeasureHeader)measureHeaders.get(i));
-					this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());
+					//this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());
+					//this.sm.getMeasureManager().moveAllBeats(measure,move);
 					this.sm.getMeasureManager().moveAllBeats(measure,move);
+					this.sm.getMeasureManager().removeVoicesOutOfTime(measure);
+					this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());
 					this.sm.getTrackManager().replaceMeasure(currTrack,measure);
 				}
 			}
