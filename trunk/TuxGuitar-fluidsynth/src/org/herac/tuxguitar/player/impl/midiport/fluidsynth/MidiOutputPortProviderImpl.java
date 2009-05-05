@@ -48,7 +48,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	public MidiSynth getSynth(){
 		if(this.synth == null || !this.synth.isInitialized()){
 			this.synth = new MidiSynth();
-			this.synth.loadDriver(getSettings().getDriver());
+			this.getSettings().apply();
 		}
 		return this.synth;
 	}

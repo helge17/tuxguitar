@@ -3,6 +3,10 @@ package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.DoubleRef;
+import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.IntegerRef;
+import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.StringRef;
+
 public class MidiSynth {
 	
 	private static final String JNI_LIBRARY_NAME = new String("tuxguitar-fluidsynth-jni");
@@ -12,12 +16,10 @@ public class MidiSynth {
 	}
 	
 	private long instance;
-	private List drivers;
 	private MidiOutputPortImpl loadedPort;
 	
 	public MidiSynth(){
 		this.instance = malloc();
-		this.drivers = new ArrayList();
 		this.loadedPort = null;
 	}
 	
@@ -32,20 +34,6 @@ public class MidiSynth {
 		}
 	}
 	
-	public List getDrivers(){
-		this.drivers.clear();
-		if(isInitialized()){
-			this.findDrivers(this.instance);
-		}
-		return this.drivers;
-	}
-	
-	public void loadDriver(String name){
-		if(isInitialized()){
-			this.loadDriver(this.instance, name);
-		}
-	}
-	
 	public boolean isConnected(MidiOutputPortImpl port){
 		return (port != null && this.loadedPort != null && this.loadedPort.equals( port ) );
 	}
@@ -53,6 +41,7 @@ public class MidiSynth {
 	public void connect(MidiOutputPortImpl port){
 		if(isInitialized()){
 			this.disconnect( this.loadedPort );
+			this.open(this.instance);
 			this.loadFont(this.instance, port.getSoundFont());
 			this.loadedPort = port;
 		}
@@ -61,7 +50,16 @@ public class MidiSynth {
 	public void disconnect(MidiOutputPortImpl port){
 		if(isInitialized() && isConnected(port)){
 			this.unloadFont(this.instance);
+			this.close(this.instance);
 			this.loadedPort = null;
+		}
+	}
+	
+	public void reconnect(){
+		MidiOutputPortImpl connection = this.loadedPort;
+		if( isConnected( connection ) ){
+			this.disconnect( connection );
+			this.connect( connection );
 		}
 	}
 	
@@ -101,17 +99,105 @@ public class MidiSynth {
 		}
 	}
 	
-	protected void addDriver(String name){
-		this.drivers.add(name);
+	public void setDoubleProperty( String key , double value ){
+		if(isInitialized()){
+			this.setDoubleProperty(this.instance, key, value);
+		}
+	}
+	
+	public void setIntegerProperty( String key , int value ){
+		if(isInitialized()){
+			this.setIntegerProperty(this.instance, key, value);
+		}
+	}
+	
+	public void setStringProperty( String key , String value ){
+		if(isInitialized()){
+			this.setStringProperty(this.instance, key, value);
+		}
+	}
+	
+	public double getDoubleProperty( String key ){
+		DoubleRef value = new DoubleRef();
+		if(isInitialized()){
+			this.getDoubleProperty(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
+	public int getIntegerProperty( String key ){
+		IntegerRef value = new IntegerRef();
+		if(isInitialized()){
+			this.getIntegerProperty(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
+	public String getStringProperty( String key ){
+		StringRef value = new StringRef();
+		if(isInitialized()){
+			this.getStringProperty(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
+	public double getDoublePropertyDefault( String key ){
+		DoubleRef value = new DoubleRef();
+		if(isInitialized()){
+			this.getDoublePropertyDefault(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
+	public int getIntegerPropertyDefault( String key ){
+		IntegerRef value = new IntegerRef();
+		if(isInitialized()){
+			this.getIntegerPropertyDefault(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
+	public String getStringPropertyDefault( String key ){
+		StringRef value = new StringRef();
+		if(isInitialized()){
+			this.getStringPropertyDefault(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
+	public List getPropertyOptions( String key ){
+		List options = new ArrayList();
+		if(isInitialized()){
+			this.getPropertyOptions(instance, key, options);
+		}
+		return options;
+	}
+	
+	public int[] getIntegerPropertyRange( String key ){
+		IntegerRef minimum = new IntegerRef();
+		IntegerRef maximum = new IntegerRef();
+		if(isInitialized()){
+			this.getIntegerPropertyRange(this.instance, key, minimum , maximum );
+		}
+		return new int[]{ minimum.getValue() , maximum.getValue() };
+	}
+	
+	public double[] getDoublePropertyRange( String key ){
+		DoubleRef minimum = new DoubleRef();
+		DoubleRef maximum = new DoubleRef();
+		if(isInitialized()){
+			this.getDoublePropertyRange(this.instance, key, minimum , maximum );
+		}
+		return new double[]{ minimum.getValue() , maximum.getValue() };
 	}
 	
 	private native long malloc();
 	
 	private native void free(long instance);
 	
-	private native void findDrivers(long instance);
+	private native void open(long instance);
 	
-	private native void loadDriver(long instance, String driver);
+	private native void close(long instance);
 	
 	private native void loadFont(long instance, String path);
 	
@@ -128,5 +214,29 @@ public class MidiSynth {
 	private native void programChange(long instance,int channel,int program);
 	
 	private native void pitchBend(long instance,int channel,int value);
+	
+	private native void setDoubleProperty(long instance, String key , double value );
+	
+	private native void setIntegerProperty(long instance, String key , int value );
+	
+	private native void setStringProperty(long instance, String key , String value );
+	
+	private native void getDoubleProperty(long instance, String key , DoubleRef ref );
+	
+	private native void getIntegerProperty(long instance, String key , IntegerRef ref );
+	
+	private native void getStringProperty(long instance, String key , StringRef ref );
+	
+	private native void getDoublePropertyDefault(long instance, String key , DoubleRef ref );
+	
+	private native void getIntegerPropertyDefault(long instance, String key , IntegerRef ref );
+	
+	private native void getStringPropertyDefault(long instance, String key , StringRef ref );
+	
+	private native void getDoublePropertyRange(long instance, String key , DoubleRef minimum , DoubleRef maximum );
+	
+	private native void getIntegerPropertyRange(long instance, String key , IntegerRef minimum , IntegerRef maximum );
+	
+	private native void getPropertyOptions(long instance, String key , List options );
 	
 }
