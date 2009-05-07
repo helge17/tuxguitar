@@ -11,6 +11,23 @@ typedef struct{
 	int soundfont_id;
 }fluid_handle_t;
 
+typedef struct{
+	JNIEnv* env;
+	jobject options;
+}fluid_settings_foreach_option_data;
+
+void fluid_settings_foreach_option_callback(void *data, char *name, char *option)
+{
+	fluid_settings_foreach_option_data* handle = (fluid_settings_foreach_option_data *)data;
+	
+	jstring joption = (*handle->env)->NewStringUTF(handle->env, option);
+	jclass cl = (*handle->env)->GetObjectClass(handle->env, handle->options);
+	jmethodID mid = (*handle->env)->GetMethodID(handle->env, cl, "add", "(Ljava/lang/Object;)Z");
+	if (mid != 0){
+		(*handle->env)->CallBooleanMethod(handle->env, handle->options, mid, joption);
+	}
+}
+
 JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
@@ -358,32 +375,14 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL){
-		
-		typedef struct{
-			JNIEnv* env;
-			jobject obj;
-			jobject options;
-		}fluid_settings_foreach_option_data;
-		
-		void fluid_settings_foreach_option_callback(void *data, char *name, char *option)
-		{
-			fluid_settings_foreach_option_data* handle = (fluid_settings_foreach_option_data *)data;
-			
-			jstring joption = (*handle->env)->NewStringUTF(handle->env, option);
-			jclass cl = (*handle->env)->GetObjectClass(handle->env, handle->options);
-			jmethodID mid = (*handle->env)->GetMethodID(handle->env, cl, "add", "(Ljava/lang/Object;)Z");
-			if (mid != 0){
-				(*handle->env)->CallBooleanMethod(handle->env, handle->options, mid, joption);
-			}
-		}
 		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc(sizeof(fluid_settings_foreach_option_data*));
 		data->env = env;
-		data->obj = obj;
 		data->options = options;
 		
 		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
 		fluid_settings_foreach_option(handle->settings, (char *)jkey, data, fluid_settings_foreach_option_callback );
 		(*env)->ReleaseStringUTFChars(env, key, jkey);
+		
 		free ( data );
 	}
 }
