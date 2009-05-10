@@ -732,6 +732,7 @@ public class TuxGuitar {
 		TuxGuitar.instance().getSongManager().setSong(song);
 		getFileHistory().reset(url);
 		getPlayer().reset();
+		getPlayer().getMode().clear();
 		getEditorCache().reset();
 		getUndoableManager().discardAllEdits();
 		getEditorManager().doUpdate( TGUpdateListener.SONG_LOADED );

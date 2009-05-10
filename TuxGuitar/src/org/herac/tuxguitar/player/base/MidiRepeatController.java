@@ -18,9 +18,13 @@ public class MidiRepeatController {
 	private int repeatStartIndex;
 	private int repeatNumber;
 	private int repeatAlternative;
+	private int sHeader;
+	private int eHeader;
 	
-	public MidiRepeatController(TGSong song){
+	public MidiRepeatController(TGSong song, int sHeader , int eHeader){
 		this.song = song;
+		this.sHeader = sHeader;
+		this.eHeader = eHeader;
 		this.count = song.countMeasureHeaders();
 		this.index = 0;
 		this.lastIndex = -1;
@@ -36,6 +40,20 @@ public class MidiRepeatController {
 	
 	public void process(){
 		TGMeasureHeader header = this.song.getMeasureHeader(this.index);
+		
+		//Verifica si el compas esta dentro del rango.
+		if( (this.sHeader != -1 && header.getNumber() < this.sHeader) || ( this.eHeader != -1 && header.getNumber() > this.eHeader ) ){
+			this.shouldPlay = false;
+			this.index ++;
+			return;
+		}
+		
+		//Abro repeticion siempre para el primer compas.
+		if( (this.sHeader != -1 && header.getNumber() == this.sHeader ) || header.getNumber() == 1 ){
+			this.repeatStartIndex = this.index;
+			this.repeatStart = header.getStart();
+			this.repeatOpen = true;
+		}
 		
 		//Por defecto el compas deberia sonar
 		this.shouldPlay = true;

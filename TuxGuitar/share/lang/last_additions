@@ -20,3 +20,11 @@ action.beat.general.voice-auto=Set Auto Stems
 
 action.beat.general.set-stroke-up=Set Upstroke
 action.beat.general.set-stroke-down=Set Downstroke
+
+
+# 1.2
+transport.mode.loop-range=Loop Range
+transport.mode.loop-range.from=Play from measure
+transport.mode.loop-range.from-default=From the beginning
+transport.mode.loop-range.to=Play to measure
+transport.mode.loop-range.to-default=To the end

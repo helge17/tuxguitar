@@ -90,12 +90,18 @@ public class MidiSequenceParser {
 	
 	private int transpose;
 	
+	private int sHeader;
+	
+	private int eHeader;
+	
 	public MidiSequenceParser(TGSongManager manager,int flags,int tempoPercent,int transpose) {
 		this.manager = manager;
 		this.flags = flags;
 		this.transpose = transpose;
 		this.tempoPercent = tempoPercent;
 		this.fisrtTickMove = (int)(((flags & ADD_FIRST_TICK_MOVE) != 0)?(-TGDuration.QUARTER_TIME):0);
+		this.sHeader = -1;
+		this.eHeader = -1;
 	}
 	
 	public MidiSequenceParser(TGSongManager manager,int flags) {
@@ -128,12 +134,20 @@ public class MidiSequenceParser {
 		return (tick + this.fisrtTickMove);
 	}
 	
+	public void setSHeader(int header) {
+		this.sHeader = header;
+	}
+	
+	public void setEHeader(int header) {
+		this.eHeader = header;
+	}
+	
 	/**
 	 * Crea las pistas de la cancion
 	 */
 	private void createTrack(MidiSequenceHandler sequence,TGTrack track) {
 		TGMeasure previous = null;
-		MidiRepeatController controller = new MidiRepeatController(track.getSong());
+		MidiRepeatController controller = new MidiRepeatController(track.getSong(),this.sHeader,this.eHeader);
 		
 		addBend(sequence,track.getNumber(),TGDuration.QUARTER_TIME,DEFAULT_BEND,track.getChannel().getChannel());
 		makeChannel(sequence, track.getChannel(), track.getNumber());
@@ -150,8 +164,9 @@ public class MidiSequenceParser {
 				}
 				//agrego los pulsos
 				makeBeats(sequence, track, measure,index, move);
+				
+				previous = measure;
 			}
-			previous = measure;
 		}
 	}
 	

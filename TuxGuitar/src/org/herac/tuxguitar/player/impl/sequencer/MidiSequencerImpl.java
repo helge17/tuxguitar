@@ -9,6 +9,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 	
 	private boolean reset;
 	private boolean running;
+	private boolean stopped;
 	private MidiTransmitter transmitter;
 	private MidiTickPlayer midiTickPlayer;
 	private MidiEventPlayer midiEventPlayer;
@@ -17,6 +18,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 	
 	public MidiSequencerImpl(){
 		this.running = false;
+		this.stopped = true;
 		this.midiTickPlayer = new MidiTickPlayer();
 		this.midiEventPlayer = new MidiEventPlayer(this);
 		this.midiEventDispacher = new MidiEventDispacher(this);
@@ -96,13 +98,15 @@ public class MidiSequencerImpl implements MidiSequencer{
 				this.reset = false;
 				this.midiEventPlayer.reset();
 			}
+			this.stopped = false;
 			this.midiTickPlayer.process();
 			this.midiEventPlayer.process();
 			if(this.getTickPosition() > this.getTickLength()){
 				this.stop();
 			}
 		}
-		else{
+		else if( !this.stopped ){
+			this.stopped = true;
 			this.midiEventPlayer.clearEvents();
 			this.midiTickPlayer.clearTick();
 			this.reset( true );
