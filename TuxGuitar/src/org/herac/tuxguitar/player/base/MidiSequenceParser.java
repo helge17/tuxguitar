@@ -389,7 +389,7 @@ public class MidiSequenceParser {
 		long lastEnd = (note.getVoice().getBeat().getStart() + note.getVoice().getDuration().getTime());
 		long realDuration = duration;
 		int nextBIndex = (bIndex + 1);
-		int measureCount = track.countMeasures();
+		int measureCount = ( this.eHeader == -1 ? track.countMeasures() : Math.min( this.eHeader, track.countMeasures() ) );
 		for (int m = mIndex; m < measureCount; m++) {
 			TGMeasure measure = track.getMeasure( m );
 			int beatCount = measure.countBeats();
@@ -740,7 +740,7 @@ public class MidiSequenceParser {
 	
 	private TGNote getNextNote(TGNote note,TGTrack track, int mIndex, int bIndex){ 
 		int nextBIndex = (bIndex + 1);
-		int measureCount = track.countMeasures();
+		int measureCount = ( this.eHeader == -1 ? track.countMeasures() : Math.min( this.eHeader, track.countMeasures() ) );
 		for (int m = mIndex; m < measureCount; m++) {
 			TGMeasure measure = track.getMeasure( m );
 			int beatCount = measure.countBeats();
@@ -765,15 +765,17 @@ public class MidiSequenceParser {
 		int nextBIndex = bIndex;
 		for (int m = mIndex; m >= 0; m--) {
 			TGMeasure measure = track.getMeasure( m );
-			nextBIndex = (nextBIndex < 0 ? measure.countBeats() : nextBIndex);
-			for (int b = (nextBIndex - 1); b >= 0; b--) {
-				TGBeat beat = measure.getBeat( b );
-				TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
-				int noteCount = voice.countNotes();
-				for (int n = 0; n < noteCount; n ++) {
-					TGNote current = voice.getNote( n );
-					if(current.getString() == note.getString()){
-						return current;
+			if( this.sHeader == -1 || this.sHeader <= measure.getNumber() ){
+				nextBIndex = (nextBIndex < 0 ? measure.countBeats() : nextBIndex);
+				for (int b = (nextBIndex - 1); b >= 0; b--) {
+					TGBeat beat = measure.getBeat( b );
+					TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
+					int noteCount = voice.countNotes();
+					for (int n = 0; n < noteCount; n ++) {
+						TGNote current = voice.getNote( n );
+						if(current.getString() == note.getString()){
+							return current;
+						}
 					}
 				}
 			}
