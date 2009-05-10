@@ -7,6 +7,7 @@ import java.util.List;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -51,6 +52,12 @@ public class MidiPlayer{
 	private int metronomeTrack;
 	
 	private int infoTrack;
+	
+	private int loopSHeader;
+	
+	private int loopEHeader;
+	
+	private long loopSPosition;
 	
 	private boolean anySolo;
 	
@@ -158,6 +165,7 @@ public class MidiPlayer{
 			this.stop();
 			this.lock.lock();
 			this.checkOutput();
+			this.updateLoop( true );
 			this.systemReset();
 			this.addSecuence();
 			this.updatePrograms();
@@ -228,6 +236,37 @@ public class MidiPlayer{
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateLoop( boolean force ){
+		if( force || !this.isRunning() ){
+			this.loopSHeader = -1;
+			this.loopEHeader = -1;
+			this.loopSPosition = TGDuration.QUARTER_TIME;
+			if( getMode().isLoop() ){
+				int hCount = this.songManager.getSong().countMeasureHeaders();
+				this.loopSHeader = ( getMode().getLoopSHeader() <= hCount ? getMode().getLoopSHeader() : -1 ) ;
+				this.loopEHeader = ( getMode().getLoopEHeader() <= hCount ? getMode().getLoopEHeader() : -1 ) ;
+				if( this.loopSHeader > 0 && this.loopSHeader <= hCount ){
+					TGMeasureHeader header = this.songManager.getMeasureHeader( this.loopSHeader );
+					if( header != null ){
+						this.loopSPosition = header.getStart();
+					}
+				}
+			}
+		}
+	}
+	
+	public int getLoopSHeader() {
+		return this.loopSHeader;
+	}
+	
+	public int getLoopEHeader() {
+		return this.loopEHeader;
+	}
+	
+	public long getLoopSPosition() {
+		return this.loopSPosition;
 	}
 	
 	public void checkOutput() throws Throwable {
@@ -315,6 +354,9 @@ public class MidiPlayer{
 	protected void changeTickPosition(){
 		try{
 			if(isRunning()){
+				if( this.tickPosition < this.getLoopSPosition() ){
+					this.tickPosition = this.getLoopSPosition();
+				}
 				this.getSequencer().setTickPosition(this.tickPosition);
 			}
 			setChangeTickPosition(false);
@@ -339,6 +381,8 @@ public class MidiPlayer{
 		try{
 			MidiSequenceParser parser = new MidiSequenceParser(this.songManager,MidiSequenceParser.DEFAULT_PLAY_FLAGS,getMode().getCurrentPercent(),0);		
 			MidiSequenceHandler sequence = getSequencer().createSequence(this.songManager.getSong().countTracks() + 2);
+			parser.setSHeader( getLoopSHeader() );
+			parser.setEHeader( getLoopEHeader() );
 			parser.parse(sequence);
 			this.infoTrack = sequence.getInfoTrack();
 			this.metronomeTrack = sequence.getMetronomeTrack();

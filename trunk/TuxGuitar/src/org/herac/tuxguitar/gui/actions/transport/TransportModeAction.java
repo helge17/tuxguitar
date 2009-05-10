@@ -28,6 +28,8 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -42,14 +44,17 @@ public class TransportModeAction extends Action {
 	protected static final int MAX_SELECTION = 500;
 	protected static final int[] DEFAULT_PERCENTS = new int[]{25,50,75,100,125,150,175,200};
 	
-	protected Button single;
-	protected Button singleLoop;
-	protected Combo singlePercent;
+	protected Button simple;
+	protected Button simpleLoop;
+	protected Combo simplePercent;
 	
 	protected Button custom;
 	protected Spinner customFrom;
 	protected Spinner customTo;
 	protected Spinner customIncrement;
+	
+	protected Combo loopSHeader;
+	protected Combo loopEHeader;
 	
 	public TransportModeAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
@@ -71,37 +76,37 @@ public class TransportModeAction extends Action {
 		radios.setLayout(new GridLayout());
 		radios.setLayoutData(getMainData());
 		
-		//---Single---
-		this.single = new Button(radios, SWT.RADIO);
-		this.single.setText(TuxGuitar.getProperty("transport.mode.simple"));
-		this.single.setSelection(mode.getType() == MidiPlayerMode.TYPE_SINGLE);
-		RadioSelectionAdapter singleAdapter = new RadioSelectionAdapter(this.single);
+		//---Simple---
+		this.simple = new Button(radios, SWT.RADIO);
+		this.simple.setText(TuxGuitar.getProperty("transport.mode.simple"));
+		this.simple.setSelection(mode.getType() == MidiPlayerMode.TYPE_SIMPLE);
+		RadioSelectionAdapter simpleAdapter = new RadioSelectionAdapter(this.simple);
 		
-		Group singleGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
-		singleGroup.setLayout(new GridLayout(2,false));
-		singleGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		singleGroup.setText(TuxGuitar.getProperty("transport.mode.simple"));
-		singleAdapter.addControl(singleGroup);
+		Group simpleGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
+		simpleGroup.setLayout(new GridLayout(2,false));
+		simpleGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		simpleGroup.setText(TuxGuitar.getProperty("transport.mode.simple"));
+		simpleAdapter.addControl(simpleGroup);
 		
-		singleAdapter.addControl(makeLabel(singleGroup, TuxGuitar.getProperty("transport.mode.simple.tempo-percent"),SWT.LEFT,1));
-		this.singlePercent = new Combo(singleGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.singlePercent.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		simpleAdapter.addControl(makeLabel(simpleGroup, TuxGuitar.getProperty("transport.mode.simple.tempo-percent"),SWT.LEFT,1));
+		this.simplePercent = new Combo(simpleGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.simplePercent.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		for(int i = 0; i < DEFAULT_PERCENTS.length; i ++){
-			this.singlePercent.add(Integer.toString(DEFAULT_PERCENTS[i]) + "%",i);
-			if(mode.getSinglePercent() == DEFAULT_PERCENTS[i]){
-				this.singlePercent.select(i);
+			this.simplePercent.add(Integer.toString(DEFAULT_PERCENTS[i]) + "%",i);
+			if(mode.getSimplePercent() == DEFAULT_PERCENTS[i]){
+				this.simplePercent.select(i);
 			}
 		}
-		singleAdapter.addControl(this.singlePercent);
+		simpleAdapter.addControl(this.simplePercent);
 		
-		this.singleLoop = new Button(singleGroup, SWT.CHECK);
-		this.singleLoop.setText(TuxGuitar.getProperty("transport.mode.simple.loop"));
-		this.singleLoop.setSelection(mode.isLoop());
-		singleAdapter.addControl(this.singleLoop);
+		this.simpleLoop = new Button(simpleGroup, SWT.CHECK);
+		this.simpleLoop.setText(TuxGuitar.getProperty("transport.mode.simple.loop"));
+		this.simpleLoop.setSelection(mode.isLoop());
+		simpleAdapter.addControl(this.simpleLoop);
 		
 		GridData loopedData = new GridData(SWT.FILL,SWT.FILL,true,true);
 		loopedData.horizontalSpan = 2;
-		this.singleLoop.setLayoutData(loopedData);
+		this.simpleLoop.setLayoutData(loopedData);
 		
 		//---Trainer---
 		this.custom = new Button(radios, SWT.RADIO);
@@ -147,8 +152,59 @@ public class TransportModeAction extends Action {
 		this.customTo.addSelectionListener(spinnerAdapter);
 		this.customIncrement.addSelectionListener(spinnerAdapter);
 		
-		singleAdapter.update();
+		//--- Loop Range ---
+		TGSong song = TuxGuitar.instance().getSongManager().getSong();
+		LoopRangeStatus loopRangeStatus = new LoopRangeStatus(this.simple,this.simpleLoop,this.custom);
+		
+		Group rangeGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
+		rangeGroup.setLayout(new GridLayout(2,false));
+		rangeGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rangeGroup.setText(TuxGuitar.getProperty("transport.mode.loop-range"));
+		loopRangeStatus.addControl( rangeGroup );
+		
+		loopRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.from"), SWT.LEFT, 1) );
+		this.loopSHeader = new Combo(rangeGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.loopSHeader.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.loopSHeader.add(TuxGuitar.getProperty("transport.mode.loop-range.from-default"),0);
+		if( mode.getLoopSHeader() == -1 ){
+			this.loopSHeader.select( 0 );
+		}
+		for(int i = 0; i < song.countMeasureHeaders() ; i ++){
+			TGMeasureHeader header = song.getMeasureHeader( i );
+			String headerItem = ("#" + header.getNumber());
+			if( header.hasMarker() ){
+				headerItem += " (" + header.getMarker().getTitle() + ")";
+			}
+			this.loopSHeader.add(headerItem, header.getNumber() );
+			if(mode.getLoopSHeader() == header.getNumber()){
+				this.loopSHeader.select( header.getNumber() );
+			}
+		}
+		loopRangeStatus.addControl( this.loopSHeader ); 
+		
+		loopRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.to"), SWT.LEFT, 1) );
+		this.loopEHeader = new Combo(rangeGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.loopEHeader.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.loopEHeader.add(TuxGuitar.getProperty("transport.mode.loop-range.to-default"),0);
+		if( mode.getLoopEHeader() == -1 ){
+			this.loopEHeader.select( 0 );
+		}
+		for(int i = 0; i < song.countMeasureHeaders() ; i ++){
+			TGMeasureHeader header = song.getMeasureHeader( i );
+			String headerItem = ("#" + header.getNumber());
+			if( header.hasMarker() ){
+				headerItem += " (" + header.getMarker().getTitle() + ")";
+			}
+			this.loopEHeader.add(headerItem, header.getNumber() );
+			if(mode.getLoopEHeader() == header.getNumber() ){
+				this.loopEHeader.select( header.getNumber() );
+			}
+		}
+		loopRangeStatus.addControl( this.loopEHeader );
+		
+		simpleAdapter.update();
 		customAdapter.update();
+		loopRangeStatus.update();
 		// ------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2, false));
@@ -201,13 +257,16 @@ public class TransportModeAction extends Action {
 	}
 	
 	protected void updateMode(MidiPlayerMode mode){
-		int type = (this.custom.getSelection())?MidiPlayerMode.TYPE_CUSTOM:MidiPlayerMode.TYPE_SINGLE;
+		int type = (this.custom.getSelection())?MidiPlayerMode.TYPE_CUSTOM:MidiPlayerMode.TYPE_SIMPLE;
+		boolean loop = (type == MidiPlayerMode.TYPE_CUSTOM || (type == MidiPlayerMode.TYPE_SIMPLE && this.simpleLoop.getSelection()));
 		mode.setType(type);
-		mode.setLoop( (type == MidiPlayerMode.TYPE_CUSTOM || (type == MidiPlayerMode.TYPE_SINGLE && this.singleLoop.getSelection())));
-		mode.setSinglePercent( this.singlePercent.getSelectionIndex() >= 0?DEFAULT_PERCENTS[this.singlePercent.getSelectionIndex()]:MidiPlayerMode.DEFAULT_TEMPO_PERCENT);
+		mode.setLoop( loop );
+		mode.setSimplePercent( this.simplePercent.getSelectionIndex() >= 0?DEFAULT_PERCENTS[this.simplePercent.getSelectionIndex()]:MidiPlayerMode.DEFAULT_TEMPO_PERCENT);
 		mode.setCustomPercentFrom(this.customFrom.getSelection());
 		mode.setCustomPercentTo(this.customTo.getSelection());
 		mode.setCustomPercentIncrement(this.customIncrement.getSelection());
+		mode.setLoopSHeader( ( loop && this.loopSHeader.getSelectionIndex() > 0 ? this.loopSHeader.getSelectionIndex() : -1 ) );
+		mode.setLoopEHeader( ( loop && this.loopEHeader.getSelectionIndex() > 0 ? this.loopEHeader.getSelectionIndex() : -1 ) );
 		mode.reset();
 	}
 	
@@ -268,6 +327,52 @@ public class TransportModeAction extends Action {
 			if(this.increment.getSelection() > (this.to.getSelection() - this.from.getSelection())){
 				this.increment.setSelection(this.to.getSelection() - this.from.getSelection());
 			}
+		}
+	}
+	
+	private class LoopRangeStatus extends SelectionAdapter{
+		
+		private List controls;
+		private boolean enabled;
+		
+		private Button simpleMode;
+		private Button simpleLoop;
+		private Button customLoop;
+		
+		public LoopRangeStatus(Button simpleMode, Button simpleLoop, Button customLoop) {
+			this.controls = new ArrayList();
+			this.enabled = false;
+			this.simpleMode = simpleMode;
+			this.simpleLoop = simpleLoop;
+			this.customLoop = customLoop;
+			this.simpleMode.addSelectionListener(this);
+			this.simpleLoop.addSelectionListener(this);
+			this.customLoop.addSelectionListener(this);
+		}
+		
+		public void addControl(Control control){
+			this.controls.add(control);
+		}
+		
+		public void update(){
+			// Check enabled
+			this.enabled = this.customLoop.getSelection();
+			if( !this.enabled ){
+				if( this.simpleMode.getSelection() ){
+					this.enabled = this.simpleLoop.getSelection();
+				}
+			}
+			
+			// Update controls
+			Iterator it = this.controls.iterator();
+			while(it.hasNext()){
+				Control control = (Control)it.next();
+				control.setEnabled( this.enabled );
+			}
+		}
+		
+		public void widgetSelected(SelectionEvent e) {
+			this.update();
 		}
 	}
 }
