@@ -218,6 +218,7 @@ public class ChordDialog {
 		TGChord chord = manager.getMeasureManager().getChord(measure, start);
 		if(chord == null){
 			chord = manager.getFactory().newChord(measure.getTrack().stringCount());
+			chord.setFirstFret(1);
 			List notes = manager.getMeasureManager().getNotes(measure, start);
 			if(!notes.isEmpty()){
 				int maxValue = -1;
@@ -230,11 +231,11 @@ public class ChordDialog {
 					if(maxValue < 0 || maxValue < note.getValue()){
 						maxValue = note.getValue();
 					}
-					if(minValue < 0 || minValue > note.getValue()){
+					if(note.getValue() > 0 && (minValue < 0 || minValue > note.getValue())){
 						minValue = note.getValue();
 					}
 				}
-				if(maxValue > TGChordImpl.MAX_FRETS  && minValue >= 0){
+				if(maxValue > TGChordImpl.MAX_FRETS  && minValue > 0){
 					chord.setFirstFret((short)(minValue));
 				}
 				
