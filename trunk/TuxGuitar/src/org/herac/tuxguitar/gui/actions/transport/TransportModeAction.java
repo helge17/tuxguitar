@@ -53,8 +53,8 @@ public class TransportModeAction extends Action {
 	protected Spinner customTo;
 	protected Spinner customIncrement;
 	
-	protected Combo loopSHeader;
-	protected Combo loopEHeader;
+	protected MHeaderCombo loopSHeader;
+	protected MHeaderCombo loopEHeader;
 	
 	public TransportModeAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
@@ -153,58 +153,30 @@ public class TransportModeAction extends Action {
 		this.customIncrement.addSelectionListener(spinnerAdapter);
 		
 		//--- Loop Range ---
-		TGSong song = TuxGuitar.instance().getSongManager().getSong();
-		LoopRangeStatus loopRangeStatus = new LoopRangeStatus(this.simple,this.simpleLoop,this.custom);
+		MHeaderRangeStatus mHeaderRangeStatus = new MHeaderRangeStatus(this.simple,this.simpleLoop,this.custom);
 		
 		Group rangeGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
 		rangeGroup.setLayout(new GridLayout(2,false));
 		rangeGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		rangeGroup.setText(TuxGuitar.getProperty("transport.mode.loop-range"));
-		loopRangeStatus.addControl( rangeGroup );
+		mHeaderRangeStatus.addControl( rangeGroup );
 		
-		loopRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.from"), SWT.LEFT, 1) );
-		this.loopSHeader = new Combo(rangeGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.loopSHeader.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.loopSHeader.add(TuxGuitar.getProperty("transport.mode.loop-range.from-default"),0);
-		if( mode.getLoopSHeader() == -1 ){
-			this.loopSHeader.select( 0 );
-		}
-		for(int i = 0; i < song.countMeasureHeaders() ; i ++){
-			TGMeasureHeader header = song.getMeasureHeader( i );
-			String headerItem = ("#" + header.getNumber());
-			if( header.hasMarker() ){
-				headerItem += " (" + header.getMarker().getTitle() + ")";
-			}
-			this.loopSHeader.add(headerItem, header.getNumber() );
-			if(mode.getLoopSHeader() == header.getNumber()){
-				this.loopSHeader.select( header.getNumber() );
-			}
-		}
-		loopRangeStatus.addControl( this.loopSHeader ); 
+		mHeaderRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.from"), SWT.LEFT, 1) );
+		this.loopSHeader = new MHeaderCombo(rangeGroup);
+		mHeaderRangeStatus.addControl( this.loopSHeader.getControl() );
 		
-		loopRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.to"), SWT.LEFT, 1) );
-		this.loopEHeader = new Combo(rangeGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.loopEHeader.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.loopEHeader.add(TuxGuitar.getProperty("transport.mode.loop-range.to-default"),0);
-		if( mode.getLoopEHeader() == -1 ){
-			this.loopEHeader.select( 0 );
-		}
-		for(int i = 0; i < song.countMeasureHeaders() ; i ++){
-			TGMeasureHeader header = song.getMeasureHeader( i );
-			String headerItem = ("#" + header.getNumber());
-			if( header.hasMarker() ){
-				headerItem += " (" + header.getMarker().getTitle() + ")";
-			}
-			this.loopEHeader.add(headerItem, header.getNumber() );
-			if(mode.getLoopEHeader() == header.getNumber() ){
-				this.loopEHeader.select( header.getNumber() );
-			}
-		}
-		loopRangeStatus.addControl( this.loopEHeader );
+		mHeaderRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.to"), SWT.LEFT, 1) );
+		this.loopEHeader = new MHeaderCombo(rangeGroup);
+		mHeaderRangeStatus.addControl( this.loopEHeader.getControl() );
+		
+		MHeaderComboController mHeaderController = new MHeaderComboController(this.loopSHeader, this.loopEHeader);
+		mHeaderController.updateLoopSHeader( mode.getLoopSHeader() );
+		mHeaderController.updateLoopEHeader( mode.getLoopSHeader() , mode.getLoopEHeader() );
+		mHeaderController.appendListener();
 		
 		simpleAdapter.update();
 		customAdapter.update();
-		loopRangeStatus.update();
+		mHeaderRangeStatus.update();
 		// ------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2, false));
@@ -265,8 +237,10 @@ public class TransportModeAction extends Action {
 		mode.setCustomPercentFrom(this.customFrom.getSelection());
 		mode.setCustomPercentTo(this.customTo.getSelection());
 		mode.setCustomPercentIncrement(this.customIncrement.getSelection());
-		mode.setLoopSHeader( ( loop && this.loopSHeader.getSelectionIndex() > 0 ? this.loopSHeader.getSelectionIndex() : -1 ) );
-		mode.setLoopEHeader( ( loop && this.loopEHeader.getSelectionIndex() > 0 ? this.loopEHeader.getSelectionIndex() : -1 ) );
+		mode.setLoopSHeader( ( loop ? this.loopSHeader.getValue() : -1 ) );
+		mode.setLoopEHeader( ( loop ? this.loopEHeader.getValue() : -1 ) );
+		//mode.setLoopSHeader( ( loop && this.loopSHeader.getSelectionIndex() > 0 ? this.loopSHeader.getSelectionIndex() : -1 ) );
+		//mode.setLoopEHeader( ( loop && this.loopEHeader.getSelectionIndex() > 0 ? this.loopEHeader.getSelectionIndex() : -1 ) );
 		mode.reset();
 	}
 	
@@ -330,7 +304,7 @@ public class TransportModeAction extends Action {
 		}
 	}
 	
-	private class LoopRangeStatus extends SelectionAdapter{
+	private class MHeaderRangeStatus extends SelectionAdapter{
 		
 		private List controls;
 		private boolean enabled;
@@ -339,7 +313,7 @@ public class TransportModeAction extends Action {
 		private Button simpleLoop;
 		private Button customLoop;
 		
-		public LoopRangeStatus(Button simpleMode, Button simpleLoop, Button customLoop) {
+		public MHeaderRangeStatus(Button simpleMode, Button simpleLoop, Button customLoop) {
 			this.controls = new ArrayList();
 			this.enabled = false;
 			this.simpleMode = simpleMode;
@@ -373,6 +347,117 @@ public class TransportModeAction extends Action {
 		
 		public void widgetSelected(SelectionEvent e) {
 			this.update();
+		}
+	}
+	
+	private class MHeaderCombo {
+		private List values;
+		private Combo combo;
+		
+		public MHeaderCombo( Composite parent ){
+			this.values = new ArrayList();
+			this.combo = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY );
+			this.combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		}
+		
+		public Combo getControl(){
+			return this.combo;
+		}
+		
+		public void clear(){
+			this.values.clear();
+			this.combo.removeAll();
+		}
+		
+		public void addItem( String text , Integer value ){
+			this.values.add( value );
+			this.combo.add( text );
+		}
+		
+		public void addItem( TGMeasureHeader header ){
+			this.addItem( getItemText(header) , header.getNumber() );
+		}
+		
+		public void setValue( int value ){
+			for( int index = 0 ; index < this.values.size() ; index++ ){
+				Integer currentValue = (Integer) this.values.get( index );
+				if( currentValue != null && currentValue.intValue() == value ){
+					int currentIndex = this.combo.getSelectionIndex();
+					if( currentIndex != index ){
+						this.combo.select( index );
+					}
+				}
+			}
+		}
+		
+		public int getValue(){
+			int index = this.combo.getSelectionIndex();
+			if( index >= 0 && index < this.values.size() ){
+				Integer value = (Integer) this.values.get( index );
+				if( value != null ){
+					return value.intValue();
+				}
+			}
+			return -1;
+		}
+		
+		private String getItemText( TGMeasureHeader header ){
+			String text = ("#" + header.getNumber());
+			if( header.hasMarker() ){
+				text += (" (" + header.getMarker().getTitle() + ")");
+			}
+			return text;
+		}
+	}
+	
+	private class MHeaderComboController {
+		protected MHeaderCombo loopSHeader;
+		protected MHeaderCombo loopEHeader;
+		
+		public MHeaderComboController(MHeaderCombo loopSHeader, MHeaderCombo loopEHeader){
+			this.loopSHeader = loopSHeader;
+			this.loopEHeader = loopEHeader;
+		}
+		
+		public void updateLoopSHeader( int sHeader ){
+			TGSong song = TuxGuitar.instance().getSongManager().getSong();
+			this.loopSHeader.clear();
+			this.loopSHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.from-default"), -1 );
+			for(int i = 0; i < song.countMeasureHeaders() ; i ++){
+				TGMeasureHeader header = song.getMeasureHeader( i );
+				this.loopSHeader.addItem( header );
+			}
+			this.loopSHeader.setValue( sHeader );
+		}
+		
+		public void updateLoopEHeader( int sHeader , int eHeader ){
+			TGSong song = TuxGuitar.instance().getSongManager().getSong();
+			this.loopEHeader.clear();
+			this.loopEHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.to-default"), -1 );
+			for(int i = 0; i < song.countMeasureHeaders() ; i ++){
+				TGMeasureHeader header = song.getMeasureHeader( i );
+				if( sHeader == -1 || header.getNumber() >= sHeader ){
+					this.loopEHeader.addItem( header );
+				}
+			}
+			this.loopEHeader.setValue( eHeader );
+		}
+		
+		public void updateLoopEHeader(){
+			int sHeader = this.loopSHeader.getValue();
+			int eHeader = this.loopEHeader.getValue();
+			if( eHeader != -1 && sHeader > eHeader ){
+				eHeader = sHeader;
+			}
+			this.updateLoopEHeader( sHeader , eHeader );
+		}
+		
+		public void appendListener(){
+			this.loopSHeader.getControl().addSelectionListener( new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					updateLoopEHeader();
+				}
+			});
 		}
 	}
 }
