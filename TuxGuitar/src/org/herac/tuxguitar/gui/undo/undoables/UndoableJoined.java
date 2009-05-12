@@ -55,4 +55,8 @@ public class UndoableJoined implements UndoableEdit{
 		this.redoCaret = new UndoableCaretHelper();
 		return this;
 	}
+	
+	public boolean isEmpty(){
+		return this.undoables.isEmpty();
+	}
 }

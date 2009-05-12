@@ -58,7 +58,23 @@ public class UndoableMeasureGeneric implements UndoableEdit{
 		}
 	}
 	
+	public static UndoableMeasureGeneric startUndo( TGMeasure measure ){
+		UndoableMeasureGeneric undoable = new UndoableMeasureGeneric();
+		undoable.doAction = UNDO_ACTION;
+		undoable.trackNumber = measure.getTrack().getNumber();
+		undoable.undoCaret = new UndoableCaretHelper();
+		undoable.undoMeasure = measure.clone(TuxGuitar.instance().getSongManager().getFactory(),measure.getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));
+		return undoable;
+	}
+	
+	public UndoableMeasureGeneric endUndo( TGMeasure measure ){
+		this.redoCaret = new UndoableCaretHelper();
+		this.redoMeasure = measure.clone(TuxGuitar.instance().getSongManager().getFactory(),measure.getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));
+		return this;
+	}
+	
 	public static UndoableMeasureGeneric startUndo(){
+		/*
 		UndoableMeasureGeneric undoable = new UndoableMeasureGeneric();
 		Caret caret = getCaret();
 		undoable.doAction = UNDO_ACTION;
@@ -66,13 +82,18 @@ public class UndoableMeasureGeneric implements UndoableEdit{
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.undoMeasure = caret.getMeasure().clone(TuxGuitar.instance().getSongManager().getFactory(),caret.getMeasure().getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));
 		return undoable;
+		*/
+		return startUndo( getCaret().getMeasure() );
 	}
 	
 	public UndoableMeasureGeneric endUndo(){
+		/*
 		Caret caret = getCaret();
 		this.redoCaret = new UndoableCaretHelper();
 		this.redoMeasure = caret.getMeasure().clone(TuxGuitar.instance().getSongManager().getFactory(),caret.getMeasure().getHeader().clone(TuxGuitar.instance().getSongManager().getFactory()));
 		return this;
+		*/
+		return endUndo( getCaret().getMeasure() );
 	}
 	
 	private static Caret getCaret(){

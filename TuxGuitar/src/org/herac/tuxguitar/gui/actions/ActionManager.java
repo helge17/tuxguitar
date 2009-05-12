@@ -122,6 +122,7 @@ import org.herac.tuxguitar.gui.actions.settings.EditPluginsAction;
 import org.herac.tuxguitar.gui.actions.system.DisposeAction;
 import org.herac.tuxguitar.gui.actions.tools.ScaleAction;
 import org.herac.tuxguitar.gui.actions.tools.TGBrowserAction;
+import org.herac.tuxguitar.gui.actions.tools.TransposeAction;
 import org.herac.tuxguitar.gui.actions.track.AddTrackAction;
 import org.herac.tuxguitar.gui.actions.track.CloneTrackAction;
 import org.herac.tuxguitar.gui.actions.track.EditLyricsAction;
@@ -321,6 +322,7 @@ public class ActionManager {
 		addAction(new ShowAboutAction());
 		
 		//tools
+		addAction(new TransposeAction() );
 		addAction(new ScaleAction());
 		addAction(new TGBrowserAction());
 		

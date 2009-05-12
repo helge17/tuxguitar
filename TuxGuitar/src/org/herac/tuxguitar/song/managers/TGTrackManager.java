@@ -289,6 +289,14 @@ public class TGTrackManager {
 		}
 	}
 	
+	public void transposeNotes(TGTrack track, int transposition , boolean tryKeepString, int applyToString){
+		Iterator it = track.getMeasures();
+		while(it.hasNext()){
+			TGMeasure measure = (TGMeasure)it.next();
+			this.songManager.getMeasureManager().transposeNotes(measure, transposition, tryKeepString, applyToString);
+		}
+	}
+	
 	/**
 	 * Retorna true si es el primer compas
 	 */

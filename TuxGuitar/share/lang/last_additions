@@ -28,3 +28,13 @@ transport.mode.loop-range.from=Play from measure
 transport.mode.loop-range.from-default=From the beginning
 transport.mode.loop-range.to=Play to measure
 transport.mode.loop-range.to-default=To the end
+
+
+tools.transpose=Transpose
+tools.transpose.semitones=Transposition Semitones
+tools.transpose.apply-to-track=Transpose all measures
+tools.transpose.apply-to-measure=Transpose only this measure
+tools.transpose.apply-to-all-tracks=Apply to all tracks
+tools.transpose.try-keep-strings=Try keep notes at same string when it's possible
+
+action.tools.transpose=Transpose Notes
