@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.song.managers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGText;
+import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -305,6 +308,27 @@ public class TGMeasureManager {
 				while(it.hasNext()){
 					TGNote note = (TGNote)it.next();
 					notes.add(note);
+				}
+			}
+		}
+		return notes;
+	}
+	
+	/**
+	 * Retorna Todas las Notas en el pulso
+	 */
+	public List getNotes(TGBeat beat){
+		List notes = new ArrayList();
+		
+		if(beat != null){
+			for(int v = 0 ; v < beat.countVoices(); v ++){
+				TGVoice voice = beat.getVoice( v );
+				if( !voice.isEmpty() && !voice.isRestVoice() ){
+					Iterator it = voice.getNotes().iterator();
+					while(it.hasNext()){
+						TGNote note = (TGNote)it.next();
+						notes.add(note);
+					}
 				}
 			}
 		}
@@ -2063,5 +2087,139 @@ public class TGMeasureManager {
 			}
 		}
 		return true;
+	}
+	
+	public void transposeNotes( TGMeasure measure, int transposition , boolean tryKeepString, int applyToString){
+		if( transposition != 0 ){
+			if( measure != null ){
+				TGTrack track = measure.getTrack();
+				if( track != null ){
+					List strings = getSortedStringsByValue(track, ( transposition > 0 ? 1 : -1 ) ) ;
+					for( int i = 0 ; i < measure.countBeats() ; i ++ ){
+						TGBeat beat = measure.getBeat( i );
+						transposeNotes( beat, strings, transposition , tryKeepString, applyToString );
+					}
+				}
+			}
+		}
+	}
+	
+	public void transposeNotes( TGBeat beat, List strings, int transposition , boolean tryKeepString, int applyToString){
+		if( transposition != 0 ){
+			List notes = getNotes(beat);
+			
+			int stringCount = strings.size();
+			for( int i = 0 ; i < stringCount ; i ++ ){
+				TGString string = (TGString)strings.get( (stringCount - i) - 1 );
+				if( applyToString == -1 || string.getNumber() == applyToString ){
+					TGNote note = null;
+					for( int n = 0 ; n < notes.size() ; n ++ ){
+						TGNote current = (TGNote)notes.get( n );
+						if( current.getString() == string.getNumber() ){
+							note = current;
+						}
+					}
+					if( note != null ){
+						transposeNote(note, notes, strings, transposition, tryKeepString, false ) ;
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean transposeNote( TGNote note, List notes, List strings , int transposition , boolean tryKeepString, boolean forceChangeString ){
+		boolean canTransposeFret = false;
+		
+		int maximumFret = 29;
+		
+		int transposedFret = ( note.getValue() + transposition );
+		
+		// Check if transposition could be done without change the string
+		if( transposedFret >= 0 && transposedFret <= maximumFret ){
+			// Do it now if keep string is the priority
+			if( !forceChangeString && tryKeepString ){
+				note.setValue( transposedFret );
+				return true;
+			}
+			canTransposeFret = true;
+		}
+		
+		// Check the current string index for this note
+		int stringIndex = -1;
+		for( int i = 0 ; i < strings.size() ; i ++ ){
+			TGString string = ( TGString ) strings.get( i );
+			if( string.getNumber() == note.getString() ){
+				stringIndex = i;
+				break;
+			}
+		}
+		
+		// Try to change the string of the note
+		TGString string = ( TGString ) strings.get( stringIndex );
+		int transposedValue = ( string.getValue() + note.getValue() + transposition );
+		int nextStringIndex = ( stringIndex + 1 );
+		while( nextStringIndex >= 0 && nextStringIndex < strings.size() ){
+			TGString nextString = ( TGString ) strings.get( nextStringIndex );
+			TGNote nextOwner = null;
+			for( int i = 0 ; i < notes.size() ; i ++ ){
+				TGNote nextNote = (TGNote) notes.get( i );
+				if( nextNote.getString() == nextString.getNumber() ){
+					nextOwner = nextNote;
+				}
+			}
+			
+			int transposedStringFret = ( transposedValue - nextString.getValue() );
+			if( transposedStringFret >= 0 && transposedStringFret <= maximumFret ){
+				if( nextOwner != null ){
+					if( ! transposeNote(nextOwner, notes, strings, 0 , tryKeepString , !canTransposeFret ) ){
+						// Note was removed.
+						nextOwner = null ;
+					}
+				}
+				if( nextOwner == null || nextOwner.getString() != nextString.getNumber() ){
+					note.setValue( transposedStringFret );
+					note.setString( nextString.getNumber() );
+					
+					return true;
+				}
+			}
+			nextStringIndex ++;
+		}
+		
+		// Keep using same string if it's possible
+		if( !forceChangeString && canTransposeFret ){
+			note.setValue( transposedFret );
+			return true;
+		}
+		
+		// If note can't be transposed, it must be removed.
+		notes.remove( note );
+		removeNote(note);
+		
+		return false;
+	}
+	
+	public List getSortedStringsByValue( TGTrack track , final int direction ){
+		List strings = new ArrayList();
+		for( int number = 1 ; number <= track.stringCount() ; number ++ ){
+			strings.add( track.getString( number ) );
+		}
+		
+		Collections.sort( strings , new Comparator() {
+			public int compare(Object o1, Object o2) {
+				if( o1 != null && o2 != null && o1 instanceof TGString && o2 instanceof TGString ){
+					TGString s1 = (TGString)o1;
+					TGString s2 = (TGString)o2;
+					int status = ( s1.getValue() - s2.getValue() );
+					if( status == 0 ){
+						return 0;
+					}
+					return ( (status * direction) > 0 ? 1 : -1 );
+				}
+				return 0;
+			}
+		});
+		
+		return strings;
 	}
 }

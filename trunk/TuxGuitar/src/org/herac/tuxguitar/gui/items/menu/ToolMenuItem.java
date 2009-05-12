@@ -18,6 +18,7 @@ import org.herac.tuxguitar.gui.actions.settings.EditKeyBindingsAction;
 import org.herac.tuxguitar.gui.actions.settings.EditPluginsAction;
 import org.herac.tuxguitar.gui.actions.tools.ScaleAction;
 import org.herac.tuxguitar.gui.actions.tools.TGBrowserAction;
+import org.herac.tuxguitar.gui.actions.tools.TransposeAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
 import org.herac.tuxguitar.gui.tools.custom.TGCustomTool;
 import org.herac.tuxguitar.gui.tools.custom.TGCustomToolManager;
@@ -32,6 +33,7 @@ public class ToolMenuItem extends MenuItems {
 	private Menu menu;
 	private MenuItem scale;
 	private MenuItem browser;
+	private MenuItem transpose;
 	private MenuItem plugins;
 	private MenuItem config;
 	private MenuItem keyBindings;
@@ -42,6 +44,9 @@ public class ToolMenuItem extends MenuItems {
 	}
 	
 	public void showItems(){
+		this.transpose = new MenuItem(this.menu, SWT.PUSH);
+		this.transpose.addSelectionListener(TuxGuitar.instance().getAction(TransposeAction.NAME));
+		
 		this.scale = new MenuItem(this.menu, SWT.PUSH);
 		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));
 		
@@ -79,6 +84,7 @@ public class ToolMenuItem extends MenuItems {
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.settingsMenuItem, "tools", null);
+		setMenuItemTextAndAccelerator(this.transpose, "tools.transpose", TransposeAction.NAME);
 		setMenuItemTextAndAccelerator(this.scale, "tools.scale", ScaleAction.NAME);
 		setMenuItemTextAndAccelerator(this.browser, "tools.browser", TGBrowserAction.NAME);
 		setMenuItemTextAndAccelerator(this.plugins, "tools.plugins", EditPluginsAction.NAME);
@@ -91,6 +97,7 @@ public class ToolMenuItem extends MenuItems {
 	}
 	
 	public void update(){
-		//Nothing to do
+		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		this.transpose.setEnabled( !running );
 	}
 }
