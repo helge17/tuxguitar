@@ -67,6 +67,8 @@ public class TrackPropertiesAction extends Action {
 	protected Text nameText;
 	protected TGColor trackColor;
 	protected List tempStrings;
+	protected Button stringTransposition;
+	protected Button stringTranspositionTryKeepString;
 	protected Spinner stringCountSpinner;
 	protected Combo[] stringCombos = new Combo[MAX_STRINGS];
 	protected Combo offsetCombo;
@@ -195,15 +197,16 @@ public class TrackPropertiesAction extends Action {
 	}
 	
 	private void initTuningInfo(Composite composite,TGTrackImpl track) {
-		composite.setLayout(new GridLayout(2,true));
+		composite.setLayout(new GridLayout(2,false));
 		initTuningData(composite,track);
 		initTuningCombos(composite);
+		//initTuningOptions(composite);
 	}
 	
 	private void initTuningCombos(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(/*MAX_STRINGS, false*/));
-		composite.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		composite.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,false,true));
 		String[] tuningTexts = getAllValueNames();
 		for (int i = 0; i < MAX_STRINGS; i++) {
 			this.stringCombos[i] = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -220,9 +223,13 @@ public class TrackPropertiesAction extends Action {
 		top.setLayout(new GridLayout());
 		top.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
 		
-		Composite bottom = new Composite(composite, SWT.NONE);
-		bottom.setLayout(new GridLayout());
-		bottom.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));
+		Composite middle = new Composite(composite, SWT.NONE);
+		middle.setLayout(new GridLayout());
+		middle.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
+		
+		Composite bottom = new Composite( composite , SWT.NONE );
+		bottom.setLayout( new GridLayout() );
+		bottom.setLayoutData( new GridData(SWT.FILL,SWT.TOP,true,true) );
 		
 		//---------------------------------STRING--------------------------------
 		Label stringCountLabel = new Label(top, SWT.NONE);
@@ -230,7 +237,8 @@ public class TrackPropertiesAction extends Action {
 		stringCountLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
 		
 		this.stringCountSpinner = new Spinner(top, SWT.BORDER);
-		this.stringCountSpinner.setLayoutData(getAlignmentData(80,SWT.FILL));
+		this.stringCountSpinner.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
+		//this.stringCountSpinner.setLayoutData(getAlignmentData(80,SWT.FILL));
 		this.stringCountSpinner.setMinimum(MIN_STRINGS);
 		this.stringCountSpinner.setMaximum(MAX_STRINGS);
 		this.stringCountSpinner.setSelection(this.stringCount);
@@ -243,18 +251,38 @@ public class TrackPropertiesAction extends Action {
 		});
 		
 		//---------------------------------OFFSET--------------------------------
-		Label offsetLabel = new Label(bottom, SWT.NONE);
+		Label offsetLabel = new Label(middle, SWT.NONE);
 		offsetLabel.setText(TuxGuitar.getProperty("tuning.offset") + ":");
 		offsetLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
 		
-		this.offsetCombo = new Combo(bottom, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.offsetCombo.setLayoutData(getAlignmentData(80,SWT.LEFT));
+		this.offsetCombo = new Combo(middle, SWT.DROP_DOWN | SWT.READ_ONLY);
+		//this.offsetCombo.setLayoutData(getAlignmentData(80,SWT.LEFT));
+		this.offsetCombo.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
 		for(int i = TGTrack.MIN_OFFSET;i <= TGTrack.MAX_OFFSET;i ++){
 			this.offsetCombo.add(Integer.toString(i));
 			if(i == track.getOffset()){
 				this.offsetCombo.select(i - TGTrack.MIN_OFFSET);
 			}
 		}
+		
+		//---------------------------------OPTIONS----------------------------------
+		this.stringTransposition = new Button( bottom , SWT.CHECK );
+		this.stringTransposition.setLayoutData( new GridData(SWT.FILL,SWT.CENTER,true,true) );
+		this.stringTransposition.setText(TuxGuitar.getProperty("tuning.strings.transpose"));
+		this.stringTransposition.setSelection( true );
+		
+		this.stringTranspositionTryKeepString = new Button( bottom , SWT.CHECK );
+		this.stringTranspositionTryKeepString.setLayoutData( new GridData(SWT.FILL,SWT.CENTER,true,true) );
+		this.stringTranspositionTryKeepString.setText(TuxGuitar.getProperty("tuning.strings.transpose.try-keep-strings"));
+		this.stringTranspositionTryKeepString.setSelection( true );
+		
+		this.stringTransposition.addSelectionListener( new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Button stringTransposition = TrackPropertiesAction.this.stringTransposition;
+				Button stringTranspositionTryKeepString = TrackPropertiesAction.this.stringTranspositionTryKeepString;
+				stringTranspositionTryKeepString.setEnabled( ( stringTransposition.isEnabled()  && stringTransposition.getSelection() ) );
+			}
+		});
 	}
 	
 	private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
@@ -359,6 +387,7 @@ public class TrackPropertiesAction extends Action {
 		final boolean infoChanges = hasInfoChanges(track,trackName,trackColor,offset);
 		final boolean tuningChanges = hasTuningChanges(track,strings);
 		final boolean instrumentChanges = hasInstrumentChanges(track,instrument,percussion);
+		final boolean transposeStrings = (this.stringTransposition.getSelection() && !percussion && !track.isPercussionTrack() );
 		
 		try {
 			if(infoChanges || tuningChanges || instrumentChanges){
@@ -389,7 +418,7 @@ public class TrackPropertiesAction extends Action {
 								}
 								//--------------------------------------tuning---------------------------------------
 								if(tuningChanges){
-									getSongManager().getTrackManager().changeInstrumentStrings(track,strings);
+									updateTrackTunings(track, strings, transposeStrings);
 								}
 								//-----------------------------instrument----------------------------------------------
 								if(instrumentChanges){
@@ -443,6 +472,10 @@ public class TrackPropertiesAction extends Action {
 		return false;
 	}
 	
+	protected boolean hasInstrumentChanges(TGTrackImpl track,int instrument,boolean percussion){
+		return ((track.getChannel().getInstrument() != instrument) || (track.isPercussionTrack() != percussion));
+	}
+	
 	protected boolean hasTuningChanges(TGTrackImpl track,List newStrings){
 		List oldStrings = track.getStrings();
 		//check the number of strings
@@ -466,8 +499,45 @@ public class TrackPropertiesAction extends Action {
 		return false;
 	}
 	
-	protected boolean hasInstrumentChanges(TGTrackImpl track,int instrument,boolean percussion){
-		return ((track.getChannel().getInstrument() != instrument) || (track.isPercussionTrack() != percussion));
+	protected void updateTrackTunings(TGTrackImpl track, List strings, boolean transposeStrings ){
+		int[] transpositions = getStringTranspositions(track, strings);
+		getSongManager().getTrackManager().changeInstrumentStrings(track,strings);
+		if( transposeStrings ){
+			getSongManager().getTrackManager().transposeNotes(track, transpositions, false );
+		}
+	}
+	
+	protected int[] getStringTranspositions(TGTrackImpl track, List newStrings ){
+		int[] transpositions = new int[ newStrings.size() ];
+		
+		TGString newString = null;
+		TGString oldString = null;
+		for( int index = 0; index < transpositions.length ; index ++ ){
+			for( int i = 0; i < track.stringCount() ; i ++ ){
+				TGString string = track.getString( i + 1 );
+				if( string.getNumber() == (index + 1) ){
+					oldString = string;
+					break;
+				}
+			}
+			for( int i = 0; i < newStrings.size() ; i ++ ){
+				TGString string = (TGString)newStrings.get( i );
+				if( string.getNumber() == (index + 1) ){
+					newString = string;
+					break;
+				}
+			}
+			if( oldString != null && newString != null ){
+				transpositions[ index ] = (oldString.getValue() - newString.getValue());
+			}else{
+				transpositions[ index ] = 0;
+			}
+			
+			newString = null;
+			oldString = null;
+		}
+		
+		return transpositions;
 	}
 	
 	protected void setButtonColor(Button button){
@@ -497,6 +567,8 @@ public class TrackPropertiesAction extends Action {
 			this.stringCombos[i].setVisible(false);
 		}
 		this.offsetCombo.setEnabled(enabled);
+		this.stringTransposition.setEnabled(enabled);
+		this.stringTranspositionTryKeepString.setEnabled(enabled && this.stringTransposition.getSelection());
 	}
 	
 	protected void initTempStrings(List realStrings) {

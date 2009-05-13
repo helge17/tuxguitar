@@ -2104,6 +2104,36 @@ public class TGMeasureManager {
 		}
 	}
 	
+	public void transposeNotes( TGMeasure measure, int[] transpositionStrings , boolean tryKeepString ){
+		if( transpositionStrings != null && transpositionStrings.length > 0 ){
+			if( measure != null ){
+				TGTrack track = measure.getTrack();
+				if( track != null ){
+					TGNote[] notes = new TGNote[ transpositionStrings.length ];
+					
+					for( int b = 0 ; b < measure.countBeats() ; b ++ ){
+						TGBeat beat = measure.getBeat( b );
+						
+						for( int n = 0 ; n < notes.length ; n ++ ){
+							notes[ n ] = getNote( beat, (n + 1) );
+						}
+						
+						for( int i = 0 ; i < notes.length ; i ++ ){
+							if( notes[ i ] != null ){
+								int transposition = transpositionStrings[ i ];
+								if( transposition != 0 ){
+									int applyToString = notes[i].getString();
+									List strings = getSortedStringsByValue(track, ( transposition > 0 ? 1 : -1 ) ) ;
+									transposeNotes( beat, strings, transposition , tryKeepString, applyToString );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public void transposeNotes( TGBeat beat, List strings, int transposition , boolean tryKeepString, int applyToString){
 		if( transposition != 0 ){
 			List notes = getNotes(beat);
@@ -2120,7 +2150,7 @@ public class TGMeasureManager {
 						}
 					}
 					if( note != null ){
-						transposeNote(note, notes, strings, transposition, tryKeepString, false ) ;
+						transposeNote(note, notes, strings, transposition, tryKeepString, false );
 					}
 				}
 			}

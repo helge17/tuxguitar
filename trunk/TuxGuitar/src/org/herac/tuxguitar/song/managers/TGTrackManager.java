@@ -293,7 +293,15 @@ public class TGTrackManager {
 		Iterator it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasure measure = (TGMeasure)it.next();
-			this.songManager.getMeasureManager().transposeNotes(measure, transposition, tryKeepString, applyToString);
+			this.songManager.getMeasureManager().transposeNotes(measure, transposition, tryKeepString, applyToString );
+		}
+	}
+	
+	public void transposeNotes(TGTrack track, int[] transpositionStrings , boolean tryKeepString ){
+		Iterator it = track.getMeasures();
+		while(it.hasNext()){
+			TGMeasure measure = (TGMeasure)it.next();
+			this.songManager.getMeasureManager().transposeNotes(measure, transpositionStrings, tryKeepString );
 		}
 	}
 	
