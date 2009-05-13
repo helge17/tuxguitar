@@ -38,3 +38,6 @@ tools.transpose.apply-to-all-tracks=Apply to all tracks
 tools.transpose.try-keep-strings=Try keep notes at same string when it's possible
 
 action.tools.transpose=Transpose Notes
+
+tuning.strings.transpose=Transpose afected notes.
+tuning.strings.transpose.try-keep-strings=Try keep notes at same string
