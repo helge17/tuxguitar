@@ -41,3 +41,9 @@ action.tools.transpose=Transpose Notes
 
 tuning.strings.transpose=Transpose afected notes.
 tuning.strings.transpose.try-keep-strings=Try keep notes at same string
+
+composition.date=Date
+composition.copyright=Copyright
+composition.writer=Tab Creator
+composition.transcriber=Transcribed By
+composition.comments=Comments

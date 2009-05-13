@@ -93,6 +93,47 @@ public class ChangeInfoAction extends Action{
 			final Text authorText = new Text(group, SWT.BORDER);
 			authorText.setLayoutData(makeTextData());
 			authorText.setText(song.getAuthor());
+			//-------DATE------------------------------------
+			Label dateLabel = new Label(group, SWT.NULL);
+			dateLabel.setLayoutData(makeLabelData());
+			dateLabel.setText(TuxGuitar.getProperty("composition.date") + ":");
+			
+			final Text dateText = new Text(group, SWT.BORDER);
+			dateText.setLayoutData(makeTextData());
+			dateText.setText(song.getDate());
+			//-------COPYRIGHT------------------------------------
+			Label copyrightLabel = new Label(group, SWT.NULL);
+			copyrightLabel.setLayoutData(makeLabelData());
+			copyrightLabel.setText(TuxGuitar.getProperty("composition.copyright") + ":");
+			
+			final Text copyrightText = new Text(group, SWT.BORDER);
+			copyrightText.setLayoutData(makeTextData());
+			copyrightText.setText(song.getCopyright());
+			//-------WRITER-------------------------------------
+			Label writerLabel = new Label(group, SWT.NULL);
+			writerLabel.setLayoutData(makeLabelData());
+			writerLabel.setText(TuxGuitar.getProperty("composition.writer") + ":");
+			
+			final Text writerText = new Text(group, SWT.BORDER);
+			writerText.setLayoutData(makeTextData());
+			writerText.setText(song.getWriter());
+			//-------TRANSCRIBER------------------------------------
+			Label transcriberLabel = new Label(group, SWT.NULL);
+			transcriberLabel.setLayoutData(makeLabelData());
+			transcriberLabel.setText(TuxGuitar.getProperty("composition.transcriber") + ":");
+			
+			final Text transcriberText = new Text(group, SWT.BORDER);
+			transcriberText.setLayoutData(makeTextData());
+			transcriberText.setText(song.getTranscriber());
+			
+			//-------COMMENTS------------------------------------
+			Label commentsLabel = new Label(group, SWT.NULL);
+			commentsLabel.setLayoutData(makeLabelData());
+			commentsLabel.setText(TuxGuitar.getProperty("composition.comments") + ":");
+			
+			final Text commentsText = new Text(group, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+			commentsText.setLayoutData(makeTextAreaData());
+			commentsText.setText(song.getComments());
 			
 			//------------------BUTTONS--------------------------
 			Composite buttons = new Composite(dialog, SWT.NONE);
@@ -108,6 +149,11 @@ public class ChangeInfoAction extends Action{
 					final String artist = artistText.getText();
 					final String album = albumText.getText();
 					final String author = authorText.getText();
+					final String date = dateText.getText();
+					final String copyright = copyrightText.getText();
+					final String writer = writerText.getText();
+					final String transcriber = transcriberText.getText();
+					final String comments = commentsText.getText();
 					
 					dialog.dispose();
 					try {
@@ -115,7 +161,7 @@ public class ChangeInfoAction extends Action{
 							public void run() throws Throwable {
 								ActionLock.lock();
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-								setProperties(name,artist,album,author);
+								setProperties(name,artist,album,author,date,copyright,writer,transcriber,comments);
 								TuxGuitar.instance().updateCache( true );
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 								ActionLock.unlock();
@@ -153,6 +199,13 @@ public class ChangeInfoAction extends Action{
 		return layout;
 	}
 	
+	private GridData makeTextAreaData(){
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.minimumWidth = TEXT_WIDTH;
+		data.minimumHeight = 100;
+		return data;
+	}
+	
 	private GridData makeTextData(){
 		return new GridData(TEXT_WIDTH,SWT.DEFAULT);
 	}
@@ -168,11 +221,11 @@ public class ChangeInfoAction extends Action{
 		return data;
 	}
 	
-	protected void setProperties(String name,String artist,String album,String author){
+	protected void setProperties(String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments){
 		//comienza el undoable
 		UndoableChangeInfo undoable = UndoableChangeInfo.startUndo();
 		
-		getSongManager().setProperties(name,artist,album,author);
+		getSongManager().setProperties(name,artist,album,author,date,copyright,writer,transcriber,comments);
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();
 		TuxGuitar.instance().showTitle();
 		

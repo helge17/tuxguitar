@@ -89,11 +89,16 @@ public class TGSongManager {
 		}
 	}
 	
-	public void setProperties(String name,String artist,String album,String author){
+	public void setProperties(String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments){
 		getSong().setName(name);
 		getSong().setArtist(artist);
 		getSong().setAlbum(album);
 		getSong().setAuthor(author);
+		getSong().setDate(date);
+		getSong().setCopyright(copyright);
+		getSong().setWriter(writer);
+		getSong().setTranscriber(transcriber);
+		getSong().setComments(comments);
 	}
 	
 	public void addTrack(TGTrack trackToAdd){
