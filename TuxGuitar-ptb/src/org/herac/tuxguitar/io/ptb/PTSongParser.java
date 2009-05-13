@@ -10,6 +10,7 @@ import org.herac.tuxguitar.io.ptb.base.PTNote;
 import org.herac.tuxguitar.io.ptb.base.PTPosition;
 import org.herac.tuxguitar.io.ptb.base.PTSection;
 import org.herac.tuxguitar.io.ptb.base.PTSong;
+import org.herac.tuxguitar.io.ptb.base.PTSongInfo;
 import org.herac.tuxguitar.io.ptb.base.PTTempo;
 import org.herac.tuxguitar.io.ptb.base.PTTrack;
 import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
@@ -45,11 +46,52 @@ public class PTSongParser {
 		
 		this.parseTrack(song.getTrack1());
 		this.parseTrack(song.getTrack2());
+		this.parseProperties(song.getInfo());
 		
 		this.manager.orderBeats();
 		
-		//return new TGSongAdjuster(this.manager).process();
 		return this.manager.getSong();
+	}
+	
+	private void parseProperties(PTSongInfo info){
+		if( info.getName() != null ){
+			this.manager.getSong().setName( info.getName() );
+		}
+		if( info.getAlbum() != null ){
+			this.manager.getSong().setAlbum( info.getAlbum() );
+		}
+		if( info.getAuthor() != null ){
+			this.manager.getSong().setAuthor( info.getAuthor() );
+		}
+		if( info.getCopyright() != null ){
+			this.manager.getSong().setCopyright( info.getCopyright() );
+		}
+		if( info.getArrenger() != null ){
+			this.manager.getSong().setWriter( info.getArrenger() );
+		}
+		if( info.getGuitarTranscriber() != null || info.getBassTranscriber() != null ){
+			String transcriber = new String(); 
+			if(info.getGuitarTranscriber() != null ){
+				transcriber += info.getGuitarTranscriber();
+			}
+			if(info.getBassTranscriber() != null ){
+				if( transcriber.length() > 0 ){
+					transcriber += (" - ");
+				}
+				transcriber += info.getBassTranscriber();
+			}
+			this.manager.getSong().setTranscriber( transcriber );
+		}
+		if( info.getGuitarInstructions() != null || info.getBassInstructions() != null ){
+			String comments = new String(); 
+			if(info.getGuitarInstructions() != null ){
+				comments += info.getGuitarInstructions();
+			}
+			if(info.getBassInstructions() != null ){
+				comments += info.getBassInstructions();
+			}
+			this.manager.getSong().setComments( comments );
+		}
 	}
 	
 	private void parseTrack(PTTrack track){
