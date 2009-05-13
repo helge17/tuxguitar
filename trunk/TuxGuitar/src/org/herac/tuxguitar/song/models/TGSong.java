@@ -24,6 +24,11 @@ public abstract class TGSong {
 	private String artist;
 	private String album;
 	private String author;
+	private String date;
+	private String copyright;
+	private String writer;
+	private String transcriber;
+	private String comments;
 	private List tracks;
 	private List measureHeaders;
 	
@@ -32,6 +37,11 @@ public abstract class TGSong {
 		this.artist = new String();
 		this.album = new String();
 		this.author = new String();
+		this.date = new String();
+		this.copyright = new String();
+		this.writer = new String();
+		this.transcriber = new String();
+		this.comments = new String();
 		this.tracks = new ArrayList();
 		this.measureHeaders = new ArrayList();
 	}
@@ -66,6 +76,46 @@ public abstract class TGSong {
 	
 	public void setArtist(String artist) {
 		this.artist = artist;
+	}
+	
+	public String getDate() {
+		return this.date;
+	}
+	
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
+	public String getCopyright() {
+		return this.copyright;
+	}
+	
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
+	
+	public String getWriter() {
+		return this.writer;
+	}
+	
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	
+	public String getTranscriber() {
+		return this.transcriber;
+	}
+	
+	public void setTranscriber(String transcriber) {
+		this.transcriber = transcriber;
+	}
+	
+	public String getComments() {
+		return this.comments;
+	}
+	
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 	
 	public int countMeasureHeaders(){
@@ -154,6 +204,11 @@ public abstract class TGSong {
 		song.setArtist(getArtist());
 		song.setAlbum(getAlbum());
 		song.setAuthor(getAuthor());
+		song.setDate(getDate());
+		song.setCopyright(getCopyright());
+		song.setWriter(getWriter());
+		song.setTranscriber(getTranscriber());
+		song.setComments(getComments());
 		Iterator headers = getMeasureHeaders();
 		while(headers.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)headers.next();

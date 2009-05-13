@@ -15,10 +15,20 @@ public class UndoableChangeInfo implements UndoableEdit{
 	private String undoArtist;
 	private String undoAlbum;
 	private String undoAuthor;
+	private String undoDate;
+	private String undoCopyright;
+	private String undoWriter;
+	private String undoTranscriber;
+	private String undoComments;
 	private String redoName;
 	private String redoArtist;
 	private String redoAlbum;
 	private String redoAuthor;
+	private String redoDate;
+	private String redoCopyright;
+	private String redoWriter;
+	private String redoTranscriber;
+	private String redoComments;
 	
 	private UndoableChangeInfo(){
 		super();
@@ -28,7 +38,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.instance().getSongManager().setProperties(this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor);
+		TuxGuitar.instance().getSongManager().setProperties(this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor,this.redoDate,this.redoCopyright,this.redoWriter,this.redoTranscriber,this.redoComments);
 		TuxGuitar.instance().showTitle();
 		this.redoCaret.update();
 		
@@ -39,7 +49,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.instance().getSongManager().setProperties(this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor);
+		TuxGuitar.instance().getSongManager().setProperties(this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor,this.undoDate,this.undoCopyright,this.undoWriter,this.undoTranscriber,this.undoComments);
 		TuxGuitar.instance().showTitle();
 		this.undoCaret.update();
 		
@@ -63,6 +73,11 @@ public class UndoableChangeInfo implements UndoableEdit{
 		undoable.undoArtist = song.getArtist();
 		undoable.undoAlbum = song.getAlbum();
 		undoable.undoAuthor = song.getAuthor();
+		undoable.undoDate = song.getDate();
+		undoable.undoCopyright = song.getCopyright();
+		undoable.undoWriter = song.getWriter();
+		undoable.undoTranscriber = song.getTranscriber();
+		undoable.undoComments = song.getComments();		
 		return undoable;
 	}
 	
@@ -73,6 +88,11 @@ public class UndoableChangeInfo implements UndoableEdit{
 		this.redoArtist = song.getArtist();
 		this.redoAlbum = song.getAlbum();
 		this.redoAuthor = song.getAuthor();
+		this.redoDate = song.getDate();
+		this.redoCopyright = song.getCopyright();
+		this.redoWriter = song.getWriter();
+		this.redoTranscriber = song.getTranscriber();
+		this.redoComments = song.getComments();
 		return this;
 	}
 }

@@ -86,6 +86,21 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo el autor
 		writeUnsignedByteString(song.getAuthor());
 		
+		//escribo la fecha
+		writeUnsignedByteString(song.getDate());
+		
+		//escribo el copyright
+		writeUnsignedByteString(song.getCopyright());
+		
+		//escribo el creador
+		writeUnsignedByteString(song.getWriter());
+		
+		//escribo el transcriptor
+		writeUnsignedByteString(song.getTranscriber());
+		
+		//escribo los comentarios
+		writeIntegerString(song.getComments());
+		
 		//escribo la cantidad de measure headers 
 		writeShort((short)song.countMeasureHeaders());
 		

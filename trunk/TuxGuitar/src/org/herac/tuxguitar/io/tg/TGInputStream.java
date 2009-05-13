@@ -114,6 +114,21 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		//leo el autor
 		song.setAuthor(readUnsignedByteString());
 		
+		//leo la fecha
+		song.setDate(readUnsignedByteString());
+		
+		//leo el copyright
+		song.setCopyright(readUnsignedByteString());
+		
+		//leo el creador
+		song.setWriter(readUnsignedByteString());
+		
+		//leo el transcriptor
+		song.setTranscriber(readUnsignedByteString());
+		
+		//leo los comentarios
+		song.setComments(readIntegerString());
+		
 		//leo la cantidad de measure headers
 		int headerCount = readShort();
 		
