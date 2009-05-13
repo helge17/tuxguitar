@@ -10,6 +10,7 @@ import org.herac.tuxguitar.io.ptb.base.PTDirection;
 import org.herac.tuxguitar.io.ptb.base.PTPosition;
 import org.herac.tuxguitar.io.ptb.base.PTSection;
 import org.herac.tuxguitar.io.ptb.base.PTSong;
+import org.herac.tuxguitar.io.ptb.base.PTSongInfo;
 import org.herac.tuxguitar.io.ptb.base.PTSymbol;
 import org.herac.tuxguitar.io.ptb.base.PTTrack;
 import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
@@ -17,13 +18,18 @@ import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
 public class PTSongSynchronizerUtil {
 	
 	public static void synchronizeTracks(PTSong src, PTSong dst){
+		applyInfo( src.getInfo() , dst.getInfo() );
 		synchronizeTrack( src.getTrack1(), dst.getTrack1() );
 		synchronizeTrack( src.getTrack2(), dst.getTrack2() );
 	}
 	
 	private static void synchronizeTrack(PTTrack src, PTTrack dst){
-		applyRepeats(src,  dst);
+		applyRepeats(src, dst);
 		applyInfos(src, dst);
+	}
+	
+	private static void applyInfo(PTSongInfo src, PTSongInfo dst){
+		src.copy( dst );
 	}
 	
 	private static void applyInfos(PTTrack src, PTTrack dst){

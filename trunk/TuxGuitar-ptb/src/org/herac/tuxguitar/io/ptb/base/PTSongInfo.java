@@ -203,4 +203,29 @@ public class PTSongInfo {
 	public void setYear(int year) {
 		this.year = year;
 	}
+	
+	public void copy( PTSongInfo info ){
+		info.setClassification(getClassification());
+		info.setReleaseType(getReleaseType());
+		info.setAlbumType(getAlbumType());
+		info.setDay(getDay());
+		info.setMonth(getMonth());
+		info.setYear(getYear());
+		info.setStyle(getStyle());
+		info.setLevel(getLevel());
+		info.setLiveRecording(isLiveRecording());
+		info.setName(getName());
+		info.setInterpret(getInterpret());
+		info.setAlbum(getAlbum());
+		info.setAuthor(getAuthor());
+		info.setLyricist(getLyricist());
+		info.setArrenger(getArrenger());
+		info.setGuitarTranscriber(getGuitarTranscriber());
+		info.setBassTranscriber(getBassTranscriber());
+		info.setLyrics(getLyrics());
+		info.setGuitarInstructions(getGuitarInstructions());
+		info.setBassInstructions(getBassInstructions());
+		info.setInstructions(getInstructions());
+		info.setCopyright(getCopyright());
+	}
 }
