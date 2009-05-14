@@ -89,12 +89,12 @@ public class GP4InputStream extends GTPInputStream {
 		song.setArtist(readStringByteSizeOfInteger());
 		song.setAlbum(readStringByteSizeOfInteger());
 		song.setAuthor(readStringByteSizeOfInteger());
+		song.setCopyright(readStringByteSizeOfInteger());
+		song.setWriter(readStringByteSizeOfInteger());
 		readStringByteSizeOfInteger();
-		readStringByteSizeOfInteger();
-		readStringByteSizeOfInteger();
-		int notes = readInt();
-		for (int i = 0; i < notes; i++) {
-			readStringByteSizeOfInteger();
+		int comments = readInt();
+		for (int i = 0; i < comments; i++) {
+			song.setComments( song.getComments() + readStringByteSizeOfInteger() );
 		}
 	}
 	
