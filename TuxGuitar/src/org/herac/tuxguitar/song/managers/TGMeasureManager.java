@@ -169,8 +169,28 @@ public class TGMeasureManager {
 		}
 	}
 	
+	public void removeNote(TGNote note, boolean checkRestBeat){
+		//note.getVoice().removeNote(note);
+		TGVoice voice = note.getVoice();
+		if( voice != null ){
+			// Remove the note
+			voice.removeNote(note);
+			
+			TGBeat beat = voice.getBeat();
+			if(checkRestBeat && beat.isRestBeat()){
+				//Anulo un posible stroke
+				beat.getStroke().setDirection( TGStroke.STROKE_NONE );
+				
+				//Borro un posible acorde
+				if( beat.getMeasure() != null ){
+					removeChord(beat.getMeasure(), beat.getStart());
+				}
+			}
+		}
+	}
+	
 	public void removeNote(TGNote note){
-		note.getVoice().removeNote(note);
+		this.removeNote(note, true);
 	}
 	
 	public void removeNote(TGMeasure measure,long start, int voiceIndex,int string){
@@ -188,88 +208,13 @@ public class TGMeasureManager {
 			for( int i = 0; i < voice.countNotes(); i ++){
 				TGNote note = voice.getNote(i);
 				if(note.getString() == string){
-					removeNote(note);
-					
-					if(checkRestBeat && beat.isRestBeat()){
-						//Anulo un posible stroke
-						beat.getStroke().setDirection( TGStroke.STROKE_NONE );
-						
-						//Borro un posible acorde
-						removeChord(measure, beat.getStart());
-					}
+					removeNote(note , checkRestBeat);
 					return;
 				}
 			}
 		}
 	}
 	
-	/*
-	@Deprecated
-	public void addNote(TGMeasure measure,long start, TGNote note, TGDuration duration){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			addNote(beat, note, duration);
-		}
-	}
-	
-	@Deprecated
-	public void addNote(TGBeat beat, TGNote note, TGDuration duration){
-		addNote(beat, note, duration, beat.getStart());
-	}
-	
-	@Deprecated
-	public void addNote(TGBeat beat, TGNote note, TGDuration duration, long start){
-		//Verifico si entra en el compas
-		if(validateDuration(beat.getMeasure(),beat, duration,true,true)){
-			//Borro lo que haya en la misma posicion
-			removeNote(beat.getMeasure(),beat.getStart(),note.getString());
-			
-			duration.copy(beat.getDuration());
-			
-			//trato de agregar un silencio similar al lado
-			tryChangeSilenceAfter(beat.getMeasure(),beat);
-			
-			// Despues de cambiar la duracion, verifico si hay un beat mejor para agregar la nota.
-			TGBeat realBeat = beat;
-			if(realBeat.getStart() != start){
-				TGBeat beatIn = getBeatIn(realBeat.getMeasure(), start);
-				if( beatIn != null ) {
-					realBeat = beatIn;
-				}
-			}
-			realBeat.addNote(note);
-		}
-	}
-	
-	public void removeNote(TGNote note){
-		note.getBeat().removeNote(note);
-	}
-	*/
-	/**
-	 * Elimina los Componentes que empiecen en Start y esten en la misma cuerda
-	 * Si hay un Silencio lo borra sin importar la cuerda
-	 */
-	/*
-	@Deprecated
-	public void removeNote(TGMeasure measure,long start,int string){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			for( int i = 0; i < beat.countNotes(); i ++){
-				TGNote note = beat.getNote(i);
-				if(note.getString() == string){
-					removeNote(note);
-					
-					//si era el unico componente agrego un silencio
-					if(beat.isRestBeat()){
-						//Borro un posible acorde
-						removeChord(measure, beat.getStart());
-					}
-					return;
-				}
-			}
-		}
-	}
-	*/
 	public void removeNotesAfterString(TGMeasure measure,int string){
 		List notesToRemove = new ArrayList();
 		
