@@ -36,7 +36,8 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class ChangeInfoAction extends Action{
 	public static final String NAME = "action.composition.change-info";
 	
-	private static final int TEXT_WIDTH = 300;
+	private static final int GROUP_WIDTH  = 450;
+	private static final int GROUP_HEIGHT = SWT.DEFAULT;
 	
 	public ChangeInfoAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
@@ -58,7 +59,7 @@ public class ChangeInfoAction extends Action{
 			
 			Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 			group.setLayout(makeGroupLayout(5));
-			group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			group.setLayoutData(new GridData(GROUP_WIDTH,GROUP_HEIGHT));
 			group.setText(TuxGuitar.getProperty("composition.properties"));
 			
 			//-------NAME------------------------------------
@@ -201,17 +202,16 @@ public class ChangeInfoAction extends Action{
 	
 	private GridData makeTextAreaData(){
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = TEXT_WIDTH;
 		data.minimumHeight = 100;
 		return data;
 	}
 	
 	private GridData makeTextData(){
-		return new GridData(TEXT_WIDTH,SWT.DEFAULT);
+		return new GridData(SWT.FILL, SWT.FILL, true, true);
 	}
 	
 	private GridData makeLabelData(){
-		return new GridData(SWT.RIGHT,SWT.CENTER,true,true);
+		return new GridData(SWT.RIGHT,SWT.CENTER,false,true);
 	}
 	
 	private GridData getButtonData(){
