@@ -106,16 +106,20 @@ public class GP5OutputStream extends GTPOutputStream {
 	}
 	
 	private void writeInfo(TGSong song) throws IOException{
+		List comments = toCommentLines(song.getComments());
 		writeStringByteSizeOfInteger(song.getName());
 		writeStringByteSizeOfInteger("");
 		writeStringByteSizeOfInteger(song.getArtist());
 		writeStringByteSizeOfInteger(song.getAlbum());
 		writeStringByteSizeOfInteger(song.getAuthor());
 		writeStringByteSizeOfInteger("");
+		writeStringByteSizeOfInteger(song.getCopyright());
+		writeStringByteSizeOfInteger(song.getWriter());
 		writeStringByteSizeOfInteger("");
-		writeStringByteSizeOfInteger("");
-		writeStringByteSizeOfInteger("");
-		writeInt(0);
+		writeInt( comments.size() );
+		for (int i = 0; i < comments.size(); i++) {
+			writeStringByteSizeOfInteger( (String)comments.get(i) );
+		}
 	}
 	
 	private void writeLyrics(TGSong song) throws IOException{
@@ -777,5 +781,19 @@ public class GP5OutputStream extends GTPOutputStream {
 	
 	private byte toChannelByte(short s){
 		return  (byte) ((s + 1) / 8);
+	}
+	
+	private List toCommentLines( String comments ){
+		List lines = new ArrayList();
+		
+		String line = comments;
+		while( line.length() > Byte.MAX_VALUE ) {
+			String subline = line.substring(0, Byte.MAX_VALUE);
+			lines.add( subline );
+			line = line.substring( Byte.MAX_VALUE );
+		}
+		lines.add( line );
+		
+		return lines;
 	}
 }
