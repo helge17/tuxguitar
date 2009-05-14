@@ -46,7 +46,7 @@ public class TGMeasureManager {
 			}
 			measure.moveBeat(i, minBeat);
 		}
-	}	
+	}
 	
 	/**
 	 * Agrega un beat al compas
