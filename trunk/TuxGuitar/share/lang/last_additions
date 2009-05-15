@@ -47,3 +47,9 @@ composition.copyright=Copyright
 composition.writer=Tab Creator
 composition.transcriber=Transcribed By
 composition.comments=Comments
+
+beat.move-left=Move One Beat Left
+beat.move-right=Move One Beat Right
+
+action.beat.general.move-left=Move One Beat Left
+action.beat.general.move-right=Move One Beat Right
