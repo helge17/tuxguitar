@@ -193,6 +193,21 @@ public class TGTrackManager {
 		}
 	}
 	
+	public void moveTrackBeats(TGTrack track, long measureStart, long moveStart, long theMove ){
+		List measures = getMeasuresBeforeEnd(track,measureStart);
+		for( int i = 0 ; i < measures.size() ; i ++ ){
+			TGMeasure measure = (TGMeasure)measures.get(i);
+			if( moveStart + theMove < moveStart ){
+				getSongManager().getMeasureManager().removeBeatsBeetween(measure, moveStart, (moveStart + Math.abs(theMove)));
+			}
+			getSongManager().getMeasureManager().moveBeats(measure, moveStart, theMove);
+		}
+		for( int i = 0 ; i < measures.size() ; i ++ ){
+			TGMeasure measure = (TGMeasure)measures.get(i);
+			getSongManager().getMeasureManager().moveOutOfBoundsBeatsToNewMeasure(measure,false);
+		}
+	}
+	
 	public void changeKeySignature(TGTrack track,long start,int keySignature,boolean toEnd){
 		changeKeySignature(track,getMeasureAt(track,start),keySignature,toEnd);
 	}

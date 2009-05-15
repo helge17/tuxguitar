@@ -50,7 +50,6 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.undoTrack = undoable.new UndoTrack(track);
-		
 		return undoable;
 	}
 	
@@ -71,6 +70,12 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		
 		public void undo(){
 			if(this.track != null){
+				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
+					TuxGuitar.instance().getSongManager().addNewMeasureBeforeEnd();
+				}
+				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
+					TuxGuitar.instance().getSongManager().removeLastMeasureHeader();
+				}
 				TuxGuitar.instance().getSongManager().replaceTrack(this.track);
 				TuxGuitar.instance().fireUpdate();
 				TuxGuitar.instance().getMixer().update();
@@ -89,6 +94,12 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		
 		public void redo(){
 			if(this.track != null){
+				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
+					TuxGuitar.instance().getSongManager().addNewMeasureBeforeEnd();
+				}
+				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
+					TuxGuitar.instance().getSongManager().removeLastMeasureHeader();
+				}
 				TuxGuitar.instance().getSongManager().replaceTrack(this.track);
 				TuxGuitar.instance().fireUpdate();
 				TuxGuitar.instance().getMixer().update();

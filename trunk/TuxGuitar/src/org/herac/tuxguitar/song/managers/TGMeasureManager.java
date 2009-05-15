@@ -89,7 +89,7 @@ public class TGMeasureManager {
 			if(next != null){
 				length = next.getStart() - start;
 			}
-			moveBeats(beat.getMeasure(),start + length,-length, minimumDuration);
+			moveBeatsInMeasure(beat.getMeasure(),start + length,-length, minimumDuration);
 		}
 	}
 	
@@ -119,6 +119,15 @@ public class TGMeasureManager {
 		
 	public void removeBeatsBeforeEnd(TGMeasure measure,long fromStart){
 		List beats = getBeatsBeforeEnd( measure.getBeats() , fromStart);
+		Iterator it = beats.iterator();
+		while(it.hasNext()){
+			TGBeat beat = (TGBeat) it.next();
+			removeBeat(beat);
+		}
+	}
+	
+	public void removeBeatsBeetween(TGMeasure measure,long p1, long p2){
+		List beats = getBeatsBeetween( measure.getBeats() , p1, p2 );
 		Iterator it = beats.iterator();
 		while(it.hasNext()){
 			TGBeat beat = (TGBeat) it.next();
@@ -371,6 +380,20 @@ public class TGMeasureManager {
 		return minimumDuration;
 	}
 	
+	public TGBeat getBeat(TGTrack track,long start) {
+		Iterator measures = track.getMeasures();
+		while( measures.hasNext() ){
+			TGMeasure measure = (TGMeasure)measures.next();
+			Iterator beats = measure.getBeats().iterator();
+			while(beats.hasNext()){
+				TGBeat beat = (TGBeat)beats.next();
+				if (beat.getStart() == start) {
+					return beat;
+				}
+			}
+		}
+		return null;
+	}
 	/**
 	 * Retorna las Nota en la posicion y cuerda
 	 */
@@ -514,34 +537,122 @@ public class TGMeasureManager {
 		return list;
 	}
 	
+	public List getBeatsBeetween(List beats,long p1, long p2) {
+		List list = new ArrayList();
+		Iterator it = beats.iterator();
+		while(it.hasNext()){
+			TGBeat current = (TGBeat)it.next();
+			if (current.getStart() >= p1 && current.getStart() < p2 ) {
+				list.add(current);
+			}
+		}
+		return list;
+	}
+	
+	public void locateBeat( TGBeat beat, TGTrack track , boolean newMeasureAlsoForRestBeats) {
+		if( beat.getMeasure() != null ){
+			beat.getMeasure().removeBeat(beat);
+			beat.setMeasure(null);
+		}
+		TGMeasure newMeasure = getSongManager().getTrackManager().getMeasureAt(track, beat.getStart() );
+		if( newMeasure == null ){
+			boolean createNewMeasure = newMeasureAlsoForRestBeats;
+			if( !createNewMeasure ){
+				createNewMeasure = ( !beat.isRestBeat() || beat.isTextBeat() );
+			}
+			if( createNewMeasure ){
+				
+				while( newMeasure == null && beat.getStart() >= TGDuration.QUARTER_TIME){
+					getSongManager().addNewMeasureBeforeEnd();
+					newMeasure = getSongManager().getTrackManager().getMeasureAt(track, beat.getStart() );
+				}
+			}
+		}
+		if( newMeasure != null ){
+			long mStart = newMeasure.getStart();
+			long mLength = newMeasure.getLength();
+			long bStart = beat.getStart();
+			for( int v = 0 ; v < beat.countVoices() ; v ++ ){
+				TGVoice voice = beat.getVoice( v );
+				long vDuration = voice.getDuration().getTime();
+				if(!voice.isEmpty() && (bStart + vDuration) > (mStart + mLength) ){
+					long vTiedDuration = ( (bStart + vDuration) - (mStart + mLength) );
+					vDuration -= vTiedDuration;
+					if( vDuration > 0 ){
+						TGDuration duration = TGDuration.fromTime(getSongManager().getFactory(), vDuration);
+						if( duration != null ){
+							duration.copy( voice.getDuration() );
+						}
+					}
+					if( vTiedDuration > 0 ) {
+						TGDuration newVoiceDuration = TGDuration.fromTime(getSongManager().getFactory(), vTiedDuration);
+						if( newVoiceDuration != null ){
+							long newBeatStart = (bStart + vDuration);
+							TGBeat newBeat = getBeat(track, newBeatStart);
+							if( newBeat == null ){
+								newBeat = getSongManager().getFactory().newBeat();
+								newBeat.setStart( (bStart + vDuration) );
+							}
+							TGVoice newVoice = newBeat.getVoice( v );
+							for( int n = 0 ; n < voice.countNotes() ; n ++ ){
+								TGNote note = voice.getNote( n );
+								TGNote newNote = getSongManager().getFactory().newNote();
+								newNote.setTiedNote( true );
+								newNote.setValue( note.getValue() );
+								newNote.setString( note.getString() );
+								newNote.setVelocity( note.getVelocity() );
+								newVoice.addNote( newNote );
+							}
+							newVoice.setEmpty( false );
+							newVoiceDuration.copy( newVoice.getDuration() );
+							
+							locateBeat(newBeat, track, newMeasureAlsoForRestBeats);
+						}
+					}
+				}
+			}
+			
+			newMeasure.addBeat(beat);
+		}
+	}
+	
 	public void moveOutOfBoundsBeatsToNewMeasure(TGMeasure measure){
+		this.moveOutOfBoundsBeatsToNewMeasure(measure, true );
+	}
+	
+	public void moveOutOfBoundsBeatsToNewMeasure(TGMeasure measure, boolean newMeasureAlsoForRestBeats ){
 		List beats = new ArrayList();
+		long mStart = measure.getStart();
+		long mLength = measure.getLength();
 		for( int i = 0; i < measure.countBeats() ; i ++ ){
 			TGBeat beat = measure.getBeat( i );
-			if( beat.getStart() < measure.getStart() || beat.getStart() >= measure.getStart() + measure.getLength() ){
+			if( beat.getStart() < mStart || beat.getStart() >= mStart + mLength ){
 				beats.add( beat );
+			}
+			else{
+				long bStart = beat.getStart();
+				for( int v = 0 ; v < beat.countVoices() ; v ++ ){
+					TGVoice voice = beat.getVoice( v );
+					long vDuration = voice.getDuration().getTime();
+					if(!voice.isEmpty() && (bStart + vDuration) > (mStart + mLength) ){
+						beats.add( beat );
+					}
+				}
 			}
 		}
 		while( !beats.isEmpty() ){
 			TGBeat beat = (TGBeat)beats.get( 0 );
-			beat.getMeasure().removeBeat(beat);
-			beat.setMeasure(null);
-			
-			TGMeasure newMeasure = getSongManager().getTrackManager().getMeasureAt(measure.getTrack(), beat.getStart() );
-			while( newMeasure == null ){
-				getSongManager().addNewMeasureBeforeEnd();
-				newMeasure = getSongManager().getTrackManager().getMeasureAt(measure.getTrack(), beat.getStart() );
+			if( beat.getMeasure() != null ){
+				beat.getMeasure().removeBeat(beat);
+				beat.setMeasure(null);
 			}
-			newMeasure.addBeat(beat);
+			this.locateBeat(beat, measure.getTrack(), newMeasureAlsoForRestBeats);
+			
 			beats.remove(0);
 		}
 	}
 	
-	public void moveAllBeats(TGMeasure measure,long theMove){
-		moveBeats(measure.getBeats(),theMove);
-	}
-	
-	public boolean moveBeats(TGMeasure measure,long start,long theMove, TGDuration fillDuration){
+	public boolean moveBeatsInMeasure(TGMeasure measure,long start,long theMove, TGDuration fillDuration){
 		if( theMove == 0 ){
 			return false;
 		}
@@ -629,6 +740,14 @@ public class TGMeasureManager {
 		}
 		
 		return success;
+	}
+	
+	public void moveAllBeats(TGMeasure measure,long theMove){
+		moveBeats(measure.getBeats(),theMove);
+	}
+	
+	public void moveBeats(TGMeasure measure, long start, long theMove){
+		moveBeats(getBeatsBeforeEnd(measure.getBeats(), start),theMove);
 	}
 	
 	/**
