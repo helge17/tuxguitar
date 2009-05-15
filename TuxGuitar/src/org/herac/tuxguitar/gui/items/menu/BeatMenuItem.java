@@ -16,6 +16,8 @@ import org.herac.tuxguitar.gui.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
+import org.herac.tuxguitar.gui.actions.note.MoveBeatsLeftAction;
+import org.herac.tuxguitar.gui.actions.note.MoveBeatsRightAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveUnusedVoiceAction;
 import org.herac.tuxguitar.gui.actions.note.SetStrokeDownAction;
 import org.herac.tuxguitar.gui.actions.note.SetStrokeUpAction;
@@ -53,6 +55,8 @@ public class BeatMenuItem extends MenuItems{
 	private MenuItem shiftDown;
 	private MenuItem semitoneUp;
 	private MenuItem semitoneDown;
+	private MenuItem moveBeatsLeft;
+	private MenuItem moveBeatsRight;
 	private DurationMenuItem durationMenuItem;
 	private ChordMenuItem chordMenuItem;
 	private NoteEffectsMenuItem effectMenuItem;
@@ -146,6 +150,17 @@ public class BeatMenuItem extends MenuItems{
 		this.shiftDown = new MenuItem(this.menu, SWT.PUSH);
 		this.shiftDown.addSelectionListener(TuxGuitar.instance().getAction(ShiftNoteDownAction.NAME));
 		
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		//--Move Beats Left
+		this.moveBeatsLeft = new MenuItem(this.menu, SWT.PUSH);
+		this.moveBeatsLeft.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsLeftAction.NAME));
+		
+		//--Move Beats Right
+		this.moveBeatsRight = new MenuItem(this.menu, SWT.PUSH);
+		this.moveBeatsRight.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsRightAction.NAME));
+		
 		this.noteMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
@@ -173,6 +188,8 @@ public class BeatMenuItem extends MenuItems{
 		this.shiftUp.setEnabled(!running && note != null);
 		this.shiftDown.setEnabled(!running && note != null);
 		this.insertText.setEnabled(!running);
+		this.moveBeatsLeft.setEnabled(!running);
+		this.moveBeatsRight.setEnabled(!running);
 		this.durationMenuItem.update();
 		this.chordMenuItem.update();
 		this.effectMenuItem.update();
@@ -194,12 +211,13 @@ public class BeatMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.shiftUp, "note.shift-up", ShiftNoteUpAction.NAME);
 		setMenuItemTextAndAccelerator(this.shiftDown, "note.shift-down", ShiftNoteDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.insertText, "text.insert", InsertTextAction.NAME);
+		setMenuItemTextAndAccelerator(this.moveBeatsLeft, "beat.move-left", MoveBeatsLeftAction.NAME);
+		setMenuItemTextAndAccelerator(this.moveBeatsRight, "beat.move-right", MoveBeatsRightAction.NAME);
 		
 		this.durationMenuItem.loadProperties();
 		this.chordMenuItem.loadProperties();
 		this.effectMenuItem.loadProperties();
 		this.dynamicMenuItem.loadProperties();
-		
 	}
 	
 	public void loadIcons(){
