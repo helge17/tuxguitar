@@ -107,7 +107,9 @@ public class OpenFileAction extends Action {
 			String path = FileChooser.instance().open(TuxGuitar.instance().getShell(),TGFileFormatManager.instance().getInputFormats());
 			if(path != null){
 				File file = new File(path);
-				return file.toURI().toURL();
+				if( file.exists() && file.isFile() ){
+					return file.toURI().toURL();
+				}
 			}
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
