@@ -15,7 +15,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.clipboard.CannotInsertTransferException;
@@ -32,14 +34,12 @@ import org.herac.tuxguitar.gui.util.DialogUtils;
  */
 public class PasteMeasureAction extends Action{
 	public static final String NAME = "action.measure.paste";
-	protected int pasteMode;
 	
 	public PasteMeasureAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(TypedEvent e){
-		this.pasteMode = MeasureTransferable.TRANSFER_TYPE_REPLACE;
 		showDialog(getEditor().getTablature().getShell());
 		return 0;
 	}
@@ -51,33 +51,34 @@ public class PasteMeasureAction extends Action{
 			dialog.setLayout(new GridLayout());
 			dialog.setText(TuxGuitar.getProperty("edit.paste"));
 			
+			//-----------------COUNT------------------------
+			Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+			group.setLayout(new GridLayout(2,false));
+			group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			group.setText(TuxGuitar.getProperty("edit.paste"));
+			
+			Label countLabel = new Label(group, SWT.NULL);
+			countLabel.setText(TuxGuitar.getProperty("edit.paste.count"));
+			
+			final Spinner countSpinner = new Spinner(group, SWT.BORDER);
+			countSpinner.setLayoutData(getSpinnerData());
+			countSpinner.setMinimum( 1 );
+			countSpinner.setMaximum( 100 );
+			countSpinner.setSelection( 1 );
+			
 			//----------------------------------------------------------------------
-			Group radios = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-			radios.setLayout(new GridLayout());
-			radios.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			radios.setText(TuxGuitar.getProperty("edit.paste"));
+			Group options = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+			options.setLayout(new GridLayout());
+			options.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			options.setText(TuxGuitar.getProperty("options"));
 			
-			final Button replace = new Button(radios,SWT.RADIO);
+			final Button replace = new Button(options,SWT.RADIO);
 			replace.setText(TuxGuitar.getProperty("edit.paste.replace-mode"));
+			replace.setSelection(true);
 			
-			final Button insert = new Button(radios,SWT.RADIO);
+			final Button insert = new Button(options,SWT.RADIO);
 			insert.setText(TuxGuitar.getProperty("edit.paste.insert-mode"));
 			
-			replace.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
-					if(replace.getSelection()){
-						PasteMeasureAction.this.pasteMode = MeasureTransferable.TRANSFER_TYPE_REPLACE;
-					}
-				}
-			});
-			insert.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
-					if(insert.getSelection()){
-						PasteMeasureAction.this.pasteMode = MeasureTransferable.TRANSFER_TYPE_INSERT;
-					}
-				}
-			});
-			replace.setSelection(true);
 			//------------------BUTTONS--------------------------
 			Composite buttons = new Composite(dialog, SWT.NONE);
 			buttons.setLayout(new GridLayout(2,false));
@@ -88,7 +89,15 @@ public class PasteMeasureAction extends Action{
 			buttonOK.setLayoutData(getButtonData());
 			buttonOK.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					pasteMeasures();
+					int pasteMode = 0;
+					int pasteCount = countSpinner.getSelection();
+					if( replace.getSelection() ){
+						pasteMode = MeasureTransferable.TRANSFER_TYPE_REPLACE;
+					}else if(insert.getSelection()){
+						pasteMode = MeasureTransferable.TRANSFER_TYPE_INSERT;
+					}
+					pasteMeasures( pasteMode , pasteCount);
+					
 					dialog.dispose();
 				}
 			});
@@ -108,6 +117,12 @@ public class PasteMeasureAction extends Action{
 		}
 	}
 	
+	private GridData getSpinnerData(){
+		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
+		data.minimumWidth = 150;
+		return data;
+	}
+	
 	private GridData getButtonData(){
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.minimumWidth = 80;
@@ -115,14 +130,18 @@ public class PasteMeasureAction extends Action{
 		return data;
 	}
 	
-	protected void pasteMeasures(){
+	protected void pasteMeasures(int pasteMode, int pasteCount){
 		try {
-			Transferable transferable = getEditor().getClipBoard().getTransferable();
-			if(transferable instanceof MeasureTransferable){
-				((MeasureTransferable)transferable).setTransferType(this.pasteMode);
-				transferable.insertTransfer();
-			
-				updateTablature();
+			if( pasteMode > 0 && pasteCount > 0 ){
+				Transferable transferable = getEditor().getClipBoard().getTransferable();
+				if(transferable instanceof MeasureTransferable){
+					((MeasureTransferable)transferable).setTransferType( pasteMode );
+					((MeasureTransferable)transferable).setPasteCount( pasteCount );
+					
+					transferable.insertTransfer();
+					
+					updateTablature();
+				}
 			}
 		} catch (CannotInsertTransferException ex) {
 			ex.printStackTrace();

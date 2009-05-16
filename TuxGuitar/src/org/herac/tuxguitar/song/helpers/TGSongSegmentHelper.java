@@ -166,4 +166,31 @@ public class TGSongSegmentHelper {
 		}
 		return measures;
 	}
+	
+	public TGSongSegment createSegmentCopies( TGSongSegment srcSegment , int count ){
+		TGSongSegment segment = srcSegment.clone( this.sm.getFactory() );
+		
+		int mCount = segment.getHeaders().size();
+		int tCount = segment.getTracks().size();
+		
+		TGMeasureHeader fMeasure = (TGMeasureHeader)segment.getHeaders().get( 0 );
+		TGMeasureHeader lMeasure = (TGMeasureHeader)segment.getHeaders().get( mCount - 1 );
+		
+		long mMove = ( ( lMeasure.getStart() + lMeasure.getLength() ) - fMeasure.getStart() );
+		for( int i = 1 ; i < count ; i ++ ){
+			for(int m = 0; m < mCount; m++ ){
+				TGMeasureHeader header = ( (TGMeasureHeader)segment.getHeaders().get(m) ).clone( this.sm.getFactory() );
+				segment.getHeaders().add( header );
+				this.sm.moveMeasureHeader(header,(mMove * i),(mCount * i));
+				for( int t = 0 ; t < tCount ; t ++ ){
+					TGTrackSegment track = (TGTrackSegment)segment.getTracks().get( t );
+					TGMeasure measure = ((TGMeasure)track.getMeasures().get( m )).clone(this.sm.getFactory(), header );
+					track.getMeasures().add( measure );
+					this.sm.getMeasureManager().moveAllBeats(measure, (mMove * i));
+				}
+			}
+		}
+		
+		return segment;
+	}
 }
