@@ -55,3 +55,4 @@ action.beat.general.move-left=Move One Beat Left
 action.beat.general.move-right=Move One Beat Right
 
 measure.add.count=Add Count
+edit.paste.count=Paste Count
