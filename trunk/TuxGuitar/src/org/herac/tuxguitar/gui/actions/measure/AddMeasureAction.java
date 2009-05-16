@@ -15,10 +15,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.helper.SyncThread;
+import org.herac.tuxguitar.gui.undo.undoables.UndoableJoined;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableAddMeasure;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
@@ -31,63 +34,49 @@ import org.herac.tuxguitar.gui.util.DialogUtils;
 public class AddMeasureAction extends Action{
 	public static final String NAME = "action.measure.add";
 	
-	protected int selectedNumber;
-	
 	public AddMeasureAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(TypedEvent e){
-		final int number = showDialog();
-		if(number > 0 && number <=  (getSongManager().getSong().countMeasureHeaders() + 1)){
-			new Thread(new Runnable() {
-				public void run() {
-					new SyncThread(new Runnable() {
-						public void run() {
-							//comienza el undoable
-							UndoableAddMeasure undoable = UndoableAddMeasure.startUndo(number);
-							TuxGuitar.instance().getFileHistory().setUnsavedFile();
-							
-							getSongManager().addNewMeasure(number);
-							updateTablature();
-							
-							int trackNumber = getEditor().getTablature().getCaret().getTrack().getNumber();
-							int stringNumber = getEditor().getTablature().getCaret().getStringNumber();
-							long start = getSongManager().getMeasureHeader(number).getStart();
-							getEditor().getTablature().getCaret().update(trackNumber,start,stringNumber);
-							
-							//termia el undoable
-							addUndoableEdit(undoable.endUndo());
-							
-							TuxGuitar.instance().updateCache(true);
-						}
-					}).start();
-				}
-			}).start();
-		}
+		showDialog();
 		return 0;
 	}
 	
-	public int showDialog() {
-		this.selectedNumber = -1;
+	public void showDialog() {
 		if (getEditor().getTablature().getCaret().getMeasure() != null) {
 			final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			dialog.setLayout(new GridLayout());
 			dialog.setText(TuxGuitar.getProperty("measure.add"));
 			
-			//----------------------------------------------------------------------
-			Group radios = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-			radios.setLayout(new GridLayout());
-			radios.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			radios.setText(TuxGuitar.getProperty("measure.add"));
+			//-----------------COUNT------------------------
+			Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+			group.setLayout(new GridLayout(2,false));
+			group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			group.setText(TuxGuitar.getProperty("measure.add"));
 			
-			final Button beforePosition = new Button(radios,SWT.RADIO);
+			Label countLabel = new Label(group, SWT.NULL);
+			countLabel.setText(TuxGuitar.getProperty("measure.add.count"));
+			
+			final Spinner countSpinner = new Spinner(group, SWT.BORDER);
+			countSpinner.setLayoutData(getSpinnerData());
+			countSpinner.setMinimum( 1 );
+			countSpinner.setMaximum( 100 );
+			countSpinner.setSelection( 1 );
+			
+			//----------------------------------------------------------------------
+			Group options = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+			options.setLayout(new GridLayout());
+			options.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			options.setText(TuxGuitar.getProperty("options"));
+			
+			final Button beforePosition = new Button(options,SWT.RADIO);
 			beforePosition.setText(TuxGuitar.getProperty("measure.add-before-current-position"));
 			
-			final Button afterPosition = new Button(radios,SWT.RADIO);
+			final Button afterPosition = new Button(options,SWT.RADIO);
 			afterPosition.setText(TuxGuitar.getProperty("measure.add-after-current-position"));
 			
-			final Button atEnd = new Button(radios,SWT.RADIO);
+			final Button atEnd = new Button(options,SWT.RADIO);
 			atEnd.setText(TuxGuitar.getProperty("measure.add-at-end"));
 			atEnd.setSelection(true);
 			//------------------BUTTONS--------------------------
@@ -100,13 +89,16 @@ public class AddMeasureAction extends Action{
 			buttonOK.setLayoutData(getButtonData());
 			buttonOK.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
+					int number = 0;
+					int count = countSpinner.getSelection();
 					if(beforePosition.getSelection()){
-						AddMeasureAction.this.selectedNumber = (getEditor().getTablature().getCaret().getMeasure().getNumber());
+						number = (getEditor().getTablature().getCaret().getMeasure().getNumber());
 					}else if(afterPosition.getSelection()){
-						AddMeasureAction.this.selectedNumber = (getEditor().getTablature().getCaret().getMeasure().getNumber() + 1);
+						number = (getEditor().getTablature().getCaret().getMeasure().getNumber() + 1);
 					}else if(atEnd.getSelection()){
-						AddMeasureAction.this.selectedNumber = (getSongManager().getSong().countMeasureHeaders() + 1);
+						number = (getSongManager().getSong().countMeasureHeaders() + 1);
 					}
+					addMeasure(number, count);
 					dialog.dispose();
 				}
 			});
@@ -124,7 +116,12 @@ public class AddMeasureAction extends Action{
 			
 			DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		}
-		return this.selectedNumber;
+	}
+	
+	private GridData getSpinnerData(){
+		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
+		data.minimumWidth = 150;
+		return data;
 	}
 	
 	private GridData getButtonData(){
@@ -132,5 +129,41 @@ public class AddMeasureAction extends Action{
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
 		return data;
+	}
+	
+	private void addMeasure( final int number , final int count ){
+		if(count > 0 && number > 0 && number <=  (getSongManager().getSong().countMeasureHeaders() + 1)){
+			new Thread(new Runnable() {
+				public void run() {
+					new SyncThread(new Runnable() {
+						public void run() {
+							UndoableJoined undoable = new UndoableJoined();
+							for( int i = 0 ; i < count ; i ++ ){
+								//comienza el undoable
+								UndoableAddMeasure mUndoable = UndoableAddMeasure.startUndo( ( number + i ) );
+								
+								getSongManager().addNewMeasure( ( number + i ) );
+								
+								//termia el undoable
+								undoable.addUndoableEdit(mUndoable.endUndo());
+								
+							}
+							updateTablature();
+							
+							int trackNumber = getEditor().getTablature().getCaret().getTrack().getNumber();
+							int stringNumber = getEditor().getTablature().getCaret().getStringNumber();
+							long start = getSongManager().getMeasureHeader(number).getStart();
+							getEditor().getTablature().getCaret().update(trackNumber,start,stringNumber);
+							
+							//termia el undoable
+							addUndoableEdit( undoable.endUndo() );
+							
+							TuxGuitar.instance().getFileHistory().setUnsavedFile();
+							TuxGuitar.instance().updateCache(true);
+						}
+					}).start();
+				}
+			}).start();
+		}
 	}
 }
