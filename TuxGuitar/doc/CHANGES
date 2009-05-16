@@ -1,11 +1,12 @@
-TuxGuitar 1.1 changes:
+TuxGuitar 1.2 changes:
 
-* Fix mixer bug
-* Fix jre1.4 support bug
-* 2 Voice support
-* Chorus/Reverb/Phaser/Tremolo MIDI Controls
-* Upstroke/Downstroke support
-* Stems Up/Down/Auto support
-* Display markers on the score
-* Encoding option on GTP Plugin
-* FTP Browser plugin now can run on non sun's JVM
+* Fix some bugs
+* Support measure range to loop
+* Transpose notes feature
+* Optionally transpose afected notes when change tuning
+* Move beats left|right support
+* More song properties options.
+* Add multiple measure support
+* Clean multiple measure support
+* Number of pastes support
+* Better fluidsynth plugin
