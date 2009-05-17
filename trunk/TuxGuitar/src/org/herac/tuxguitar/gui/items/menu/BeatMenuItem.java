@@ -69,7 +69,7 @@ public class BeatMenuItem extends MenuItems{
 	
 	public void showItems(){
 		//--Tied Note
-		this.tiedNote = new MenuItem(this.menu, SWT.PUSH);
+		this.tiedNote = new MenuItem(this.menu, SWT.CHECK);
 		this.tiedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeTiedNoteAction.NAME));
 		
 		//--Clean Beat
@@ -174,6 +174,7 @@ public class BeatMenuItem extends MenuItems{
 		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
+		this.tiedNote.setSelection(note != null && note.isTiedNote());
 		this.cleanBeat.setEnabled(!running);
 		this.removeVoice.setEnabled(!running);
 		this.voiceAuto.setEnabled(!running && !restBeat);

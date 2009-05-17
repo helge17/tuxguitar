@@ -21,6 +21,7 @@ import org.herac.tuxguitar.gui.actions.insert.InsertChordAction;
 import org.herac.tuxguitar.gui.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.gui.items.ToolItems;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.song.models.TGNote;
 
 /**
  * @author julian
@@ -42,7 +43,7 @@ public class BeatToolItems  extends ToolItems{
 	public void showItems(ToolBar toolBar){
 		this.toolBar = toolBar;
 		
-		this.tiedNote = new ToolItem(toolBar, SWT.PUSH);
+		this.tiedNote = new ToolItem(toolBar, SWT.CHECK);
 		this.tiedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeTiedNoteAction.NAME));
 		
 		this.chordItems = new ChordMenuItem();
@@ -53,8 +54,10 @@ public class BeatToolItems  extends ToolItems{
 	}
 	
 	public void update(){
+		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
+		this.tiedNote.setSelection(note != null && note.isTiedNote());
 		this.chordItems.setEnabled(!running);
 		this.chordItems.update();
 	}
