@@ -16,6 +16,7 @@ import org.herac.tuxguitar.gui.actions.insert.RepeatAlternativeAction;
 import org.herac.tuxguitar.gui.actions.insert.RepeatCloseAction;
 import org.herac.tuxguitar.gui.actions.insert.RepeatOpenAction;
 import org.herac.tuxguitar.gui.items.ToolItems;
+import org.herac.tuxguitar.song.models.TGMeasure;
 
 /**
  * @author julian
@@ -45,13 +46,13 @@ public class CompositionToolItems extends ToolItems{
 		
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
-		this.repeatOpen = new ToolItem(toolBar, SWT.PUSH);
+		this.repeatOpen = new ToolItem(toolBar, SWT.CHECK);
 		this.repeatOpen.addSelectionListener(TuxGuitar.instance().getAction(RepeatOpenAction.NAME));
 		
-		this.repeatClose = new ToolItem(toolBar, SWT.PUSH);
+		this.repeatClose = new ToolItem(toolBar, SWT.CHECK);
 		this.repeatClose.addSelectionListener(TuxGuitar.instance().getAction(RepeatCloseAction.NAME));
 		
-		this.repeatAlternative = new ToolItem(toolBar, SWT.PUSH);
+		this.repeatAlternative = new ToolItem(toolBar, SWT.CHECK);
 		this.repeatAlternative.addSelectionListener(TuxGuitar.instance().getAction(RepeatAlternativeAction.NAME));
 		
 		this.loadIcons();
@@ -75,11 +76,15 @@ public class CompositionToolItems extends ToolItems{
 	}
 	
 	public void update(){
+		TGMeasure measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tempo.setEnabled( !running );
 		this.timeSignature.setEnabled( !running );
 		this.repeatOpen.setEnabled( !running );
+		this.repeatOpen.setSelection(measure != null && measure.isRepeatOpen());
 		this.repeatClose.setEnabled( !running );
+		this.repeatClose.setSelection(measure != null && measure.getRepeatClose() > 0);
 		this.repeatAlternative.setEnabled( !running );
+		this.repeatAlternative.setSelection(measure != null && measure.getHeader().getRepeatAlternative() > 0);
 	}
 }
