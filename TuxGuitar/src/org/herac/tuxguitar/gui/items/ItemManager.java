@@ -63,7 +63,6 @@ import org.herac.tuxguitar.gui.util.TGFileUtils;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
-	//private static final int COOL_ITEM_HEIGHT = 32;
 	
 	private Menu menu;
 	private Menu popupMenu;
@@ -155,20 +154,18 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	}
 	
 	private void makeToolBar(ToolItems item){
-		ToolBar toolBar = new ToolBar(this.coolBar,SWT.HORIZONTAL | SWT.FLAT /*| SWT.WRAP*/);
+		ToolBar toolBar = new ToolBar(this.coolBar,SWT.HORIZONTAL | SWT.FLAT );
 		item.showItems(toolBar);
 		makeCoolItem(toolBar); 
 		this.loadedToolItems.add(item);
 	}
 	
 	private void makeCoolItem(ToolBar toolBar){
+		Point size = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		CoolItem coolItem = new CoolItem(this.coolBar, SWT.NONE);
+		coolItem.setMinimumSize(size);
+		coolItem.setPreferredSize(coolItem.computeSize(size.x, size.y));
 		coolItem.setControl(toolBar);
-		Point size = toolBar.computeSize( SWT.DEFAULT,SWT.DEFAULT );
-		//Point coolSize = coolItem.computeSize(size.x, COOL_ITEM_HEIGHT);
-		Point coolSize = coolItem.computeSize(size.x, size.y);
-		coolItem.setMinimumSize(coolSize);
-		coolItem.setSize(coolSize);
 	}
 	
 	public void createMenu() {
