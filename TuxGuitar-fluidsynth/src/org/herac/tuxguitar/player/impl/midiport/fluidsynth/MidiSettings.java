@@ -9,10 +9,17 @@ import org.herac.tuxguitar.gui.system.plugins.TGPluginConfigManager;
 public class MidiSettings {
 	
 	public static final String AUDIO_DRIVER = "audio.driver";
+	public static final String AUDIO_SAMPLE_FORMAT = "audio.sample-format";
 	public static final String AUDIO_PERIOD_SIZE = "audio.period-size";
+	public static final String AUDIO_PERIOD_COUNT = "audio.periods";
 	public static final String SYNTH_GAIN = "synth.gain";
+	public static final String SYNTH_POLYPHONY = "synth.polyphony";
+	public static final String SYNTH_SAMPLE_RATE = "synth.sample-rate";
 	public static final String SYNTH_REVERB_ACTIVE = "synth.reverb.active";
 	public static final String SYNTH_CHORUS_ACTIVE = "synth.chorus.active";
+	
+	public static final String SYNTH_AUDIO_CHANNELS = "synth.audio-channels";
+	public static final String SYNTH_AUDIO_GROUPS = "synth.audio-groups";
 	
 	private TGConfigManager config;
 	private MidiOutputPortProviderImpl provider;
@@ -45,6 +52,11 @@ public class MidiSettings {
 		return getConfig().getStringConfigValue(property, this.getSynth().getStringProperty( property ));
 	}
 	
+	public boolean getBooleanValue( String property ){
+		String value = this.getStringValue(property);
+		return (value != null && value.equals("yes"));
+	}
+	
 	public void setDoubleValue( String property , double value ){
 		getConfig().setProperty( property , value );
 	}
@@ -59,6 +71,10 @@ public class MidiSettings {
 		}else{
 			getConfig().setProperty( property , value );
 		}
+	}
+	
+	public void setBooleanValue( String property , boolean value ){
+		this.setStringValue(property, ( value ? "yes" : "no" ) );
 	}
 	
 	public List getSoundfonts(){
@@ -91,10 +107,14 @@ public class MidiSettings {
 	public void apply(){
 		if(this.getSynth() != null && this.getSynth().isInitialized()){
 			this.getSynth().setStringProperty( AUDIO_DRIVER, getStringValue( AUDIO_DRIVER) );
+			this.getSynth().setStringProperty( AUDIO_SAMPLE_FORMAT, getStringValue( AUDIO_SAMPLE_FORMAT) );
 			this.getSynth().setIntegerProperty(AUDIO_PERIOD_SIZE, getIntegerValue( AUDIO_PERIOD_SIZE) );
+			this.getSynth().setIntegerProperty(AUDIO_PERIOD_COUNT, getIntegerValue( AUDIO_PERIOD_COUNT) );
+			this.getSynth().setDoubleProperty(SYNTH_GAIN, getDoubleValue( SYNTH_GAIN ) );
+			this.getSynth().setDoubleProperty(SYNTH_SAMPLE_RATE, getDoubleValue( SYNTH_SAMPLE_RATE ) );
 			this.getSynth().setStringProperty(SYNTH_REVERB_ACTIVE, getStringValue( SYNTH_REVERB_ACTIVE) );
 			this.getSynth().setStringProperty(SYNTH_CHORUS_ACTIVE, getStringValue( SYNTH_CHORUS_ACTIVE) );
-			this.getSynth().setDoubleProperty(SYNTH_GAIN, getDoubleValue( SYNTH_GAIN ) );
+			this.getSynth().setIntegerProperty(SYNTH_POLYPHONY, getIntegerValue( SYNTH_POLYPHONY ) );
 			this.getSynth().reconnect();
 		}
 	}
