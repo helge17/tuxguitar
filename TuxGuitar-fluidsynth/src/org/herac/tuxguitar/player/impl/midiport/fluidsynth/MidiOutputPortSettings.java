@@ -59,7 +59,6 @@ public class MidiOutputPortSettings extends MidiSettings {
 		cSoundfontsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		final Table soundfontsTable = new Table(cSoundfontsTable, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
-		//soundfontsTable.setLayoutData(new GridData(TABLE_WIDTH,TABLE_HEIGHT));
 		soundfontsTable.setLayoutData(getTableData());
 		soundfontsTable.setHeaderVisible(true);
 		
@@ -396,9 +395,9 @@ public class MidiOutputPortSettings extends MidiSettings {
 	protected void fillSynthGainScale( Scale scale ){
 		double[] range = getSynth().getDoublePropertyRange( MidiSettings.SYNTH_GAIN );
 		if( range.length == 2 ){
-			int value = (int)Math.round( getDoubleValue( MidiSettings.SYNTH_GAIN ) );
-			int minimum = (int)Math.round( range[0] );
-			int maximum = (int)Math.round( range[1] );
+			int value = (int)Math.round( getDoubleValue( MidiSettings.SYNTH_GAIN ) * 10f );
+			int minimum = (int)Math.round( range[0] * 10 );
+			int maximum = (int)Math.round( range[1] * 10 );
 			if( minimum < maximum ){
 				scale.setMinimum( minimum );
 				scale.setMaximum( maximum );
@@ -471,12 +470,13 @@ public class MidiOutputPortSettings extends MidiSettings {
 	}
 	
 	protected void updateSynthGainSelection( int value ){
+		double doubleValue = ( value / 10.00 );
 		double[] range = getSynth().getDoublePropertyRange( MidiSettings.SYNTH_GAIN );
 		if( range.length == 2 ){
 			int minimum = (int)Math.round( range[0] );
 			int maximum = (int)Math.round( range[1] );
-			if( minimum < maximum && value >= minimum && value <= maximum ){
-				setDoubleValue( MidiSettings.SYNTH_GAIN , value );
+			if( minimum < maximum && doubleValue >= minimum && doubleValue <= maximum ){
+				setDoubleValue( MidiSettings.SYNTH_GAIN , doubleValue );
 			}
 		}
 	}
