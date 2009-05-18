@@ -402,7 +402,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 				scale.setMinimum( minimum );
 				scale.setMaximum( maximum );
 				scale.setIncrement(1);
-				scale.setPageIncrement(1);
+				scale.setPageIncrement(10);
 				if( value >= minimum && value <= maximum ){
 					scale.setSelection( value );
 				}

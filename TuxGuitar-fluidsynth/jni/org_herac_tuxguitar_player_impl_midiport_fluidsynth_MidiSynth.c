@@ -211,16 +211,15 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		double value = 0;
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		
-		fluid_settings_getnum(handle->settings,(char *)jkey, &value );
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(D)V");
 		if (mid != 0){
+			double value = 0;
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			
+			fluid_settings_getnum(handle->settings,(char *)jkey, &value );
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (jdouble)value );
 		}
 	}
@@ -231,16 +230,15 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		int value = 0;
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		
-		fluid_settings_getint(handle->settings,(char *)jkey, &value );
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(I)V");
 		if (mid != 0){
+			int value = 0;
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			
+			fluid_settings_getint(handle->settings,(char *)jkey, &value );
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (jint)value );
 		}
 	}
@@ -251,17 +249,17 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		char *value = NULL;
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		
-		fluid_settings_getstr(handle->settings,(char *)jkey, &value );
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
-		jstring jvalue = (*env)->NewStringUTF(env, value);
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(Ljava/lang/String;)V");
 		if (mid != 0){
+			jstring jvalue = NULL;
+			char *value = NULL;
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			
+			fluid_settings_getstr(handle->settings,(char *)jkey, &value );
+			jvalue = (*env)->NewStringUTF(env, value);
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , jvalue );
 		}
 	}
@@ -272,14 +270,13 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		double value = fluid_settings_getnum_default(handle->settings,(char *)jkey);
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(D)V");
 		if (mid != 0){
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			double value = fluid_settings_getnum_default(handle->settings,(char *)jkey);
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (jdouble)value );
 		}
 	}
@@ -290,14 +287,13 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		int value = fluid_settings_getint_default(handle->settings,(char *)jkey);
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(I)V");
 		if (mid != 0){
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			int value = fluid_settings_getint_default(handle->settings,(char *)jkey);
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (jint)value );
 		}
 	}
@@ -308,15 +304,14 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		char *value = fluid_settings_getstr_default(handle->settings,(char *)jkey);
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
-		jstring jvalue = (*env)->NewStringUTF(env, value);
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(Ljava/lang/String;)V");
 		if (mid != 0){
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			char *value = fluid_settings_getstr_default(handle->settings,(char *)jkey);
+			jstring jvalue = (*env)->NewStringUTF(env, value);
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , jvalue );
 		}
 	}
@@ -327,19 +322,18 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		double minimum = 0;
-		double maximum = 0;
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		
-		fluid_settings_getnum_range(handle->settings,(char *)jkey, &minimum , &maximum );
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass clMin = (*env)->GetObjectClass(env, minimumRef);
 		jclass clMax = (*env)->GetObjectClass(env, maximumRef);
 		jmethodID midMin = (*env)->GetMethodID(env, clMin, "setValue", "(D)V");
 		jmethodID midMax = (*env)->GetMethodID(env, clMax, "setValue", "(D)V");
 		if (midMin != 0 && midMax != 0){
+			double minimum = 0;
+			double maximum = 0;
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			
+			fluid_settings_getnum_range(handle->settings,(char *)jkey, &minimum , &maximum );
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, minimumRef , midMin , (jdouble)minimum );
 			(*env)->CallVoidMethod( env, maximumRef , midMax , (jdouble)maximum );
 		}
@@ -351,19 +345,18 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		int minimum = 0;
-		int maximum = 0;
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		
-		fluid_settings_getint_range(handle->settings,(char *)jkey, &minimum , &maximum );
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass clMin = (*env)->GetObjectClass(env, minimumRef);
 		jclass clMax = (*env)->GetObjectClass(env, maximumRef);
 		jmethodID midMin = (*env)->GetMethodID(env, clMin, "setValue", "(I)V");
 		jmethodID midMax = (*env)->GetMethodID(env, clMax, "setValue", "(I)V");
 		if (midMin != 0 && midMax != 0){
+			int minimum = 0;
+			int maximum = 0;
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			
+			fluid_settings_getint_range(handle->settings,(char *)jkey, &minimum , &maximum );
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, minimumRef , midMin , (jint)minimum );
 			(*env)->CallVoidMethod( env, maximumRef , midMax , (jint)maximum );
 		}
@@ -375,11 +368,11 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL){
+		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
 		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc(sizeof(fluid_settings_foreach_option_data*));
 		data->env = env;
 		data->options = options;
 		
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
 		fluid_settings_foreach_option(handle->settings, (char *)jkey, data, fluid_settings_foreach_option_callback );
 		(*env)->ReleaseStringUTFChars(env, key, jkey);
 		
@@ -392,14 +385,13 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
-		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		int value = fluid_settings_is_realtime(handle->settings,(char *)jkey);
-		
-		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
 		jclass cl = (*env)->GetObjectClass(env, ref);
 		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(Z)V");
 		if (mid != 0){
+			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+			int value = fluid_settings_is_realtime(handle->settings,(char *)jkey);
+			
+			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (value != 0 ? JNI_TRUE : JNI_FALSE) );
 		}
 	}
