@@ -131,7 +131,7 @@ public class MidiSettings {
 		if( newValue != null ){
 			if( oldValue == null || !newValue.equals( oldValue ) ){
 				this.getSynth().setStringProperty( property, newValue );
-				this.restartSynth = (!this.getSynth().isRealtimeProperty( property ));
+				this.restartSynth = (this.restartSynth || !this.getSynth().isRealtimeProperty( property ));
 			}
 		}
 	}
@@ -141,7 +141,7 @@ public class MidiSettings {
 		double oldValue = this.getSynth().getDoubleProperty( property );
 		if( newValue != oldValue ){
 			this.getSynth().setDoubleProperty( property, newValue );
-			this.restartSynth = (!this.getSynth().isRealtimeProperty( property ));
+			this.restartSynth = (this.restartSynth || !this.getSynth().isRealtimeProperty( property ));
 		}
 	}
 	
@@ -150,7 +150,7 @@ public class MidiSettings {
 		int oldValue = this.getSynth().getIntegerProperty( property );
 		if( newValue != oldValue ){
 			this.getSynth().setIntegerProperty( property, newValue );
-			this.restartSynth = (!this.getSynth().isRealtimeProperty( property ));
+			this.restartSynth = (this.restartSynth || !this.getSynth().isRealtimeProperty( property ));
 		}
 	}
 }
