@@ -199,6 +199,14 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_getPropertyOptions
   (JNIEnv *, jobject, jlong, jstring, jobject);
 
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth
+ * Method:    isRealtimeProperty
+ * Signature: (JLjava/lang/String;Lorg/herac/tuxguitar/player/impl/midiport/fluidsynth/type/BooleanRef;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_isRealtimeProperty
+  (JNIEnv *, jobject, jlong, jstring, jobject);
+
 #ifdef __cplusplus
 }
 #endif

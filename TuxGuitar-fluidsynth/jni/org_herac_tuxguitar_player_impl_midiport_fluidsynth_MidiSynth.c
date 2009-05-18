@@ -386,3 +386,21 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		free ( data );
 	}
 }
+
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_isRealtimeProperty(JNIEnv* env, jobject obj, jlong ptr, jstring key, jobject ref)
+{
+	fluid_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL && handle->settings != NULL && key != NULL ){
+		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
+		int value = fluid_settings_is_realtime(handle->settings,(char *)jkey);
+		
+		(*env)->ReleaseStringUTFChars(env, key, jkey);
+		
+		jclass cl = (*env)->GetObjectClass(env, ref);
+		jmethodID mid = (*env)->GetMethodID(env, cl, "setValue", "(Z)V");
+		if (mid != 0){
+			(*env)->CallVoidMethod( env, ref , mid , (value != 0 ? JNI_TRUE : JNI_FALSE) );
+		}
+	}
+}
