@@ -3,6 +3,7 @@ package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.BooleanRef;
 import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.DoubleRef;
 import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.IntegerRef;
 import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.StringRef;
@@ -191,6 +192,14 @@ public class MidiSynth {
 		return new double[]{ minimum.getValue() , maximum.getValue() };
 	}
 	
+	public boolean isRealtimeProperty( String key ){
+		BooleanRef value = new BooleanRef();
+		if(isInitialized()){
+			this.isRealtimeProperty(this.instance, key, value);
+		}
+		return value.getValue();
+	}
+	
 	private native long malloc();
 	
 	private native void free(long instance);
@@ -239,4 +248,5 @@ public class MidiSynth {
 	
 	private native void getPropertyOptions(long instance, String key , List options );
 	
+	private native void isRealtimeProperty(long instance, String key , BooleanRef ref );
 }

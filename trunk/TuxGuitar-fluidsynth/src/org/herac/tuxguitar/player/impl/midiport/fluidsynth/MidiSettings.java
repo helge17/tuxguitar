@@ -24,6 +24,8 @@ public class MidiSettings {
 	private TGConfigManager config;
 	private MidiOutputPortProviderImpl provider;
 	
+	private boolean restartSynth;
+	
 	public MidiSettings(MidiOutputPortProviderImpl provider){
 		this.provider = provider;
 	}
@@ -106,16 +108,49 @@ public class MidiSettings {
 	
 	public void apply(){
 		if(this.getSynth() != null && this.getSynth().isInitialized()){
-			this.getSynth().setStringProperty( AUDIO_DRIVER, getStringValue( AUDIO_DRIVER) );
-			this.getSynth().setStringProperty( AUDIO_SAMPLE_FORMAT, getStringValue( AUDIO_SAMPLE_FORMAT) );
-			this.getSynth().setIntegerProperty(AUDIO_PERIOD_SIZE, getIntegerValue( AUDIO_PERIOD_SIZE) );
-			this.getSynth().setIntegerProperty(AUDIO_PERIOD_COUNT, getIntegerValue( AUDIO_PERIOD_COUNT) );
-			this.getSynth().setDoubleProperty(SYNTH_GAIN, getDoubleValue( SYNTH_GAIN ) );
-			this.getSynth().setDoubleProperty(SYNTH_SAMPLE_RATE, getDoubleValue( SYNTH_SAMPLE_RATE ) );
-			this.getSynth().setStringProperty(SYNTH_REVERB_ACTIVE, getStringValue( SYNTH_REVERB_ACTIVE) );
-			this.getSynth().setStringProperty(SYNTH_CHORUS_ACTIVE, getStringValue( SYNTH_CHORUS_ACTIVE) );
-			this.getSynth().setIntegerProperty(SYNTH_POLYPHONY, getIntegerValue( SYNTH_POLYPHONY ) );
-			this.getSynth().reconnect();
+			this.restartSynth = false;
+			this.applyStringProperty( AUDIO_DRIVER );
+			this.applyStringProperty( AUDIO_SAMPLE_FORMAT );
+			this.applyIntegerProperty(AUDIO_PERIOD_SIZE );
+			this.applyIntegerProperty(AUDIO_PERIOD_COUNT );
+			this.applyDoubleProperty(SYNTH_GAIN );
+			this.applyDoubleProperty(SYNTH_SAMPLE_RATE );
+			this.applyStringProperty(SYNTH_REVERB_ACTIVE );
+			this.applyStringProperty(SYNTH_CHORUS_ACTIVE );
+			this.applyIntegerProperty(SYNTH_POLYPHONY );
+			if( this.restartSynth ){
+				this.getSynth().reconnect();
+				this.restartSynth = false;
+			}
+		}
+	}
+	
+	private void applyStringProperty( String property ){
+		String newValue = this.getStringValue( property );
+		String oldValue = this.getSynth().getStringProperty( property );
+		if( newValue != null ){
+			if( oldValue == null || !newValue.equals( oldValue ) ){
+				this.getSynth().setStringProperty( property, newValue );
+				this.restartSynth = (!this.getSynth().isRealtimeProperty( property ));
+			}
+		}
+	}
+	
+	private void applyDoubleProperty( String property ){
+		double newValue = this.getDoubleValue( property );
+		double oldValue = this.getSynth().getDoubleProperty( property );
+		if( newValue != oldValue ){
+			this.getSynth().setDoubleProperty( property, newValue );
+			this.restartSynth = (!this.getSynth().isRealtimeProperty( property ));
+		}
+	}
+	
+	private void applyIntegerProperty( String property ){
+		int newValue = this.getIntegerValue( property );
+		int oldValue = this.getSynth().getIntegerProperty( property );
+		if( newValue != oldValue ){
+			this.getSynth().setIntegerProperty( property, newValue );
+			this.restartSynth = (!this.getSynth().isRealtimeProperty( property ));
 		}
 	}
 }
