@@ -60,11 +60,7 @@ public class TGVoiceImpl extends TGVoice{
 	public int getPosX() {
 		return this.getBeatImpl().getPosX();
 	}
-	/*
-	public void setPosX(int posX) {
-		this.posX = posX;
-	}
-	*/
+	
 	public int getWidth() {
 		return this.width;
 	}
@@ -366,59 +362,45 @@ public class TGVoiceImpl extends TGVoice{
 	public void paintSilence(ViewLayout layout,TGPainter painter, int fromX, int fromY) {
 		int style = layout.getStyle();
 		int x = 0;
-		//int firstLineY = 0;
 		int lineSpacing = 0;
-		//int lineCount = 0;
-		float y = 0;//this.silenceY;//(this.silenceMoved ? this.silenceY : 0);
+		float y = 0;
 		float scale = 0;
 		
 		if((style & ViewLayout.DISPLAY_SCORE) != 0 ){
 			x = fromX + getPosX() + getBeatImpl().getSpacing();
 			y = fromY + getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) + this.silenceY;
 			lineSpacing = layout.getScoreLineSpacing();
-			//lineCount = 5;
 			scale = (lineSpacing / 9.0f);
 		}else{
 			x = fromX + getPosX() + getBeatImpl().getSpacing() - 1;
 			y = fromY + getPaintPosition(TrackSpacing.POSITION_TABLATURE) + this.silenceY;
 			lineSpacing = layout.getStringSpacing();
-			//lineCount = getBeat().getMeasure().getTrack().stringCount();
 			scale = (lineSpacing / 10.0f);
 		}
 		
 		setStyle(layout, painter,(layout.isPlayModeEnabled() && isPlaying(layout)));
 		painter.initPath(TGPainter.PATH_FILL);
 		
-		//(this.centerPosition ? : firstLineY );
-		
 		int duration = getDuration().getValue();
 		if(duration == TGDuration.WHOLE){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ( lineCount <= 5 ? lineSpacing : lineSpacing * 2 ));
 			TGSilencePainter.paintWhole(painter, x, y , scale);
 		}
 		else if(duration == TGDuration.HALF){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ( lineCount <= 5 ? lineSpacing * 2 : lineSpacing * 3 ) - (scale * 3));
 			TGSilencePainter.paintHalf(painter, x, y , scale);
 		}
 		else if(duration == TGDuration.QUARTER){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ((lineSpacing * (lineCount - 1)) / 2) - (scale * 8));
 			TGSilencePainter.paintQuarter(painter, x, y, scale);
 		}
 		else if(duration == TGDuration.EIGHTH){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ((lineSpacing * (lineCount - 1)) / 2) - (scale * 6));
 			TGSilencePainter.paintEighth(painter, x, y, scale);
 		}
 		else if(duration == TGDuration.SIXTEENTH){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ((lineSpacing * (lineCount - 1)) / 2) - (scale * 8));
 			TGSilencePainter.paintSixteenth(painter, x, y, scale);
 		}
 		else if(duration == TGDuration.THIRTY_SECOND){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ((lineSpacing * (lineCount - 1)) / 2) - (scale * 12));
-			
 			TGSilencePainter.paintThirtySecond(painter, x, y, scale);
 		}
 		else if(duration == TGDuration.SIXTY_FOURTH){
-			//y += (this.silenceMoved ? firstLineY : firstLineY + ((lineSpacing * (lineCount - 1)) / 2) - (scale * 14));
 			TGSilencePainter.paintSixtyFourth(painter, x, y, scale);
 		}
 		
@@ -488,21 +470,6 @@ public class TGVoiceImpl extends TGVoice{
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath();
 				painter.setLineWidth( (int)verticalLineWidth );
-				/*
-				boolean painting = false;
-				boolean[] usedStrings = getUsedStrings();
-				for (int i = 0; i < usedStrings.length; i++) {
-					if (!usedStrings[i] && painting) {
-						int stringPosition = (fromY + (stringSpacing * (i + 1)) - stringSpacing);
-						int posY1 = stringPosition - (stringSpacing / 2);
-						int posY2 = stringPosition + (stringSpacing / 2);
-						posY2 = ((posY2 - posY1 < stringSpacing)?posY2 + 1:posY2);
-						painter.moveTo(x, posY1);
-						painter.lineTo(x, posY2);
-					}
-					painting = ( painting || usedStrings[i] );
-				}
-				*/
 				painter.moveTo(x, y1);
 				painter.lineTo(x, y2);
 				painter.closePath();
@@ -546,8 +513,6 @@ public class TGVoiceImpl extends TGVoice{
 			//-------------puntillo--------------------------------------
 			if (getDuration().isDotted() || getDuration().isDoubleDotted()) {
 				int joinedType = getJoinedType();
-				
-				//float scale = (stringSpacing / 10.0f);
 				float posX = ((getDuration().getValue() > TGDuration.WHOLE)?((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT || joinedType == TGVoiceImpl.JOINED_TYPE_RIGHT)?(x+ (4.0f * scale)):(x- (5.0f * scale))):x);
 				float posY = (y2 - ((getDuration().getValue() >= TGDuration.EIGHTH)? ((stringSpacing / 2) * (getDuration().getIndex() - 2)):(1.0f * scale)));
 				paintDot(layout, painter, posX, posY,scale);
@@ -620,14 +585,11 @@ public class TGVoiceImpl extends TGVoice{
 						}
 						int hY1 = fromY + this.group.getY2(layout,hX1,key,clef);
 						int hY2 = fromY + this.group.getY2(layout,hX2,key,clef);
-						//painter.setLineWidth(3);
 						painter.setLineWidth(Math.max(1,Math.round(3f * scale)));
 						painter.initPath();
 						for(int i = 0; i <= index; i ++){
 							painter.moveTo(fromX + xMove + hX1, hY1 - ( (i * (5f * scale)) * dir));
 							painter.lineTo(fromX + xMove + hX2, hY2 - ( (i * (5f * scale)) * dir));
-							//painter.moveTo(fromX + xMove + hX1, hY1 - ( (i * (scale/1.6f)) * dir));
-							//painter.lineTo(fromX + xMove + hX2, hY2 - ( (i * (scale/1.6f)) * dir));
 						}
 						painter.closePath();
 						painter.setLineWidth(1);

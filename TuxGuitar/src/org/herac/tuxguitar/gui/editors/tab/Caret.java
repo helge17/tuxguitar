@@ -221,11 +221,6 @@ public class Caret {
 		if (this.selectedBeat != null && !this.selectedBeat.getVoice(getVoice()).isRestVoice()) {
 			this.selectedBeat.getVoice(getVoice()).getDuration().copy(this.selectedDuration);
 		}
-		/*
-		if (this.selectedBeat != null && !this.selectedBeat.isRestBeat()) {
-			this.selectedBeat.getDuration().copy(this.selectedDuration);
-		}
-		*/
 	}
 	
 	public void moveUp() {
@@ -325,9 +320,6 @@ public class Caret {
 	}
 	
 	private void updateBeat(){
-		// TODO: Check why it's setted again. and remove if it's not needed.
-		//this.selectedBeat = getSongManager().getMeasureManager().getBeat(getMeasure(),getPosition());
-		
 		this.restBeat = this.selectedBeat.isRestBeat();
 	}
 	

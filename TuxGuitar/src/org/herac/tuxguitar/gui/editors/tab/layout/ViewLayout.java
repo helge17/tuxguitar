@@ -265,7 +265,6 @@ public abstract class ViewLayout {
 	
 	protected void checkDefaultSpacing(TrackSpacing ts){
 		int checkPosition = -1;
-		//int minBufferSeparator = (Math.round( getMinBufferSeparator() * getScale() ));
 		int minBufferSeparator = getMinBufferSeparator();
 		if( (this.style & DISPLAY_SCORE) != 0 ){
 			int bufferSeparator = (ts.getPosition(TrackSpacing.POSITION_SCORE_UP_LINES) - ts.getPosition(TrackSpacing.POSITION_BUFFER_SEPARATOR));

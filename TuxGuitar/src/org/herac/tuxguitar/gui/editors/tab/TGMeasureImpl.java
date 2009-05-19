@@ -135,7 +135,6 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private int widthBeats = 0;
 	
-	//private List beatGroups; //TODO: borrar
 	private List[] voiceGroups;
 	
 	private TGMeasureBuffer buffer;
@@ -162,7 +161,6 @@ public class TGMeasureImpl extends TGMeasure{
 	public TGMeasureImpl(TGMeasureHeader header) {
 		super(header);
 		this.registeredAccidentals = new boolean[11][7];
-		//this.beatGroups = new ArrayList();
 		this.voiceGroups = new List[TGBeat.MAX_VOICES];
 		for(int v = 0 ; v < TGBeat.MAX_VOICES; v ++){
 			this.voiceGroups[v] = new ArrayList();
@@ -231,15 +229,10 @@ public class TGMeasureImpl extends TGMeasure{
 		TGDuration minDuration = null;
 		TGBeatImpl previousBeat = null;
 		TGVoiceImpl[] previousVoices = new TGVoiceImpl[TGBeat.MAX_VOICES];
-		//TGBeatGroup group = null;
 		TGBeatGroup[] groups = new TGBeatGroup[TGBeat.MAX_VOICES];
 		
 		int style = layout.getStyle();
 		int minimunChordLength = 0;
-		//int[] minimumNote = new int[TGBeat.MAX_VOICES];
-		//int[] maximumNote = new int[TGBeat.MAX_VOICES];
-		//boolean beatChanged = false;
-		//boolean voiceChanged[] = new boolean[TGBeat.MAX_VOICES];
 		
 		boolean[] notEmptyVoicesChecked = new boolean[TGBeat.MAX_VOICES];
 		boolean chordEnabled = ((style & (ViewLayout.DISPLAY_CHORD_DIAGRAM | ViewLayout.DISPLAY_CHORD_NAME)) != 0);
@@ -276,7 +269,6 @@ public class TGMeasureImpl extends TGMeasure{
 						this.notEmptyVoices ++;
 					}
 					
-					//voiceChanged[v] = true;
 					Iterator it = voice.getNotes().iterator();
 					while(it.hasNext()){
 						TGNoteImpl note = (TGNoteImpl)it.next();
@@ -312,60 +304,7 @@ public class TGMeasureImpl extends TGMeasure{
 			if (emptyBeat){
 				System.out.println( "Empty Beat !!!!!! " + beat.getStart() + "  " + i);
 			}
-			/*
-			for( int v = 0; v < TGBeat.MAX_VOICES; v ++){
-				TGVoiceImpl voice = (TGVoiceImpl)beat.getVoice(v);
-				if(!voice.isEmpty()){					
-					//
-				}
-			}
-			*/
-			/*
-			for( int v = 0; v < TGBeat.MAX_VOICES; v ++){
-				TGVoiceImpl voice = (TGVoiceImpl)beat.getVoice(v);
-				if(!voice.isEmpty()){
-					voice.reset();
-					if (minDuration == null || voice.getDuration().getTime() <= minDuration.getTime()) {
-						minDuration = voice.getDuration();
-					}
-					
-					voiceChanged[v] = true;
-					Iterator it = voice.getNotes().iterator();
-					while(it.hasNext()){
-						TGNoteImpl note = (TGNoteImpl)it.next();
-						
-						voice.check(note);
-						
-						if( ( groups[v] == null ) || (voiceChanged[v] && !canJoin(layout.getSongManager(),voice,previousVoices[v]) ) ){
-							groups[v] = new TGBeatGroup();
-							this.voiceGroups[v].add(groups[v]);
-						}
-						groups[v].check(note,getClef(), groups[ (v + 1) % groups.length ]);
-						note.setBeatGroup(groups[v]);
-						voiceChanged[v] = false;
-					}
-					
-					if(!voice.isRestVoice()){
-						beat.check(voice.getMinNote());
-						beat.check(voice.getMaxNote());
-					}else{
-						for( int v2 = 0; v2 < TGBeat.MAX_VOICES; v2 ++){
-							if(v2 != voice.getIndex()){
-								TGVoiceImpl voice2 = beat.getVoiceImpl(v2);
-								if( !voice2.isEmpty() && voice2.getDuration().isEqual(voice.getDuration())){
-									if(!voice2.isRestVoice() || !voice2.isHiddenSilence()){
-										voice.setHiddenSilence(true);
-										break;
-									}
-								}
-							}
-						}
-					}
-					makeVoice(layout, voice, previousVoices[v], groups[v]);
-					previousVoices[v] = voice;
-				}
-			}
-			*/
+			
 			makeBeat(layout,beat,previousBeat,chordEnabled);
 			previousBeat = beat;
 		}

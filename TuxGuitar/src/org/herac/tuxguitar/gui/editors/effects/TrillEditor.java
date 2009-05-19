@@ -50,7 +50,6 @@ public class TrillEditor extends SelectionAdapter{
 		//-----defaults-------------------------------------------------
 		int fret = note.getValue();
 		int duration = TGDuration.SIXTEENTH;
-		//Duration duration = new Duration(Duration.SIXTEENTH);
 		if(note.getEffect().isTrill()){
 			fret = note.getEffect().getTrill().getFret();
 			duration = note.getEffect().getTrill().getDuration().getValue();
@@ -64,7 +63,6 @@ public class TrillEditor extends SelectionAdapter{
 		Label fretLabel = new Label(noteGroup,SWT.NONE);
 		
 		fretLabel.setText(TuxGuitar.getProperty("fret") + ": ");
-		//fretLabel.setLayoutData(makeGridData(1));
 		
 		this.fretSpinner = new Spinner(noteGroup,SWT.BORDER);
 		this.fretSpinner.setLayoutData(makeGridData(1));

@@ -196,7 +196,6 @@ public class BendEditor{
 		while(it.hasNext()){
 			Point point = (Point)it.next();
 			if(prevPoint != null){
-				//painter.drawLine(prevPoint.x,prevPoint.y,point.x,point.y);
 				painter.initPath();
 				painter.moveTo(prevPoint.x,prevPoint.y);
 				painter.lineTo(point.x,point.y);

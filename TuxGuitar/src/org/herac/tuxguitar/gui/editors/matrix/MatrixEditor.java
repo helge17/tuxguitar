@@ -82,8 +82,8 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	private float height;
 	private float bufferWidth;
 	private float bufferHeight;
-	private float timeWidth; // = 25;
-	private float lineHeight; // = 10;
+	private float timeWidth;
+	private float lineHeight;
 	private int leftSpacing;
 	private int minNote;
 	private int maxNote;

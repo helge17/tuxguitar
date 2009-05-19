@@ -89,7 +89,6 @@ public class GraceEditor extends SelectionAdapter{
 		Label fretLabel = new Label(noteGroup,SWT.NONE);
 		
 		fretLabel.setText(TuxGuitar.getProperty("fret") + ": ");
-		//fretLabel.setLayoutData(makeGridData(1));
 		
 		this.fretSpinner = new Spinner(noteGroup,SWT.BORDER);
 		this.fretSpinner.setLayoutData(makeGridData(1));

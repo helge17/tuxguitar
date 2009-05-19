@@ -331,7 +331,6 @@ public class FretBoard extends Composite {
 				if(i > 2){
 					painterBuffer.setLineWidth(2);
 				}
-				//painterBuffer.drawLine(this.frets[0], this.strings[i], this.frets[this.frets.length - 1], this.strings[i]);
 				painterBuffer.initPath();
 				painterBuffer.moveTo(this.frets[0], this.strings[i]);
 				painterBuffer.lineTo(this.frets[this.frets.length - 1], this.strings[i]);
@@ -373,7 +372,6 @@ public class FretBoard extends Composite {
 	}
 	
 	private void paintScale(TGPainter painter) {
-		//TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
 		TGTrack track = getTrack();
 		
 		for (int i = 0; i < this.strings.length; i++) {
@@ -403,7 +401,6 @@ public class FretBoard extends Composite {
 	
 	private void paintNotes(TGPainter painter) {
 		if(this.beat != null){
-			//TGTrack track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
 			TGTrack track = getTrack();
 			
 			for(int v = 0; v < this.beat.countVoices(); v ++){

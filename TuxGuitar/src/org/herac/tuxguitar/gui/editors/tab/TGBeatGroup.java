@@ -172,7 +172,6 @@ public class TGBeatGroup {
 			if(y1 < y2 && (y2 - y1) > maxDistance) y2 = (y1 + maxDistance);
 			if(y2 < y1 && (y1 - y2) > maxDistance) y1 = (y2 + maxDistance);
 			
-			//int y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
 			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0){
 				y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
 			}
