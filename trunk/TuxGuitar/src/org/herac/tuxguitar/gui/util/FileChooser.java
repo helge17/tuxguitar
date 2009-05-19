@@ -85,12 +85,12 @@ public class FileChooser {
 		String path = dialog.open();
 		if(path != null){
 			File file = new File(path);
-			if( file.exists() && file.isFile() ){
-				TuxGuitar.instance().getFileHistory().setChooserPath( file.getParent() );
-				return path;
+			File parent = file.getParentFile();
+			if( parent != null && parent.exists() && parent.isDirectory() ){
+				TuxGuitar.instance().getFileHistory().setChooserPath( parent.getAbsolutePath() );
 			}
 		}
-		return null;
+		return path;
 	}
 	
 	private String getFileName(List formats, String defaultName, boolean replaceExtension){
