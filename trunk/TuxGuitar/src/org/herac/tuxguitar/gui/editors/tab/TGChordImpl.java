@@ -311,7 +311,6 @@ public class TGChordImpl extends TGChord {
 			int x2 = x + (i * getStringSpacing());
 			int y1 = y;
 			int y2 = y + ((getFretSpacing() * (MAX_FRETS - 1)));
-			//painter.drawLine(x1,y1,x2,y2);
 			painter.moveTo(x1,y1);
 			painter.lineTo(x2,y2);
 		}
@@ -324,7 +323,6 @@ public class TGChordImpl extends TGChord {
 			int x2 = x + ((getStringSpacing() * (countStrings() - 1)));
 			int y1 = y + (i * getFretSpacing());
 			int y2 = y + (i * getFretSpacing());
-			//painter.drawLine(x1,y1,x2,y2);
 			painter.moveTo(x1,y1);
 			painter.lineTo(x2,y2);
 		}

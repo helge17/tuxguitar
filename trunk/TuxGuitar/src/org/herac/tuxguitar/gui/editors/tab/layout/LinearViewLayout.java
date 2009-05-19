@@ -74,8 +74,6 @@ public class LinearViewLayout extends ViewLayout{
 				if((style & DISPLAY_TABLATURE) != 0){
 					ts.setSize(TrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(minY), getStringSpacing()) ));
 					ts.setSize(TrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max(maxY, track.getTabHeight() + getStringSpacing() + 1) ));
-					//ts.setSize(TrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR,((style & DISPLAY_SCORE) != 0 ?getMinScoreTabSpacing():  ((getStringSpacing() / 2) * 5) +1  ));
-					//ts.setSize(TrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?track.getTabHeight() + getStringSpacing() +1:track.getTabHeight() + ((getStringSpacing() / 2) * 5) +1 ) );
 				}
 				ts.setSize(TrackSpacing.POSITION_LYRIC,10);
 				checkDefaultSpacing(ts);

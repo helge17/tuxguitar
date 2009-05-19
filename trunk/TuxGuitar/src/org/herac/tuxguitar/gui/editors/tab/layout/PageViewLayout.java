@@ -83,8 +83,6 @@ public class PageViewLayout extends ViewLayout{
 					if((style & DISPLAY_TABLATURE) != 0){
 						ts.setSize(TrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
 						ts.setSize(TrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
-						//ts.setSize(TrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR,((style & DISPLAY_SCORE) != 0 ?getMinScoreTabSpacing(): ((getStringSpacing() / 2) * 5) +1 ));
-						//ts.setSize(TrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?track.getTabHeight() + getStringSpacing() +1:track.getTabHeight() + ((getStringSpacing() / 2) * 5) +1 ) );
 					}
 					ts.setSize(TrackSpacing.POSITION_LYRIC,10);
 					checkDefaultSpacing(ts);
@@ -102,7 +100,6 @@ public class PageViewLayout extends ViewLayout{
 							emptyWith = ( emptyWith > clientArea.width ? clientArea.width : emptyWith );
 							paintLines(track,ts,painter, emptyX ,posY, emptyWith);
 						}
-						//paintLines(track,ts,painter,(fromX + MARGIN_LEFT + line.tempWith + 2),posY,((getMaxWidth() - 15) - (fromX + line.tempWith)));
 					}
 					
 					posY += lineHeight + getTrackSpacing();
@@ -125,7 +122,6 @@ public class PageViewLayout extends ViewLayout{
 		int width = this.marginLeft;
 		
 		//verifico si esta en el area de cliente
-		//boolean isAtX = ((posX + fromX) > clientArea.x - 1500 && (posX + fromX) < clientArea.x + clientArea.width + 100);
 		boolean isAtY = (posY + ts.getSize() > clientArea.y && posY < clientArea.y + clientArea.height + 80);
 		
 		int measureSpacing = 0;
@@ -158,7 +154,6 @@ public class PageViewLayout extends ViewLayout{
 				currMeasure.setOutOfBounds(true);
 			}
 			
-			//int measureWidth = ( currMeasure.getWidth(this) + measureSpacing );
 			posX += measureWidth;
 			width += measureWidth;
 		}
@@ -200,7 +195,6 @@ public class PageViewLayout extends ViewLayout{
 	
 	public int getMaxWidth(){
 		if(this.maximumWidth <= 0){
-			//this.maximumWidth = ((TuxGuitar.instance().getShell().getMonitor().getClientArea().width - getTablature().getVerticalBar().getSize().x - 15));
 			int marginLeft = 0;
 			int marginRight = 0;
 			int monitorWidth = getTablature().getMonitor().getClientArea().width;

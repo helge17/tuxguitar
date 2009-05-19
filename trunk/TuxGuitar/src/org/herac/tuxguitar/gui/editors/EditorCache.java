@@ -139,8 +139,6 @@ public class EditorCache {
 	}
 	
 	public boolean isPlaying(TGMeasure measure,TGBeat b){
-		//TGDuration duration = TuxGuitar.instance().getSongManager().getMeasureManager().getMinimumDuration(b);
-		//return (isPlaying(measure) && this.playStart >= b.getStart() && this.playStart < (b.getStart() + duration.getTime()));
 		return (isPlaying(measure) && this.playBeat != null && this.playBeat.getStart() == b.getStart());
 	}
 }
