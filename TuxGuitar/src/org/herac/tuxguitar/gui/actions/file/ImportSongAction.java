@@ -6,6 +6,8 @@
  */
 package org.herac.tuxguitar.gui.actions.file;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
@@ -70,7 +72,7 @@ public class ImportSongAction extends Action {
 	protected void importFile(Object data){
 		final TGSongImporter importer = (TGSongImporter)data;
 		final String path = FileChooser.instance().open(TuxGuitar.instance().getShell(),importer.getFileFormat());
-		if(path == null || !importer.configure(false)){
+		if(!isValidFile(path) || !importer.configure(false)){
 			ActionLock.unlock();
 			return;
 		}
@@ -85,5 +87,13 @@ public class ImportSongAction extends Action {
 				}
 			}
 		}).start();
+	}
+	
+	protected boolean isValidFile( String path ){
+		if( path != null ){
+			File file = new File( path );
+			return ( file.exists() && file.isFile() );
+		}
+		return false;
 	}
 }
