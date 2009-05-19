@@ -13,11 +13,13 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	
 	private static final int TICK_MOVE = 1;
 	
+	private Object lock;
 	private Sequencer sequencer;
 	private Transmitter sequencerTransmitter;
 	private MidiTransmitter transmitter;
 	
 	public MidiSequencerImpl(Sequencer sequencer){
+		this.lock = new Object();
 		this.sequencer = sequencer;
 	}
 	
@@ -144,7 +146,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	
 	public void start() {
 		try {
-			getSequencer().start();
+			this.setRunning( true );
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
@@ -152,8 +154,22 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	
 	public void stop() {
 		try {
-			this.getSequencer().stop();
-			this.reset( true );
+			this.setRunning( false );
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+	}
+	
+	public void setRunning( boolean running ) {
+		try {
+			synchronized ( this.lock ) {
+				if( running && !this.isRunning() ){
+					this.getSequencer().start();
+				}else if( !running && this.isRunning() ){
+					this.getSequencer().stop();
+					this.reset( true );
+				}
+			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}

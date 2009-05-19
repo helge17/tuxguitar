@@ -16,7 +16,9 @@ public class MidiReceiverImpl implements Receiver{
 	
 	public void send(MidiMessage message, long timeStamp) {
 		try {
-			parseMessage(message.getMessage());
+			if( this.sequencer.isRunning() ){
+				parseMessage(message.getMessage());
+			}
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
