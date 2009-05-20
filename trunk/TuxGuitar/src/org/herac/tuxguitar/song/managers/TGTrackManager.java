@@ -304,19 +304,19 @@ public class TGTrackManager {
 		}
 	}
 	
-	public void transposeNotes(TGTrack track, int transposition , boolean tryKeepString, int applyToString){
+	public void transposeNotes(TGTrack track, int transposition , boolean tryKeepString, boolean applyToChords, int applyToString){
 		Iterator it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasure measure = (TGMeasure)it.next();
-			this.songManager.getMeasureManager().transposeNotes(measure, transposition, tryKeepString, applyToString );
+			this.songManager.getMeasureManager().transposeNotes(measure, transposition, tryKeepString, applyToChords, applyToString );
 		}
 	}
 	
-	public void transposeNotes(TGTrack track, int[] transpositionStrings , boolean tryKeepString ){
+	public void transposeNotes(TGTrack track, int[] transpositionStrings , boolean tryKeepString , boolean applyToChords ){
 		Iterator it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasure measure = (TGMeasure)it.next();
-			this.songManager.getMeasureManager().transposeNotes(measure, transpositionStrings, tryKeepString );
+			this.songManager.getMeasureManager().transposeNotes(measure, transpositionStrings, tryKeepString , applyToChords);
 		}
 	}
 	

@@ -60,10 +60,6 @@ public abstract class TGChord {
 		return this.strings;
 	}
 	
-	public void setStrings(int[] strings) {
-		this.strings = strings;
-	}
-	
 	public int countStrings(){
 		return this.strings.length;
 	}

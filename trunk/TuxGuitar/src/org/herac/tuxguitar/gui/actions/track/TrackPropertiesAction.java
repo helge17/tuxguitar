@@ -69,6 +69,7 @@ public class TrackPropertiesAction extends Action {
 	protected List tempStrings;
 	protected Button stringTransposition;
 	protected Button stringTranspositionTryKeepString;
+	protected Button stringTranspositionApplyToChords;
 	protected Spinner stringCountSpinner;
 	protected Combo[] stringCombos = new Combo[MAX_STRINGS];
 	protected Combo offsetCombo;
@@ -271,6 +272,11 @@ public class TrackPropertiesAction extends Action {
 		this.stringTransposition.setText(TuxGuitar.getProperty("tuning.strings.transpose"));
 		this.stringTransposition.setSelection( true );
 		
+		this.stringTranspositionApplyToChords = new Button( bottom , SWT.CHECK );
+		this.stringTranspositionApplyToChords.setLayoutData( new GridData(SWT.FILL,SWT.CENTER,true,true) );
+		this.stringTranspositionApplyToChords.setText(TuxGuitar.getProperty("tuning.strings.transpose.apply-to-chords"));
+		this.stringTranspositionApplyToChords.setSelection( true );
+		
 		this.stringTranspositionTryKeepString = new Button( bottom , SWT.CHECK );
 		this.stringTranspositionTryKeepString.setLayoutData( new GridData(SWT.FILL,SWT.CENTER,true,true) );
 		this.stringTranspositionTryKeepString.setText(TuxGuitar.getProperty("tuning.strings.transpose.try-keep-strings"));
@@ -279,8 +285,10 @@ public class TrackPropertiesAction extends Action {
 		this.stringTransposition.addSelectionListener( new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				Button stringTransposition = TrackPropertiesAction.this.stringTransposition;
+				Button stringTranspositionApplyToChords = TrackPropertiesAction.this.stringTranspositionApplyToChords;
 				Button stringTranspositionTryKeepString = TrackPropertiesAction.this.stringTranspositionTryKeepString;
-				stringTranspositionTryKeepString.setEnabled( ( stringTransposition.isEnabled()  && stringTransposition.getSelection() ) );
+				stringTranspositionApplyToChords.setEnabled( ( stringTransposition.isEnabled() && stringTransposition.getSelection() ) );
+				stringTranspositionTryKeepString.setEnabled( ( stringTransposition.isEnabled() && stringTransposition.getSelection() ) );
 			}
 		});
 	}
@@ -388,6 +396,8 @@ public class TrackPropertiesAction extends Action {
 		final boolean tuningChanges = hasTuningChanges(track,strings);
 		final boolean instrumentChanges = hasInstrumentChanges(track,instrument,percussion);
 		final boolean transposeStrings = (this.stringTransposition.getSelection() && !percussion && !track.isPercussionTrack() );
+		final boolean transposeApplyToChords = (transposeStrings && this.stringTranspositionApplyToChords.getSelection());
+		final boolean transposeTryKeepString = (transposeStrings && this.stringTranspositionTryKeepString.getSelection());
 		
 		try {
 			if(infoChanges || tuningChanges || instrumentChanges){
@@ -418,7 +428,7 @@ public class TrackPropertiesAction extends Action {
 								}
 								//--------------------------------------tuning---------------------------------------
 								if(tuningChanges){
-									updateTrackTunings(track, strings, transposeStrings);
+									updateTrackTunings(track, strings, transposeStrings, transposeTryKeepString, transposeApplyToChords);
 								}
 								//-----------------------------instrument----------------------------------------------
 								if(instrumentChanges){
@@ -499,11 +509,11 @@ public class TrackPropertiesAction extends Action {
 		return false;
 	}
 	
-	protected void updateTrackTunings(TGTrackImpl track, List strings, boolean transposeStrings ){
+	protected void updateTrackTunings(TGTrackImpl track, List strings, boolean transposeStrings , boolean transposeTryKeepString , boolean transposeApplyToChords ){
 		int[] transpositions = getStringTranspositions(track, strings);
 		getSongManager().getTrackManager().changeInstrumentStrings(track,strings);
 		if( transposeStrings ){
-			getSongManager().getTrackManager().transposeNotes(track, transpositions, false );
+			getSongManager().getTrackManager().transposeNotes(track, transpositions, transposeTryKeepString, transposeApplyToChords );
 		}
 	}
 	
@@ -568,6 +578,7 @@ public class TrackPropertiesAction extends Action {
 		}
 		this.offsetCombo.setEnabled(enabled);
 		this.stringTransposition.setEnabled(enabled);
+		this.stringTranspositionApplyToChords.setEnabled(enabled && this.stringTransposition.getSelection());
 		this.stringTranspositionTryKeepString.setEnabled(enabled && this.stringTransposition.getSelection());
 	}
 	

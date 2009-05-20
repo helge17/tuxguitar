@@ -2153,7 +2153,7 @@ public class TGMeasureManager {
 		return true;
 	}
 	
-	public void transposeNotes( TGMeasure measure, int transposition , boolean tryKeepString, int applyToString){
+	public void transposeNotes( TGMeasure measure, int transposition , boolean tryKeepString, boolean applyToChords, int applyToString){
 		if( transposition != 0 ){
 			if( measure != null ){
 				TGTrack track = measure.getTrack();
@@ -2161,14 +2161,14 @@ public class TGMeasureManager {
 					List strings = getSortedStringsByValue(track, ( transposition > 0 ? 1 : -1 ) ) ;
 					for( int i = 0 ; i < measure.countBeats() ; i ++ ){
 						TGBeat beat = measure.getBeat( i );
-						transposeNotes( beat, strings, transposition , tryKeepString, applyToString );
+						transposeNotes( beat, strings, transposition , tryKeepString, applyToChords, applyToString );
 					}
 				}
 			}
 		}
 	}
 	
-	public void transposeNotes( TGMeasure measure, int[] transpositionStrings , boolean tryKeepString ){
+	public void transposeNotes( TGMeasure measure, int[] transpositionStrings , boolean tryKeepString , boolean applyToChords){
 		if( transpositionStrings != null && transpositionStrings.length > 0 ){
 			if( measure != null ){
 				TGTrack track = measure.getTrack();
@@ -2188,7 +2188,7 @@ public class TGMeasureManager {
 								if( transposition != 0 ){
 									int applyToString = notes[i].getString();
 									List strings = getSortedStringsByValue(track, ( transposition > 0 ? 1 : -1 ) ) ;
-									transposeNotes( beat, strings, transposition , tryKeepString, applyToString );
+									transposeNotes( beat, strings, transposition , tryKeepString, applyToChords, applyToString );
 								}
 							}
 						}
@@ -2198,7 +2198,7 @@ public class TGMeasureManager {
 		}
 	}
 	
-	public void transposeNotes( TGBeat beat, List strings, int transposition , boolean tryKeepString, int applyToString){
+	public void transposeNotes( TGBeat beat, List strings, int transposition , boolean tryKeepString, boolean applyToChord, int applyToString){
 		if( transposition != 0 ){
 			List notes = getNotes(beat);
 			
@@ -2215,6 +2215,14 @@ public class TGMeasureManager {
 					}
 					if( note != null ){
 						transposeNote(note, notes, strings, transposition, tryKeepString, false );
+					}
+					
+					if( applyToChord && beat.isChordBeat() ){
+						TGChord chord = beat.getChord();
+						int chordString = ( string.getNumber() - 1 );
+						if( chord.getFretValue( chordString ) >= 0 ){
+							transposeChordNote(chord, chordString, strings, transposition, tryKeepString, false);
+						}
 					}
 				}
 			}
@@ -2289,6 +2297,81 @@ public class TGMeasureManager {
 		// If note can't be transposed, it must be removed.
 		notes.remove( note );
 		removeNote(note);
+		
+		return false;
+	}
+	
+	private boolean transposeChordNote( TGChord chord, int chordString, List strings , int transposition , boolean tryKeepString, boolean forceChangeString ){
+		boolean canTransposeFret = false;
+		
+		int maximumFret = 24;
+		
+		int noteValue = chord.getFretValue( chordString );
+		int noteString = (chordString + 1 );
+		
+		int transposedFret = ( noteValue + transposition );
+		
+		// Check if transposition could be done without change the string
+		if( transposedFret >= 0 && transposedFret <= maximumFret ){
+			// Do it now if keep string is the priority
+			if( !forceChangeString && tryKeepString ){
+				chord.addFretValue(chordString, transposedFret);
+				chord.setFirstFret( -1 );
+				return true;
+			}
+			canTransposeFret = true;
+		}
+		
+		// Check the current string index for this note
+		int stringIndex = -1;
+		for( int i = 0 ; i < strings.size() ; i ++ ){
+			TGString string = ( TGString ) strings.get( i );
+			if( string.getNumber() == noteString ){
+				stringIndex = i;
+				break;
+			}
+		}
+		
+		// Try to change the string of the note
+		TGString string = ( TGString ) strings.get( stringIndex );
+		int transposedValue = ( string.getValue() + noteValue + transposition );
+		int nextStringIndex = ( stringIndex + 1 );
+		while( nextStringIndex >= 0 && nextStringIndex < strings.size() ){
+			TGString nextString = ( TGString ) strings.get( nextStringIndex );
+			int nextChordString = -1;
+			for( int i = 0 ; i < chord.countStrings() ; i ++ ){
+				if( (i + 1) == nextString.getNumber() ){
+					if( chord.getFretValue( i ) >= 0 ){
+						nextChordString = i;
+					}
+				}
+			}
+			
+			int transposedStringFret = ( transposedValue - nextString.getValue() );
+			if( transposedStringFret >= 0 && transposedStringFret <= maximumFret ){
+				if( nextChordString >= 0 ){
+					transposeChordNote(chord, nextChordString , strings, 0 , tryKeepString , !canTransposeFret );
+				}
+				if( nextChordString < 0 || chord.getFretValue( nextChordString ) < 0 ){
+					chord.setFirstFret( -1 );
+					chord.addFretValue( chordString , -1 );
+					chord.addFretValue( ( nextString.getNumber() - 1 ) , transposedStringFret );
+					
+					return true;
+				}
+			}
+			nextStringIndex ++;
+		}
+		
+		// Keep using same string if it's possible
+		if( !forceChangeString && canTransposeFret ){
+			chord.setFirstFret( -1 );
+			chord.addFretValue( chordString , transposedFret );
+			return true;
+		}
+		
+		// If note can't be transposed, it must be removed.
+		chord.addFretValue( chordString , -1 );
 		
 		return false;
 	}
