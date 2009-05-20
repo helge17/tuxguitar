@@ -441,7 +441,7 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 	
 	public void redrawPlayingMode(){
 		if(!TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+			//TuxGuitar.instance().lock();
 			if(!isDisposed()){
 				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){
 					long time = System.currentTimeMillis();
@@ -453,7 +453,7 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 					}
 				}
 			}
-			TuxGuitar.instance().unlock();
+			//TuxGuitar.instance().unlock();
 		}
 	}
 

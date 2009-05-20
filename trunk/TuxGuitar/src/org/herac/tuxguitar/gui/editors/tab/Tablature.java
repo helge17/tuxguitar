@@ -223,7 +223,7 @@ public class Tablature extends Composite {
 	
 	public void redrawPlayingMode(){
 		if(!super.isDisposed() && !isPainting() && !TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+			//TuxGuitar.instance().lock();
 			if(TuxGuitar.instance().getPlayer().isRunning()){
 				this.editorKit.tryBack();
 				this.setPainting(true);
@@ -234,7 +234,7 @@ public class Tablature extends Composite {
 				
 				this.setPainting(false);
 			}
-			TuxGuitar.instance().unlock();
+			//TuxGuitar.instance().unlock();
 		}
 	}
 	

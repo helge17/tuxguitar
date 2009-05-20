@@ -72,7 +72,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		this.hSroll = getComposite().getHorizontalBar();
 		this.hSroll.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				redraw();
+				redrawLocked();
 			}
 		});
 	}
@@ -235,9 +235,17 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		}
 	}
 	
+	public void redrawLocked(){
+		if( !TuxGuitar.instance().isLocked() ){
+			TuxGuitar.instance().lock();
+			redraw();
+			TuxGuitar.instance().unlock();
+		}
+	}
+	
 	public void redraw(){
 		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+			//TuxGuitar.instance().lock();
 			this.updateTable();
 			this.table.getColumnCanvas().setTitle(TuxGuitar.instance().getSongManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
@@ -251,13 +259,13 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 				this.followScroll = false;
 			}
 			getComposite().redraw();
-			TuxGuitar.instance().unlock();
+			//TuxGuitar.instance().unlock();
 		}
 	}
 	
 	public void redrawPlayingMode(){
 		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+			//TuxGuitar.instance().lock();
 			TGMeasure measure =  TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
@@ -270,7 +278,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 				this.selectedTrack = selectedTrack;
 				this.selectedMeasure = selectedMeasure;
 			}
-			TuxGuitar.instance().unlock();
+			//TuxGuitar.instance().unlock();
 		}
 	}
 	
