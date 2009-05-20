@@ -2223,6 +2223,7 @@ public class TGMeasureManager {
 						if( chord.getFretValue( chordString ) >= 0 ){
 							transposeChordNote(chord, chordString, strings, transposition, tryKeepString, false);
 						}
+						chord.setFirstFret( -1 );
 					}
 				}
 			}
@@ -2316,7 +2317,6 @@ public class TGMeasureManager {
 			// Do it now if keep string is the priority
 			if( !forceChangeString && tryKeepString ){
 				chord.addFretValue(chordString, transposedFret);
-				chord.setFirstFret( -1 );
 				return true;
 			}
 			canTransposeFret = true;
@@ -2353,7 +2353,6 @@ public class TGMeasureManager {
 					transposeChordNote(chord, nextChordString , strings, 0 , tryKeepString , !canTransposeFret );
 				}
 				if( nextChordString < 0 || chord.getFretValue( nextChordString ) < 0 ){
-					chord.setFirstFret( -1 );
 					chord.addFretValue( chordString , -1 );
 					chord.addFretValue( ( nextString.getNumber() - 1 ) , transposedStringFret );
 					
@@ -2365,7 +2364,6 @@ public class TGMeasureManager {
 		
 		// Keep using same string if it's possible
 		if( !forceChangeString && canTransposeFret ){
-			chord.setFirstFret( -1 );
 			chord.addFretValue( chordString , transposedFret );
 			return true;
 		}
