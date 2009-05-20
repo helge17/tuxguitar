@@ -253,13 +253,13 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		this.editor.getHorizontalBar().setIncrement(SCROLL_INCREMENT);
 		this.editor.getHorizontalBar().addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				redraw();
+				redrawLocked();
 			}
 		});
 		this.editor.getVerticalBar().setIncrement(SCROLL_INCREMENT);
 		this.editor.getVerticalBar().addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				redraw();
+				redrawLocked();
 			}
 		});
 	}
@@ -672,7 +672,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	protected void setGrids(int grids){
 		this.grids = grids;
 		this.disposeBuffer();
-		this.redraw();
+		this.redrawLocked();
 	}
 	
 	public int getGrids(){
@@ -703,20 +703,28 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		this.playedTrack = -1;
 	}
 	
-	public void redraw(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+	public void redrawLocked(){
+		if(!TuxGuitar.instance().isLocked()){
 			TuxGuitar.instance().lock();
-			
-			this.editor.redraw();
-			this.loadDurationImage(false);
-			
+			this.redraw();
 			TuxGuitar.instance().unlock();
 		}
 	}
 	
+	public void redraw(){
+		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+			//TuxGuitar.instance().lock();
+			
+			this.editor.redraw();
+			this.loadDurationImage(false);
+			
+			//TuxGuitar.instance().unlock();
+		}
+	}
+	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked() && TuxGuitar.instance().getPlayer().isRunning()/* && !this.paintLock.isLocked()*/){
-			TuxGuitar.instance().lock();
+		if(!isDisposed() && !TuxGuitar.instance().isLocked() && TuxGuitar.instance().getPlayer().isRunning()){
+			//TuxGuitar.instance().lock();
 			
 			TGMeasure measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			TGBeat beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
@@ -742,14 +750,14 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				this.playedTrack = currentTrack;
 				this.playedBeat = beat;
 			}
-			TuxGuitar.instance().unlock();
+			//TuxGuitar.instance().unlock();
 		}
 	}
 	
 	protected void configure(){
 		this.config.configure(this.dialog);
 		this.disposeBuffer();
-		this.redraw();
+		this.redrawLocked();
 	}
 	
 	private void layout(){
@@ -891,7 +899,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		
 		public void mouseEnter(MouseEvent e) {
 			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
-				redraw();
+				redrawLocked();
 			}
 		}
 		
