@@ -94,7 +94,11 @@ public class TransposeAction extends Action{
 		
 		final Button applyToAllTracksButton = new Button(options, SWT.CHECK);
 		applyToAllTracksButton.setText(TuxGuitar.getProperty("tools.transpose.apply-to-all-tracks"));
-		applyToAllTracksButton.setSelection(false);
+		applyToAllTracksButton.setSelection(true);
+		
+		final Button applyToChordsButton = new Button(options, SWT.CHECK);
+		applyToChordsButton.setText(TuxGuitar.getProperty("tools.transpose.apply-to-chords"));
+		applyToChordsButton.setSelection(true);
 		
 		final Button tryKeepStringButton = new Button(options, SWT.CHECK);
 		tryKeepStringButton.setText(TuxGuitar.getProperty("tools.transpose.try-keep-strings"));
@@ -114,6 +118,7 @@ public class TransposeAction extends Action{
 				if( transpositionIndex >= 0 && transpositionIndex < transpositions.length ){
 					final int transposition = transpositions[ transpositionIndex ];
 					final boolean tryKeepString = tryKeepStringButton.getSelection();
+					final boolean applyToChords = applyToChordsButton.getSelection();
 					final boolean applyToAllTracks = applyToAllTracksButton.getSelection();
 					final boolean applyToAllMeasures = applyToAllMeasuresButton.getSelection();
 					
@@ -123,7 +128,7 @@ public class TransposeAction extends Action{
 							public void run() throws Throwable {
 								ActionLock.lock();
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-								transpose(transposition, tryKeepString, applyToAllMeasures, applyToAllTracks );
+								transpose(transposition, tryKeepString, applyToChords , applyToAllMeasures, applyToAllTracks );
 								TuxGuitar.instance().updateCache( true );
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 								ActionLock.unlock();
@@ -159,7 +164,7 @@ public class TransposeAction extends Action{
 		return data;
 	}
 	
-	public void transpose( int transposition , boolean tryKeepString , boolean applyToAllMeasures , boolean applyToAllTracks) {
+	public void transpose( int transposition , boolean tryKeepString , boolean applyToChords , boolean applyToAllMeasures , boolean applyToAllTracks) {
 		//comienza el undoable
 		UndoableJoined undoableJoined = new UndoableJoined();
 		
@@ -169,10 +174,10 @@ public class TransposeAction extends Action{
 			if( applyToAllTracks ){
 				TGSong song = getSongManager().getSong();
 				for( int i = 0 ; i < song.countTracks() ; i ++ ){
-					transposeTrack( undoableJoined , song.getTrack( i ) , transposition , tryKeepString );
+					transposeTrack( undoableJoined , song.getTrack( i ) , transposition , tryKeepString , applyToChords);
 				}
 			} else {
-				transposeTrack( undoableJoined , caret.getTrack(), transposition , tryKeepString );
+				transposeTrack( undoableJoined , caret.getTrack(), transposition , tryKeepString , applyToChords);
 			}
 			
 			updateTablature();
@@ -183,11 +188,11 @@ public class TransposeAction extends Action{
 					TGTrack track = song.getTrack( i );
 					TGMeasure measure = getSongManager().getTrackManager().getMeasure(track, caret.getMeasure().getNumber() );
 					if( measure != null ){
-						transposeMeasure( undoableJoined, measure, transposition , tryKeepString );
+						transposeMeasure( undoableJoined, measure, transposition , tryKeepString , applyToChords);
 					}
 				}
 			} else {
-				transposeMeasure( undoableJoined , caret.getMeasure(), transposition , tryKeepString );
+				transposeMeasure( undoableJoined , caret.getMeasure(), transposition , tryKeepString , applyToChords);
 			}
 			fireUpdate( caret.getMeasure().getNumber() );
 		}
@@ -199,24 +204,24 @@ public class TransposeAction extends Action{
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();
 	}
 	
-	public void transposeMeasure( UndoableJoined undoableJoined , TGMeasure measure, int transposition , boolean tryKeepString ) {
+	public void transposeMeasure( UndoableJoined undoableJoined , TGMeasure measure, int transposition , boolean tryKeepString , boolean applyToChords ) {
 		if( transposition != 0 && !measure.getTrack().isPercussionTrack() ){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo( measure );
 			
-			getSongManager().getMeasureManager().transposeNotes( measure , transposition , tryKeepString , -1 );
+			getSongManager().getMeasureManager().transposeNotes( measure , transposition , tryKeepString , applyToChords , -1 );
 			
 			//termia el undoable
 			undoableJoined.addUndoableEdit( undoable.endUndo( measure ) );
 		}
 	}
 	
-	public void transposeTrack( UndoableJoined undoableJoined , TGTrack track, int transposition , boolean tryKeepString ) {
+	public void transposeTrack( UndoableJoined undoableJoined , TGTrack track, int transposition , boolean tryKeepString , boolean applyToChords ) {
 		if( transposition != 0 && !track.isPercussionTrack() ){
 			//comienza el undoable
 			UndoableTrackGeneric undoable = UndoableTrackGeneric.startUndo( track );
 			
-			getSongManager().getTrackManager().transposeNotes( track , transposition , tryKeepString , -1 );
+			getSongManager().getTrackManager().transposeNotes( track , transposition , tryKeepString , applyToChords, -1 );
 			
 			//termia el undoable
 			undoableJoined.addUndoableEdit( undoable.endUndo( track ) );

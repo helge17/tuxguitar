@@ -430,4 +430,18 @@ public class TGChordImpl extends TGChord {
 		}
 		return false;
 	}
+	
+	public void addFretValue(int string,int fret){
+		if(!isDisposed() && this.getFretValue(string) != fret){
+			this.dispose();
+		}
+		super.addFretValue(string, fret);
+	}
+	
+	public void setFirstFret(int firstFret) {
+		if(!isDisposed() && this.getFirstFret() != firstFret){
+			this.dispose();
+		}
+		super.setFirstFret(firstFret);
+	}
 }
