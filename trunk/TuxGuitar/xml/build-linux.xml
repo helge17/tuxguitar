@@ -67,7 +67,7 @@
 		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
 		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
 		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
-		<echo file="${file.script}" append="true">VM_ARGS="-Xms128m -Xmx128m"${line.separator}</echo>
+		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
 		<echo file="${file.script}" append="true">##EXPORT VARS${line.separator}</echo>
 		<echo file="${file.script}" append="true">export CLASSPATH${line.separator}</echo>
 		<echo file="${file.script}" append="true">export LD_LIBRARY_PATH${line.separator}</echo>

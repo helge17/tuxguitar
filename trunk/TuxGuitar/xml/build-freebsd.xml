@@ -51,7 +51,7 @@
 		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
 		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
 		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
-		<echo file="${file.script}" append="true">VM_ARGS="-Xms128m -Xmx128m"${line.separator}</echo>
+		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
 		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
 		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
 		<chmod file="${file.script}" perm="755"/>
