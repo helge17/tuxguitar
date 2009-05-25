@@ -51,6 +51,7 @@ public class LilypondOutputStream {
 		this.manager = new TGSongManager();
 		this.manager.setSong(song);
 		
+		this.addFunctions();
 		this.addVersion();
 		this.addPaper(song);
 		this.addLayout();
@@ -63,6 +64,14 @@ public class LilypondOutputStream {
 	
 	private void addVersion(){
 		this.writer.println("\\version \"" + LILYPOND_VERSION + "\"");
+	}
+	
+	private void addFunctions(){
+		// tab-clear-tied-fret-numbers
+		this.writer.println("#(define (tie::tab-clear-tied-fret-numbers grob)");
+		this.writer.println(indent(1) + "(let* ((tied-fret-nr (ly:spanner-bound grob RIGHT)))");
+		this.writer.println(indent(2) + "(ly:grob-set-property! tied-fret-nr 'transparent #t)))");
+		this.writer.println();
 	}
 	
 	private void addPaper(TGSong song){
@@ -98,7 +107,13 @@ public class LilypondOutputStream {
 		this.writer.println(indent(2) + "\\override TimeSignature #'style = #'numbered");
 		this.writer.println(indent(2) + "\\override Stem #'transparent = #" + getLilypondBoolean(this.settings.isScoreEnabled()));
 		this.writer.println(indent(2) + "\\override Beam #'transparent = #" + getLilypondBoolean(this.settings.isScoreEnabled()));
+		this.writer.println(indent(2) + "\\override Tie  #'after-line-breaking = #tie::tab-clear-tied-fret-numbers");
 		this.writer.println(indent(1) + "}");
+		if( this.settings.isScoreEnabled() ){
+			this.writer.println(indent(1) + "\\context { \\TabVoice");
+			this.writer.println(indent(2) + "\\override Tie #'stencil = ##f");
+			this.writer.println(indent(1) + "}");
+		}
 		this.writer.println(indent(1) + "\\context { \\StaffGroup");
 		this.writer.println(indent(2) + "\\consists \"Instrument_name_engraver\"");
 		this.writer.println(indent(1) + "}");
@@ -151,25 +166,29 @@ public class LilypondOutputStream {
 	}
 	
 	private void addMusic(TGTrack track,String id){
-		this.writer.println(id + "Music = #(define-music-function (parser location inTab) (boolean?)");
-		this.writer.println("#{");
-		TGMeasure previous = null;
-		int count = track.countMeasures();
-		for(int i = 0; i < count; i ++){
-			// TODO: Add multivoice support.
-			TGMeasure srcMeasure = track.getMeasure(i);
-			TGMeasure measure = new TGVoiceJoiner(this.manager.getFactory(),srcMeasure).process();
+		for( int voice = 0 ; voice < TGBeat.MAX_VOICES ; voice ++ ){ 
+		
+			this.writer.println(trackVoiceID(voice,id,"Music") + " = #(define-music-function (parser location inTab) (boolean?)");
+			this.writer.println("#{");
+			this.writer.println(indent(1) + getLilypondVoice(voice));
 			
-			int measureFrom = this.settings.getMeasureFrom();
-			int measureTo = this.settings.getMeasureTo();
-			if((measureFrom <= measure.getNumber() || measureFrom == LilypondSettings.FIRST_MEASURE) && (measureTo >= measure.getNumber() || measureTo == LilypondSettings.LAST_MEASURE )){
-				this.addMeasure(measure,previous,1,(i == (count - 1)));
-				previous = measure;
+			TGMeasure previous = null;
+			int count = track.countMeasures();
+			for(int i = 0; i < count; i ++){
+				TGMeasure measure = track.getMeasure(i);
+				
+				int measureFrom = this.settings.getMeasureFrom();
+				int measureTo = this.settings.getMeasureTo();
+				if((measureFrom <= measure.getNumber() || measureFrom == LilypondSettings.FIRST_MEASURE) && (measureTo >= measure.getNumber() || measureTo == LilypondSettings.LAST_MEASURE )){
+					this.addMeasure(measure,previous,voice,1,(i == (count - 1)));
+					previous = measure;
+				}
 			}
+			this.writer.println(indent(1) + "\\bar \"|.\"");
+			this.writer.println(indent(1) + "\\pageBreak");
+			this.writer.println("#})");
+		
 		}
-		this.writer.println(indent(1) + "\\bar \"|.\"");
-		this.writer.println(indent(1) + "\\pageBreak");
-		this.writer.println("#})");
 	}
 	
 	private void addScoreStaff(TGTrack track,String id){
@@ -177,19 +196,26 @@ public class LilypondOutputStream {
 		boolean addChordDiagrams = this.settings.isChordDiagramEnabled();
 		boolean addTexts = this.settings.isTextEnabled();
 		
-		this.writer.println(id + "Staff = \\new " + (addLyrics ? "Voice = \"" + id + "Staff\" <<" : "Staff {"));
+		this.writer.println(id + "Staff = \\new Staff <<" );
 		
-		if(!addChordDiagrams){
-			this.writer.println(indent(1) + "\\removeWithTag #'chords");
+		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
+			String vId =  trackVoiceID(v, id, "Music") ;
+			this.writer.println(indent(1) + "\\context Voice = \"" + vId + "\" {");
+			if(!addChordDiagrams){
+				this.writer.println(indent(2) + "\\removeWithTag #'chords");
+			}
+			if(!addTexts){
+				this.writer.println(indent(2) + "\\removeWithTag #'texts");
+			}
+			this.writer.println(indent(2) + "\\" + vId + " #" + getLilypondBoolean( false ) );
+			this.writer.println(indent(1) + "}");
 		}
-		if(!addTexts){
-			this.writer.println(indent(1) + "\\removeWithTag #'texts");
-		}
-		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean( false ));
+		
 		if(addLyrics){
-			this.writer.println(indent(1) + "\\new Lyrics \\lyricsto \"" + id + "Staff\" \\" + id + "Lyrics");
+			this.writer.println(indent(1) + "\\new Lyrics \\lyricsto \"" + trackVoiceID(0, id, "Music") + "\" \\" + id + "Lyrics");
 		}
-		this.writer.println( (addLyrics ? ">>" : "}" ) );
+		
+		this.writer.println(">>");
 	}
 	
 	private void addTabStaff(TGTrack track,String id){
@@ -197,21 +223,25 @@ public class LilypondOutputStream {
 		boolean addChordDiagrams = (this.settings.isChordDiagramEnabled() && !this.settings.isScoreEnabled());
 		boolean addTexts = (this.settings.isTextEnabled() && !this.settings.isScoreEnabled());
 		
-		this.writer.println(id + "TabStaff = \\new " + (addLyrics ? "TabVoice = \"" + id + "TabStaff\" <<" : "TabStaff {" ));
+		this.writer.println(id + "TabStaff = \\new TabStaff " + getLilypondTuning(track) + " <<" );
 		
-		this.addTuning(track,1);
-		
-		if(!addChordDiagrams){
-			this.writer.println(indent(1) + "\\removeWithTag #'chords");
+		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
+			String vId =  trackVoiceID(v, id, "Music") ;
+			this.writer.println(indent(1) + "\\context TabVoice = \"" + vId + "\" {");
+			if(!addChordDiagrams){
+				this.writer.println(indent(2) + "\\removeWithTag #'chords");
+			}
+			if(!addTexts){
+				this.writer.println(indent(2) + "\\removeWithTag #'texts");
+			}
+			this.writer.println(indent(2) + "\\" + vId + " #" + getLilypondBoolean( true ) );
+			this.writer.println(indent(1) + "}");
+			
 		}
-		if(!addTexts){
-			this.writer.println(indent(1) + "\\removeWithTag #'texts");
-		}
-		this.writer.println(indent(1) + "\\" + id + "Music #" + getLilypondBoolean( true ));
 		if(addLyrics){
-			this.writer.println(indent(1) + "\\new Lyrics \\lyricsto \"" + id + "TabStaff\" \\" + id + "Lyrics");
+			this.writer.println(indent(1) + "\\new Lyrics \\lyricsto \"" + trackVoiceID(0, id, "Music") + "\" \\" + id + "Lyrics");
 		}
-		this.writer.println( (addLyrics ? ">>" : "}" ) );
+		this.writer.println(">>");
 	}
 	
 	private void addLyrics(TGTrack track,String id){
@@ -230,17 +260,6 @@ public class LilypondOutputStream {
 		this.writer.println("}");
 	}
 	
-	private void addTuning(TGTrack track, int indent){
-		this.writer.print(indent(indent) + "\\set TabStaff.stringTunings = #'(");
-		Iterator strings = track.getStrings().iterator();
-		while(strings.hasNext()){
-			TGString string = (TGString)strings.next();
-			//Lilypond relates string tuning to MIDI middle C (note 60)
-			this.writer.print( (string.getValue() - 60) + " ");
-		}
-		this.writer.println(")");
-	}
-	
 	private void addStaffGroup(TGTrack track,String id){
 		this.writer.println(id + "StaffGroup = \\new StaffGroup <<");
 		if(this.addTrackTitleOnGroup(track.getSong())){
@@ -255,7 +274,7 @@ public class LilypondOutputStream {
 		this.writer.println(">>");
 	}
 	
-	private void addMeasure(TGMeasure measure,TGMeasure previous,int indent,boolean isLast){
+	private void addMeasure(TGMeasure measure,TGMeasure previous,int voice,int indent,boolean isLast){
 		if(previous == null || measure.getTempo().getValue() != previous.getTempo().getValue()){
 			this.addTempo(measure.getTempo(),indent);
 		}
@@ -288,7 +307,7 @@ public class LilypondOutputStream {
 			this.addRepeatAlternativeOpen(indent);
 		}
 		
-		this.addMeasureComponents(measure,(this.temp.isRepeatOpen() || this.temp.isRepeatAlternativeOpen() ? (indent + 1): indent));
+		this.addMeasureComponents(measure,voice,(this.temp.isRepeatOpen() || this.temp.isRepeatAlternativeOpen() ? (indent + 1): indent));
 		
 		// If is last alternative, we can close it now
 		if(this.temp.isRepeatAlternativeOpen() && this.temp.getRepeatAlternativeNumber() >= this.temp.getRepeatCount()){
@@ -388,34 +407,44 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void addMeasureComponents(TGMeasure measure,int indent){
+	private void addMeasureComponents(TGMeasure measure,int voice,int indent){
 		this.writer.print(indent(indent));
-		this.addComponents(measure);
+		this.addComponents(measure,voice);
 		this.writer.println();
 	}
 	
-	private void addComponents(TGMeasure measure){
+	private void addComponents(TGMeasure measure,int vIndex){
 		int key = measure.getKeySignature();
 		TGBeat previous = null;
 		
 		for(int i = 0 ; i < measure.countBeats() ; i ++){
 			TGBeat beat = measure.getBeat( i );
-			TGVoice voice = beat.getVoice(0);
-			TGTupleto tupleto = voice.getDuration().getTupleto();
-			
-			if(previous != null && this.temp.isTupletOpen() && !tupleto.isEqual( previous.getVoice(0).getDuration().getTupleto() )){
-				this.writer.print("} ");
-				this.temp.setTupletOpen(false);
+			TGVoice voice = beat.getVoice( vIndex );
+			if( !voice.isEmpty() ){
+				TGTupleto tupleto = voice.getDuration().getTupleto();
+				
+				if(previous != null && this.temp.isTupletOpen() && !tupleto.isEqual( previous.getVoice(0).getDuration().getTupleto() )){
+					this.writer.print("} ");
+					this.temp.setTupletOpen(false);
+				}
+				
+				if(!this.temp.isTupletOpen() && !tupleto.isEqual(TGTupleto.NORMAL)){
+					this.writer.print("\\times " + tupleto.getTimes() + "/" + tupleto.getEnters() + " {");
+					this.temp.setTupletOpen(true);
+				}
+				
+				this.addBeat(key, beat, voice);
+				
+				previous = beat;
 			}
-			
-			if(!this.temp.isTupletOpen() && !tupleto.isEqual(TGTupleto.NORMAL)){
-				this.writer.print("\\times " + tupleto.getTimes() + "/" + tupleto.getEnters() + " {");
-				this.temp.setTupletOpen(true);
+		}
+		// It Means that all voice beats are empty 
+		if( previous == null ){
+			for( int i = 0; i < measure.getTimeSignature().getNumerator() ; i ++ ){
+				this.writer.print("\\skip ");
+				this.addDuration( measure.getTimeSignature().getDenominator() );
+				this.writer.print(" ");
 			}
-			
-			this.addBeat(key, beat);
-			
-			previous = beat;
 		}
 		
 		if(this.temp.isTupletOpen()){
@@ -424,8 +453,8 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void addBeat(int key,TGBeat beat){
-		TGVoice voice = beat.getVoice(0);
+	private void addBeat(int key,TGBeat beat, TGVoice voice){
+		boolean vibrato = false;
 		if(voice.isRestVoice()){
 			this.writer.print("r");
 			this.addDuration( voice.getDuration() );
@@ -444,6 +473,12 @@ public class LilypondOutputStream {
 					this.addDuration( voice.getDuration() );
 				}
 				this.addString(note.getString());
+				if(note.getEffect().isVibrato()){
+					vibrato = true;
+					if(!(size > 1) && vibrato ){
+						this.addVibrato();
+					}
+				}
 				if(this.isAnyTiedTo(note)){
 					this.writer.print("~");
 				}
@@ -455,19 +490,31 @@ public class LilypondOutputStream {
 			if(size > 1){
 				this.writer.print(">");
 				this.addDuration( voice.getDuration() );
-			}
-			
-			if(beat.isChordBeat()){
-				this.writer.print("-\\tag #'chords ^\\markup \\fret-diagram #\"");
-				TGChord chord = beat.getChord();
-				for( int i = 0; i < chord.countStrings(); i ++){
-					this.writer.print((i + 1) + "-" + getLilypondChordFret(chord.getFretValue( i )) + ";");
+				if( vibrato ){
+					this.addVibrato();
 				}
-				this.writer.print("\"");
 			}
 			
-			if(beat.isTextBeat()){
-				this.writer.print("-\\tag #'texts ^\\markup {\"" + beat.getText().getValue() + "\"}");
+			// Check for chord beat, voice must not be a rest
+			if( !voice.isRestVoice() ){
+				// Do not write same chord on all voices
+				if( voice.getIndex() == 0 || beat.getVoice(0).isEmpty() || beat.getVoice(0).isRestVoice() ) {
+					if(beat.isChordBeat()){
+						this.writer.print("-\\tag #'chords ^\\markup \\fret-diagram #\"");
+						TGChord chord = beat.getChord();
+						for( int i = 0; i < chord.countStrings(); i ++){
+							this.writer.print((i + 1) + "-" + getLilypondChordFret(chord.getFretValue( i )) + ";");
+						}
+						this.writer.print("\"");
+					}
+				}
+			}
+			
+			// Do not write same text on all voices
+			if( voice.getIndex() == 0 || beat.getVoice(0).isEmpty() ) {
+				if(beat.isTextBeat()){
+					this.writer.print("-\\tag #'texts ^\\markup {\"" + beat.getText().getValue() + "\"}");
+				}
 			}
 			
 			if(beat.getMeasure().getTrack().getLyrics().getFrom() > beat.getMeasure().getNumber()){
@@ -495,6 +542,10 @@ public class LilypondOutputStream {
 	
 	private void addDuration(TGDuration duration){
 		this.writer.print(getLilypondDuration(duration));
+	}
+	
+	private void addVibrato(){
+		this.writer.print("\\prall");
 	}
 	
 	private void checkRepeatCount(TGMeasureHeader header){
@@ -586,6 +637,22 @@ public class LilypondOutputStream {
 		return Integer.toString(value);
 	}
 	
+	private String getLilypondTuning(TGTrack track){
+		String tuning = ("\\with { stringTunings = #'( ");
+		Iterator strings = track.getStrings().iterator();
+		while(strings.hasNext()){
+			TGString string = (TGString)strings.next();
+			//Lilypond relates string tuning to MIDI middle C (note 60)
+			tuning += ( (string.getValue() - 60) + " ");
+		}
+		tuning += (") }");
+		return tuning;
+	}
+	
+	private String getLilypondVoice(int voice){
+		return ( voice == 0 ? "\\voiceOne" : "\\voiceTwo" );
+	}
+	
 	private String toBase26(int value){
 		String result = new String();
 		int base = value;
@@ -597,8 +664,11 @@ public class LilypondOutputStream {
 	}
 	
 	private String trackID(int index, String suffix){
-		//Lilypond identifiers must be alphabetic. Base26 of the track index is used for uniqueness.
 		return ("Track" + this.toBase26(index) + suffix);
+	}
+	
+	private String trackVoiceID(int index, String prefix, String suffix){
+		return (prefix + "Voice" + this.toBase26(index) + suffix);
 	}
 	
 	protected class LilypondTempData{
