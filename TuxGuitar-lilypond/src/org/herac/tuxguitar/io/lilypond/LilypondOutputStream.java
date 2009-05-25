@@ -166,11 +166,9 @@ public class LilypondOutputStream {
 	}
 	
 	private void addMusic(TGTrack track,String id){
-		for( int voice = 0 ; voice < TGBeat.MAX_VOICES ; voice ++ ){ 
-		
+		for( int voice = 0 ; voice < TGBeat.MAX_VOICES ; voice ++ ){
 			this.writer.println(trackVoiceID(voice,id,"Music") + " = #(define-music-function (parser location inTab) (boolean?)");
 			this.writer.println("#{");
-			this.writer.println(indent(1) + getLilypondVoice(voice));
 			
 			TGMeasure previous = null;
 			int count = track.countMeasures();
@@ -187,7 +185,6 @@ public class LilypondOutputStream {
 			this.writer.println(indent(1) + "\\bar \"|.\"");
 			this.writer.println(indent(1) + "\\pageBreak");
 			this.writer.println("#})");
-		
 		}
 	}
 	
@@ -289,6 +286,9 @@ public class LilypondOutputStream {
 		if(previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature())){
 			this.addTimeSignature(measure.getTimeSignature(),indent);
 		}
+		
+		// Set the specific voice
+		this.addMeasureVoice(measure,voice, (previous == null), indent);
 		
 		// Open repeat
 		if(measure.isRepeatOpen()){
@@ -405,6 +405,14 @@ public class LilypondOutputStream {
 		if(clefName!=""){
 			this.writer.println(indent(indent) + "\\clef #(if $inTab \"tab\" \"" + clefName + "_8\")");
 		}
+	}
+	
+	private void addMeasureVoice(TGMeasure measure, int voice , boolean force ,int indent){
+		boolean multipleVoices = hasMultipleVoices(measure);
+		if ( force || multipleVoices != this.temp.isMultipleVoices() ){
+			this.writer.println( indent(indent) + getLilypondVoice( multipleVoices ? voice : -1 ) );
+		}
+		this.temp.setMultipleVoices( multipleVoices );
 	}
 	
 	private void addMeasureComponents(TGMeasure measure,int voice,int indent){
@@ -566,6 +574,28 @@ public class LilypondOutputStream {
 		}
 	}
 	
+	private boolean hasMultipleVoices( TGMeasure measure ){
+		int voiceCount = 0;
+		boolean[] voicesUsed = new boolean[ TGBeat.MAX_VOICES ];
+		for( int i = 0 ; i < voicesUsed.length ; i ++ ){
+			voicesUsed[ i ] = false;
+		}
+		for( int i = 0 ; i < measure.countBeats() ; i ++ ){
+			TGBeat beat = measure.getBeat( i );
+			for( int v = 0 ; v < beat.countVoices() ; v ++ ){
+				if( !beat.getVoice( v ).isEmpty() ){
+					voicesUsed[ v ] = true;
+				}
+			}
+		}
+		for( int i = 0 ; i < voicesUsed.length ; i ++ ){
+			if( voicesUsed[ i ] ){
+				voiceCount ++;
+			}
+		}
+		return (voiceCount > 1);
+	}
+	
 	private boolean addTrackTitleOnGroup(TGSong song){
 		if(this.settings.isTrackNameEnabled() && this.settings.isTrackGroupEnabled()){
 			if(this.settings.getTrack() == LilypondSettings.ALL_TRACKS && song.countTracks() > 1){
@@ -650,6 +680,9 @@ public class LilypondOutputStream {
 	}
 	
 	private String getLilypondVoice(int voice){
+		if( voice == -1 ){
+			return "\\oneVoice";
+		}
 		return ( voice == 0 ? "\\voiceOne" : "\\voiceTwo" );
 	}
 	
@@ -678,6 +711,7 @@ public class LilypondOutputStream {
 		private boolean repeatOpen;
 		private boolean repeatAlternativeOpen;
 		private boolean tupletOpen;
+		private boolean multipleVoices;
 		private List skippedLyricBeats;
 		
 		protected LilypondTempData(){
@@ -686,6 +720,7 @@ public class LilypondOutputStream {
 		}
 		
 		public void reset(){
+			this.multipleVoices = false;
 			this.repeatCount = 0;
 			this.repeatOpen = false;
 			this.tupletOpen = false;
@@ -730,6 +765,14 @@ public class LilypondOutputStream {
 		
 		public void setTupletOpen(boolean tupletOpen) {
 			this.tupletOpen = tupletOpen;
+		}
+		
+		public void setMultipleVoices( boolean multipleVoices ){
+			this.multipleVoices = multipleVoices;
+		}
+		
+		public boolean isMultipleVoices() {
+			return this.multipleVoices;
 		}
 		
 		public void addSkippedLyricBeat( String duration ){
