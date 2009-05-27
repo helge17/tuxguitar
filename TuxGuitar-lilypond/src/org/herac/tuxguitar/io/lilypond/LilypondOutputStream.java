@@ -639,6 +639,9 @@ public class LilypondOutputStream {
 		if( effect.isPalmMute() ){
 			this.writer.print("\\palmMute ");
 		}
+		if( effect.isGhostNote() ){
+			this.writer.print("\\parenthesize ");
+		}
 		if( effect.isBend() ){
 			this.writer.print("\\bendAfter #+6 ");
 		}
