@@ -478,9 +478,7 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void addBeat(int key,TGBeat beat, TGVoice voice){
-		List effectsOnBeat = new ArrayList();
-		
+	private void addBeat(int key,TGBeat beat, TGVoice voice){		
 		if(voice.isRestVoice()){
 			this.writer.print("r");
 			this.addDuration( voice.getDuration() );
@@ -493,8 +491,6 @@ public class LilypondOutputStream {
 			int size = voice.countNotes();
 			for(int i = 0 ; i < size ; i ++){
 				TGNote note = voice.getNote(i);
-				
-				this.checkEffectsOnBeat(effectsOnBeat, note.getEffect() );
 				
 				this.addEffectsBeforeNote(note);
 				
@@ -515,7 +511,7 @@ public class LilypondOutputStream {
 			
 			this.addDuration( voice.getDuration() );
 			this.addEffectsOnDuration( voice );
-			this.addEffectsOnBeat(effectsOnBeat);
+			this.addEffectsOnBeat( voice );
 		}
 		
 		// Check for chord beat, voice must not be a rest
@@ -643,6 +639,9 @@ public class LilypondOutputStream {
 		if( effect.isPalmMute() ){
 			this.writer.print("\\palmMute ");
 		}
+		if( effect.isBend() ){
+			this.writer.print("\\bendAfter #+6 ");
+		}
 	}
 	
 	private void addEffectsOnNote(TGNoteEffect effect){
@@ -664,28 +663,35 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void addEffectsOnBeat(List effects){
-		Iterator it = effects.iterator();
-		while( it.hasNext() ){
-			this.writer.print( (String)it.next() );
+	private void addEffectsOnBeat(TGVoice voice){
+		boolean trill = false;
+		boolean vibrato = false;
+		boolean staccato = false;
+		boolean accentuatedNote = false;
+		boolean heavyAccentuatedNote = false;
+		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
+			TGNoteEffect effect = voice.getNote(i).getEffect();
+			
+			trill = (trill || effect.isTrill() );
+			vibrato = (vibrato || effect.isVibrato() );
+			staccato = (staccato || effect.isStaccato() );
+			accentuatedNote = (accentuatedNote || effect.isAccentuatedNote() );
+			heavyAccentuatedNote = (heavyAccentuatedNote || effect.isHeavyAccentuatedNote() );
 		}
-	}
-	
-	private void checkEffectsOnBeat( List effects , TGNoteEffect effect ){
-		if( effect.isVibrato() && !effects.contains("\\prall")){
-			effects.add("\\prall");
+		if( trill ){
+			this.writer.print("\\trill");
 		}
-		if( effect.isTrill() && !effects.contains("\\trill")){
-			effects.add("\\trill");
+		if( vibrato ){
+			this.writer.print("\\prall");
 		}
-		if( effect.isStaccato() && !effects.contains("\\staccato")){
-			effects.add("\\staccato");
+		if( staccato ){
+			this.writer.print("\\staccato");
 		}
-		if( effect.isAccentuatedNote() && !effects.contains("->")){
-			effects.add("->");
+		if( accentuatedNote ){
+			this.writer.print("->");
 		}
-		if( effect.isHeavyAccentuatedNote() && !effects.contains("-^")){
-			effects.add("-^");
+		if( heavyAccentuatedNote ){
+			this.writer.print("-^");
 		}
 	}
 	
