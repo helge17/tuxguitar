@@ -14,6 +14,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
@@ -21,6 +22,7 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
 public class LilypondOutputStream {
 	
@@ -55,6 +57,7 @@ public class LilypondOutputStream {
 		this.addVersion();
 		this.addPaper(song);
 		this.addLayout();
+		this.addCommands();
 		this.addSongDefinitions(song);
 		this.addSong(song);
 		
@@ -71,6 +74,22 @@ public class LilypondOutputStream {
 		this.writer.println("#(define (tie::tab-clear-tied-fret-numbers grob)");
 		this.writer.println(indent(1) + "(let* ((tied-fret-nr (ly:spanner-bound grob RIGHT)))");
 		this.writer.println(indent(2) + "(ly:grob-set-property! tied-fret-nr 'transparent #t)))");
+		this.writer.println();
+	}
+	
+	private void addCommands(){
+		// deadNote
+		this.writer.println("deadNote = #(define-music-function (parser location note) (ly:music?)");
+		this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
+		this.writer.println(indent(2) + "(acons 'style 'cross (ly:music-property note 'tweaks)))");
+		this.writer.println(indent(1) + "note)");
+		this.writer.println();
+		
+		// palmMute
+		this.writer.println("palmMute = #(define-music-function (parser location note) (ly:music?)");
+		this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
+		this.writer.println(indent(2) + "(acons 'style 'do (ly:music-property note 'tweaks)))");
+		this.writer.println(indent(1) + "note)");
 		this.writer.println();
 	}
 	
@@ -448,11 +467,9 @@ public class LilypondOutputStream {
 		}
 		// It Means that all voice beats are empty 
 		if( previous == null ){
-			for( int i = 0; i < measure.getTimeSignature().getNumerator() ; i ++ ){
-				this.writer.print("\\skip ");
-				this.addDuration( measure.getTimeSignature().getDenominator() );
-				this.writer.print(" ");
-			}
+			this.writer.print("\\skip ");
+			this.addDuration( measure.getTimeSignature().getDenominator() );
+			this.writer.print("*" + measure.getTimeSignature().getNumerator() + " ");
 		}
 		
 		if(this.temp.isTupletOpen()){
@@ -462,7 +479,78 @@ public class LilypondOutputStream {
 	}
 	
 	private void addBeat(int key,TGBeat beat, TGVoice voice){
-		boolean vibrato = false;
+		List effectsOnBeat = new ArrayList();
+		
+		if(voice.isRestVoice()){
+			this.writer.print("r");
+			this.addDuration( voice.getDuration() );
+		}
+		else{
+			this.addEffectsBeforeBeat(voice);
+			
+			this.writer.print("<");
+			
+			int size = voice.countNotes();
+			for(int i = 0 ; i < size ; i ++){
+				TGNote note = voice.getNote(i);
+				
+				this.checkEffectsOnBeat(effectsOnBeat, note.getEffect() );
+				
+				this.addEffectsBeforeNote(note);
+				
+				this.addKey(key, (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue()) );
+				if(this.isAnyTiedTo(note)){
+					this.writer.print("~");
+				}
+				
+				this.addString(note.getString());
+				this.addEffectsOnNote(note.getEffect());
+				
+				if(size > 1){
+					this.writer.print(" ");
+				}
+			}
+			
+			this.writer.print(">");
+			
+			this.addDuration( voice.getDuration() );
+			this.addEffectsOnDuration( voice );
+			this.addEffectsOnBeat(effectsOnBeat);
+		}
+		
+		// Check for chord beat, voice must not be a rest
+		if( !voice.isRestVoice() ){
+			// Do not write same chord on all voices
+			if( voice.getIndex() == 0 || beat.getVoice(0).isEmpty() || beat.getVoice(0).isRestVoice() ) {
+				if(beat.isChordBeat()){
+					this.writer.print("-\\tag #'chords ^\\markup \\fret-diagram #\"");
+					TGChord chord = beat.getChord();
+					for( int i = 0; i < chord.countStrings(); i ++){
+						this.writer.print((i + 1) + "-" + getLilypondChordFret(chord.getFretValue( i )) + ";");
+					}
+					this.writer.print("\"");
+				}
+			}
+		}
+		
+		// Do not write same text on all voices
+		if( voice.getIndex() == 0 || beat.getVoice(0).isEmpty() ) {
+			if(beat.isTextBeat()){
+				this.writer.print("-\\tag #'texts ^\\markup {\"" + beat.getText().getValue() + "\"}");
+			}
+		}
+		
+		// Check if it's a lyric beat to skip
+		if( voice.getIndex() == 0 && !voice.isRestVoice() ){
+			if( beat.getMeasure().getTrack().getLyrics().getFrom() > beat.getMeasure().getNumber()){
+				this.temp.addSkippedLyricBeat( getLilypondDuration(voice.getDuration()));
+			}
+		}
+		
+		this.writer.print(" ");
+	}
+	/*
+	private void addBeat(int key,TGBeat beat, TGVoice voice){
 		if(voice.isRestVoice()){
 			this.writer.print("r");
 			this.addDuration( voice.getDuration() );
@@ -472,23 +560,26 @@ public class LilypondOutputStream {
 			if(size > 1){
 				this.writer.print("<");
 			}
+			
+			List beatEffects = new ArrayList();
+			
 			for(int i = 0 ; i < size ; i ++){
 				TGNote note = voice.getNote(i);
+				
+				this.checkBeatEffects(beatEffects, note.getEffect() );
 				
 				int note_value = (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
 				this.addKey(key, note_value);
 				if(!(size > 1)){
 					this.addDuration( voice.getDuration() );
 				}
-				this.addString(note.getString());
-				if(note.getEffect().isVibrato()){
-					vibrato = true;
-					if(!(size > 1) && vibrato ){
-						this.addVibrato();
-					}
-				}
 				if(this.isAnyTiedTo(note)){
 					this.writer.print("~");
+				}
+				
+				this.addString(note.getString());
+				if(!(size > 1)){
+					this.addBeatEffects(beatEffects);
 				}
 				
 				if(size > 1){
@@ -498,9 +589,7 @@ public class LilypondOutputStream {
 			if(size > 1){
 				this.writer.print(">");
 				this.addDuration( voice.getDuration() );
-				if( vibrato ){
-					this.addVibrato();
-				}
+				this.addBeatEffects(beatEffects);
 			}
 			
 			// Check for chord beat, voice must not be a rest
@@ -532,16 +621,10 @@ public class LilypondOutputStream {
 			this.writer.print(" ");
 		}
 	}
+	*/
 	
-	private void addKey(int key,int value){
-		String[] LILYPOND_NOTES = (key <= 7 ? LILYPOND_SHARP_NOTES : LILYPOND_FLAT_NOTES );
-		this.writer.print(LILYPOND_NOTES[ value % 12 ]);
-		for(int i = 4; i < (value / 12); i ++){
-			this.writer.print("'");
-		}
-		for(int i = (value / 12); i < 4; i ++){
-			this.writer.print(",");
-		}
+	private void addKey(int keySignature,int value){
+		this.writer.print( getLilypondKey(keySignature, value) );
 	}
 	
 	private void addString(int string){
@@ -552,8 +635,96 @@ public class LilypondOutputStream {
 		this.writer.print(getLilypondDuration(duration));
 	}
 	
-	private void addVibrato(){
-		this.writer.print("\\prall");
+	private void addEffectsBeforeNote(TGNote note){
+		TGNoteEffect effect = note.getEffect();
+		if( effect.isDeadNote() ){
+			this.writer.print("\\deadNote ");
+		}
+		if( effect.isPalmMute() ){
+			this.writer.print("\\palmMute ");
+		}
+	}
+	
+	private void addEffectsOnNote(TGNoteEffect effect){
+		if( effect.isHarmonic() ){
+			this.writer.print("\\harmonic");
+		}
+	}
+	
+	private void addEffectsOnDuration(TGVoice voice){
+		int tremoloPicking = -1;
+		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
+			TGNote note = voice.getNote(i);
+			if( tremoloPicking == -1 && note.getEffect().isTremoloPicking() ){
+				tremoloPicking = note.getEffect().getTremoloPicking().getDuration().getValue();
+			}
+		}
+		if( tremoloPicking != -1 ){
+			this.writer.print(":" + tremoloPicking );
+		}
+	}
+	
+	private void addEffectsOnBeat(List effects){
+		Iterator it = effects.iterator();
+		while( it.hasNext() ){
+			this.writer.print( (String)it.next() );
+		}
+	}
+	
+	private void checkEffectsOnBeat( List effects , TGNoteEffect effect ){
+		if( effect.isVibrato() && !effects.contains("\\prall")){
+			effects.add("\\prall");
+		}
+		if( effect.isTrill() && !effects.contains("\\trill")){
+			effects.add("\\trill");
+		}
+		if( effect.isStaccato() && !effects.contains("\\staccato")){
+			effects.add("\\staccato");
+		}
+		if( effect.isAccentuatedNote() && !effects.contains("->")){
+			effects.add("->");
+		}
+		if( effect.isHeavyAccentuatedNote() && !effects.contains("-^")){
+			effects.add("-^");
+		}
+	}
+	
+	private void addEffectsBeforeBeat(TGVoice voice){
+		List graceNotes = new ArrayList();
+		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
+			TGNote note = voice.getNote(i);
+			if( note.getEffect().isGrace() ){
+				graceNotes.add( note );
+			}
+		}
+		if( !graceNotes.isEmpty() ){
+			this.writer.print("\\grace ");
+			this.writer.print("<");
+			
+			int duration = 0;
+			for( int i = 0 ; i < graceNotes.size() ; i ++ ){
+				TGNote note = (TGNote)graceNotes.get( i );
+				TGMeasure measure = voice.getBeat().getMeasure();
+				TGString string = measure.getTrack().getString(note.getString());
+				TGEffectGrace grace = note.getEffect().getGrace();
+				
+				if( duration < TGDuration.SIXTY_FOURTH && grace.getDuration() == 1 ){
+					duration = TGDuration.SIXTY_FOURTH;
+				}else if( duration < TGDuration.THIRTY_SECOND && grace.getDuration() == 2 ){
+					duration = TGDuration.THIRTY_SECOND;
+				}else if( duration < TGDuration.SIXTEENTH && grace.getDuration() == 3 ){
+					duration = TGDuration.SIXTEENTH;
+				}
+				if( i > 0 ){
+					this.writer.print(" ");
+				}
+				this.addKey(measure.getKeySignature(), (string.getValue() + grace.getFret()) );
+				this.addString(note.getString());
+			}
+			this.writer.print(">");
+			this.writer.print(duration);
+			this.writer.print(" ");
+		}
 	}
 	
 	private void checkRepeatCount(TGMeasureHeader header){
@@ -644,6 +815,18 @@ public class LilypondOutputStream {
 	
 	private String getLilypondBoolean(boolean value){
 		return (value ? "#t" : "#f");
+	}
+	
+	private String getLilypondKey(int keySignature , int value){
+		String[] LILYPOND_NOTES = (keySignature <= 7 ? LILYPOND_SHARP_NOTES : LILYPOND_FLAT_NOTES );
+		String key = (LILYPOND_NOTES[ value % 12 ]);
+		for(int i = 4; i < (value / 12); i ++){
+			key += ("'");
+		}
+		for(int i = (value / 12); i < 4; i ++){
+			key += (",");
+		}
+		return key;
 	}
 	
 	private String getLilypondDuration(TGDuration value){
