@@ -17,6 +17,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -672,6 +673,7 @@ public class LilypondOutputStream {
 		boolean staccato = false;
 		boolean accentuatedNote = false;
 		boolean heavyAccentuatedNote = false;
+		boolean arpeggio = ( voice.getBeat().getStroke().getDirection() != TGStroke.STROKE_NONE );
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
 			TGNoteEffect effect = voice.getNote(i).getEffect();
 			
@@ -695,6 +697,9 @@ public class LilypondOutputStream {
 		}
 		if( heavyAccentuatedNote ){
 			this.writer.print("-^");
+		}
+		if( arpeggio ){
+			this.writer.print("\\arpeggio");
 		}
 	}
 	
