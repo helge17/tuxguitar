@@ -79,14 +79,17 @@ public class LilypondOutputStream {
 	
 	private void addCommands(){
 		// deadNote
-		this.writer.println("deadNote = #(define-music-function (parser location note) (ly:music?)");
+		this.writer.println("chordNoteDeadNote = #(define-music-function (parser location note) (ly:music?)");
 		this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
-		this.writer.println(indent(2) + "(acons 'style 'cross (ly:music-property note 'tweaks)))");
+		this.writer.println(indent(2) + "(acons 'stencil ly:note-head::print");
+		this.writer.println(indent(3) + "(acons 'glyph-name \"2cross\"");
+		this.writer.println(indent(4) + "(acons 'style 'special");
+		this.writer.println(indent(5) + "(ly:music-property note 'tweaks)))))");
 		this.writer.println(indent(1) + "note)");
 		this.writer.println();
 		
 		// palmMute
-		this.writer.println("palmMute = #(define-music-function (parser location note) (ly:music?)");
+		this.writer.println("chordNotePalmMute = #(define-music-function (parser location note) (ly:music?)");
 		this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
 		this.writer.println(indent(2) + "(acons 'style 'do (ly:music-property note 'tweaks)))");
 		this.writer.println(indent(1) + "note)");
@@ -578,10 +581,10 @@ public class LilypondOutputStream {
 	private void addEffectsBeforeNote(TGNote note){
 		TGNoteEffect effect = note.getEffect();
 		if( effect.isDeadNote() ){
-			this.writer.print("\\deadNote ");
+			this.writer.print("\\chordNoteDeadNote ");
 		}
 		if( effect.isPalmMute() ){
-			this.writer.print("\\palmMute ");
+			this.writer.print("\\chordNotePalmMute ");
 		}
 		if( effect.isGhostNote() ){
 			this.writer.print("\\parenthesize ");
