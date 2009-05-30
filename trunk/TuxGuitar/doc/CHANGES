@@ -9,4 +9,5 @@ TuxGuitar 1.2 changes:
 * Add multiple measure support
 * Clean multiple measure support
 * Number of pastes support
+* Better lilypond plugin
 * Better fluidsynth plugin
