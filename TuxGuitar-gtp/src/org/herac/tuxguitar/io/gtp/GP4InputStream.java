@@ -319,6 +319,7 @@ public class GP4InputStream extends GTPInputStream {
 		for (int i = 0; i < numberOfBeats; i++) {
 			nextNoteStart += readBeat(nextNoteStart, measure, track, tempo);
 		}
+		measure.setClef( getClef(track) );
 	}
 	
 	private TGNote readNote(TGString string, TGTrack track,TGNoteEffect effect)throws IOException {
@@ -668,5 +669,18 @@ public class GP4InputStream extends GTPInputStream {
 	private short toChannelShort(byte b){
 		short value = (short)(( b * 8 ) - 1);
 		return (short)Math.max(value,0);
+	}
+	
+	private int getClef( TGTrack track ){
+		if( !track.isPercussionTrack() ){
+			Iterator it = track.getStrings().iterator();
+			while( it.hasNext() ){
+				TGString string = (TGString) it.next();
+				if( string.getValue() <= 34 ){
+					return TGMeasure.CLEF_BASS;
+				}
+			}
+		}
+		return TGMeasure.CLEF_TREBLE;
 	}
 }

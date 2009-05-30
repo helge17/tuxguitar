@@ -381,6 +381,7 @@ public class GP5InputStream extends GTPInputStream {
 			TGBeat beat = (TGBeat)it.next();
 			measure.removeBeat( beat );
 		}
+		measure.setClef( getClef(track) );
 	}
 	
 	private TGNote readNote(TGString string,TGTrack track,TGNoteEffect effect)throws IOException {
@@ -725,6 +726,19 @@ public class GP5InputStream extends GTPInputStream {
 	private short toChannelShort(byte b){
 		short value = (short)(( b * 8 ) - 1);
 		return (short)Math.max(value,0);
+	}
+	
+	private int getClef( TGTrack track ){
+		if( !track.isPercussionTrack() ){
+			Iterator it = track.getStrings().iterator();
+			while( it.hasNext() ){
+				TGString string = (TGString) it.next();
+				if( string.getValue() <= 34 ){
+					return TGMeasure.CLEF_BASS;
+				}
+			}
+		}
+		return TGMeasure.CLEF_TREBLE;
 	}
 	
 	private TGBeat getBeat(TGMeasure measure, long start){
