@@ -171,7 +171,7 @@ public class GP1InputStream extends GTPInputStream {
 				lastReadedStarts[i] = start;
 				start += length;
 			}
-			
+			measure.setClef( getClef(track) );
 			track.addMeasure(measure);
 		}
 	}
@@ -374,6 +374,19 @@ public class GP1InputStream extends GTPInputStream {
 			}
 		}
 		return repeatAlternative;
+	}
+	
+	private int getClef( TGTrack track ){
+		if( !track.isPercussionTrack() ){
+			Iterator it = track.getStrings().iterator();
+			while( it.hasNext() ){
+				TGString string = (TGString) it.next();
+				if( string.getValue() <= 34 ){
+					return TGMeasure.CLEF_BASS;
+				}
+			}
+		}
+		return TGMeasure.CLEF_TREBLE;
 	}
 	
 	private TGBeat getBeat(TGTrack track, TGMeasure measure,long start){
