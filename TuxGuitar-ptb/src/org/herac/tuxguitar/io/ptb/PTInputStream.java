@@ -67,7 +67,7 @@ public class PTInputStream implements TGInputStreamBase{
 	public TGSong readSong() throws IOException{
 		this.readVersion();
 		if (!isSupportedVersion(this.version)) {
-			throw new IOException("Unsuported Version");
+			throw new IOException("Unsupported Version");
 		}
 		this.song = new PTSong();
 		this.readSongInfo();

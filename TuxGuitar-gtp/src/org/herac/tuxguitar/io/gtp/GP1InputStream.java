@@ -59,7 +59,7 @@ public class GP1InputStream extends GTPInputStream {
 		readVersion();
 		if (!isSupportedVersion(getVersion())) {
 			this.close();
-			throw new GTPFormatException("Unsuported Version");
+			throw new GTPFormatException("Unsupported Version");
 		}
 		this.trackCount = ((getVersionIndex() > 2)?8:1);
 		

@@ -108,7 +108,7 @@ public class TESongImporter implements TGSongImporter{
 			track.getChannel().setBalance((short)(( tracks[i].getPan() * 127) / 15));
 			track.getChannel().setInstrument((short)tracks[i].getInstrument());
 			if(tracks[i].isPercussion()){
-				TGChannel.setPercusionChannel(track.getChannel());
+				TGChannel.setPercussionChannel(track.getChannel());
 			}
 			track.getStrings().clear();
 			int strings[] = tracks[i].getStrings();
