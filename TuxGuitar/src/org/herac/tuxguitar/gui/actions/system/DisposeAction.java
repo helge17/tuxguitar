@@ -100,7 +100,7 @@ public class DisposeAction extends Action {
 	
 	protected void closeModules(){
 		TuxGuitar.instance().getPlayer().close();
-		TuxGuitar.instance().getPluginManager().closePLugins();
+		TuxGuitar.instance().getPluginManager().closePlugins();
 	}
 	
 	protected void dispose(){

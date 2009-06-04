@@ -116,9 +116,9 @@ public class FretBoardConfig {
 		this.colorScale.dispose();
 	}
 	
-	private static final int MINIMUN_CONTROL_WIDTH = 180;
-	private static final int MINIMUN_BUTTON_WIDTH = 80;
-	private static final int MINIMUN_BUTTON_HEIGHT = 25;
+	private static final int MINIMUM_CONTROL_WIDTH = 180;
+	private static final int MINIMUM_BUTTON_WIDTH = 80;
+	private static final int MINIMUM_BUTTON_HEIGHT = 25;
 	
 	public void configure(Shell shell) {
 		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -204,8 +204,8 @@ public class FretBoardConfig {
 	
 	protected GridData getButtonData(){
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = MINIMUN_BUTTON_WIDTH;
-		data.minimumHeight = MINIMUN_BUTTON_HEIGHT;
+		data.minimumWidth = MINIMUM_BUTTON_WIDTH;
+		data.minimumHeight = MINIMUM_BUTTON_HEIGHT;
 		return data;
 	}
 	
@@ -220,7 +220,7 @@ public class FretBoardConfig {
 		label.setText(title);
 		
 		ButtonColor button = new ButtonColor(parent, SWT.PUSH, TuxGuitar.getProperty("choose"));
-		button.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
+		button.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
 		button.loadColor(rgb);
 		
 		return button.getValue();
@@ -234,7 +234,7 @@ public class FretBoardConfig {
 		label.setText(title);
 		
 		Button button = new Button(parent, SWT.PUSH);
-		button.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
+		button.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
 		button.setText(TuxGuitar.getProperty("choose"));
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {

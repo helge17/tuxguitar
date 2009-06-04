@@ -404,8 +404,8 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	protected void paintBeat(TGPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
-		int minimunY = BORDER_HEIGHT;
-		int maximunY = (this.clientArea.height - BORDER_HEIGHT);
+		int minimumY = BORDER_HEIGHT;
+		int maximumY = (this.clientArea.height - BORDER_HEIGHT);
 		
 		for( int v = 0; v < beat.countVoices(); v ++ ){
 			TGVoice voice = beat.getVoice(v);
@@ -416,12 +416,12 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				float x2 = (x1 + ((voice.getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime()) - 2 );
 				float y2 = (y1 + this.lineHeight - 2 );
 				
-				if( y1 >= maximunY || y2 <= minimunY){
+				if( y1 >= maximumY || y2 <= minimumY){
 					continue;
 				}
 				
-				y1 = ( y1 < minimunY ? minimunY : y1 );
-				y2 = ( y2 > maximunY ? maximunY : y2 );
+				y1 = ( y1 < minimumY ? minimumY : y1 );
+				y2 = ( y2 > maximumY ? maximumY : y2 );
 				
 				if((x2 - x1) > 0 && (y2 - y1) > 0){
 					painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );

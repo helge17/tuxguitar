@@ -115,14 +115,14 @@ public abstract class TGChannel {
 		return (channel == DEFAULT_PERCUSSION_CHANNEL);
 	}
 	
-	public static void setPercusionChannel(TGChannel channel){
+	public static void setPercussionChannel(TGChannel channel){
 		channel.setChannel(DEFAULT_PERCUSSION_CHANNEL);
 		channel.setEffectChannel(DEFAULT_PERCUSSION_CHANNEL);
 	}
 	
-	public static TGChannel newPercusionChannel(TGFactory factory){
+	public static TGChannel newPercussionChannel(TGFactory factory){
 		TGChannel channel = factory.newChannel();
-		TGChannel.setPercusionChannel(channel);
+		TGChannel.setPercussionChannel(channel);
 		return channel;
 	}
 	

@@ -44,7 +44,7 @@ public class ChordEditor extends Composite {
 	private Composite composite;
 	private Text chordName;
 	private List points;
-	private boolean[] fisrtFrets;
+	private boolean[] firstFrets;
 	private int[] strings;
 	private int[] frets;
 	private short fret;
@@ -68,15 +68,15 @@ public class ChordEditor extends Composite {
 	public void init(short maxStrings) {
 		this.fret = MIN_FRET;
 		this.maxStrings = maxStrings;
-		this.fisrtFrets = new boolean[this.maxStrings];
+		this.firstFrets = new boolean[this.maxStrings];
 		this.strings = new int[this.maxStrings];
 		this.frets = new int[TGChordImpl.MAX_FRETS];
 		this.width = ((STRING_SPACING * this.maxStrings) - STRING_SPACING);
 		this.height = ((FRET_SPACING * TGChordImpl.MAX_FRETS) - FRET_SPACING);
 		this.points = new ArrayList();
 		
-		for (int i = 0; i < this.fisrtFrets.length; i++) {
-			this.fisrtFrets[i] = false;
+		for (int i = 0; i < this.firstFrets.length; i++) {
+			this.firstFrets[i] = false;
 		}
 		
 		for (int i = 0; i < this.strings.length; i++) {
@@ -184,10 +184,10 @@ public class ChordEditor extends Composite {
 		}
 		
 		// dibujo las notas al aire
-		for (int i = 0; i < this.fisrtFrets.length; i++) {
+		for (int i = 0; i < this.firstFrets.length; i++) {
 			if (!hasPoints(i)) {
 				painter.initPath();
-				if (this.fisrtFrets[i]) {
+				if (this.firstFrets[i]) {
 					int x = this.strings[i] - (noteSize / 2);
 					int y = (FRET_SPACING - noteSize) - 11;
 					painter.addOval(x, y, (noteSize - 1), (noteSize - 1));
@@ -209,12 +209,12 @@ public class ChordEditor extends Composite {
 		int fretIndex = getFretIndex(y);
 		
 		if (y < FRET_SPACING) {
-			this.fisrtFrets[stringIndex] = !this.fisrtFrets[stringIndex];
+			this.firstFrets[stringIndex] = !this.firstFrets[stringIndex];
 			this.removePointsAtStringLine(this.strings[stringIndex]);
 		} else if (y < (FRET_SPACING * TGChordImpl.MAX_FRETS)) {
 			Point point = new Point(this.strings[stringIndex],this.frets[fretIndex]);
 			if (!this.removePoint(point)) {
-				this.fisrtFrets[stringIndex] = false;
+				this.firstFrets[stringIndex] = false;
 				this.removePointsAtStringLine(this.strings[stringIndex]);
 				this.addPoint(point);
 				this.orderPoints();
@@ -319,7 +319,7 @@ public class ChordEditor extends Composite {
 	
 	public int getValue(int string) {
 		int value = -1;
-		if (this.fisrtFrets[this.maxStrings - string]) {
+		if (this.firstFrets[this.maxStrings - string]) {
 			value = 0;
 		}
 		
@@ -339,10 +339,10 @@ public class ChordEditor extends Composite {
 	public void addValue(int value, int string/*, boolean redecorate*/) {
 		int realValue = value;
 		if (string >= 1 && string <= this.maxStrings) {
-			this.fisrtFrets[this.maxStrings - string] = false;
+			this.firstFrets[this.maxStrings - string] = false;
 			this.removePointsAtStringLine(this.strings[this.maxStrings - string]);
 			if (realValue == 0) {
-				this.fisrtFrets[this.maxStrings - string] = true;
+				this.firstFrets[this.maxStrings - string] = true;
 			} else if (realValue >= 0) {
 				realValue -= (getFret() - 1);
 				if (realValue > 0 && realValue <= TGChordImpl.MAX_FRETS) {

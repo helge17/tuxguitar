@@ -358,18 +358,18 @@ public class TGChordImpl extends TGChord {
 	}
 	
 	public void calculateFirstFret(){
-		int minimun = -1;
-		int maximun = -1;
+		int minimum = -1;
+		int maximum = -1;
 		boolean zero = false;
 		for (int i = 0; i < getStrings().length; i++) {
 			int fretValue = getFretValue(i);
 			zero = (zero || fretValue == 0);
 			if(fretValue > 0){
-				minimun = (minimun < 0)?fretValue:Math.min(minimun,fretValue);
-				maximun = (Math.max(maximun,fretValue));
+				minimum = (minimum < 0)?fretValue:Math.min(minimum,fretValue);
+				maximum = (Math.max(maximum,fretValue));
 			}
 		}
-		int firstFret = (zero && maximun < MAX_FRETS)?1:minimun;
+		int firstFret = (zero && maximum < MAX_FRETS)?1:minimum;
 		setFirstFret( Math.max(firstFret,1) );
 	}
 	

@@ -159,7 +159,7 @@ public class TuxGuitar {
 	
 	private void initSynchronizer(){
 		TGSynchronizer.instance().setController(new TGSynchronizer.TGSynchronizerController() {
-			public void excecute(final TGSynchronizer.TGSynchronizerTask task) {
+			public void execute(final TGSynchronizer.TGSynchronizerTask task) {
 				final Display display = getDisplay();
 				if(display != null && !display.isDisposed()){
 					display.syncExec(new Runnable() {
@@ -170,7 +170,7 @@ public class TuxGuitar {
 				}
 			}
 			
-			public void excecuteLater(final TGSynchronizer.TGSynchronizerTask task) {
+			public void executeLater(final TGSynchronizer.TGSynchronizerTask task) {
 				final Display display = getDisplay();
 				if(display != null && !display.isDisposed()){
 					display.asyncExec(new Runnable() {
@@ -402,10 +402,10 @@ public class TuxGuitar {
 		this.sashComposite.layout(true,true);
 	}
 	
-	public void updateShellFooter(int offset,int minimunWith,int minimunHeight){
+	public void updateShellFooter(int offset,int minimumWith,int minimumHeight){
 		FormData data = ((FormData)this.sashComposite.getLayoutData());
 		data.bottom.offset = -offset;
-		getShell().setMinimumSize(Math.max(640,minimunWith),Math.max(480,minimunHeight));
+		getShell().setMinimumSize(Math.max(640,minimumWith),Math.max(480,minimumHeight));
 		getShell().layout(true,true);
 		getShell().redraw();
 	}
@@ -639,7 +639,7 @@ public class TuxGuitar {
 		}
 	}
 	
-	public void redrawPayingMode(){
+	public void redrawPlayingMode(){
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
 			this.getEditorCache().updatePlayMode();

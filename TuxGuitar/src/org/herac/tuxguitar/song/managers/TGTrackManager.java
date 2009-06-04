@@ -273,11 +273,11 @@ public class TGTrackManager {
 		}
 	}
 	
-	public void changeInstrument(TGTrack track,int instrument,boolean percusion){
+	public void changeInstrument(TGTrack track,int instrument,boolean percussion){
 		track.getChannel().setInstrument((short)instrument);
-		if(percusion){
-			TGChannel.setPercusionChannel(track.getChannel());
-			track.setStrings(TGSongManager.createPercusionStrings(getSongManager().getFactory(),track.getStrings().size()));
+		if(percussion){
+			TGChannel.setPercussionChannel(track.getChannel());
+			track.setStrings(TGSongManager.createPercussionStrings(getSongManager().getFactory(),track.getStrings().size()));
 		}else{
 			if(track.getChannel().isPercussionChannel()){
 				TGChannel tempChannel = this.songManager.getFreeChannel((short)instrument,false);

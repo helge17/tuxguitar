@@ -28,7 +28,7 @@ public class TGFileFormatManager {
 		this.outputStreams = new ArrayList();
 		this.exporters = new ArrayList();
 		this.importers = new ArrayList();
-		this.addDefatultStreams();
+		this.addDefaultStreams();
 	}
 	
 	public static TGFileFormatManager instance(){
@@ -131,7 +131,7 @@ public class TGFileFormatManager {
 		return false;
 	}
 	
-	private void addDefatultStreams(){
+	private void addDefaultStreams(){
 		this.addInputStream(new TGInputStream());
 		this.addOutputStream(new TGOutputStream());
 	}

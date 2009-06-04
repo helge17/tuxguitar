@@ -14,14 +14,14 @@ public class TGPluginManager {
 	
 	public TGPluginManager(){
 		this.plugins = new ArrayList();
-		this.initPLugins();
+		this.initPlugins();
 	}
 	
 	public List getPlugins(){
 		return this.plugins;
 	}
 	
-	public void initPLugins(){
+	public void initPlugins(){
 		try{
 			//Search available providers
 			Iterator it = TGServiceReader.lookupProviders(TGPlugin.class,TGClassLoader.instance().getClassLoader());
@@ -41,7 +41,7 @@ public class TGPluginManager {
 		}
 	}
 	
-	public void closePLugins(){
+	public void closePlugins(){
 		Iterator it = this.plugins.iterator();
 		while(it.hasNext()){
 			try{

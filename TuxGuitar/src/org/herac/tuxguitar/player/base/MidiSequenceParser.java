@@ -84,7 +84,7 @@ public class MidiSequenceParser {
 	 */
 	private int metronomeTrack;
 	
-	private int fisrtTickMove;
+	private int firstTickMove;
 	
 	private int tempoPercent;
 	
@@ -99,7 +99,7 @@ public class MidiSequenceParser {
 		this.flags = flags;
 		this.transpose = transpose;
 		this.tempoPercent = tempoPercent;
-		this.fisrtTickMove = (int)(((flags & ADD_FIRST_TICK_MOVE) != 0)?(-TGDuration.QUARTER_TIME):0);
+		this.firstTickMove = (int)(((flags & ADD_FIRST_TICK_MOVE) != 0)?(-TGDuration.QUARTER_TIME):0);
 		this.sHeader = -1;
 		this.eHeader = -1;
 	}
@@ -131,7 +131,7 @@ public class MidiSequenceParser {
 	}
 	
 	private long getTick(long tick){
-		return (tick + this.fisrtTickMove);
+		return (tick + this.firstTickMove);
 	}
 	
 	public void setSHeader(int header) {

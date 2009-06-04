@@ -70,9 +70,23 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	public static final int SCORE_KEY_OFFSETS[] = new int[]{30,18,22,24};
 	
-	public static final int SCORE_KEY_SHARP_POSITIONS[] = new int[]{ 1 , 4, 0, 3, 6, 2 , 5 };
+	//public static final int SCORE_KEY_SHARP_POSITIONS[] = new int[]{ 1 , 4, 0, 3, 6, 2 , 5 };
 	
-	public static final int SCORE_KEY_FLAT_POSITIONS[] = new int[]{ 5, 2, 6, 3, 0, 4, 1 };
+	//public static final int SCORE_KEY_FLAT_POSITIONS[] = new int[]{ 5, 2, 6, 3, 0, 4, 1 };
+	
+	public static final int SCORE_KEY_SHARP_POSITIONS[][] = new int[][]{ 
+		new int[] { 1 , 4, 0, 3, 6, 2 , 5 } ,
+		new int[] { 3 , 6, 2, 5, 8, 4 , 7 } ,
+		new int[] { 7 , 3, 6, 2, 5, 1 , 4 } ,
+		new int[] { 2 , 5, 1, 4, 7, 3 , 6 } ,
+	};
+	
+	public static final int SCORE_KEY_FLAT_POSITIONS[][] = new int[][]{ 
+		new int[] { 5, 2, 6, 3, 7, 4, 8 } ,
+		new int[] { 7, 4, 8, 5, 9, 6, 10 } ,
+		new int[] { 4, 1, 5, 2, 6, 3, 7 } ,
+		new int[] { 6, 3, 7, 4, 8, 5, 9 } ,
+	};
 	
 	/**
 	 * Espacio por defecto de la clave
@@ -232,7 +246,7 @@ public class TGMeasureImpl extends TGMeasure{
 		TGBeatGroup[] groups = new TGBeatGroup[TGBeat.MAX_VOICES];
 		
 		int style = layout.getStyle();
-		int minimunChordLength = 0;
+		int minimumChordLength = 0;
 		
 		boolean[] notEmptyVoicesChecked = new boolean[TGBeat.MAX_VOICES];
 		boolean chordEnabled = ((style & (ViewLayout.DISPLAY_CHORD_DIAGRAM | ViewLayout.DISPLAY_CHORD_NAME)) != 0);
@@ -250,7 +264,7 @@ public class TGMeasureImpl extends TGMeasure{
 			if(chordEnabled && beat.getChord() != null){
 				if(previousChord != null){
 					int length = (int) (beat.getStart() - previousChord.getBeat().getStart());
-					minimunChordLength = (minimunChordLength > 0)?Math.min(minimunChordLength, Math.abs(length)):length;
+					minimumChordLength = (minimumChordLength > 0)?Math.min(minimumChordLength, Math.abs(length)):length;
 				}
 				previousChord = beat.getChord();
 			}
@@ -319,10 +333,10 @@ public class TGMeasureImpl extends TGMeasure{
 		
 		if(!this.compactMode){
 			this.quarterSpacing = (minDuration != null)?layout.getSpacingForQuarter(minDuration): Math.round(DEFAULT_QUARTER_SPACING * layout.getScale());
-			if(chordEnabled && minimunChordLength > 0){
+			if(chordEnabled && minimumChordLength > 0){
 				int chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (getTrack().stringCount() * layout.getChordStringSpacing()));
-				int minimunSpacing = (int)((TGDuration.QUARTER_TIME * chordWidth) / minimunChordLength);
-				this.quarterSpacing = Math.max(minimunSpacing,this.quarterSpacing);
+				int minimumSpacing = (int)((TGDuration.QUARTER_TIME * chordWidth) / minimumChordLength);
+				this.quarterSpacing = Math.max(minimumSpacing,this.quarterSpacing);
 			}
 			this.getHeaderImpl().notifyQuarterSpacing(this.quarterSpacing);
 		}
@@ -842,8 +856,10 @@ public class TGMeasureImpl extends TGMeasure{
 			float scale = layout.getScoreLineSpacing();
 			int x = fromX + getClefSpacing(layout) + 10;
 			int y = fromY + getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			int clefIndex = (this.getClef() - 1);
 			int currentKey = this.getKeySignature();
 			int previousKey = (this.prevMeasure != null ? this.prevMeasure.getKeySignature() : 0);
+			/*
 			int offsetClef = 0;
 			if(this.getClef() == TGMeasure.CLEF_TREBLE){
 				offsetClef = 0;
@@ -857,34 +873,16 @@ public class TGMeasureImpl extends TGMeasure{
 			else if(this.getClef() == TGMeasure.CLEF_ALTO){
 				offsetClef = 1;
 			}
+			*/
 			
 			layout.setKeySignatureStyle(painter);
 			
-			//sharps
-			if(currentKey >= 1 && currentKey <= 7){
-				for(int i = 0; i < currentKey; i ++ ){
-					float offset =  ( (scale / 2) * ( ( (SCORE_KEY_SHARP_POSITIONS[i] + offsetClef) + 7) % 7)  )  - (scale / 2);
-					painter.initPath(TGPainter.PATH_FILL);
-					TGKeySignaturePainter.paintSharp(painter,x, (y +  offset  ), scale);
-					painter.closePath();
-					x += (scale - (scale / 4));
-				}
-			}
-			//flats
-			else if(currentKey >= 8 && currentKey <= 14){
-				for(int i = 7; i < currentKey; i ++ ){
-					float offset =  ( (scale / 2) * ( ( (SCORE_KEY_FLAT_POSITIONS[i - 7] + offsetClef) + 7) % 7)  )  - (scale / 2);
-					painter.initPath(TGPainter.PATH_FILL);
-					TGKeySignaturePainter.paintFlat(painter,x, (y +  offset  ), scale);
-					painter.closePath();
-					x += (scale - (scale / 4));
-				}
-			}
 			//natural
 			if(previousKey >= 1 && previousKey <= 7){
 				int naturalFrom =  (currentKey >= 1 && currentKey <= 7) ? currentKey : 0;
 				for(int i = naturalFrom; i < previousKey; i ++ ){
-					float offset =  ( (scale / 2) * ( ( (SCORE_KEY_SHARP_POSITIONS[i] + offsetClef) + 7) % 7)  )  - (scale / 2);
+					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_SHARP_POSITIONS[i] + offsetClef) + 7) % 7)  )  - (scale / 2);
+					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
 					painter.initPath(TGPainter.PATH_FILL);
 					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
 					painter.closePath();
@@ -894,9 +892,33 @@ public class TGMeasureImpl extends TGMeasure{
 			else if(previousKey >= 8 && previousKey <= 14){
 				int naturalFrom =  (currentKey >= 8 && currentKey <= 14) ? currentKey : 7;
 				for(int i = naturalFrom; i < previousKey; i ++ ){
-					float offset =  ( (scale / 2) * ( ( (SCORE_KEY_FLAT_POSITIONS[i - 7] + offsetClef) + 7) % 7)  )  - (scale / 2);
+					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_FLAT_POSITIONS[i - 7] + offsetClef) + 7) % 7)  )  - (scale / 2);
+					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
 					painter.initPath(TGPainter.PATH_FILL);
 					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
+					painter.closePath();
+					x += (scale - (scale / 4));
+				}
+			}
+			
+			//sharps
+			if(currentKey >= 1 && currentKey <= 7){
+				for(int i = 0; i < currentKey; i ++ ){
+					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_SHARP_POSITIONS[i] + offsetClef) + 7) % 7)  )  - (scale / 2);
+					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
+					painter.initPath(TGPainter.PATH_FILL);
+					TGKeySignaturePainter.paintSharp(painter,x, (y +  offset  ), scale);
+					painter.closePath();
+					x += (scale - (scale / 4));
+				}
+			}
+			//flats
+			else if(currentKey >= 8 && currentKey <= 14){
+				for(int i = 7; i < currentKey; i ++ ){
+					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_FLAT_POSITIONS[i - 7] + offsetClef) + 7) % 7)  )  - (scale / 2);
+					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
+					painter.initPath(TGPainter.PATH_FILL);
+					TGKeySignaturePainter.paintFlat(painter,x, (y +  offset  ), scale);
 					painter.closePath();
 					x += (scale - (scale / 4));
 				}
