@@ -52,7 +52,7 @@ public class GP4InputStream extends GTPInputStream {
 		readVersion();
 		if (!isSupportedVersion(getVersion())) {
 			this.close();
-			throw new GTPFormatException("Unsuported Version");
+			throw new GTPFormatException("Unsupported Version");
 		}
 		TGSong song = getFactory().newSong();
 		

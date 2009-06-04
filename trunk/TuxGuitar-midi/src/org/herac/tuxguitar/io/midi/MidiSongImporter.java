@@ -453,7 +453,7 @@ public class MidiSongImporter implements TGSongImporter{
 			if(!track.isPercussionTrack()){
 				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings());
 			}else{
-				track.setStrings(TGSongManager.createPercusionStrings(this.factory,6));
+				track.setStrings(TGSongManager.createPercussionStrings(this.factory,6));
 			}
 		}
 	}

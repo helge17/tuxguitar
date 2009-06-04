@@ -16,25 +16,25 @@ public class TGTrayPlugin extends TGPluginAdapter {
 	}
 	
 	public void close() {
-		this.removePluin();
+		this.removePlugin();
 	}
 	
 	public void setEnabled(boolean enabled) {
 		if(enabled){
-			this.addPluin();
+			this.addPlugin();
 		}else{
-			this.removePluin();
+			this.removePlugin();
 		}
 	}
 	
-	protected void addPluin(){
+	protected void addPlugin(){
 		if(!this.loaded){
 			this.tray.addTray();
 			this.loaded = true;
 		}
 	}
 	
-	protected void removePluin(){
+	protected void removePlugin(){
 		if(this.loaded){
 			this.tray.removeTray();
 			this.loaded = false;

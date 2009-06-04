@@ -57,15 +57,15 @@ public class PTSection {
 	public void sort(){
 		int count = getPositions().size();
 		for(int i = 0;i < count;i++){
-			PTPosition minimun = null;
+			PTPosition minimum = null;
 			for(int j = i;j < count;j++){
 				PTPosition position = (PTPosition)getPositions().get(j);
-				if(minimun == null || position.getPosition() < minimun.getPosition()){
-					minimun = position;
+				if(minimum == null || position.getPosition() < minimum.getPosition()){
+					minimum = position;
 				}
 			}
-			getPositions().remove(minimun);
-			getPositions().add(i,minimun);
+			getPositions().remove(minimum);
+			getPositions().add(i,minimum);
 		}
 	}
 }
