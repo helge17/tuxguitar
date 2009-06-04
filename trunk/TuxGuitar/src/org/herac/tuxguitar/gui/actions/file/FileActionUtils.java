@@ -34,13 +34,13 @@ public class FileActionUtils {
 		String path = TuxGuitar.instance().getFileHistory().getCurrentFilePath();
 		String file = TuxGuitar.instance().getFileHistory().getCurrentFileName(FileChooser.DEFAULT_SAVE_FILENAME);
 		String fullPath = path + File.separator + file;
-		return ( isSuportedFormat(fullPath) ? fullPath : chooseFileName() );
+		return ( isSupportedFormat(fullPath) ? fullPath : chooseFileName() );
 	}
 	
 	public static String chooseFileName(){
 		String fileName = FileChooser.instance().save(TuxGuitar.instance().getShell(),TGFileFormatManager.instance().getOutputFormats());
 		if (fileName != null) {
-			if (!isSuportedFormat(fileName)) {
+			if (!isSupportedFormat(fileName)) {
 				fileName += TGFileFormatManager.DEFAULT_EXTENSION;
 			}
 			if(!canWrite(fileName)){
@@ -58,7 +58,7 @@ public class FileActionUtils {
 		return fileName;
 	}
 	
-	public static boolean isSuportedFormat(String path) {
+	public static boolean isSupportedFormat(String path) {
 		if(path != null){
 			int index = path.lastIndexOf(".");
 			if(index > 0){

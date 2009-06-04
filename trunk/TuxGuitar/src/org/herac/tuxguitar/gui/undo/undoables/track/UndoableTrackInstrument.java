@@ -15,8 +15,8 @@ public class UndoableTrackInstrument implements UndoableEdit{
 	private UndoableCaretHelper redoCaret;
 	private short undoInstrument;
 	private short redoInstrument;
-	private boolean undoPercusion;
-	private boolean redoPercusion;
+	private boolean undoPercussion;
+	private boolean redoPercussion;
 	
 	private UndoableTrackInstrument(){
 		super();
@@ -27,7 +27,7 @@ public class UndoableTrackInstrument implements UndoableEdit{
 			throw new CannotRedoException();
 		}
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
-		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.redoInstrument,this.redoPercusion);
+		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.redoInstrument,this.redoPercussion);
 		TuxGuitar.instance().fireUpdate();
 		TuxGuitar.instance().getMixer().updateValues();
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
@@ -42,7 +42,7 @@ public class UndoableTrackInstrument implements UndoableEdit{
 			throw new CannotUndoException();
 		}
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
-		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.undoInstrument,this.undoPercusion);
+		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.undoInstrument,this.undoPercussion);
 		TuxGuitar.instance().fireUpdate();
 		TuxGuitar.instance().getMixer().updateValues();
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
@@ -67,7 +67,7 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.trackNumber = track.getNumber();
 		undoable.undoInstrument = track.getChannel().getInstrument();
-		undoable.undoPercusion = track.isPercussionTrack();
+		undoable.undoPercussion = track.isPercussionTrack();
 		
 		return undoable;
 	}
@@ -75,7 +75,7 @@ public class UndoableTrackInstrument implements UndoableEdit{
 	public UndoableTrackInstrument endUndo(TGTrack track){
 		this.redoCaret = new UndoableCaretHelper();
 		this.redoInstrument = track.getChannel().getInstrument();
-		this.redoPercusion = track.isPercussionTrack();
+		this.redoPercussion = track.isPercussionTrack();
 		
 		return this;
 	}

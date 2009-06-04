@@ -156,7 +156,7 @@ public class ChordSettingsDialog {
 		});
 		this.maxFret.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				checkMaximunFretValue();
+				checkMaximumFretValue();
 			}
 		});
 	}
@@ -169,7 +169,7 @@ public class ChordSettingsDialog {
 		}
 	}
 	
-	protected void checkMaximunFretValue(){
+	protected void checkMaximumFretValue(){
 		int maxSelection = this.maxFret.getSelection();
 		int minSelection = this.minFret.getSelection();
 		if(maxSelection < minSelection){

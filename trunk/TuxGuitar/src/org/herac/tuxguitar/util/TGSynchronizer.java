@@ -22,7 +22,7 @@ public class TGSynchronizer {
 	
 	public void addRunnable(TGRunnable runnable) throws Throwable {
 		TGSynchronizerTask task = new TGSynchronizerTask(runnable);
-		this.controller.excecute(task);
+		this.controller.execute(task);
 		if(task.getThrowable() != null){
 			throw task.getThrowable();
 		}
@@ -30,7 +30,7 @@ public class TGSynchronizer {
 	
 	public void runLater(TGRunnable runnable) throws Throwable {
 		TGSynchronizerTask task = new TGSynchronizerTask(runnable);
-		this.controller.excecuteLater(task);
+		this.controller.executeLater(task);
 		if(task.getThrowable() != null){
 			throw task.getThrowable();
 		}
@@ -67,7 +67,7 @@ public class TGSynchronizer {
 	}
 	
 	public interface TGSynchronizerController{
-		public void excecute(TGSynchronizerTask task);
-		public void excecuteLater(TGSynchronizerTask task);
+		public void execute(TGSynchronizerTask task);
+		public void executeLater(TGSynchronizerTask task);
 	}
 }

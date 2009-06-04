@@ -55,9 +55,9 @@ public class TrackPropertiesAction extends Action {
 	public static final String NAME = "action.track.properties";
 	
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_TUNING);
-	private static final int MINIMUN_LEFT_CONTROLS_WIDTH = 180;
-	private static final int MINIMUN_BUTTON_WIDTH = 80;
-	private static final int MINIMUN_BUTTON_HEIGHT = 25;
+	private static final int MINIMUM_LEFT_CONTROLS_WIDTH = 180;
+	private static final int MINIMUM_BUTTON_WIDTH = 80;
+	private static final int MINIMUM_BUTTON_HEIGHT = 25;
 	private static final int MAX_STRINGS = 7;
 	private static final int MIN_STRINGS = 4;
 	private static final int MAX_OCTAVES = 10;
@@ -144,8 +144,8 @@ public class TrackPropertiesAction extends Action {
 	
 	public GridData getButtonsData(){
 		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = MINIMUN_BUTTON_WIDTH;
-		data.minimumHeight = MINIMUN_BUTTON_HEIGHT;
+		data.minimumWidth = MINIMUM_BUTTON_WIDTH;
+		data.minimumHeight = MINIMUM_BUTTON_HEIGHT;
 		return data;
 	}
 	
@@ -164,7 +164,7 @@ public class TrackPropertiesAction extends Action {
 		nameLabel.setText(TuxGuitar.getProperty("track.name") + ":");
 		
 		this.nameText = new Text(top, SWT.BORDER);
-		this.nameText.setLayoutData(getAlignmentData(MINIMUN_LEFT_CONTROLS_WIDTH,SWT.FILL));
+		this.nameText.setLayoutData(getAlignmentData(MINIMUM_LEFT_CONTROLS_WIDTH,SWT.FILL));
 		this.nameText.setText(track.getName());
 		
 		//-----------------------COLOR---------------------------------
@@ -173,7 +173,7 @@ public class TrackPropertiesAction extends Action {
 		colorLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
 		
 		final Button colorButton = new Button(bottom, SWT.PUSH);
-		colorButton.setLayoutData(getAlignmentData(MINIMUN_LEFT_CONTROLS_WIDTH,SWT.FILL));
+		colorButton.setLayoutData(getAlignmentData(MINIMUM_LEFT_CONTROLS_WIDTH,SWT.FILL));
 		colorButton.setText(TuxGuitar.getProperty("choose"));
 		colorButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -343,7 +343,7 @@ public class TrackPropertiesAction extends Action {
 		instrumentLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
 		
 		this.instrumentCombo = new Combo(top, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.instrumentCombo.setLayoutData(getAlignmentData(MINIMUN_LEFT_CONTROLS_WIDTH,SWT.FILL));
+		this.instrumentCombo.setLayoutData(getAlignmentData(MINIMUM_LEFT_CONTROLS_WIDTH,SWT.FILL));
 		MidiInstrument[] instruments = TuxGuitar.instance().getPlayer().getInstruments();
 		if (instruments != null) {
 			int count = instruments.length;

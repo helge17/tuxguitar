@@ -28,9 +28,9 @@ public class MarkerEditor {
 	public static final int STATUS_NEW = 1;
 	public static final int STATUS_EDIT = 2;
 	
-	private static final int MINIMUN_CONTROL_WIDTH = 180;
-	private static final int MINIMUN_BUTTON_WIDTH = 80;
-	private static final int MINIMUN_BUTTON_HEIGHT = 25;
+	private static final int MINIMUM_CONTROL_WIDTH = 180;
+	private static final int MINIMUM_BUTTON_WIDTH = 80;
+	private static final int MINIMUM_BUTTON_HEIGHT = 25;
 	
 	private int status;
 	protected TGMarker marker;
@@ -71,7 +71,7 @@ public class MarkerEditor {
 		measureLabel.setText(TuxGuitar.getProperty("measure"));
 		
 		this.measureSpinner = new Spinner(group, SWT.BORDER);
-		this.measureSpinner.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
+		this.measureSpinner.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
 		this.measureSpinner.setMinimum(1);
 		this.measureSpinner.setMaximum(measureCount);
 		this.measureSpinner.setSelection(this.marker.getMeasure());
@@ -91,7 +91,7 @@ public class MarkerEditor {
 		titleLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
 		titleLabel.setText(TuxGuitar.getProperty("title"));
 		this.titleText = new Text(group, SWT.BORDER);
-		this.titleText.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
+		this.titleText.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
 		this.titleText.setText(this.marker.getTitle());
 		
 		// Color
@@ -99,7 +99,7 @@ public class MarkerEditor {
 		colorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
 		colorLabel.setText(TuxGuitar.getProperty("color"));
 		this.colorButton = new Button(group, SWT.PUSH);
-		this.colorButton.setLayoutData(getAlignmentData(MINIMUN_CONTROL_WIDTH,SWT.FILL));
+		this.colorButton.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
 		this.colorButton.setText(TuxGuitar.getProperty("choose"));
 		this.colorButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -128,8 +128,8 @@ public class MarkerEditor {
 		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
 		
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = MINIMUN_BUTTON_WIDTH;
-		data.minimumHeight = MINIMUN_BUTTON_HEIGHT;
+		data.minimumWidth = MINIMUM_BUTTON_WIDTH;
+		data.minimumHeight = MINIMUM_BUTTON_HEIGHT;
 		
 		final Button buttonOK = new Button(buttons, SWT.PUSH);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));

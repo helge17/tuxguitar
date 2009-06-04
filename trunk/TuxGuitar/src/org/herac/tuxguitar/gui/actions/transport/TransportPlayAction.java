@@ -50,7 +50,7 @@ public class TransportPlayAction extends Action {
 		final TGSynchronizer.TGRunnable playing = new TGSynchronizer.TGRunnable() {
 			public void run() {
 				if(TuxGuitar.instance().getPlayer().isRunning()){
-					TuxGuitar.instance().redrawPayingMode();
+					TuxGuitar.instance().redrawPlayingMode();
 				}
 			}
 		};

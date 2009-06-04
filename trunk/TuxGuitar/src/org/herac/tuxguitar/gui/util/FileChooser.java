@@ -141,7 +141,7 @@ public class FileChooser {
 			int size = (formats.size() + 2);
 			this.filterNames = new String[size];
 			this.filterExtensions = new String[size];
-			this.filterNames[0] = new String("All Suported Formats");
+			this.filterNames[0] = new String("All Supported Formats");
 			this.filterExtensions[0] = new String();
 			for(int i = 1; i < (size - 1); i ++){
 				TGFileFormat format = (TGFileFormat)formats.get(i-1);

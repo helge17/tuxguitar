@@ -179,9 +179,9 @@ public class TGSongManager {
 		return (getSong().countTracks() + 1);
 	}
 	
-	public TGChannel getFreeChannel(short instrument,boolean isPercusion){
-		if(isPercusion){
-			return TGChannel.newPercusionChannel(getFactory());
+	public TGChannel getFreeChannel(short instrument,boolean isPercussion){
+		if(isPercussion){
+			return TGChannel.newPercussionChannel(getFactory());
 		}
 		short normalChannel = -1;
 		short effectChannel = -1;
@@ -1014,7 +1014,7 @@ public class TGSongManager {
 		return strings;
 	}
 	
-	public static List createPercusionStrings(TGFactory factory,int stringCount){
+	public static List createPercussionStrings(TGFactory factory,int stringCount){
 		List strings = new ArrayList();
 		for(int i = 1;i <= stringCount; i++){
 			strings.add(newString(factory,i, 0));

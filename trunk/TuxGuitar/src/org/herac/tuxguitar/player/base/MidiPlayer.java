@@ -167,7 +167,7 @@ public class MidiPlayer{
 			this.checkOutput();
 			this.updateLoop( true );
 			this.systemReset();
-			this.addSecuence();
+			this.addSequence();
 			this.updatePrograms();
 			this.updateControllers();
 			this.updateDefaultControllers();
@@ -377,7 +377,7 @@ public class MidiPlayer{
 	 * Agrega la Secuencia
 	 * @throws MidiUnavailableException 
 	 */
-	public void addSecuence() {
+	public void addSequence() {
 		try{
 			MidiSequenceParser parser = new MidiSequenceParser(this.songManager,MidiSequenceParser.DEFAULT_PLAY_FLAGS,getMode().getCurrentPercent(),0);		
 			MidiSequenceHandler sequence = getSequencer().createSequence(this.songManager.getSong().countTracks() + 2);
@@ -422,15 +422,15 @@ public class MidiPlayer{
 	
 	public void updateControllers() {
 		this.anySolo = false;
-		boolean percusionUpdated = false;
+		boolean percussionUpdated = false;
 		Iterator it = this.songManager.getSong().getTracks();
 		while(it.hasNext()){
 			TGTrack track = (TGTrack)it.next();
 			this.updateController(track);
 			this.anySolo = ((!this.anySolo)?track.isSolo():this.anySolo);
-			percusionUpdated = (percusionUpdated || track.isPercussionTrack());
+			percussionUpdated = (percussionUpdated || track.isPercussionTrack());
 		}
-		if(!percusionUpdated && isMetronomeEnabled()){
+		if(!percussionUpdated && isMetronomeEnabled()){
 			int volume = (int)((this.getVolume() / 10.00) * TGChannel.DEFAULT_VOLUME);
 			int balance = TGChannel.DEFAULT_BALANCE;
 			int chorus = TGChannel.DEFAULT_CHORUS;

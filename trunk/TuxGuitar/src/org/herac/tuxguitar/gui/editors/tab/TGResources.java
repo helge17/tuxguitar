@@ -268,10 +268,10 @@ public class TGResources {
 		this.scoreNotes[SCORE_NOTE_FULL_PLAY_MODE] = getScoreNoteImage( getPlayNoteColor(),true);
 		
 		this.harmonicNotes = new Image[4];
-		this.harmonicNotes[SCORE_NOTE_EMPTY_NORMAL_MODE] = getArmonicImage( getScoreNoteColor(),false);
-		this.harmonicNotes[SCORE_NOTE_EMPTY_PLAY_MODE] = getArmonicImage( getPlayNoteColor(),false);
-		this.harmonicNotes[SCORE_NOTE_FULL_NORMAL_MODE] = getArmonicImage( getScoreNoteColor(),true);
-		this.harmonicNotes[SCORE_NOTE_FULL_PLAY_MODE] = getArmonicImage( getPlayNoteColor(),true);
+		this.harmonicNotes[SCORE_NOTE_EMPTY_NORMAL_MODE] = getHarmonicImage( getScoreNoteColor(),false);
+		this.harmonicNotes[SCORE_NOTE_EMPTY_PLAY_MODE] = getHarmonicImage( getPlayNoteColor(),false);
+		this.harmonicNotes[SCORE_NOTE_FULL_NORMAL_MODE] = getHarmonicImage( getScoreNoteColor(),true);
+		this.harmonicNotes[SCORE_NOTE_FULL_PLAY_MODE] = getHarmonicImage( getPlayNoteColor(),true);
 		
 		this.tempoImage = getTempoImage(this.getColorBlack());
 		
@@ -324,7 +324,7 @@ public class TGResources {
 		return getImageMask(image, getBackgroundColor().getRGB(), color.getRGB());
 	}
 	
-	private Image getArmonicImage(Color color,boolean full) {
+	private Image getHarmonicImage(Color color,boolean full) {
 		int size = getLayout().getScoreLineSpacing();
 		
 		int x = 0;
