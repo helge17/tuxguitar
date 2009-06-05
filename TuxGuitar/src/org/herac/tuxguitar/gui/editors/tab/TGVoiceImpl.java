@@ -151,6 +151,9 @@ public class TGVoiceImpl extends TGVoice{
 		this.usedStrings = new boolean[getBeat().getMeasure().getTrack().stringCount()];
 		this.maxString = 1;
 		this.minString = getBeat().getMeasure().getTrack().stringCount();
+		this.group = null;
+		this.previous = null;
+		this.next = null;
 	}
 	
 	public void check(TGNoteImpl note){
