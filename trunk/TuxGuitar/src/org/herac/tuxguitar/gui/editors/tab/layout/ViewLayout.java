@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.herac.tuxguitar.gui.TuxGuitar;
@@ -414,10 +415,11 @@ public abstract class ViewLayout {
 		painter.setBackground(getResources().getBackgroundColor());
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getResources().getColorBlack()) );
 	}
-
-	public void setMarkerStyle(TGPainter painter){
+	
+	public void setMarkerStyle(TGPainter painter, Color color){
 		painter.setFont(getResources().getMarkerFont());
 		painter.setBackground(getResources().getBackgroundColor());
+		painter.setForeground(color);
 	}
 	
 	public void setTextStyle(TGPainter painter){

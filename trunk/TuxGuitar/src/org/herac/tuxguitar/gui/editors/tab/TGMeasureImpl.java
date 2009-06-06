@@ -1059,8 +1059,7 @@ public class TGMeasureImpl extends TGMeasure{
 			int x = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
 			int y = (getPosY() + getTs().getPosition(TrackSpacing.POSITION_MARKER));
 			
-			layout.setMarkerStyle(painter);
-			painter.setForeground( getMarkerColor() );
+			layout.setMarkerStyle(painter,getMarkerColor());
 			painter.drawString(getMarker().getTitle(), x, y);
 		}
 	}

@@ -110,6 +110,10 @@ public class PrintStylesDialog {
 		chordDiagramEnabled.setText(TuxGuitar.getProperty("export.chord-diagram-enabled"));
 		chordDiagramEnabled.setSelection(true);
 		
+		final Button blackAndWhite = new Button(options,SWT.CHECK);
+		blackAndWhite.setText(TuxGuitar.getProperty("export.black-and-white"));
+		blackAndWhite.setSelection(true);
+		
 		tablatureEnabled.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				if(!tablatureEnabled.getSelection()){
@@ -143,6 +147,7 @@ public class PrintStylesDialog {
 				styles.setTrackNumber(tracks.getSelectionIndex() + 1);
 				styles.setFromMeasure(fromSpinner.getSelection());
 				styles.setToMeasure(toSpinner.getSelection());
+				styles.setBlackAndWhite(blackAndWhite.getSelection());
 				styles.setStyle(style);
 				dialog.dispose();
 			}
