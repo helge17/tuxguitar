@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Rectangle;
@@ -310,13 +311,16 @@ public class PrinterViewLayout extends ViewLayout{
 	
 	public void setLineStyle(TGPainter painter){
 		painter.setLineWidth(1);
-		painter.setForeground(getResources().getColorBlack());
+		//painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getDarkColor( getResources().getLineColor() ) );
 	}
 	
 	public void setMeasureNumberStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterDefaultFont());
+		//painter.setBackground(getResources().getColorWhite());
+		//painter.setForeground(getResources().getColorBlack());
 		painter.setBackground(getResources().getColorWhite());
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground(getDarkColor(getResources().getColorRed()));
 	}
 	
 	public void setDivisionsStyle(TGPainter painter, boolean fill){
@@ -325,59 +329,59 @@ public class PrinterViewLayout extends ViewLayout{
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
-	public void setTempoStyle(TGPainter painter){
+	public void setTempoStyle(TGPainter painter, boolean fontStyle){
 		painter.setFont(getResources().getPrinterDefaultFont());
-		painter.setBackground(getResources().getColorWhite());
 		painter.setForeground(getResources().getColorBlack());
+		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
 	}
 	
-	public void setTripletFeelStyle(TGPainter painter){
+	public void setTripletFeelStyle(TGPainter painter, boolean fontStyle){
 		painter.setFont(getResources().getPrinterDefaultFont());
-		painter.setBackground(getResources().getColorWhite());
 		painter.setForeground(getResources().getColorBlack());
+		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
 	}
 	
 	public void setTabNoteStyle(TGPainter painter,boolean playMode){
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
 		painter.setFont(getResources().getPrinterNoteFont());
 	}
 	
 	public void setTabNoteFooterStyle(TGPainter painter){
-		painter.setForeground( getResources().getColorBlack());
-		painter.setBackground( getResources().getColorBlack());
+		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
+		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
 	}
 	
 	public void setTabEffectStyle(TGPainter painter){
-		painter.setForeground( getResources().getColorBlack());
-		painter.setBackground( getResources().getColorBlack());
+		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
+		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
 	}
 	
 	public void setScoreNoteStyle(TGPainter painter,boolean playing){
-		painter.setBackground( getResources().getColorBlack() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
+		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
 	}
 	
 	public void setScoreNoteFooterStyle(TGPainter painter){
-		painter.setForeground( getResources().getColorBlack());
-		painter.setBackground( getResources().getColorBlack());
+		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
 	}
 	
 	public void setScoreEffectStyle(TGPainter painter){
-		painter.setForeground( getResources().getColorBlack());
-		painter.setBackground( getResources().getColorBlack());
+		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
 	}
 	
 	public void setTimeSignatureStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterTimeSignatureFont());
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setGraceStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterGraceFont());
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
 	}
 	
 	public void setLyricStyle(TGPainter painter,boolean playMode){
@@ -386,28 +390,34 @@ public class PrinterViewLayout extends ViewLayout{
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
+	public void setMarkerStyle(TGPainter painter, Color color){
+		painter.setFont(getResources().getMarkerFont());
+		painter.setBackground(getResources().getColorWhite());
+		painter.setForeground(getDarkColor(color));
+	}
+	
 	public void setTextStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterTextFont());
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setOfflineEffectStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setTupletoStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setRepeatEndingStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setChordStyle(TGChordImpl chord){
@@ -415,14 +425,18 @@ public class PrinterViewLayout extends ViewLayout{
 		chord.setFont(getResources().getPrinterChordFont());
 		chord.setForegroundColor(getResources().getColorBlack());
 		chord.setBackgroundColor(getResources().getColorWhite());
-		chord.setColor(getResources().getColorBlack());
-		chord.setNoteColor(getResources().getColorBlack());
-		chord.setTonicColor(getResources().getColorBlack());
+		chord.setColor(getDarkColor(getResources().getLineColor()));
+		chord.setNoteColor(getDarkColor(getResources().getTabNoteColor()));
+		chord.setTonicColor(getDarkColor(getResources().getTabNoteColor()));
 		chord.setFretSpacing(getChordFretSpacing());
 		chord.setStringSpacing(getChordStringSpacing());
 		chord.setNoteSize(getChordNoteSize());
 		chord.setFirstFretSpacing(getChordFretIndexSpacing());
 		chord.setFirstFretFont(getResources().getChordFretFont());
+	}
+	
+	public Color getDarkColor( Color color ) {
+		return ( this.styles.isBlackAndWhite() ? getResources().getColorBlack() : color );
 	}
 	
 	public int getMaxWidth(){

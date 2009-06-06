@@ -58,3 +58,5 @@ action.beat.general.move-right=Move One Beat Right
 
 measure.add.count=Add Count
 edit.paste.count=Paste Count
+
+export.black-and-white=Black And White Mode
