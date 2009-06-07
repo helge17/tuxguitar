@@ -49,6 +49,7 @@ public class PDFSongExporter implements TGSongExporter{
 		styles.setFromMeasure(1);
 		styles.setToMeasure(song.countMeasureHeaders());
 		styles.setTrackNumber(1);
+		styles.setBlackAndWhite(false);
 		return styles;
 	}
 	
