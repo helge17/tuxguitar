@@ -142,6 +142,9 @@ public class MidiSequenceParser {
 		this.eHeader = header;
 	}
 	
+	private int fix( int value ){
+		return ( value >= 0 ? value <= 127 ? value : 127 : 0 );
+	}
 	/**
 	 * Crea las pistas de la cancion
 	 */
@@ -319,8 +322,8 @@ public class MidiSequenceParser {
 	 * Crea una nota en la posicion start
 	 */
 	private void makeNote(MidiSequenceHandler sequence,int track, int key, long start, long duration, int velocity, int channel) {
-		sequence.addNoteOn(getTick(start),track,channel,key,velocity);
-		sequence.addNoteOff(getTick(start + duration),track,channel,key,velocity);
+		sequence.addNoteOn(getTick(start),track,channel,fix(key),fix(velocity));
+		sequence.addNoteOff(getTick(start + duration),track,channel,fix(key),fix(velocity));
 	}
 	
 	private void makeChannel(MidiSequenceHandler sequence,TGChannel channel,int track) {
@@ -334,14 +337,14 @@ public class MidiSequenceParser {
 	
 	private void makeChannel(MidiSequenceHandler sequence,TGChannel channel,int track,boolean primary) {
 		int number = (primary?channel.getChannel():channel.getEffectChannel());
-		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.VOLUME,channel.getVolume());
-		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BALANCE,channel.getBalance());
-		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.CHORUS,channel.getChorus());
-		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.REVERB,channel.getReverb());
-		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.PHASER,channel.getPhaser());
-		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.TREMOLO,channel.getTremolo());
+		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.VOLUME,fix(channel.getVolume()));
+		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BALANCE,fix(channel.getBalance()));
+		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.CHORUS,fix(channel.getChorus()));
+		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.REVERB,fix(channel.getReverb()));
+		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.PHASER,fix(channel.getPhaser()));
+		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.TREMOLO,fix(channel.getTremolo()));
 		sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.EXPRESSION, 127);
-		sequence.addProgramChange(getTick(TGDuration.QUARTER_TIME),track,number,channel.getInstrument());
+		sequence.addProgramChange(getTick(TGDuration.QUARTER_TIME),track,number,fix(channel.getInstrument()));
 	}
 	/**
 	 * Agrega un Time Signature si es distinto al anterior
@@ -487,7 +490,7 @@ public class MidiSequenceParser {
 	}
 	
 	private void addBend(MidiSequenceHandler sequence,int track, long tick,int bend, int channel) {
-		sequence.addPitchBend(getTick(tick),track,channel,bend);
+		sequence.addPitchBend(getTick(tick),track,channel,fix(bend));
 	}
 	
 	public void makeVibrato(MidiSequenceHandler sequence,int track,long start, long duration,int channel){
@@ -600,7 +603,7 @@ public class MidiSequenceParser {
 		long tick = start;
 		long tickIncrement = (duration / ((127 - expression) / expressionIncrement));
 		while( tick < (start + duration) && expression < 127 ) {
-			sequence.addControlChange(getTick(tick),track,channel,MidiControllers.EXPRESSION, expression);
+			sequence.addControlChange(getTick(tick),track,channel,MidiControllers.EXPRESSION, fix(expression));
 			tick += tickIncrement;
 			expression += expressionIncrement;
 		}
