@@ -108,7 +108,7 @@ public class TrackMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.cloneTrack, "track.clone", CloneTrackAction.NAME);
 		setMenuItemTextAndAccelerator(this.removeTrack, "track.remove", RemoveTrackAction.NAME);
 		setMenuItemTextAndAccelerator(this.moveUp, "track.move-up", MoveTrackUpAction.NAME);
-		setMenuItemTextAndAccelerator(this.moveDown, "track.move-up", MoveTrackDownAction.NAME);
+		setMenuItemTextAndAccelerator(this.moveDown, "track.move-down", MoveTrackDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.lyrics, "track.lyrics", EditLyricsAction.NAME);
 		setMenuItemTextAndAccelerator(this.properties, "track.properties", TrackPropertiesAction.NAME);
 	}
