@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gui.tools.browser.dialog;
+package org.herac.tuxguitar.gui.tools.browser.filesystem;
 
 import java.util.Comparator;
 

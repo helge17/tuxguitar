@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.gui.tools.browser.dialog;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -201,9 +200,6 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 	}
 	
 	protected void addElements(List elements){
-		if(elements != null){
-			Collections.sort(elements,new TGBrowserElementComparator());
-		}
 		this.elements = elements;
 	}
 	
