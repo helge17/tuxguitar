@@ -2,6 +2,7 @@ package org.herac.tuxguitar.gui.tools.browser.filesystem;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowser;
@@ -47,6 +48,9 @@ public class TGBrowserImpl extends TGBrowser{
 			for(int i = 0; i < files.length;i ++){
 				elements.add(new TGBrowserElementImpl(this.element,files[i]));
 			}
+		}
+		if( !elements.isEmpty() ){
+			Collections.sort(elements,new TGBrowserElementComparator());
 		}
 		return elements;
 	}
