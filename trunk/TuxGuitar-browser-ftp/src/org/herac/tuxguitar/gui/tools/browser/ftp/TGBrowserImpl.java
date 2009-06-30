@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -114,6 +115,9 @@ public class TGBrowserImpl extends TGBrowser{
 						}
 					}
 				}
+			}
+			if( !elements.isEmpty() ){
+				Collections.sort(elements,new TGBrowserElementComparator());
 			}
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);
