@@ -42,7 +42,7 @@ public abstract class TGBrowserBar implements LanguageLoader{
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(factory.getType());
 		collection.setData(data);
-		TGBrowserManager.instance().addCollection(collection);
+		collection = TGBrowserManager.instance().addCollection(collection);
 		if(reload){
 			getBrowser().updateCollections(collection);
 		}

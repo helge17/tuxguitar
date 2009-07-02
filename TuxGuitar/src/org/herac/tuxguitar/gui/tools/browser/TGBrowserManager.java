@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.gui.tools.browser.filesystem.TGBrowserFactoryImpl;
 import org.herac.tuxguitar.gui.tools.browser.xml.TGBrowserReader;
@@ -104,16 +105,32 @@ public class TGBrowserManager {
 		return this.collections.size();
 	}
 	
-	public void addCollection(TGBrowserCollection collection){
-		if(collection.getData() != null){
-			this.collections.add(collection);
-			this.changes = true;
-		}
-	}
-	
 	public void removeCollection(TGBrowserCollection collection){
 		this.collections.remove(collection);
 		this.changes = true;
+	}
+	
+	public TGBrowserCollection addCollection(TGBrowserCollection collection){
+		if(collection.getData() != null ){
+			TGBrowserCollection existent = getCollection(collection.getType(), collection.getData());
+			if( existent != null ){
+				return existent;
+			}
+			this.collections.add(collection);
+			this.changes = true;
+		}
+		return collection;
+	}
+	
+	public TGBrowserCollection getCollection(String type, TGBrowserData data ){
+		Iterator it = this.getCollections();
+		while( it.hasNext() ){
+			TGBrowserCollection collection = ( TGBrowserCollection ) it.next();
+			if( collection.getType().equals(type) && collection.getData().equals(data) ){
+				return collection;
+			}
+		}
+		return null;
 	}
 	
 	public TGBrowserCollection getCollection(int index){
