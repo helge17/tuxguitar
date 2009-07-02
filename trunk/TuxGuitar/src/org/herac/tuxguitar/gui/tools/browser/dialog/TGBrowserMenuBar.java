@@ -211,5 +211,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 			this.menu.dispose();
 		}
 		this.init(shell);
+		this.loadProperties();
+		this.updateItems();
 	}
 }
