@@ -142,6 +142,8 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	public void reload(){
 		this.disposeItems();
 		this.initItems();
+		this.loadProperties();
+		this.updateItems();
 		this.composite.layout(true,true);
 	}
 	
