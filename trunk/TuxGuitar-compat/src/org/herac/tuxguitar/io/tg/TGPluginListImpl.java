@@ -7,7 +7,7 @@ import org.herac.tuxguitar.gui.system.plugins.base.TGExporterPlugin;
 import org.herac.tuxguitar.gui.system.plugins.base.TGInputStreamPlugin;
 import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGRawExporter;
 
 public class TGPluginListImpl extends TGPluginList{
 	
@@ -39,12 +39,12 @@ public class TGPluginListImpl extends TGPluginList{
 			}
 		});
 		plugins.add(new TGExporterPlugin() {
-			protected TGSongExporter getExporter() {
+			protected TGRawExporter getExporter() {
 				return new org.herac.tuxguitar.io.tg.v11.TGOutputStream();
 			}
 		});
 		plugins.add(new TGExporterPlugin() {
-			protected TGSongExporter getExporter() {
+			protected TGRawExporter getExporter() {
 				return new org.herac.tuxguitar.io.tg.v10.TGOutputStream();
 			}
 		});

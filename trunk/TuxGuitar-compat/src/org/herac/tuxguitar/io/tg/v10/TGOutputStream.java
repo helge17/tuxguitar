@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -45,7 +45,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TGOutputStream extends TGStream implements TGSongExporter{
+public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
 	private DataOutputStream dataOutputStream;
 	
@@ -65,9 +65,12 @@ public class TGOutputStream extends TGStream implements TGSongExporter{
 		return true;
 	}
 	
-	public void exportSong(OutputStream stream,TGSong song) throws TGFileFormatException {
+	public void init(TGFactory factory,OutputStream stream){
+		this.dataOutputStream = new DataOutputStream(stream);
+	}
+	
+	public void exportSong(TGSong song) throws TGFileFormatException {
 		try{
-			this.dataOutputStream = new DataOutputStream(stream);
 			this.writeVersion();
 			this.write(song);
 			this.dataOutputStream.flush();

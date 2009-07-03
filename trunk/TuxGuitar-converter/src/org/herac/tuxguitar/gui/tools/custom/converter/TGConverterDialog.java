@@ -26,7 +26,8 @@ import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.io.base.TGRawExporter;
 
 public class TGConverterDialog implements LanguageLoader,IconLoader{
 	
@@ -179,8 +180,10 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 		
 		Iterator exporters = TGFileFormatManager.instance().getExporters();
 		while (exporters.hasNext()) {
-			TGSongExporter exporter = (TGSongExporter)exporters.next();
-			addFileFormats(combo, exporter.getFileFormat());
+			TGRawExporter exporter = (TGRawExporter)exporters.next();
+			if( exporter instanceof TGLocalFileExporter ){
+				addFileFormats(combo, ((TGLocalFileExporter)exporter).getFileFormat() );
+			}
 		}
 		if(this.outputFormats.size() > 0 ){
 			combo.select( 0 );

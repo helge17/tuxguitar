@@ -11,8 +11,10 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongExporter;
-import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.io.base.TGLocalFileImporter;
+import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.base.TGRawImporter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -68,13 +70,14 @@ public class TGConverter {
 				}
 				// then it's exporter
 				if (exporter==true) {
-					TGSongExporter songExporter = findExporter();
+					TGLocalFileExporter songExporter = findExporter();
 					if (songExporter==null)
 						this.getListener().notifyFileResult(this.extension,EXPORTER_NOT_FOUND);
 					else {
 						songExporter.configure(true);
 						try {
-							songExporter.exportSong(new BufferedOutputStream(new FileOutputStream(convertFileName)), manager.getSong());
+							songExporter.init(manager.getFactory(), new BufferedOutputStream(new FileOutputStream(convertFileName)));
+							songExporter.exportSong(manager.getSong());
 						} catch (FileNotFoundException ex) {
 							this.getListener().notifyFileResult(convertFileName,FILE_COULDNT_WRITE);
 						}
@@ -148,14 +151,19 @@ public class TGConverter {
 		return checkIfExists( new File(convertPath).getAbsolutePath() , 0 );
 	}
 	
-	private TGSongExporter findExporter() {
+	private TGLocalFileExporter findExporter() {
 		// find the exporter
 		Iterator exporters = TGFileFormatManager.instance().getExporters();
 		String wantedExtension = "*"+this.extension;
 		while (exporters.hasNext()) {
-			TGSongExporter current = (TGSongExporter)exporters.next();
-			if (current.getFileFormat().getSupportedFormats().startsWith(wantedExtension))
-				return current;
+			TGRawExporter rawExporter = (TGRawExporter)exporters.next();
+			if( rawExporter instanceof TGLocalFileExporter ){
+				TGLocalFileExporter current = (TGLocalFileExporter)rawExporter;
+				
+				if (current.getFileFormat().getSupportedFormats().startsWith(wantedExtension)){
+					return current;
+				}
+			}
 		}
 		return null;
 	}
@@ -163,12 +171,16 @@ public class TGConverter {
 	private TGSong importSong(TGFactory factory, String filename) {
 		Iterator importers = TGFileFormatManager.instance().getImporters();
 		while (importers.hasNext() ) {
-			TGSongImporter currentImporter = (TGSongImporter)importers.next();
 			try {
-				currentImporter.configure(true);
-				if (isSupportedExtension(filename,currentImporter)) {
-					InputStream input = new BufferedInputStream(new FileInputStream(filename));
-					return currentImporter.importSong(factory, input);
+				TGRawImporter rawImporter = (TGRawImporter)importers.next();
+				if( rawImporter instanceof TGLocalFileImporter ){
+					TGLocalFileImporter currentImporter = (TGLocalFileImporter)rawImporter;
+					currentImporter.configure(true);
+					if (isSupportedExtension(filename,currentImporter)) {
+						InputStream input = new BufferedInputStream(new FileInputStream(filename));
+						currentImporter.init(factory, input);
+						return currentImporter.importSong();
+					}
 				}
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
@@ -177,7 +189,7 @@ public class TGConverter {
 		return null;
 	}
 	
-	private boolean isSupportedExtension(String filename, TGSongImporter currentImporter) {
+	private boolean isSupportedExtension(String filename, TGLocalFileImporter currentImporter) {
 		try {
 			String extension = filename.substring(filename.lastIndexOf("."),filename.length());
 			extension="*"+extension.toLowerCase();
