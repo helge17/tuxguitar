@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.midi.base.MidiEvent;
 import org.herac.tuxguitar.io.midi.base.MidiMessage;
 import org.herac.tuxguitar.io.midi.base.MidiSequence;
@@ -28,7 +28,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-public class MidiSongImporter implements TGSongImporter{
+public class MidiSongImporter implements TGLocalFileImporter{
 	
 	private static final int MIN_DURATION_VALUE = TGDuration.SIXTY_FOURTH;
 	
@@ -40,6 +40,7 @@ public class MidiSongImporter implements TGSongImporter{
 	private List trackTuningHelpers;
 	private MidiSettings settings;
 	protected TGFactory factory;
+	protected InputStream stream;
 	
 	public MidiSongImporter(){
 		super();
@@ -58,14 +59,17 @@ public class MidiSongImporter implements TGSongImporter{
 		return (this.settings != null);
 	}
 	
-	public TGSong importSong(TGFactory factory,InputStream stream) throws TGFileFormatException {
+	public void init(TGFactory factory,InputStream stream) {
+		this.factory = factory;
+		this.stream = stream;
+	}
+	
+	public TGSong importSong() throws TGFileFormatException {
 		try {
-			if(this.settings == null){
+			if(this.settings == null || this.factory == null || this.stream == null ){
 				return null;
 			}
-			this.factory = factory;
-			
-			MidiSequence sequence = new MidiFileReader().getSequence(stream);
+			MidiSequence sequence = new MidiFileReader().getSequence(this.stream);
 			initFields(sequence);
 			for(int i = 0; i < sequence.countTracks(); i++){
 				MidiTrack track = sequence.getTrack(i);

@@ -3,11 +3,13 @@ package org.herac.tuxguitar.io.lilypond;
 import java.io.OutputStream;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public class LilypondSongExporter implements TGSongExporter{
+public class LilypondSongExporter implements TGLocalFileExporter{
 	
+	private OutputStream stream;
 	private LilypondSettings settings;
 	
 	public String getExportName() {
@@ -23,9 +25,13 @@ public class LilypondSongExporter implements TGSongExporter{
 		return (this.settings != null);
 	}
 	
-	public void exportSong(OutputStream stream, TGSong song) {
-		if(this.settings != null){
-			new LilypondOutputStream(stream,this.settings).writeSong(song);
+	public void init(TGFactory factory,OutputStream stream){
+		this.stream = stream;
+	}
+	
+	public void exportSong(TGSong song) {
+		if(this.stream != null && this.settings != null){
+			new LilypondOutputStream(this.stream,this.settings).writeSong(song);
 		}
 	}
 }
