@@ -4,10 +4,13 @@ import java.io.OutputStream;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public class MusicXMLSongExporter implements TGSongExporter{
+public class MusicXMLSongExporter implements TGLocalFileExporter{
+	
+	private OutputStream stream;
 	
 	public String getExportName() {
 		return "MusicXML";
@@ -21,7 +24,13 @@ public class MusicXMLSongExporter implements TGSongExporter{
 		return true;
 	}
 	
-	public void exportSong(OutputStream stream, TGSong song) throws TGFileFormatException {
-		new MusicXMLWriter(stream).writeSong(song);
+	public void init(TGFactory factory,OutputStream stream){
+		this.stream = stream;
+	}
+	
+	public void exportSong(TGSong song) throws TGFileFormatException {
+		if( this.stream != null ){
+			new MusicXMLWriter(this.stream).writeSong(song);
+		}
 	}
 }

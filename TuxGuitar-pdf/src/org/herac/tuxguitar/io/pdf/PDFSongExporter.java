@@ -18,17 +18,19 @@ import org.herac.tuxguitar.gui.printer.PrintStyles;
 import org.herac.tuxguitar.gui.printer.PrintStylesDialog;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class PDFSongExporter implements TGSongExporter{
+public class PDFSongExporter implements TGLocalFileExporter{
 	
 	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
 	
 	private PrintStyles styles;
+	private OutputStream stream;
 	
 	public String getExportName() {
 		return "PDF";
@@ -36,11 +38,6 @@ public class PDFSongExporter implements TGSongExporter{
 	
 	public TGFileFormat getFileFormat() {
 		return new TGFileFormat("PDF","*.pdf");
-	}
-	
-	public boolean configure(boolean setDefaults) {
-		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.instance().getShell()) : null );
-		return ( this.styles != null || setDefaults );
 	}
 	
 	public PrintStyles getDefaultStyles(TGSong song){
@@ -53,9 +50,20 @@ public class PDFSongExporter implements TGSongExporter{
 		return styles;
 	}
 	
-	public void exportSong(OutputStream stream, TGSong song) {
+	public boolean configure(boolean setDefaults) {
+		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.instance().getShell()) : null );
+		return ( this.styles != null || setDefaults );
+	}
+	
+	public void init(TGFactory factory,OutputStream stream){
+		this.stream = stream;
+	}
+	
+	public void exportSong(TGSong song) {
 		try{
-			this.export(stream,song, (this.styles != null ? this.styles : getDefaultStyles(song)) );
+			if( this.stream != null ){
+				this.export(this.stream,song, (this.styles != null ? this.styles : getDefaultStyles(song)) );
+			}
 		}catch(Throwable throwable){
 			return;
 		}

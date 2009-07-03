@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.tef.base.TEChord;
 import org.herac.tuxguitar.io.tef.base.TEComponent;
 import org.herac.tuxguitar.io.tef.base.TEComponentChord;
@@ -30,7 +30,7 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGTupleto;
 
-public class TESongImporter implements TGSongImporter{
+public class TESongImporter implements TGLocalFileImporter{
 	
 	private static final int[][] PERCUSSION_TUNINGS = new int[][]{
 		new int[]{ 49, 41, 32 },
@@ -41,6 +41,7 @@ public class TESongImporter implements TGSongImporter{
 	};
 	
 	protected TGSongManager manager;
+	protected InputStream stream;
 	
 	public TESongImporter(){
 		super();
@@ -58,10 +59,16 @@ public class TESongImporter implements TGSongImporter{
 		return true;
 	}
 	
-	public TGSong importSong(TGFactory factory,InputStream stream) throws TGFileFormatException {
+	public void init(TGFactory factory,InputStream stream) {
+		this.manager = new TGSongManager(factory);
+		this.stream = stream;
+	}
+	
+	public TGSong importSong() throws TGFileFormatException {
 		try {
-			this.manager = new TGSongManager(factory);
-			return this.parseSong(new TEInputStream(stream).readSong());
+			if( this.manager != null && this.stream != null ){
+				return this.parseSong(new TEInputStream(this.stream).readSong());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

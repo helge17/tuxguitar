@@ -2,11 +2,11 @@ package org.herac.tuxguitar.io.gervill;
 
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.gui.system.plugins.base.TGExporterPlugin;
-import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGRawExporter;
 
 public class MidiToAudioPlugin extends TGExporterPlugin{
 	
-	protected TGSongExporter getExporter() throws TGPluginException {
+	protected TGRawExporter getExporter() throws TGPluginException {
 		return new MidiToAudioExporter();
 	}
 	
