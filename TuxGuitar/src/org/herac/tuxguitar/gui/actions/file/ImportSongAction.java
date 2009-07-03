@@ -16,7 +16,8 @@ import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 import org.herac.tuxguitar.gui.util.FileChooser;
-import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGLocalFileImporter;
+import org.herac.tuxguitar.io.base.TGRawImporter;
 
 /**
  * @author julian
@@ -54,7 +55,7 @@ public class ImportSongAction extends Action {
 								public void run() {
 									if(!TuxGuitar.isDisposed()){
 										TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-										importFile(event.widget.getData());
+										processImporter(event.widget.getData());
 									}
 								}
 							}).start();
@@ -64,13 +65,20 @@ public class ImportSongAction extends Action {
 				return 0;
 			}
 		}
-		importFile(event.widget.getData());
+		processImporter(event.widget.getData());
 		
 		return 0;
 	}
 	
-	protected void importFile(Object data){
-		final TGSongImporter importer = (TGSongImporter)data;
+	protected void processImporter(Object importer){
+		if( importer instanceof TGLocalFileImporter ){
+			this.processLocalFileImporter( (TGLocalFileImporter)importer );
+		}else if( importer instanceof TGRawImporter ){
+			this.processRawImporter( (TGRawImporter)importer );
+		}
+	}
+	
+	private void processLocalFileImporter(final TGLocalFileImporter importer){
 		final String path = FileChooser.instance().open(TuxGuitar.instance().getShell(),importer.getFileFormat());
 		if(!isValidFile(path) || !importer.configure(false)){
 			ActionLock.unlock();
@@ -82,6 +90,19 @@ public class ImportSongAction extends Action {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.importSong(importer, path);
+					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					ActionLock.unlock();
+				}
+			}
+		}).start();
+	}
+	
+	private void processRawImporter( final TGRawImporter importer ){
+		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		new Thread(new Runnable() {
+			public void run() {
+				if(!TuxGuitar.isDisposed()){
+					FileActionUtils.importSong(importer);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 					ActionLock.unlock();
 				}

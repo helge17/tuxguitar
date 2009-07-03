@@ -30,8 +30,8 @@ import org.herac.tuxguitar.gui.actions.file.SaveAsFileAction;
 import org.herac.tuxguitar.gui.actions.file.SaveFileAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongExporter;
-import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.base.TGRawImporter;
 
 /**
  * @author julian
@@ -96,7 +96,7 @@ public class FileMenuItem extends MenuItems {
 		
 		Iterator importers = TGFileFormatManager.instance().getImporters();
 		while(importers.hasNext()){
-			TGSongImporter importer = (TGSongImporter)importers.next();
+			TGRawImporter importer = (TGRawImporter)importers.next();
 			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
 			item.setData(importer);
 			item.addSelectionListener(TuxGuitar.instance().getAction(ImportSongAction.NAME));
@@ -110,7 +110,7 @@ public class FileMenuItem extends MenuItems {
 		
 		Iterator exporters = TGFileFormatManager.instance().getExporters();
 		while(exporters.hasNext()){
-			TGSongExporter exporter = (TGSongExporter)exporters.next();
+			TGRawExporter exporter = (TGRawExporter)exporters.next();
 			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
 			item.setData(exporter);
 			item.addSelectionListener(TuxGuitar.instance().getAction(ExportSongAction.NAME));
@@ -202,16 +202,16 @@ public class FileMenuItem extends MenuItems {
 		Iterator importItems = this.importItems.iterator();
 		while(importItems.hasNext()){
 			MenuItem item = (MenuItem)importItems.next();
-			if( item.getData() instanceof TGSongImporter ){
-				item.setText(TuxGuitar.getProperty("file.import") + " " + ((TGSongImporter)item.getData()).getImportName());
+			if( item.getData() instanceof TGRawImporter ){
+				item.setText(TuxGuitar.getProperty("file.import") + " " + ((TGRawImporter)item.getData()).getImportName());
 			}
 		}
 		
 		Iterator exportItems = this.exportItems.iterator();
 		while(exportItems.hasNext()){
 			MenuItem item = (MenuItem)exportItems.next();
-			if( item.getData() instanceof TGSongExporter ){
-				item.setText(TuxGuitar.getProperty("file.export") + " " + ((TGSongExporter)item.getData()).getExportName());
+			if( item.getData() instanceof TGRawExporter ){
+				item.setText(TuxGuitar.getProperty("file.export") + " " + ((TGRawExporter)item.getData()).getExportName());
 			}
 		}
 	}
