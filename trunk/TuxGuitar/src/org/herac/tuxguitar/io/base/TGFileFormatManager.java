@@ -62,19 +62,19 @@ public class TGFileFormatManager {
 		this.outputStreams.remove(stream);
 	}
 	
-	public void addImporter(TGSongImporter importer){
+	public void addImporter(TGRawImporter importer){
 		this.importers.add(importer);
 	}
 	
-	public void removeImporter(TGSongImporter importer){
+	public void removeImporter(TGRawImporter importer){
 		this.importers.remove(importer);
 	}
 	
-	public void addExporter(TGSongExporter exporter){
+	public void addExporter(TGRawExporter exporter){
 		this.exporters.add(exporter);
 	}
 	
-	public void removeExporter(TGSongExporter exporter){
+	public void removeExporter(TGRawExporter exporter){
 		this.exporters.remove(exporter);
 	}
 	

@@ -3,14 +3,14 @@ package org.herac.tuxguitar.gui.system.plugins.base;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGRawImporter;
 
 public abstract class TGImporterPlugin extends TGPluginAdapter{
 	
 	private boolean loaded;
-	private TGSongImporter importer;
+	private TGRawImporter importer;
 	
-	protected abstract TGSongImporter getImporter() throws TGPluginException;
+	protected abstract TGRawImporter getImporter() throws TGPluginException;
 	
 	public void init() throws TGPluginException {
 		this.importer = getImporter();
