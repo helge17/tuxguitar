@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
@@ -152,16 +153,23 @@ public class TGConverter {
 	}
 	
 	private TGLocalFileExporter findExporter() {
-		// find the exporter
 		Iterator exporters = TGFileFormatManager.instance().getExporters();
-		String wantedExtension = "*"+this.extension;
+		//String wantedExtension = "*"+this.extension;
 		while (exporters.hasNext()) {
 			TGRawExporter rawExporter = (TGRawExporter)exporters.next();
 			if( rawExporter instanceof TGLocalFileExporter ){
 				TGLocalFileExporter current = (TGLocalFileExporter)rawExporter;
-				
-				if (current.getFileFormat().getSupportedFormats().startsWith(wantedExtension)){
-					return current;
+				String[] extensions = current.getFileFormat().getSupportedFormats().split(TGFileFormat.EXTENSION_SEPARATOR);
+				if(extensions != null && extensions.length > 0){
+					for(int i = 0; i < extensions.length; i ++){
+						int dotIndex = extensions[i].indexOf(".");
+						if(dotIndex >= 0){
+							String extension = extensions[i].substring( dotIndex );
+							if( extension.equals(this.extension) ){
+								return current;
+							}
+						}
+					}
 				}
 			}
 		}
