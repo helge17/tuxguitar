@@ -54,12 +54,20 @@ public class TGFileFormatManager {
 		this.inputStreams.remove(stream);
 	}
 	
+	public int countInputStreams(){
+		return this.inputStreams.size();
+	}
+	
 	public void addOutputStream(TGOutputStreamBase stream){
 		this.outputStreams.add(stream);
 	}
 	
 	public void removeOutputStream(TGOutputStreamBase stream){
 		this.outputStreams.remove(stream);
+	}
+	
+	public int countOutputStreams(){
+		return this.outputStreams.size();
 	}
 	
 	public void addImporter(TGRawImporter importer){
@@ -70,12 +78,20 @@ public class TGFileFormatManager {
 		this.importers.remove(importer);
 	}
 	
+	public int countImporters(){
+		return this.importers.size();
+	}
+	
 	public void addExporter(TGRawExporter exporter){
 		this.exporters.add(exporter);
 	}
 	
 	public void removeExporter(TGRawExporter exporter){
 		this.exporters.remove(exporter);
+	}
+	
+	public int countExporters(){
+		return this.exporters.size();
 	}
 	
 	public Iterator getInputStreams(){
