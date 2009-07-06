@@ -369,8 +369,8 @@ public class TransportModeAction extends Action {
 			this.combo.removeAll();
 		}
 		
-		public void addItem( String text , Integer value ){
-			this.values.add( value );
+		public void addItem( String text , int value ){
+			this.values.add( new Integer( value ) );
 			this.combo.add( text );
 		}
 		
