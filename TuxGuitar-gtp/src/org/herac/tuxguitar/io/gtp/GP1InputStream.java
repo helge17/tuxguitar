@@ -144,6 +144,9 @@ public class GP1InputStream extends GTPInputStream {
 			readUnsignedByte();
 			readUnsignedByte();
 			beats[i] = readUnsignedByte();
+			if( beats[i] > 127 ){
+				beats[i] = 0;
+			}
 			skip(9);
 		}
 		

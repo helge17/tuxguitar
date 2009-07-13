@@ -137,9 +137,11 @@ public class GP2InputStream extends GTPInputStream {
 			readUnsignedByte();
 			readUnsignedByte();
 			beats[i] = readUnsignedByte();
+			if( beats[i] > 127 ){
+				beats[i] = 0;
+			}
 			skip(9);
 		}
-		
 		skip(2);
 		
 		int flags = readUnsignedByte();
