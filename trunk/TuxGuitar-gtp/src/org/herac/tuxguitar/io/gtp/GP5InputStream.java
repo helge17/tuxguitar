@@ -195,7 +195,8 @@ public class GP5InputStream extends GTPInputStream {
 		skip(1);
 		
 		int read = readByte();
-		if (read == 8 || read == 10) {
+		//if (read == 8 || read == 10 || read == 24 ) {
+		if( (read & 0x08) != 0 ){
 			skip(1);
 		}
 		
