@@ -170,13 +170,13 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 		}
 	}
 	
-	public void notifyFileResult(final String filename, final int errorCode) {
+	public void notifyFileResult(final String filename, final int result) {
 		if(!isDisposed() ){
 			try {
 				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
 					public void run() {
 						if(!isDisposed() ){
-							TGConverterProcess.this.appendLogMessage(errorCode, filename);
+							TGConverterProcess.this.appendLogMessage(result, filename);
 							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
 						}
 					}
@@ -225,10 +225,10 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 		}
 	}
 	
-	protected void appendLogMessage(int code, String fileName) {
-		String message = (TuxGuitar.getProperty( "batch.converter.messages." + (code == TGConverter.FILE_OK ? "ok" : "failed") ) + EOL);
+	protected void appendLogMessage(int result, String fileName) {
+		String message = (TuxGuitar.getProperty( "batch.converter.messages." + (result == TGConverter.FILE_OK ? "ok" : "failed") ) + EOL);
 		
-		switch (code) {
+		switch (result) {
 			case TGConverter.FILE_COULDNT_WRITE :
 				message += ( TuxGuitar.getProperty("batch.converter.messages.couldnt-write", new String[] {fileName}) + EOL );
 				break;
@@ -250,7 +250,7 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 		}
 		
 		StyleRange range = new StyleRange();
-		range.foreground = ( code == TGConverter.FILE_OK ? TGConverterProcess.COLOR_INFO : TGConverterProcess.COLOR_ERROR );
+		range.foreground = ( result == TGConverter.FILE_OK ? TGConverterProcess.COLOR_INFO : TGConverterProcess.COLOR_ERROR );
 		range.start = TGConverterProcess.this.output.getCharCount();
 		range.length = message.length();
 		
