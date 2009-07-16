@@ -27,13 +27,13 @@ import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 
 public class TGConverterDialog implements LanguageLoader,IconLoader{
 	
 	private static final int SHELL_WIDTH = 500;
 	
-	protected List outputFormats;
 	protected Shell dialog;
 	protected Group group;
 	protected Label outputFormatLabel;
@@ -43,6 +43,8 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 	protected Button outputFolderChooser;
 	protected Button buttonOK;
 	protected Button buttonCancel;
+	
+	protected List outputFormats;
 	
 	public TGConverterDialog() {
 		this.outputFormats = new ArrayList();
@@ -120,7 +122,7 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 			public void widgetSelected(SelectionEvent arg0) {
 				String inputFolderValue = inputFolder.getText();
 				String outputFolderValue = outputFolder.getText();
-				String outputFormatValue = getFileFormat( outputFormat.getSelectionIndex() );
+				TGConverterFormat outputFormatValue = getFileFormat( outputFormat.getSelectionIndex() );
 				
 				if(inputFolderValue == null || inputFolderValue.trim().length() == 0){
 					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.input.folder.invalid"));
@@ -128,12 +130,12 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 				else if(outputFolderValue == null || outputFolderValue.trim().length() == 0){
 					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.folder.invalid"));
 				}
-				else if(outputFormatValue == null || outputFormatValue.trim().length() == 0){
+				else if(outputFormat == null){
 					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.format.invalid"));
 				}
 				else{
 					TGConverterProcess process = new TGConverterProcess();
-					process.start(inputFolderValue.trim(), outputFolderValue.trim(), outputFormatValue.trim());
+					process.start(inputFolderValue.trim(), outputFolderValue.trim(), outputFormatValue );
 					TGConverterDialog.this.dialog.dispose();
 				}
 			}
@@ -172,17 +174,17 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 	private void addFileFormats(Combo combo){
 		this.outputFormats.clear();
 		
-		Iterator outputStreams = TGFileFormatManager.instance().getOutputFormats().iterator();
-		while (outputStreams.hasNext()) {
-			TGFileFormat format = (TGFileFormat)outputStreams.next();
-			addFileFormats(combo, format);
+		Iterator outputStreams = TGFileFormatManager.instance().getOutputStreams();
+		while(outputStreams.hasNext()){
+			TGOutputStreamBase stream = (TGOutputStreamBase)outputStreams.next();
+			addFileFormats(combo, stream.getFileFormat() , stream );
 		}
 		
 		Iterator exporters = TGFileFormatManager.instance().getExporters();
 		while (exporters.hasNext()) {
 			TGRawExporter exporter = (TGRawExporter)exporters.next();
 			if( exporter instanceof TGLocalFileExporter ){
-				addFileFormats(combo, ((TGLocalFileExporter)exporter).getFileFormat() );
+				addFileFormats(combo, ((TGLocalFileExporter)exporter).getFileFormat() , exporter );
 			}
 		}
 		if(this.outputFormats.size() > 0 ){
@@ -190,24 +192,28 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 		}
 	}
 	
-	private void addFileFormats(Combo combo, TGFileFormat format){
+	private void addFileFormats(Combo combo, TGFileFormat format, Object exporter ){
 		if(format.getSupportedFormats() != null){
 			String[] extensions = format.getSupportedFormats().split(TGFileFormat.EXTENSION_SEPARATOR);
 			if(extensions != null && extensions.length > 0){
 				for(int i = 0; i < extensions.length; i ++){
 					int dotIndex = extensions[i].indexOf(".");
 					if(dotIndex >= 0){
-						combo.add( format.getName() + " (" + extensions[i] + ")");
-						this.outputFormats.add(extensions[i].substring( dotIndex ));
+						String exportName = format.getName();
+						if( exporter instanceof TGLocalFileExporter ){
+							exportName = ( (TGLocalFileExporter) exporter ).getExportName();
+						}
+						combo.add( exportName + " (" + extensions[i] + ")");
+						this.outputFormats.add(new TGConverterFormat( (extensions[i].substring( dotIndex )).trim() , exporter ));
 					}
 				}
 			}
 		}
 	}
 	
-	protected String getFileFormat(int index){
+	protected TGConverterFormat getFileFormat(int index){
 		if(index >= 0 && index < this.outputFormats.size()){
-			return (String)this.outputFormats.get(index);
+			return (TGConverterFormat)this.outputFormats.get(index);
 		}
 		return null;
 	}

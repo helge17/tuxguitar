@@ -38,9 +38,9 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 	protected TGConverter converter;
 	protected boolean finished;
 	
-	public void start(final String initFolder,String destFolder,String extension){
+	public void start(final String initFolder,String destFolder, TGConverterFormat format ){
 		this.converter = new TGConverter(initFolder,destFolder);
-		this.converter.setExtension(extension);
+		this.converter.setFormat(format);
 		this.converter.setListener(this);
 		
 		this.showProcess();
