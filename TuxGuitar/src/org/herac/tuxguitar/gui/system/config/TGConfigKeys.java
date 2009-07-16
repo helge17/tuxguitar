@@ -71,6 +71,7 @@ public class TGConfigKeys {
 	public static final String FRETBOARD_COLOR_FRET_POINT = "fretboard.color.fret-point";
 	public static final String FRETBOARD_COLOR_NOTE = "fretboard.color.note";
 	public static final String FRETBOARD_COLOR_SCALE = "fretboard.color.scale";
+	public static final String FRETBOARD_DIRECTION = "fretboard.direction";
 	public static final String PIANO_COLOR_KEY_NATURAL = "piano.color.natural-key";
 	public static final String PIANO_COLOR_KEY_NOT_NATURAL = "piano.color.not-natural-key";
 	public static final String PIANO_COLOR_NOTE = "piano.color.note";
