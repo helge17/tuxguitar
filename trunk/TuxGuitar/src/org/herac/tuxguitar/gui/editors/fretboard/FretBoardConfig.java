@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FontDialog;
@@ -32,7 +33,12 @@ public class FretBoardConfig {
 	
 	public static final int DISPLAY_TEXT_SCALE = 0x02;
 	
+	public static final int DIRECTION_RIGHT = 0;
+	
+	public static final int DIRECTION_LEFT = 1;
+	
 	private int style;
+	private int direction;
 	private Font font;
 	private Color colorBackground;
 	private Color colorString;
@@ -72,10 +78,15 @@ public class FretBoardConfig {
 		return this.colorScale;
 	}
 	
+	public int getDirection(){
+		return this.direction;
+	}
+	
 	public void load(){
 		Display display = TuxGuitar.instance().getDisplay();
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		this.style = config.getIntConfigValue(TGConfigKeys.FRETBOARD_STYLE);
+		this.direction = config.getIntConfigValue(TGConfigKeys.FRETBOARD_DIRECTION, DIRECTION_RIGHT );
 		this.font = new Font(display,config.getFontDataConfigValue(TGConfigKeys.FRETBOARD_FONT));
 		this.colorBackground = new Color(display,config.getRGBConfigValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
 		this.colorString = new Color(display,config.getRGBConfigValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
@@ -88,6 +99,7 @@ public class FretBoardConfig {
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		Properties defaults = config.getDefaults();
 		config.setProperty(TGConfigKeys.FRETBOARD_STYLE,defaults.getProperty(TGConfigKeys.FRETBOARD_STYLE));
+		config.setProperty(TGConfigKeys.FRETBOARD_DIRECTION,defaults.getProperty(TGConfigKeys.FRETBOARD_DIRECTION));
 		config.setProperty(TGConfigKeys.FRETBOARD_FONT,defaults.getProperty(TGConfigKeys.FRETBOARD_FONT));
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_STRING,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_STRING));
@@ -96,15 +108,23 @@ public class FretBoardConfig {
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_SCALE,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_SCALE));
 	}
 	
-	public void save(int style,FontData fontData,RGB rgbBackground,RGB rgbString,RGB rgbFretPoint,RGB rgbNote,RGB rgbScale){
+	public void save(int style, int direction, FontData fontData,RGB rgbBackground,RGB rgbString,RGB rgbFretPoint,RGB rgbNote,RGB rgbScale){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		config.setProperty(TGConfigKeys.FRETBOARD_STYLE,style);
+		config.setProperty(TGConfigKeys.FRETBOARD_DIRECTION,direction);
 		config.setProperty(TGConfigKeys.FRETBOARD_FONT,fontData);
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,rgbBackground);
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_STRING,rgbString);
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,rgbFretPoint);
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_NOTE,rgbNote);
 		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_SCALE,rgbScale);
+	}
+	
+	public void saveDirection( int direction ){
+		TGConfigManager config = TuxGuitar.instance().getConfig();
+		config.setProperty(TGConfigKeys.FRETBOARD_DIRECTION,direction);
+		
+		this.direction = direction;
 	}
 	
 	public void dispose(){
@@ -139,6 +159,16 @@ public class FretBoardConfig {
 		final RGB rgbFretPoint = getColorChooser(group,TuxGuitar.getProperty("fretboard.fretpoint-color"), this.colorFretPoint.getRGB());
 		final RGB rgbNote = getColorChooser(group,TuxGuitar.getProperty("fretboard.note-color"), this.colorNote.getRGB());
 		final RGB rgbScale = getColorChooser(group,TuxGuitar.getProperty("fretboard.scale-note-color"), this.colorScale.getRGB());
+		
+		Label directionLabel = new Label(group, SWT.NULL);
+		directionLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
+		directionLabel.setText(TuxGuitar.getProperty("fretboard.direction"));
+		
+		final Combo directionCombo = new Combo(group , SWT.DROP_DOWN | SWT.READ_ONLY);
+		directionCombo.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
+		directionCombo.add(TuxGuitar.getProperty("fretboard.right-mode"));
+		directionCombo.add(TuxGuitar.getProperty("fretboard.left-mode"));
+		directionCombo.select( this.direction );
 		
 		// ----------------------------------------------------------------------
 		group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
@@ -181,9 +211,14 @@ public class FretBoardConfig {
 				style |= (displayTextNote.getSelection() ? DISPLAY_TEXT_NOTE : 0 );
 				style |= (displayTextScale.getSelection() ? DISPLAY_TEXT_SCALE : 0 );
 				
+				int direction = directionCombo.getSelectionIndex();
+				if( direction != DIRECTION_RIGHT && direction != DIRECTION_LEFT ){
+					direction = DIRECTION_RIGHT;
+				}
+				//if( direction )
 				dialog.dispose();
 				
-				save(style, fontData, rgbBackground, rgbString, rgbFretPoint, rgbNote, rgbScale);
+				save(style, direction, fontData, rgbBackground, rgbString, rgbFretPoint, rgbNote, rgbScale);
 				applyChanges();
 			}
 		});

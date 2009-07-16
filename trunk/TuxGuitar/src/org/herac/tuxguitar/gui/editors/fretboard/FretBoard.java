@@ -146,17 +146,10 @@ public class FretBoard extends Composite {
 		this.handSelector = new Combo(this.toolComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.handSelector.add(TuxGuitar.getProperty("fretboard.right-mode"));
 		this.handSelector.add(TuxGuitar.getProperty("fretboard.left-mode"));
-		this.handSelector.select(0);
+		this.handSelector.select( this.getDirection(this.config.getDirection()) );
 		this.handSelector.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				int index = FretBoard.this.handSelector.getSelectionIndex();
-				if (index == 0) {
-					initFrets(10, 1);
-				} else {
-					initFrets(10, 2);
-				}
-				setChanges(true);
-				FretBoard.this.fretBoardComposite.redraw();
+				updateDirection(FretBoard.this.handSelector.getSelectionIndex());
 			}
 		});
 		
@@ -243,20 +236,29 @@ public class FretBoard extends Composite {
 		}
 	}
 	
-	protected void initFrets(int fromX, int hand) {
+	protected void initFrets(int fromX) {
 		this.frets = new int[MAX_FRETS];
 		int nextX = fromX;
-		if (hand == 1) {
+		int direction = this.getDirection(this.config.getDirection());
+		if (direction == FretBoardConfig.DIRECTION_RIGHT) {
 			for (int i = 0; i < this.frets.length; i++) {
 				this.frets[i] = nextX;
 				nextX += (this.fretSpacing - ((i + 1) * 2));
 			}
-		} else if (hand == 2) {
+		} else if (direction == FretBoardConfig.DIRECTION_LEFT) {
 			for (int i = this.frets.length - 1; i >= 0; i--) {
 				this.frets[i] = nextX;
 				nextX += (this.fretSpacing - (i * 2));
 			}
 		}
+	}
+	
+	private int getDirection( int value ){
+		int direction = value;
+		if( direction != FretBoardConfig.DIRECTION_RIGHT && direction != FretBoardConfig.DIRECTION_LEFT ){
+			direction = FretBoardConfig.DIRECTION_RIGHT;
+		}
+		return direction;
 	}
 	
 	private void initStrings(int count) {
@@ -289,7 +291,7 @@ public class FretBoard extends Composite {
 			int clientHeight = getClientArea().height;
 			
 			if(this.lastSize.x != clientWidth || hasChanges()){
-				this.layout(getClientArea().width,this.handSelector.getSelectionIndex() + 1);
+				this.layout(getClientArea().width);
 			}
 			
 			if(this.lastSize.y != clientHeight){
@@ -591,6 +593,13 @@ public class FretBoard extends Composite {
 		TuxGuitar.instance().updateCache(true);
 	}
 	
+	protected void updateDirection( int direction ){
+		this.config.saveDirection( this.getDirection(direction) );
+		this.initFrets(10);
+		this.setChanges(true);
+		this.fretBoardComposite.redraw();
+	}
+	
 	public boolean hasChanges(){
 		return this.changes;
 	}
@@ -644,7 +653,7 @@ public class FretBoard extends Composite {
 		this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
 		this.loadDurationImage(true);
 		this.layout(true,true);
-		this.layout(getClientArea().width,this.handSelector.getSelectionIndex() + 1);
+		this.layout(getClientArea().width);
 	}
 	
 	public void loadScale(){
@@ -667,16 +676,17 @@ public class FretBoard extends Composite {
 		super.layout();
 	}
 	
-	public void layout(int width,int hand){
+	public void layout(int width){
 		this.disposeFretBoardImage();
 		this.calculateFretSpacing(width);
-		this.initFrets(10,hand);
+		this.initFrets(10);
 		this.initStrings(getStringCount());
 		this.setChanges(false);
 	}
 	
 	protected void configure(){
 		this.config.configure(getShell());
+		this.handSelector.select( this.getDirection(this.config.getDirection()) );
 		this.setChanges(true);
 		this.redraw();
 	}

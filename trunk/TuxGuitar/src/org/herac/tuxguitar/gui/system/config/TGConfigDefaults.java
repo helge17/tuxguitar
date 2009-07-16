@@ -97,6 +97,7 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.LANGUAGE,"");
 		this.loadProperty(TGConfigKeys.FRETBOARD_STRING_SPACING,20);
 		this.loadProperty(TGConfigKeys.FRETBOARD_STYLE ,FretBoardConfig.DISPLAY_TEXT_SCALE);
+		this.loadProperty(TGConfigKeys.FRETBOARD_DIRECTION ,FretBoardConfig.DIRECTION_RIGHT);
 		this.loadProperty(TGConfigKeys.FRETBOARD_FONT, (DEFAULT_FONT_NAME + ",8,1"));
 		this.loadProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,"0,0,0");
 		this.loadProperty(TGConfigKeys.FRETBOARD_COLOR_STRING,"227,217,217");
