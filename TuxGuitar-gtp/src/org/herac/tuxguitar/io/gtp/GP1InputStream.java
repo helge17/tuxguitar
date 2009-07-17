@@ -330,12 +330,8 @@ public class GP1InputStream extends GTPInputStream {
 			TGChord chord = getFactory().newChord(strings);
 			chord.setName(readStringByte(0));
 			
-			byte[] data = new byte[4];
-			
 			this.skip(1);
-			this.read(data);
-			
-			if ((data[0] != 12) && ((data[3] & 0xc) != 12)) {
+			if ( readInt() < 12 ) {
 				skip(32);
 			}
 			
