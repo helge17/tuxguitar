@@ -11,6 +11,7 @@ import java.net.URL;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
@@ -259,38 +260,49 @@ public class TuxGuitar {
 	}
 	
 	public void createComposites(Composite composite) {
-		this.sashComposite = new Composite(composite,SWT.NONE);
-		this.sashComposite.setLayout(new FormLayout());
 		FormData data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.top = new FormAttachment(getItemManager().getCoolbar(),MARGIN_WIDTH);
 		data.bottom = new FormAttachment(100,0);
+		this.sashComposite = new Composite(composite,SWT.NONE);
+		this.sashComposite.setLayout(new FormLayout());
 		this.sashComposite.setLayoutData(data);
 		
-		this.sash = new Sash(this.sashComposite, SWT.HORIZONTAL);
 		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.bottom = new FormAttachment(100,-150);
-		
+		data.height = MARGIN_WIDTH;
+		this.sash = new Sash(this.sashComposite, SWT.HORIZONTAL);
 		this.sash.setLayoutData(data);
 		
-		getTablatureEditor().showTablature(this.sashComposite);
 		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.top = new FormAttachment(0,0);
 		data.bottom = new FormAttachment(this.sash, 0);
+		getTablatureEditor().showTablature(this.sashComposite);
 		getTablatureEditor().getTablature().setLayoutData(data);
 		
-		getTable().init(this.sashComposite);
 		data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(this.sash,10);
+		data.top = new FormAttachment(this.sash,0);
 		data.bottom = new FormAttachment(100,0);
+		getTable().init(this.sashComposite);
 		getTable().getComposite().setLayoutData(data);
+		
+		data = new FormData();
+		data.left = new FormAttachment(0,0);
+		data.right = new FormAttachment(100,0);
+		data.top = new FormAttachment(this.sashComposite,0);
+		data.bottom = new FormAttachment(100,0);
+		
+		Composite footer = new Composite(composite,SWT.NONE);
+		footer.setLayout(new FormLayout());
+		footer.setLayoutData(data);
+		getFretBoardEditor().showFretBoard(footer);
 		
 		this.sash.addMouseListener(new MouseAdapter() {
 			public void mouseUp(MouseEvent e) {
@@ -306,6 +318,11 @@ public class TuxGuitar {
 				((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
 			}
 		});
+		this.sash.addMouseTrackListener(new MouseTrackAdapter() {
+			public void mouseEnter(MouseEvent e) {
+				TuxGuitar.this.sash.setCursor( getDisplay().getSystemCursor( SWT.CURSOR_SIZENS ) );
+			}
+		});
 		this.sashComposite.addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event arg0) {
 				FormData data = ((FormData) TuxGuitar.this.sash.getLayoutData());
@@ -316,17 +333,6 @@ public class TuxGuitar {
 				}
 			}
 		});
-		
-		data = new FormData();
-		data.left = new FormAttachment(0,0);
-		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(this.sashComposite,0);
-		data.bottom = new FormAttachment(100,0);
-		
-		Composite footer = new Composite(composite,SWT.NONE);
-		footer.setLayout(new FormLayout());
-		footer.setLayoutData(data);
-		getFretBoardEditor().showFretBoard(footer);
 	}
 	
 	public void restoreControlsConfig(){
@@ -395,7 +401,7 @@ public class TuxGuitar {
 		int offset = ((FormData) getTable().getComposite().getLayoutData()).top.offset;
 		int sashHeight = this.sash.getBounds().height;
 		int maximumHeight = (this.sashComposite.getBounds().height - sashHeight);
-		int height = (value + sashHeight + offset);
+		int height = (value + offset);
 		height = Math.max( height,0);
 		height = Math.min( height,maximumHeight);
 		((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);

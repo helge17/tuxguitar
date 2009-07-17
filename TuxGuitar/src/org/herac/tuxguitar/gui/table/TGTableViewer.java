@@ -5,6 +5,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -63,6 +64,8 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
+		layout.marginTop = 0;
+		layout.marginBottom = 0;
 		layout.horizontalSpacing = 0;
 		layout.verticalSpacing = 0;
 		getComposite().setLayout(layout);
@@ -221,7 +224,10 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	}
 	
 	private int getHeight(){
-		return ( this.table.getMinHeight() + getComposite().getHorizontalBar().getSize().y);
+		Rectangle r1 = this.composite.getBounds();
+		Rectangle r2 = this.composite.getClientArea();
+		return ( this.table.getMinHeight() + (r1.height - r2.height) );
+		//return ( this.table.getMinHeight() + getComposite().getHorizontalBar().getSize().y );
 	}
 	
 	private void redrawRows(int selectedTrack){
@@ -245,7 +251,6 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	
 	public void redraw(){
 		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
-			//TuxGuitar.instance().lock();
 			this.updateTable();
 			this.table.getColumnCanvas().setTitle(TuxGuitar.instance().getSongManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
@@ -259,13 +264,11 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 				this.followScroll = false;
 			}
 			getComposite().redraw();
-			//TuxGuitar.instance().unlock();
 		}
 	}
 	
 	public void redrawPlayingMode(){
 		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
-			//TuxGuitar.instance().lock();
 			TGMeasure measure =  TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
@@ -278,7 +281,6 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 				this.selectedTrack = selectedTrack;
 				this.selectedMeasure = selectedMeasure;
 			}
-			//TuxGuitar.instance().unlock();
 		}
 	}
 	
