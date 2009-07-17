@@ -17,16 +17,8 @@
 	<path id="class.path">
 		<pathelement location="${build.dir}"/>
 		<pathelement location="${path.swt}"/>
-		<!--
-		<pathelement location="${path.ant-contrib}"/>
-		<pathelement location="/usr/share/ant/lib/ant-contrib.jar"/>
-		-->
     </path >
-	<!--
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath refid="class.path"/>
-	</taskdef>
-	-->
+	
 	<target name="init" depends="clean">
 		<mkdir dir="${build.dir}" />
 	</target>
