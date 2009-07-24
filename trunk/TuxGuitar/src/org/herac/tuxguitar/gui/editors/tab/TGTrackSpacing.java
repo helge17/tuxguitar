@@ -15,7 +15,7 @@ public class TGTrackSpacing extends TGSpacing {
 	public static final int POSITION_SCORE_UP_LINES = 7;
 	public static final int POSITION_SCORE_MIDDLE_LINES = 8;
 	public static final int POSITION_SCORE_DOWN_LINES = 9;
-	public static final int POSITION_TUPLETO = 10;
+	public static final int POSITION_DIVISION_TYPE = 10;
 	public static final int POSITION_EFFECTS = 11;
 	public static final int POSITION_TABLATURE_TOP_SEPARATOR = 12;
 	public static final int POSITION_TABLATURE = 13;
@@ -34,8 +34,8 @@ public class TGTrackSpacing extends TGSpacing {
 				6,  //POSITION_CHORD
 				8,  //POSITION_SCORE_UP_LINES
 				9,  //POSITION_SCORE_MIDDLE_LINES
-				10,  //POSITION_SCORE_DOWN_LINES
-				11, //POSITION_TUPLETO
+				10, //POSITION_SCORE_DOWN_LINES
+				11, //POSITION_DIVISION_TYPE
 				7,  //POSITION_EFFECTS
 				12, //POSITION_TABLATURE_TOP_SEPARATOR
 				13, //POSITION_TABLATURE
@@ -55,7 +55,7 @@ public class TGTrackSpacing extends TGSpacing {
 				13, //POSITION_SCORE_UP_LINES
 				14, //POSITION_SCORE_MIDDLE_LINES
 				15, //POSITION_SCORE_DOWN_LINES
-				10,  //POSITION_TUPLETO
+				10, //POSITION_DIVISION_TYPE
 				7,  //POSITION_EFFECTS
 				8,  //POSITION_TABLATURE_TOP_SEPARATOR
 				9,  //POSITION_TABLATURE
@@ -75,7 +75,7 @@ public class TGTrackSpacing extends TGSpacing {
 				7,  //POSITION_SCORE_UP_LINES
 				8,  //POSITION_SCORE_MIDDLE_LINES
 				9,  //POSITION_SCORE_DOWN_LINES
-				10,  //POSITION_TUPLETO
+				10, //POSITION_DIVISION_TYPE
 				11, //POSITION_EFFECTS
 				12, //POSITION_TABLATURE_TOP_SEPARATOR
 				13, //POSITION_TABLATURE

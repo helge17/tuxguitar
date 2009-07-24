@@ -13,7 +13,7 @@ import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 
 /**
  * @author julian
@@ -21,10 +21,10 @@ import org.herac.tuxguitar.song.models.TGTupleto;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ChangeTupletoDurationAction extends Action{
-	public static final String NAME = "action.note.duration.change-tupleto";
+public class ChangeDivisionTypeAction extends Action{
+	public static final String NAME = "action.note.duration.change-division-type";
 	
-	public ChangeTupletoDurationAction() {
+	public ChangeDivisionTypeAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
@@ -37,22 +37,22 @@ public class ChangeTupletoDurationAction extends Action{
 			isKeyEvent = true;
 		}
 		if(!isKeyEvent){
-			TGTupleto tupleto = defaultTupleto();
-			if(e.widget.getData() != null && e.widget.getData() instanceof TGTupleto){
-				tupleto = (TGTupleto)e.widget.getData();
+			TGDivisionType divisionType = defaultDivisionType();
+			if(e.widget.getData() != null && e.widget.getData() instanceof TGDivisionType){
+				divisionType = (TGDivisionType)e.widget.getData();
 			}
 			
-			if(getSelectedDuration().getTupleto().isEqual(tupleto)){
-				setTupleto(noTupleto());
+			if(getSelectedDuration().getDivision().isEqual(divisionType)){
+				setDivisionType(noTuplet());
 			}else{
-				setTupleto(tupleto);
+				setDivisionType(divisionType);
 			}
 		}
 		else{
-			if(getSelectedDuration().getTupleto().isEqual(TGTupleto.NORMAL)){
-				setTupleto(defaultTupleto());
+			if(getSelectedDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
+				setDivisionType(defaultDivisionType());
 			}else{
-				setTupleto(noTupleto());
+				setDivisionType(noTuplet());
 			}
 		}
 		setDurations();
@@ -63,23 +63,23 @@ public class ChangeTupletoDurationAction extends Action{
 		return 0;
 	}
 	
-	private TGTupleto noTupleto(){
-		TGTupleto tupleto = getSongManager().getFactory().newTupleto();
-		tupleto.setEnters(1);
-		tupleto.setTimes(1);
-		return tupleto;
+	private TGDivisionType noTuplet(){
+		TGDivisionType divisionType = getSongManager().getFactory().newDivisionType();
+		divisionType.setEnters(1);
+		divisionType.setTimes(1);
+		return divisionType;
 	}
 	
-	private TGTupleto defaultTupleto(){
-		TGTupleto tupleto = getSongManager().getFactory().newTupleto();
-		tupleto.setEnters(3);
-		tupleto.setTimes(2);
-		return tupleto;
+	private TGDivisionType defaultDivisionType(){
+		TGDivisionType divisionType = getSongManager().getFactory().newDivisionType();
+		divisionType.setEnters(3);
+		divisionType.setTimes(2);
+		return divisionType;
 	}
 	
-	private void setTupleto(TGTupleto tupleto){
-		getSelectedDuration().getTupleto().setEnters(tupleto.getEnters());
-		getSelectedDuration().getTupleto().setTimes(tupleto.getTimes());
+	private void setDivisionType(TGDivisionType divisionType){
+		getSelectedDuration().getDivision().setEnters(divisionType.getEnters());
+		getSelectedDuration().getDivision().setTimes(divisionType.getTimes());
 	}
 	
 	private void setDurations() {

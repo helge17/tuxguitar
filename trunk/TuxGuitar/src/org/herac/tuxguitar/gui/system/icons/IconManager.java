@@ -91,7 +91,7 @@ public class IconManager {
 	private Image songProperties;
 	private Image durationDotted;
 	private Image durationDoubleDotted;
-	private Image durationTupleto;
+	private Image divisionType;
 	private Image fileNew;
 	private Image fileOpen;
 	private Image fileSave;
@@ -221,7 +221,7 @@ public class IconManager {
 		this.trackRemove = loadIcon("track_remove.png");
 		this.durationDotted = loadIcon("dotted.png");
 		this.durationDoubleDotted = loadIcon("doubledotted.png");
-		this.durationTupleto = loadIcon("tupleto.png");
+		this.divisionType = loadIcon("division-type.png");
 		this.fretboard = loadIcon("fretboard.png");
 		this.fretboardFirstFret = loadIcon("firstfret.png");
 		this.fretboardFret = loadIcon("fret.png");
@@ -405,8 +405,8 @@ public class IconManager {
 		return this.durationDoubleDotted;
 	}
 	
-	public Image getDurationTupleto() {
-		return this.durationTupleto;
+	public Image getDivisionType() {
+		return this.divisionType;
 	}
 	
 	public Image getDynamicF() {

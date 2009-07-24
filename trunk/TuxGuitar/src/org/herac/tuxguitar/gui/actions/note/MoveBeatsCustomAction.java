@@ -264,8 +264,8 @@ public class MoveBeatsCustomAction extends Action{
 			duration.setValue( ((Integer)MOVE_DURATIONS[ index ].getValue()).intValue() );
 			duration.setDotted( false );
 			duration.setDoubleDotted( false );
-			duration.getTupleto().setTimes( 1 );
-			duration.getTupleto().setEnters( 1 );
+			duration.getDivision().setTimes( 1 );
+			duration.getDivision().setEnters( 1 );
 			return ( duration.getTime() * count );
 		}
 		return 0;
@@ -278,8 +278,8 @@ public class MoveBeatsCustomAction extends Action{
 				duration.setValue( ((Integer)MOVE_DURATIONS[ index ].getValue()).intValue() );
 				duration.setDotted(((boolean[])MOVE_DURATION_TYPES[ indexType ].getValue())[0]);
 				duration.setDoubleDotted(((boolean[])MOVE_DURATION_TYPES[ indexType ].getValue())[1]);
-				duration.getTupleto().setEnters(((int[])MOVE_DURATION_DIVISIONS[ indexDivision ].getValue())[0]);
-				duration.getTupleto().setTimes(((int[])MOVE_DURATION_DIVISIONS[ indexDivision ].getValue())[1]);
+				duration.getDivision().setEnters(((int[])MOVE_DURATION_DIVISIONS[ indexDivision ].getValue())[0]);
+				duration.getDivision().setTimes(((int[])MOVE_DURATION_DIVISIONS[ indexDivision ].getValue())[1]);
 				return ( duration.getTime() * count );
 			}
 		}

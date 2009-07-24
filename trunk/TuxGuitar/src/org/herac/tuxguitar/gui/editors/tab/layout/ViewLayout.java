@@ -74,7 +74,7 @@ public abstract class ViewLayout {
 	private int chordNoteSize;
 	private int repeatEndingSpacing;
 	private int effectSpacing;
-	private int tupletoSpacing;
+	private int divisionTypeSpacing;
 	private int textSpacing;
 	private int markerSpacing;
 	private int loopMarkerSpacing;
@@ -124,7 +124,7 @@ public abstract class ViewLayout {
 		this.setTextSpacing( Math.round( 15f * getScale() ) );
 		this.setMarkerSpacing( Math.round( 15f * getScale() ) );
 		this.setLoopMarkerSpacing( Math.round( 5f * getScale() ) );
-		this.setTupletoSpacing( Math.round( 10f * getScale() ) );
+		this.setDivisionTypeSpacing( Math.round( 10f * getScale() ) );
 		this.setEffectSpacing( Math.round( 8f * getScale() ) );
 	}
 	
@@ -512,7 +512,7 @@ public abstract class ViewLayout {
 		painter.setBackground(getResources().getColorBlack());
 	}
 	
-	public void setTupletoStyle(TGPainter painter){
+	public void setDivisionTypeStyle(TGPainter painter){
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground(getResources().getBackgroundColor());
 		painter.setFont(getResources().getDefaultFont());
@@ -743,12 +743,12 @@ public abstract class ViewLayout {
 		this.repeatEndingSpacing = repeatEndingSpacing;
 	}
 	
-	public int getTupletoSpacing() {
-		return this.tupletoSpacing;
+	public int getDivisionTypeSpacing() {
+		return this.divisionTypeSpacing;
 	}
 	
-	public void setTupletoSpacing(int tupletoSpacing) {
-		this.tupletoSpacing = tupletoSpacing;
+	public void setDivisionTypeSpacing(int divisionTypeSpacing) {
+		this.divisionTypeSpacing = divisionTypeSpacing;
 	}
 	
 	public int getTextSpacing() {

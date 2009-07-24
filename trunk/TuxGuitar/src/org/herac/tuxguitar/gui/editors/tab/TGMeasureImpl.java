@@ -29,7 +29,7 @@ import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 
 /**
  * @author julian
@@ -158,7 +158,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private int beatEffectSpacing;
 	private boolean text;
 	private boolean chord;
-	private boolean tupleto;
+	private boolean division;
 	
 	private boolean[][] registeredAccidentals;
 	
@@ -467,8 +467,8 @@ public class TGMeasureImpl extends TGMeasure{
 					}
 					voice.update(layout);
 					
-					if(!this.tupleto && !voice.getDuration().getTupleto().isEqual(TGTupleto.NORMAL)){
-						this.tupleto = true;
+					if(!this.division && !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
+						this.division = true;
 					}
 					if( (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 || (voice.isRestVoice() && !voice.isHiddenSilence()) ){
 						if( voice.getMaxY() > this.maxY ){
@@ -551,7 +551,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private void resetSpacing(){
 		this.text = false;
 		this.chord = false;
-		this.tupleto = false;
+		this.division = false;
 		this.beatEffectSpacing = 0;
 	}
 	
@@ -571,8 +571,8 @@ public class TGMeasureImpl extends TGMeasure{
 		if(this.getHeader().getRepeatAlternative() > 0){
 			ts.setSize(TGTrackSpacing.POSITION_REPEAT_ENDING,layout.getRepeatEndingSpacing());
 		}
-		if(this.tupleto){
-			ts.setSize(TGTrackSpacing.POSITION_TUPLETO,layout.getTupletoSpacing());
+		if(this.division){
+			ts.setSize(TGTrackSpacing.POSITION_DIVISION_TYPE,layout.getDivisionTypeSpacing());
 		}
 		if( this.beatEffectSpacing > 0 ){
 			ts.setSize(TGTrackSpacing.POSITION_EFFECTS, this.beatEffectSpacing );

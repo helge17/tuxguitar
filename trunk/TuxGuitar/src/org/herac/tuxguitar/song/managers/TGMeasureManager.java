@@ -1245,8 +1245,8 @@ public class TGMeasureManager {
 		if(!startBeat){
 			TGDuration minDuration = getSongManager().getFactory().newDuration();
 			minDuration.setValue(TGDuration.SIXTY_FOURTH);
-			minDuration.getTupleto().setEnters(3);
-			minDuration.getTupleto().setTimes(2);
+			minDuration.getDivision().setEnters(3);
+			minDuration.getDivision().setTimes(2);
 			for(int i = 0;i < minDuration.getTime();i++){
 				start ++;
 				startBeat = (start % beatLength == 0);
@@ -1511,8 +1511,8 @@ public class TGMeasureManager {
 		minimum.setValue(TGDuration.SIXTY_FOURTH);
 		minimum.setDotted(false);
 		minimum.setDoubleDotted(false);
-		minimum.getTupleto().setEnters(3);
-		minimum.getTupleto().setTimes(2);
+		minimum.getDivision().setEnters(3);
+		minimum.getDivision().setTimes(2);
 		
 		long missingTime = time;
 		while( missingTime > minimum.getTime() ){
