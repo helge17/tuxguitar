@@ -24,7 +24,7 @@ import org.herac.tuxguitar.gui.actions.composition.ChangeTimeSignatureAction;
 import org.herac.tuxguitar.gui.actions.composition.ChangeTripletFeelAction;
 import org.herac.tuxguitar.gui.actions.duration.ChangeDottedDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.ChangeDoubleDottedDurationAction;
-import org.herac.tuxguitar.gui.actions.duration.ChangeTupletoDurationAction;
+import org.herac.tuxguitar.gui.actions.duration.ChangeDivisionTypeAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.IncrementDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.SetEighthDurationAction;
@@ -265,7 +265,7 @@ public class ActionManager {
 		addAction(new SetSixtyFourthDurationAction());
 		addAction(new ChangeDottedDurationAction());
 		addAction(new ChangeDoubleDottedDurationAction());
-		addAction(new ChangeTupletoDurationAction());
+		addAction(new ChangeDivisionTypeAction());
 		addAction(new IncrementDurationAction());
 		addAction(new DecrementDurationAction());
 		

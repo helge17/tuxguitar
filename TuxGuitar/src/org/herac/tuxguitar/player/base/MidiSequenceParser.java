@@ -664,8 +664,8 @@ public class MidiSequenceParser {
 					TGVoice v = getNextBeat(voice,bIndex);
 					if(v == null || ( v.getBeat().getStart() > (bStart + voice.getDuration().getTime()) || v.getDuration().isEqual(newDuration(TGDuration.EIGHTH)))  ){
 						TGDuration duration = newDuration(TGDuration.EIGHTH);
-						duration.getTupleto().setEnters(3);
-						duration.getTupleto().setTimes(2);
+						duration.getDivision().setEnters(3);
+						duration.getDivision().setTimes(2);
 						bDuration = (duration.getTime() * 2);
 					}
 				}
@@ -674,8 +674,8 @@ public class MidiSequenceParser {
 					TGVoice v = getPreviousBeat(voice,bIndex);
 					if(v == null || ( v.getBeat().getStart() < (bStart - voice.getDuration().getTime())  || v.getDuration().isEqual(newDuration(TGDuration.EIGHTH)) )){
 						TGDuration duration = newDuration(TGDuration.EIGHTH);
-						duration.getTupleto().setEnters(3);
-						duration.getTupleto().setTimes(2);
+						duration.getDivision().setEnters(3);
+						duration.getDivision().setTimes(2);
 						bStart = ( (bStart - voice.getDuration().getTime()) + (duration.getTime() * 2));
 						bDuration = duration.getTime();
 					}
@@ -688,8 +688,8 @@ public class MidiSequenceParser {
 					TGVoice v = getNextBeat(voice,bIndex);
 					if(v == null || ( v.getBeat().getStart() > (bStart + voice.getDuration().getTime()) || v.getDuration().isEqual(newDuration(TGDuration.SIXTEENTH)))  ){
 						TGDuration duration = newDuration(TGDuration.SIXTEENTH);
-						duration.getTupleto().setEnters(3);
-						duration.getTupleto().setTimes(2);
+						duration.getDivision().setEnters(3);
+						duration.getDivision().setTimes(2);
 						bDuration = (duration.getTime() * 2);
 					}
 				}
@@ -698,8 +698,8 @@ public class MidiSequenceParser {
 					TGVoice v = getPreviousBeat(voice,bIndex);
 					if(v == null || ( v.getBeat().getStart() < (bStart - voice.getDuration().getTime())  || v.getDuration().isEqual(newDuration(TGDuration.SIXTEENTH)) )){
 						TGDuration duration = newDuration(TGDuration.SIXTEENTH);
-						duration.getTupleto().setEnters(3);
-						duration.getTupleto().setTimes(2);
+						duration.getDivision().setEnters(3);
+						duration.getDivision().setTimes(2);
 						bStart = ( (bStart - voice.getDuration().getTime()) + (duration.getTime() * 2));
 						bDuration = duration.getTime();
 					}

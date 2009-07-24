@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.duration.ChangeDottedDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.ChangeDoubleDottedDurationAction;
-import org.herac.tuxguitar.gui.actions.duration.ChangeTupletoDurationAction;
+import org.herac.tuxguitar.gui.actions.duration.ChangeDivisionTypeAction;
 import org.herac.tuxguitar.gui.actions.duration.SetEighthDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.SetHalfDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.SetQuarterDurationAction;
@@ -30,7 +30,7 @@ import org.herac.tuxguitar.gui.actions.duration.SetWholeDurationAction;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
 import org.herac.tuxguitar.gui.items.ToolItems;
 import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 
 /**
  * @author julian
@@ -44,7 +44,7 @@ public class DurationToolItems  extends ToolItems{
 	private ToolItem[] durationItems;
 	private ToolItem dotted;
 	private ToolItem doubleDotted;
-	private TupletoMenuItem tupletoItems;
+	private DivisionTypeMenuItem divisionTypeItems;
 	
 	public DurationToolItems(){
 		super(NAME);
@@ -84,8 +84,8 @@ public class DurationToolItems  extends ToolItems{
 		this.doubleDotted = new ToolItem(toolBar, SWT.CHECK);
 		this.doubleDotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDoubleDottedDurationAction.NAME));
 		
-		this.tupletoItems = new TupletoMenuItem();
-		this.tupletoItems.addItems();
+		this.divisionTypeItems = new DivisionTypeMenuItem();
+		this.divisionTypeItems.addItems();
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -104,8 +104,8 @@ public class DurationToolItems  extends ToolItems{
 		this.doubleDotted.setSelection(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled( !running );
 		
-		this.tupletoItems.setEnabled( !running );
-		this.tupletoItems.update();
+		this.divisionTypeItems.setEnabled( !running );
+		this.divisionTypeItems.update();
 	}
 	
 	public void loadProperties(){
@@ -118,7 +118,7 @@ public class DurationToolItems  extends ToolItems{
 		this.durationItems[6].setToolTipText(TuxGuitar.getProperty("duration.sixtyfourth"));
 		this.dotted.setToolTipText(TuxGuitar.getProperty("duration.dotted"));
 		this.doubleDotted.setToolTipText(TuxGuitar.getProperty("duration.doubledotted"));
-		this.tupletoItems.setText(TuxGuitar.getProperty("duration.tupleto"));
+		this.divisionTypeItems.setText(TuxGuitar.getProperty("duration.division-type"));
 	}
 	
 	public void loadIcons(){
@@ -131,35 +131,35 @@ public class DurationToolItems  extends ToolItems{
 		this.durationItems[6].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.dotted.setImage(TuxGuitar.instance().getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(TuxGuitar.instance().getIconManager().getDurationDoubleDotted());
-		this.tupletoItems.setImage(TuxGuitar.instance().getIconManager().getDurationTupleto());
+		this.divisionTypeItems.setImage(TuxGuitar.instance().getIconManager().getDivisionType());
 	}
 	
 	protected TablatureEditor getEditor(){
 		return super.getEditor();
 	}
 	
-	private class TupletoMenuItem extends SelectionAdapter {
-		private ToolItem tupleto;
+	private class DivisionTypeMenuItem extends SelectionAdapter {
+		private ToolItem divisionType;
 		private Menu subMenu;
 		private MenuItem[] subMenuItems;
 		
-		public TupletoMenuItem() {
-			this.tupleto = new ToolItem(DurationToolItems.this.toolBar, SWT.DROP_DOWN);
-			this.tupleto.addSelectionListener(this);
-			this.tupleto.setData(newTupleto(3,2));
-			this.subMenu = new Menu(this.tupleto.getParent().getShell());
+		public DivisionTypeMenuItem() {
+			this.divisionType = new ToolItem(DurationToolItems.this.toolBar, SWT.DROP_DOWN);
+			this.divisionType.addSelectionListener(this);
+			this.divisionType.setData(newDivisionType(3,2));
+			this.subMenu = new Menu(this.divisionType.getParent().getShell());
 		}
 		
 		public void setText(String text){
-			this.tupleto.setToolTipText(text);
+			this.divisionType.setToolTipText(text);
 		}
 		
 		public void setImage(Image image){
-			this.tupleto.setImage(image);
+			this.divisionType.setImage(image);
 		}
 		
 		public void setEnabled(boolean enabled){
-			this.tupleto.setEnabled(enabled);
+			this.divisionType.setEnabled(enabled);
 		}
 		
 		public void addItems() {
@@ -167,43 +167,43 @@ public class DurationToolItems  extends ToolItems{
 			
 			this.subMenuItems[0] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[0].setText("3");
-			this.subMenuItems[0].setData(newTupleto(3,2));
-			this.subMenuItems[0].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[0].setData(newDivisionType(3,2));
+			this.subMenuItems[0].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[1] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[1].setText("5");
-			this.subMenuItems[1].setData(newTupleto(5,4));
-			this.subMenuItems[1].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[1].setData(newDivisionType(5,4));
+			this.subMenuItems[1].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[2] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[2].setText("6");
-			this.subMenuItems[2].setData(newTupleto(6,4));
-			this.subMenuItems[2].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[2].setData(newDivisionType(6,4));
+			this.subMenuItems[2].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[3] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[3].setText("7");
-			this.subMenuItems[3].setData(newTupleto(7,4));
-			this.subMenuItems[3].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[3].setData(newDivisionType(7,4));
+			this.subMenuItems[3].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[4] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[4].setText("9");
-			this.subMenuItems[4].setData(newTupleto(9,8));
-			this.subMenuItems[4].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[4].setData(newDivisionType(9,8));
+			this.subMenuItems[4].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[5] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[5].setText("10");
-			this.subMenuItems[5].setData(newTupleto(10,8));
-			this.subMenuItems[5].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[5].setData(newDivisionType(10,8));
+			this.subMenuItems[5].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[6] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[6].setText("11");
-			this.subMenuItems[6].setData(newTupleto(11,8));
-			this.subMenuItems[6].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[6].setData(newDivisionType(11,8));
+			this.subMenuItems[6].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 			
 			this.subMenuItems[7] = new MenuItem(this.subMenu, SWT.CHECK);
 			this.subMenuItems[7].setText("12");
-			this.subMenuItems[7].setData(newTupleto(12,8));
-			this.subMenuItems[7].addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+			this.subMenuItems[7].setData(newDivisionType(12,8));
+			this.subMenuItems[7].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 		}
 		
 		public void widgetSelected(SelectionEvent event) {
@@ -215,14 +215,14 @@ public class DurationToolItems  extends ToolItems{
 				this.subMenu.setVisible(true);
 			}else{
 				TGDuration duration = getEditor().getTablature().getCaret().getDuration();
-				if(duration.getTupleto().isEqual(TGTupleto.NORMAL)){
-					((TGTupleto)this.tupleto.getData()).setEnters(3);
-					((TGTupleto)this.tupleto.getData()).setTimes(2);
+				if(duration.getDivision().isEqual(TGDivisionType.NORMAL)){
+					((TGDivisionType)this.divisionType.getData()).setEnters(3);
+					((TGDivisionType)this.divisionType.getData()).setTimes(2);
 				}else{
-					((TGTupleto)this.tupleto.getData()).setEnters(1);
-					((TGTupleto)this.tupleto.getData()).setTimes(1);
+					((TGDivisionType)this.divisionType.getData()).setEnters(1);
+					((TGDivisionType)this.divisionType.getData()).setTimes(1);
 				}
-				TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME).process(event);
+				TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME).process(event);
 			}
 		}
 		
@@ -230,16 +230,16 @@ public class DurationToolItems  extends ToolItems{
 			TGDuration duration = getEditor().getTablature().getCaret().getDuration();
 			
 			for(int i = 0;i < this.subMenuItems.length;i++){
-				TGTupleto tupleto = (TGTupleto)this.subMenuItems[i].getData();
-				this.subMenuItems[i].setSelection((tupleto.isEqual(duration.getTupleto())));
+				TGDivisionType divisionType = (TGDivisionType)this.subMenuItems[i].getData();
+				this.subMenuItems[i].setSelection((divisionType.isEqual(duration.getDivision())));
 			}
 		}
 		
-		private TGTupleto newTupleto(int enters,int times){
-			TGTupleto tupleto = TuxGuitar.instance().getSongManager().getFactory().newTupleto();
-			tupleto.setEnters(enters);
-			tupleto.setTimes(times);
-			return tupleto;
+		private TGDivisionType newDivisionType(int enters,int times){
+			TGDivisionType divisionType = TuxGuitar.instance().getSongManager().getFactory().newDivisionType();
+			divisionType.setEnters(enters);
+			divisionType.setTimes(times);
+			return divisionType;
 		}
 	}
 }

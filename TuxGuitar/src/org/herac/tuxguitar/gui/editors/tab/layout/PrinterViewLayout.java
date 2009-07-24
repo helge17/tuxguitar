@@ -78,7 +78,7 @@ public class PrinterViewLayout extends ViewLayout{
 		this.setRepeatEndingSpacing( getScaledValue(scale ,  20 ) );
 		this.setTextSpacing( getScaledValue( scale, 15 ) );
 		this.setMarkerSpacing( getScaledValue( scale, 15 ) );
-		this.setTupletoSpacing( getScaledValue( scale,  10 ) );
+		this.setDivisionTypeSpacing( getScaledValue( scale,  10 ) );
 		this.setEffectSpacing( getScaledValue(scale ,  8 ) );
 		this.setScale( checkScale() );
 		this.setFontScale( scale );
@@ -409,7 +409,7 @@ public class PrinterViewLayout extends ViewLayout{
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
-	public void setTupletoStyle(TGPainter painter){
+	public void setDivisionTypeStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getResources().getColorBlack() );

@@ -24,7 +24,7 @@
 	<shortcut key="16777219" mask="262144" action="action.measure.go-previous"/>
 	<shortcut key="118" mask="262144" action="action.measure.paste"/>
 	<shortcut key="16777258" mask="0" action="action.note.duration.change-dotted"/>
-	<shortcut key="16777263" mask="0" action="action.note.duration.change-tupleto"/>	
+	<shortcut key="16777263" mask="0" action="action.note.duration.change-division-type"/>	
 	<shortcut key="98" mask="0" action="action.note.effect.change-bend"/>
 	<shortcut key="120" mask="0" action="action.note.effect.change-dead"/>
 	<shortcut key="102" mask="0" action="action.note.effect.change-fade-in"/>

@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.duration.ChangeDottedDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.ChangeDoubleDottedDurationAction;
-import org.herac.tuxguitar.gui.actions.duration.ChangeTupletoDurationAction;
+import org.herac.tuxguitar.gui.actions.duration.ChangeDivisionTypeAction;
 import org.herac.tuxguitar.gui.actions.duration.SetEighthDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.SetHalfDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.SetQuarterDurationAction;
@@ -41,7 +41,7 @@ public class DurationMenuItem  extends MenuItems{
 	private MenuItem sixtyFourth;
 	private MenuItem dotted;
 	private MenuItem doubleDotted;
-	private MenuItem tupleto;
+	private MenuItem division;
 	
 	public DurationMenuItem(Shell shell,Menu parent, int style) {
 		this.durationMenuItem = new MenuItem(parent, style);
@@ -81,9 +81,9 @@ public class DurationMenuItem  extends MenuItems{
 		this.doubleDotted = new MenuItem(this.menu, SWT.PUSH);
 		this.doubleDotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDoubleDottedDurationAction.NAME));
 		
-		//--tupleto---
-		this.tupleto = new MenuItem(this.menu, SWT.PUSH);
-		this.tupleto.addSelectionListener(TuxGuitar.instance().getAction(ChangeTupletoDurationAction.NAME));
+		//--division---
+		this.division = new MenuItem(this.menu, SWT.PUSH);
+		this.division.addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
 		
 		this.durationMenuItem.setMenu(this.menu);
 		
@@ -102,7 +102,7 @@ public class DurationMenuItem  extends MenuItems{
 		this.sixtyFourth.setEnabled(!running);
 		this.dotted.setEnabled(!running);
 		this.doubleDotted.setEnabled(!running);
-		this.tupleto.setEnabled(!running);
+		this.division.setEnabled(!running);
 	}
 	
 	public void loadProperties(){
@@ -116,7 +116,7 @@ public class DurationMenuItem  extends MenuItems{
 		setMenuItemTextAndAccelerator(this.sixtyFourth, "duration.sixtyfourth", SetSixtyFourthDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.dotted, "duration.dotted", ChangeDottedDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.doubleDotted, "duration.doubledotted", ChangeDoubleDottedDurationAction.NAME);
-		setMenuItemTextAndAccelerator(this.tupleto, "duration.tupleto", ChangeTupletoDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.division, "duration.division-type", ChangeDivisionTypeAction.NAME);
 	}
 	
 	public void loadIcons() {
@@ -129,6 +129,6 @@ public class DurationMenuItem  extends MenuItems{
 		this.sixtyFourth.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.dotted.setImage(TuxGuitar.instance().getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(TuxGuitar.instance().getIconManager().getDurationDoubleDotted());
-		this.tupleto.setImage(TuxGuitar.instance().getIconManager().getDurationTupleto());
+		this.division.setImage(TuxGuitar.instance().getIconManager().getDivisionType());
 	}
 }
