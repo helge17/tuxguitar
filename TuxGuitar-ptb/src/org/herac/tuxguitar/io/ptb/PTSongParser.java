@@ -208,8 +208,8 @@ public class PTSongParser {
 		tgVoice.getDuration().setValue(beat.getDuration());
 		tgVoice.getDuration().setDotted(beat.isDotted());
 		tgVoice.getDuration().setDoubleDotted(beat.isDoubleDotted());
-		tgVoice.getDuration().getTupleto().setTimes(beat.getTimes());
-		tgVoice.getDuration().getTupleto().setEnters(beat.getEnters());
+		tgVoice.getDuration().getDivision().setTimes(beat.getTimes());
+		tgVoice.getDuration().getDivision().setEnters(beat.getEnters());
 		
 		Iterator it = beat.getNotes().iterator();
 		while(it.hasNext()){
