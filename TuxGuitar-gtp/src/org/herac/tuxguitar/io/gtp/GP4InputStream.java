@@ -208,39 +208,39 @@ public class GP4InputStream extends GTPInputStream {
 		duration.setValue( (int) (Math.pow( 2 , (readByte() + 4) ) / 4 ) );
 		duration.setDotted(((flags & 0x01) != 0));
 		if ((flags & 0x20) != 0) {
-			int tuplet = readInt();
-			switch (tuplet) {
+			int divisionType = readInt();
+			switch (divisionType) {
 			case 3:
-				duration.getTupleto().setEnters(3);
-				duration.getTupleto().setTimes(2);
+				duration.getDivision().setEnters(3);
+				duration.getDivision().setTimes(2);
 				break;
 			case 5:
-				duration.getTupleto().setEnters(5);
-				duration.getTupleto().setTimes(4);
+				duration.getDivision().setEnters(5);
+				duration.getDivision().setTimes(4);
 				break;
 			case 6:
-				duration.getTupleto().setEnters(6);
-				duration.getTupleto().setTimes(4);
+				duration.getDivision().setEnters(6);
+				duration.getDivision().setTimes(4);
 				break;
 			case 7:
-				duration.getTupleto().setEnters(7);
-				duration.getTupleto().setTimes(4);
+				duration.getDivision().setEnters(7);
+				duration.getDivision().setTimes(4);
 				break;
 			case 9:
-				duration.getTupleto().setEnters(9);
-				duration.getTupleto().setTimes(8);
+				duration.getDivision().setEnters(9);
+				duration.getDivision().setTimes(8);
 				break;
 			case 10:
-				duration.getTupleto().setEnters(10);
-				duration.getTupleto().setTimes(8);
+				duration.getDivision().setEnters(10);
+				duration.getDivision().setTimes(8);
 				break;
 			case 11:
-				duration.getTupleto().setEnters(11);
-				duration.getTupleto().setTimes(8);
+				duration.getDivision().setEnters(11);
+				duration.getDivision().setTimes(8);
 				break;
 			case 12:
-				duration.getTupleto().setEnters(12);
-				duration.getTupleto().setTimes(8);
+				duration.getDivision().setEnters(12);
+				duration.getDivision().setTimes(8);
 				break;
 			}
 		}

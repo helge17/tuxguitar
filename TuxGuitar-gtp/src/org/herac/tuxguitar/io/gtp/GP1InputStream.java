@@ -196,8 +196,8 @@ public class GP1InputStream extends GTPInputStream {
 		
 		duration.setDotted( ((flags & 0x10) != 0) );
 		if ((flags & 0x20) != 0) {
-			duration.getTupleto().setEnters(3);
-			duration.getTupleto().setTimes(2);
+			duration.getDivision().setEnters(3);
+			duration.getDivision().setTimes(2);
 			skip(1);
 		}
 		
