@@ -15,13 +15,13 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGClefPainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGKeySignaturePainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGTempoPainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGTripletFeelPainter;
 import org.herac.tuxguitar.gui.helper.SyncThread;
+import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -29,7 +29,6 @@ import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGTupleto;
 
 /**
@@ -69,10 +68,6 @@ public class TGMeasureImpl extends TGMeasure{
 	public static final boolean ACCIDENTAL_NOTES[] = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
 	
 	public static final int SCORE_KEY_OFFSETS[] = new int[]{30,18,22,24};
-	
-	//public static final int SCORE_KEY_SHARP_POSITIONS[] = new int[]{ 1 , 4, 0, 3, 6, 2 , 5 };
-	
-	//public static final int SCORE_KEY_FLAT_POSITIONS[] = new int[]{ 5, 2, 6, 3, 0, 4, 1 };
 	
 	public static final int SCORE_KEY_SHARP_POSITIONS[][] = new int[][]{ 
 		new int[] { 1 , 4, 0, 3, 6, 2 , 5 } ,
@@ -137,7 +132,7 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private int spacing;
 	
-	private TrackSpacing ts;
+	private TGTrackSpacing ts;
 	
 	private int maxY;
 	
@@ -160,15 +155,10 @@ public class TGMeasureImpl extends TGMeasure{
 	private int lyricBeatIndex;
 	private int width;
 	
+	private int beatEffectSpacing;
 	private boolean text;
 	private boolean chord;
-	private boolean accentuated;
-	private boolean harmonic;
-	private boolean tapping;
-	private boolean palmMute;
-	private boolean vibrato;
 	private boolean tupleto;
-	private boolean fadeIn;
 	
 	private boolean[][] registeredAccidentals;
 	
@@ -286,13 +276,12 @@ public class TGMeasureImpl extends TGMeasure{
 					Iterator it = voice.getNotes().iterator();
 					while(it.hasNext()){
 						TGNoteImpl note = (TGNoteImpl)it.next();
-						
 						voice.check(note);
 					}
 					
 					if(!voice.isRestVoice()){
-						beat.check(voice.getMinNote());
-						beat.check(voice.getMaxNote());
+						beat.check( layout, voice.getMinNote() );
+						beat.check( layout, voice.getMaxNote() );
 						if( ( groups[v] == null ) || !canJoin(layout.getSongManager(),voice,previousVoices[v]) ){
 							groups[v] = new TGBeatGroup(v);
 							this.voiceGroups[v].add(groups[v]);
@@ -442,6 +431,7 @@ public class TGMeasureImpl extends TGMeasure{
 		int tmpX = spacing;
 		for (int i = 0; i < countBeats(); i++) {
 			TGBeatImpl beat = (TGBeatImpl) getBeat(i);
+			beat.resetEffectsSpacing(layout);
 			
 			if(this.compactMode){
 				beat.setPosX(tmpX);
@@ -472,12 +462,9 @@ public class TGMeasureImpl extends TGMeasure{
 					Iterator notes = voice.getNotes().iterator();
 					while(notes.hasNext()){
 						TGNoteImpl note = (TGNoteImpl)notes.next();
-						
-						checkEffects(layout,note.getEffect());
-						
+						beat.updateEffectsSpacing(layout, note.getEffect());
 						note.update(layout);
 					}
-					
 					voice.update(layout);
 					
 					if(!this.tupleto && !voice.getDuration().getTupleto().isEqual(TGTupleto.NORMAL)){
@@ -492,6 +479,11 @@ public class TGMeasureImpl extends TGMeasure{
 						}
 					}
 				}
+			}
+			
+			int bsSize = beat.getEffectsSpacing(layout);
+			if( bsSize > this.beatEffectSpacing ){
+				this.beatEffectSpacing = bsSize;
 			}
 			
 			if(!this.chord && beat.isChordBeat()){
@@ -556,72 +548,34 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
-	private void checkEffects(ViewLayout layout,TGNoteEffect effect){
-		if(effect.isAccentuatedNote() || effect.isHeavyAccentuatedNote()){
-			this.accentuated = true;
-		}
-		if(effect.isHarmonic() && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 ){
-			this.harmonic = true;
-		}
-		if(effect.isTapping() || effect.isSlapping() || effect.isPopping()){
-			this.tapping = true;
-		}
-		if(effect.isPalmMute()){
-			this.palmMute = true;
-		}
-		if(effect.isFadeIn()){
-			this.fadeIn = true;
-		}
-		if(effect.isVibrato() || effect.isTrill()){
-			this.vibrato = true;
-		}
-	}
-	
 	private void resetSpacing(){
 		this.text = false;
 		this.chord = false;
 		this.tupleto = false;
-		this.accentuated = false;
-		this.harmonic = false;
-		this.tapping = false;
-		this.palmMute = false;
-		this.fadeIn = false;
-		this.vibrato = false;
+		this.beatEffectSpacing = 0;
 	}
 	
-	public void registerSpacing(ViewLayout layout,TrackSpacing ts){
+	public void registerSpacing(ViewLayout layout,TGTrackSpacing ts){
+		if(layout.hasLoopMarker( this )){
+			ts.setSize(TGTrackSpacing.POSITION_LOOP_MARKER,layout.getLoopMarkerSpacing());
+		}
 		if(this.hasMarker()){
-			ts.setSize(TrackSpacing.POSITION_MARKER,layout.getMarkerSpacing());
+			ts.setSize(TGTrackSpacing.POSITION_MARKER,layout.getMarkerSpacing());
 		}
 		if(this.chord){
-			ts.setSize(TrackSpacing.POSITION_CHORD,layout.getDefaultChordSpacing());
+			ts.setSize(TGTrackSpacing.POSITION_CHORD,layout.getDefaultChordSpacing());
 		}
 		if(this.text){
-			ts.setSize(TrackSpacing.POSITION_TEXT,layout.getTextSpacing());
+			ts.setSize(TGTrackSpacing.POSITION_TEXT,layout.getTextSpacing());
 		}
 		if(this.getHeader().getRepeatAlternative() > 0){
-			ts.setSize(TrackSpacing.POSITION_REPEAT_ENDING,layout.getRepeatEndingSpacing());
+			ts.setSize(TGTrackSpacing.POSITION_REPEAT_ENDING,layout.getRepeatEndingSpacing());
 		}
 		if(this.tupleto){
-			ts.setSize(TrackSpacing.POSITION_TUPLETO,layout.getTupletoSpacing());
+			ts.setSize(TGTrackSpacing.POSITION_TUPLETO,layout.getTupletoSpacing());
 		}
-		if(this.accentuated){
-			ts.setSize(TrackSpacing.POSITION_ACCENTUATED_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.harmonic){
-			ts.setSize(TrackSpacing.POSITION_HARMONIC_EFFEC,layout.getEffectSpacing());
-		}
-		if(this.tapping){
-			ts.setSize(TrackSpacing.POSITION_TAPPING_EFFEC,layout.getEffectSpacing());
-		}
-		if(this.palmMute){
-			ts.setSize(TrackSpacing.POSITION_PALM_MUTE_EFFEC,layout.getEffectSpacing());
-		}
-		if(this.fadeIn){
-			ts.setSize(TrackSpacing.POSITION_FADE_IN,layout.getEffectSpacing());
-		}
-		if(this.vibrato){
-			ts.setSize(TrackSpacing.POSITION_VIBRATO_EFFEC,layout.getEffectSpacing());
+		if( this.beatEffectSpacing > 0 ){
+			ts.setSize(TGTrackSpacing.POSITION_EFFECTS, this.beatEffectSpacing );
 		}
 	}
 	
@@ -652,8 +606,9 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		if(bufferEnabled){
 			painter.setBackground(layout.getResources().getBackgroundColor());
-			getBuffer().paintImage(painter,getPosX(),getPosY(),getTs().getPosition(TrackSpacing.POSITION_BUFFER_SEPARATOR));
+			getBuffer().paintImage(painter,getPosX(),getPosY(),getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 		}
+		this.paintLoopMarker(layout, painter);
 		this.paintMarker(layout, painter);
 		this.paintTexts(layout,painter);
 		this.paintTempo(layout,painter);
@@ -672,7 +627,7 @@ public class TGMeasureImpl extends TGMeasure{
 			float scale = layout.getScale();
 			float x1 = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
 			float x2 = (getPosX() + getWidth(layout) + getSpacing());
-			float y1 = (getPosY() + getTs().getPosition(TrackSpacing.POSITION_REPEAT_ENDING));
+			float y1 = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_REPEAT_ENDING));
 			float y2 = (y1 + (layout.getRepeatEndingSpacing() * 0.75f ));
 			String string = new String();
 			for(int i = 0; i < 8; i ++){
@@ -714,17 +669,17 @@ public class TGMeasureImpl extends TGMeasure{
 		boolean addInfo = false;
 		//-----SCORE ------------------------------------//
 		if((style & ViewLayout.DISPLAY_SCORE) != 0 ){
-			y1 = getPosY() + getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			y1 = getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 			y2 = y1 + (layout.getScoreLineSpacing() * 4);
 			addInfo = true;
 			if( (style & ViewLayout.DISPLAY_TABLATURE) != 0 && (layout.isFirstMeasure(this) || isFirstOfLine())){
-				offsetY = ( getPosY() + getTs().getPosition(TrackSpacing.POSITION_TABLATURE)) - y2;
+				offsetY = ( getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE)) - y2;
 			}
 			paintDivisions(layout, painter, x1, y1, x2, y2, offsetY, addInfo );
 		}
 		//-----TABLATURE ------------------------------------//
 		if( (style & ViewLayout.DISPLAY_TABLATURE) != 0 ){
-			y1 = getPosY() + getTs().getPosition(TrackSpacing.POSITION_TABLATURE);
+			y1 = getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 			y2 = y1 + ((getTrack().getStrings().size() - 1 ) * layout.getStringSpacing());
 			addInfo = ( (style & ViewLayout.DISPLAY_SCORE) == 0 );
 			offsetY = 0;
@@ -829,7 +784,7 @@ public class TGMeasureImpl extends TGMeasure{
 		//-----SCORE ------------------------------------//
 		if((layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 && this.paintClef){
 			int x = fromX + Math.round( 14 * layout.getScale() ) ;
-			int y = fromY + getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			int y = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 			layout.setClefStyle(painter);
 			painter.initPath(TGPainter.PATH_FILL);
 			if(this.getClef() == TGMeasure.CLEF_TREBLE){
@@ -855,25 +810,10 @@ public class TGMeasureImpl extends TGMeasure{
 		if((layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0 && this.paintKeySignature){
 			float scale = layout.getScoreLineSpacing();
 			int x = fromX + getClefSpacing(layout) + 10;
-			int y = fromY + getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			int y = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 			int clefIndex = (this.getClef() - 1);
 			int currentKey = this.getKeySignature();
 			int previousKey = (this.prevMeasure != null ? this.prevMeasure.getKeySignature() : 0);
-			/*
-			int offsetClef = 0;
-			if(this.getClef() == TGMeasure.CLEF_TREBLE){
-				offsetClef = 0;
-			}
-			else if(this.getClef() == TGMeasure.CLEF_BASS){
-				offsetClef = 2;
-			}
-			else if(this.getClef() == TGMeasure.CLEF_TENOR){
-				offsetClef = -1;
-			}
-			else if(this.getClef() == TGMeasure.CLEF_ALTO){
-				offsetClef = 1;
-			}
-			*/
 			
 			layout.setKeySignatureStyle(painter);
 			
@@ -881,7 +821,6 @@ public class TGMeasureImpl extends TGMeasure{
 			if(previousKey >= 1 && previousKey <= 7){
 				int naturalFrom =  (currentKey >= 1 && currentKey <= 7) ? currentKey : 0;
 				for(int i = naturalFrom; i < previousKey; i ++ ){
-					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_SHARP_POSITIONS[i] + offsetClef) + 7) % 7)  )  - (scale / 2);
 					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
 					painter.initPath(TGPainter.PATH_FILL);
 					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
@@ -892,7 +831,6 @@ public class TGMeasureImpl extends TGMeasure{
 			else if(previousKey >= 8 && previousKey <= 14){
 				int naturalFrom =  (currentKey >= 8 && currentKey <= 14) ? currentKey : 7;
 				for(int i = naturalFrom; i < previousKey; i ++ ){
-					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_FLAT_POSITIONS[i - 7] + offsetClef) + 7) % 7)  )  - (scale / 2);
 					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
 					painter.initPath(TGPainter.PATH_FILL);
 					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
@@ -904,7 +842,6 @@ public class TGMeasureImpl extends TGMeasure{
 			//sharps
 			if(currentKey >= 1 && currentKey <= 7){
 				for(int i = 0; i < currentKey; i ++ ){
-					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_SHARP_POSITIONS[i] + offsetClef) + 7) % 7)  )  - (scale / 2);
 					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
 					painter.initPath(TGPainter.PATH_FILL);
 					TGKeySignaturePainter.paintSharp(painter,x, (y +  offset  ), scale);
@@ -915,7 +852,6 @@ public class TGMeasureImpl extends TGMeasure{
 			//flats
 			else if(currentKey >= 8 && currentKey <= 14){
 				for(int i = 7; i < currentKey; i ++ ){
-					//float offset =  ( (scale / 2) * ( ( (SCORE_KEY_FLAT_POSITIONS[i - 7] + offsetClef) + 7) % 7)  )  - (scale / 2);
 					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
 					painter.initPath(TGPainter.PATH_FILL);
 					TGKeySignaturePainter.paintFlat(painter,x, (y +  offset  ), scale);
@@ -936,13 +872,13 @@ public class TGMeasureImpl extends TGMeasure{
 			String numerator = Integer.toString(getTimeSignature().getNumerator());
 			String denominator = Integer.toString(getTimeSignature().getDenominator().getValue());
 			if( (style & ViewLayout.DISPLAY_SCORE) != 0 ){
-				int y = getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+				int y = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				int y1 = (int)(y - (3f * scale));
 				int y2 = (int)(((y + (layout.getScoreLineSpacing() * 4)) - painter.getStringExtent(denominator).y) + (3f * scale));
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}else if( (style & ViewLayout.DISPLAY_TABLATURE) != 0 ){
-				int y = getTs().getPosition(TrackSpacing.POSITION_TABLATURE);
+				int y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 				int move = (int)((8f - getTrack().stringCount()) * scale);
 				int y1 = (y - move);
 				int y2 = ((y  + getTrackImpl().getTabHeight()) - painter.getStringExtent(denominator).y) + move;
@@ -960,9 +896,9 @@ public class TGMeasureImpl extends TGMeasure{
 			int lineSpacing = (Math.max(layout.getScoreLineSpacing() , layout.getStringSpacing()));
 			int style = layout.getStyle();
 			if( (style & ViewLayout.DISPLAY_SCORE) != 0 ){
-				y += ( getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) - lineSpacing ) ;
+				y += ( getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - lineSpacing ) ;
 			}else if( (style & ViewLayout.DISPLAY_TABLATURE) != 0 ){
-				y += ( getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - lineSpacing ) ;
+				y += ( getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - lineSpacing ) ;
 			}
 			
 			layout.setTempoStyle(painter, false);
@@ -990,9 +926,9 @@ public class TGMeasureImpl extends TGMeasure{
 			int lineSpacing = (Math.max(layout.getScoreLineSpacing() , layout.getStringSpacing()));
 			int style = layout.getStyle();
 			if( (style & ViewLayout.DISPLAY_SCORE) != 0 ){
-				y += ( getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) - lineSpacing );
+				y += ( getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - lineSpacing );
 			}else if( (style & ViewLayout.DISPLAY_TABLATURE) != 0 ){
-				y += ( getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - lineSpacing );
+				y += ( getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - lineSpacing );
 			}
 			
 			layout.setTripletFeelStyle(painter, true);
@@ -1054,10 +990,35 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
+	private void paintLoopMarker(ViewLayout layout,TGPainter painter){
+		if( layout.hasLoopMarker( this ) ){
+			int size = Math.round( layout.getLoopMarkerSpacing() - (1f * layout.getScale()));
+			MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+			if( pm.getLoopSHeader() == getHeader().getNumber() ){
+				int x = (getPosX() + Math.round(size / 2f) );
+				int y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_LOOP_MARKER));
+				layout.setLoopSMarkerStyle(painter);
+				paintLoopMarker(painter, x, y, size);
+			}
+			if( pm.getLoopEHeader() == getHeader().getNumber() ){
+				float x = (getPosX() + getWidth(layout) + getSpacing() - size );
+				float y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_LOOP_MARKER));
+				layout.setLoopEMarkerStyle(painter);
+				paintLoopMarker(painter, x, y, size);
+			}
+		}
+	}
+	
+	private void paintLoopMarker(TGPainter painter, float x, float y, float size){
+		painter.initPath( TGPainter.PATH_FILL );
+		painter.addRectangle(x, y, size, size);
+		painter.closePath();
+	}
+	
 	private void paintMarker(ViewLayout layout,TGPainter painter){
 		if( this.hasMarker() ){
 			int x = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
-			int y = (getPosY() + getTs().getPosition(TrackSpacing.POSITION_MARKER));
+			int y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_MARKER));
 			
 			layout.setMarkerStyle(painter,getMarkerColor());
 			painter.drawString(getMarker().getTitle(), x, y);
@@ -1083,14 +1044,14 @@ public class TGMeasureImpl extends TGMeasure{
 			int y2 = getPosY();
 			int style = layout.getStyle();
 			if( (style & (ViewLayout.DISPLAY_SCORE | ViewLayout.DISPLAY_TABLATURE)) == (ViewLayout.DISPLAY_SCORE | ViewLayout.DISPLAY_TABLATURE) ){
-				y1 += (getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
-				y2 += (getTs().getPosition(TrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
+				y1 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
+				y2 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
 			}else if( (style & ViewLayout.DISPLAY_SCORE) != 0 ){
-				y1 += (getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
-				y2 += (getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (layout.getScoreLineSpacing() * 5));
+				y1 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
+				y2 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (layout.getScoreLineSpacing() * 5));
 			} else if( (style & ViewLayout.DISPLAY_TABLATURE) != 0 ){
-				y1 += (getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - layout.getStringSpacing());
-				y2 += (getTs().getPosition(TrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
+				y1 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - layout.getStringSpacing());
+				y2 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
 			}
 			layout.setMeasurePlayingStyle(painter);
 			// Don't uncomment "lineStyle" until be sure SWT bug has fixed.
@@ -1246,16 +1207,18 @@ public class TGMeasureImpl extends TGMeasure{
 		return (TGTrackImpl)super.getTrack();
 	}
 	
-	public TrackSpacing getTs() {
+	public TGTrackSpacing getTs() {
 		return this.ts;
 	}
 	
-	public void setTs(TrackSpacing ts) {
+	public void setTs(TGTrackSpacing ts) {
 		if(getTs() == null){
 			setBufferCreated(false);
-		}else if(getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) != ts.getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES)){
+		}else if(getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) != ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES)){
 			setBufferCreated(false);
-		}else if(getTs().getPosition(TrackSpacing.POSITION_TABLATURE) != ts.getPosition(TrackSpacing.POSITION_TABLATURE)){
+		}else if(getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) != ts.getPosition(TGTrackSpacing.POSITION_TABLATURE)){
+			setBufferCreated(false);
+		}else if(getTs().getPosition(TGTrackSpacing.POSITION_EFFECTS) != ts.getPosition(TGTrackSpacing.POSITION_EFFECTS)){
 			setBufferCreated(false);
 		}
 		this.ts = ts;

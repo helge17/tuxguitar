@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.gui.editors.tab;
 
 import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.song.models.TGLyric;
 
@@ -59,7 +58,7 @@ public class TGLyricImpl extends TGLyric{
 						if(str.length() > 0){
 							int x = (fromX + beat.getPosX() + beat.getSpacing() + 2);
 							layout.setLyricStyle(painter,(layout.isPlayModeEnabled() && beat.isPlaying(layout)));
-							painter.drawString(str,x + 13,(fromY + currentMeasure.getTs().getPosition(TrackSpacing.POSITION_LYRIC)));
+							painter.drawString(str,x + 13,(fromY + currentMeasure.getTs().getPosition(TGTrackSpacing.POSITION_LYRIC)));
 						}
 					}
 					beatIndex ++;

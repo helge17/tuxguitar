@@ -16,6 +16,7 @@ import org.herac.tuxguitar.gui.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
+import org.herac.tuxguitar.gui.actions.note.MoveBeatsCustomAction;
 import org.herac.tuxguitar.gui.actions.note.MoveBeatsLeftAction;
 import org.herac.tuxguitar.gui.actions.note.MoveBeatsRightAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveUnusedVoiceAction;
@@ -57,6 +58,7 @@ public class BeatMenuItem extends MenuItems{
 	private MenuItem semitoneDown;
 	private MenuItem moveBeatsLeft;
 	private MenuItem moveBeatsRight;
+	private MenuItem moveBeatsCustom;
 	private DurationMenuItem durationMenuItem;
 	private ChordMenuItem chordMenuItem;
 	private NoteEffectsMenuItem effectMenuItem;
@@ -161,6 +163,10 @@ public class BeatMenuItem extends MenuItems{
 		this.moveBeatsRight = new MenuItem(this.menu, SWT.PUSH);
 		this.moveBeatsRight.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsRightAction.NAME));
 		
+		//--Move Beats Custom
+		this.moveBeatsCustom = new MenuItem(this.menu, SWT.PUSH);
+		this.moveBeatsCustom.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsCustomAction.NAME));
+		
 		this.noteMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
@@ -191,6 +197,7 @@ public class BeatMenuItem extends MenuItems{
 		this.insertText.setEnabled(!running);
 		this.moveBeatsLeft.setEnabled(!running);
 		this.moveBeatsRight.setEnabled(!running);
+		this.moveBeatsCustom.setEnabled(!running);
 		this.durationMenuItem.update();
 		this.chordMenuItem.update();
 		this.effectMenuItem.update();
@@ -214,6 +221,7 @@ public class BeatMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.insertText, "text.insert", InsertTextAction.NAME);
 		setMenuItemTextAndAccelerator(this.moveBeatsLeft, "beat.move-left", MoveBeatsLeftAction.NAME);
 		setMenuItemTextAndAccelerator(this.moveBeatsRight, "beat.move-right", MoveBeatsRightAction.NAME);
+		setMenuItemTextAndAccelerator(this.moveBeatsCustom, "beat.move-custom", MoveBeatsCustomAction.NAME);
 		
 		this.durationMenuItem.loadProperties();
 		this.chordMenuItem.loadProperties();

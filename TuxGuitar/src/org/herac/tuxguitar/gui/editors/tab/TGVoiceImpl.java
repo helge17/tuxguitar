@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGNotePainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGSilencePainter;
@@ -371,12 +370,12 @@ public class TGVoiceImpl extends TGVoice{
 		
 		if((style & ViewLayout.DISPLAY_SCORE) != 0 ){
 			x = fromX + getPosX() + getBeatImpl().getSpacing();
-			y = fromY + getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES) + this.silenceY;
+			y = fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + this.silenceY;
 			lineSpacing = layout.getScoreLineSpacing();
 			scale = (lineSpacing / 9.0f);
 		}else{
 			x = fromX + getPosX() + getBeatImpl().getSpacing() - 1;
-			y = fromY + getPaintPosition(TrackSpacing.POSITION_TABLATURE) + this.silenceY;
+			y = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + this.silenceY;
 			lineSpacing = layout.getStringSpacing();
 			scale = (lineSpacing / 10.0f);
 		}
@@ -423,9 +422,9 @@ public class TGVoiceImpl extends TGVoice{
 		if(!getDuration().getTupleto().isEqual(TGTupleto.NORMAL)){
 			layout.setTupletoStyle(painter);
 			if((style & ViewLayout.DISPLAY_SCORE) != 0 ){
-				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()), x,(fromY + getPaintPosition(TrackSpacing.POSITION_TUPLETO)));
+				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()), x,(fromY + getPaintPosition(TGTrackSpacing.POSITION_TUPLETO)));
 			}else{
-				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()),x,(fromY + getPaintPosition(TrackSpacing.POSITION_TUPLETO)));
+				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()),x,(fromY + getPaintPosition(TGTrackSpacing.POSITION_TUPLETO)));
 			}
 		}
 	}
@@ -444,10 +443,10 @@ public class TGVoiceImpl extends TGVoice{
 			int spacing = getBeatImpl().getSpacing();
 			
 			if((style & ViewLayout.DISPLAY_SCORE) != 0){
-				paintScoreBeat(layout, painter, fromX, fromY+getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES), spacing);
+				paintScoreBeat(layout, painter, fromX, fromY+getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES), spacing);
 			}
 			if((style & ViewLayout.DISPLAY_TABLATURE) != 0 && (style & ViewLayout.DISPLAY_SCORE) == 0){
-				paintTablatureBeat(layout, painter, fromX, fromY + getPaintPosition(TrackSpacing.POSITION_TABLATURE), spacing);
+				paintTablatureBeat(layout, painter, fromX, fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE), spacing);
 			}
 		}
 	}
@@ -524,7 +523,7 @@ public class TGVoiceImpl extends TGVoice{
 			//-------------tresillo--------------------------------------
 			if (!getDuration().getTupleto().isEqual(TGTupleto.NORMAL)) {
 				layout.setTupletoStyle(painter);
-				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()), (int)(x - 3),((fromY - getPaintPosition(TrackSpacing.POSITION_TABLATURE)) + getPaintPosition(TrackSpacing.POSITION_TUPLETO)));
+				painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()), (int)(x - 3),((fromY - getPaintPosition(TGTrackSpacing.POSITION_TABLATURE)) + getPaintPosition(TGTrackSpacing.POSITION_TUPLETO)));
 			}
 		}
 	}
@@ -535,7 +534,7 @@ public class TGVoiceImpl extends TGVoice{
 		//TUPLETO
 		if (!getDuration().getTupleto().isEqual(TGTupleto.NORMAL)) {
 			layout.setTupletoStyle(painter);
-			painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()),vX ,((fromY - getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES)) + getPaintPosition(TrackSpacing.POSITION_TUPLETO)));
+			painter.drawString(Integer.toString(getDuration().getTupleto().getEnters()),vX ,((fromY - getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES)) + getPaintPosition(TGTrackSpacing.POSITION_TUPLETO)));
 		}
 		//dibujo el pie
 		if(getDuration().getValue() >= TGDuration.HALF){

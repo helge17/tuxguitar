@@ -17,6 +17,7 @@ import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.TGLyricImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -66,8 +67,8 @@ public class PageViewLayout extends ViewLayout{
 				TGTrackImpl track = (TGTrackImpl) tracks.next();
 				if(number < 0 || track.getNumber() == number){
 					
-					TrackSpacing ts = new TrackSpacing(this) ;
-					ts.setSize(TrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0 ?( (getScoreLineSpacing() * 5) ):0));
+					TGTrackSpacing ts = new TGTrackSpacing(this) ;
+					ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0 ?( (getScoreLineSpacing() * 5) ):0));
 					
 					if(nextMeasureIndex == 0){
 						((TGLyricImpl)track.getLyrics()).start();
@@ -75,16 +76,16 @@ public class PageViewLayout extends ViewLayout{
 					
 					line = getTempLines(track,nextMeasureIndex,ts);
 					if( (style & DISPLAY_SCORE) != 0 ){
-						ts.setSize(TrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
+						ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
 						if(line.maxY + getMinScoreTabSpacing() > getScoreSpacing()){
-							ts.setSize(TrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - (getScoreLineSpacing() * 4)) );
+							ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - (getScoreLineSpacing() * 4)) );
 						}
 					}
 					if((style & DISPLAY_TABLATURE) != 0){
-						ts.setSize(TrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
-						ts.setSize(TrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
+						ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
+						ts.setSize(TGTrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
 					}
-					ts.setSize(TrackSpacing.POSITION_LYRIC,10);
+					ts.setSize(TGTrackSpacing.POSITION_LYRIC,10);
 					checkDefaultSpacing(ts);
 					
 					paintLine(track,line,painter,fromX,posY,ts,clientArea);
@@ -116,7 +117,7 @@ public class PageViewLayout extends ViewLayout{
 		this.paintCaret(painter);
 	}
 	
-	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter,int fromX, int fromY,TrackSpacing ts,Rectangle clientArea) {
+	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter,int fromX, int fromY,TGTrackSpacing ts,Rectangle clientArea) {
 		int posX = (this.marginLeft + fromX);
 		int posY = fromY;
 		int width = this.marginLeft;
@@ -160,7 +161,7 @@ public class PageViewLayout extends ViewLayout{
 		this.setWidth(Math.max(getWidth(),width));
 	}
 	
-	public TempLine getTempLines(TGTrack track,int fromIndex,TrackSpacing ts) {
+	public TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {
 		int style = getStyle();
 		
 		TempLine line = new TempLine();

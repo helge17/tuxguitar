@@ -15,8 +15,8 @@ import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.TGVoiceImpl;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -75,12 +75,12 @@ public class MouseKit {
 					int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
 					int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing();
 					int width = (int)(10.0f * scale);
-					int topHeight = measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-					int bottomHeight = (measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_DOWN_LINES));
+					int topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+					int bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
 					
 					int x1 = (int)(e.x - (width / 2.0f));
 					int x2 = (int)(e.x + (width / 2.0f));
-					int y1 = (measure.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+					int y1 = (measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 					int y2 = (y1 + (lineSpacing * 5));
 					
 					if(e.y < (y1 + 3) && e.y >= (y1 - topHeight)){
@@ -146,10 +146,10 @@ public class MouseKit {
 					
 					int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing();
 					
-					int topHeight = measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-					int bottomHeight = (measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_DOWN_LINES));
+					int topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+					int bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
 					
-					int y1 = (pos.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+					int y1 = (pos.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 					int y2 = (y1 + (lineSpacing * 5));
 					
 					if(e.y >= (y1 - topHeight) && e.y  < (y2 + bottomHeight)){

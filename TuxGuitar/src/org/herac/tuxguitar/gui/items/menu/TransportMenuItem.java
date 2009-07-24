@@ -14,8 +14,12 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportModeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportSetLoopEHeaderAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.items.MenuItems;
+import org.herac.tuxguitar.player.base.MidiPlayerMode;
+import org.herac.tuxguitar.song.models.TGMeasure;
 
 /**
  * @author julian
@@ -32,8 +36,10 @@ public class TransportMenuItem extends MenuItems{
 	private Menu menu;
 	private MenuItem play;
 	private MenuItem stop;
-	private MenuItem mode;
 	private MenuItem metronome;
+	private MenuItem mode;
+	private MenuItem loopSHeader;
+	private MenuItem loopEHeader;
 	
 	private int status;
 	
@@ -58,6 +64,15 @@ public class TransportMenuItem extends MenuItems{
 		this.mode = new MenuItem(this.menu, SWT.PUSH);
 		this.mode.addSelectionListener(TuxGuitar.instance().getAction(TransportModeAction.NAME));
 		
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		this.loopSHeader = new MenuItem(this.menu, SWT.CHECK);
+		this.loopSHeader.addSelectionListener(TuxGuitar.instance().getAction(TransportSetLoopSHeaderAction.NAME));
+		
+		this.loopEHeader = new MenuItem(this.menu, SWT.CHECK);
+		this.loopEHeader.addSelectionListener(TuxGuitar.instance().getAction(TransportSetLoopEHeaderAction.NAME));
+		
 		this.transportMenuItem.setMenu(this.menu);
 		
 		this.status = STATUS_STOPPED;
@@ -66,7 +81,13 @@ public class TransportMenuItem extends MenuItems{
 	}
 	
 	public void update(){
+		TGMeasure measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
+		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
 		this.metronome.setSelection(TuxGuitar.instance().getPlayer().isMetronomeEnabled());
+		this.loopSHeader.setEnabled( pm.isLoop() );
+		this.loopSHeader.setSelection( measure != null && measure.getNumber() == pm.getLoopSHeader() );
+		this.loopEHeader.setEnabled( pm.isLoop() );
+		this.loopEHeader.setSelection( measure != null && measure.getNumber() == pm.getLoopEHeader() );
 		this.loadIcons(false);
 	}
 	
@@ -76,6 +97,8 @@ public class TransportMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.stop, "transport.stop", TransportStopAction.NAME);
 		setMenuItemTextAndAccelerator(this.mode, "transport.mode", TransportModeAction.NAME);
 		setMenuItemTextAndAccelerator(this.metronome, "transport.metronome", TransportMetronomeAction.NAME);
+		setMenuItemTextAndAccelerator(this.loopSHeader, "transport.set-loop-start", TransportSetLoopSHeaderAction.NAME);
+		setMenuItemTextAndAccelerator(this.loopEHeader, "transport.set-loop-end", TransportSetLoopEHeaderAction.NAME);
 	}
 	
 	public void loadIcons(){
