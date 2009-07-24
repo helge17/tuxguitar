@@ -26,7 +26,7 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
@@ -335,16 +335,16 @@ public class TGInputStream implements TGInputStreamBase{
 		//leo el doble puntillo
 		duration.setDoubleDotted( readBoolean() );
 		
-		//leo el tupleto
-		readTupleto(duration.getTupleto());
+		//leo el tipo de divisiones
+		readDivisionType(duration.getDivision());
 	}
 	
-	private void readTupleto(TGTupleto tupleto){
+	private void readDivisionType(TGDivisionType divisionType){
 		//leo los enters
-		tupleto.setEnters(readInt());
+		divisionType.setEnters(readInt());
 		
 		//leo los tiempos
-		tupleto.setTimes(readInt());
+		divisionType.setTimes(readInt());
 	}
 	
 	private void readNoteEffect(TGNoteEffect effect){

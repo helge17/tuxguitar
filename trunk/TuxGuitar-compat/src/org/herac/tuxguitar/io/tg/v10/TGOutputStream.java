@@ -31,7 +31,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -434,24 +434,24 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		int header = 0;
 		header = (duration.isDotted())?header |= DURATION_DOTTED:header;
 		header = (duration.isDoubleDotted())?header |= DURATION_DOUBLE_DOTTED:header;
-		header = (!duration.getTupleto().isEqual(TGTupleto.NORMAL))?header |= DURATION_NO_TUPLETO:header;
+		header = (!duration.getDivision().isEqual(TGDivisionType.NORMAL))?header |= DURATION_NO_TUPLE:header;
 		writeHeader(header);
 		
 		//escribo el valor
 		writeByte(duration.getValue());
 		
-		//escribo el tupleto
-		if(((header & DURATION_NO_TUPLETO) != 0)){
-			writeTupleto(duration.getTupleto());
+		//escribo el tipo de divisiones
+		if(((header & DURATION_NO_TUPLE) != 0)){
+			writeDivisionType(duration.getDivision());
 		}
 	}
 	
-	private void writeTupleto(TGTupleto tupleto){
+	private void writeDivisionType(TGDivisionType divisionType){
 		//escribo los enters
-		writeByte(tupleto.getEnters());
+		writeByte(divisionType.getEnters());
 		
 		//escribo los tiempos
-		writeByte(tupleto.getTimes());
+		writeByte(divisionType.getTimes());
 	}
 	
 	private void writeNoteEffect(TGNoteEffect effect){
