@@ -26,7 +26,7 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -284,7 +284,7 @@ public class MusicXMLWriter {
 	private void writeDuration(Node parent, TGDuration duration){
 		int index = duration.getIndex();
 		if( index >=0 && index <= 6 ){
-			int value = (DURATION_VALUES[ index ] * duration.getTupleto().getTimes() / duration.getTupleto().getEnters());
+			int value = (DURATION_VALUES[ index ] * duration.getDivision().getTimes() / duration.getDivision().getEnters());
 			if(duration.isDotted()){
 				value += (value / 2);
 			}
@@ -303,10 +303,10 @@ public class MusicXMLWriter {
 				this.addNode(parent,"dot");
 			}
 			
-			if(!duration.getTupleto().isEqual(TGTupleto.NORMAL)){
-				Node tupleto = this.addNode(parent,"time-modification");
-				this.addNode(tupleto,"actual-notes",Integer.toString(duration.getTupleto().getEnters()));
-				this.addNode(tupleto,"normal-notes",Integer.toString(duration.getTupleto().getTimes()));
+			if(!duration.getDivision().isEqual(TGDivisionType.NORMAL)){
+				Node divisionType = this.addNode(parent,"time-modification");
+				this.addNode(divisionType,"actual-notes",Integer.toString(duration.getDivision().getEnters()));
+				this.addNode(divisionType,"normal-notes",Integer.toString(duration.getDivision().getTimes()));
 			}
 		}
 	}
