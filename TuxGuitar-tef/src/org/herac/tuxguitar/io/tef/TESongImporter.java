@@ -28,7 +28,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 
 public class TESongImporter implements TGLocalFileImporter{
 	
@@ -171,7 +171,7 @@ public class TESongImporter implements TGLocalFileImporter{
 	
 	private long getStart(TGDuration duration, TGMeasure measure,int position){
 		float fixedPosition = position;
-		if(duration != null && !duration.getTupleto().isEqual(TGTupleto.NORMAL)){
+		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.NORMAL)){
 			fixedPosition = (( fixedPosition - (fixedPosition % 64)) + ((((fixedPosition % 64) * 2) * 2) / 3) );
 		}
 		long start = ((long) (measure.getStart() + ( (fixedPosition * TGDuration.QUARTER_TIME)  / 64)) );
@@ -191,8 +191,8 @@ public class TESongImporter implements TGLocalFileImporter{
 			tgDuration.setDotted(true);
 		}
 		else if( (duration % 3) == 2){
-			tgDuration.getTupleto().setEnters(3);
-			tgDuration.getTupleto().setTimes(2);
+			tgDuration.getDivision().setEnters(3);
+			tgDuration.getDivision().setTimes(2);
 		}
 		tgDuration.setValue(value);
 		
