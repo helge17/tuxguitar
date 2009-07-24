@@ -30,7 +30,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -371,7 +371,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		if (changeTempo) {
 			flags |= 0x10;
 		}
-		if (!duration.getTupleto().isEqual(TGTupleto.NORMAL)) {
+		if (!duration.getDivision().isEqual(TGDivisionType.NORMAL)) {
 			flags |= 0x20;
 		}
 		if (voice.isEmpty() || voice.isRestVoice()) {
@@ -385,7 +385,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		}
 		writeByte(parseDuration(duration));
 		if ((flags & 0x20) != 0) {
-			writeInt(duration.getTupleto().getEnters());
+			writeInt(duration.getDivision().getEnters());
 		}
 		
 		if ((flags & 0x02) != 0) {
