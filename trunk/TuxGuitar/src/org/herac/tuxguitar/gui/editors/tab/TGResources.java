@@ -58,6 +58,8 @@ public class TGResources {
 	private Color colorRed;
 	private Color caretColor1;
 	private Color caretColor2;
+	private Color loopSMarkerColor;
+	private Color loopEMarkerColor;
 	private Image[] scoreNotes;
 	private Image[] harmonicNotes;
 	private Image tempoImage;
@@ -188,6 +190,14 @@ public class TGResources {
 		return this.caretColor2;
 	}
 	
+	public Color getLoopSMarkerColor() {
+		return this.loopSMarkerColor;
+	}
+	
+	public Color getLoopEMarkerColor() {
+		return this.loopEMarkerColor;
+	}
+	
 	public Image getTempoImage() {
 		return this.tempoImage;
 	}
@@ -254,6 +264,8 @@ public class TGResources {
 		this.playNoteColor = getColor(TGConfigKeys.COLOR_PLAY_NOTE);
 		this.caretColor1 = getColor(TGConfigKeys.COLOR_CARET_1);
 		this.caretColor2 = getColor(TGConfigKeys.COLOR_CARET_2);
+		this.loopSMarkerColor = getColor(TGConfigKeys.COLOR_LOOP_S_MARKER);
+		this.loopEMarkerColor = getColor(TGConfigKeys.COLOR_LOOP_E_MARKER);
 		// Static colors
 		this.colorWhite = TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_WHITE);
 		this.colorBlack = TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_BLACK);

@@ -107,6 +107,7 @@ import org.herac.tuxguitar.gui.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.gui.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.IncrementNoteSemitoneAction;
 import org.herac.tuxguitar.gui.actions.note.InsertNoteAction;
+import org.herac.tuxguitar.gui.actions.note.MoveBeatsCustomAction;
 import org.herac.tuxguitar.gui.actions.note.MoveBeatsLeftAction;
 import org.herac.tuxguitar.gui.actions.note.MoveBeatsRightAction;
 import org.herac.tuxguitar.gui.actions.note.RemoveNoteAction;
@@ -140,6 +141,8 @@ import org.herac.tuxguitar.gui.actions.track.TrackPropertiesAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportModeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportSetLoopEHeaderAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.actions.view.ShowFretBoardAction;
 import org.herac.tuxguitar.gui.actions.view.ShowMatrixAction;
@@ -250,6 +253,7 @@ public class ActionManager {
 		addAction(new SetStrokeDownAction());
 		addAction(new MoveBeatsRightAction());
 		addAction(new MoveBeatsLeftAction());
+		addAction(new MoveBeatsCustomAction());
 		
 		//duration actions
 		addAction(new SetWholeDurationAction());
@@ -309,6 +313,8 @@ public class ActionManager {
 		addAction(new TransportStopAction());
 		addAction(new TransportMetronomeAction());
 		addAction(new TransportModeAction());
+		addAction(new TransportSetLoopSHeaderAction());
+		addAction(new TransportSetLoopEHeaderAction());
 		
 		//setting actions
 		addAction(new EditPluginsAction());

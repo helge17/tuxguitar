@@ -55,6 +55,8 @@ public class TGConfigKeys {
 	public static final String COLOR_PLAY_NOTE = "color.play.note";
 	public static final String COLOR_CARET_1 = "color.caret.1";
 	public static final String COLOR_CARET_2 = "color.caret.2";
+	public static final String COLOR_LOOP_S_MARKER = "color.loop.s.marker";
+	public static final String COLOR_LOOP_E_MARKER = "color.loop.e.marker";
 	public static final String MIDI_PORT = "midi.port";
 	public static final String MIDI_SEQUENCER = "midi.sequencer";
 	public static final String MAX_HISTORY_FILES = "history.max-files";

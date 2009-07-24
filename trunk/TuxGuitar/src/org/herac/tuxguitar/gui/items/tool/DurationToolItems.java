@@ -55,42 +55,33 @@ public class DurationToolItems  extends ToolItems{
 		this.durationItems = new ToolItem[7];
 		
 		this.durationItems[0] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[0].setToolTipText("Redonda");
 		this.durationItems[0].addSelectionListener(TuxGuitar.instance().getAction(SetWholeDurationAction.NAME));
 		
 		this.durationItems[1] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[1].setToolTipText("Blanca");
 		this.durationItems[1].addSelectionListener(TuxGuitar.instance().getAction(SetHalfDurationAction.NAME));
 		
 		this.durationItems[2] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[2].setToolTipText("Negra");
 		this.durationItems[2].setSelection(true);
 		this.durationItems[2].addSelectionListener(TuxGuitar.instance().getAction(SetQuarterDurationAction.NAME));
 		
 		this.durationItems[3] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[3].setToolTipText("Corchea");
 		this.durationItems[3].addSelectionListener(TuxGuitar.instance().getAction(SetEighthDurationAction.NAME));
 		
 		this.durationItems[4] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[4].setToolTipText("Semi-Corchea");
 		this.durationItems[4].addSelectionListener(TuxGuitar.instance().getAction(SetSixteenthDurationAction.NAME));
 		
 		this.durationItems[5] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[5].setToolTipText("Fusa");
 		this.durationItems[5].addSelectionListener(TuxGuitar.instance().getAction(SetThirtySecondDurationAction.NAME));
 		
 		this.durationItems[6] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[6].setToolTipText("Semi-Fusa");
 		this.durationItems[6].addSelectionListener(TuxGuitar.instance().getAction(SetSixtyFourthDurationAction.NAME));
 		
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		this.dotted = new ToolItem(toolBar, SWT.CHECK);
-		this.dotted.setToolTipText("Puntillo");
 		this.dotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDottedDurationAction.NAME));
 		
 		this.doubleDotted = new ToolItem(toolBar, SWT.CHECK);
-		this.doubleDotted.setToolTipText("Doble Puntillo");
 		this.doubleDotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDoubleDottedDurationAction.NAME));
 		
 		this.tupletoItems = new TupletoMenuItem();

@@ -20,6 +20,7 @@ import org.herac.tuxguitar.gui.editors.tab.TGChordImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGLyricImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
 import org.herac.tuxguitar.gui.printer.PrintDocument;
 import org.herac.tuxguitar.gui.printer.PrintStyles;
@@ -127,22 +128,22 @@ public class PrinterViewLayout extends ViewLayout{
 		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(this.styles.getTrackNumber());
 		((TGLyricImpl)track.getLyrics()).start(getSkippedBeats(track));
 		
-		TrackSpacing ts = new TrackSpacing(this) ;
+		TGTrackSpacing ts = new TGTrackSpacing(this) ;
 		TempLine line = getTempLines(track,( this.styles.getFromMeasure() - 1 ),ts);
 		while(!line.measures.isEmpty()){
 			
-			ts.setSize(TrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0?( (getScoreLineSpacing() * 5) ):0));
+			ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0?( (getScoreLineSpacing() * 5) ):0));
 			if((style & DISPLAY_SCORE) != 0){
-				ts.setSize(TrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
+				ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
 				if(line.maxY + getMinScoreTabSpacing() > getScoreSpacing()){
-					ts.setSize(TrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - (getScoreLineSpacing() * 4)) );
+					ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - (getScoreLineSpacing() * 4)) );
 				}
 			}
 			if((style & DISPLAY_TABLATURE) != 0){
-				ts.setSize(TrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
-				ts.setSize(TrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
+				ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
+				ts.setSize(TGTrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
 			}
-			ts.setSize(TrackSpacing.POSITION_LYRIC,10);
+			ts.setSize(TGTrackSpacing.POSITION_LYRIC,10);
 			checkDefaultSpacing(ts);
 			
 			lineHeight = ts.getSize();
@@ -160,7 +161,7 @@ public class PrinterViewLayout extends ViewLayout{
 			posY += lineHeight + getTrackSpacing();
 			height += lineHeight + getTrackSpacing();
 			
-			ts = new TrackSpacing(this) ;
+			ts = new TGTrackSpacing(this) ;
 			line = getTempLines(track,( line.lastIndex + 1 ),ts);
 		}
 		this.setHeight(height);
@@ -201,7 +202,7 @@ public class PrinterViewLayout extends ViewLayout{
 		}
 	}
 	
-	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter,int fromX, int fromY,TrackSpacing ts) {
+	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter,int fromX, int fromY,TGTrackSpacing ts) {
 		if(this.document.isPaintable(this.page) ){
 			int posX = fromX;
 			int posY = fromY;
@@ -267,7 +268,7 @@ public class PrinterViewLayout extends ViewLayout{
 		return ((getMaxHeight() - textHeight));
 	}
 	
-	private TempLine getTempLines(TGTrack track,int fromIndex,TrackSpacing ts) {
+	private TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {
 		TempLine line = new TempLine();
 		int measureCount = track.countMeasures();
 		for (int measureIdx = fromIndex; measureIdx < measureCount; measureIdx++) {
@@ -453,6 +454,10 @@ public class PrinterViewLayout extends ViewLayout{
 	
 	public boolean isLastMeasure(TGMeasure measure){
 		return (measure.getNumber() == this.styles.getToMeasure());
+	}
+	
+	public boolean hasLoopMarker(TGMeasure measure){
+		return false;
 	}
 	
 	private int getScaledValue(float scale, int value){

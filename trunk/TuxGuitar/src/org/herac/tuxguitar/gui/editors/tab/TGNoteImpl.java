@@ -11,7 +11,6 @@ import java.util.Iterator;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGKeySignaturePainter;
 import org.herac.tuxguitar.gui.editors.tab.painters.TGNotePainter;
@@ -57,35 +56,40 @@ public class TGNoteImpl extends TGNote {
 	 */
 	public void paint(ViewLayout layout,TGPainter painter, int fromX, int fromY) {
 		int spacing = getBeatImpl().getSpacing();
-		paintScoreNote(layout, painter, fromX, fromY + getPaintPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES),spacing);
+		paintScoreNote(layout, painter, fromX, fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES),spacing);
 		if(!layout.isPlayModeEnabled()){
 			paintOfflineEffects(layout, painter,fromX,fromY, spacing);
 		}
-		paintTablatureNote(layout, painter, fromX, fromY + getPaintPosition(TrackSpacing.POSITION_TABLATURE),spacing);
+		paintTablatureNote(layout, painter, fromX, fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE),spacing);
 	}
 	
-	private void paintOfflineEffects(ViewLayout layout,TGPainter painter,int fromX, int fromY, int spacing){
+	private void paintOfflineEffects(ViewLayout layout,TGPainter painter,int fromX, int fromY, int spacing){		
+		TGSpacing bs = getBeatImpl().getBs();
+		TGSpacing ts = getMeasureImpl().getTs();
 		TGNoteEffect effect = getEffect();
+		
+		int tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
+		int bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
 		
 		layout.setOfflineEffectStyle(painter);
 		if(effect.isAccentuatedNote()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_ACCENTUATED_EFFECT));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_ACCENTUATED_EFFECT ));
 			paintAccentuated(layout, painter, x, y);
 		}
-		else if(effect.isHeavyAccentuatedNote()){
+		if(effect.isHeavyAccentuatedNote()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_ACCENTUATED_EFFECT));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_HEAVY_ACCENTUATED_EFFECT ));
 			paintHeavyAccentuated(layout, painter, x, y);
 		}
 		if(effect.isFadeIn()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_FADE_IN));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_FADE_IN ));
 			paintFadeIn(layout, painter, x, y);
 		}
 		if(effect.isHarmonic() && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 ){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_HARMONIC_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_HARMONIC_EFFEC ));
 			String key = new String();
 			key = effect.getHarmonic().isNatural()?TGEffectHarmonic.KEY_NATURAL:key;
 			key = effect.getHarmonic().isArtificial()?TGEffectHarmonic.KEY_ARTIFICIAL:key;
@@ -96,32 +100,32 @@ public class TGNoteImpl extends TGNote {
 		}
 		if(effect.isTapping()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_TAPPING_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TAPPING_EFFEC ));
 			painter.drawString("T",x, y);
 		}
-		else if(effect.isSlapping()){
+		if(effect.isSlapping()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_TAPPING_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_SLAPPING_EFFEC ));
 			painter.drawString("S",x, y);
 		}
-		else if(effect.isPopping()){
+		if(effect.isPopping()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_TAPPING_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_POPPING_EFFEC ));
 			painter.drawString("P",x, y);
 		}
 		if(effect.isPalmMute()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_PALM_MUTE_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_PALM_MUTE_EFFEC ));
 			painter.drawString("P.M",x, y);
 		}
 		if(effect.isVibrato()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_VIBRATO_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_VIBRATO_EFFEC ));
 			paintVibrato(layout, painter,x,y);
 		}
 		if(effect.isTrill()){
 			int x = fromX + getPosX() + spacing;
-			int y = (fromY + getPaintPosition(TrackSpacing.POSITION_VIBRATO_EFFEC));
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TRILL_EFFEC ));
 			paintTrill(layout, painter,x,y);
 		}
 	}

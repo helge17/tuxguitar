@@ -13,8 +13,8 @@ import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -154,7 +154,7 @@ public class EditorKit implements MouseListener,MouseMoveListener,MouseTrackList
 		TGString string = null;
 		int stringSpacing = getTablature().getViewLayout().getStringSpacing();
 		int minorDistance = 0;
-		int firstStringY = measure.getPosY() + measure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE);
+		int firstStringY = measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 		
 		Iterator it = measure.getTrack().getStrings().iterator();
 		while(it.hasNext()){

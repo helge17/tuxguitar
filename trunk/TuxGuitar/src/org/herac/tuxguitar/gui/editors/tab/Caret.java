@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.song.managers.TGMeasureManager;
@@ -137,7 +136,7 @@ public class Caret {
 					int stringSpacing = this.tablature.getViewLayout().getStringSpacing();
 					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					int x = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - 5;
-					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
+					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
 					int width = 14;
 					int height = 14;
 					layout.setCaretStyle(painter, expectedVoice);
@@ -151,8 +150,8 @@ public class Caret {
 					float xMargin = (2.0f * layout.getScale());
 					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - xMargin;
 					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);
-					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TrackSpacing.POSITION_TOP) - line;
-					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TrackSpacing.POSITION_BOTTOM);
+					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
+					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
 					layout.setCaretStyle(painter, true);
 					painter.initPath();
 					painter.moveTo(x1, y1);
