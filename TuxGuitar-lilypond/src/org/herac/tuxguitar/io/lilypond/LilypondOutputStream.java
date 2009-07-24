@@ -20,7 +20,7 @@ import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
@@ -452,16 +452,16 @@ public class LilypondOutputStream {
 			TGBeat beat = measure.getBeat( i );
 			TGVoice voice = beat.getVoice( vIndex );
 			if( !voice.isEmpty() ){
-				TGTupleto tupleto = voice.getDuration().getTupleto();
+				TGDivisionType divisionType = voice.getDuration().getDivision();
 				
-				if(previous != null && this.temp.isTupletOpen() && !tupleto.isEqual( previous.getVoice(0).getDuration().getTupleto() )){
+				if(previous != null && this.temp.isDivisionTypeOpen() && !divisionType.isEqual( previous.getVoice(0).getDuration().getDivision() )){
 					this.writer.print("} ");
-					this.temp.setTupletOpen(false);
+					this.temp.setDivisionTypeOpen(false);
 				}
 				
-				if(!this.temp.isTupletOpen() && !tupleto.isEqual(TGTupleto.NORMAL)){
-					this.writer.print("\\times " + tupleto.getTimes() + "/" + tupleto.getEnters() + " {");
-					this.temp.setTupletOpen(true);
+				if(!this.temp.isDivisionTypeOpen() && !divisionType.isEqual(TGDivisionType.NORMAL)){
+					this.writer.print("\\times " + divisionType.getTimes() + "/" + divisionType.getEnters() + " {");
+					this.temp.setDivisionTypeOpen(true);
 				}
 				
 				this.addBeat(key, beat, voice);
@@ -476,9 +476,9 @@ public class LilypondOutputStream {
 			this.writer.print("*" + measure.getTimeSignature().getNumerator() + " ");
 		}
 		
-		if(this.temp.isTupletOpen()){
+		if(this.temp.isDivisionTypeOpen()){
 			this.writer.print("} ");
-			this.temp.setTupletOpen(false);
+			this.temp.setDivisionTypeOpen(false);
 		}
 	}
 	
@@ -861,7 +861,7 @@ public class LilypondOutputStream {
 		private int repeatAlternativeNumber;
 		private boolean repeatOpen;
 		private boolean repeatAlternativeOpen;
-		private boolean tupletOpen;
+		private boolean divisionTypeOpen;
 		private boolean multipleVoices;
 		private List skippedLyricBeats;
 		
@@ -874,7 +874,7 @@ public class LilypondOutputStream {
 			this.multipleVoices = false;
 			this.repeatCount = 0;
 			this.repeatOpen = false;
-			this.tupletOpen = false;
+			this.divisionTypeOpen = false;
 			this.skippedLyricBeats.clear();
 		}
 		
@@ -910,12 +910,12 @@ public class LilypondOutputStream {
 			this.repeatAlternativeOpen = repeatAlternativeOpen;
 		}
 		
-		public boolean isTupletOpen() {
-			return this.tupletOpen;
+		public boolean isDivisionTypeOpen() {
+			return this.divisionTypeOpen;
 		}
 		
-		public void setTupletOpen(boolean tupletOpen) {
-			this.tupletOpen = tupletOpen;
+		public void setDivisionTypeOpen(boolean divisionTypeOpen) {
+			this.divisionTypeOpen = divisionTypeOpen;
 		}
 		
 		public void setMultipleVoices( boolean multipleVoices ){
