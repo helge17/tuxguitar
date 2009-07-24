@@ -52,11 +52,34 @@ composition.comments=Comments
 
 beat.move-left=Move One Beat Left
 beat.move-right=Move One Beat Right
+beat.move-custom=Custom Beat Move
+beat.move-custom.dialog.title=Custom Move
+beat.move-custom.dialog.direction-tip=Move Direction
+beat.move-custom.dialog.move-1.tip=Primary Move
+beat.move-custom.dialog.move-2.tip=Secondary Move
+beat.move-custom.dialog.direction=Direction
+beat.move-custom.dialog.direction.right=Move To Right
+beat.move-custom.dialog.direction.left=Move To Left
+beat.move-custom.dialog.count=Count
+beat.move-custom.dialog.duration=Duration
+beat.move-custom.dialog.duration.type=Dotted/Double-Dotted
+beat.move-custom.dialog.duration.type.normal=None
+beat.move-custom.dialog.duration.division-type=Division Type
+beat.move-custom.dialog.duration.division-type.normal=Normal (Tuplet)
 
 action.beat.general.move-left=Move One Beat Left
 action.beat.general.move-right=Move One Beat Right
+action.beat.general.move-custom=Custom Beat Move
 
 measure.add.count=Add Count
 edit.paste.count=Paste Count
 
 export.black-and-white=Black And White Mode
+
+fretboard.direction=Direction
+
+transport.set-loop-start=Set loop start point
+transport.set-loop-end=Set loop end point
+
+action.transport.set-loop-start=Set loop start point
+action.transport.set-loop-end=Set loop end point
