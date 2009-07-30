@@ -60,9 +60,8 @@ public class MidiToAudioSynth {
 		try {
 			Class.forName("com.sun.media.sound.SoftSynthesizer", false, getClass().getClassLoader() );
 			return true;
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (Throwable throwable) {
+			return false;
 		}
-		return false;
 	}
 }
