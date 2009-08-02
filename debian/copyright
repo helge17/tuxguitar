@@ -3,7 +3,7 @@ Sat, 17 Jun 2006 13:19:36 +0200.
 
 It was downloaded from <http://www.tuxguitar.com.ar>
 
-Upstream Author: Julian Casadesus <akdmia[a]users.sourceforge.net>
+Upstream Author: Julian Casadesus <akdmia@users.sourceforge.net>
 
 
 Copyright: (c) 2006-2008 by Julian Casadesus.
@@ -13,8 +13,8 @@ License:
   the GNU Lesser General Public License.
 
   On Debian systems, the complete text of the GNU Lesser General Public
-  License can be found in the file `/usr/share/common-licenses/LGPL'.
+  License can be found in the file `/usr/share/common-licenses/LGPL-2.1'.
 
 
 The Debian packaging is (C) 2006, Philippe Coval <rzr@users.sf.net> and
-is licensed under the LGPL, see `/usr/share/common-licenses/LGPL'.
+is licensed under the LGPL-2.1, see `/usr/share/common-licenses/LGPL-2.1'.
