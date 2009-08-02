@@ -1,29 +1,52 @@
-tuxguitar-snapshot (0.0.20081209-0ubuntu0~rzr1) intrepid; urgency=low
+tuxguitar-snapshot (0.0.0-0) UNRELEASED; urgency=low
 
   * wip: http://rzr.online.fr/q/tuxguitar
 
- -- Philippe Coval <rzr@gna.org>  Tue, 09 Dec 2008 12:20:11 +0100
+ -- Philippe Coval <rzr@gna.org>  Sun, 02 Aug 2009 15:04:52 +0200
 
-tuxguitar-snapshot (0.0.20081209-0) unstable; urgency=low
+tuxguitar (1.1-1) unstable; urgency=low
 
-  * wip: http://rzr.online.fr/q/tuxguitar
+  * New Upstream Release (Closes: #489859) (LP: #366476)
+  * Merged patch : tuxguitar_1.0.dak-1ubuntu1.patch
+  * debian/README.txt
+    - suggests to install tuxguitar-jsa
 
- -- Philippe Coval <rzr@gna.org>  Tue, 09 Dec 2008 12:18:37 +0100
+ -- Philippe Coval <rzr@gna.org>  Sat, 25 Apr 2009 19:49:27 +0200
+
+tuxguitar (1.0.dak-1ubuntu1) jaunty; urgency=low
+
+  * Merge from debian unstable.
+  * debian/control
+    - Replace build dependency openjdk-6-jdk with default-jdk.
+    - Remove unnecessary build dependencies gcj, java-gcj-compat-dev,
+      sun-java5-jdk, icedtea-java7-jdk, libswt3.2-gtk-java.
+    - Replace runtime dependency openjdk-6-jre with default-jre.
+    - Remove unnecessary runtime java-gcj-compat, sun-java6-jre, sun-java5-jre,
+      libswt3.2-gtk-java. Replaced java-virtual-machine with java2-runtime.
+      (LP: #250137)
+  * debian/rules
+    - Set JAVA_HOME to the value corresponding to default-jdk.
+  * misc/tuxguitar.sh
+    - Ubuntu specific change for correct path of xulrunner-1.9 installation.
+
+ -- Onkar Shinde <onkarshinde@ubuntu.com>  Tue, 13 Jan 2009 00:52:49 +0530
 
 tuxguitar (1.0.dak-1) unstable; urgency=low
 
+  [ Philippe Coval ]
   * debian/control ; debian/rules :
     - set to main since openjdk supports sound (Closes: #505612)	
     - uses ${shlibs:Depends} vs hardcoded libs (Closes: #506883)
     - depends on at least xulrunner for browsing doc (Closes: #493557)
 
-  * debian/changelog :
-    - merged Ubuntu patch
+  [ Ben Hutchings ]
+  * Move virtual packages to end of dependency alternations
+  * Move OpenJDK dependencies to start of dependency alternations
+  * Replace recommendation of Sun JVM with OpenJDK
+  * Fix "2<" to "2>" in postinst and postrm
+  * Avoid adding current directory to LD_LIBRARY_PATH
 
-  * misc/tuxguitar.sh :
-    - update from upstream, Notify when missing mozilla (Closes: #493557)
-
- -- Philippe Coval <rzr@gna.org>  Mon, 08 Dec 2008 09:00:17 +0100
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 10 Dec 2008 03:15:10 +0000
 
 tuxguitar (1.0-1ubuntu1) intrepid; urgency=low
 
@@ -159,4 +182,3 @@ tuxguitar (0.6-1) unstable; urgency=low
   * Initial release (Closes: #374287) 
 
  -- Philippe Coval <rzr@users.sf.net>  Sat, 17 Jun 2006 13:19:36 +0200
-
