@@ -1,7 +1,7 @@
 Source: tuxguitar-snapshot
 Section: sound
 Priority: optional
-nMaintainer: Philippe Coval <rzr@gna.org>
+Maintainer: Philippe Coval <rzr@gna.org>
 Uploaders: tony mancill <tmancill@debian.org>
 Build-Depends: debhelper (>= 5.0.0), docbook-to-man, docbook-utils, ant, default-jdk | java2-compiler, libswt-gtk-3.4-java, libitext-java, libasound2-dev, libfluidsynth-dev
 Standards-Version: 3.8.2
