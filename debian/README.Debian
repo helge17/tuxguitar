@@ -1,14 +1,19 @@
 tuxguitar for Debian
 --------------------
 
-The recommended JVM is OpenJDK because of its sound support (JSA).
-
- -- Ben Hutchings <ben@decadent.org.uk>  Tue, 09 Dec 2008 01:04:46 +0000
-
 The package has been splited into several part, the core is still tuxguitar
 but the sound plugins are optional.
 
+I suggest you to install tuxguitar-jsa (note that it depends OpenJDK)
+and does work on most systems (including pulseaudio). Tested settings are : 
+
+  Sound / Midi Sequencer : TuxGuitar Sequencer
+  MIDI Port : Gervill
+
+
 Note that, other JSA Sound banks can be downloaded at :
   http://java.sun.com/products/java-media/sound/soundbanks.html
+
+TuxGuitar-gervill sound plugin is not compiled yet since it depends on non free jvm
 
  -- Philippe Coval <rzr@users.sf.net>  Fri, 07 Mar 2008 21:16:53 +0100
