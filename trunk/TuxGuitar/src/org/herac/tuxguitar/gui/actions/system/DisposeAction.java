@@ -12,12 +12,12 @@ import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.actions.file.FileActionUtils;
-import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.marker.MarkerList;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 import org.herac.tuxguitar.gui.table.TGTableViewer;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -67,15 +67,19 @@ public class DisposeAction extends Action {
 	}
 	
 	protected void exit(){
-		new SyncThread(new Runnable() {
-			public void run() {
-				TuxGuitar.instance().lock();
-				closeModules();
-				saveConfig();
-				dispose();
-				TuxGuitar.instance().unlock();
-			}
-		}).start();
+		try {
+			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					TuxGuitar.instance().lock();
+					closeModules();
+					saveConfig();
+					dispose();
+					TuxGuitar.instance().unlock();
+				}
+			});
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
 	}
 	
 	protected void saveConfig(){
