@@ -47,7 +47,7 @@
 		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
 		
 		<echo file="${file.script}" append="false">cd "."${line.separator}</echo>
-		<echo file="${file.script}" append="true">javaw -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>
+		<echo file="${file.script}" append="true">java -cp ;${dist.jar.path}${build.jar};${lib.swt.jar};${lib.itext.jar};${dist.share.path} -Djava.library.path=${lib.swt.jni} org.herac.tuxguitar.gui.TGMain %1 %2 %3 %4 %5 %6 %7 %8 %9 %10</echo>
 		<chmod file="${file.script}" perm="755"/>
 		
 		<available property="janel.enabled" file="${janel.exe}" />
