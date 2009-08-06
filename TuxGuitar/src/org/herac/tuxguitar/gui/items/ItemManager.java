@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -75,6 +77,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	private boolean layout_locked;
 	private boolean shouldReloadToolBars;
+	private boolean updateCoolBarWrapIndicesEnabled;
 	
 	public ItemManager(){
 		this.loadedToolItems = new ArrayList();
@@ -98,6 +101,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 		boolean initialized = (this.coolBar != null && !this.coolBar.isDisposed());
 		
 		this.layout_locked = true;
+		this.updateCoolBarWrapIndicesEnabled = true;
 		if( !initialized ){
 			FormData coolData = new FormData();
 			coolData.left = new FormAttachment(0);
@@ -111,6 +115,12 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 					layoutCoolBar();
 				}
 			});
+			this.coolBar.addDragDetectListener( new DragDetectListener() {
+				public void dragDetected(DragDetectEvent e) {
+					disableUpdateCoolBarWrapIndices();
+				}
+			});
+			
 			TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.coolBar);
 		}
 		this.makeCoolItems();
@@ -166,7 +176,9 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	protected void layoutCoolBar(){
 		if(!this.layout_locked){
 			this.layout_locked = true;
-			this.updateCoolBarWrapIndices();
+			if( this.updateCoolBarWrapIndicesEnabled ){
+				this.updateCoolBarWrapIndices();
+			}
 			this.layoutShellLater();
 			this.layout_locked = false;
 		}
@@ -408,5 +420,12 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 		if( type == TGUpdateListener.SELECTION ){
 			this.updateItems();
 		}
+	}
+	
+	public void disableUpdateCoolBarWrapIndices() {
+		if( this.updateCoolBarWrapIndicesEnabled ){
+			this.coolBar.setWrapIndices( null );
+		}
+		this.updateCoolBarWrapIndicesEnabled = false;
 	}
 }
