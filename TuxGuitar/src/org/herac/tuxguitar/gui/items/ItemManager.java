@@ -26,17 +26,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGUpdateListener;
+import org.herac.tuxguitar.gui.items.menu.BeatMenuItem;
 import org.herac.tuxguitar.gui.items.menu.CompositionMenuItem;
 import org.herac.tuxguitar.gui.items.menu.EditMenuItem;
 import org.herac.tuxguitar.gui.items.menu.FileMenuItem;
 import org.herac.tuxguitar.gui.items.menu.HelpMenuItem;
-import org.herac.tuxguitar.gui.items.menu.ViewMenuItem;
 import org.herac.tuxguitar.gui.items.menu.MarkerMenuItem;
 import org.herac.tuxguitar.gui.items.menu.MeasureMenuItem;
-import org.herac.tuxguitar.gui.items.menu.BeatMenuItem;
 import org.herac.tuxguitar.gui.items.menu.ToolMenuItem;
 import org.herac.tuxguitar.gui.items.menu.TrackMenuItem;
 import org.herac.tuxguitar.gui.items.menu.TransportMenuItem;
+import org.herac.tuxguitar.gui.items.menu.ViewMenuItem;
+import org.herac.tuxguitar.gui.items.tool.BeatToolItems;
 import org.herac.tuxguitar.gui.items.tool.CompositionToolItems;
 import org.herac.tuxguitar.gui.items.tool.DurationToolItems;
 import org.herac.tuxguitar.gui.items.tool.DynamicToolItems;
@@ -45,7 +46,6 @@ import org.herac.tuxguitar.gui.items.tool.FileToolItems;
 import org.herac.tuxguitar.gui.items.tool.LayoutToolItems;
 import org.herac.tuxguitar.gui.items.tool.MarkerToolItems;
 import org.herac.tuxguitar.gui.items.tool.NoteEffectToolItems;
-import org.herac.tuxguitar.gui.items.tool.BeatToolItems;
 import org.herac.tuxguitar.gui.items.tool.PropertiesToolItems;
 import org.herac.tuxguitar.gui.items.tool.TrackToolItems;
 import org.herac.tuxguitar.gui.items.tool.TransportToolItems;
@@ -55,6 +55,7 @@ import org.herac.tuxguitar.gui.items.xml.ToolBarsWriter;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -135,11 +136,59 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 		}
 	}
 	
+	protected void updateCoolBarWrapIndices(){
+		int coolBarWidth = this.coolBar.getClientArea().width;
+		int coolItemsWidth = 0;
+		
+		List coolItemIndices = new ArrayList();
+		
+		CoolItem[] items = this.coolBar.getItems();
+		for(int i = 0;i < items.length; i ++){
+			Point controlSise = items[i].getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			Point itemSize = items[i].computeSize(controlSise.x, controlSise.y);
+			
+			int nextCoolItemsWidth = ( coolItemsWidth + itemSize.x );
+			if( nextCoolItemsWidth > coolBarWidth ){
+				coolItemIndices.add( new Integer( i ) );
+				nextCoolItemsWidth = itemSize.x;
+			}
+			coolItemsWidth = nextCoolItemsWidth;
+		}
+		
+		int[] coolItemIndicesArray = new int[ coolItemIndices.size() ];
+		for(int i = 0;i < coolItemIndicesArray.length; i ++){
+			coolItemIndicesArray[i] = ((Integer)coolItemIndices.get(i)).intValue();
+		}
+		
+		this.coolBar.setWrapIndices( coolItemIndicesArray );
+	}
+	
 	protected void layoutCoolBar(){
 		if(!this.layout_locked){
 			this.layout_locked = true;
-			TuxGuitar.instance().getShell().layout();
+			this.updateCoolBarWrapIndices();
+			this.layoutShellLater();
 			this.layout_locked = false;
+		}
+	}
+	
+	protected void layoutShell(){
+		if(!this.layout_locked){
+			this.layout_locked = true;
+			TuxGuitar.instance().getShell().layout(true,true);
+			this.layout_locked = false;
+		}
+	}
+	
+	protected void layoutShellLater(){
+		try {
+			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws Throwable {
+					layoutShell();
+				}
+			});
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 	}
 	
