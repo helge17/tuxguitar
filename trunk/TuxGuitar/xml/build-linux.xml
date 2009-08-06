@@ -23,12 +23,16 @@
 	
 	<target name="build"  >
 		<property name="et" value="&gt;" />
-		<echo file="${file.properties}" append="false">font.default=Sans,6,2${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.note=Sans,7,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,3${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,2${line.separator}</echo>
+		<echo file="${file.properties}" append="false">font.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,12,3${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,10,1${line.separator}</echo>
 		<echo file="${file.properties}" append="true">midi.sequencer=Real Time Sequencer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">midi.port=Java Sound Synthesizer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
