@@ -9,9 +9,6 @@ package org.herac.tuxguitar.gui.actions.transport;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.util.MidiTickUtil;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
 
 /**
  * @author julian
@@ -27,17 +24,7 @@ public class TransportStopAction extends Action{
 	}
 	
 	protected int execute(TypedEvent e){
-		TuxGuitar.instance().getPlayer().reset();
-		updateTickPosition();
+		TuxGuitar.instance().getTransport().stop();
 		return 0;
-	}
-	
-	protected void updateTickPosition(){
-		MidiPlayer player = TuxGuitar.instance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
-		if(header != null){
-			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
-		}
-		getEditor().getTablature().getCaret().goToTickPosition();
 	}
 }
