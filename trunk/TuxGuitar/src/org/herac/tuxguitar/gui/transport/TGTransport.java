@@ -14,7 +14,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -28,16 +27,16 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportModeAction;
-import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
-import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.editors.TGRedrawListener;
 import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
 import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -219,14 +218,14 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 		this.stop = new ToolItem(this.toolBar,SWT.PUSH);
 		this.stop.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				stop(e);
+				stop();
 			}
 		});
 		
 		this.play = new ToolItem(this.toolBar,SWT.PUSH);
 		this.play.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				play(e);
+				play();
 			}
 		});
 		
@@ -409,12 +408,38 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 		}
 	}
 	
-	public void play(TypedEvent e){
-		TuxGuitar.instance().getAction(TransportPlayAction.NAME).process(e);
+	public void gotoPlayerPosition(){
+		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		if(header != null){
+			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
+		}
+		TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
+		TuxGuitar.instance().updateCache(true);
 	}
 	
-	public void stop(TypedEvent e){
-		TuxGuitar.instance().getAction(TransportStopAction.NAME).process(e);
+	public void play(){
+		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		if(!player.isRunning()){
+			try{
+				player.getMode().reset();
+				player.play();
+			}catch(MidiPlayerException exception){
+				MessageDialog.errorMessage(exception);
+			}
+		}else{
+			player.pause();
+		}
+	}
+	
+	public void stop(){
+		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		if(!player.isRunning()){
+			player.reset();
+			this.gotoPlayerPosition();
+		}else{
+			player.reset();
+		}
 	}
 	
 	public void redraw(){
@@ -456,13 +481,13 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 			//TuxGuitar.instance().unlock();
 		}
 	}
-
+	
 	public void doRedraw(int type) {
 		if( type == TGRedrawListener.PLAYING_THREAD || type == TGRedrawListener.PLAYING_NEW_BEAT ){
 			this.redrawPlayingMode();
 		}
 	}
-
+	
 	public void doUpdate(int type) {
 		if( type == TGUpdateListener.SELECTION ){
 			this.updateItems();

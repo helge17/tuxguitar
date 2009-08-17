@@ -57,6 +57,7 @@ import org.herac.tuxguitar.gui.table.TGTableViewer;
 import org.herac.tuxguitar.gui.tools.browser.dialog.TGBrowserDialog;
 import org.herac.tuxguitar.gui.tools.scale.ScaleManager;
 import org.herac.tuxguitar.gui.transport.TGTransport;
+import org.herac.tuxguitar.gui.transport.TGTransportListener;
 import org.herac.tuxguitar.gui.undo.UndoableManager;
 import org.herac.tuxguitar.gui.util.ArgumentParser;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
@@ -590,6 +591,7 @@ public class TuxGuitar {
 		if(this.player == null){
 			this.player = new MidiPlayer();
 			this.player.init(getSongManager());
+			this.player.addListener( new TGTransportListener() );
 			try {
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), false);
 			} catch (MidiPlayerException e) {

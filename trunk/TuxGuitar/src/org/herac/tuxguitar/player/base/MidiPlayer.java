@@ -39,6 +39,8 @@ public class MidiPlayer{
 	
 	private List sequencerProviders;
 	
+	private List listeners;
+	
 	private int volume;
 	
 	private boolean running;
@@ -83,6 +85,7 @@ public class MidiPlayer{
 		this.songManager = songManager;
 		this.outputPortProviders = new ArrayList();
 		this.sequencerProviders = new ArrayList();
+		this.listeners = new ArrayList();
 		this.getSequencer();
 		this.getMode();
 		this.reset();
@@ -161,6 +164,7 @@ public class MidiPlayer{
 	 */
 	public synchronized void play() throws MidiPlayerException{
 		try {
+			final boolean notifyStarted = (!this.isRunning());
 			this.setStarting(true);
 			this.stop();
 			this.lock.lock();
@@ -180,7 +184,11 @@ public class MidiPlayer{
 					try {
 						MidiPlayer.this.lock.lock();
 						
-						setStarting(false);
+						MidiPlayer.this.setStarting(false);
+						
+						if( notifyStarted ){
+							MidiPlayer.this.notifyStarted();
+						}
 						
 						MidiPlayer.this.tickLength = getSequencer().getTickLength();
 						MidiPlayer.this.tickPosition = getSequencer().getTickPosition();
@@ -204,6 +212,10 @@ public class MidiPlayer{
 							}else {
 								stop(isPaused());
 							}
+						}
+						
+						if( !isRunning() ){
+							MidiPlayer.this.notifyStopped();
 						}
 					}catch (Throwable throwable) {
 						setStarting(false);
@@ -801,5 +813,33 @@ public class MidiPlayer{
 				}
 			}
 		}
-	}	
+	}
+	
+	public void addListener( MidiPlayerListener listener ){
+		if( !this.listeners.contains( listener ) ){
+			this.listeners.add( listener );
+		}
+	}
+	
+	public void removeListener( MidiPlayerListener listener ){
+		if( this.listeners.contains( listener ) ){
+			this.listeners.remove( listener );
+		}
+	}
+	
+	public void notifyStarted(){
+		Iterator it = this.listeners.iterator();
+		while( it.hasNext() ){
+			MidiPlayerListener listener = (MidiPlayerListener) it.next();
+			listener.notifyStarted();
+		}
+	}
+	
+	public void notifyStopped(){
+		Iterator it = this.listeners.iterator();
+		while( it.hasNext() ){
+			MidiPlayerListener listener = (MidiPlayerListener) it.next();
+			listener.notifyStopped();
+		}
+	}
 }
