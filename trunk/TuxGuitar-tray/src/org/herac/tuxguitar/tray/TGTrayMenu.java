@@ -1,11 +1,12 @@
 package org.herac.tuxguitar.tray;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.file.ExitAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 
 public class TGTrayMenu {
 	
@@ -18,28 +19,16 @@ public class TGTrayMenu {
 		this.menu = new Menu (TuxGuitar.instance().getShell(), SWT.POP_UP);
 		
 		this.play = new MenuItem(this.menu,SWT.PUSH);
-		this.play.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().play(e);
-			}
-		});
+		this.play.addSelectionListener(TuxGuitar.instance().getAction(TransportPlayAction.NAME));
 		
 		this.stop = new MenuItem(this.menu, SWT.PUSH);
-		this.stop.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().stop(e);
-			}
-		});
+		this.stop.addSelectionListener(TuxGuitar.instance().getAction(TransportStopAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		this.exit = new MenuItem(this.menu, SWT.PUSH);
-		this.exit.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				TuxGuitar.instance().getShell().close();
-			}
-		});
+		this.exit.addSelectionListener(TuxGuitar.instance().getAction(ExitAction.NAME));
 		
 		this.loadProperties();
 		this.loadIcons();
