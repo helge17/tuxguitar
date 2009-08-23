@@ -10,6 +10,8 @@ import org.herac.tuxguitar.player.base.MidiTransmitter;
 public class JackSequencer implements MidiSequencer{
 	
 	private long transportUID;
+	private long transportTryCount;
+	private long transportTryNumber;
 	private boolean reset;
 	private boolean running;
 	private boolean stopped;
@@ -28,6 +30,8 @@ public class JackSequencer implements MidiSequencer{
 		this.running = false;
 		this.transportRunning = false;
 		this.transportUID = -1;
+		this.transportTryCount = 10;
+		this.transportTryNumber = 0;
 		this.jackClient = jackClient;
 		this.jackTickController = new JackTickController(this);
 		this.jackEventController = new JackEventController(this);
@@ -66,12 +70,8 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	public void setTickPosition(long tickPosition, boolean transportUpdate ){
-		if( transportUpdate ){
-			double frame = Math.round(this.jackTickController.tickToFrame(tickPosition, this.jackClient.getTransportFrameRate()));
-			this.jackClient.setTransportFrame( Math.round( frame ) );
-		}
 		this.reset = true;
-		this.jackTickController.setTickChange();
+		this.jackTickController.setTickChange(tickPosition , transportUpdate);
 	}
 	
 	public long getTickLength(){
@@ -173,8 +173,11 @@ public class JackSequencer implements MidiSequencer{
 				this.jackTickController.clearTick();
 				this.reset( true );
 			}
-			else {
-				this.running = false;
+			else if( this.running ){
+				if( this.transportTryNumber++ > this.transportTryCount ){
+					this.running = false;
+					this.transportTryNumber = 0;
+				}
 			}
 		}
 		this.transportRunning = transportRunning;
