@@ -10,25 +10,34 @@ public class JackTickController {
 	private long frame;
 	private long lastFrame;
 	private long tickLength;
-	private boolean tickChanged;
 	private double tick;
 	
+	private Object lock;
 	private JackSequencer sequencer;
 	
 	public JackTickController(JackSequencer sequencer){
+		this.lock = new Object();
 		this.sequencer = sequencer;
 	}
 	
 	public void process() {
-		long frameRate = this.sequencer.getJackClient().getTransportFrameRate();
-		if( this.tickChanged ){
+		synchronized ( this.lock ) {
+			long frameRate = this.sequencer.getJackClient().getTransportFrameRate();
+			this.lastFrame = this.frame;
 			this.frame = this.sequencer.getJackClient().getTransportFrame();
-			this.tick = this.frameToTick( this.frame , frameRate );
-			this.tickChanged = false;
+			this.tick += ((double)TGDuration.QUARTER_TIME * ((double)getTempo() * (double)(this.frame - this.lastFrame) / 60.00) / (double)frameRate);
 		}
-		this.lastFrame = this.frame;
-		this.frame = this.sequencer.getJackClient().getTransportFrame();
-		this.tick += ((double)TGDuration.QUARTER_TIME * ((double)getTempo() * (double)(this.frame - this.lastFrame) / 60.00) / (double)frameRate);
+	}
+	
+	public void setTickChange(long tick , boolean updateTransport ) {		
+		synchronized ( this.lock ) {
+			if( updateTransport ){
+				long frameRate = this.sequencer.getJackClient().getTransportFrameRate();
+				this.sequencer.getJackClient().setTransportFrame( Math.round( tickToFrame(tick, frameRate )) );
+			}
+			this.frame = this.sequencer.getJackClient().getTransportFrame();
+			this.tick = this.frameToTick( this.frame , this.sequencer.getJackClient().getTransportFrameRate() );
+		}
 	}
 	
 	public void clearTick(){
@@ -41,10 +50,6 @@ public class JackTickController {
 	
 	public void setTempo(int tempo) {
 		this.tempo = tempo;
-	}
-	
-	public void setTickChange() {
-		this.tickChanged = true;
 	}
 	
 	public double getTick() {
