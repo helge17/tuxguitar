@@ -18,10 +18,9 @@ public class JackOutputPortRouter {
 	private boolean programRoutingEnabled;
 	
 	public JackOutputPortRouter(){
-		this.ports = 0;
+		this.ports = 1;
 		this.channels = new int[16][3];
 		this.programs = new int[127][3];
-		this.createUniquePort();
 	}
 	
 	public int getPortCount(){
