@@ -338,7 +338,7 @@ int JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr){
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		
-		if( pthread_mutex_lock( &handle->lock ) == 0 ){
+		if( pthread_mutex_trylock( &handle->lock ) == 0 ){
 			
 			if(handle->client != NULL && handle->midi != NULL  && handle->midi->ports != NULL )
 			{
