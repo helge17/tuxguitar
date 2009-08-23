@@ -71,7 +71,7 @@ public class JackSequencer implements MidiSequencer{
 	
 	public void setTickPosition(long tickPosition, boolean transportUpdate ){
 		this.reset = true;
-		this.jackTickController.setTickChange(tickPosition , transportUpdate);
+		this.jackTickController.setTick(tickPosition , transportUpdate);
 	}
 	
 	public long getTickLength(){
