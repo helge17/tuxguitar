@@ -98,7 +98,7 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	public void start( boolean startTransport ) throws MidiPlayerException{
-		if(!this.running){
+		if(!this.running ){
 			this.setTempo(120);
 			this.running = true;
 			if( startTransport ){
@@ -131,8 +131,11 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	protected void startPlayer(){
-		this.transportLockTick = true;
-		TuxGuitar.instance().getTransport().play();
+		// Make sure sequencer was already initialized.
+		if( this.transmitter != null ){
+			this.transportLockTick = true;
+			TuxGuitar.instance().getTransport().play();
+		}
 	}
 	
 	protected void process() throws MidiPlayerException{
