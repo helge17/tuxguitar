@@ -6,19 +6,22 @@ import java.util.List;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.jack.sequencer.JackSequencerProviderPlugin;
+import org.herac.tuxguitar.jack.settings.JackSettings;
 import org.herac.tuxguitar.jack.synthesizer.JackOutputPortProviderPlugin;
 
 public class JackPluginImpl extends TGPluginList {
 	
 	private JackClient jackClient;
+	private JackSettings jackSettings;
 	
 	public JackPluginImpl(){
 		this.jackClient = new JackClient();
+		this.jackSettings = new JackSettings();
 	}
 	
 	protected List getPlugins() throws TGPluginException {
 		List plugins = new ArrayList();
-		plugins.add( new JackOutputPortProviderPlugin(this.jackClient) );
+		plugins.add( new JackOutputPortProviderPlugin(this.jackClient , this.jackSettings) );
 		plugins.add( new JackSequencerProviderPlugin(this.jackClient) );
 		return plugins;
 	}
