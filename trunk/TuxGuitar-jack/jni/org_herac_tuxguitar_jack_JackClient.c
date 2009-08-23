@@ -69,7 +69,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env
 			
 			if(handle->client == NULL)
 			{
-				handle->client = jack_client_new ("TuxGuitar");
+				handle->client = jack_client_open ("TuxGuitar", JackNullOption , NULL );
 				if( handle->client == NULL ){
 					fprintf (stderr, "jack server not running?\n");
 				}
@@ -94,6 +94,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* en
 			
 			if(handle->client != NULL)
 			{
+				jack_deactivate (handle->client);
 				jack_client_close (handle->client);
 				handle->client = NULL;
 			}
