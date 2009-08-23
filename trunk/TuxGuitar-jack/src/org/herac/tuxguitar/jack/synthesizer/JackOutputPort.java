@@ -20,7 +20,7 @@ public class JackOutputPort extends MidiOutputPort{
 	
 	public void open(){
 		if(!this.jackClient.isPortsOpen()){
-			this.jackClient.openPorts();
+			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
 		}
 	}
 	

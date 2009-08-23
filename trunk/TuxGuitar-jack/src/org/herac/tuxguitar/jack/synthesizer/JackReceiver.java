@@ -53,9 +53,10 @@ public class JackReceiver implements MidiReceiver{
 	}
 	
 	public void sendProgramChange(int channel, int value) {
+		this.jackOutputPort.getRouter().setProgram(channel, value);
 		byte[] event = new byte[2];
 		event[0] = (byte)(0xC0 | this.jackOutputPort.getRouter().getChannelRoute(channel) );
-		event[1] = (byte)value;
+		event[1] = (byte)this.jackOutputPort.getRouter().getProgramRoute(channel);
 		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
 	}
 	

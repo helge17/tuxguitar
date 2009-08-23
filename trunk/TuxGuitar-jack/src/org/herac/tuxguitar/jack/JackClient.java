@@ -56,12 +56,12 @@ public class JackClient{
 		return (this.isOpen() && this.openPorts);
 	}
 	
-	public void openPorts(){
+	public void openPorts(int count){
 		if(!this.isOpen()){
 			this.open();
 		}
 		if(this.isOpen() && !this.openPorts){
-			this.openPorts(this.instance, 1 );
+			this.openPorts(this.instance, count);
 			this.openPorts = true;
 		}
 	}
@@ -134,7 +134,7 @@ public class JackClient{
 	
 	private native void close(long instance);
 	
-	private native void openPorts(long instance, int ports);
+	private native void openPorts(long instance, int count);
 	
 	private native void closePorts(long instance);
 	
