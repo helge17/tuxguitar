@@ -125,6 +125,11 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPorts(JNIEnv
 					sprintf( port_name , "Output Port %d", port_index );
 					handle->midi->ports[port_index] = jack_port_register(handle->client, port_name, JACK_DEFAULT_MIDI_TYPE, JackPortIsOutput, 0);
 				}
+				
+				int event_index = 0;
+				for( event_index = 0 ; event_index < EVENT_BUFFER_SIZE ; event_index ++ ){
+					handle->midi->event_queue[ event_index ].event_data = NULL;
+				}
 			}
 			pthread_mutex_unlock( &handle->lock );
 		}
@@ -143,6 +148,14 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePorts(JNIEn
 				int port_index = 0;
 				for( port_index = 0 ; port_index < handle->midi->port_count ; port_index ++ ){
 					jack_port_unregister(handle->client, handle->midi->ports[port_index] );
+				}
+				
+				int event_index = 0;
+				for( event_index = 0 ; event_index < EVENT_BUFFER_SIZE ; event_index ++ ){
+					if( handle->midi->event_queue[ event_index ].event_data != NULL ) {
+						free ( handle->midi->event_queue[ event_index ].event_data );
+					}
+					handle->midi->event_queue[ event_index ].event_data = NULL;
 				}
 				
 				free( handle->midi->ports );
@@ -314,6 +327,10 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(
 					if( count > 0 ){
 						jbyte* jdataArray = (*env)->GetByteArrayElements( env , jdata, 0);
 						if( jdataArray != NULL ) {
+							if( handle->midi->event_queue[ handle->midi->event_count ].event_data != NULL ) {
+								free ( handle->midi->event_queue[ handle->midi->event_count ].event_data );
+								handle->midi->event_queue[ handle->midi->event_count ].event_data = NULL;
+							}
 							handle->midi->event_queue[ handle->midi->event_count ].event_port = port;
 							handle->midi->event_queue[ handle->midi->event_count ].event_size = count;
 							handle->midi->event_queue[ handle->midi->event_count ].event_data = (int *)malloc( sizeof( int ) * count );
@@ -364,10 +381,8 @@ int JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr){
 							}
 						}
 						
-						handle->midi->event_queue[index].event_size = 0;
-						free ( handle->midi->event_queue[index].event_data );
-						handle->midi->event_queue[index].event_data = NULL;
 						handle->midi->event_count --;
+						handle->midi->event_queue[index].event_size = 0;
 					}
 				}
 			}
