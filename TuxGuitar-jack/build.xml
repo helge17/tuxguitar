@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar-jack" basedir="." default="all">
+	<description>
+	TuxGuitar JACK Audio Connection Kit
+	</description>
+		
+	<property file="build.properties" />
+	<property name="build.src.path" value="src${file.separator}" />
+	<property name="build.share.path" value="share${file.separator}" />
+	<property name="build.path" value="build${file.separator}" />
+	<property name="build.jar" value="tuxguitar-jack.jar" />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar}"/>
+		<pathelement location="${path.swt}"/>
+	</path >
+	
+	<target name="init" depends="clean">
+		<mkdir dir="${build.path}" />
+	</target>
+	
+	<target name="build" depends="init">
+		<echo>+-------------------------------------------------+</echo>
+		<echo>|          B U I L D I N G   P L U G I N          |</echo>
+		<echo>+-------------------------------------------------+</echo>
+		
+		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<classpath refid="class.path"/>
+			<include name="**/*.java"/>
+		</javac>
+		
+		<copy todir="${build.path}">
+			<fileset dir="${build.share.path}"/>
+		</copy>
+		
+		<echo>+-----------------------------------------------+</echo>
+		<echo>|        P A C K A G I N G   P L U G I N        |</echo>
+		<echo>+-----------------------------------------------+</echo>
+		
+		<jar destfile="${build.jar}" basedir="${build.path}" />
+		<delete quiet="true" dir="${build.path}" />
+	</target>
+	
+	<target name="clean">
+		<delete quiet="true" dir="${build.path}" />
+		<delete quiet="true" file="${build.jar}" />
+	</target>
+	
+	<target name="all" depends="build" />
+</project>
