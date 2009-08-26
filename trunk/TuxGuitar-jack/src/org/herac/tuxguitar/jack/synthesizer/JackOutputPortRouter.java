@@ -15,114 +15,171 @@ public class JackOutputPortRouter {
 	private int ports;
 	private int[][] channels;
 	private int[][] programs;
-	private boolean programRoutingEnabled;
 	
 	public JackOutputPortRouter(){
 		this.ports = 1;
 		this.channels = new int[16][3];
-		this.programs = new int[127][3];
+		this.programs = new int[128][3];
 	}
 	
 	public int getPortCount(){
 		return this.ports;
 	}
 	
-	public int getChannelRoute( int channel ){
-		if( channel >= 0 && channel < this.channels.length ){
-			return this.channels[ channel ][ CHANNEL_INDEX ];
-		}
-		return 0;
-	}
-	
 	public int getPortRoute( int channel ){
 		if( channel >= 0 && channel < this.channels.length ){
-			return this.channels[ channel ][ PORT_INDEX ];
+			int route = this.channels[ channel ][ PORT_INDEX ];
+			return ( route >= 0 ? route : 0 );
 		}
 		return 0;
 	}
 	
-	public int getProgramRoute( int channel ){
+	public int getChannelRoute( int channel ){
 		if( channel >= 0 && channel < this.channels.length ){
-			return this.channels[ channel ][ PROGRAM_INDEX ];
+			int route = this.channels[ channel ][ CHANNEL_INDEX ];
+			return ( route >= 0 ? route : channel );
+		}
+		return 0;
+	}
+	
+	public int getProgramRoute( int channel , int program ){
+		if( channel >= 0 && channel < this.channels.length ){
+			int route = this.channels[ channel ][ PROGRAM_INDEX ];
+			return ( route >= 0 ? route : program );
 		}
 		return 0;
 	}
 	
 	public void setProgram( int channel , int program ){
 		if( channel >= 0 && channel < this.channels.length && program >= 0 && program < this.programs.length ){
-			if( this.programRoutingEnabled && channel != 9 ){
-				int routePort = this.programs[ program ][ PORT_INDEX ];
-				int routeChannel = this.programs[ program ][ CHANNEL_INDEX ];
-				int routeProgram = this.programs[ program ][ PROGRAM_INDEX ];
-				
-				this.channels[ channel ][ PORT_INDEX ] = (routePort >= 0 ? routePort : 0 );
-				this.channels[ channel ][ CHANNEL_INDEX ] = (routeChannel >= 0 ? routeChannel : channel );
-				this.channels[ channel ][ PROGRAM_INDEX ] = (routeProgram >= 0 ? routeProgram : program );
-			}else{
-				this.channels[ channel ][ PROGRAM_INDEX ] = program;
+			if( this.channels[ channel ][ PROGRAM_INDEX ] >= 0 ){
+				if( channel != 9 ){
+					int routePort = this.programs[ program ][ PORT_INDEX ];
+					int routeChannel = this.programs[ program ][ CHANNEL_INDEX ];
+					int routeProgram = this.programs[ program ][ PROGRAM_INDEX ];
+					if( routePort >= 0 ){
+						this.channels[ channel ][ PORT_INDEX ] = routePort;
+					}
+					if( routeChannel >= 0 ){
+						this.channels[ channel ][ CHANNEL_INDEX ] = routeChannel;
+					}
+					if( routeProgram >= 0 ){
+						this.channels[ channel ][ PROGRAM_INDEX ] = routeProgram;
+					}
+				}else{
+					this.channels[ channel ][ PROGRAM_INDEX ] = program;
+				}
 			}
 		}
 	}
 	
 	protected void createUniquePort(){
 		this.ports = 1;
-		this.programRoutingEnabled = false;
 		for( int i = 0 ; i < this.channels.length ; i ++ ){
-			this.channels[i][ CHANNEL_INDEX ] = i;
-			this.channels[i][ PROGRAM_INDEX ] = 0;
 			this.channels[i][ PORT_INDEX ] = 0;
+			this.channels[i][ CHANNEL_INDEX ] = i;
+			this.channels[i][ PROGRAM_INDEX ] = -1;
 		}
 		for( int i = 0 ; i < this.programs.length ; i ++ ){
-			this.programs[i][ PROGRAM_INDEX ] = i;
-			this.programs[i][ CHANNEL_INDEX ] = -1;
 			this.programs[i][ PORT_INDEX ] = -1;
+			this.programs[i][ PROGRAM_INDEX ] = -1;
+			this.programs[i][ CHANNEL_INDEX ] = -1;
 		}
 	}
 	
-	protected void createMultiplePortsByChannel(){
+	protected void createMultiplePortsByChannel( int[][] routing ){
 		this.ports = this.channels.length;
-		this.programRoutingEnabled = false;
+		
+		// Initialize default channel values
 		for( int i = 0 ; i < this.channels.length ; i ++ ){
-			this.channels[i][ CHANNEL_INDEX ] = i;
-			this.channels[i][ PROGRAM_INDEX ] = 0;
 			this.channels[i][ PORT_INDEX ] = i;
+			this.channels[i][ CHANNEL_INDEX ] = i;
+			this.channels[i][ PROGRAM_INDEX ] = -1;
 		}
+		// Disable program routing
 		for( int i = 0 ; i < this.programs.length ; i ++ ){
-			this.programs[i][ PROGRAM_INDEX ] = i;
-			this.programs[i][ CHANNEL_INDEX ] = -1;
 			this.programs[i][ PORT_INDEX ] = -1;
+			this.programs[i][ PROGRAM_INDEX ] = -1;
+			this.programs[i][ CHANNEL_INDEX ] = -1;
+		}
+		
+		// load new routing
+		for( int i = 0 ; i < routing.length ; i ++ ){
+			if( routing[i].length == 3 ){
+				int channel = routing[i][0];
+				if( channel >= 0 && channel < this.channels.length ){
+					this.channels[channel][ CHANNEL_INDEX ] = routing[i][1];
+					this.channels[channel][ PROGRAM_INDEX ] = routing[i][2];
+				}
+			}
 		}
 	}
 	
-	protected void createMultiplePortsByProgram( boolean[] ports, boolean percussion ){
+	protected void createMultiplePortsByProgram( int[][] routing ){
 		this.ports = 1;
-		this.programRoutingEnabled = true;
+		
+		// Initialize default channel values
 		for( int i = 0 ; i < this.channels.length ; i ++ ){
-			this.channels[i][ CHANNEL_INDEX ] = i;
+			this.channels[i][ PORT_INDEX ] = -1;
+			this.channels[i][ CHANNEL_INDEX ] = -1;
 			this.channels[i][ PROGRAM_INDEX ] = 0;
-			this.channels[i][ PORT_INDEX ] = 0;
 		}
+		
+		// Initialize default program values
 		for( int i = 0 ; i < this.programs.length ; i ++ ){
+			this.programs[i][ PORT_INDEX ] = 0;
 			this.programs[i][ PROGRAM_INDEX ] = i;
 			this.programs[i][ CHANNEL_INDEX ] = -1;
-			this.programs[i][ PORT_INDEX ] = ( ports[ i ] ? this.ports++ : 0 );
 		}
-		this.channels[9][ PORT_INDEX ] = ( percussion ? this.ports++ : 0 );
+		
+		// load new routing
+		for( int i = 0 ; i < routing.length ; i ++ ){
+			if( routing[i].length == 4 ){
+				int program = routing[i][0];
+				if( program >= 0 && program < this.programs.length ){
+					if( routing[i][1] > 0 ){
+						// Create a dedicated port
+						this.programs[program][ PORT_INDEX ] = this.ports ++ ;
+					}
+					this.programs[program][ CHANNEL_INDEX ] = routing[i][2];
+					this.programs[program][ PROGRAM_INDEX ] = (routing[i][3] >= 0 ? routing[i][3] : program );
+				}
+				// Percussion Kit
+				else if( program == 128 ){
+					if( routing[i][1] > 0 ){
+						// Create a dedicated port
+						this.channels[9][ PORT_INDEX ] = this.ports ++ ;
+					}
+					this.channels[9][ CHANNEL_INDEX ] = routing[i][2];
+					this.channels[9][ PROGRAM_INDEX ] = routing[i][3];
+				}
+			}
+		}
 	}
 	
 	public void loadSettings( TGConfigManager config ){
 		int type = config.getIntConfigValue("jack.midi.ports.type", CREATE_UNIQUE_PORT );
 		if( type == CREATE_MULTIPLE_PORTS_BY_PROGRAM ){
-			boolean[] ports = new boolean[this.programs.length];
-			boolean percussion = config.getBooleanConfigValue("jack.midi.port.percussion", false);
-			
-			for( int i = 0 ; i < ports.length ; i ++ ){
-				ports[ i ] = config.getBooleanConfigValue("jack.midi.port.program-" + i , false);
+			// 128 instruments + 1 percussion kit
+			int[][] routing = new int[129][];
+			for( int i = 0 ; i < routing.length ; i ++ ){
+				routing[i] = new int[4];
+				routing[i][0] = i;
+				routing[i][1] = config.getIntConfigValue("jack.midi.port.program-routing.port-" + i , 0 );
+				routing[i][2] = config.getIntConfigValue("jack.midi.port.program-routing.to-channel-" + i , -1 );
+				routing[i][3] = config.getIntConfigValue("jack.midi.port.program-routing.to-program-" + i , -1 );
 			}
-			this.createMultiplePortsByProgram(ports, percussion);
-			
+			this.createMultiplePortsByProgram( routing );
 		}else if( type == CREATE_MULTIPLE_PORTS_BY_CHANNEL ){
-			this.createMultiplePortsByChannel();
+			// 16 channels
+			int[][] routing = new int[16][];
+			for( int i = 0 ; i < routing.length ; i ++ ){
+				routing[i] = new int[3];
+				routing[i][0] = i;
+				routing[i][1] = config.getIntConfigValue("jack.midi.port.channel-routing.to-channel-" + i , -1 );
+				routing[i][2] = config.getIntConfigValue("jack.midi.port.channel-routing.to-program-" + i , -1 );
+			}
+			this.createMultiplePortsByChannel( routing );
 		}else{
 			this.createUniquePort();
 		}
