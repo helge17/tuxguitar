@@ -3,13 +3,16 @@ package org.herac.tuxguitar.jack;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
+import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.jack.sequencer.JackSequencerProviderPlugin;
 import org.herac.tuxguitar.jack.settings.JackSettings;
+import org.herac.tuxguitar.jack.settings.JackSettingsDialog;
 import org.herac.tuxguitar.jack.synthesizer.JackOutputPortProviderPlugin;
 
-public class JackPluginImpl extends TGPluginList {
+public class JackPluginImpl extends TGPluginList implements TGPluginSetup {
 	
 	private JackClient jackClient;
 	private JackSettings jackSettings;
@@ -47,5 +50,10 @@ public class JackPluginImpl extends TGPluginList {
 	
 	public String getVersion() {
 		return "1.0";
+	}
+	
+	public void setupDialog(Shell parent){
+		JackSettingsDialog jackSettingsDialog = new JackSettingsDialog( this.jackSettings );
+		jackSettingsDialog.open( parent );
 	}
 }
