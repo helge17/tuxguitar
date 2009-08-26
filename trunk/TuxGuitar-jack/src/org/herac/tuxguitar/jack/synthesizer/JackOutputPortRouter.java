@@ -66,8 +66,6 @@ public class JackOutputPortRouter {
 					if( routeProgram >= 0 ){
 						this.channels[ channel ][ PROGRAM_INDEX ] = routeProgram;
 					}
-				}else{
-					this.channels[ channel ][ PROGRAM_INDEX ] = program;
 				}
 			}
 		}
