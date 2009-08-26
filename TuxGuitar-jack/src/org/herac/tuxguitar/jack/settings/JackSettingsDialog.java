@@ -49,10 +49,8 @@ public class JackSettingsDialog {
 		final TabItem[] routingTabs = new TabItem[2];
 		
 		// ----------------------------------------------------------------------
-		int selectedIndex = this.settings.getConfig().getIntConfigValue("jack.midi.ports.type", JackOutputPortRouter.CREATE_UNIQUE_PORT );
-		if( selectedIndex < 0 || selectedIndex > 2 ){
-			selectedIndex = 0;
-		}
+		int synthRouteType = this.settings.getConfig().getIntConfigValue("jack.midi.ports.type", JackOutputPortRouter.CREATE_UNIQUE_PORT );
+		
 		Composite tabControl = new Composite( tabFolder, SWT.NONE);
 		tabControl.setLayout(new GridLayout());
 		tabControl.setLayoutData(new FormData(TAB_WIDTH,TAB_HEIGHT));
@@ -73,6 +71,16 @@ public class JackSettingsDialog {
 		buttonSynthRouteType1.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.type.single"));
 		buttonSynthRouteType2.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.type.multiple-by-channel") );
 		buttonSynthRouteType3.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.type.multiple-by-program") );
+		
+		if( synthRouteType == JackOutputPortRouter.CREATE_MULTIPLE_PORTS_BY_CHANNEL ){
+			buttonSynthRouteType2.setSelection( true );
+			routingTabs[0] = openChannelRoutingTab(tabFolder, channelRouting);
+		}else if( synthRouteType == JackOutputPortRouter.CREATE_MULTIPLE_PORTS_BY_PROGRAM ){
+			buttonSynthRouteType3.setSelection( true );
+			routingTabs[1] = openProgramRoutingTab(tabFolder, programRouting);
+		}else{
+			buttonSynthRouteType1.setSelection( true );
+		}
 		
 		final SelectionListener routeTypeListener = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
@@ -111,7 +119,7 @@ public class JackSettingsDialog {
 				if( buttonSynthRouteType2.getSelection() ){
 					type = JackOutputPortRouter.CREATE_MULTIPLE_PORTS_BY_CHANNEL;
 				}
-				else if( buttonSynthRouteType2.getSelection() ){
+				else if( buttonSynthRouteType3.getSelection() ){
 					type = JackOutputPortRouter.CREATE_MULTIPLE_PORTS_BY_PROGRAM;
 				}
 				saveChanges( type , channelRouting , programRouting );
@@ -224,10 +232,10 @@ public class JackSettingsDialog {
 		dstChannelColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-channel"));
 		dstProgramColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-program"));
 		
-		srcChannelColumn.setWidth(110);
-		dstPortColumn.setWidth(120);
-		dstChannelColumn.setWidth(120);
-		dstProgramColumn.setWidth(120);
+		srcChannelColumn.setWidth(125);
+		dstPortColumn.setWidth(125);
+		dstChannelColumn.setWidth(125);
+		dstProgramColumn.setWidth(125);
 		
 		loadProgramRoutingItems( table , routing );
 		
@@ -410,9 +418,9 @@ public class JackSettingsDialog {
 		dstChannelColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-channel"));
 		dstProgramColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-program"));
 		
-		srcChannelColumn.setWidth(110);
-		dstChannelColumn.setWidth(120);
-		dstProgramColumn.setWidth(120);
+		srcChannelColumn.setWidth(166);
+		dstChannelColumn.setWidth(166);
+		dstProgramColumn.setWidth(166);
 		
 		loadChannelRoutingItems( table , routing );
 		
