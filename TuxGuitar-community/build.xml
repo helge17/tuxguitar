@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar-community" basedir="." default="all">
+	<description>
+	TuxGuitar Community Integration
+	</description>
+		
+	<property file="build.properties" />
+	<property name="build.src.path" value="src${file.separator}" />
+	<property name="build.share.path" value="share${file.separator}" />
+	<property name="build.path" value="build${file.separator}" />
+	<property name="build.cfg" value="tuxguitar-community.cfg" />
+	<property name="build.jar" value="tuxguitar-community.jar" />
+	
+	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
+	<property name="service.provider" value="org.herac.tuxguitar.community.TGCommunityPluginImpl" />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar}"/>
+		<pathelement location="${path.swt}"/>
+	</path >
+	
+	<target name="init" depends="clean">
+		<mkdir dir="${build.path}" />
+	</target>
+	
+	<target name="build" depends="init">
+		<echo>+-------------------------------------------------+</echo>
+		<echo>|          B U I L D I N G   P L U G I N          |</echo>
+		<echo>+-------------------------------------------------+</echo>
+		
+		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<classpath refid="class.path"/>
+			<include name="**/*.java"/>
+		</javac>
+		
+		<mkdir dir="${build.path}${file.separator}lang" />
+		<copy todir="${build.path}${file.separator}lang">
+			<fileset dir="${build.share.path}${file.separator}lang"/>
+		</copy>
+		
+		<mkdir dir="${build.path}/META-INF/services" />
+		<echo file="${build.path}/META-INF/services/${service.class}" append="false">${service.provider}</echo>
+		
+		<touch file="${build.path}/${build.cfg}" />
+		<echo file="${build.path}/${build.cfg}" append="true">community.url=${default.community.url}${line.separator}</echo>
+		<echo file="${build.path}/${build.cfg}" append="true">community.browser=${default.community.browser}${line.separator}</echo>
+		
+		<echo>+-----------------------------------------------+</echo>
+		<echo>|        P A C K A G I N G   P L U G I N        |</echo>
+		<echo>+-----------------------------------------------+</echo>
+		
+		<jar destfile="${build.jar}" basedir="${build.path}" />
+		<delete quiet="true" dir="${build.path}" />
+	</target>
+	
+	<target name="clean">
+		<delete quiet="true" dir="${build.path}" />
+		<delete quiet="true" file="${build.jar}" />
+	</target>
+	
+	<target name="all" depends="build" />
+</project>
