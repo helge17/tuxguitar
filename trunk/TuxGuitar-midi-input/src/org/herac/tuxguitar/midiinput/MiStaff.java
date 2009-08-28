@@ -104,12 +104,12 @@ class MiStaff
 
 	void	addBar(long inTime)
 	{
-	MiStaffEvent	se = (MiStaffEvent)f_Events.get(inTime);
+	MiStaffEvent	se = (MiStaffEvent)f_Events.get( new Long(inTime) );
 
 	if(se == null)
 		{
 		se = new MiStaffEvent(inTime);
-		f_Events.put(inTime, se);
+		f_Events.put( new Long(inTime) , se);
 		}
 
 	se.markAsBar();
@@ -120,12 +120,12 @@ class MiStaff
 	{
 	MiStaffEvent	se;
 
-	se = (MiStaffEvent)f_Events.get(inNote.getTimeOn());
+	se = (MiStaffEvent)f_Events.get( new Long(inNote.getTimeOn()) );
 
 	if(se == null)
 		{
 		se = new MiStaffEvent(inNote.getTimeOn());
-		f_Events.put(inNote.getTimeOn(), se);
+		f_Events.put( new Long(inNote.getTimeOn()) , se);
 		}
 
 	se.addNoteOn(inNote);
@@ -134,10 +134,10 @@ class MiStaff
 
 	private void	mergeEvent(TreeMap inEventsMap, MiStaffEvent inSE)
 	{
-	MiStaffEvent	se = (MiStaffEvent)inEventsMap.get(inSE.getBeginTime());
+	MiStaffEvent	se = (MiStaffEvent)inEventsMap.get( new Long(inSE.getBeginTime()) );
 
 	if(se == null)
-		inEventsMap.put(inSE.getBeginTime(), inSE);
+		inEventsMap.put( new Long(inSE.getBeginTime()) , inSE);
 	else
 		se.merge(inSE);
 	}
@@ -145,12 +145,12 @@ class MiStaff
 
 	private void	addTiedNote(long inTime, MiStaffNote inSN, long inResidualDuration)
 	{
-	MiStaffEvent	se = (MiStaffEvent)f_Events.get(inTime);
+	MiStaffEvent	se = (MiStaffEvent)f_Events.get( new Long(inTime) );
 
 	if(se == null)
 		{
 		se = new MiStaffEvent(inTime);
-		f_Events.put(inTime, se);
+		f_Events.put( new Long(inTime), se);
 		}
 
 	MiStaffNote sn = new MiStaffNote(inSN);
@@ -199,7 +199,7 @@ class MiStaff
 
 	private TGBeat	getEventBeat(long inTime)
 	{
-	MiStaffEvent	se		= (MiStaffEvent)f_Events.get(inTime);
+	MiStaffEvent	se		= (MiStaffEvent)f_Events.get( new Long(inTime) );
 	TGBeat			tgBeat	= se.getBeat();
 
 	// creates a TGBeat if needed
@@ -397,7 +397,7 @@ class MiStaff
 
 			if(eventsIt.hasNext() && eventsIt2.hasNext())
 				{
-				Long	nextTime	= (Long)eventsIt2.next();
+				long	nextTime	= ((Long)eventsIt2.next()).longValue();
 
 				for(Iterator snIt = se.getNotes().iterator(); snIt.hasNext();)
 					{

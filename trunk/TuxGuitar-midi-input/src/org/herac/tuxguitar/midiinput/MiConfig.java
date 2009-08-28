@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginConfigManager;
@@ -106,7 +105,7 @@ class MiConfig
 		final int		currMinDuration		= getMinDuration();
 		final int		currEchoTimeOut		= getEchoTimeOut();
 		final int		currInputTimeOut	= getInputTimeOut();
-		final int		currChordMode		= getChordMode();
+		//final int		currChordMode		= getChordMode();
 
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
