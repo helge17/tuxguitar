@@ -16,7 +16,7 @@
 		<jar href="files/tuxguitar-jws.jar" />
 	</resources>
 	
-	<resources os="Linux">		
+	<resources os="Linux">
 		<jar href="files/gnu-linux-x86/swt.jar" />
 		<jar href="files/gnu-linux-x86/tuxguitar-dist.jar" />
 		<jar href="files/gnu-linux-x86/tuxguitar-alsa.jar" />
