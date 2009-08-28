@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="TuxGuitar-viewer" basedir="." default="all">
+	<description>
+		TuxGuitar-viewer
+	</description>
+	
+	<property name="ant.build.javac.source" value="1.4" />
+	<property name="ant.build.javac.target" value="1.4" />
+	
+	<property name="build.src.path" value="src${file.separator}" />
+	<property name="build.resource.path" value="resources${file.separator}" />
+	<property name="build.path" value="build${file.separator}" />
+	<property name="build.jar" value="tuxguitar-viewer.jar" />
+	
+	<property name="dist.dst.path" value="" />
+	<property name="dist.jar.path" value="." />
+	
+	<target name="all" depends="package" />
+	
+	<target name="clean">
+		<delete quiet="true" dir="${build.path}" />
+		<delete quiet="true" file="${build.jar}" />
+	</target>
+	
+	<target name="build" depends="clean">
+		<echo>+--------------------------------------------------------------------+</echo>
+		<echo>|                B U I L D I N G   T U X G U I T A R                 |</echo>
+		<echo>+--------------------------------------------------------------------+</echo>
+		
+		<mkdir dir="${build.path}" />
+		
+		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<include name="**/*.java"/>
+		</javac>
+		
+		<copy todir="${build.path}">
+			<fileset dir="${build.resource.path}"/>
+		</copy>
+		
+	</target>
+	
+	<target name="package" depends="build">
+		<echo>+--------------------------------------------------------------------+</echo>
+		<echo>|              P A C K A G I N G   T U X G U I T A R                 |</echo>
+		<echo>+--------------------------------------------------------------------+</echo>
+		
+		<jar destfile="${build.jar}">
+			<fileset dir="${build.path}" />
+		</jar>
+		
+	</target>
+	
+	<target name="install" depends="all">
+		<echo>+--------------------------------------------------------------------+</echo>
+		<echo>|              I N S T A L L I N G   T U X G U I T A R               |</echo>
+		<echo>+--------------------------------------------------------------------+</echo>
+		
+		<mkdir dir="${dist.dst.path}${dist.jar.path}" />
+		<copy todir="${dist.dst.path}${dist.jar.path}">
+			<fileset file="${build.jar}"/>
+		</copy>
+		
+	</target>
+	
+</project>
