@@ -6,15 +6,9 @@ import java.util.TreeSet;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.managers.TGTrackManager;
-import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
 
 
 class MiBuffer
@@ -327,6 +321,6 @@ class MiBuffer
 
 	public void		toTrack(int inTempo, long inStartPosition, String inTrackName)
 	{
-	MiStaff	staff = new MiStaff(f_Notes, inTempo, f_StartTime, f_StopTime, inStartPosition, inTrackName);
+	/*MiStaff	staff = */new MiStaff(f_Notes, inTempo, f_StartTime, f_StopTime, inStartPosition, inTrackName);
 	}
 }

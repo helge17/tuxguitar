@@ -1,18 +1,12 @@
 package org.herac.tuxguitar.midiinput;
 
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-
 import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
 import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.gui.editors.TablatureEditor;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-
-//import org.herac.tuxguitar.gui.editors.TablatureEditor;
-//import org.herac.tuxguitar.gui.editors.tab.Caret;
-
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
 
