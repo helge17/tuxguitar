@@ -13,7 +13,7 @@
 typedef struct {
 	int event_port;
 	int event_size;
-	int *event_data;
+	jack_midi_data_t *event_data;
 } jack_jni_event_t;
 
 typedef struct {
@@ -331,11 +331,11 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(
 							}
 							handle->midi->event_queue[ handle->midi->event_count ].event_port = port;
 							handle->midi->event_queue[ handle->midi->event_count ].event_size = count;
-							handle->midi->event_queue[ handle->midi->event_count ].event_data = (int *)malloc( sizeof( int ) * count );
+							handle->midi->event_queue[ handle->midi->event_count ].event_data = (jack_midi_data_t *)malloc( sizeof( jack_midi_data_t ) * count );
 							if( handle->midi->event_queue[ handle->midi->event_count ].event_data != NULL ) {
 								int index = 0;
 								for( index = 0 ; index < count ; index ++ ){
-									handle->midi->event_queue[ handle->midi->event_count ].event_data[ index ] = jdataArray[ index ];
+									handle->midi->event_queue[ handle->midi->event_count ].event_data[ index ] = (jack_midi_data_t)jdataArray[ index ];
 								}
 								handle->midi->event_count ++;
 								(*env)->ReleaseByteArrayElements( env , jdata, jdataArray, 0);
