@@ -138,6 +138,51 @@ public class JackSequencer implements MidiSequencer{
 		}
 	}
 	
+	public MidiTransmitter getTransmitter() {
+		return this.transmitter;
+	}
+	
+	public void setTransmitter(MidiTransmitter transmitter) {
+		this.transmitter = transmitter;
+	}
+	
+	public void open() {
+		if( !this.jackClient.isOpen() ){
+			this.jackClient.open();
+		}
+		this.jackTimer.setRunning( true );
+	}
+	
+	public void close() throws MidiPlayerException {
+		this.jackTimer.setRunning( false );
+		if(this.isRunning()){
+			this.stop();
+		}
+		if( this.jackClient.isOpen() ){
+			this.jackClient.close( false );
+		}
+	}
+	
+	public MidiSequenceHandler createSequence(int tracks) throws MidiPlayerException{
+		return new JackSequenceHandler(this,tracks);
+	}
+	
+	public void setSolo(int index,boolean solo) throws MidiPlayerException{
+		this.getJackTrackController().setSolo(index, solo);
+	}
+	
+	public void setMute(int index,boolean mute) throws MidiPlayerException{
+		this.getJackTrackController().setMute(index, mute);
+	}
+	
+	public String getKey() {
+		return "tuxguitar-jack";
+	}
+	
+	public String getName() {
+		return "Jack Sequencer";
+	}
+	
 	protected void process() throws MidiPlayerException{
 		boolean transportRunning = this.jackClient.isTransportRunning();
 		
@@ -184,51 +229,6 @@ public class JackSequencer implements MidiSequencer{
 			}
 		}
 		this.transportRunning = transportRunning;
-	}
-	
-	public MidiTransmitter getTransmitter() {
-		return this.transmitter;
-	}
-	
-	public void setTransmitter(MidiTransmitter transmitter) {
-		this.transmitter = transmitter;
-	}
-	
-	public void open() {
-		if( !this.jackClient.isOpen() ){
-			this.jackClient.open();
-		}
-		this.jackTimer.setRunning( true );
-	}
-	
-	public void close() throws MidiPlayerException {
-		this.jackTimer.setRunning( false );
-		if(this.isRunning()){
-			this.stop();
-		}
-		if( this.jackClient.isOpen() ){
-			this.jackClient.close( false );
-		}
-	}
-	
-	public MidiSequenceHandler createSequence(int tracks) throws MidiPlayerException{
-		return new JackSequenceHandler(this,tracks);
-	}
-	
-	public void setSolo(int index,boolean solo) throws MidiPlayerException{
-		this.getJackTrackController().setSolo(index, solo);
-	}
-	
-	public void setMute(int index,boolean mute) throws MidiPlayerException{
-		this.getJackTrackController().setMute(index, mute);
-	}
-	
-	public String getKey() {
-		return "tuxguitar-jack";
-	}
-	
-	public String getName() {
-		return "Jack Sequencer";
 	}
 	
 	private class JackTimer implements Runnable{
