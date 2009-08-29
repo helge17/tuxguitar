@@ -112,8 +112,8 @@ public class MidiSequenceParser {
 	 * Crea la cancion
 	 */
 	public void parse(MidiSequenceHandler sequence) {
-		this.infoTrack = sequence.getInfoTrack();
-		this.metronomeTrack = sequence.getMetronomeTrack();
+		this.infoTrack = 0;
+		this.metronomeTrack = (sequence.getTracks() - 1);
 		addDefaultMessages(sequence);
 		for (int i = 0; i < this.manager.getSong().countTracks(); i++) {
 			TGTrack songTrack = this.manager.getSong().getTrack(i);
@@ -122,11 +122,11 @@ public class MidiSequenceParser {
 		sequence.notifyFinish();
 	}
 	
-	private int infoIndex(){
+	public int getInfoTrack(){
 		return this.infoTrack;
 	}
 	
-	private int metronomeIndex(){
+	public int getMetronomeTrack(){
 		return this.metronomeTrack;
 	}
 	
@@ -363,7 +363,7 @@ public class MidiSequenceParser {
 			}
 		}
 		if (addTimeSignature) {
-			sequence.addTimeSignature(getTick(currMeasure.getStart() + startMove), infoIndex(), currMeasure.getTimeSignature());
+			sequence.addTimeSignature(getTick(currMeasure.getStart() + startMove), getInfoTrack(), currMeasure.getTimeSignature());
 		}
 	}
 	
@@ -381,7 +381,7 @@ public class MidiSequenceParser {
 		}
 		if (addTempo) {
 			int usq = (int)(currMeasure.getTempo().getInUSQ() * 100.00 / this.tempoPercent );
-			sequence.addTempoInUSQ(getTick(currMeasure.getStart() + startMove), infoIndex(), usq);
+			sequence.addTempoInUSQ(getTick(currMeasure.getStart() + startMove), getInfoTrack(), usq);
 		}
 	}
 	
@@ -472,7 +472,7 @@ public class MidiSequenceParser {
 			long start = (startMove + header.getStart());
 			long length = header.getTimeSignature().getDenominator().getTime();
 			for(int i = 1; i <= header.getTimeSignature().getNumerator();i ++){
-				makeNote(sequence,metronomeIndex(),DEFAULT_METRONOME_KEY,start,length,TGVelocities.DEFAULT,9);
+				makeNote(sequence,getMetronomeTrack(),DEFAULT_METRONOME_KEY,start,length,TGVelocities.DEFAULT,9);
 				start += length;
 			}
 		}
@@ -481,10 +481,10 @@ public class MidiSequenceParser {
 	public void addDefaultMessages(MidiSequenceHandler sequence) {
 		if( (this.flags & ADD_DEFAULT_CONTROLS) != 0) {
 			for(int i = 0; i < 16; i ++){
-				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),infoIndex(),i,MidiControllers.RPN_MSB,0);
-				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),infoIndex(),i,MidiControllers.RPN_LSB,0);
-				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),infoIndex(),i,MidiControllers.DATA_ENTRY_MSB,12);
-				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),infoIndex(),i,MidiControllers.DATA_ENTRY_LSB, 0);
+				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),i,MidiControllers.RPN_MSB,0);
+				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),i,MidiControllers.RPN_LSB,0);
+				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),i,MidiControllers.DATA_ENTRY_MSB,12);
+				sequence.addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),i,MidiControllers.DATA_ENTRY_LSB, 0);
 			}
 		}
 	}

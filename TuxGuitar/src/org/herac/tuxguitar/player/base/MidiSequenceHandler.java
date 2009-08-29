@@ -5,21 +5,9 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 public abstract class MidiSequenceHandler {
 	
 	private int tracks;
-	private int infoTrack;
-	private int metronomeTrack;
 	
 	public MidiSequenceHandler(int tracks){
 		this.tracks = tracks;
-		this.infoTrack = 0;
-		this.metronomeTrack = (tracks - 1);
-	}
-	
-	public int getInfoTrack() {
-		return this.infoTrack;
-	}
-	
-	public int getMetronomeTrack() {
-		return this.metronomeTrack;
 	}
 	
 	public int getTracks() {
