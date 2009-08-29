@@ -396,8 +396,8 @@ public class MidiPlayer{
 			parser.setSHeader( getLoopSHeader() );
 			parser.setEHeader( getLoopEHeader() );
 			parser.parse(sequence);
-			this.infoTrack = sequence.getInfoTrack();
-			this.metronomeTrack = sequence.getMetronomeTrack();
+			this.infoTrack = parser.getInfoTrack();
+			this.metronomeTrack = parser.getMetronomeTrack();
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
