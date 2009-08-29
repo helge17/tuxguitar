@@ -1,7 +1,7 @@
 CFLAGS?=-I$(shell gcj -print-file-name=include/)
 CFLAGS+=-fPIC
 LDFLAGS?=
-LDLIBS?=-ljack
+LDLIBS?=`pkg-config --libs jack`
 LDPATH?=
 LIBRARY_PREFIX?=lib
 LIBRARY_NAME?=tuxguitar-jack-jni
