@@ -27,7 +27,7 @@ typedef struct {
 	pthread_mutex_t lock;
 	jack_client_t *client;
 	jack_jni_synth_t *midi;
-} handle_t;
+} jack_jni_handle_t;
 
 int  JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr);
 
@@ -35,7 +35,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* 
 {
 	jlong ptr = 0;
 	
-	handle_t *handle = (handle_t *) malloc( sizeof(handle_t) );
+	jack_jni_handle_t *handle = (jack_jni_handle_t *) malloc( sizeof(jack_jni_handle_t) );
 	handle->client = NULL;
 	handle->midi = NULL;
 	
@@ -48,7 +48,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* 
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_free(JNIEnv* env, jobject obj, jlong ptr)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		
@@ -60,7 +60,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_free(JNIEnv* env
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env, jobject obj, jlong ptr)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		
@@ -86,7 +86,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* env, jobject obj, jlong ptr)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -105,7 +105,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* en
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPorts(JNIEnv* env, jobject obj, jlong ptr, jint ports)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -137,7 +137,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPorts(JNIEnv
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePorts(JNIEnv* env, jobject obj, jlong ptr)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -170,7 +170,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportUID
 {
 	jlong result = 0;
 	
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -192,7 +192,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFra
 {
 	jlong result = 0;
 	
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -214,7 +214,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFra
 {
 	jlong result = 0;
 	
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -234,7 +234,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFra
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportFrame(JNIEnv* env, jobject obj, jlong ptr, jlong frame)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -251,7 +251,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportFram
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStart(JNIEnv* env, jobject obj, jlong ptr)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -271,7 +271,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStar
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStop(JNIEnv* env, jobject obj, jlong ptr)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -292,7 +292,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStop
 JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportRunning(JNIEnv* env, jobject obj, jlong ptr){
 	jboolean result = JNI_FALSE;
 	
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -313,7 +313,7 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportR
 
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(JNIEnv* env, jobject obj, jlong ptr, jint port, jbyteArray jdata)
 {
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		if( pthread_mutex_lock( &handle->lock ) == 0 ){
@@ -350,7 +350,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(
 }
 
 int JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr){
-	handle_t *handle = NULL;
+	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
 		
