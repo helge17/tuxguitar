@@ -168,7 +168,7 @@ public class MidiPlayer{
 			this.setStarting(true);
 			this.stop();
 			this.lock.lock();
-			this.checkOutput();
+			this.checkDevices();
 			this.updateLoop( true );
 			this.systemReset();
 			this.addSequence();
@@ -281,9 +281,10 @@ public class MidiPlayer{
 		return this.loopSPosition;
 	}
 	
-	public void checkOutput() throws Throwable {
-		if( getOutputPort() != null ){
-			getOutputPort().check();
+	public void checkDevices() throws Throwable {
+		this.getSequencer().check();
+		if( this.getOutputPort() != null ){
+			this.getOutputPort().check();
 		}
 	}
 	
