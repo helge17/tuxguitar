@@ -122,6 +122,10 @@ public class MidiSequencerImpl implements MidiSequencer{
 		this.transmitter = transmitter;
 	}
 	
+	public void check() {
+		// Not implemented
+	}
+	
 	public synchronized void open() {
 		//not implemented
 	}
