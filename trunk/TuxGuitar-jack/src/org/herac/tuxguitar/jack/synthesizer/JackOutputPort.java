@@ -7,16 +7,14 @@ import org.herac.tuxguitar.jack.settings.JackSettingsListener;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class JackOutputPort extends MidiOutputPort implements JackSettingsListener {
+public class JackOutputPort implements JackSettingsListener, MidiOutputPort {
 	
 	private JackClient jackClient;
 	private JackSettings jackSettings;
 	private JackReceiver jackReceiver;
 	private JackOutputPortRouter jackOutputPortRouter;
 	
-	
 	public JackOutputPort( JackClient jackClient , JackSettings jackSettings ){
-		super("tuxguitar-jack","Jack Midi Port");
 		this.jackOutputPortRouter = new JackOutputPortRouter();
 		this.jackReceiver = new JackReceiver(jackClient, this);
 		this.jackSettings = jackSettings;
@@ -60,5 +58,13 @@ public class JackOutputPort extends MidiOutputPort implements JackSettingsListen
 		if( connected ){
 			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
 		}
+	}
+	
+	public String getKey(){
+		return ("tuxguitar-jack");
+	}
+	
+	public String getName(){
+		return ("Jack Midi Port");
 	}
 }

@@ -10,12 +10,15 @@ import org.herac.tuxguitar.player.base.MidiReceiver;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiMessageUtils;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class MidiPortOut extends MidiOutputPort{
+public class MidiPortOut implements MidiOutputPort {
 	
+	private String key;
+	private String name;
 	private MidiReceiverImpl receiver;
 	
 	public MidiPortOut(MidiDevice device){
-		super(device.getDeviceInfo().getName(),device.getDeviceInfo().getName());
+		this.key = device.getDeviceInfo().getName();
+		this.name = device.getDeviceInfo().getName();
 		this.receiver = new MidiReceiverImpl(device);
 	}
 	
@@ -45,6 +48,14 @@ public class MidiPortOut extends MidiOutputPort{
 		} catch (Throwable throwable) {
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}
+	}
+	
+	public String getKey() {
+		return this.key;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 }
 
