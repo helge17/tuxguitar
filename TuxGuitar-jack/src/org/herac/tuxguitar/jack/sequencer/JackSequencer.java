@@ -183,6 +183,10 @@ public class JackSequencer implements MidiSequencer{
 		return "Jack Sequencer";
 	}
 	
+	public void check() {
+		// Not implemented
+	}
+	
 	protected void process() throws MidiPlayerException{
 		boolean transportRunning = this.jackClient.isTransportRunning();
 		

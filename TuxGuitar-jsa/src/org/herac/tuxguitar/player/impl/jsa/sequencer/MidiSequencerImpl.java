@@ -214,4 +214,8 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	public String getName() {
 		return this.sequencer.getDeviceInfo().getName();
 	}
+	
+	public void check() {
+		// Not implemented
+	}
 }

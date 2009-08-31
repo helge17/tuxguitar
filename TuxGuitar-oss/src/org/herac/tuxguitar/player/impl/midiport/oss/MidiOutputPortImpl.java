@@ -3,13 +3,14 @@ package org.herac.tuxguitar.player.impl.midiport.oss;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutputPortImpl extends MidiOutputPort{
+public class MidiOutputPortImpl implements MidiOutputPort{
 	
-	private final int device;
-	private final MidiReceiverImpl receiver;
+	private int device;
+	private String name;
+	private MidiReceiverImpl receiver;
 	
 	public MidiOutputPortImpl(MidiSystem midiSystem,String name,int device){
-		super(MidiOutputPortImpl.getUniqueKey(device),MidiOutputPortImpl.getUniqueName(name,device));
+		this.name = name;
 		this.device = device;
 		this.receiver = new MidiReceiverImpl(this,midiSystem);
 	}
@@ -37,15 +38,11 @@ public class MidiOutputPortImpl extends MidiOutputPort{
 		return this.device;
 	}
 	
-	public static String toString(int device){
-		return (Integer.toString(device));
+	public String getKey(){
+		return ("tuxguitar-oss_" + this.device);
 	}
 	
-	public static String getUniqueKey(int device){
-		return ("tuxguitar-oss_" + device);
-	}
-	
-	public static String getUniqueName(String name,int device){
-		return (name +" #" + device);
+	public String getName(){
+		return (this.name +" #" + this.device);
 	}
 }

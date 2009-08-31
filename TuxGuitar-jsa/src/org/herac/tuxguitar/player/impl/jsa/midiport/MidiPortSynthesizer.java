@@ -16,17 +16,28 @@ import org.herac.tuxguitar.player.base.MidiReceiver;
 import org.herac.tuxguitar.player.impl.jsa.assistant.SBAssistant;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
 
-public class MidiPortSynthesizer extends MidiOutputPort{
+public class MidiPortSynthesizer implements MidiOutputPort{
 	
+	private String key;
+	private String name;
 	private Synthesizer synthesizer;
 	private MidiReceiver receiver;
 	private boolean synthesizerLoaded;
 	private boolean soundbankLoaded;
 	
 	public MidiPortSynthesizer(Synthesizer synthesizer){
-		super(synthesizer.getDeviceInfo().getName(),synthesizer.getDeviceInfo().getName());
+		this.key = synthesizer.getDeviceInfo().getName();
+		this.name = synthesizer.getDeviceInfo().getName();
 		this.synthesizer = synthesizer;
 		this.receiver = new MidiPortSynthesizerReceiver(this);
+	}
+	
+	public String getKey() {
+		return this.key;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	public void open(){

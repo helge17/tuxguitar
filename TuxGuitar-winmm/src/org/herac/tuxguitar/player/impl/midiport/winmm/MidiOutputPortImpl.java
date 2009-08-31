@@ -3,13 +3,14 @@ package org.herac.tuxguitar.player.impl.midiport.winmm;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutputPortImpl extends MidiOutputPort{
+public class MidiOutputPortImpl implements MidiOutputPort{
 	
-	private final int device;
-	private final MidiReceiverImpl receiver;
+	private int device;
+	private String name;
+	private MidiReceiverImpl receiver;
 	
 	public MidiOutputPortImpl(MidiSystem midiSystem,String name,int device){
-		super(MidiOutputPortImpl.toString(device),name);
+		this.name = name;
 		this.device = device;
 		this.receiver = new MidiReceiverImpl(this,midiSystem);
 	}
@@ -39,5 +40,13 @@ public class MidiOutputPortImpl extends MidiOutputPort{
 	
 	public static String toString(int device){
 		return (Integer.toString(device));
+	}
+	
+	public String getKey() {
+		return (Integer.toString(this.device));
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 }
