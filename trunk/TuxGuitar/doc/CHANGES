@@ -11,3 +11,5 @@ TuxGuitar 1.2 changes:
 * Number of pastes support
 * Better lilypond plugin
 * Better fluidsynth plugin
+* New jack plugin
+* New community integration plugin
