@@ -5,14 +5,17 @@ import java.io.File;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiOutputPortImpl extends MidiOutputPort{
+public class MidiOutputPortImpl implements MidiOutputPort{
 	
+	private String key;
+	private String name;
 	private MidiSynth synth;
 	private MidiReceiverImpl receiver;
 	private String soundFont;
 	
 	public MidiOutputPortImpl(MidiSynth synth,File soundfont){
-		super(getUniqueKey(soundfont),getUniqueName(soundfont));
+		this.key = getUniqueKey(soundfont);
+		this.name = getUniqueName(soundfont);
 		this.soundFont = soundfont.getAbsolutePath();
 		this.receiver = new MidiReceiverImpl(synth);
 		this.synth = synth;
@@ -43,11 +46,19 @@ public class MidiOutputPortImpl extends MidiOutputPort{
 		return this.soundFont;
 	}
 	
-	public static String getUniqueKey(File soundfont){
+	public String getKey(){
+		return this.key;
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public String getUniqueKey(File soundfont){
 		return ("tuxguitar-fluidsynth_" + soundfont.getAbsolutePath());
 	}
 	
-	private static String getUniqueName(File soundfont){
+	private String getUniqueName(File soundfont){
 		String name = soundfont.getName();
 		int extensionIndex = name.lastIndexOf(".");
 		if( extensionIndex > 0 ){

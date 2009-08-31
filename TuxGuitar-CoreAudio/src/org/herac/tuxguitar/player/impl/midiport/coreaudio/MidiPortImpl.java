@@ -3,12 +3,15 @@ package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiPortImpl extends MidiOutputPort{
+public class MidiPortImpl implements MidiOutputPort{
 	
-	private final MidiReceiverImpl receiver;
+	private String key;
+	private String name;
+	private MidiReceiverImpl receiver;
 
 	public MidiPortImpl(MidiReceiverImpl midiOut,String name,String key){
-        super(key,name);
+        this.key = key;
+        this.name = name;
 		this.receiver = midiOut;		
 	}
 	
@@ -29,5 +32,13 @@ public class MidiPortImpl extends MidiOutputPort{
 	
 	public void check(){
 		// Not implemented
+	}
+	
+	public String getKey(){
+		return this.key;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 }
