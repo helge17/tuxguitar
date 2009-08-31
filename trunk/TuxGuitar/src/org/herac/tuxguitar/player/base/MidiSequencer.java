@@ -1,15 +1,7 @@
 package org.herac.tuxguitar.player.base;
 
 
-public interface MidiSequencer {
-	
-	public String getKey();
-	
-	public String getName();
-	
-	public void open() throws MidiPlayerException;
-	
-	public void close() throws MidiPlayerException;
+public interface MidiSequencer extends MidiDevice{
 	
 	public void start() throws MidiPlayerException;
 	

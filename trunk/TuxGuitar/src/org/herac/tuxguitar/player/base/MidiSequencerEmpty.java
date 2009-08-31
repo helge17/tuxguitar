@@ -12,6 +12,10 @@ public class MidiSequencerEmpty implements MidiSequencer{
 		// Not implemented
 	}
 	
+	public void check() {
+		// Not implemented
+	}
+	
 	public MidiSequenceHandler createSequence(int tracks) {
 		return new MidiSequenceHandler(tracks) {
 			
