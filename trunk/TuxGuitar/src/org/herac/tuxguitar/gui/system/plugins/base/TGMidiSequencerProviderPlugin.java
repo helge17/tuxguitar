@@ -39,7 +39,6 @@ public abstract class TGMidiSequencerProviderPlugin extends TGPluginAdapter{
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);
 			}
-			
 		}
 	}
 	
@@ -51,7 +50,6 @@ public abstract class TGMidiSequencerProviderPlugin extends TGPluginAdapter{
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);
 			}
-			
 		}
 	}
 }
