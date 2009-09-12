@@ -11,6 +11,7 @@ public class JackClient{
 	private long instance;
 	private boolean open;
 	private boolean openPorts;
+	private boolean openTransport;
 	
 	public JackClient() {
 		this.instance = malloc();
@@ -25,22 +26,19 @@ public class JackClient{
 		}
 	}
 	
-	public boolean isOpen(){
-		return (this.instance != 0 && this.open);
-	}
-	
-	public void open(){
+	private void open(){
 		if(this.instance != 0 && !this.open){
 			this.open(this.instance);
 			this.open = true;
 		}
 	}
 	
-	public void close( boolean force ){
+	private void close( boolean force ){
 		if( force ){
 			this.closePorts();
+			this.closeTransport();
 		}
-		if( !this.isPortsOpen() ){
+		if( !this.isPortsOpen() && !this.isTransportOpen() ){
 			if(this.instance != 0 && this.open){
 				this.close(this.instance);
 				this.open = false;
@@ -50,6 +48,10 @@ public class JackClient{
 	
 	public void close(){
 		this.close( true );
+	}
+	
+	public boolean isOpen(){
+		return (this.instance != 0 && this.open);
 	}
 	
 	public boolean isPortsOpen(){
@@ -70,6 +72,26 @@ public class JackClient{
 		if(this.isOpen() && this.openPorts){
 			this.closePorts(this.instance);
 			this.openPorts = false;
+		}
+		this.close( false );
+	}
+	
+	public boolean isTransportOpen(){
+		return (this.isOpen() && this.openTransport);
+	}
+	
+	public void openTransport(){
+		if(!this.isOpen()){
+			this.open();
+		}
+		if(this.isOpen() && !this.openTransport){
+			this.openTransport = true;
+		}
+	}
+	
+	public void closeTransport(){
+		if(this.isOpen() && this.openTransport){
+			this.openTransport = false;
 		}
 		this.close( false );
 	}
@@ -126,6 +148,16 @@ public class JackClient{
 		return false;
 	}
 	
+	public boolean isServerRunning(){
+		if(this.instance != 0 && this.open){
+			if( this.isServerRunning(this.instance) ){
+				return true;
+			}
+			this.close( true );
+		}
+		return false;
+	}
+	
 	private native long malloc();
 	
 	private native void free(long instance);
@@ -151,6 +183,8 @@ public class JackClient{
 	private native void setTransportStop(long instance);
 	
 	private native boolean isTransportRunning(long instance);
+	
+	private native boolean isServerRunning(long instance);
 	
 	private native void addEventToQueue(long instance, int port, byte[] data);
 }

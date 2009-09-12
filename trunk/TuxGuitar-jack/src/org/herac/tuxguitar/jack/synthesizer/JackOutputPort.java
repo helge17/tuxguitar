@@ -5,6 +5,7 @@ import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.settings.JackSettings;
 import org.herac.tuxguitar.jack.settings.JackSettingsListener;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
+import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiReceiver;
 
 public class JackOutputPort implements JackSettingsListener, MidiOutputPort {
@@ -22,9 +23,9 @@ public class JackOutputPort implements JackSettingsListener, MidiOutputPort {
 	}
 	
 	public void open(){
-		this.loadSettings( this.jackSettings.getConfig() );
-		this.jackSettings.addListener( this );
 		if(!this.jackClient.isPortsOpen()){
+			this.loadSettings( this.jackSettings.getConfig() );
+			this.jackSettings.addListener( this );
 			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
 		}
 	}
@@ -32,17 +33,21 @@ public class JackOutputPort implements JackSettingsListener, MidiOutputPort {
 	public void close(){
 		if(this.jackClient.isPortsOpen()){
 			this.jackClient.closePorts();
+			this.jackSettings.removeListener( this );
 		}
-		this.jackSettings.removeListener( this );
+	}
+	
+	public void check() throws MidiPlayerException {
+		if( !this.jackClient.isServerRunning() || !this.jackClient.isPortsOpen() ){
+			this.open();
+			if( !this.jackClient.isServerRunning() || !this.jackClient.isPortsOpen() ){
+				throw new MidiPlayerException("Jack server not running?");
+			}
+		}
 	}
 	
 	public MidiReceiver getReceiver(){
-		this.open();
 		return this.jackReceiver;
-	}
-	
-	public void check(){
-		// Not implemented
 	}
 	
 	public JackOutputPortRouter getRouter(){
