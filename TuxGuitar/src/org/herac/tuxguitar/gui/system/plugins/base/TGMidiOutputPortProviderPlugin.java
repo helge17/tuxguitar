@@ -39,7 +39,6 @@ public abstract class TGMidiOutputPortProviderPlugin extends TGPluginAdapter{
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);
 			}
-			
 		}
 	}
 	

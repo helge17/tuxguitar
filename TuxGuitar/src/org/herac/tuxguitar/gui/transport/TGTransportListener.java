@@ -20,6 +20,7 @@ public class TGTransportListener implements MidiPlayerListener{
 		new Thread(new Runnable() {
 			public void run() {
 				try {
+					TuxGuitar.instance().updateCache(true);
 					while (TuxGuitar.instance().getPlayer().isRunning()) {
 						synchronized( TGTransportListener.this.sync ){
 							TGSynchronizer.instance().addRunnable( TGTransportListener.this.startedRunnable );
@@ -61,5 +62,4 @@ public class TGTransportListener implements MidiPlayerListener{
 			}
 		};
 	}
-	
 }
