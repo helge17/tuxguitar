@@ -147,8 +147,8 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	public void open() {
-		if( !this.jackClient.isOpen() ){
-			this.jackClient.open();
+		if( !this.jackClient.isTransportOpen() ){
+			this.jackClient.openTransport();
 		}
 		this.jackTimer.setRunning( true );
 	}
@@ -158,8 +158,17 @@ public class JackSequencer implements MidiSequencer{
 		if(this.isRunning()){
 			this.stop();
 		}
-		if( this.jackClient.isOpen() ){
-			this.jackClient.close( false );
+		if( this.jackClient.isTransportOpen() ){
+			this.jackClient.closeTransport();
+		}
+	}
+	
+	public void check() throws MidiPlayerException {
+		if( !this.jackClient.isServerRunning() || !this.jackClient.isTransportOpen() ){
+			this.open();
+			if( !this.jackClient.isServerRunning() || !this.jackClient.isTransportOpen() ){
+				throw new MidiPlayerException("Jack server not running?");
+			}
 		}
 	}
 	
@@ -181,10 +190,6 @@ public class JackSequencer implements MidiSequencer{
 	
 	public String getName() {
 		return "Jack Sequencer";
-	}
-	
-	public void check() {
-		// Not implemented
 	}
 	
 	protected void process() throws MidiPlayerException{
@@ -237,7 +242,7 @@ public class JackSequencer implements MidiSequencer{
 	
 	private class JackTimer implements Runnable{
 		
-		private static final int TIMER_DELAY = 15;
+		private static final int TIMER_DELAY = 10;
 		
 		private Object sequencerSync;
 		private JackSequencer sequencer;

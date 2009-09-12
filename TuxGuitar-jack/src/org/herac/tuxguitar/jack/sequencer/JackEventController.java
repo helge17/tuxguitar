@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.player.base.MidiPlayerException;
+import org.herac.tuxguitar.song.models.TGDuration;
 
 public class JackEventController{
 	private JackSequencer sequencer;
@@ -70,7 +71,7 @@ public class JackEventController{
 	}
 	
 	public void reset(){
-		this.tick = (this.sequencer.getTickPosition() - 1);
+		this.tick = (this.sequencer.getTickPosition() - (TGDuration.QUARTER_TIME / 8) );
 		this.reset = true;
 	}
 	

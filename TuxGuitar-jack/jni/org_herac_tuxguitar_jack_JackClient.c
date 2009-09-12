@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
@@ -24,12 +23,14 @@ typedef struct {
 } jack_jni_synth_t;
 
 typedef struct {
+	int running;
 	pthread_mutex_t lock;
 	jack_client_t *client;
 	jack_jni_synth_t *midi;
 } jack_jni_handle_t;
 
 int  JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr);
+void JackShutdownCallbackImpl(void *ptr);
 
 JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* env, jobject obj)
 {
@@ -38,6 +39,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* 
 	jack_jni_handle_t *handle = (jack_jni_handle_t *) malloc( sizeof(jack_jni_handle_t) );
 	handle->client = NULL;
 	handle->midi = NULL;
+	handle->running = 0;
 	
 	pthread_mutex_init( &handle->lock , NULL );
 	
@@ -68,16 +70,15 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env
 			
 			if(handle->client == NULL)
 			{
-				handle->client = jack_client_open ("TuxGuitar", JackNullOption , NULL );
-				if( handle->client == NULL ){
-					fprintf (stderr, "jack server not running?\n");
-				}
-				
+				handle->client = jack_client_open ("TuxGuitar", JackNoStartServer , NULL );
 				if( handle->client != NULL ){
+					jack_on_shutdown(handle->client, JackShutdownCallbackImpl, handle);
 					jack_set_process_callback (handle->client, JackProcessCallbackImpl , handle);
 					jack_activate (handle->client);
 				}
 			}
+			
+			handle->running = ( handle->client != NULL ? 1 : 0 );
 			
 			pthread_mutex_unlock( &handle->lock );
 		}
@@ -97,6 +98,8 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* en
 				jack_client_close (handle->client);
 				handle->client = NULL;
 			}
+			
+			handle->running = 0;
 			
 			pthread_mutex_unlock( &handle->lock );
 		}
@@ -289,7 +292,8 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStop
 	}
 }
 
-JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportRunning(JNIEnv* env, jobject obj, jlong ptr){
+JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportRunning(JNIEnv* env, jobject obj, jlong ptr)
+{
 	jboolean result = JNI_FALSE;
 	
 	jack_jni_handle_t *handle = NULL;
@@ -305,6 +309,25 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportR
 					result = JNI_TRUE;
 				}
 			}
+			pthread_mutex_unlock( &handle->lock );
+		}
+	}
+	return result;
+}
+
+JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isServerRunning(JNIEnv* env, jobject obj, jlong ptr)
+{
+	jboolean result = JNI_FALSE;
+	
+	jack_jni_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL){
+		if( pthread_mutex_lock( &handle->lock ) == 0 ){
+			
+			if(handle->running > 0){
+				result = JNI_TRUE;
+			}
+			
 			pthread_mutex_unlock( &handle->lock );
 		}
 	}
@@ -390,4 +413,18 @@ int JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr){
 		}
 	}
 	return 0;
+}
+
+void JackShutdownCallbackImpl(void *ptr)
+{
+	jack_jni_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL){
+		if( pthread_mutex_lock( &handle->lock ) == 0 ){
+			
+			handle->running = 0;
+			
+			pthread_mutex_unlock( &handle->lock );
+		}
+	}
 }

@@ -113,6 +113,14 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportR
 
 /*
  * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    isServerRunning
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isServerRunning
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
  * Method:    addEventToQueue
  * Signature: (JI[B)V
  */
