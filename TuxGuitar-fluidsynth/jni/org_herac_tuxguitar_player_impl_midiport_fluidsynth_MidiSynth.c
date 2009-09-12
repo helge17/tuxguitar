@@ -126,7 +126,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_noteOn(JNIEnv* env, jobject ojb, jlong ptr, jint channel, jint note, jint velocity)
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_noteOn(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint note, jint velocity)
 {
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -135,7 +135,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_noteOff(JNIEnv* env, jobject ojb, jlong ptr, jint channel, jint note, jint velocity)
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_noteOff(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint note, jint velocity)
 {
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -144,7 +144,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_programChange(JNIEnv* env, jobject ojb, jlong ptr, jint channel, jint program)
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_programChange(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint program)
 {
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -153,7 +153,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_controlChange(JNIEnv* env, jobject ojb, jlong ptr, jint channel, jint control, jint value)
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_controlChange(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint control, jint value)
 {
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -162,7 +162,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_pitchBend(JNIEnv* env, jobject ojb, jlong ptr, jint channel, jint value)
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_pitchBend(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint value)
 {
 	fluid_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
