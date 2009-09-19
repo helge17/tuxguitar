@@ -16,16 +16,16 @@ public class OpenDocListener {
 	public void init() throws Throwable{
 		long cls = TGCocoa.objc_lookUpClass ("SWTApplicationDelegate");
 		if( cls != 0 ){
-			Callback callback = new Callback( this , "callbackProc", 4 );
+			Callback callback = TGCocoa.newCallback( this , "callbackProc64" , "callbackProc32", 4 );
 			
-			long callbackProc = callback.getAddress();
+			long callbackProc = TGCocoa.getCallbackAddress( callback );
 			if( callbackProc != 0 ){
 				TGCocoa.class_addMethod(cls, sel_application_openFile_, callbackProc , "B:@@");
 			}
 		}
 	}
 	
-	public int callbackProc(long id, long sel,long arg0, long arg1) {
+	public long callbackProc(long id, long sel,long arg0, long arg1) {
 		if( this.isEnabled() ){
 			if (sel == sel_application_openFile_) {
 				try {
@@ -41,8 +41,12 @@ public class OpenDocListener {
 		return 0;
 	}
 	
-	public int callbackProc(int id, int sel,int arg0, int arg1) {
-		return callbackProc( (long)id, (long)sel, (long)arg0, (long)arg1);
+	public long callbackProc64(long id, long sel,long arg0, long arg1) {
+		return this.callbackProc(id, sel, arg0, arg1);
+	}
+	
+	public int callbackProc32(int id, int sel,int arg0, int arg1) {
+		return (int)this.callbackProc( (long)id, (long)sel, (long)arg0, (long)arg1);
 	}
 	
 	public boolean isEnabled() {

@@ -25,13 +25,13 @@ public class MacToolbar {
 	}
 	
 	public void init( Shell shell ) throws Throwable{
-		Callback callback = new Callback( this , "callbackProc", 3 );
-		long callbackProc = callback.getAddress();
+		Callback callback = TGCocoa.newCallback( this , "callbackProc64", "callbackProc32", 3 );
+		long callbackProc = TGCocoa.getCallbackAddress( callback );
 		
 		if( callbackProc != 0 ){
 			String classname = ("MacToolbarDelegate");
 			if( TGCocoa.objc_lookUpClass ( classname ) == 0 ) {
-				long cls = TGCocoa.objc_allocateClassPair(OS.class_NSApplication, classname , 0 ) ;
+				long cls = TGCocoa.objc_allocateClassPair( classname , 0 ) ;
 				TGCocoa.class_addIvar(cls, SWT_OBJECT, C.PTR_SIZEOF , (byte)(C.PTR_SIZEOF == 4 ? 2 : 3), new byte[]{'*','\0'} );
 				TGCocoa.class_addMethod(cls, sel_toolbarButtonClicked_, callbackProc , "@:@");
 				TGCocoa.objc_registerClassPair(cls);
@@ -41,7 +41,7 @@ public class MacToolbar {
 			delegate.alloc().init();
 			//TODO: The pointer returned by NewGlobalRef is not auto deleted.
 			// We must to free the pointer when plugin is closed using "OS.DeleteGlobalRef".
-			OS.object_setInstanceVariable( delegate.id , SWT_OBJECT , OS.NewGlobalRef( this ) );
+			TGCocoa.object_setInstanceVariable( MacToolbarDelegate.class.getField("id").get( delegate ) , SWT_OBJECT , TGCocoa.NewGlobalRef( this ) );
 			
 			NSToolbar dummyBar = new NSToolbar();
 			dummyBar.alloc();
@@ -63,7 +63,7 @@ public class MacToolbar {
 		}
 	}
 	
-    public int callbackProc( long id, long sel, long arg0 ) {
+    public long callbackProc( long id, long sel, long arg0 ) {
     	if ( this.isEnabled() ){
 	    	if ( sel == sel_toolbarButtonClicked_ ) {
 	    		return handleToogleToolbarCommand();
@@ -72,8 +72,12 @@ public class MacToolbar {
         return OS.noErr;
     }
     
-    public int callbackProc( int id, int sel, int arg0 ) {
-    	return this.callbackProc( (long)id, (long)sel, (long)arg0);
+    public long callbackProc64( long id, long sel, long arg0 ) {
+    	return this.callbackProc(id, sel, arg0);
+    }
+    
+    public int callbackProc32( int id, int sel, int arg0 ) {
+    	return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
     }
     
 	public boolean isEnabled() {

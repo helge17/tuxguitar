@@ -28,9 +28,8 @@ public class MacMenu {
 	public void init() throws Throwable{
 		long cls = TGCocoa.objc_lookUpClass ("SWTApplicationDelegate");
 		if( cls != 0 ){
-			Callback callback = new Callback( this , "callbackProc", 3 );
-			
-			long callbackProc = callback.getAddress();
+			Callback callback = TGCocoa.newCallback( this , "callbackProc64", "callbackProc32", 3 );
+			long callbackProc = TGCocoa.getCallbackAddress( callback );
 			if( callbackProc != 0 ){
 				TGCocoa.class_addMethod(cls, sel_preferencesMenuItemSelected_, callbackProc , "@:@");
 				TGCocoa.class_addMethod(cls, sel_aboutMenuItemSelected_, callbackProc , "@:@");
@@ -38,25 +37,28 @@ public class MacMenu {
 		}
 		NSApplication app = NSApplication.sharedApplication();
 		NSMenu mainMenu = app.mainMenu();
-		if( mainMenu.numberOfItems() > 0 ){
-			NSMenuItem appMenuItem = mainMenu.itemAtIndex( 0 );
+		if( TGCocoa.getMenuNumberOfItems( mainMenu ) > 0 ){
+			//NSMenuItem appMenuItem = mainMenu.itemAtIndex( 0 );
+			NSMenuItem appMenuItem = TGCocoa.getMenuItemAtIndex( mainMenu , 0 );
 			NSMenu appMenu = appMenuItem.submenu();
 			
-			long itemCount = appMenu.numberOfItems();
+			long itemCount = TGCocoa.getMenuNumberOfItems( appMenu );
 			if( itemCount > kPreferencesMenuItem ) {
-				NSMenuItem menuItem = appMenu.itemAtIndex( kPreferencesMenuItem ); 
+				//NSMenuItem menuItem = appMenu.itemAtIndex( kPreferencesMenuItem );
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kPreferencesMenuItem );
 				menuItem.setEnabled( true );
 				TGCocoa.setControlAction(menuItem, sel_preferencesMenuItemSelected_);
 			}
 			if( itemCount > kAboutMenuItem ) {
-				NSMenuItem menuItem = appMenu.itemAtIndex( kAboutMenuItem ); 
+				//NSMenuItem menuItem = appMenu.itemAtIndex( kAboutMenuItem );
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kAboutMenuItem );
 				menuItem.setEnabled( true );
 				TGCocoa.setControlAction(menuItem, sel_aboutMenuItemSelected_);
 			}
 		}
 	}
 	
-    public int callbackProc( long id, long sel, long arg0 ) {
+    public long callbackProc( long id, long sel, long arg0 ) {
     	if ( this.isEnabled() ){
 	    	if ( sel == sel_preferencesMenuItemSelected_ ) {
 	        	return handlePreferencesCommand();
@@ -67,8 +69,12 @@ public class MacMenu {
         return OS.noErr;
     }
     
-    public int callbackProc( int id, int sel, int arg0 ) {
-    	return callbackProc( (long)id, (long)sel, (long)arg0);
+    public long callbackProc64( long id, long sel, long arg0 ) {
+    	return this.callbackProc(id, sel, arg0);
+    }
+    
+    public int callbackProc32( int id, int sel, int arg0 ) {
+    	return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
     }
     
 	public boolean isEnabled() {
