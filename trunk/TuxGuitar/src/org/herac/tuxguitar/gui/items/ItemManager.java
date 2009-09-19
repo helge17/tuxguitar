@@ -77,6 +77,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	private boolean layout_locked;
 	private boolean shouldReloadToolBars;
+	private boolean coolbarVisible;
 	private boolean updateCoolBarWrapIndicesEnabled;
 	
 	public ItemManager(){
@@ -132,6 +133,22 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 		}
 	}
 	
+	public void toogleToolbarVisibility(){
+		if(this.coolBar != null && !this.coolBar.isDisposed()){
+			this.layout_locked = true;
+			this.coolBar.setVisible( !this.coolbarVisible );
+			if( this.coolbarVisible ){
+				this.clearCoolBar();
+			}else{
+				this.makeCoolItems();
+			}
+			
+			this.layout_locked = false;
+			
+			this.layoutCoolBar();
+		}
+	}
+	
 	private void clearCoolBar(){
 		if(this.coolBar != null && !this.coolBar.isDisposed()){
 			this.loadedToolItems.clear();
@@ -144,6 +161,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 				controls[i].dispose();
 			}
 		}
+		this.coolbarVisible = false;
 	}
 	
 	protected void updateCoolBarWrapIndices(){
@@ -212,6 +230,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 				this.makeToolBar(this.toolItems[i]);
 			}
 		}
+		this.coolbarVisible = true;
 	}
 	
 	private void makeToolBar(ToolItems item){
