@@ -1,0 +1,96 @@
+package org.herac.tuxguitar.cocoa.menu;
+
+import org.eclipse.swt.internal.Callback;
+import org.eclipse.swt.internal.cocoa.NSApplication;
+import org.eclipse.swt.internal.cocoa.NSMenu;
+import org.eclipse.swt.internal.cocoa.NSMenuItem;
+import org.eclipse.swt.internal.cocoa.OS;
+import org.herac.tuxguitar.cocoa.TGCocoa;
+import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.actions.file.ExitAction;
+import org.herac.tuxguitar.gui.actions.help.ShowAboutAction;
+import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
+
+public class MacMenu {
+	
+    private static final int kAboutMenuItem = 0;
+    private static final int kPreferencesMenuItem = 2;
+    
+    private static long sel_preferencesMenuItemSelected_ = TGCocoa.sel_registerName("preferencesMenuItemSelected:");
+    private static long sel_aboutMenuItemSelected_ = TGCocoa.sel_registerName("aboutMenuItemSelected:");
+    
+    private boolean enabled;
+    
+	public MacMenu(){
+		super();
+	}
+	
+	public void init() throws Throwable{
+		long cls = TGCocoa.objc_lookUpClass ("SWTApplicationDelegate");
+		if( cls != 0 ){
+			Callback callback = new Callback( this , "callbackProc", 3 );
+			
+			long callbackProc = callback.getAddress();
+			if( callbackProc != 0 ){
+				TGCocoa.class_addMethod(cls, sel_preferencesMenuItemSelected_, callbackProc , "@:@");
+				TGCocoa.class_addMethod(cls, sel_aboutMenuItemSelected_, callbackProc , "@:@");
+			}
+		}
+		NSApplication app = NSApplication.sharedApplication();
+		NSMenu mainMenu = app.mainMenu();
+		if( mainMenu.numberOfItems() > 0 ){
+			NSMenuItem appMenuItem = mainMenu.itemAtIndex( 0 );
+			NSMenu appMenu = appMenuItem.submenu();
+			
+			long itemCount = appMenu.numberOfItems();
+			if( itemCount > kPreferencesMenuItem ) {
+				NSMenuItem menuItem = appMenu.itemAtIndex( kPreferencesMenuItem ); 
+				menuItem.setEnabled( true );
+				TGCocoa.setControlAction(menuItem, sel_preferencesMenuItemSelected_);
+			}
+			if( itemCount > kAboutMenuItem ) {
+				NSMenuItem menuItem = appMenu.itemAtIndex( kAboutMenuItem ); 
+				menuItem.setEnabled( true );
+				TGCocoa.setControlAction(menuItem, sel_aboutMenuItemSelected_);
+			}
+		}
+	}
+	
+    public int callbackProc( long id, long sel, long arg0 ) {
+    	if ( this.isEnabled() ){
+	    	if ( sel == sel_preferencesMenuItemSelected_ ) {
+	        	return handlePreferencesCommand();
+	        }else if ( sel == sel_aboutMenuItemSelected_ ) {
+	        	return handleAboutCommand();
+	        }
+    	}
+        return OS.noErr;
+    }
+    
+    public int callbackProc( int id, int sel, int arg0 ) {
+    	return callbackProc( (long)id, (long)sel, (long)arg0);
+    }
+    
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public int handleQuitCommand(){
+		TuxGuitar.instance().getAction(ExitAction.NAME).process(null);
+		return OS.noErr;
+	}
+	
+	public int handleAboutCommand(){
+		TuxGuitar.instance().getAction(ShowAboutAction.NAME).process(null);
+		return OS.noErr;
+	}
+	
+	public int handlePreferencesCommand(){
+		TuxGuitar.instance().getAction(EditConfigAction.NAME).process(null);
+		return OS.noErr;
+	}
+}
