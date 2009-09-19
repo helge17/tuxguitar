@@ -3,7 +3,9 @@ package org.herac.tuxguitar.cocoa;
 import java.lang.reflect.Method;
 
 import org.eclipse.swt.internal.C;
+import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.cocoa.NSControl;
+import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
 import org.eclipse.swt.internal.cocoa.NSString;
 import org.eclipse.swt.internal.cocoa.OS;
@@ -28,12 +30,16 @@ public class TGCocoa {
 		return 0;
 	}
 	
-	public static final long objc_allocateClassPair(long superclass, String name, long extraBytes) throws Throwable{
-		return longValue(invokeMethod(OS.class, "objc_allocateClassPair", new Object[] { osType(superclass), name, osType(extraBytes) }));
+	public static final long objc_allocateClassPair(String name, long extraBytes) throws Throwable{
+		return longValue(invokeMethod(OS.class, "objc_allocateClassPair", new Object[] { OS.class.getField("class_NSObject").get(OS.class), name, osType(extraBytes) }));
 	}
 	
 	public static final boolean class_addIvar(long cls, byte[] name, long size, byte alignment, byte[] types) throws Throwable{
 		return boolValue(invokeMethod(OS.class, "class_addIvar", new Object[] { osType(cls), name, osType(size), new Byte(alignment), types }));
+	}
+	
+	public static final long object_setInstanceVariable(Object idValue, byte[] name, long value) throws Throwable{
+		return longValue(invokeMethod(OS.class, "object_setInstanceVariable", new Object[] { idValue , name, osType(value) }));
 	}
 	
 	public static final boolean class_addMethod(long cls, long name, long imp, String types) throws Throwable{
@@ -52,10 +58,30 @@ public class TGCocoa {
 		invokeMethod(NSMenuItem.class, control, "setAction", new Object[] { osType(aSelector) });
 	}
 	
+	public static final NSMenuItem getMenuItemAtIndex(NSMenu menu, long index) throws Throwable{
+		return (NSMenuItem)invokeMethod(NSMenu.class, menu, "itemAtIndex", new Object[] { osType(index) });
+	}
+	
 	public static final String getNSStringValue( long pointer ) throws Throwable {
 		NSString nsString = new NSString();
 		NSString.class.getField("id").set(nsString, osType(pointer) );
 		return nsString.getString();
+	}
+	
+	public static final Callback newCallback(Object object, String method64, String method32, int argCount) throws Throwable {
+		return new Callback( object, ( C.PTR_SIZEOF == 8 ? method64 : method32 ) , argCount );
+	}
+	
+	public static final long getCallbackAddress( Callback callback ) throws Throwable {
+		return longValue(invokeMethod(Callback.class, callback , "getAddress", new Object[] {}));
+	}
+	
+	public static final long getMenuNumberOfItems( NSMenu menu ) throws Throwable {
+		return longValue(invokeMethod(NSMenu.class, menu , "numberOfItems", new Object[] {}));
+	}
+	
+	public static final long NewGlobalRef( Object object ) throws Throwable{
+		return longValue(invokeMethod(OS.class, "NewGlobalRef", new Object[] { object }));
 	}
 	
 	private static Object invokeMethod(Class clazz, String methodName, Object[] args) throws Throwable {
