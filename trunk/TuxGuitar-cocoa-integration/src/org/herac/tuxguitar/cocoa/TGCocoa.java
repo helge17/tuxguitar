@@ -89,6 +89,10 @@ public class TGCocoa {
 		return longValue( method.invoke(OS.class, new Object[] { object }) ) ;
 	}
 	
+	public static final void DeleteGlobalRef( long ref ) throws Throwable{
+		invokeMethod(OS.class, "DeleteGlobalRef", new Object[] { osType(ref) } );
+	}
+	
 	public static final MacToolbarDelegate newMacToolbarDelegate() throws Throwable{
 		return (MacToolbarDelegate)Class.forName( MacToolbarDelegate.class.getName() ).newInstance();
 	}

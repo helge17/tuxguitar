@@ -19,6 +19,10 @@ public class MacToolbar {
 	
 	private boolean enabled;
 	
+	private long delegateRef;
+	
+	private MacToolbarDelegate delegate;
+	
 	public MacToolbar(){
 		super();
 	}
@@ -36,11 +40,11 @@ public class MacToolbar {
 				TGCocoa.objc_registerClassPair(cls);
 			}
 			
-			MacToolbarDelegate delegate = TGCocoa.newMacToolbarDelegate();
-			delegate.alloc().init();
-			//TODO: The pointer returned by NewGlobalRef is not auto deleted.
-			// We must to free the pointer when plugin is closed using "OS.DeleteGlobalRef".
-			TGCocoa.object_setInstanceVariable( MacToolbarDelegate.class.getField("id").get( delegate ) , SWT_OBJECT , TGCocoa.NewGlobalRef( MacToolbar.this ) );
+			this.delegate = TGCocoa.newMacToolbarDelegate();
+			this.delegate.alloc().init();
+			this.delegateRef = TGCocoa.NewGlobalRef( MacToolbar.this );
+			
+			TGCocoa.object_setInstanceVariable( MacToolbarDelegate.class.getField("id").get( delegate ) , SWT_OBJECT , this.delegateRef );
 			
 			NSToolbar dummyBar = new NSToolbar();
 			dummyBar.alloc();
@@ -57,6 +61,13 @@ public class MacToolbar {
 				toolbarButton.setTarget( delegate );
 				TGCocoa.setControlAction( toolbarButton , sel_toolbarButtonClicked_ );
 			}
+		}
+	}
+	
+	public void finalize() throws Throwable{
+		if( this.delegateRef != 0 ){
+			TGCocoa.DeleteGlobalRef( this.delegateRef );
+			this.delegateRef = 0;
 		}
 	}
 	
