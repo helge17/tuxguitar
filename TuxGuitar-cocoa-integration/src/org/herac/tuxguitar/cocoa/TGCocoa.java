@@ -4,13 +4,17 @@ import java.lang.reflect.Method;
 
 import org.eclipse.swt.internal.C;
 import org.eclipse.swt.internal.Callback;
+import org.eclipse.swt.internal.cocoa.NSButton;
 import org.eclipse.swt.internal.cocoa.NSControl;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
 import org.eclipse.swt.internal.cocoa.NSString;
+import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.internal.cocoa.OS;
 
 public class TGCocoa {
+	
+	public static final int noErr = OS.noErr;
 	
 	public static final long sel_registerName(String selectorName){
 		try {
@@ -21,13 +25,8 @@ public class TGCocoa {
 		return 0;
 	}
 	
-	public static final long objc_lookUpClass(String classname){
-		try {
-			return longValue(invokeMethod(OS.class, "objc_lookUpClass", new Object[] { classname }));
-		}catch (Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return 0;
+	public static final long objc_lookUpClass(String classname) throws Throwable{
+		return longValue(invokeMethod(OS.class, "objc_lookUpClass", new Object[] { classname }));
 	}
 	
 	public static final long objc_allocateClassPair(String name, long extraBytes) throws Throwable{
@@ -60,6 +59,10 @@ public class TGCocoa {
 	
 	public static final NSMenuItem getMenuItemAtIndex(NSMenu menu, long index) throws Throwable{
 		return (NSMenuItem)invokeMethod(NSMenu.class, menu, "itemAtIndex", new Object[] { osType(index) });
+	}
+	
+	public static final NSButton getStandardWindowButton(NSWindow nsWindow, long index) throws Throwable{
+		return (NSButton)invokeMethod(NSWindow.class, nsWindow, "standardWindowButton", new Object[] { osType(index) });
 	}
 	
 	public static final String getNSStringValue( long pointer ) throws Throwable {

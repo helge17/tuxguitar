@@ -6,7 +6,6 @@ import org.eclipse.swt.internal.cocoa.NSButton;
 import org.eclipse.swt.internal.cocoa.NSString;
 import org.eclipse.swt.internal.cocoa.NSToolbar;
 import org.eclipse.swt.internal.cocoa.NSWindow;
-import org.eclipse.swt.internal.cocoa.OS;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.cocoa.TGCocoa;
 
@@ -14,7 +13,7 @@ public class MacToolbar {
 	
 	private static final byte[] SWT_OBJECT = {'S', 'W', 'T', '_', 'O', 'B', 'J', 'E', 'C', 'T', '\0'};
 	
-    private static final int NSWindowToolbarButton = 3;
+    private static final long NSWindowToolbarButton = 3;
     
     private static final long sel_toolbarButtonClicked_ = TGCocoa.sel_registerName("toolbarButtonClicked:");
     
@@ -53,9 +52,7 @@ public class MacToolbar {
 			dummyBar.release();
 			nsWindow.setShowsToolbarButton(true);
 			
-			// Override the target and action of the toolbar button so we can
-			// control it.
-			NSButton toolbarButton = nsWindow.standardWindowButton(NSWindowToolbarButton);
+			NSButton toolbarButton = TGCocoa.getStandardWindowButton(nsWindow, NSWindowToolbarButton);
 			if (toolbarButton != null) {
 				toolbarButton.setTarget( delegate );
 				TGCocoa.setControlAction( toolbarButton , sel_toolbarButtonClicked_ );
@@ -69,7 +66,7 @@ public class MacToolbar {
 	    		return handleToogleToolbarCommand();
 	        }
     	}
-        return OS.noErr;
+        return TGCocoa.noErr;
     }
     
     public long callbackProc64( long id, long sel, long arg0 ) {
@@ -88,8 +85,8 @@ public class MacToolbar {
 		this.enabled = enabled;
 	}
 	
-	public int handleToogleToolbarCommand(){
+	public long handleToogleToolbarCommand(){
 		MacToolbarAction.toogleToolbar();
-		return OS.noErr;
+		return TGCocoa.noErr;
 	}
 }

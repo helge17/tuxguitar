@@ -28,5 +28,4 @@ public class MacMenuPlugin extends TGPluginAdapter {
 			throw new TGPluginException( throwable );
 		}
 	}
-
 }
