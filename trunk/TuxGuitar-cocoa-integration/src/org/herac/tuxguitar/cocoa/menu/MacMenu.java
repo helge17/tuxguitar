@@ -12,8 +12,8 @@ import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
 
 public class MacMenu {
 	
-	private static final int kAboutMenuItem = 0;
-	private static final int kPreferencesMenuItem = 2;
+	private static final long kAboutMenuItem = 0;
+	private static final long kPreferencesMenuItem = 2;
 	
 	private static long sel_preferencesMenuItemSelected_ = TGCocoa.sel_registerName("preferencesMenuItemSelected:");
 	private static long sel_aboutMenuItemSelected_ = TGCocoa.sel_registerName("aboutMenuItemSelected:");
