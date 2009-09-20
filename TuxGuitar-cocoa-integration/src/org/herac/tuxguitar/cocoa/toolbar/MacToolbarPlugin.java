@@ -13,7 +13,13 @@ public class MacToolbarPlugin extends TGPluginAdapter {
 	}
 	
 	public void close() throws TGPluginException {
-		// Nothing todo
+		try {
+			if( this.macToolbar != null ){
+				this.macToolbar.finalize();
+			}
+		} catch( Throwable throwable ){
+			throw new TGPluginException( throwable );
+		}
 	}
 	
 	public void setEnabled(boolean enabled) throws TGPluginException {
