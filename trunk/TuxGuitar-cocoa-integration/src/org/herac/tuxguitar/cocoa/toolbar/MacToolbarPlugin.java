@@ -29,5 +29,4 @@ public class MacToolbarPlugin extends TGPluginAdapter {
 			throw new TGPluginException( throwable );
 		}
 	}
-
 }

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 
 public class TGCocoaIntegrationPlugin extends TGPluginList {
-
+	
 	private List plugins; 
 	
 	protected List getPlugins() throws TGPluginException {
@@ -22,5 +22,21 @@ public class TGCocoaIntegrationPlugin extends TGPluginList {
 			this.plugins.add(new MacToolbarPlugin());
 		}
 		return this.plugins;
+	}
+	
+	public String getAuthor() {
+		return "Auria & Julian Casadesus";
+	}
+
+	public String getDescription() {		
+		return "Cocoa Integration Plugin";
+	}
+
+	public String getName() {
+		return "Cocoa Integration Plugin";
+	}
+
+	public String getVersion() {
+		return "1.0";
 	}
 }

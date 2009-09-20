@@ -28,5 +28,4 @@ public class OpenDocPlugin extends TGPluginAdapter {
 			throw new TGPluginException( throwable );
 		}
 	}
-
 }
