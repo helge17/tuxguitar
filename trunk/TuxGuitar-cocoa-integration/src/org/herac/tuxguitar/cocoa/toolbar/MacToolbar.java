@@ -13,12 +13,12 @@ public class MacToolbar {
 	
 	private static final byte[] SWT_OBJECT = {'S', 'W', 'T', '_', 'O', 'B', 'J', 'E', 'C', 'T', '\0'};
 	
-    private static final long NSWindowToolbarButton = 3;
-    
-    private static final long sel_toolbarButtonClicked_ = TGCocoa.sel_registerName("toolbarButtonClicked:");
-    
-    private boolean enabled;
-    
+	private static final long NSWindowToolbarButton = 3;
+	
+	private static final long sel_toolbarButtonClicked_ = TGCocoa.sel_registerName("toolbarButtonClicked:");
+	
+	private boolean enabled;
+	
 	public MacToolbar(){
 		super();
 	}
@@ -60,23 +60,23 @@ public class MacToolbar {
 		}
 	}
 	
-    public long callbackProc( long id, long sel, long arg0 ) {
-    	if ( this.isEnabled() ){
-	    	if ( sel == sel_toolbarButtonClicked_ ) {
-	    		return handleToogleToolbarCommand();
-	        }
-    	}
-        return TGCocoa.noErr;
-    }
-    
-    public long callbackProc64( long id, long sel, long arg0 ) {
-    	return this.callbackProc(id, sel, arg0);
-    }
-    
-    public int callbackProc32( int id, int sel, int arg0 ) {
-    	return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
-    }
-    
+	public long callbackProc( long id, long sel, long arg0 ) {
+		if ( this.isEnabled() ){
+			if ( sel == sel_toolbarButtonClicked_ ) {
+				return handleToogleToolbarCommand();
+			}
+		}
+		return TGCocoa.noErr;
+	}
+	
+	public long callbackProc64( long id, long sel, long arg0 ) {
+		return this.callbackProc(id, sel, arg0);
+	}
+	
+	public int callbackProc32( int id, int sel, int arg0 ) {
+		return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
+	}
+	
 	public boolean isEnabled() {
 		return this.enabled;
 	}
