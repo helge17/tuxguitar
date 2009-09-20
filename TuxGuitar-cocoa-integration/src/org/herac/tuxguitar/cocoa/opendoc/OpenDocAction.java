@@ -8,7 +8,7 @@ import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.util.ConfirmDialog;
 
 public class OpenDocAction {
-
+	
 	public static void saveAndOpen(final String file){
 		ActionLock.lock();
 		

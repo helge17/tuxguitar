@@ -12,14 +12,14 @@ import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
 
 public class MacMenu {
 	
-    private static final int kAboutMenuItem = 0;
-    private static final int kPreferencesMenuItem = 2;
-    
-    private static long sel_preferencesMenuItemSelected_ = TGCocoa.sel_registerName("preferencesMenuItemSelected:");
-    private static long sel_aboutMenuItemSelected_ = TGCocoa.sel_registerName("aboutMenuItemSelected:");
-    
-    private boolean enabled;
-    
+	private static final int kAboutMenuItem = 0;
+	private static final int kPreferencesMenuItem = 2;
+	
+	private static long sel_preferencesMenuItemSelected_ = TGCocoa.sel_registerName("preferencesMenuItemSelected:");
+	private static long sel_aboutMenuItemSelected_ = TGCocoa.sel_registerName("aboutMenuItemSelected:");
+	
+	private boolean enabled;
+	
 	public MacMenu(){
 		super();
 	}
@@ -54,25 +54,25 @@ public class MacMenu {
 		}
 	}
 	
-    public long callbackProc( long id, long sel, long arg0 ) {
-    	if ( this.isEnabled() ){
-	    	if ( sel == sel_preferencesMenuItemSelected_ ) {
-	        	return handlePreferencesCommand();
-	        }else if ( sel == sel_aboutMenuItemSelected_ ) {
-	        	return handleAboutCommand();
-	        }
-    	}
-        return TGCocoa.noErr;
-    }
-    
-    public long callbackProc64( long id, long sel, long arg0 ) {
-    	return this.callbackProc(id, sel, arg0);
-    }
-    
-    public int callbackProc32( int id, int sel, int arg0 ) {
-    	return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
-    }
-    
+	public long callbackProc( long id, long sel, long arg0 ) {
+		if ( this.isEnabled() ){
+			if ( sel == sel_preferencesMenuItemSelected_ ) {
+				return handlePreferencesCommand();
+			}else if ( sel == sel_aboutMenuItemSelected_ ) {
+				return handleAboutCommand();
+			}
+		}
+		return TGCocoa.noErr;
+	}
+	
+	public long callbackProc64( long id, long sel, long arg0 ) {
+		return this.callbackProc(id, sel, arg0);
+	}
+	
+	public int callbackProc32( int id, int sel, int arg0 ) {
+		return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
+	}
+	
 	public boolean isEnabled() {
 		return this.enabled;
 	}

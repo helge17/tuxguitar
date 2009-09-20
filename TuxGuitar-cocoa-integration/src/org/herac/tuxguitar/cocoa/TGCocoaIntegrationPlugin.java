@@ -27,15 +27,15 @@ public class TGCocoaIntegrationPlugin extends TGPluginList {
 	public String getAuthor() {
 		return "Auria & Julian Casadesus";
 	}
-
-	public String getDescription() {		
+	
+	public String getDescription() {
 		return "Cocoa Integration Plugin";
 	}
-
+	
 	public String getName() {
 		return "Cocoa Integration Plugin";
 	}
-
+	
 	public String getVersion() {
 		return "1.0";
 	}
