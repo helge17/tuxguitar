@@ -13,3 +13,5 @@ TuxGuitar 1.2 changes:
 * Better fluidsynth plugin
 * New jack plugin
 * New community integration plugin
+* New cocoa integration plugin
+* New audio unit plugin
