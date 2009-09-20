@@ -11,6 +11,7 @@ import org.eclipse.swt.internal.cocoa.NSMenuItem;
 import org.eclipse.swt.internal.cocoa.NSString;
 import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.internal.cocoa.OS;
+import org.herac.tuxguitar.cocoa.toolbar.MacToolbarDelegate;
 
 public class TGCocoa {
 	
@@ -84,7 +85,12 @@ public class TGCocoa {
 	}
 	
 	public static final long NewGlobalRef( Object object ) throws Throwable{
-		return longValue(invokeMethod(OS.class, "NewGlobalRef", new Object[] { object }));
+		Method method = OS.class.getMethod("NewGlobalRef", new Class[] { Object.class });
+		return longValue( method.invoke(OS.class, new Object[] { object }) ) ;
+	}
+	
+	public static final MacToolbarDelegate newMacToolbarDelegate() throws Throwable{
+		return (MacToolbarDelegate)Class.forName( MacToolbarDelegate.class.getName() ).newInstance();
 	}
 	
 	private static Object invokeMethod(Class clazz, String methodName, Object[] args) throws Throwable {
