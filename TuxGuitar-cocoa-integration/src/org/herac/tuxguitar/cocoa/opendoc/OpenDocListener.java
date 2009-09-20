@@ -38,7 +38,7 @@ public class OpenDocListener {
 				}
 			}
 		}
-		return 0;
+		return TGCocoa.noErr;
 	}
 	
 	public long callbackProc64(long id, long sel,long arg0, long arg1) {
