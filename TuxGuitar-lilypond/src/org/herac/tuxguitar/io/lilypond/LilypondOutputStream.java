@@ -101,6 +101,7 @@ public class LilypondOutputStream {
 		
 		this.writer.println(indent(1) + "indent = #" + (this.addTrackTitleOnGroup(song) ? 30 : 0));
 		this.writer.println(indent(1) + "printallheaders = #" + getLilypondBoolean(true));
+		this.writer.println(indent(1) + "print-all-headers = #" + getLilypondBoolean(true));
 		this.writer.println(indent(1) + "ragged-right = #" + getLilypondBoolean(false));
 		this.writer.println(indent(1) + "ragged-bottom = #" + getLilypondBoolean(true));
 		this.writer.println("}");
