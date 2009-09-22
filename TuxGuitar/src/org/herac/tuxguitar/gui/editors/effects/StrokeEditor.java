@@ -43,7 +43,7 @@ public class StrokeEditor extends SelectionAdapter{
 		
 		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
-		dialog.setText(TuxGuitar.getProperty("stroke.editor"));
+		dialog.setText(TuxGuitar.getProperty("beat.stroke"));
 		
 		//-----defaults-------------------------------------------------
 		int duration = TGDuration.SIXTEENTH;
