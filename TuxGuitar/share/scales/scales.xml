@@ -138,5 +138,19 @@
 	<scale name="Lydian #3" keys="1,3,6,7,8,10,12" />
 	<scale name="Mixolydian #2" keys="1,4,5,6,8,10,11" />
 	<scale name="Aeolian #1" keys="1,2,3,5,7,8,10" />
-	<scale name="Locian #7" keys="1,2,4,6,7,9,12" />	
+	<scale name="Locian #7" keys="1,2,4,6,7,9,12" />
+	<scale name="Ionian #1b3" keys="1,2,3,5,7,9,11" />
+	<scale name="Dorian #7b2" keys="1,2,4,6,8,10,12" />
+	<scale name="Phrygian #6b1" keys="1,3,5,7,9,11,12" />
+	<scale name="Lydian #5b7" keys="1,3,5,7,9,10,11" />
+	<scale name="Mixolydian #4b6" keys="1,3,5,7,8,9,11" />
+	<scale name="Aeolian #3b5" keys="1,3,5,6,7,9,11" />
+	<scale name="Locian #2b4" keys="1,3,4,5,7,9,11" />
+	<scale name="Ionian b5b6" keys="1,3,5,6,7,9,12" />
+	<scale name="Dorian b4b5" keys="1,3,4,5,7,10,11" />
+	<scale name="Phrygian b3b4" keys="1,2,3,5,8,9,11" />
+	<scale name="Lydian b2b3" keys="1,2,4,7,8,10,12" />
+	<scale name="Mixolydian b1b2" keys="1,3,6,7,9,11,12" />
+	<scale name="Aeolian b7b1" keys="1,4,5,7,9,10,11" />
+	<scale name="Locian b6b7" keys="1,2,4,6,7,8,10" />
 </scales>
