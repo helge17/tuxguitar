@@ -35,7 +35,7 @@ public class AboutDialog {
 	private static final int IMAGE_WIDTH = 100;
 	private static final int IMAGE_HEIGHT = 100;
 	
-	private static final int TAB_ITEM_WIDTH = 640;
+	private static final int TAB_ITEM_WIDTH = 660;
 	private static final int TAB_ITEM_HEIGHT = 300;
 	
 	protected Composite imageComposite;
