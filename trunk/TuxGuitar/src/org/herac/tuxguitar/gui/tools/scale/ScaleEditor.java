@@ -33,7 +33,7 @@ public class ScaleEditor {
 		keys.select(TuxGuitar.instance().getScaleManager().getSelectionKey());
 		
 		final List scales = new List(composite,SWT.BORDER | SWT.V_SCROLL);
-		scales.setLayoutData(new GridData(250,200));
+		scales.setLayoutData(new GridData(SWT.DEFAULT,200));
 		scales.add("None");
 		String[] scaleNames = TuxGuitar.instance().getScaleManager().getScaleNames();
 		for(int i = 0;i < scaleNames.length;i ++){
