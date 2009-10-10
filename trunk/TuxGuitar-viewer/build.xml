@@ -49,6 +49,17 @@
 			<fileset dir="${build.path}" />
 		</jar>
 		
+		<genkey alias="tuxguitar" storepass="tuxguitar" keystore="${build.path}/tuxguitar-keystore" >
+			<dname>
+				<param name="CN" value="TuxGuitar"/>
+				<param name="OU" value="TuxGuitar"/>
+				<param name="O"  value="Herac"/>
+				<param name="C"  value="AR"/>
+			</dname>
+		</genkey>
+		<signjar alias="tuxguitar" keystore="${build.path}/tuxguitar-keystore" storepass="tuxguitar" keypass="tuxguitar">
+			<fileset file="${build.jar}" />
+		</signjar>
 	</target>
 	
 	<target name="install" depends="all">
@@ -60,7 +71,6 @@
 		<copy todir="${dist.dst.path}${dist.jar.path}">
 			<fileset file="${build.jar}"/>
 		</copy>
-		
 	</target>
 	
 </project>
