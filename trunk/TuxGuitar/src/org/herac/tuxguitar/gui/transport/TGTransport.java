@@ -409,12 +409,16 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 	}
 	
 	public void gotoPlayerPosition(){
+		TuxGuitar.instance().lock();
+		
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
 		}
 		TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
+		TuxGuitar.instance().unlock();
+		
 		TuxGuitar.instance().updateCache(true);
 	}
 	
