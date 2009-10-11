@@ -311,6 +311,7 @@ public class Caret {
 	}
 	
 	private void updateNote(){
+		// TODO: Null Pointer
 		this.selectedNote = getSongManager().getMeasureManager().getNote(getMeasure(),getPosition(),getSelectedString().getNumber());
 	}
 	
