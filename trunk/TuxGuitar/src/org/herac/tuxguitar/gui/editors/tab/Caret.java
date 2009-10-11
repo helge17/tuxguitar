@@ -285,9 +285,8 @@ public class Caret {
 	}
 	
 	private void updateString(){
-		int stringCount = getTrack().getStrings().size();
-		if(this.string > stringCount){
-			this.string = stringCount;
+		if(this.string < 1 || this.string > getTrack().stringCount() ){
+			this.string = 1;
 		}
 	}
 	
@@ -298,6 +297,7 @@ public class Caret {
 	public boolean hasChanges() {
 		return this.changes;
 	}
+	
 	public void setChanges(boolean changes) {
 		this.changes = changes;
 	}
@@ -311,8 +311,12 @@ public class Caret {
 	}
 	
 	private void updateNote(){
-		// TODO: Null Pointer
-		this.selectedNote = getSongManager().getMeasureManager().getNote(getMeasure(),getPosition(),getSelectedString().getNumber());
+		this.selectedNote = null;
+		
+		TGString string = getSelectedString();
+		if( string != null ){
+			this.selectedNote = getSongManager().getMeasureManager().getNote(getMeasure(),getPosition(),string.getNumber());
+		}
 	}
 	
 	public TGNote getSelectedNote(){
@@ -330,11 +334,11 @@ public class Caret {
 	public TGSongManager getSongManager(){
 		return this.tablature.getSongManager();
 	}
-
+	
 	public int getVoice() {
 		return this.voice;
 	}
-
+	
 	public void setVoice(int voice) {
 		this.voice = voice;
 		this.update();

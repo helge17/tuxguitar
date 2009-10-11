@@ -77,14 +77,14 @@ public class TGSongManager {
 	}
 	
 	public void clearSong(){
-		if(getSong() != null){
-			getSong().clear();
+		if(this.getSong() != null){
+			this.getSong().clear();
 		}
 	}
 	
 	public void setSong(TGSong song){
 		if(song != null){
-			clearSong();
+			this.clearSong();
 			this.song = song;
 		}
 	}

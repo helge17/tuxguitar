@@ -58,7 +58,9 @@ public class TGTransportListener implements MidiPlayerListener{
 	private TGSynchronizer.TGRunnable getStoppedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
 			public void run() {
+				TuxGuitar.instance().lock();
 				TuxGuitar.instance().getTransport().gotoPlayerPosition();
+				TuxGuitar.instance().unlock();
 			}
 		};
 	}

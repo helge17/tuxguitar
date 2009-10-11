@@ -281,6 +281,7 @@ public class Tablature extends Composite {
 	public TGSongManager getSongManager() {
 		return this.songManager;
 	}
+	
 	public void setSongManager(TGSongManager songManager) {
 		this.songManager = songManager;
 	}
