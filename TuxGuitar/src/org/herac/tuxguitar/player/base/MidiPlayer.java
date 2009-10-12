@@ -48,7 +48,7 @@ public class MidiPlayer{
 	private boolean paused;
 	
 	private boolean changeTickPosition;
-		
+	
 	private boolean metronomeEnabled;
 	
 	private int metronomeTrack;

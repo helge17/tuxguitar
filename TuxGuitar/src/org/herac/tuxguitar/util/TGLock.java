@@ -2,46 +2,42 @@ package org.herac.tuxguitar.util;
 
 public class TGLock {
 	
-	private Thread lock;
-	private long lockId;
-	private long lockCount;
+	private Object lock;
+	private Thread lockThread;
 	
 	public TGLock(){
-		this.lockId = 0;
-		this.lockCount = 0;
+		this.lock = new Object();
+		this.lockThread = null;
 	}
 	
 	public void lock(){
 		Thread thread = Thread.currentThread();
 		
-		// Only if it isn't already locked
-		if( this.lock != thread){
-			
-			long lockId = this.lockId ++;
-			while( lockId != this.lockCount && thread != this.lock){
-				Thread.yield();
+		boolean lockSuccess = false;
+		
+		synchronized( this.lock ){
+			if( ( lockSuccess = !this.isLocked( thread ) ) ){
+				this.lockThread = thread;
 			}
-			
+		}
+		
+		if( !lockSuccess ){
 			while( isLocked(thread) ){
 				Thread.yield();
 			}
-			
-			synchronized( this ){
-				this.lock = thread;
-				this.lockCount ++ ;
-			}
+			this.lock();
 		}
 	}
 	
 	public void unlock(){
-		synchronized( this ){
-			this.lock = null;
+		synchronized( this.lock ){
+			this.lockThread = null;
 		}
 	}
 	
 	public boolean isLocked(Thread thread){
-		synchronized( this ){
-			return (this.lock != null && this.lock != thread);
+		synchronized( this.lock ){
+			return (this.lockThread != null && this.lockThread != thread);
 		}
 	}
 	
