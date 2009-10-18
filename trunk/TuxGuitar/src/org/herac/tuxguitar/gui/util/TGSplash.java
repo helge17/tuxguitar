@@ -44,6 +44,7 @@ public class TGSplash {
 				}
 			});
 			this.shell.open();
+			this.shell.update();
 		}
 	}
 	
