@@ -66,7 +66,7 @@ public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
 	public ClipBoard getClipBoard(){
 		return this.clipBoard;
 	}
-
+	
 	public void doRedraw(int type) {
 		if( type == TGRedrawListener.NORMAL ){
 			getTablature().redraw();
