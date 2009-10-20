@@ -265,17 +265,19 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	protected void updateScroll(){
-		int borderWidth = this.editor.getBorderWidth();
-		ScrollBar vBar = this.editor.getVerticalBar();
-		ScrollBar hBar = this.editor.getHorizontalBar();
-		vBar.setMaximum(Math.round(this.height + (borderWidth * 2)));
-		vBar.setThumb(Math.round(Math.min(this.height + (borderWidth * 2), this.clientArea.height)));
-		hBar.setMaximum(Math.round(this.width + (borderWidth * 2)));
-		hBar.setThumb(Math.round(Math.min(this.width + (borderWidth * 2), this.clientArea.width)));
+		if( this.clientArea != null ){
+			int borderWidth = this.editor.getBorderWidth();
+			ScrollBar vBar = this.editor.getVerticalBar();
+			ScrollBar hBar = this.editor.getHorizontalBar();
+			vBar.setMaximum(Math.round(this.height + (borderWidth * 2)));
+			vBar.setThumb(Math.round(Math.min(this.height + (borderWidth * 2), this.clientArea.height)));
+			hBar.setMaximum(Math.round(this.width + (borderWidth * 2)));
+			hBar.setThumb(Math.round(Math.min(this.width + (borderWidth * 2), this.clientArea.width)));
+		}
 	}
 	
 	protected int getValueAt(float y){
-		if((y - BORDER_HEIGHT) < 0 || y + BORDER_HEIGHT > this.clientArea.height){
+		if(this.clientArea == null || (y - BORDER_HEIGHT) < 0 || y + BORDER_HEIGHT > this.clientArea.height){
 			return -1;
 		}
 		int scroll = this.editor.getVerticalBar().getSelection();
@@ -297,156 +299,166 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		this.disposeSelectionBuffer();
 		this.clientArea = this.editor.getClientArea();
 		
-		Image buffer = getBuffer();
-		
-		this.width = this.bufferWidth;
-		this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
-		
-		this.updateScroll();
-		int scrollX = this.editor.getHorizontalBar().getSelection();
-		int scrollY = this.editor.getVerticalBar().getSelection();
-		
-		painter.drawImage(buffer,-scrollX,(BORDER_HEIGHT - scrollY));
-		this.paintMeasure(painter,(-scrollX), (BORDER_HEIGHT - scrollY) );
-		this.paintBorders(painter,(-scrollX),0);
-		this.paintPosition(painter,(-scrollX),0);
-		
-		this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
+		if( this.clientArea != null ){
+			Image buffer = getBuffer();
+			
+			this.width = this.bufferWidth;
+			this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
+			
+			this.updateScroll();
+			int scrollX = this.editor.getHorizontalBar().getSelection();
+			int scrollY = this.editor.getVerticalBar().getSelection();
+			
+			painter.drawImage(buffer,-scrollX,(BORDER_HEIGHT - scrollY));
+			this.paintMeasure(painter,(-scrollX), (BORDER_HEIGHT - scrollY) );
+			this.paintBorders(painter,(-scrollX),0);
+			this.paintPosition(painter,(-scrollX),0);
+			
+			this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
+		}
 	}
 	
 	protected Image getBuffer(){
-		this.bufferDisposer.update(this.clientArea.width, this.clientArea.height);
-		if(this.buffer == null || this.buffer.isDisposed()){
-			String[] names = null;
-			TGMeasure measure = getMeasure();
-			boolean percussion = measure.getTrack().isPercussionTrack();
-			this.maxNote = 0;
-			this.minNote = 127;
-			if(percussion){
-				names = new String[PERCUSSIONS.length];
+		if( this.clientArea != null ){
+			this.bufferDisposer.update(this.clientArea.width, this.clientArea.height);
+			if(this.buffer == null || this.buffer.isDisposed()){
+				String[] names = null;
+				TGMeasure measure = getMeasure();
+				boolean percussion = measure.getTrack().isPercussionTrack();
+				this.maxNote = 0;
+				this.minNote = 127;
+				if(percussion){
+					names = new String[PERCUSSIONS.length];
+					for(int i = 0; i < names.length;i ++){
+						this.minNote = Math.min(this.minNote,PERCUSSIONS[i].getValue());
+						this.maxNote = Math.max(this.maxNote,PERCUSSIONS[i].getValue());
+						names[i] = PERCUSSIONS[names.length - i -1].getName();
+					}
+				}else{
+					for(int sNumber = 1; sNumber <= measure.getTrack().stringCount();sNumber ++){
+						TGString string = measure.getTrack().getString(sNumber);
+						this.minNote = Math.min(this.minNote,string.getValue());
+						this.maxNote = Math.max(this.maxNote,(string.getValue() + 20));
+					}
+					names = new String[this.maxNote - this.minNote + 1];
+					for(int i = 0; i < names.length;i ++){
+						names[i] = (NOTE_NAMES[ (this.maxNote - i) % 12] + ((this.maxNote - i) / 12 ) );
+					}
+				}
+				
+				int minimumNameWidth = 110;
+				int minimumNameHeight = 0;
+				TGPainter painter = new TGPainter(new GC(this.dialog.getDisplay()));
+				painter.setFont(this.config.getFont());
 				for(int i = 0; i < names.length;i ++){
-					this.minNote = Math.min(this.minNote,PERCUSSIONS[i].getValue());
-					this.maxNote = Math.max(this.maxNote,PERCUSSIONS[i].getValue());
-					names[i] = PERCUSSIONS[names.length - i -1].getName();
+					Point size = painter.getStringExtent(names[i]);
+					if( size.x > minimumNameWidth ){
+						minimumNameWidth = size.x;
+					}
+					if( size.y  > minimumNameHeight ){
+						minimumNameHeight = size.y ;
+					}
 				}
-			}else{
-				for(int sNumber = 1; sNumber <= measure.getTrack().stringCount();sNumber ++){
-					TGString string = measure.getTrack().getString(sNumber);
-					this.minNote = Math.min(this.minNote,string.getValue());
-					this.maxNote = Math.max(this.maxNote,(string.getValue() + 20));
-				}
-				names = new String[this.maxNote - this.minNote + 1];
-				for(int i = 0; i < names.length;i ++){
-					names[i] = (NOTE_NAMES[ (this.maxNote - i) % 12] + ((this.maxNote - i) / 12 ) );
-				}
-			}
-			
-			int minimumNameWidth = 110;
-			int minimumNameHeight = 0;
-			TGPainter painter = new TGPainter(new GC(this.dialog.getDisplay()));
-			painter.setFont(this.config.getFont());
-			for(int i = 0; i < names.length;i ++){
-				Point size = painter.getStringExtent(names[i]);
-				if( size.x > minimumNameWidth ){
-					minimumNameWidth = size.x;
-				}
-				if( size.y  > minimumNameHeight ){
-					minimumNameHeight = size.y ;
-				}
-			}
-			painter.dispose();
-			
-			int cols = measure.getTimeSignature().getNumerator();
-			int rows = (this.maxNote - this.minNote);
-			
-			this.leftSpacing = minimumNameWidth + 10;
-			this.lineHeight = Math.max(minimumNameHeight,( (this.clientArea.height - (BORDER_HEIGHT * 2.0f))/ (rows + 1.0f)));
-			this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.width-this.leftSpacing) / cols)  );
-			this.bufferWidth = this.leftSpacing + (this.timeWidth * cols);
-			this.bufferHeight = (this.lineHeight * (rows + 1));
-			this.buffer = new Image(this.editor.getDisplay(),Math.round( this.bufferWidth),Math.round(this.bufferHeight));
-			
-			painter = new TGPainter(new GC(this.buffer));
-			painter.setFont(this.config.getFont());
-			painter.setForeground(this.config.getColorForeground());
-			for(int i = 0; i <= rows; i++){
-				painter.setBackground(this.config.getColorLine( i % 2 ) );
-				painter.initPath(TGPainter.PATH_FILL);
-				painter.addRectangle(0 ,(i * this.lineHeight),this.bufferWidth ,this.lineHeight);
-				painter.closePath();
-				painter.drawString(names[i],5,( Math.round( (i * this.lineHeight) ) +  Math.round(  (this.lineHeight - minimumNameHeight) / 2 )  ) );
-			}
-			for(int i = 0; i < cols; i ++){
-				float colX = this.leftSpacing + (i * this.timeWidth);
-				float divisionWidth = ( this.timeWidth / this.grids );
-				for( int j = 0; j < this.grids; j ++ ){
-					painter.setLineStyle( j == 0 ? SWT.LINE_SOLID : SWT.LINE_DOT);
-					painter.initPath();
-					painter.moveTo(Math.round( colX + (j * divisionWidth) ),0);
-					painter.lineTo(Math.round( colX + (j * divisionWidth) ),this.bufferHeight);
+				painter.dispose();
+				
+				int cols = measure.getTimeSignature().getNumerator();
+				int rows = (this.maxNote - this.minNote);
+				
+				this.leftSpacing = minimumNameWidth + 10;
+				this.lineHeight = Math.max(minimumNameHeight,( (this.clientArea.height - (BORDER_HEIGHT * 2.0f))/ (rows + 1.0f)));
+				this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.width-this.leftSpacing) / cols)  );
+				this.bufferWidth = this.leftSpacing + (this.timeWidth * cols);
+				this.bufferHeight = (this.lineHeight * (rows + 1));
+				this.buffer = new Image(this.editor.getDisplay(),Math.round( this.bufferWidth),Math.round(this.bufferHeight));
+				
+				painter = new TGPainter(new GC(this.buffer));
+				painter.setFont(this.config.getFont());
+				painter.setForeground(this.config.getColorForeground());
+				for(int i = 0; i <= rows; i++){
+					painter.setBackground(this.config.getColorLine( i % 2 ) );
+					painter.initPath(TGPainter.PATH_FILL);
+					painter.addRectangle(0 ,(i * this.lineHeight),this.bufferWidth ,this.lineHeight);
 					painter.closePath();
+					painter.drawString(names[i],5,( Math.round( (i * this.lineHeight) ) +  Math.round(  (this.lineHeight - minimumNameHeight) / 2 )  ) );
 				}
+				for(int i = 0; i < cols; i ++){
+					float colX = this.leftSpacing + (i * this.timeWidth);
+					float divisionWidth = ( this.timeWidth / this.grids );
+					for( int j = 0; j < this.grids; j ++ ){
+						painter.setLineStyle( j == 0 ? SWT.LINE_SOLID : SWT.LINE_DOT);
+						painter.initPath();
+						painter.moveTo(Math.round( colX + (j * divisionWidth) ),0);
+						painter.lineTo(Math.round( colX + (j * divisionWidth) ),this.bufferHeight);
+						painter.closePath();
+					}
+				}
+				painter.dispose();
 			}
-			painter.dispose();
 		}
 		return this.buffer;
 	}
 	
 	protected void paintMeasure(TGPainter painter,float fromX, float fromY){
-		TGMeasure measure = getMeasure();
-		if(measure != null){
-			Iterator it = measure.getBeats().iterator();
-			while(it.hasNext()){
-				TGBeat beat = (TGBeat)it.next();
-				paintBeat(painter, measure, beat, fromX, fromY);
+		if( this.clientArea != null ){
+			TGMeasure measure = getMeasure();
+			if(measure != null){
+				Iterator it = measure.getBeats().iterator();
+				while(it.hasNext()){
+					TGBeat beat = (TGBeat)it.next();
+					paintBeat(painter, measure, beat, fromX, fromY);
+				}
 			}
 		}
 	}
 	
 	protected void paintBeat(TGPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
-		int minimumY = BORDER_HEIGHT;
-		int maximumY = (this.clientArea.height - BORDER_HEIGHT);
-		
-		for( int v = 0; v < beat.countVoices(); v ++ ){
-			TGVoice voice = beat.getVoice(v);
-			for( int i = 0 ; i < voice.countNotes() ; i ++){
-				TGNoteImpl note = (TGNoteImpl)voice.getNote(i);
-				float x1 = (fromX + this.leftSpacing + (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength()) + 1);
-				float y1 = (fromY + (((this.maxNote - this.minNote) - (note.getRealValue() - this.minNote)) * this.lineHeight) + 1 );
-				float x2 = (x1 + ((voice.getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime()) - 2 );
-				float y2 = (y1 + this.lineHeight - 2 );
-				
-				if( y1 >= maximumY || y2 <= minimumY){
-					continue;
-				}
-				
-				y1 = ( y1 < minimumY ? minimumY : y1 );
-				y2 = ( y2 > maximumY ? maximumY : y2 );
-				
-				if((x2 - x1) > 0 && (y2 - y1) > 0){
-					painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );
-					painter.initPath(TGPainter.PATH_FILL);
-					painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
-					painter.closePath();
+		if( this.clientArea != null ){
+			int minimumY = BORDER_HEIGHT;
+			int maximumY = (this.clientArea.height - BORDER_HEIGHT);
+			
+			for( int v = 0; v < beat.countVoices(); v ++ ){
+				TGVoice voice = beat.getVoice(v);
+				for( int i = 0 ; i < voice.countNotes() ; i ++){
+					TGNoteImpl note = (TGNoteImpl)voice.getNote(i);
+					float x1 = (fromX + this.leftSpacing + (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength()) + 1);
+					float y1 = (fromY + (((this.maxNote - this.minNote) - (note.getRealValue() - this.minNote)) * this.lineHeight) + 1 );
+					float x2 = (x1 + ((voice.getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime()) - 2 );
+					float y2 = (y1 + this.lineHeight - 2 );
+					
+					if( y1 >= maximumY || y2 <= minimumY){
+						continue;
+					}
+					
+					y1 = ( y1 < minimumY ? minimumY : y1 );
+					y2 = ( y2 > maximumY ? maximumY : y2 );
+					
+					if((x2 - x1) > 0 && (y2 - y1) > 0){
+						painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );
+						painter.initPath(TGPainter.PATH_FILL);
+						painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
+						painter.closePath();
+					}
 				}
 			}
 		}
 	}
 	
 	protected void paintBorders(TGPainter painter,float fromX, float fromY){
-		painter.setBackground(this.config.getColorBorder());
-		painter.initPath(TGPainter.PATH_FILL);
-		painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
-		painter.addRectangle(fromX,fromY + (this.clientArea.height - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
-		painter.closePath();
-		
-		painter.initPath();
-		painter.addRectangle(fromX,fromY,this.width,this.clientArea.height);
-		painter.closePath();
+		if( this.clientArea != null ){
+			painter.setBackground(this.config.getColorBorder());
+			painter.initPath(TGPainter.PATH_FILL);
+			painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
+			painter.addRectangle(fromX,fromY + (this.clientArea.height - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
+			painter.closePath();
+			
+			painter.initPath();
+			painter.addRectangle(fromX,fromY,this.width,this.clientArea.height);
+			painter.closePath();
+		}
 	}
 	
 	protected void paintPosition(TGPainter painter,float fromX, float fromY){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if( this.clientArea != null && !TuxGuitar.instance().getPlayer().isRunning()){
 			Caret caret = getCaret();
 			TGMeasure measure = getMeasure();
 			TGBeat beat = caret.getSelectedBeat();
@@ -466,7 +478,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	protected void paintSelection(TGPainter painter, float fromX, float fromY){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if( this.clientArea != null && !TuxGuitar.instance().getPlayer().isRunning()){
 			selectionFinish();
 			if(this.selection >= 0 ){
 				int x = Math.round( fromX );
