@@ -22,11 +22,7 @@ public class TGPluginConfigManager extends TGConfigManager{
 	public String getFileName(){
 		return TGFileUtils.PATH_USER_PLUGINS_CONFIG + File.separator + this.name + ".cfg";
 	}
-	/*
-	public Properties getDefaults() {
-		return new Properties();
-	}
-	*/
+	
 	public Properties getDefaults() {
 		Properties properties = new Properties();
 		try {
