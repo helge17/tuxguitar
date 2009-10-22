@@ -141,6 +141,7 @@ public class Caret {
 					int height = 14;
 					layout.setCaretStyle(painter, expectedVoice);
 					painter.initPath();
+					painter.setAntialias(false);
 					painter.addRectangle(x, y, width, height);
 					painter.closePath();
 				}

@@ -95,6 +95,7 @@ public class MouseKit {
 								break;
 							}
 							painter.initPath();
+							painter.setAntialias(false);
 							painter.moveTo(x1, y);
 							painter.lineTo(x2, y);
 							painter.closePath();
@@ -117,6 +118,7 @@ public class MouseKit {
 									break;
 								}
 								painter.initPath();
+								painter.setAntialias(false);
 								painter.moveTo(x1, y);
 								painter.lineTo(x2, y);
 								painter.closePath();

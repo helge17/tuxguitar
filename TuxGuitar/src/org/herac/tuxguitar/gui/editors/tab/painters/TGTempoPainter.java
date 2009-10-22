@@ -13,6 +13,7 @@ public class TGTempoPainter {
 		painter.closePath();
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo(x + width,y);
 		painter.lineTo(x + width,y + (height - (0.66f * scale)) );
 		painter.closePath();

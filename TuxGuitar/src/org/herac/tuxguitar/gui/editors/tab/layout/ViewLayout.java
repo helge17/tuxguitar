@@ -208,6 +208,7 @@ public abstract class ViewLayout {
 				int posY = tempY + ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				
 				painter.initPath();
+				painter.setAntialias(false);
 				for(int i = 1;i <= 5;i ++){
 					painter.moveTo(tempX, posY);
 					painter.lineTo(tempX + width,posY);
@@ -220,6 +221,7 @@ public abstract class ViewLayout {
 				tempY += ts.getPosition(TGTrackSpacing.POSITION_TABLATURE);
 				
 				painter.initPath();
+				painter.setAntialias(false);
 				for(int i = 0; i < track.stringCount();i++){
 					painter.moveTo(tempX,tempY);
 					painter.lineTo(tempX + width,tempY);

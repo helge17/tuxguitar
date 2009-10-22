@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.gui.editors;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -49,6 +50,7 @@ public class TGPainter {
 		this.style = style;
 		this.path = new Path(this.gc.getDevice());
 		this.pathEmpty = true;
+		this.setAntialias(true);
 	}
 	
 	public void initPath(){
@@ -56,21 +58,18 @@ public class TGPainter {
 	}
 	
 	public void closePath(){
-		if(this.pathEmpty){
-			System.out.println("Warning: Empty Path!");
-		}
-		
-		if( (this.style & PATH_DRAW) != 0){
-			TGPainterUtils.beforePath(this.gc);
-			this.gc.drawPath(this.path);
-		}
-		if( (this.style & PATH_FILL) != 0){
-			TGPainterUtils.beforePath(this.gc);
-			this.gc.fillPath(this.path);
+		if(! this.pathEmpty ){
+			if( (this.style & PATH_DRAW) != 0){
+				this.gc.drawPath(this.path);
+			}
+			if( (this.style & PATH_FILL) != 0){
+				this.gc.fillPath(this.path);
+			}
 		}
 		this.style = 0;
 		this.path.dispose();
 		this.pathEmpty = true;
+		this.setAntialias(false);
 	}
 	
 	public GC getGC(){
@@ -81,56 +80,32 @@ public class TGPainter {
 		this.gc.dispose();
 	}
 	
-	public void setBackground(Color arg0) {
-		this.gc.setBackground(arg0);
-	}
-	
-	public void setFont(Font arg0) {
-		this.gc.setFont(arg0);
-	}
-	
-	public void setForeground(Color arg0) {
-		this.gc.setForeground(arg0);
-	}
-	
-	public void setLineStyle(int arg0) {
-		this.gc.setLineStyle(arg0);
-	}
-	
-	public void setLineWidth(int arg0) {
-		this.gc.setLineWidth(arg0);
-	}
-	
-	public void setAlpha(int alpha) {
-		this.gc.setAlpha(alpha);
-	}
-	
 	public void copyArea(Image image, int x, int y) {
 		this.gc.copyArea(image, x, y);
 	}
 	
 	public Point getStringExtent(String string) {
-		TGPainterUtils.beforeString(this.gc);
+		this.setAdvanced(false);
 		return this.gc.stringExtent(string);
 	}
 	
 	public void drawString(String string, int x, int y) {
-		TGPainterUtils.beforeString(this.gc);
+		this.setAdvanced(false);
 		this.gc.drawString(string, x, y);
 	}
 	
 	public void drawString(String string, int x, int y, boolean isTransparent) {
-		TGPainterUtils.beforeString(this.gc);
+		this.setAdvanced(false);
 		this.gc.drawString(string, x, y, isTransparent);
 	}
 	
 	public void drawImage(Image image, int srcX, int srcY, int srcWidth, int srcHeight, int destX, int destY, int destWidth, int destHeight) {
-		TGPainterUtils.beforeImage(this.gc);
+		this.setAdvanced(false);
 		this.gc.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
 	}
 	
 	public void drawImage(Image image, int x, int y) {
-		TGPainterUtils.beforeImage(this.gc);
+		this.setAdvanced(false);
 		this.gc.drawImage(image, x, y);
 	}
 	
@@ -180,5 +155,41 @@ public class TGPainter {
 	public void addRectangle(Rectangle rectangle) {
 		this.path.addRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
 		this.pathEmpty = false;
+	}
+	
+	public void setBackground(Color arg0) {
+		this.gc.setBackground(arg0);
+	}
+	
+	public void setFont(Font arg0) {
+		this.gc.setFont(arg0);
+	}
+	
+	public void setForeground(Color arg0) {
+		this.gc.setForeground(arg0);
+	}
+	
+	public void setLineStyle(int arg0) {
+		this.gc.setLineStyle(arg0);
+	}
+	
+	public void setLineWidth(int arg0) {
+		this.gc.setLineWidth(arg0);
+	}
+	
+	public void setAlpha(int alpha) {
+		this.gc.setAlpha(alpha);
+	}
+	
+	public void setAntialias(boolean enabled){
+		if( !TGPainterUtils.FORCE_OS_DEFAULTS ){
+			this.gc.setAntialias(enabled ? SWT.ON : SWT.OFF );
+		}
+	}
+	
+	public void setAdvanced(boolean advanced){
+		if( !TGPainterUtils.FORCE_OS_DEFAULTS ){
+			this.gc.setAdvanced(advanced);
+		}
 	}
 }

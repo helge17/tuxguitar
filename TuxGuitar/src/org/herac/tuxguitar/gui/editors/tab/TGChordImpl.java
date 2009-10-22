@@ -305,6 +305,7 @@ public class TGChordImpl extends TGChord {
 		}
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		for(int i = 0;i < getStrings().length;i++){
 			int x1 = x + (i * getStringSpacing());
 			int x2 = x + (i * getStringSpacing());
@@ -317,6 +318,7 @@ public class TGChordImpl extends TGChord {
 		
 		//dibujo las cegillas
 		painter.initPath();
+		painter.setAntialias(false);
 		for(int i = 0;i < MAX_FRETS;i++){
 			int x1 = x;
 			int x2 = x + ((getStringSpacing() * (countStrings() - 1)));

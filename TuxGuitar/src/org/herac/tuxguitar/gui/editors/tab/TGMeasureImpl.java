@@ -637,6 +637,7 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 			layout.setRepeatEndingStyle(painter);
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.moveTo(x1, y2);
 			painter.lineTo(x1, y1);
 			painter.lineTo(x2, y1);
@@ -704,11 +705,13 @@ public class TGMeasureImpl extends TGMeasure{
 		//principio
 		if(this.isRepeatOpen() || layout.isFirstMeasure(this)){
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
+			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
 			painter.addRectangle( x1, y1, lineWidthBig, (y2 + offsetY) - y1);
 			painter.closePath();
 			
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
 			painter.moveTo(x1 + lineWidthBig + scale + lineWidthSmall, y1);
 			painter.lineTo(x1 + lineWidthBig + scale + lineWidthSmall, (y2 + offsetY));
@@ -729,6 +732,7 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 		}else{
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
 			painter.moveTo(x1, y1);
 			painter.lineTo(x1, (y2 + offsetY));
@@ -738,12 +742,14 @@ public class TGMeasureImpl extends TGMeasure{
 		//fin
 		if(this.getRepeatClose() > 0 || layout.isLastMeasure(this)){
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
 			painter.moveTo( (x2 + getSpacing()) - (lineWidthBig + scale + lineWidthSmall) , y1);
 			painter.lineTo( (x2 + getSpacing()) - (lineWidthBig + scale + lineWidthSmall) , y2);
 			painter.closePath();
 			
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
+			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
 			painter.addRectangle( (x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, y2 - y1);
 			painter.closePath();
@@ -769,6 +775,7 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 		}else{
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
 			painter.moveTo(x2 + getSpacing(), y1);
 			painter.lineTo(x2 + getSpacing(), y2);
@@ -1059,6 +1066,7 @@ public class TGMeasureImpl extends TGMeasure{
 			//painter.setLineStyle(SWT.LINE_DASH);
 			painter.setLineWidth(1);
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.addRectangle(getPosX() + (5f * scale),y1,width - (10f * scale),(y2 - y1));
 			painter.closePath();
 			//painter.setLineStyle(SWT.LINE_SOLID);

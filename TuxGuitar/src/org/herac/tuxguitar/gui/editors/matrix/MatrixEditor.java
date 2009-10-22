@@ -87,6 +87,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	private int leftSpacing;
 	private int minNote;
 	private int maxNote;
+	private int duration;
 	private int selection;
 	private int grids;
 	private int playedTrack;
@@ -97,7 +98,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	private int selectionX;
 	private int selectionY;
 	
-	private int duration;
+	private boolean selectionPaintDisabled;
 	
 	public MatrixEditor(){
 		this.grids = this.loadGrids();
@@ -296,6 +297,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			this.resetPlayed();
 		}
+		
 		this.disposeSelectionBuffer();
 		this.clientArea = this.editor.getClientArea();
 		
@@ -478,15 +480,18 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	protected void paintSelection(TGPainter painter, float fromX, float fromY){
-		if( this.clientArea != null && !TuxGuitar.instance().getPlayer().isRunning()){
+		if( !this.selectionPaintDisabled && this.clientArea != null && !TuxGuitar.instance().getPlayer().isRunning()){
 			selectionFinish();
-			if(this.selection >= 0 ){
+			if(this.selection >= 0){
+				this.selectionPaintDisabled = true;
+				
 				int x = Math.round( fromX );
 				int y = Math.round( fromY + ((this.maxNote - this.selection) * this.lineHeight)  );
 				int width = Math.round( this.bufferWidth );
 				int height = Math.round( this.lineHeight );
-				this.selectionBackBuffer = new Image(this.editor.getDisplay(),width,height);
-				painter.copyArea(this.selectionBackBuffer,x,y);
+				
+				Image selectionArea = new Image(this.editor.getDisplay(),width,height);
+				painter.copyArea(selectionArea,x,y);
 				painter.setAlpha(100);
 				painter.setBackground(this.config.getColorLine(2));
 				painter.initPath(TGPainter.PATH_FILL);
@@ -495,6 +500,8 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				
 				this.selectionX = x;
 				this.selectionY = y;
+				this.selectionBackBuffer = selectionArea;
+				this.selectionPaintDisabled = false;
 			}
 		}
 	}
