@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DragDetectEvent;
-import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -116,8 +114,8 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 					layoutCoolBar();
 				}
 			});
-			this.coolBar.addDragDetectListener( new DragDetectListener() {
-				public void dragDetected(DragDetectEvent e) {
+			this.coolBar.addListener(SWT.DragDetect, new Listener() {
+				public void handleEvent(Event event) {
 					disableUpdateCoolBarWrapIndices();
 				}
 			});
