@@ -194,12 +194,14 @@ public class Piano extends Composite{
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
 				painter.setForeground(this.config.getColorNotNatural());
 				painter.initPath();
+				painter.setAntialias(false);
 				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
 				painter.closePath();
 				x += NATURAL_WIDTH;
 			}else{
 				painter.setBackground(this.config.getColorNotNatural());
 				painter.initPath(TGPainter.PATH_FILL);
+				painter.setAntialias(false);
 				painter.addRectangle(x - (SHARP_WIDTH / 2),y,SHARP_WIDTH,SHARP_HEIGHT);
 				painter.closePath();
 			}
@@ -245,10 +247,12 @@ public class Piano extends Composite{
 					
 					int size = SHARP_WIDTH;
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle( (x + 1 + (((NATURAL_WIDTH - size) / 2))) ,(NATURAL_HEIGHT - size - (((NATURAL_WIDTH - size) / 2))),size,size);
 					painter.closePath();
 				}else{
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle(posX + 1, SHARP_HEIGHT - SHARP_WIDTH + 1,SHARP_WIDTH - 2,SHARP_WIDTH - 2);
 					painter.closePath();
 				}
@@ -287,6 +291,7 @@ public class Piano extends Composite{
 			if(i == value){
 				if(TYPE_NOTES[i % TYPE_NOTES.length]){
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT);
 					
 					int x = posX;
@@ -297,6 +302,7 @@ public class Piano extends Composite{
 					painter.closePath();
 				}else{
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
 					painter.closePath();
 				}

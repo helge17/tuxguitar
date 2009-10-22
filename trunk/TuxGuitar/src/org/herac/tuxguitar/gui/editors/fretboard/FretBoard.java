@@ -334,6 +334,7 @@ public class FretBoard extends Composite {
 					painterBuffer.setLineWidth(2);
 				}
 				painterBuffer.initPath();
+				painterBuffer.setAntialias(false);
 				painterBuffer.moveTo(this.frets[0], this.strings[i]);
 				painterBuffer.lineTo(this.frets[this.frets.length - 1], this.strings[i]);
 				painterBuffer.closePath();

@@ -36,6 +36,7 @@ public class TGTableCanvasPainter implements PaintListener{
 			
 			painter.setBackground(painter.getGC().getDevice().getSystemColor(SWT.COLOR_GRAY));
 			painter.initPath(TGPainter.PATH_FILL);
+			painter.setAntialias(false);
 			painter.addRectangle(0,y,width,size);
 			painter.closePath();
 			
@@ -48,10 +49,12 @@ public class TGTableCanvasPainter implements PaintListener{
 				TGMeasureImpl measure = (TGMeasureImpl)this.track.getMeasure(j);
 				if(isRestMeasure(measure)){
 					painter.initPath();
+					painter.setAntialias(false);
 					painter.addRectangle(x,y,size - 2,size - 1);
 					painter.closePath();
 				}else{
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle(x,y,size - 1,size );
 					painter.closePath();
 				}
@@ -59,6 +62,7 @@ public class TGTableCanvasPainter implements PaintListener{
 				if((playing && measure.isPlaying(this.viewer.getEditor().getTablature().getViewLayout())) || (!playing && hasCaret)){
 					painter.setBackground(painter.getGC().getDevice().getSystemColor(SWT.COLOR_BLACK));
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle(x + 4,y + 4,size - 9,size - 8);
 					painter.closePath();
 					painter.setBackground(trackColor);
