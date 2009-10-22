@@ -589,24 +589,26 @@ public class TGMeasureImpl extends TGMeasure{
 		boolean bufferEnabled = layout.isBufferEnabled();
 		
 		if(shouldRepaintBuffer() || !bufferEnabled ){
-			TGPainter painterBuffer = painter;
+			TGPainter bufferPainter = painter;
 			int x = (bufferEnabled ? 0 : getPosX());
 			int y = (bufferEnabled ? 0 : getPosY());
 			if(bufferEnabled){
-				getBuffer().makeBuffer(getWidth(layout) + getSpacing(), getTs().getSize(),layout.getResources().getBackgroundColor());
-				painterBuffer = getBuffer().getPainter();
+				getBuffer().createBuffer(getWidth(layout) + getSpacing(), getTs().getSize(),layout.getResources().getBackgroundColor());
+				bufferPainter = getBuffer().getPainter();
 			}
-			layout.paintLines(getTrackImpl(),getTs(),painterBuffer,x,y, getWidth(layout) + getSpacing());
-			paintTimeSignature(layout,painterBuffer,x,y);
-			paintClef(layout,painterBuffer,x,y);
-			paintKeySignature(layout,painterBuffer,x,y);
-			paintComponents(layout,painterBuffer,x,y);
-			
+			layout.paintLines(getTrackImpl(),getTs(),bufferPainter,x,y, getWidth(layout) + getSpacing());
+			paintTimeSignature(layout,bufferPainter,x,y);
+			paintClef(layout,bufferPainter,x,y);
+			paintKeySignature(layout,bufferPainter,x,y);
+			paintComponents(layout,bufferPainter,x,y);
+			if(bufferEnabled){
+				getBuffer().disposePainter();
+			}
 			setBufferCreated(true);
 		}
 		if(bufferEnabled){
 			painter.setBackground(layout.getResources().getBackgroundColor());
-			getBuffer().paintImage(painter,getPosX(),getPosY(),getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+			getBuffer().paintBuffer(painter,getPosX(),getPosY(),getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 		}
 		this.paintLoopMarker(layout, painter);
 		this.paintMarker(layout, painter);

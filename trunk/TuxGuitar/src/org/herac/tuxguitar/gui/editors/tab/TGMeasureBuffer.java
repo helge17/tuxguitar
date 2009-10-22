@@ -21,12 +21,18 @@ public class TGMeasureBuffer {
 		this.device = device;
 	}
 	
-	public void makeBuffer(int width,int height,Color background){
+	public void createBuffer(int width,int height,Color background){
 		this.dispose();
 		this.buffer = new Image(this.device,width,height);
 		this.width = width;
 		this.height = height;
 		this.fillBuffer(background);
+	}
+	
+	public void disposeBuffer(){
+		if(this.buffer != null && !this.buffer.isDisposed()){
+			this.buffer.dispose();
+		}
 	}
 	
 	private void fillBuffer(Color background){
@@ -36,15 +42,27 @@ public class TGMeasureBuffer {
 		getPainter().closePath();
 	}
 	
-	public TGPainter getPainter(){
-		if(this.painter == null || this.painter.getGC().isDisposed()){
-			this.painter = new TGPainter(this.buffer);
-		}
-		return this.painter;
+	public void paintBuffer(TGPainter painter,int x,int y,int srcY){
+		painter.drawImage(this.buffer,0,srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
 	}
 	
-	public void paintImage(TGPainter painter,int x,int y,int srcY){
-		painter.drawImage(this.buffer,0,srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
+	public void createPainter(){
+		this.disposePainter();
+		this.painter = new TGPainter(this.buffer);
+	}
+	
+	public void disposePainter(){
+		if(this.painter != null && !this.painter.getGC().isDisposed()){
+			this.painter.dispose();
+			this.painter = null;
+		}
+	}
+	
+	public TGPainter getPainter(){
+		if(this.painter == null || this.painter.getGC().isDisposed()){
+			this.createPainter();
+		}
+		return this.painter;
 	}
 	
 	public Image getImage(){
@@ -52,12 +70,8 @@ public class TGMeasureBuffer {
 	}
 	
 	public void dispose(){
-		if(this.painter != null && !this.painter.getGC().isDisposed()){
-			this.painter.dispose();
-		}
-		if(this.buffer != null && !this.buffer.isDisposed()){
-			this.buffer.dispose();
-		}
+		this.disposePainter();
+		this.disposeBuffer();
 	}
 	
 	public boolean isDisposed(){
