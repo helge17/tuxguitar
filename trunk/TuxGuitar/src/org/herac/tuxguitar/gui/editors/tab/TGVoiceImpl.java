@@ -471,6 +471,7 @@ public class TGVoiceImpl extends TGVoice{
 			if (getDuration().getValue() >= TGDuration.QUARTER) {
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath();
+				painter.setAntialias(false);
 				painter.setLineWidth( (int)verticalLineWidth );
 				painter.moveTo(x, y1);
 				painter.lineTo(x, y2);
@@ -506,6 +507,7 @@ public class TGVoiceImpl extends TGVoice{
 			} else if (getDuration().getValue() == TGDuration.HALF) {
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath();
+				painter.setAntialias(false);
 				painter.setLineWidth( (int)verticalLineWidth );
 				painter.moveTo(x, (y1 + ((y2 - y1) / 2)));
 				painter.lineTo(x, y2);
@@ -553,6 +555,7 @@ public class TGVoiceImpl extends TGVoice{
 			int vY2 = fromY + this.group.getY2(layout,getPosX() + spacing,key,clef);
 			
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.moveTo(vX + xMove, vY1 + yMove);
 			painter.lineTo(vX + xMove, vY2);
 			painter.closePath();

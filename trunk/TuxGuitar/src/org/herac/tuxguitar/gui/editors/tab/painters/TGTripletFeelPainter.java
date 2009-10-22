@@ -15,6 +15,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo( x + Math.round(ovalWidth) ,y + Math.round(topSpacing + verticalSpacing + (0.33f * scale)) );
 		painter.lineTo( x + Math.round(ovalWidth) ,y + topSpacing);
 		painter.closePath();
@@ -24,6 +25,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo(x + Math.round(ovalWidth + horizontalSpacing) ,y +Math.round(topSpacing + verticalSpacing + (0.33f * scale)) );
 		painter.lineTo(x + Math.round(ovalWidth + horizontalSpacing) ,y +topSpacing);
 		painter.closePath();
@@ -48,6 +50,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo( x + Math.round(ovalWidth) ,y + Math.round(verticalSpacing + (0.33f * scale)) );
 		painter.lineTo( x + Math.round(ovalWidth) ,y);
 		painter.lineTo( x + Math.round(ovalWidth + horizontalSpacing) ,y);
@@ -70,6 +73,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo(x + Math.round(ovalWidth) ,y + Math.round(topSpacing + verticalSpacing + (0.33f * scale)) );
 		painter.lineTo(x + Math.round(ovalWidth) ,y + topSpacing);
 		painter.lineTo(x + Math.round(ovalWidth + horizontalSpacing) ,y + topSpacing);
@@ -100,6 +104,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo(x + Math.round(ovalWidth) ,y + Math.round(verticalSpacing + (0.33f * scale)) );
 		painter.lineTo(x + Math.round(ovalWidth) ,y);
 		painter.lineTo(x + Math.round(ovalWidth + horizontalSpacing) ,y);
