@@ -114,6 +114,5 @@ public class DisposeAction extends Action {
 		TuxGuitar.instance().getTablatureEditor().getTablature().dispose();
 		TuxGuitar.instance().getIconManager().disposeIcons();
 		TuxGuitar.instance().getShell().dispose();
-		TuxGuitar.instance().getDisplay().dispose();
 	}
 }
