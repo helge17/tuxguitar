@@ -173,6 +173,7 @@ public class TremoloBarEditor{
 		for(int i = 0;i < this.x.length;i++){
 			this.setStyleX(painter,i);
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.moveTo(this.x[i],Y_SPACING);
 			painter.lineTo(this.x[i],Y_SPACING + this.height);
 			painter.closePath();
@@ -180,6 +181,7 @@ public class TremoloBarEditor{
 		for(int i = 0;i < this.y.length;i++){
 			this.setStyleY(painter,i);
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.moveTo(X_SPACING,this.y[i]);
 			painter.lineTo(X_SPACING + this.width,this.y[i]);
 			painter.closePath();
@@ -208,6 +210,7 @@ public class TremoloBarEditor{
 		while(it.hasNext()){
 			Point point = (Point)it.next();
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.addRectangle(point.x - 2,point.y - 2,5,5);
 			painter.closePath();
 		}

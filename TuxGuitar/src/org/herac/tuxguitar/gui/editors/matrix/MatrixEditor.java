@@ -379,6 +379,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				for(int i = 0; i <= rows; i++){
 					painter.setBackground(this.config.getColorLine( i % 2 ) );
 					painter.initPath(TGPainter.PATH_FILL);
+					painter.setAntialias(false);
 					painter.addRectangle(0 ,(i * this.lineHeight),this.bufferWidth ,this.lineHeight);
 					painter.closePath();
 					painter.drawString(names[i],5,( Math.round( (i * this.lineHeight) ) +  Math.round(  (this.lineHeight - minimumNameHeight) / 2 )  ) );
@@ -389,6 +390,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					for( int j = 0; j < this.grids; j ++ ){
 						painter.setLineStyle( j == 0 ? SWT.LINE_SOLID : SWT.LINE_DOT);
 						painter.initPath();
+						painter.setAntialias(false);
 						painter.moveTo(Math.round( colX + (j * divisionWidth) ),0);
 						painter.lineTo(Math.round( colX + (j * divisionWidth) ),this.bufferHeight);
 						painter.closePath();
@@ -437,6 +439,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					if((x2 - x1) > 0 && (y2 - y1) > 0){
 						painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );
 						painter.initPath(TGPainter.PATH_FILL);
+						painter.setAntialias(false);
 						painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
 						painter.closePath();
 					}
@@ -449,11 +452,13 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		if( this.clientArea != null ){
 			painter.setBackground(this.config.getColorBorder());
 			painter.initPath(TGPainter.PATH_FILL);
+			painter.setAntialias(false);
 			painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
 			painter.addRectangle(fromX,fromY + (this.clientArea.height - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
 			painter.closePath();
 			
 			painter.initPath();
+			painter.setAntialias(false);
 			painter.addRectangle(fromX,fromY,this.width,this.clientArea.height);
 			painter.closePath();
 		}
@@ -469,10 +474,12 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				float width = ((beat.getVoice(caret.getVoice()).getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime());
 				painter.setBackground(this.config.getColorPosition());
 				painter.initPath(TGPainter.PATH_FILL);
+				painter.setAntialias(false);
 				painter.addRectangle(fromX + (this.leftSpacing + x),fromY , width,BORDER_HEIGHT);
 				painter.closePath();
 				
 				painter.initPath(TGPainter.PATH_FILL);
+				painter.setAntialias(false);
 				painter.addRectangle(fromX + (this.leftSpacing + x),fromY + (this.clientArea.height - BORDER_HEIGHT), width,BORDER_HEIGHT);
 				painter.closePath();
 			}
@@ -495,6 +502,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				painter.setAlpha(100);
 				painter.setBackground(this.config.getColorLine(2));
 				painter.initPath(TGPainter.PATH_FILL);
+				painter.setAntialias(false);
 				painter.addRectangle(x,y,width,height);
 				painter.closePath();
 				

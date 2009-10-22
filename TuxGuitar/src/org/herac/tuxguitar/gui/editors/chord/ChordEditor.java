@@ -151,6 +151,7 @@ public class ChordEditor extends Composite {
 		
 		// dibujo el puente
 		painter.initPath();
+		painter.setAntialias(false);
 		painter.moveTo((STRING_SPACING - 10), (FRET_SPACING - 10));
 		painter.lineTo(STRING_SPACING + (this.width + 10), (FRET_SPACING - 10));
 		painter.closePath();
@@ -159,6 +160,7 @@ public class ChordEditor extends Composite {
 		
 		// dibujo las cuerdas
 		painter.initPath();
+		painter.setAntialias(false);
 		for (int i = 0; i < this.strings.length; i++) {
 			painter.moveTo(this.strings[i], FRET_SPACING);
 			painter.lineTo(this.strings[i], FRET_SPACING + this.height);
@@ -167,6 +169,7 @@ public class ChordEditor extends Composite {
 		
 		// dibujo las cegillas
 		painter.initPath();
+		painter.setAntialias(false);
 		for (int i = 0; i < this.frets.length; i++) {
 			painter.moveTo(STRING_SPACING, this.frets[i]);
 			painter.lineTo(STRING_SPACING + this.width, this.frets[i]);
