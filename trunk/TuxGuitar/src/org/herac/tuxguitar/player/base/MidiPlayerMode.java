@@ -35,24 +35,28 @@ public class MidiPlayerMode{
 	
 	public void reset(){
 		if(getType() == TYPE_SIMPLE){
-			this.currentPercent = getSimplePercent();
+			this.setCurrentPercent(getSimplePercent());
 		}
 		else if(getType() == TYPE_CUSTOM){
-			this.currentPercent = getCustomPercentFrom();
+			this.setCurrentPercent(getCustomPercentFrom());
 		}
 	}
 	
 	public void notifyLoop(){
 		if(getType() == TYPE_SIMPLE){
-			this.currentPercent = getSimplePercent();
+			this.setCurrentPercent(getSimplePercent());
 		}
 		else if(getType() == TYPE_CUSTOM){
-			this.currentPercent = (Math.min(getCustomPercentTo(),(getCurrentPercent() + getCustomPercentIncrement())));
+			this.setCurrentPercent(Math.min(getCustomPercentTo(),(getCurrentPercent() + getCustomPercentIncrement())));
 		}
 	}
 	
 	public int getCurrentPercent(){
 		return this.currentPercent;
+	}
+	
+	public void setCurrentPercent(int currentPercent){
+		this.currentPercent = currentPercent;
 	}
 	
 	public boolean isLoop() {

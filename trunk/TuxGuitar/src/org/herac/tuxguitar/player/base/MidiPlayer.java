@@ -241,6 +241,7 @@ public class MidiPlayer{
 				this.setStarting(true);
 				this.reset();
 				this.getMode().notifyLoop();
+				this.notifyLoop();
 				this.play();
 				return;
 			}
@@ -841,6 +842,14 @@ public class MidiPlayer{
 		while( it.hasNext() ){
 			MidiPlayerListener listener = (MidiPlayerListener) it.next();
 			listener.notifyStopped();
+		}
+	}
+	
+	public void notifyLoop(){
+		Iterator it = this.listeners.iterator();
+		while( it.hasNext() ){
+			MidiPlayerListener listener = (MidiPlayerListener) it.next();
+			listener.notifyLoop();
 		}
 	}
 }
