@@ -24,8 +24,8 @@ public abstract class TGEffectTremoloPicking {
 		effect.getDuration().setValue(getDuration().getValue());
 		effect.getDuration().setDotted(getDuration().isDotted());
 		effect.getDuration().setDoubleDotted(getDuration().isDoubleDotted());
-		effect.getDuration().getTupleto().setEnters(getDuration().getTupleto().getEnters());
-		effect.getDuration().getTupleto().setTimes(getDuration().getTupleto().getTimes());
+		effect.getDuration().getDivision().setEnters(getDuration().getDivision().getEnters());
+		effect.getDuration().getDivision().setTimes(getDuration().getDivision().getTimes());
 		return effect;
 	}
 	

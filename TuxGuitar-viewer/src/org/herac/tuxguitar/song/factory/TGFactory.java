@@ -19,7 +19,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -66,8 +66,8 @@ public class TGFactory {
 		};
 	}
 	
-	public TGTupleto newTupleto(){
-		return new TGTupleto(){
+	public TGDivisionType newDivisionType(){
+		return new TGDivisionType(){
 			//TGTupleto Implementation
 		};
 	}

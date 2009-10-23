@@ -32,7 +32,7 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -474,14 +474,14 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		//leo el tupleto
 		if(((header & DURATION_NO_TUPLETO) != 0)){
-			readTupleto(duration.getTupleto());
+			readTupleto(duration.getDivision());
 		}
 		else{
-			TGTupleto.NORMAL.copy(duration.getTupleto());
+			TGDivisionType.NORMAL.copy(duration.getDivision());
 		}
 	}
 	
-	private void readTupleto(TGTupleto tupleto){
+	private void readTupleto(TGDivisionType tupleto){
 		//leo los enters
 		tupleto.setEnters(readByte());
 		
