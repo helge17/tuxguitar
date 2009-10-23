@@ -15,7 +15,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGDivisionType {
-	public static final TGDivisionType NORMAL = newTupleto(1,1);
+	public static final TGDivisionType NORMAL = newDivisionType(1,1);
 	
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos
@@ -51,26 +51,26 @@ public abstract class TGDivisionType {
 		return time * this.times / this.enters;
 	}
 	
-	public boolean isEqual(TGDivisionType tupleto){
-		return (tupleto.getEnters() == getEnters() && tupleto.getTimes() == getTimes());
+	public boolean isEqual(TGDivisionType divisionType){
+		return (divisionType.getEnters() == getEnters() && divisionType.getTimes() == getTimes());
 	}
 	
 	public TGDivisionType clone(TGFactory factory){
-		TGDivisionType tupleto = factory.newDivisionType();
-		copy(tupleto);
-		return tupleto;
+		TGDivisionType divisionType = factory.newDivisionType();
+		copy(divisionType);
+		return divisionType;
 	}
 	
-	public void copy(TGDivisionType tupleto){
-		tupleto.setEnters(this.enters);
-		tupleto.setTimes(this.times);
+	public void copy(TGDivisionType divisionType){
+		divisionType.setEnters(this.enters);
+		divisionType.setTimes(this.times);
 	}
 	
-	private static TGDivisionType newTupleto(int enters,int times){
-		TGDivisionType tupleto = new TGFactory().newDivisionType();
-		tupleto.setEnters(enters);
-		tupleto.setTimes(times);
-		return tupleto;
+	private static TGDivisionType newDivisionType(int enters,int times){
+		TGDivisionType divisionType = new TGFactory().newDivisionType();
+		divisionType.setEnters(enters);
+		divisionType.setTimes(times);
+		return divisionType;
 	}
 	
 }
