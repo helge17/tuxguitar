@@ -50,6 +50,8 @@ public class TGConfig{
 	public static final Color COLOR_SCORE_NOTE = new Color(0,0,0);
 	public static final Color COLOR_TAB_NOTE = new Color(0,0,0);
 	public static final Color COLOR_PLAY_NOTE = new Color(255,0,0);
+	public static final Color COLOR_LOOP_S_MARKER = new Color(0,255,0);
+	public static final Color COLOR_LOOP_E_MARKER = new Color(255,0,0);
 	
 	public static String LOOK_FEEL = null;
 	public static String SONG_URL = null;

@@ -42,6 +42,8 @@ public class TGResources {
 	private Color colorWhite;
 	private Color colorBlack;
 	private Color colorRed;
+	private Color loopSMarkerColor;
+	private Color loopEMarkerColor;
 	private Image[] scoreNotes;
 	private Image[] harmonicNotes;
 	private Image tempoImage;
@@ -135,6 +137,14 @@ public class TGResources {
 		return this.colorRed;
 	}
 	
+	public Color getLoopSMarkerColor() {
+		return this.loopSMarkerColor;
+	}
+	
+	public Color getLoopEMarkerColor() {
+		return this.loopEMarkerColor;
+	}
+	
 	public Image getTempoImage() {
 		return this.tempoImage;
 	}
@@ -191,6 +201,8 @@ public class TGResources {
 		this.scoreNoteColor = TGConfig.COLOR_SCORE_NOTE;
 		this.tabNoteColor = TGConfig.COLOR_TAB_NOTE;
 		this.playNoteColor = TGConfig.COLOR_PLAY_NOTE;
+		this.loopSMarkerColor = TGConfig.COLOR_LOOP_S_MARKER;
+		this.loopEMarkerColor = TGConfig.COLOR_LOOP_E_MARKER;
 		// Static colors
 		this.colorWhite = Color.WHITE;
 		this.colorBlack = Color.BLACK;

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.TGPainter;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
@@ -22,9 +23,11 @@ import org.herac.tuxguitar.gui.editors.tab.TGMeasureHeaderImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.editors.tab.TGResources;
 import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.TGVoiceImpl;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
 import org.herac.tuxguitar.gui.system.config.TGConfig;
+import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -70,9 +73,10 @@ public abstract class ViewLayout {
 	private int chordNoteSize;
 	private int repeatEndingSpacing;
 	private int effectSpacing;
-	private int tupletoSpacing;
+	private int divisionTypeSpacing;
 	private int textSpacing;
 	private int markerSpacing;
+	private int loopMarkerSpacing;
 	private boolean bufferEnabled;
 	private boolean playModeEnabled;
 	
@@ -117,7 +121,7 @@ public abstract class ViewLayout {
 		this.setRepeatEndingSpacing( Math.round( 20f * getScale() ) );
 		this.setTextSpacing( Math.round( 15f * getScale() ) );
 		this.setMarkerSpacing( Math.round( 15f * getScale() ) );
-		this.setTupletoSpacing( Math.round( 10f * getScale() ) );
+		this.setDivisionTypeSpacing( Math.round( 10f * getScale() ) );
 		this.setEffectSpacing( Math.round( 8f * getScale() ) );
 	}
 	
@@ -190,7 +194,7 @@ public abstract class ViewLayout {
 	/**
 	 * Pinta las lineas
 	 */
-	public void paintLines(TGTrackImpl track,TrackSpacing ts,TGPainter painter,int x,int y,int width) {
+	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,TGPainter painter,int x,int y,int width) {
 		if(width > 0){
 			setLineStyle(painter);
 			int tempX = ((x < 0)?0:x);
@@ -198,7 +202,7 @@ public abstract class ViewLayout {
 			
 			//partitura
 			if( (this.style & DISPLAY_SCORE) != 0 ){
-				int posY = tempY + ts.getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+				int posY = tempY + ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				
 				painter.initPath();
 				painter.setAntialias(false);
@@ -211,7 +215,7 @@ public abstract class ViewLayout {
 			}
 			//tablatura
 			if((this.style & DISPLAY_TABLATURE) != 0){
-				tempY += ts.getPosition(TrackSpacing.POSITION_TABLATURE);
+				tempY += ts.getPosition(TGTrackSpacing.POSITION_TABLATURE);
 				
 				painter.initPath();
 				painter.setAntialias(false);
@@ -263,26 +267,26 @@ public abstract class ViewLayout {
 		return scale;
 	}
 	
-	protected void checkDefaultSpacing(TrackSpacing ts){
+	protected void checkDefaultSpacing(TGTrackSpacing ts){
 		int checkPosition = -1;
 		int minBufferSeparator = getMinBufferSeparator();
 		if( (this.style & DISPLAY_SCORE) != 0 ){
-			int bufferSeparator = (ts.getPosition(TrackSpacing.POSITION_SCORE_UP_LINES) - ts.getPosition(TrackSpacing.POSITION_BUFFER_SEPARATOR));
+			int bufferSeparator = (ts.getPosition(TGTrackSpacing.POSITION_SCORE_UP_LINES) - ts.getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 			if(bufferSeparator < minBufferSeparator ) {
-				ts.setSize(TrackSpacing.POSITION_BUFFER_SEPARATOR,minBufferSeparator - bufferSeparator);
+				ts.setSize(TGTrackSpacing.POSITION_BUFFER_SEPARATOR,minBufferSeparator - bufferSeparator);
 			}
-			checkPosition = ts.getPosition(TrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			checkPosition = ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 		}
 		else if((this.style & DISPLAY_TABLATURE) != 0){
-			int bufferSeparator = (ts.getPosition(TrackSpacing.POSITION_TABLATURE) - ts.getPosition(TrackSpacing.POSITION_BUFFER_SEPARATOR));
+			int bufferSeparator = (ts.getPosition(TGTrackSpacing.POSITION_TABLATURE) - ts.getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 			if(bufferSeparator < minBufferSeparator ) {
-				ts.setSize(TrackSpacing.POSITION_BUFFER_SEPARATOR,minBufferSeparator - bufferSeparator);
+				ts.setSize(TGTrackSpacing.POSITION_BUFFER_SEPARATOR,minBufferSeparator - bufferSeparator);
 			}
-			checkPosition = ts.getPosition(TrackSpacing.POSITION_TABLATURE);
+			checkPosition = ts.getPosition(TGTrackSpacing.POSITION_TABLATURE);
 		}
 		
 		if(checkPosition >= 0 && checkPosition < getMinTopSpacing()){
-			ts.setSize(TrackSpacing.POSITION_TOP, (getMinTopSpacing() - checkPosition));
+			ts.setSize(TGTrackSpacing.POSITION_TOP, (getMinTopSpacing() - checkPosition));
 		}
 	}
 	
@@ -511,7 +515,7 @@ public abstract class ViewLayout {
 		painter.setBackground(getResources().getColorBlack());
 	}
 	
-	public void setTupletoStyle(TGPainter painter){
+	public void setDivisionTypeStyle(TGPainter painter){
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground(getResources().getBackgroundColor());
 		painter.setFont(getResources().getDefaultFont());
@@ -536,6 +540,14 @@ public abstract class ViewLayout {
 		chord.setNoteSize(getChordNoteSize());
 		chord.setFirstFretSpacing(getChordFretIndexSpacing());
 		chord.setFirstFretFont(getResources().getChordFretFont());
+	}
+	
+	public void setLoopSMarkerStyle(TGPainter painter){
+		painter.setBackground(getResources().getLoopSMarkerColor());
+	}
+	
+	public void setLoopEMarkerStyle(TGPainter painter){
+		painter.setBackground(getResources().getLoopEMarkerColor());
 	}
 	
 	public Rectangle getNoteOrientation(TGPainter painter,int x,int y,TGNote note){
@@ -734,12 +746,12 @@ public abstract class ViewLayout {
 		this.repeatEndingSpacing = repeatEndingSpacing;
 	}
 	
-	public int getTupletoSpacing() {
-		return this.tupletoSpacing;
+	public int getDivisionTypeSpacing() {
+		return this.divisionTypeSpacing;
 	}
 	
-	public void setTupletoSpacing(int tupletoSpacing) {
-		this.tupletoSpacing = tupletoSpacing;
+	public void setDivisionTypeSpacing(int divisionTypeSpacing) {
+		this.divisionTypeSpacing = divisionTypeSpacing;
 	}
 	
 	public int getTextSpacing() {
@@ -756,6 +768,14 @@ public abstract class ViewLayout {
 	
 	public void setMarkerSpacing(int markerSpacing) {
 		this.markerSpacing = markerSpacing;
+	}
+	
+	public int getLoopMarkerSpacing() {
+		return this.loopMarkerSpacing;
+	}
+	
+	public void setLoopMarkerSpacing(int loopMarkerSpacing) {
+		this.loopMarkerSpacing = loopMarkerSpacing;
 	}
 	
 	public int getEffectSpacing() {
@@ -783,6 +803,14 @@ public abstract class ViewLayout {
 	
 	public boolean isLastMeasure(TGMeasure measure){
 		return (measure.getNumber() == getSongManager().getSong().countMeasureHeaders());
+	}
+
+	public boolean hasLoopMarker(TGMeasure measure){
+		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+		if( pm.isLoop() && ( pm.getLoopSHeader() == measure.getNumber() || pm.getLoopEHeader() == measure.getNumber() ) ){
+			return true;
+		}
+		return false;
 	}
 	
 	protected void clearTrackPositions(){
