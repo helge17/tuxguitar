@@ -28,7 +28,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
-import org.herac.tuxguitar.song.models.TGTupleto;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 
 /**
  * @author julian
@@ -478,7 +478,7 @@ public class TGMeasureImpl extends TGMeasure{
 					
 					voice.update(layout);
 					
-					if(!this.tupleto && !voice.getDuration().getTupleto().isEqual(TGTupleto.NORMAL)){
+					if(!this.tupleto && !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
 						this.tupleto = true;
 					}
 					if( (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 || (voice.isRestVoice() && !voice.isHiddenSilence()) ){

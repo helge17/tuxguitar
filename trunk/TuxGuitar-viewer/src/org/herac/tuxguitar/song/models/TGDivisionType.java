@@ -14,8 +14,8 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class TGTupleto {
-	public static final TGTupleto NORMAL = newTupleto(1,1);
+public abstract class TGDivisionType {
+	public static final TGDivisionType NORMAL = newTupleto(1,1);
 	
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos
@@ -26,7 +26,7 @@ public abstract class TGTupleto {
 	 */
 	private int times;
 	
-	public TGTupleto(){
+	public TGDivisionType(){
 		this.enters = 1;
 		this.times = 1;
 	}
@@ -51,23 +51,23 @@ public abstract class TGTupleto {
 		return time * this.times / this.enters;
 	}
 	
-	public boolean isEqual(TGTupleto tupleto){
+	public boolean isEqual(TGDivisionType tupleto){
 		return (tupleto.getEnters() == getEnters() && tupleto.getTimes() == getTimes());
 	}
 	
-	public TGTupleto clone(TGFactory factory){
-		TGTupleto tupleto = factory.newTupleto();
+	public TGDivisionType clone(TGFactory factory){
+		TGDivisionType tupleto = factory.newDivisionType();
 		copy(tupleto);
 		return tupleto;
 	}
 	
-	public void copy(TGTupleto tupleto){
+	public void copy(TGDivisionType tupleto){
 		tupleto.setEnters(this.enters);
 		tupleto.setTimes(this.times);
 	}
 	
-	private static TGTupleto newTupleto(int enters,int times){
-		TGTupleto tupleto = new TGFactory().newTupleto();
+	private static TGDivisionType newTupleto(int enters,int times){
+		TGDivisionType tupleto = new TGFactory().newDivisionType();
 		tupleto.setEnters(enters);
 		tupleto.setTimes(times);
 		return tupleto;
