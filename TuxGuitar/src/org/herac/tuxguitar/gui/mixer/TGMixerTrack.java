@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackChannel;
+import org.herac.tuxguitar.gui.undo.undoables.track.UndoableTrackSoloMute;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGMixerTrack {
@@ -58,15 +59,12 @@ public class TGMixerTrack {
 		this.checkSolo.setSelection(TGMixerTrack.this.track.isSolo());
 		this.checkSolo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				UndoableTrackChannel undoable = UndoableTrackChannel.startUndo();
+				TGTrack track = TGMixerTrack.this.track;
 				
-				TGMixerTrack.this.track.setSolo(TGMixerTrack.this.checkSolo.getSelection());
-				if(TGMixerTrack.this.track.isSolo()){
-					TGMixerTrack.this.track.setMute(false);
-				}
-				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.SOLO);
-				
-				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+				UndoableTrackSoloMute undoable = UndoableTrackSoloMute.startUndo(track);
+				TuxGuitar.instance().getSongManager().getTrackManager().changeSolo(track,TGMixerTrack.this.checkSolo.getSelection());
+				TGMixerTrack.this.mixer.fireChanges(track.getChannel(),TGMixer.SOLO);
+				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(track));
 				TuxGuitar.instance().updateCache(true);
 			}
 		});
@@ -74,15 +72,12 @@ public class TGMixerTrack {
 		this.checkMute.setSelection(TGMixerTrack.this.track.isMute());
 		this.checkMute.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				UndoableTrackChannel undoable = UndoableTrackChannel.startUndo();
+				TGTrack track = TGMixerTrack.this.track;
 				
-				TGMixerTrack.this.track.setMute(TGMixerTrack.this.checkMute.getSelection());
-				if(TGMixerTrack.this.track.isMute()){
-					TGMixerTrack.this.track.setSolo(false);
-				}
-				TGMixerTrack.this.mixer.fireChanges(TGMixerTrack.this.track.getChannel(),TGMixer.MUTE);
-				
-				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+				UndoableTrackSoloMute undoable = UndoableTrackSoloMute.startUndo(track);
+				TuxGuitar.instance().getSongManager().getTrackManager().changeMute(track,TGMixerTrack.this.checkMute.getSelection());
+				TGMixerTrack.this.mixer.fireChanges(track.getChannel(),TGMixer.MUTE);
+				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(track));
 				TuxGuitar.instance().updateCache(true);
 			}
 		});
