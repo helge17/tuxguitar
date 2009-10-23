@@ -250,6 +250,16 @@ public class TGTrackManager {
 		}
 	}
 	
+	public void changeSolo(TGTrack track,boolean solo){
+		track.setSolo(solo);
+		track.setMute(track.isSolo() ? false : track.isMute());
+	}
+	
+	public void changeMute(TGTrack track,boolean mute){
+		track.setMute(mute);
+		track.setSolo(track.isMute() ? false : track.isSolo());
+	}
+	
 	public void changeInfo(TGTrack track,String name,TGColor color,int offset){
 		track.setName(name);
 		track.setOffset(offset);
