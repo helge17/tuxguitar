@@ -429,21 +429,21 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		//leo el valor
 		duration.setValue(readByte());
 		
-		//leo el tupleto
-		if(((header & DURATION_NO_TUPLETO) != 0)){
-			readTupleto(duration.getDivision());
+		//leo el tipo de divisiones
+		if(((header & DURATION_NO_TUPLET) != 0)){
+			readDivisionType(duration.getDivision());
 		}
 		else{
 			TGDivisionType.NORMAL.copy(duration.getDivision());
 		}
 	}
 	
-	private void readTupleto(TGDivisionType tupleto){
+	private void readDivisionType(TGDivisionType divisionType){
 		//leo los enters
-		tupleto.setEnters(readByte());
+		divisionType.setEnters(readByte());
 		
 		//leo los tiempos
-		tupleto.setTimes(readByte());
+		divisionType.setTimes(readByte());
 	}
 	
 	private void readNoteEffect(TGNoteEffect effect){
