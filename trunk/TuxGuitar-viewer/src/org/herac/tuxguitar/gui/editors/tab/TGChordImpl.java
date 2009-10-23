@@ -13,7 +13,6 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.layout.TrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGString;
@@ -176,7 +175,7 @@ public class TGChordImpl extends TGChord {
 	
 	public void paint(ViewLayout layout, TGPainter painter, int fromX, int fromY) {
 		layout.setChordStyle(this);
-		this.setPosY(getPaintPosition(TrackSpacing.POSITION_CHORD));
+		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
 		this.update(painter, layout.isBufferEnabled());
 		this.paint(painter,getBeatImpl().getSpacing() + fromX + Math.round(4f * layout.getScale()), fromY);
