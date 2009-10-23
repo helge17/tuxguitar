@@ -45,6 +45,10 @@ public class TGTransportListener implements MidiPlayerListener{
 		}
 	}
 	
+	public void notifyLoop(){
+		// Not implemented
+	}
+	
 	private TGSynchronizer.TGRunnable getStartedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
 			public void run() {
