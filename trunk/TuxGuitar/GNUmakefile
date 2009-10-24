@@ -39,7 +39,11 @@ RESOURCE_PATH?=./dist/
 RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
 RESOURCES_DIST?=$(shell find $(RESOURCE_PATH) -name "*.dist")
 DEPENDENCIES?=$(SWT_JAR)
-OBJECTS?=$(SOURCES:%.java=%.o) $(RESOURCES_DIST:%.dist=%.o) $(RESOURCES_XML:%.xml=%.o) $(DEPENDENCIES:%.jar=%.o)
+OBJECTS?=\
+ $(PACKAGE).o\
+ $(RESOURCES_DIST:%.dist=%.o)\
+ $(RESOURCES_XML:%.xml=%.o)\
+ $(DEPENDENCIES:%.jar=%.o)\
 
 # runtime
 MAINCLASS?=org.herac.tuxguitar.gui.TGMain
@@ -86,20 +90,20 @@ clean:
 	-@find . -name "*.bin" -exec rm -f {} \; > /dev/null 2>&1
 	-@find . -name "*.tmp" -exec rm -f {} \; > /dev/null 2>&1
 
-%.o: %.java
-	$(GCJ) $(GCJFLAGS) -c -o $@ $<
-
 %.o: %.jar
-	$(GCJ) $(GCJFLAGS) -c -o $@ $<
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $<
 
 %.o: %.dist
-	$(GCJ) $(GCJFLAGS) -c -o $@ --resource $(<F) $<
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
 
 %.o: %.xml
-	$(GCJ) $(GCJFLAGS) -c -o $@ --resource $(<F) $<
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
+
+$(PACKAGE).o: $(SOURCES)
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
 
 $(LIBRARY): $(OBJECTS)
-	$(GCJ) $(LDFLAGS) -shared -o $@ $^
+	$(GCJ) $(LDFLAGS) -shared -o $@ $(^F)
 
 $(BINARY):
 	$(GCJ) -o $@ --main=$(MAINCLASS) $(PROPERTIES) -l$(PACKAGE) -L$(TG_LIBRARY_PATH) -L./
