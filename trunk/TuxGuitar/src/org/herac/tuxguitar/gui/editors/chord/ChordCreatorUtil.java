@@ -758,18 +758,18 @@ public class ChordCreatorUtil {
 		while (it.hasNext()) {
 			StringValue sv = (StringValue) it.next();
 			
-			if (sv.requiredNoteIndex >= 0) { // only basis tones
+			if (sv.getRequiredNoteIndex() >= 0) { // only basis tones
 				boolean insert = true;
 				
 				for (int i = 0; i < currentIndex; i++)
-					if (values[i] == sv.requiredNoteIndex + 1)
+					if (values[i] == sv.getRequiredNoteIndex() + 1)
 						insert = false;
 				
 				// sv.requiredNoteIndex+1, because we have index 0 and we don't
 				// want it inside
 				
 				if (insert) {
-					values[currentIndex] = sv.requiredNoteIndex + 1;
+					values[currentIndex] = sv.getRequiredNoteIndex() + 1;
 					currentIndex++;
 				}
 				
@@ -787,7 +787,7 @@ public class ChordCreatorUtil {
 			Iterator it2 = stringValueCombination.iterator();
 			while (it2.hasNext()) {
 				StringValue current = (StringValue)it2.next();
-				if ((this.tuning[current.string] + current.fret) % 12 == (this.chordTonic + 7) %12)
+				if ((this.tuning[current.getString()] + current.getFret()) % 12 == (this.chordTonic + 7) %12)
 					existsSubdominant = true;
 			}
 			
@@ -824,7 +824,7 @@ public class ChordCreatorUtil {
 			boolean found = false;
 			Iterator it = stringValueCombination.iterator();
 			while (it.hasNext())
-				if (((StringValue) it.next()).string == i)
+				if (((StringValue) it.next()).getString() == i)
 					found = true;
 			if (found) {
 				if (!stumbled)
@@ -857,8 +857,8 @@ public class ChordCreatorUtil {
 			while (it.hasNext()) {
 				StringValue sv = (StringValue) it.next();
 				
-				if (sv.string == i) { // stumbled upon lowest tone
-					if ( (this.tuning[sv.string]+sv.fret) % 12 == this.bassTonic  )
+				if (sv.getString() == i) { // stumbled upon lowest tone
+					if ( (this.tuning[sv.getString()]+sv.getFret()) % 12 == this.bassTonic  )
 					  return ChordSettings.instance().getBassGrade();
 					// else
 					return -ChordSettings.instance().getBassGrade();
@@ -894,7 +894,7 @@ public class ChordCreatorUtil {
 			
 			while (it.hasNext()) {
 				StringValue sv = (StringValue) it.next();
-				positions[sv.string] = sv.fret;
+				positions[sv.getString()] = sv.getFret();
 			}
 		}
 		// algorithm
@@ -1060,7 +1060,7 @@ public class ChordCreatorUtil {
 			
 			while (it.hasNext() && !found) {
 				StringValue sv = (StringValue) it.next();
-				if (sv.string == string &&!found && sv.fret!=-1) { // stumbled upon next string
+				if (sv.getString() == string &&!found && sv.getFret()!=-1) { // stumbled upon next string
 					current = sv;
 					found=true;
 					stringDepth++;
@@ -1070,29 +1070,29 @@ public class ChordCreatorUtil {
 			// grade algorithms----
 			if (current != null) {
 				// search for tonic
-				if (foundTonic==-1 && current.requiredNoteIndex==0)
-					foundTonic=this.tuning[current.string]+current.fret;
+				if (foundTonic==-1 && current.getRequiredNoteIndex()==0)
+					foundTonic=this.tuning[current.getString()]+current.getFret();
 				
 				// specific bass not in bass?
 				if (stringDepth>1) {
-					if (current.requiredNoteIndex==this.BASS_INDEX)  
+					if (current.getRequiredNoteIndex()==this.BASS_INDEX)  
 						finalGrade -= ChordSettings.instance().getGoodChordSemanticsGrade();
 					
-					if (current.requiredNoteIndex<0) { // expanding tones
+					if (current.getRequiredNoteIndex()<0) { // expanding tones
 						// expanding tone found before the tonic
 						if (foundTonic==-1)
 							finalGrade -= ChordSettings.instance().getGoodChordSemanticsGrade()/2;
 						else {
 							// if expanding note isn't higher than tonic's octave
-							if (foundTonic+11 > this.tuning[current.string]+current.fret)
+							if (foundTonic+11 > this.tuning[current.getString()]+current.getFret())
 								finalGrade -= ChordSettings.instance().getGoodChordSemanticsGrade()/3;
 						}
 						
 						// search for distinct expanding notes
 						for (int i=0; i<this.expandingNotes.length; i++)
-							if ((this.tuning[string]+current.fret)%12==(this.chordTonic+this.expandingNotes[i]-1)%12)
+							if ((this.tuning[string]+current.getFret())%12==(this.chordTonic+this.expandingNotes[i]-1)%12)
 								if (foundExpanding[i]==0)
-									foundExpanding[i]=current.requiredNoteIndex;
+									foundExpanding[i]=current.getRequiredNoteIndex();
 						
 					}
 				}
@@ -1146,12 +1146,12 @@ public class ChordCreatorUtil {
 			boolean foundDifferentFret = false;
 			// repeat until gone through all strings, or found something different
 			for (int i=0; i<currentStringValue.size(); i++) {
-				int currentString = ((ChordCreatorUtil.StringValue)currentStringValue.get(i)).string ;
+				int currentString = ((ChordCreatorUtil.StringValue)currentStringValue.get(i)).getString() ;
 				// search for the same string - if not found do nothing
 				for (int j=0; j<stringValues.size(); j++)
-				if ( ((ChordCreatorUtil.StringValue)stringValues.get(j)).string == currentString) {
+				if ( ((ChordCreatorUtil.StringValue)stringValues.get(j)).getString() == currentString) {
 					// if the frets on the same string differ, then chords are not subset/superset of each other
-					if (((ChordCreatorUtil.StringValue)stringValues.get(j)).fret != ((ChordCreatorUtil.StringValue)currentStringValue.get(i)).fret)
+					if (((ChordCreatorUtil.StringValue)stringValues.get(j)).getFret() != ((ChordCreatorUtil.StringValue)currentStringValue.get(i)).getFret())
 						foundDifferentFret=true;
 				}
 				
@@ -1188,26 +1188,13 @@ public class ChordCreatorUtil {
 			return this.string;
 		}
 		
-		public void setString(int string) {
-			this.string = string;
-		}
-		
 		public int getFret() {
 			return this.fret;
-		}
-		
-		public void setFret(int fret) {
-			this.fret = fret;
 		}
 		
 		public int getRequiredNoteIndex() {
 			return this.requiredNoteIndex;
 		}
-		
-		public void setRequiredNoteIndex(int requiredNoteIndex) {
-			this.requiredNoteIndex = requiredNoteIndex;
-		}
-		
 	}
 	
 	/** used just to sort StringValue ArrayLists by priorities */
