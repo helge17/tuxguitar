@@ -276,7 +276,7 @@ public class MidiSequenceParser {
 					//---Slide---
 					else if(note.getEffect().isSlide() && effectChannel >= 0 && !percussionTrack){
 						channel = effectChannel;
-						TGNote nextNote = getNextNote(note,track,measureIdx,bIndex);
+						TGNote nextNote = getNextNote(note,track,measureIdx,bIndex,true);
 						makeSlide(sequence,trackId,note,nextNote,startMove,channel);
 					}
 					//---Vibrato---
@@ -448,7 +448,7 @@ public class MidiSequenceParser {
 		
 		//Check for Hammer effect
 		if(!songTrack.isPercussionTrack()){
-			TGNote prevNote = getPreviousNote(note,songTrack,mIndex,bIndex);
+			TGNote prevNote = getPreviousNote(note,songTrack,mIndex,bIndex,false);
 			if(prevNote != null && prevNote.getEffect().isHammer()){
 				velocity = Math.max(TGVelocities.MIN_VELOCITY,(velocity - 25));
 			}
@@ -741,7 +741,7 @@ public class MidiSequenceParser {
 		return next;
 	}
 	
-	private TGNote getNextNote(TGNote note,TGTrack track, int mIndex, int bIndex){ 
+	private TGNote getNextNote(TGNote note,TGTrack track, int mIndex, int bIndex, boolean breakAtRest){ 
 		int nextBIndex = (bIndex + 1);
 		int measureCount = ( this.eHeader == -1 ? track.countMeasures() : Math.min( this.eHeader, track.countMeasures() ) );
 		for (int m = mIndex; m < measureCount; m++) {
@@ -750,21 +750,25 @@ public class MidiSequenceParser {
 			for (int b = nextBIndex; b < beatCount; b++) {
 				TGBeat beat = measure.getBeat( b );
 				TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
-				int noteCount = voice.countNotes();
-				for (int n = 0; n < noteCount; n++) {
-					TGNote currNote = voice.getNote( n );
-					if(currNote.getString() == note.getString()){
-						return currNote;
+				if( !voice.isEmpty() ){
+					int noteCount = voice.countNotes();
+					for (int n = 0; n < noteCount; n++) {
+						TGNote currNote = voice.getNote( n );
+						if(currNote.getString() == note.getString()){
+							return currNote;
+						}
+					}
+					if( breakAtRest ){
+						return null;
 					}
 				}
-				return null;
 			}
 			nextBIndex = 0;
 		}
 		return null;
 	}
 	
-	private TGNote getPreviousNote(TGNote note,TGTrack track, int mIndex, int bIndex){
+	private TGNote getPreviousNote(TGNote note,TGTrack track, int mIndex, int bIndex, boolean breakAtRest){
 		int nextBIndex = bIndex;
 		for (int m = mIndex; m >= 0; m--) {
 			TGMeasure measure = track.getMeasure( m );
@@ -773,11 +777,16 @@ public class MidiSequenceParser {
 				for (int b = (nextBIndex - 1); b >= 0; b--) {
 					TGBeat beat = measure.getBeat( b );
 					TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
-					int noteCount = voice.countNotes();
-					for (int n = 0; n < noteCount; n ++) {
-						TGNote current = voice.getNote( n );
-						if(current.getString() == note.getString()){
-							return current;
+					if( !voice.isEmpty() ){
+						int noteCount = voice.countNotes();
+						for (int n = 0; n < noteCount; n ++) {
+							TGNote current = voice.getNote( n );
+							if(current.getString() == note.getString()){
+								return current;
+							}
+						}
+						if( breakAtRest ){
+							return null;
 						}
 					}
 				}
