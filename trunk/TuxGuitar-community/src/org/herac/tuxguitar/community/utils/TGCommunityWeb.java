@@ -35,8 +35,8 @@ public class TGCommunityWeb {
 			return true;
 		} catch ( Throwable throwable ) {
 			throwable.printStackTrace();
-			return false;
 		}
+		return false;
 	}
 	
 	private static boolean openCommandLineBrowser( URL url ){
