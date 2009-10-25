@@ -5,6 +5,8 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 import javax.sound.midi.Transmitter;
 
+import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiTransmitter;
@@ -66,9 +68,15 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		}
 	}
 	
-	protected Sequencer getSequencer() {
-		this.open();
+	protected Sequencer getSequencer(boolean open) {
+		if( open ){
+			this.open();
+		}
 		return this.sequencer;
+	}
+	
+	protected Sequencer getSequencer() {
+		return this.getSequencer(true);
 	}
 	
 	public MidiSequenceHandler createSequence(int tracks) {
@@ -111,15 +119,6 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		}
 	}
 	
-	public boolean isRunning() {
-		try {
-			return getSequencer().isRunning();
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
-		return false;
-	}
-	
 	public void setMute(int index, boolean mute) {
 		try {
 			getSequencer().setTrackMute(index, mute);
@@ -158,6 +157,15 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
+	}
+	
+	public boolean isRunning() {
+		try {
+			return ( getSequencer( false ) != null && getSequencer( false ).isRunning() );
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+		return false;
 	}
 	
 	public void setRunning( boolean running ) {
@@ -215,7 +223,10 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		return this.sequencer.getDeviceInfo().getName();
 	}
 	
-	public void check() {
-		// Not implemented
+	public void check() throws MidiPlayerException {
+		this.getSequencer( true );
+		if( this.sequencer == null || !this.sequencer.isOpen() ){
+			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.midi.unavailable"));
+		}
 	}
 }
