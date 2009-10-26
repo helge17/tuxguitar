@@ -13,3 +13,18 @@ TuxGuitar/share/plugins/tuxguitar-tray.jar usr/share/tuxguitar/plugins/
 ./misc/tuxguitar.xpm usr/share/pixmaps/
 ./misc/tuxguitar.desktop usr/share/applications/
 ./misc/tuxguitar.xml usr/share/mime/packages/
+TuxGuitar/tuxguitar.jar usr/share/tuxguitar/
+TuxGuitar/share/plugins/tuxguitar-gtp.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-midi.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-ptb.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-ascii.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-musicxml.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-tef.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-compat.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-lilypond.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-pdf.jar usr/share/tuxguitar/plugins/
+TuxGuitar/share/plugins/tuxguitar-tray.jar usr/share/tuxguitar/plugins/
+
+./misc/tuxguitar.xpm usr/share/pixmaps/
+./misc/tuxguitar.desktop usr/share/applications/
+./misc/tuxguitar.xml usr/share/mime/packages/

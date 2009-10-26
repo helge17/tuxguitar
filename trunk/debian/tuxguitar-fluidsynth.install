@@ -1,3 +1,6 @@
 ./TuxGuitar-fluidsynth/tuxguitar-fluidsynth.jar usr/share/tuxguitar/plugins/
 ./debian/tmp/tuxguitar-snapshot/usr/lib/jni/libtuxguitar-fluidsynth-jni.so usr/lib/jni/
 #TODO
+./TuxGuitar-fluidsynth/tuxguitar-fluidsynth.jar usr/share/tuxguitar/plugins/
+./debian/tmp/tuxguitar-snapshot/usr/lib/jni/libtuxguitar-fluidsynth-jni.so usr/lib/jni/
+#TODO

@@ -1,2 +1,4 @@
 version=3
 http://sf.net/tuxguitar/tuxguitar-src-(.*)\.tar\.gz
+version=3
+http://sf.net/tuxguitar/tuxguitar-src-(.*)\.tar\.gz

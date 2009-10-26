@@ -46,12 +46,14 @@ subdirs?=\
  TuxGuitar-jsa \
 \
  TuxGuitar-converter \
+ TuxGuitar-community \
 #}subdirs
 
 subdirs_jni?=\
  TuxGuitar-alsa \
  TuxGuitar-oss \
  TuxGuitar-fluidsynth \
+ TuxGuitar-jack \
  #}subdirs_jni
 
 #  
@@ -71,6 +73,7 @@ out_java?=\
  ./TuxGuitar-ptb/tuxguitar-ptb.jar \
  ./TuxGuitar-musicxml/tuxguitar-musicxml.jar \
  ./TuxGuitar-converter/tuxguitar-converter.jar \
+ ./TuxGuitar-community/tuxguitar-community.jar \
  #}out_java
 
 out_jsa?=TuxGuitar-jsa/tuxguitar-jsa.jar
