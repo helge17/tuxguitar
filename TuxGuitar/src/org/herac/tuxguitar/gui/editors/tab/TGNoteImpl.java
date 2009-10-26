@@ -389,7 +389,7 @@ public class TGNoteImpl extends TGNote {
 		int y = fromY + getTabPosY();
 		TGNoteEffect effect = getEffect();
 		if(effect.isGrace()){
-			layout.setGraceStyle(painter);
+			layout.setTabGraceStyle(painter);
 			String value = Integer.toString(effect.getGrace().getFret());
 			Point gracePoint = painter.getStringExtent(value);
 			painter.drawString(value, (this.noteOrientation.x - gracePoint.x - 2), this.noteOrientation.y );
@@ -495,7 +495,7 @@ public class TGNoteImpl extends TGNote {
 		float x = fromX - (2f * scale);
 		float y = fromY + (scale / 3);
 		
-		layout.setTabEffectStyle(painter);
+		layout.setScoreEffectStyle(painter);
 		painter.initPath(TGPainter.PATH_FILL);
 		TGNotePainter.paintFooter(painter,x, y , -1 , scale);
 		painter.closePath();

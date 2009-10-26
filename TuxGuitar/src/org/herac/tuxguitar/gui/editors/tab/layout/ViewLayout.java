@@ -411,11 +411,6 @@ public abstract class ViewLayout {
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
-	public void setGraceStyle(TGPainter painter){
-		painter.setFont(getResources().getGraceFont());
-		painter.setBackground(getResources().getBackgroundColor());
-	}
-	
 	public void setLyricStyle(TGPainter painter,boolean playMode){
 		painter.setFont(getResources().getLyricFont());
 		painter.setBackground(getResources().getBackgroundColor());
@@ -496,6 +491,12 @@ public abstract class ViewLayout {
 	public void setTabEffectStyle(TGPainter painter){
 		painter.setForeground( getResources().getTabNoteColor());
 		painter.setBackground( getResources().getTabNoteColor());
+	}
+	
+	public void setTabGraceStyle(TGPainter painter){
+		painter.setFont(getResources().getGraceFont());
+		painter.setForeground(getResources().getTabNoteColor());
+		painter.setBackground(getResources().getBackgroundColor());
 	}
 	
 	public void setPlayNoteColor(TGPainter painter){

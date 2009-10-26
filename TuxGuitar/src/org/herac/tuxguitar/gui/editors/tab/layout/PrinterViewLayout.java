@@ -379,7 +379,7 @@ public class PrinterViewLayout extends ViewLayout{
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
-	public void setGraceStyle(TGPainter painter){
+	public void setTabGraceStyle(TGPainter painter){
 		painter.setFont(getResources().getPrinterGraceFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
