@@ -1,2 +1,4 @@
 ?package(tuxguitar):needs="X11" section="Applications/Sound"\
   title="tuxguitar" command="/usr/bin/tuxguitar"
+?package(tuxguitar):needs="X11" section="Applications/Sound"\
+  title="tuxguitar" command="/usr/bin/tuxguitar"

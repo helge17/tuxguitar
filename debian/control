@@ -4,6 +4,63 @@ Priority: optional
 Maintainer: Philippe Coval <rzr@gna.org>
 Uploaders: tony mancill <tmancill@debian.org>
 Build-Depends: debhelper (>= 5.0.0), docbook-to-man, docbook-utils, ant, default-jdk | java2-compiler, libswt-gtk-3.4-java, libitext-java, libasound2-dev, libfluidsynth-dev
+Standards-Version: 3.8.3
+Homepage: http://www.tuxguitar.com.ar
+XS-Vcs-svn: svn://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
+XS-Vcs-Browser: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
+
+Package: tuxguitar-snapshot
+Architecture: all
+Section: sound
+Depends: default-jre | java2-runtime, libitext-java, libswt-gtk-3.4-java, libswt-cairo-gtk-3.4-jni , libswt-mozilla-gtk-3.4-jni, xulrunner-1.9
+Recommends: tuxguitar-alsa (= ${source:Version}), tuxguitar-oss (= ${source:Version})
+Suggests: tuxguitar-snapshot-jsa (= ${source:Version}), lilypond
+Description: Multitrack guitar tablature editor and player (gp3 to gp5)
+ TuxGuitar is a multitrack Guitar tablature editor and player.
+ It can open GP3, GP4, and GP5 files and exports in MIDI and PDF.
+
+Package: tuxguitar-snapshot-jsa
+Architecture: all
+Section: sound
+Depends: tuxguitar-snapshot (= ${source:Version}), default-jre | sun-java6-jre | sun-java5-jre
+Description: tuxguitar plugin for sound playback using Java Sound API
+ Use Tuxguitar along this plugin if unsure, other sounds can be used too.
+
+Package: tuxguitar-snapshot-alsa
+Architecture: any
+Section: sound
+Depends: ${shlibs:Depends}, tuxguitar-snapshot (= ${source:Version})
+Suggests: timidity
+Replaces: tuxguitar-alsa
+Description: tuxguitar plugin for sound playback using ALSA
+ Use Tuxguitar along this plugin if your Sound Device is supported by ALSA.
+ A MIDI expander is required (Hardware or Software).
+
+Package: tuxguitar-snapshot-oss
+Architecture: any
+Section: sound
+Depends: ${shlibs:Depends}, tuxguitar-snapshot (= ${source:Version}), oss-compat
+Suggests: timidity
+Priority: extra
+Description: tuxguitar plugin for sound playback using OSS
+ Use Tuxguitar along this plugin if your Sound Device is supported by OSS.
+ A MIDI expander is required (Hardware or Software).
+
+Package: tuxguitar-snapshot-fluidsynth
+Replaces: tuxguitar-fluidsynth
+Architecture: any
+Section: sound
+Depends: ${shlibs:Depends}, tuxguitar-snapshot (= ${source:Version}), fluidsynth
+Priority: extra
+Description: tuxguitar plugin for sound playback using fluidsynth
+ Use Tuxguitar along this plugin if your audio system is configured for 
+ fluidsynth as MIDI expander.
+Source: tuxguitar-snapshot
+Section: sound
+Priority: optional
+Maintainer: Philippe Coval <rzr@gna.org>
+Uploaders: tony mancill <tmancill@debian.org>
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, docbook-utils, ant, default-jdk | java2-compiler, libswt-gtk-3.4-java, libitext-java, libasound2-dev, libfluidsynth-dev
 Standards-Version: 3.8.2
 Homepage: http://www.tuxguitar.com.ar
 XS-Vcs-svn: svn://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk

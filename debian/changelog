@@ -35,6 +35,196 @@ tuxguitar (1.0.dak-1) unstable; urgency=low
 
   [ Philippe Coval ]
   * debian/control ; debian/rules :
+    - set to main since openjdk supports sound (Closes: #505612)
+    - uses ${shlibs:Depends} vs hardcoded libs (Closes: #506883)
+    - depends on at least xulrunner for browsing doc (Closes: #493557)
+
+  [ Ben Hutchings ]
+  * Move virtual packages to end of dependency alternations
+  * Move OpenJDK dependencies to start of dependency alternations
+  * Replace recommendation of Sun JVM with OpenJDK
+  * Fix "2<" to "2>" in postinst and postrm
+  * Avoid adding current directory to LD_LIBRARY_PATH
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 10 Dec 2008 03:15:10 +0000
+
+tuxguitar (1.0-1ubuntu1) intrepid; urgency=low
+
+  * fix LP: #272772: packages that Depend/Recommend/Suggest firefox
+    (meta-package) must alternatively Depend/Recommend/Suggest abrowser
+    - update debian/control
+
+ -- Alexander Sack <asac@ubuntu.com>  Mon, 22 Sep 2008 03:34:37 +0200
+
+tuxguitar (1.0-1) unstable; urgency=low
+
+  * New upstream release (Closes: #481728) also (LP: #176979, #212207)
+
+ -- Philippe Coval <rzr@users.sf.net>  Thu, 19 Jun 2008 00:30:30 +0200
+
+tuxguitar (0.9.99~1.0rc4-1) unstable; urgency=low
+
+  * New Upstream release (1.0-rc4 retitled to 0.9.99~1.0rc4)
+  * Fixed plugin loading bug by hardcoding path (Closes: #479668)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat, 17 May 2008 01:19:00 +0200
+
+tuxguitar (0.9.99~1.0rc3-1) unstable; urgency=low
+
+  * New Upstream release (1.0-rc3 retitled to 0.9.99~1.0rc3)
+  * Updated startup script from upstream
+  * debian/control now build with gcj by default not openjdk (Closes: #474410)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat, 01 May 2008 12:16:00 +0200
+
+tuxguitar (0.9.99~1.0rc2-2) unstable; urgency=low
+
+  * ADD: Support compilers and jvm's based on classpath
+  * FIX: arch vs indep for non i386 arch (closes: #474410)
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed, 16 Apr 2008 19:19:52 +0200
+
+tuxguitar (0.9.99~1.0rc2-1) unstable; urgency=low
+
+  * ADD: New Upstream release (1.0-rc2 retitled to 0.9.99~1.0rc2)
+  * FIX: Only on sun-java6 supported (Closes: #466986)
+  * FIX: Compile in 1.4 format (Closes: #466038)
+  * ADD: plugins ALSA and OSS (natives JNI) (Closes: #439669)
+
+ -- Philippe Coval <rzr@users.sf.net>  Mon, 17 Mar 2008 19:37:27 +0100
+
+tuxguitar (0.9.1-4) unstable; urgency=low
+
+  * Merged Ubuntu changes (closes: #457342)
+  * Changed maintainer to myself
+  * Added desktop and icon
+
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 25 Jan 2008 21:33:37 +0100
+
+tuxguitar (0.9.1-3ubuntu1) hardy; urgency=low
+
+  * Modified debian/control and GNUmakefile to make building work (LP: #176736)
+  * changed mantainer to Ubuntu MOTU Developers.
+
+ -- Teemu Heinamaki (Hippu) <teemu.heinamaki@gmail.com>  Sun, 16 Dec 2007 00:02:48 +0200
+
+tuxguitar (0.9.1-3) unstable; urgency=low
+
+  * Add generic wrapper script (closes: #434181)
+
+ -- Philippe Coval <rzr@users.sf.net>  Mon, 23 Jul 2007 08:56:56 +0200
+
+tuxguitar (0.9.1-2) unstable; urgency=low
+
+  * Fix depend bug (closes: #427340)
+  * Fix classpath (closes: #433821)
+  * Fix makefile for faster build (sync upstream)
+
+ -- Philippe Coval <rzr@users.sf.net>  Fri, 20 Jul 2007 00:20:17 +0200
+
+tuxguitar (0.9.1-1) unstable; urgency=low
+
+  * New upstream release
+  * added support for java6 too (closes: #409543)
+  * Fix swt bug (closes: #406122)
+	
+ -- Philippe Coval <rzr@users.sf.net>  Sun,  4 Feb 2007 01:41:23 +0100
+
+tuxguitar (0.9-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Philippe Coval <rzr@users.sf.net>  Tue, 30 Jan 2007 19:05:13 +0100
+
+tuxguitar (0.8dfsg-1) testing-proposed-updates; urgency=medium
+
+  * removed janel-ant (closes: #405295)
+  * use sun's javac path to compile
+  * installed german locale (closes: #398972)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat,  6 Jan 2007 12:17:31 +0100
+
+tuxguitar (0.8.1-1) unstable; urgency=low
+
+  * New upstream release (closes: #405295 , #398972)
+
+ -- Philippe Coval <rzr@users.sf.net>  Wed,  3 Jan 2007 22:08:53 +0100
+
+tuxguitar (0.8-3) unstable; urgency=low
+
+  * classpath now includes swt-gtk-3.2.1 (closes: #397368)
+  * removed unecessary dependency on libswt-gtk-3.2-jni (closes: #396591)
+  * package architecture is now "all"
+
+ -- Philippe Coval <rzr@users.sf.net>  Tue,  7 Nov 2006 21:40:45 +0100
+
+tuxguitar (0.8-2) unstable; urgency=low
+
+  * suppport command line arguments
+
+ -- Philippe Coval <rzr@users.sf.net>  Sun,  3 Sep 2006 11:45:09 +0200
+
+tuxguitar (0.8-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Philippe Coval <rzr@users.sf.net>  Mon, 28 Aug 2006 21:37:59 +0200
+
+tuxguitar (0.7-1) unstable; urgency=low
+
+  * New upstream release
+  * updated from libswt-gtk-3.1-java to libswt-gtk-3.2-java
+
+ -- Philippe Coval <rzr@users.sf.net>  Thu,  3 Aug 2006 22:19:50 +0200
+
+tuxguitar (0.6-1) unstable; urgency=low
+
+  * Initial release (Closes: #374287)
+
+ -- Philippe Coval <rzr@users.sf.net>  Sat, 17 Jun 2006 13:19:36 +0200
+tuxguitar-snapshot (0.0.20091026-0ubuntu0~rzr1) kermic; urgency=low
+
+  * wip: http://rzr.online.fr/q/tuxguitar-snapshot
+
+ -- Philippe Coval <rzr@gna.org>  Mon, 26 Oct 2009 12:45:33 +0100
+
+tuxguitar-snapshot (0.0.0-0) UNRELEASED; urgency=low
+
+  * wip: http://rzr.online.fr/q/tuxguitar
+
+ -- Philippe Coval <rzr@gna.org>  Sun, 02 Aug 2009 15:04:52 +0200
+
+tuxguitar (1.1-1) unstable; urgency=low
+
+  * New Upstream Release (Closes: #489859) (LP: #366476)
+  * Merged patch : tuxguitar_1.0.dak-1ubuntu1.patch
+  * debian/README.txt
+    - suggests to install tuxguitar-jsa
+
+ -- Philippe Coval <rzr@gna.org>  Sat, 25 Apr 2009 19:49:27 +0200
+
+tuxguitar (1.0.dak-1ubuntu1) jaunty; urgency=low
+
+  * Merge from debian unstable.
+  * debian/control
+    - Replace build dependency openjdk-6-jdk with default-jdk.
+    - Remove unnecessary build dependencies gcj, java-gcj-compat-dev,
+      sun-java5-jdk, icedtea-java7-jdk, libswt3.2-gtk-java.
+    - Replace runtime dependency openjdk-6-jre with default-jre.
+    - Remove unnecessary runtime java-gcj-compat, sun-java6-jre, sun-java5-jre,
+      libswt3.2-gtk-java. Replaced java-virtual-machine with java2-runtime.
+      (LP: #250137)
+  * debian/rules
+    - Set JAVA_HOME to the value corresponding to default-jdk.
+  * misc/tuxguitar.sh
+    - Ubuntu specific change for correct path of xulrunner-1.9 installation.
+
+ -- Onkar Shinde <onkarshinde@ubuntu.com>  Tue, 13 Jan 2009 00:52:49 +0530
+
+tuxguitar (1.0.dak-1) unstable; urgency=low
+
+  [ Philippe Coval ]
+  * debian/control ; debian/rules :
     - set to main since openjdk supports sound (Closes: #505612)	
     - uses ${shlibs:Depends} vs hardcoded libs (Closes: #506883)
     - depends on at least xulrunner for browsing doc (Closes: #493557)
