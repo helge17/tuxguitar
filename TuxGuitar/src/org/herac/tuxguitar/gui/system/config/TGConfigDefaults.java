@@ -82,7 +82,7 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.FONT_PRINTER_GRACE, (DEFAULT_FONT_NAME + ",6,0"));
 		this.loadProperty(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE, (DEFAULT_FONT_NAME + ",36,3"));
 		this.loadProperty(TGConfigKeys.COLOR_BACKGROUND,"255,255,255");
-		this.loadProperty(TGConfigKeys.COLOR_LINE,"229,229,229");
+		this.loadProperty(TGConfigKeys.COLOR_LINE,"214,214,214");
 		this.loadProperty(TGConfigKeys.COLOR_SCORE_NOTE,"64,64,64");
 		this.loadProperty(TGConfigKeys.COLOR_TAB_NOTE,"64,64,64");
 		this.loadProperty(TGConfigKeys.COLOR_PLAY_NOTE,"255,0,0");

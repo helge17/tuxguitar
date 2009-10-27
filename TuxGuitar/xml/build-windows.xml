@@ -31,12 +31,21 @@
 	</target>
 	
 	<target name="build" >
-		<echo file="${file.properties}" append="false">font.default=Times New Roman,7,0${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.note=Small Fonts,6,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.time-signature=Arial,10,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.printer.default=Times New Roman,6,0${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.printer.note=Small Fonts,5,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">font.printer.time-signature=Arial,8,1${line.separator}</echo>
+		<echo file="${file.properties}" append="false">font.default=Small Fonts,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Small Fonts,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Sylfaen,10,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.text=Tahoma,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.lyric=Tahoma,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.grace=Small Fonts,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.chord=Tahoma,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.chord-fret=Small Fonts,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.default=Tahoma,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.text=Tahoma,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Sylfaen,10,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.lyric=Tahoma,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.note=Small Fonts,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.grace=Small Fonts,5,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.chord=Tahoma,8,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">browser.lines-visible=false${line.separator}</echo>
 		<echo file="${file.properties}" append="true">midi.sequencer=Real Time Sequencer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
