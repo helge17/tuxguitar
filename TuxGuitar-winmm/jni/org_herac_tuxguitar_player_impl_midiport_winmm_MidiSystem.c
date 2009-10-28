@@ -35,25 +35,19 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL){
-		MIDIOUTCAPS moc;
+		MIDIOUTCAPSW moc;
 		UINT count, i;
 		count = midiOutGetNumDevs();
 		for (i = 0; i < count; i++){
-			if (midiOutGetDevCaps(i, &moc, sizeof(MIDIOUTCAPS)) == MMSYSERR_NOERROR){
-				int srcLen = strlen( moc.szPname );
-				int dstLen = MultiByteToWideChar( CP_ACP, 0, (LPCSTR)moc.szPname, srcLen, NULL, 0 );
-				wchar_t* dstBuffer = malloc( (dstLen * 2) + 1 );
-				MultiByteToWideChar( CP_ACP, 0, (LPCSTR)moc.szPname, srcLen,(LPWSTR)dstBuffer, dstLen );
-				
+			if (midiOutGetDevCapsW(i, &moc, sizeof(MIDIOUTCAPSW)) == MMSYSERR_NOERROR){
 				//Add a new MidiDevice to the java class
 				jint device  = i;
-				jstring name =  (*env)->NewString( env, (jchar*)dstBuffer, dstLen );
+				jstring name =  (*env)->NewString( env, (jchar*)moc.szPname , wcslen( moc.szPname ) );
 				jclass cl = (*env)->GetObjectClass(env, obj);
 				jmethodID mid = (*env)->GetMethodID(env, cl, "addPort", "(Ljava/lang/String;I)V");
 				if (mid != 0){
 					(*env)->CallVoidMethod(env, obj, mid, name, device);
 				}
-				free (dstBuffer);
 			}
 		}
 	}
