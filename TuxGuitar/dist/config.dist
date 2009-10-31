@@ -1,6 +1,6 @@
 skin=Lavender
-midi.port=Java Sound Synthesizer
-midi.sequencer=Real Time Sequencer
+midi.port=Gervill
+midi.sequencer=tuxguitar.sequencer
 
 
 ## Needed for MacOs releases

@@ -47,7 +47,7 @@
 		<echo file="${file.properties}" append="true">font.printer.grace=Small Fonts,5,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.chord=Tahoma,8,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">browser.lines-visible=false${line.separator}</echo>
-		<echo file="${file.properties}" append="true">midi.sequencer=Real Time Sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=tuxguitar.sequencer${line.separator}</echo>
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
 		
 		<echo file="${file.description}" append="true">${line.separator}</echo>
