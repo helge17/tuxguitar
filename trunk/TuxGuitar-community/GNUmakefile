@@ -67,8 +67,8 @@ clean:
 	-@find . -name "*.o" -exec rm -f {} \; > /dev/null 2>&1
 	-@find . -name "*.so" -exec rm -f {} \; > /dev/null 2>&1
 	-@find . -name "*.tmp" -exec rm -f {} \; > /dev/null 2>&1
-	-@rm $(SETTINGS)
 	-@rm $(TG_SERVICE_CLASS)
+	-@rm $(SETTINGS)
 
 $(PACKAGE).o: $(SOURCES)
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^

@@ -33,8 +33,8 @@
 		<echo file="${file.properties}" append="true">font.printer.text=Sans,8,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.lyric=Sans,7,0${line.separator}</echo>
 		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,10,1${line.separator}</echo>
-		<echo file="${file.properties}" append="true">midi.sequencer=Real Time Sequencer${line.separator}</echo>
-		<echo file="${file.properties}" append="true">midi.port=Java Sound Synthesizer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=tuxguitar.sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.port=Gervill${line.separator}</echo>
 		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
 		
 		<echo file="${file.description}" append="true">${line.separator}</echo>
