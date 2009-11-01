@@ -6,6 +6,7 @@ import java.util.List;
 import org.herac.tuxguitar.cocoa.menu.MacMenuPlugin;
 import org.herac.tuxguitar.cocoa.opendoc.OpenDocPlugin;
 import org.herac.tuxguitar.cocoa.toolbar.MacToolbarPlugin;
+import org.herac.tuxguitar.cocoa.modifiedmarker.ModifiedMarkerPlugin;
 import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
 import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 
@@ -20,6 +21,7 @@ public class TGCocoaIntegrationPlugin extends TGPluginList {
 			this.plugins.add(new OpenDocPlugin());
 			this.plugins.add(new MacMenuPlugin());
 			this.plugins.add(new MacToolbarPlugin());
+			this.plugins.add(new ModifiedMarkerPlugin());
 		}
 		return this.plugins;
 	}
