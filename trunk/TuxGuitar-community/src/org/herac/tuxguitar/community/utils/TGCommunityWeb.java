@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.community.utils;
 
-import java.awt.Desktop;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -31,7 +31,17 @@ public class TGCommunityWeb {
 	
 	private static boolean openDesktopBrowser( URL url ){
 		try {
-			Desktop.getDesktop().browse( url.toURI() );
+			Class desktopClass = Class.forName("java.awt.Desktop");
+			if( desktopClass != null ){
+				Method desktop_getDesktop = desktopClass.getDeclaredMethod("getDesktop", new Class[]{} );
+				Method desktop_browse = desktopClass.getDeclaredMethod("browse", new Class[]{ java.net.URI.class });
+				if( desktop_getDesktop != null && desktop_browse != null ){
+					Object desktopObject = desktop_getDesktop.invoke( null , new Object[]{} );
+					if( desktopObject != null ){
+						desktop_browse.invoke( desktopObject , new Object[] { new java.net.URI( url.toExternalForm() ) } );
+					}
+				}
+			}
 			return true;
 		} catch ( Throwable throwable ) {
 			throwable.printStackTrace();
