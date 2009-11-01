@@ -757,6 +757,7 @@ public class TuxGuitar {
 		getFileHistory().reset(url);
 		getEditorCache().reset();
 		getUndoableManager().discardAllEdits();
+		getEditorManager().doUpdate( TGUpdateListener.SONG_SAVED );
 		
 		this.unlock();
 		
