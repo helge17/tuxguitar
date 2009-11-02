@@ -33,18 +33,26 @@
 		<j2se version="1.5+" />
 		<jar href="files/gnu-linux-x86-64/swt.jar" />
 		<jar href="files/gnu-linux-x86-64/tuxguitar-dist.jar" />
+		<jar href="files/gnu-linux-x86-64/tuxguitar-alsa.jar" />
+		<nativelib href="files/gnu-linux-x86-64/tuxguitar-alsa-jni.jar" />
 	</resources>
 	
 	<resources os="Mac\ OS\ X" arch="i386">
 		<j2se version="1.5+" java-vm-args="-XstartOnFirstThread"/>
 		<jar href="files/macosx-x86/swt.jar" />
 		<jar href="files/macosx-x86/tuxguitar-dist.jar" />
+		<jar href="files/macosx-x86/tuxguitar-cocoa-integration.jar" />
+		<jar href="files/macosx-x86/tuxguitar-audiounit.jar" />
+		<nativelib href="files/macosx-x86/tuxguitar-audiounit-jni.jar" />
 	</resources>
 	
 	<resources os="Mac\ OS\ X" arch="x86_64">
 		<j2se version="1.5+" java-vm-args="-XstartOnFirstThread"/>
 		<jar href="files/macosx-x86_64/swt.jar" />
 		<jar href="files/macosx-x86_64/tuxguitar-dist.jar" />
+		<jar href="files/macosx-x86_64/tuxguitar-cocoa-integration.jar" />
+		<jar href="files/macosx-x86_64/tuxguitar-audiounit.jar" />
+		<nativelib href="files/macosx-x86_64/tuxguitar-audiounit-jni.jar" />
 	</resources>
 	
 	<application-desc main-class="org.herac.tuxguitar.gui.TGMain" />
