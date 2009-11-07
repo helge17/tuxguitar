@@ -651,7 +651,7 @@ public class MidiSequenceParser {
 	}
 	
 	private long applyStrokeDuration( TGNote note, long duration , int[] stroke){
-		return (duration - stroke[ note.getString() - 1 ]);
+		return (duration > stroke[note.getString() - 1] ? (duration - stroke[ note.getString() - 1 ]) : duration );
 	}
 	
 	private BeatData checkTripletFeel(TGVoice voice,int bIndex){
