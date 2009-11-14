@@ -260,7 +260,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			flags |= 0x01;
 		}
 		writeUnsignedByte(flags);
-		writeByte((byte)8);
+		writeUnsignedByte((8 | flags));
 		writeStringByte(track.getName(), 40);
 		writeInt(track.getStrings().size());
 		for (int i = 0; i < 7; i++) {
