@@ -47,6 +47,7 @@ subdirs?=\
 \
  TuxGuitar-converter \
  TuxGuitar-community \
+ TuxGuitar-tuner \
 #}subdirs
 
 subdirs_jni?=\
@@ -74,6 +75,7 @@ out_java?=\
  ./TuxGuitar-musicxml/tuxguitar-musicxml.jar \
  ./TuxGuitar-converter/tuxguitar-converter.jar \
  ./TuxGuitar-community/tuxguitar-community.jar \
+ ./TuxGuitar-tuner/tuxguitar-tuner.jar \
  #}out_java
 
 out_jsa?=TuxGuitar-jsa/tuxguitar-jsa.jar
