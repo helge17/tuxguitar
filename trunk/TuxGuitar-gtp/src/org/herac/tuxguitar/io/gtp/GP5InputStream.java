@@ -338,7 +338,7 @@ public class GP5InputStream extends GTPInputStream {
 			readByte();
 			readByte();
 		}
-		if ((flags & 0x01) != 0) {
+		if ((flags & 0x01) != 0 || (flags & 0x02) != 0) {
 			skip(4);
 		}
 		if ((flags & 0x10) == 0) {
