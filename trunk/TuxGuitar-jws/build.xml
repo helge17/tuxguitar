@@ -160,6 +160,12 @@
 			<param name="locale.file" value="messages_ru.properties"/>
 		</antcall>
 		<antcall target="build.locale">
+			<param name="locale.file" value="messages_eu.properties"/>
+		</antcall>
+		<antcall target="build.locale">
+			<param name="locale.file" value="messages_fi.properties"/>
+		</antcall>
+		<antcall target="build.locale">
 			<param name="locale.file" value="messages_zh_TW.properties"/>
 		</antcall>
 		<antcall target="build.locale">
