@@ -455,7 +455,7 @@ public class LilypondOutputStream {
 			if( !voice.isEmpty() ){
 				TGDivisionType divisionType = voice.getDuration().getDivision();
 				
-				if(previous != null && this.temp.isDivisionTypeOpen() && !divisionType.isEqual( previous.getVoice(0).getDuration().getDivision() )){
+				if(previous != null && this.temp.isDivisionTypeOpen() && !divisionType.isEqual( previous.getVoice( vIndex ).getDuration().getDivision() )){
 					this.writer.print("} ");
 					this.temp.setDivisionTypeOpen(false);
 				}
@@ -750,7 +750,7 @@ public class LilypondOutputStream {
 		TGBeat beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), note.getVoice().getBeat());
 		while( measure != null){
 			while( beat != null ){
-				TGVoice voice = beat.getVoice(0);
+				TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
 				
 				// If is a rest beat, all voice sounds must be stopped.
 				if(voice.isRestVoice()){
