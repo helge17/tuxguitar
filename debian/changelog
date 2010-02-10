@@ -1,3 +1,9 @@
+tuxguitar-snapshot (0.0.20100208-0ubuntu0~rzr5) lucid; urgency=low
+
+  * wip: http://rzr.online.fr/q/tuxguitar
+
+ -- Philippe Coval <rzr@gna.org>  Tue, 09 Feb 2010 08:47:50 +0100
+
 tuxguitar-snapshot (0.0.0-0) UNRELEASED; urgency=low
 
   * wip: http://rzr.online.fr/q/tuxguitar
