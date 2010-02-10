@@ -3,10 +3,8 @@ Section: sound
 Priority: optional
 Maintainer: Philippe Coval <rzr@gna.org>
 Uploaders: tony mancill <tmancill@debian.org>
-Build-Depends: debhelper (>= 5.0.0), docbook-to-man, docbook-utils, ant, default-jdk | java2-compiler, 
- libswt-gtk-3.5-java, 
- libitext-java, libasound2-dev, libfluidsynth-dev
-Standards-Version: 3.8.3
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, docbook-utils, ant, default-jdk | java2-compiler, libswt-gtk-3.5-java, libitext-java, libasound2-dev, libfluidsynth-dev
+Standards-Version: 3.8.4
 Homepage: http://www.tuxguitar.com.ar
 XS-Vcs-svn: svn://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
 XS-Vcs-Browser: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
@@ -14,10 +12,7 @@ XS-Vcs-Browser: https://tuxguitar.svn.sourceforge.net/svnroot/tuxguitar/trunk
 Package: tuxguitar-snapshot
 Architecture: all
 Section: sound
-Depends: default-jre | java2-runtime, libitext-java, xulrunner-1.9,
- ( libswt-gtk-3.5-java, libswt-cairo-gtk-3.5-jni , libswt-mozilla-gtk-3.5-jni ) | 
- ( libswt-gtk-3.4-java, libswt-cairo-gtk-3.4-jni , libswt-mozilla-gtk-3.4-jni ),
- ${shlibs:Depends}, ${misc:Depends}
+Depends: default-jre | java2-runtime, libitext-java, xulrunner-1.9, libswt-gtk-3.5-java, libswt-cairo-gtk-3.5-jni, libswt-mozilla-gtk-3.5-jni, ${shlibs:Depends}, ${misc:Depends}
 Recommends: tuxguitar-alsa (= ${source:Version}), tuxguitar-oss (= ${source:Version})
 Suggests: tuxguitar-snapshot-jsa (= ${source:Version}), lilypond
 Description: Multitrack guitar tablature editor and player (gp3 to gp5)

@@ -15,8 +15,9 @@ JAVA_VERS?=1.4
 ITEXT_JAR?=/usr/share/java/itext.jar
 
 SWT_JAR?=$(shell echo ` \
-    ( t=/usr/share/java/swt.jar && test -r "$$t" && echo $$t ) \
+ || ( t=/usr/share/java/swt.jar && test -r "$$t" && echo $$t ) \
  || ( t=/usr/lib/java/swt.jar && test -r "$$t" && echo $$t ) \
+ || ( t=/usr/lib/java/swt-gtk-3.5.jar && test -r "$$t" && echo $$t ) \
  || ( t=/etc/alternatives/swt.jar && test -r "$$t" && echo $$t ) \
 ` )
 SWT_PATH?=${SWT_JAR}
