@@ -96,6 +96,10 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 		this.createCoolbar();
 	}
 	
+	public boolean isCoolbarVisible(){
+		return this.coolbarVisible;
+	}
+	
 	public void createCoolbar() {
 		boolean initialized = (this.coolBar != null && !this.coolBar.isDisposed());
 		
@@ -109,6 +113,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 			
 			this.coolBar = new CoolBar(TuxGuitar.instance().getShell(),SWT.HORIZONTAL | SWT.FLAT);
 			this.coolBar.setLayoutData(coolData);
+			this.coolBar.setVisible( this.coolbarVisible );
 			this.coolBar.addListener(SWT.Resize, new Listener() {
 				public void handleEvent(Event event) {
 					layoutCoolBar();
@@ -122,7 +127,10 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 			
 			TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.coolBar);
 		}
-		this.makeCoolItems();
+		
+		if( this.coolbarVisible ) {
+			this.makeCoolItems();
+		}
 		
 		this.layout_locked = false;
 		
@@ -134,6 +142,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	public void toogleToolbarVisibility(){
 		if(this.coolBar != null && !this.coolBar.isDisposed()){
 			this.layout_locked = true;
+			
 			this.coolBar.setVisible( !this.coolbarVisible );
 			if( this.coolbarVisible ){
 				this.clearCoolBar();
@@ -418,6 +427,7 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 				initToolItem(new DynamicToolItems(), true),
 		};
 		this.shouldReloadToolBars = true;
+		this.coolbarVisible = true;
 	}
 	
 	private ToolItems initToolItem(ToolItems item, boolean enabled){
