@@ -148,6 +148,7 @@ import org.herac.tuxguitar.gui.actions.view.ShowFretBoardAction;
 import org.herac.tuxguitar.gui.actions.view.ShowMatrixAction;
 import org.herac.tuxguitar.gui.actions.view.ShowMixerAction;
 import org.herac.tuxguitar.gui.actions.view.ShowPianoAction;
+import org.herac.tuxguitar.gui.actions.view.ShowToolbarsAction;
 import org.herac.tuxguitar.gui.actions.view.ShowTransportAction;
 
 /**
@@ -198,6 +199,7 @@ public class ActionManager {
 		addAction(new SetChordDiagramEnabledAction());
 		
 		//view actions
+		addAction(new ShowToolbarsAction());
 		addAction(new ShowFretBoardAction());
 		addAction(new ShowPianoAction());
 		addAction(new ShowMixerAction());

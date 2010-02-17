@@ -23,6 +23,7 @@ import org.herac.tuxguitar.gui.actions.view.ShowFretBoardAction;
 import org.herac.tuxguitar.gui.actions.view.ShowMatrixAction;
 import org.herac.tuxguitar.gui.actions.view.ShowMixerAction;
 import org.herac.tuxguitar.gui.actions.view.ShowPianoAction;
+import org.herac.tuxguitar.gui.actions.view.ShowToolbarsAction;
 import org.herac.tuxguitar.gui.actions.view.ShowTransportAction;
 import org.herac.tuxguitar.gui.editors.tab.layout.LinearViewLayout;
 import org.herac.tuxguitar.gui.editors.tab.layout.PageViewLayout;
@@ -40,6 +41,7 @@ public class ViewMenuItem extends MenuItems{
 	private Menu menu;
 	private Menu chordMenu;
 	private MenuItem layoutMenuItem;
+	private MenuItem showToolbars;
 	private MenuItem showMixer;
 	private MenuItem showTransport;
 	private MenuItem showFretBoard;
@@ -62,6 +64,10 @@ public class ViewMenuItem extends MenuItems{
 	}
 	
 	public void showItems(){
+		//--TOOLBARS--
+		this.showToolbars = new MenuItem(this.menu, SWT.CHECK);
+		this.showToolbars.addSelectionListener(TuxGuitar.instance().getAction(ShowToolbarsAction.NAME));
+		
 		//--MIXER--
 		this.showMixer = new MenuItem(this.menu, SWT.CHECK);
 		this.showMixer.addSelectionListener(TuxGuitar.instance().getAction(ShowMixerAction.NAME));
@@ -130,6 +136,7 @@ public class ViewMenuItem extends MenuItems{
 	public void update(){
 		ViewLayout layout = TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout();
 		int style = layout.getStyle();
+		this.showToolbars.setSelection(TuxGuitar.instance().getItemManager().isCoolbarVisible());
 		this.showMixer.setSelection(!TuxGuitar.instance().getMixer().isDisposed());
 		this.showTransport.setSelection(!TuxGuitar.instance().getTransport().isDisposed());
 		this.showFretBoard.setSelection(TuxGuitar.instance().getFretBoardEditor().isVisible());
@@ -148,6 +155,7 @@ public class ViewMenuItem extends MenuItems{
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.layoutMenuItem, "view", null);
+		setMenuItemTextAndAccelerator(this.showToolbars, "view.show-toolbars", ShowToolbarsAction.NAME);
 		setMenuItemTextAndAccelerator(this.showMixer, "view.show-mixer", ShowMixerAction.NAME);
 		setMenuItemTextAndAccelerator(this.showTransport, "view.show-transport", ShowTransportAction.NAME);
 		setMenuItemTextAndAccelerator(this.showFretBoard, "view.show-fretboard", ShowFretBoardAction.NAME);

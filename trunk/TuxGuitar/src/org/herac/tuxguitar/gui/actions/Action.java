@@ -54,21 +54,7 @@ public abstract class Action extends ActionAdapter {
 			if ((flags & AUTO_LOCK) != 0) {
 				ActionLock.lock();
 			}
-			/*
-			new SyncThread(new Runnable() {
-				public void run() {
-					if (!TuxGuitar.isDisposed()) {
-						int result = execute(e);
-						
-						TuxGuitar.instance().updateCache((((flags | result) & AUTO_UPDATE) != 0));
-						
-						if (((flags | result) & AUTO_UNLOCK) != 0) {
-							ActionLock.unlock();
-						}
-					}
-				}
-			}).start();
-			*/
+			
 			try {
 				TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws Throwable {
