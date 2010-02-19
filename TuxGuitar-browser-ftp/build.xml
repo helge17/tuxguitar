@@ -7,11 +7,9 @@
 	
 	<property file="build.properties" />
 	<property name="build.src.path" value="src" />
+	<property name="build.share.path" value="share" />
 	<property name="build.path" value="build" />
 	<property name="build.jar" value="tuxguitar-browser-ftp.jar" />
-	
-	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
-	<property name="service.provider" value="org.herac.tuxguitar.gui.tools.browser.ftp.TGBrowserPluginImpl" />
 	
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar}"/>
@@ -32,8 +30,9 @@
 			<include name="**/*.java"/>
 		</javac>
 		
-		<mkdir dir="${build.path}/META-INF/services" />
-		<echo file="${build.path}/META-INF/services/${service.class}" append="false">${service.provider}</echo>
+		<copy todir="${build.path}">
+			<fileset dir="${build.share.path}"/>
+		</copy>
 		
 		<echo>+-----------------------------------------------+</echo>
 		<echo>|        P A C K A G I N G   L I B R A R Y      |</echo>
