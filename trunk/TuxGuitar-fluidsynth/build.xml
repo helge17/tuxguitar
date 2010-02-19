@@ -11,9 +11,6 @@
 	<property name="build.path" value="build" />
 	<property name="build.jar" value="tuxguitar-fluidsynth.jar" />
 	
-	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
-	<property name="service.provider" value="org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiOutputPortProviderPlugin" />
-	
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.swt}"/>
@@ -39,13 +36,9 @@
 			<include name="**/*.java"/>
 		</javac>
 		
-		<mkdir dir="${build.path}${file.separator}lang" />
-		<copy todir="${build.path}${file.separator}lang">
-			<fileset dir="${build.share.path}${file.separator}lang"/>
+		<copy todir="${build.path}">
+			<fileset dir="${build.share.path}"/>
 		</copy>
-		
-		<mkdir dir="${build.path}/META-INF/services" />
-		<echo file="${build.path}/META-INF/services/${service.class}" append="false">${service.provider}</echo>
 		
 		<echo>+----------------------------------------------------------------------+</echo>
 		<echo>|    P A C K A G I N G   T U X G U I T A R  -  F L U I D S Y N T H     |</echo>
