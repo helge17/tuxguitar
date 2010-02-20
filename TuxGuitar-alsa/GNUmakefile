@@ -7,7 +7,6 @@
 PACKAGE?=tuxguitar-alsa
 LIBRARY?=lib$(PACKAGE).so
 LIBRARY_JNI?=lib$(PACKAGE)-jni.so
-LIBRARY_PROVIDER?=org.herac.tuxguitar.player.impl.midiport.alsa.MidiOutputPortProviderPlugin
 
 PREFIX?=/usr
 
@@ -15,7 +14,6 @@ PREFIX?=/usr
 SWT_PATH?=/usr/share/java/swt.jar
 
 # tuxguitar paths
-TG_SERVICE_CLASS?=org.herac.tuxguitar.gui.system.plugins.TGPlugin
 TG_PREFIX?=$(PREFIX)
 TG_SOURCE_PATH?=$(TG_PREFIX)/src
 TG_LIBRARY_PATH?=$(TG_PREFIX)/lib
@@ -25,7 +23,10 @@ TG_NATIVE_PLUGINS_PATH?=$(TG_PREFIX)/share/tuxguitar/plugins
 # install paths
 INSTALL_LIBRARY_JNI_DIR?=$(TG_LIBRARY_PATH_JNI)
 INSTALL_LIBRARY_DIR?=$(TG_NATIVE_PLUGINS_PATH)
-INSTALL_SERVICE_DIR?=$(TG_NATIVE_PLUGINS_PATH)/$(PACKAGE)/META-INF/services
+INSTALL_SHARED_DIR?=$(TG_NATIVE_PLUGINS_PATH)/$(PACKAGE)
+
+# resources
+SHARE_PATH?=./share/
 
 # build paths
 JAVA_SOURCE_PATH?=./src/
@@ -43,7 +44,7 @@ CFLAGS=-fPIC -I $(shell $(GCJ) -print-file-name=include/)
 
 default: all
 
-all: objects library library_jni meta-inf
+all: objects library library_jni
 
 objects: tmp.classes.tmp
 
@@ -58,21 +59,20 @@ install:
 	-install -d $(DESTDIR)$(PREFIX)/
 	-install -d $(DESTDIR)$(INSTALL_LIBRARY_DIR)/
 	-install -d $(DESTDIR)$(INSTALL_LIBRARY_JNI_DIR)/
-	-install -d $(DESTDIR)$(INSTALL_SERVICE_DIR)/
+	-install -d $(DESTDIR)$(INSTALL_SHARED_DIR)/
 	-install $(LIBRARY) $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
 	-install $(LIBRARY_JNI) $(DESTDIR)$(INSTALL_LIBRARY_JNI_DIR)/$(LIBRARY_JNI)
-	-install $(TG_SERVICE_CLASS) $(DESTDIR)$(INSTALL_SERVICE_DIR)/$(TG_SERVICE_CLASS)
+	-cp -rfa $(SHARE_PATH)/* $(DESTDIR)$(INSTALL_SHARED_DIR)
 
 uninstall:
+	-rm -rf $(DESTDIR)$(INSTALL_SHARED_DIR)/
 	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
 	-rm $(DESTDIR)$(INSTALL_LIBRARY_JNI_DIR)/$(LIBRARY_JNI)
-	-rm $(DESTDIR)$(INSTALL_SERVICE_DIR)/$(TG_SERVICE_CLASS)
 
 clean:
 	-@find . -name "*.o" -exec rm -f {} \; > /dev/null 2>&1
 	-@find . -name "*.so" -exec rm -f {} \; > /dev/null 2>&1
 	-@find . -name "*.tmp" -exec rm -f {} \; > /dev/null 2>&1
-	-@rm $(TG_SERVICE_CLASS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $(@F) $<
@@ -81,12 +81,9 @@ $(PACKAGE).o: $(JAVA_SOURCES)
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
 
 $(LIBRARY): $(JAVA_OBJECTS)
-	${GCJ} -shared -o $@ -ltuxguitar -L$(TG_LIBRARY_PATH) $(^F)
+	$(GCJ) -shared -o $@ $(^F) -ltuxguitar -L$(TG_LIBRARY_PATH)
 
 $(LIBRARY_JNI): $(JNI_OBJECTS)
-	$(GCJ) -shared -o $@ -lasound -lpthread $(^F)
-
-meta-inf:
-	echo $(LIBRARY_PROVIDER) > $(TG_SERVICE_CLASS)
+	$(GCJ) -shared -o $@ $(^F) -lasound -lpthread
 
 #eof "$Id: GNUmakefile,v 1.10 2008/04/17 20:06:34 rzr Exp $"
