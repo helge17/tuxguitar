@@ -56,7 +56,7 @@ PROPERTIES?=\
  -Dtuxguitar.library.extension=$(TG_NATIVE_PLUGINS_EXTENSION) \
 
 GCJ?=gcj
-GCJFLAGS+=-fjni -I$(SOURCE_PATH) -I$(SWT_PATH)
+GCJFLAGS+=-fbootstrap-classes -fjni -I$(SOURCE_PATH) -I$(SWT_PATH)
 LDFLAGS?=
 
 default: all

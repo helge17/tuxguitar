@@ -76,7 +76,7 @@ $(PACKAGE).o: $(JAVA_SOURCES)
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
 
 $(LIBRARY): $(JAVA_OBJECTS)
-	${GCJ} -shared -o $@ $(^F) -ltuxguitar -L$(TG_LIBRARY_PATH)
+	$(GCJ) -shared -o $@ $(^F) -ltuxguitar -L$(TG_LIBRARY_PATH)
 
 $(LIBRARY_JNI): $(JNI_OBJECTS)
 	$(GCJ) -shared -o $@ $(^F) `pkg-config --libs jack`

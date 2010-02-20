@@ -9,7 +9,6 @@
 	<property name="build.src.path" value="src${file.separator}" />
 	<property name="build.share.path" value="share${file.separator}" />
 	<property name="build.path" value="build${file.separator}" />
-	<property name="build.cfg" value="tuxguitar-gtp.cfg" />
 	<property name="build.jar" value="tuxguitar-gtp.jar" />
 	
 	<path id="class.path">
@@ -34,8 +33,6 @@
 		<copy todir="${build.path}">
 			<fileset dir="${build.share.path}"/>
 		</copy>
-		
-		<echo file="${build.path}/${build.cfg}" append="false">charset=${gtp.charset.default}</echo>
 		
 		<echo>+-----------------------------------------------+</echo>
 		<echo>|        P A C K A G I N G   P L U G I N        |</echo>

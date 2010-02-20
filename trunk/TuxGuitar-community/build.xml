@@ -9,7 +9,6 @@
 	<property name="build.src.path" value="src${file.separator}" />
 	<property name="build.share.path" value="share${file.separator}" />
 	<property name="build.path" value="build${file.separator}" />
-	<property name="build.cfg" value="tuxguitar-community.cfg" />
 	<property name="build.jar" value="tuxguitar-community.jar" />
 	
 	<path id="class.path">
@@ -34,10 +33,6 @@
 		<copy todir="${build.path}">
 			<fileset dir="${build.share.path}"/>
 		</copy>
-		
-		<touch file="${build.path}/${build.cfg}" />
-		<echo file="${build.path}/${build.cfg}" append="true">community.url=${default.community.url}${line.separator}</echo>
-		<echo file="${build.path}/${build.cfg}" append="true">community.browser=${default.community.browser}${line.separator}</echo>
 		
 		<echo>+-----------------------------------------------+</echo>
 		<echo>|        P A C K A G I N G   P L U G I N        |</echo>
