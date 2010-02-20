@@ -4,7 +4,7 @@
 #@Licence: LGPL
 #@Description: Wrapper script for starting java application tuxguitar
 ###############################################################################
-PACKAGE=tuxguitar
+PACKAGE="tuxguitar"
 [ ! -z $DEBUG ] && set -e
 [ ! -z $DEBUG ] && set -x
 
@@ -41,16 +41,16 @@ java_guess_()
     t="/opt/sun-jdk-1.6.0.04/"
     [ -d "$t" ] && d="$t"
 # debian
-if [ -r /etc/debian_version  ]; then
-    t="/usr/lib/jvm/java-gcj/jre/bin/../../"
-    [ -d "$t" ] && d="$t"
-    t="/usr/lib/jvm/java-1.5.0-sun/jre/bin/../../"
-    [ -d "$t" ] && d="$t"
-    t="/usr/lib/jvm/java-6-sun/jre/bin/../../"
-    [ -d "$t" ] && d="$t"
-    t="/usr/lib/jvm/java-6-openjdk/jre/bin/../../"
-    [ -d "$t" ] && d="$t"
-fi
+    if [ -r /etc/debian_version  ]; then
+        t="/usr/lib/jvm/java-gcj/jre/bin/../../"
+        [ -d "$t" ] && d="$t"
+        t="/usr/lib/jvm/java-1.5.0-sun/jre/bin/../../"
+        [ -d "$t" ] && d="$t"
+        t="/usr/lib/jvm/java-6-sun/jre/bin/../../"
+        [ -d "$t" ] && d="$t"
+        t="/usr/lib/jvm/java-6-openjdk/jre/bin/../../"
+        [ -d "$t" ] && d="$t"
+    fi
 # results
     [ -d "$d" ] && echo "$d"
 }
@@ -91,12 +91,20 @@ mozilla_guess_()
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/xulrunner-1.9"
     test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/xulrunner-1.9.1"
+    test -r "$t/libxpcom.so" && d="$t"
     echo "$d"
 }
 
 #
 env_()
 {
+    t="/etc/default/${PACKAGE}/env.sh"
+    [ -r "$t" ] && source "$t"
+
+    t="/etc/${PACKAGE}/env.sh"
+    [ -r "$t" ] && source "$t"
+
 # java
     [ -z ${JAVA_HOME} ] && t=$(java_guess_) && [ -d "$t" ] && JAVA_HOME=$t
     if [ -d "${JAVA_HOME}" ] ; then
@@ -107,14 +115,14 @@ env_()
         JAVA=${JAVA:=java}
         export JAVA
     fi
-    
+
 # mozilla
     [ -z ${MOZILLA_FIVE_HOME} ] && t=$(mozilla_guess_) && [ -d "$t" ] && MOZILLA_FIVE_HOME=$t
     if [ -d "$MOZILLA_FIVE_HOME" ] ; then
         export MOZILLA_FIVE_HOME
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MOZILLA_FIVE_HOME
     else
-	echo '$MOZILLA_FIVE_HOME not valid : check doc shipped w/ tuxguitar'
+        echo '$MOZILLA_FIVE_HOME not valid : check doc shipped w/ tuxguitar'
     fi
 
     [ ! -z ${DEBUG} ] && echo "# MOZILLA_FIVE_HOME=${MOZILLA_FIVE_HOME}"
@@ -142,9 +150,9 @@ tuxguitar_()
     JAVA_FLAGS=${JAVA_FLAGS:="-Xms128m -Xmx128m"}
     JAVA_FLAGS="\
 ${JAVA_FLAGS} \
- -Djava.library.path=${PACKAGE_LIB} \
- -D${PACKAGE}.share.path=/usr/share/${PACKAGE} \
- -cp ${CLASSPATH}:${PACKAGE_CLASSPATH}"
+        -Djava.library.path=${PACKAGE_LIB} \
+        -D${PACKAGE}.share.path=/usr/share/${PACKAGE} \
+        -cp ${CLASSPATH}:${PACKAGE_CLASSPATH}"
     local arg=""
     [ -z "$1" ] && arg="/usr/share/tuxguitar/tuxguitar.tg"
 # run java
