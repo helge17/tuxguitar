@@ -50,6 +50,7 @@ import org.herac.tuxguitar.gui.actions.effects.ChangeGraceNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeHammerNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeHarmonicNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeHeavyAccentuatedNoteAction;
+import org.herac.tuxguitar.gui.actions.effects.ChangeLetRingAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangePalmMuteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangePoppingAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeSlappingAction;
@@ -292,6 +293,7 @@ public class ActionManager {
 		addAction(new ChangeTrillNoteAction());
 		addAction(new ChangeTremoloPickingAction());
 		addAction(new ChangePalmMuteAction());
+		addAction(new ChangeLetRingAction());
 		addAction(new ChangeStaccatoAction());
 		addAction(new ChangeTappingAction());
 		addAction(new ChangeSlappingAction());

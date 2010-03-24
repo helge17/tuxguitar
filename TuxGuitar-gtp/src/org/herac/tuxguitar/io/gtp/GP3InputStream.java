@@ -485,8 +485,9 @@ public class GP3InputStream extends GTPInputStream {
 	
 	private void readNoteEffects(TGNoteEffect effect) throws IOException {
 		int flags = readUnsignedByte();
-		effect.setSlide( ((flags & 0x04) != 0) );
 		effect.setHammer( ((flags & 0x02) != 0) );
+		effect.setSlide( ((flags & 0x04) != 0) );
+		effect.setLetRing(((flags & 0x08) != 0));
 		if ((flags & 0x01) != 0) {
 			readBend(effect);
 		}

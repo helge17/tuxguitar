@@ -52,6 +52,7 @@ public class TGBeatImpl extends TGBeat{
 	private boolean slapping;
 	private boolean popping;
 	private boolean palmMute;
+	private boolean letRing;
 	private boolean vibrato;
 	private boolean trill;
 	private boolean fadeIn;
@@ -194,6 +195,7 @@ public class TGBeatImpl extends TGBeat{
 		this.slapping = false;
 		this.popping = false;
 		this.palmMute = false;
+		this.letRing = false;
 		this.fadeIn = false;
 		this.vibrato = false;
 		this.trill = false;
@@ -220,6 +222,9 @@ public class TGBeatImpl extends TGBeat{
 		}
 		if(effect.isPalmMute()){
 			this.palmMute = true;
+		}
+		if(effect.isLetRing()){
+			this.letRing = true;
 		}
 		if(effect.isFadeIn()){
 			this.fadeIn = true;
@@ -253,6 +258,9 @@ public class TGBeatImpl extends TGBeat{
 		}
 		if(this.palmMute){
 			this.bs.setSize(TGBeatSpacing.POSITION_PALM_MUTE_EFFEC,layout.getEffectSpacing());
+		}
+		if(this.letRing){
+			this.bs.setSize(TGBeatSpacing.POSITION_LET_RING_EFFEC,layout.getEffectSpacing());
 		}
 		if(this.fadeIn){
 			this.bs.setSize(TGBeatSpacing.POSITION_FADE_IN,layout.getEffectSpacing());

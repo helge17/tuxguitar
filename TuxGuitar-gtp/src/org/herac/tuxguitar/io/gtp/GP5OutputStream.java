@@ -435,6 +435,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		    note.getEffect().isBend()     ||
 		    note.getEffect().isSlide()    ||
 		    note.getEffect().isHammer()   ||
+		    note.getEffect().isLetRing()  ||
 		    note.getEffect().isPalmMute() ||
 		    note.getEffect().isStaccato() ||
 		    note.getEffect().isTrill()    ||
@@ -559,6 +560,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		}
 		if (effect.isHammer()) {
 			flags1 |= 0x02;
+		}
+		if (effect.isLetRing()) {
+			flags1 |= 0x08;
 		}
 		if (effect.isGrace()) {
 			flags1 |= 0x10;

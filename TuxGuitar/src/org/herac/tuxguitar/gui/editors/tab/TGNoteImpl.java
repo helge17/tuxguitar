@@ -118,6 +118,11 @@ public class TGNoteImpl extends TGNote {
 			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_PALM_MUTE_EFFEC ));
 			painter.drawString("P.M",x, y);
 		}
+		if(effect.isLetRing()){
+			int x = fromX + getPosX() + spacing;
+			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_LET_RING_EFFEC ));
+			painter.drawString("L.R",x, y);
+		}
 		if(effect.isVibrato()){
 			int x = fromX + getPosX() + spacing;
 			int y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_VIBRATO_EFFEC ));

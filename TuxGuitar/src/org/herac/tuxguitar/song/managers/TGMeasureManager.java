@@ -1338,6 +1338,16 @@ public class TGMeasureManager {
 	}
 	
 	/** 
+	 * Agrega un let-ring
+	 */
+	public void changeLetRing(TGMeasure measure,long start,int string){
+		TGNote note = getNote(measure,start,string);
+		if(note != null){
+			note.getEffect().setLetRing(!note.getEffect().isLetRing());
+		}
+	}
+	
+	/** 
 	 * Agrega un tapping
 	 */
 	public void changeTapping(TGMeasure measure,long start,int string){

@@ -523,6 +523,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		header = (effect.isSlapping())?header |= EFFECT_SLAPPING:header;
 		header = (effect.isPopping())?header |= EFFECT_POPPING:header;
 		header = (effect.isFadeIn())?header |= EFFECT_FADE_IN:header;
+		header = (effect.isLetRing())?header |= EFFECT_LET_RING:header;
 		
 		writeHeader(header,3);
 		

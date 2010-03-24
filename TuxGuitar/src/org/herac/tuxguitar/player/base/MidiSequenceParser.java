@@ -323,7 +323,9 @@ public class MidiSequenceParser {
 	 */
 	private void makeNote(MidiSequenceHandler sequence,int track, int key, long start, long duration, int velocity, int channel) {
 		sequence.addNoteOn(getTick(start),track,channel,fix(key),fix(velocity));
-		sequence.addNoteOff(getTick(start + duration),track,channel,fix(key),fix(velocity));
+		if( duration > 0 ){
+			sequence.addNoteOff(getTick(start + duration),track,channel,fix(key),fix(velocity));
+		}
 	}
 	
 	private void makeChannel(MidiSequenceHandler sequence,TGChannel channel,int track) {
@@ -414,7 +416,11 @@ public class MidiSequenceParser {
 								return applyDurationEffects(note, tempo, realDuration);
 							}
 						}
+						
 					}
+				}
+				if( note.getEffect().isLetRing() ){
+					realDuration += ( voice.getDuration().getTime() );
 				}
 			}
 			nextBIndex = 0;

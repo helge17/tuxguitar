@@ -336,19 +336,20 @@ public class GP4OutputStream extends GTPOutputStream{
 		if(note.getEffect().isAccentuatedNote()){
 			flags |= 0x40;
 		}
-		if (note.getEffect().isVibrato()		||
-			note.getEffect().isBend()		   ||
-			note.getEffect().isGrace()		  ||
-			note.getEffect().isSlide()		  ||
-			note.getEffect().isHammer()		 ||
-			note.getEffect().isPalmMute()	   ||
-			note.getEffect().isStaccato()	   ||
-			note.getEffect().isTapping()		||
-			note.getEffect().isSlapping()	   ||
-			note.getEffect().isPopping()		||
-			note.getEffect().isHarmonic()	   ||
-			note.getEffect().isTremoloPicking() ||
-			note.getEffect().isTrill()) {
+		if (note.getEffect().isVibrato()  ||
+			note.getEffect().isBend()     ||
+			note.getEffect().isGrace()    ||
+			note.getEffect().isSlide()    ||
+			note.getEffect().isHammer()   ||
+			note.getEffect().isLetRing()  ||
+			note.getEffect().isPalmMute() ||
+			note.getEffect().isStaccato() ||
+			note.getEffect().isTapping()  ||
+			note.getEffect().isSlapping() ||
+			note.getEffect().isPopping()  ||
+			note.getEffect().isHarmonic() ||
+			note.getEffect().isTrill()    ||
+			note.getEffect().isTremoloPicking()) {
 			flags |= 0x08;
 		}
 		writeUnsignedByte(flags);
@@ -461,6 +462,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		}
 		if (effect.isHammer()) {
 			flags1 |= 0x02;
+		}
+		if (effect.isLetRing()) {
+			flags1 |= 0x08;
 		}
 		if (effect.isGrace()) {
 			flags1 |= 0x10;
