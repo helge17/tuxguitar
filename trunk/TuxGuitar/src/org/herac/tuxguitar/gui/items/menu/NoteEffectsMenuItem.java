@@ -20,6 +20,7 @@ import org.herac.tuxguitar.gui.actions.effects.ChangeGraceNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeHammerNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeHarmonicNoteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeHeavyAccentuatedNoteAction;
+import org.herac.tuxguitar.gui.actions.effects.ChangeLetRingAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangePalmMuteAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangePoppingAction;
 import org.herac.tuxguitar.gui.actions.effects.ChangeSlappingAction;
@@ -49,17 +50,15 @@ public class NoteEffectsMenuItem extends MenuItems{
 	private MenuItem deadNote;
 	private MenuItem slide;
 	private MenuItem hammer;
-	
 	private MenuItem ghostNote;
 	private MenuItem accentuatedNote;
 	private MenuItem heavyAccentuatedNote;
-	
+	private MenuItem letRing;
 	private MenuItem harmonicNote;
 	private MenuItem graceNote;
 	private MenuItem trill;
 	private MenuItem tremoloPicking;
 	private MenuItem palmMute;
-	
 	private MenuItem staccato;
 	private MenuItem tapping;
 	private MenuItem slapping;
@@ -111,6 +110,10 @@ public class NoteEffectsMenuItem extends MenuItems{
 		//--HEAVY ACCENTUATED NOTE--
 		this.heavyAccentuatedNote = new MenuItem(this.menu, SWT.CHECK);
 		this.heavyAccentuatedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeHeavyAccentuatedNoteAction.NAME));
+		
+		//--LET RING--
+		this.letRing = new MenuItem(this.menu, SWT.CHECK);
+		this.letRing.addSelectionListener(TuxGuitar.instance().getAction(ChangeLetRingAction.NAME));
 		
 		//--HARMONIC NOTE--
 		this.harmonicNote = new MenuItem(this.menu, SWT.CHECK);
@@ -188,6 +191,8 @@ public class NoteEffectsMenuItem extends MenuItems{
 		this.accentuatedNote.setEnabled(!running && note != null);
 		this.heavyAccentuatedNote.setSelection(note != null && note.getEffect().isHeavyAccentuatedNote());
 		this.heavyAccentuatedNote.setEnabled(!running && note != null);
+		this.letRing.setSelection(note != null && note.getEffect().isLetRing());
+		this.letRing.setEnabled(!running && note != null);
 		this.harmonicNote.setSelection(note != null && note.getEffect().isHarmonic());
 		this.harmonicNote.setEnabled(!running && note != null);
 		this.graceNote.setSelection(note != null && note.getEffect().isGrace());
@@ -221,6 +226,7 @@ public class NoteEffectsMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.ghostNote, "effects.ghostnote", ChangeGhostNoteAction.NAME);
 		setMenuItemTextAndAccelerator(this.accentuatedNote, "effects.accentuatednote", ChangeAccentuatedNoteAction.NAME);
 		setMenuItemTextAndAccelerator(this.heavyAccentuatedNote, "effects.heavyaccentuatednote", ChangeHeavyAccentuatedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.letRing, "effects.let-ring", ChangeLetRingAction.NAME);
 		setMenuItemTextAndAccelerator(this.harmonicNote, "effects.harmonic", ChangeHarmonicNoteAction.NAME);
 		setMenuItemTextAndAccelerator(this.graceNote, "effects.grace", ChangeGraceNoteAction.NAME);
 		setMenuItemTextAndAccelerator(this.trill, "effects.trill", ChangeTrillNoteAction.NAME);

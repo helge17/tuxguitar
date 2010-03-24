@@ -40,6 +40,7 @@ public abstract class TGNoteEffect {
 	private boolean slapping;
 	private boolean popping;
 	private boolean fadeIn;
+	private boolean letRing;
 	
 	public TGNoteEffect(){
 		this.bend = null;
@@ -61,6 +62,7 @@ public abstract class TGNoteEffect {
 		this.slapping = false;
 		this.popping = false;
 		this.fadeIn = false;
+		this.letRing = false;
 	}
 	
 	public boolean isDeadNote() {
@@ -82,6 +84,7 @@ public abstract class TGNoteEffect {
 	public boolean isVibrato() {
 		return this.vibrato;
 	}
+	
 	public void setVibrato(boolean vibrato) {
 		this.vibrato = vibrato;
 		//si no es null quito los efectos incompatibles
@@ -279,6 +282,7 @@ public abstract class TGNoteEffect {
 		//si es true, quito los efectos incompatibles
 		if(this.isPalmMute()){
 			this.staccato = false;
+			this.letRing = false;
 		}
 	}
 	
@@ -290,6 +294,20 @@ public abstract class TGNoteEffect {
 		this.staccato = staccato;
 		//si es true, quito los efectos incompatibles
 		if(this.isStaccato()){
+			this.palmMute = false;
+			this.letRing = false;
+		}
+	}
+	
+	public boolean isLetRing() {
+		return this.letRing;
+	}
+	
+	public void setLetRing(boolean letRing) {
+		this.letRing = letRing;
+		//si es true, quito los efectos incompatibles
+		if(this.isLetRing()){
+			this.staccato = false;
 			this.palmMute = false;
 		}
 	}
@@ -356,6 +374,7 @@ public abstract class TGNoteEffect {
 				isAccentuatedNote() ||
 				isHeavyAccentuatedNote() ||
 				isPalmMute() ||
+				isLetRing() ||
 				isStaccato() ||
 				isTapping() ||
 				isSlapping() ||
@@ -373,6 +392,7 @@ public abstract class TGNoteEffect {
 		effect.setAccentuatedNote(isAccentuatedNote());
 		effect.setHeavyAccentuatedNote(isHeavyAccentuatedNote());
 		effect.setPalmMute(isPalmMute());
+		effect.setLetRing(isLetRing());
 		effect.setStaccato(isStaccato());
 		effect.setTapping(isTapping());
 		effect.setSlapping(isSlapping());

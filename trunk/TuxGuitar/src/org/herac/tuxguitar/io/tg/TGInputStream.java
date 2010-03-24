@@ -568,6 +568,9 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		//fade in
 		effect.setFadeIn(((header & EFFECT_FADE_IN) != 0));
+		
+		//let ring
+		effect.setLetRing(((header & EFFECT_LET_RING) != 0));
 	}
 	
 	private TGEffectBend readBendEffect(){

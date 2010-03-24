@@ -290,7 +290,7 @@ public class GP3OutputStream extends GTPOutputStream{
 		if(note.getEffect().isGhostNote()){
 			flags |= 0x04;
 		} 
-		if (note.getEffect().isBend() || note.getEffect().isGrace() || note.getEffect().isSlide() || note.getEffect().isHammer()) {
+		if (note.getEffect().isBend() || note.getEffect().isGrace() || note.getEffect().isSlide() || note.getEffect().isHammer() || note.getEffect().isLetRing()) {
 			flags |= 0x08;
 		}
 		writeUnsignedByte(flags);
@@ -402,6 +402,9 @@ public class GP3OutputStream extends GTPOutputStream{
 		}
 		if (effect.isSlide()) {
 			flags |= 0x04;
+		}
+		if (effect.isLetRing()) {
+			flags |= 0x08;
 		}
 		if (effect.isGrace()) {
 			flags |= 0x10;

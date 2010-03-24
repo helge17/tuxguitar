@@ -526,6 +526,7 @@ public class GP4InputStream extends GTPInputStream {
 		int flags1 = readUnsignedByte();
 		int flags2 = readUnsignedByte();
 		noteEffect.setHammer(((flags1 & 0x02) != 0));
+		noteEffect.setLetRing(((flags1 & 0x08) != 0));
 		noteEffect.setVibrato(((flags2 & 0x40) != 0) || noteEffect.isVibrato());
 		noteEffect.setPalmMute(((flags2 & 0x02) != 0));
 		noteEffect.setStaccato(((flags2 & 0x01) != 0));

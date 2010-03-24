@@ -73,43 +73,45 @@ public class TGStream {
 	
 	protected static final int DURATION_NO_TUPLET = 0x04;
 	
-	protected static final int EFFECT_BEND = 0x01;
+	protected static final int EFFECT_BEND = 0x000001;
 	
-	protected static final int EFFECT_TREMOLO_BAR = 0x02;
+	protected static final int EFFECT_TREMOLO_BAR = 0x000002;
 	
-	protected static final int EFFECT_HARMONIC = 0x04;
+	protected static final int EFFECT_HARMONIC = 0x000004;
 	
-	protected static final int EFFECT_GRACE = 0x08;
+	protected static final int EFFECT_GRACE = 0x000008;
 	
-	protected static final int EFFECT_TRILL = 0x010;
+	protected static final int EFFECT_TRILL = 0x000010;
 	
-	protected static final int EFFECT_TREMOLO_PICKING = 0x020;
+	protected static final int EFFECT_TREMOLO_PICKING = 0x000020;
 	
-	protected static final int EFFECT_VIBRATO = 0x040;
+	protected static final int EFFECT_VIBRATO = 0x000040;
 	
-	protected static final int EFFECT_DEAD = 0x080;
+	protected static final int EFFECT_DEAD = 0x000080;
 	
-	protected static final int EFFECT_SLIDE = 0x0100;
+	protected static final int EFFECT_SLIDE = 0x000100;
 	
-	protected static final int EFFECT_HAMMER = 0x0200;
+	protected static final int EFFECT_HAMMER = 0x000200;
 	
-	protected static final int EFFECT_GHOST = 0x0400;
+	protected static final int EFFECT_GHOST = 0x000400;
 	
-	protected static final int EFFECT_ACCENTUATED = 0x0800;
+	protected static final int EFFECT_ACCENTUATED = 0x000800;
 	
-	protected static final int EFFECT_HEAVY_ACCENTUATED = 0x01000;
+	protected static final int EFFECT_HEAVY_ACCENTUATED = 0x001000;
 	
-	protected static final int EFFECT_PALM_MUTE = 0x02000;
+	protected static final int EFFECT_PALM_MUTE = 0x002000;
 	
-	protected static final int EFFECT_STACCATO = 0x04000;
+	protected static final int EFFECT_STACCATO = 0x004000;
 	
-	protected static final int EFFECT_TAPPING = 0x08000;
+	protected static final int EFFECT_TAPPING = 0x008000;
 	
 	protected static final int EFFECT_SLAPPING = 0x010000;
 	
 	protected static final int EFFECT_POPPING = 0x020000;
 	
 	protected static final int EFFECT_FADE_IN = 0x040000;
+	
+	protected static final int EFFECT_LET_RING = 0x080000;
 	
 	protected static final int GRACE_FLAG_DEAD = 0x01;
 	
