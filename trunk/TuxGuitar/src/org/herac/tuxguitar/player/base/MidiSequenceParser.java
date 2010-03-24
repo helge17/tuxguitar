@@ -391,6 +391,8 @@ public class MidiSequenceParser {
 	 * Retorna la Duracion real de una nota, verificando si tiene otras ligadas
 	 */
 	private long getRealNoteDuration(TGTrack track, TGNote note, TGTempo tempo, long duration,int mIndex, int bIndex) {
+		boolean letRing = (note.getEffect().isLetRing());
+		boolean letRingBeatChanged = false;
 		long lastEnd = (note.getVoice().getBeat().getStart() + note.getVoice().getDuration().getTime());
 		long realDuration = duration;
 		int nextBIndex = (bIndex + 1);
@@ -412,16 +414,18 @@ public class MidiSequenceParser {
 							if (nextNote.isTiedNote()) {
 								realDuration += (beat.getStart() - lastEnd) + (nextNote.getVoice().getDuration().getTime());
 								lastEnd = (beat.getStart() + voice.getDuration().getTime());
+								letRing = (nextNote.getEffect().isLetRing());
+								letRingBeatChanged = true;
 							} else {
 								return applyDurationEffects(note, tempo, realDuration);
 							}
 						}
-						
 					}
 				}
-				if( note.getEffect().isLetRing() ){
+				if(letRing && !letRingBeatChanged){
 					realDuration += ( voice.getDuration().getTime() );
 				}
+				letRingBeatChanged = false;
 			}
 			nextBIndex = 0;
 		}
