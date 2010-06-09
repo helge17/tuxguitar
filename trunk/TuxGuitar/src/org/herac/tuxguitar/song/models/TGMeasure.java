@@ -134,12 +134,12 @@ public abstract class TGMeasure {
 		return this.header.getLength();
 	}
 	
-	public boolean hasMarker() {
-		return this.header.hasMarker();
-	}
-	
 	public TGMarker getMarker(){
 		return this.header.getMarker();
+	}
+	
+	public boolean hasMarker() {
+		return this.header.hasMarker();
 	}
 	
 	public void makeEqual(TGMeasure measure){
