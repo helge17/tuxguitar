@@ -109,6 +109,9 @@
 			<param name="locale.file" value="messages.properties"/>
 		</antcall>
 		<antcall target="build.locale">
+			<param name="locale.file" value="messages_bg.properties"/>
+		</antcall>
+		<antcall target="build.locale">
 			<param name="locale.file" value="messages_el.properties"/>
 		</antcall>
 		<antcall target="build.locale">
