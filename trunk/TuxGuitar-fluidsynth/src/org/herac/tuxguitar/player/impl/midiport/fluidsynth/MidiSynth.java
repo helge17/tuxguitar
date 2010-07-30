@@ -169,7 +169,7 @@ public class MidiSynth {
 	public List getPropertyOptions( String key ){
 		List options = new ArrayList();
 		if(isInitialized()){
-			this.getPropertyOptions(instance, key, options);
+			this.getPropertyOptions(this.instance, key, options);
 		}
 		return options;
 	}
