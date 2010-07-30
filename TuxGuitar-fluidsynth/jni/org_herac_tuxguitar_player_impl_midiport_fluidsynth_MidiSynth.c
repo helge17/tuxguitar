@@ -369,7 +369,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL){
 		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc(sizeof(fluid_settings_foreach_option_data*));
+		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc( sizeof(fluid_settings_foreach_option_data));
 		data->env = env;
 		data->options = options;
 		
