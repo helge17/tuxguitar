@@ -113,7 +113,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	public void setTickPosition(long tickPosition) {
 		try {
 			this.getSequencer().setTickPosition(tickPosition - TICK_MOVE);
-			this.reset( false );
+			this.reset();
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
@@ -175,7 +175,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 					this.getSequencer().start();
 				}else if( !running && this.isRunning() ){
 					this.getSequencer().stop();
-					this.reset( true );
+					this.reset();
 				}
 			}
 		} catch (Throwable throwable) {
@@ -183,14 +183,11 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 		}
 	}
 	
-	public void reset(boolean systemReset){
+	public void reset(){
 		try {
 			this.getTransmitter().sendAllNotesOff();
 			for(int channel = 0; channel < 16;channel ++){
 				this.getTransmitter().sendPitchBend(channel, 64);
-			}
-			if( systemReset ){
-				this.getTransmitter().sendSystemReset();
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();

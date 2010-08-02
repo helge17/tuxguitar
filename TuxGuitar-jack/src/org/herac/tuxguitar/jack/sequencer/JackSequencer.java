@@ -120,13 +120,10 @@ public class JackSequencer implements MidiSequencer{
 		}
 	}
 	
-	public void reset(boolean systemReset)  throws MidiPlayerException{
+	public void reset()  throws MidiPlayerException{
 		this.getTransmitter().sendAllNotesOff();
 		for(int channel = 0; channel < 16;channel ++){
 			this.getTransmitter().sendPitchBend(channel, 64);
-		}
-		if( systemReset ){
-			this.getTransmitter().sendSystemReset();
 		}
 	}
 	
@@ -212,7 +209,7 @@ public class JackSequencer implements MidiSequencer{
 					this.setTickPosition( 0 , false );
 				}
 				if(this.reset){
-					this.reset( false );
+					this.reset();
 					this.reset = false;
 					this.jackEventController.reset();
 				}
@@ -228,7 +225,7 @@ public class JackSequencer implements MidiSequencer{
 				this.stopped = true;
 				this.jackEventController.clearEvents();
 				this.jackTickController.clearTick();
-				this.reset( true );
+				this.reset();
 			}
 			else if( this.running ){
 				if( this.transportTryNumber++ > this.transportTryCount ){
