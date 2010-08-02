@@ -485,34 +485,17 @@ public class MidiSongImporter implements TGLocalFileImporter{
 			return this.channel;
 		}
 		
-		public void setChannel(int channel) {
-			this.channel = channel;
-		}
-		
 		public long getTick() {
 			return this.tick;
-		}
-		
-		public void setTick(long tick) {
-			this.tick = tick;
 		}
 		
 		public int getTrack() {
 			return this.track;
 		}
 		
-		public void setTrack(int track) {
-			this.track = track;
-		}
-		
 		public int getValue() {
 			return this.value;
 		}
-		
-		public void setValue(int value) {
-			this.value = value;
-		}
-		
 	}
 	
 	private class TempChannel{
@@ -540,10 +523,6 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		
 		public int getChannel() {
 			return this.channel;
-		}
-		
-		public void setChannel(int channel) {
-			this.channel = channel;
 		}
 		
 		public int getInstrument() {
@@ -650,14 +629,6 @@ public class MidiSongImporter implements TGLocalFileImporter{
 			}
 			
 			return strings;
-		}
-		
-		public int getMaxValue() {
-			return this.maxValue;
-		}
-		
-		public int getMinValue() {
-			return this.minValue;
 		}
 		
 		public int getTrack() {
