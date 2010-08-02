@@ -130,7 +130,7 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 				else if(outputFolderValue == null || outputFolderValue.trim().length() == 0){
 					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.folder.invalid"));
 				}
-				else if(outputFormat == null){
+				else if(outputFormatValue == null){
 					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.format.invalid"));
 				}
 				else{
