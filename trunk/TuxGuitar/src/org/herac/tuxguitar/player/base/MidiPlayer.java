@@ -169,8 +169,7 @@ public class MidiPlayer{
 			this.stop();
 			this.lock.lock();
 			this.checkDevices();
-			this.updateLoop( true );
-			this.systemReset();
+			this.updateLoop(true);
 			this.addSequence();
 			this.updatePrograms();
 			this.updateControllers();
@@ -374,14 +373,6 @@ public class MidiPlayer{
 				this.getSequencer().setTickPosition(this.tickPosition);
 			}
 			setChangeTickPosition(false);
-		} catch (MidiPlayerException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void systemReset(){
-		try {
-			this.getOutputTransmitter().sendSystemReset();
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}

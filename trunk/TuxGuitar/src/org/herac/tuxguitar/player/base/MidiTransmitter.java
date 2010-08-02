@@ -11,13 +11,6 @@ public class MidiTransmitter {
 		this.receivers = new ArrayList();
 	}
 	
-	public void sendSystemReset() throws MidiPlayerException {
-		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
-			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
-			receiver.getReceiver().sendSystemReset();
-		}
-	}
-	
 	public void sendAllNotesOff() throws MidiPlayerException {
 		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );

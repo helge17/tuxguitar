@@ -80,13 +80,10 @@ public class MidiSequencerImpl implements MidiSequencer{
 		this.setRunning(true);
 	}
 	
-	public synchronized void reset(boolean systemReset)  throws MidiPlayerException{
+	public synchronized void reset()  throws MidiPlayerException{
 		this.getTransmitter().sendAllNotesOff();
 		for(int channel = 0; channel < 16;channel ++){
 			this.getTransmitter().sendPitchBend(channel, 64);
-		}
-		if( systemReset ){
-			this.getTransmitter().sendSystemReset();
 		}
 	}
 	
@@ -94,7 +91,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 		boolean running = this.isRunning();
 		if(running){
 			if(this.reset){
-				this.reset( false );
+				this.reset();
 				this.reset = false;
 				this.midiEventPlayer.reset();
 			}
@@ -109,7 +106,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 			this.stopped = true;
 			this.midiEventPlayer.clearEvents();
 			this.midiTickPlayer.clearTick();
-			this.reset( true );
+			this.reset();
 		}
 		return running;
 	}
