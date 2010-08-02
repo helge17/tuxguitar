@@ -258,7 +258,7 @@ public class MidiSequenceParser {
 					//---Slide---
 					else if(note.getEffect().isSlide() && effectChannel >= 0 && !percussionTrack){
 						channel = effectChannel;
-						TGNote nextNote = getNextNote(note,track,measureIdx,bIndex);
+						TGNote nextNote = getNextNote(note,track,measureIdx,bIndex, true);
 						makeSlide(sequence,trackId,note,nextNote,startMove,channel);
 					}
 					//---Vibrato---
@@ -723,7 +723,7 @@ public class MidiSequenceParser {
 		return next;
 	}
 	
-	private TGNote getNextNote(TGNote note,TGTrack track, int mIndex, int bIndex){ 
+	private TGNote getNextNote(TGNote note,TGTrack track, int mIndex, int bIndex, boolean breakAtRest){ 
 		int nextBIndex = (bIndex + 1);
 		int measureCount = track.countMeasures();
 		for (int m = mIndex; m < measureCount; m++) {
@@ -739,7 +739,9 @@ public class MidiSequenceParser {
 						return currNote;
 					}
 				}
-				return null;
+				if( breakAtRest ){
+					return null;
+				}
 			}
 			nextBIndex = 0;
 		}
