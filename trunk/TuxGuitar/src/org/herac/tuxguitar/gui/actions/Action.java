@@ -99,8 +99,8 @@ public abstract class Action extends ActionAdapter {
 		TuxGuitar.instance().fireUpdate();
 	}
 	
-	public void fireUpdate(int measureNumber) {
-		this.getEditor().getTablature().getViewLayout().fireUpdate(measureNumber);
+	public void fireUpdate(int number) {
+		this.getEditor().getTablature().updateMeasure(number);
 	}
 	
 	public void addUndoableEdit(UndoableEdit anEdit) {

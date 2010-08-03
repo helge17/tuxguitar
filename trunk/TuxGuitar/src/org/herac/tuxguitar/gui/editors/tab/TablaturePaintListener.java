@@ -8,7 +8,7 @@ package org.herac.tuxguitar.gui.editors.tab;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 
 /**
  * @author julian
@@ -24,6 +24,6 @@ public class TablaturePaintListener implements PaintListener{
 	}
 	
 	public void paintControl(PaintEvent e) {
-		this.tablature.paintTablature( new TGPainter(e.gc) );
+		this.tablature.paintTablature( new TGPainterImpl(e.gc) );
 	}
 }

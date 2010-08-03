@@ -39,9 +39,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.TGChordImpl;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
+import org.herac.tuxguitar.graphics.TGColor;
+import org.herac.tuxguitar.graphics.control.TGChordImpl;
+import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGFontImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGString;
 /**
@@ -81,7 +84,7 @@ public class ChordList extends Composite {
 		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		this.composite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
 				paintChords(painter);
 			}
 		});
@@ -123,7 +126,7 @@ public class ChordList extends Composite {
 		this.composite.redraw();
 	}
 	
-	protected void paintChords(TGPainter painter) {
+	protected void paintChords(TGPainterImpl painter) {
 		int maxHeight = 0;
 		int fromX = 15;
 		int fromY = 10;
@@ -132,17 +135,17 @@ public class ChordList extends Composite {
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
 			
-			Color color = getChordColor(chord);
-			chord.setBackgroundColor(this.composite.getBackground());
+			TGColor color = new TGColorImpl(getChordColor(chord));
+			chord.setBackgroundColor(new TGColorImpl(this.composite.getBackground()));
 			chord.setColor(color);
 			chord.setNoteColor(color);
-			chord.setTonicColor(getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+			chord.setTonicColor(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_DARK_RED)));
 			chord.setFirstFretSpacing(CHORD_FIRST_FRET_SPACING);
 			chord.setStringSpacing(CHORD_STRING_SPACING);
 			chord.setFretSpacing(CHORD_FRET_SPACING);
 			chord.setNoteSize(CHORD_NOTE_SIZE);
-			chord.setFirstFretFont(getFont(painter.getGC()));
-			chord.setStyle(ViewLayout.DISPLAY_CHORD_DIAGRAM);
+			chord.setFirstFretFont(new TGFontImpl(getFont(painter.getGC())));
+			chord.setStyle(TGLayout.DISPLAY_CHORD_DIAGRAM);
 			chord.update(painter, true);
 			if(fromX + chord.getWidth() >= ((getBounds().x + getBounds().width) - 20)){
 				fromX = 15;

@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.gui.editors;
 
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.util.MidiTickUtil;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;

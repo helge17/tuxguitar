@@ -26,7 +26,7 @@ public class UndoableChangeOpenRepeat implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.changeOpenRepeat(this.position);
 		TGMeasure measure = manager.getTrackManager().getMeasureAt(manager.getFirstTrack(),this.position);
-		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure.getNumber());
+		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
@@ -39,7 +39,7 @@ public class UndoableChangeOpenRepeat implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.changeOpenRepeat(this.position);
 		TGMeasure measure = manager.getTrackManager().getMeasureAt(manager.getFirstTrack(),this.position);
-		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure.getNumber());
+		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;

@@ -9,15 +9,15 @@ package org.herac.tuxguitar.gui.items.tool;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
+import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.layout.SetCompactViewAction;
 import org.herac.tuxguitar.gui.actions.layout.SetLinearLayoutAction;
 import org.herac.tuxguitar.gui.actions.layout.SetMultitrackViewAction;
 import org.herac.tuxguitar.gui.actions.layout.SetPageLayoutAction;
 import org.herac.tuxguitar.gui.actions.layout.SetScoreEnabledAction;
-import org.herac.tuxguitar.gui.editors.tab.layout.LinearViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.layout.PageViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.items.ToolItems;
 
 /**
@@ -76,13 +76,13 @@ public class LayoutToolItems extends ToolItems{
 	}
 	
 	public void update(){
-		ViewLayout layout = getEditor().getTablature().getViewLayout();
+		TGLayout layout = getEditor().getTablature().getViewLayout();
 		int style = layout.getStyle();
-		this.pageLayout.setSelection(layout instanceof PageViewLayout);
-		this.linearLayout.setSelection(layout instanceof LinearViewLayout);
-		this.multitrack.setSelection( (style & ViewLayout.DISPLAY_MULTITRACK) != 0 );
-		this.scoreEnabled.setSelection( (style & ViewLayout.DISPLAY_SCORE) != 0 );
-		this.compact.setSelection( (style & ViewLayout.DISPLAY_COMPACT) != 0 );
-		this.compact.setEnabled((style & ViewLayout.DISPLAY_MULTITRACK) == 0 || getEditor().getTablature().getSongManager().getSong().countTracks() == 1);
+		this.pageLayout.setSelection(layout instanceof TGLayoutVertical);
+		this.linearLayout.setSelection(layout instanceof TGLayoutHorizontal);
+		this.multitrack.setSelection( (style & TGLayout.DISPLAY_MULTITRACK) != 0 );
+		this.scoreEnabled.setSelection( (style & TGLayout.DISPLAY_SCORE) != 0 );
+		this.compact.setSelection( (style & TGLayout.DISPLAY_COMPACT) != 0 );
+		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || getEditor().getTablature().getSongManager().getSong().countTracks() == 1);
 	}
 }

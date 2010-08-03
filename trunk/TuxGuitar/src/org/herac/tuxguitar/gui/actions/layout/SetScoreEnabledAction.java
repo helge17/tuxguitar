@@ -7,8 +7,8 @@
 package org.herac.tuxguitar.gui.actions.layout;
 
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 
 /**
  * @author julian
@@ -24,10 +24,10 @@ public class SetScoreEnabledAction extends Action{
 	}
 	
 	protected int execute(TypedEvent e){
-		ViewLayout layout = getEditor().getTablature().getViewLayout();
-		layout.setStyle( ( layout.getStyle() ^ ViewLayout.DISPLAY_SCORE ) );
-		if((layout.getStyle() & ViewLayout.DISPLAY_TABLATURE) == 0 && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 ){
-			layout.setStyle( ( layout.getStyle() ^ ViewLayout.DISPLAY_TABLATURE) );
+		TGLayout layout = getEditor().getTablature().getViewLayout();
+		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_SCORE ) );
+		if((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0 && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){
+			layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_TABLATURE) );
 		}
 		updateTablature();
 		return 0;

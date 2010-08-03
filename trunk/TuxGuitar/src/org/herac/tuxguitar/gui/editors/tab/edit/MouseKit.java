@@ -6,18 +6,21 @@ import java.util.List;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
+import org.herac.tuxguitar.graphics.TGImage;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGNoteImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
+import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.ActionLock;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
-import org.herac.tuxguitar.gui.editors.tab.TGVoiceImpl;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -31,7 +34,7 @@ public class MouseKit {
 	private static final int FIRST_LINE_VALUES[] = new int[] {65,45,52,55};
 	
 	private EditorKit kit;
-	private Image back = null;
+	private TGImage back = null;
 	private int lastx;
 	private int lasty;
 	
@@ -39,13 +42,13 @@ public class MouseKit {
 		this.kit = kit;
 	}
 	
-	private ViewLayout.TrackPosition getTrackPosition(int y) {
+	private TGLayout.TrackPosition getTrackPosition(int y) {
 		return this.kit.getTablature().getViewLayout().getTrackPositionAt(y);
 	}
 	
 	public void tryBack(){
 		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
-			TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
+			TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
 			if(this.back != null && !this.back.isDisposed()){
 				painter.drawImage(this.back,this.lastx,this.lasty);
 			}
@@ -84,8 +87,8 @@ public class MouseKit {
 					int y2 = (y1 + (lineSpacing * 5));
 					
 					if(e.y < (y1 + 3) && e.y >= (y1 - topHeight)){
-						this.back = new Image(TuxGuitar.instance().getDisplay(),width + 1,topHeight + 1);
-						TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
+						this.back = new TGImageImpl(TuxGuitar.instance().getDisplay(),width + 1,topHeight + 1);
+						TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
 						painter.copyArea(this.back,x1, (y1 - topHeight));
 						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
 						for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
@@ -105,8 +108,8 @@ public class MouseKit {
 						this.lastx = x1;
 						this.lasty = (y1 - topHeight);
 					}else if(e.y > (y2 - 3) && e.y  < y2 + bottomHeight){
-						this.back = new Image(TuxGuitar.instance().getDisplay(),width + 1,bottomHeight + 1);
-						TGPainter painter = new TGPainter(new GC(this.kit.getTablature()));
+						this.back = new TGImageImpl(TuxGuitar.instance().getDisplay(),width + 1,bottomHeight + 1);
+						TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
 						painter.copyArea(this.back,x1, y2);	
 						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
 						tempValue -= 14;
@@ -138,7 +141,7 @@ public class MouseKit {
 		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
 			ActionLock.lock();
 			
-			ViewLayout.TrackPosition pos = getTrackPosition(e.y) ;
+			TGLayout.TrackPosition pos = getTrackPosition(e.y) ;
 			if(pos != null){
 				TGTrackImpl track = this.kit.getTablature().getCaret().getTrack();
 				TGMeasureImpl measure = this.kit.getTablature().getCaret().getMeasure();
@@ -279,13 +282,13 @@ public class MouseKit {
 			TuxGuitar.instance().getFileHistory().setUnsavedFile();
 			
 			//reprodusco las notas en el pulso
-			caret.getSelectedBeat().play();
+			TuxGuitar.instance().playBeat(caret.getSelectedBeat());
 		}
 	}
 	
 	private void redrawTablature(){
 		Caret caret = this.kit.getTablature().getCaret();
-		this.kit.getTablature().getViewLayout().fireUpdate(caret.getMeasure().getNumber());
+		this.kit.getTablature().updateMeasure(caret.getMeasure().getNumber());
 		TuxGuitar.instance().updateCache(true);
 	}
 	

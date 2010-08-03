@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.gui.printer;
 
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 
 public class PrintStyles {
 	
@@ -15,7 +15,7 @@ public class PrintStyles {
 	private boolean blackAndWhite;
 	
 	public PrintStyles() {
-		this(-1,-1,-1,ViewLayout.DISPLAY_TABLATURE, true);
+		this(-1,-1,-1,TGLayout.DISPLAY_TABLATURE, true);
 	}
 	
 	public PrintStyles(int trackNumber,int fromMeasure, int toMeasure, int style , boolean blackAndWhite) {

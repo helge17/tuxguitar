@@ -10,14 +10,15 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.herac.tuxguitar.graphics.TGImage;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.caret.GoLeftAction;
@@ -25,14 +26,16 @@ import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.IncrementDurationAction;
 import org.herac.tuxguitar.gui.actions.tools.ScaleAction;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -60,7 +63,7 @@ public class Piano extends Composite{
 	private Button settings;
 	protected TGBeat beat;
 	protected TGBeat externalBeat;
-	protected Image image;
+	protected TGImage image;
 	
 	public Piano(Composite parent, int style) {
 		super(parent, style);
@@ -179,28 +182,28 @@ public class Piano extends Composite{
 	 *
 	 * @return
 	 */
-	private Image makePianoImage(){
-		Image image = new Image(getDisplay(),(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
-		TGPainter painter = new TGPainter(new GC(image));
+	private TGImage makePianoImage(){
+		TGImage image = new TGImageImpl(getDisplay(),(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
+		TGPainter painter = image.createPainter();
 		
 		int x = 0;
 		int y = 0;
-		painter.setBackground(this.config.getColorNatural());
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.setBackground(new TGColorImpl(this.config.getColorNatural()));
+		painter.initPath(TGPainterImpl.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
 		painter.closePath();
 		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
 			
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
-				painter.setForeground(this.config.getColorNotNatural());
+				painter.setForeground(new TGColorImpl(this.config.getColorNotNatural()));
 				painter.initPath();
 				painter.setAntialias(false);
 				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
 				painter.closePath();
 				x += NATURAL_WIDTH;
 			}else{
-				painter.setBackground(this.config.getColorNotNatural());
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.setBackground(new TGColorImpl(this.config.getColorNotNatural()));
+				painter.initPath(TGPainterImpl.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(x - (SHARP_WIDTH / 2),y,SHARP_WIDTH,SHARP_HEIGHT);
 				painter.closePath();
@@ -219,8 +222,8 @@ public class Piano extends Composite{
 	 * @param value
 	 */
 	private void paintScale(TGPainter painter){
-		painter.setBackground(this.config.getColorScale());
-		painter.setForeground(this.config.getColorScale());
+		painter.setBackground(new TGColorImpl(this.config.getColorScale()));
+		painter.setForeground(new TGColorImpl(this.config.getColorScale()));
 		int posX = 0;
 		
 		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
@@ -246,12 +249,12 @@ public class Piano extends Composite{
 					}
 					
 					int size = SHARP_WIDTH;
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(TGPainterImpl.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle( (x + 1 + (((NATURAL_WIDTH - size) / 2))) ,(NATURAL_HEIGHT - size - (((NATURAL_WIDTH - size) / 2))),size,size);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(TGPainterImpl.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1, SHARP_HEIGHT - SHARP_WIDTH + 1,SHARP_WIDTH - 2,SHARP_WIDTH - 2);
 					painter.closePath();
@@ -268,8 +271,8 @@ public class Piano extends Composite{
 	 * @param gc
 	 * @param value
 	 */
-	protected void paintNote(TGPainter painter,int value){
-		painter.setBackground(this.config.getColorNote());
+	protected void paintNote(TGPainterImpl painter,int value){
+		painter.setBackground(new TGColorImpl(this.config.getColorNote()));
 		int posX = 0;
 		int y = 0;
 		
@@ -290,7 +293,7 @@ public class Piano extends Composite{
 			
 			if(i == value){
 				if(TYPE_NOTES[i % TYPE_NOTES.length]){
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(TGPainterImpl.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT);
 					
@@ -301,7 +304,7 @@ public class Piano extends Composite{
 					painter.addRectangle(x + 1,(y + SHARP_HEIGHT) + 1,NATURAL_WIDTH - 1,(NATURAL_HEIGHT - SHARP_HEIGHT) - 1);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(TGPainterImpl.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
 					painter.closePath();
@@ -423,7 +426,7 @@ public class Piano extends Composite{
 					TuxGuitar.instance().getFileHistory().setUnsavedFile();
 					
 					//reprodusco las notas en el pulso
-					caret.getSelectedBeat().play();
+					TuxGuitar.instance().playBeat(caret.getSelectedBeat());
 					
 					return true;
 				}
@@ -433,8 +436,8 @@ public class Piano extends Composite{
 	}
 	
 	protected void afterAction() {
-		int measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getNumber();
-		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure);
+		TGMeasureHeader measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader();
+		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
 		TuxGuitar.instance().updateCache(true);
 	}
 	
@@ -553,7 +556,7 @@ public class Piano extends Composite{
 				TuxGuitar.instance().lock();
 				updateEditor();
 				
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
 				painter.drawImage(Piano.this.image,0,0);
 				
 				//pinto notas

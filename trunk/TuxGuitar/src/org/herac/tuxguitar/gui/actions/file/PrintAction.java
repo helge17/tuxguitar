@@ -14,17 +14,19 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
-import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.TGFactoryImpl;
-import org.herac.tuxguitar.gui.editors.tab.Tablature;
-import org.herac.tuxguitar.gui.editors.tab.layout.PrinterViewLayout;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
+import org.herac.tuxguitar.gui.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.gui.helper.SyncThread;
+import org.herac.tuxguitar.gui.printer.PrintController;
 import org.herac.tuxguitar.gui.printer.PrintDocument;
 import org.herac.tuxguitar.gui.printer.PrintStyles;
 import org.herac.tuxguitar.gui.printer.PrintStylesDialog;
+import org.herac.tuxguitar.gui.printer.PrintLayout;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -73,17 +75,11 @@ public class PrintAction extends Action{
 						new SyncThread(new Runnable() {
 							public void run() {
 								try{
-									Shell shell = new Shell();
 									Printer printer = new Printer(printerData);
+									PrintController controller = new PrintController(manager, new TGResourceFactoryImpl(printer));
+									PrintLayout layout = new PrintLayout(controller,data);
 									
-									Tablature tablature = new Tablature(shell);
-									tablature.setSongManager(manager);
-									
-									Rectangle bounds = getPrinterArea(printer,0.5);
-									
-									PrinterViewLayout layout = new PrinterViewLayout(tablature,data, getPrinterScale(printer));
-									
-									print(printer, printerData, layout , bounds);
+									print(printer, printerData, layout , getPrinterArea(printer,0.5), getPrinterScale(printer) );
 								}catch(Throwable throwable ){
 									MessageDialog.errorMessage(throwable);
 								}
@@ -99,21 +95,13 @@ public class PrintAction extends Action{
 		}
 	}
 	
-	protected void print(final Printer printer,final PrinterData printerData ,final PrinterViewLayout layout, final Rectangle bounds){
+	protected void print(final Printer printer,final PrinterData printerData ,final PrintLayout layout, final TGRectangle bounds, final float scale){
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					layout.getTablature().updateTablature();
+					layout.loadStyles(scale);
+					layout.updateSong();
 					layout.makeDocument(new PrintDocumentImpl(layout,printer, printerData, bounds));
-					//new SyncThread(new Runnable() {
-					//	public void run() {
-					//		try{
-					//			layout.makeDocument(new PrintDocumentImpl(layout,printer, bounds));
-					//		}catch(Throwable throwable ){
-					//			MessageDialog.errorMessage(throwable);
-					//		}
-					//	}
-					//}).start();
 				}catch(Throwable throwable ){
 					MessageDialog.errorMessage(throwable);
 				}
@@ -121,7 +109,7 @@ public class PrintAction extends Action{
 		}).start();
 	}
 	
-	protected Rectangle getPrinterArea(Printer printer,double margin) {
+	protected TGRectangle getPrinterArea(Printer printer,double margin) {
 		Rectangle clientArea = printer.getClientArea();
 		Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 		Point dpi = printer.getDPI();
@@ -131,7 +119,7 @@ public class PrintAction extends Action{
 		int width = clientArea.width + trim.width - (int) (margin * dpi.x) - trim.x;
 		int height = clientArea.height + trim.height - (int) (margin * dpi.y) - trim.y;
 		
-		return new Rectangle(x,y,width,height);
+		return new TGRectangle(x,y,width,height);
 	}
 	
 	protected float getPrinterScale(Printer printer) {
@@ -146,24 +134,24 @@ public class PrintAction extends Action{
 		
 		private Printer printer;
 		private PrinterData printerData;
-		private PrinterViewLayout layout;
-		private TGPainter painter;
-		private Rectangle bounds;
+		private PrintLayout layout;
+		private TGPainterImpl painter;
+		private TGRectangle bounds;
 		private boolean started;
 		
-		public PrintDocumentImpl(PrinterViewLayout layout, Printer printer,PrinterData printerData, Rectangle bounds){
+		public PrintDocumentImpl(PrintLayout layout, Printer printer,PrinterData printerData, TGRectangle bounds){
 			this.layout = layout;
 			this.printer = printer;
 			this.printerData = printerData;
 			this.bounds = bounds;
-			this.painter = new TGPainter();
+			this.painter = new TGPainterImpl();
 		}
 		
 		public TGPainter getPainter() {
 			return this.painter;
 		}
 		
-		public Rectangle getBounds(){
+		public TGRectangle getBounds(){
 			return this.bounds;
 		}
 		
@@ -223,12 +211,6 @@ public class PrintAction extends Action{
 		public void dispose(){
 			if(!this.printer.isDisposed()){
 				this.printer.dispose();
-			}
-			if(!this.layout.getTablature().isDisposed() && !this.layout.getTablature().getShell().isDisposed()){
-				this.layout.getTablature().getShell().dispose();
-			}
-			if(!this.layout.getTablature().isDisposed()){
-				this.layout.getTablature().dispose();
 			}
 		}
 	}

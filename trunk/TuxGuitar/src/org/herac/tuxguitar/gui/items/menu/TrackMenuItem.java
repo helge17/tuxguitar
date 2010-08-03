@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.track.AddTrackAction;
 import org.herac.tuxguitar.gui.actions.track.CloneTrackAction;
@@ -22,7 +23,6 @@ import org.herac.tuxguitar.gui.actions.track.MoveTrackDownAction;
 import org.herac.tuxguitar.gui.actions.track.MoveTrackUpAction;
 import org.herac.tuxguitar.gui.actions.track.RemoveTrackAction;
 import org.herac.tuxguitar.gui.actions.track.TrackPropertiesAction;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
 import org.herac.tuxguitar.gui.items.MenuItems;
 
 /**

@@ -13,18 +13,21 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.graphics.TGResourceFactory;
+import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.TGFactoryImpl;
-import org.herac.tuxguitar.gui.editors.tab.Tablature;
-import org.herac.tuxguitar.gui.editors.tab.layout.PrinterViewLayout;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
+import org.herac.tuxguitar.gui.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.gui.helper.SyncThread;
+import org.herac.tuxguitar.gui.printer.PrintController;
 import org.herac.tuxguitar.gui.printer.PrintDocument;
 import org.herac.tuxguitar.gui.printer.PrintPreview;
 import org.herac.tuxguitar.gui.printer.PrintStyles;
 import org.herac.tuxguitar.gui.printer.PrintStylesDialog;
+import org.herac.tuxguitar.gui.printer.PrintLayout;
 import org.herac.tuxguitar.gui.util.MessageDialog;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -76,10 +79,9 @@ public class PrintPreviewAction extends Action{
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
-					Tablature tablature = new Tablature(TuxGuitar.instance().getShell());
-					tablature.setSongManager(manager);
-					
-					PrinterViewLayout layout = new PrinterViewLayout(tablature,data, 1f);
+					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.instance().getDisplay());
+					PrintController controller = new PrintController(manager, factory);
+					PrintLayout layout = new PrintLayout(controller,data);
 					
 					printPreview( layout );
 				}catch(Throwable throwable){
@@ -89,17 +91,13 @@ public class PrintPreviewAction extends Action{
 		}).start();
 	}
 	
-	public void printPreview(final PrinterViewLayout layout){
+	public void printPreview(final PrintLayout layout){
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					layout.getTablature().updateTablature();
-					layout.makeDocument(new PrintDocumentImpl(layout, new Rectangle(0,0,850,1050)));
-					//new SyncThread(new Runnable() {
-					//	public void run() {
-					//		layout.makeDocument(new PrintDocumentImpl(layout, new Rectangle(0,0,850,1050)));
-					//	}
-					//}).start();
+					layout.loadStyles(1f);
+					layout.updateSong();
+					layout.makeDocument(new PrintDocumentImpl(new TGRectangle(0,0,850,1050)));
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
@@ -109,15 +107,13 @@ public class PrintPreviewAction extends Action{
 	
 	private class PrintDocumentImpl implements PrintDocument{
 		
-		private PrinterViewLayout layout;
-		private TGPainter painter;
-		private Rectangle bounds;
+		private TGPainterImpl painter;
+		private TGRectangle bounds;
 		private List pages;
 		
-		public PrintDocumentImpl(PrinterViewLayout layout, Rectangle bounds){
-			this.layout = layout;
+		public PrintDocumentImpl(TGRectangle bounds){
 			this.bounds = bounds;
-			this.painter = new TGPainter();
+			this.painter = new TGPainterImpl();
 			this.pages = new ArrayList();
 		}
 		
@@ -125,12 +121,12 @@ public class PrintPreviewAction extends Action{
 			return this.painter;
 		}
 		
-		public Rectangle getBounds(){
+		public TGRectangle getBounds(){
 			return this.bounds;
 		}
 		
 		public void pageStart() {
-			Image page = new Image(this.layout.getTablature().getDisplay(),this.bounds.width - this.bounds.x, this.bounds.height - this.bounds.y);
+			Image page = new Image(TuxGuitar.instance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
 			this.painter.init( page );
 			this.pages.add( page );
 		}
@@ -144,13 +140,11 @@ public class PrintPreviewAction extends Action{
 		}
 		
 		public void finish() {
-			final Tablature tablature = this.layout.getTablature();
-			final Rectangle bounds = this.bounds;
+			final TGRectangle bounds = this.bounds;
 			final List pages = this.pages;
 			try {
 				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable(){
 					public void run() {
-						tablature.dispose();
 						PrintPreview preview = new PrintPreview(pages,bounds);
 						preview.showPreview(getEditor().getTablature().getShell());
 						Iterator it = pages.iterator();

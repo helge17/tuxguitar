@@ -16,9 +16,8 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -28,6 +27,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGImage;
+import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.caret.GoLeftAction;
@@ -35,7 +37,10 @@ import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.IncrementDurationAction;
 import org.herac.tuxguitar.gui.actions.tools.ScaleAction;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGFontImpl;
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
@@ -44,6 +49,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -70,7 +76,7 @@ public class FretBoard extends Composite {
 	private Label scaleName;
 	private Button scale;
 	private Button settings;
-	private Image fretBoard;
+	private TGImage fretBoard;
 	
 	private TGBeat beat;
 	private TGBeat externalBeat;
@@ -304,32 +310,34 @@ public class FretBoard extends Composite {
 	
 	private void paintFretBoard(TGPainter painter){
 		if(this.fretBoard == null || this.fretBoard.isDisposed()){
-			this.fretBoard = new Image(getDisplay(),getClientArea().width,((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
+			Rectangle clientArea = getClientArea();
 			
-			TGPainter painterBuffer = new TGPainter(new GC(this.fretBoard));
+			this.fretBoard = new TGImageImpl(getDisplay(),clientArea.width,((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
+			
+			TGPainter painterBuffer = this.fretBoard.createPainter();
 			
 			//fondo
-			painterBuffer.setBackground(this.config.getColorBackground());
-			painterBuffer.initPath(TGPainter.PATH_FILL);
-			painterBuffer.addRectangle(getClientArea());
+			painterBuffer.setBackground(new TGColorImpl(this.config.getColorBackground()));
+			painterBuffer.initPath(TGPainterImpl.PATH_FILL);
+			painterBuffer.addRectangle(clientArea.x,clientArea.y,clientArea.width,clientArea.height);
 			painterBuffer.closePath();
 			
 			
 			// pinto las cegillas
-			Image fretImage = TuxGuitar.instance().getIconManager().getFretboardFret();
-			Image firstFretImage = TuxGuitar.instance().getIconManager().getFretboardFirstFret();
+			TGImage fretImage = new TGImageImpl(TuxGuitar.instance().getIconManager().getFretboardFret());
+			TGImage firstFretImage = new TGImageImpl(TuxGuitar.instance().getIconManager().getFretboardFirstFret());
 			
-			painterBuffer.drawImage(firstFretImage,0,0,firstFretImage.getBounds().width,firstFretImage.getBounds().height,this.frets[0] - 5,this.strings[0] - 5,firstFretImage.getBounds().width,this.strings[this.strings.length - 1] );
+			painterBuffer.drawImage(firstFretImage,0,0,firstFretImage.getWidth(),firstFretImage.getHeight(),this.frets[0] - 5,this.strings[0] - 5,firstFretImage.getWidth(),this.strings[this.strings.length - 1] );
 			
 			paintFretPoints(painterBuffer,0);
 			for (int i = 1; i < this.frets.length; i++) {
-				painterBuffer.drawImage(fretImage,0,0,fretImage.getBounds().width,fretImage.getBounds().height,this.frets[i],this.strings[0] - 5,fretImage.getBounds().width,this.strings[this.strings.length - 1] );
+				painterBuffer.drawImage(fretImage,0,0,fretImage.getWidth(),fretImage.getHeight(),this.frets[i],this.strings[0] - 5,fretImage.getWidth(),this.strings[this.strings.length - 1] );
 				paintFretPoints(painterBuffer, i);
 			}
 			
 			// pinto las cuerdas
 			for (int i = 0; i < this.strings.length; i++) {
-				painterBuffer.setForeground(this.config.getColorString());
+				painterBuffer.setForeground(new TGColorImpl(this.config.getColorString()));
 				if(i > 2){
 					painterBuffer.setLineWidth(2);
 				}
@@ -349,7 +357,7 @@ public class FretBoard extends Composite {
 	}
 	
 	private void paintFretPoints(TGPainter painter, int fretIndex) {
-		painter.setBackground(this.config.getColorFretPoint());
+		painter.setBackground(new TGColorImpl(this.config.getColorFretPoint()));
 		if ((fretIndex + 1) < this.frets.length) {
 			int fret = ((fretIndex + 1) % 12);
 			painter.setLineWidth(10);
@@ -358,7 +366,7 @@ public class FretBoard extends Composite {
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - STRING_SPACING;
 				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + STRING_SPACING;
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.initPath(TGPainterImpl.PATH_FILL);
 				painter.addOval(x - (size / 2), y1 - (size / 2), size, size);
 				painter.addOval(x - (size / 2), y2 - (size / 2), size, size);
 				painter.closePath();
@@ -366,7 +374,7 @@ public class FretBoard extends Composite {
 				int size = getOvalSize();
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2);
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.initPath(TGPainterImpl.PATH_FILL);
 				painter.addOval(x - (size / 2),y - (size / 2),size, size);
 				painter.closePath();
 			}
@@ -399,7 +407,7 @@ public class FretBoard extends Composite {
 			}
 		}
 		
-		painter.setForeground(this.config.getColorBackground());
+		painter.setForeground(new TGColorImpl(this.config.getColorBackground()));
 	}
 	
 	private void paintNotes(TGPainter painter) {
@@ -436,22 +444,22 @@ public class FretBoard extends Composite {
 	
 	private void paintKeyOval(TGPainter painter,Color background,int x, int y) {
 		int size = getOvalSize();
-		painter.setBackground(background);
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.setBackground(new TGColorImpl(background));
+		painter.initPath(TGPainterImpl.PATH_FILL);
 		painter.moveTo(x - (size / 2),y - (size / 2));
 		painter.addOval(x - (size / 2),y - (size / 2),size, size);
 		painter.closePath();
 	}
 	
 	private void paintKeyText(TGPainter painter,Color foreground,int x, int y,String text) {
-		painter.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		painter.setForeground(foreground);
-		painter.setFont(this.config.getFont());
-		Point size = painter.getStringExtent(text);
-		painter.initPath(TGPainter.PATH_FILL);
-		painter.addRectangle(x - (size.x / 2),y - (size.y / 2),size.x, size.y);
+		painter.setBackground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_WHITE)));
+		painter.setForeground(new TGColorImpl(foreground));
+		painter.setFont(new TGFontImpl(this.config.getFont()));
+		TGDimension size = painter.getStringExtent(text);
+		painter.initPath(TGPainterImpl.PATH_FILL);
+		painter.addRectangle(x - (size.getWidth() / 2),y - (size.getHeight() / 2),size.getWidth(), size.getHeight());
 		painter.closePath();
-		painter.drawString(text,x - (size.x / 2),y - (size.y / 2),true);
+		painter.drawString(text,x - (size.getWidth() / 2),y - (size.getHeight() / 2),true);
 	}
 	
 	protected void paintEditor(TGPainter painter) {
@@ -585,12 +593,12 @@ public class FretBoard extends Composite {
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();
 		
 		//reprodusco las notas en el pulso
-		caret.getSelectedBeat().play();
+		TuxGuitar.instance().playBeat(caret.getSelectedBeat());
 	}
 	
 	protected void afterAction() {
-		int measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getNumber();
-		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure);
+		TGMeasureHeader measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader();
+		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
 		TuxGuitar.instance().updateCache(true);
 	}
 	
@@ -703,7 +711,7 @@ public class FretBoard extends Composite {
 		}
 		
 		public void paintControl(PaintEvent e) {
-			TGPainter painter = new TGPainter(e.gc);
+			TGPainterImpl painter = new TGPainterImpl(e.gc);
 			paintEditor(painter);
 		}
 		

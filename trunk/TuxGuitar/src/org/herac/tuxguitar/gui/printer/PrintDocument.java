@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.gui.printer;
 
-import org.eclipse.swt.graphics.Rectangle;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGRectangle;
 
 public interface PrintDocument{
 	
@@ -17,6 +17,6 @@ public interface PrintDocument{
 	
 	public TGPainter getPainter();
 	
-	public Rectangle getBounds();
+	public TGRectangle getBounds();
 	
 }

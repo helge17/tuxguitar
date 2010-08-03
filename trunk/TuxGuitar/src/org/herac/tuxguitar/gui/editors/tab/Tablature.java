@@ -15,35 +15,49 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.graphics.TGResourceFactory;
+import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
+import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGController;
+import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
+import org.herac.tuxguitar.gui.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.gui.editors.tab.edit.EditorKit;
-import org.herac.tuxguitar.gui.editors.tab.layout.LinearViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.layout.PageViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
+import org.herac.tuxguitar.gui.system.config.TGConfigManager;
+import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class Tablature extends Composite {
+public class Tablature extends Composite implements TGController {
 	
 	private static final int SCROLL_DELAY = 15;
 	private static final int SCROLL_INCREMENT = 50;
 	
+	private TGResourceFactory resourceFactory;
 	private TGSongManager songManager;
 	private Caret caret;
 	private int width;
 	private int height;
-	private ViewLayout viewLayout;
+	private TGLayout viewLayout;
 	private EditorKit editorKit;
 	
 	private TGBeatImpl playedBeat;
 	private TGMeasureImpl playedMeasure;
-	
 	private int scrollX;
 	private int scrollY;
 	private boolean resetScroll;
@@ -51,6 +65,8 @@ public class Tablature extends Composite {
 	protected long lastHScrollTime;
 	
 	private boolean painting;
+	
+	private int pageLayoutForceWidth;
 	
 	public Tablature(final Composite parent) {
 		this(parent,SWT.NONE);
@@ -101,6 +117,14 @@ public class Tablature extends Composite {
 		this.playedBeat = null;
 		this.playedMeasure = null;
 		getViewLayout().updateSong();
+		getCaret().update();
+	}
+	
+	public void updateMeasure(int number){
+		this.playedBeat = null;
+		this.playedMeasure = null;
+		getViewLayout().updateMeasureNumber(number);
+		getCaret().update();
 	}
 	
 	public void initCaret(){
@@ -113,14 +137,16 @@ public class Tablature extends Composite {
 			this.setPainting(true);
 			try{
 				this.checkScroll();
+				this.checkLayout();
 				
-				Rectangle area = getClientArea();
+				TGRectangle area = createRectangle(getClientArea());
 				ScrollBar xScroll = getHorizontalBar();
 				ScrollBar yScroll = getVerticalBar();
 				this.scrollX = xScroll.getSelection();
 				this.scrollY = yScroll.getSelection();
 				
 				this.getViewLayout().paint(painter,area,-this.scrollX,-this.scrollY);
+				this.getCaret().paintCaret(this.getViewLayout(),painter);
 				
 				this.width = this.viewLayout.getWidth();
 				this.height = this.viewLayout.getHeight();
@@ -171,10 +197,10 @@ public class Tablature extends Composite {
 	}
 	
 	public boolean moveScrollTo(TGMeasureImpl measure){
-		return moveScrollTo(measure,getHorizontalBar(),getVerticalBar(),getClientArea());
+		return moveScrollTo(measure,getHorizontalBar(),getVerticalBar(), createRectangle(getClientArea()));
 	}
 	
-	public boolean moveScrollTo(TGMeasureImpl measure,ScrollBar xScroll,ScrollBar yScroll,Rectangle area){
+	public boolean moveScrollTo(TGMeasureImpl measure,ScrollBar xScroll,ScrollBar yScroll,TGRectangle area){
 		boolean success = false;
 		if(measure != null && measure.getTs() != null){
 			int mX = measure.getPosX();
@@ -187,14 +213,14 @@ public class Tablature extends Composite {
 			
 			//Solo se ajusta si es necesario
 			//si el largo del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
-			if( mX < 0 || ( (mX + mWidth ) > area.width && (area.width >= mWidth + marginWidth || mX > marginWidth) )  ){
+			if( mX < 0 || ( (mX + mWidth ) > area.getWidth() && (area.getWidth() >= mWidth + marginWidth || mX > marginWidth) ) ){
 				xScroll.setSelection((this.scrollX + mX) - marginWidth );
 				success = true;
 			}
 			
 			//Solo se ajusta si es necesario
 			//si el alto del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
-			if( mY < 0 || ( (mY + mHeight ) > area.height && (area.height >= mHeight + marginHeight || mY > marginHeight) )  ){
+			if( mY < 0 || ( (mY + mHeight ) > area.getHeight() && (area.getHeight() >= mHeight + marginHeight || mY > marginHeight) ) ){
 				yScroll.setSelection( (this.scrollY + mY)  - marginHeight );
 				success = true;
 			}
@@ -228,7 +254,7 @@ public class Tablature extends Composite {
 				this.editorKit.tryBack();
 				this.setPainting(true);
 				
-				TGPainter painter = new TGPainter(new GC(this));
+				TGPainter painter = new TGPainterImpl(new GC(this));
 				redrawPlayingMode(painter,false);
 				painter.dispose();
 				
@@ -286,11 +312,11 @@ public class Tablature extends Composite {
 		this.songManager = songManager;
 	}
 	
-	public ViewLayout getViewLayout(){
+	public TGLayout getViewLayout(){
 		return this.viewLayout;
 	}
 	
-	public void setViewLayout(ViewLayout viewLayout){
+	public void setViewLayout(TGLayout viewLayout){
 		if(getViewLayout() != null){
 			getViewLayout().disposeLayout();
 		}
@@ -304,30 +330,60 @@ public class Tablature extends Composite {
 		this.reloadStyles();
 	}
 	
+	public void checkLayout(){
+		if( this.viewLayout instanceof TGLayoutVertical ){
+			if( this.pageLayoutForceWidth <= 0 ){
+				this.pageLayoutForceWidth = TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.LAYOUT_PAGE_FORCE_WIDTH, 0);
+				if(this.pageLayoutForceWidth <= 0){
+					int marginLeft = 0;
+					int marginRight = 0;
+					int monitorWidth = getMonitor().getClientArea().width;
+					Rectangle tablatureArea = getClientArea();
+					Composite parent = getParent();
+					while( parent != null ){
+						Rectangle parentArea = parent.getClientArea();
+						parent = parent.getParent();
+						if( parent == null ){
+							marginRight = ( parentArea.width - (marginLeft + tablatureArea.width ) );
+						}else{
+							marginLeft += parentArea.x ;
+						}
+					}
+					this.pageLayoutForceWidth = (monitorWidth - ( marginLeft + marginRight ) );
+				}
+			}
+			((TGLayoutVertical)this.viewLayout).setMaximumWidth(this.pageLayoutForceWidth);
+		}
+	}
+	
+	public TGRectangle createRectangle( Rectangle rectangle ){
+		return new TGRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
+	}
+	
 	public void reloadStyles(){
 		if(this.getViewLayout() != null){
-			this.getViewLayout().reloadStyles();
-			this.setBackground(getViewLayout().getResources().getBackgroundColor());
+			this.getViewLayout().loadStyles(1.0f);
+			this.setBackground( ((TGColorImpl)getViewLayout().getResources().getBackgroundColor()).getHandle() );
 		}
 	}
 	
 	public void reloadViewLayout(){
-		int style =  TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.LAYOUT_STYLE);
-		int mode = TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.LAYOUT_MODE);
-		this.loadViewLayout(style, mode);
+		TGConfigManager config = TuxGuitar.instance().getConfig();
+		
+		this.loadViewLayout(config.getIntConfigValue(TGConfigKeys.LAYOUT_STYLE), config.getIntConfigValue(TGConfigKeys.LAYOUT_MODE));
 	}
 	
 	private void loadViewLayout( int style, int mode ){
 		switch(mode){
-			case ViewLayout.MODE_PAGE:
-				setViewLayout(new PageViewLayout(this,style));
+			case TGLayout.MODE_VERTICAL:
+				setViewLayout(new TGLayoutVertical(this,style));
 			break;
-			case ViewLayout.MODE_LINEAR:
-				setViewLayout(new LinearViewLayout(this,style));
+			case TGLayout.MODE_HORIZONTAL:
+				setViewLayout(new TGLayoutHorizontal(this,style));
 			break;
 			default:
-				if( mode != ViewLayout.DEFAULT_MODE ){
-					this.loadViewLayout( style, ViewLayout.DEFAULT_MODE );
+				if( mode != TGLayout.DEFAULT_MODE ){
+					this.loadViewLayout( style, TGLayout.DEFAULT_MODE );
 				}
 			break;
 		}
@@ -336,5 +392,87 @@ public class Tablature extends Composite {
 	public void dispose(){
 		super.dispose();
 		this.getViewLayout().disposeLayout();
+	}
+	
+	public TGResourceFactory getResourceFactory(){
+		if( this.resourceFactory == null ){
+			this.resourceFactory = new TGResourceFactoryImpl(this.getDisplay());
+		}
+		return this.resourceFactory;
+	}
+	
+	public int getTrackSelection(){
+		if( (getViewLayout().getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0 ){
+			return getCaret().getTrack().getNumber();
+		}
+		return -1;
+	}
+	
+	public boolean isRunning(TGBeat beat) {
+		return ( isRunning( beat.getMeasure() ) && TuxGuitar.instance().getEditorCache().isPlaying(beat.getMeasure(),beat) );
+	}
+	
+	public boolean isRunning(TGMeasure measure) {
+		return ( measure.getTrack().equals(getCaret().getTrack()) && TuxGuitar.instance().getEditorCache().isPlaying( measure ) );
+	}
+	
+	public boolean isLoopSHeader(TGMeasureHeader measureHeader){
+		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+		return ( pm.isLoop() && pm.getLoopSHeader() == measureHeader.getNumber() );
+	}
+	
+	public boolean isLoopEHeader(TGMeasureHeader measureHeader){
+		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+		return ( pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber() );
+	}
+	
+	public void configureStyles(TGLayoutStyles styles){
+		TGConfigManager config = TuxGuitar.instance().getConfig();
+		
+		styles.setBufferEnabled(true);
+		styles.setStringSpacing(config.getIntConfigValue(TGConfigKeys.TAB_LINE_SPACING));
+		styles.setScoreLineSpacing(config.getIntConfigValue(TGConfigKeys.SCORE_LINE_SPACING));
+		styles.setFirstMeasureSpacing(20);
+		styles.setMinBufferSeparator(20);
+		styles.setMinTopSpacing(30);
+		styles.setMinScoreTabSpacing(config.getIntConfigValue(TGConfigKeys.MIN_SCORE_TABLATURE_SPACING));
+		styles.setFirstTrackSpacing(config.getIntConfigValue(TGConfigKeys.FIRST_TRACK_SPACING));
+		styles.setTrackSpacing(config.getIntConfigValue(TGConfigKeys.TRACK_SPACING));
+		styles.setChordFretIndexSpacing(8);
+		styles.setChordStringSpacing(5);
+		styles.setChordFretSpacing(6);
+		styles.setChordNoteSize(4);
+		styles.setRepeatEndingSpacing(20);
+		styles.setTextSpacing(15);
+		styles.setMarkerSpacing(15);
+		styles.setLoopMarkerSpacing(5);
+		styles.setDivisionTypeSpacing(10);
+		styles.setEffectSpacing(8);
+		
+		styles.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT));
+		styles.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_NOTE));
+		styles.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE));
+		styles.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_LYRIC));
+		styles.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TEXT));
+		styles.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
+		styles.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_GRACE));
+		styles.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD));
+		styles.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
+		styles.setPrinterDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
+		styles.setPrinterNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
+		styles.setPrinterTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
+		styles.setPrinterLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));
+		styles.setPrinterTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT));
+		styles.setPrinterGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_GRACE));
+		styles.setPrinterChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_CHORD));
+		styles.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
+		styles.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
+		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
+		styles.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
+		styles.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
+		styles.setCaretColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
+		styles.setCaretColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
+		styles.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
+		styles.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
 	}
 }

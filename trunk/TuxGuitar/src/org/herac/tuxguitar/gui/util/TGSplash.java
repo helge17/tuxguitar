@@ -7,8 +7,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 
 public class TGSplash {
@@ -39,8 +41,8 @@ public class TGSplash {
 			this.shell.setText(TuxGuitar.APPLICATION_NAME);
 			this.shell.addPaintListener(new PaintListener() {
 				public void paintControl(PaintEvent e) {
-					TGPainter painter = new TGPainter(e.gc);
-					painter.drawImage(image, 0, 0);
+					TGPainter painter = new TGPainterImpl(e.gc);
+					painter.drawImage(new TGImageImpl(image), 0, 0);
 				}
 			});
 			this.shell.open();

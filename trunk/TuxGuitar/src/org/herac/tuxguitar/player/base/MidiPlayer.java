@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.sound.midi.MidiUnavailableException;
+
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -504,7 +507,15 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void playBeat(final TGTrack track,final List notes) {
+	public void playBeat(TGBeat beat) {
+		List notes = new ArrayList();
+		for( int v = 0; v < beat.countVoices(); v ++){
+			notes.addAll( beat.getVoice(v).getNotes() );
+		}
+		playBeat(beat.getMeasure().getTrack(), notes);
+	}
+	
+	public void playBeat(TGTrack track,final List notes) {
 		int channel = track.getChannel().getChannel();
 		int program = track.getChannel().getInstrument();
 		int volume = (int)((this.getVolume() / 10.00) * track.getChannel().getVolume());

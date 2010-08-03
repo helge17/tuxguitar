@@ -9,13 +9,13 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Point;
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackSpacing;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGString;
@@ -94,11 +94,11 @@ public class EditorKit implements MouseListener,MouseMoveListener,MouseTrackList
 	}
 	
 	private boolean isScoreEnabled(){
-		return ( (getTablature().getViewLayout().getStyle() & ViewLayout.DISPLAY_SCORE) != 0 );
+		return ( (getTablature().getViewLayout().getStyle() & TGLayout.DISPLAY_SCORE) != 0 );
 	}
 	
 	public TGTrackImpl findSelectedTrack(int y){
-		ViewLayout layout = getTablature().getViewLayout();
+		TGLayout layout = getTablature().getViewLayout();
 		int number = layout.getTrackNumberAt(y);
 		if(number >= 0){
 			return (TGTrackImpl)layout.getSongManager().getTrack(number);
