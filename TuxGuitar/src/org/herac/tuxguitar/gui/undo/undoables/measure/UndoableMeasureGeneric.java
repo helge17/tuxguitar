@@ -53,8 +53,8 @@ public class UndoableMeasureGeneric implements UndoableEdit{
 		if(track != null && replace != null){
 			TGMeasureHeader header = TuxGuitar.instance().getSongManager().getMeasureHeader(replace.getNumber());
 			TGMeasure measure = replace.clone(TuxGuitar.instance().getSongManager().getFactory(),header);
-			measure = TuxGuitar.instance().getSongManager().getTrackManager().replaceMeasure(track,measure);
-			TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measure.getNumber());
+			TuxGuitar.instance().getSongManager().getTrackManager().replaceMeasure(track,measure);
+			TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(header.getNumber());
 		}
 	}
 	

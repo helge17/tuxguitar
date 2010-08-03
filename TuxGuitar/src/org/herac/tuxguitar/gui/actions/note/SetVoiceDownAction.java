@@ -9,12 +9,12 @@ package org.herac.tuxguitar.gui.actions.note;
 import java.util.Iterator;
 
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGBeatGroup;
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.editors.tab.TGBeatGroup;
-import org.herac.tuxguitar.gui.editors.tab.TGBeatImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGVoiceImpl;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGVoice;
 

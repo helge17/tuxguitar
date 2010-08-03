@@ -15,8 +15,6 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FillLayout;
@@ -30,16 +28,22 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGImage;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.gui.actions.caret.GoRightAction;
 import org.herac.tuxguitar.gui.actions.duration.DecrementDurationAction;
 import org.herac.tuxguitar.gui.actions.duration.IncrementDurationAction;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGFontImpl;
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.editors.TGRedrawListener;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.editors.tab.TGNoteImpl;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.system.icons.IconLoader;
 import org.herac.tuxguitar.gui.system.language.LanguageLoader;
@@ -73,7 +77,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	private Composite toolbar;
 	private Composite editor;
 	private Rectangle clientArea;
-	private Image buffer;
+	private TGImage buffer;
 	private BufferDisposer bufferDisposer;
 	private Label durationLabel;
 	private Label gridsLabel;
@@ -94,7 +98,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	private int playedMeasure;
 	private TGBeat playedBeat;
 	
-	private Image selectionBackBuffer;
+	private TGImage selectionBackBuffer;
 	private int selectionX;
 	private int selectionY;
 	
@@ -302,7 +306,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		this.clientArea = this.editor.getClientArea();
 		
 		if( this.clientArea != null ){
-			Image buffer = getBuffer();
+			TGImage buffer = getBuffer();
 			
 			this.width = this.bufferWidth;
 			this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
@@ -320,7 +324,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		}
 	}
 	
-	protected Image getBuffer(){
+	protected TGImage getBuffer(){
 		if( this.clientArea != null ){
 			this.bufferDisposer.update(this.clientArea.width, this.clientArea.height);
 			if(this.buffer == null || this.buffer.isDisposed()){
@@ -350,15 +354,15 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				
 				int minimumNameWidth = 110;
 				int minimumNameHeight = 0;
-				TGPainter painter = new TGPainter(new GC(this.dialog.getDisplay()));
-				painter.setFont(this.config.getFont());
+				TGPainter painter = new TGPainterImpl(new GC(this.dialog.getDisplay()));
+				painter.setFont(new TGFontImpl(this.config.getFont()));
 				for(int i = 0; i < names.length;i ++){
-					Point size = painter.getStringExtent(names[i]);
-					if( size.x > minimumNameWidth ){
-						minimumNameWidth = size.x;
+					TGDimension size = painter.getStringExtent(names[i]);
+					if( size.getWidth() > minimumNameWidth ){
+						minimumNameWidth = size.getWidth();
 					}
-					if( size.y  > minimumNameHeight ){
-						minimumNameHeight = size.y ;
+					if( size.getHeight()  > minimumNameHeight ){
+						minimumNameHeight = size.getHeight() ;
 					}
 				}
 				painter.dispose();
@@ -371,13 +375,13 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.width-this.leftSpacing) / cols)  );
 				this.bufferWidth = this.leftSpacing + (this.timeWidth * cols);
 				this.bufferHeight = (this.lineHeight * (rows + 1));
-				this.buffer = new Image(this.editor.getDisplay(),Math.round( this.bufferWidth),Math.round(this.bufferHeight));
+				this.buffer = new TGImageImpl(this.editor.getDisplay(),Math.round( this.bufferWidth),Math.round(this.bufferHeight));
 				
-				painter = new TGPainter(new GC(this.buffer));
-				painter.setFont(this.config.getFont());
-				painter.setForeground(this.config.getColorForeground());
+				painter = this.buffer.createPainter();
+				painter.setFont(new TGFontImpl(this.config.getFont()));
+				painter.setForeground(new TGColorImpl(this.config.getColorForeground()));
 				for(int i = 0; i <= rows; i++){
-					painter.setBackground(this.config.getColorLine( i % 2 ) );
+					painter.setBackground(new TGColorImpl(this.config.getColorLine( i % 2 ) ));
 					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(0 ,(i * this.lineHeight),this.bufferWidth ,this.lineHeight);
@@ -388,7 +392,11 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					float colX = this.leftSpacing + (i * this.timeWidth);
 					float divisionWidth = ( this.timeWidth / this.grids );
 					for( int j = 0; j < this.grids; j ++ ){
-						painter.setLineStyle( j == 0 ? SWT.LINE_SOLID : SWT.LINE_DOT);
+						if( j == 0 ){
+							painter.setLineStyleSolid();
+						}else{
+							painter.setLineStyleDot();
+						}
 						painter.initPath();
 						painter.setAntialias(false);
 						painter.moveTo(Math.round( colX + (j * divisionWidth) ),0);
@@ -437,7 +445,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					y2 = ( y2 > maximumY ? maximumY : y2 );
 					
 					if((x2 - x1) > 0 && (y2 - y1) > 0){
-						painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) );
+						painter.setBackground(new TGColorImpl( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) ));
 						painter.initPath(TGPainter.PATH_FILL);
 						painter.setAntialias(false);
 						painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
@@ -450,7 +458,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	
 	protected void paintBorders(TGPainter painter,float fromX, float fromY){
 		if( this.clientArea != null ){
-			painter.setBackground(this.config.getColorBorder());
+			painter.setBackground(new TGColorImpl(this.config.getColorBorder()));
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
@@ -472,7 +480,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 			if(beat != null){
 				float x = (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength());
 				float width = ((beat.getVoice(caret.getVoice()).getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime());
-				painter.setBackground(this.config.getColorPosition());
+				painter.setBackground(new TGColorImpl(this.config.getColorPosition()));
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(fromX + (this.leftSpacing + x),fromY , width,BORDER_HEIGHT);
@@ -497,10 +505,10 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				int width = Math.round( this.bufferWidth );
 				int height = Math.round( this.lineHeight );
 				
-				Image selectionArea = new Image(this.editor.getDisplay(),width,height);
+				TGImage selectionArea = new TGImageImpl(this.editor.getDisplay(),width,height);
 				painter.copyArea(selectionArea,x,y);
 				painter.setAlpha(100);
-				painter.setBackground(this.config.getColorLine(2));
+				painter.setBackground(new TGColorImpl(this.config.getColorLine(2)));
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(x,y,width,height);
@@ -524,7 +532,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				int scrollX = this.editor.getHorizontalBar().getSelection();
 				int scrollY = this.editor.getVerticalBar().getSelection();
 				
-				TGPainter painter = new TGPainter(new GC(this.editor));
+				TGPainter painter = new TGPainterImpl(new GC(this.editor));
 				this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
 				painter.dispose();
 			}
@@ -533,7 +541,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	
 	public void selectionFinish(){
 		if(this.selectionBackBuffer != null && !this.selectionBackBuffer.isDisposed()){
-			TGPainter painter = new TGPainter(new GC(this.editor));
+			TGPainter painter = new TGPainterImpl(new GC(this.editor));
 			painter.drawImage(this.selectionBackBuffer,this.selectionX, this.selectionY);
 			painter.dispose();
 		}
@@ -649,7 +657,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 						TuxGuitar.instance().getFileHistory().setUnsavedFile();
 						
 						//reprodusco las notas en el pulso
-						caret.getSelectedBeat().play();
+						TuxGuitar.instance().playBeat(caret.getSelectedBeat());
 						
 						this.afterAction();
 						
@@ -662,7 +670,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	protected void afterAction() {
-		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(getMeasure().getNumber());
+		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(getMeasure().getNumber());
 		TuxGuitar.instance().updateCache(true);
 		this.editor.redraw();
 	}
@@ -764,7 +772,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					this.editor.redraw();
 				}
 				else{
-					TGPainter painter = new TGPainter(new GC(this.editor));
+					TGPainter painter = new TGPainterImpl(new GC(this.editor));
 					int scrollX = this.editor.getHorizontalBar().getSelection();
 					int scrollY = this.editor.getVerticalBar().getSelection();
 					if(this.playedBeat != null){
@@ -895,7 +903,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		public void paintControl(PaintEvent e) {
 			if(!TuxGuitar.instance().isLocked()){
 				TuxGuitar.instance().lock();
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainter painter = new TGPainterImpl(e.gc);
 				paintEditor(painter);
 				TuxGuitar.instance().unlock();
 			}

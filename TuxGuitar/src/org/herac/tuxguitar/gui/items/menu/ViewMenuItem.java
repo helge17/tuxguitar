@@ -10,6 +10,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
+import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.layout.SetChordDiagramEnabledAction;
 import org.herac.tuxguitar.gui.actions.layout.SetChordNameEnabledAction;
@@ -25,9 +28,6 @@ import org.herac.tuxguitar.gui.actions.view.ShowMixerAction;
 import org.herac.tuxguitar.gui.actions.view.ShowPianoAction;
 import org.herac.tuxguitar.gui.actions.view.ShowToolbarsAction;
 import org.herac.tuxguitar.gui.actions.view.ShowTransportAction;
-import org.herac.tuxguitar.gui.editors.tab.layout.LinearViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.layout.PageViewLayout;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.items.MenuItems;
 
 /**
@@ -134,7 +134,7 @@ public class ViewMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		ViewLayout layout = TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout();
+		TGLayout layout = TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout();
 		int style = layout.getStyle();
 		this.showToolbars.setSelection(TuxGuitar.instance().getItemManager().isCoolbarVisible());
 		this.showMixer.setSelection(!TuxGuitar.instance().getMixer().isDisposed());
@@ -142,15 +142,15 @@ public class ViewMenuItem extends MenuItems{
 		this.showFretBoard.setSelection(TuxGuitar.instance().getFretBoardEditor().isVisible());
 		this.showPiano.setSelection(!TuxGuitar.instance().getPianoEditor().isDisposed());
 		this.showMatrix.setSelection(!TuxGuitar.instance().getMatrixEditor().isDisposed());
-		this.pageLayout.setSelection(layout instanceof PageViewLayout);
-		this.linearLayout.setSelection(layout instanceof LinearViewLayout);
-		this.multitrack.setSelection( (style & ViewLayout.DISPLAY_MULTITRACK) != 0 );
-		this.scoreEnabled.setSelection( (style & ViewLayout.DISPLAY_SCORE) != 0 );
-		this.tablatureEnabled.setSelection( (style & ViewLayout.DISPLAY_TABLATURE) != 0 );
-		this.compact.setSelection( (style & ViewLayout.DISPLAY_COMPACT) != 0 );
-		this.compact.setEnabled((style & ViewLayout.DISPLAY_MULTITRACK) == 0 || layout.getSongManager().getSong().countTracks() == 1);
-		this.chordName.setSelection( (style & ViewLayout.DISPLAY_CHORD_NAME) != 0 );
-		this.chordDiagram.setSelection( (style & ViewLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
+		this.pageLayout.setSelection(layout instanceof TGLayoutVertical);
+		this.linearLayout.setSelection(layout instanceof TGLayoutHorizontal);
+		this.multitrack.setSelection( (style & TGLayout.DISPLAY_MULTITRACK) != 0 );
+		this.scoreEnabled.setSelection( (style & TGLayout.DISPLAY_SCORE) != 0 );
+		this.tablatureEnabled.setSelection( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
+		this.compact.setSelection( (style & TGLayout.DISPLAY_COMPACT) != 0 );
+		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || layout.getSongManager().getSong().countTracks() == 1);
+		this.chordName.setSelection( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
+		this.chordDiagram.setSelection( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
 	}
 	
 	public void loadProperties(){

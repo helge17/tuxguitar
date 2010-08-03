@@ -22,9 +22,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.editors.tab.TGChordImpl;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -110,7 +111,7 @@ public class ChordEditor extends Composite {
 		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		this.composite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
 				paintEditor(painter);
 			}
 		});
@@ -144,10 +145,10 @@ public class ChordEditor extends Composite {
 		return data;
 	}
 	
-	protected void paintEditor(TGPainter painter) {
+	protected void paintEditor(TGPainterImpl painter) {
 		int noteSize = (FRET_SPACING / 2);
 		
-		painter.setForeground(this.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		painter.setForeground(new TGColorImpl(this.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		
 		// dibujo el puente
 		painter.initPath();
@@ -177,11 +178,11 @@ public class ChordEditor extends Composite {
 		painter.closePath();
 		
 		// dibujo las notas
-		painter.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		painter.setBackground(new TGColorImpl(this.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		Iterator it = this.points.iterator();
 		while (it.hasNext()) {
 			Point point = (Point) it.next();
-			painter.initPath(TGPainter.PATH_FILL);
+			painter.initPath(TGPainterImpl.PATH_FILL);
 			painter.addOval(point.x - (noteSize / 2), point.y + (noteSize / 2),noteSize, noteSize);
 			painter.closePath();
 		}

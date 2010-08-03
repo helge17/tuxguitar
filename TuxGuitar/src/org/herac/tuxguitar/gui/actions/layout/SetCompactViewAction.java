@@ -7,8 +7,8 @@
 package org.herac.tuxguitar.gui.actions.layout;
 
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 
 /**
  * @author julian
@@ -24,8 +24,8 @@ public class SetCompactViewAction extends Action{
 	}
 	
 	protected int execute(TypedEvent e){
-		ViewLayout layout = getEditor().getTablature().getViewLayout();
-		layout.setStyle( ( layout.getStyle() ^ ViewLayout.DISPLAY_COMPACT ) );
+		TGLayout layout = getEditor().getTablature().getViewLayout();
+		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_COMPACT ) );
 		updateTablature();
 		return 0;
 	}

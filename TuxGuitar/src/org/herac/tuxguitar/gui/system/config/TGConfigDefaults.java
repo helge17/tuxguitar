@@ -11,10 +11,10 @@ import java.util.Properties;
 
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.editors.fretboard.FretBoardConfig;
 import org.herac.tuxguitar.gui.editors.tab.edit.EditorKit;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.gui.util.TGFileUtils;
 
 /**
@@ -60,8 +60,8 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.SHOW_FRETBOARD,false);
 		this.loadProperty(TGConfigKeys.SHOW_PIANO,false);
 		this.loadProperty(TGConfigKeys.SHOW_MARKERS,false);
-		this.loadProperty(TGConfigKeys.LAYOUT_MODE,ViewLayout.MODE_PAGE);
-		this.loadProperty(TGConfigKeys.LAYOUT_STYLE,(ViewLayout.DISPLAY_TABLATURE | ViewLayout.DISPLAY_SCORE | ViewLayout.DISPLAY_COMPACT | ViewLayout.DISPLAY_CHORD_DIAGRAM));
+		this.loadProperty(TGConfigKeys.LAYOUT_MODE,TGLayout.MODE_VERTICAL);
+		this.loadProperty(TGConfigKeys.LAYOUT_STYLE,(TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT | TGLayout.DISPLAY_CHORD_DIAGRAM));
 		this.loadProperty(TGConfigKeys.EDITOR_MOUSE_MODE,EditorKit.MOUSE_MODE_EDITION);
 		this.loadProperty(TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true);
 		this.loadProperty(TGConfigKeys.FONT_DEFAULT, (DEFAULT_FONT_NAME + ",6,0"));

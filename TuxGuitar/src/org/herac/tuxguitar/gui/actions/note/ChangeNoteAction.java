@@ -8,10 +8,10 @@ package org.herac.tuxguitar.gui.actions.note;
 
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBindingConstants;
 import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -93,7 +93,7 @@ public class ChangeNoteAction extends Action {
 		addUndoableEdit(undoable.endUndo());
 		
 		//reprodusco las notas en el pulso
-		getEditor().getTablature().getCaret().getSelectedBeat().play();
+		TuxGuitar.instance().playBeat(getEditor().getTablature().getCaret().getSelectedBeat());
 	}
 	
 	private int getValueOf(int keyCode){

@@ -7,8 +7,8 @@
 package org.herac.tuxguitar.gui.actions.marker;
 
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.marker.MarkerEditor;
 import org.herac.tuxguitar.gui.marker.MarkerList;
 import org.herac.tuxguitar.song.models.TGMarker;

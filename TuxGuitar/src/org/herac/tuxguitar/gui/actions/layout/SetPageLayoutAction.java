@@ -7,9 +7,9 @@
 package org.herac.tuxguitar.gui.actions.layout;
 
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.editors.tab.Tablature;
-import org.herac.tuxguitar.gui.editors.tab.layout.PageViewLayout;
 
 /**
  * @author julian
@@ -26,7 +26,7 @@ public class SetPageLayoutAction extends Action{
 	
 	protected int execute(TypedEvent e){
 		Tablature tablature = getEditor().getTablature();
-		tablature.setViewLayout(new PageViewLayout(tablature,tablature.getViewLayout().getStyle()));
+		tablature.setViewLayout(new TGLayoutVertical(tablature,tablature.getViewLayout().getStyle()));
 		updateTablature();
 		return 0;
 	}

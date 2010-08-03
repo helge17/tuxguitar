@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.gui.TuxGuitar;
 import org.herac.tuxguitar.gui.actions.measure.AddMeasureAction;
 import org.herac.tuxguitar.gui.actions.measure.CleanMeasureAction;
@@ -20,7 +21,6 @@ import org.herac.tuxguitar.gui.actions.measure.GoNextMeasureAction;
 import org.herac.tuxguitar.gui.actions.measure.GoPreviousMeasureAction;
 import org.herac.tuxguitar.gui.actions.measure.PasteMeasureAction;
 import org.herac.tuxguitar.gui.actions.measure.RemoveMeasureAction;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
 import org.herac.tuxguitar.gui.items.MenuItems;
 
 /**

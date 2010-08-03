@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.util.TGVersion;
@@ -62,8 +63,8 @@ public class AboutDialog {
 		this.imageComposite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				Rectangle bounds = AboutDialog.this.image.getBounds();
-				TGPainter painter = new TGPainter(e.gc);
-				painter.drawImage(AboutDialog.this.image,((IMAGE_WIDTH - bounds.width) /2),((IMAGE_HEIGHT - bounds.height) /2));
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
+				painter.drawImage(new TGImageImpl(AboutDialog.this.image),((IMAGE_WIDTH - bounds.width) /2),((IMAGE_HEIGHT - bounds.height) /2));
 			}
 		});
 		

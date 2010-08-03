@@ -21,8 +21,12 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.herac.tuxguitar.graphics.TGImage;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGImageImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.system.keybindings.KeyBindingConstants;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 
@@ -39,11 +43,11 @@ public class PrintPreview{
 	protected Text currentText;
 	protected Button previous;
 	protected Button next;
-	protected Rectangle bounds;
+	protected TGRectangle bounds;
 	protected List pages;
 	protected int currentPage;
 	
-	public PrintPreview(List pages,Rectangle bounds){
+	public PrintPreview(List pages,TGRectangle bounds){
 		this.pages = pages;
 		this.bounds = bounds;
 	}
@@ -132,8 +136,9 @@ public class PrintPreview{
 					
 					int vScroll = PrintPreview.this.previewComposite.getVerticalBar().getSelection();
 					
-					TGPainter painter = new TGPainter(e.gc);
-					painter.drawImage((Image)PrintPreview.this.pages.get(PrintPreview.this.currentPage),MARGIN_LEFT,MARGIN_TOP - vScroll);
+					TGImage page = new TGImageImpl((Image)PrintPreview.this.pages.get(PrintPreview.this.currentPage));
+					TGPainter painter = new TGPainterImpl(e.gc);
+					painter.drawImage(page, MARGIN_LEFT, MARGIN_TOP - vScroll);
 				}
 			}
 		});
@@ -142,8 +147,8 @@ public class PrintPreview{
 		pageData.verticalAlignment = SWT.CENTER;
 		pageData.grabExcessHorizontalSpace = true;
 		pageData.grabExcessVerticalSpace = true;
-		pageData.widthHint = (this.bounds.width - this.bounds.x) + (MARGIN_LEFT + MARGIN_RIGHT);
-		pageData.heightHint = (this.bounds.height - this.bounds.y) + (MARGIN_TOP + MARGIN_BOTTOM);
+		pageData.widthHint = (this.bounds.getWidth() - this.bounds.getX()) + (MARGIN_LEFT + MARGIN_RIGHT);
+		pageData.heightHint = (this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM);
 		this.pageComposite.setLayoutData(pageData);
 		this.previewComposite.getVerticalBar().setIncrement(SCROLL_INCREMENT);
 		this.previewComposite.getVerticalBar().addListener(SWT.Selection, new Listener() {
@@ -156,8 +161,8 @@ public class PrintPreview{
 	protected void updateScroll(){
 		ScrollBar vBar = this.previewComposite.getVerticalBar();
 		Rectangle client = this.pageComposite.getClientArea();
-		vBar.setMaximum((this.bounds.height - this.bounds.y) + (MARGIN_TOP + MARGIN_BOTTOM));
-		vBar.setThumb(Math.min((this.bounds.height - this.bounds.y) + (MARGIN_TOP + MARGIN_BOTTOM), client.height));
+		vBar.setMaximum((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
+		vBar.setThumb(Math.min((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM), client.height));
 	}
 	
 	protected void changePage(int index){

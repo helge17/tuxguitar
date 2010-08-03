@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.gui.actions.Action;
 import org.herac.tuxguitar.gui.actions.ActionLock;
 import org.herac.tuxguitar.gui.actions.ActionManager;
@@ -39,7 +40,6 @@ import org.herac.tuxguitar.gui.editors.TablatureEditor;
 import org.herac.tuxguitar.gui.editors.chord.CustomChordManager;
 import org.herac.tuxguitar.gui.editors.lyric.LyricEditor;
 import org.herac.tuxguitar.gui.editors.matrix.MatrixEditor;
-import org.herac.tuxguitar.gui.editors.tab.TGFactoryImpl;
 import org.herac.tuxguitar.gui.helper.FileHistory;
 import org.herac.tuxguitar.gui.helper.SyncThread;
 import org.herac.tuxguitar.gui.items.ItemManager;
@@ -788,6 +788,16 @@ public class TuxGuitar {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void playBeat( final TGBeat beat ){
+		new Thread(new Runnable() {
+			public void run() {
+				if(!isDisposed() && !getPlayer().isRunning() ){
+					getPlayer().playBeat(beat);
+				}
+			}
+		}).start();
 	}
 	
 	public boolean isInitialized() {

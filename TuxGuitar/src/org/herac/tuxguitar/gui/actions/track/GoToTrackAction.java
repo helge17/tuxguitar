@@ -7,8 +7,8 @@
 package org.herac.tuxguitar.gui.actions.track;
 
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.gui.actions.Action;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
 
 /**
  * @author julian

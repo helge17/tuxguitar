@@ -23,7 +23,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.gui.editors.TGColorImpl;
+import org.herac.tuxguitar.gui.editors.TGPainterImpl;
 import org.herac.tuxguitar.gui.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -34,8 +35,8 @@ import org.herac.tuxguitar.song.models.effects.TGEffectBend;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class BendEditor{
-	public static final int X_SPACING = 30;
-	public static final int Y_SPACING = 15;
+	private static final int X_SPACING = 30;
+	private static final int Y_SPACING = 15;
 	private static final int X_LENGTH = TGEffectBend.MAX_POSITION_LENGTH + 1;
 	private static final int Y_LENGTH = TGEffectBend.MAX_VALUE_LENGTH + 1;
 	
@@ -92,7 +93,7 @@ public class BendEditor{
 		this.editor.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true) , getWidth() + (X_SPACING * 2),getHeight() + (Y_SPACING * 2))  );
 		this.editor.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
 				paintEditor(painter);
 			}
 		});
@@ -170,7 +171,7 @@ public class BendEditor{
 		return data;
 	}
 	
-	protected void paintEditor(TGPainter painter){
+	protected void paintEditor(TGPainterImpl painter){
 		for(int i = 0;i < this.x.length;i++){
 			this.setStyleX(painter,i);
 			painter.initPath();
@@ -190,9 +191,9 @@ public class BendEditor{
 		
 		Iterator it = null;
 		Point prevPoint = null;
-		painter.setLineStyle(SWT.LINE_SOLID);
+		painter.setLineStyleSolid();
 		painter.setLineWidth(2);
-		painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_GRAY)));
 		
 		it = this.points.iterator();
 		while(it.hasNext()){
@@ -207,7 +208,7 @@ public class BendEditor{
 		}
 		
 		painter.setLineWidth(5);
-		painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		
 		it = this.points.iterator();
 		while(it.hasNext()){
@@ -220,30 +221,30 @@ public class BendEditor{
 		painter.setLineWidth(1);
 	}
 	
-	private void setStyleX(TGPainter painter,int i){
-		painter.setLineStyle(SWT.LINE_SOLID);
+	private void setStyleX(TGPainterImpl painter,int i){
+		painter.setLineStyleSolid();
 		if(i == 0 || i == (X_LENGTH - 1)){
-			painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		}else{
-			painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLUE));
+			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLUE)));
 			if((i % 3) > 0){
-				painter.setLineStyle(SWT.LINE_DOT);
+				painter.setLineStyleDot();
 			}
 		}
 	}
 	
-	private void setStyleY(TGPainter painter,int i){
-		painter.setLineStyle(SWT.LINE_SOLID);
+	private void setStyleY(TGPainterImpl painter,int i){
+		painter.setLineStyleSolid();
 		if(i == 0 || i == (Y_LENGTH - 1)){
-			painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		}else{
-			painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_RED));
+			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_RED)));
 			
 			if((i % 2) > 0){
-				painter.setLineStyle(SWT.LINE_DOT);
-				painter.setForeground(this.editor.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+				painter.setLineStyleDot();
+				painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_GRAY)));
 			}else if((i % 4) > 0){
-				painter.setLineStyle(SWT.LINE_DOT);
+				painter.setLineStyleDot();
 			}
 		}
 	}

@@ -16,8 +16,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
+import org.herac.tuxguitar.graphics.TGColorModel;
+import org.herac.tuxguitar.graphics.TGFontModel;
 
 /**
  * @author julian
@@ -145,6 +148,51 @@ public abstract class TGConfigManager {
 						int blue = Integer.parseInt(values[2].trim());
 						
 						return new RGB(red,green,blue);
+					}catch(NumberFormatException e){
+						e.printStackTrace();
+					}
+				}
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
+	}
+	
+	public TGFontModel getFontModelConfigValue(String key){
+		try{
+			String value = getProperty(key);
+			if(value != null){
+				String[] values = value.trim().split(",");
+				if(values != null && values.length == 3){
+					try{
+						String name = values[0].trim();
+						int size = Integer.parseInt(values[1].trim());
+						int style = Integer.parseInt(values[2].trim());
+						return new TGFontModel( (name == null ? "" : name),size, (style & SWT.BOLD) != 0 , (style & SWT.ITALIC) != 0 );
+					}catch(NumberFormatException e){
+						e.printStackTrace();
+					}
+				}
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
+	}
+	
+	public TGColorModel getColorModelConfigValue(String key){
+		try{
+			String value = getProperty(key);
+			if(value != null){
+				String[] values = value.trim().split(",");
+				if(values != null && values.length == 3){
+					try{
+						int red = Integer.parseInt(values[0].trim());
+						int green = Integer.parseInt(values[1].trim());
+						int blue = Integer.parseInt(values[2].trim());
+						
+						return new TGColorModel(red,green,blue);
 					}catch(NumberFormatException e){
 						e.printStackTrace();
 					}
