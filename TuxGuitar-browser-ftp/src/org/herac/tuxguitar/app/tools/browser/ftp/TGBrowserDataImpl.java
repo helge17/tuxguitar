@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.gui.tools.browser.ftp;
+package org.herac.tuxguitar.app.tools.browser.ftp;
 
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
-import org.herac.tuxguitar.gui.tools.browser.ftp.utils.Base64Decoder;
-import org.herac.tuxguitar.gui.tools.browser.ftp.utils.Base64Encoder;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.ftp.utils.Base64Decoder;
+import org.herac.tuxguitar.app.tools.browser.ftp.utils.Base64Encoder;
 
 public class TGBrowserDataImpl implements TGBrowserData{
 	
