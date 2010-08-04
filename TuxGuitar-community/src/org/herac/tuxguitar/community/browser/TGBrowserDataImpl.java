@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.community.browser;
 
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 
 public class TGBrowserDataImpl implements TGBrowserData {
 	

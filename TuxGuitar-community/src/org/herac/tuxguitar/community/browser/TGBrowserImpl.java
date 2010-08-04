@@ -3,9 +3,9 @@ package org.herac.tuxguitar.community.browser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserImpl extends TGBrowser {
 	

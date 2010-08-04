@@ -2,11 +2,11 @@ package org.herac.tuxguitar.community.browser;
 
 import java.util.List;
 
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuth;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
 
 public class TGBrowserConnection {
 	

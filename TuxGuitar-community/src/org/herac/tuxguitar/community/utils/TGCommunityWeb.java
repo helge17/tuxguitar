@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
-import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 
 public class TGCommunityWeb {
 	

@@ -3,11 +3,11 @@ package org.herac.tuxguitar.community;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.community.browser.TGBrowserPluginImpl;
 import org.herac.tuxguitar.community.io.TGShareSongPlugin;
 import org.herac.tuxguitar.community.startup.TGCommunityStartupPlugin;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 
 public class TGCommunityPluginImpl extends TGPluginList {
 
