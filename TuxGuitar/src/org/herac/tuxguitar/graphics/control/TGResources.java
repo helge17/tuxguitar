@@ -26,7 +26,6 @@ public class TGResources {
 	
 	private List resources;
 	private TGLayout layout;
-	//private TGResourceFactory factory;
 	
 	private TGFont defaultFont;
 	private TGFont noteFont;
@@ -52,8 +51,6 @@ public class TGResources {
 	private TGColor colorWhite;
 	private TGColor colorBlack;
 	private TGColor colorRed;
-	private TGColor caretColor1;
-	private TGColor caretColor2;
 	private TGColor loopSMarkerColor;
 	private TGColor loopEMarkerColor;
 	private TGImage[] scoreNotes;
@@ -178,14 +175,6 @@ public class TGResources {
 		return this.colorRed;
 	}
 	
-	public TGColor getCaretColor1() {
-		return this.caretColor1;
-	}
-	
-	public TGColor getCaretColor2() {
-		return this.caretColor2;
-	}
-	
 	public TGColor getLoopSMarkerColor() {
 		return this.loopSMarkerColor;
 	}
@@ -258,8 +247,6 @@ public class TGResources {
 		this.scoreNoteColor = getColor(style.getScoreNoteColor());
 		this.tabNoteColor = getColor(style.getTabNoteColor());
 		this.playNoteColor = getColor(style.getPlayNoteColor());
-		this.caretColor1 = getColor(style.getCaretColor1());
-		this.caretColor2 = getColor(style.getCaretColor2());
 		this.loopSMarkerColor = getColor(style.getLoopSMarkerColor());
 		this.loopEMarkerColor = getColor(style.getLoopEMarkerColor());
 		// Static colors

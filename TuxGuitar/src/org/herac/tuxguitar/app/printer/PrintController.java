@@ -104,8 +104,6 @@ public class PrintController implements TGController {
 		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
 		styles.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
 		styles.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
-		styles.setCaretColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
-		styles.setCaretColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
 		styles.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		styles.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
 		

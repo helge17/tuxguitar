@@ -27,13 +27,11 @@ public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
 	}
 	
 	public void showTablature(Composite parent) {
-		this.tablature = new Tablature(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED);
+		this.tablature = new Tablature(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED, TuxGuitar.instance().getSongManager());
 		this.tablature.initGUI();
-		this.tablature.setSongManager(TuxGuitar.instance().getSongManager());
 		this.tablature.reloadViewLayout();
-		this.tablature.initDefaults();
 		this.tablature.updateTablature();
-		this.tablature.initCaret();
+		this.tablature.resetCaret();
 		this.tablature.setFocus();
 		this.initListener();
 		this.initKeyActions();
@@ -81,7 +79,7 @@ public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
 		}else if( type == TGUpdateListener.SONG_LOADED ){
 			getTablature().updateTablature();
 			getTablature().resetScroll();
-			getTablature().initCaret();
+			getTablature().resetCaret();
 		}
 	}
 }

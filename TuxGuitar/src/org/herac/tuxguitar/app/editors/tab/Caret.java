@@ -11,12 +11,15 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.graphics.TGColor;
+import org.herac.tuxguitar.graphics.TGColorModel;
 import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGResource;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
-import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.song.managers.TGMeasureManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -44,6 +47,9 @@ public class Caret {
 	private int velocity;
 	private boolean restBeat;
 	private boolean changes;
+	
+	private TGColor color1;
+	private TGColor color2;
 	
 	public Caret(Tablature tablature) {
 		this.tablature = tablature;
@@ -143,7 +149,8 @@ public class Caret {
 					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
 					int width = 14;
 					int height = 14;
-					layout.setCaretStyle(painter, expectedVoice);
+					this.setPaintStyle(painter, expectedVoice);
+					
 					painter.initPath();
 					painter.setAntialias(false);
 					painter.addRectangle(x, y, width, height);
@@ -157,7 +164,8 @@ public class Caret {
 					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
-					layout.setCaretStyle(painter, true);
+					this.setPaintStyle(painter, true);
+					
 					painter.initPath();
 					painter.moveTo(x1, y1);
 					painter.lineTo(x1 + ((x2 - x1) / 2f), y1 + (line / 2f));
@@ -168,6 +176,13 @@ public class Caret {
 					painter.closePath();
 				}
 			}
+		}
+	}
+	
+	public void setPaintStyle(TGPainter painter, boolean expectedVoice){
+		TGColor foreground = ( expectedVoice ? this.color1 : this.color2 );
+		if( foreground != null ){
+			painter.setForeground( foreground );
 		}
 	}
 	
@@ -351,5 +366,26 @@ public class Caret {
 	
 	public boolean isRestBeatSelected(){
 		return this.restBeat;
+	}
+	
+	public void setColor1(TGColorModel cm){
+		this.disposeResource( this.color1 );
+		this.color1 = this.tablature.getResourceFactory().createColor(cm);
+	}
+	
+	public void setColor2(TGColorModel cm){
+		this.disposeResource( this.color2 );
+		this.color2 = this.tablature.getResourceFactory().createColor(cm);
+	}
+	
+	public void disposeResource(TGResource resource){
+		if( resource != null && !resource.isDisposed() ){
+			resource.dispose();
+		}
+	}
+	
+	public void dispose(){
+		this.disposeResource( this.color1 );
+		this.disposeResource( this.color2 );
 	}
 }

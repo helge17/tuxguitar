@@ -45,8 +45,6 @@ public class TGLayoutStyles {
 	private TGColorModel scoreNoteColor;
 	private TGColorModel tabNoteColor;
 	private TGColorModel playNoteColor;
-	private TGColorModel caretColor1;
-	private TGColorModel caretColor2;
 	private TGColorModel loopSMarkerColor;
 	private TGColorModel loopEMarkerColor;
 	
@@ -368,22 +366,6 @@ public class TGLayoutStyles {
 	
 	public void setPlayNoteColor(TGColorModel playNoteColor) {
 		this.playNoteColor = playNoteColor;
-	}
-	
-	public TGColorModel getCaretColor1() {
-		return this.caretColor1;
-	}
-	
-	public void setCaretColor1(TGColorModel caretColor1) {
-		this.caretColor1 = caretColor1;
-	}
-	
-	public TGColorModel getCaretColor2() {
-		return this.caretColor2;
-	}
-	
-	public void setCaretColor2(TGColorModel caretColor2) {
-		this.caretColor2 = caretColor2;
 	}
 	
 	public TGColorModel getLoopSMarkerColor() {
