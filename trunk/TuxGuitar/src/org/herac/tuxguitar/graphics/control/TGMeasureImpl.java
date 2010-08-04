@@ -1084,7 +1084,6 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Retorna true si se esta reproduciendo y la posicion del player esta en este compas.
 	 */
 	public boolean isPlaying(TGLayout layout){
-		//return (getTrackImpl().hasCaret(layout) && TuxGuitar.instance().getEditorCache().isPlaying(this));
 		return layout.getComponent().isRunning(this);
 	}
 	

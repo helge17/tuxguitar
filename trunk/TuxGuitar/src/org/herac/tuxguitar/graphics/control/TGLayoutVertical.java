@@ -42,7 +42,6 @@ public class TGLayoutVertical extends TGLayout{
 		this.clearTrackPositions();
 		
 		int style = getStyle();
-		//int number = ((style & ViewLayout.DISPLAY_MULTITRACK) == 0?getTablature().getCaret().getTrack().getNumber():-1);
 		int number = getComponent().getTrackSelection();
 		int posY = fromY + getFirstTrackSpacing();
 		int height = getFirstTrackSpacing();

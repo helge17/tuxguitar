@@ -68,12 +68,10 @@ public class Tablature extends Composite implements TGController {
 	
 	private int pageLayoutForceWidth;
 	
-	public Tablature(final Composite parent) {
-		this(parent,SWT.NONE);
-	}
-	
-	public Tablature(final Composite parent,int style) {
+	public Tablature(Composite parent,int style, TGSongManager songManager ) {
 		super(parent, style);
+		this.songManager = songManager;
+		this.caret = new Caret(this);
 		this.editorKit = new EditorKit(this);
 	}
 	
@@ -110,7 +108,7 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void initDefaults(){
-		this.caret = new Caret(this);
+	//	this.caret = new Caret(this);
 	}
 	
 	public void updateTablature(){
@@ -127,7 +125,7 @@ public class Tablature extends Composite implements TGController {
 		getCaret().update();
 	}
 	
-	public void initCaret(){
+	public void resetCaret(){
 		this.caret.update(1,TGDuration.QUARTER_TIME,1);
 	}
 	
@@ -307,11 +305,11 @@ public class Tablature extends Composite implements TGController {
 	public TGSongManager getSongManager() {
 		return this.songManager;
 	}
-	
+	/*
 	public void setSongManager(TGSongManager songManager) {
 		this.songManager = songManager;
 	}
-	
+	*/
 	public TGLayout getViewLayout(){
 		return this.viewLayout;
 	}
@@ -391,6 +389,7 @@ public class Tablature extends Composite implements TGController {
 	
 	public void dispose(){
 		super.dispose();
+		this.getCaret().dispose();
 		this.getViewLayout().disposeLayout();
 	}
 	
@@ -470,9 +469,10 @@ public class Tablature extends Composite implements TGController {
 		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
 		styles.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
 		styles.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
-		styles.setCaretColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
-		styles.setCaretColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
 		styles.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		styles.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
+		
+		getCaret().setColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
+		getCaret().setColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
 	}
 }

@@ -414,10 +414,6 @@ public abstract class TGLayout {
 		painter.setForeground(getResources().getLineColor());
 	}
 	
-	public void setCaretStyle(TGPainter painter, boolean expectedVoice){
-		painter.setForeground( expectedVoice ? getResources().getCaretColor1() : getResources().getCaretColor2() );
-	}
-	
 	public void setScoreSilenceStyle(TGPainter painter,boolean playMode){
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getResources().getScoreNoteColor() ));
 		painter.setBackground( (playMode ? getResources().getPlayNoteColor() : getResources().getScoreNoteColor() ));
