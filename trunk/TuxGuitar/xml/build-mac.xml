@@ -176,7 +176,7 @@
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni${line.separator}</echo>
 		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib${line.separator}</echo>
 		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
-		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
+		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.app.TGMain${line.separator}</echo>
 		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
 		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
 		<echo file="${file.script}" append="true">##SWT ARGUMENTS${line.separator}</echo>

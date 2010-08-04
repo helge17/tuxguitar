@@ -46,7 +46,7 @@ OBJECTS?=\
  $(DEPENDENCIES:%.jar=%.o)\
 
 # runtime
-MAINCLASS?=org.herac.tuxguitar.gui.TGMain
+MAINCLASS?=org.herac.tuxguitar.app.TGMain
 PROPERTIES?=\
  -Djava.library.path=$(TG_LIBRARY_PATH_JNI) \
  -Djava.class.path=$(TG_SHARE_PATH) \
