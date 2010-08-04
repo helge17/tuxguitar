@@ -125,7 +125,7 @@
 		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
 		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${path.itext}:${dist.share.path}${line.separator}</echo>
 		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
-		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.gui.TGMain${line.separator}</echo>
+		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.app.TGMain${line.separator}</echo>
 		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
 		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
 		<echo file="${file.script}" append="true">##EXPORT VARS${line.separator}</echo>
