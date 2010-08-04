@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gui.tools.browser.ftp;
+package org.herac.tuxguitar.app.tools.browser.ftp;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,14 +16,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.tools.browser.TGBrowserCollection;
-import org.herac.tuxguitar.gui.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.gui.util.DialogUtils;
-import org.herac.tuxguitar.gui.util.MessageDialog;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.util.MessageDialog;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	

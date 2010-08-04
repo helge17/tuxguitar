@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gui.tools.browser.ftp.utils;
+package org.herac.tuxguitar.app.tools.browser.ftp.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

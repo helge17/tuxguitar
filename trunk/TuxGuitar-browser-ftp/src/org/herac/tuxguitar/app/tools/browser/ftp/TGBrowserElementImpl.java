@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.gui.tools.browser.ftp;
+package org.herac.tuxguitar.app.tools.browser.ftp;
 
 import java.io.InputStream;
 
-import org.herac.tuxguitar.gui.tools.browser.TGBrowserException;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserElementImpl extends TGBrowserElement{
 	
