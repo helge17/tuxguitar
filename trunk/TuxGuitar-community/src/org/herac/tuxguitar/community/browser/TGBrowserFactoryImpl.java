@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.community.browser;
 
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserData;
-import org.herac.tuxguitar.gui.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory {
 	

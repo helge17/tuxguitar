@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.community;
 
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.community.auth.TGCommunityAuth;
-import org.herac.tuxguitar.gui.system.config.TGConfigManager;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginConfigManager;
 
 public class TGCommunitySingleton {
 	

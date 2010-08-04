@@ -2,9 +2,9 @@ package org.herac.tuxguitar.community.auth;
 
 import java.security.MessageDigest;
 
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.community.auth.utils.Base64Decoder;
 import org.herac.tuxguitar.community.auth.utils.Base64Encoder;
-import org.herac.tuxguitar.gui.system.config.TGConfigManager;
 
 public class TGCommunityAuth {
 	
