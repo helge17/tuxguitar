@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.managers.TGTrackManager;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;

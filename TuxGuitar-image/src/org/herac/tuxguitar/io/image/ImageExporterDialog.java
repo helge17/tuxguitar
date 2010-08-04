@@ -13,11 +13,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.tab.layout.ViewLayout;
-import org.herac.tuxguitar.gui.helper.SyncThread;
-import org.herac.tuxguitar.gui.printer.PrintStyles;
-import org.herac.tuxguitar.gui.util.DialogUtils;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.helper.SyncThread;
+import org.herac.tuxguitar.app.printer.PrintStyles;
+import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class ImageExporterDialog extends ImageExporter {
@@ -194,10 +194,10 @@ public class ImageExporterDialog extends ImageExporter {
 				}
 				
 				int style = 0;
-				style |= (scoreEnabled.getSelection() ? ViewLayout.DISPLAY_SCORE : 0);
-				style |= (tablatureEnabled.getSelection() ? ViewLayout.DISPLAY_TABLATURE : 0);
-				style |= (chordNameEnabled.getSelection() ? ViewLayout.DISPLAY_CHORD_NAME : 0);
-				style |= (chordDiagramEnabled.getSelection() ? ViewLayout.DISPLAY_CHORD_DIAGRAM : 0);
+				style |= (scoreEnabled.getSelection() ? TGLayout.DISPLAY_SCORE : 0);
+				style |= (tablatureEnabled.getSelection() ? TGLayout.DISPLAY_TABLATURE : 0);
+				style |= (chordNameEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_NAME : 0);
+				style |= (chordDiagramEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
 				styles.setTrackNumber(tracks.getSelectionIndex() + 1);
 				styles.setFromMeasure(fromSpinner.getSelection());
 				styles.setToMeasure(toSpinner.getSelection());

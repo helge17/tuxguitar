@@ -8,16 +8,16 @@ import java.util.TreeSet;
 import javax.sound.midi.ShortMessage;
 import javax.swing.Timer;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.actions.ActionLock;
-import org.herac.tuxguitar.gui.editors.fretboard.FretBoard;
-import org.herac.tuxguitar.gui.editors.TablatureEditor;
-import org.herac.tuxguitar.gui.editors.tab.TGMeasureImpl;
-import org.herac.tuxguitar.gui.editors.tab.TGTrackImpl;
-import org.herac.tuxguitar.gui.editors.tab.Caret;
-import org.herac.tuxguitar.gui.tools.scale.ScaleManager;
-import org.herac.tuxguitar.gui.undo.undoables.measure.UndoableMeasureGeneric;
-import org.herac.tuxguitar.gui.util.MessageDialog;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.editors.TablatureEditor;
+import org.herac.tuxguitar.app.editors.fretboard.FretBoard;
+import org.herac.tuxguitar.app.editors.tab.Caret;
+import org.herac.tuxguitar.app.tools.scale.ScaleManager;
+import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
+import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -378,7 +378,7 @@ static private	MiProvider	s_Instance;
 							
 						songMgr.getMeasureManager().addChord(beat, chord);
 						TuxGuitar.instance().getFileHistory().setUnsavedFile();
-						editor.getTablature().getViewLayout().fireUpdate(measure.getNumber());
+						editor.getTablature().updateMeasure(measure.getNumber());
 
 						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
 

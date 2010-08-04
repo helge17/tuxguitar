@@ -7,9 +7,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.system.icons.IconLoader;
-import org.herac.tuxguitar.gui.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.icons.IconLoader;
+import org.herac.tuxguitar.app.system.language.LanguageLoader;
 
 public class TGTray implements IconLoader,LanguageLoader{
 	

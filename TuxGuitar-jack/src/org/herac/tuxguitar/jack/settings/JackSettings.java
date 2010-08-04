@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.gui.system.config.TGConfigManager;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginConfigManager;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 
 public class JackSettings {
 	

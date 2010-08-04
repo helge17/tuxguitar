@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.tef;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGImporterPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGImporterPlugin;
 import org.herac.tuxguitar.io.base.TGRawImporter;
 
 public class TEPluginImporter extends TGImporterPlugin{

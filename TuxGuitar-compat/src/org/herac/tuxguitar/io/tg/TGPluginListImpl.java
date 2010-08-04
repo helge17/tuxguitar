@@ -3,9 +3,9 @@ package org.herac.tuxguitar.io.tg;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGExporterPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGInputStreamPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
+import org.herac.tuxguitar.app.system.plugins.base.TGExporterPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGInputStreamPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 

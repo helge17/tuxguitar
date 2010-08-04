@@ -55,5 +55,5 @@
 		<nativelib href="files/macosx-x86_64/tuxguitar-audiounit-jni.jar" />
 	</resources>
 	
-	<application-desc main-class="org.herac.tuxguitar.gui.TGMain" />
+	<application-desc main-class="org.herac.tuxguitar.app.TGMain" />
 </jnlp>

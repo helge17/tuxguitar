@@ -12,7 +12,7 @@
 	<property name="build.dir" value="build" />
 	<property name="build.jar" value="./jws/files/tuxguitar-jws.jar" />
 	
-	<property name="plugin.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
+	<property name="plugin.class" value="org.herac.tuxguitar.app.system.plugins.TGPlugin" />
 	
 	<path id="class.path">
 		<pathelement location="${build.dir}"/>

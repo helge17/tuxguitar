@@ -3,7 +3,7 @@ package org.herac.tuxguitar.midiinput;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.herac.tuxguitar.gui.util.MessageDialog;
+import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGBeat;
 
 
@@ -92,13 +92,13 @@ class MiStaffEvent
 	{
 	try	{
 		if(f_Beat != null)
-			throw new Exception("f_Beat non è nullo!");
+			throw new Exception("f_Beat non ï¿½ nullo!");
 
 		if(f_BeginTime != inEvent.f_BeginTime)
-			throw new Exception("f_BeginTime è diverso, old: " + f_BeginTime + " new: " + inEvent.f_BeginTime);
+			throw new Exception("f_BeginTime ï¿½ diverso, old: " + f_BeginTime + " new: " + inEvent.f_BeginTime);
 /*
 		if(f_EndTime != inEvent.f_EndTime)
-			throw new Exception("f_EndTime è diverso, old: " + f_EndTime + " new: " + inEvent.f_EndTime);
+			throw new Exception("f_EndTime ï¿½ diverso, old: " + f_EndTime + " new: " + inEvent.f_EndTime);
 */
 		f_Type |= inEvent.f_Type;
 		f_Notes.addAll(inEvent.f_Notes);

@@ -3,10 +3,10 @@ package org.herac.tuxguitar.tray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.actions.file.ExitAction;
-import org.herac.tuxguitar.gui.actions.transport.TransportPlayAction;
-import org.herac.tuxguitar.gui.actions.transport.TransportStopAction;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.file.ExitAction;
+import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.app.actions.transport.TransportStopAction;
 
 public class TGTrayMenu {
 	
