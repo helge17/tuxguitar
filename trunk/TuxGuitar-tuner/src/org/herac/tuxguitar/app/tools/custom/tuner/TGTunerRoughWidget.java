@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gui.tools.custom.tuner;
+package org.herac.tuxguitar.app.tools.custom.tuner;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -7,7 +7,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
-import org.herac.tuxguitar.gui.editors.TGPainter;
+import org.herac.tuxguitar.app.editors.TGColorImpl;
+import org.herac.tuxguitar.app.editors.TGPainterImpl;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
@@ -43,7 +44,7 @@ public class TGTunerRoughWidget extends Composite {
 		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		this.composite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
 				TGTunerRoughWidget.this.paintWidget(painter);
 			}
 
@@ -56,12 +57,12 @@ public class TGTunerRoughWidget extends Composite {
 	}
 	
 	
-	private void paintWidget(TGPainter painter) {
+	private void paintWidget(TGPainterImpl painter) {
 		
 		Point compositeSize = this.composite.getSize();
 		
 		// lines and tones
-		painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		painter.initPath();
 		painter.moveTo(this.startA, compositeSize.y/2);
 		painter.lineTo(compositeSize.x-this.endAb, compositeSize.y/2);
@@ -79,7 +80,7 @@ public class TGTunerRoughWidget extends Composite {
 		
 		// marker
 		if (this.currentFrequency>0) {
-			painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
+			painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLUE)));
 			painter.initPath();
 			int markerPos = this.markerWidth/2 + this.startA+(int)Math.round(((compositeSize.x-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
 			painter.moveTo(markerPos, compositeSize.y/2-this.markerHeight/2);

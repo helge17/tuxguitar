@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.herac.tuxguitar.gui.tools.custom.tuner;
+package org.herac.tuxguitar.app.tools.custom.tuner;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

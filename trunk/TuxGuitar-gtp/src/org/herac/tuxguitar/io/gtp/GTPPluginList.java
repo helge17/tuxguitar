@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.gui.system.plugins.base.TGInputStreamPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGOutputStreamPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
+import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.app.system.plugins.base.TGInputStreamPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGOutputStreamPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 

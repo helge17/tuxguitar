@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiSequencerProviderPlugin;
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.base.TGMidiSequencerProviderPlugin;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 

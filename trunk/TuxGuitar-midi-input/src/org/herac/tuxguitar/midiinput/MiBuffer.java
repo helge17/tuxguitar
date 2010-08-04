@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;

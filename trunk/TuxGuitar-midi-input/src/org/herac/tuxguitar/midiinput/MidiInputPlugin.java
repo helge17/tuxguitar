@@ -2,11 +2,11 @@ package org.herac.tuxguitar.midiinput;
 
 import org.eclipse.swt.widgets.Shell;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.util.MessageDialog;
-import org.herac.tuxguitar.gui.system.plugins.base.TGToolItemPlugin;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.app.system.plugins.base.TGToolItemPlugin;
+import org.herac.tuxguitar.app.util.MessageDialog;
 
 public class MidiInputPlugin
 	extends TGToolItemPlugin

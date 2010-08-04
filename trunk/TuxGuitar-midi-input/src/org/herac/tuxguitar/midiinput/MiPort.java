@@ -6,7 +6,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MiPort

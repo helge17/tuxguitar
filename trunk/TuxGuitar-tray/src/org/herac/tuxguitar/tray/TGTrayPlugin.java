@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.tray;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
 
 public class TGTrayPlugin extends TGPluginAdapter {
 	

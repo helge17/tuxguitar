@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.TreeSet;
 //import java.util.Arrays;	// just for debugging
 
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.tools.scale.ScaleManager;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 class MiScaleFinder

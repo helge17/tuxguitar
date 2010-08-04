@@ -133,7 +133,7 @@ tuxguitar_()
 {
     local PACKAGE=${PACKAGE:=tuxguitar}
     local PACKAGE_HOME=${PACKAGE_HOME:=/usr/share/${PACKAGE}/}
-    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.gui.TGMain}
+    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.app.TGMain}
     local PACKAGE_LIB=${PACKAGE_LIB:=/usr/lib/jni}
 # java env
     JAVA=${JAVA:=java}

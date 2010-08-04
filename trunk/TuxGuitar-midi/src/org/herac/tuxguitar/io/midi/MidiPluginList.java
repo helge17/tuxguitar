@@ -3,7 +3,7 @@ package org.herac.tuxguitar.io.midi;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 
 public class MidiPluginList extends TGPluginList{
 	

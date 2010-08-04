@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gui.tools.custom.tuner;
+package org.herac.tuxguitar.app.tools.custom.tuner;
 
 
 import org.eclipse.swt.SWT;
@@ -14,9 +14,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.util.DialogUtils;
-import org.herac.tuxguitar.gui.util.MessageDialog;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.util.MessageDialog;
 
 
 /**

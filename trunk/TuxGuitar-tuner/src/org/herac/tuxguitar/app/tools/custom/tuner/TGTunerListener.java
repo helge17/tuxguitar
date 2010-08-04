@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gui.tools.custom.tuner;
+package org.herac.tuxguitar.app.tools.custom.tuner;
 
 public interface TGTunerListener {
 

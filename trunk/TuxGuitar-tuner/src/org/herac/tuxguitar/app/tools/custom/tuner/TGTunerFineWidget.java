@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.herac.tuxguitar.gui.tools.custom.tuner;
+package org.herac.tuxguitar.app.tools.custom.tuner;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -11,9 +11,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGPainter;
-import org.herac.tuxguitar.gui.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.editors.TGColorImpl;
+import org.herac.tuxguitar.app.editors.TGFontImpl;
+import org.herac.tuxguitar.app.editors.TGPainterImpl;
+import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
@@ -47,7 +49,7 @@ public class TGTunerFineWidget extends Composite {
 		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		this.composite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				TGPainter painter = new TGPainter(e.gc);
+				TGPainterImpl painter = new TGPainterImpl(e.gc);
 				TGTunerFineWidget.this.paintWidget(painter);
 			}
 		});
@@ -67,12 +69,12 @@ public class TGTunerFineWidget extends Composite {
 	}
 	
 	
-	public void paintWidget(TGPainter painter) {
+	public void paintWidget(TGPainterImpl painter) {
 		Point compositeSize = this.composite.getSize();
 		
 		// margins & stuff
 		
-		painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLACK)));
 		painter.initPath();
 		painter.setLineWidth(2);
 		float height = compositeSize.y-this.bottomY-25;
@@ -87,14 +89,14 @@ public class TGTunerFineWidget extends Composite {
 		
 		if (this.isEnabled()) {
 			// tone name
-			painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
-			painter.setFont(this.letterFont);
+			painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLUE)));
+			painter.setFont(new TGFontImpl(this.letterFont));
 			painter.drawString(this.currentNoteString, compositeSize.x*12/15, 10);
 
 			// pointer
 			if (this.currentFrequency!=-1) {
 				painter.setLineWidth(3);
-				painter.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+				painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_RED)));
 				painter.initPath();
 				painter.moveTo(compositeSize.x/2, compositeSize.y-this.bottomY);
 				painter.lineTo((float)(compositeSize.x/2 + height*Math.cos(this.getAngleRad())),(float)( compositeSize.y-this.bottomY-height*Math.sin(this.getAngleRad())));

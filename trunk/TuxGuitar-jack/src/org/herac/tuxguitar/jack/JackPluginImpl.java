@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.jack.sequencer.JackSequencerProviderPlugin;
 import org.herac.tuxguitar.jack.settings.JackSettings;
 import org.herac.tuxguitar.jack.settings.JackSettingsDialog;

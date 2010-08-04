@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiOutputPortProviderPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGMidiSequencerProviderPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
+import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.app.system.plugins.base.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGMidiSequencerProviderPlugin;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl;

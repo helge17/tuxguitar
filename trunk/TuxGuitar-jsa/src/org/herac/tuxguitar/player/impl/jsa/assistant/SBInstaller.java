@@ -9,8 +9,8 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;

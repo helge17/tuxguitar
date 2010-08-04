@@ -17,10 +17,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.util.DialogUtils;
-import org.herac.tuxguitar.gui.util.MessageDialog;
-import org.herac.tuxguitar.gui.util.TGFileUtils;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
