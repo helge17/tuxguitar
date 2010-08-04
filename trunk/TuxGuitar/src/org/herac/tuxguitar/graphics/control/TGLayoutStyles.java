@@ -33,13 +33,6 @@ public class TGLayoutStyles {
 	private TGFontModel graceFont;
 	private TGFontModel chordFont;
 	private TGFontModel chordFretFont;
-	private TGFontModel printerDefaultFont;
-	private TGFontModel printerNoteFont;
-	private TGFontModel printerTimeSignatureFont;
-	private TGFontModel printerLyricFont;
-	private TGFontModel printerTextFont;
-	private TGFontModel printerGraceFont;
-	private TGFontModel printerChordFont;
 	private TGColorModel backgroundColor;
 	private TGColorModel lineColor;
 	private TGColorModel scoreNoteColor;
@@ -270,62 +263,6 @@ public class TGLayoutStyles {
 	
 	public void setChordFretFont(TGFontModel chordFretFont) {
 		this.chordFretFont = chordFretFont;
-	}
-	
-	public TGFontModel getPrinterDefaultFont() {
-		return this.printerDefaultFont;
-	}
-	
-	public void setPrinterDefaultFont(TGFontModel printerDefaultFont) {
-		this.printerDefaultFont = printerDefaultFont;
-	}
-	
-	public TGFontModel getPrinterNoteFont() {
-		return this.printerNoteFont;
-	}
-	
-	public void setPrinterNoteFont(TGFontModel printerNoteFont) {
-		this.printerNoteFont = printerNoteFont;
-	}
-	
-	public TGFontModel getPrinterTimeSignatureFont() {
-		return this.printerTimeSignatureFont;
-	}
-	
-	public void setPrinterTimeSignatureFont(TGFontModel printerTimeSignatureFont) {
-		this.printerTimeSignatureFont = printerTimeSignatureFont;
-	}
-	
-	public TGFontModel getPrinterLyricFont() {
-		return this.printerLyricFont;
-	}
-	
-	public void setPrinterLyricFont(TGFontModel printerLyricFont) {
-		this.printerLyricFont = printerLyricFont;
-	}
-	
-	public TGFontModel getPrinterTextFont() {
-		return this.printerTextFont;
-	}
-	
-	public void setPrinterTextFont(TGFontModel printerTextFont) {
-		this.printerTextFont = printerTextFont;
-	}
-	
-	public TGFontModel getPrinterGraceFont() {
-		return this.printerGraceFont;
-	}
-	
-	public void setPrinterGraceFont(TGFontModel printerGraceFont) {
-		this.printerGraceFont = printerGraceFont;
-	}
-	
-	public TGFontModel getPrinterChordFont() {
-		return this.printerChordFont;
-	}
-	
-	public void setPrinterChordFont(TGFontModel printerChordFont) {
-		this.printerChordFont = printerChordFont;
 	}
 	
 	public TGColorModel getBackgroundColor() {

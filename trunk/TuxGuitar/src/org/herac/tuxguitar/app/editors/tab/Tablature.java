@@ -457,13 +457,6 @@ public class Tablature extends Composite implements TGController {
 		styles.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_GRACE));
 		styles.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD));
 		styles.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
-		styles.setPrinterDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
-		styles.setPrinterNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
-		styles.setPrinterTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
-		styles.setPrinterLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));
-		styles.setPrinterTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT));
-		styles.setPrinterGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_GRACE));
-		styles.setPrinterChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_CHORD));
 		styles.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
 		styles.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));

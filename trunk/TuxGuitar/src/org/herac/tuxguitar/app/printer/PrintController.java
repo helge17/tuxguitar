@@ -83,22 +83,15 @@ public class PrintController implements TGController {
 		styles.setDivisionTypeSpacing(10);
 		styles.setEffectSpacing(8);
 		
-		styles.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT));
-		styles.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_NOTE));
-		styles.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE));
-		styles.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_LYRIC));
-		styles.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TEXT));
-		styles.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
-		styles.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_GRACE));
-		styles.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD));
+		styles.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
+		styles.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
+		styles.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
+		styles.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));
+		styles.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT));
+		styles.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_GRACE));
+		styles.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_CHORD));
 		styles.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
-		styles.setPrinterDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
-		styles.setPrinterNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
-		styles.setPrinterTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
-		styles.setPrinterLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));
-		styles.setPrinterTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT));
-		styles.setPrinterGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_GRACE));
-		styles.setPrinterChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_CHORD));
+		styles.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
 		styles.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
 		styles.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
@@ -106,6 +99,5 @@ public class PrintController implements TGController {
 		styles.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
 		styles.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		styles.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
-		
 	}
 }

@@ -260,32 +260,29 @@ public class PrintLayout extends TGLayout{
 	
 	public void setLineStyle(TGPainter painter){
 		painter.setLineWidth(1);
-		//painter.setForeground(getResources().getColorBlack());
 		painter.setForeground( getDarkColor( getResources().getLineColor() ) );
 	}
 	
 	public void setMeasureNumberStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterDefaultFont());
-		//painter.setBackground(getResources().getColorWhite());
-		//painter.setForeground(getResources().getColorBlack());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground(getResources().getColorWhite());
 		painter.setForeground(getDarkColor(getResources().getColorRed()));
 	}
 	
 	public void setDivisionsStyle(TGPainter painter, boolean fill){
-		painter.setFont(getResources().getPrinterDefaultFont());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground( (fill ? getResources().getColorBlack() :getResources().getColorWhite() ));
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
 	public void setTempoStyle(TGPainter painter, boolean fontStyle){
-		painter.setFont(getResources().getPrinterDefaultFont());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
 	}
 	
 	public void setTripletFeelStyle(TGPainter painter, boolean fontStyle){
-		painter.setFont(getResources().getPrinterDefaultFont());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
 	}
@@ -293,7 +290,7 @@ public class PrintLayout extends TGLayout{
 	public void setTabNoteStyle(TGPainter painter,boolean playMode){
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
-		painter.setFont(getResources().getPrinterNoteFont());
+		painter.setFont(getResources().getNoteFont());
 	}
 	
 	public void setTabNoteFooterStyle(TGPainter painter){
@@ -322,19 +319,19 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	public void setTimeSignatureStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterTimeSignatureFont());
+		painter.setFont(getResources().getTimeSignatureFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setTabGraceStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterGraceFont());
+		painter.setFont(getResources().getGraceFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
 	}
 	
 	public void setLyricStyle(TGPainter painter,boolean playMode){
-		painter.setFont(getResources().getPrinterLyricFont());
+		painter.setFont(getResources().getLyricFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground(getResources().getColorBlack());
 	}
@@ -346,32 +343,32 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	public void setTextStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterTextFont());
+		painter.setFont(getResources().getTextFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setOfflineEffectStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterDefaultFont());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setDivisionTypeStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterDefaultFont());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setRepeatEndingStyle(TGPainter painter){
-		painter.setFont(getResources().getPrinterDefaultFont());
+		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground( getResources().getColorWhite() );
 		painter.setForeground( getResources().getColorBlack() );
 	}
 	
 	public void setChordStyle(TGChordImpl chord){
 		chord.setStyle(getStyle());
-		chord.setFont(getResources().getPrinterChordFont());
+		chord.setFont(getResources().getChordFont());
 		chord.setForegroundColor(getResources().getColorBlack());
 		chord.setBackgroundColor(getResources().getColorWhite());
 		chord.setColor(getDarkColor(getResources().getLineColor()));
@@ -403,11 +400,7 @@ public class PrintLayout extends TGLayout{
 	public boolean isLastMeasure(TGMeasureHeader mh){
 		return (mh.getNumber() == this.styles.getToMeasure());
 	}
-	/*
-	public boolean hasLoopMarker(TGMeasureHeader mh){
-		return false;
-	}
-	*/
+	
 	/*
 	private int getScaledValue(float scale, int value){
 		return getScaledValue(scale, value,1);
@@ -420,21 +413,21 @@ public class PrintLayout extends TGLayout{
 	*/
 	public TGFont getSongNameFont( TGResourceFactory factory ){
 		if( factory != null && ( this.songNameFont == null || this.songNameFont.isDisposed() ) ){
-			this.songNameFont = factory.createFont(this.getResources().getPrinterDefaultFont().getName(),Math.round(16.0f * getFontScale()), true, false);
+			this.songNameFont = factory.createFont(this.getResources().getDefaultFont().getName(),Math.round(16.0f * getFontScale()), true, false);
 		}
 		return this.songNameFont;
 	}
 	
 	public TGFont getSongAuthorFont( TGResourceFactory factory ){
 		if( factory != null && ( this.songAuthorFont == null || this.songAuthorFont.isDisposed() ) ){
-			this.songAuthorFont = factory.createFont(this.getResources().getPrinterDefaultFont().getName(),Math.round(8.0f * getFontScale()), true, false);
+			this.songAuthorFont = factory.createFont(this.getResources().getDefaultFont().getName(),Math.round(8.0f * getFontScale()), true, false);
 		}
 		return this.songAuthorFont;
 	}
 	
 	public TGFont getTrackNameFont( TGResourceFactory factory ){
 		if( factory != null && ( this.trackNameFont == null || this.trackNameFont.isDisposed() ) ){
-			this.trackNameFont = factory.createFont(this.getResources().getPrinterDefaultFont().getName(),Math.round(8.0f * getFontScale()), true, false);
+			this.trackNameFont = factory.createFont(this.getResources().getDefaultFont().getName(),Math.round(8.0f * getFontScale()), true, false);
 		}
 		return this.trackNameFont;
 	}

@@ -98,16 +98,13 @@ public abstract class TGLayout {
 		this.setBufferEnabled( this.styles.isBufferEnabled() );
 		this.setStringSpacing( (int)(this.styles.getStringSpacing() * getScale() ) );
 		this.setScoreLineSpacing( (int)(this.styles.getScoreLineSpacing() * getScale() ) );
-		
 		this.setFirstMeasureSpacing( Math.round( this.styles.getFirstMeasureSpacing() * getScale() ) );
 		this.setMinBufferSeparator( Math.round( this.styles.getMinBufferSeparator() * getScale() ) );
 		this.setMinTopSpacing( Math.round( this.styles.getMinTopSpacing() * getScale() ) );
 		this.setMinScoreTabSpacing( Math.round( this.styles.getMinScoreTabSpacing() * getScale() ) );
-		
 		this.setScoreSpacing( (( getScoreLineSpacing() * 4) + getMinScoreTabSpacing() ) );
 		this.setFirstTrackSpacing( Math.round(this.styles.getFirstTrackSpacing() * getScale() ) );
 		this.setTrackSpacing( Math.round(this.styles.getTrackSpacing() * getScale() ) );
-		
 		this.setChordFretIndexSpacing( Math.round( this.styles.getChordFretIndexSpacing() * getScale() ) );
 		this.setChordStringSpacing( Math.round( this.styles.getChordStringSpacing() * getScale() ) );
 		this.setChordFretSpacing( Math.round( this.styles.getChordFretSpacing() * getScale() ) );

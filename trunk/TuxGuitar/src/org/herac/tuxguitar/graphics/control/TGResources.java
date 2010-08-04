@@ -36,13 +36,6 @@ public class TGResources {
 	private TGFont graceFont;
 	private TGFont chordFont;
 	private TGFont chordFretFont;
-	private TGFont printerDefaultFont;
-	private TGFont printerNoteFont;
-	private TGFont printerTimeSignatureFont;
-	private TGFont printerLyricFont;
-	private TGFont printerTextFont;
-	private TGFont printerGraceFont;
-	private TGFont printerChordFont;
 	private TGColor backgroundColor;
 	private TGColor lineColor;
 	private TGColor scoreNoteColor;
@@ -113,34 +106,6 @@ public class TGResources {
 	
 	public TGFont getGraceFont() {
 		return this.graceFont;
-	}
-	
-	public TGFont getPrinterDefaultFont() {
-		return this.printerDefaultFont;
-	}
-	
-	public TGFont getPrinterNoteFont() {
-		return this.printerNoteFont;
-	}
-	
-	public TGFont getPrinterTimeSignatureFont() {
-		return this.printerTimeSignatureFont;
-	}
-	
-	public TGFont getPrinterLyricFont() {
-		return this.printerLyricFont;
-	}
-	
-	public TGFont getPrinterTextFont() {
-		return this.printerTextFont;
-	}
-	
-	public TGFont getPrinterGraceFont() {
-		return this.printerGraceFont;
-	}
-	
-	public TGFont getPrinterChordFont() {
-		return this.printerChordFont;
 	}
 	
 	public TGColor getBackgroundColor() {
@@ -232,13 +197,6 @@ public class TGResources {
 		this.graceFont = getFont(style.getGraceFont(), scale);
 		this.chordFont = getFont(style.getChordFont(), scale);
 		this.chordFretFont = getFont(style.getChordFretFont(), scale);
-		this.printerDefaultFont = getFont(style.getPrinterDefaultFont(), scale);
-		this.printerNoteFont = getFont(style.getPrinterNoteFont(), scale);
-		this.printerTimeSignatureFont = getFont(style.getPrinterTimeSignatureFont(), scale);
-		this.printerLyricFont = getFont(style.getPrinterLyricFont(), scale);
-		this.printerTextFont =  getFont(style.getPrinterTextFont(), scale);
-		this.printerGraceFont = getFont(style.getPrinterGraceFont(), scale);
-		this.printerChordFont = getFont(style.getPrinterChordFont(), scale);
 	}
 	
 	private void initColors(TGLayoutStyles style){
