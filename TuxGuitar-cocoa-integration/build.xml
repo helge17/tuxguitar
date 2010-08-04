@@ -10,7 +10,7 @@
 	<property name="build.path" value="build" />
 	<property name="build.jar" value="tuxguitar-cocoa-integration.jar" />
 	
-	<property name="service.class" value="org.herac.tuxguitar.gui.system.plugins.TGPlugin" />
+	<property name="service.class" value="org.herac.tuxguitar.app.system.plugins.TGPlugin" />
 	<property name="service.provider" value="org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin" />
 	
 	<path id="class.path">

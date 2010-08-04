@@ -4,11 +4,11 @@ import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.file.ExitAction;
+import org.herac.tuxguitar.app.actions.help.ShowAboutAction;
+import org.herac.tuxguitar.app.actions.settings.EditConfigAction;
 import org.herac.tuxguitar.cocoa.TGCocoa;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.actions.file.ExitAction;
-import org.herac.tuxguitar.gui.actions.help.ShowAboutAction;
-import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
 
 public class MacMenu {
 	

@@ -5,10 +5,10 @@ import org.eclipse.swt.internal.carbon.HICommand;
 import org.eclipse.swt.internal.carbon.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.actions.file.ExitAction;
-import org.herac.tuxguitar.gui.actions.help.ShowAboutAction;
-import org.herac.tuxguitar.gui.actions.settings.EditConfigAction;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.file.ExitAction;
+import org.herac.tuxguitar.app.actions.help.ShowAboutAction;
+import org.herac.tuxguitar.app.actions.settings.EditConfigAction;
 
 public class MacMenu {
 	

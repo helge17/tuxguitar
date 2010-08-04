@@ -3,12 +3,12 @@ package org.herac.tuxguitar.cocoa;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.cocoa.menu.MacMenuPlugin;
 import org.herac.tuxguitar.cocoa.opendoc.OpenDocPlugin;
 import org.herac.tuxguitar.cocoa.toolbar.MacToolbarPlugin;
 import org.herac.tuxguitar.cocoa.modifiedmarker.ModifiedMarkerPlugin;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 
 public class TGCocoaIntegrationPlugin extends TGPluginList {
 	

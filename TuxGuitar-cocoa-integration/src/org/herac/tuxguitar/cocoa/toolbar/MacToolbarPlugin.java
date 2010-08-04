@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.cocoa.toolbar;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
 
 public class MacToolbarPlugin extends TGPluginAdapter {
 	

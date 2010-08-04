@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.cocoa.toolbar;
 
-import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MacToolbarAction {

@@ -2,8 +2,8 @@ package org.herac.tuxguitar.cocoa.modifiedmarker;
 
 import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.editors.TGUpdateListener;
 
 public class ModifiedMarker implements TGUpdateListener {
 	

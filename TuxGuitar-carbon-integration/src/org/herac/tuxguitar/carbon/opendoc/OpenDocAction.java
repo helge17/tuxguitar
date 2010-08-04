@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.carbon.opendoc;
 
 import org.eclipse.swt.SWT;
-import org.herac.tuxguitar.gui.TuxGuitar;
-import org.herac.tuxguitar.gui.actions.ActionLock;
-import org.herac.tuxguitar.gui.actions.file.FileActionUtils;
-import org.herac.tuxguitar.gui.helper.SyncThread;
-import org.herac.tuxguitar.gui.util.ConfirmDialog;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.file.FileActionUtils;
+import org.herac.tuxguitar.app.helper.SyncThread;
+import org.herac.tuxguitar.app.util.ConfirmDialog;
 
 public class OpenDocAction {
 
