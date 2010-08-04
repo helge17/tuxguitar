@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.carbon.opendoc;
 
+import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
 import org.herac.tuxguitar.carbon.opendoc.OpenDocListener;
-import org.herac.tuxguitar.gui.system.plugins.TGPluginException;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginAdapter;
 
 public class OpenDocPlugin extends TGPluginAdapter {
 	

@@ -3,9 +3,9 @@ package org.herac.tuxguitar.carbon;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.carbon.menu.MacMenuPlugin;
 import org.herac.tuxguitar.carbon.opendoc.OpenDocPlugin;
-import org.herac.tuxguitar.gui.system.plugins.base.TGPluginList;
 
 public class TGCarbonIntegrationPlugin extends TGPluginList {
 
