@@ -62,6 +62,15 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public void setAdvanced(boolean advanced);
 	
-	public TGDimension getStringExtent(String string);
+	public int getFontSize();
 	
+	public int getFMHeight();
+	
+	public int getFMAscent();
+	
+	public int getFMDescent();
+	
+	public int getFMWidth( String text );
+	
+	public TGDimension getStringExtent(String string);
 }
