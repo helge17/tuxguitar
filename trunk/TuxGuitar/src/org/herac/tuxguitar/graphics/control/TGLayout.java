@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -525,8 +524,12 @@ public abstract class TGLayout {
 	}
 	
 	public TGRectangle getOrientation(TGPainter painter,int x,int y,String s){
-		TGDimension size = painter.getStringExtent(s);
-		return new TGRectangle((x - (size.getWidth() / 2)),(y - (size.getHeight() / 2)),size.getWidth(), size.getHeight() );
+		int fmWidth = painter.getFMWidth(s);
+		int fmAscent = painter.getFMAscent();
+		int fSize = painter.getFontSize();
+		return new TGRectangle((x - (fmWidth / 2)),(y - (fmAscent - fSize) - (fSize / 2)),fmWidth, fSize );
+		//TGDimension size = painter.getStringExtent(s);
+		//return new TGRectangle((x - (size.getWidth() / 2)),(y - (size.getHeight() / 2)),size.getWidth(), size.getHeight() );
 	}
 	
 	public TGSongManager getSongManager() {

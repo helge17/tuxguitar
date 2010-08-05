@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.editors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Path;
@@ -205,6 +206,34 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		if( !TGPainterUtils.FORCE_OS_DEFAULTS ){
 			this.gc.setAdvanced(advanced);
 		}
+	}
+	
+	public int getFontSize(){
+		FontData[] fd = this.gc.getFont().getFontData();
+		if( fd != null && fd.length > 0 ){
+			return fd[0].getHeight();
+		}
+		return 0;
+	}
+	
+	public int getFMHeight(){
+		this.setAdvanced(false);
+		return this.gc.getFontMetrics().getHeight();
+	}
+	
+	public int getFMAscent(){
+		this.setAdvanced(false);
+		return this.gc.getFontMetrics().getAscent();
+	}
+	
+	public int getFMDescent(){
+		this.setAdvanced(false);
+		return this.gc.getFontMetrics().getDescent();
+	}
+	
+	public int getFMWidth( String text ){
+		this.setAdvanced(false);
+		return this.gc.stringExtent( text ).x;
 	}
 	
 	public TGDimension getStringExtent(String string) {
