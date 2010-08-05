@@ -40,8 +40,13 @@ public class TGFontImpl implements TGFont {
 		return ( fd != null && fd.length > 0 ? fd[0].getHeight() : 0 );
 	}
 	
-	public int getStyle() {
+	public boolean isBold() {
 		FontData[] fd = this.handle.getFontData();
-		return ( fd != null && fd.length > 0 ? fd[0].getStyle() : 0 );
+		return ( fd != null && fd.length > 0 ? ((fd[0].getStyle() & SWT.BOLD) != 0) : false );
+	}
+	
+	public boolean isItalic() {
+		FontData[] fd = this.handle.getFontData();
+		return ( fd != null && fd.length > 0 ? ((fd[0].getStyle() & SWT.ITALIC) != 0) : false );
 	}
 }

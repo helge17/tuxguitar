@@ -402,11 +402,12 @@ public class TGChordImpl extends TGChord {
 			return true;
 		}
 		if( f1 != null && f2 != null && !f1.isDisposed() && !f2.isDisposed()){
-			boolean sameName = f1.getName().equals(f2.getName());
-			boolean sameStyle = f1.getStyle() == f2.getStyle();
-			boolean sameHeight = f1.getHeight() == f2.getHeight();
+			boolean sameName = (f1.getName().equals(f2.getName()));
+			boolean sameBold = (f1.isBold() == f2.isBold());
+			boolean sameItalic = (f1.isItalic() == f2.isItalic());
+			boolean sameHeight = (f1.getHeight() == f2.getHeight());
 			
-			return (sameName && sameStyle && sameHeight);
+			return (sameName && sameBold && sameItalic && sameHeight);
 		}
 		return false;
 	}
