@@ -236,11 +236,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		return this.gc.stringExtent( text ).x;
 	}
 	
-	public TGDimension getStringExtent(String string) {
-		this.setAdvanced(false);
-		return createDimension(this.gc.stringExtent(string));
-	}
-	
 	public TGPoint createPoint( Point point ){
 		return new TGPoint( point.x , point.y );
 	}

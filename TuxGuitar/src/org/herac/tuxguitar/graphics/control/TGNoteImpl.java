@@ -8,7 +8,6 @@ package org.herac.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
@@ -395,8 +394,7 @@ public class TGNoteImpl extends TGNote {
 		if(effect.isGrace()){
 			layout.setTabGraceStyle(painter);
 			String value = Integer.toString(effect.getGrace().getFret());
-			TGDimension graceSize = painter.getStringExtent(value);
-			painter.drawString(value, (this.noteOrientation.getX() - graceSize.getWidth() - 2), this.noteOrientation.getY() );
+			painter.drawString(value, (this.noteOrientation.getX() - painter.getFMWidth(value) - 2), this.noteOrientation.getY() );
 		}
 		if(effect.isBend()){
 			paintBend(layout, painter,(this.noteOrientation.getX() + this.noteOrientation.getWidth()), y);
@@ -555,11 +553,12 @@ public class TGNoteImpl extends TGNote {
 	
 	private void paintTrill(TGLayout layout, TGPainter painter,int fromX,int fromY){
 		String string = "Tr";
-		TGDimension stringSize = painter.getStringExtent( string );
+		int fmWidth = painter.getFMWidth( string );
+		int fmHeight = painter.getFMHeight();
 		float scale = layout.getScale();
-		float x = fromX + stringSize.getWidth();
-		float y = fromY + (   (stringSize.getHeight() - (5.0f * scale)) / 2.0f );
-		float width = ( getVoiceImpl().getWidth() - stringSize.getWidth() - (2.0f * scale) );
+		float x = fromX + fmWidth;
+		float y = fromY + ( (fmHeight - (5.0f * scale)) / 2.0f );
+		float width = ( getVoiceImpl().getWidth() - fmWidth - (2.0f * scale) );
 		
 		int loops = (int)(width / (6.0f * scale) );
 		if(loops > 0 ){
@@ -569,7 +568,7 @@ public class TGNoteImpl extends TGNote {
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.moveTo(( x + (2.0f * scale) ),( y + (1.0f * scale) ));
 			for( int i = 0; i < loops ; i ++ ){
-				x = (fromX + stringSize.getWidth() + ( (6.0f * scale) * i ) );
+				x = (fromX + fmWidth + ( (6.0f * scale) * i ) );
 				painter.lineTo(( x + (2.0f * scale) ),( y + (1.0f * scale) ));
 				painter.cubicTo(( x + (2.0f * scale) ),( y + (1.0f * scale) ),( x + (3.0f * scale) ), y ,( x + (4.0f * scale) ),( y + (1.0f * scale) ));
 				painter.lineTo(( x + (6.0f * scale) ),( y + (3.0f * scale) ));
@@ -579,7 +578,7 @@ public class TGNoteImpl extends TGNote {
 			painter.cubicTo(( x + (7.0f * scale) ),( y + (2.0f * scale) ),( x + (8.0f * scale) ),( y + (2.0f * scale) ),( x + (7.0f * scale) ),( y + (3.0f * scale) ));
 			
 			for( int i = (loops - 1); i >= 0 ; i -- ){
-				x = (fromX + stringSize.getWidth() + ( (6.0f * scale) * i ) );
+				x = (fromX + fmWidth + ( (6.0f * scale) * i ) );
 				painter.lineTo(( x + (6.0f * scale) ),( y + (4.0f * scale) ));
 				painter.cubicTo(( x + (6.0f * scale) ),( y + (4.0f * scale) ),( x + (5.0f * scale) ),( y + (5.0f * scale) ),( x + (4.0f * scale) ),( y + (4.0f * scale) ));
 				painter.lineTo(( x + (2.0f * scale) ),( y + (2.0f * scale) ));

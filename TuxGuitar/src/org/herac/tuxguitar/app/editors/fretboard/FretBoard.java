@@ -42,7 +42,6 @@ import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
-import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -455,11 +454,14 @@ public class FretBoard extends Composite {
 		painter.setBackground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_WHITE)));
 		painter.setForeground(new TGColorImpl(foreground));
 		painter.setFont(new TGFontImpl(this.config.getFont()));
-		TGDimension size = painter.getStringExtent(text);
+		
+		int fmWidth = painter.getFMWidth(text);
+		int fmHeight = painter.getFMHeight();
+		
 		painter.initPath(TGPainterImpl.PATH_FILL);
-		painter.addRectangle(x - (size.getWidth() / 2),y - (size.getHeight() / 2),size.getWidth(), size.getHeight());
+		painter.addRectangle(x - (fmWidth / 2),y - (fmHeight / 2),fmWidth, fmHeight);
 		painter.closePath();
-		painter.drawString(text,x - (size.getWidth() / 2),y - (size.getHeight() / 2),true);
+		painter.drawString(text,x - (fmWidth / 2),y - (fmHeight / 2),true);
 	}
 	
 	protected void paintEditor(TGPainter painter) {

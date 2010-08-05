@@ -206,18 +206,15 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	private int getCenter(TGPainter painter,String text){
-		int textWidth = painter.getStringExtent(text).getWidth();
-		return ((getMaxWidth() - textWidth) / 2);
+		return ((getMaxWidth() - painter.getFMWidth(text)) / 2);
 	}
 	
 	private int getRight(TGPainter painter,String text){
-		int textWidth = painter.getStringExtent(text).getWidth();
-		return ((getMaxWidth() - textWidth));
+		return ((getMaxWidth() - painter.getFMWidth(text)));
 	}
 	
 	private int getBottom(TGPainter painter,String text){
-		int textHeight = painter.getStringExtent(text).getWidth();
-		return ((getMaxHeight() - textHeight));
+		return ((getMaxHeight() - painter.getFMHeight()));
 	}
 	
 	private TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {

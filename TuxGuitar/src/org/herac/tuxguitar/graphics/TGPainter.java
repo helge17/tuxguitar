@@ -72,5 +72,4 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public int getFMWidth( String text );
 	
-	public TGDimension getStringExtent(String string);
 }

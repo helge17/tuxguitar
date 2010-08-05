@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.painters.TGClefPainter;
 import org.herac.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
@@ -705,7 +704,7 @@ public class TGMeasureImpl extends TGMeasure{
 		if(addInfo){
 			String number = Integer.toString(this.getNumber());
 			layout.setMeasureNumberStyle(painter);
-			painter.drawString(number,getPosX() + Math.round(scale),(y1 - painter.getStringExtent(number).getHeight()) - Math.round(scale));
+			painter.drawString(number,getPosX() + Math.round(scale),(y1 - painter.getFMHeight()) - Math.round(scale));
 		}
 		
 		layout.setDivisionsStyle(painter,true);
@@ -777,8 +776,9 @@ public class TGMeasureImpl extends TGMeasure{
 				if(addInfo){
 					layout.setDivisionsStyle(painter,false);
 					String repetitions = ("x" + this.getRepeatClose());
-					TGDimension numberSize = painter.getStringExtent(repetitions);
-					painter.drawString(repetitions,x2 - numberSize.getWidth() + getSpacing() - size,(y1 - numberSize.getHeight()) - Math.round(scale));
+					painter.drawString(repetitions,x2 - painter.getFMWidth(repetitions) + getSpacing() - size,(y1 - painter.getFMHeight()) - Math.round(scale));
+					//TGDimension numberSize = painter.getStringExtent(repetitions);
+					//painter.drawString(repetitions,x2 - numberSize.getWidth() + getSpacing() - size,(y1 - numberSize.getHeight()) - Math.round(scale));
 				}
 			}
 		}else{
@@ -889,14 +889,14 @@ public class TGMeasureImpl extends TGMeasure{
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
 				int y = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				int y1 = (int)(y - (3f * scale));
-				int y2 = (int)(((y + (layout.getScoreLineSpacing() * 4)) - painter.getStringExtent(denominator).getHeight()) + (3f * scale));
+				int y2 = (int)(((y + (layout.getScoreLineSpacing() * 4)) - painter.getFMHeight()) + (3f * scale));
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
 				int y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 				int move = (int)((8f - getTrack().stringCount()) * scale);
 				int y1 = (y - move);
-				int y2 = ((y  + getTrackImpl().getTabHeight()) - painter.getStringExtent(denominator).getHeight()) + move;
+				int y2 = ((y  + getTrackImpl().getTabHeight()) - painter.getFMHeight()) + move;
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}
@@ -928,7 +928,7 @@ public class TGMeasureImpl extends TGMeasure{
 			layout.setTempoStyle(painter, true);
 			String value = (" = " + getTempo().getValue());
 			int fontX = x + (Math.round( (1.33f * scale) ) + 1 );
-			int fontY = Math.round(y - painter.getStringExtent( value ).getHeight() - (1.0f * layout.getScale()));
+			int fontY = Math.round(y - painter.getFMHeight() - (1.0f * layout.getScale()));
 			painter.drawString(value , fontX, fontY, true);
 		}
 	}
@@ -948,14 +948,13 @@ public class TGMeasureImpl extends TGMeasure{
 			
 			layout.setTripletFeelStyle(painter, true);
 			String equal = (" = ");
-			TGDimension fontSize = painter.getStringExtent( equal );
 			int fontX = x + (Math.round( (1.33f * scale) + (1.5f * scale) ));
-			int fontY = Math.round(y - fontSize.getHeight() - (1.0f * layout.getScale()));
+			int fontY = Math.round(y - painter.getFMHeight() - (1.0f * layout.getScale()));
 			painter.drawString(equal, fontX , fontY, true);
 			
 			layout.setTripletFeelStyle(painter, false);
 			int x1 = x;
-			int x2 = x + (Math.round( (1.33f * scale) + (1.5f * scale) ) + fontSize.getWidth());
+			int x2 = x + (Math.round( (1.33f * scale) + (1.5f * scale) ) + painter.getFMWidth(equal));
 			int y1 = y - (Math.round( (1.0f * scale) + (2.5f * scale) ) + 2);
 			int y2 = y - (Math.round( (1.0f * scale) + (2.5f * scale) + (1.0f * scale)) + 2);
 			
