@@ -7,7 +7,6 @@
 package org.herac.tuxguitar.graphics.control;
 
 import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGFont;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
@@ -263,9 +262,8 @@ public class TGChordImpl extends TGChord {
 			this.nameHeight = 0;
 			return;
 		}
-		TGDimension size = painter.getStringExtent(name);
-		this.nameWidth = size.getWidth();
-		this.nameHeight = size.getHeight();
+		this.nameWidth = painter.getFMWidth(name);
+		this.nameHeight = painter.getFMHeight();
 	}
 	
 	protected void updateDiagram(TGResourceFactory bufferFactory){
@@ -295,8 +293,7 @@ public class TGChordImpl extends TGChord {
 		if(font != null){
 			String firstFretString = Integer.toString(getFirstFret());
 			painter.setFont(font);
-			TGDimension size = painter.getStringExtent(firstFretString);
-			painter.drawString(firstFretString,fromX + (getFirstFretSpacing() - size.getWidth()),Math.round(y + ((getFretSpacing() / 2f) - (size.getHeight() / 2f))));
+			painter.drawString(firstFretString,fromX + (getFirstFretSpacing() - painter.getFMWidth(firstFretString)),Math.round(y + ((getFretSpacing() / 2f) - (painter.getFMHeight() / 2f))));
 			x += getFirstFretSpacing();
 		}
 		

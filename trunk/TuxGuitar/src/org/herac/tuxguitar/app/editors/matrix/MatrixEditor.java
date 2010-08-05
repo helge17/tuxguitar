@@ -46,7 +46,6 @@ import org.herac.tuxguitar.app.system.language.LanguageLoader;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
-import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
@@ -357,12 +356,13 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 				TGPainter painter = new TGPainterImpl(new GC(this.dialog.getDisplay()));
 				painter.setFont(new TGFontImpl(this.config.getFont()));
 				for(int i = 0; i < names.length;i ++){
-					TGDimension size = painter.getStringExtent(names[i]);
-					if( size.getWidth() > minimumNameWidth ){
-						minimumNameWidth = size.getWidth();
+					int fmWidth = painter.getFMWidth(names[i]);
+					if( fmWidth > minimumNameWidth ){
+						minimumNameWidth = fmWidth;
 					}
-					if( size.getHeight()  > minimumNameHeight ){
-						minimumNameHeight = size.getHeight() ;
+					int fmHeight = painter.getFMHeight();
+					if( fmHeight > minimumNameHeight ){
+						minimumNameHeight = fmHeight;
 					}
 				}
 				painter.dispose();
