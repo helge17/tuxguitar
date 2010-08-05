@@ -6,6 +6,8 @@ public interface TGFont extends TGResource {
 	
 	public int getHeight();
 	
-	public int getStyle();
+	public boolean isBold();
+	
+	public boolean isItalic();
 	
 }
