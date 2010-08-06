@@ -37,8 +37,9 @@ public class TGLayoutVertical extends TGLayout{
 	public void paintSong(TGPainter painter,TGRectangle clientArea,int fromX,int fromY) {
 		this.marginLeft = getFirstMeasureSpacing();
 		this.marginRight = 10;
-		this.setWidth(0);
+		this.maximumWidth = (clientArea.getWidth() - (this.marginLeft + this.marginRight));
 		this.setHeight(0);
+		this.setWidth(0);
 		this.clearTrackPositions();
 		
 		int style = getStyle();
@@ -83,7 +84,7 @@ public class TGLayoutVertical extends TGLayout{
 					addTrackPosition(track.getNumber(),posY,lineHeight);
 					
 					int emptyX = (this.marginLeft + fromX + line.tempWith + 2);
-					int emptyWith = ( getMaximumWidth() - emptyX );
+					int emptyWith = ( this.maximumWidth - emptyX );
 					if((emptyWith - 20) > 0 && (line.lastIndex + 1) >= measureCount){
 						if(emptyX < (clientArea.getX() + clientArea.getWidth())){
 							emptyX = (emptyX < clientArea.getX() ? clientArea.getX() :emptyX);
@@ -115,7 +116,7 @@ public class TGLayoutVertical extends TGLayout{
 		
 		int measureSpacing = 0;
 		if(line.fullLine){
-			int diff = ( getMaximumWidth() - line.tempWith);
+			int diff = ( this.maximumWidth - line.tempWith);
 			if(diff != 0 && line.measures.size() > 0){
 				measureSpacing = diff / line.measures.size();
 			}
@@ -167,7 +168,7 @@ public class TGLayoutVertical extends TGLayout{
 			TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(measureIdx);
 			
 			//verifico si tengo que bajar de linea
-			if((line.tempWith + measure.getWidth(this)) >=  getMaximumWidth() && !line.measures.isEmpty()){
+			if((line.tempWith + measure.getWidth(this)) >= this.maximumWidth && !line.measures.isEmpty()){
 				line.fullLine = true;
 				return line;
 			}
@@ -180,14 +181,6 @@ public class TGLayoutVertical extends TGLayout{
 		}
 		
 		return line;
-	}
-	
-	public void setMaximumWidth( int maximumWidth ){
-		this.maximumWidth = maximumWidth;
-	}
-	
-	private int getMaximumWidth(){
-		return (this.maximumWidth - (this.marginLeft + this.marginRight));
 	}
 	
 	private class TempLine{
