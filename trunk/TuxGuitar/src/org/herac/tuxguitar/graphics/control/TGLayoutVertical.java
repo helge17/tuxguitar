@@ -66,8 +66,8 @@ public class TGLayoutVertical extends TGLayout{
 					line = getTempLines(track,nextMeasureIndex,ts);
 					if( (style & DISPLAY_SCORE) != 0 ){
 						ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
-						if(line.maxY + getMinScoreTabSpacing() > getScoreSpacing()){
-							ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - (getScoreLineSpacing() * 4)) );
+						if(line.maxY > track.getScoreHeight()){
+							ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - track.getScoreHeight()) );
 						}
 					}
 					if((style & DISPLAY_TABLATURE) != 0){

@@ -63,10 +63,9 @@ public class TGLayoutHorizontal extends TGLayout{
 					measure.registerSpacing(this,ts);
 				}
 				ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, ( (style & DISPLAY_SCORE) != 0 ?Math.abs(minY):0));
-				if((style & DISPLAY_SCORE) != 0 && maxY + getMinScoreTabSpacing() > getScoreSpacing()){
-					ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (maxY - (getScoreLineSpacing() * 4)) );
+				if((style & DISPLAY_SCORE) != 0 && maxY > track.getScoreHeight()){
+					ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (maxY - track.getScoreHeight()) );
 				}
-				
 				if((style & DISPLAY_TABLATURE) != 0){
 					ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(minY), getStringSpacing()) ));
 					ts.setSize(TGTrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max(maxY, track.getTabHeight() + getStringSpacing() + 1) ));

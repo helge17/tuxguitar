@@ -50,7 +50,6 @@ public abstract class TGLayout {
 	private int minScoreTabSpacing;
 	private int stringSpacing;
 	private int scoreLineSpacing;
-	private int scoreSpacing;
 	private int trackSpacing;
 	private int firstTrackSpacing;
 	private int firstMeasureSpacing;
@@ -101,7 +100,6 @@ public abstract class TGLayout {
 		this.setMinBufferSeparator( Math.round( this.styles.getMinBufferSeparator() * getScale() ) );
 		this.setMinTopSpacing( Math.round( this.styles.getMinTopSpacing() * getScale() ) );
 		this.setMinScoreTabSpacing( Math.round( this.styles.getMinScoreTabSpacing() * getScale() ) );
-		this.setScoreSpacing( (( getScoreLineSpacing() * 4) + getMinScoreTabSpacing() ) );
 		this.setFirstTrackSpacing( Math.round(this.styles.getFirstTrackSpacing() * getScale() ) );
 		this.setTrackSpacing( Math.round(this.styles.getTrackSpacing() * getScale() ) );
 		this.setChordFretIndexSpacing( Math.round( this.styles.getChordFretIndexSpacing() * getScale() ) );
@@ -634,14 +632,6 @@ public abstract class TGLayout {
 	
 	public void setScoreLineSpacing(int scoreLineSpacing) {
 		this.scoreLineSpacing = scoreLineSpacing;
-	}
-	
-	public int getScoreSpacing() {
-		return this.scoreSpacing;
-	}
-	
-	public void setScoreSpacing(int scoreSpacing) {
-		this.scoreSpacing = scoreSpacing;
 	}
 	
 	public int getFirstTrackSpacing() {
