@@ -883,20 +883,21 @@ public class TGMeasureImpl extends TGMeasure{
 			float scale = layout.getScale();
 			int style = layout.getStyle();
 			int leftSpacing = Math.round( 5.0f * scale );
+			int fSize = painter.getFontSize();
+			int fmAscent = painter.getFMAscent();
 			int x = (getClefSpacing(layout) + getKeySignatureSpacing(layout) + getHeaderImpl().getLeftSpacing(layout) + leftSpacing);
 			String numerator = Integer.toString(getTimeSignature().getNumerator());
 			String denominator = Integer.toString(getTimeSignature().getDenominator().getValue());
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
 				int y = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				int y1 = (int)(y - (3f * scale));
-				int y2 = (int)(((y + (layout.getScoreLineSpacing() * 4)) - painter.getFMHeight()) + (3f * scale));
+				int y1 = (int)(y - (fmAscent - fSize) + (1f * scale));
+				int y2 = (int)(y + getTrackImpl().getScoreHeight() - fmAscent - (1f * scale));
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
 				int y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
-				int move = (int)((8f - getTrack().stringCount()) * scale);
-				int y1 = (y - move);
-				int y2 = ((y  + getTrackImpl().getTabHeight()) - painter.getFMHeight()) + move;
+				int y1 = (int)(y - (fmAscent - fSize) + (1f * scale));
+				int y2 = (int)(y + getTrackImpl().getTabHeight() - fmAscent - (1f * scale));
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}
