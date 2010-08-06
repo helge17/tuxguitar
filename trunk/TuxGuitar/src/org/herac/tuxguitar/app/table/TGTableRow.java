@@ -60,6 +60,12 @@ public class TGTableRow {
 		this.instrument.setBackground(background);
 	}
 	
+	public void setForeground(Color foreground){
+		this.number.setForeground(foreground);
+		this.name.setForeground(foreground);
+		this.instrument.setForeground(foreground);
+	}
+	
 	public void dispose(){
 		this.row.dispose();
 	}
