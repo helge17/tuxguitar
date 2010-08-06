@@ -15,7 +15,6 @@ import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.table.TGTableViewer;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -108,7 +107,7 @@ public class DisposeAction extends Action {
 	}
 	
 	protected void dispose(){
-		TGTableViewer.disposeColors();
+		TuxGuitar.instance().getTable().dispose();
 		TuxGuitar.instance().getSongManager().clearSong();
 		TuxGuitar.instance().getFretBoardEditor().dispose();
 		TuxGuitar.instance().getTablatureEditor().getTablature().dispose();

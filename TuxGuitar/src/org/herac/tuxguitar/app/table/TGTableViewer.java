@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
@@ -30,14 +31,10 @@ import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGTableViewer implements TGRedrawListener, TGUpdateListener, LanguageLoader{
 	
-	public static final Color[] BACKGROUNDS = new Color[]{
-		new Color(TuxGuitar.instance().getDisplay(),255,255,255),
-		new Color(TuxGuitar.instance().getDisplay(),238,238,238),
-		new Color(TuxGuitar.instance().getDisplay(),192,192,192)
-	};
-	
 	private Composite composite;
 	private ScrollBar hSroll;
+	private Color[] backgrounds;
+	private Color[] foregrounds;
 	private TGTable table;
 	private int selectedTrack;
 	private int selectedMeasure;
@@ -54,10 +51,26 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	
 	public void init(Composite parent){
 		this.composite = new Composite(parent,SWT.H_SCROLL);
+		this.addColors();
 		this.addLayout();
 		this.addTable();
 		this.addHScroll();
 		this.loadConfig();
+	}
+	
+	private void addColors(){
+		Display display = this.getComposite().getDisplay();
+
+		this.backgrounds = new Color[]{
+			new Color(display,255,255,255),
+			new Color(display,238,238,238),
+			new Color(display,192,192,192),
+		};
+		this.foregrounds = new Color[]{
+			new Color( display, 0, 0, 0 ),
+			new Color( display, 0, 0, 0 ),
+			new Color( display, 0, 0, 0 ),
+		};
 	}
 	
 	private void addLayout(){
@@ -236,7 +249,8 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 			TGTableRow row = this.table.getRow(i); 
 			row.getPainter().redraw();
 			if(this.selectedTrack != selectedTrack){
-				row.setBackground( ((selectedTrack - 1) == i)?BACKGROUNDS[2]:BACKGROUNDS[ i % 2] );
+				row.setBackground( this.backgrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
+				row.setForeground( this.foregrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
 			}
 		}
 	}
@@ -301,14 +315,17 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		this.trackCount = 0;
 	}
 	
-	public static void disposeColors(){
-		for(int i = 0;i < BACKGROUNDS.length;i++){
-			BACKGROUNDS[i].dispose();
-		}
-	}
-	
 	public Composite getComposite(){
 		return this.composite;
+	}
+	
+	public void disposeColors(){
+		for(int i = 0; i < this.backgrounds.length; i++){
+			this.backgrounds[i].dispose();
+		}
+		for(int i = 0; i < this.foregrounds.length; i++){
+			this.foregrounds[i].dispose();
+		}
 	}
 	
 	public void dispose(){
