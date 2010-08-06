@@ -27,7 +27,6 @@ public class TGConfigKeys {
 	public static final String SHOW_MARKERS = "show.markers";
 	public static final String LAYOUT_MODE = "layout.mode";
 	public static final String LAYOUT_STYLE = "layout.style";
-	public static final String LAYOUT_PAGE_FORCE_WIDTH = "layout.page.force-width";
 	public static final String LANGUAGE = "language";
 	public static final String EDITOR_MOUSE_MODE = "editor.mouse.mode";
 	public static final String EDITOR_NATURAL_KEY_MODE = "editor.natural.key.mode";
@@ -90,6 +89,5 @@ public class TGConfigKeys {
 	public static final String MATRIX_COLOR_PLAY_NOTE = "matrix.color.play-note";
 	public static final String TABLE_AUTO_SIZE = "table.auto-size";
 	public static final String BROWSER_LINES_VISIBLE = "browser.lines-visible";
-	public static final String SYSTEM_PLAYER = "system.player";
 	public static final String FORCE_OS_DEFAULTS = "painter.force-os-defaults";
 }

@@ -66,8 +66,6 @@ public class Tablature extends Composite implements TGController {
 	
 	private boolean painting;
 	
-	private int pageLayoutForceWidth;
-	
 	public Tablature(Composite parent,int style, TGSongManager songManager ) {
 		super(parent, style);
 		this.songManager = songManager;
@@ -107,10 +105,6 @@ public class Tablature extends Composite implements TGController {
 		});
 	}
 	
-	public void initDefaults(){
-	//	this.caret = new Caret(this);
-	}
-	
 	public void updateTablature(){
 		this.playedBeat = null;
 		this.playedMeasure = null;
@@ -135,7 +129,6 @@ public class Tablature extends Composite implements TGController {
 			this.setPainting(true);
 			try{
 				this.checkScroll();
-				this.checkLayout();
 				
 				TGRectangle area = createRectangle(getClientArea());
 				ScrollBar xScroll = getHorizontalBar();
@@ -305,11 +298,7 @@ public class Tablature extends Composite implements TGController {
 	public TGSongManager getSongManager() {
 		return this.songManager;
 	}
-	/*
-	public void setSongManager(TGSongManager songManager) {
-		this.songManager = songManager;
-	}
-	*/
+	
 	public TGLayout getViewLayout(){
 		return this.viewLayout;
 	}
@@ -326,32 +315,6 @@ public class Tablature extends Composite implements TGController {
 			this.getVerticalBar().setSelection(0);
 		}
 		this.reloadStyles();
-	}
-	
-	public void checkLayout(){
-		if( this.viewLayout instanceof TGLayoutVertical ){
-			if( this.pageLayoutForceWidth <= 0 ){
-				this.pageLayoutForceWidth = TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.LAYOUT_PAGE_FORCE_WIDTH, 0);
-				if(this.pageLayoutForceWidth <= 0){
-					int marginLeft = 0;
-					int marginRight = 0;
-					int monitorWidth = getMonitor().getClientArea().width;
-					Rectangle tablatureArea = getClientArea();
-					Composite parent = getParent();
-					while( parent != null ){
-						Rectangle parentArea = parent.getClientArea();
-						parent = parent.getParent();
-						if( parent == null ){
-							marginRight = ( parentArea.width - (marginLeft + tablatureArea.width ) );
-						}else{
-							marginLeft += parentArea.x ;
-						}
-					}
-					this.pageLayoutForceWidth = (monitorWidth - ( marginLeft + marginRight ) );
-				}
-			}
-			((TGLayoutVertical)this.viewLayout).setMaximumWidth(this.pageLayoutForceWidth);
-		}
 	}
 	
 	public TGRectangle createRectangle( Rectangle rectangle ){
