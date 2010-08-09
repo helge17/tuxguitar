@@ -44,18 +44,27 @@ public class SVGController implements TGController {
 		this.tgLayout.updateSong();
 	}
 	
-	public void write(StringBuffer buffer) throws Throwable {
-		buffer.append("<svg width=\"1700px\" height=\"2700px\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
-		buffer.append("\r\n");
-		
-		TGPainter painter = new SVGPainter(buffer);
+	public void write(StringBuffer svgBuffer) throws Throwable {		
 		if( this.tgSongManager.getSong() != null ){
-			this.tgLayout.paint(painter, new TGRectangle(0, 0, 1024, 50000 ), 0, 0);
+			// Do a paint to calculate the document height.
+			TGRectangle svgBounds = new TGRectangle(0, 0, 960, 0 );
+			TGPainter svgPainter = new SVGPainter(new StringBuffer());
+			this.tgLayout.paint(svgPainter, svgBounds, 0, 0);
+			svgBounds.setHeight(this.tgLayout.getHeight());
+			
+			// Start of SVG document
+			svgBuffer.append("<svg width=\"" + svgBounds.getWidth() + "px\" height=\"" + svgBounds.getHeight() + "px\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
+			svgBuffer.append("\r\n");
+			
+			// Paint the TGSong
+			svgPainter = new SVGPainter(svgBuffer);
+			this.tgLayout.paint(svgPainter, svgBounds, 0, 0);
+			svgPainter.dispose();
+			
+			// End of SVG document
+			svgBuffer.append("\r\n");
+			svgBuffer.append("</svg>");
 		}
-		painter.dispose();
-		
-		buffer.append("\r\n");
-		buffer.append("</svg>");
 	}
 	
 	public void configureStyles(TGLayoutStyles styles) {
