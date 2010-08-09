@@ -46,6 +46,7 @@ public class SVGExporterStyles {
 		this.setLayoutFlags( 0 );
 		this.setLayoutFlags( this.getLayoutFlags() | TGLayout.DISPLAY_SCORE );
 		this.setLayoutFlags( this.getLayoutFlags() | TGLayout.DISPLAY_TABLATURE );
+		this.setLayoutFlags( this.getLayoutFlags() | TGLayout.DISPLAY_MULTITRACK );
 		this.setLayoutFlags( this.getLayoutFlags() | TGLayout.DISPLAY_COMPACT );
 		this.setLayoutFlags( this.getLayoutFlags() | TGLayout.DISPLAY_CHORD_NAME );
 		this.setLayoutFlags( this.getLayoutFlags() | TGLayout.DISPLAY_CHORD_DIAGRAM );
