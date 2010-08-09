@@ -35,9 +35,9 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
-		painter.moveTo( x, y + (1 * scale) );
-		painter.cubicTo( x, y + (1 * scale), x + ( ( (ovalWidth * 2f) + horizontalSpacing) / 2f),y + (-1 * scale) ,x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale));
-		painter.moveTo( x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale) );
+		painter.moveTo( x, y + (1.2f * scale) );
+		painter.cubicTo(x + (horizontalSpacing / 2f), y, x + ( (ovalWidth * 2f) + (horizontalSpacing / 2f)), y, x + ( (ovalWidth * 2f) + horizontalSpacing), y + (1.2f * scale));
+		painter.moveTo( x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1.2f * scale) );
 		painter.closePath();
 	}
 	
@@ -88,9 +88,9 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 		
 		painter.initPath();
-		painter.moveTo( x,y + (1 * scale) );
-		painter.cubicTo( x,y + (1 * scale),x + ( ( (ovalWidth * 2f) + horizontalSpacing) / 2f),y + (-1*scale) ,x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale));
-		painter.moveTo( x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale) );
+		painter.moveTo( x, y + (1.2f * scale) );
+		painter.cubicTo(x + (horizontalSpacing / 2f), y, x + ( (ovalWidth * 2f) + (horizontalSpacing / 2f)), y, x + ( (ovalWidth * 2f) + horizontalSpacing), y + (1.2f * scale));
+		painter.moveTo( x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1.2f * scale) );
 		painter.closePath();
 		
 		return Math.round( (ovalWidth * 2f) + horizontalSpacing );
