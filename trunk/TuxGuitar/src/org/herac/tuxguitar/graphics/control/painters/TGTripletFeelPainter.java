@@ -37,6 +37,7 @@ public class TGTripletFeelPainter {
 		painter.initPath();
 		painter.moveTo( x, y + (1 * scale) );
 		painter.cubicTo( x, y + (1 * scale), x + ( ( (ovalWidth * 2f) + horizontalSpacing) / 2f),y + (-1 * scale) ,x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale));
+		painter.moveTo( x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale) );
 		painter.closePath();
 	}
 	
@@ -89,6 +90,7 @@ public class TGTripletFeelPainter {
 		painter.initPath();
 		painter.moveTo( x,y + (1 * scale) );
 		painter.cubicTo( x,y + (1 * scale),x + ( ( (ovalWidth * 2f) + horizontalSpacing) / 2f),y + (-1*scale) ,x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale));
+		painter.moveTo( x + ( (ovalWidth * 2f) + horizontalSpacing),y + (1 * scale) );
 		painter.closePath();
 		
 		return Math.round( (ovalWidth * 2f) + horizontalSpacing );
