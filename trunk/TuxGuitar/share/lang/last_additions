@@ -1,4 +1,6 @@
 # 1.3
+export.all-tracks=Export all tracks
+
 view.show-toolbars=Show Toolbars
 action.view.show-toolbars=Show Toolbars
 
