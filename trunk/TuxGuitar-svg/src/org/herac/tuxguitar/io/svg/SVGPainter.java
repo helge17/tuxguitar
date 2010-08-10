@@ -106,7 +106,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 	}
 	
 	public void cubicTo(float cx1, float cy1, float cx2, float cy2, float x, float y) {
-		this.svgPath.append("L " + cx1 + " " + cy1 + " " + cx2 + " " + cy2 + " "+ x + " " + y + " ");
+		this.svgPath.append("C " + cx1 + " " + cy1 + " " + cx2 + " " + cy2 + " "+ x + " " + y + " ");
 	}
 	
 	public void lineTo(float x, float y) {
