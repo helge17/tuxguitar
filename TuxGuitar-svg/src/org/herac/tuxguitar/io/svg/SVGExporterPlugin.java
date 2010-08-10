@@ -7,7 +7,7 @@ import org.herac.tuxguitar.io.base.TGRawExporter;
 public class SVGExporterPlugin extends TGExporterPlugin {
 	
 	protected TGRawExporter getExporter() throws TGPluginException {
-		return new SVGExporter(new SVGExporterStyles());
+		return new SVGExporter(new SVGExporterStylesDialog());
 	}
 	
 	public String getAuthor() {
