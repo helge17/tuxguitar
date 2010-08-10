@@ -44,7 +44,7 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 		
 		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
 		trackAllCheck.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true,2,1));
-		trackAllCheck.setText(TuxGuitar.getProperty("lilypond.options.select-all-tracks"));
+		trackAllCheck.setText(TuxGuitar.getProperty("export.all-tracks"));
 		trackAllCheck.setSelection(false);
 		trackAllCheck.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
