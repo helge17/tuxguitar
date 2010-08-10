@@ -422,7 +422,9 @@ public class TGNoteImpl extends TGNote {
 		painter.moveTo( x, y );
 		painter.lineTo( x + (1.0f * scale), y );
 		painter.cubicTo(x + (1.0f * scale), y,  x + (3.0f * scale), y , x + (3.0f * scale), y - (2.0f * scale));
+		painter.moveTo( x + (3.0f * scale), y - (2.0f * scale) );
 		painter.lineTo( x + (3.0f * scale), y - (12.0f * scale));
+		painter.moveTo( x + (3.0f * scale), y - (12.0f * scale));
 		painter.lineTo( x + (1.0f * scale), y - (10.0f * scale));
 		painter.moveTo( x + (3.0f * scale), y - (12.0f * scale));
 		painter.lineTo( x + (5.0f * scale), y - (10.0f * scale));
@@ -439,6 +441,7 @@ public class TGNoteImpl extends TGNote {
 		painter.initPath();
 		painter.moveTo(x1,y1);
 		painter.lineTo(x1 + ( (x2 - x1) / 2 ),y2);
+		painter.moveTo(x1 + ( (x2 - x1) / 2 ),y2);
 		painter.lineTo(x2,y1);
 		painter.closePath();
 	}
@@ -600,6 +603,7 @@ public class TGNoteImpl extends TGNote {
 		painter.cubicTo( x , y , x + width, y,  x + width, y - (4.0f * scale ));
 		painter.moveTo ( x , y );
 		painter.cubicTo( x , y , x + width, y,  x + width, y + (4.0f * scale ));
+		painter.moveTo ( x + width, y + (4.0f * scale ) );
 		painter.closePath();
 	}
 	
@@ -610,6 +614,7 @@ public class TGNoteImpl extends TGNote {
 		painter.initPath();
 		painter.moveTo( x , y );
 		painter.lineTo( x + (6.0f * scale ) , y + (2.5f * scale ));
+		painter.moveTo( x + (6.0f * scale ) , y + (2.5f * scale ));
 		painter.lineTo( x , y + (5.0f * scale ));
 		painter.closePath();
 	}
@@ -621,6 +626,7 @@ public class TGNoteImpl extends TGNote {
 		painter.initPath();
 		painter.moveTo( x , y + (5.0f * scale ) );
 		painter.lineTo( x + (3.0f * scale ) , y + (1.0f * scale ));
+		painter.moveTo( x + (3.0f * scale ) , y + (1.0f * scale ));
 		painter.lineTo( x + (6.0f * scale ) , y + (5.0f * scale ) );
 		painter.closePath();
 	}
