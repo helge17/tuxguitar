@@ -1,0 +1,2 @@
+# Add here the TGPlugin implementation class names.
+org.herac.tuxguitar.io.gpx.GPXInputStreamPlugin
