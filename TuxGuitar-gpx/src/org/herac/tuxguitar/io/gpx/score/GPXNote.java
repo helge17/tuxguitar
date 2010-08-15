@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXNote extends GPXDocumentElement {
+public class GPXNote {
 	
 	private int id;
 	private int fret;
@@ -11,12 +11,14 @@ public class GPXNote extends GPXDocumentElement {
 	private int variation;
 	private int midiNumber;
 	
+	private boolean slide;
+	private boolean vibrato;
 	private boolean tieDestination;
 	private boolean mutedEnabled;
 	private boolean palmMutedEnabled;
 	
-	public GPXNote(GPXDocument document){
-		super(document);
+	public GPXNote(){
+		super();
 		this.id = -1;
 		this.fret = -1;
 		this.string = -1;
@@ -25,7 +27,6 @@ public class GPXNote extends GPXDocumentElement {
 		this.element = -1;
 		this.variation = -1;
 		this.midiNumber = -1;
-		this.tieDestination = false;
 	}
 	
 	public int getId() {
@@ -90,6 +91,22 @@ public class GPXNote extends GPXDocumentElement {
 
 	public void setPalmMutedEnabled(boolean palmMutedEnabled) {
 		this.palmMutedEnabled = palmMutedEnabled;
+	}
+
+	public boolean isSlide() {
+		return slide;
+	}
+
+	public void setSlide(boolean slide) {
+		this.slide = slide;
+	}
+
+	public boolean isVibrato() {
+		return vibrato;
+	}
+
+	public void setVibrato(boolean vibrato) {
+		this.vibrato = vibrato;
 	}
 
 	public int getElement() {

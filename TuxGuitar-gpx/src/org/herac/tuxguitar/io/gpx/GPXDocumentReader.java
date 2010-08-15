@@ -38,6 +38,7 @@ public class GPXDocumentReader {
 	
 	public GPXDocument read(){
 		if( this.xmlDocument != null ){
+			this.readScore();
 			this.readAutomations();
 			this.readTracks();
 			this.readMasterBars();
@@ -50,6 +51,25 @@ public class GPXDocumentReader {
 		return this.gpxDocument;
 	}
 	
+	public void readScore(){
+		if( this.xmlDocument != null ){
+			Node scoreNode = getChildNode(this.xmlDocument.getFirstChild(), "Score");
+			if( scoreNode != null ){
+				this.gpxDocument.getScore().setTitle( getChildNodeContent(scoreNode, "Title"));
+				this.gpxDocument.getScore().setSubTitle( getChildNodeContent(scoreNode, "SubTitle"));
+				this.gpxDocument.getScore().setArtist( getChildNodeContent(scoreNode, "Artist"));
+				this.gpxDocument.getScore().setAlbum( getChildNodeContent(scoreNode, "Album"));
+				this.gpxDocument.getScore().setWords( getChildNodeContent(scoreNode, "Words"));
+				this.gpxDocument.getScore().setMusic( getChildNodeContent(scoreNode, "Music"));
+				this.gpxDocument.getScore().setWordsAndMusic( getChildNodeContent(scoreNode, "WordsAndMusic"));
+				this.gpxDocument.getScore().setCopyright( getChildNodeContent(scoreNode, "Copyright"));
+				this.gpxDocument.getScore().setTabber( getChildNodeContent(scoreNode, "Tabber"));
+				this.gpxDocument.getScore().setInstructions( getChildNodeContent(scoreNode, "Instructions"));
+				this.gpxDocument.getScore().setNotices( getChildNodeContent(scoreNode, "Notices"));
+			}
+		}
+	}
+	
 	public void readAutomations(){
 		if( this.xmlDocument != null ){
 			Node masterTrackNode = getChildNode(this.xmlDocument.getFirstChild(), "MasterTrack");
@@ -58,7 +78,7 @@ public class GPXDocumentReader {
 				for( int i = 0 ; i < automationNodes.getLength() ; i ++ ){
 					Node automationNode = automationNodes.item( i );
 					if( automationNode.getNodeName().equals("Automation") ){
-						GPXAutomation automation = new GPXAutomation(this.gpxDocument);
+						GPXAutomation automation = new GPXAutomation();
 						automation.setType( getChildNodeContent(automationNode, "Type"));
 						automation.setBarId( getChildNodeIntegerContent(automationNode, "Bar"));
 						automation.setValue( getChildNodeIntegerContentArray(automationNode, "Value"));
@@ -79,10 +99,10 @@ public class GPXDocumentReader {
 			for( int i = 0 ; i < trackNodes.getLength() ; i ++ ){
 				Node trackNode = trackNodes.item( i );
 				if( trackNode.getNodeName().equals("Track") ){
-					GPXTrack track = new GPXTrack( this.gpxDocument );
+					GPXTrack track = new GPXTrack();
 					track.setId( getAttributeIntegerValue(trackNode, "id") );
 					track.setName(getChildNodeContent(trackNode, "Name" ));
-					
+					track.setColor(getChildNodeIntegerContentArray(trackNode, "Color"));
 					Node gmNode = getChildNode(trackNode, "GeneralMidi");
 					if( gmNode != null ){
 						track.setGmProgram(getChildNodeIntegerContent(gmNode, "Program"));
@@ -113,7 +133,7 @@ public class GPXDocumentReader {
 			for( int i = 0 ; i < masterBarNodes.getLength() ; i ++ ){
 				Node masterBarNode = masterBarNodes.item( i );
 				if( masterBarNode.getNodeName().equals("MasterBar") ){
-					GPXMasterBar masterBar = new GPXMasterBar( this.gpxDocument );
+					GPXMasterBar masterBar = new GPXMasterBar();
 					masterBar.setBarIds( getChildNodeIntegerContentArray(masterBarNode, "Bars"));
 					masterBar.setTime( getChildNodeIntegerContentArray(masterBarNode, "Time", "/"));
 					
@@ -136,7 +156,7 @@ public class GPXDocumentReader {
 			for( int i = 0 ; i < barNodes.getLength() ; i ++ ){
 				Node barNode = barNodes.item( i );
 				if( barNode.getNodeName().equals("Bar") ){
-					GPXBar bar = new GPXBar( this.gpxDocument );
+					GPXBar bar = new GPXBar();
 					bar.setId(getAttributeIntegerValue(barNode, "id"));
 					bar.setVoiceIds( getChildNodeIntegerContentArray(barNode, "Voices"));
 					bar.setClef(getChildNodeContent(barNode, "Clef"));
@@ -154,7 +174,7 @@ public class GPXDocumentReader {
 			for( int i = 0 ; i < voiceNodes.getLength() ; i ++ ){
 				Node voiceNode = voiceNodes.item( i );
 				if( voiceNode.getNodeName().equals("Voice") ){
-					GPXVoice voice = new GPXVoice( this.gpxDocument );
+					GPXVoice voice = new GPXVoice();
 					voice.setId(getAttributeIntegerValue(voiceNode, "id"));
 					voice.setBeatIds( getChildNodeIntegerContentArray(voiceNode, "Beats"));
 					
@@ -170,7 +190,7 @@ public class GPXDocumentReader {
 			for( int i = 0 ; i < beatNodes.getLength() ; i ++ ){
 				Node beatNode = beatNodes.item( i );
 				if( beatNode.getNodeName().equals("Beat") ){
-					GPXBeat beat = new GPXBeat( this.gpxDocument );
+					GPXBeat beat = new GPXBeat();
 					beat.setId(getAttributeIntegerValue(beatNode, "id"));
 					beat.setDynamic(getChildNodeContent(beatNode, "Dynamic"));
 					beat.setRhythmId(getAttributeIntegerValue(getChildNode(beatNode, "Rhythm"), "ref"));
@@ -188,11 +208,13 @@ public class GPXDocumentReader {
 			for( int i = 0 ; i < noteNodes.getLength() ; i ++ ){
 				Node noteNode = noteNodes.item( i );
 				if( noteNode.getNodeName().equals("Note") ){
-					GPXNote note = new GPXNote( this.gpxDocument );
+					GPXNote note = new GPXNote();
 					note.setId( getAttributeIntegerValue(noteNode, "id") );
 					
 					Node tieNode = getChildNode(noteNode, "Tie");
 					note.setTieDestination( tieNode != null ? getAttributeValue(tieNode, "destination").equals("true") : false);
+					
+					note.setVibrato( getChildNode(noteNode, "Vibrato") != null );
 					
 					NodeList propertyNodes = getChildNodeList(noteNode, "Properties");
 					for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
@@ -225,7 +247,9 @@ public class GPXDocumentReader {
 							if( getAttributeValue(propertyNode, "name").equals("PalmMuted") ){
 								note.setPalmMutedEnabled( getChildNode(propertyNode, "Enable") != null );
 							}
-							
+							if( getAttributeValue(propertyNode, "name").equals("Slide") ){
+								note.setSlide( true );
+							}
 						}
 					}
 					
@@ -244,7 +268,7 @@ public class GPXDocumentReader {
 					Node primaryTupletNode = getChildNode(rhythmNode, "PrimaryTuplet");
 					Node augmentationDotNode = getChildNode(rhythmNode, "AugmentationDot");
 					
-					GPXRhythm rhythm = new GPXRhythm( this.gpxDocument );
+					GPXRhythm rhythm = new GPXRhythm();
 					rhythm.setId( getAttributeIntegerValue(rhythmNode, "id") );
 					rhythm.setNoteValue(getChildNodeContent(rhythmNode, "NoteValue") );
 					rhythm.setPrimaryTupletDen(primaryTupletNode != null ? getAttributeIntegerValue(primaryTupletNode, "den") : 1);

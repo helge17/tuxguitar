@@ -112,7 +112,7 @@ public class GPXFileSystem {
 					
 					byte[] bcfsBytes = bcfsBuffer.toByteArray();
 					int pos = ( bcfsBytes.length - offs );
-					for( int i = 0; i < size ; i ++ ){
+					for( int i = 0; i < (size > offs ? offs : size) ; i ++ ){
 						bcfsBuffer.write( bcfsBytes[pos + i] ) ;
 					}
 				} else {

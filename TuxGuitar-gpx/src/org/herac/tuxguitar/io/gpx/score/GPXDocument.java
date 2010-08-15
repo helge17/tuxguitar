@@ -6,6 +6,7 @@ import java.util.List;
 
 public class GPXDocument {
 	
+	private GPXScore score;
 	private List tracks;
 	private List masterBars;
 	private List bars;
@@ -16,6 +17,7 @@ public class GPXDocument {
 	private List automations;
 	
 	public GPXDocument(){
+		this.score = new GPXScore();
 		this.tracks = new ArrayList();
 		this.masterBars = new ArrayList();
 		this.bars = new ArrayList();
@@ -24,6 +26,10 @@ public class GPXDocument {
 		this.notes = new ArrayList();
 		this.rhythms = new ArrayList();
 		this.automations = new ArrayList();
+	}
+	
+	public GPXScore getScore(){
+		return this.score;
 	}
 	
 	public List getTracks() {

@@ -40,10 +40,21 @@ public class GPXDocumentParser {
 	public TGSong parse(){
 		TGSong tgSong =  this.factory.newSong();
 		
+		this.parseScore(tgSong);
 		this.parseTracks(tgSong);
 		this.parseMasterBars(tgSong);
 		
 		return tgSong;
+	}
+	
+	private void parseScore(TGSong tgSong){
+		tgSong.setName(this.document.getScore().getTitle());
+		tgSong.setArtist(this.document.getScore().getArtist());
+		tgSong.setAlbum(this.document.getScore().getAlbum());
+		tgSong.setAuthor(this.document.getScore().getWordsAndMusic());
+		tgSong.setCopyright(this.document.getScore().getCopyright());
+		tgSong.setWriter(this.document.getScore().getTabber());
+		tgSong.setComments(this.document.getScore().getNotices());
 	}
 	
 	private void parseTracks(TGSong tgSong){
@@ -76,6 +87,11 @@ public class GPXDocumentParser {
 				tgTrack.getStrings().add(TGSongManager.newString(this.factory,4, 50));
 				tgTrack.getStrings().add(TGSongManager.newString(this.factory,5, 45));
 				tgTrack.getStrings().add(TGSongManager.newString(this.factory,6, 40));
+			}
+			if( gpTrack.getColor() != null && gpTrack.getColor().length == 3 ){
+				tgTrack.getColor().setR(gpTrack.getColor()[0]);
+				tgTrack.getColor().setG(gpTrack.getColor()[1]);
+				tgTrack.getColor().setB(gpTrack.getColor()[2]);
 			}
 			tgSong.addTrack(tgTrack);
 		}
@@ -217,8 +233,11 @@ public class GPXDocumentParser {
 			tgNote.setString(tgString);
 			tgNote.setTiedNote(gpNote.isTieDestination());
 			tgNote.setVelocity(tgVelocity);
+			tgNote.getEffect().setVibrato(gpNote.isVibrato());
+			tgNote.getEffect().setSlide(gpNote.isSlide());
 			tgNote.getEffect().setDeadNote(gpNote.isMutedEnabled());
 			tgNote.getEffect().setPalmMute(gpNote.isPalmMutedEnabled());
+			
 			tgVoice.addNote( tgNote );
 		}
 	}

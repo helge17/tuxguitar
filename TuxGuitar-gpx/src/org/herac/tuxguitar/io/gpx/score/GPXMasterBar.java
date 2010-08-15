@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXMasterBar extends GPXDocumentElement {
+public class GPXMasterBar {
 	
 	private int[] barIds;
 	private int[] time;
@@ -8,8 +8,8 @@ public class GPXMasterBar extends GPXDocumentElement {
 	private int repeatCount;
 	private boolean repeatStart;
 	
-	public GPXMasterBar(GPXDocument document){
-		super(document);
+	public GPXMasterBar(){
+		super();
 	}
 	
 	public int[] getBarIds() {

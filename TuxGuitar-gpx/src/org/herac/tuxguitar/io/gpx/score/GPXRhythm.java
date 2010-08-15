@@ -1,26 +1,15 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXRhythm extends GPXDocumentElement {
+public class GPXRhythm {
 	
-	
-/*
-
-Whole
-Half
-Quarter
-Eighth
-16th
-32nd
-64th
-*/
 	private int id;
 	private int augmentationDotCount;
 	private int primaryTupletNum;
 	private int primaryTupletDen;
 	private String noteValue;
 	
-	public GPXRhythm(GPXDocument document){
-		super(document);
+	public GPXRhythm(){
+		super();
 	}
 
 	public int getId() {
