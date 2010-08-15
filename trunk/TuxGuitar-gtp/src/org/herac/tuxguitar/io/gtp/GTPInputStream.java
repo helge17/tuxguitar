@@ -105,9 +105,9 @@ public abstract class GTPInputStream extends GTPFileFormat implements TGInputStr
 	}
 	
 	protected String readString(int size, int len, String charset) throws IOException{
-		byte[] bytes = new byte[ (size > 0?size:len) ];
+		byte[] bytes = new byte[ (size > 0 ? size : len ) ];
 		this.stream.read(bytes);
-		return newString(bytes,(len >= 0?len:size), charset);
+		return newString(bytes,(len >= 0 && len <= bytes.length ? len : size ), charset);
 	}
 	
 	protected String readString(int length, String charset) throws IOException{
