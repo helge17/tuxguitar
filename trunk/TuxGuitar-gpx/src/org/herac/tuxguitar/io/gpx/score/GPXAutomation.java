@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXAutomation extends GPXDocumentElement {
+public class GPXAutomation {
 	
 	private String type;
 	private int barId;
@@ -9,8 +9,8 @@ public class GPXAutomation extends GPXDocumentElement {
 	private boolean visible;
 	private int[] value;
 	
-	public GPXAutomation(GPXDocument document){
-		super(document);
+	public GPXAutomation(){
+		super();
 	}
 
 	public String getType() {

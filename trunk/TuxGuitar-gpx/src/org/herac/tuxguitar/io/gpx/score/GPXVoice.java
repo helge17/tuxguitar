@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXVoice extends GPXDocumentElement {
+public class GPXVoice {
 	
 	private int id;
 	private int[] beatIds;
 	
-	public GPXVoice(GPXDocument document){
-		super(document);
+	public GPXVoice(){
+		super();
 	}
 	
 	public int getId() {

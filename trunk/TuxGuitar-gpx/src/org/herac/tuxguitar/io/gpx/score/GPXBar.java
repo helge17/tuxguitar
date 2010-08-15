@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXBar extends GPXDocumentElement {
+public class GPXBar {
 	
 	private int id;
 	private int[] voiceIds;
 	private String clef;
 	private String simileMark;
 	
-	public GPXBar(GPXDocument document){
-		super(document);
+	public GPXBar(){
+		super();
 	}
 	
 	public int getId() {

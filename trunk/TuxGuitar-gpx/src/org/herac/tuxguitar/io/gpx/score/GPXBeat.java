@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.gpx.score;
 
-public class GPXBeat extends GPXDocumentElement {
+public class GPXBeat {
 	
 	private int id;
 	private int rhythmId;
 	private int[] noteIds;
 	private String dynamic;
 	
-	public GPXBeat(GPXDocument document){
-		super(document);
+	public GPXBeat(){
+		super();
 	}
 	
 	public int getId() {
