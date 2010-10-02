@@ -59,8 +59,8 @@ subdirs_jni?=\
  TuxGuitar-jack \
  #}subdirs_jni
 
-#  
-export PACKAGE_JAR 
+#
+export PACKAGE_JAR
 ###
 
 out_java?=\
@@ -94,6 +94,8 @@ out_linux?=\
  ./TuxGuitar-oss/jni/libtuxguitar-oss-jni.so \
  ./TuxGuitar-fluidsynth/tuxguitar-fluidsynth.jar \
  ./TuxGuitar-fluidsynth/jni/libtuxguitar-fluidsynth-jni.so \
+ ./TuxGuitar-jack/tuxguitar-jack.jar \
+ ./TuxGuitar-jack/jni/libtuxguitar-jack-jni.so \
  #}out_linux
 
 out_windows?=TuxGuitar-winmm/tuxguitar-winmm.jar
@@ -101,7 +103,7 @@ out_windows?=TuxGuitar-winmm/tuxguitar-winmm.jar
 out_macos?=TuxGuitar-CoreAudio/tuxguitar-coreaudio.jar
 
 #all?=${out_java} out_${JNI_OS} ${out_jsa} ${out_sun}  # TODO
-all?=${out_java} ${out_${JNI_OS}} ${out_jsa} 
+all?=${out_java} ${out_${JNI_OS}} ${out_jsa}
 
 ###
 
@@ -146,7 +148,7 @@ build: help all
 
 rebuild: clean fix build
 
-all: ${all} 
+all: ${all}
 
 all-java: ${out_java}
 
@@ -188,6 +190,7 @@ install: ${all}
 #	-install -m 755 ./TuxGuitar/${PACKAGE} ${INSTALL_BIN_DIR}/${PACKAGE}
 	-install -m 644 ${PACKAGE_JAR} ${INSTALL_JAR_DIR}/${PACKAGE}.jar
 	install -d ${INSTALL_BIN_DIR}
+	mkdir -p  ./TuxGuitar/share/plugins/
 	for t in ${subdirs} ; do cp $$t/*.jar ./TuxGuitar/share/plugins/ ; done
 #	-find . -iname "*.jar" -exec cp {} ./TuxGuitar/share/plugins/ \;
 	cp -rfa ./TuxGuitar/doc/* ${INSTALL_DOC_DIR}/
@@ -213,15 +216,15 @@ clean:
 	find . -type l -exec rm -fv "{}" \;
 	rm -rf TuxGuitar/tmp
 
-run: ${PACKAGE_EXEC} 
-	cd ./TuxGuitar && APP_HOME=. ; ${SHELL} $< 
+run: ${PACKAGE_EXEC}
+	cd ./TuxGuitar && APP_HOME=. ; ${SHELL} $<
 
 test: ${PACKAGE_EXEC}
 	cd TuxGuitar && APP_HOME=. ; \
 	 export PACKAGE_CLASSPATH="${PACKAGE_JAR}:." ;\
 	 DEBUG=1 ${SHELL} $< --version
 
-help:	
+help:
 	@echo "# JAVA_HOME=${JAVA_HOME}"
 	@echo "# JAVA=${JAVA}"
 	@echo "# JAVAC=${JAVAC}"
@@ -240,14 +243,14 @@ release_dir?=${PACKAGE}-${package_version}
 dist tarball: snapshot
 
 
-snapshot: ../${snapshot_dir}.tar.gz 
+snapshot: ../${snapshot_dir}.tar.gz
 
 ../${snapshot_dir}.tar.gz: ../${snapshot_dir}
 	cd ${@D} && tar czf ${@F}.tar.gz \
 	 --exclude="debian" \
 	 ${@D}
 
-release:  ../${release_dir}.tar.gz 
+release:  ../${release_dir}.tar.gz
 
 ../${release_dir}.tar.gz: ../${release_dir}
 	cd ${@D} && tar czf ${@F}.tar.gz \
