@@ -1,6 +1,2 @@
 ./TuxGuitar-alsa/tuxguitar-alsa.jar usr/share/tuxguitar/plugins/
-./debian/tmp/tuxguitar-snapshot/usr/lib/jni/libtuxguitar-alsa-jni.so usr/lib/jni/
-#TODO
-./TuxGuitar-alsa/tuxguitar-alsa.jar usr/share/tuxguitar/plugins/
-./debian/tmp/tuxguitar-snapshot/usr/lib/jni/libtuxguitar-alsa-jni.so usr/lib/jni/
-#TODO
+./debian/tmp/tuxguitar/usr/lib/jni/libtuxguitar-alsa-jni.so usr/lib/jni/

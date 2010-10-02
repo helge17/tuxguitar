@@ -65,6 +65,8 @@ swt_guess_()
     [ -r "$t" ] && f="$t"
     t="/usr/lib/java/swt.jar"
     [ -r "$t" ] && f="$t"
+    t="/usr/lib/java/swt-gtk-3.5.1.jar"
+    [ -r "$t" ] && f="$t"
     t="/usr/share/java/swt-gtk-3.4.jar"
     [ -r "$t" ] && f="$t"
     t="/usr/lib/java/swt3.2-gtk.jar"
@@ -91,25 +93,28 @@ mozilla_guess_()
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/xulrunner-1.9"
     test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/xulrunner-`xulrunner-1.9.1 --gre-version`"
+    test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/xulrunner-1.9.1"
     test -r "$t/libxpcom.so" && d="$t"
     echo "$d"
 }
 
+
 #
 env_()
 {
     t="/etc/default/${PACKAGE}/env.sh"
-    [ -r "$t" ] && source "$t"
+    [ -r "$t" ] && . "$t"
 
     t="/etc/${PACKAGE}/env.sh"
-    [ -r "$t" ] && source "$t"
+    [ -r "$t" ] && . "$t"
 
 # java
-    [ -z ${JAVA_HOME} ] && t=$(java_guess_) && [ -d "$t" ] && JAVA_HOME=$t
+    [ -z ${JAVA_HOME} ] && t=$(java_guess_) && [ -d "$t" ] && JAVA_HOME="$t"
     if [ -d "${JAVA_HOME}" ] ; then
         export JAVA_HOME
-        JAVA=${JAVA:=${JAVA_HOME}/jre/bin/java}
+        JAVA="${JAVA:=${JAVA_HOME}/jre/bin/java}"
         [ -x ${JAVA} ] && export JAVA
     else
         JAVA=${JAVA:=java}
@@ -117,10 +122,11 @@ env_()
     fi
 
 # mozilla
-    [ -z ${MOZILLA_FIVE_HOME} ] && t=$(mozilla_guess_) && [ -d "$t" ] && MOZILLA_FIVE_HOME=$t
+    [ -z ${MOZILLA_FIVE_HOME} ] \
+	&& t=$(mozilla_guess_) && [ -d "$t" ] && MOZILLA_FIVE_HOME=$t
     if [ -d "$MOZILLA_FIVE_HOME" ] ; then
         export MOZILLA_FIVE_HOME
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MOZILLA_FIVE_HOME
+        export LD_LIBRARY_PATH="$MOZILLA_FIVE_HOME"
     else
         echo '$MOZILLA_FIVE_HOME not valid : check doc shipped w/ tuxguitar'
     fi
@@ -129,11 +135,12 @@ env_()
     [ ! -z ${DEBUG} ] && echo "# JAVA_HOME=${JAVA_HOME}"}
 }
 
+
 tuxguitar_()
 {
     local PACKAGE=${PACKAGE:=tuxguitar}
     local PACKAGE_HOME=${PACKAGE_HOME:=/usr/share/${PACKAGE}/}
-    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.app.TGMain}
+    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.gui.TGMain}
     local PACKAGE_LIB=${PACKAGE_LIB:=/usr/lib/jni}
 # java env
     JAVA=${JAVA:=java}
@@ -148,11 +155,11 @@ tuxguitar_()
     [ -r "$t" ] && CLASSPATH=${CLASSPATH}:$t
 
     JAVA_FLAGS=${JAVA_FLAGS:="-Xms128m -Xmx128m"}
-    JAVA_FLAGS="\
-${JAVA_FLAGS} \
+    JAVA_FLAGS=" ${JAVA_FLAGS} \
         -Djava.library.path=${PACKAGE_LIB} \
         -D${PACKAGE}.share.path=/usr/share/${PACKAGE} \
-        -cp ${CLASSPATH}:${PACKAGE_CLASSPATH}"
+        -cp ${CLASSPATH}:${PACKAGE_CLASSPATH} \
+        "
     local arg=""
     [ -z "$1" ] && arg="/usr/share/tuxguitar/tuxguitar.tg"
 # run java
@@ -163,6 +170,7 @@ ${JAVA_FLAGS} \
 }
 
 # main
+
 env_
 tuxguitar_ "$@"
 

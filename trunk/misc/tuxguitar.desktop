@@ -2,7 +2,6 @@
 Version=1.0
 Name=tuxguitar
 Comment=Edit, playback guitar tablatures
-Comment[bg]=Редактиране и изпълнение на таблатури за китара
 Comment[fr]=Edite, joue des tablatures de guitare
 Comment[es]=Edita, reproduce tablaturas de guitarra
 Exec=tuxguitar
