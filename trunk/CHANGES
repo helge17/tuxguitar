@@ -1,0 +1,22 @@
+TuxGuitar Dev changes:
+
+* Add Show/Hide Toolbars feature.
+* Add Let Ring support
+
+TuxGuitar 1.2 changes:
+
+* Fix some bugs
+* Support measure range to loop
+* Transpose notes feature
+* Optionally transpose afected notes when change tuning
+* Move beats left|right support
+* More song properties options.
+* Add multiple measure support
+* Clean multiple measure support
+* Number of pastes support
+* Better lilypond plugin
+* Better fluidsynth plugin
+* New jack plugin
+* New community integration plugin
+* New cocoa integration plugin
+* New audio unit plugin
