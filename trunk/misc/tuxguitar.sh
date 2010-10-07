@@ -97,6 +97,8 @@ mozilla_guess_()
     test -r "$t/libxpcom.so" && d="$t"
     t="/usr/lib/xulrunner-1.9.1"
     test -r "$t/libxpcom.so" && d="$t"
+    t="/usr/lib/xulrunner-1.9.2"
+    test -r "$t/libxpcom.so" && d="$t"
     echo "$d"
 }
 
@@ -123,7 +125,7 @@ env_()
 
 # mozilla
     [ -z ${MOZILLA_FIVE_HOME} ] \
-	&& t=$(mozilla_guess_) && [ -d "$t" ] && MOZILLA_FIVE_HOME=$t
+	&& t=$(mozilla_guess_) && [ -d "$t" ] && MOZILLA_FIVE_HOME="$t"
     if [ -d "$MOZILLA_FIVE_HOME" ] ; then
         export MOZILLA_FIVE_HOME
         export LD_LIBRARY_PATH="$MOZILLA_FIVE_HOME"
@@ -140,7 +142,8 @@ tuxguitar_()
 {
     local PACKAGE=${PACKAGE:=tuxguitar}
     local PACKAGE_HOME=${PACKAGE_HOME:=/usr/share/${PACKAGE}/}
-    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.gui.TGMain}
+#   local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.gui.TGMain}
+    local PACKAGE_MAIN=${PACKAGE_MAIN:=org.herac.tuxguitar.app.TGMain}
     local PACKAGE_LIB=${PACKAGE_LIB:=/usr/lib/jni}
 # java env
     JAVA=${JAVA:=java}
@@ -163,6 +166,7 @@ tuxguitar_()
     local arg=""
     [ -z "$1" ] && arg="/usr/share/tuxguitar/tuxguitar.tg"
 # run java
+    [ ! -z ${DEBUG} ] && echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
     [ ! -z ${DEBUG} ] && ${JAVA} -version
     [ ! -z ${DEBUG} ] && ${JAVA} ${JAVA_FLAGS} ${PACKAGE_MAIN} --version
 
