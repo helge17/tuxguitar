@@ -63,3 +63,13 @@ Priority: extra
 Description: tuxguitar plugin for sound playback using JACKD
  Use Tuxguitar along this plugin if your Sound Device is supported by JACK.
  A MIDI expander is required (Hardware or Software).
+
+Package: tuxguitar-snapshot
+Architecture: any
+Section: sound
+Depends: ${shlibs:Depends}, tuxguitar (= ${source:Version}), ${misc:Depends}
+Suggests: qjackctl
+Priority: extra
+Description: tuxguitar unreleased version
+ Remove on issue and upgrade tuxguitar
+
