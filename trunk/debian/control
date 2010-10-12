@@ -65,11 +65,11 @@ Description: tuxguitar plugin for sound playback using JACKD
  A MIDI expander is required (Hardware or Software).
 
 Package: tuxguitar-snapshot
-Architecture: any
+Architecture: all
 Section: sound
 Depends: ${shlibs:Depends}, tuxguitar (= ${source:Version}), ${misc:Depends}
-Suggests: qjackctl
+Suggests: rzr
 Priority: extra
 Description: tuxguitar unreleased version
- Remove on issue and upgrade tuxguitar
+ TODO: Remove on issue and upgrade tuxguitar
 
