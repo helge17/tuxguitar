@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.sound.midi.MidiUnavailableException;
-
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -79,11 +77,6 @@ public class MidiPlayer{
 		this.volume = MAX_VOLUME;
 	}
 	
-	/**
-	 * Inicia el Secuenciador y Sintetizador
-	 * @throws MidiUnavailableException 
-	 */
-	
 	public void init(TGSongManager songManager) {
 		this.songManager = songManager;
 		this.outputPortProviders = new ArrayList();
@@ -94,23 +87,14 @@ public class MidiPlayer{
 		this.reset();
 	}
 	
-	/**
-	 * Retorna una lista de instrumentos
-	 */
 	public MidiInstrument[] getInstruments(){
 		return MidiInstrument.INSTRUMENT_LIST;
 	}
 	
-	/**
-	 * Retorna una lista de instrumentos
-	 */
 	public MidiPercussion[] getPercussions(){
 		return MidiPercussion.PERCUSSION_LIST;
 	}
 	
-	/**
-	 * Resetea los valores
-	 */
 	public void reset(){
 		this.stop();
 		this.lock.lock();
@@ -119,10 +103,6 @@ public class MidiPlayer{
 		this.lock.unlock();
 	}
 	
-	/**
-	 * Cierra el Secuenciador y Sintetizador
-	 * @throws MidiUnavailableException 
-	 */
 	public void close(){
 		try {
 			this.closeSequencer();
@@ -132,10 +112,6 @@ public class MidiPlayer{
 		}
 	}
 	
-	/**
-	 * Para la reproduccion
-	 * @throws MidiUnavailableException 
-	 */
 	public void stop(boolean paused) {
 		try{
 			this.setPaused(paused);
@@ -148,10 +124,6 @@ public class MidiPlayer{
 		}
 	}
 	
-	/**
-	 * Para la reproduccion
-	 * @throws MidiUnavailableException 
-	 */
 	public void stop() {
 		this.stop(false);
 	}
@@ -160,11 +132,6 @@ public class MidiPlayer{
 		this.stop(true);
 	}
 	
-	/**
-	 * Inicia la reproduccion
-	 * @throws MidiPlayerException 
-	 * @throws MidiUnavailableException 
-	 */
 	public synchronized void play() throws MidiPlayerException{
 		try {
 			final boolean notifyStarted = (!this.isRunning());
@@ -310,16 +277,10 @@ public class MidiPlayer{
 		this.starting = starting;
 	}
 	
-	/**
-	 * Asigna el valor a running
-	 */
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
 	
-	/**
-	 * Retorna True si esta reproduciendo
-	 */
 	public boolean isRunning() {
 		try {
 			return (this.running || this.getSequencer().isRunning() || this.isStarting());
@@ -337,32 +298,19 @@ public class MidiPlayer{
 		this.paused = paused;
 	}
 	
-	/**
-	 * Retorna True si hay cambios en la posicion
-	 */
 	protected boolean isChangeTickPosition() {
 		return this.changeTickPosition;
 	}
 	
-	/**
-	 * Asigna los cambios de la posicion
-	 */
 	private void setChangeTickPosition(boolean changeTickPosition) {
 		this.changeTickPosition = changeTickPosition;
 	}
 	
-	/**
-	 * Indica la posicion del secuenciador
-	 * @throws MidiUnavailableException 
-	 */
 	public void setTickPosition(long position) {
 		this.tickPosition = position;
 		this.setChangeTickPosition(true);
 	}
 	
-	/**
-	 * Retorna el tick de la nota que esta reproduciendo
-	 */
 	public long getTickPosition() {
 		return this.tickPosition;
 	}
@@ -381,10 +329,6 @@ public class MidiPlayer{
 		}
 	}
 	
-	/**
-	 * Agrega la Secuencia
-	 * @throws MidiUnavailableException 
-	 */
 	public void addSequence() {
 		try{
 			MidiSequenceParser parser = new MidiSequenceParser(this.songManager,MidiSequenceParser.DEFAULT_PLAY_FLAGS,getMode().getCurrentPercent(),0);		
@@ -577,16 +521,10 @@ public class MidiPlayer{
 		return this.outputTransmitter;
 	}
 	
-	/**
-	 * Retorna el Puerto Midi
-	 */
 	public MidiOutputPort getOutputPort(){
 		return this.outputPort;
 	}
 	
-	/**
-	 * Retorna el Sequenciador 
-	 */
 	public MidiSequencer getSequencer(){
 		if (this.sequencer == null) {
 			this.sequencer = new MidiSequencerEmpty();
