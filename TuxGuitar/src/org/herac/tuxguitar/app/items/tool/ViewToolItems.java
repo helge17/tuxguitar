@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.view.ShowFretBoardAction;
-import org.herac.tuxguitar.app.actions.view.ShowMixerAction;
+import org.herac.tuxguitar.app.actions.view.ShowInstrumentsAction;
 import org.herac.tuxguitar.app.actions.view.ShowTransportAction;
 import org.herac.tuxguitar.app.items.ToolItems;
 
@@ -25,7 +25,7 @@ public class ViewToolItems extends ToolItems{
 	public static final String NAME = "view.items";
 	
 	private ToolItem showFretBoard;
-	private ToolItem showMixer;
+	private ToolItem showInstruments;
 	private ToolItem showTransport;
 	
 	public ViewToolItems(){
@@ -37,9 +37,9 @@ public class ViewToolItems extends ToolItems{
 		this.showFretBoard = new ToolItem(toolBar, SWT.CHECK);
 		this.showFretBoard.addSelectionListener(TuxGuitar.instance().getAction(ShowFretBoardAction.NAME));
 		
-		//--MIXER--
-		this.showMixer = new ToolItem(toolBar, SWT.CHECK);
-		this.showMixer.addSelectionListener(TuxGuitar.instance().getAction(ShowMixerAction.NAME));
+		//--INSTRUMENTS--
+		this.showInstruments = new ToolItem(toolBar, SWT.CHECK);
+		this.showInstruments.addSelectionListener(TuxGuitar.instance().getAction(ShowInstrumentsAction.NAME));
 		
 		//--TRANSPORT--
 		this.showTransport = new ToolItem(toolBar, SWT.CHECK);
@@ -51,19 +51,19 @@ public class ViewToolItems extends ToolItems{
 	
 	public void update(){
 		this.showFretBoard.setSelection(TuxGuitar.instance().getFretBoardEditor().isVisible());
-		this.showMixer.setSelection(!TuxGuitar.instance().getMixer().isDisposed());
+		this.showInstruments.setSelection(!TuxGuitar.instance().getChannelManager().isDisposed());
 		this.showTransport.setSelection(!TuxGuitar.instance().getTransport().isDisposed());
 	}
 	
 	public void loadProperties(){
 		this.showFretBoard.setToolTipText(TuxGuitar.getProperty("view.show-fretboard"));
-		this.showMixer.setToolTipText(TuxGuitar.getProperty("view.show-mixer"));
+		this.showInstruments.setToolTipText(TuxGuitar.getProperty("view.show-instruments"));
 		this.showTransport.setToolTipText(TuxGuitar.getProperty("view.show-transport"));
 	}
 	
 	public void loadIcons(){
 		this.showFretBoard.setImage(TuxGuitar.instance().getIconManager().getFretboard());
-		this.showMixer.setImage(TuxGuitar.instance().getIconManager().getMixer());
+		this.showInstruments.setImage(TuxGuitar.instance().getIconManager().getInstruments());
 		this.showTransport.setImage(TuxGuitar.instance().getIconManager().getTransport());
 	}
 }

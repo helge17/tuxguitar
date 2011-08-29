@@ -1,3 +1,4 @@
+/*
 package org.herac.tuxguitar.app.mixer;
 
 import java.util.ArrayList;
@@ -204,3 +205,4 @@ public class TGMixerTrackChannel {
 		}
 	}
 }
+*/

@@ -1,7 +1,12 @@
 TuxGuitar Dev changes:
 
-* Add Show/Hide Toolbars feature.
-* Add Let Ring support
+* Add show/hide toolbars feature.
+* Add let ring support
+* New oxygen skin
+--* New abc exporter and importer plugin.
+--* New svg exporter plugin
+--* New image exporter plugin 
+
 
 TuxGuitar 1.2 changes:
 

@@ -129,6 +129,16 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		//leo los comentarios
 		song.setComments(readIntegerString());
 		
+		//leo la cantidad de canales
+		int channelCount = readByte();
+		
+		//leo las canales
+		for(int i = 0;i < channelCount;i++){
+			TGChannel channel = this.factory.newChannel();
+			readChannel(channel);
+			song.addChannel(channel);
+		}
+		
 		//leo la cantidad de measure headers
 		int headerCount = readShort();
 		
@@ -170,8 +180,8 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		//leo el mute
 		track.setMute((header & TRACK_MUTE) != 0);
 		
-		//leo el canal
-		readChannel(track.getChannel());
+		//leo el id del canal
+		track.setChannelId(readShort());
 		
 		//leo la cantidad de compases
 		int measureCount = song.countMeasureHeaders();
@@ -278,14 +288,20 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	}
 	
 	private void readChannel(TGChannel channel){
+		//leo el id
+		channel.setChannelId(readShort());
+		
 		//leo el canal
 		channel.setChannel(readByte());
 		
 		//leo el canal de efectos
 		channel.setEffectChannel(readByte());
 		
-		//leo el instrumento
-		channel.setInstrument(readByte());
+		//leo el banco de sonidos
+		channel.setBank(readByte());
+		
+		//leo el programa
+		channel.setProgram(readByte());
 		
 		//leo el volumen
 		channel.setVolume(readByte());
@@ -304,6 +320,9 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		
 		//leo el tremolo
 		channel.setTremolo(readByte());
+
+		//leo el nombre
+		channel.setName(readUnsignedByteString());
 	}
 	
 	private void readBeats(TGMeasure measure,TGBeatData data){

@@ -34,7 +34,6 @@ public class CloneTrackAction extends Action{
 		
 		getSongManager().cloneTrack(caret.getTrack());
 		updateTablature();
-		TuxGuitar.instance().getMixer().update();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());

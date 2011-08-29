@@ -36,6 +36,7 @@ import org.herac.tuxguitar.app.editors.TGEditorManager;
 import org.herac.tuxguitar.app.editors.TGRedrawListener;
 import org.herac.tuxguitar.app.editors.TGUpdateListener;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
+import org.herac.tuxguitar.app.editors.channel.TGChannelManagerDialog;
 import org.herac.tuxguitar.app.editors.chord.CustomChordManager;
 import org.herac.tuxguitar.app.editors.lyric.LyricEditor;
 import org.herac.tuxguitar.app.editors.matrix.MatrixEditor;
@@ -43,7 +44,6 @@ import org.herac.tuxguitar.app.helper.FileHistory;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.items.ItemManager;
 import org.herac.tuxguitar.app.marker.MarkerList;
-import org.herac.tuxguitar.app.mixer.TGMixer;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.config.TGConfigManagerImpl;
@@ -111,7 +111,7 @@ public class TuxGuitar {
 	
 	private TGTableViewer table;
 	
-	private TGMixer songMixer;
+	private TGChannelManagerDialog channelManager;
 	
 	private TGTransport songTransport;
 	
@@ -357,10 +357,10 @@ public class TuxGuitar {
 			getFretBoardEditor().hideFretBoard();
 		}
 		//---Mixer---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MIXER)){
+		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_INSTRUMENTS)){
 			new SyncThread(new Runnable() {
 				public void run() {
-					getMixer().show();
+					getChannelManager().show();
 				}
 			}).start();
 		}
@@ -460,11 +460,11 @@ public class TuxGuitar {
 		return this.songManager;
 	}
 	
-	public TGMixer getMixer(){
-		if(this.songMixer == null){
-			this.songMixer = new TGMixer();
+	public TGChannelManagerDialog getChannelManager(){
+		if( this.channelManager == null ){
+			this.channelManager = new TGChannelManagerDialog();
 		}
-		return this.songMixer;
+		return this.channelManager;
 	}
 	
 	public TGTransport getTransport(){

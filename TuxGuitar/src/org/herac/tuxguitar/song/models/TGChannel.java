@@ -3,9 +3,11 @@ package org.herac.tuxguitar.song.models;
 import org.herac.tuxguitar.song.factory.TGFactory;
 
 public abstract class TGChannel {
+	
 	public static final short DEFAULT_PERCUSSION_CHANNEL = 9;
 	
-	public static final short DEFAULT_INSTRUMENT = 25;
+	public static final short DEFAULT_BANK = 0;
+	public static final short DEFAULT_PROGRAM = 25;
 	public static final short DEFAULT_VOLUME = 127;
 	public static final short DEFAULT_BALANCE = 64;
 	public static final short DEFAULT_CHORUS = 0;
@@ -13,26 +15,40 @@ public abstract class TGChannel {
 	public static final short DEFAULT_PHASER = 0;
 	public static final short DEFAULT_TREMOLO = 0;
 	
+	private int channelId;
 	private short channel;
 	private short effectChannel;
-	private short instrument;
+	private short bank;
+	private short program;
 	private short volume;
 	private short balance;
 	private short chorus;
 	private short reverb;
 	private short phaser;
 	private short tremolo;
+	private String name;
 	
 	public TGChannel() {
+		this.channelId = 0;
 		this.channel = 0;
 		this.effectChannel = 0;
-		this.instrument = DEFAULT_INSTRUMENT;
+		this.bank = DEFAULT_BANK;
+		this.program = DEFAULT_PROGRAM;
 		this.volume = DEFAULT_VOLUME;
 		this.balance = DEFAULT_BALANCE;
 		this.chorus = DEFAULT_CHORUS;
 		this.reverb = DEFAULT_REVERB;
 		this.phaser = DEFAULT_PHASER;
 		this.tremolo = DEFAULT_TREMOLO;
+		this.name = new String();
+	}
+	
+	public int getChannelId() {
+		return this.channelId;
+	}
+	
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
 	}
 	
 	public short getBalance() {
@@ -67,12 +83,20 @@ public abstract class TGChannel {
 		this.chorus = chorus;
 	}
 	
-	public short getInstrument() {
-		return (!this.isPercussionChannel()?this.instrument:0);
+	public short getBank() {
+		return this.bank;
 	}
 	
-	public void setInstrument(short instrument) {
-		this.instrument = instrument;
+	public void setBank(short bank) {
+		this.bank = bank;
+	}
+	
+	public short getProgram() {
+		return (!this.isPercussionChannel()?this.program:0);
+	}
+	
+	public void setProgram(short program) {
+		this.program = program;
 	}
 	
 	public short getPhaser() {
@@ -107,6 +131,14 @@ public abstract class TGChannel {
 		this.volume = volume;
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public boolean isPercussionChannel(){
 		return TGChannel.isPercussionChannel(this.getChannel());
 	}
@@ -133,14 +165,17 @@ public abstract class TGChannel {
 	}
 	
 	public void copy(TGChannel channel){
+		channel.setChannelId(getChannelId());
 		channel.setChannel(getChannel());
 		channel.setEffectChannel(getEffectChannel());
-		channel.setInstrument(getInstrument());
+		channel.setBank(getBank());
+		channel.setProgram(getProgram());
 		channel.setVolume(getVolume());
 		channel.setBalance(getBalance());
 		channel.setChorus(getChorus());
 		channel.setReverb(getReverb());
 		channel.setPhaser(getPhaser());
 		channel.setTremolo(getTremolo());
+		channel.setName(getName());
 	}
 }

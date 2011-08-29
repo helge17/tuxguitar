@@ -7,6 +7,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TGColorImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.graphics.TGColor;
+import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGTrack;
 
@@ -36,7 +37,7 @@ public class TGTableCanvasPainter implements PaintListener{
 			boolean playing = TuxGuitar.instance().getPlayer().isRunning();
 			
 			painter.setBackground(new TGColorImpl(painter.getGC().getDevice().getSystemColor(SWT.COLOR_GRAY)));
-			painter.initPath(TGPainterImpl.PATH_FILL);
+			painter.initPath(TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(0,y,width,size);
 			painter.closePath();
@@ -54,7 +55,7 @@ public class TGTableCanvasPainter implements PaintListener{
 					painter.addRectangle(x,y,size - 2,size - 1);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainterImpl.PATH_FILL);
+					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(x,y,size - 1,size );
 					painter.closePath();
@@ -62,7 +63,7 @@ public class TGTableCanvasPainter implements PaintListener{
 				boolean hasCaret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().equals(measure);
 				if((playing && measure.isPlaying(this.viewer.getEditor().getTablature().getViewLayout())) || (!playing && hasCaret)){
 					painter.setBackground(new TGColorImpl(painter.getGC().getDevice().getSystemColor(SWT.COLOR_BLACK)));
-					painter.initPath(TGPainterImpl.PATH_FILL);
+					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(x + 4,y + 4,size - 9,size - 8);
 					painter.closePath();

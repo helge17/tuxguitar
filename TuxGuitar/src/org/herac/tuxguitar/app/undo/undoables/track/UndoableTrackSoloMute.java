@@ -32,7 +32,6 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 			manager.getTrackManager().changeSolo(track, this.redoSolo );
 			manager.getTrackManager().changeMute(track, this.redoMute );
 		}
-		TuxGuitar.instance().getMixer().updateValues();
 		TuxGuitar.instance().getTable().fireUpdate(false);
 		TuxGuitar.instance().updateCache(true);
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
@@ -53,7 +52,6 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 			manager.getTrackManager().changeSolo(track, this.undoSolo );
 			manager.getTrackManager().changeMute(track, this.undoMute );
 		}
-		TuxGuitar.instance().getMixer().updateValues();
 		TuxGuitar.instance().getTable().fireUpdate(false);
 		TuxGuitar.instance().updateCache(true);
 		if (TuxGuitar.instance().getPlayer().isRunning()) {

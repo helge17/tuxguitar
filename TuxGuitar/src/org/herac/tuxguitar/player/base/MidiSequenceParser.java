@@ -163,34 +163,37 @@ public class MidiSequenceParser {
 	 * Crea las pistas de la cancion
 	 */
 	private void createTrack(MidiSequenceHelper sh, TGTrack track) {
-		TGMeasure previous = null;
-		
-		this.addBend(sh,track.getNumber(),TGDuration.QUARTER_TIME,DEFAULT_BEND,track.getChannel().getChannel());
-		this.makeChannel(sh, track.getChannel(), track.getNumber());
-		
-		int mCount = sh.getMeasureHelpers().size();
-		for( int mIndex = 0 ; mIndex < mCount ; mIndex++ ){
-			MidiMeasureHelper mh = sh.getMeasureHelper( mIndex );
+		TGChannel tgChannel = this.manager.getChannel( track.getChannelId() );
+		if( tgChannel != null ){
+			TGMeasure previous = null;
 			
-			TGMeasure measure = track.getMeasure(mh.getIndex());
-			if(track.getNumber() == 1){
-				addTimeSignature(sh,measure, previous, mh.getMove());
-				addTempo(sh,measure, previous, mh.getMove());
-				addMetronome(sh,measure.getHeader(), mh.getMove() );
+			this.addBend(sh,track.getNumber(),TGDuration.QUARTER_TIME,DEFAULT_BEND, tgChannel.getChannel());
+			this.makeChannel(sh, tgChannel, track.getNumber());
+			
+			int mCount = sh.getMeasureHelpers().size();
+			for( int mIndex = 0 ; mIndex < mCount ; mIndex++ ){
+				MidiMeasureHelper mh = sh.getMeasureHelper( mIndex );
+				
+				TGMeasure measure = track.getMeasure(mh.getIndex());
+				if(track.getNumber() == 1){
+					addTimeSignature(sh,measure, previous, mh.getMove());
+					addTempo(sh,measure, previous, mh.getMove());
+					addMetronome(sh,measure.getHeader(), mh.getMove() );
+				}
+				//agrego los pulsos
+				makeBeats( sh, tgChannel, track, measure, mIndex, mh.getMove() );
+				
+				previous = measure;
 			}
-			//agrego los pulsos
-			makeBeats( sh, track, measure, mIndex, mh.getMove() );
-			
-			previous = measure;
 		}
 	}
 	
-	private void makeBeats(MidiSequenceHelper sh, TGTrack track, TGMeasure measure, int mIndex, long startMove) {
+	private void makeBeats(MidiSequenceHelper sh, TGChannel channel, TGTrack track, TGMeasure measure, int mIndex, long startMove) {
 		int[] stroke = new int[track.stringCount()];
 		TGBeat previous = null;
 		for (int bIndex = 0; bIndex < measure.countBeats(); bIndex++) {
 			TGBeat beat = measure.getBeat(bIndex);
-			makeNotes( sh, track, beat, measure.getTempo(), mIndex, bIndex, startMove, getStroke(beat, previous, stroke) );
+			makeNotes( sh, channel, track, beat, measure.getTempo(), mIndex, bIndex, startMove, getStroke(beat, previous, stroke) );
 			previous = beat;
 		}
 	}
@@ -198,7 +201,7 @@ public class MidiSequenceParser {
 	/**
 	 * Crea las notas del compas
 	 */
-	private void makeNotes( MidiSequenceHelper sh, TGTrack track, TGBeat beat, TGTempo tempo, int mIndex,int bIndex, long startMove, int[] stroke) {
+	private void makeNotes( MidiSequenceHelper sh, TGChannel tgChannel, TGTrack track, TGBeat beat, TGTempo tempo, int mIndex,int bIndex, long startMove, int[] stroke) {
 		for( int vIndex = 0; vIndex < beat.countVoices(); vIndex ++ ){
 			TGVoice voice = beat.getVoice(vIndex);
 			
@@ -211,18 +214,18 @@ public class MidiSequenceParser {
 					long start = applyStrokeStart(note, (th.getStart() + startMove) , stroke);
 					long duration = applyStrokeDuration(note, getRealNoteDuration(sh, track, note, tempo, th.getDuration(), mIndex,bIndex), stroke);
 					
-					int velocity = getRealVelocity(sh, note, track, mIndex, bIndex);
-					int channel = track.getChannel().getChannel();
-					int effectChannel = track.getChannel().getEffectChannel();
+					int velocity = getRealVelocity(sh, note, track, tgChannel, mIndex, bIndex);
+					int channel = tgChannel.getChannel();
+					int effectChannel = tgChannel.getEffectChannel();
 					
-					boolean percussionTrack = track.isPercussionTrack();
+					boolean percussionChannel = tgChannel.isPercussionChannel();
 					//---Fade In---
 					if(note.getEffect().isFadeIn()){
 						channel = effectChannel;
-						makeFadeIn(sh,track.getNumber(), start, duration, track.getChannel().getVolume(), channel);
+						makeFadeIn(sh,track.getNumber(), start, duration, tgChannel.getVolume(), channel);
 					}
 					//---Grace---
-					if(note.getEffect().isGrace() && effectChannel >= 0 && !percussionTrack ){
+					if(note.getEffect().isGrace() && effectChannel >= 0 && !percussionChannel ){
 						channel = effectChannel;
 						int graceKey = track.getOffset() + note.getEffect().getGrace().getFret() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue();
 						int graceLength = note.getEffect().getGrace().getDurationTime();
@@ -237,7 +240,7 @@ public class MidiSequenceParser {
 						
 					}
 					//---Trill---
-					if(note.getEffect().isTrill() && effectChannel >= 0 && !percussionTrack ){
+					if(note.getEffect().isTrill() && effectChannel >= 0 && !percussionChannel ){
 						int trillKey = track.getOffset() + note.getEffect().getTrill().getFret() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue();
 						long trillLength = note.getEffect().getTrill().getDuration().getTime();
 						
@@ -272,27 +275,27 @@ public class MidiSequenceParser {
 					}
 					
 					//---Bend---
-					if(note.getEffect().isBend() && effectChannel >= 0 && !percussionTrack ){
+					if(note.getEffect().isBend() && effectChannel >= 0 && !percussionChannel ){
 						channel = effectChannel;
 						makeBend(sh,track.getNumber(),start,duration,note.getEffect().getBend(),channel);
 					}
 					//---TremoloBar---
-					else if(note.getEffect().isTremoloBar() && effectChannel >= 0 && !percussionTrack ){
+					else if(note.getEffect().isTremoloBar() && effectChannel >= 0 && !percussionChannel ){
 						channel = effectChannel;
 						makeTremoloBar(sh,track.getNumber(),start,duration,note.getEffect().getTremoloBar(),channel);
 					}
 					//---Slide---
-					else if(note.getEffect().isSlide() && effectChannel >= 0 && !percussionTrack){
+					else if(note.getEffect().isSlide() && effectChannel >= 0 && !percussionChannel){
 						channel = effectChannel;
 						makeSlide(sh, note, track, mIndex, bIndex, startMove, channel);
 					}
 					//---Vibrato---
-					else if(note.getEffect().isVibrato() && effectChannel >= 0 && !percussionTrack){
+					else if(note.getEffect().isVibrato() && effectChannel >= 0 && !percussionChannel){
 						channel = effectChannel;
 						makeVibrato(sh,track.getNumber(),start,duration,channel);
 					}
 					//---Harmonic---
-					if(note.getEffect().isHarmonic() && !percussionTrack){
+					if(note.getEffect().isHarmonic() && !percussionChannel){
 						int orig = key;
 						
 						//Natural
@@ -306,7 +309,7 @@ public class MidiSequenceParser {
 						}
 						//Artifical/Tapped/Pinch/Semi
 						else{
-							if(note.getEffect().getHarmonic().isSemi() && !percussionTrack){
+							if(note.getEffect().getHarmonic().isSemi() && !percussionChannel){
 								makeNote(sh,track.getNumber(),Math.min(127,orig), start, duration,Math.max(TGVelocities.MIN_VELOCITY,velocity - (TGVelocities.VELOCITY_INCREMENT * 3)),channel);
 							}
 							key = (orig + TGEffectHarmonic.NATURAL_FREQUENCIES[note.getEffect().getHarmonic().getData()][1]);
@@ -353,7 +356,7 @@ public class MidiSequenceParser {
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.PHASER,fix(channel.getPhaser()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.TREMOLO,fix(channel.getTremolo()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.EXPRESSION, 127);
-		sh.getSequence().addProgramChange(getTick(TGDuration.QUARTER_TIME),track,number,fix(channel.getInstrument()));
+		sh.getSequence().addProgramChange(getTick(TGDuration.QUARTER_TIME),track,number,fix(channel.getProgram()));
 	}
 	/**
 	 * Agrega un Time Signature si es distinto al anterior
@@ -464,12 +467,12 @@ public class MidiSequenceParser {
 		return (value < maximum ? value : maximum );
 	}
 	
-	private int getRealVelocity(MidiSequenceHelper sh, TGNote note, TGTrack songTrack, int mIndex,int bIndex){
+	private int getRealVelocity(MidiSequenceHelper sh, TGNote note, TGTrack tgTrack, TGChannel tgChannel, int mIndex,int bIndex){
 		int velocity = note.getVelocity();
 		
 		//Check for Hammer effect
-		if(!songTrack.isPercussionTrack()){
-			MidiNoteHelper previousNote = getPreviousNote(sh, note,songTrack,mIndex,bIndex,false);
+		if(!tgChannel.isPercussionChannel()){
+			MidiNoteHelper previousNote = getPreviousNote(sh, note,tgTrack,mIndex,bIndex,false);
 			if(previousNote != null && previousNote.getNote().getEffect().isHammer()){
 				velocity = Math.max(TGVelocities.MIN_VELOCITY,(velocity - 25));
 			}

@@ -16,18 +16,18 @@ import org.herac.tuxguitar.app.actions.Action;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ShowMixerAction extends Action{
-	public static final String NAME = "action.view.show-mixer";
+public class ShowInstrumentsAction extends Action{
+	public static final String NAME = "action.view.show-instruments";
 	
-	public ShowMixerAction() {
+	public ShowInstrumentsAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(TypedEvent e){
-		if(TuxGuitar.instance().getMixer().isDisposed()){
-			TuxGuitar.instance().getMixer().show();
+		if(TuxGuitar.instance().getChannelManager().isDisposed()){
+			TuxGuitar.instance().getChannelManager().show();
 		}else{
-			TuxGuitar.instance().getMixer().dispose();
+			TuxGuitar.instance().getChannelManager().dispose();
 		}
 		return 0;
 	}

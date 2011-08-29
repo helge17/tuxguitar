@@ -78,7 +78,6 @@ public class UndoableTrackGeneric implements UndoableEdit{
 				}
 				TuxGuitar.instance().getSongManager().replaceTrack(this.track);
 				TuxGuitar.instance().fireUpdate();
-				TuxGuitar.instance().getMixer().update();
 			}
 		}
 	}
@@ -102,7 +101,6 @@ public class UndoableTrackGeneric implements UndoableEdit{
 				}
 				TuxGuitar.instance().getSongManager().replaceTrack(this.track);
 				TuxGuitar.instance().fireUpdate();
-				TuxGuitar.instance().getMixer().update();
 			}
 		}
 	}

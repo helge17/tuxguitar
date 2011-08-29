@@ -25,7 +25,6 @@ public class UndoableMoveTrackUp implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.moveTrackUp(manager.getTrack(this.trackNumber + 1));
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -37,7 +36,6 @@ public class UndoableMoveTrackUp implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.moveTrackDown(manager.getTrack(this.trackNumber));
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
 		this.undoCaret.update();
 		this.doAction = REDO_ACTION;
 	}

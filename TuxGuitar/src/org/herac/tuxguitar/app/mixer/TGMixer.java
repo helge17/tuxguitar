@@ -1,9 +1,4 @@
 /*
- * Created on 20-mar-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.mixer;
 
 import java.util.ArrayList;
@@ -31,12 +26,6 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
- */
 public class TGMixer implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	public static final int MUTE = 0x01;
@@ -273,3 +262,4 @@ public class TGMixer implements TGUpdateListener,IconLoader,LanguageLoader{
 		}
 	}
 }
+*/

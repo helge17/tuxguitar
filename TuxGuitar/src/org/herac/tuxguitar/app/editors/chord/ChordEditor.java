@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TGColorImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
+import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -182,7 +183,7 @@ public class ChordEditor extends Composite {
 		Iterator it = this.points.iterator();
 		while (it.hasNext()) {
 			Point point = (Point) it.next();
-			painter.initPath(TGPainterImpl.PATH_FILL);
+			painter.initPath(TGPainter.PATH_FILL);
 			painter.addOval(point.x - (noteSize / 2), point.y + (noteSize / 2),noteSize, noteSize);
 			painter.closePath();
 		}
@@ -485,18 +486,22 @@ public class ChordEditor extends Composite {
 					}
 				}
 				
-				TGChannel ch = getCurrentTrack().getChannel(); 
-				TuxGuitar.instance().getPlayer().playBeat(ch.getChannel(),
-				                                          ch.getInstrument(),
-				                                          ch.getVolume(),
-				                                          ch.getBalance(),
-				                                          ch.getChorus(),
-				                                          ch.getReverb(),
-				                                          ch.getPhaser(),
-				                                          ch.getTremolo(),
-				                                          beat,
-				                                          200,
-				                                          200 );
+				TGChannel channel = TuxGuitar.instance().getSongManager().getChannel(getCurrentTrack().getChannelId());
+				if( channel != null ){
+					TuxGuitar.instance().getPlayer().playBeat(
+						channel.getChannel(),
+						channel.getProgram(),
+						channel.getVolume(),
+						channel.getBalance(),
+						channel.getChorus(),
+						channel.getReverb(),
+						channel.getPhaser(),
+						channel.getTremolo(),
+						beat,
+						200,
+						200
+					);
+				}
 			}
 		}).start();
 	}

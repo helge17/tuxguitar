@@ -205,7 +205,7 @@ public class TransposeAction extends Action{
 	}
 	
 	public void transposeMeasure( UndoableJoined undoableJoined , TGMeasure measure, int transposition , boolean tryKeepString , boolean applyToChords ) {
-		if( transposition != 0 && !measure.getTrack().isPercussionTrack() ){
+		if( transposition != 0 && !getSongManager().isPercussionChannel(measure.getTrack().getChannelId()) ){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo( measure );
 			
@@ -217,7 +217,7 @@ public class TransposeAction extends Action{
 	}
 	
 	public void transposeTrack( UndoableJoined undoableJoined , TGTrack track, int transposition , boolean tryKeepString , boolean applyToChords ) {
-		if( transposition != 0 && !track.isPercussionTrack() ){
+		if( transposition != 0 && !getSongManager().isPercussionChannel(track.getChannelId()) ){
 			//comienza el undoable
 			UndoableTrackGeneric undoable = UndoableTrackGeneric.startUndo( track );
 			

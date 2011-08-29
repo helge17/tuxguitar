@@ -32,7 +32,6 @@ public class UndoableTrackInfo implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.getTrackManager().changeInfo(manager.getTrack(this.trackNumber),this.redoName,this.redoColor.clone(manager.getFactory()),this.redoOffset);
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -44,7 +43,6 @@ public class UndoableTrackInfo implements UndoableEdit{
 		TGSongManager manager = TuxGuitar.instance().getSongManager();
 		manager.getTrackManager().changeInfo(manager.getTrack(this.trackNumber),this.undoName,this.undoColor.clone(manager.getFactory()),this.undoOffset);
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
