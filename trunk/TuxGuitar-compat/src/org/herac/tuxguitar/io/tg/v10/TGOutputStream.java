@@ -15,7 +15,9 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -47,6 +49,8 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
  */
 public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
+	private TGFactory factory;
+	private TGChannel channelAux;
 	private DataOutputStream dataOutputStream;
 	
 	public boolean isSupportedExtension(String extension) {
@@ -66,6 +70,8 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	}
 	
 	public void init(TGFactory factory,OutputStream stream){
+		this.factory = factory;
+		this.channelAux = null;
 		this.dataOutputStream = new DataOutputStream(stream);
 	}
 	
@@ -269,32 +275,34 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		header = (track.isMute())?header |= CHANNEL_MUTE:header;
 		writeHeader(header);
 		
+		TGChannel channel = getChannel(track.getSong(), track);
+		
 		//escribo el canal
-		writeByte(track.getChannel().getChannel());
+		writeByte(channel.getChannel());
 		
 		//escribo el canal de efectos
-		writeByte(track.getChannel().getEffectChannel());
+		writeByte(channel.getEffectChannel());
 		
 		//escribo el instrumento
-		writeByte(track.getChannel().getInstrument());
+		writeByte(channel.getProgram());
 		
 		//escribo el volumen
-		writeByte(track.getChannel().getVolume());
+		writeByte(channel.getVolume());
 		
 		//escribo el balance
-		writeByte(track.getChannel().getBalance());
+		writeByte(channel.getBalance());
 		
 		//escribo el chorus
-		writeByte(track.getChannel().getChorus());
+		writeByte(channel.getChorus());
 		
 		//escribo el reverb
-		writeByte(track.getChannel().getReverb());
+		writeByte(channel.getReverb());
 		
 		//escribo el phaser
-		writeByte(track.getChannel().getPhaser());
+		writeByte(channel.getPhaser());
 		
 		//escribo el tremolo
-		writeByte(track.getChannel().getTremolo());
+		writeByte(channel.getTremolo());
 	}
 	
 	private void writeBeats(TGMeasure measure,TGBeatData data){
@@ -656,6 +664,23 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private TGChannel getChannel( TGSong song, TGTrack track ){
+		TGSongManager tgSongManager = new TGSongManager(this.factory);
+		tgSongManager.setSong( song );
+		
+		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
+		if( tgChannel != null ){
+			return tgChannel;
+		}
+		if( this.channelAux == null ){
+			this.channelAux = tgSongManager.createChannel();
+			if( this.channelAux.getChannel() < 0 && song.countChannels() > 0 ){
+				this.channelAux = (song.getChannel(song.countChannels() - 1));
+			}
+		}
+		return this.channelAux;
 	}
 	
 	public class TGVoiceJoiner {

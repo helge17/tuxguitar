@@ -14,10 +14,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -26,7 +27,6 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -110,18 +110,21 @@ public class MusicXMLWriter {
 		Iterator tracks = this.manager.getSong().getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
+			TGChannel channel = this.manager.getChannel(track.getChannelId());
 			
 			Node scoreParts = this.addNode(partList,"score-part");
 			this.addAttribute(scoreParts, "id", "P" + track.getNumber());
 			
 			this.addNode(scoreParts, "part-name", track.getName());
 			
-			Node scoreInstrument = this.addAttribute(this.addNode(scoreParts, "score-instrument"), "id", "P" + track.getNumber() + "-I1");
-			this.addNode(scoreInstrument, "instrument-name",MidiInstrument.INSTRUMENT_LIST[track.getChannel().getInstrument()].getName());
+			if( channel != null ){
+				Node scoreInstrument = this.addAttribute(this.addNode(scoreParts, "score-instrument"), "id", "P" + track.getNumber() + "-I1");
+				this.addNode(scoreInstrument, "instrument-name",channel.getName());
 			
-			Node midiInstrument = this.addAttribute(this.addNode(scoreParts, "midi-instrument"), "id", "P" + track.getNumber() + "-I1");
-			this.addNode(midiInstrument, "midi-channel",Integer.toString(track.getChannel().getChannel() + 1));
-			this.addNode(midiInstrument, "midi-program",Integer.toString(track.getChannel().getInstrument() + 1));
+				Node midiInstrument = this.addAttribute(this.addNode(scoreParts, "midi-instrument"), "id", "P" + track.getNumber() + "-I1");
+				this.addNode(midiInstrument, "midi-channel",Integer.toString(channel.getChannel() + 1));
+				this.addNode(midiInstrument, "midi-program",Integer.toString(channel.getProgram() + 1));
+			}
 		}
 	}
 	

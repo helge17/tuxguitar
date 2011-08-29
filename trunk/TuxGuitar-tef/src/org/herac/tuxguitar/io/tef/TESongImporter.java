@@ -111,12 +111,17 @@ public class TESongImporter implements TGLocalFileImporter{
 	private void addTrackValues(TETrack[] tracks){
 		for(int i = 0; i < tracks.length; i ++){
 			TGTrack track = this.manager.getSong().getTrack(i);
-			track.getChannel().setVolume((short)((  (15 - tracks[i].getVolume()) * 127) / 15));
-			track.getChannel().setBalance((short)(( tracks[i].getPan() * 127) / 15));
-			track.getChannel().setInstrument((short)tracks[i].getInstrument());
+			
+			TGChannel tgChannel = this.manager.addChannel();
+			tgChannel.setVolume((short)((  (15 - tracks[i].getVolume()) * 127) / 15));
+			tgChannel.setBalance((short)(( tracks[i].getPan() * 127) / 15));
+			tgChannel.setProgram((short)tracks[i].getInstrument());
+			tgChannel.setName(("#" + tgChannel.getChannelId()));
 			if(tracks[i].isPercussion()){
-				TGChannel.setPercussionChannel(track.getChannel());
+				TGChannel.setPercussionChannel(tgChannel);
 			}
+			track.setChannelId(tgChannel.getChannelId());
+			
 			track.getStrings().clear();
 			int strings[] = tracks[i].getStrings();
 			

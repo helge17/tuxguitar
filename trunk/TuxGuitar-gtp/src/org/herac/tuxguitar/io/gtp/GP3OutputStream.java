@@ -16,6 +16,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -29,7 +30,6 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -101,7 +101,7 @@ public class GP3OutputStream extends GTPOutputStream{
 	private void writeChannels(TGSong song) throws IOException{
 		TGChannel[] channels = makeChannels(song);
 		for (int i = 0; i < channels.length; i++) {
-			writeInt(channels[i].getInstrument());
+			writeInt(channels[i].getProgram());
 			writeByte(toChannelByte(channels[i].getVolume()));
 			writeByte(toChannelByte(channels[i].getBalance()));
 			writeByte(toChannelByte(channels[i].getChorus()));
@@ -177,8 +177,10 @@ public class GP3OutputStream extends GTPOutputStream{
 	}
 	
 	private void createTrack(TGTrack track) throws IOException {
+		TGChannel channel = getChannel(track.getSong(), track);
+		
 		int flags = 0;
-		if (track.isPercussionTrack()) {
+		if (isPercussionChannel(track.getSong(),track.getChannelId())) {
 			flags |= 0x01;
 		}
 		writeUnsignedByte(flags);
@@ -194,8 +196,8 @@ public class GP3OutputStream extends GTPOutputStream{
 			writeInt(value);
 		}
 		writeInt(1);
-		writeInt(track.getChannel().getChannel() + 1);
-		writeInt(track.getChannel().getEffectChannel() + 1);
+		writeInt(channel.getChannel() + 1);
+		writeInt(channel.getEffectChannel() + 1);
 		writeInt(24);
 		writeInt(Math.min(Math.max(track.getOffset(),0),12));
 		writeColor(track.getColor());
@@ -480,7 +482,7 @@ public class GP3OutputStream extends GTPOutputStream{
 			channels[i] = getFactory().newChannel();
 			channels[i].setChannel((short)i);
 			channels[i].setEffectChannel((short)i);
-			channels[i].setInstrument((short)24);
+			channels[i].setProgram((short)24);
 			channels[i].setVolume((short)13);
 			channels[i].setBalance((short)8);
 			channels[i].setChorus((short)0);
@@ -489,15 +491,15 @@ public class GP3OutputStream extends GTPOutputStream{
 			channels[i].setTremolo((short)0);
 		}
 		
-		Iterator it = song.getTracks();
+		Iterator it = song.getChannels();
 		while (it.hasNext()) {
-			TGTrack track = (TGTrack) it.next();
-			channels[track.getChannel().getChannel()].setInstrument(track.getChannel().getInstrument());
-			channels[track.getChannel().getChannel()].setVolume(track.getChannel().getVolume());
-			channels[track.getChannel().getChannel()].setBalance(track.getChannel().getBalance());
-			channels[track.getChannel().getEffectChannel()].setInstrument(track.getChannel().getInstrument());
-			channels[track.getChannel().getEffectChannel()].setVolume(track.getChannel().getVolume());
-			channels[track.getChannel().getEffectChannel()].setBalance(track.getChannel().getBalance());
+			TGChannel tgChannel = (TGChannel) it.next();
+			channels[tgChannel.getChannel()].setProgram(tgChannel.getProgram());
+			channels[tgChannel.getChannel()].setVolume(tgChannel.getVolume());
+			channels[tgChannel.getChannel()].setBalance(tgChannel.getBalance());
+			channels[tgChannel.getEffectChannel()].setProgram(tgChannel.getProgram());
+			channels[tgChannel.getEffectChannel()].setVolume(tgChannel.getVolume());
+			channels[tgChannel.getEffectChannel()].setBalance(tgChannel.getBalance());
 		}
 		
 		return channels;

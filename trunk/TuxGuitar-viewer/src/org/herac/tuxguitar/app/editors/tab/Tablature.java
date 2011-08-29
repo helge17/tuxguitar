@@ -11,19 +11,30 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGPainter;
+import org.herac.tuxguitar.app.editors.TGColorImpl;
+import org.herac.tuxguitar.app.editors.TGPainterImpl;
+import org.herac.tuxguitar.app.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.editors.TGScrollBar;
-import org.herac.tuxguitar.app.editors.tab.layout.PageViewLayout;
-import org.herac.tuxguitar.app.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.app.system.config.TGConfig;
+import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.graphics.TGResourceFactory;
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGController;
+import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class Tablature{
+public class Tablature implements TGController {
 	
 	private Component component;
 	private TGScrollBar scroll;
@@ -32,7 +43,7 @@ public class Tablature{
 	private Caret caret;
 	//private int width;
 	private int height;
-	private ViewLayout viewLayout;
+	private TGLayout viewLayout;
 	
 	private TGBeatImpl playedBeat;
 	private TGMeasureImpl playedMeasure;
@@ -64,7 +75,7 @@ public class Tablature{
 		this.caret.update(1,TGDuration.QUARTER_TIME,1);
 	}
 	
-	public synchronized void paintTablature(TGPainter painter){
+	public synchronized void paintTablature(TGPainterImpl painter){
 		TuxGuitar.instance().lock();
 		this.setPainting(true);
 		try{
@@ -74,7 +85,7 @@ public class Tablature{
 			
 			this.scrollY = this.scroll.getValue();
 			
-			this.getViewLayout().paint(painter, area, 0, -this.scrollY );
+			this.getViewLayout().paint(painter, createRectangle(area) , 0, -this.scrollY );
 			
 			//this.width = this.viewLayout.getWidth();
 			this.height = this.viewLayout.getHeight();
@@ -160,7 +171,7 @@ public class Tablature{
 			if(TuxGuitar.instance().getPlayer().isRunning()){
 				this.setPainting(true);
 				
-				TGPainter painter = new TGPainter((Graphics2D)this.component.getGraphics());
+				TGPainterImpl painter = new TGPainterImpl((Graphics2D)this.component.getGraphics());
 				redrawPlayingMode(painter,false);
 				painter.dispose();
 				
@@ -170,10 +181,10 @@ public class Tablature{
 		}
 	}
 	
-	private void redrawPlayingMode(TGPainter painter,boolean force){
+	private void redrawPlayingMode(TGPainterImpl painter,boolean force){
 		if(!TuxGuitar.instance().isLocked()){
 			try{
-				TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
+				org.herac.tuxguitar.graphics.control.TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 				TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
 				if(measure != null && beat != null && measure.hasTrack(getCaret().getTrack().getNumber())){
 					if(!moveScrollTo(measure) || force){
@@ -214,11 +225,11 @@ public class Tablature{
 		this.songManager = songManager;
 	}
 	
-	public ViewLayout getViewLayout(){
+	public TGLayout getViewLayout(){
 		return this.viewLayout;
 	}
 	
-	public void setViewLayout(ViewLayout viewLayout){
+	public void setViewLayout(TGLayout viewLayout){
 		if(getViewLayout() != null){
 			getViewLayout().disposeLayout();
 		}
@@ -235,16 +246,86 @@ public class Tablature{
 	
 	public void reloadStyles(){
 		if(this.getViewLayout() != null){
-			this.getViewLayout().reloadStyles();
-			this.component.setBackground(getViewLayout().getResources().getBackgroundColor());
+			this.getViewLayout().loadStyles(1.0f);
+			this.component.setBackground(((TGColorImpl)getViewLayout().getResources().getBackgroundColor()).getHandle() );
 		}
 	}
 	
+	public TGRectangle createRectangle( Rectangle rectangle ){
+		return new TGRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
+	}
+	
 	public void reloadViewLayout(){
-		setViewLayout(new PageViewLayout(this,TGConfig.LAYOUT_STYLE));
+		setViewLayout(new TGLayoutVertical(this,TGConfig.LAYOUT_STYLE));
 	}
 	
 	public void dispose(){
 		this.getViewLayout().disposeLayout();
+	}
+
+	public TGResourceFactory getResourceFactory() {
+		return new TGResourceFactoryImpl();
+	}
+	
+	public void configureStyles(TGLayoutStyles styles) {
+		styles.setBufferEnabled(true);
+		styles.setStringSpacing( TGConfig.TAB_LINE_SPACING );
+		styles.setScoreLineSpacing( TGConfig.SCORE_LINE_SPACING );
+		styles.setFirstMeasureSpacing(0);
+		styles.setMinBufferSeparator(20);
+		styles.setMinTopSpacing(30);
+		styles.setMinScoreTabSpacing(TGConfig.MIN_SCORE_TABLATURE_SPACING);
+		styles.setFirstTrackSpacing(TGConfig.FIRST_TRACK_SPACING);
+		styles.setTrackSpacing(TGConfig.TRACK_SPACING);
+		
+		styles.setChordFretIndexSpacing(8);
+		styles.setChordStringSpacing(5);
+		styles.setChordFretSpacing(6);
+		styles.setChordNoteSize(4);
+		styles.setRepeatEndingSpacing(20);
+		styles.setTextSpacing(15);
+		styles.setMarkerSpacing(15);
+		styles.setDivisionTypeSpacing(10);
+		styles.setEffectSpacing(8);
+		
+		styles.setDefaultFont(TGConfig.FONT_DEFAULT);
+		styles.setNoteFont(TGConfig.FONT_NOTE);
+		styles.setTimeSignatureFont(TGConfig.FONT_TIME_SIGNATURE);
+		styles.setLyricFont(TGConfig.FONT_LYRIC);
+		styles.setTextFont(TGConfig.FONT_TEXT);
+		styles.setMarkerFont(TGConfig.FONT_MARKER);
+		styles.setGraceFont(TGConfig.FONT_GRACE);
+		styles.setChordFont(TGConfig.FONT_CHORD);
+		styles.setChordFretFont(TGConfig.FONT_CHORD_FRET);
+		styles.setBackgroundColor(TGConfig.COLOR_BACKGROUND);
+		styles.setLineColor(TGConfig.COLOR_LINE);
+		styles.setScoreNoteColor(TGConfig.COLOR_SCORE_NOTE);
+		styles.setTabNoteColor(TGConfig.COLOR_TAB_NOTE);
+		styles.setPlayNoteColor(TGConfig.COLOR_PLAY_NOTE);
+	}
+
+	public int getTrackSelection(){
+		if( (getViewLayout().getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0 ){
+			return getCaret().getTrack().getNumber();
+		}
+		return -1;
+	}
+	
+	public boolean isRunning(TGBeat beat) {
+		return ( isRunning( beat.getMeasure() ) && TuxGuitar.instance().getEditorCache().isPlaying(beat.getMeasure(),beat) );
+	}
+	
+	public boolean isRunning(TGMeasure measure) {
+		return ( measure.getTrack().equals(getCaret().getTrack()) && TuxGuitar.instance().getEditorCache().isPlaying( measure ) );
+	}
+
+	public boolean isLoopSHeader(TGMeasureHeader measureHeader) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isLoopEHeader(TGMeasureHeader measureHeader) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

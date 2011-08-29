@@ -9,7 +9,7 @@ package org.herac.tuxguitar.app.actions.layout;
 import java.awt.AWTEvent;
 
 import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.editors.tab.layout.ViewLayout;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 
 /**
  * @author julian
@@ -25,10 +25,10 @@ public class SetTablatureEnabledAction extends Action{
 	}
 	
 	protected int execute(AWTEvent e){
-		ViewLayout layout = getEditor().getTablature().getViewLayout();
-		layout.setStyle( ( layout.getStyle() ^ ViewLayout.DISPLAY_TABLATURE ) );
-		if((layout.getStyle() & ViewLayout.DISPLAY_TABLATURE) == 0 && (layout.getStyle() & ViewLayout.DISPLAY_SCORE) == 0 ){
-			layout.setStyle( ( layout.getStyle() ^ ViewLayout.DISPLAY_SCORE ) );
+		TGLayout layout = getEditor().getTablature().getViewLayout();
+		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_TABLATURE ) );
+		if((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0 && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){
+			layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_SCORE ) );
 		}
 		updateTablature();
 		return 0;

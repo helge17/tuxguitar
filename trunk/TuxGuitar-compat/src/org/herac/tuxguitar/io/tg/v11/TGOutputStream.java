@@ -15,6 +15,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -49,6 +50,8 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
  */
 public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
+	private TGFactory factory;
+	private TGChannel channelAux;
 	private DataOutputStream dataOutputStream;
 	
 	public boolean isSupportedExtension(String extension) {
@@ -68,6 +71,8 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	}
 	
 	public void init(TGFactory factory,OutputStream stream){
+		this.factory = factory;
+		this.channelAux = null;
 		this.dataOutputStream = new DataOutputStream(stream);
 	}
 	
@@ -139,7 +144,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		writeUnsignedByteString(track.getName());
 		
 		//escribo el canal
-		writeChannel(track.getChannel());
+		writeChannel(getChannel(track.getSong(), track));
 		
 		//escribo los compases
 		TGMeasure lastMeasure = null;
@@ -277,7 +282,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		writeByte(channel.getEffectChannel());
 		
 		//escribo el instrumento
-		writeByte(channel.getInstrument());
+		writeByte(channel.getProgram());
 		
 		//escribo el volumen
 		writeByte(channel.getVolume());
@@ -701,5 +706,22 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private TGChannel getChannel( TGSong song, TGTrack track ){
+		TGSongManager tgSongManager = new TGSongManager(this.factory);
+		tgSongManager.setSong( song );
+		
+		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
+		if( tgChannel != null ){
+			return tgChannel;
+		}
+		if( this.channelAux == null ){
+			this.channelAux = tgSongManager.createChannel();
+			if( this.channelAux.getChannel() < 0 && song.countChannels() > 0 ){
+				this.channelAux = (song.getChannel(song.countChannels() - 1));
+			}
+		}
+		return this.channelAux;
 	}
 }

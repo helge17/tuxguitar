@@ -116,6 +116,5 @@ static	private	MiRecorder	s_Instance;
 		}
 
 	TuxGuitar.instance().fireUpdate();
-	TuxGuitar.instance().getMixer().update();
 	}
 }

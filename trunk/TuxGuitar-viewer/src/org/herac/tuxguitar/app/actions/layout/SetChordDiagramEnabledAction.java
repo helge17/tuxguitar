@@ -9,7 +9,7 @@ package org.herac.tuxguitar.app.actions.layout;
 import java.awt.AWTEvent;
 
 import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.editors.tab.layout.ViewLayout;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 
 /**
  * @author julian
@@ -25,8 +25,8 @@ public class SetChordDiagramEnabledAction extends Action{
 	}
 	
 	protected int execute(AWTEvent e){
-		ViewLayout layout = getEditor().getTablature().getViewLayout();
-		layout.setStyle( ( layout.getStyle() ^ ViewLayout.DISPLAY_CHORD_DIAGRAM) );
+		TGLayout layout = getEditor().getTablature().getViewLayout();
+		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_CHORD_DIAGRAM) );
 		updateTablature();
 		return 0;
 	}

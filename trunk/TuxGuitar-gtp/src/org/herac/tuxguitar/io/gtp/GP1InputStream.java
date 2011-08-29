@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -35,14 +36,14 @@ public class GP1InputStream extends GTPInputStream {
 	};
 	
 	private static final short TRACK_CHANNELS[][] = new short[][]{
-		new short[]{0,1},
-		new short[]{2,3},
-		new short[]{4,5},
-		new short[]{6,7},
-		new short[]{8,10},
-		new short[]{11,12},
-		new short[]{13,14},
-		new short[]{9,9},
+		new short[]{1,0,1},
+		new short[]{2,2,3},
+		new short[]{3,4,5},
+		new short[]{4,6,7},
+		new short[]{5,8,10},
+		new short[]{6,11,12},
+		new short[]{7,13,14},
+		new short[]{8,9,9},
 	};
 	
 	private int trackCount;
@@ -75,10 +76,16 @@ public class GP1InputStream extends GTPInputStream {
 		}
 		
 		for (int i = 0; i < this.trackCount; i++) {
+			TGChannel channel = getFactory().newChannel();
+			channel.setChannelId(TRACK_CHANNELS[ i ][0]);
+			channel.setChannel(TRACK_CHANNELS[ i ][1]);
+			channel.setEffectChannel(TRACK_CHANNELS[ i ][2]);
+			song.addChannel(channel);
+		}
+		for (int i = 0; i < this.trackCount; i++) {
 			TGTrack track = getFactory().newTrack();
 			track.setNumber( (i + 1) );
-			track.getChannel().setChannel(TRACK_CHANNELS[ i ][0]);
-			track.getChannel().setEffectChannel(TRACK_CHANNELS[ i ][1]);
+			track.setChannelId(TRACK_CHANNELS[ i ][0]);
 			TGColor.RED.copy(track.getColor());
 			
 			int strings = ((getVersionIndex() > 1)?readInt():6);
@@ -94,7 +101,7 @@ public class GP1InputStream extends GTPInputStream {
 		int measureCount = readInt();
 		
 		for (int i = 0; i < this.trackCount; i++) {
-			readTrack(song.getTrack(i));
+			readTrack(song.getTrack(i), song.getChannel(i));
 		}
 		
 		if(getVersionIndex() > 2){
@@ -310,17 +317,17 @@ public class GP1InputStream extends GTPInputStream {
 		skip(1);
 	}
 	
-	private void readTrack(TGTrack track) throws IOException {
+	private void readTrack(TGTrack track, TGChannel channel) throws IOException {
 		track.setName("Track 1");
-		track.getChannel().setInstrument((short)readInt());
+		channel.setProgram((short)readInt());
 		if (getVersionIndex() > 2) {
 			readInt(); // Number of frets
 			track.setName(readStringByteSizeOfByte());
 			track.setSolo(readBoolean());
-			track.getChannel().setVolume((short)readInt());
-			track.getChannel().setBalance((short)readInt());
-			track.getChannel().setChorus((short)readInt());
-			track.getChannel().setReverb((short)readInt());
+			channel.setVolume((short)readInt());
+			channel.setBalance((short)readInt());
+			channel.setChorus((short)readInt());
+			channel.setReverb((short)readInt());
 			track.setOffset(readInt());
 		}
 	}
@@ -376,7 +383,7 @@ public class GP1InputStream extends GTPInputStream {
 	}
 	
 	private int getClef( TGTrack track ){
-		if( !track.isPercussionTrack() ){
+		if(!isPercussionChannel(track.getSong(),track.getChannelId())){
 			Iterator it = track.getStrings().iterator();
 			while( it.hasNext() ){
 				TGString string = (TGString) it.next();
@@ -412,5 +419,16 @@ public class GP1InputStream extends GTPInputStream {
 			}
 		}
 		return null;
+	}
+	
+	private boolean isPercussionChannel( TGSong song, int channelId ){
+		Iterator it = song.getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = (TGChannel)it.next();
+			if( channel.getChannelId() == channelId ){
+				return channel.isPercussionChannel();
+			}
+		}
+		return false;
 	}
 }

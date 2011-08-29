@@ -18,6 +18,7 @@ import org.herac.tuxguitar.io.ptb.helper.TrackHelper;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -335,10 +336,14 @@ public class PTSongParser {
 	}
 	
 	private void setTrackInfo(TGTrack tgTrack , PTTrackInfo info){
+		TGChannel tgChannel = this.manager.addChannel();
+		tgChannel.setProgram((short) info.getInstrument() );
+		tgChannel.setVolume((short) info.getVolume() );
+		tgChannel.setBalance((short) info.getBalance() );
+		tgChannel.setName(("#" + tgChannel.getChannelId()));
+		
 		tgTrack.setName( info.getName() );
-		tgTrack.getChannel().setInstrument((short) info.getInstrument() );
-		tgTrack.getChannel().setVolume((short) info.getVolume() );
-		tgTrack.getChannel().setBalance((short) info.getBalance() );
+		tgTrack.setChannelId(tgChannel.getChannelId());
 		tgTrack.getStrings().clear();
 		for(int i = 0; i < info.getStrings().length; i ++){
 			TGString string = this.manager.getFactory().newString();
@@ -349,16 +354,20 @@ public class PTSongParser {
 	}
 	
 	private boolean hasSameInfo(TGTrack track , PTTrackInfo info){
+		TGChannel tgChannel = this.manager.getChannel(track.getChannelId());
+		if( tgChannel == null ){
+			return false;
+		}
 		if( !info.getName().equals( track.getName() ) ){
 			return false;
 		}
-		if( info.getInstrument() != track.getChannel().getInstrument() ){
+		if( info.getInstrument() != tgChannel.getProgram() ){
 			return false;
 		}
-		if( info.getVolume() != track.getChannel().getVolume() ){
+		if( info.getVolume() != tgChannel.getVolume() ){
 			return false;
 		}
-		if( info.getBalance() != track.getChannel().getBalance() ){
+		if( info.getBalance() != tgChannel.getBalance() ){
 			return false;
 		}
 		if( info.getStrings().length != track.stringCount() ){

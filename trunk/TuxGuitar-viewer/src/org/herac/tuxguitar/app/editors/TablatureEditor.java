@@ -64,16 +64,16 @@ public class TablatureEditor extends Canvas{
 
 		// Paint the tablature into the buffer.
 		if(this.loaded && this.started){
-			this.bufferGraphics.setBackground( this.tablature.getViewLayout().getResources().getBackgroundColor());
+			this.bufferGraphics.setBackground( ((TGColorImpl)this.tablature.getViewLayout().getResources().getBackgroundColor()).getHandle());
 			this.bufferGraphics.clearRect(0, 0, this.size.width, this.size.height);
-			this.tablature.paintTablature(new TGPainter( this.bufferGraphics ));
+			this.tablature.paintTablature(new TGPainterImpl( this.bufferGraphics ));
 		}
 
 		// Paint a "loading" message.
 		else{
 			this.bufferGraphics.setBackground( Color.WHITE );
 			this.bufferGraphics.clearRect(0, 0, this.size.width, this.size.height);
-			this.paintLoading(new TGPainter( this.bufferGraphics ));
+			this.paintLoading(new TGPainterImpl( this.bufferGraphics ));
 		}
 		
 		// Draw the buffer image
@@ -109,7 +109,7 @@ public class TablatureEditor extends Canvas{
 		return this.started;
 	}
 	
-	private void paintLoading(TGPainter painter){
+	private void paintLoading(TGPainterImpl painter){
 		painter.setFont( TGConfig.FONT_LOADING_MESSAGE );
 		painter.setForeground( TGConfig.COLOR_LOADING_MESSAGE );
 		String msg = "Loading ...";
