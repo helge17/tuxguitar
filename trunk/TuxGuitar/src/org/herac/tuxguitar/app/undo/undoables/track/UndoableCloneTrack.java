@@ -23,7 +23,6 @@ public class UndoableCloneTrack implements UndoableEdit{
 		}
 		TuxGuitar.instance().getSongManager().cloneTrack(TuxGuitar.instance().getSongManager().getTrack(this.trackNumber));
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
@@ -35,7 +34,6 @@ public class UndoableCloneTrack implements UndoableEdit{
 		}
 		TuxGuitar.instance().getSongManager().removeTrack(TuxGuitar.instance().getSongManager().getLastTrack());
 		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().update();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;

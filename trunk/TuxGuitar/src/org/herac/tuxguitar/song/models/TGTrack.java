@@ -23,12 +23,12 @@ public abstract class TGTrack {
 	
 	private int number;
 	private int offset;
+	private int channelId;
 	private boolean solo;
 	private boolean mute;
 	private String name;
 	private List measures;
 	private List strings;
-	private TGChannel channel;
 	private TGColor color;
 	private TGLyric lyrics;
 	private TGSong song;
@@ -36,12 +36,12 @@ public abstract class TGTrack {
 	public TGTrack(TGFactory factory) {
 		this.number = 0;
 		this.offset = 0;
+		this.channelId = -1;
 		this.solo = false;
 		this.mute = false;
 		this.name = new String();
 		this.measures = new ArrayList();
 		this.strings = new ArrayList();
-		this.channel = factory.newChannel();
 		this.color = factory.newColor();
 		this.lyrics = factory.newLyric();
 	}
@@ -81,14 +81,6 @@ public abstract class TGTrack {
 	
 	public int countMeasures(){
 		return this.measures.size();
-	}
-	
-	public TGChannel getChannel() {
-		return this.channel;
-	}
-	
-	public void setChannel(TGChannel channel) {
-		this.channel = channel;
 	}
 	
 	public List getStrings() {
@@ -139,6 +131,14 @@ public abstract class TGTrack {
 		this.mute = mute;
 	}
 	
+	public int getChannelId() {
+		return this.channelId;
+	}
+	
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
+	}
+	
 	public TGLyric getLyrics() {
 		return this.lyrics;
 	}
@@ -153,10 +153,6 @@ public abstract class TGTrack {
 	
 	public int stringCount(){
 		return this.strings.size();
-	}
-	
-	public boolean isPercussionTrack(){
-		return (getChannel().isPercussionChannel());
 	}
 	
 	public TGSong getSong() {
@@ -183,7 +179,9 @@ public abstract class TGTrack {
 		track.setNumber(getNumber());
 		track.setName(getName());
 		track.setOffset(getOffset());
-		getChannel().copy(track.getChannel());
+		track.setSolo(isSolo());
+		track.setMute(isMute());
+		track.setChannelId(getChannelId());
 		getColor().copy(track.getColor());
 		getLyrics().copy(track.getLyrics());
 		for (int i = 0; i < getStrings().size(); i++) {

@@ -20,15 +20,15 @@ import org.herac.tuxguitar.app.actions.layout.SetPageLayoutAction;
 import org.herac.tuxguitar.app.actions.layout.SetScoreEnabledAction;
 import org.herac.tuxguitar.app.actions.layout.SetTablatureEnabledAction;
 import org.herac.tuxguitar.app.actions.view.ShowFretBoardAction;
+import org.herac.tuxguitar.app.actions.view.ShowInstrumentsAction;
 import org.herac.tuxguitar.app.actions.view.ShowMatrixAction;
-import org.herac.tuxguitar.app.actions.view.ShowMixerAction;
 import org.herac.tuxguitar.app.actions.view.ShowPianoAction;
 import org.herac.tuxguitar.app.actions.view.ShowToolbarsAction;
 import org.herac.tuxguitar.app.actions.view.ShowTransportAction;
 import org.herac.tuxguitar.app.items.MenuItems;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.graphics.control.TGLayout;
 
 /**
  * @author julian
@@ -42,7 +42,7 @@ public class ViewMenuItem extends MenuItems{
 	private Menu chordMenu;
 	private MenuItem layoutMenuItem;
 	private MenuItem showToolbars;
-	private MenuItem showMixer;
+	private MenuItem showInstruments;
 	private MenuItem showTransport;
 	private MenuItem showFretBoard;
 	private MenuItem showPiano;
@@ -68,9 +68,9 @@ public class ViewMenuItem extends MenuItems{
 		this.showToolbars = new MenuItem(this.menu, SWT.CHECK);
 		this.showToolbars.addSelectionListener(TuxGuitar.instance().getAction(ShowToolbarsAction.NAME));
 		
-		//--MIXER--
-		this.showMixer = new MenuItem(this.menu, SWT.CHECK);
-		this.showMixer.addSelectionListener(TuxGuitar.instance().getAction(ShowMixerAction.NAME));
+		//--INSTRUMENTS--
+		this.showInstruments = new MenuItem(this.menu, SWT.CHECK);
+		this.showInstruments.addSelectionListener(TuxGuitar.instance().getAction(ShowInstrumentsAction.NAME));
 		
 		//--TRANSPORT--
 		this.showTransport = new MenuItem(this.menu, SWT.CHECK);
@@ -137,7 +137,7 @@ public class ViewMenuItem extends MenuItems{
 		TGLayout layout = TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout();
 		int style = layout.getStyle();
 		this.showToolbars.setSelection(TuxGuitar.instance().getItemManager().isCoolbarVisible());
-		this.showMixer.setSelection(!TuxGuitar.instance().getMixer().isDisposed());
+		this.showInstruments.setSelection(!TuxGuitar.instance().getChannelManager().isDisposed());
 		this.showTransport.setSelection(!TuxGuitar.instance().getTransport().isDisposed());
 		this.showFretBoard.setSelection(TuxGuitar.instance().getFretBoardEditor().isVisible());
 		this.showPiano.setSelection(!TuxGuitar.instance().getPianoEditor().isDisposed());
@@ -156,7 +156,7 @@ public class ViewMenuItem extends MenuItems{
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.layoutMenuItem, "view", null);
 		setMenuItemTextAndAccelerator(this.showToolbars, "view.show-toolbars", ShowToolbarsAction.NAME);
-		setMenuItemTextAndAccelerator(this.showMixer, "view.show-mixer", ShowMixerAction.NAME);
+		setMenuItemTextAndAccelerator(this.showInstruments, "view.show-instruments", ShowInstrumentsAction.NAME);
 		setMenuItemTextAndAccelerator(this.showTransport, "view.show-transport", ShowTransportAction.NAME);
 		setMenuItemTextAndAccelerator(this.showFretBoard, "view.show-fretboard", ShowFretBoardAction.NAME);
 		setMenuItemTextAndAccelerator(this.showPiano, "view.show-piano", ShowPianoAction.NAME);

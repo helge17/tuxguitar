@@ -189,7 +189,7 @@ public class Piano extends Composite{
 		int x = 0;
 		int y = 0;
 		painter.setBackground(new TGColorImpl(this.config.getColorNatural()));
-		painter.initPath(TGPainterImpl.PATH_FILL);
+		painter.initPath(TGPainter.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
 		painter.closePath();
 		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
@@ -203,7 +203,7 @@ public class Piano extends Composite{
 				x += NATURAL_WIDTH;
 			}else{
 				painter.setBackground(new TGColorImpl(this.config.getColorNotNatural()));
-				painter.initPath(TGPainterImpl.PATH_FILL);
+				painter.initPath(TGPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(x - (SHARP_WIDTH / 2),y,SHARP_WIDTH,SHARP_HEIGHT);
 				painter.closePath();
@@ -249,12 +249,12 @@ public class Piano extends Composite{
 					}
 					
 					int size = SHARP_WIDTH;
-					painter.initPath(TGPainterImpl.PATH_FILL);
+					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle( (x + 1 + (((NATURAL_WIDTH - size) / 2))) ,(NATURAL_HEIGHT - size - (((NATURAL_WIDTH - size) / 2))),size,size);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainterImpl.PATH_FILL);
+					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1, SHARP_HEIGHT - SHARP_WIDTH + 1,SHARP_WIDTH - 2,SHARP_WIDTH - 2);
 					painter.closePath();
@@ -293,7 +293,7 @@ public class Piano extends Composite{
 			
 			if(i == value){
 				if(TYPE_NOTES[i % TYPE_NOTES.length]){
-					painter.initPath(TGPainterImpl.PATH_FILL);
+					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT);
 					
@@ -304,7 +304,7 @@ public class Piano extends Composite{
 					painter.addRectangle(x + 1,(y + SHARP_HEIGHT) + 1,NATURAL_WIDTH - 1,(NATURAL_HEIGHT - SHARP_HEIGHT) - 1);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainterImpl.PATH_FILL);
+					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
 					painter.closePath();

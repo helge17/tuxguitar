@@ -11,12 +11,10 @@ import org.herac.tuxguitar.song.models.TGTrack;
 public class UndoableTrackInstrument implements UndoableEdit{
 	private int doAction;
 	private int trackNumber;
+	private int undoChannelId;
+	private int redoChannelId;
 	private UndoableCaretHelper undoCaret;
 	private UndoableCaretHelper redoCaret;
-	private short undoInstrument;
-	private short redoInstrument;
-	private boolean undoPercussion;
-	private boolean redoPercussion;
 	
 	private UndoableTrackInstrument(){
 		super();
@@ -26,13 +24,11 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
-		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.redoInstrument,this.redoPercussion);
-		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().updateValues();
-		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updatePrograms();
-		}
+		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
+		tgSongManager.getTrackManager().changeChannel(tgSongManager.getTrack(this.trackNumber),this.redoChannelId);
+		
+		TuxGuitar.instance().updateCache(true);
+		
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -41,13 +37,11 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
-		manager.getTrackManager().changeInstrument(manager.getTrack(this.trackNumber),this.undoInstrument,this.undoPercussion);
-		TuxGuitar.instance().fireUpdate();
-		TuxGuitar.instance().getMixer().updateValues();
-		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updatePrograms();
-		}
+		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
+		tgSongManager.getTrackManager().changeChannel(tgSongManager.getTrack(this.trackNumber),this.undoChannelId);
+		
+		TuxGuitar.instance().updateCache(true);
+		
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
@@ -66,16 +60,14 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.trackNumber = track.getNumber();
-		undoable.undoInstrument = track.getChannel().getInstrument();
-		undoable.undoPercussion = track.isPercussionTrack();
+		undoable.undoChannelId = track.getChannelId();
 		
 		return undoable;
 	}
 	
 	public UndoableTrackInstrument endUndo(TGTrack track){
 		this.redoCaret = new UndoableCaretHelper();
-		this.redoInstrument = track.getChannel().getInstrument();
-		this.redoPercussion = track.isPercussionTrack();
+		this.redoChannelId = track.getChannelId();
 		
 		return this;
 	}

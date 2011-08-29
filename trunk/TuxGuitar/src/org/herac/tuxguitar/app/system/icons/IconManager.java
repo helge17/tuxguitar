@@ -100,7 +100,7 @@ public class IconManager {
 	private Image filePrintPreview;
 	private Image chord;
 	private Image noteTied;
-	private Image mixer;
+	private Image instruments;
 	private Image dynamicPPP;
 	private Image dynamicPP;
 	private Image dynamicP;
@@ -263,7 +263,7 @@ public class IconManager {
 		this.markerLast = loadIcon("marker_last.png");
 		this.markerPrevious = loadIcon("marker_previous.png");
 		this.markerNext = loadIcon("marker_next.png");
-		this.mixer = loadIcon("mixer.png");
+		this.instruments = loadIcon("mixer.png");
 		this.dynamicPPP = loadIcon("dynamic_ppp.png");
 		this.dynamicPP = loadIcon("dynamic_pp.png");
 		this.dynamicP = loadIcon("dynamic_p.png");
@@ -629,8 +629,8 @@ public class IconManager {
 		return this.markerRemove;
 	}
 	
-	public Image getMixer() {
-		return this.mixer;
+	public Image getInstruments() {
+		return this.instruments;
 	}
 	
 	public Image getNoteTied() {

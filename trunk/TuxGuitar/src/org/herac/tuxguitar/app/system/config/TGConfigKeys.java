@@ -19,7 +19,7 @@ public class TGConfigKeys {
 	public static final String MAXIMIZED = "window.maximized";
 	public static final String WIDTH = "window.width";
 	public static final String HEIGHT = "window.height";
-	public static final String SHOW_MIXER = "show.mixer";
+	public static final String SHOW_INSTRUMENTS = "show.instruments";
 	public static final String SHOW_TRANSPORT = "show.transport";
 	public static final String SHOW_FRETBOARD = "show.fretboard";
 	public static final String SHOW_MATRIX = "show.matrix";

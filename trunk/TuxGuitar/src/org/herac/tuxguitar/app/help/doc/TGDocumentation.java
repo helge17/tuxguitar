@@ -6,12 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.eclipse.swt.program.Program;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 
 public class TGDocumentation {
@@ -22,14 +17,7 @@ public class TGDocumentation {
 	public void display() throws Throwable{
 		URL url = getIndexUrl();
 		if( url != null ){
-			Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.SHELL_TRIM);
-			dialog.setLayout(new FillLayout());
-			
-			Browser browser = new Browser(dialog, SWT.BORDER);
-			browser.setLayout(new FillLayout());
-			browser.setUrl( url.toExternalForm() );
-			
-			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_MAXIMIZED);
+			Program.launch( url.toExternalForm() );
 		}
 	}
 	

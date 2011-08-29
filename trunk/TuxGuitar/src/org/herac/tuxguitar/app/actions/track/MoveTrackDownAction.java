@@ -35,7 +35,6 @@ public class MoveTrackDownAction extends Action{
 		
 		if(getSongManager().moveTrackDown(track)){
 			updateTablature();
-			TuxGuitar.instance().getMixer().update();
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo(track));

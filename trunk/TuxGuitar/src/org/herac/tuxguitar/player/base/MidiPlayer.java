@@ -359,12 +359,12 @@ public class MidiPlayer{
 	
 	public void updatePrograms() {
 		try{
-			Iterator it = this.songManager.getSong().getTracks();
+			Iterator it = this.songManager.getSong().getChannels();
 			while(it.hasNext()){
-				TGTrack track = (TGTrack)it.next();
-				getOutputTransmitter().sendProgramChange(track.getChannel().getChannel(),track.getChannel().getInstrument());
-				if(track.getChannel().getChannel() != track.getChannel().getEffectChannel()){
-					getOutputTransmitter().sendProgramChange(track.getChannel().getEffectChannel(),track.getChannel().getInstrument());
+				TGChannel channel = (TGChannel)it.next();
+				getOutputTransmitter().sendProgramChange(channel.getChannel(),channel.getProgram());
+				if( channel.getChannel() != channel.getEffectChannel()){
+					getOutputTransmitter().sendProgramChange(channel.getEffectChannel(), channel.getProgram());
 				}
 			}
 		}catch (MidiPlayerException e) {
@@ -373,14 +373,13 @@ public class MidiPlayer{
 	}
 	
 	public void updateControllers() {
-		this.anySolo = false;
 		boolean percussionUpdated = false;
-		Iterator it = this.songManager.getSong().getTracks();
-		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();
-			this.updateController(track);
-			this.anySolo = ((!this.anySolo)?track.isSolo():this.anySolo);
-			percussionUpdated = (percussionUpdated || track.isPercussionTrack());
+		
+		Iterator channelsIt = this.songManager.getSong().getChannels();
+		while( channelsIt.hasNext() ){
+			TGChannel channel = (TGChannel) channelsIt.next();
+			this.updateController(channel);
+			percussionUpdated = (percussionUpdated || channel.isPercussionChannel());
 		}
 		if(!percussionUpdated && isMetronomeEnabled()){
 			int volume = (int)((this.getVolume() / 10.00) * TGChannel.DEFAULT_VOLUME);
@@ -394,23 +393,17 @@ public class MidiPlayer{
 		this.afterUpdate();
 	}
 	
-	private void updateController(TGTrack track) {
-		try{
-			int volume = (int)((this.getVolume() / 10.00) * track.getChannel().getVolume());
-			int balance = track.getChannel().getBalance();
-			int chorus = track.getChannel().getChorus();
-			int reverb = track.getChannel().getReverb();
-			int phaser = track.getChannel().getPhaser();
-			int tremolo = track.getChannel().getTremolo();
-			
-			updateController(track.getChannel().getChannel(),volume,balance,chorus,reverb,phaser,tremolo,127);
-			if(track.getChannel().getChannel() != track.getChannel().getEffectChannel()){
-				updateController(track.getChannel().getEffectChannel(),volume,balance,chorus,reverb,phaser,tremolo,127);
-			}
-			getSequencer().setMute(track.getNumber(),track.isMute());
-			getSequencer().setSolo(track.getNumber(),track.isSolo());
-		}catch (MidiPlayerException e) {
-			e.printStackTrace();
+	private void updateController(TGChannel channel) {
+		int volume = (int)((this.getVolume() / 10.00) * channel.getVolume());
+		int balance = channel.getBalance();
+		int chorus = channel.getChorus();
+		int reverb = channel.getReverb();
+		int phaser = channel.getPhaser();
+		int tremolo = channel.getTremolo();
+		
+		updateController(channel.getChannel(),volume,balance,chorus,reverb,phaser,tremolo,127);
+		if(channel.getChannel() != channel.getEffectChannel()){
+			updateController(channel.getEffectChannel(),volume,balance,chorus,reverb,phaser,tremolo,127);
 		}
 	}
 	
@@ -423,6 +416,28 @@ public class MidiPlayer{
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.PHASER,phaser);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.EXPRESSION,expression);
+		}catch (MidiPlayerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateTracks() {
+		this.anySolo = false;
+		
+		Iterator tracksIt = this.songManager.getSong().getTracks();
+		while( tracksIt.hasNext() ){
+			TGTrack track = (TGTrack)tracksIt.next();
+			this.updateTrack(track);
+			this.anySolo = ((!this.anySolo)?track.isSolo():this.anySolo);
+		}
+		
+		this.afterUpdate();
+	}
+	
+	private void updateTrack(TGTrack track) {
+		try{
+			getSequencer().setMute(track.getNumber(),track.isMute());
+			getSequencer().setSolo(track.getNumber(),track.isSolo());
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
@@ -460,22 +475,25 @@ public class MidiPlayer{
 	}
 	
 	public void playBeat(TGTrack track,final List notes) {
-		int channel = track.getChannel().getChannel();
-		int program = track.getChannel().getInstrument();
-		int volume = (int)((this.getVolume() / 10.00) * track.getChannel().getVolume());
-		int balance = track.getChannel().getBalance();
-		int chorus = track.getChannel().getChorus();
-		int reverb = track.getChannel().getReverb();
-		int phaser = track.getChannel().getPhaser();
-		int tremolo = track.getChannel().getTremolo();
-		int size = notes.size();
-		int[][] beat = new int[size][2];
-		for(int i = 0; i < size; i ++){
-			TGNote note = (TGNote)notes.get(i);
-			beat[i][0] = track.getOffset() + (note.getValue() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue());
-			beat[i][1] = note.getVelocity();
+		TGChannel tgChannel = this.songManager.getChannel(track.getChannelId());
+		if( tgChannel != null ){
+			int channel = tgChannel.getChannel();
+			int program = tgChannel.getProgram();
+			int volume = (int)((this.getVolume() / 10.00) * tgChannel.getVolume());
+			int balance = tgChannel.getBalance();
+			int chorus = tgChannel.getChorus();
+			int reverb = tgChannel.getReverb();
+			int phaser = tgChannel.getPhaser();
+			int tremolo = tgChannel.getTremolo();
+			int size = notes.size();
+			int[][] beat = new int[size][2];
+			for(int i = 0; i < size; i ++){
+				TGNote note = (TGNote)notes.get(i);
+				beat[i][0] = track.getOffset() + (note.getValue() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue());
+				beat[i][1] = note.getVelocity();
+			}
+			playBeat(channel,program,volume,balance,chorus,reverb,phaser,tremolo,beat);
 		}
-		playBeat(channel,program,volume,balance,chorus,reverb,phaser,tremolo,beat);
 	}
 	
 	public void playBeat(int channel,int program,int volume,int balance,int chorus, int reverb,int phaser,int tremolo,int[][] beat) {

@@ -50,7 +50,6 @@ public class RemoveTrackAction extends Action{
 		if(nextCaretTrack != null){
 			caret.update(nextCaretTrack.getNumber(),getSongManager().getTrackManager().getMeasureAt(nextCaretTrack, caret.getMeasure().getStart()).getStart(),1);
 		}
-		TuxGuitar.instance().getMixer().update();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());

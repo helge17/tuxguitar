@@ -101,6 +101,14 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo los comentarios
 		writeIntegerString(song.getComments());
 		
+		//escribo la cantidad de canales
+		writeByte(song.countChannels());
+		
+		//escribo las canales
+		for(int i = 0;i < song.countChannels();i++){
+			writeChannel(song.getChannel(i));
+		}
+		
 		//escribo la cantidad de measure headers 
 		writeShort((short)song.countMeasureHeaders());
 		
@@ -118,8 +126,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		
 		//escribo las pistas
 		for(int i = 0;i < song.countTracks();i++){
-			TGTrack track = song.getTrack(i);
-			writeTrack(track);
+			writeTrack(song.getTrack(i));
 		}
 	}
 	
@@ -140,8 +147,8 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo el nombre
 		writeUnsignedByteString(track.getName());
 		
-		//escribo el canal
-		writeChannel(track.getChannel());
+		//escribo el id del canal
+		writeShort((short)track.getChannelId());
 		
 		//escribo los compases
 		TGMeasure lastMeasure = null;
@@ -272,14 +279,20 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 	}
 	
 	private void writeChannel(TGChannel channel){
+		//escribo el id
+		writeShort((short)channel.getChannelId());
+		
 		//escribo el canal
 		writeByte(channel.getChannel());
 		
 		//escribo el canal de efectos
 		writeByte(channel.getEffectChannel());
+
+		//escribo el banco de sonidos
+		writeByte(channel.getBank());
 		
-		//escribo el instrumento
-		writeByte(channel.getInstrument());
+		//escribo el programa
+		writeByte(channel.getProgram());
 		
 		//escribo el volumen
 		writeByte(channel.getVolume());
@@ -298,6 +311,9 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		
 		//escribo el tremolo
 		writeByte(channel.getTremolo());
+		
+		//escribo el nombre
+		writeUnsignedByteString(channel.getName());
 	}
 	
 	private void writeBeats(TGMeasure measure,TGBeatData data){

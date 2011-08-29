@@ -1,3 +1,4 @@
+/*
 package org.herac.tuxguitar.app.mixer;
 
 import org.eclipse.swt.SWT;
@@ -189,6 +190,8 @@ public class TGMixerTrack {
 	}
 	
 	public void updateItems(){
+		this.checkSolo.setSelection(this.track.isSolo());
+		this.checkMute.setSelection(this.track.isMute());
 		this.mixerChannel.updateItems(false);
 	}
 	
@@ -391,3 +394,4 @@ public class TGMixerTrack {
 		}
 	}
 }
+*/

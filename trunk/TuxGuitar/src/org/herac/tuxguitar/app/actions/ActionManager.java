@@ -128,6 +128,8 @@ import org.herac.tuxguitar.app.actions.tools.ScaleAction;
 import org.herac.tuxguitar.app.actions.tools.TGBrowserAction;
 import org.herac.tuxguitar.app.actions.tools.TransposeAction;
 import org.herac.tuxguitar.app.actions.track.AddTrackAction;
+import org.herac.tuxguitar.app.actions.track.ChangeTrackMuteAction;
+import org.herac.tuxguitar.app.actions.track.ChangeTrackSoloAction;
 import org.herac.tuxguitar.app.actions.track.CloneTrackAction;
 import org.herac.tuxguitar.app.actions.track.EditLyricsAction;
 import org.herac.tuxguitar.app.actions.track.GoFirstTrackAction;
@@ -146,8 +148,8 @@ import org.herac.tuxguitar.app.actions.transport.TransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.actions.transport.TransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.app.actions.transport.TransportStopAction;
 import org.herac.tuxguitar.app.actions.view.ShowFretBoardAction;
+import org.herac.tuxguitar.app.actions.view.ShowInstrumentsAction;
 import org.herac.tuxguitar.app.actions.view.ShowMatrixAction;
-import org.herac.tuxguitar.app.actions.view.ShowMixerAction;
 import org.herac.tuxguitar.app.actions.view.ShowPianoAction;
 import org.herac.tuxguitar.app.actions.view.ShowToolbarsAction;
 import org.herac.tuxguitar.app.actions.view.ShowTransportAction;
@@ -203,7 +205,7 @@ public class ActionManager {
 		addAction(new ShowToolbarsAction());
 		addAction(new ShowFretBoardAction());
 		addAction(new ShowPianoAction());
-		addAction(new ShowMixerAction());
+		addAction(new ShowInstrumentsAction());
 		addAction(new ShowTransportAction());
 		addAction(new ShowMatrixAction());
 		
@@ -226,6 +228,8 @@ public class ActionManager {
 		addAction(new GoPreviousTrackAction());
 		addAction(new MoveTrackUpAction());
 		addAction(new MoveTrackDownAction());
+		addAction(new ChangeTrackMuteAction());
+		addAction(new ChangeTrackSoloAction());
 		addAction(new EditLyricsAction());
 		addAction(new TrackPropertiesAction());
 		

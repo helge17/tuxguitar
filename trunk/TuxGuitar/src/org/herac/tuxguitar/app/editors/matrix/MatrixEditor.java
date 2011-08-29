@@ -329,10 +329,9 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 			if(this.buffer == null || this.buffer.isDisposed()){
 				String[] names = null;
 				TGMeasure measure = getMeasure();
-				boolean percussion = measure.getTrack().isPercussionTrack();
 				this.maxNote = 0;
 				this.minNote = 127;
-				if(percussion){
+				if( TuxGuitar.instance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId()) ){
 					names = new String[PERCUSSIONS.length];
 					for(int i = 0; i < names.length;i ++){
 						this.minNote = Math.min(this.minNote,PERCUSSIONS[i].getValue());
@@ -678,17 +677,20 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	protected void play(final int value){
 		new Thread(new Runnable() {
 			public void run() {
-				TGTrack track = getMeasure().getTrack();
-				int volume = TGChannel.DEFAULT_VOLUME;
-				int balance = TGChannel.DEFAULT_BALANCE;
-				int chorus = track.getChannel().getChorus();
-				int reverb = track.getChannel().getReverb();
-				int phaser = track.getChannel().getPhaser();
-				int tremolo = track.getChannel().getTremolo();
-				int channel = track.getChannel().getChannel();
-				int program = track.getChannel().getInstrument();
-				int[][] beat = new int[][]{ new int[]{ (track.getOffset() + value) , TGVelocities.DEFAULT } };
-				TuxGuitar.instance().getPlayer().playBeat(channel,program, volume, balance,chorus,reverb,phaser,tremolo,beat);
+				TGTrack tgTrack = getMeasure().getTrack();
+				TGChannel tgChannel = TuxGuitar.instance().getSongManager().getChannel(tgTrack.getChannelId());
+				if( tgChannel != null ){
+					int volume = TGChannel.DEFAULT_VOLUME;
+					int balance = TGChannel.DEFAULT_BALANCE;
+					int chorus = tgChannel.getChorus();
+					int reverb = tgChannel.getReverb();
+					int phaser = tgChannel.getPhaser();
+					int tremolo = tgChannel.getTremolo();
+					int channel = tgChannel.getChannel();
+					int program = tgChannel.getProgram();
+					int[][] beat = new int[][]{ new int[]{ (tgTrack.getOffset() + value) , TGVelocities.DEFAULT } };
+					TuxGuitar.instance().getPlayer().playBeat(channel,program, volume, balance,chorus,reverb,phaser,tremolo,beat);
+				}
 			}
 		}).start();
 	}
@@ -875,7 +877,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 			int track = measure.getTrack().getNumber();
 			int numerator = measure.getTimeSignature().getNumerator();
 			int denominator = measure.getTimeSignature().getDenominator().getValue();
-			boolean percussion = measure.getTrack().isPercussionTrack();
+			boolean percussion = TuxGuitar.instance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId());
 			if(width != this.width || height != this.height || this.track != track || this.numerator != numerator || this.denominator != denominator || this.percussion != percussion){
 				disposeBuffer();
 			}

@@ -56,7 +56,7 @@ public class ChangeNoteAction extends Action {
 				if(lastAddedStart == start && lastAddedString == string){
 					if (lastAddedValue > 0 && lastAddedValue < 10 && time <  ( lastAddedTime + DELAY ) ){
 						int newValue = ( ( lastAddedValue * 10 ) + value );
-						if(newValue < 30 || caret.getTrack().isPercussionTrack()){
+						if( newValue < 30 || getSongManager().isPercussionChannel(caret.getTrack().getChannelId()) ){
 							value = newValue;
 						}
 					}

@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
 import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.editors.TGUpdateListener;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.undo.undoables.UndoableJoined;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackGeneric;
@@ -39,8 +40,8 @@ import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackInstrument;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -51,7 +52,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrackPropertiesAction extends Action {
+public class TrackPropertiesAction extends Action implements TGUpdateListener {
 	public static final String NAME = "action.track.properties";
 	
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_TUNING);
@@ -75,8 +76,8 @@ public class TrackPropertiesAction extends Action {
 	protected Combo offsetCombo;
 	protected int stringCount;
 	protected Combo instrumentCombo;
-	protected Button percussionCheckBox;
 	protected Color colorButtonValue;
+	protected boolean percussionChannel;
 	
 	public TrackPropertiesAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
@@ -92,11 +93,19 @@ public class TrackPropertiesAction extends Action {
 		if (track != null) {
 			this.stringCount = track.getStrings().size();
 			this.trackColor = track.getColor().clone(getSongManager().getFactory());
+			this.percussionChannel = getSongManager().isPercussionChannel(track.getChannelId());
 			this.initTempStrings(track.getStrings());
 			
 			this.dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			this.dialog.setLayout(new GridLayout(2,false));
 			this.dialog.setText(TuxGuitar.getProperty("track.properties"));
+			
+			this.addListeners();
+			this.dialog.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					removeListeners();
+				}
+			});
 			
 			Composite left = new Composite(this.dialog,SWT.NONE);
 			left.setLayout(new GridLayout());
@@ -122,7 +131,7 @@ public class TrackPropertiesAction extends Action {
 			//BUTTONS
 			initButtons(bottom);
 			
-			updateTuningGroup(!track.isPercussionTrack());
+			updateTuningGroup(!this.percussionChannel);
 			
 			DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		}
@@ -201,7 +210,6 @@ public class TrackPropertiesAction extends Action {
 		composite.setLayout(new GridLayout(2,false));
 		initTuningData(composite,track);
 		initTuningCombos(composite);
-		//initTuningOptions(composite);
 	}
 	
 	private void initTuningCombos(Composite parent) {
@@ -239,15 +247,14 @@ public class TrackPropertiesAction extends Action {
 		
 		this.stringCountSpinner = new Spinner(top, SWT.BORDER);
 		this.stringCountSpinner.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
-		//this.stringCountSpinner.setLayoutData(getAlignmentData(80,SWT.FILL));
 		this.stringCountSpinner.setMinimum(MIN_STRINGS);
 		this.stringCountSpinner.setMaximum(MAX_STRINGS);
 		this.stringCountSpinner.setSelection(this.stringCount);
 		this.stringCountSpinner.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				TrackPropertiesAction.this.stringCount = TrackPropertiesAction.this.stringCountSpinner.getSelection();
-				setDefaultTuning();
-				updateTuningGroup(!TrackPropertiesAction.this.percussionCheckBox.getSelection());
+				setDefaultTuning(TrackPropertiesAction.this.percussionChannel);
+				updateTuningGroup(!TrackPropertiesAction.this.percussionChannel);
 			}
 		});
 		
@@ -257,7 +264,6 @@ public class TrackPropertiesAction extends Action {
 		offsetLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
 		
 		this.offsetCombo = new Combo(middle, SWT.DROP_DOWN | SWT.READ_ONLY);
-		//this.offsetCombo.setLayoutData(getAlignmentData(80,SWT.LEFT));
 		this.offsetCombo.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
 		for(int i = TGTrack.MIN_OFFSET;i <= TGTrack.MAX_OFFSET;i ++){
 			this.offsetCombo.add(Integer.toString(i));
@@ -330,54 +336,86 @@ public class TrackPropertiesAction extends Action {
 		composite.setLayout(new GridLayout());
 		
 		Composite top = new Composite(composite, SWT.NONE);
-		top.setLayout(new GridLayout());
+		top.setLayout(new GridLayout(2,false));
 		top.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
-		
-		Composite bottom = new Composite(composite, SWT.NONE);
-		bottom.setLayout(new GridLayout());
-		bottom.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));
 		
 		//------------Instrument Combo-------------------------------------
 		Label instrumentLabel = new Label(top, SWT.NONE);
 		instrumentLabel.setText(TuxGuitar.getProperty("instrument.instrument") + ":");
-		instrumentLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
+		instrumentLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true,2,1));
 		
 		this.instrumentCombo = new Combo(top, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.instrumentCombo.setLayoutData(getAlignmentData(MINIMUM_LEFT_CONTROLS_WIDTH,SWT.FILL));
-		MidiInstrument[] instruments = TuxGuitar.instance().getPlayer().getInstruments();
-		if (instruments != null) {
-			int count = instruments.length;
-			if (count > 128) {
-				count = 128;
+		this.instrumentCombo.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
+		this.instrumentCombo.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				checkPercussionChannel();
 			}
-			for (int i = 0; i < count; i++) {
-				this.instrumentCombo.add(instruments[i].getName());
-			}
-			this.instrumentCombo.select(track.getChannel().getInstrument());
-		}
-		this.instrumentCombo.setEnabled(!track.isPercussionTrack() && instruments != null);
+		});
+		this.loadChannels(track.getChannelId());
 		
-		//--------------------Precusion CheckBox-------------------------------
-		this.percussionCheckBox = new Button(bottom, SWT.CHECK);
-		this.percussionCheckBox.setText(TuxGuitar.getProperty("instrument.percussion-track"));
-		this.percussionCheckBox.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
-		if (instruments != null) {
-			this.percussionCheckBox.setSelection(track.isPercussionTrack());
-			this.percussionCheckBox.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
-					TrackPropertiesAction.this.instrumentCombo.setEnabled(!TrackPropertiesAction.this.percussionCheckBox.getSelection());
-					
-					setDefaultTuning();
-					updateTuningGroup(!TrackPropertiesAction.this.percussionCheckBox.getSelection());
+		Button settings = new Button(top, SWT.PUSH);
+		settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+		settings.setToolTipText(TuxGuitar.getProperty("settings"));
+		settings.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,false));
+		settings.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				if(!TuxGuitar.instance().getChannelManager().isDisposed()){
+					TuxGuitar.instance().getChannelManager().dispose();
 				}
-			});
-		} else {
-			this.percussionCheckBox.setEnabled(false);
+				TuxGuitar.instance().getChannelManager().show(TrackPropertiesAction.this.dialog);
+			}
+		});
+	}
+	
+	protected void loadChannels(int selectedChannelId){
+		List tgChannelsData = new ArrayList();
+		List tgChannelsAvailable = getSongManager().getChannels();
+		
+		Combo tgChannelsCombo = this.instrumentCombo;
+		tgChannelsCombo.removeAll();
+		tgChannelsCombo.add(TuxGuitar.getProperty("track.instrument.default-select-option"));
+		tgChannelsCombo.select(0);
+		tgChannelsData.add(new Integer(-1));
+		
+		for( int i = 0 ; i < tgChannelsAvailable.size() ; i ++) {
+			TGChannel tgChannel = (TGChannel)tgChannelsAvailable.get(i);
+			tgChannelsData.add(new Integer(tgChannel.getChannelId()));
+			tgChannelsCombo.add(tgChannel.getName());
+			
+			if( tgChannel.getChannelId() == selectedChannelId ){
+				tgChannelsCombo.select(tgChannelsCombo.getItemCount() - 1);
+			}
+			
 		}
-		//-----------------------------------------------------------
+		tgChannelsCombo.setData(tgChannelsData);
+	}
+	
+	protected void reloadChannels(){
+		loadChannels(getSelectedChannelId());
+	}
+	
+	protected void checkPercussionChannel(){
+		boolean percussionChannel = getSongManager().isPercussionChannel( getSelectedChannelId() );
+		if( this.percussionChannel != percussionChannel ){
+			this.setDefaultTuning(percussionChannel);
+			this.updateTuningGroup(!percussionChannel);
+		}
+		this.percussionChannel = percussionChannel;
+	}
+	
+	protected int getSelectedChannelId(){
+		int index = this.instrumentCombo.getSelectionIndex();
+		if( index >= 0 ){
+			Object data = this.instrumentCombo.getData();
+			if( data instanceof List && ((List)data).size() > index ){
+				return ((Integer)((List)data).get(index)).intValue();
+			}
+		}
+		return -1;
 	}
 	
 	protected void updateTrackProperties() {
+		final TGSongManager songManager = getSongManager();
 		final TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
 		
 		final String trackName = this.nameText.getText();
@@ -387,20 +425,20 @@ public class TrackPropertiesAction extends Action {
 			strings.add(TGSongManager.newString(getSongManager().getFactory(),(i + 1), this.stringCombos[i].getSelectionIndex()));
 		}
 		
-		final boolean percussion = this.percussionCheckBox.getSelection();
-		final int offset = ((percussion)?0:TGTrack.MIN_OFFSET + this.offsetCombo.getSelectionIndex());
-		final int instrument = ((this.instrumentCombo.getSelectionIndex() >= 0)?this.instrumentCombo.getSelectionIndex():0);
+		final int channelId = getSelectedChannelId();
+		final int offset = ((songManager.isPercussionChannel(channelId))?0:TGTrack.MIN_OFFSET + this.offsetCombo.getSelectionIndex());
+		
 		
 		final TGColor trackColor = this.trackColor;
 		final boolean infoChanges = hasInfoChanges(track,trackName,trackColor,offset);
 		final boolean tuningChanges = hasTuningChanges(track,strings);
-		final boolean instrumentChanges = hasInstrumentChanges(track,instrument,percussion);
-		final boolean transposeStrings = (this.stringTransposition.getSelection() && !percussion && !track.isPercussionTrack() );
+		final boolean channelChanges = hasChannelChanges(track, channelId);
+		final boolean transposeStrings = shouldTransposeStrings(track, channelId);
 		final boolean transposeApplyToChords = (transposeStrings && this.stringTranspositionApplyToChords.getSelection());
 		final boolean transposeTryKeepString = (transposeStrings && this.stringTranspositionTryKeepString.getSelection());
 		
 		try {
-			if(infoChanges || tuningChanges || instrumentChanges){
+			if(infoChanges || tuningChanges || channelChanges){
 				ActionLock.lock();
 				TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws Throwable {
@@ -421,7 +459,7 @@ public class TrackPropertiesAction extends Action {
 									if(!tuningChanges){
 										undoableInfo = UndoableTrackInfo.startUndo(track);
 									}
-									getSongManager().getTrackManager().changeInfo(track,trackName,trackColor,offset);
+									songManager.getTrackManager().changeInfo(track,trackName,trackColor,offset);
 									if(!tuningChanges && undoableInfo != null){
 										undoable.addUndoableEdit(undoableInfo.endUndo(track));
 									}
@@ -431,12 +469,12 @@ public class TrackPropertiesAction extends Action {
 									updateTrackTunings(track, strings, transposeStrings, transposeTryKeepString, transposeApplyToChords);
 								}
 								//-----------------------------instrument----------------------------------------------
-								if(instrumentChanges){
+								if(channelChanges){
 									UndoableTrackInstrument undoableInstrument = null;
 									if(!tuningChanges){
 										undoableInstrument = UndoableTrackInstrument.startUndo(track);
 									}
-									getSongManager().getTrackManager().changeInstrument(track,instrument,percussion);
+									songManager.getTrackManager().changeChannel(track,channelId);
 									if(!tuningChanges && undoableInstrument != null){
 										undoable.addUndoableEdit(undoableInstrument.endUndo(track));
 									}
@@ -450,7 +488,6 @@ public class TrackPropertiesAction extends Action {
 									public void run() {
 										if(!TuxGuitar.isDisposed()){
 											updateTablature();
-											TuxGuitar.instance().getMixer().updateValues();
 											TuxGuitar.instance().updateCache( true );
 											TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 											ActionLock.unlock();
@@ -469,6 +506,16 @@ public class TrackPropertiesAction extends Action {
 		}
 	}
 	
+	protected boolean shouldTransposeStrings(TGTrackImpl track, int selectedChannelId){
+		if(this.stringTransposition.getSelection()){
+			boolean percussionChannelNew = getSongManager().isPercussionChannel(selectedChannelId);
+			boolean percussionChannelOld = getSongManager().isPercussionChannel(track.getChannelId());
+			
+			return (!percussionChannelNew && !percussionChannelOld);
+		}
+		return false;
+	}
+	
 	protected boolean hasInfoChanges(TGTrackImpl track,String name,TGColor color,int offset){
 		if(!name.equals(track.getName())){
 			return true;
@@ -482,8 +529,8 @@ public class TrackPropertiesAction extends Action {
 		return false;
 	}
 	
-	protected boolean hasInstrumentChanges(TGTrackImpl track,int instrument,boolean percussion){
-		return ((track.getChannel().getInstrument() != instrument) || (track.isPercussionTrack() != percussion));
+	protected boolean hasChannelChanges(TGTrackImpl track,int channelId){
+		return ( track.getChannelId() != channelId );
 	}
 	
 	protected boolean hasTuningChanges(TGTrackImpl track,List newStrings){
@@ -590,9 +637,9 @@ public class TrackPropertiesAction extends Action {
 		}
 	}
 	
-	protected void setDefaultTuning() {
+	protected void setDefaultTuning( boolean percussionChannel ) {
 		this.tempStrings.clear();
-		if (this.percussionCheckBox.getSelection()) {
+		if( percussionChannel ) {
 			for (int i = 1; i <= this.stringCount; i++) {
 				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),i, 0));
 			}
@@ -644,5 +691,25 @@ public class TrackPropertiesAction extends Action {
 			valueNames[i] =  NOTE_NAMES[ (i -  ((i / MAX_NOTES) * MAX_NOTES) ) ] + (i / MAX_NOTES);
 		}
 		return valueNames;
+	}
+	
+	public void addListeners(){
+		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+	}
+	
+	public void removeListeners(){
+		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+	}
+	
+	public void updateItems(){
+		if( this.dialog != null && !this.dialog.isDisposed() ){
+			this.reloadChannels();
+		}
+	}
+	
+	public void doUpdate(int type) {
+		if( type == TGUpdateListener.SELECTION ){
+			this.updateItems();
+		}
 	}
 }

@@ -1,4 +1,6 @@
 # 1.3
+track.instrument.default-select-option=--- Select ---
+
 export.all-tracks=Export all tracks
 
 view.show-toolbars=Show Toolbars
@@ -6,3 +8,4 @@ action.view.show-toolbars=Show Toolbars
 
 effects.let-ring=Let Ring
 action.note.effect.change-let-ring=Add/Remove let ring
+

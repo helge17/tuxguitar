@@ -55,7 +55,7 @@ public class TGConfigDefaults{
 		this.loadProperty(TGConfigKeys.MAXIMIZED,false);
 		this.loadProperty(TGConfigKeys.WIDTH,800);
 		this.loadProperty(TGConfigKeys.HEIGHT,600);
-		this.loadProperty(TGConfigKeys.SHOW_MIXER,false);
+		this.loadProperty(TGConfigKeys.SHOW_INSTRUMENTS,false);
 		this.loadProperty(TGConfigKeys.SHOW_TRANSPORT,false);
 		this.loadProperty(TGConfigKeys.SHOW_FRETBOARD,false);
 		this.loadProperty(TGConfigKeys.SHOW_PIANO,false);

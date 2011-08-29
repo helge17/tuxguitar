@@ -1,3 +1,4 @@
+/*
 package org.herac.tuxguitar.app.undo.undoables.track;
 
 import java.util.ArrayList;
@@ -107,3 +108,4 @@ public class UndoableTrackChannel implements UndoableEdit{
 		return this;
 	}
 }
+*/

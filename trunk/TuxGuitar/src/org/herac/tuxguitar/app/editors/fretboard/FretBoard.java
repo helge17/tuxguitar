@@ -317,7 +317,7 @@ public class FretBoard extends Composite {
 			
 			//fondo
 			painterBuffer.setBackground(new TGColorImpl(this.config.getColorBackground()));
-			painterBuffer.initPath(TGPainterImpl.PATH_FILL);
+			painterBuffer.initPath(TGPainter.PATH_FILL);
 			painterBuffer.addRectangle(clientArea.x,clientArea.y,clientArea.width,clientArea.height);
 			painterBuffer.closePath();
 			
@@ -365,7 +365,7 @@ public class FretBoard extends Composite {
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - STRING_SPACING;
 				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + STRING_SPACING;
-				painter.initPath(TGPainterImpl.PATH_FILL);
+				painter.initPath(TGPainter.PATH_FILL);
 				painter.addOval(x - (size / 2), y1 - (size / 2), size, size);
 				painter.addOval(x - (size / 2), y2 - (size / 2), size, size);
 				painter.closePath();
@@ -373,7 +373,7 @@ public class FretBoard extends Composite {
 				int size = getOvalSize();
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2);
-				painter.initPath(TGPainterImpl.PATH_FILL);
+				painter.initPath(TGPainter.PATH_FILL);
 				painter.addOval(x - (size / 2),y - (size / 2),size, size);
 				painter.closePath();
 			}
@@ -444,7 +444,7 @@ public class FretBoard extends Composite {
 	private void paintKeyOval(TGPainter painter,Color background,int x, int y) {
 		int size = getOvalSize();
 		painter.setBackground(new TGColorImpl(background));
-		painter.initPath(TGPainterImpl.PATH_FILL);
+		painter.initPath(TGPainter.PATH_FILL);
 		painter.moveTo(x - (size / 2),y - (size / 2));
 		painter.addOval(x - (size / 2),y - (size / 2),size, size);
 		painter.closePath();
@@ -458,7 +458,7 @@ public class FretBoard extends Composite {
 		int fmWidth = painter.getFMWidth(text);
 		int fmHeight = painter.getFMHeight();
 		
-		painter.initPath(TGPainterImpl.PATH_FILL);
+		painter.initPath(TGPainter.PATH_FILL);
 		painter.addRectangle(x - (fmWidth / 2),y - (fmHeight / 2),fmWidth, fmHeight);
 		painter.closePath();
 		painter.drawString(text,x - (fmWidth / 2),y - (fmHeight / 2),true);

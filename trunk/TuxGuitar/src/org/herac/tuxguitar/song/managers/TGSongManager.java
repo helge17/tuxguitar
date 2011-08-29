@@ -166,8 +166,8 @@ public class TGSongManager {
 		track.setNumber(1);
 		track.setName("Track 1");
 		track.addMeasure(measure);
-		track.getChannel().setChannel((short)0);
-		track.getChannel().setEffectChannel((short)1);
+		//track.getChannel().setChannel((short)0);
+		//track.getChannel().setEffectChannel((short)1);
 		track.setStrings(createDefaultInstrumentStrings());
 		TGColor.RED.copy(track.getColor());
 		song.addTrack(track);
@@ -179,6 +179,7 @@ public class TGSongManager {
 		return (getSong().countTracks() + 1);
 	}
 	
+	/*
 	public TGChannel getFreeChannel(short instrument,boolean isPercussion){
 		if(isPercussion){
 			return TGChannel.newPercussionChannel(getFactory());
@@ -205,7 +206,7 @@ public class TGSongManager {
 		TGChannel channel = getFactory().newChannel();
 		channel.setChannel(normalChannel);
 		channel.setEffectChannel(effectChannel);
-		channel.setInstrument(instrument);
+		channel.setProgram(instrument);
 		return channel;
 	}
 	
@@ -256,6 +257,150 @@ public class TGSongManager {
 			}
 		}
 	}
+	*/
+	// -------------------------------------------------------------- // 
+	public TGChannel createChannel(){
+		TGChannel channel = getFactory().newChannel();
+		
+		List freeChannels = getFreeChannels( channel );
+		
+		channel.setChannel((short)( freeChannels.size() > 0 ? ((Integer)freeChannels.get(0)).intValue() : -1 ) );
+		channel.setEffectChannel((short)( freeChannels.size() > 1 ? ((Integer)freeChannels.get(1)).intValue() : channel.getChannel() ) );
+		
+		return channel;
+	}
+	
+	public TGChannel addChannel(){
+		return addChannel(createChannel());
+	}
+	
+	public TGChannel addChannel(TGChannel channel){
+		if( channel != null ){
+			if( channel.getChannelId() <= 0 ){
+				channel.setChannelId( getNextChannelId() );
+			}
+			getSong().addChannel(channel);
+		}
+		return channel;
+	}
+	
+	public void removeChannel(TGChannel channel){
+		if( channel != null ){
+			getSong().removeChannel(channel);
+		}
+	}
+	
+	public void removeChannel(int channelId){
+		TGChannel channel = getChannel(channelId);
+		if( channel != null ){
+			removeChannel(channel);
+		}
+	}
+	
+	public void removeAllChannels(){
+		while( getSong().countChannels() > 0 ){
+			removeChannel( getSong().getChannel(0) );
+		}
+	}
+	
+	public TGChannel getChannel(int channelId){
+		Iterator it = getSong().getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = (TGChannel)it.next();
+			if( channel.getChannelId() == channelId ){
+				return channel;
+			}
+		}
+		return null;
+	}
+	
+	public List getChannels(){
+		List channels = new ArrayList();
+		
+		Iterator it = getSong().getChannels();
+		while( it.hasNext() ){
+			channels.add((TGChannel)it.next());
+		}
+		
+		return channels;
+	}
+	
+	public int getNextChannelId(){
+		int maximumId = 0;
+		
+		Iterator it = getSong().getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = (TGChannel)it.next();
+			if( maximumId < channel.getChannelId() ){
+				maximumId = channel.getChannelId();
+			}
+		}
+		
+		return (maximumId + 1);
+	}
+	
+	public TGChannel updateChannel(int id,short c1,short c2,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
+		TGChannel channel = getChannel(id);
+		if( channel != null ){
+			channel.setChannel(c1);
+			channel.setEffectChannel(c2);
+			channel.setBank(bnk);
+			channel.setProgram(prg);
+			channel.setVolume(vol);
+			channel.setBalance(bal);
+			channel.setChorus(cho);
+			channel.setReverb(rev);
+			channel.setPhaser(pha);
+			channel.setTremolo(tre);
+			channel.setName(name);
+		}
+		return channel;
+	}
+	
+	public List getFreeChannels( TGChannel forChannel ){
+		List freeChannels = new ArrayList();
+		
+		for( int ch = 0 ; ch < TGSongManager.MAX_CHANNELS ; ch ++ ){
+			if( !TGChannel.isPercussionChannel(ch) ){
+				boolean isFreeChannel = true;
+				
+				Iterator channelIt = getSong().getChannels();
+				while( channelIt.hasNext() ){
+					TGChannel channel = (TGChannel) channelIt.next();
+					if( forChannel == null || !forChannel.equals( channel ) ){
+						if( channel.getChannel() == ch || channel.getEffectChannel() == ch){
+							isFreeChannel = false;
+						}
+					}
+				}
+				
+				if( isFreeChannel ){
+					freeChannels.add(new Integer(ch));
+				}
+			}
+		}
+		return freeChannels;
+	}
+	
+	public boolean isPercussionChannel( int channelId ){
+		TGChannel channel = getChannel(channelId);
+		if( channel != null ){
+			return channel.isPercussionChannel();
+		}
+		return false;
+	}
+	
+	public boolean isAnyTrackConnectedToChannel( int channelId ){
+		Iterator it = getSong().getTracks();
+		while( it.hasNext() ){
+			TGTrack track = (TGTrack) it.next();
+			if( track.getChannelId() == channelId ){
+				return true;
+			}
+		}
+		return false;
+	}
+	// -------------------------------------------------------------- // 
 	
 	public TGTrack getTrack(int number){
 		TGTrack track = null;
@@ -326,7 +471,7 @@ public class TGSongManager {
 			track.addMeasure(measure);
 		}
 		track.setStrings(createDefaultInstrumentStrings());
-		getFreeChannel(TGChannel.DEFAULT_INSTRUMENT,false).copy(track.getChannel());
+		//getFreeChannel(TGChannel.DEFAULT_PROGRAM,false).copy(track.getChannel());
 		TGColor.RED.copy(track.getColor());
 		return track;
 	}
