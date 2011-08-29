@@ -11,8 +11,8 @@ import java.awt.AWTEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
 import org.herac.tuxguitar.app.editors.tab.Caret;
-import org.herac.tuxguitar.app.editors.tab.TGMeasureImpl;
-import org.herac.tuxguitar.app.editors.tab.TGTrackImpl;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 
 /**
  * @author julian

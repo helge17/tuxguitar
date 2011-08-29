@@ -101,6 +101,6 @@ public abstract class Action extends ActionAdapter {
 	}
 	
 	public void fireUpdate(int measureNumber) {
-		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().fireUpdate(measureNumber);
+		TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().updateMeasureNumber(measureNumber);
 	}
 }

@@ -22,8 +22,8 @@ import org.herac.tuxguitar.app.actions.layout.SetScoreEnabledAction;
 import org.herac.tuxguitar.app.actions.layout.SetTablatureEnabledAction;
 import org.herac.tuxguitar.app.actions.transport.TransportMixerAction;
 import org.herac.tuxguitar.app.actions.transport.TransportSetupAction;
-import org.herac.tuxguitar.app.editors.tab.layout.ViewLayout;
 import org.herac.tuxguitar.app.system.config.TGConfig;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 
 /**
  * @author julian
@@ -56,22 +56,22 @@ public class SettingsAction extends Action{
 		JMenu showMenu = new JMenu("View");
 		showMenu.setFont( TGConfig.FONT_WIDGETS );
 		
-		JMenuItem showScore = new JCheckBoxMenuItem("Show Score", ( style & ViewLayout.DISPLAY_SCORE) != 0 );
+		JMenuItem showScore = new JCheckBoxMenuItem("Show Score", ( style & TGLayout.DISPLAY_SCORE) != 0 );
 		showScore.addActionListener( TuxGuitar.instance().getAction( SetScoreEnabledAction.NAME ) );
 		showScore.setFont( TGConfig.FONT_WIDGETS );
 		showMenu.add( showScore );
 		
-		JMenuItem showTablature = new JCheckBoxMenuItem("Show Tablature", ( style & ViewLayout.DISPLAY_TABLATURE) != 0 );
+		JMenuItem showTablature = new JCheckBoxMenuItem("Show Tablature", ( style & TGLayout.DISPLAY_TABLATURE) != 0 );
 		showTablature.addActionListener( TuxGuitar.instance().getAction( SetTablatureEnabledAction.NAME ) );
 		showTablature.setFont( TGConfig.FONT_WIDGETS );
 		showMenu.add( showTablature );
 		
-		JMenuItem showChordName = new JCheckBoxMenuItem("Show Chord Names", ( style & ViewLayout.DISPLAY_CHORD_NAME) != 0 );
+		JMenuItem showChordName = new JCheckBoxMenuItem("Show Chord Names", ( style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
 		showChordName.addActionListener( TuxGuitar.instance().getAction( SetChordNameEnabledAction.NAME ) );
 		showChordName.setFont( TGConfig.FONT_WIDGETS );
 		showMenu.add( showChordName );
 		
-		JMenuItem showChordDiagram = new JCheckBoxMenuItem("Show Chord Diagrams", ( style & ViewLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
+		JMenuItem showChordDiagram = new JCheckBoxMenuItem("Show Chord Diagrams", ( style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
 		showChordDiagram.addActionListener( TuxGuitar.instance().getAction( SetChordDiagramEnabledAction.NAME ) );
 		showChordDiagram.setFont( TGConfig.FONT_WIDGETS );
 		showMenu.add( showChordDiagram );

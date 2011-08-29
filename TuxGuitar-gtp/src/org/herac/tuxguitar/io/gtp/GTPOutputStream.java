@@ -2,12 +2,18 @@ package org.herac.tuxguitar.io.gtp;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.song.models.TGTrack;
 
 public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputStreamBase{
 	
+	private TGChannel channelAux;
 	private OutputStream outputStream;
 	
 	public GTPOutputStream(GTPSettings settings){
@@ -16,6 +22,7 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 	
 	public void init(TGFactory factory,OutputStream stream) {
 		super.init(factory);
+		this.channelAux = null;
 		this.outputStream = stream;
 	}
 	
@@ -87,5 +94,33 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 	protected void close() throws IOException{
 		this.outputStream.flush();
 		this.outputStream.close();
+	}
+	
+	protected TGChannel getChannel( TGSong song, TGTrack track ){
+		TGSongManager tgSongManager = new TGSongManager(getFactory());
+		tgSongManager.setSong( song );
+		
+		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
+		if( tgChannel != null ){
+			return tgChannel;
+		}
+		if( this.channelAux == null ){
+			this.channelAux = tgSongManager.createChannel();
+			if( this.channelAux.getChannel() < 0 && song.countChannels() > 0 ){
+				this.channelAux = (song.getChannel(song.countChannels() - 1));
+			}
+		}
+		return this.channelAux;
+	}
+	
+	protected boolean isPercussionChannel( TGSong song, int channelId ){
+		Iterator it = song.getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = (TGChannel)it.next();
+			if( channel.getChannelId() == channelId ){
+				return channel.isPercussionChannel();
+			}
+		}
+		return false;
 	}
 }

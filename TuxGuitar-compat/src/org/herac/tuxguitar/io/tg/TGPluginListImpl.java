@@ -15,6 +15,11 @@ public class TGPluginListImpl extends TGPluginList{
 		List plugins = new ArrayList();
 		plugins.add(new TGInputStreamPlugin() {
 			protected TGInputStreamBase getInputStream() {
+				return new org.herac.tuxguitar.io.tg.v12.TGInputStream();
+			}
+		});
+		plugins.add(new TGInputStreamPlugin() {
+			protected TGInputStreamBase getInputStream() {
 				return new org.herac.tuxguitar.io.tg.v11.TGInputStream();
 			}
 		});
@@ -36,6 +41,11 @@ public class TGPluginListImpl extends TGPluginList{
 		plugins.add(new TGInputStreamPlugin() {
 			protected TGInputStreamBase getInputStream() {
 				return new org.herac.tuxguitar.io.tg.v07.TGInputStream();
+			}
+		});
+		plugins.add(new TGExporterPlugin() {
+			protected TGRawExporter getExporter() {
+				return new org.herac.tuxguitar.io.tg.v12.TGOutputStream();
 			}
 		});
 		plugins.add(new TGExporterPlugin() {

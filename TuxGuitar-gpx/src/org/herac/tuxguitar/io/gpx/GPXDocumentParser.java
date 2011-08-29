@@ -17,6 +17,7 @@ import org.herac.tuxguitar.io.gpx.score.GPXVoice;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -62,12 +63,27 @@ public class GPXDocumentParser {
 		for( int i = 0 ; i < tracks.size(); i ++ ){
 			GPXTrack gpTrack = (GPXTrack) this.document.getTracks().get(i);
 			
+			TGChannel tgChannel = this.factory.newChannel();
+			tgChannel.setProgram((short)gpTrack.getGmProgram());
+			tgChannel.setChannel((short)gpTrack.getGmChannel1());
+			tgChannel.setEffectChannel((short)gpTrack.getGmChannel2());
+			
+			for( int c = 0 ; c < tgSong.countChannels() ; c ++ ){
+				TGChannel tgChannelAux = tgSong.getChannel(c);
+				if( tgChannelAux.getChannel() == tgChannel.getChannel() ){
+					tgChannel.setChannelId(tgChannelAux.getChannelId());
+				}
+			}
+			if( tgChannel.getChannelId() <= 0 ){
+				tgChannel.setChannelId( tgSong.countChannels() + 1 );
+				tgChannel.setName(("#" + tgChannel.getChannelId()));
+				tgSong.addChannel(tgChannel);
+			}
+			
 			TGTrack tgTrack = this.factory.newTrack();
 			tgTrack.setNumber( i + 1 );
 			tgTrack.setName(gpTrack.getName());
-			tgTrack.getChannel().setInstrument((short)gpTrack.getGmProgram());
-			tgTrack.getChannel().setChannel((short)gpTrack.getGmChannel1());
-			tgTrack.getChannel().setEffectChannel((short)gpTrack.getGmChannel2());
+			tgTrack.setChannelId(tgChannel.getChannelId());
 			
 			if( gpTrack.getTunningPitches() != null ){
 				for( int s = 1; s <= gpTrack.getTunningPitches().length ; s ++ ){
@@ -76,7 +92,7 @@ public class GPXDocumentParser {
 					tgString.setValue(gpTrack.getTunningPitches()[ gpTrack.getTunningPitches().length - s ]);
 					tgTrack.getStrings().add(tgString);
 				}
-			}else if( tgTrack.isPercussionTrack() ){
+			}else if( tgChannel.isPercussionChannel() ){
 				for( int s = 1; s <= 6 ; s ++ ){
 					tgTrack.getStrings().add(TGSongManager.newString(this.factory, s, 0));
 				}

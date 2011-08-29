@@ -107,7 +107,7 @@ public class GP4InputStream extends GTPInputStream {
 	
 	private void readTracks(TGSong song, int count, List channels,TGLyric lyric, int lyricTrack) throws IOException{
 		for (int number = 1; number <= count; number++) {
-			song.addTrack(readTrack(number, channels,(number == lyricTrack)?lyric:getFactory().newLyric()));
+			song.addTrack(readTrack(song, number, channels,(number == lyricTrack)?lyric:getFactory().newLyric()));
 		}
 	}
 	
@@ -146,7 +146,7 @@ public class GP4InputStream extends GTPInputStream {
 			TGChannel channel = getFactory().newChannel();
 			channel.setChannel((short)i);
 			channel.setEffectChannel((short)i);
-			channel.setInstrument((short)readInt());
+			channel.setProgram((short)readInt());
 			channel.setVolume(toChannelShort(readByte()));
 			channel.setBalance(toChannelShort(readByte()));
 			channel.setChorus(toChannelShort(readByte()));
@@ -354,7 +354,7 @@ public class GP4InputStream extends GTPInputStream {
 		return note;
 	}
 	
-	private TGTrack readTrack(int number, List channels,TGLyric lyrics) throws IOException {
+	private TGTrack readTrack(TGSong song, int number, List channels,TGLyric lyrics) throws IOException {
 		TGTrack track = getFactory().newTrack();
 		track.setNumber(number);
 		track.setLyrics(lyrics);
@@ -371,24 +371,40 @@ public class GP4InputStream extends GTPInputStream {
 			}
 		}
 		readInt();
-		readChannel(track.getChannel(), channels);
+		readChannel(song, track, channels);
 		readInt();
 		track.setOffset(readInt());
 		readColor(track.getColor());
 		return track;
 	}
 	
-	private void readChannel(TGChannel channel,List channels) throws IOException {
+	private void readChannel(TGSong song, TGTrack track,List channels) throws IOException {
 		int index = (readInt() - 1);
 		int effectChannel = (readInt() - 1);
 		if(index >= 0 && index < channels.size()){
+			TGChannel channel = getFactory().newChannel();
+			
 			((TGChannel) channels.get(index)).copy(channel);
-			if (channel.getInstrument() < 0) {
-				channel.setInstrument((short)0);
+			if (channel.getProgram() < 0) {
+				channel.setProgram((short)0);
 			}
 			if(!channel.isPercussionChannel()){
 				channel.setEffectChannel((short)effectChannel);
 			}
+			
+			//------------------------------------------//
+			for( int i = 0 ; i < song.countChannels() ; i ++ ){
+				TGChannel channelAux = song.getChannel(i);
+				if( channelAux.getChannel() == channel.getChannel() ){
+					channel.setChannelId(channelAux.getChannelId());
+				}
+			}
+			if( channel.getChannelId() <= 0 ){
+				channel.setChannelId( song.countChannels() + 1 );
+				channel.setName(("#" + channel.getChannelId()));
+				song.addChannel(channel);
+			}
+			track.setChannelId(channel.getChannelId());
 		}
 	}
 	
@@ -673,7 +689,7 @@ public class GP4InputStream extends GTPInputStream {
 	}
 	
 	private int getClef( TGTrack track ){
-		if( !track.isPercussionTrack() ){
+		if(!isPercussionChannel(track.getSong(),track.getChannelId())){
 			Iterator it = track.getStrings().iterator();
 			while( it.hasNext() ){
 				TGString string = (TGString) it.next();
@@ -683,5 +699,16 @@ public class GP4InputStream extends GTPInputStream {
 			}
 		}
 		return TGMeasure.CLEF_TREBLE;
+	}
+	
+	private boolean isPercussionChannel( TGSong song, int channelId ){
+		Iterator it = song.getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = (TGChannel)it.next();
+			if( channel.getChannelId() == channelId ){
+				return channel.isPercussionChannel();
+			}
+		}
+		return false;
 	}
 }

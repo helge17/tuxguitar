@@ -10,9 +10,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGPainter;
-import org.herac.tuxguitar.app.editors.tab.layout.ViewLayout;
+import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
+import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
 import org.herac.tuxguitar.song.managers.TGMeasureManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -127,11 +131,11 @@ public class Caret {
 		this.setChanges(true);
 	}
 	
-	public void paintCaret(ViewLayout layout,TGPainter painter) {
+	public void paintCaret(TGLayout layout,TGPainterImpl painter) {
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && this.selectedBeat instanceof TGBeatImpl) {
-				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
-				if( (layout.getStyle() & ViewLayout.DISPLAY_TABLATURE) != 0){
+				org.herac.tuxguitar.graphics.control.TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
+				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){
 					boolean expectedVoice = (getSelectedNote() == null || getSelectedNote().getVoice().getIndex() == getVoice());
 					int stringSpacing = this.tablature.getViewLayout().getStringSpacing();
 					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
@@ -139,13 +143,13 @@ public class Caret {
 					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
 					int width = 14;
 					int height = 14;
-					layout.setCaretStyle(painter, expectedVoice);
+					painter.setForeground( expectedVoice ? layout.getResources().getLineColor() : layout.getResources().getColorRed());
 					painter.initPath();
 					painter.setAntialias(false);
 					painter.addRectangle(x, y, width, height);
 					painter.closePath();
 				}
-				else if( (layout.getStyle() & ViewLayout.DISPLAY_SCORE) != 0){
+				else if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
 					int line = this.tablature.getViewLayout().getScoreLineSpacing();
 					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float xMargin = (2.0f * layout.getScale());
@@ -153,7 +157,7 @@ public class Caret {
 					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
-					layout.setCaretStyle(painter, true);
+					painter.setForeground(layout.getResources().getLineColor());
 					painter.initPath();
 					painter.moveTo(x1, y1);
 					painter.lineTo(x1 + ((x2 - x1) / 2f), y1 + (line / 2f));

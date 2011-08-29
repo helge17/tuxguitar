@@ -33,6 +33,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 	private static final int MIN_DURATION_VALUE = TGDuration.SIXTY_FOURTH;
 	
 	private int resolution;
+	private List channels;
 	private List headers;
 	private List tracks;
 	private List tempNotes;
@@ -84,6 +85,10 @@ public class MidiSongImporter implements TGLocalFileImporter{
 			
 			TGSong song = this.factory.newSong();
 			
+			Iterator channels = this.channels.iterator();
+			while(channels.hasNext()){
+				song.addChannel((TGChannel)channels.next());
+			}
 			Iterator headers = this.headers.iterator();
 			while(headers.hasNext()){
 				song.addMeasureHeader((TGMeasureHeader)headers.next());
@@ -100,6 +105,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 	
 	private void initFields(MidiSequence sequence){
 		this.resolution = sequence.getResolution();
+		this.channels = new ArrayList();
 		this.headers = new ArrayList();
 		this.tracks = new ArrayList();
 		this.tempNotes = new ArrayList();
@@ -229,14 +235,10 @@ public class MidiSongImporter implements TGLocalFileImporter{
 				return track;
 			}
 		}
-		TGChannel channel = this.factory.newChannel();
-		channel.setChannel((short)-1);
-		channel.setEffectChannel((short)-1);
-		channel.setInstrument((short)0);
 		
 		TGTrack track = this.factory.newTrack();
 		track.setNumber(number);
-		track.setChannel(channel);
+		track.setChannelId(-1);
 		TGColor.RED.copy(track.getColor());
 		
 		this.tracks.add(track);
@@ -404,6 +406,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 	}
 	
 	private void checkAll()throws Exception{
+		checkChannels();
 		checkTracks();
 		
 		int headerCount = this.headers.size();
@@ -426,38 +429,71 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		}
 	}
 	
+	private void checkChannels(){
+		for(int tc = 0 ; tc < this.tempChannels.size() ; tc ++ ){
+			TempChannel tempChannel = (TempChannel)this.tempChannels.get( tc );
+			if( tempChannel.getTrack() > 0 ){
+				boolean channelExists = false;
+				for(int c = 0 ; c < this.channels.size() ; c ++ ){
+					TGChannel tgChannel = (TGChannel) this.channels.get(c);
+					if( tgChannel.getChannel() == tempChannel.getChannel() || tgChannel.getEffectChannel() == tempChannel.getChannel() ){
+						channelExists = true;
+					}
+				}
+				
+				if(!channelExists){
+					TGChannel tgChannel = this.factory.newChannel();
+					tgChannel.setChannelId(this.channels.size() + 1);
+					tgChannel.setChannel((short)tempChannel.getChannel());
+					tgChannel.setEffectChannel((short)tempChannel.getChannel());
+					tgChannel.setProgram((short)tempChannel.getInstrument());
+					tgChannel.setVolume((short)tempChannel.getVolume());
+					tgChannel.setBalance((short)tempChannel.getBalance());
+					tgChannel.setName(("#" + tgChannel.getChannelId()));
+					
+					for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
+						TempChannel tempChannelAux = (TempChannel)this.tempChannels.get( tcAux );
+						if( tempChannel.getTrack() == tempChannelAux.getTrack() ){
+							if( tgChannel.getEffectChannel() ==  tgChannel.getChannel() ){
+								tgChannel.setEffectChannel((short)tempChannelAux.getChannel());
+							}else{
+								tempChannelAux.setTrack(-1);
+							}
+						}
+					}
+					
+					this.channels.add( tgChannel );
+				}
+			}
+		}
+	}
+	
 	private void checkTracks(){
 		Iterator it = this.tracks.iterator();
 		while(it.hasNext()){
 			TGTrack track = (TGTrack)it.next();
+			TGChannel trackChannel = null;
+			
 			Iterator tcIt = this.tempChannels.iterator();
 			while(tcIt.hasNext()){
 				TempChannel tempChannel = (TempChannel)tcIt.next();
-				if(tempChannel.getTrack() == track.getNumber()){
-					if(track.getChannel().getChannel() < 0){
-						track.getChannel().setChannel((short)tempChannel.getChannel());
-						track.getChannel().setInstrument((short)tempChannel.getInstrument());
-						track.getChannel().setVolume((short)tempChannel.getVolume());
-						track.getChannel().setBalance((short)tempChannel.getBalance());
-					}else if(track.getChannel().getEffectChannel() < 0){
-						track.getChannel().setEffectChannel((short)tempChannel.getChannel());
+				if( tempChannel.getTrack() == track.getNumber() ){
+					Iterator channelIt = this.channels.iterator();
+					while( channelIt.hasNext() ){
+						TGChannel tgChannel = (TGChannel)channelIt.next();
+						if( tempChannel.getChannel() == tgChannel.getChannel() ){
+							trackChannel = tgChannel;
+						}
 					}
 				}
 			}
-			if(track.getChannel().getChannel() < 0){
-				track.getChannel().setChannel((short)(TGSongManager.MAX_CHANNELS - 1));
-				track.getChannel().setInstrument((short)0);
-				track.getChannel().setVolume((short)127);
-				track.getChannel().setBalance((short)64);
+			if( trackChannel != null ){
+				track.setChannelId( trackChannel.getChannelId() );
 			}
-			if(track.getChannel().getEffectChannel() < 0){
-				track.getChannel().setEffectChannel(track.getChannel().getChannel());
-			}
-			
-			if(!track.isPercussionTrack()){
-				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings());
-			}else{
+			if( trackChannel != null && trackChannel.isPercussionChannel() ){
 				track.setStrings(TGSongManager.createPercussionStrings(this.factory,6));
+			}else{
+				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings());
 			}
 		}
 	}

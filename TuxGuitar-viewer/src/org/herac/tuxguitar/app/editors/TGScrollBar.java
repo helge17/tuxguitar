@@ -48,7 +48,7 @@ public class TGScrollBar {
 		this.buttonDown.addMouseListener( new TGScrollBarAction( this, 1) );
 		
 		JPanel panel = new JPanel();
-		panel.setBackground( TGConfig.COLOR_BACKGROUND );
+		panel.setBackground( TGConfig.COLOR_WIDGET_BACKGROUND );
 		panel.setLayout( new BoxLayout( panel, BoxLayout.PAGE_AXIS) );
 		panel.add( Box.createVerticalStrut( 100 ));
 		panel.add( this.buttonUp );

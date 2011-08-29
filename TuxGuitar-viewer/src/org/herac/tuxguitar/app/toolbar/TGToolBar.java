@@ -55,7 +55,7 @@ public class TGToolBar {
 			this.buttons.add( this.buttonTrack  );
 			this.buttons.add( Box.createHorizontalGlue() );
 			this.buttons.add( this.buttonSetup  );
-			this.buttons.setBackground( TGConfig.COLOR_BACKGROUND );
+			this.buttons.setBackground( TGConfig.COLOR_WIDGET_BACKGROUND );
 		}
 		return this.buttons;
 	}

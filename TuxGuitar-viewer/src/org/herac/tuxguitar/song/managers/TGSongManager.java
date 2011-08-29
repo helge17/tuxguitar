@@ -712,6 +712,16 @@ public class TGSongManager {
 		return null;
 	}
 	
+	public int getMeasureHeaderIndex(TGMeasureHeader mh){
+		for (int i = 0; i < getSong().countMeasureHeaders(); i++) {
+			TGMeasureHeader header = getSong().getMeasureHeader(i);
+			if(header.getNumber() == mh.getNumber()){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	/**
 	 * Retorna Todos los desde Start hasta el final del compas
 	 */

@@ -15,6 +15,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -148,7 +149,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		track.setName(readUnsignedByteString());
 		
 		//leo el canal
-		readChannel(track);
+		readChannel(song, track);
 		
 		//leo la cantidad de compases
 		int measureCount = song.countMeasureHeaders();
@@ -254,41 +255,57 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		return measure;
 	}
 	
-	private void readChannel(TGTrack track){
+	private void readChannel(TGSong song, TGTrack track){
 		int header = readHeader();
 		
+		TGChannel channel = this.factory.newChannel();
+		
 		//leo el canal
-		track.getChannel().setChannel(readByte());
+		channel.setChannel(readByte());
 		
 		//leo el canal de efectos
-		track.getChannel().setEffectChannel(readByte());
+		channel.setEffectChannel(readByte());
 		
 		//leo el instrumento
-		track.getChannel().setInstrument(readByte());
+		channel.setProgram(readByte());
 		
 		//leo el volumen
-		track.getChannel().setVolume(readByte());
+		channel.setVolume(readByte());
 		
 		//leo el balance
-		track.getChannel().setBalance(readByte());
+		channel.setBalance(readByte());
 		
 		//leo el chorus
-		track.getChannel().setChorus(readByte());
+		channel.setChorus(readByte());
 		
 		//leo el reverb
-		track.getChannel().setReverb(readByte());
+		channel.setReverb(readByte());
 		
 		//leo el phaser
-		track.getChannel().setPhaser(readByte());
+		channel.setPhaser(readByte());
 		
 		//leo el tremolo
-		track.getChannel().setTremolo(readByte());
+		channel.setTremolo(readByte());
 		
 		//leo el solo
 		track.setSolo((header & CHANNEL_SOLO) != 0);
 		
 		//leo el mute
 		track.setMute((header & CHANNEL_MUTE) != 0);
+		
+		//------------------------------------------//
+		for( int i = 0 ; i < song.countChannels() ; i ++ ){
+			TGChannel channelAux = song.getChannel(i);
+			if( channelAux.getChannel() == channel.getChannel() ){
+				channel.setChannelId(channelAux.getChannelId());
+			}
+		}
+		if( channel.getChannelId() <= 0 ){
+			channel.setChannelId( song.countChannels() + 1 );
+			channel.setName(("#" + channel.getChannelId()));
+			song.addChannel(channel);
+		}
+		track.setChannelId(channel.getChannelId());
 	}
 	
 	private void readBeats(TGMeasure measure,TGBeatData data){
