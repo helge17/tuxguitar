@@ -261,7 +261,7 @@ class MiStaff
 	private void	generateTrack(String inTrackName)
 	{
 	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
-	TGTrack			tgTrack		= tgSongMgr.createTrack();
+	TGTrack			tgTrack		= tgSongMgr.addTrack();
 	Iterator		eventsIt;
 
 	if(f_Dump_TrackGeneration)

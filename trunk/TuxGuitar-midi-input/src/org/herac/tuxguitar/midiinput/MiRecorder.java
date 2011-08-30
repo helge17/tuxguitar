@@ -73,7 +73,7 @@ static	private	MiRecorder	s_Instance;
 	f_Tempo			= caret.getMeasure().getTempo().getValue();
 	f_StartPosition = caret.getMeasure().getStart();
 
-	f_TempTrack = tgSongMgr.createTrack();
+	f_TempTrack = tgSongMgr.addTrack();
 
 	f_TempTrack.setName("Traccia temporanea input MIDI");
 /*

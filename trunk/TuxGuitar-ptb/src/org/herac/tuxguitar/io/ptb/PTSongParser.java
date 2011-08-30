@@ -329,7 +329,7 @@ public class PTSongParser {
 	}
 	
 	private TGTrack createTrack(PTTrackInfo info){
-		TGTrack track = this.manager.createTrack();
+		TGTrack track = this.manager.addTrack();
 		this.helper.getInfoHelper().addStaffTrack( track );
 		this.setTrackInfo(track, info );
 		return track;
@@ -340,7 +340,6 @@ public class PTSongParser {
 		tgChannel.setProgram((short) info.getInstrument() );
 		tgChannel.setVolume((short) info.getVolume() );
 		tgChannel.setBalance((short) info.getBalance() );
-		tgChannel.setName(("#" + tgChannel.getChannelId()));
 		
 		tgTrack.setName( info.getName() );
 		tgTrack.setChannelId(tgChannel.getChannelId());

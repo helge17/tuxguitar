@@ -33,7 +33,7 @@ public class AddTrackAction extends Action{
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		
-		TGTrack track = getSongManager().createTrack();
+		TGTrack track = getSongManager().addTrack();
 		updateTablature();
 		caret.update(track.getNumber(),caret.getPosition(),1);
 		
