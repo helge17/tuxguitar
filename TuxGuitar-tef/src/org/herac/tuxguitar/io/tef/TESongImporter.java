@@ -90,7 +90,7 @@ public class TESongImporter implements TGLocalFileImporter{
 		this.manager.getFirstMeasureHeader().getTempo().setValue(tempo);
 		
 		while(this.manager.getSong().countTracks() < tracks){
-			this.manager.createTrack();
+			this.manager.addTrack();
 		}
 		while(this.manager.getSong().countMeasureHeaders() < measures){
 			this.manager.addNewMeasureBeforeEnd();
@@ -116,7 +116,6 @@ public class TESongImporter implements TGLocalFileImporter{
 			tgChannel.setVolume((short)((  (15 - tracks[i].getVolume()) * 127) / 15));
 			tgChannel.setBalance((short)(( tracks[i].getPan() * 127) / 15));
 			tgChannel.setProgram((short)tracks[i].getInstrument());
-			tgChannel.setName(("#" + tgChannel.getChannelId()));
 			if(tracks[i].isPercussion()){
 				TGChannel.setPercussionChannel(tgChannel);
 			}
