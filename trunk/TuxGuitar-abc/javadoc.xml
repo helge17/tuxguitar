@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="../TuxGuitar/bin:/home/peter/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_3.2.0.v3232m.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="org.herac.tuxguitar.io.abc,org.herac.tuxguitar.io.abc.base" source="1.4" sourcepath="src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>
