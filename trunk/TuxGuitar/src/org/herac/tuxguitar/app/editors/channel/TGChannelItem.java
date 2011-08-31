@@ -161,15 +161,15 @@ public class TGChannelItem {
 	
 	public void loadProperties(){
 		if(!isDisposed()){
-			this.percussionButton.setText(TuxGuitar.getProperty("instrument.percussion-track"));
+			this.percussionButton.setText(TuxGuitar.getProperty("instrument.percussion-channel"));
 			this.removeChannelButton.setText(TuxGuitar.getProperty("remove"));
 			
-			this.volumeScale.setText(TuxGuitar.getProperty("mixer.channel.volume"));
-			this.balanceScale.setText(TuxGuitar.getProperty("mixer.channel.balance"));
-			this.reverbScale.setText(TuxGuitar.getProperty("mixer.channel.reverb"));
-			this.chorusScale.setText(TuxGuitar.getProperty("mixer.channel.chorus"));
-			this.tremoloScale.setText(TuxGuitar.getProperty("mixer.channel.tremolo"));
-			this.phaserScale.setText(TuxGuitar.getProperty("mixer.channel.phaser"));
+			this.volumeScale.setText(TuxGuitar.getProperty("instrument.volume"));
+			this.balanceScale.setText(TuxGuitar.getProperty("instrument.balance"));
+			this.reverbScale.setText(TuxGuitar.getProperty("instrument.reverb"));
+			this.chorusScale.setText(TuxGuitar.getProperty("instrument.chorus"));
+			this.tremoloScale.setText(TuxGuitar.getProperty("instrument.tremolo"));
+			this.phaserScale.setText(TuxGuitar.getProperty("instrument.phaser"));
 			
 			this.updateChannelCombos( this.getHandle().isPlayerRunning() );
 		}
@@ -202,8 +202,8 @@ public class TGChannelItem {
 		if(!isDisposed() && getChannel() != null){
 			List channels = getHandle().getFreeChannels(getChannel());
 			
-			String channel1Prefix = TuxGuitar.getProperty("mixer.channel.channel");
-			String channel2Prefix = TuxGuitar.getProperty("mixer.channel.effect-channel");
+			String channel1Prefix = TuxGuitar.getProperty("instrument.channel");
+			String channel2Prefix = TuxGuitar.getProperty("instrument.effect-channel");
 			
 			this.reloadChannelCombo(this.channel1Combo, channels, getChannel().getChannel(), channel1Prefix);
 			this.reloadChannelCombo(this.channel2Combo, channels, getChannel().getEffectChannel(), channel2Prefix);

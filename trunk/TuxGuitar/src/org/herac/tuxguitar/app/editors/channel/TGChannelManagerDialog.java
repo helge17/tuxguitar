@@ -45,7 +45,7 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 	}
 	
 	public void show(Shell parent){
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM);
+		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(createGridLayout(1,false, true, true));
 		
 		this.createWindow(this.dialog, new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -54,6 +54,7 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				removeListeners();
+				TuxGuitar.instance().updateCache(true);
 			}
 		});
 		
@@ -201,10 +202,10 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 		if(!isDisposed()){
 			this.addChannelButton.setText(TuxGuitar.getProperty("add"));
 			
-			this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("mixer.volume") + ":");
-			this.volumeTip = TuxGuitar.getProperty("mixer.volume");
+			this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("instruments.volume") + ":");
+			this.volumeTip = TuxGuitar.getProperty("instruments.volume");
 			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
-			this.dialog.setText(TuxGuitar.getProperty("mixer"));
+			this.dialog.setText(TuxGuitar.getProperty("instruments.dialog-title"));
 			
 			this.channelList.loadProperties();
 		}

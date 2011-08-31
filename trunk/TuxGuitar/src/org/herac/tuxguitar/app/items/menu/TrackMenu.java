@@ -128,8 +128,8 @@ public class TrackMenu extends MenuItems{
 			setMenuItemTextAndAccelerator(this.removeTrack, "track.remove", RemoveTrackAction.NAME);
 			setMenuItemTextAndAccelerator(this.moveUp, "track.move-up", MoveTrackUpAction.NAME);
 			setMenuItemTextAndAccelerator(this.moveDown, "track.move-down", MoveTrackDownAction.NAME);
-			setMenuItemTextAndAccelerator(this.changeSolo, "mixer.track.solo", ChangeTrackSoloAction.NAME);
-			setMenuItemTextAndAccelerator(this.changeMute, "mixer.track.mute", ChangeTrackMuteAction.NAME);
+			setMenuItemTextAndAccelerator(this.changeSolo, "track.solo", ChangeTrackSoloAction.NAME);
+			setMenuItemTextAndAccelerator(this.changeMute, "track.mute", ChangeTrackMuteAction.NAME);
 			setMenuItemTextAndAccelerator(this.lyrics, "track.lyrics", EditLyricsAction.NAME);
 			setMenuItemTextAndAccelerator(this.properties, "track.properties", TrackPropertiesAction.NAME);
 		}
