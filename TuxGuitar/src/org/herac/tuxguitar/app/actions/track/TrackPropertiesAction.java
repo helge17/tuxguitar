@@ -123,7 +123,7 @@ public class TrackPropertiesAction extends Action implements TGUpdateListener {
 			initTrackInfo(makeGroup(left,1,TuxGuitar.getProperty("track.properties.general")), track);
 			
 			//INSTRUMENT
-			initInstrumentFields(makeGroup(left,1,TuxGuitar.getProperty("instrument.instrument")), track);
+			initInstrumentFields(makeGroup(left,1,TuxGuitar.getProperty("instrument")), track);
 			
 			//TUNING
 			initTuningInfo(makeGroup(right,2,TuxGuitar.getProperty("tuning")), track);
@@ -341,7 +341,7 @@ public class TrackPropertiesAction extends Action implements TGUpdateListener {
 		
 		//------------Instrument Combo-------------------------------------
 		Label instrumentLabel = new Label(top, SWT.NONE);
-		instrumentLabel.setText(TuxGuitar.getProperty("instrument.instrument") + ":");
+		instrumentLabel.setText(TuxGuitar.getProperty("instrument") + ":");
 		instrumentLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true,2,1));
 		
 		this.instrumentCombo = new Combo(top, SWT.DROP_DOWN | SWT.READ_ONLY);
