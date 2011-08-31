@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.io.svg;
 
+import org.herac.tuxguitar.graphics.TGColor;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
@@ -56,9 +57,21 @@ public class SVGController implements TGController {
 			svgBuffer.append("<svg width=\"" + svgBounds.getWidth() + "px\" height=\"" + svgBounds.getHeight() + "px\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
 			svgBuffer.append("\r\n");
 			
-			// Paint the TGSong
+			// Open the painter
 			svgPainter = new SVGPainter(svgBuffer);
+			
+			// Fill the background.
+			TGColor svgBackground = svgPainter.createColor(this.tgStyles.getStyles().getBackgroundColor());
+			svgPainter.setBackground(svgBackground);
+			svgPainter.initPath(TGPainter.PATH_FILL);
+			svgPainter.addRectangle(0, 0, svgBounds.getWidth(), svgBounds.getHeight());
+			svgPainter.closePath();
+			svgBackground.dispose();
+			
+			// Paint the TGSong
 			this.tgLayout.paint(svgPainter, svgBounds, 0, 0);
+			
+			// Closes the painter
 			svgPainter.dispose();
 			
 			// End of SVG document
