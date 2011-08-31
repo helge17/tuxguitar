@@ -103,7 +103,7 @@ public class ABCSongImporter implements TGLocalFileImporter{
 		this.manager.getFirstMeasureHeader().getTempo().setValue(tempo);
 		TGSong tgsong = this.manager.getSong();
 		while(tgsong.countTracks() < tracks){
-			this.manager.addTrack
+			this.manager.addTrack();
 		}
 		while(tgsong.countMeasureHeaders() < measures){
 			this.manager.addNewMeasureBeforeEnd();
