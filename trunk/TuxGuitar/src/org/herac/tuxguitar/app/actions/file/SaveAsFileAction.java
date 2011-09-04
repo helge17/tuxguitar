@@ -7,9 +7,9 @@
 package org.herac.tuxguitar.app.actions.file;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 
 /**
@@ -18,13 +18,14 @@ import org.herac.tuxguitar.app.actions.ActionLock;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class SaveAsFileAction extends Action {
+	
 	public static final String NAME = "action.file.save-as";
 	
 	public SaveAsFileAction() {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE );
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		final String fileName = FileActionUtils.chooseFileName();
 		if(fileName == null){
 			return AUTO_UNLOCK;

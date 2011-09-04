@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.track;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.song.models.TGTrack;
 
@@ -18,13 +18,14 @@ import org.herac.tuxguitar.song.models.TGTrack;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class GoFirstTrackAction extends Action{
+	
 	public static final String NAME = "action.track.go-first";
 	
 	public GoFirstTrackAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		Caret caret = getEditor().getTablature().getCaret();
 		TGTrack track = getSongManager().getFirstTrack();
 		if(track != null){

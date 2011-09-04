@@ -8,10 +8,10 @@ package org.herac.tuxguitar.app.actions.insert;
 
 import java.util.Iterator;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.chord.ChordDialog;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
@@ -30,21 +30,26 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class InsertChordAction extends Action {
+	
 	public static final String NAME = "action.insert.chord";
+	
+	public static final String PROPERTY_CHORD = "chord";
 	
 	public InsertChordAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
+		Object propertyChord = actionData.get(PROPERTY_CHORD);
+		
 		Caret caret = getEditor().getTablature().getCaret();
 		TGTrackImpl track = caret.getTrack();
 		TGMeasureImpl measure = caret.getMeasure();
 		TGBeat beat = caret.getSelectedBeat();
 		if (track != null && measure != null && beat != null) {
 			//Si el acorde llego en el data del widget solo lo agrego
-			if(e.widget.getData() instanceof TGChord){
-				TGChord chord = ((TGChord)e.widget.getData()).clone(getSongManager().getFactory());
+			if( propertyChord instanceof TGChord){
+				TGChord chord = ((TGChord)propertyChord).clone(getSongManager().getFactory());
 				insertChord(chord, track, measure, beat, caret.getVoice());
 			}
 			//sino muestro el editor de acordes

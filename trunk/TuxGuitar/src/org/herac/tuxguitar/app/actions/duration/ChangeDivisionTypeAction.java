@@ -6,14 +6,13 @@
  */
 package org.herac.tuxguitar.app.actions.duration;
 
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
-import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGDivisionType;
+import org.herac.tuxguitar.song.models.TGDuration;
 
 /**
  * @author julian
@@ -22,39 +21,40 @@ import org.herac.tuxguitar.song.models.TGDivisionType;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ChangeDivisionTypeAction extends Action{
+	
 	public static final String NAME = "action.note.duration.change-division-type";
+	
+	public static final String PROPERTY_DIVISION_TYPE = "divisionType";
 	
 	public ChangeDivisionTypeAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
+		Object propertyDivisionType = actionData.get(PROPERTY_DIVISION_TYPE);
+		
 		//comienza el undoable
 		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 		
-		boolean isKeyEvent = false;
-		if(e instanceof KeyEvent){
-			isKeyEvent = true;
+		TGDivisionType divisionType = defaultDivisionType();
+		if( propertyDivisionType instanceof TGDivisionType){
+			divisionType = (TGDivisionType)propertyDivisionType;
 		}
-		if(!isKeyEvent){
-			TGDivisionType divisionType = defaultDivisionType();
-			if(e.widget.getData() != null && e.widget.getData() instanceof TGDivisionType){
-				divisionType = (TGDivisionType)e.widget.getData();
-			}
-			
-			if(getSelectedDuration().getDivision().isEqual(divisionType)){
-				setDivisionType(noTuplet());
-			}else{
-				setDivisionType(divisionType);
-			}
+		
+		
+		TGDivisionType newDivisionType = null;
+		TGDivisionType oldDivisionType = getSelectedDuration().getDivision();
+		if( oldDivisionType.isEqual(TGDivisionType.NORMAL)){
+			newDivisionType = divisionType;
 		}
 		else{
-			if(getSelectedDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
-				setDivisionType(defaultDivisionType());
-			}else{
-				setDivisionType(noTuplet());
+			newDivisionType = noTuplet();
+			if(!oldDivisionType.isEqual(divisionType) && propertyDivisionType instanceof TGDivisionType ){
+				newDivisionType = divisionType;
 			}
 		}
+		
+		setDivisionType(newDivisionType);
 		setDurations();
 		
 		//termia el undoable

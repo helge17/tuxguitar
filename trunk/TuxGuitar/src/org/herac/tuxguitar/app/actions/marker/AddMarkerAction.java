@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.marker;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.marker.MarkerEditor;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
@@ -20,13 +20,14 @@ import org.herac.tuxguitar.song.models.TGMarker;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class AddMarkerAction extends Action{
+	
 	public static final String NAME = "action.marker.add";
 	
 	public AddMarkerAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		if(new MarkerEditor(getMarker()).open(getEditor().getTablature().getShell())){
 			MarkerList.instance().update(true);
 		}

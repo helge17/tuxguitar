@@ -11,6 +11,8 @@ import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionAdapter;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
@@ -24,13 +26,16 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class DisposeAction extends Action {
+	
 	public static final String NAME = "action.system.dispose";
 	
 	public DisposeAction() {
 		super(NAME, AUTO_LOCK);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
+		TypedEvent e = (TypedEvent)actionData.get(ActionAdapter.PROPERTY_TYPED_EVENT);
+		
 		if(e instanceof ShellEvent){
 			TuxGuitar.instance().getPlayer().reset();
 			

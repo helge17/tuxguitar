@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.edit;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 
 /**
  * @author julian
@@ -16,13 +16,14 @@ import org.herac.tuxguitar.app.actions.Action;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SetNaturalKeyAction extends Action{
+	
 	public static final String NAME = "action.edit.set-natural-key";
 	
 	public SetNaturalKeyAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING | AUTO_UPDATE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		getEditor().getTablature().getEditorKit().setNatural(!getEditor().getTablature().getEditorKit().isNatural());
 		return 0;
 	}

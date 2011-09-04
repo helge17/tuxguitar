@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.measure;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableAddMeasure;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
@@ -21,13 +21,14 @@ import org.herac.tuxguitar.song.models.TGMeasure;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class GoNextMeasureAction extends Action{
+	
 	public static final String NAME = "action.measure.go-next";
 	
 	public GoNextMeasureAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		Caret caret = getEditor().getTablature().getCaret();
 		//si es el ultimo compas, agrego uno nuevo
 		if(getSongManager().getTrackManager().isLastMeasure(caret.getMeasure())){

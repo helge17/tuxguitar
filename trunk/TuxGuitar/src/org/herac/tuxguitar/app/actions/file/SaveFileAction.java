@@ -7,9 +7,9 @@
 package org.herac.tuxguitar.app.actions.file;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 
 /**
@@ -19,13 +19,14 @@ import org.herac.tuxguitar.app.actions.ActionLock;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SaveFileAction extends Action{
+	
 	public static final String NAME = "action.file.save";
 	
 	public SaveFileAction() {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE );
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		final String fileName = FileActionUtils.getFileName();
 		if(fileName == null){
 			return AUTO_UNLOCK;

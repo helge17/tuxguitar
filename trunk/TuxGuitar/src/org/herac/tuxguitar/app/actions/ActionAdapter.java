@@ -16,7 +16,17 @@ import org.eclipse.swt.widgets.ToolItem;
 
 public abstract class ActionAdapter implements SelectionListener,MouseListener,MenuListener,ShellListener{
 	
-	public abstract void process(TypedEvent e);
+	public static final String PROPERTY_TYPED_EVENT = "typedEvent";
+	
+	public abstract void process(ActionData actionData);
+	
+	public synchronized void processEvent(TypedEvent e) {
+		Object widgetData = (e.widget != null ? e.widget.getData() : null);
+		
+		ActionData actionData = (widgetData instanceof ActionData ? (ActionData)widgetData : new ActionData());
+		actionData.put(PROPERTY_TYPED_EVENT, e);
+		this.process(actionData);
+	}
 	
 	public void widgetSelected(SelectionEvent e) {
 		if(e.widget != null && (e.widget.getStyle() & SWT.RADIO) != 0){
@@ -30,20 +40,20 @@ public abstract class ActionAdapter implements SelectionListener,MouseListener,M
 				return;
 			}
 		}
-		process(e);
+		processEvent(e);
 	}
 	
 	public void mouseUp(MouseEvent e) {
-		process(e);
+		processEvent(e);
 	}
 	
 	public void menuShown(MenuEvent e) {
-		process(e);
+		processEvent(e);
 	}
 	
 	public void shellClosed(ShellEvent e) {
 		e.doit = false;
-		process(e);
+		processEvent(e);
 	}
 	
 	public void widgetDefaultSelected(SelectionEvent e) {

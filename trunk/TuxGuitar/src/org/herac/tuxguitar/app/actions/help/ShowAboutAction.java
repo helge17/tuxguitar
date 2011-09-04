@@ -6,11 +6,11 @@
  */
 package org.herac.tuxguitar.app.actions.help;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.help.about.AboutDialog;
 
 /**
@@ -20,6 +20,7 @@ import org.herac.tuxguitar.app.help.about.AboutDialog;
  * Preferences - Java - Code Style - Code Templates
  */
 public class ShowAboutAction extends Action {
+	
 	public static final String NAME = "action.help.about";
 	
 	protected Canvas imageCanvas;
@@ -29,7 +30,7 @@ public class ShowAboutAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		new AboutDialog().open(TuxGuitar.instance().getShell());
 		return 0;
 	}

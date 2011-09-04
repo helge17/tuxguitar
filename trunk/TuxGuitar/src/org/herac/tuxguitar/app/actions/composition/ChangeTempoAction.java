@@ -9,7 +9,6 @@ package org.herac.tuxguitar.app.actions.composition;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeTempo;
 import org.herac.tuxguitar.app.util.DialogUtils;
@@ -37,7 +37,9 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ChangeTempoAction extends Action{
+	
 	public static final String NAME = "action.composition.change-tempo";
+	
 	private static final int MIN_TEMPO = 30;
 	private static final int MAX_TEMPO = 320;
 	
@@ -47,7 +49,7 @@ public class ChangeTempoAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		showDialog(getEditor().getTablature().getShell());
 		return 0;
 	}

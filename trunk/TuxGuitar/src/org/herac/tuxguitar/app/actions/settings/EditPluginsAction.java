@@ -13,7 +13,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
@@ -29,6 +28,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.system.plugins.TGPlugin;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.app.util.DialogUtils;
@@ -41,6 +41,7 @@ import org.herac.tuxguitar.app.util.MessageDialog;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class EditPluginsAction extends Action{
+	
 	public static final String NAME = "action.settings.plugins";
 	
 	private static final int TABLE_WIDTH = 400;
@@ -50,7 +51,7 @@ public class EditPluginsAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		showDialog();
 		return 0;
 	}

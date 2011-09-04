@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.track;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 
 /**
@@ -17,14 +17,17 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class GoToTrackAction extends Action{
+	
 	public static final String NAME = "action.track.goto";
+	
+	public static final String PROPERTY_TRACK = "track";
 	
 	public GoToTrackAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(TypedEvent e){
-		Object data = e.widget.getData();
+	protected int execute(ActionData actionData){
+		Object data = actionData.get(PROPERTY_TRACK);
 		if(data instanceof TGTrackImpl){
 			TGTrackImpl track = (TGTrackImpl)data;
 			getEditor().getTablature().getCaret().update(track.getNumber());

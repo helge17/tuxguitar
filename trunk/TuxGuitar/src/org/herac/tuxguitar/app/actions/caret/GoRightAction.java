@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.caret;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableAddMeasure;
 
@@ -19,13 +19,14 @@ import org.herac.tuxguitar.app.undo.undoables.measure.UndoableAddMeasure;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class GoRightAction extends Action{
+	
 	public static final String NAME = "action.caret.go-right";
 	
 	public GoRightAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		if(TuxGuitar.instance().getPlayer().isRunning()){
 			TuxGuitar.instance().getTransport().gotoNext();
 		}

@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.app.system.plugins.base;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.app.tools.custom.TGCustomTool;
 import org.herac.tuxguitar.app.tools.custom.TGCustomToolManager;
@@ -59,7 +59,7 @@ public abstract class TGToolItemPlugin extends TGPluginAdapter{
 			super(name, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 		}
 		
-		protected int execute(TypedEvent e) {
+		protected int execute(ActionData actionData) {
 			doAction();
 			return 0;
 		}

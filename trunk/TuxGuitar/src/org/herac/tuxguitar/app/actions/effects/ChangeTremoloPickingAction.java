@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.effects;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.effects.TremoloPickingEditor;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
@@ -22,13 +22,14 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ChangeTremoloPickingAction extends Action{
+	
 	public static final String NAME = "action.note.effect.change-tremolo-picking";
 	
 	public ChangeTremoloPickingAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
 		if(note != null){
 			changeTremoloPicking(new TremoloPickingEditor().show(note));
