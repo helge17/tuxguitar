@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.track;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableCloneTrack;
 
@@ -19,13 +19,14 @@ import org.herac.tuxguitar.app.undo.undoables.track.UndoableCloneTrack;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CloneTrackAction extends Action{
+	
 	public static final String NAME = "action.track.clone";
 	
 	public CloneTrackAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		//comienza el undoable
 		UndoableCloneTrack undoable = UndoableCloneTrack.startUndo();
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();

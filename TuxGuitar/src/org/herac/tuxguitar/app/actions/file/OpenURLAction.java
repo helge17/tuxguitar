@@ -11,7 +11,6 @@ import java.net.URL;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -22,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
@@ -37,11 +37,15 @@ public class OpenURLAction extends Action {
 	
 	public static final String NAME = "action.file.open-url";
 	
+	public static final String PROPERTY_URL = "url";
+	
 	public OpenURLAction() {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(final TypedEvent event){
+	protected int execute(ActionData actionData){
+		final Object propertyUrl = actionData.get(PROPERTY_URL);
+		
 		TuxGuitar.instance().getPlayer().reset();
 		
 		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
@@ -65,7 +69,7 @@ public class OpenURLAction extends Action {
 								public void run() {
 									if(!TuxGuitar.isDisposed()){
 										TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-										openURL(event.widget.getData());
+										openURL( propertyUrl );
 									}
 								}
 							}).start();
@@ -75,7 +79,7 @@ public class OpenURLAction extends Action {
 				return 0;
 			}
 		}
-		openURL(event.widget.getData());
+		openURL( propertyUrl );
 		
 		return 0;
 	}

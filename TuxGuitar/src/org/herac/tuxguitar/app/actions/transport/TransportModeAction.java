@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionAdapter;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -38,6 +40,7 @@ import org.herac.tuxguitar.song.models.TGSong;
  * Preferences - Java - Code Style - Code Templates
  */
 public class TransportModeAction extends Action {
+	
 	public static final String NAME = "action.transport.mode";
 	
 	protected static final int MIN_SELECTION = 1;
@@ -60,7 +63,9 @@ public class TransportModeAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
+		TypedEvent e = (TypedEvent)actionData.get(ActionAdapter.PROPERTY_TYPED_EVENT);
+		
 		this.showDialog(e.widget.getDisplay().getActiveShell(), TuxGuitar.instance().getPlayer().getMode());
 		return 0;
 	}

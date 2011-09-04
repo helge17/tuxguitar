@@ -9,9 +9,9 @@ package org.herac.tuxguitar.app.actions.file;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
@@ -25,13 +25,18 @@ import org.herac.tuxguitar.io.base.TGRawImporter;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class ImportSongAction extends Action {
+	
 	public static final String NAME = "action.file.import";
+	
+	public static final String PROPERTY_IMPORTER = "importer";
 	
 	public ImportSongAction() {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(final TypedEvent event){
+	protected int execute(ActionData actionData){
+		final Object propertyImporter = actionData.get(PROPERTY_IMPORTER);
+		
 		TuxGuitar.instance().getPlayer().reset();
 		
 		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
@@ -55,7 +60,7 @@ public class ImportSongAction extends Action {
 								public void run() {
 									if(!TuxGuitar.isDisposed()){
 										TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-										processImporter(event.widget.getData());
+										processImporter(propertyImporter);
 									}
 								}
 							}).start();
@@ -65,7 +70,7 @@ public class ImportSongAction extends Action {
 				return 0;
 			}
 		}
-		processImporter(event.widget.getData());
+		processImporter(propertyImporter);
 		
 		return 0;
 	}

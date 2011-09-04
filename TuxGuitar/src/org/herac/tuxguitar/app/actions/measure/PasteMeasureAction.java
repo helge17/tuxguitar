@@ -9,7 +9,6 @@ package org.herac.tuxguitar.app.actions.measure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.clipboard.CannotInsertTransferException;
 import org.herac.tuxguitar.app.clipboard.MeasureTransferable;
 import org.herac.tuxguitar.app.clipboard.Transferable;
@@ -33,13 +33,14 @@ import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class PasteMeasureAction extends Action{
+	
 	public static final String NAME = "action.measure.paste";
 	
 	public PasteMeasureAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		showDialog(getEditor().getTablature().getShell());
 		return 0;
 	}

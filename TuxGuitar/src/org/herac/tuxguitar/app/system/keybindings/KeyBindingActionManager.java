@@ -89,7 +89,7 @@ public class KeyBindingActionManager {
 			kb.setMask(event.stateMask);
 			Action action = getActionForKeyBinding(kb);
 			if (action != null){
-				action.process(event);
+				action.processEvent(event);
 			}
 		}
 		

@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.actions.composition.ChangeInfoAction;
 import org.herac.tuxguitar.app.actions.track.GoToTrackAction;
@@ -108,7 +109,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		this.table.getColumnCanvas().getControl().addMouseListener(listener);
 		this.table.getColumnCanvas().getControl().addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(MouseEvent e) {
-				TuxGuitar.instance().getAction(ChangeInfoAction.NAME).process(e);
+				TuxGuitar.instance().getAction(ChangeInfoAction.NAME).process(new ActionData());
 			}
 		});
 		this.fireUpdate(true);
@@ -194,7 +195,10 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 						
 						public void mouseDown(MouseEvent e) {
 							if(track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber()){
-								TuxGuitar.instance().getAction(GoToTrackAction.NAME).process(e);
+								ActionData actionData = new ActionData();
+								actionData.put(GoToTrackAction.PROPERTY_TRACK, track);
+								
+								TuxGuitar.instance().getAction(GoToTrackAction.NAME).process(actionData);
 							}
 						}
 						
@@ -202,7 +206,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 							new Thread(new Runnable() {
 								public void run() {
 									ActionLock.waitFor();
-									TuxGuitar.instance().getAction(TrackPropertiesAction.NAME).process(e);
+									TuxGuitar.instance().getAction(TrackPropertiesAction.NAME).process(new ActionData());
 								}
 							}).start();
 						}

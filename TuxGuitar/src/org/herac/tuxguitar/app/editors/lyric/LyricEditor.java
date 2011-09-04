@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.edit.RedoAction;
 import org.herac.tuxguitar.app.actions.edit.UndoAction;
 import org.herac.tuxguitar.app.actions.track.GoNextTrackAction;
@@ -138,13 +139,13 @@ public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
 		
 		this.previous.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getAction(GoPreviousTrackAction.NAME).process(e);
+				TuxGuitar.instance().getAction(GoPreviousTrackAction.NAME).process(new ActionData());
 				composite.layout();
 			}
 		});
 		this.next.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getAction(GoNextTrackAction.NAME).process(e);
+				TuxGuitar.instance().getAction(GoNextTrackAction.NAME).process(new ActionData());
 				composite.layout();
 			}
 		});
@@ -164,7 +165,7 @@ public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
 			public void keyPressed(KeyEvent event) {
 				for( int i = 0 ; i < KB_ACTIONS.length ; i ++ ){
 					if(event.keyCode == KB_ACTIONS[i].getKeyBinding().getKey() && event.stateMask == KB_ACTIONS[i].getKeyBinding().getMask()){
-						TuxGuitar.instance().getAction(KB_ACTIONS[i].getAction()).process(event);
+						TuxGuitar.instance().getAction(KB_ACTIONS[i].getAction()).processEvent(event);
 						return;
 					}
 				}

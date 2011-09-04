@@ -7,9 +7,9 @@
 package org.herac.tuxguitar.app.actions.file;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
@@ -20,46 +20,26 @@ import org.herac.tuxguitar.io.base.TGRawExporter;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class ExportSongAction extends Action {
+	
 	public static final String NAME = "action.file.export";
+	
+	public static final String PROPERTY_EXPORTER = "exporter";
 	
 	public ExportSongAction() {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE );
 	}
 	
-	protected int execute(TypedEvent e){
-		Object data = e.widget.getData(); 
-		if(! (data instanceof TGRawExporter) ){
+	protected int execute(ActionData actionData){
+		Object propertyExporter = actionData.get(PROPERTY_EXPORTER);
+		if(!(propertyExporter instanceof TGRawExporter) ){
 			return AUTO_UNLOCK;
 		}
 		
-		final TGRawExporter exporter = (TGRawExporter)data;
+		final TGRawExporter exporter = (TGRawExporter)propertyExporter;
 		if( exporter instanceof TGLocalFileExporter ){
 			return this.processLocalFileExporter( (TGLocalFileExporter)exporter );
 		}
 		return this.processRawExporter( exporter );
-		/*
-		if(!exporter.configure(false)){
-			return AUTO_UNLOCK;
-		}
-		
-		final String fileName = FileActionUtils.chooseFileName(exporter.getFileFormat());
-		if(fileName == null){
-			return AUTO_UNLOCK;
-		}
-		
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-		new Thread(new Runnable() {
-			public void run() {
-				if(!TuxGuitar.isDisposed()){
-					FileActionUtils.exportSong(exporter, fileName);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
-				}
-			}
-		}).start();
-		
-		return 0;
-		*/
 	}
 	
 	private int processLocalFileExporter( final TGLocalFileExporter exporter ){

@@ -7,9 +7,9 @@
 package org.herac.tuxguitar.app.actions.view;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 
 /**
  * @author julian
@@ -18,13 +18,14 @@ import org.herac.tuxguitar.app.actions.Action;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ShowFretBoardAction extends Action{
+	
 	public static final String NAME = "action.view.show-fretboard";
 	
 	public ShowFretBoardAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 		if(TuxGuitar.instance().getFretBoardEditor().isVisible()){
 			TuxGuitar.instance().getFretBoardEditor().hideFretBoard();

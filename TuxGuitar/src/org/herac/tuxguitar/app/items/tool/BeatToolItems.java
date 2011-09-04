@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.insert.InsertChordAction;
 import org.herac.tuxguitar.app.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.app.items.ToolItems;
@@ -101,8 +102,11 @@ public class BeatToolItems  extends ToolItems{
 			this.subMenuItems = new MenuItem[TuxGuitar.instance().getCustomChordManager().countChords()];
 			for(int i = 0;i < this.subMenuItems.length; i++){
 				TGChord chord = TuxGuitar.instance().getCustomChordManager().getChord(i);
+				ActionData actionData = new ActionData();
+				actionData.put(InsertChordAction.PROPERTY_CHORD, chord);
+				
 				this.subMenuItems[i] = new MenuItem(this.subMenu, SWT.PUSH);
-				this.subMenuItems[i].setData(chord);
+				this.subMenuItems[i].setData(actionData);
 				this.subMenuItems[i].setText(chord.getName());
 				this.subMenuItems[i].addSelectionListener(TuxGuitar.instance().getAction(InsertChordAction.NAME));
 			}
@@ -124,7 +128,7 @@ public class BeatToolItems  extends ToolItems{
 				this.subMenu.setLocation(pt.x, pt.y + rect.height);
 				this.subMenu.setVisible(true);
 			}else{
-				TuxGuitar.instance().getAction(InsertChordAction.NAME).process(event);
+				TuxGuitar.instance().getAction(InsertChordAction.NAME).process(new ActionData());
 			}
 		}
 		

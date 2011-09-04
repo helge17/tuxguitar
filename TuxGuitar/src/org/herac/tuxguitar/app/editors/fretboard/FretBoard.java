@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.app.actions.caret.GoRightAction;
@@ -731,7 +732,7 @@ public class FretBoard extends Composite {
 					ActionLock.unlock();
 				}
 			}else{
-				TuxGuitar.instance().getAction(GoRightAction.NAME).process(e);
+				TuxGuitar.instance().getAction(GoRightAction.NAME).process(new ActionData());
 			}
 		}
 		

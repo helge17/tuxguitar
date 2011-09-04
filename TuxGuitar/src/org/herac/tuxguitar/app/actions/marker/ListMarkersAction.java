@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.marker;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.marker.MarkerList;
 
 /**
@@ -17,13 +17,14 @@ import org.herac.tuxguitar.app.marker.MarkerList;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ListMarkersAction extends Action{
+	
 	public static final String NAME = "action.marker.list";
 	
 	public ListMarkersAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		if(MarkerList.instance().isDisposed()){
 			MarkerList.instance().show();
 		}

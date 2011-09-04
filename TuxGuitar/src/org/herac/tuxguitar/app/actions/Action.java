@@ -6,7 +6,6 @@
  */
 package org.herac.tuxguitar.app.actions;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
@@ -40,9 +39,9 @@ public abstract class Action extends ActionAdapter {
 		this.flags = flags;
 	}
 	
-	protected abstract int execute(TypedEvent e);
+	protected abstract int execute(ActionData actionData);
 	
-	public synchronized void process(final TypedEvent e) {
+	public synchronized void process(final ActionData actionData) {
 		if (!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()) {
 			final int flags = getFlags();
 			
@@ -59,7 +58,7 @@ public abstract class Action extends ActionAdapter {
 				TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws Throwable {
 						if (!TuxGuitar.isDisposed()) {
-							int result = execute(e);
+							int result = execute(actionData);
 							
 							TuxGuitar.instance().updateCache((((flags | result) & AUTO_UPDATE) != 0));
 							

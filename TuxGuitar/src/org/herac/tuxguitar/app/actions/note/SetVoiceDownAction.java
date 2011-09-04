@@ -8,9 +8,9 @@ package org.herac.tuxguitar.app.actions.note;
 
 import java.util.Iterator;
 
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.graphics.control.TGBeatGroup;
@@ -25,13 +25,14 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SetVoiceDownAction extends Action{
+	
 	public static final String NAME = "action.beat.general.voice-down";
 	
 	public SetVoiceDownAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
 		Caret caret = getEditor().getTablature().getCaret();
 		TGBeatImpl beat = caret.getSelectedBeat();
 		if( beat != null ){

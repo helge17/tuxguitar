@@ -10,6 +10,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionAdapter;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingConstants;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
@@ -41,7 +43,9 @@ public class ChangeNoteAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING);
 	}
 	
-	protected int execute(TypedEvent e){
+	protected int execute(ActionData actionData){
+		TypedEvent e = (TypedEvent)actionData.get(ActionAdapter.PROPERTY_TYPED_EVENT);
+		
 		if (e instanceof KeyEvent) {
 			int value = getValueOf(((KeyEvent) e).keyCode);
 			if (value >= 0) {

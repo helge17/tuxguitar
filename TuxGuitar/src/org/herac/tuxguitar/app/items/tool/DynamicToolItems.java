@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.note.ChangeVelocityAction;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.items.ToolItems;
@@ -43,42 +44,42 @@ public class DynamicToolItems  extends ToolItems{
 		this.toolBar = toolBar;
 		//--PPP--
 		this.pianoPianissimo = new ToolItem(this.toolBar, SWT.CHECK);
-		this.pianoPianissimo.setData(new Integer(TGVelocities.PIANO_PIANISSIMO));
+		this.pianoPianissimo.setData(createChangeVelocityActionData(TGVelocities.PIANO_PIANISSIMO));
 		this.pianoPianissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--PP--
 		this.pianissimo = new ToolItem(this.toolBar, SWT.CHECK);
-		this.pianissimo.setData(new Integer(TGVelocities.PIANISSIMO));
+		this.pianissimo.setData(createChangeVelocityActionData(TGVelocities.PIANISSIMO));
 		this.pianissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--P--
 		this.piano = new ToolItem(this.toolBar, SWT.CHECK);
-		this.piano.setData(new Integer(TGVelocities.PIANO));
+		this.piano.setData(createChangeVelocityActionData(TGVelocities.PIANO));
 		this.piano.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--MP--
 		this.mezzoPiano = new ToolItem(this.toolBar, SWT.CHECK);
-		this.mezzoPiano.setData(new Integer(TGVelocities.MEZZO_PIANO));
+		this.mezzoPiano.setData(createChangeVelocityActionData(TGVelocities.MEZZO_PIANO));
 		this.mezzoPiano.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--MF--
 		this.mezzoForte = new ToolItem(this.toolBar, SWT.CHECK);
-		this.mezzoForte.setData(new Integer(TGVelocities.MEZZO_FORTE));
+		this.mezzoForte.setData(createChangeVelocityActionData(TGVelocities.MEZZO_FORTE));
 		this.mezzoForte.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--F--
 		this.forte = new ToolItem(this.toolBar, SWT.CHECK);
-		this.forte.setData(new Integer(TGVelocities.FORTE));
+		this.forte.setData(createChangeVelocityActionData(TGVelocities.FORTE));
 		this.forte.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--FF--
 		this.fortissimo = new ToolItem(this.toolBar, SWT.CHECK);
-		this.fortissimo.setData(new Integer(TGVelocities.FORTISSIMO));
+		this.fortissimo.setData(createChangeVelocityActionData(TGVelocities.FORTISSIMO));
 		this.fortissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		//--FF--
 		this.forteFortissimo = new ToolItem(this.toolBar, SWT.CHECK);
-		this.forteFortissimo.setData(new Integer(TGVelocities.FORTE_FORTISSIMO));
+		this.forteFortissimo.setData(createChangeVelocityActionData(TGVelocities.FORTE_FORTISSIMO));
 		this.forteFortissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
 		
 		this.loadIcons();
@@ -127,5 +128,11 @@ public class DynamicToolItems  extends ToolItems{
 		this.forte.setImage(TuxGuitar.instance().getIconManager().getDynamicF());
 		this.fortissimo.setImage(TuxGuitar.instance().getIconManager().getDynamicFF());
 		this.forteFortissimo.setImage(TuxGuitar.instance().getIconManager().getDynamicFFF());
+	}
+	
+	private ActionData createChangeVelocityActionData(int velocity){
+		ActionData actionData = new ActionData();
+		actionData.put(ChangeVelocityAction.PROPERTY_VELOCITY, new Integer(velocity));
+		return actionData;
 	}
 }
