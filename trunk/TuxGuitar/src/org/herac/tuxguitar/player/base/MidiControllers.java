@@ -2,6 +2,8 @@ package org.herac.tuxguitar.player.base;
 
 public class MidiControllers {
 	
+	public static final int BANK_SELECT = 0x00;
+	
 	public static final int VOLUME = 0x07;
 	
 	public static final int BALANCE = 0x0A;
