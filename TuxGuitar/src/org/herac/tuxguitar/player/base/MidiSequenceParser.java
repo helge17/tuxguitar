@@ -349,6 +349,7 @@ public class MidiSequenceParser {
 	
 	private void makeChannel(MidiSequenceHelper sh,TGChannel channel,int track,boolean primary) {
 		int number = (primary?channel.getChannel():channel.getEffectChannel());
+		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BANK_SELECT,fix(channel.getBank()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.VOLUME,fix(channel.getVolume()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BALANCE,fix(channel.getBalance()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.CHORUS,fix(channel.getChorus()));

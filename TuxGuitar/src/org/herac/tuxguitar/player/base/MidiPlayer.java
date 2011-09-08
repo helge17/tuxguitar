@@ -362,8 +362,10 @@ public class MidiPlayer{
 			Iterator it = this.songManager.getSong().getChannels();
 			while(it.hasNext()){
 				TGChannel channel = (TGChannel)it.next();
+				getOutputTransmitter().sendControlChange(channel.getChannel(),MidiControllers.BANK_SELECT,channel.getBank());
 				getOutputTransmitter().sendProgramChange(channel.getChannel(),channel.getProgram());
 				if( channel.getChannel() != channel.getEffectChannel()){
+					getOutputTransmitter().sendControlChange(channel.getEffectChannel(), MidiControllers.BANK_SELECT,channel.getBank());
 					getOutputTransmitter().sendProgramChange(channel.getEffectChannel(), channel.getProgram());
 				}
 			}
@@ -478,6 +480,7 @@ public class MidiPlayer{
 		TGChannel tgChannel = this.songManager.getChannel(track.getChannelId());
 		if( tgChannel != null ){
 			int channel = tgChannel.getChannel();
+			int bank = tgChannel.getBank();
 			int program = tgChannel.getProgram();
 			int volume = (int)((this.getVolume() / 10.00) * tgChannel.getVolume());
 			int balance = tgChannel.getBalance();
@@ -492,24 +495,25 @@ public class MidiPlayer{
 				beat[i][0] = track.getOffset() + (note.getValue() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue());
 				beat[i][1] = note.getVelocity();
 			}
-			playBeat(channel,program,volume,balance,chorus,reverb,phaser,tremolo,beat);
+			playBeat(channel,bank,program,volume,balance,chorus,reverb,phaser,tremolo,beat);
 		}
 	}
 	
-	public void playBeat(int channel,int program,int volume,int balance,int chorus, int reverb,int phaser,int tremolo,int[][] beat) {
-		playBeat(channel, program, volume, balance, chorus, reverb, phaser, tremolo, beat,500,0);
+	public void playBeat(int channel,int bank,int program,int volume,int balance,int chorus, int reverb,int phaser,int tremolo,int[][] beat) {
+		playBeat(channel, bank, program, volume, balance, chorus, reverb, phaser, tremolo, beat,500,0);
 	}
 	
-	public void playBeat(int channel,int program,int volume,int balance,int chorus, int reverb,int phaser,int tremolo,int[][] beat,long duration,int interval) {
+	public void playBeat(int channel,int bank,int program,int volume,int balance,int chorus, int reverb,int phaser,int tremolo,int[][] beat,long duration,int interval) {
 		try {
-			getOutputTransmitter().sendProgramChange(channel,program);
+			getOutputTransmitter().sendControlChange(channel,MidiControllers.BANK_SELECT,bank);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.VOLUME,volume);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.BALANCE,balance);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.CHORUS,chorus);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.REVERB,reverb);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.PHASER,phaser);
 			getOutputTransmitter().sendControlChange(channel,MidiControllers.TREMOLO,tremolo);
-				
+			getOutputTransmitter().sendProgramChange(channel,program);
+			
 			for(int i = 0; i < beat.length; i ++){
 				getOutputTransmitter().sendNoteOn(channel,beat[i][0], beat[i][1]);
 				if(interval > 0){
