@@ -490,6 +490,7 @@ public class ChordEditor extends Composite {
 				if( channel != null ){
 					TuxGuitar.instance().getPlayer().playBeat(
 						channel.getChannel(),
+						channel.getBank(),
 						channel.getProgram(),
 						channel.getVolume(),
 						channel.getBalance(),

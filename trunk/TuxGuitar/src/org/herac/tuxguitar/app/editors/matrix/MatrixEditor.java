@@ -688,8 +688,9 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					int tremolo = tgChannel.getTremolo();
 					int channel = tgChannel.getChannel();
 					int program = tgChannel.getProgram();
+					int bank = tgChannel.getBank();
 					int[][] beat = new int[][]{ new int[]{ (tgTrack.getOffset() + value) , TGVelocities.DEFAULT } };
-					TuxGuitar.instance().getPlayer().playBeat(channel,program, volume, balance,chorus,reverb,phaser,tremolo,beat);
+					TuxGuitar.instance().getPlayer().playBeat(channel,bank,program, volume, balance,chorus,reverb,phaser,tremolo,beat);
 				}
 			}
 		}).start();
