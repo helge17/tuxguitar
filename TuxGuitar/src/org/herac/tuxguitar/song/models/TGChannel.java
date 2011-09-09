@@ -5,6 +5,8 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 public abstract class TGChannel {
 	
 	public static final short DEFAULT_PERCUSSION_CHANNEL = 9;
+	public static final short DEFAULT_PERCUSSION_PROGRAM = 0;
+	public static final short DEFAULT_PERCUSSION_BANK = 128;
 	
 	public static final short DEFAULT_BANK = 0;
 	public static final short DEFAULT_PROGRAM = 25;
@@ -92,7 +94,7 @@ public abstract class TGChannel {
 	}
 	
 	public short getProgram() {
-		return (!this.isPercussionChannel()?this.program:0);
+		return this.program;
 	}
 	
 	public void setProgram(short program) {
@@ -150,6 +152,8 @@ public abstract class TGChannel {
 	public static void setPercussionChannel(TGChannel channel){
 		channel.setChannel(DEFAULT_PERCUSSION_CHANNEL);
 		channel.setEffectChannel(DEFAULT_PERCUSSION_CHANNEL);
+		channel.setProgram(DEFAULT_PERCUSSION_PROGRAM);
+		channel.setBank(DEFAULT_PERCUSSION_BANK);
 	}
 	
 	public static TGChannel newPercussionChannel(TGFactory factory){

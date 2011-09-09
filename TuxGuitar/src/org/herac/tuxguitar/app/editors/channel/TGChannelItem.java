@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.editors.channel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -74,7 +75,7 @@ public class TGChannelItem {
 		this.programCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		this.programCombo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel();
+				updateChannel(false);
 			}
 		});
 		
@@ -82,7 +83,7 @@ public class TGChannelItem {
 		this.bankCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		this.bankCombo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel();
+				updateChannel(false);
 			}
 		});
 		
@@ -95,7 +96,7 @@ public class TGChannelItem {
 		this.percussionButton.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.percussionButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel();
+				updateChannel(true);
 			}
 		});
 		
@@ -103,7 +104,7 @@ public class TGChannelItem {
 		this.channel1Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		this.channel1Combo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel();
+				updateChannel(false);
 			}
 		});
 		
@@ -111,7 +112,7 @@ public class TGChannelItem {
 		this.channel2Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		this.channel2Combo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel();
+				updateChannel(false);
 			}
 		});
 		
@@ -231,8 +232,9 @@ public class TGChannelItem {
 	private void updateBankCombo(boolean playerRunning){
 		if(!isDisposed() && getChannel() != null){
 			if( this.bankCombo.getItemCount() == 0 ){
+				String bankPrefix = TuxGuitar.getProperty("instrument.bank");
 				for (int i = 0; i < 128; i++) {
-					this.bankCombo.add(new Integer(i).toString());
+					this.bankCombo.add((bankPrefix + " #" + i));
 				}
 			}
 			if( getChannel().getBank() >= 0 && getChannel().getBank() < this.bankCombo.getItemCount() ){
@@ -244,29 +246,44 @@ public class TGChannelItem {
 	
 	private void updateProgramCombo(boolean playerRunning){
 		if(!isDisposed() && getChannel() != null){
-			if( this.programCombo.getItemCount() == 0 ){
-				MidiInstrument[] instruments = TuxGuitar.instance().getPlayer().getInstruments();
-				if (instruments != null) {
-					int count = instruments.length;
-					if (count > 128) {
-						count = 128;
-					}
-					for (int i = 0; i < count; i++) {
-						this.programCombo.add(instruments[i].getName());
-					}
-					
-				}
+			this.programCombo.removeAll();
+			
+			List programNames = getProgramNames();
+			for( int i = 0 ; i < programNames.size() ; i ++ ){
+				this.programCombo.add((String)programNames.get(i));
 			}
 			if( getChannel().getProgram() >= 0 && getChannel().getProgram() < this.programCombo.getItemCount() ){
 				this.programCombo.select(getChannel().getProgram());
 			}
-			this.programCombo.setEnabled(!playerRunning && !getChannel().isPercussionChannel() && this.programCombo.getItemCount() > 0);
+			this.programCombo.setEnabled(!playerRunning && this.programCombo.getItemCount() > 0);
 		}
+	}
+	
+	private List getProgramNames(){
+		List programNames = new ArrayList();
+		if( getChannel().isPercussionChannel() ){
+			String programPrefix = TuxGuitar.getProperty("instrument.program");
+			for (int i = 0; i < 128; i++) {
+				programNames.add((programPrefix + " #" + i));
+			}
+		}else{
+			MidiInstrument[] instruments = TuxGuitar.instance().getPlayer().getInstruments();
+			if (instruments != null) {
+				int count = instruments.length;
+				if (count > 128) {
+					count = 128;
+				}
+				for (int i = 0; i < count; i++) {
+					programNames.add(instruments[i].getName());
+				}
+			}
+		}
+		return programNames;
 	}
 	
 	public void checkForNameModified(){
 		if( getChannel() != null && !isDisposed() && !this.nameText.getText().equals(getChannel().getName()) ){
-			updateChannel();
+			updateChannel(false);
 		}
 	}
 	
@@ -296,23 +313,30 @@ public class TGChannelItem {
 		}
 	}
 	
-	public void updateChannel(){
+	public void updateChannel(boolean percussionChanged){
 		if( getChannel() != null && !isDisposed() ){			
-			int bank = getChannel().getBank();
-			int bankSelection = this.bankCombo.getSelectionIndex();
-			if( bankSelection >= 0 ){
-				bank = bankSelection;
-			}
+			boolean percussionChannel = this.percussionButton.getSelection();
 			
+			int bank = getChannel().getBank();
 			int program = getChannel().getProgram();
-			int programSelection = this.programCombo.getSelectionIndex();
-			if( programSelection >= 0 ){
-				program = programSelection;
+			if( percussionChanged ){
+				bank = (percussionChannel ? TGChannel.DEFAULT_BANK : TGChannel.DEFAULT_PERCUSSION_BANK);
+				program = (percussionChannel ? TGChannel.DEFAULT_PROGRAM : TGChannel.DEFAULT_PERCUSSION_PROGRAM);
+			}else{
+				int bankSelection = this.bankCombo.getSelectionIndex();
+				if( bankSelection >= 0 ){
+					bank = bankSelection;
+				}
+				
+				int programSelection = this.programCombo.getSelectionIndex();
+				if( programSelection >= 0 ){
+					program = programSelection;
+				}
 			}
 			
 			int channel1 = -1;
 			int channel2 = -1;
-			if( this.percussionButton.getSelection() ){
+			if( percussionChannel ){
 				channel1 = TGChannel.DEFAULT_PERCUSSION_CHANNEL;
 				channel2 = TGChannel.DEFAULT_PERCUSSION_CHANNEL;
 			}else{

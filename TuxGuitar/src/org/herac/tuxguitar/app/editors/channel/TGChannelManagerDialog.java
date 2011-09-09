@@ -187,6 +187,8 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 	
 	private void updateItems(){
 		if(!isDisposed()){
+			TuxGuitar.instance().loadCursor(this.dialog,SWT.CURSOR_WAIT);
+			
 			this.channelList.updateItems();
 			
 			int volume = TuxGuitar.instance().getPlayer().getVolume();
@@ -195,6 +197,8 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 				this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 				this.volumeValue = volume;
 			}
+			
+			TuxGuitar.instance().loadCursor(this.dialog,SWT.CURSOR_ARROW);
 		}
 	}
 
