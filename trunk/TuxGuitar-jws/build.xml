@@ -45,6 +45,7 @@
 		<antcall target="build.skins" />
 		<antcall target="build.help" />
 		<antcall target="build.scales" />
+		<antcall target="build.templates" />
 		
 		<echo>+------------------------------------------------------------------+</echo>
 		<echo>|          P A C K A G I N G   T U X G U I T A R  -  J W S         |</echo>
@@ -98,6 +99,13 @@
 		<mkdir dir="${build.dir}/scales" />
 		<copy todir="${build.dir}/scales">
 			<fileset dir="${tuxguitar.share.path}/scales"/>
+		</copy>
+	</target>
+	
+	<target name="build.templates" >
+		<mkdir dir="${build.dir}/templates" />
+		<copy todir="${build.dir}/templates">
+			<fileset dir="${tuxguitar.share.path}/templates"/>
 		</copy>
 	</target>
 	
