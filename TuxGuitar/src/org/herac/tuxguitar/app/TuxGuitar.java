@@ -25,9 +25,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.actions.ActionManager;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
+import org.herac.tuxguitar.app.actions.file.NewFileAction;
 import org.herac.tuxguitar.app.actions.system.DisposeAction;
 import org.herac.tuxguitar.app.editors.EditorCache;
 import org.herac.tuxguitar.app.editors.FretBoardEditor;
@@ -55,6 +57,8 @@ import org.herac.tuxguitar.app.system.plugins.TGPluginManager;
 import org.herac.tuxguitar.app.table.TGTableViewer;
 import org.herac.tuxguitar.app.tools.browser.dialog.TGBrowserDialog;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
+import org.herac.tuxguitar.app.tools.template.TGTemplate;
+import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.transport.TGTransportListener;
 import org.herac.tuxguitar.app.undo.UndoableManager;
@@ -138,6 +142,8 @@ public class TuxGuitar {
 	private CustomChordManager customChordManager;
 	
 	private FileHistory fileHistory;
+	
+	private TGTemplateManager templateManager;
 	
 	private TGPluginManager pluginManager;
 	
@@ -257,6 +263,8 @@ public class TuxGuitar {
 					}).start();
 				}
 			}).start();
+		}else{
+			getAction(NewFileAction.NAME).process(new ActionData());
 		}
 	}
 	
@@ -587,6 +595,13 @@ public class TuxGuitar {
 		return this.fileHistory;
 	}
 	
+	public TGTemplateManager getTemplateManager(){
+		if( this.templateManager == null ){
+			this.templateManager = new TGTemplateManager();
+		}
+		return this.templateManager;
+	}
+	
 	public MidiPlayer getPlayer(){
 		if(this.player == null){
 			this.player = new MidiPlayer();
@@ -731,7 +746,18 @@ public class TuxGuitar {
 	}
 	
 	public void newSong(){
-		TuxGuitar.instance().fireNewSong(TuxGuitar.instance().getSongManager().newSong(),null);
+		this.newSong(TuxGuitar.instance().getTemplateManager().getDefatulTemplate());
+	}
+	
+	public void newSong(TGTemplate tgTemplate){
+		TGSong tgSong = null;
+		if( tgTemplate != null ){
+			tgSong = TuxGuitar.instance().getTemplateManager().getTemplateAsSong(tgTemplate);
+		}
+		if( tgSong == null ){
+			tgSong = TuxGuitar.instance().getSongManager().newSong();
+		}
+		TuxGuitar.instance().fireNewSong(tgSong,null);
 	}
 	
 	public void fireNewSong(TGSong song,URL url){
