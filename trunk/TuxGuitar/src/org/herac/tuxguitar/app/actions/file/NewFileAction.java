@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.actions.Action;
 import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.actions.ActionLock;
 import org.herac.tuxguitar.app.helper.SyncThread;
+import org.herac.tuxguitar.app.tools.template.TGTemplate;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 
 /**
@@ -24,11 +25,15 @@ public class NewFileAction extends Action{
 	
 	public static final String NAME = "action.file.new";
 	
+	public static final String PROPERTY_TEMPLATE = "template";
+	
 	public NewFileAction() {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(ActionData actionData){
+		final Object propertyTemplate = actionData.get(PROPERTY_TEMPLATE);
+		
 		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
 			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
@@ -50,7 +55,7 @@ public class NewFileAction extends Action{
 							new SyncThread(new Runnable() {
 								public void run() {
 									if(!TuxGuitar.isDisposed()){
-										newSong();
+										newSong(propertyTemplate);
 									}
 								}
 							}).start();
@@ -60,21 +65,32 @@ public class NewFileAction extends Action{
 				return 0;
 			}
 		}
-		newSong();
+		newSong(propertyTemplate);
 		
 		return 0;
 	}
 	
-	protected void newSong(){
+	protected void newSong(final Object propertyTemplate){
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
-					TuxGuitar.instance().newSong();
+					TuxGuitar.instance().newSong(getTemplate(propertyTemplate));
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 					ActionLock.unlock();
 				}
 			}
 		}).start();
+	}
+	
+	protected TGTemplate getTemplate(Object propertyTemplate){
+		TGTemplate tgTemplate = null;
+		if( propertyTemplate instanceof TGTemplate ){
+			tgTemplate = (TGTemplate)propertyTemplate;
+		}
+		if( tgTemplate == null ){
+			tgTemplate = TuxGuitar.instance().getTemplateManager().getDefatulTemplate();
+		}
+		return tgTemplate;
 	}
 }

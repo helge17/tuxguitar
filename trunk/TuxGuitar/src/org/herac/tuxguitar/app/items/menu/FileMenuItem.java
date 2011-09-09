@@ -30,6 +30,7 @@ import org.herac.tuxguitar.app.actions.file.PrintPreviewAction;
 import org.herac.tuxguitar.app.actions.file.SaveAsFileAction;
 import org.herac.tuxguitar.app.actions.file.SaveFileAction;
 import org.herac.tuxguitar.app.items.MenuItems;
+import org.herac.tuxguitar.app.tools.template.TGTemplate;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
@@ -42,12 +43,15 @@ import org.herac.tuxguitar.io.base.TGRawImporter;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class FileMenuItem extends MenuItems {
+	
 	private MenuItem fileMenuItem;
 	private Menu menu;
+	private Menu newSongMenu;
 	private Menu importMenu; 
 	private Menu exportMenu; 
 	private Menu historyMenu;
 	private MenuItem newSong;
+	private MenuItem newSongDefault;
 	private MenuItem open;
 	private MenuItem openURL;
 	private MenuItem save;
@@ -73,8 +77,14 @@ public class FileMenuItem extends MenuItems {
 	public void showItems(){
 		//---------------------------------------------------
 		//--NEW--
-		this.newSong = new MenuItem(this.menu, SWT.PUSH);
+		this.newSong = new MenuItem(this.menu, SWT.CASCADE);
 		this.newSong.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
+		this.newSongMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
+		this.newSongDefault = new MenuItem(this.newSongMenu, SWT.PUSH);
+		this.newSongDefault.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
+		
+		this.addNewSongTemplates();
+		
 		//--OPEN--
 		this.open = new MenuItem(this.menu, SWT.PUSH);
 		this.open.addSelectionListener(TuxGuitar.instance().getAction(OpenFileAction.NAME));
@@ -143,11 +153,32 @@ public class FileMenuItem extends MenuItems {
 		if( this.exportItem != null ){
 			this.exportItem.setMenu(this.exportMenu);
 		}
+		this.newSong.setMenu(this.newSongMenu);
 		this.historyItem.setMenu(this.historyMenu);
 		this.fileMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();
+	}
+	
+	private void addNewSongTemplates(){		
+		if( TuxGuitar.instance().getTemplateManager().countTemplates() > 0 ){
+			//--SEPARATOR--
+			new MenuItem(this.newSongMenu, SWT.SEPARATOR);
+			
+			Iterator it = TuxGuitar.instance().getTemplateManager().getTemplates();
+			while( it.hasNext() ){
+				TGTemplate tgTemplate = (TGTemplate)it.next();
+				
+				ActionData actionData = new ActionData();
+				actionData.put(NewFileAction.PROPERTY_TEMPLATE, tgTemplate);
+				
+				MenuItem menuItem = new MenuItem(this.newSongMenu, SWT.PUSH);
+				menuItem.setText(tgTemplate.getName());
+				menuItem.setData(actionData);
+				menuItem.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
+			}
+		}
 	}
 	
 	private void addImporters(){
@@ -270,7 +301,8 @@ public class FileMenuItem extends MenuItems {
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.fileMenuItem, "file", null);
-		setMenuItemTextAndAccelerator(this.newSong, "file.new", NewFileAction.NAME);
+		setMenuItemTextAndAccelerator(this.newSong, "file.new", null);
+		setMenuItemTextAndAccelerator(this.newSongDefault, "file.new-song.default-template", NewFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.open, "file.open", OpenFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.openURL, "file.open-url", OpenURLAction.NAME);
 		setMenuItemTextAndAccelerator(this.save, "file.save", SaveFileAction.NAME);
