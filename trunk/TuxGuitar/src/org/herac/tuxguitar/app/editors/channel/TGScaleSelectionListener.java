@@ -71,6 +71,6 @@ public class TGScaleSelectionListener extends SelectionAdapter implements Runnab
 	}
 	
 	public void doAction(){
-		this.handle.updateChannel();
+		this.handle.updateChannel(false);
 	}
 }

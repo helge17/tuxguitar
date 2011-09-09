@@ -141,6 +141,7 @@ public class MidiPlayer{
 			this.checkDevices();
 			this.updateLoop(true);
 			this.addSequence();
+			this.updateTracks();
 			this.updatePrograms();
 			this.updateControllers();
 			this.updateDefaultControllers();
