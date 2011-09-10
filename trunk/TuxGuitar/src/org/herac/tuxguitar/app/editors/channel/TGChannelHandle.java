@@ -39,18 +39,27 @@ public class TGChannelHandle {
 	}
 	
 	public void updateChannel(int id,short c1,short c2,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
-		// Comienza el Undoable
-		UndoableModifyChannel undoable = UndoableModifyChannel.startUndo(id);
-		
-		getManager().updateChannel(id, c1, c2, bnk, prg, vol, bal, cho, rev, pha, tre, name);
-		
-		// Termina el Undoable
-		TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo() );
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		TuxGuitar.instance().updateCache(true);
-		
-		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();
+		TGChannel channel = getManager().getChannel(id);
+		if( channel != null ){
+			boolean programChange = (bnk != channel.getBank() || prg != channel.getProgram());
+			
+			// Comienza el Undoable
+			UndoableModifyChannel undoable = UndoableModifyChannel.startUndo(id);
+			
+			getManager().updateChannel(id, c1, c2, bnk, prg, vol, bal, cho, rev, pha, tre, name);
+			
+			// Termina el Undoable
+			TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo() );
+			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.instance().updateCache(true);
+			
+			if (TuxGuitar.instance().getPlayer().isRunning()) {
+				if(programChange){
+					TuxGuitar.instance().getPlayer().updatePrograms();
+				}else{
+					TuxGuitar.instance().getPlayer().updateControllers();
+				}
+			}
 		}
 	}
 	
@@ -64,6 +73,10 @@ public class TGChannelHandle {
 	
 	public boolean isAnyTrackConnectedToChannel(TGChannel channel){
 		return getManager().isAnyTrackConnectedToChannel( channel.getChannelId() );
+	}
+	
+	public boolean isAnyPercussionChannel(){
+		return getManager().isAnyPercussionChannel();
 	}
 	
 	public boolean isPlayerRunning(){
