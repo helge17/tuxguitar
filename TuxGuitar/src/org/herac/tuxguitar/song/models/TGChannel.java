@@ -86,7 +86,7 @@ public abstract class TGChannel {
 	}
 	
 	public short getBank() {
-		return this.bank;
+		return (this.isPercussionChannel() ? DEFAULT_PERCUSSION_BANK : this.bank);
 	}
 	
 	public void setBank(short bank) {

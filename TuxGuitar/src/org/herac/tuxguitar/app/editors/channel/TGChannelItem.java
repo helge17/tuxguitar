@@ -179,11 +179,12 @@ public class TGChannelItem {
 	public void updateItems(){
 		if(!isDisposed() && getChannel() != null){
 			boolean playerRunning = this.getHandle().isPlayerRunning();
+			boolean anyPercussionChannel = this.getHandle().isAnyPercussionChannel();
 			boolean anyTrackConnectedToChannel = this.getHandle().isAnyTrackConnectedToChannel(getChannel());
 			
 			this.nameText.setText(getChannel().getName());
 			this.percussionButton.setSelection(getChannel().isPercussionChannel());
-			this.percussionButton.setEnabled(!anyTrackConnectedToChannel);
+			this.percussionButton.setEnabled(!anyTrackConnectedToChannel && (!anyPercussionChannel || getChannel().isPercussionChannel()));
 			this.removeChannelButton.setEnabled(!anyTrackConnectedToChannel);
 			
 			this.volumeScale.setValue(getChannel().getVolume());
@@ -240,7 +241,7 @@ public class TGChannelItem {
 			if( getChannel().getBank() >= 0 && getChannel().getBank() < this.bankCombo.getItemCount() ){
 				this.bankCombo.select(getChannel().getBank());
 			}
-			this.bankCombo.setEnabled(!playerRunning && !getChannel().isPercussionChannel() && this.bankCombo.getItemCount() > 0);
+			this.bankCombo.setEnabled(!getChannel().isPercussionChannel());
 		}
 	}
 	
@@ -255,18 +256,12 @@ public class TGChannelItem {
 			if( getChannel().getProgram() >= 0 && getChannel().getProgram() < this.programCombo.getItemCount() ){
 				this.programCombo.select(getChannel().getProgram());
 			}
-			this.programCombo.setEnabled(!playerRunning && this.programCombo.getItemCount() > 0);
 		}
 	}
 	
 	private List getProgramNames(){
 		List programNames = new ArrayList();
-		if( getChannel().isPercussionChannel() ){
-			String programPrefix = TuxGuitar.getProperty("instrument.program");
-			for (int i = 0; i < 128; i++) {
-				programNames.add((programPrefix + " #" + i));
-			}
-		}else{
+		if(!getChannel().isPercussionChannel() ){
 			MidiInstrument[] instruments = TuxGuitar.instance().getPlayer().getInstruments();
 			if (instruments != null) {
 				int count = instruments.length;
@@ -276,6 +271,12 @@ public class TGChannelItem {
 				for (int i = 0; i < count; i++) {
 					programNames.add(instruments[i].getName());
 				}
+			}
+		}
+		if( programNames.isEmpty() ){
+			String programPrefix = TuxGuitar.getProperty("instrument.program");
+			for (int i = 0; i < 128; i++) {
+				programNames.add((programPrefix + " #" + i));
 			}
 		}
 		return programNames;

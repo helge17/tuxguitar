@@ -25,7 +25,7 @@ import org.herac.tuxguitar.jack.synthesizer.JackOutputPortRouter;
 
 public class JackSettingsDialog {
 	
-	private static final int TAB_WIDTH = 550;
+	private static final int TAB_WIDTH = 720;
 	private static final int TAB_HEIGHT = 350;
 	
 	private JackSettings settings;
@@ -36,7 +36,7 @@ public class JackSettingsDialog {
 	
 	public void open( Shell parent ){
 		final int[][] channelRouting = getChannelRoutingSettings();
-		final int[][] programRouting = getProgramRoutingSettings();
+		final int[][][] programRouting = getProgramRoutingSettings();
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setText(TuxGuitar.getProperty("jack.settings.dialog"));
@@ -148,7 +148,7 @@ public class JackSettingsDialog {
 		return data;
 	}
 	
-	protected void saveChanges( int type , int[][] channelRouting, int[][] programRouting){
+	protected void saveChanges( int type , int[][] channelRouting, int[][][] programRouting){
 		if( type == JackOutputPortRouter.CREATE_MULTIPLE_PORTS_BY_CHANNEL ){
 			this.setChannelRoutingSettings(channelRouting);
 		}
@@ -162,41 +162,51 @@ public class JackSettingsDialog {
 	protected int[][] getChannelRoutingSettings(){
 		int[][] channelsRoute = new int[16][];
 		for( int i = 0 ; i < channelsRoute.length ; i ++ ){
-			channelsRoute[i] = new int[3];
+			channelsRoute[i] = new int[4];
 			channelsRoute[i][0] = i;
 			channelsRoute[i][1] = this.settings.getConfig().getIntConfigValue("jack.midi.port.channel-routing.to-channel-" + i , -1 );
 			channelsRoute[i][2] = this.settings.getConfig().getIntConfigValue("jack.midi.port.channel-routing.to-program-" + i , -1 );
+			channelsRoute[i][3] = this.settings.getConfig().getIntConfigValue("jack.midi.port.channel-routing.to-bank-" + i , -1 );
 		}
 		return channelsRoute;
 	}
 	
 	protected void setChannelRoutingSettings(int[][] channelsRoute){
 		for( int i = 0 ; i < channelsRoute.length ; i ++ ){
-			if( channelsRoute[i].length == 3 ){
+			if( channelsRoute[i].length == 4 ){
 				this.settings.getConfig().setProperty("jack.midi.port.channel-routing.to-channel-" + channelsRoute[i][0] , channelsRoute[i][1] );
 				this.settings.getConfig().setProperty("jack.midi.port.channel-routing.to-program-" + channelsRoute[i][0] , channelsRoute[i][2] );
+				this.settings.getConfig().setProperty("jack.midi.port.channel-routing.to-bank-" + channelsRoute[i][0] , channelsRoute[i][3] );
 			}
 		}
 	}
 	
-	protected int[][] getProgramRoutingSettings(){
-		int[][] routing = new int[129][];
-		for( int i = 0 ; i < routing.length ; i ++ ){
-			routing[i] = new int[4];
-			routing[i][0] = i;
-			routing[i][1] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.port-" + i , 0 );
-			routing[i][2] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-channel-" + i , -1 );
-			routing[i][3] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-program-" + i , -1 );
+	protected int[][][] getProgramRoutingSettings(){
+		int[][][] routing = new int[129][128][];
+		for( int bank = 0 ; bank < routing.length ; bank ++ ){
+			for( int prg = 0 ; prg < routing[bank].length ; prg ++ ){
+				String portId = (bank + "-" + prg);
+				routing[bank][prg] = new int[5];
+				routing[bank][prg][0] = prg;
+				routing[bank][prg][1] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.port-" + portId , 0 );
+				routing[bank][prg][2] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-channel-" + portId , -1 );
+				routing[bank][prg][3] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-program-" + portId , -1 );
+				routing[bank][prg][4] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-bank-" + portId , -1 );
+			}
 		}
 		return routing;
 	}
 	
-	protected void setProgramRoutingSettings(int[][] routing){
-		for( int i = 0 ; i < routing.length ; i ++ ){
-			if( routing[i].length == 4 ){
-				this.settings.getConfig().setProperty("jack.midi.port.program-routing.port-" + routing[i][0] , routing[i][1] );
-				this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-channel-" + routing[i][0] , routing[i][2] );
-				this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-program-" + routing[i][0] , routing[i][3] );
+	protected void setProgramRoutingSettings(int[][][] routing){
+		for( int bank = 0 ; bank < routing.length ; bank ++ ){
+			for( int prg = 0 ; prg < routing[bank].length ; prg ++ ){
+				if( routing[bank][prg].length == 5 ){
+					String portId = (bank + "-" + prg);
+					this.settings.getConfig().setProperty("jack.midi.port.program-routing.port-" + portId , routing[bank][prg][1] );
+					this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-channel-" + portId , routing[bank][prg][2] );
+					this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-program-" + portId , routing[bank][prg][3] );
+					this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-bank-" + portId , routing[bank][prg][4] );
+				}
 			}
 		}
 	}
@@ -205,7 +215,7 @@ public class JackSettingsDialog {
 	// PROGRAM ROUTING ------------------------------------------------------------------------------------//
 	// ----------------------------------------------------------------------------------------------------//
 	
-	public TabItem openProgramRoutingTab( TabFolder tabFolder , int[][] routing ){
+	public TabItem openProgramRoutingTab( TabFolder tabFolder , final int[][][] routing ){
 		Composite tabControl = new Composite( tabFolder, SWT.NONE);
 		tabControl.setLayout(new GridLayout());
 		tabControl.setLayoutData(new FormData(TAB_WIDTH,TAB_HEIGHT));
@@ -218,26 +228,48 @@ public class JackSettingsDialog {
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
+		final Combo srcBankCombo = new Combo( composite, SWT.DROP_DOWN | SWT.READ_ONLY );
+		for( int bank = 0; bank < routing.length ; bank ++ ){
+			srcBankCombo.add(
+				( bank == 128 )
+				? TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.src-program.percussion")
+				: TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.src-bank", new String[]{Integer.toString(bank)})
+			);
+		}
+		srcBankCombo.select(0);
+		
 		final Table table = new Table( composite, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		table.setHeaderVisible(true);
 		
-		TableColumn srcChannelColumn = new TableColumn(table, SWT.LEFT);
+		TableColumn srcProgramColumn = new TableColumn(table, SWT.LEFT);
 		TableColumn dstPortColumn = new TableColumn(table, SWT.LEFT);
 		TableColumn dstChannelColumn = new TableColumn(table, SWT.LEFT);
 		TableColumn dstProgramColumn = new TableColumn(table, SWT.LEFT);
+		TableColumn dstBankColumn = new TableColumn(table, SWT.LEFT);
 		
-		srcChannelColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.src-program"));
+		srcProgramColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.src-program"));
 		dstPortColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-port"));
 		dstChannelColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-channel"));
 		dstProgramColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-program"));
+		dstBankColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-bank"));
 		
-		srcChannelColumn.setWidth(125);
-		dstPortColumn.setWidth(125);
-		dstChannelColumn.setWidth(125);
-		dstProgramColumn.setWidth(125);
+		srcProgramColumn.setWidth(130);
+		dstPortColumn.setWidth(130);
+		dstChannelColumn.setWidth(130);
+		dstProgramColumn.setWidth(130);
+		dstBankColumn.setWidth(130);
 		
-		loadProgramRoutingItems( table , routing );
+		loadProgramRoutingItems( table , routing[0] );
+		
+		srcBankCombo.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				int srcBank = srcBankCombo.getSelectionIndex();
+				if( srcBank >= 0 && srcBank < routing.length ){
+					loadProgramRoutingItems( table , routing[srcBank] );
+				}
+			}
+		});
 		
 		//-------------------------------------------------------//
 		Composite buttons = new Composite( composite , SWT.NONE);
@@ -260,6 +292,8 @@ public class JackSettingsDialog {
 	}
 	
 	protected void loadProgramRoutingItems( Table table , int[][] routing ){
+		table.removeAll();
+		
 		for( int i = 0 ; i < routing.length ; i ++ ){
 			this.addProgramRoutingItem(table, routing[i]);
 		}
@@ -271,8 +305,8 @@ public class JackSettingsDialog {
 	}
 	
 	protected void addProgramRoutingItem( TableItem item, int[] route){
-		if( route.length == 4 ){
-			String[] text = new String[4];
+		if( route.length == 5 ){
+			String[] text = new String[5];
 			if( route[0] < 128 ){
 				text[0] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.src-program.item", new String[]{ Integer.toString(route[0]) }));
 			}else{
@@ -292,6 +326,11 @@ public class JackSettingsDialog {
 				text[3] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-program.item", new String[]{ Integer.toString(route[3]) }));
 			}else{
 				text[3] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-program.default"));
+			}
+			if( route[4] >= 0 ){
+				text[4] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-bank.item", new String[]{ Integer.toString(route[4]) }));
+			}else{
+				text[4] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-bank.default"));
 			}
 			item.setText( text );
 			item.setData( route );
@@ -357,6 +396,18 @@ public class JackSettingsDialog {
 		}
 		programRouteValue.select( route[3] + 1 );
 		
+		Label bankRoute = new Label(group, SWT.NULL);
+		bankRoute.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
+		bankRoute.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-bank") + ":");
+		
+		final Combo bankRouteValue = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
+		bankRouteValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		bankRouteValue.add(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-bank.default"));
+		for( int i = 0 ; i < 128 ; i ++ ){
+			bankRouteValue.add(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.program-router.dst-bank.item", new String[]{Integer.toString(i)}));
+		}
+		bankRouteValue.select( route[4] + 1 );
+		
 		// ------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2,false));
@@ -370,6 +421,7 @@ public class JackSettingsDialog {
 				route[1] = programPortValue.getSelectionIndex();
 				route[2] = channelRouteValue.getSelectionIndex() - 1;
 				route[3] = programRouteValue.getSelectionIndex() - 1;
+				route[4] = bankRouteValue.getSelectionIndex() - 1;
 				addProgramRoutingItem(item, route);
 				dialog.dispose();
 			}
@@ -413,14 +465,17 @@ public class JackSettingsDialog {
 		TableColumn srcChannelColumn = new TableColumn(table, SWT.LEFT);
 		TableColumn dstChannelColumn = new TableColumn(table, SWT.LEFT);
 		TableColumn dstProgramColumn = new TableColumn(table, SWT.LEFT);
+		TableColumn dstBankColumn = new TableColumn(table, SWT.LEFT);
 		
 		srcChannelColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.src-channel"));
 		dstChannelColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-channel"));
 		dstProgramColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-program"));
+		dstBankColumn.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-bank"));
 		
 		srcChannelColumn.setWidth(166);
 		dstChannelColumn.setWidth(166);
 		dstProgramColumn.setWidth(166);
+		dstBankColumn.setWidth(166);
 		
 		loadChannelRoutingItems( table , routing );
 		
@@ -457,8 +512,8 @@ public class JackSettingsDialog {
 	}
 	
 	protected void addChannelRoutingItem( TableItem item, int[] route){
-		if( route.length == 3 ){
-			String[] text = new String[3];
+		if( route.length == 4 ){
+			String[] text = new String[4];
 			
 			text[0] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.src-channel.item", new String[]{ Integer.toString(route[0]) }));
 			if( route[1] >= 0 ){
@@ -470,6 +525,11 @@ public class JackSettingsDialog {
 				text[2] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-program.item", new String[]{ Integer.toString(route[2]) }));
 			}else{
 				text[2] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-program.default"));
+			}
+			if( route[3] >= 0 ){
+				text[3] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-bank.item", new String[]{ Integer.toString(route[3]) }));
+			}else{
+				text[3] = (TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-bank.default"));
 			}
 			item.setText( text );
 			item.setData( route );
@@ -521,6 +581,18 @@ public class JackSettingsDialog {
 		}
 		programRouteValue.select( route[2] + 1 );
 		
+		Label bankRoute = new Label(group, SWT.NULL);
+		bankRoute.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
+		bankRoute.setText(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-bank") + ":");
+		
+		final Combo bankRouteValue = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
+		bankRouteValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		bankRouteValue.add(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-bank.default"));
+		for( int i = 0 ; i < 127 ; i ++ ){
+			bankRouteValue.add(TuxGuitar.getProperty("jack.settings.dialog.options.midi-port.channel-router.dst-bank.item", new String[]{Integer.toString(i)}));
+		}
+		bankRouteValue.select( route[3] + 1 );
+		
 		// ------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
 		buttons.setLayout(new GridLayout(2,false));
@@ -533,6 +605,7 @@ public class JackSettingsDialog {
 			public void widgetSelected(SelectionEvent arg0) {
 				route[1] = channelRouteValue.getSelectionIndex() - 1;
 				route[2] = programRouteValue.getSelectionIndex() - 1;
+				route[3] = bankRouteValue.getSelectionIndex() - 1;
 				addChannelRoutingItem(item, route);
 				dialog.dispose();
 			}

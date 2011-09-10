@@ -270,6 +270,17 @@ public class TGSongManager {
 		return false;
 	}
 	
+	public boolean isAnyPercussionChannel(){
+		Iterator it = getSong().getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = (TGChannel) it.next();
+			if( channel.isPercussionChannel() ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean isAnyTrackConnectedToChannel( int channelId ){
 		Iterator it = getSong().getTracks();
 		while( it.hasNext() ){
