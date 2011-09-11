@@ -364,7 +364,7 @@ public class TuxGuitar {
 		}else{
 			getFretBoardEditor().hideFretBoard();
 		}
-		//---Mixer---
+		//---Instruments---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_INSTRUMENTS)){
 			new SyncThread(new Runnable() {
 				public void run() {
