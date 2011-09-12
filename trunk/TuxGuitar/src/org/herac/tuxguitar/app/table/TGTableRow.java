@@ -14,6 +14,7 @@ public class TGTableRow {
 	private TGTable table;
 	private Composite row;
 	private CLabel number;
+	private CLabel soloMute;
 	private CLabel name;
 	private CLabel instrument;
 	private Composite painter;
@@ -38,6 +39,10 @@ public class TGTableRow {
 		this.number.addMouseListener(mouseListenerLabel);
 		this.table.addRowItem(this.table.getColumnNumber(),this.number,true);
 		
+		this.soloMute = new CLabel(this.row,SWT.LEFT);
+		this.soloMute.addMouseListener(mouseListenerLabel);
+		this.table.addRowItem(this.table.getColumnSoloMute(),this.soloMute,true);
+		
 		this.name = new CLabel(this.row,SWT.LEFT);
 		this.name.addMouseListener(mouseListenerLabel);
 		this.table.addRowItem(this.table.getColumnName(),this.name,true);
@@ -56,12 +61,14 @@ public class TGTableRow {
 	
 	public void setBackground(Color background){
 		this.number.setBackground(background);
+		this.soloMute.setBackground(background);
 		this.name.setBackground(background);
 		this.instrument.setBackground(background);
 	}
 	
 	public void setForeground(Color foreground){
 		this.number.setForeground(foreground);
+		this.soloMute.setForeground(foreground);
 		this.name.setForeground(foreground);
 		this.instrument.setForeground(foreground);
 	}
@@ -84,6 +91,10 @@ public class TGTableRow {
 	
 	public CLabel getNumber() {
 		return this.number;
+	}
+	
+	public CLabel getSoloMute() {
+		return this.soloMute;
 	}
 	
 	public MouseListener getMouseListenerLabel() {
