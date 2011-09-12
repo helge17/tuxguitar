@@ -1,4 +1,9 @@
 # 1.3
+track.short-solo-mute=S-M
+track.short-solo-mute.s=(S)
+track.short-solo-mute.m=(M)
+track.short-solo-mute.none=-
+
 instruments.dialog-title=Instruments
 instrument.percussion-channel=Percussion Channel
 instrument.program=Program

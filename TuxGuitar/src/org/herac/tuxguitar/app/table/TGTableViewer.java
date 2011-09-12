@@ -104,6 +104,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		MouseListener listener = mouseFocusListener();
 		this.table = new TGTable(getComposite());
 		this.table.getColumnNumber().getControl().addMouseListener(listener);
+		this.table.getColumnSoloMute().getControl().addMouseListener(listener);
 		this.table.getColumnName().getControl().addMouseListener(listener);
 		this.table.getColumnInstrument().getControl().addMouseListener(listener);
 		this.table.getColumnCanvas().getControl().addMouseListener(listener);
@@ -118,6 +119,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	
 	public void loadProperties() {
 		this.table.getColumnNumber().setTitle(TuxGuitar.getProperty("track.number"));
+		this.table.getColumnSoloMute().setTitle(TuxGuitar.getProperty("track.short-solo-mute"));
 		this.table.getColumnName().setTitle(TuxGuitar.getProperty("track.name"));
 		this.table.getColumnInstrument().setTitle(TuxGuitar.getProperty("track.instrument"));
 	}
@@ -161,6 +163,16 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		return new String();
 	}
 	
+	private String getSoloMute(TGTrack track){
+		if( track.isSolo() ){
+			return TuxGuitar.getProperty("track.short-solo-mute.s");
+		}
+		if( track.isMute() ){
+			return TuxGuitar.getProperty("track.short-solo-mute.m");
+		}
+		return TuxGuitar.getProperty("track.short-solo-mute.none");
+	}
+	
 	private void updateTable(){
 		if(this.update){
 			int count = TuxGuitar.instance().getSongManager().getSong().countTracks();
@@ -176,6 +188,11 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 					row.getNumber().setText(Integer.toString(track.getNumber()));
 					row.getNumber().setData(track);
 					row.getNumber().setMenu(createTrackMenu());
+					
+					//Solo-Mute
+					row.getSoloMute().setText(getSoloMute(track));
+					row.getSoloMute().setData(track);
+					row.getSoloMute().setMenu(createTrackMenu());
 					
 					//Name
 					row.getName().setText(track.getName());
@@ -257,8 +274,9 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 			TGTableRow row = this.table.getRow(i);
 			
 			row.getNumber().setText(Integer.toString(((TGTrack)row.getNumber().getData()).getNumber()));
-			row.getName().setText(((TGTrack)row.getNumber().getData()).getName());
-			row.getInstrument().setText(getInstrument(((TGTrack)row.getNumber().getData())));
+			row.getSoloMute().setText(getSoloMute((TGTrack)row.getSoloMute().getData()));
+			row.getName().setText(((TGTrack)row.getName().getData()).getName());
+			row.getInstrument().setText(getInstrument((TGTrack)row.getInstrument().getData()));
 		}
 	}
 	
