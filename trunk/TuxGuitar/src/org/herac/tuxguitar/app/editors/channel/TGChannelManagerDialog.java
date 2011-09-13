@@ -58,7 +58,7 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 			}
 		});
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER );
+		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	public boolean isDisposed() {
@@ -162,12 +162,12 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 		return gridLayout;
 	}
 	
-	private GridData createGridData(int hAlign, int vAlign, boolean grabExcessHSpace, boolean grabExcessVSpace, int hSpan, int vSpan,int mWidth, int mHeight){
+	public GridData createGridData(int hAlign, int vAlign, boolean gEHSpace, boolean gEVSpace, int hSpan, int vSpan,int mWidth, int mHeight){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = hAlign;
 		gridData.verticalAlignment = vAlign;
-		gridData.grabExcessHorizontalSpace = grabExcessHSpace;
-		gridData.grabExcessVerticalSpace = grabExcessVSpace;
+		gridData.grabExcessHorizontalSpace = gEHSpace;
+		gridData.grabExcessVerticalSpace = gEVSpace;
 		gridData.horizontalSpan = hSpan;
 		gridData.verticalSpan = vSpan;
 		gridData.minimumWidth = mWidth;

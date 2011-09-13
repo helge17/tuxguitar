@@ -49,7 +49,7 @@ public class TGTable {
 		this.columnName = new TGTableColumn(this,SWT.LEFT);
 		this.columnInstrument = new TGTableColumn(this,SWT.LEFT);
 		this.columnCanvas = new TGTableColumn(this,SWT.CENTER);
-		this.columnControl.setWeights(new int[]{1,1,7,7,20});
+		this.columnControl.setWeights(new int[]{1,2,7,7,20});
 		
 		this.rowControl = new Composite(this.table,SWT.NONE);
 		this.rowControl.setLayout(newGridLayout(1,0,1,0,1));
