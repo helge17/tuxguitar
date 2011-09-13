@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.song.models.TGChannel;
 
 public class TGChannelList {
-
+	
 	private List channelItems;
 	private TGChannelManagerDialog dialog;
 	
