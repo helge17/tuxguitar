@@ -152,7 +152,6 @@ public class TGBeatImpl extends TGBeat{
 	}
 	
 	public boolean isPlaying(TGLayout layout){
-		//return (getMeasureImpl().isPlaying(layout) && TuxGuitar.instance().getEditorCache().isPlaying(getMeasure(),this));
 		return layout.getComponent().isRunning(this);
 	}
 	

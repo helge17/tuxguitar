@@ -32,6 +32,8 @@ public class MidiPlayer{
 	
 	private MidiPlayerMode mode;
 	
+	private MidiPlayerCountDown countDown;
+	
 	private String sequencerKey;
 	
 	private String outputPortKey;
@@ -148,7 +150,7 @@ public class MidiPlayer{
 			this.setMetronomeEnabled(isMetronomeEnabled());
 			this.changeTickPosition();
 			this.setRunning(true);
-			this.getSequencer().start();
+			
 			new Thread(new Runnable() {
 				public synchronized void run() {
 					try {
@@ -158,6 +160,19 @@ public class MidiPlayer{
 						
 						if( notifyStarted ){
 							MidiPlayer.this.notifyStarted();
+						}
+						
+						if( MidiPlayer.this.getCountDown().isEnabled() ){
+							MidiPlayer.this.notifyCountDownStarted();
+							MidiPlayer.this.getCountDown().start();
+							MidiPlayer.this.notifyCountDownStopped();
+						}
+						
+						if( MidiPlayer.this.isRunning() ){
+							if( MidiPlayer.this.isChangeTickPosition() ){
+								MidiPlayer.this.changeTickPosition();
+							}
+							MidiPlayer.this.getSequencer().start();
 						}
 						
 						MidiPlayer.this.tickLength = getSequencer().getTickLength();
@@ -530,11 +545,22 @@ public class MidiPlayer{
 		}
 	}
 	
+	public TGSongManager getSongManager(){
+		return this.songManager;
+	}
+	
 	public MidiPlayerMode getMode(){
 		if(this.mode == null){
 			this.mode = new MidiPlayerMode();
 		}
 		return this.mode;
+	}
+	
+	public MidiPlayerCountDown getCountDown(){
+		if( this.countDown == null ){
+			this.countDown = new MidiPlayerCountDown(this);
+		}
+		return this.countDown;
 	}
 	
 	public MidiTransmitter getOutputTransmitter(){
@@ -805,6 +831,22 @@ public class MidiPlayer{
 		while( it.hasNext() ){
 			MidiPlayerListener listener = (MidiPlayerListener) it.next();
 			listener.notifyStopped();
+		}
+	}
+	
+	public void notifyCountDownStarted(){
+		Iterator it = this.listeners.iterator();
+		while( it.hasNext() ){
+			MidiPlayerListener listener = (MidiPlayerListener) it.next();
+			listener.notifyCountDownStarted();
+		}
+	}
+	
+	public void notifyCountDownStopped(){
+		Iterator it = this.listeners.iterator();
+		while( it.hasNext() ){
+			MidiPlayerListener listener = (MidiPlayerListener) it.next();
+			listener.notifyCountDownStopped();
 		}
 	}
 	

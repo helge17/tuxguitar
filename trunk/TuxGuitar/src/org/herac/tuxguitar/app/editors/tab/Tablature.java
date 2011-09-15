@@ -260,14 +260,14 @@ public class Tablature extends Composite implements TGController {
 			try{
 				TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 				TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
-				if(measure != null && beat != null && measure.hasTrack(getCaret().getTrack().getNumber())){
+				if(measure != null && measure.hasTrack(getCaret().getTrack().getNumber())){
 					if(!moveScrollTo(measure) || force){
 						boolean paintMeasure = (force || this.playedMeasure == null || !this.playedMeasure.equals(measure));
 						if(this.playedMeasure != null && this.playedBeat != null && !this.playedMeasure.isOutOfBounds() && this.playedMeasure.hasTrack(getCaret().getTrack().getNumber())){
 							getViewLayout().paintPlayMode(painter, this.playedMeasure, this.playedBeat,paintMeasure);
 						}
 						if(!measure.isOutOfBounds()){
-							getViewLayout().paintPlayMode(painter, measure, beat,paintMeasure);
+							getViewLayout().paintPlayMode(painter, measure, beat, paintMeasure);
 						}
 						this.playedBeat = beat;
 						this.playedMeasure =  measure;

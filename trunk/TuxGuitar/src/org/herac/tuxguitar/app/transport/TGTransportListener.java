@@ -66,4 +66,12 @@ public class TGTransportListener implements MidiPlayerListener{
 			}
 		};
 	}
+
+	public void notifyCountDownStarted() {
+		// Not implemented
+	}
+	
+	public void notifyCountDownStopped() {
+		// Not implemented
+	}
 }

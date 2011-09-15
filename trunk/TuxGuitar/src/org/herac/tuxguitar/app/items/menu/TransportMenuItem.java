@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.transport.TransportCountDownAction;
 import org.herac.tuxguitar.app.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.app.actions.transport.TransportModeAction;
 import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
@@ -37,6 +38,7 @@ public class TransportMenuItem extends MenuItems{
 	private MenuItem play;
 	private MenuItem stop;
 	private MenuItem metronome;
+	private MenuItem countDown;
 	private MenuItem mode;
 	private MenuItem loopSHeader;
 	private MenuItem loopEHeader;
@@ -61,6 +63,9 @@ public class TransportMenuItem extends MenuItems{
 		this.metronome = new MenuItem(this.menu, SWT.CHECK);
 		this.metronome.addSelectionListener(TuxGuitar.instance().getAction(TransportMetronomeAction.NAME));
 		
+		this.countDown = new MenuItem(this.menu, SWT.CHECK);
+		this.countDown.addSelectionListener(TuxGuitar.instance().getAction(TransportCountDownAction.NAME));
+		
 		this.mode = new MenuItem(this.menu, SWT.PUSH);
 		this.mode.addSelectionListener(TuxGuitar.instance().getAction(TransportModeAction.NAME));
 		
@@ -84,6 +89,7 @@ public class TransportMenuItem extends MenuItems{
 		TGMeasure measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
 		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
 		this.metronome.setSelection(TuxGuitar.instance().getPlayer().isMetronomeEnabled());
+		this.countDown.setSelection(TuxGuitar.instance().getPlayer().getCountDown().isEnabled());
 		this.loopSHeader.setEnabled( pm.isLoop() );
 		this.loopSHeader.setSelection( measure != null && measure.getNumber() == pm.getLoopSHeader() );
 		this.loopEHeader.setEnabled( pm.isLoop() );
@@ -97,6 +103,7 @@ public class TransportMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.stop, "transport.stop", TransportStopAction.NAME);
 		setMenuItemTextAndAccelerator(this.mode, "transport.mode", TransportModeAction.NAME);
 		setMenuItemTextAndAccelerator(this.metronome, "transport.metronome", TransportMetronomeAction.NAME);
+		setMenuItemTextAndAccelerator(this.countDown, "transport.count-down", TransportCountDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.loopSHeader, "transport.set-loop-start", TransportSetLoopSHeaderAction.NAME);
 		setMenuItemTextAndAccelerator(this.loopEHeader, "transport.set-loop-end", TransportSetLoopEHeaderAction.NAME);
 	}

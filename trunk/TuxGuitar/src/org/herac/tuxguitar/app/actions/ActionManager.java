@@ -141,6 +141,7 @@ import org.herac.tuxguitar.app.actions.track.MoveTrackDownAction;
 import org.herac.tuxguitar.app.actions.track.MoveTrackUpAction;
 import org.herac.tuxguitar.app.actions.track.RemoveTrackAction;
 import org.herac.tuxguitar.app.actions.track.TrackPropertiesAction;
+import org.herac.tuxguitar.app.actions.transport.TransportCountDownAction;
 import org.herac.tuxguitar.app.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.app.actions.transport.TransportModeAction;
 import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
@@ -320,6 +321,7 @@ public class ActionManager {
 		addAction(new TransportPlayAction());
 		addAction(new TransportStopAction());
 		addAction(new TransportMetronomeAction());
+		addAction(new TransportCountDownAction());
 		addAction(new TransportModeAction());
 		addAction(new TransportSetLoopSHeaderAction());
 		addAction(new TransportSetLoopEHeaderAction());
