@@ -77,7 +77,7 @@ public class EditorCache {
 			this.playChanges = false;
 			
 			TGSongManager manager = TuxGuitar.instance().getSongManager();
-			if(TuxGuitar.instance().getPlayer().isRunning()){
+			if( this.isPlaying() ){
 				Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
 				TGTrack track = caret.getTrack();
 				
@@ -96,7 +96,7 @@ public class EditorCache {
 					if(this.playMeasure == null || !this.playMeasure.hasTrack(track.getNumber())  || !isPlaying(this.playMeasure)){
 						this.playMeasure = (TGMeasureImpl)manager.getTrackManager().getMeasureAt(track,start);
 					}
-					if (this.playMeasure != null) {
+					if (this.playMeasure != null && !isPlayingCountDown()) {
 						this.playBeat = (TGBeatImpl)manager.getMeasureManager().getBeatIn(this.playMeasure, start);
 						if(this.playBeat != null){
 							TGBeat next = manager.getMeasureManager().getNextBeat(this.playMeasure.getBeats(), this.playBeat);
@@ -134,8 +134,16 @@ public class EditorCache {
 		return this.playChanges;
 	}
 	
+	public boolean isPlaying(){
+		return TuxGuitar.instance().getPlayer().isRunning();
+	}
+	
+	public boolean isPlayingCountDown(){
+		return TuxGuitar.instance().getPlayer().getCountDown().isRunning();
+	}
+	
 	public boolean isPlaying(TGMeasure measure){
-		return (TuxGuitar.instance().getPlayer().isRunning() && this.playMeasure != null && measure.equals(this.playMeasure));
+		return (isPlaying() && this.playMeasure != null && measure.equals(this.playMeasure));
 	}
 	
 	public boolean isPlaying(TGMeasure measure,TGBeat b){

@@ -219,7 +219,9 @@ public abstract class TGLayout {
 			measure.paintMeasure(this,painter);
 		}
 		//pinto el pulso
-		beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this), measure.getPosY());
+		if( beat != null ){
+			beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this), measure.getPosY());
+		}
 		
 		//pinto los lyrics
 		((TGLyricImpl)measure.getTrackImpl().getLyrics()).paintCurrentNoteBeats(painter,this,measure,measure.getPosX(), measure.getPosY());

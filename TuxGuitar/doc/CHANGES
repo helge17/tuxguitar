@@ -2,6 +2,7 @@ TuxGuitar Dev changes:
 
 * Add show/hide toolbars feature.
 * Add let ring support
+* Add count down support
 * Add bank selection support
 * Soundfont selection support in gervill plugin
 * New oxygen skin

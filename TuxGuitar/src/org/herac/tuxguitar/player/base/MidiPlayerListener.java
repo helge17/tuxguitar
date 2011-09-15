@@ -6,5 +6,9 @@ public interface MidiPlayerListener {
 	
 	public void notifyStopped();
 	
+	public void notifyCountDownStarted();
+	
+	public void notifyCountDownStopped();
+	
 	public void notifyLoop();
 }
