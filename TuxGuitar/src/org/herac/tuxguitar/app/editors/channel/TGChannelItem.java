@@ -42,7 +42,7 @@ public class TGChannelItem {
 	private TGScalePopup reverbScale;
 	private TGScalePopup chorusScale;
 	private TGScalePopup tremoloScale;
-	private TGScalePopup phaserScale; 
+	private TGScalePopup phaserScale;
 	
 	public TGChannelItem(TGChannelManagerDialog dialog){
 		this.dialog = dialog;
@@ -216,15 +216,18 @@ public class TGChannelItem {
 	}
 	
 	private void reloadChannelCombo(Combo combo, List channels, int selected, String prefix){
-		combo.removeAll();
-		combo.setData(channels);
-		
+		if(!(combo.getData() instanceof List) || isDifferentList(channels, (List)combo.getData())){
+			combo.removeAll();
+			combo.setData(channels);
+			for( int i = 0 ; i < channels.size() ; i ++ ){
+				Integer channel = (Integer)channels.get(i);
+				
+				combo.add(prefix + " #" + channel.toString() );
+			}
+		}
 		for( int i = 0 ; i < channels.size() ; i ++ ){
 			Integer channel = (Integer)channels.get(i);
-			
-			combo.add(prefix + " #" + channel.toString() );
-			
-			if( selected == channel.intValue() ){
+			if( channel.intValue() == selected ){
 				combo.select( i );
 			}
 		}
@@ -247,11 +250,13 @@ public class TGChannelItem {
 	
 	private void updateProgramCombo(boolean playerRunning){
 		if(!isDisposed() && getChannel() != null){
-			this.programCombo.removeAll();
-			
 			List programNames = getProgramNames();
-			for( int i = 0 ; i < programNames.size() ; i ++ ){
-				this.programCombo.add((String)programNames.get(i));
+			if(!(this.programCombo.getData() instanceof List) || isDifferentList(programNames, (List)this.programCombo.getData())){
+				this.programCombo.removeAll();
+				this.programCombo.setData(programNames);
+				for( int i = 0 ; i < programNames.size() ; i ++ ){
+					this.programCombo.add((String)programNames.get(i));
+				}
 			}
 			if( getChannel().getProgram() >= 0 && getChannel().getProgram() < this.programCombo.getItemCount() ){
 				this.programCombo.select(getChannel().getProgram());
@@ -280,6 +285,19 @@ public class TGChannelItem {
 			}
 		}
 		return programNames;
+	}
+	
+	private boolean isDifferentList(List list1, List list2){
+		if( list1.size() != list2.size() ){
+			return true;
+		}
+		for( int i = 0 ; i < list1.size() ; i ++ ){
+			if(!list1.get(i).equals(list2.get(i)) ){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public void checkForNameModified(){
@@ -321,8 +339,8 @@ public class TGChannelItem {
 			int bank = getChannel().getBank();
 			int program = getChannel().getProgram();
 			if( percussionChanged ){
-				bank = (percussionChannel ? TGChannel.DEFAULT_BANK : TGChannel.DEFAULT_PERCUSSION_BANK);
-				program = (percussionChannel ? TGChannel.DEFAULT_PROGRAM : TGChannel.DEFAULT_PERCUSSION_PROGRAM);
+				bank = (percussionChannel ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+				program = (percussionChannel ? TGChannel.DEFAULT_PERCUSSION_PROGRAM : TGChannel.DEFAULT_PROGRAM);
 			}else{
 				int bankSelection = this.bankCombo.getSelectionIndex();
 				if( bankSelection >= 0 ){
