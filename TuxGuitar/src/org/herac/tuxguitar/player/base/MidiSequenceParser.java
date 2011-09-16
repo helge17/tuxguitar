@@ -349,7 +349,6 @@ public class MidiSequenceParser {
 	
 	private void makeChannel(MidiSequenceHelper sh,TGChannel channel,int track,boolean primary) {
 		int number = (primary?channel.getChannel():channel.getEffectChannel());
-		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BANK_SELECT,fix(channel.getBank()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.VOLUME,fix(channel.getVolume()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BALANCE,fix(channel.getBalance()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.CHORUS,fix(channel.getChorus()));
@@ -357,6 +356,9 @@ public class MidiSequenceParser {
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.PHASER,fix(channel.getPhaser()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.TREMOLO,fix(channel.getTremolo()));
 		sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.EXPRESSION, 127);
+		if(!channel.isPercussionChannel()){
+			sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),track,number,MidiControllers.BANK_SELECT, fix(channel.getBank()));
+		}
 		sh.getSequence().addProgramChange(getTick(TGDuration.QUARTER_TIME),track,number,fix(channel.getProgram()));
 	}
 	/**
