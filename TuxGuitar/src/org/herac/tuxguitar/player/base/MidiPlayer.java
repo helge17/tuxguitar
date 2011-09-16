@@ -150,12 +150,10 @@ public class MidiPlayer{
 			this.setMetronomeEnabled(isMetronomeEnabled());
 			this.changeTickPosition();
 			this.setRunning(true);
-			
 			new Thread(new Runnable() {
 				public synchronized void run() {
 					try {
 						MidiPlayer.this.lock.lock();
-						
 						MidiPlayer.this.setStarting(false);
 						
 						if( notifyStarted ){
