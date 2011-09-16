@@ -364,16 +364,27 @@ public class MidiPlayer{
 	}
 	
 	public void updatePrograms() {
+		Iterator it = this.songManager.getSong().getChannels();
+		while(it.hasNext()){
+			updateProgram((TGChannel)it.next());
+		}
+	}
+	
+	private void updateProgram(TGChannel channel) {
+		this.updateProgram(channel.getChannel(), channel.getBank(), channel.getProgram());
+		
+		if( channel.getChannel() != channel.getEffectChannel()){
+			this.updateProgram(channel.getEffectChannel(), channel.getBank(), channel.getProgram());
+		}
+	}
+	
+	private void updateProgram(int channel, int bank, int program) {
 		try{
-			Iterator it = this.songManager.getSong().getChannels();
-			while(it.hasNext()){
-				TGChannel channel = (TGChannel)it.next();
-				getOutputTransmitter().sendControlChange(channel.getChannel(),MidiControllers.BANK_SELECT,channel.getBank());
-				getOutputTransmitter().sendProgramChange(channel.getChannel(),channel.getProgram());
-				if( channel.getChannel() != channel.getEffectChannel()){
-					getOutputTransmitter().sendControlChange(channel.getEffectChannel(), MidiControllers.BANK_SELECT,channel.getBank());
-					getOutputTransmitter().sendProgramChange(channel.getEffectChannel(), channel.getProgram());
-				}
+			if( bank >= 0 && bank <= 127 ){
+				getOutputTransmitter().sendControlChange(channel, MidiControllers.BANK_SELECT, bank);
+			}
+			if( program >= 0 && program <= 127 ){
+				getOutputTransmitter().sendProgramChange(channel, program);
 			}
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
