@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
@@ -25,6 +24,7 @@ public class JackSequencer implements MidiSequencer{
 	private JackTrackController jackTrackController;
 	private JackTimer jackTimer;
 	private JackClient jackClient;
+	private JackMidiPlayerStarter jackMidiPlayerStarter;
 	
 	public JackSequencer(JackClient jackClient){
 		this.stopped = true;
@@ -40,6 +40,7 @@ public class JackSequencer implements MidiSequencer{
 		this.jackEventDispacher = new JackEventDispacher(this);
 		this.jackTrackController = new JackTrackController(this);
 		this.jackTimer = new JackTimer(this);
+		this.jackMidiPlayerStarter = new JackMidiPlayerStarter(this);
 	}
 	
 	public JackClient getJackClient(){
@@ -151,7 +152,7 @@ public class JackSequencer implements MidiSequencer{
 		// Make sure sequencer was already initialized.
 		if( this.transmitter != null ){
 			this.transportLockTick = true;
-			TuxGuitar.instance().getTransport().play();
+			this.jackMidiPlayerStarter.start();
 		}
 	}
 	
@@ -164,9 +165,10 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	public void open() {
-		if( !this.jackClient.isTransportOpen() ){
+		if(!this.jackClient.isTransportOpen() ){
 			this.jackClient.openTransport();
 		}
+		this.jackMidiPlayerStarter.open();
 		this.jackTimer.setRunning( true );
 	}
 	
@@ -175,6 +177,7 @@ public class JackSequencer implements MidiSequencer{
 		if(this.isRunning()){
 			this.stop();
 		}
+		this.jackMidiPlayerStarter.close();
 		if( this.jackClient.isTransportOpen() ){
 			this.jackClient.closeTransport();
 		}
