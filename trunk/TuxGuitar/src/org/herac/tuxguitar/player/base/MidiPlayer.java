@@ -70,8 +70,6 @@ public class MidiPlayer{
 	
 	protected long tickPosition;
 	
-	protected boolean starting;
-	
 	protected TGLock lock = new TGLock();
 	
 	public MidiPlayer() {
@@ -114,16 +112,20 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void stop(boolean paused) {
+	public void stopSequencer() {
 		try{
-			this.setPaused(paused);
-			if(this.isRunning()){
+			if( this.getSequencer().isRunning() ){
 				this.getSequencer().stop();
 			}
-			this.setRunning(false);
 		}catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void stop(boolean paused) {
+		this.setPaused(paused);
+		this.stopSequencer();
+		this.setRunning(false);
 	}
 	
 	public void stop() {
@@ -136,10 +138,11 @@ public class MidiPlayer{
 	
 	public synchronized void play() throws MidiPlayerException{
 		try {
-			final boolean notifyStarted = (!this.isRunning());
-			this.setStarting(true);
-			this.stop();
 			this.lock.lock();
+			
+			final boolean notifyStarted = (!this.isRunning());
+			this.setRunning(true);
+			this.stopSequencer();
 			this.checkDevices();
 			this.updateLoop(true);
 			this.addSequence();
@@ -149,12 +152,11 @@ public class MidiPlayer{
 			this.updateDefaultControllers();
 			this.setMetronomeEnabled(isMetronomeEnabled());
 			this.changeTickPosition();
-			this.setRunning(true);
+			
 			new Thread(new Runnable() {
 				public synchronized void run() {
 					try {
 						MidiPlayer.this.lock.lock();
-						MidiPlayer.this.setStarting(false);
 						
 						if( notifyStarted ){
 							MidiPlayer.this.notifyStarted();
@@ -201,7 +203,6 @@ public class MidiPlayer{
 							MidiPlayer.this.notifyStopped();
 						}
 					}catch (Throwable throwable) {
-						setStarting(false);
 						reset();
 						throwable.printStackTrace();
 					}finally{
@@ -210,7 +211,6 @@ public class MidiPlayer{
 				}
 			}).start();
 		}catch (Throwable throwable) {
-			this.setStarting(false);
 			this.reset();
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		}finally{
@@ -221,8 +221,8 @@ public class MidiPlayer{
 	protected void finish(){
 		try {
 			if(this.getMode().isLoop()){
-				this.setStarting(true);
-				this.reset();
+				this.stopSequencer();
+				this.setTickPosition(TGDuration.QUARTER_TIME);
 				this.getMode().notifyLoop();
 				this.notifyLoop();
 				this.play();
@@ -283,21 +283,13 @@ public class MidiPlayer{
 		}
 	}
 	
-	protected boolean isStarting() {
-		return this.starting;
-	}
-	
-	protected void setStarting(boolean starting) {
-		this.starting = starting;
-	}
-	
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
 	
 	public boolean isRunning() {
 		try {
-			return (this.running || this.getSequencer().isRunning() || this.isStarting());
+			return (this.running || this.getSequencer().isRunning());
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}
