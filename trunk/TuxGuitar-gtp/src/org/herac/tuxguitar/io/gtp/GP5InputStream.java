@@ -37,6 +37,8 @@ public class GP5InputStream extends GTPInputStream {
 	private static final String supportedVersions[] = { "FICHIER GUITAR PRO v5.00","FICHIER GUITAR PRO v5.10"};
 	private static final float GP_BEND_SEMITONE = 25f;
 	private static final float GP_BEND_POSITION = 60f;
+
+	private int keySignature;
 	
 	public GP5InputStream(GTPSettings settings) {
 		super(settings, supportedVersions);
@@ -68,7 +70,8 @@ public class GP5InputStream extends GTPInputStream {
 			skip(1);
 		}
 		
-		readInt(); //key
+		this.keySignature = readKeySignature();
+		this.skip(3);
 		
 		readByte(); //octave
 		
@@ -335,8 +338,8 @@ public class GP5InputStream extends GTPInputStream {
 			header.setRepeatAlternative(readUnsignedByte());
 		}
 		if ((flags & 0x40) != 0) {
-			readByte();
-			readByte();
+			this.keySignature = readKeySignature();
+			this.skip(1);
 		}
 		if ((flags & 0x01) != 0 || (flags & 0x02) != 0) {
 			skip(4);
@@ -383,6 +386,7 @@ public class GP5InputStream extends GTPInputStream {
 			measure.removeBeat( beat );
 		}
 		measure.setClef( getClef(track) );
+		measure.setKeySignature(this.keySignature);
 	}
 	
 	private TGNote readNote(TGString string,TGTrack track,TGNoteEffect effect)throws IOException {
@@ -720,6 +724,16 @@ public class GP5InputStream extends GTPInputStream {
 			readStringByteSizeOfInteger();
 			readStringByteSizeOfInteger();
 		}
+	}
+	
+	private int readKeySignature() throws IOException {
+		// 0: C 1: G, -1: F		
+		int keySignature = readByte();
+		if (keySignature < 0){
+			keySignature = 7 - keySignature; // translate -1 to 8, etc.
+		}
+		
+		return keySignature;
 	}
 	
 	private int toStrokeValue( int value ){

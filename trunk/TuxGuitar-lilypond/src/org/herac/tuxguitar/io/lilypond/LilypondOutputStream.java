@@ -26,14 +26,15 @@ import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
 public class LilypondOutputStream {
 	
-	private static final String LILYPOND_VERSION = "2.10.5";
-	
 	private static final String[] LILYPOND_SHARP_NOTES = new String[]{"c","cis","d","dis","e","f","fis","g","gis","a","ais","b"};
 	private static final String[] LILYPOND_FLAT_NOTES = new String[]{"c","des","d","ees","e","f","ges","g","aes","a","bes","b"};
 	
 	private static final String[] LILYPOND_KEY_SIGNATURES = new String[]{ "c","g","d","a","e","b","fis","cis","f","bes","ees","aes", "des", "ges","ces" };
 	
 	private static final String INDENT = new String("   ");
+	
+	// anything over high C should be printed 8vb
+	private static final int MAX_PITCH = 72;
 	
 	private TGSongManager manager;
 	
@@ -66,7 +67,7 @@ public class LilypondOutputStream {
 	}
 	
 	private void addVersion(){
-		this.writer.println("\\version \"" + LILYPOND_VERSION + "\"");
+		this.writer.println("\\version \"" + this.settings.getLilypondVersion() + "\"");
 	}
 	
 	private void addFunctions(){
@@ -78,30 +79,36 @@ public class LilypondOutputStream {
 	}
 	
 	private void addCommands(){
-		// deadNote
-		this.writer.println("deadNote = #(define-music-function (parser location note) (ly:music?)");
-		this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
-		this.writer.println(indent(2) + "(acons 'stencil ly:note-head::print");
-		this.writer.println(indent(3) + "(acons 'glyph-name \"2cross\"");
-		this.writer.println(indent(4) + "(acons 'style 'special");
-		this.writer.println(indent(5) + "(ly:music-property note 'tweaks)))))");
-		this.writer.println(indent(1) + "note)");
-		this.writer.println();
-		
-		// palmMute
-		this.writer.println("palmMute = #(define-music-function (parser location note) (ly:music?)");
-		this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
-		this.writer.println(indent(2) + "(acons 'style 'do (ly:music-property note 'tweaks)))");
-		this.writer.println(indent(1) + "note)");
-		this.writer.println();
+		// TODO: use "ly:gulp-file name" to add a custom header
+		if ( this.settings.getLilypondVersion().compareTo("2.13.17") < 0 ){
+			this.writer.println("deadNote = #(define-music-function (parser location note) (ly:music?)");
+			this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
+			this.writer.println(indent(2) + "(acons 'stencil ly:note-head::print");
+			this.writer.println(indent(3) + "(acons 'glyph-name \"2cross\"");
+			this.writer.println(indent(4) + "(acons 'style 'special");
+			this.writer.println(indent(5) + "(ly:music-property note 'tweaks)))))");
+			this.writer.println(indent(1) + "note)");
+			this.writer.println();
+	
+			// palmMute - native in 2.14
+			this.writer.println("palmMute = #(define-music-function (parser location note) (ly:music?)");
+			this.writer.println(indent(1) + "(set! (ly:music-property note 'tweaks)");
+			this.writer.println(indent(2) + "(acons 'style 'do (ly:music-property note 'tweaks)))");
+			this.writer.println(indent(1) + "note)");
+			this.writer.println();
+		}
 	}
 	
 	private void addPaper(TGSong song){
 		this.writer.println("\\paper {");
 		
 		this.writer.println(indent(1) + "indent = #" + (this.addTrackTitleOnGroup(song) ? 30 : 0));
-		this.writer.println(indent(1) + "printallheaders = #" + getLilypondBoolean(true));
-		this.writer.println(indent(1) + "print-all-headers = #" + getLilypondBoolean(true));
+
+		if ( this.settings.getLilypondVersion().compareTo("2.11.60") < 0) {
+			this.writer.println(indent(1) + "printallheaders = #" + getLilypondBoolean(true));
+		} else {
+			this.writer.println(indent(1) + "print-all-headers = #" + getLilypondBoolean(true));
+		}
 		this.writer.println(indent(1) + "ragged-right = #" + getLilypondBoolean(false));
 		this.writer.println(indent(1) + "ragged-bottom = #" + getLilypondBoolean(true));
 		this.writer.println("}");
@@ -499,10 +506,23 @@ public class LilypondOutputStream {
 		}
 		else{
 			this.addEffectsBeforeBeat(voice);
-			
-			this.writer.print("<");
-			
+
 			int size = voice.countNotes();
+			
+			int ottava = 0;
+			for(int i = 0 ; i < size ; i ++){
+				TGNote note = voice.getNote(i);
+				int thisnote = beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue();
+				if (thisnote > MAX_PITCH) {
+					ottava = 1;
+				}
+			}
+			if (ottava != 0) {
+				this.addOttava(ottava);
+			}
+
+			this.writer.print("<");
+
 			for(int i = 0 ; i < size ; i ++){
 				TGNote note = voice.getNote(i);
 				
@@ -526,6 +546,9 @@ public class LilypondOutputStream {
 			this.addDuration( voice.getDuration() );
 			this.addEffectsOnDuration( voice );
 			this.addEffectsOnBeat( voice );
+			if (ottava != 0) {
+				this.addOttava(0);
+			}
 		}
 		
 		// Add Chord, if was not previously added in another voice
@@ -575,6 +598,12 @@ public class LilypondOutputStream {
 		this.writer.print("\\" + string);
 	}
 	
+	private void addOttava(int ottava){
+		this.writer.print(" \\ottava #" + ottava);
+		if (ottava != 0)
+			this.writer.print(" ");
+	}
+	
 	private void addDuration(TGDuration duration){
 		this.writer.print(getLilypondDuration(duration));
 	}
@@ -615,6 +644,8 @@ public class LilypondOutputStream {
 	}
 	
 	private void addEffectsOnBeat(TGVoice voice){
+		boolean hammer = false;
+		boolean slide = false;
 		boolean trill = false;
 		boolean vibrato = false;
 		boolean staccato = false;
@@ -624,11 +655,21 @@ public class LilypondOutputStream {
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
 			TGNoteEffect effect = voice.getNote(i).getEffect();
 			
+			hammer = (hammer || effect.isHammer() );
+			slide = (slide || effect.isSlide() );
 			trill = (trill || effect.isTrill() );
 			vibrato = (vibrato || effect.isVibrato() );
 			staccato = (staccato || effect.isStaccato() );
 			accentuatedNote = (accentuatedNote || effect.isAccentuatedNote() );
 			heavyAccentuatedNote = (heavyAccentuatedNote || effect.isHeavyAccentuatedNote() );
+		}
+		if (hammer){
+			this.writer.print("_\"H\"");
+		}
+		if (slide){
+			// TODO: this is a workaround, when lilypond suppords slides version-protect this
+			// TODO: maybe this should be on the note instead of the beat but will work mostly
+			this.writer.print("\\glissando");
 		}
 		if( trill ){
 			this.writer.print("\\trill");
@@ -819,13 +860,49 @@ public class LilypondOutputStream {
 		return Integer.toString(value);
 	}
 	
+	private String getLilypondPitch(int value){
+		// ly:make-pitch octave note alter
+		// octave is specified by an integer, zero for the octave containing middle C. 
+		// note is a number indexing the global default scale, with 0 corresponding to 
+		// pitch C and 6 usually corresponding to pitch B. alter is a rational number 
+		// of 200-cent whole tones for alteration. 
+		//
+		// String retval = "(ly:make-pitch 1 5 0)";
+		int[] pitches = new int[]{0,0,1,1,2,3,3,4,4,5,5,6};
+		// "rational" in scheme is a fraction, like 1/2, instead of floating point 0.5 - so just use SHARP until that's fixed
+		// Also use NATURAL to match convert-ly output
+		String[] alters = new String[]{"NATURAL","SHARP","NATURAL","SHARP","NATURAL","NATURAL","SHARP","NATURAL","SHARP","NATURAL","SHARP","NATURAL"};
+		// int octave = (value-60)/12; // this rounds up, Java n00b mistake, also MOD can return a negative value
+		int octave = -1;
+		for(int i = 4; i < (value / 12); i ++){
+			octave += 1;
+		}
+		for(int i = (value / 12); i < 4; i ++){
+			octave -= 1;
+		}
+		int note = value % 12;
+		String retval = "(ly:make-pitch";
+		retval += " " + octave;
+		retval += " " + pitches[note];
+		retval += " " + alters[note];
+		return retval + ")";
+	}
+	
 	private String getLilypondTuning(TGTrack track){
-		String tuning = ("\\with { stringTunings = #'( ");
+		String tuning = ("\\with { stringTunings = #`( ");
 		Iterator strings = track.getStrings().iterator();
 		while(strings.hasNext()){
 			TGString string = (TGString)strings.next();
-			//Lilypond relates string tuning to MIDI middle C (note 60)
-			tuning += ( (string.getValue() - 60) + " ");
+			if ( this.settings.getLilypondVersion().compareTo("2.13.46") < 0) {
+				tuning += ( (string.getValue() - 60) + " ");
+			} else {
+				// 2.13.46: Change stringTunings from a list of semitones to a
+				// list of pitches (in scheme syntax).  There is the option of 
+				// pre-defining a custom tuning as follows instead.
+				// \makeStringTuning #'custom-tuning <c' g' d'' a''>
+				// TODO: if this is a normal guitar tuning, skip this whole thing
+				tuning += ("," + this.getLilypondPitch(string.getValue()) + " ");
+			}
 		}
 		tuning += (") }");
 		return tuning;
