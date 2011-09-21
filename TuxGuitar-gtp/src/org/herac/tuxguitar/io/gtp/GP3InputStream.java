@@ -41,6 +41,7 @@ public class GP3InputStream extends GTPInputStream {
 	private static final float GP_BEND_POSITION = 60f;
 	
 	private int tripletFeel;
+	private int keySignature;
 	
 	public GP3InputStream(GTPSettings settings){
 		super(settings, SUPPORTED_VERSIONS);
@@ -63,8 +64,9 @@ public class GP3InputStream extends GTPInputStream {
 		this.tripletFeel = ((readBoolean())?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
 		
 		int tempoValue = readInt();
-		
-		readInt(); //key
+				
+		this.keySignature = readKeySignature();
+		this.skip(3);
 		
 		List channels = readChannels();
 		
@@ -137,6 +139,7 @@ public class GP3InputStream extends GTPInputStream {
 			for (int j = 0; j < tracks; j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = getFactory().newMeasure(header);
+				
 				track.addMeasure(measure);
 				readMeasure(measure, track, tempo);
 			}
@@ -250,8 +253,8 @@ public class GP3InputStream extends GTPInputStream {
 			header.setMarker(readMarker(number));
 		}
 		if ((flags & 0x40) != 0) {
-			readByte();
-			readByte();
+			this.keySignature = readKeySignature();
+			this.skip(1);
 		}
 		return header;
 	}
@@ -263,6 +266,7 @@ public class GP3InputStream extends GTPInputStream {
 			nextNoteStart += readBeat(nextNoteStart, measure, track, tempo);
 		}
 		measure.setClef( getClef(track) );
+		measure.setKeySignature(this.keySignature);
 	}
 	
 	private long readBeat(long start, TGMeasure measure,TGTrack track, TGTempo tempo) throws IOException{
@@ -582,6 +586,16 @@ public class GP3InputStream extends GTPInputStream {
 			tempo.setValue(tempoValue);
 			readByte();
 		}
+	}
+	
+	private int readKeySignature() throws IOException {
+		// 0: C 1: G, -1: F		
+		int keySignature = readByte();
+		if (keySignature < 0){
+			keySignature = 7 - keySignature; // translate -1 to 8, etc.
+		}
+		
+		return keySignature;
 	}
 	
 	private int toStrokeValue( int value ){

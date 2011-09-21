@@ -69,11 +69,11 @@ public class GTPPluginList extends TGPluginList implements TGPluginSetup{
 	}
 	
 	public String getName() {
-		return "GPx File Format plugin";
+		return "Guitar Pro File Format plugin";
 	}
 	
 	public String getDescription() {
-		return "GPx File Format plugin for TuxGuitar";
+		return "Guitar Pro File Format plugin for TuxGuitar";
 	}
 	
 	public String getVersion() {

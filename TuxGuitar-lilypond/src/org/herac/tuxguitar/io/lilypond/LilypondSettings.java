@@ -8,6 +8,8 @@ public class LilypondSettings {
 	
 	public static final int LAST_MEASURE = -1;
 	
+	private String lilypondVersion;
+
 	private int track;
 	private int measureFrom;	
 	private int measureTo;
@@ -22,6 +24,14 @@ public class LilypondSettings {
 	
 	public LilypondSettings(){
 		super();
+	}
+	
+	public String getLilypondVersion() {
+		return this.lilypondVersion;
+	}
+	
+	public void setLilypondVersion(String lilypondVersion) {
+		this.lilypondVersion = lilypondVersion;
 	}
 	
 	public int getMeasureFrom() {
@@ -123,6 +133,7 @@ public class LilypondSettings {
 		settings.setChordDiagramEnabled(true);
 		settings.setTrackNameEnabled(true);
 		settings.setTrackGroupEnabled(false);
+		settings.setLilypondVersion("2.14.0");
 		return settings;
 	}
 }

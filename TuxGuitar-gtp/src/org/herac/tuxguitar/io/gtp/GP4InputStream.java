@@ -39,6 +39,7 @@ public class GP4InputStream extends GTPInputStream {
 	private static final float GP_BEND_POSITION = 60f;
 	
 	private int tripletFeel;
+	private int keySignature;
 	
 	public GP4InputStream(GTPSettings settings){
 		super(settings, SUPPORTED_VERSIONS);
@@ -64,8 +65,9 @@ public class GP4InputStream extends GTPInputStream {
 		TGLyric lyric = readLyrics();
 		
 		int tempoValue = readInt();
-		
-		readInt(); //key
+
+		this.keySignature = readKeySignature();
+		this.skip(3);
 		
 		readByte(); //octave
 		
@@ -307,8 +309,8 @@ public class GP4InputStream extends GTPInputStream {
 			header.setMarker(readMarker(number));
 		}
 		if ((flags & 0x40) != 0) {
-			readByte();
-			readByte();
+			this.keySignature = readKeySignature();
+			this.skip(1);
 		}
 		return header;
 	}
@@ -320,6 +322,7 @@ public class GP4InputStream extends GTPInputStream {
 			nextNoteStart += readBeat(nextNoteStart, measure, track, tempo);
 		}
 		measure.setClef( getClef(track) );
+		measure.setKeySignature(this.keySignature);
 	}
 	
 	private TGNote readNote(TGString string, TGTrack track,TGNoteEffect effect)throws IOException {
@@ -662,6 +665,16 @@ public class GP4InputStream extends GTPInputStream {
 			readByte();
 		}
 		readByte();
+	}
+	
+	private int readKeySignature() throws IOException {
+		// 0: C 1: G, -1: F		
+		int keySignature = readByte();
+		if (keySignature < 0){
+			keySignature = 7 - keySignature; // translate -1 to 8, etc.
+		}
+		
+		return keySignature;
 	}
 	
 	private int toStrokeValue( int value ){
