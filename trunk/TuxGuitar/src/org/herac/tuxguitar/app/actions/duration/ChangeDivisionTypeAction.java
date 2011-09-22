@@ -65,15 +65,13 @@ public class ChangeDivisionTypeAction extends Action{
 	
 	private TGDivisionType noTuplet(){
 		TGDivisionType divisionType = getSongManager().getFactory().newDivisionType();
-		divisionType.setEnters(1);
-		divisionType.setTimes(1);
+		TGDivisionType.NORMAL.copy(divisionType);
 		return divisionType;
 	}
 	
 	private TGDivisionType defaultDivisionType(){
 		TGDivisionType divisionType = getSongManager().getFactory().newDivisionType();
-		divisionType.setEnters(3);
-		divisionType.setTimes(2);
+		TGDivisionType.TRIPLET.copy(divisionType);
 		return divisionType;
 	}
 	

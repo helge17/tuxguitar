@@ -26,6 +26,7 @@ import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackGeneric;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -56,17 +57,7 @@ public class MoveBeatsCustomAction extends Action{
 		new ComboItem( TuxGuitar.getProperty("duration.doubledotted") , new boolean[]{ false, true} ),
 	};
 	
-	private static final ComboItem[] MOVE_DURATION_DIVISIONS = new ComboItem[]{
-		new ComboItem( TuxGuitar.getProperty("beat.move-custom.dialog.duration.division-type.normal") , new int[] { 1  , 1} ),
-		new ComboItem( "3"    , new int[] { 3  , 2} ),
-		new ComboItem( "5"    , new int[] { 5  , 4} ),
-		new ComboItem( "6"    , new int[] { 6  , 4} ),
-		new ComboItem( "7"    , new int[] { 7  , 4} ),
-		new ComboItem( "9"    , new int[] { 9  , 8} ),
-		new ComboItem( "10"   , new int[] { 10 , 8} ),
-		new ComboItem( "11"   , new int[] { 11 , 8} ),
-		new ComboItem( "12"   , new int[] { 12 , 8} ),
-	};
+	private static final ComboItem[] MOVE_DURATION_DIVISIONS = createDivisionTypeComboItems();
 	
 	public MoveBeatsCustomAction() {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
@@ -332,5 +323,17 @@ public class MoveBeatsCustomAction extends Action{
 		public Object getValue() {
 			return this.value;
 		}
+	}
+	
+	private static ComboItem[] createDivisionTypeComboItems(){
+		TGDivisionType[] types = TGDivisionType.ALTERED_DIVISION_TYPES;
+		
+		ComboItem[] comboItems = new ComboItem[ types.length + 1 ];
+		comboItems[0] = new ComboItem( TuxGuitar.getProperty("beat.move-custom.dialog.duration.division-type.normal") , new int[] { 1  , 1} );
+		for( int i = 0 ; i < types.length ; i ++ ){ 
+			comboItems[i + 1] = new ComboItem(new Integer(types[i].getEnters()).toString(),new int[]{types[i].getEnters(),types[i].getTimes()});
+		}
+		
+		return comboItems;
 	}
 }

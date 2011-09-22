@@ -15,7 +15,22 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGDivisionType {
+	
 	public static final TGDivisionType NORMAL = newDivisionType(1,1);
+	
+	public static final TGDivisionType TRIPLET = newDivisionType(3,2);
+	
+	public static final TGDivisionType[] ALTERED_DIVISION_TYPES = new TGDivisionType[]{
+		newDivisionType(3,2),
+		newDivisionType(5,4),
+		newDivisionType(6,4),
+		newDivisionType(7,4),
+		newDivisionType(9,8),
+		newDivisionType(10,8),
+		newDivisionType(11,8),
+		newDivisionType(12,8),
+		newDivisionType(13,8),
+	};
 	
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos
