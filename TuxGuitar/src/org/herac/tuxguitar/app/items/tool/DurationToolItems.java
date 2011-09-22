@@ -30,8 +30,8 @@ import org.herac.tuxguitar.app.actions.duration.SetThirtySecondDurationAction;
 import org.herac.tuxguitar.app.actions.duration.SetWholeDurationAction;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.items.ToolItems;
-import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGDivisionType;
+import org.herac.tuxguitar.song.models.TGDuration;
 
 /**
  * @author julian
@@ -146,7 +146,7 @@ public class DurationToolItems  extends ToolItems{
 		private MenuItem[] subMenuItems;
 		
 		public DivisionTypeMenuItem() {
-			this.divisionType = createDivisionType(3,2);
+			this.divisionType = createDivisionType(TGDivisionType.TRIPLET);
 			this.divisionTypeItem = new ToolItem(DurationToolItems.this.toolBar, SWT.DROP_DOWN);
 			this.divisionTypeItem.addSelectionListener(this);
 			this.subMenu = new Menu(this.divisionTypeItem.getParent().getShell());
@@ -165,47 +165,14 @@ public class DurationToolItems  extends ToolItems{
 		}
 		
 		public void addItems() {
-			this.subMenuItems = new MenuItem[8];
+			this.subMenuItems = new MenuItem[TGDivisionType.ALTERED_DIVISION_TYPES.length];
 			
-			this.subMenuItems[0] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[0].setText("3");
-			this.subMenuItems[0].setData(createDivisionTypeActionData(3,2));
-			this.subMenuItems[0].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[1] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[1].setText("5");
-			this.subMenuItems[1].setData(createDivisionTypeActionData(5,4));
-			this.subMenuItems[1].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[2] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[2].setText("6");
-			this.subMenuItems[2].setData(createDivisionTypeActionData(6,4));
-			this.subMenuItems[2].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[3] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[3].setText("7");
-			this.subMenuItems[3].setData(createDivisionTypeActionData(7,4));
-			this.subMenuItems[3].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[4] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[4].setText("9");
-			this.subMenuItems[4].setData(createDivisionTypeActionData(9,8));
-			this.subMenuItems[4].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[5] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[5].setText("10");
-			this.subMenuItems[5].setData(createDivisionTypeActionData(10,8));
-			this.subMenuItems[5].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[6] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[6].setText("11");
-			this.subMenuItems[6].setData(createDivisionTypeActionData(11,8));
-			this.subMenuItems[6].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
-			
-			this.subMenuItems[7] = new MenuItem(this.subMenu, SWT.CHECK);
-			this.subMenuItems[7].setText("12");
-			this.subMenuItems[7].setData(createDivisionTypeActionData(12,8));
-			this.subMenuItems[7].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
+			for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
+				this.subMenuItems[i] = new MenuItem(this.subMenu, SWT.CHECK);
+				this.subMenuItems[i].setText(new Integer(TGDivisionType.ALTERED_DIVISION_TYPES[i].getEnters()).toString());
+				this.subMenuItems[i].setData(createDivisionTypeActionData(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
+				this.subMenuItems[i].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
+			}
 		}
 		
 		public void widgetSelected(SelectionEvent event) {
@@ -218,11 +185,9 @@ public class DurationToolItems  extends ToolItems{
 			}else{
 				TGDuration duration = getEditor().getTablature().getCaret().getDuration();
 				if(duration.getDivision().isEqual(TGDivisionType.NORMAL)){
-					this.divisionType.setEnters(3);
-					this.divisionType.setTimes(2);
+					TGDivisionType.TRIPLET.copy(this.divisionType);
 				}else{
-					this.divisionType.setEnters(1);
-					this.divisionType.setTimes(1);
+					TGDivisionType.NORMAL.copy(this.divisionType);
 				}
 				TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME).process(createDivisionTypeActionData(this.divisionType));
 			}
@@ -239,21 +204,16 @@ public class DurationToolItems  extends ToolItems{
 			}
 		}
 		
-		private TGDivisionType createDivisionType(int enters,int times){
-			TGDivisionType divisionType = TuxGuitar.instance().getSongManager().getFactory().newDivisionType();
-			divisionType.setEnters(enters);
-			divisionType.setTimes(times);
-			return divisionType;
+		private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc){
+			TGDivisionType tgDivisionTypeDst = TuxGuitar.instance().getSongManager().getFactory().newDivisionType();
+			tgDivisionTypeSrc.copy(tgDivisionTypeDst);
+			return tgDivisionTypeDst;
 		}
 		
-		private ActionData createDivisionTypeActionData(TGDivisionType divisionType){
+		private ActionData createDivisionTypeActionData(TGDivisionType tgDivisionType){
 			ActionData actionData = new ActionData();
-			actionData.put(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, divisionType);
+			actionData.put(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
 			return actionData;
-		}
-		
-		private ActionData createDivisionTypeActionData(int enters,int times){
-			return createDivisionTypeActionData(createDivisionType(enters, times));
 		}
 	}
 }
