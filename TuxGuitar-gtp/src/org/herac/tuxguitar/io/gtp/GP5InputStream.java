@@ -270,6 +270,10 @@ public class GP5InputStream extends GTPInputStream {
 				duration.getDivision().setEnters(12);
 				duration.getDivision().setTimes(8);
 				break;
+			case 13:
+				duration.getDivision().setEnters(13);
+				duration.getDivision().setTimes(8);
+				break;
 			}
 		}
 		return duration;
