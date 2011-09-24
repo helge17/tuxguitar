@@ -7,9 +7,12 @@ public class GPXMasterBar {
 	
 	private int repeatCount;
 	private boolean repeatStart;
+	private int accidentalCount;
+	private String mode;
 	
 	public GPXMasterBar(){
-		super();
+		this.accidentalCount = 0;
+		this.mode = null;
 	}
 	
 	public int[] getBarIds() {
@@ -43,4 +46,21 @@ public class GPXMasterBar {
 	public void setRepeatStart(boolean repeatStart) {
 		this.repeatStart = repeatStart;
 	}
+
+	public int getAccidentalCount() {
+		return accidentalCount;
+	}
+
+	public void setAccidentalCount(int accidentalCount) {
+		this.accidentalCount = accidentalCount;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	
 }

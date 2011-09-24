@@ -24,9 +24,15 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGStroke;
+import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GPXDocumentParser {
 	
@@ -149,6 +155,14 @@ public class GPXDocumentParser {
 				TGTrack tgTrack = tgSong.getTrack(t);
 				TGMeasure tgMeasure = this.factory.newMeasure(tgMeasureHeader);
 				
+				int accidental = mbar.getAccidentalCount();
+				if( accidental < 0 ){
+					accidental = 7 - accidental; // translate -1 to 8, etc.
+				}
+				if( accidental >= 0 && accidental <= 14 ){
+					tgMeasure.setKeySignature(accidental);
+				}
+				
 				tgTrack.addMeasure(tgMeasure);
 				
 				int gpMasterBarIndex = i;
@@ -178,6 +192,17 @@ public class GPXDocumentParser {
 	}
 	
 	private void parseBar(GPXBar bar , TGMeasure tgMeasure){
+		if (bar.getClef() != null) {
+			String clef = bar.getClef();
+			if (clef.equals("F4")){
+				tgMeasure.setClef(TGMeasure.CLEF_BASS);
+			} else if (clef.equals("C3")){
+				tgMeasure.setClef(TGMeasure.CLEF_ALTO);
+			} else if (clef.equals("C4")){
+				tgMeasure.setClef(TGMeasure.CLEF_TENOR);
+			}
+		}
+		
 		int[] voiceIds = bar.getVoiceIds();
 		for( int v = 0; v < TGBeat.MAX_VOICES; v ++ ){
 			if( voiceIds.length > v ){
@@ -192,6 +217,14 @@ public class GPXDocumentParser {
 							TGBeat tgBeat = getBeat(tgMeasure, tgStart);
 							TGVoice tgVoice = tgBeat.getVoice( v % tgBeat.countVoices() );
 							tgVoice.setEmpty(false);
+							tgBeat.getStroke().setDirection( this.parseStroke(beat) );
+
+							if (beat.getText().length() > 0) {
+								TGText text = this.factory.newText();
+								text.setValue(beat.getText().trim());
+								text.setBeat(tgBeat);
+								tgBeat.setText(text);
+							}
 							
 							this.parseRhythm(gpRhythm, tgVoice.getDuration());
 							if( beat.getNoteIds() != null ){
@@ -200,7 +233,7 @@ public class GPXDocumentParser {
 								for( int n = 0 ; n < beat.getNoteIds().length; n ++ ){
 									GPXNote gpNote = this.document.getNote( beat.getNoteIds()[n] );
 									if( gpNote != null ){
-										this.parseNote(gpNote, tgVoice, tgVelocity);
+										this.parseNote(gpNote, tgVoice, tgVelocity, beat);
 									}
 								}
 							}
@@ -213,7 +246,7 @@ public class GPXDocumentParser {
 		}
 	}
 	
-	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity){
+	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity, GPXBeat gpBeat){
 		int tgValue = -1;
 		int tgString = -1;
 		
@@ -249,13 +282,118 @@ public class GPXDocumentParser {
 			tgNote.setString(tgString);
 			tgNote.setTiedNote(gpNote.isTieDestination());
 			tgNote.setVelocity(tgVelocity);
+			tgNote.getEffect().setFadeIn(gpBeat.isFadeIn());
 			tgNote.getEffect().setVibrato(gpNote.isVibrato());
 			tgNote.getEffect().setSlide(gpNote.isSlide());
 			tgNote.getEffect().setDeadNote(gpNote.isMutedEnabled());
 			tgNote.getEffect().setPalmMute(gpNote.isPalmMutedEnabled());
+			tgNote.getEffect().setTapping(gpNote.isTapped());
+			tgNote.getEffect().setHammer(gpNote.isHammer());
+			tgNote.getEffect().setGhostNote(gpNote.isGhost());
+			tgNote.getEffect().setSlapping(gpBeat.isSlapped());
+			tgNote.getEffect().setPopping(gpBeat.isPopped());
+			tgNote.getEffect().setStaccato(gpNote.getAccent() == 1);
+			tgNote.getEffect().setHeavyAccentuatedNote(gpNote.getAccent() == 4);
+			tgNote.getEffect().setAccentuatedNote(gpNote.getAccent() == 8);
+			tgNote.getEffect().setTrill(makeTrill(gpNote));
+			tgNote.getEffect().setTremoloPicking(makeTremoloPicking(gpBeat, gpNote));
+			tgNote.getEffect().setHarmonic( makeHarmonic ( gpNote ) );
+			tgNote.getEffect().setBend( makeBend ( gpNote ) );
 			
 			tgVoice.addNote( tgNote );
 		}
+	}
+	
+	private TGEffectTrill makeTrill(GPXNote gpNote){
+		TGEffectTrill tr = null;
+		if( gpNote.getTrill() > 0 ){
+			// A trill from string E frets 3 to 4 returns : <Trill>68</Trill> and <XProperties><XProperty id="688062467"><Int>30</Int></XProperty></XProperties>
+			// gpNote.getTrill() returns the MIDI note to trill this note with, TG wants a duration as well.
+			tr = this.factory.newEffectTrill();
+			tr.setFret(gpNote.getTrill());
+			// TODO: add a duration
+		}
+		return tr;
+	}
+	
+	private TGEffectTremoloPicking makeTremoloPicking(GPXBeat gpBeat, GPXNote gpNote){
+		TGEffectTremoloPicking tp = null;
+		if (gpBeat.getTremolo() != null && gpBeat.getTremolo().length == 2) {
+			tp = this.factory.newEffectTremoloPicking();
+			tp.getDuration().setValue((TGDuration.QUARTER * gpBeat.getTremolo()[1]));
+		}
+		return tp;
+	}
+	
+	private TGEffectHarmonic makeHarmonic(GPXNote note){
+		TGEffectHarmonic harmonic = null;
+		if( note.getHarmonicType() != null && note.getHarmonicType().length() > 0 ){
+			harmonic = this.factory.newEffectHarmonic();
+			
+			String type = note.getHarmonicType();
+			if (type.equals("Artificial")){
+				harmonic.setType(TGEffectHarmonic.TYPE_ARTIFICIAL);
+			}else if (type.equals("Natural")){
+				harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
+			}else if (type.equals("Pinch")){
+				harmonic.setType(TGEffectHarmonic.TYPE_PINCH);
+			}else{
+				// Default type.
+				harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
+			}
+			
+			int hFret = note.getHarmonicFret();
+			
+			// midi export does this, but not for natural harmonics
+			// key = (orig + TGEffectHarmonic.NATURAL_FREQUENCIES[note.getEffect().getHarmonic().getData()][1]);
+			
+			if (hFret >= 0){
+				for(int i = 0;i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
+					if(hFret == (TGEffectHarmonic.NATURAL_FREQUENCIES[i][0] ) ){
+						harmonic.setData(i);
+						break;
+					}
+				}
+			}
+		}
+		return harmonic;
+	}
+	
+	private TGEffectBend makeBend(GPXNote note){
+		// TG: position and value arguments.
+		// value 4 is a whole bend, so it's measured in quarter-tones (1 is a 1/4 bend), maximum of 3 whole steps
+		// position is where the bend happens, 0 to 12 (where 12 basically represents the start of the next note)
+		// GPX: 100 seems to be a full bend, so 100 * 12 / 300 = 4
+		TGEffectBend bend = null;
+		if( note.isBendEnabled() ){
+			bend = this.factory.newEffectBend();
+			if (note.getBendOriginValue() > 0) {
+				// pre-bend
+				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
+				bend.addPoint(4, note.getBendMiddleValue() * 12 / 300);
+				bend.addPoint(8, note.getBendDestinationValue() * 12 / 300);
+				bend.addPoint(12, 0);
+			} else if (note.getBendDestinationValue() > 0) {
+				// bend/release/bend?
+				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
+				bend.addPoint(4, note.getBendMiddleValue() * 12 / 300);
+				bend.addPoint(8, note.getBendDestinationValue() * 12 / 300);
+				bend.addPoint(12, 0);
+			} else  if (note.getBendMiddleValue() != note.getBendDestinationValue()){
+				// bend/release
+				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
+				bend.addPoint(3, note.getBendMiddleValue() * 12 / 300);
+				bend.addPoint(6, note.getBendMiddleValue() * 12 / 300);
+				bend.addPoint(9, note.getBendDestinationValue() * 12 / 300);
+				bend.addPoint(12, note.getBendDestinationValue() * 12 / 300);
+			} else {
+				// bend
+				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
+				bend.addPoint(6, note.getBendMiddleValue() * 12 / 300);
+				bend.addPoint(12, note.getBendDestinationValue() * 12 / 300);
+			}
+		}
+		return bend;
 	}
 	
 	private void parseRhythm(GPXRhythm gpRhythm , TGDuration tgDuration){
@@ -278,6 +416,17 @@ public class GPXDocumentParser {
 		}else if(gpRhythm.getNoteValue().equals("64th")){
 			tgDuration.setValue(TGDuration.SIXTY_FOURTH);
 		}
+	}
+	
+	private int parseStroke(GPXBeat beat){
+		int tgStroke = TGStroke.STROKE_NONE;
+		String stroke = beat.getBrush(); 
+		if ( stroke.equals("Down")){
+			tgStroke = TGStroke.STROKE_DOWN;
+		}else if ( stroke.equals("Up")){
+			tgStroke = TGStroke.STROKE_UP;
+		}
+		return tgStroke;
 	}
 	
 	private int parseDynamic(GPXBeat beat){
