@@ -131,7 +131,7 @@ public class MidiToAudioSynth {
 	
 	private Patch createModelPatch(int bank, int program, boolean percussion) throws Throwable {
 		Class[] constructorSignature = new Class[]{int.class, int.class, boolean.class};
-		Object[] constructorArguments = new Object[]{bank, program, percussion};
+		Object[] constructorArguments = new Object[]{new Integer(bank), new Integer(program), new Boolean(percussion)};
 		
 		ClassLoader classLoader = getClass().getClassLoader();
 		Class classInstance = classLoader.loadClass(MODEL_PATCH_CLASSNAME);
