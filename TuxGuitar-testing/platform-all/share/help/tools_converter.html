@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="css/styles.css" ></link>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="PageMenu" >
+						<ul>
+							<li >
+								<span>Introduction</span>
+								<ul>
+									<li ><a class="PageLink" href="about.html" >About</a></li>
+									<li ><a class="PageLink" href="license.html" >License</a></li>
+									<li ><a class="PageLink" href="whatsnew.html" >What's new</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Getting started</span>
+								<ul>
+									<li ><a class="PageLink" href="start_first_steps.html" >The First Steps</a></li>
+									<li ><a class="PageLink" href="start_toolbars.html" >Toolbars</a></li>
+									<li ><a class="PageLink" href="start_playing.html" >Playing a song</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Making and editing a song</span>
+								<ul>
+									<li><a class="PageLink" href="editing_track.html" >Editing a track</a></li>
+									<li><a class="PageLink" href="editing_song.html" >Editing a whole song</a></li>
+									<li><a class="PageLink" href="edit_effects.html" >Note effects</a></li>
+									<li><a class="PageLink" href="edit_chord.html" >Chord edit dialog</a></li>
+									<li><a class="PageLink" href="edit_matrix.html" >Matrix editor</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Tools and settings</span>
+								<ul>
+									<li><a class="PageLink" href="tools_shortcuts.html" >Default shortcuts</a></li>
+									<li><a class="PageLink" href="tools_keybinding.html" >Shortcut editor</a></li>
+									<li><a class="PageLink" href="tools_skin.html" >Changing the skin</a></li>
+									<li><a class="PageLink" href="tools_plugins.html" >Plugins dialog</a></li>
+									<li><a class="PageLink" href="tools_sound.html" >Sound in TuxGuitar</a></li>
+									<li><a class="PageLink" href="tools_converter.html" >File format batch converter</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li><a class="PageLink" href="file_formats.html" >Supported file formats</a></li>
+						</ul>
+					</div>
+				</td>
+				<td valign="top">
+					<div id="PageContent" >
+						<!-- START OF PAGE CONTENT -->
+						
+						<h1>TuxGuitar-converter</h1>
+						
+						
+						<div class="level1">
+						<pre class="code">
+						</pre>
+						
+						<h2><a name="what_is_tuxguitar-converter" id="what_is_tuxguitar-converter">What is tuxguitar-converter</a></h2>
+						<p>
+						 <strong>tuxguitar-converter</strong> is batch file format converter. It allows you to convert number of files from various file formats (*.gpX, *.ptb, *.tef, *.tg) into destination file format, keeping the file names but changing the format (and extension of a file).
+						</p>
+						
+						<p>
+						Converter simply tries to load every file and save/export it into destination file.
+						</p>
+						
+						<p>
+						So supported input formats are files TuxGuitar can load and import, and destination format is every format TuxGuitar can save into or export. You can check for <a class="PageLink" href="file_formats.html">supported file formats</a>. For some exporter plugins that have various exporting options, default options are used.
+						</p>
+						
+						
+						<h2><a name="how_to_install_tuxguitar-converter" id="how_to_install_tuxguitar-converter">How to install tuxguitar-converter</a></h2>
+						
+						<p>
+						 <strong>tuxguitar-converter</strong> plugin is included on all bytecode TuxGuitar distributions as default. If you downloaded a compiled TuxGuitar package, you shouldn&rsquo;t bother to install it manually.<br/>
+						 Of course you may want rebuild and install the plugin.
+						</p>
+						
+						<p>
+						To install the plugin, you must copy <strong>tuxguitar-converter.jar</strong> into <strong>$TUXGUITAR_HOME\share\plugins</strong>
+						</p>
+						
+						
+						<h2><a name="using_batch_file_format_converter" id="using_batch_file_format_converter">Using batch file format converter</a></h2>
+						
+						<p>
+						 <img src="images/tools/converter.png"/>
+						</p>
+						
+						<p>
+						You access the converter dialog through Tools&rarr;&ldquo;File format batch converter&rdquo;.
+						</p>
+						
+						<p>
+						On the dialog you must specify <strong>input folder</strong>. Input folder <em class="u">and its subfolders</em> contain files that will be converted.
+						</p>
+						
+						<p>
+						<strong>Output folder</strong> is folder in which new files will be stored. If destination folder you specified doesn&rsquo;t exist, it will be created.
+						</p>
+						
+						<p>
+						<strong>Output file format</strong> is used to specify file format of new created files. It will display all supported formats (which might depend on your installed plugins).
+						</p>
+						
+						<p>
+						After you confirm the converting new window will appear showing you the progress. You can cancel the process anytime. 
+						</p>
+						
+						</div>
+						<br/><br/>
+
+						<!-- END OF PAGE CONTENT -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

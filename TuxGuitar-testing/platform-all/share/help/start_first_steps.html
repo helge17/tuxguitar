@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="css/styles.css" ></link>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="PageMenu" >
+						<ul>
+							<li >
+								<span>Introduction</span>
+								<ul>
+									<li ><a class="PageLink" href="about.html" >About</a></li>
+									<li ><a class="PageLink" href="license.html" >License</a></li>
+									<li ><a class="PageLink" href="whatsnew.html" >What's new</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Getting started</span>
+								<ul>
+									<li ><a class="PageLink" href="start_first_steps.html" >The First Steps</a></li>
+									<li ><a class="PageLink" href="start_toolbars.html" >Toolbars</a></li>
+									<li ><a class="PageLink" href="start_playing.html" >Playing a song</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Making and editing a song</span>
+								<ul>
+									<li><a class="PageLink" href="editing_track.html" >Editing a track</a></li>
+									<li><a class="PageLink" href="editing_song.html" >Editing a whole song</a></li>
+									<li><a class="PageLink" href="edit_effects.html" >Note effects</a></li>
+									<li><a class="PageLink" href="edit_chord.html" >Chord edit dialog</a></li>
+									<li><a class="PageLink" href="edit_matrix.html" >Matrix editor</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Tools and settings</span>
+								<ul>
+									<li><a class="PageLink" href="tools_shortcuts.html" >Default shortcuts</a></li>
+									<li><a class="PageLink" href="tools_keybinding.html" >Shortcut editor</a></li>
+									<li><a class="PageLink" href="tools_skin.html" >Changing the skin</a></li>
+									<li><a class="PageLink" href="tools_plugins.html" >Plugins dialog</a></li>
+									<li><a class="PageLink" href="tools_sound.html" >Sound in TuxGuitar</a></li>
+									<li><a class="PageLink" href="tools_converter.html" >File format batch converter</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li><a class="PageLink" href="file_formats.html" >Supported file formats</a></li>
+						</ul>
+					</div>
+				</td>
+				<td valign="top">
+					<div id="PageContent" >
+						<!-- START OF PAGE CONTENT -->
+						
+						<h1>The First Steps</h1>
+						
+						<h2>Creating a new file:</h2>
+						
+						<p>
+						 The first thing you need to do is make sure you have a brand new file to work on. 
+						 When you launch TuxGuitar, you should already have a blank tablature document ready for editing. However, 
+						 if you need to start over with another blank document, all you have to do is click the &ldquo;New&rdquo; button (highlighted in red below).
+						</p>
+						
+						<p>
+						 <img src="images/start/fs_new_file.png" />
+						</p>
+						
+						<p>
+						 Wow. That was easy. Now that we have blank document, we just need to set up our first track. Then the real fun can begin.
+						</p>
+						<h2>Preparing your first track for playback:</h2>
+						
+						<p>
+						 At the bottom of the screen, you should see a track list window that will look like the one below. 
+						</p>
+						
+						<p>
+						 <img src="images/start/fs_song_table.png" />
+						</p>
+						
+						<p>
+						 The track list is a very useful yet compact information center which provides quick access to many of the most important aspects of your song. 
+						 There is a lot to be said about the track list, but we will not dig too deep into it right now, lest we should confuse newcomers. So for now, 
+						 let it suffice to say that the track window will help us stay organized while we edit our tablature.
+						</p>
+						
+						<p>
+						As you have probably noticed, there is already one track ready for you when you start a new tab document. You can just think of tracks as instruments. If you have a song with two guitars and one bassline that need transcribing, you will need three tracks. Fairly simple concept. It gets better though: as long as you have a soundbank installed for your Java Virtual Machine, each track will play back a sound when you play the file in TuxGuitar. Now, let&rsquo;s get into setting this up, because as you can see, our first track wants to play back piano sounds, and we&rsquo;re certainly not using TuxGuitar for piano.
+						</p>
+						
+						<p>
+						So: double-click anywhere on &ldquo;Track 1&rdquo; or &ldquo;Piano&rdquo; to open the track properties dialog, as seen below.
+						</p>
+						
+						<h2>Using The Track Properties Dialog:</h2>
+						
+						<p>
+						 <img src="images/start/fs_track_properties.png" />
+						</p>
+						
+						<p>
+						The Properties dialog is where we will go to setup how we want each track to playback. There are three main sections in the Properties box, 
+						and they are laid out as follows (red boxes added for clarity):
+						</p>
+						
+						<h3>#1: Name of the track:</h3>
+						
+						<p>
+						Whatever you type in the box here is what will show up in the track list we looked at earlier. As you can see, 
+						we have named our track &ldquo;Rhythm Guitar,&rdquo; but you can name it anything you like. 
+						You can also set the color the track will display in the track list.
+						</p>
+						
+						
+						<h3>#2: Instrument (i.e.-the sound the track will play back):</h3>
+						
+						
+						<p>
+						This is the sound that your track will play back from your jvm soundbank. Most soundbanks have a plethora of sounds which go far beyond just guitars, 
+						so be as creative as you want. Don&rsquo;t expect the sound quality to be too superb, though. In most cases, 
+						these sounds will be less than &ldquo;realistic&rdquo;. This is really only for referencing purposes. 
+						(It is possible to have this trigger other, possibly better sounds via the tuxguitar-alsa plugin, 
+						but that is a lesson for another day, and perhaps another author.) 
+						</p>
+						
+						<p>
+						You can also check &ldquo;Percussion Track&rdquo; to have it play drum sounds if you wish to include them in the tabs.
+						</p>
+						
+						<p>
+						<em>
+						*A side note on the instrument settings section: If you are not able to change this setting, 
+						you probably have a soundbank problem. This issue has been covered in the TuxGuitar forums as well as in the main documentation, 
+						so check there for help.
+						</em>
+						</p>
+						
+						<h3>#3: Tuning:</h3>
+						
+						
+						<p>
+						This one is pretty self-explanatory. You can set the number of strings for your instrument (i.e. 4 if you&rsquo;re a bass player, 
+						3 if you&rsquo;re in The Presidents of The United States of America) and the tuning of the instrument, in case you use alternate tunings. 
+						It is important to make sure you have your tuning correct, or else the actual score staff of your tabs will be inaccurate, and nobody wants that.
+						</p>
+						
+						<p>
+						Once you have everything set to your liking, click OK. Now, if you look at your track list again, 
+						you will see that your changes have taken affect. And with that, you are ready to start editing tabs with sound.
+						</p>
+						<br/>
+						<br/>
+
+						<!-- END OF PAGE CONTENT -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

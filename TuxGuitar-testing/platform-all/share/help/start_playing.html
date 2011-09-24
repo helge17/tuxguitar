@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="css/styles.css" ></link>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="PageMenu" >
+						<ul>
+							<li >
+								<span>Introduction</span>
+								<ul>
+									<li ><a class="PageLink" href="about.html" >About</a></li>
+									<li ><a class="PageLink" href="license.html" >License</a></li>
+									<li ><a class="PageLink" href="whatsnew.html" >What's new</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Getting started</span>
+								<ul>
+									<li ><a class="PageLink" href="start_first_steps.html" >The First Steps</a></li>
+									<li ><a class="PageLink" href="start_toolbars.html" >Toolbars</a></li>
+									<li ><a class="PageLink" href="start_playing.html" >Playing a song</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Making and editing a song</span>
+								<ul>
+									<li><a class="PageLink" href="editing_track.html" >Editing a track</a></li>
+									<li><a class="PageLink" href="editing_song.html" >Editing a whole song</a></li>
+									<li><a class="PageLink" href="edit_effects.html" >Note effects</a></li>
+									<li><a class="PageLink" href="edit_chord.html" >Chord edit dialog</a></li>
+									<li><a class="PageLink" href="edit_matrix.html" >Matrix editor</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Tools and settings</span>
+								<ul>
+									<li><a class="PageLink" href="tools_shortcuts.html" >Default shortcuts</a></li>
+									<li><a class="PageLink" href="tools_keybinding.html" >Shortcut editor</a></li>
+									<li><a class="PageLink" href="tools_skin.html" >Changing the skin</a></li>
+									<li><a class="PageLink" href="tools_plugins.html" >Plugins dialog</a></li>
+									<li><a class="PageLink" href="tools_sound.html" >Sound in TuxGuitar</a></li>
+									<li><a class="PageLink" href="tools_converter.html" >File format batch converter</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li><a class="PageLink" href="file_formats.html" >Supported file formats</a></li>
+						</ul>
+					</div>
+				</td>
+				<td valign="top">
+					<div id="PageContent" >
+						<!-- START OF PAGE CONTENT -->
+						
+						<h1>Playing a song</h1>
+						
+						<h2><a name="opening_an_existing_song" id="opening_an_existing_song">Opening an existing song:</a></h2>
+						
+						<p>
+						 TuxGuitar currently supports several file formats. Besides its internal <em><strong>.tg</strong></em> format (which is recommended), 
+						 it can open and play all Guitar Pro formats (<strong><em>.gtp</em></strong>, <strong><em>.gp3</em></strong>, <strong><em>.gp4</em></strong>, <strong><em>.gp5</em></strong>) 
+						 and also a PowerTab format (<strong><em>.ptb</em></strong>).
+						</p>
+						
+						<p>
+						You can open a file through File/Open dialog in TuxGuitar, but you can also assign a file type association in your operating system.
+						</p>
+						
+						<p>
+						 Another way to open a file is directly from an online resource, by using the <strong>File&rarr;Open_URL</strong> dialog. If you enter the correct URL of an online file TuxGuitar is able to open, you can view and play the file in the same manner as it is open from one of your folders. Of course, you cannot save the file back on the same URL, you can save it only as a local file.
+						</p>
+						
+						
+						<h2><a name="playback" id="playback">Playback:</a></h2>
+						
+						<p>
+						<img src="images/start/tb_transport.png"/>
+						</p>
+						
+						<p>
+						Using playback controls you can play, stop and pause the playback, but also you can navigate through the song (next/previous measure, beginning/end of a song). During the playback currently played note will be coloured in red, so it is easier to see how the current note is played.
+						</p>
+						
+						<p>
+						You can also navigate through the song using the &ldquo;transporter&rdquo; in the bottom-right of the application window, which is the graphical represantation of a song&rsquo;s tracks. It isn&rsquo;t automatically scrolled during the playback, but using the scrollbar on the bottom of the screen you can view the whole song. You can access the wanted instrument and measure by clicking on the proper rectangle in the &ldquo;transporter&rdquo; widget.
+						</p>
+						
+						<p>
+						The song can be navigated also with a &ldquo;Show transport&rdquo; option in <em>Layout</em> menu by which you can navigate through internal representation of a song, quickly getting on any position.
+						</p>
+						
+						<p>
+						The current instrument can be changed by clicking on the instrument name in the bottom-left side of the application window. Display will be changed accordingly to view the wanted instrument&rsquo;s notes.
+						</p>
+						
+						
+						<h2><a name="views" id="views">Views:</a></h2>
+						
+						<p>
+						 During the playback you can change the current view.
+						</p>
+						
+						<p>
+						<img src="images/start/tb_layout.png"/>
+						</p>
+						
+						<p>
+						There are two types of the view: <strong>page layout</strong> or <strong>linear layout</strong>.
+						</p>
+						
+						<p>
+						<strong>Linear layout</strong> displays a track in a single line. It means that on the current sheet  is read in the right direction, and the time is represented by the <strong>width</strong> of current display. <strong>Page layout</strong> displays a track as a page of a sheet - when the notes exceed width of the sheet display, they are displayed in the next line. So sheet is read in the direction from top to bottom, and time is represented by the <strong>heigth</strong> of the current display (in the case of single track view).
+						</p>
+						
+						<p>
+						By enabling <strong>Multitrack</strong> view, in the same line of a layout will be displayed all the instruments. So if you use Linear layout and enable Multitrack view all the instruments will be one beneath each other, and played in the right direction. <em>Using Multitrack view with Page layout can sometimes result in a pretty messy layout.</em>
+						</p>
+						
+						<p>
+						By enabling <strong>Show score</strong> options the scores will be displayed above the tabs.
+						</p>
+						
+						<p>
+						By enabling <strong>Compact</strong> view you can make your tablature view more compact, if you consider it too wide.
+						</p>
+						
+						
+						<h2><a name="play_mode" id="play_mode">Play Mode:</a></h2>
+						
+						<p><img src="images/start/p_mode.png"/></p>
+						
+						<h3><a name="play_mode_simple" id="play_mode_simple">Simple Mode:</a></h3>
+						
+						<p>
+						Simple mode allows the modified tempo during the playback. You can play and examine the song with half of the speed, 
+						1% of the original speed or even with the up-tempo. It is achieved by changing the playback percentage to an arbitrary 
+						value (50% is half of the speed; 200% doubles the tempo).
+						</p>
+						
+						<h3><a name="play_mode_trainer" id="play_mode_trainer">Training Mode:</a></h3>
+						
+						<p>
+						Training mode gives you the opportunity to practice with a gradual tempo incrementation. You can choose to start slowly, 
+						in only half of a tempo, but in every cycle of the tune to increase the tempo by 5%, getting to the full speed after 10 playbacks.  
+						You choose a <em>beginning tempo</em>, <em>ending tempo</em> and an <em>increment</em> (in percentage) that increases the tempo 
+						after each cycle.
+						</p>
+						<br/><br/>
+						
+						<!-- END OF PAGE CONTENT -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

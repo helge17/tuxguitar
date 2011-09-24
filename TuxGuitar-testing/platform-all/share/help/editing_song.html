@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="css/styles.css" ></link>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="PageMenu" >
+						<ul>
+							<li >
+								<span>Introduction</span>
+								<ul>
+									<li ><a class="PageLink" href="about.html" >About</a></li>
+									<li ><a class="PageLink" href="license.html" >License</a></li>
+									<li ><a class="PageLink" href="whatsnew.html" >What's new</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Getting started</span>
+								<ul>
+									<li ><a class="PageLink" href="start_first_steps.html" >The First Steps</a></li>
+									<li ><a class="PageLink" href="start_toolbars.html" >Toolbars</a></li>
+									<li ><a class="PageLink" href="start_playing.html" >Playing a song</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Making and editing a song</span>
+								<ul>
+									<li><a class="PageLink" href="editing_track.html" >Editing a track</a></li>
+									<li><a class="PageLink" href="editing_song.html" >Editing a whole song</a></li>
+									<li><a class="PageLink" href="edit_effects.html" >Note effects</a></li>
+									<li><a class="PageLink" href="edit_chord.html" >Chord edit dialog</a></li>
+									<li><a class="PageLink" href="edit_matrix.html" >Matrix editor</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Tools and settings</span>
+								<ul>
+									<li><a class="PageLink" href="tools_shortcuts.html" >Default shortcuts</a></li>
+									<li><a class="PageLink" href="tools_keybinding.html" >Shortcut editor</a></li>
+									<li><a class="PageLink" href="tools_skin.html" >Changing the skin</a></li>
+									<li><a class="PageLink" href="tools_plugins.html" >Plugins dialog</a></li>
+									<li><a class="PageLink" href="tools_sound.html" >Sound in TuxGuitar</a></li>
+									<li><a class="PageLink" href="tools_converter.html" >File format batch converter</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li><a class="PageLink" href="file_formats.html" >Supported file formats</a></li>
+						</ul>
+					</div>
+				</td>
+				<td valign="top">
+					<div id="PageContent" >
+						<!-- START OF PAGE CONTENT -->
+						
+						<h1>Editing a whole song</h1>
+						
+						<div class="level1">
+						
+						<p>
+						 Song is consisted out of tracks, so when you are editing a song most of the time you edit the tracks, one by one, which is explained in the <a class="PageLink" href="editing_track.html">Editing a track</a> section. But there are some options that affect the song as a whole.
+						</p>
+						
+						</div>
+						
+						<h2><a name="managing_the_tracks" id="managing_the_tracks">Managing the tracks</a></h2>
+						<div class="level2">
+						
+						<p>
+						 <img src="images/start/tb_add_track.png"/>
+						</p>
+						
+						<p>
+						Each song consists out of one or more tracks. In any moment you can add or remove track, create new one by copying contents of the selected one (clone track). If you want to add a percussion track, you have to check the <strong>Percussion Track</strong> box in the Track Properties.
+						</p>
+						
+						<p>
+						All the tracks are displayed in the instrument list, located on the bottom of the application window. You can rearrange the order of the instruments on that list by choosing <strong>Track/Move Up-Down</strong> from the main menu. If you double-click on the instrument name on the list, <strong>Track properties</strong> dialog will appear, where you can modify instrument, track name, colour and tunning.
+						</p>
+						
+						</div>
+						<!--
+						<h2><a name="choosing_the_channels" id="choosing_the_channels">Choosing the channels:</a></h2>
+						<div class="level2">
+						
+						<p>
+						<img src="images/edit/sed_instrument_list.jpg" title="" alt="" width="620" height="144" />
+						</p>
+						
+						<p>
+						There are some numbers in combo boxes on the instrument list - those are channels for the instrument.
+						</p>
+						
+						<p>
+						To understand the way of distributing channels properly, you have to know something about MIDI specification.
+						</p>
+						
+						<p>
+						MIDI uses channels to play music - each <strong>channel has currently assigned instrument (voice)</strong>. There are 16 different channels (marked 0..15) - channel 9 is reserved for drums and percussion.
+						</p>
+						
+						<p>
+						For example, to be able to play a <a href="edit_effects.html#dead_note">dead note</a> and a tone in the same time, TuxGuitar has to occupy two channels for a track, because dead note is one instrument (voice) and guitar tone is another instrument. So every track has its <strong>Channel</strong> (marked green on the picture above), but also needs the <strong>Effect channel</strong> (marked orange on the picture above). Because there are only 16 channels it leads you to conclusion that you cannot have more than 7 instruments (tracks) and a percussion in TuxGuitar. That is not true.
+						</p>
+						
+						<p>
+						It means that as long as you don&rsquo;t have more than 7 instruments and a percussion, you don&rsquo;t have to worry about distributing MIDI channels - TuxGuitar distributes the channels in order. But if you have more tracks you have to be careful. By overlapping MIDI channels you can achieve MIDI reproduction without any problems, but you have to understand the problem.
+						</p>
+						
+						</div>
+						
+						<h5><a name="effect_channel" id="effect_channel">Effect channel</a></h5>
+						<div class="level5">
+						
+						<p>
+						 <strong>Effect channel</strong> is used in certain occasions. One ocasion is when <strong>two different voices</strong> are played in the same time in the same track. In TuxGuitar that can happen if you play dead note or harmonic in the same time with an ordinary instrument tone. 
+						</p>
+						
+						<p>
+						The other occasion effect channel is used is when you apply some <strong>pitch effect</strong> (like bend, slide, vibrato or tremolo bar) on <em class="u"><strong>some of the notes</strong></em> played in the same time in same track/channel. The reason for this is because by MIDI specification effect can be applied only on channel, not on note. So TuxGuitar automatically moves note to Effect channel and apply pitch effect on him. That is also the reason why you cannot apply slide and bend effect in the exact same time in TuxGuitar (but also on real guitar :).
+						</p>
+						
+						</div>
+						
+						<h4><a name="how_to_overlap_channels" id="how_to_overlap_channels">How to overlap channels?</a></h4>
+						<div class="level4">
+						
+						<p>
+						 The safest way is to overlap channels of two tracks that are never played in the same time. The only problem is that <strong>mixer settings</strong> (volume, pan and solo/mute) would have the same value for both the instruments (tracks).
+						</p>
+						
+						<p>
+						You can also try to assign the same channel for channel (CH) and effects channel (EC) if you don&rsquo;t use effects like dead note, harmonics in the same time with an ordinary instrument note, or you don&rsquo;t need to apply &ldquo;pitch&rdquo; effect on only some notes played in the same time with notes without pitch effect. If you do use effects but set the same CH and EC, dead note and harmonics probably wouldn&rsquo;t be heard, and pitch effects would apply on all the notes in the same time.
+						</p>
+						
+						</div>
+						-->
+						<h2><a name="mixer_dialog" id="mixer_dialog">Mixer dialog:</a></h2>
+						<div class="level2">
+						
+						<p>
+						<img src="images/edit/sed_mixer_dialog.png" title="" alt="" />
+						</p>
+						
+						<p>
+						Mixer dialog can be accessed by choosing <em>Layout/Show mixer</em> from the main menu, or by clicking on the icon in the toolbar (in the middle on the picture below).
+						</p>
+						
+						<p>
+						<img src="images/start/tb_view.png" width="91" height="27" />
+						</p>
+						
+						<p>
+						The most insteresting feature of the Mixer dialog is adjusting <strong>volume</strong> for each track (to be more precise: for each MIDI channel). 
+						</p>
+						
+						<p>
+						You can also set <strong>pan</strong> for each track - balance between left and right speaker.
+						</p>
+						
+						<p>
+						In Mixer dialog you can choose to <strong>Mute</strong> (turn off) a specific instrument, and also to play only single instrument by choosing <strong>Solo</strong>.
+						</p>
+						
+						<p>
+						<strong>Metronome</strong> is also placed in Mixer dialog. By clicking on the button you enable and disable it - it is played with each beat determined by denominator in song&rsquo;s <a class="PageLink" href="editing_track.html#before_you_start_with_notes">time signature</a> (e.g. metronome will go in every 1/8 for 7/8 key signature).
+						</p>
+						
+						<p>
+						<em>Changing volume or instrument in the middle of a song is still unsupported by TuxGuitar, but it most probably will in some later versions.</em>
+						</p>
+						
+						<h4 name="choosing_the_channels" id="choosing_the_channels">Choosing the channels:</h4>
+						
+						<div class="level2">
+						
+						<p>
+						There are some numbers in combo boxes on the mixer dialog - those are channels for the track.
+						</p>
+						
+						<p>
+						To understand the way of distributing channels properly, you have to know something about MIDI specification.
+						</p>
+						
+						<p>
+						MIDI uses channels to play music - each <strong>channel has currently assigned instrument (voice)</strong>. There are 16 different channels (marked 0..15) - channel 9 is reserved for drums and percussion.
+						</p>
+						
+						<p>
+						For example, to be able to play a <a class="PageLink" href="edit_effects.html#dead_note">dead note</a> and a tone in the same time, TuxGuitar has to occupy two channels for a track, because dead note is one instrument (voice) and guitar tone is another instrument. So every track has its <strong>Channel</strong> (marked green on the picture above), but also needs the <strong>Effect channel</strong> (marked orange on the picture above). Because there are only 16 channels it leads you to conclusion that you cannot have more than 7 instruments (tracks) and a percussion in TuxGuitar. That is not true.
+						</p>
+						
+						<p>
+						It means that as long as you don&rsquo;t have more than 7 instruments and a percussion, you don&rsquo;t have to worry about distributing MIDI channels - TuxGuitar distributes the channels in order. But if you have more tracks you have to be careful. By overlapping MIDI channels you can achieve MIDI reproduction without any problems, but you have to understand the problem.
+						</p>
+						
+						</div>
+						
+						<h5 name="effect_channel" id="effect_channel">Effect channel</h5>
+						<div class="level4">
+						
+						<p>
+						 <strong>Effect channel</strong> is used in certain occasions. One ocasion is when <strong>two different voices</strong> are played in the same time in the same track. In TuxGuitar that can happen if you play dead note or harmonic in the same time with an ordinary instrument tone. 
+						</p>
+						
+						<p>
+						The other occasion effect channel is used is when you apply some <strong>pitch effect</strong> (like bend, slide, vibrato or tremolo bar) on <em class="u"><strong>some of the notes</strong></em> played in the same time in same track/channel. The reason for this is because by MIDI specification effect can be applied only on channel, not on note. So TuxGuitar automatically moves note to Effect channel and apply pitch effect on him. That is also the reason why you cannot apply slide and bend effect in the exact same time in TuxGuitar (but also on real guitar :).
+						</p>
+						
+						</div>
+						
+						<h5 name="how_to_overlap_channels" id="how_to_overlap_channels">How to overlap channels?</h5>
+						<div class="level4">
+						
+						<p>
+						 The safest way is to overlap channels of two tracks that are never played in the same time. The only problem is that <strong>mixer settings</strong> (volume, pan and solo/mute) would have the same value for both the instruments (tracks).
+						</p>
+						
+						<p>
+						You can also try to assign the same channel for channel (CH) and effects channel (EC) if you don&rsquo;t use effects like dead note, harmonics in the same time with an ordinary instrument note, or you don&rsquo;t need to apply &ldquo;pitch&rdquo; effect on only some notes played in the same time with notes without pitch effect. If you do use effects but set the same CH and EC, dead note and harmonics probably wouldn&rsquo;t be heard, and pitch effects would apply on all the notes in the same time.
+						</p>
+						
+						</div>
+						
+						</div>
+						
+						<h2><a name="composition_properties" id="composition_properties">Composition properties:</a></h2>
+						<div class="level2">
+						
+						<p>
+						 You don&rsquo;t want your transcription to be distributed in cyberspace without any credits. :)
+						</p>
+						
+						<p>
+						By selecting <em>Composition/Properties</em> from the main menu or clicking on appropriate icon you invoke dialog that containst information about the current song.
+						</p>
+						
+						<p>
+						<img src="images/start/tb_properties.png" class="media" title="" alt="" width="28" height="26" />
+						</p>
+						
+						<p>
+						Every song should have name, author and transcriber set, both for archiving and printing purpose. Read <a class="PageLink" href="start_toolbars.html#song_properties">more details</a>.
+						</p>
+						</div>
+						<br/><br/>
+						
+						<!-- END OF PAGE CONTENT -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
