@@ -10,11 +10,11 @@ public class GPXInputStreamPlugin extends TGInputStreamPlugin{
 	}
 	
 	public String getAuthor() {
-		return "J.Jørgen von Bargen, Julian Casadesus <julian@casadesus.com.ar>";
+		return "J.Jørgen von Bargen, Julian Casadesus <julian@casadesus.com.ar>, b4dc0d3r";
 	}
 	
 	public String getDescription() {
-		return "GPX File Format plugin based on code contributed by J.Jørgen von Bargen";
+		return "GPX File Format plugin based on code contributed by J.Jørgen von Bargen, updates by b4dc0d3r";
 	}
 	
 	public String getName() {
@@ -22,6 +22,6 @@ public class GPXInputStreamPlugin extends TGInputStreamPlugin{
 	}
 	
 	public String getVersion() {
-		return "0.1";
+		return "0.2";
 	}
 }

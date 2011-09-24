@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.io.gpx;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -144,6 +145,13 @@ public class GPXDocumentReader {
 							masterBar.setRepeatCount( getAttributeIntegerValue(repeatNode, "count"));
 						}
 					}
+					
+					Node keyNode = getChildNode(masterBarNode, "Key");
+					if (keyNode != null) {
+						masterBar.setAccidentalCount(this.getChildNodeIntegerContent(keyNode, "AccidentalCount") ); 
+						masterBar.setMode(this.getChildNodeContent(keyNode, "Mode") ); 
+					}
+					
 					this.gpxDocument.getMasterBars().add( masterBar );
 				}
 			}
@@ -194,6 +202,7 @@ public class GPXDocumentReader {
 					beat.setId(getAttributeIntegerValue(beatNode, "id"));
 					beat.setDynamic(getChildNodeContent(beatNode, "Dynamic"));
 					beat.setRhythmId(getAttributeIntegerValue(getChildNode(beatNode, "Rhythm"), "ref"));
+					beat.setTremolo( getChildNodeIntegerContentArray(beatNode, "Tremolo", "/"));
 					beat.setNoteIds( getChildNodeIntegerContentArray(beatNode, "Notes"));
 					
 					this.gpxDocument.getBeats().add( beat );
@@ -214,41 +223,78 @@ public class GPXDocumentReader {
 					Node tieNode = getChildNode(noteNode, "Tie");
 					note.setTieDestination( tieNode != null ? getAttributeValue(tieNode, "destination").equals("true") : false);
 					
+					String ghostNodeContent = getChildNodeContent(noteNode, "AntiAccent");
+					if( ghostNodeContent != null ){
+						note.setGhost(ghostNodeContent.equals("Normal"));
+					}
+					
+					note.setAccent(getChildNodeIntegerContent(noteNode, "Accent"));
+					note.setTrill(getChildNodeIntegerContent(noteNode, "Trill"));
+
 					note.setVibrato( getChildNode(noteNode, "Vibrato") != null );
 					
 					NodeList propertyNodes = getChildNodeList(noteNode, "Properties");
 					for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
 						Node propertyNode = propertyNodes.item( p );
 						if (propertyNode.getNodeName().equals("Property") ){ 
-							if( getAttributeValue(propertyNode, "name").equals("String") ){
+							String propertyName = getAttributeValue(propertyNode, "name");
+							if( propertyName.equals("String") ){
 								note.setString( getChildNodeIntegerContent(propertyNode, "String") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Fret") ){
+							if( propertyName.equals("Fret") ){
 								note.setFret( getChildNodeIntegerContent(propertyNode, "Fret") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Midi") ){
+							if( propertyName.equals("Midi") ){
 								note.setMidiNumber( getChildNodeIntegerContent(propertyNode, "Number") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Tone") ){
+							if( propertyName.equals("Tone") ){
 								note.setTone( getChildNodeIntegerContent(propertyNode, "Step") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Octave") ){
+							if( propertyName.equals("Octave") ){
 								note.setOctave( getChildNodeIntegerContent(propertyNode, "Number") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Element") ){
+							if( propertyName.equals("Element") ){
 								note.setElement( getChildNodeIntegerContent(propertyNode, "Element") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Variation") ){
+							if( propertyName.equals("Variation") ){
 								note.setVariation( getChildNodeIntegerContent(propertyNode, "Variation") );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Muted") ){
+							if( propertyName.equals("Muted") ){
 								note.setMutedEnabled( getChildNode(propertyNode, "Enable") != null );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("PalmMuted") ){
+							if( propertyName.equals("PalmMuted") ){
 								note.setPalmMutedEnabled( getChildNode(propertyNode, "Enable") != null );
 							}
-							if( getAttributeValue(propertyNode, "name").equals("Slide") ){
+							if( propertyName.equals("Slide") ){
 								note.setSlide( true );
+								note.setSlideFlags( getChildNodeIntegerContent(propertyNode, "Flags") );
+							}
+							if( propertyName.equals("Tapped") ){
+								note.setTapped( getChildNode(propertyNode, "Enable") != null );
+							}
+							if( propertyName.equals("Bended") ){
+								note.setBendEnabled( getChildNode(propertyNode, "Enable") != null );
+							}
+							if( propertyName.equals("BendOriginValue") ){
+								note.setBendOriginValue( getChildNodeIntegerContent(propertyNode, "Float") );
+							}
+							if( propertyName.equals("BendMiddleValue") ){
+								note.setBendMiddleValue( getChildNodeIntegerContent(propertyNode, "Float") );
+							}
+							if( propertyName.equals("BendDestinationValue") ){
+								note.setBendDestinationValue( getChildNodeIntegerContent(propertyNode, "Float") );
+							}
+							if( propertyName.equals("HopoOrigin") ){
+								note.setHammer(true);
+							}
+							if( propertyName.equals("HopoDestination") ){
+//								this is a hammer-on or pull-off
+							}
+							if( propertyName.equals("HarmonicFret") ){
+								note.setHarmonicFret( ( getChildNodeIntegerContent(propertyNode, "HFret") ) );
+							}
+							if( propertyName.equals("HarmonicType") ){
+								note.setHarmonicType( getChildNodeContent (propertyNode, "HType"));
 							}
 						}
 					}
@@ -290,7 +336,7 @@ public class GPXDocumentReader {
 	
 	private int getAttributeIntegerValue(Node node, String attribute ){
 		try {
-			return Integer.parseInt(this.getAttributeValue(node, attribute));
+			return new BigDecimal(this.getAttributeValue(node, attribute)).intValue();
 		} catch( Throwable throwable ){ 
 			return 0;
 		}
@@ -341,23 +387,27 @@ public class GPXDocumentReader {
 	
 	private int getChildNodeIntegerContent(Node node, String name ){
 		try {
-			return Integer.parseInt(this.getChildNodeContent(node, name));
+			return new BigDecimal(this.getChildNodeContent(node, name)).intValue();
 		} catch( Throwable throwable ){
 			return 0;
 		}
 	}
 	
 	private int[] getChildNodeIntegerContentArray(Node node, String name , String regex){
-		try {
-			String[] contents = ( this.getChildNodeContent(node, name).trim().split(regex) );
+		String rawContents = this.getChildNodeContent(node, name);
+		if( rawContents != null ){
+			String[] contents = rawContents.trim().split(regex);
 			int[] intContents = new int[contents.length];
 			for( int i = 0 ; i < intContents.length; i ++ ){
-				intContents[i] = Integer.parseInt( contents[i].trim() );
+				try {
+					intContents[i] = new BigDecimal( contents[i].trim() ).intValue();
+				} catch( Throwable throwable ){
+					intContents[i] = 0;
+				}
 			}
 			return intContents;
-		} catch( Throwable throwable ){
-			return null;
 		}
+		return null;
 	}
 	
 	private int[] getChildNodeIntegerContentArray(Node node, String name ){
