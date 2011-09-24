@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="css/styles.css" ></link>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="PageMenu" >
+						<ul>
+							<li >
+								<span>Introduction</span>
+								<ul>
+									<li ><a class="PageLink" href="about.html" >About</a></li>
+									<li ><a class="PageLink" href="license.html" >License</a></li>
+									<li ><a class="PageLink" href="whatsnew.html" >What's new</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Getting started</span>
+								<ul>
+									<li ><a class="PageLink" href="start_first_steps.html" >The First Steps</a></li>
+									<li ><a class="PageLink" href="start_toolbars.html" >Toolbars</a></li>
+									<li ><a class="PageLink" href="start_playing.html" >Playing a song</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Making and editing a song</span>
+								<ul>
+									<li><a class="PageLink" href="editing_track.html" >Editing a track</a></li>
+									<li><a class="PageLink" href="editing_song.html" >Editing a whole song</a></li>
+									<li><a class="PageLink" href="edit_effects.html" >Note effects</a></li>
+									<li><a class="PageLink" href="edit_chord.html" >Chord edit dialog</a></li>
+									<li><a class="PageLink" href="edit_matrix.html" >Matrix editor</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Tools and settings</span>
+								<ul>
+									<li><a class="PageLink" href="tools_shortcuts.html" >Default shortcuts</a></li>
+									<li><a class="PageLink" href="tools_keybinding.html" >Shortcut editor</a></li>
+									<li><a class="PageLink" href="tools_skin.html" >Changing the skin</a></li>
+									<li><a class="PageLink" href="tools_plugins.html" >Plugins dialog</a></li>
+									<li><a class="PageLink" href="tools_sound.html" >Sound in TuxGuitar</a></li>
+									<li><a class="PageLink" href="tools_converter.html" >File format batch converter</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li><a class="PageLink" href="file_formats.html" >Supported file formats</a></li>
+						</ul>
+					</div>
+				</td>
+				<td valign="top">
+					<div id="PageContent" >
+						<!-- START OF PAGE CONTENT -->
+						
+						<h1>Chord Editor dialog</h1>
+						
+						
+						<div class="level1">
+						
+						<p>
+						 This is a dialog that allows you to get a chord based on it&rsquo;s theory, recognize a chord based on the tab, memorize or get a chord from a library, and few more things. This is also the only way to add a chord name or/and diagram in the tab.
+						</p>
+						
+						<p>
+						<img src="images/edit/chord_dialog.png" title=" The Dialog " alt=" The Dialog " />
+						</p>
+						
+						<p>
+						As you can see chord dialog consists of many things, but is still easy to use. Nevertheless, every feature of the dialog will be explained here.
+						</p>
+						</div>
+						
+						<h2><a name="opening_the_dialog" id="opening_the_dialog">Opening the dialog</a></h2>
+						<div class="level2">
+						
+						<p>
+						 When you open the dialog by clicking on it&rsquo;s icon (or hitting &ldquo;<strong>A</strong>&rdquo; key as shortcut), the first thing you will notice is that the notes from your tab are now in the chord dialog <strong>editor</strong>, the chord is recognized according to the theory and you can hear the sound preview of it.
+						</p>
+						</div>
+						
+						<h2><a name="editor" id="editor">Editor</a></h2>
+						<div class="level2">
+						
+						<p>
+						 In <strong>editor</strong> you can compose your own chord by simple drawing. You should first choose the starting fret with the slider on the right side of the <strong>editor</strong> and then put the black dots on the frets. Clicking above the line on the editor changes the note between the &ldquo;empty-string&rdquo; (white dot) or &ldquo;don&rsquo;t play this string&rdquo; sign (marked with <strong>X</strong>). The span of the editor is 5 frets, but you will have to admit that you rarely play chords by stratching the fingers to 6-fret span. :)
+						</p>
+						
+						<p>
+						While you are &ldquo;drawing&rdquo; the chord, it will constantly be recognized, which can be seen in recognizer window.
+						</p>
+						
+						<p>
+						After composing your chord you can save it to library, or simply press OK and add it to tab.
+						</p>
+						</div>
+						
+						<h2><a name="chord" id="chord">Chord</a></h2>
+						<div class="level2">
+						
+						<p>
+						 This bunch of controls is used to compose a chord based on it&rsquo;s name (theory).
+						</p>
+						
+						<p>
+						You should first choose chord root, either in sharp or flat. Then you should choose chord flavor (major, maj7, sus2, sus4...).
+						</p>
+						
+						<p>
+						Next, you can alterate the chord. You can make <strong>/9</strong> chord (adds b7 and 9 tones), <strong>/11</strong> chord (adds b7, 9 and 11 tones) and <strong>/13</strong> chord (adds b7, 9, 11 and 13 tones). By enabling the &ldquo;add&rdquo; checkbox you get the &ldquo;<strong>add</strong>&rdquo; chord (which means add13 chord has only 13 note, without b7, 9 and 11).
+						</p>
+						
+						<p>
+						 You can modify the selected alteration with <strong>+/-</strong> control, and other alterations with appropriate +/- box (rightmost of the <strong>Chord</strong> controls).
+						</p>
+						
+						<p>
+						On the bottom of <strong>chord</strong> controls is a bass note. If you choose a different bass note than the chord root you will get so-called inverted chord.
+						</p>
+						</div>
+						
+						<h2><a name="proposals" id="proposals">Proposals</a></h2>
+						<div class="level2">
+						
+						<p>
+						 Based on the chosen chord theory, you will get proposals for the fingerings. On the proposal thumbnails you can see the chord position and the fingering. The chord proposals are generated and sorted, so don&rsquo;t be too dissapointed if you don&rsquo;t see your favourite chord on the second position.
+						</p>
+						
+						<p>
+						On the other hand, proposals are generated for any tunning and any criteria the same way. You may be surprised when it digs some convenient fingering for a chord you had trouble with.
+						</p>
+						
+						<p>
+						After you click on the proposal, it will appear in <strong>editor</strong>, it&rsquo;s <strong>name</strong> would be written and you should hear the way it sounds.
+						</p>
+						</div>
+						
+						<h2><a name="name" id="name">Name</a></h2>
+						<div class="level2">
+						
+						<p>
+						 The title of the chord is changed every time you choose one of the proposals. The chord name isn&rsquo;t displayed while you edit the chord because you would loose the chord name you typed in the first place.
+						</p>
+						</div>
+						
+						<h2><a name="recognized" id="recognized">Recognized</a></h2>
+						<div class="level2">
+						
+						<p>
+						 The <strong>recognized</strong> window contains the proposals of the chord title, according to the theory. Besides the chord name you will see the probability of a chord. The probability is less when a chord is missing some tone to be complete.
+						</p>
+						
+						<p>
+						When you click on an item in recognition window, the <strong>chord</strong> controls should change based on the chord you chose, it&rsquo;s name will be displayed in title window, and the <strong>proposals</strong> of more fingering positions should be generated below.
+						</p>
+						</div>
+						
+						<h2><a name="library" id="library">Library</a></h2>
+						<div class="level2">
+						
+						<p>
+						 When you compose a convenient chord, you can add it into <strong>library</strong>. Once added, it can be accessed outside the chord dialog - by clicking on the arrow besides <strong>Chord Editor</strong> icon in the toolbar. When you add a chord to a tab that way, it&rsquo;s name and/or diagram will be displayed in the tab.
+						</p>
+						
+						<p>
+						In Chord Editor dialog you can manipulate the library list: add, rename or remove chord from a library.
+						</p>
+						</div>
+						
+						<h2><a name="settings" id="settings">Settings</a></h2>
+						<div class="level2">
+						
+						<p>
+						 In the <strong>Settings dialog</strong> are some options which can customize and improve the chord proposal assembly process.
+						</p>
+						
+						<p>
+						<img src="images/edit/chord_settings_dialog.png" title=" Chord Settings " alt=" Chord Settings " />
+						</p>
+						
+						<p>
+						<strong>Chords to display</strong> is the number of the best chord proposals to be considered into proposal list. Note that this number of proposals wouldn&rsquo;t be displayed, because the very similar fingerings (like x02210 and x0221x for <em>Am</em>) will not be included.
+						</p>
+						
+						<p>
+						 <strong>Chord type</strong> is a very important property. Besides the &ldquo;<strong>Most common</strong>&rdquo; chords, here you can choose between &ldquo;<strong>Open-voiced chords</strong>&ldquo;, &ldquo;<strong>Closed-voiced chords</strong>&rdquo; and &ldquo;<strong>Chord inversions</strong>&ldquo;. While chord inversions mean that the bass note isn&rsquo;t the root note of the chord, open- and closed-voiced chords are a little bit more specific: closed voice have tones very close (tonically) to each other, while open-voiced tend to distribute the notes of the chord in different octaves.
+						</p>
+						
+						<p>
+						<strong>Open chords</strong> include empty strings into chord composition, so you get &ldquo;open chords&rdquo;. For example, famous &ldquo;Hendrix chord&rdquo; is an open chord ( 076780 ). <strong>Open chords</strong> are another <strong>chord type</strong>, but can be used in combination with any of them.
+						</p>
+						
+						<p>
+						<strong>Search frets</strong> is an option for you if you are looking for a chord on a specific position. Normally all the chords from fret 0 to fret 15 will be proposed, but you can narrow (or expand!) the search by modifying the starting and ending fret. If <strong>open chords</strong> is selected, zero-fret will be included in the search, too.
+						</p>
+						
+						<p>
+						By clicking on the OK button your changes will be applied, but they won&rsquo;t be remembered next time you run TuxGuitar.
+						</p>
+						</div>
+						
+						<h2><a name="chord_layout" id="chord_layout">Chord layout</a></h2>
+						<div class="level2">
+						
+						<p>
+						 When you insert a chord it will be displayed on the main tab view. There are two different views of a chord, plus mixed one. It is changed in the main menu, checking one or both of the items from <strong>Layout&rarr;Chord_Style</strong>.
+						</p>
+						
+						<p>
+						You can view the chord as a diagram (where to put the fingers), only its name (entered in the library), or both. 
+						</p>
+						
+						</div><br/><br/>
+						
+						<!-- END OF PAGE CONTENT -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
