@@ -35,7 +35,6 @@ public class TGTray implements IconLoader,LanguageLoader{
 			for(int i = 0; i < items.length; i ++){
 				items[i].dispose();
 			}
-			this.icon.dispose();
 			this.menu.dispose();
 		}
 	}

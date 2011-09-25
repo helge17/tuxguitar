@@ -69,6 +69,12 @@ public class IconManager {
 	private Image aboutLicense;
 	private Image aboutAuthors;
 	private Image appIcon;
+	private Image appIcon16;
+	private Image appIcon24;
+	private Image appIcon32;
+	private Image appIcon48;
+	private Image appIcon64;
+	private Image appIcon96;
 	private Image appSplash;
 	private Image optionMain;
 	private Image optionStyle;
@@ -201,6 +207,12 @@ public class IconManager {
 		this.editModeEdition = loadIcon("edit_mode_edition.png");
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
 		this.appIcon = loadIcon("icon.png");
+		this.appIcon16 = loadIcon("icon-16x16.png");
+		this.appIcon24 = loadIcon("icon-24x24.png");
+		this.appIcon32 = loadIcon("icon-32x32.png");
+		this.appIcon48 = loadIcon("icon-48x48.png");
+		this.appIcon64 = loadIcon("icon-64x64.png");
+		this.appIcon96 = loadIcon("icon-96x96.png");
 		this.appSplash = loadIcon("splash.png");
 		this.aboutDescription = loadIcon("about_description.png");
 		this.aboutLicense = loadIcon("about_license.png");
@@ -367,6 +379,30 @@ public class IconManager {
 	
 	public Image getAppIcon() {
 		return this.appIcon;
+	}
+	
+	public Image getAppIcon16() {
+		return this.appIcon16;
+	}
+	
+	public Image getAppIcon24() {
+		return this.appIcon24;
+	}
+	
+	public Image getAppIcon32() {
+		return this.appIcon32;
+	}
+	
+	public Image getAppIcon48() {
+		return this.appIcon48;
+	}
+	
+	public Image getAppIcon64() {
+		return this.appIcon64;
+	}
+	
+	public Image getAppIcon96() {
+		return this.appIcon96;
 	}
 	
 	public Image getAppSplash() {
