@@ -28,9 +28,7 @@ CLASSPATH=${CLASSPATH}:${PLATFORM_ALL}/tuxguitar.jar
 CLASSPATH=${CLASSPATH}:${PLATFORM_ALL}/share
 CLASSPATH=${CLASSPATH}:${PLATFORM_OS}/lib/tuxguitar-dist.jar
 CLASSPATH=${CLASSPATH}:${PLATFORM_OS}/lib/swt.jar
-
-##TG_CLASSPATH
-TG_CLASSPATH=${CLASSPATH}:${PLATFORM_OS}/share/plugins
+CLASSPATH=${CLASSPATH}:${PLATFORM_OS}/share
 
 ##MAINCLASS
 MAINCLASS=org.herac.tuxguitar.app.TGMain
@@ -44,4 +42,4 @@ export LD_LIBRARY_PATH
 export MOZILLA_FIVE_HOME
 
 ##LAUNCH
-${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.class.path="${TG_CLASSPATH}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"
+${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"
