@@ -41,7 +41,7 @@ public class TGFileUtils {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
 					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( file.exists() ){
+					if( isExistentAndReadable( file ) ){
 						return new FileInputStream( file );
 					}
 				}
@@ -58,7 +58,7 @@ public class TGFileUtils {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
 					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( file.exists() ){
+					if( isExistentAndReadable( file ) ){
 						return file.toURI().toURL();
 					}
 				}
@@ -76,7 +76,7 @@ public class TGFileUtils {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
 					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( file.exists() ){
+					if( isExistentAndReadable( file ) ){
 						vector.addElement( file.toURI().toURL() );
 					}
 				}
@@ -100,7 +100,7 @@ public class TGFileUtils {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
 					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( file.exists() ){
+					if( isExistentAndReadable( file ) ){
 						return file.getAbsolutePath() + File.separator;
 					}
 				}
@@ -116,17 +116,22 @@ public class TGFileUtils {
 	}
 	
 	public static void loadClasspath(){
-		String plugins = getResourcePath("plugins");
-		if(plugins != null){
-			TGClassLoader.instance().addPaths(new File(plugins));
-		}
-		
-		String custompath = System.getProperty(TG_CLASS_PATH);
-		if(custompath != null){
-			String[] paths = custompath.split(File.pathSeparator);
-			for(int i = 0; i < paths.length; i++){
-				TGClassLoader.instance().addPaths(new File(paths[i]));
+		try {
+			Enumeration plugins = getResourceUrls("plugins");
+			while( plugins.hasMoreElements() ){
+				URL url = (URL)plugins.nextElement();
+				TGClassLoader.instance().addPaths(new File(url.getFile()));
 			}
+			
+			String custompath = System.getProperty(TG_CLASS_PATH);
+			if(custompath != null){
+				String[] paths = custompath.split(File.pathSeparator);
+				for(int i = 0; i < paths.length; i++){
+					TGClassLoader.instance().addPaths(new File(paths[i]));
+				}
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
 		}
 	}
 	
@@ -147,7 +152,7 @@ public class TGFileUtils {
 			String path = getResourcePath(resource);
 			if( path != null ){
 				File file = new File( path );
-				if(file.exists() && file.isDirectory()){
+				if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
 					return file.list();
 				}
 			}
@@ -214,8 +219,8 @@ public class TGFileUtils {
 		
 		// Check if the path exists
 		File file = new File(configPath);
-		if(!file.exists()){
-			file.mkdirs();
+		if(!isExistentAndReadable( file )){
+			tryCreateDirectory( file );
 		}
 		return configPath;
 	}
@@ -225,8 +230,8 @@ public class TGFileUtils {
 		
 		//Check if the path exists
 		File file = new File(configPluginsPath);
-		if(!file.exists()){
-			file.mkdirs();
+		if(!isExistentAndReadable( file )){
+			tryCreateDirectory( file );
 		}
 		
 		return configPluginsPath;
@@ -243,8 +248,8 @@ public class TGFileUtils {
 		
 		// Check if the path exists
 		File file = new File(userSharePath);
-		if(!file.exists()){
-			file.mkdirs();
+		if(!isExistentAndReadable( file )){
+			tryCreateDirectory( file );
 		}
 		return userSharePath;
 	}
@@ -256,5 +261,29 @@ public class TGFileUtils {
 			staticSharedPaths += (File.pathSeparator + staticSharedPathsProperty);
 		}
 		return staticSharedPaths.split(File.pathSeparator);
+	}
+	
+	private static boolean isExistentAndReadable( File file ){
+		try{
+			return file.exists();
+		}catch(SecurityException se){
+			return false;
+		}
+	}
+	
+	private static boolean isDirectoryAndReadable( File file ){
+		try{
+			return file.isDirectory();
+		}catch(SecurityException se){
+			return false;
+		}
+	}
+	
+	private static boolean tryCreateDirectory( File file ){
+		try{
+			return file.mkdirs();
+		}catch(SecurityException se){
+			return false;
+		}
 	}
 }
