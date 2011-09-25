@@ -14,15 +14,17 @@
 	<property name="platform-linux-x86_64.share.path" value="platform-linux-x86_64/share" />
 	
 	<target name="clean" >
-		<delete quiet="true" file="${platform-all.path}${file.separator}tuxguitar.jar" />
-		<delete quiet="true" dir="${platform-all.doc.path}" />
-		<delete quiet="true" dir="${platform-all.share.path}" />
-		<delete quiet="true" dir="${platform-win32.share.path}" />
-		<delete quiet="true" dir="${platform-linux-x86.share.path}" />
-		<delete quiet="true" dir="${platform-linux-x86_64.share.path}" />
+		<delete quiet="true">
+			<fileset file="${platform-all.path}${file.separator}tuxguitar.jar"/>
+			<fileset dir="${platform-all.doc.path}" excludes="**/.svn"/>
+			<fileset dir="${platform-all.share.path}" excludes="**/.svn"/>
+			<fileset dir="${platform-win32.share.path}" excludes="**/.svn"/>
+			<fileset dir="${platform-linux-x86.share.path}" excludes="**/.svn"/>
+			<fileset dir="${platform-linux-x86_64.share.path}" excludes="**/.svn"/>
+		</delete>
 	</target>
 	
-	<target name="build" depends="clean">
+	<target name="build" depends="clean" >
 		<mkdir dir="${platform-all.doc.path}" />
 		<mkdir dir="${platform-all.share.path}" />
 		<mkdir dir="${platform-win32.share.path}" />
@@ -188,7 +190,7 @@
 		</ant>
 		
 		<copy todir="${plugin.dst.path}">
-			<fileset dir="${plugin.src.path}" includes="**/*.jar" />
+			<fileset dir="${plugin.src.path}" includes="tuxguitar-*.jar" />
 		</copy>
 		
 		<ant dir="${plugin.src.path}" target="clean" />
