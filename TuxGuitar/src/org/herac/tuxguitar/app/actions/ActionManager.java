@@ -113,6 +113,16 @@ import org.herac.tuxguitar.app.actions.note.MoveBeatsLeftAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsRightAction;
 import org.herac.tuxguitar.app.actions.note.RemoveNoteAction;
 import org.herac.tuxguitar.app.actions.note.RemoveUnusedVoiceAction;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber0Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber1Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber2Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber3Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber4Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber5Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber6Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber7Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber8Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber9Action;
 import org.herac.tuxguitar.app.actions.note.SetStrokeDownAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeUpAction;
 import org.herac.tuxguitar.app.actions.note.SetVoiceAutoAction;
@@ -247,6 +257,16 @@ public class ActionManager {
 		
 		//note actions
 		addAction(new ChangeNoteAction());
+		addAction(new SetNoteFretNumber0Action());
+		addAction(new SetNoteFretNumber1Action());
+		addAction(new SetNoteFretNumber2Action());
+		addAction(new SetNoteFretNumber3Action());
+		addAction(new SetNoteFretNumber4Action());
+		addAction(new SetNoteFretNumber5Action());
+		addAction(new SetNoteFretNumber6Action());
+		addAction(new SetNoteFretNumber7Action());
+		addAction(new SetNoteFretNumber8Action());
+		addAction(new SetNoteFretNumber9Action());
 		addAction(new InsertNoteAction());
 		addAction(new RemoveNoteAction());
 		addAction(new RemoveUnusedVoiceAction());

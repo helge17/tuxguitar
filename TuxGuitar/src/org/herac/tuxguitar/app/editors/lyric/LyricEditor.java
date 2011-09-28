@@ -25,7 +25,7 @@ import org.herac.tuxguitar.app.editors.TGUpdateListener;
 import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingConstants;
+import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
 import org.herac.tuxguitar.app.system.language.LanguageLoader;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -35,8 +35,8 @@ public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
 	private static int EDITOR_HEIGHT = 200;
 	
 	protected static final KeyBindingAction KB_ACTIONS[] = new KeyBindingAction[]{
-		new KeyBindingAction(UndoAction.NAME,new KeyBinding(122,KeyBindingConstants.CONTROL)),
-		new KeyBindingAction(RedoAction.NAME,new KeyBinding(121,KeyBindingConstants.CONTROL)),
+		new KeyBindingAction(UndoAction.NAME,new KeyBinding(122,KeyBindingUtil.CONTROL)),
+		new KeyBindingAction(RedoAction.NAME,new KeyBinding(121,KeyBindingUtil.CONTROL)),
 	};
 	
 	private TGTrack track;
