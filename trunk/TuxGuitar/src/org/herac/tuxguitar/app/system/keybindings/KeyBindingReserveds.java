@@ -8,42 +8,41 @@ import org.herac.tuxguitar.app.actions.caret.GoRightAction;
 import org.herac.tuxguitar.app.actions.caret.GoUpAction;
 import org.herac.tuxguitar.app.actions.duration.DecrementDurationAction;
 import org.herac.tuxguitar.app.actions.duration.IncrementDurationAction;
-import org.herac.tuxguitar.app.actions.note.ChangeNoteAction;
 import org.herac.tuxguitar.app.actions.note.InsertNoteAction;
 import org.herac.tuxguitar.app.actions.note.RemoveNoteAction;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber0Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber1Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber2Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber3Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber4Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber5Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber6Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber7Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber8Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber9Action;
 
 public class KeyBindingReserveds {
 	
 	private static KeyBindingAction[] reserveds = new KeyBindingAction[]{
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_0,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_1,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_2,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_3,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_4,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_5,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_6,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_7,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_8,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.NUMBER_9,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_0,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_1,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_2,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_3,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_4,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_5,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_6,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_7,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_8,0)),
-		new KeyBindingAction(ChangeNoteAction.NAME,new KeyBinding(KeyBindingConstants.KEYPAD_9,0)),
-		new KeyBindingAction(RemoveNoteAction.NAME,new KeyBinding(KeyBindingConstants.BACKSPACE,0)),
-		new KeyBindingAction(RemoveNoteAction.NAME,new KeyBinding(KeyBindingConstants.DELETE,0)),
-		new KeyBindingAction(InsertNoteAction.NAME,new KeyBinding(KeyBindingConstants.INSERT,0)),
+		new KeyBindingAction(SetNoteFretNumber0Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_0,0)),
+		new KeyBindingAction(SetNoteFretNumber1Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_1,0)),
+		new KeyBindingAction(SetNoteFretNumber2Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_2,0)),
+		new KeyBindingAction(SetNoteFretNumber3Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_3,0)),
+		new KeyBindingAction(SetNoteFretNumber4Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_4,0)),
+		new KeyBindingAction(SetNoteFretNumber5Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_5,0)),
+		new KeyBindingAction(SetNoteFretNumber6Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_6,0)),
+		new KeyBindingAction(SetNoteFretNumber7Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_7,0)),
+		new KeyBindingAction(SetNoteFretNumber8Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_8,0)),
+		new KeyBindingAction(SetNoteFretNumber9Action.getActionName(),new KeyBinding(KeyBindingUtil.NUMBER_9,0)),
+		new KeyBindingAction(RemoveNoteAction.NAME,new KeyBinding(KeyBindingUtil.BACKSPACE,0)),
+		new KeyBindingAction(RemoveNoteAction.NAME,new KeyBinding(KeyBindingUtil.DELETE,0)),
+		new KeyBindingAction(InsertNoteAction.NAME,new KeyBinding(KeyBindingUtil.INSERT,0)),
 		new KeyBindingAction(IncrementDurationAction.NAME,new KeyBinding(16777259,0)),
 		new KeyBindingAction(DecrementDurationAction.NAME,new KeyBinding(16777261,0)),
-		new KeyBindingAction(GoUpAction.NAME,new KeyBinding(KeyBindingConstants.UP,0)),
-		new KeyBindingAction(GoDownAction.NAME,new KeyBinding(KeyBindingConstants.DOWN,0)),
-		new KeyBindingAction(GoLeftAction.NAME,new KeyBinding(KeyBindingConstants.LEFT,0)),
-		new KeyBindingAction(GoRightAction.NAME,new KeyBinding(KeyBindingConstants.RIGHT,0)),
+		new KeyBindingAction(GoUpAction.NAME,new KeyBinding(KeyBindingUtil.UP,0)),
+		new KeyBindingAction(GoDownAction.NAME,new KeyBinding(KeyBindingUtil.DOWN,0)),
+		new KeyBindingAction(GoLeftAction.NAME,new KeyBinding(KeyBindingUtil.LEFT,0)),
+		new KeyBindingAction(GoRightAction.NAME,new KeyBinding(KeyBindingUtil.RIGHT,0)),
 	};
 	
 	public static boolean isReserved(KeyBinding kb){

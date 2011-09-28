@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Control;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
 import org.herac.tuxguitar.app.util.TGFileUtils;
@@ -27,7 +26,7 @@ public class KeyBindingActionManager {
 	public void init(){
 		List enabled = KeyBindingReader.getKeyBindings(getUserFileName());
 		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings()) );
-		this.listener = new KeyBindingListener();
+		this.listener = new KeyBindingListener(this);
 	}
 	
 	private String getUserFileName(){
@@ -81,20 +80,10 @@ public class KeyBindingActionManager {
 		control.addKeyListener(this.listener);
 	}
 	
-	protected class KeyBindingListener implements KeyListener {
-		
-		public void keyPressed(KeyEvent event) {
-			KeyBinding kb = new KeyBinding();
-			kb.setKey(event.keyCode);
-			kb.setMask(event.stateMask);
-			Action action = getActionForKeyBinding(kb);
-			if (action != null){
-				action.processEvent(event);
-			}
-		}
-		
-		public void keyReleased(KeyEvent evt) {
-			//not implemented
+	public void processKeyBinding(KeyBinding kb){
+		Action action = getActionForKeyBinding(kb);
+		if (action != null){
+			action.process(new ActionData());
 		}
 	}
 }

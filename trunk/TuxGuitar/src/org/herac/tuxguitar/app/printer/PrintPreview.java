@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TGImageImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingConstants;
+import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
@@ -80,7 +80,7 @@ public class PrintPreview{
 		
 		this.currentText.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
-				if(e.keyCode == KeyBindingConstants.ENTER){
+				if(e.keyCode == KeyBindingUtil.ENTER){
 					try{
 						Integer number = new Integer(PrintPreview.this.currentText.getText());
 						changePage(number.intValue() - 1);

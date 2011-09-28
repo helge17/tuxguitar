@@ -6,14 +6,10 @@
  */
 package org.herac.tuxguitar.app.actions.note;
 
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionAdapter;
 import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.editors.tab.Caret;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingConstants;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -27,7 +23,9 @@ import org.herac.tuxguitar.song.models.TGNote;
  */
 public class ChangeNoteAction extends Action {
 	
-	public static final String NAME = "action.note.general.change";
+	private static final String NAME = "action.note.general.change";
+	
+	public static final String PROPERTY_FRET_NUMBER = "fretNumber";
 	
 	private static final int DELAY = 1000;
 	
@@ -40,14 +38,17 @@ public class ChangeNoteAction extends Action {
 	private static long lastAddedTime;
 	
 	public ChangeNoteAction() {
-		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING);
+		this(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING);
+	}
+	
+	protected ChangeNoteAction(String name, int flags) {
+		super(name, flags);
 	}
 	
 	protected int execute(ActionData actionData){
-		TypedEvent e = (TypedEvent)actionData.get(ActionAdapter.PROPERTY_TYPED_EVENT);
-		
-		if (e instanceof KeyEvent) {
-			int value = getValueOf(((KeyEvent) e).keyCode);
+		Object propertyFretNumber = actionData.get(PROPERTY_FRET_NUMBER);
+		if( propertyFretNumber instanceof Integer ){
+			int value = ((Integer)propertyFretNumber).intValue();
 			if (value >= 0) {
 				Caret caret = getEditor().getTablature().getCaret();
 				TGMeasureImpl measure = caret.getMeasure();
@@ -98,41 +99,5 @@ public class ChangeNoteAction extends Action {
 		
 		//reprodusco las notas en el pulso
 		TuxGuitar.instance().playBeat(getEditor().getTablature().getCaret().getSelectedBeat());
-	}
-	
-	private int getValueOf(int keyCode){
-		switch(keyCode){
-		case KeyBindingConstants.NUMBER_0:
-		case KeyBindingConstants.KEYPAD_0:
-			return 0;
-		case KeyBindingConstants.NUMBER_1:
-		case KeyBindingConstants.KEYPAD_1:
-			return 1;
-		case KeyBindingConstants.NUMBER_2:
-		case KeyBindingConstants.KEYPAD_2:
-			return 2;
-		case KeyBindingConstants.NUMBER_3:
-		case KeyBindingConstants.KEYPAD_3:
-			return 3;
-		case KeyBindingConstants.NUMBER_4:
-		case KeyBindingConstants.KEYPAD_4:
-			return 4;
-		case KeyBindingConstants.NUMBER_5:
-		case KeyBindingConstants.KEYPAD_5:
-			return 5;
-		case KeyBindingConstants.NUMBER_6:
-		case KeyBindingConstants.KEYPAD_6:
-			return 6;
-		case KeyBindingConstants.NUMBER_7:
-		case KeyBindingConstants.KEYPAD_7:
-			return 7;
-		case KeyBindingConstants.NUMBER_8:
-		case KeyBindingConstants.KEYPAD_8:
-			return 8;
-		case KeyBindingConstants.NUMBER_9:
-		case KeyBindingConstants.KEYPAD_9:
-			return 9;
-		}
-		return -1;
 	}
 }
