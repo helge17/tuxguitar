@@ -137,6 +137,7 @@ public class GPXDocumentReader {
 					GPXMasterBar masterBar = new GPXMasterBar();
 					masterBar.setBarIds( getChildNodeIntegerContentArray(masterBarNode, "Bars"));
 					masterBar.setTime( getChildNodeIntegerContentArray(masterBarNode, "Time", "/"));
+					masterBar.setTripletFeel(getChildNodeContent(masterBarNode, "TripletFeel"));
 					
 					Node repeatNode = getChildNode(masterBarNode, "Repeat");
 					if( repeatNode != null ){
@@ -276,13 +277,25 @@ public class GPXDocumentReader {
 								note.setBendEnabled( getChildNode(propertyNode, "Enable") != null );
 							}
 							if( propertyName.equals("BendOriginValue") ){
-								note.setBendOriginValue( getChildNodeIntegerContent(propertyNode, "Float") );
+								note.setBendOriginValue( getChildNodeIntegerContent(propertyNode, "Float", -1) );
 							}
 							if( propertyName.equals("BendMiddleValue") ){
-								note.setBendMiddleValue( getChildNodeIntegerContent(propertyNode, "Float") );
+								note.setBendMiddleValue( getChildNodeIntegerContent(propertyNode, "Float", -1) );
 							}
 							if( propertyName.equals("BendDestinationValue") ){
-								note.setBendDestinationValue( getChildNodeIntegerContent(propertyNode, "Float") );
+								note.setBendDestinationValue( getChildNodeIntegerContent(propertyNode, "Float", -1) );
+							}
+							if( propertyName.equals("BendOriginOffset") ){
+								note.setBendOriginOffset( getChildNodeIntegerContent(propertyNode, "Float", -1) );
+							}
+							if( propertyName.equals("BendMiddleOffset1") ){
+								note.setBendMiddleOffset1( getChildNodeIntegerContent(propertyNode, "Float", -1) );
+							}
+							if( propertyName.equals("BendMiddleOffset2") ){
+								note.setBendMiddleOffset2( getChildNodeIntegerContent(propertyNode, "Float", -1) );
+							}
+							if( propertyName.equals("BendDestinationOffset") ){
+								note.setBendDestinationOffset( getChildNodeIntegerContent(propertyNode, "Float", -1) );
 							}
 							if( propertyName.equals("HopoOrigin") ){
 								note.setHammer(true);
@@ -386,10 +399,14 @@ public class GPXDocumentReader {
 	}
 	
 	private int getChildNodeIntegerContent(Node node, String name ){
+		return getChildNodeIntegerContent(node, name, 0);
+	}
+	
+	private int getChildNodeIntegerContent(Node node, String name, int defaultValue){
 		try {
 			return new BigDecimal(this.getChildNodeContent(node, name)).intValue();
 		} catch( Throwable throwable ){
-			return 0;
+			return defaultValue;
 		}
 	}
 	
