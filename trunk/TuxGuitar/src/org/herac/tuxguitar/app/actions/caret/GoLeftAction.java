@@ -21,7 +21,7 @@ public class GoLeftAction extends Action{
 	public static final String NAME = "action.caret.go-left";
 	
 	public GoLeftAction() {
-		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(ActionData actionData){

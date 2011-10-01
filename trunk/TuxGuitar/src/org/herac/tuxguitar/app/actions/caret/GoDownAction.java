@@ -20,7 +20,7 @@ public class GoDownAction extends Action{
 	public static final String NAME = "action.caret.go-down";
 	
 	public GoDownAction() {
-		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING | AUTO_UPDATE );
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(ActionData actionData){

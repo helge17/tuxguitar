@@ -34,10 +34,6 @@ public class KeyBindingActionManager {
 	}
 	
 	public Action getActionForKeyBinding(KeyBinding kb){
-		Action action = KeyBindingReserveds.getActionForKeyBinding(kb);
-		if(action != null){
-			return action;
-		}
 		Iterator it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
@@ -49,10 +45,6 @@ public class KeyBindingActionManager {
 	}
 	
 	public KeyBinding getKeyBindingForAction(String action){
-		KeyBinding kb = KeyBindingReserveds.getKeyBindingForAction(action);
-		if(kb != null){
-			return kb;
-		}
 		Iterator it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();

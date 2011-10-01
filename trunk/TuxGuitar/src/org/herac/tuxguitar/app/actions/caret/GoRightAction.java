@@ -23,7 +23,7 @@ public class GoRightAction extends Action{
 	public static final String NAME = "action.caret.go-right";
 	
 	public GoRightAction() {
-		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
 	protected int execute(ActionData actionData){

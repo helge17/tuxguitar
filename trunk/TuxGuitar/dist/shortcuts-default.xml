@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shortcuts>
+	<shortcut key="48" mask="0" action="action.note.general.set-fret-number-0"/>
+	<shortcut key="49" mask="0" action="action.note.general.set-fret-number-1"/>
+	<shortcut key="50" mask="0" action="action.note.general.set-fret-number-2"/>
+	<shortcut key="51" mask="0" action="action.note.general.set-fret-number-3"/>
+	<shortcut key="52" mask="0" action="action.note.general.set-fret-number-4"/>
+	<shortcut key="53" mask="0" action="action.note.general.set-fret-number-5"/>
+	<shortcut key="54" mask="0" action="action.note.general.set-fret-number-6"/>
+	<shortcut key="55" mask="0" action="action.note.general.set-fret-number-7"/>
+	<shortcut key="56" mask="0" action="action.note.general.set-fret-number-8"/>
+	<shortcut key="57" mask="0" action="action.note.general.set-fret-number-9"/>
+	<shortcut key="127" mask="0" action="action.beat.general.delete-note-or-rest"/>
+	<shortcut key="16777225" mask="0" action="action.beat.general.insert-rest"/>
+ 	<shortcut key="16777259" mask="0" action="action.note.duration.increment-duration"/>
+	<shortcut key="16777261" mask="0" action="action.note.duration.decrement-duration"/>
+	<shortcut key="16777217" mask="0" action="action.caret.go-up"/>
+	<shortcut key="16777218" mask="0" action="action.caret.go-down"/>
+	<shortcut key="16777219" mask="0" action="action.caret.go-left"/>
+	<shortcut key="16777220" mask="0" action="action.caret.go-right"/>
 	<shortcut key="16777230" mask="0" action="action.composition.change-info"/>
 	<shortcut key="121" mask="262144" action="action.edit.redo"/>
 	<shortcut key="122" mask="262144" action="action.edit.undo"/>

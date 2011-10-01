@@ -16,9 +16,11 @@ import org.herac.tuxguitar.app.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.app.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.app.actions.note.DecrementNoteSemitoneAction;
 import org.herac.tuxguitar.app.actions.note.IncrementNoteSemitoneAction;
+import org.herac.tuxguitar.app.actions.note.InsertRestBeatAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsCustomAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsLeftAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsRightAction;
+import org.herac.tuxguitar.app.actions.note.DeleteNoteOrRestAction;
 import org.herac.tuxguitar.app.actions.note.RemoveUnusedVoiceAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeDownAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeUpAction;
@@ -44,6 +46,8 @@ public class BeatMenuItem extends MenuItems{
 	private MenuItem noteMenuItem;
 	private Menu menu;
 	private MenuItem tiedNote;
+	private MenuItem insertRestBeat;
+	private MenuItem deleteNoteOrRest;
 	private MenuItem cleanBeat;
 	private MenuItem removeVoice;
 	private MenuItem insertText;
@@ -73,6 +77,14 @@ public class BeatMenuItem extends MenuItems{
 		//--Tied Note
 		this.tiedNote = new MenuItem(this.menu, SWT.CHECK);
 		this.tiedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeTiedNoteAction.NAME));
+		
+		//--Insert Rest Beat
+		this.insertRestBeat = new MenuItem(this.menu, SWT.PUSH);
+		this.insertRestBeat.addSelectionListener(TuxGuitar.instance().getAction(InsertRestBeatAction.NAME));
+		
+		//--Delete Note or Rest
+		this.deleteNoteOrRest = new MenuItem(this.menu, SWT.PUSH);
+		this.deleteNoteOrRest.addSelectionListener(TuxGuitar.instance().getAction(DeleteNoteOrRestAction.NAME));
 		
 		//--Clean Beat
 		this.cleanBeat = new MenuItem(this.menu, SWT.PUSH);
@@ -181,6 +193,8 @@ public class BeatMenuItem extends MenuItems{
 		boolean running = TuxGuitar.instance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
 		this.tiedNote.setSelection(note != null && note.isTiedNote());
+		this.insertRestBeat.setEnabled(!running);
+		this.deleteNoteOrRest.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
 		this.removeVoice.setEnabled(!running);
 		this.voiceAuto.setEnabled(!running && !restBeat);
@@ -209,6 +223,8 @@ public class BeatMenuItem extends MenuItems{
 		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", CleanBeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.removeVoice, "beat.voice.remove-unused", RemoveUnusedVoiceAction.NAME);
 		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", ChangeTiedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.insertRestBeat, "beat.insert-rest", InsertRestBeatAction.NAME);
+		setMenuItemTextAndAccelerator(this.deleteNoteOrRest, "beat.delete-note-or-rest", DeleteNoteOrRestAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceAuto, "beat.voice-auto", SetVoiceAutoAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceUp, "beat.voice-up", SetVoiceUpAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceDown, "beat.voice-down", SetVoiceDownAction.NAME);

@@ -106,23 +106,14 @@ import org.herac.tuxguitar.app.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.app.actions.note.ChangeVelocityAction;
 import org.herac.tuxguitar.app.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.app.actions.note.DecrementNoteSemitoneAction;
+import org.herac.tuxguitar.app.actions.note.DeleteNoteOrRestAction;
 import org.herac.tuxguitar.app.actions.note.IncrementNoteSemitoneAction;
-import org.herac.tuxguitar.app.actions.note.InsertNoteAction;
+import org.herac.tuxguitar.app.actions.note.InsertRestBeatAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsCustomAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsLeftAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsRightAction;
-import org.herac.tuxguitar.app.actions.note.RemoveNoteAction;
 import org.herac.tuxguitar.app.actions.note.RemoveUnusedVoiceAction;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber0Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber1Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber2Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber3Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber4Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber5Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber6Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber7Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber8Action;
-import org.herac.tuxguitar.app.actions.note.SetNoteFretNumber9Action;
+import org.herac.tuxguitar.app.actions.note.SetNoteFretNumberAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeDownAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeUpAction;
 import org.herac.tuxguitar.app.actions.note.SetVoiceAutoAction;
@@ -257,18 +248,8 @@ public class ActionManager {
 		
 		//note actions
 		addAction(new ChangeNoteAction());
-		addAction(new SetNoteFretNumber0Action());
-		addAction(new SetNoteFretNumber1Action());
-		addAction(new SetNoteFretNumber2Action());
-		addAction(new SetNoteFretNumber3Action());
-		addAction(new SetNoteFretNumber4Action());
-		addAction(new SetNoteFretNumber5Action());
-		addAction(new SetNoteFretNumber6Action());
-		addAction(new SetNoteFretNumber7Action());
-		addAction(new SetNoteFretNumber8Action());
-		addAction(new SetNoteFretNumber9Action());
-		addAction(new InsertNoteAction());
-		addAction(new RemoveNoteAction());
+		addAction(new InsertRestBeatAction());
+		addAction(new DeleteNoteOrRestAction());
 		addAction(new RemoveUnusedVoiceAction());
 		addAction(new CleanBeatAction());
 		addAction(new ChangeTiedNoteAction());
@@ -282,6 +263,9 @@ public class ActionManager {
 		addAction(new MoveBeatsRightAction());
 		addAction(new MoveBeatsLeftAction());
 		addAction(new MoveBeatsCustomAction());
+		for( int i = 0 ; i < 10 ; i ++ ){
+			addAction(new SetNoteFretNumberAction(i));
+		}
 		
 		//duration actions
 		addAction(new SetWholeDurationAction());
