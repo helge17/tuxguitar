@@ -21,10 +21,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingReserveds;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
 
 public class KeyBindingSelector {
 	
@@ -134,14 +132,6 @@ public class KeyBindingSelector {
 	}
 	
 	protected boolean isValid(KeyBinding kb){
-		if(KeyBindingReserveds.isReserved(kb)){
-			if(!this.editor.isDisposed()){
-				String title = TuxGuitar.getProperty("key-bindings-editor-reserved-title");
-				String message = TuxGuitar.getProperty("key-bindings-editor-reserved-message");
-				MessageDialog.infoMessage(this.editor.getDialog(),title,message);
-			}
-			return false;
-		}
 		if(this.editor.exists(kb)){
 			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("key-bindings-editor-override"));
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
