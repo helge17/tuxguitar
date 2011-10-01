@@ -9,6 +9,7 @@ public class GPXMasterBar {
 	private boolean repeatStart;
 	private int accidentalCount;
 	private String mode;
+	private String tripletFeel;
 	
 	public GPXMasterBar(){
 		this.accidentalCount = 0;
@@ -62,5 +63,12 @@ public class GPXMasterBar {
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
+
+	public String getTripletFeel() {
+		return this.tripletFeel;
+	}
 	
+	public void setTripletFeel(String tripletFeel) {
+		this.tripletFeel = tripletFeel;
+	}
 }

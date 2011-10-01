@@ -16,7 +16,11 @@ public class GPXNote {
 	private int bendOriginValue;
 	private int bendMiddleValue;
 	private int bendDestinationValue;
-
+	private int bendOriginOffset;
+	private int bendMiddleOffset1;
+	private int bendMiddleOffset2;
+	private int bendDestinationOffset;
+	
 	private boolean hammer;
 	private boolean ghost;
 	private boolean slide;
@@ -46,9 +50,13 @@ public class GPXNote {
 		this.trill = 0;
 		this.accent = 0;
 		this.bendEnabled = false;
-		this.bendOriginValue = 0;
-		this.bendMiddleValue = 0;
-		this.bendDestinationValue = 0;
+		this.bendOriginValue = -1;
+		this.bendMiddleValue = -1;
+		this.bendDestinationValue = -1;
+		this.bendOriginOffset = -1;
+		this.bendMiddleOffset1 = -1;
+		this.bendMiddleOffset2 = -1;
+		this.bendDestinationOffset = -1;
 		this.slideFlags = 0;
 		this.harmonicType = "";
 		this.harmonicFret = -1;
@@ -196,6 +204,38 @@ public class GPXNote {
 
 	public void setBendDestinationValue(int bendDestinationValue) {
 		this.bendDestinationValue = bendDestinationValue;
+	}
+
+	public int getBendOriginOffset() {
+		return bendOriginOffset;
+	}
+
+	public void setBendOriginOffset(int bendOriginOffset) {
+		this.bendOriginOffset = bendOriginOffset;
+	}
+
+	public int getBendMiddleOffset1() {
+		return bendMiddleOffset1;
+	}
+
+	public void setBendMiddleOffset1(int bendMiddleOffset1) {
+		this.bendMiddleOffset1 = bendMiddleOffset1;
+	}
+
+	public int getBendMiddleOffset2() {
+		return bendMiddleOffset2;
+	}
+
+	public void setBendMiddleOffset2(int bendMiddleOffset2) {
+		this.bendMiddleOffset2 = bendMiddleOffset2;
+	}
+
+	public int getBendDestinationOffset() {
+		return bendDestinationOffset;
+	}
+
+	public void setBendDestinationOffset(int bendDestinationOffset) {
+		this.bendDestinationOffset = bendDestinationOffset;
 	}
 
 	public boolean isHammer() {

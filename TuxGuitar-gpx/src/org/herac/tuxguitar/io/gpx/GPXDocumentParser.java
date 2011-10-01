@@ -31,10 +31,14 @@ import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GPXDocumentParser {
+	
+	private static final float GP_BEND_SEMITONE =  25f;
+	private static final float GP_BEND_POSITION = 100f;
 	
 	private TGFactory factory;
 	private GPXDocument document;
@@ -132,6 +136,7 @@ public class GPXDocumentParser {
 			tgMeasureHeader.setNumber( i + 1 );
 			tgMeasureHeader.setRepeatOpen(mbar.isRepeatStart());
 			tgMeasureHeader.setRepeatClose(mbar.getRepeatCount());
+			tgMeasureHeader.setTripletFeel(parseTripletFeel(mbar));
 			if( mbar.getTime() != null && mbar.getTime().length == 2){
 				tgMeasureHeader.getTimeSignature().setNumerator(mbar.getTime()[0]);
 				tgMeasureHeader.getTimeSignature().getDenominator().setValue(mbar.getTime()[1]);
@@ -244,6 +249,10 @@ public class GPXDocumentParser {
 				}
 			}
 		}
+		
+		if( tgMeasure.getNumber() == 1 ){
+			this.fixFirstMeasureStartPositions(tgMeasure);
+		}
 	}
 	
 	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity, GPXBeat gpBeat){
@@ -295,16 +304,16 @@ public class GPXDocumentParser {
 			tgNote.getEffect().setStaccato(gpNote.getAccent() == 1);
 			tgNote.getEffect().setHeavyAccentuatedNote(gpNote.getAccent() == 4);
 			tgNote.getEffect().setAccentuatedNote(gpNote.getAccent() == 8);
-			tgNote.getEffect().setTrill(makeTrill(gpNote));
-			tgNote.getEffect().setTremoloPicking(makeTremoloPicking(gpBeat, gpNote));
-			tgNote.getEffect().setHarmonic( makeHarmonic ( gpNote ) );
-			tgNote.getEffect().setBend( makeBend ( gpNote ) );
+			tgNote.getEffect().setTrill(parseTrill(gpNote));
+			tgNote.getEffect().setTremoloPicking(parseTremoloPicking(gpBeat, gpNote));
+			tgNote.getEffect().setHarmonic(parseHarmonic( gpNote ) );
+			tgNote.getEffect().setBend(parseBend( gpNote ) );
 			
 			tgVoice.addNote( tgNote );
 		}
 	}
 	
-	private TGEffectTrill makeTrill(GPXNote gpNote){
+	private TGEffectTrill parseTrill(GPXNote gpNote){
 		TGEffectTrill tr = null;
 		if( gpNote.getTrill() > 0 ){
 			// A trill from string E frets 3 to 4 returns : <Trill>68</Trill> and <XProperties><XProperty id="688062467"><Int>30</Int></XProperty></XProperties>
@@ -316,7 +325,7 @@ public class GPXDocumentParser {
 		return tr;
 	}
 	
-	private TGEffectTremoloPicking makeTremoloPicking(GPXBeat gpBeat, GPXNote gpNote){
+	private TGEffectTremoloPicking parseTremoloPicking(GPXBeat gpBeat, GPXNote gpNote){
 		TGEffectTremoloPicking tp = null;
 		if (gpBeat.getTremolo() != null && gpBeat.getTremolo().length == 2) {
 			tp = this.factory.newEffectTremoloPicking();
@@ -325,7 +334,7 @@ public class GPXDocumentParser {
 		return tp;
 	}
 	
-	private TGEffectHarmonic makeHarmonic(GPXNote note){
+	private TGEffectHarmonic parseHarmonic(GPXNote note){
 		TGEffectHarmonic harmonic = null;
 		if( note.getHarmonicType() != null && note.getHarmonicType().length() > 0 ){
 			harmonic = this.factory.newEffectHarmonic();
@@ -359,41 +368,44 @@ public class GPXDocumentParser {
 		return harmonic;
 	}
 	
-	private TGEffectBend makeBend(GPXNote note){
-		// TG: position and value arguments.
-		// value 4 is a whole bend, so it's measured in quarter-tones (1 is a 1/4 bend), maximum of 3 whole steps
-		// position is where the bend happens, 0 to 12 (where 12 basically represents the start of the next note)
-		// GPX: 100 seems to be a full bend, so 100 * 12 / 300 = 4
+	private TGEffectBend parseBend(GPXNote note){
 		TGEffectBend bend = null;
-		if( note.isBendEnabled() ){
+		if( note.isBendEnabled() && note.getBendOriginValue() >= 0 && note.getBendDestinationValue() >= 0 ){
 			bend = this.factory.newEffectBend();
-			if (note.getBendOriginValue() > 0) {
-				// pre-bend
-				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
-				bend.addPoint(4, note.getBendMiddleValue() * 12 / 300);
-				bend.addPoint(8, note.getBendDestinationValue() * 12 / 300);
-				bend.addPoint(12, 0);
-			} else if (note.getBendDestinationValue() > 0) {
-				// bend/release/bend?
-				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
-				bend.addPoint(4, note.getBendMiddleValue() * 12 / 300);
-				bend.addPoint(8, note.getBendDestinationValue() * 12 / 300);
-				bend.addPoint(12, 0);
-			} else  if (note.getBendMiddleValue() != note.getBendDestinationValue()){
-				// bend/release
-				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
-				bend.addPoint(3, note.getBendMiddleValue() * 12 / 300);
-				bend.addPoint(6, note.getBendMiddleValue() * 12 / 300);
-				bend.addPoint(9, note.getBendDestinationValue() * 12 / 300);
-				bend.addPoint(12, note.getBendDestinationValue() * 12 / 300);
-			} else {
-				// bend
-				bend.addPoint(0, note.getBendOriginValue() * 12 / 300);
-				bend.addPoint(6, note.getBendMiddleValue() * 12 / 300);
-				bend.addPoint(12, note.getBendDestinationValue() * 12 / 300);
+			
+			// Add the first point
+			bend.addPoint(0, parseBendValue(note.getBendOriginValue()));
+			
+			if( note.getBendOriginOffset() >= 0 ){
+				bend.addPoint(parseBendPosition(note.getBendOriginOffset()), parseBendValue(note.getBendOriginValue()));
 			}
+			if( note.getBendMiddleValue() >= 0 ){
+				int defaultMiddleOffset = Math.round(GP_BEND_POSITION / 2);
+				if( note.getBendMiddleOffset1() != 12 ){
+					int offset = (note.getBendMiddleOffset1() >= 0 ? note.getBendMiddleOffset1() : defaultMiddleOffset);
+					bend.addPoint(parseBendPosition(offset), parseBendValue(note.getBendMiddleValue()));
+				}
+				if( note.getBendMiddleOffset2() != 12 ){
+					int offset = (note.getBendMiddleOffset2() >= 0 ? note.getBendMiddleOffset2() : defaultMiddleOffset);
+					bend.addPoint(parseBendPosition(offset), parseBendValue(note.getBendMiddleValue()));
+				}
+			}
+			if( note.getBendDestinationOffset() >= 0 && note.getBendDestinationOffset() < GP_BEND_POSITION ){
+				bend.addPoint(parseBendPosition(note.getBendDestinationOffset()), parseBendValue(note.getBendDestinationValue()));
+			}
+			
+			// Add last point
+			bend.addPoint(TGEffectBend.MAX_POSITION_LENGTH, parseBendValue(note.getBendDestinationValue()));
 		}
 		return bend;
+	}
+	
+	private int parseBendValue( int gpValue ){
+		return Math.round(gpValue * (TGEffectBend.SEMITONE_LENGTH / GP_BEND_SEMITONE));
+	}
+	
+	private int parseBendPosition( int gpOffset ){
+		return Math.round(gpOffset * (TGEffectTremoloBar.MAX_POSITION_LENGTH / GP_BEND_POSITION));
 	}
 	
 	private void parseRhythm(GPXRhythm gpRhythm , TGDuration tgDuration){
@@ -453,6 +465,18 @@ public class GPXDocumentParser {
 		return tgVelocity;
 	}
 	
+	private int parseTripletFeel(GPXMasterBar gpMasterBar){
+		if( gpMasterBar.getTripletFeel() != null ){
+			if( gpMasterBar.getTripletFeel().equals("Triplet8th") ){
+				return TGMeasureHeader.TRIPLET_FEEL_EIGHTH; 
+			}
+			if( gpMasterBar.getTripletFeel().equals("Triplet16th") ){
+				return TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH;
+			}
+		}
+		return TGMeasureHeader.TRIPLET_FEEL_NONE;
+	}
+	
 	private TGBeat getBeat(TGMeasure measure, long start){
 		int count = measure.countBeats();
 		for(int i = 0 ; i < count ; i ++ ){
@@ -491,5 +515,28 @@ public class GPXDocumentParser {
 			}
 		}
 		return null;
+	}
+	
+	private void fixFirstMeasureStartPositions(TGMeasure tgMeasure){
+		if( tgMeasure.getNumber() == 1 ){
+			long measureEnd = (tgMeasure.getStart() + tgMeasure.getLength());
+			long maximumNoteEnd = 0;
+			for( int b = 0 ; b < tgMeasure.countBeats(); b ++ ){
+				TGBeat tgBeat = tgMeasure.getBeat(b);
+				for( int v = 0 ; v < tgBeat.countVoices() ; v ++ ){
+					TGVoice tgVoice = tgBeat.getVoice( v );
+					if(!tgVoice.isEmpty() ){
+						maximumNoteEnd = Math.max(maximumNoteEnd, (tgBeat.getStart() + tgVoice.getDuration().getTime()));
+					}
+				}
+			}
+			if( maximumNoteEnd < measureEnd ){
+				long movement = (measureEnd - maximumNoteEnd);
+				for( int b = 0 ; b < tgMeasure.countBeats(); b ++ ){
+					TGBeat tgBeat = tgMeasure.getBeat(b);
+					tgBeat.setStart( tgBeat.getStart() + movement );
+				}
+			}
+		}
 	}
 }
