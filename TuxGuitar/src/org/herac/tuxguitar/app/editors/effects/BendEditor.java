@@ -48,6 +48,7 @@ public class BendEditor{
 	protected Composite editor;
 	protected DefaultBend[] defaultBends;
 	protected TGEffectBend result;
+	protected boolean cancelled;
 	
 	public BendEditor() {
 		this.init();
@@ -68,7 +69,17 @@ public class BendEditor{
 		}
 	}
 	
-	public TGEffectBend show(Shell shell,final TGNote note){
+	public boolean isCancelled(){
+		return this.cancelled;
+	}
+	
+	public TGEffectBend getResult(){
+		return this.result;
+	}
+	
+	public void show(Shell shell,final TGNote note){
+		this.cancelled = true;
+		
 		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
@@ -130,6 +141,7 @@ public class BendEditor{
 		buttonClean.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				BendEditor.this.result = null;
+				BendEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -139,6 +151,7 @@ public class BendEditor{
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				BendEditor.this.result = getBend();
+				BendEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -161,8 +174,6 @@ public class BendEditor{
 		dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		
-		return this.result;
 	}
 	
 	private GridData resizeData(GridData data,int minimumWidth,int minimumHeight){
