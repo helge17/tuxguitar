@@ -37,8 +37,10 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GPXDocumentParser {
 	
-	private static final float GP_BEND_SEMITONE =  25f;
 	private static final float GP_BEND_POSITION = 100f;
+	private static final float GP_BEND_SEMITONE =  25f;
+	private static final float GP_WHAMMY_BAR_POSITION = 100f;
+	private static final float GP_WHAMMY_BAR_SEMITONE =  50f;
 	
 	private TGFactory factory;
 	private GPXDocument document;
@@ -308,6 +310,7 @@ public class GPXDocumentParser {
 			tgNote.getEffect().setTremoloPicking(parseTremoloPicking(gpBeat, gpNote));
 			tgNote.getEffect().setHarmonic(parseHarmonic( gpNote ) );
 			tgNote.getEffect().setBend(parseBend( gpNote ) );
+			tgNote.getEffect().setTremoloBar(parseTremoloBar( gpBeat ));
 			
 			tgVoice.addNote( tgNote );
 		}
@@ -370,27 +373,27 @@ public class GPXDocumentParser {
 	
 	private TGEffectBend parseBend(GPXNote note){
 		TGEffectBend bend = null;
-		if( note.isBendEnabled() && note.getBendOriginValue() >= 0 && note.getBendDestinationValue() >= 0 ){
+		if( note.isBendEnabled() && note.getBendOriginValue() != null && note.getBendDestinationValue() != null ){
 			bend = this.factory.newEffectBend();
 			
 			// Add the first point
 			bend.addPoint(0, parseBendValue(note.getBendOriginValue()));
 			
-			if( note.getBendOriginOffset() >= 0 ){
+			if( note.getBendOriginOffset() != null ){
 				bend.addPoint(parseBendPosition(note.getBendOriginOffset()), parseBendValue(note.getBendOriginValue()));
 			}
-			if( note.getBendMiddleValue() >= 0 ){
-				int defaultMiddleOffset = Math.round(GP_BEND_POSITION / 2);
-				if( note.getBendMiddleOffset1() != 12 ){
-					int offset = (note.getBendMiddleOffset1() >= 0 ? note.getBendMiddleOffset1() : defaultMiddleOffset);
+			if( note.getBendMiddleValue() != null ){
+				Integer defaultMiddleOffset = new Integer(Math.round(GP_BEND_POSITION / 2));
+				if( note.getBendMiddleOffset1() == null || note.getBendMiddleOffset1().intValue() != 12 ){
+					Integer offset = (note.getBendMiddleOffset1() != null ? note.getBendMiddleOffset1() : defaultMiddleOffset);
 					bend.addPoint(parseBendPosition(offset), parseBendValue(note.getBendMiddleValue()));
 				}
-				if( note.getBendMiddleOffset2() != 12 ){
-					int offset = (note.getBendMiddleOffset2() >= 0 ? note.getBendMiddleOffset2() : defaultMiddleOffset);
+				if( note.getBendMiddleOffset2() == null || note.getBendMiddleOffset2().intValue() != 12 ){
+					Integer offset = (note.getBendMiddleOffset2() != null ? note.getBendMiddleOffset2() : defaultMiddleOffset);
 					bend.addPoint(parseBendPosition(offset), parseBendValue(note.getBendMiddleValue()));
 				}
 			}
-			if( note.getBendDestinationOffset() >= 0 && note.getBendDestinationOffset() < GP_BEND_POSITION ){
+			if( note.getBendDestinationOffset() != null && note.getBendDestinationOffset().intValue() < GP_BEND_POSITION ){
 				bend.addPoint(parseBendPosition(note.getBendDestinationOffset()), parseBendValue(note.getBendDestinationValue()));
 			}
 			
@@ -400,12 +403,68 @@ public class GPXDocumentParser {
 		return bend;
 	}
 	
-	private int parseBendValue( int gpValue ){
-		return Math.round(gpValue * (TGEffectBend.SEMITONE_LENGTH / GP_BEND_SEMITONE));
+	private int parseBendValue( Integer gpValue ){
+		return Math.round(gpValue.intValue() * (TGEffectBend.SEMITONE_LENGTH / GP_BEND_SEMITONE));
 	}
 	
-	private int parseBendPosition( int gpOffset ){
-		return Math.round(gpOffset * (TGEffectTremoloBar.MAX_POSITION_LENGTH / GP_BEND_POSITION));
+	private int parseBendPosition( Integer gpOffset ){
+		return Math.round(gpOffset.intValue() * (TGEffectBend.MAX_POSITION_LENGTH / GP_BEND_POSITION));
+	}
+	
+	private TGEffectTremoloBar parseTremoloBar(GPXBeat beat){
+		TGEffectTremoloBar tremoloBar = null;
+		if( beat.isWhammyBarEnabled() && beat.getWhammyBarOriginValue() != null && beat.getWhammyBarDestinationValue() != null){
+			tremoloBar = this.factory.newEffectTremoloBar();
+			
+			// Add the first point
+			tremoloBar.addPoint(0, parseTremoloBarValue(beat.getWhammyBarOriginValue()));
+			
+			if( beat.getWhammyBarOriginOffset() != null ){
+				tremoloBar.addPoint(parseTremoloBarPosition(beat.getWhammyBarOriginOffset()), parseTremoloBarValue(beat.getWhammyBarOriginValue()));
+			}
+			if( beat.getWhammyBarMiddleValue() != null ){
+				boolean hiddenPoint = false;
+				if( beat.getWhammyBarDestinationValue().intValue() != 0 ){
+					if( beat.getWhammyBarMiddleValue().intValue() == Math.round(beat.getWhammyBarDestinationValue().intValue() / 2f) ){
+						hiddenPoint = false;
+					}
+				}
+				if(!hiddenPoint ){
+					Integer defaultMiddleOffset = new Integer(Math.round(GP_WHAMMY_BAR_POSITION / 2));
+					Integer offset1 = (beat.getWhammyBarMiddleOffset1() != null ? beat.getWhammyBarMiddleOffset1() : defaultMiddleOffset);
+					if( beat.getWhammyBarOriginOffset() == null || offset1.intValue() >= beat.getWhammyBarOriginOffset().intValue() ){
+						tremoloBar.addPoint(parseTremoloBarPosition(offset1), parseTremoloBarValue(beat.getWhammyBarMiddleValue()));
+					}
+					
+					Integer offset2 = (beat.getWhammyBarMiddleOffset2() != null ? beat.getWhammyBarMiddleOffset2() : defaultMiddleOffset);
+					if( beat.getWhammyBarOriginOffset() == null || offset1.intValue() >= beat.getWhammyBarOriginOffset().intValue() && offset2.intValue() > offset1.intValue() ){
+						tremoloBar.addPoint(parseTremoloBarPosition(offset2), parseTremoloBarValue(beat.getWhammyBarMiddleValue()));
+					}
+				}
+			}
+			if( beat.getWhammyBarDestinationOffset() != null && beat.getWhammyBarDestinationOffset().intValue() < GP_WHAMMY_BAR_POSITION ){
+				tremoloBar.addPoint(parseTremoloBarPosition(beat.getWhammyBarDestinationOffset()), parseTremoloBarValue(beat.getWhammyBarDestinationValue()));
+			}
+			
+			// Add last point
+			tremoloBar.addPoint(TGEffectTremoloBar.MAX_POSITION_LENGTH, parseTremoloBarValue(beat.getWhammyBarDestinationValue()));
+		}
+		return tremoloBar;
+	}
+	
+	private int parseTremoloBarValue( Integer gpValue ){
+		int value = Math.round(gpValue.intValue() * (1f / GP_WHAMMY_BAR_SEMITONE));
+		if( value > TGEffectTremoloBar.MAX_VALUE_LENGTH ){
+			value = TGEffectTremoloBar.MAX_VALUE_LENGTH;
+		}
+		if( value < (TGEffectTremoloBar.MAX_VALUE_LENGTH * -1) ){
+			value = (TGEffectTremoloBar.MAX_VALUE_LENGTH * -1);
+		}
+		return value;
+	}
+	
+	private int parseTremoloBarPosition( Integer gpOffset ){
+		return Math.round(gpOffset.intValue() * (TGEffectTremoloBar.MAX_POSITION_LENGTH / GP_WHAMMY_BAR_POSITION));
 	}
 	
 	private void parseRhythm(GPXRhythm gpRhythm , TGDuration tgDuration){

@@ -206,6 +206,41 @@ public class GPXDocumentReader {
 					beat.setTremolo( getChildNodeIntegerContentArray(beatNode, "Tremolo", "/"));
 					beat.setNoteIds( getChildNodeIntegerContentArray(beatNode, "Notes"));
 					
+					NodeList propertyNodes = getChildNodeList(beatNode, "Properties");
+					if( propertyNodes != null ){
+						for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
+							Node propertyNode = propertyNodes.item( p );
+							if (propertyNode.getNodeName().equals("Property") ){ 
+								String propertyName = getAttributeValue(propertyNode, "name");
+								
+								if( propertyName.equals("WhammyBar") ){
+									beat.setWhammyBarEnabled( getChildNode(propertyNode, "Enable") != null );
+								}
+								if( propertyName.equals("WhammyBarOriginValue") ){
+									beat.setWhammyBarOriginValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("WhammyBarMiddleValue") ){
+									beat.setWhammyBarMiddleValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("WhammyBarDestinationValue") ){
+									beat.setWhammyBarDestinationValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("WhammyBarOriginOffset") ){
+									beat.setWhammyBarOriginOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("WhammyBarMiddleOffset1") ){
+									beat.setWhammyBarMiddleOffset1( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("WhammyBarMiddleOffset2") ){
+									beat.setWhammyBarMiddleOffset2( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("WhammyBarDestinationOffset") ){
+									beat.setWhammyBarDestinationOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+							}
+						}
+					}
+					
 					this.gpxDocument.getBeats().add( beat );
 				}
 			}
@@ -235,79 +270,81 @@ public class GPXDocumentReader {
 					note.setVibrato( getChildNode(noteNode, "Vibrato") != null );
 					
 					NodeList propertyNodes = getChildNodeList(noteNode, "Properties");
-					for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
-						Node propertyNode = propertyNodes.item( p );
-						if (propertyNode.getNodeName().equals("Property") ){ 
-							String propertyName = getAttributeValue(propertyNode, "name");
-							if( propertyName.equals("String") ){
-								note.setString( getChildNodeIntegerContent(propertyNode, "String") );
-							}
-							if( propertyName.equals("Fret") ){
-								note.setFret( getChildNodeIntegerContent(propertyNode, "Fret") );
-							}
-							if( propertyName.equals("Midi") ){
-								note.setMidiNumber( getChildNodeIntegerContent(propertyNode, "Number") );
-							}
-							if( propertyName.equals("Tone") ){
-								note.setTone( getChildNodeIntegerContent(propertyNode, "Step") );
-							}
-							if( propertyName.equals("Octave") ){
-								note.setOctave( getChildNodeIntegerContent(propertyNode, "Number") );
-							}
-							if( propertyName.equals("Element") ){
-								note.setElement( getChildNodeIntegerContent(propertyNode, "Element") );
-							}
-							if( propertyName.equals("Variation") ){
-								note.setVariation( getChildNodeIntegerContent(propertyNode, "Variation") );
-							}
-							if( propertyName.equals("Muted") ){
-								note.setMutedEnabled( getChildNode(propertyNode, "Enable") != null );
-							}
-							if( propertyName.equals("PalmMuted") ){
-								note.setPalmMutedEnabled( getChildNode(propertyNode, "Enable") != null );
-							}
-							if( propertyName.equals("Slide") ){
-								note.setSlide( true );
-								note.setSlideFlags( getChildNodeIntegerContent(propertyNode, "Flags") );
-							}
-							if( propertyName.equals("Tapped") ){
-								note.setTapped( getChildNode(propertyNode, "Enable") != null );
-							}
-							if( propertyName.equals("Bended") ){
-								note.setBendEnabled( getChildNode(propertyNode, "Enable") != null );
-							}
-							if( propertyName.equals("BendOriginValue") ){
-								note.setBendOriginValue( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("BendMiddleValue") ){
-								note.setBendMiddleValue( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("BendDestinationValue") ){
-								note.setBendDestinationValue( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("BendOriginOffset") ){
-								note.setBendOriginOffset( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("BendMiddleOffset1") ){
-								note.setBendMiddleOffset1( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("BendMiddleOffset2") ){
-								note.setBendMiddleOffset2( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("BendDestinationOffset") ){
-								note.setBendDestinationOffset( getChildNodeIntegerContent(propertyNode, "Float", -1) );
-							}
-							if( propertyName.equals("HopoOrigin") ){
-								note.setHammer(true);
-							}
-							if( propertyName.equals("HopoDestination") ){
-//								this is a hammer-on or pull-off
-							}
-							if( propertyName.equals("HarmonicFret") ){
-								note.setHarmonicFret( ( getChildNodeIntegerContent(propertyNode, "HFret") ) );
-							}
-							if( propertyName.equals("HarmonicType") ){
-								note.setHarmonicType( getChildNodeContent (propertyNode, "HType"));
+					if( propertyNodes != null ){
+						for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
+							Node propertyNode = propertyNodes.item( p );
+							if (propertyNode.getNodeName().equals("Property") ){ 
+								String propertyName = getAttributeValue(propertyNode, "name");
+								if( propertyName.equals("String") ){
+									note.setString( getChildNodeIntegerContent(propertyNode, "String") );
+								}
+								if( propertyName.equals("Fret") ){
+									note.setFret( getChildNodeIntegerContent(propertyNode, "Fret") );
+								}
+								if( propertyName.equals("Midi") ){
+									note.setMidiNumber( getChildNodeIntegerContent(propertyNode, "Number") );
+								}
+								if( propertyName.equals("Tone") ){
+									note.setTone( getChildNodeIntegerContent(propertyNode, "Step") );
+								}
+								if( propertyName.equals("Octave") ){
+									note.setOctave( getChildNodeIntegerContent(propertyNode, "Number") );
+								}
+								if( propertyName.equals("Element") ){
+									note.setElement( getChildNodeIntegerContent(propertyNode, "Element") );
+								}
+								if( propertyName.equals("Variation") ){
+									note.setVariation( getChildNodeIntegerContent(propertyNode, "Variation") );
+								}
+								if( propertyName.equals("Muted") ){
+									note.setMutedEnabled( getChildNode(propertyNode, "Enable") != null );
+								}
+								if( propertyName.equals("PalmMuted") ){
+									note.setPalmMutedEnabled( getChildNode(propertyNode, "Enable") != null );
+								}
+								if( propertyName.equals("Slide") ){
+									note.setSlide( true );
+									note.setSlideFlags( getChildNodeIntegerContent(propertyNode, "Flags") );
+								}
+								if( propertyName.equals("Tapped") ){
+									note.setTapped( getChildNode(propertyNode, "Enable") != null );
+								}
+								if( propertyName.equals("Bended") ){
+									note.setBendEnabled( getChildNode(propertyNode, "Enable") != null );
+								}
+								if( propertyName.equals("BendOriginValue") ){
+									note.setBendOriginValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("BendMiddleValue") ){
+									note.setBendMiddleValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("BendDestinationValue") ){
+									note.setBendDestinationValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("BendOriginOffset") ){
+									note.setBendOriginOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("BendMiddleOffset1") ){
+									note.setBendMiddleOffset1( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("BendMiddleOffset2") ){
+									note.setBendMiddleOffset2( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("BendDestinationOffset") ){
+									note.setBendDestinationOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("HopoOrigin") ){
+									note.setHammer(true);
+								}
+								if( propertyName.equals("HopoDestination") ){
+	//								this is a hammer-on or pull-off
+								}
+								if( propertyName.equals("HarmonicFret") ){
+									note.setHarmonicFret( ( getChildNodeIntegerContent(propertyNode, "HFret") ) );
+								}
+								if( propertyName.equals("HarmonicType") ){
+									note.setHarmonicType( getChildNodeContent (propertyNode, "HType"));
+								}
 							}
 						}
 					}
@@ -398,15 +435,11 @@ public class GPXDocumentReader {
 		return false;
 	}
 	
-	private int getChildNodeIntegerContent(Node node, String name ){
-		return getChildNodeIntegerContent(node, name, 0);
-	}
-	
-	private int getChildNodeIntegerContent(Node node, String name, int defaultValue){
+	private int getChildNodeIntegerContent(Node node, String name){
 		try {
 			return new BigDecimal(this.getChildNodeContent(node, name)).intValue();
 		} catch( Throwable throwable ){
-			return defaultValue;
+			return 0;
 		}
 	}
 	

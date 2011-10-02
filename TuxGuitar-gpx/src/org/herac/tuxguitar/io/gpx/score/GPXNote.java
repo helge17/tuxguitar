@@ -13,13 +13,13 @@ public class GPXNote {
 	private int midiNumber;
 	// bends are measured in % of full step.  100 = full step, not 100 (cents) = half step
 	private boolean bendEnabled;
-	private int bendOriginValue;
-	private int bendMiddleValue;
-	private int bendDestinationValue;
-	private int bendOriginOffset;
-	private int bendMiddleOffset1;
-	private int bendMiddleOffset2;
-	private int bendDestinationOffset;
+	private Integer bendOriginValue;
+	private Integer bendMiddleValue;
+	private Integer bendDestinationValue;
+	private Integer bendOriginOffset;
+	private Integer bendMiddleOffset1;
+	private Integer bendMiddleOffset2;
+	private Integer bendDestinationOffset;
 	
 	private boolean hammer;
 	private boolean ghost;
@@ -49,14 +49,6 @@ public class GPXNote {
 		this.ghost = false;
 		this.trill = 0;
 		this.accent = 0;
-		this.bendEnabled = false;
-		this.bendOriginValue = -1;
-		this.bendMiddleValue = -1;
-		this.bendDestinationValue = -1;
-		this.bendOriginOffset = -1;
-		this.bendMiddleOffset1 = -1;
-		this.bendMiddleOffset2 = -1;
-		this.bendDestinationOffset = -1;
 		this.slideFlags = 0;
 		this.harmonicType = "";
 		this.harmonicFret = -1;
@@ -182,59 +174,59 @@ public class GPXNote {
 		this.bendEnabled = bendEnabled;
 	}
 
-	public int getBendOriginValue() {
+	public Integer getBendOriginValue() {
 		return bendOriginValue;
 	}
 
-	public void setBendOriginValue(int bendOriginValue) {
+	public void setBendOriginValue(Integer bendOriginValue) {
 		this.bendOriginValue = bendOriginValue;
 	}
 
-	public int getBendMiddleValue() {
+	public Integer getBendMiddleValue() {
 		return bendMiddleValue;
 	}
 
-	public void setBendMiddleValue(int bendMiddleValue) {
+	public void setBendMiddleValue(Integer bendMiddleValue) {
 		this.bendMiddleValue = bendMiddleValue;
 	}
 
-	public int getBendDestinationValue() {
+	public Integer getBendDestinationValue() {
 		return bendDestinationValue;
 	}
 
-	public void setBendDestinationValue(int bendDestinationValue) {
+	public void setBendDestinationValue(Integer bendDestinationValue) {
 		this.bendDestinationValue = bendDestinationValue;
 	}
 
-	public int getBendOriginOffset() {
+	public Integer getBendOriginOffset() {
 		return bendOriginOffset;
 	}
 
-	public void setBendOriginOffset(int bendOriginOffset) {
+	public void setBendOriginOffset(Integer bendOriginOffset) {
 		this.bendOriginOffset = bendOriginOffset;
 	}
 
-	public int getBendMiddleOffset1() {
+	public Integer getBendMiddleOffset1() {
 		return bendMiddleOffset1;
 	}
 
-	public void setBendMiddleOffset1(int bendMiddleOffset1) {
+	public void setBendMiddleOffset1(Integer bendMiddleOffset1) {
 		this.bendMiddleOffset1 = bendMiddleOffset1;
 	}
 
-	public int getBendMiddleOffset2() {
+	public Integer getBendMiddleOffset2() {
 		return bendMiddleOffset2;
 	}
 
-	public void setBendMiddleOffset2(int bendMiddleOffset2) {
+	public void setBendMiddleOffset2(Integer bendMiddleOffset2) {
 		this.bendMiddleOffset2 = bendMiddleOffset2;
 	}
 
-	public int getBendDestinationOffset() {
+	public Integer getBendDestinationOffset() {
 		return bendDestinationOffset;
 	}
 
-	public void setBendDestinationOffset(int bendDestinationOffset) {
+	public void setBendDestinationOffset(Integer bendDestinationOffset) {
 		this.bendDestinationOffset = bendDestinationOffset;
 	}
 
