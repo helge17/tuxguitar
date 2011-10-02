@@ -31,8 +31,12 @@ public class ChangeTremoloBarAction extends Action{
 	
 	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
-		if(note != null){
-			changeTremoloBar(new TremoloBarEditor().show(getEditor().getTablature().getShell(),note));
+		if( note != null ){
+			TremoloBarEditor tremoloBarEditor = new TremoloBarEditor();
+			tremoloBarEditor.show(getEditor().getTablature().getShell(),note);
+			if(!tremoloBarEditor.isCancelled() ){
+				changeTremoloBar(tremoloBarEditor.getResult());
+			}
 		}
 		return 0;
 	}

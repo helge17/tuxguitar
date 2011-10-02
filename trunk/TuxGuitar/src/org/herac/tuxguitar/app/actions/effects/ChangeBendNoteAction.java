@@ -32,7 +32,11 @@ public class ChangeBendNoteAction extends Action{
 	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
 		if(note != null){
-			changeBend(new BendEditor().show(getEditor().getTablature().getShell(),note));
+			BendEditor bendEditor = new BendEditor();
+			bendEditor.show(getEditor().getTablature().getShell(),note);
+			if(!bendEditor.isCancelled()){
+				changeBend(bendEditor.getResult());
+			}
 		}
 		return 0;
 	}

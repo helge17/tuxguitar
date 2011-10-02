@@ -48,6 +48,7 @@ public class TremoloBarEditor{
 	protected Composite editor;
 	protected DefaultTremoloBar[] defaultTremoloBars;
 	protected TGEffectTremoloBar result;
+	protected boolean cancelled;
 	
 	public TremoloBarEditor() {
 		this.init();
@@ -68,7 +69,17 @@ public class TremoloBarEditor{
 		}
 	}
 	
-	public TGEffectTremoloBar show(Shell shell,final TGNote note){
+	public boolean isCancelled(){
+		return this.cancelled;
+	}
+	
+	public TGEffectTremoloBar getResult(){
+		return this.result;
+	}
+	
+	public void show(Shell shell,final TGNote note){
+		this.cancelled = true;
+		
 		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
@@ -129,6 +140,7 @@ public class TremoloBarEditor{
 		buttonClean.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TremoloBarEditor.this.result = null;
+				TremoloBarEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -138,6 +150,7 @@ public class TremoloBarEditor{
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TremoloBarEditor.this.result = getTremoloBar();
+				TremoloBarEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -160,8 +173,6 @@ public class TremoloBarEditor{
 		dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		
-		return this.result;
 	}
 	
 	private GridData resizeData(GridData data,int minimumWidth,int minimumHeight){
