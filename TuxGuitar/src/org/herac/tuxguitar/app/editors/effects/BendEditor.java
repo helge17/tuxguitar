@@ -161,6 +161,7 @@ public class BendEditor{
 		buttonCancel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				BendEditor.this.result = note.getEffect().getBend();
+				BendEditor.this.cancelled = true;
 				dialog.dispose();
 			}
 		});

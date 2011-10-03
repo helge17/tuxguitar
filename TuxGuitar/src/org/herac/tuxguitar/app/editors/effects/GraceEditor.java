@@ -20,9 +20,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
 public class GraceEditor extends SelectionAdapter{
 	
-	public static final int WIDTH = 400;
-	
-	public static final int HEIGHT = 0;
+	private static final int LAYOUT_COLUMNS = 2;
 	
 	private Spinner fretSpinner;
 	private Button deadButton;
@@ -45,14 +43,23 @@ public class GraceEditor extends SelectionAdapter{
 	private Button hammerButton;
 	
 	protected TGEffectGrace result;
+	protected boolean cancelled;
 	
 	public GraceEditor(){
 		super();
 	}
 	
-	private static final int LAYOUT_COLUMNS = 2;
+	public boolean isCancelled(){
+		return this.cancelled;
+	}
 	
-	public TGEffectGrace show(final TGNote note){
+	public TGEffectGrace getResult(){
+		return this.result;
+	}
+	
+	public void show(final TGNote note){
+		this.cancelled = true;
+		
 		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
@@ -218,6 +225,7 @@ public class GraceEditor extends SelectionAdapter{
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				GraceEditor.this.result = getGrace();
+				GraceEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -228,6 +236,7 @@ public class GraceEditor extends SelectionAdapter{
 		buttonClean.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				GraceEditor.this.result = null;
+				GraceEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -238,6 +247,7 @@ public class GraceEditor extends SelectionAdapter{
 		buttonCancel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				GraceEditor.this.result = note.getEffect().getGrace();
+				GraceEditor.this.cancelled = true;
 				dialog.dispose();
 			}
 		});
@@ -245,7 +255,6 @@ public class GraceEditor extends SelectionAdapter{
 		dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		return this.result;
 	}
 	
 	private Group makeGroup(Composite parent,int horizontalSpan,String text){

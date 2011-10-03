@@ -32,7 +32,11 @@ public class ChangeGraceNoteAction extends Action{
 	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
 		if(note != null){
-			changeGrace(new GraceEditor().show(note));
+			GraceEditor graceEditor = new GraceEditor();
+			graceEditor.show(note);
+			if(!graceEditor.isCancelled()){
+				changeGrace(graceEditor.getResult());
+			}
 		}
 		return 0;
 	}
