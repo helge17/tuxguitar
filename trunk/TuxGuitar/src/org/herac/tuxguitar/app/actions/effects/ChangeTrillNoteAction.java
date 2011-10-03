@@ -31,8 +31,12 @@ public class ChangeTrillNoteAction extends Action{
 	
 	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
-		if(note != null){
-			changeTrill(new TrillEditor().show(note));
+		if( note != null ){
+			TrillEditor trillEditor = new TrillEditor();
+			trillEditor.show(note);
+			if(!trillEditor.isCancelled()){
+				changeTrill(trillEditor.getResult());
+			}
 		}
 		return 0;
 	}

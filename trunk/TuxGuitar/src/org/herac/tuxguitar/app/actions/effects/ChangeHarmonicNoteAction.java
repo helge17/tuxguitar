@@ -32,7 +32,11 @@ public class ChangeHarmonicNoteAction extends Action{
 	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
 		if(note != null){
-			changeHarmonic(new HarmonicEditor().show(note));
+			HarmonicEditor harmonicEditor = new HarmonicEditor();
+			harmonicEditor.show(note);
+			if(!harmonicEditor.isCancelled()){
+				changeHarmonic(harmonicEditor.getResult());
+			}
 		}
 		return 0;
 	}

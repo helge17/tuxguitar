@@ -19,19 +19,28 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 public class HarmonicEditor extends SelectionAdapter{
 	
 	public static final int WIDTH = 400;
-	public static final int HEIGHT = 0;
 	
 	protected Combo harmonicType;
 	protected Combo harmonicDataCombo;
+	protected Button[] typeButtons;
 	protected TGEffectHarmonic result;
+	protected boolean cancelled;
 	
 	public HarmonicEditor(){
 		super();
 	}
 	
-	protected Button[] typeButtons;
+	public boolean isCancelled(){
+		return this.cancelled;
+	}
 	
-	public TGEffectHarmonic show(final TGNote note){
+	public TGEffectHarmonic getResult(){
+		return this.result;
+	}
+	
+	public void show(final TGNote note){
+		this.cancelled = true;
+		
 		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
@@ -88,6 +97,7 @@ public class HarmonicEditor extends SelectionAdapter{
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				HarmonicEditor.this.result = getHarmonic();
+				HarmonicEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -99,6 +109,7 @@ public class HarmonicEditor extends SelectionAdapter{
 		buttonClean.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				HarmonicEditor.this.result = null;
+				HarmonicEditor.this.cancelled = false;
 				dialog.dispose();
 			}
 		});
@@ -109,6 +120,7 @@ public class HarmonicEditor extends SelectionAdapter{
 		buttonCancel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				HarmonicEditor.this.result = note.getEffect().getHarmonic();
+				HarmonicEditor.this.cancelled = true;
 				dialog.dispose();
 			}
 		});
@@ -118,7 +130,6 @@ public class HarmonicEditor extends SelectionAdapter{
 		dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		return this.result;
 	}
 	
 	private GridData resizeData(GridData data,int minWidth){

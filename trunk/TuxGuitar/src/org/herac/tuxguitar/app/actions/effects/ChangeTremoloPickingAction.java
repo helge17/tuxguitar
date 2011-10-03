@@ -32,7 +32,11 @@ public class ChangeTremoloPickingAction extends Action{
 	protected int execute(ActionData actionData){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
 		if(note != null){
-			changeTremoloPicking(new TremoloPickingEditor().show(note));
+			TremoloPickingEditor tremoloPickingEditor = new TremoloPickingEditor();
+			tremoloPickingEditor.show(note);
+			if(!tremoloPickingEditor.isCancelled()){
+				changeTremoloPicking(tremoloPickingEditor.getResult());
+			}
 		}
 		return 0;
 	}

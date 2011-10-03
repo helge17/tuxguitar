@@ -160,6 +160,7 @@ public class TremoloBarEditor{
 		buttonCancel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TremoloBarEditor.this.result = note.getEffect().getTremoloBar();
+				TremoloBarEditor.this.cancelled = true;
 				dialog.dispose();
 			}
 		});
