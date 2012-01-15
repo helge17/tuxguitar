@@ -1,18 +1,20 @@
 package org.herac.tuxguitar.app.editors.channel;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,12 +39,15 @@ public class TGScalePopup{
 	public void init(Composite parent){
 		this.value = -1;
 		this.inverted =  true;
-		this.item = new Button(parent, SWT.PUSH);
-		this.item.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				showShell();
-			}
-		});
+		this.item = new Button(parent, SWT.TOGGLE);
+		this.item.addDisposeListener(createItemDisposeListener());
+		this.item.addSelectionListener(createItemSelectionListener());
+		this.item.getShell().addListener(SWT.Move, createMoveShellListener());
+	}
+	
+	public void reset(){
+		this.item.setSelection(false);
+		this.hideShell();
 	}
 	
 	public void addDefaultListeners(){
@@ -131,23 +136,15 @@ public class TGScalePopup{
 	}
 	
 	public void showShell() {
-		if( isShellDisposed() ){			
-			this.shell = new Shell( this.item.getShell(), SWT.NO_TRIM);
+		if( isShellDisposed() ){
+			this.shell = new Shell( this.item.getShell(), SWT.NO_TRIM );
 			this.shell.setVisible(false);
 			this.shell.setLayout(getGridLayout());
-			this.shell.addShellListener(new ShellAdapter() {
-				public void shellDeactivated(ShellEvent e) {
-					hideShell();
-				}
-				public void shellClosed(ShellEvent e) {
-					hideShell();
-				}
-			});
 			
 			this.composite = new Composite(this.shell, SWT.BORDER);
 			this.composite.setLayout(getGridLayout());
 			this.composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
+			
 			this.scale = new Scale(this.composite, SWT.VERTICAL );
 			this.scale.setMaximum(127);
 			this.scale.setMinimum(0);
@@ -157,13 +154,9 @@ public class TGScalePopup{
 			this.setValueToScale();
 			this.addDefaultListeners();
 			
-			Rectangle bounds = this.item.getBounds();
-			Point location = this.item.getParent().toDisplay(new Point(bounds.x, bounds.y));
-			
 			this.shell.pack();
-			this.shell.setLocation( (location.x + (bounds.width / 2)) - (this.shell.getSize().x / 2), location.y + bounds.height);
+			this.moveShell();
 			this.shell.setVisible(true);
-			this.shell.setActive();
 		}
 	}
 	
@@ -174,11 +167,52 @@ public class TGScalePopup{
 		}
 	}
 	
+	public void showHideShell() {
+		if( this.item.getSelection() ){
+			showShell();
+		}else{
+			hideShell();
+		}
+	}
+	
+	public void moveShell() {
+		if(!isShellDisposed()){
+			Rectangle bounds = this.item.getBounds();
+			Point location = this.item.getParent().toDisplay(new Point(bounds.x, bounds.y));
+			
+			this.shell.setLocation( (location.x + (bounds.width / 2)) - (this.shell.getSize().x / 2), location.y + bounds.height);
+		}
+	}
+	
 	public boolean isShellDisposed(){
 		return ( this.shell == null || this.shell.isDisposed() );
 	}
 	
 	public void setSelectionListener(SelectionListener selectionListener){
 		this.selectionListener = selectionListener;
+	}
+	
+	private DisposeListener createItemDisposeListener(){
+		return new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				hideShell();
+			}
+		};
+	}
+	
+	private SelectionListener createItemSelectionListener(){
+		return new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				showHideShell();
+			}
+		};
+	}
+	
+	private Listener createMoveShellListener(){
+		return new Listener() {
+			public void handleEvent(Event event) {
+				moveShell();
+			}
+		};
 	}
 }

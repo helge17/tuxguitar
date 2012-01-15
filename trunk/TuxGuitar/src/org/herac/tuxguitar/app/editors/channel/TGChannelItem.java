@@ -159,7 +159,6 @@ public class TGChannelItem {
 		this.updateItems();
 	}
 	
-	
 	public void loadProperties(){
 		if(!isDisposed()){
 			this.percussionButton.setText(TuxGuitar.getProperty("instrument.percussion-channel"));
@@ -173,6 +172,17 @@ public class TGChannelItem {
 			this.phaserScale.setText(TuxGuitar.getProperty("instrument.phaser"));
 			
 			this.updateChannelCombos( this.getHandle().isPlayerRunning() );
+		}
+	}
+	
+	public void resetItems(){
+		if(!isDisposed() ){
+			this.volumeScale.reset();
+			this.balanceScale.reset();
+			this.reverbScale.reset();
+			this.chorusScale.reset();
+			this.tremoloScale.reset();
+			this.phaserScale.reset();
 		}
 	}
 	
@@ -306,6 +316,12 @@ public class TGChannelItem {
 		}
 	}
 	
+	public void checkForChannelChanged( TGChannel newChannel ){
+		if( this.channel == null || (newChannel != null && !newChannel.equals(this.channel))){
+			this.resetItems();
+		}
+	}
+	
 	public TGChannelHandle getHandle() {
 		return this.dialog.getHandle();
 	}
@@ -315,6 +331,7 @@ public class TGChannelItem {
 	}
 
 	public void setChannel(TGChannel channel) {
+		this.checkForChannelChanged(channel);
 		this.channel = channel;
 	}
 	
