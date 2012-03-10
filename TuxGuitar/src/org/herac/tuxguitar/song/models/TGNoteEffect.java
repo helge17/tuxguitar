@@ -73,11 +73,12 @@ public abstract class TGNoteEffect {
 		this.deadNote = deadNote;
 		//si es true, quito los efectos incompatibles
 		if(this.isDeadNote()){
-			this.tremoloBar = null;
 			this.bend = null;
 			this.trill = null;
 			this.slide = false;
 			this.hammer = false;
+			this.tremoloBar = null;
+			this.tremoloPicking = null;
 		}
 	}
 	
@@ -90,6 +91,7 @@ public abstract class TGNoteEffect {
 		//si no es null quito los efectos incompatibles
 		if(this.isVibrato()){
 			this.trill = null;
+			this.tremoloPicking = null;
 		}
 	}
 	
@@ -101,11 +103,12 @@ public abstract class TGNoteEffect {
 		this.bend = bend;
 		//si no es null quito los efectos incompatibles
 		if(this.isBend()){
-			this.tremoloBar = null;
 			this.trill = null;
 			this.deadNote = false;
 			this.slide = false;
 			this.hammer = false;
+			this.tremoloBar = null;
+			this.tremoloPicking = null;
 		}
 	}
 	
@@ -126,6 +129,7 @@ public abstract class TGNoteEffect {
 			this.deadNote = false;
 			this.slide = false;
 			this.hammer = false;
+			this.tremoloPicking = null;
 		}
 	}
 	
@@ -187,10 +191,11 @@ public abstract class TGNoteEffect {
 		//si es true, quito los efectos incompatibles
 		if(this.isHammer()){
 			this.trill = null;
-			this.tremoloBar = null;
 			this.bend = null;
 			this.deadNote = false;
 			this.slide = false;
+			this.tremoloBar = null;
+			this.tremoloPicking = null;
 		}
 	}
 	
@@ -203,10 +208,11 @@ public abstract class TGNoteEffect {
 		//si es true, quito los efectos incompatibles
 		if(this.isSlide()){
 			this.trill = null;
-			this.tremoloBar = null;
 			this.bend = null;
 			this.deadNote = false;
 			this.hammer = false;
+			this.tremoloBar = null;
+			this.tremoloPicking = null;
 		}
 	}
 	
