@@ -82,9 +82,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 	
 	public synchronized void reset()  throws MidiPlayerException{
 		this.getTransmitter().sendAllNotesOff();
-		for(int channel = 0; channel < 16;channel ++){
-			this.getTransmitter().sendPitchBend(channel, 64);
-		}
+		this.getTransmitter().sendPitchBendReset();
 	}
 	
 	protected synchronized boolean process() throws MidiPlayerException{

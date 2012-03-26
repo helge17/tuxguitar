@@ -104,8 +104,6 @@ public class TGSongManager {
 	public TGSong newSong(){
 		TGChannel channel = getFactory().newChannel();
 		channel.setChannelId(1);
-		channel.setChannel((short)0);
-		channel.setEffectChannel((short)1);
 		channel.setName(getDefaultChannelName(channel));
 		
 		TGMeasureHeader header = getFactory().newHeader();
@@ -131,14 +129,7 @@ public class TGSongManager {
 	}
 	
 	public TGChannel createChannel(){
-		TGChannel channel = getFactory().newChannel();
-		
-		List freeChannels = getFreeChannels( channel );
-		
-		channel.setChannel((short)( freeChannels.size() > 0 ? ((Integer)freeChannels.get(0)).intValue() : -1 ) );
-		channel.setEffectChannel((short)( freeChannels.size() > 1 ? ((Integer)freeChannels.get(1)).intValue() : channel.getChannel() ) );
-		
-		return channel;
+		return getFactory().newChannel();
 	}
 	
 	public TGChannel addChannel(){
@@ -219,11 +210,9 @@ public class TGSongManager {
 		return new String();
 	}
 	
-	public TGChannel updateChannel(int id,short c1,short c2,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
+	public TGChannel updateChannel(int id,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
 		TGChannel channel = getChannel(id);
 		if( channel != null ){
-			channel.setChannel(c1);
-			channel.setEffectChannel(c2);
 			channel.setBank(bnk);
 			channel.setProgram(prg);
 			channel.setVolume(vol);
@@ -235,31 +224,6 @@ public class TGSongManager {
 			channel.setName(name);
 		}
 		return channel;
-	}
-	
-	public List getFreeChannels( TGChannel forChannel ){
-		List freeChannels = new ArrayList();
-		
-		for( int ch = 0 ; ch < TGSongManager.MAX_CHANNELS ; ch ++ ){
-			if( !TGChannel.isPercussionChannel(ch) ){
-				boolean isFreeChannel = true;
-				
-				Iterator channelIt = getSong().getChannels();
-				while( channelIt.hasNext() ){
-					TGChannel channel = (TGChannel) channelIt.next();
-					if( forChannel == null || !forChannel.equals( channel ) ){
-						if( channel.getChannel() == ch || channel.getEffectChannel() == ch){
-							isFreeChannel = false;
-						}
-					}
-				}
-				
-				if( isFreeChannel ){
-					freeChannels.add(new Integer(ch));
-				}
-			}
-		}
-		return freeChannels;
 	}
 	
 	public boolean isPercussionChannel( int channelId ){

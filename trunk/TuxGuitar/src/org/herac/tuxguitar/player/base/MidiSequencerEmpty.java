@@ -35,15 +35,15 @@ public class MidiSequencerEmpty implements MidiSequencer{
 				// Not implemented
 			}
 			
-			public void addPitchBend(long tick, int track, int channel, int value) {
+			public void addPitchBend(long tick, int track, int channel, int value, int voice, boolean bendMode) {
 				// Not implemented
 			}
 			
-			public void addNoteOn(long tick, int track, int channel, int note,int velocity) {
+			public void addNoteOn(long tick, int track, int channel, int note,int velocity, int voice, boolean bendMode) {
 				// Not implemented
 			}
 			
-			public void addNoteOff(long tick, int track, int channel, int note,int velocity) {
+			public void addNoteOff(long tick, int track, int channel, int note,int velocity, int voice, boolean bendMode) {
 				// Not implemented
 			}
 			

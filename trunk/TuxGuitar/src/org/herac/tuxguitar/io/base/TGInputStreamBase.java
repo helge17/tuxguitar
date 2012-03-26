@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.io.base;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
@@ -14,5 +13,5 @@ public interface TGInputStreamBase {
 	
 	public TGFileFormat getFileFormat();
 	
-	public TGSong readSong() throws TGFileFormatException,IOException;
+	public TGSong readSong() throws TGFileFormatException;
 }

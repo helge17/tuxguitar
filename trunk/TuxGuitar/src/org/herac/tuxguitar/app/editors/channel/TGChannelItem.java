@@ -32,10 +32,9 @@ public class TGChannelItem {
 	private Combo programCombo;
 	private Combo bankCombo;
 	
+	private Button setupChannelButton;
 	private Button removeChannelButton;
 	private Button percussionButton;
-	private Combo channel1Combo;
-	private Combo channel2Combo;
 	
 	private TGScalePopup volumeScale;
 	private TGScalePopup balanceScale;
@@ -90,7 +89,7 @@ public class TGChannelItem {
 		// Column 2
 		Composite col2Composite = new Composite(this.composite, SWT.NONE);
 		col2Composite.setLayout(this.dialog.createGridLayout(1,false, true, false));
-		col2Composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		col2Composite.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));
 		
 		this.percussionButton = new Button(col2Composite, SWT.CHECK);
 		this.percussionButton.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -100,29 +99,25 @@ public class TGChannelItem {
 			}
 		});
 		
-		this.channel1Combo = new Combo(col2Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.channel1Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
-		this.channel1Combo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				updateChannel(false);
-			}
-		});
-		
-		this.channel2Combo = new Combo(col2Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.channel2Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
-		this.channel2Combo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				updateChannel(false);
-			}
-		});
-		
 		// Column 3
 		Composite col3Composite = new Composite(this.composite, SWT.NONE);
 		col3Composite.setLayout(this.dialog.createGridLayout(1,false, true, false));
 		col3Composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
-		this.removeChannelButton = new Button(col3Composite, SWT.PUSH);
-		this.removeChannelButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false));
+		Composite actionButtonsComposite = new Composite(col3Composite, SWT.NONE);
+		actionButtonsComposite.setLayout(this.dialog.createGridLayout(2, false, true, false));
+		actionButtonsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		
+		this.setupChannelButton = new Button(actionButtonsComposite, SWT.PUSH);
+		this.setupChannelButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false));
+		this.setupChannelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				setupChannel();
+			}
+		});
+		
+		this.removeChannelButton = new Button(actionButtonsComposite, SWT.PUSH);
+		this.removeChannelButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 		this.removeChannelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				removeChannel();
@@ -155,6 +150,7 @@ public class TGChannelItem {
 		
 		//--------------------------------------------------------------//
 		
+		this.loadIcons();
 		this.loadProperties();
 		this.updateItems();
 	}
@@ -163,6 +159,7 @@ public class TGChannelItem {
 		if(!isDisposed()){
 			this.percussionButton.setText(TuxGuitar.getProperty("instrument.percussion-channel"));
 			this.removeChannelButton.setText(TuxGuitar.getProperty("remove"));
+			this.setupChannelButton.setToolTipText(TuxGuitar.getProperty("settings"));
 			
 			this.volumeScale.setText(TuxGuitar.getProperty("instrument.volume"));
 			this.balanceScale.setText(TuxGuitar.getProperty("instrument.balance"));
@@ -170,8 +167,12 @@ public class TGChannelItem {
 			this.chorusScale.setText(TuxGuitar.getProperty("instrument.chorus"));
 			this.tremoloScale.setText(TuxGuitar.getProperty("instrument.tremolo"));
 			this.phaserScale.setText(TuxGuitar.getProperty("instrument.phaser"));
-			
-			this.updateChannelCombos( this.getHandle().isPlayerRunning() );
+		}
+	}
+	
+	public void loadIcons(){
+		if(!isDisposed()){
+			this.setupChannelButton.setImage(TuxGuitar.instance().getIconManager().getSettings());
 		}
 	}
 	
@@ -196,6 +197,7 @@ public class TGChannelItem {
 			this.percussionButton.setSelection(getChannel().isPercussionChannel());
 			this.percussionButton.setEnabled(!anyTrackConnectedToChannel && (!anyPercussionChannel || getChannel().isPercussionChannel()));
 			this.removeChannelButton.setEnabled(!anyTrackConnectedToChannel);
+			this.setupChannelButton.setEnabled(this.dialog.getChannelSettingsHandlerManager().isChannelSettingsHandlerAvailable());
 			
 			this.volumeScale.setValue(getChannel().getVolume());
 			this.balanceScale.setValue(getChannel().getBalance());
@@ -206,40 +208,6 @@ public class TGChannelItem {
 			
 			this.updateBankCombo(playerRunning);
 			this.updateProgramCombo(playerRunning);
-			this.updateChannelCombos(playerRunning);
-		}
-	}
-	
-	private void updateChannelCombos(boolean playerRunning){
-		if(!isDisposed() && getChannel() != null){
-			List channels = getHandle().getFreeChannels(getChannel());
-			
-			String channel1Prefix = TuxGuitar.getProperty("instrument.channel");
-			String channel2Prefix = TuxGuitar.getProperty("instrument.effect-channel");
-			
-			this.reloadChannelCombo(this.channel1Combo, channels, getChannel().getChannel(), channel1Prefix);
-			this.reloadChannelCombo(this.channel2Combo, channels, getChannel().getEffectChannel(), channel2Prefix);
-			
-			this.channel1Combo.setEnabled(!playerRunning && !getChannel().isPercussionChannel() && this.channel1Combo.getItemCount() > 0);
-			this.channel2Combo.setEnabled(!playerRunning && !getChannel().isPercussionChannel() && this.channel2Combo.getItemCount() > 0);
-		}
-	}
-	
-	private void reloadChannelCombo(Combo combo, List channels, int selected, String prefix){
-		if(!(combo.getData() instanceof List) || isDifferentList(channels, (List)combo.getData())){
-			combo.removeAll();
-			combo.setData(channels);
-			for( int i = 0 ; i < channels.size() ; i ++ ){
-				Integer channel = (Integer)channels.get(i);
-				
-				combo.add(prefix + " #" + channel.toString() );
-			}
-		}
-		for( int i = 0 ; i < channels.size() ; i ++ ){
-			Integer channel = (Integer)channels.get(i);
-			if( channel.intValue() == selected ){
-				combo.select( i );
-			}
 		}
 	}
 	
@@ -359,9 +327,11 @@ public class TGChannelItem {
 				bank = (percussionChannel ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 				program = (percussionChannel ? TGChannel.DEFAULT_PERCUSSION_PROGRAM : TGChannel.DEFAULT_PROGRAM);
 			}else{
-				int bankSelection = this.bankCombo.getSelectionIndex();
-				if( bankSelection >= 0 ){
-					bank = bankSelection;
+				if(!percussionChannel ){
+					int bankSelection = this.bankCombo.getSelectionIndex();
+					if( bankSelection >= 0 ){
+						bank = bankSelection;
+					}
 				}
 				
 				int programSelection = this.programCombo.getSelectionIndex();
@@ -370,29 +340,8 @@ public class TGChannelItem {
 				}
 			}
 			
-			int channel1 = -1;
-			int channel2 = -1;
-			if( percussionChannel ){
-				channel1 = TGChannel.DEFAULT_PERCUSSION_CHANNEL;
-				channel2 = TGChannel.DEFAULT_PERCUSSION_CHANNEL;
-			}else{
-				int channel1Selection = this.channel1Combo.getSelectionIndex();
-				Object channel1Data = this.channel1Combo.getData();
-				if( channel1Selection >= 0 && channel1Data instanceof List && ((List)channel1Data).size() > channel1Selection ){
-					channel1 = ((Integer)((List)channel1Data).get(channel1Selection)).intValue();
-				}
-				
-				int channel2Selection = this.channel2Combo.getSelectionIndex();
-				Object channel2Data = this.channel2Combo.getData();
-				if( channel2Selection >= 0 && channel2Data instanceof List && ((List)channel2Data).size() > channel2Selection ){
-					channel2 = ((Integer)((List)channel2Data).get(channel2Selection)).intValue();
-				}
-			}
-			
 			getHandle().updateChannel(
 				getChannel().getChannelId(), 
-				(short)channel1,
-				(short)channel2,
 				(short)bank,
 				(short)program,
 				(short)this.volumeScale.getValue(),
@@ -409,6 +358,15 @@ public class TGChannelItem {
 	public void removeChannel(){
 		if( getChannel() != null && !isDisposed() ){
 			getHandle().removeChannel(getChannel());
+		}
+	}
+	
+	public void setupChannel(){
+		if( getChannel() != null && !isDisposed() ){
+			TGChannelSettingsDialog settingsDialog = this.dialog.getChannelSettingsHandlerManager().findChannelSettingsDialog();
+			if( settingsDialog != null ){
+				settingsDialog.show(this.dialog.getShell(), getChannel());
+			}
 		}
 	}
 }

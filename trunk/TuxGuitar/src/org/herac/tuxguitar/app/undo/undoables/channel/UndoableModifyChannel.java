@@ -74,9 +74,7 @@ public class UndoableModifyChannel implements UndoableEdit{
 	private void updateSongChannel(TGChannel channel){
 		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
 		tgSongManager.updateChannel(
-			channel.getChannelId(), 
-			channel.getChannel(), 
-			channel.getEffectChannel(), 
+			channel.getChannelId(),  
 			channel.getBank(), 
 			channel.getProgram(), 
 			channel.getVolume(), 

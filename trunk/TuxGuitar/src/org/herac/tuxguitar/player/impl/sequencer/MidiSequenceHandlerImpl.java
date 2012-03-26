@@ -17,16 +17,16 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 		this.seq.addEvent(MidiEvent.controlChange(tick, track, channel, controller, value));
 	}
 	
-	public void addNoteOff(long tick,int track,int channel, int note, int velocity) {
-		this.seq.addEvent(MidiEvent.noteOff(tick, track, channel, note, velocity));
+	public void addNoteOff(long tick,int track,int channel, int note, int velocity, int voice, boolean bendMode) {
+		this.seq.addEvent(MidiEvent.noteOff(tick, track, channel, note, velocity, voice, bendMode));
 	}
 	
-	public void addNoteOn(long tick,int track,int channel, int note, int velocity) {
-		this.seq.addEvent(MidiEvent.noteOn(tick, track, channel, note, velocity));
+	public void addNoteOn(long tick,int track,int channel, int note, int velocity, int voice, boolean bendMode) {
+		this.seq.addEvent(MidiEvent.noteOn(tick, track, channel, note, velocity, voice, bendMode));
 	}
 	
-	public void addPitchBend(long tick,int track,int channel, int value) {
-		this.seq.addEvent(MidiEvent.pitchBend(tick, track, channel, value));
+	public void addPitchBend(long tick,int track,int channel, int value, int voice, boolean bendMode) {
+		this.seq.addEvent(MidiEvent.pitchBend(tick, track, channel, value, voice, bendMode));
 	}
 	
 	public void addProgramChange(long tick,int track,int channel, int instrument) {

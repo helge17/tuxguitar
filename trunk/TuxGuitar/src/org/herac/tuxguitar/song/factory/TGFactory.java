@@ -2,6 +2,7 @@ package org.herac.tuxguitar.song.factory;
 
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -93,6 +94,12 @@ public class TGFactory {
 	public TGChannel newChannel(){
 		return new TGChannel(){
 			//TGChannel Implementation
+		};
+	}
+	
+	public TGChannelParameter newChannelParameter(){
+		return new TGChannelParameter(){
+			//TGChannelParameter Implementation
 		};
 	}
 	

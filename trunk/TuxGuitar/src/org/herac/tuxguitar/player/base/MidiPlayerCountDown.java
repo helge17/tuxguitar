@@ -20,33 +20,36 @@ public class MidiPlayerCountDown {
 		try {
 			this.running = true;
 			
-			TGMeasureHeader header = this.findMeasureHeader();
-			if( header != null ){
-				Object timerLock = new Object();
-				
-				int  tgTempo = header.getTempo().getValue();
-				long tgLength = header.getTimeSignature().getDenominator().getTime();
-				long tickLength = (long)(1000.00 * (60.00 / tgTempo * tgLength) / TGDuration.QUARTER_TIME);
-				long tickStart = System.currentTimeMillis();
-				
-				int tickIndex = 0;
-				int tickCount = header.getTimeSignature().getNumerator();
-				
-				while( this.isRunning() && tickIndex <= tickCount ){
-						long currentTime = System.currentTimeMillis();
-						if( tickStart <= currentTime ){
-							tickStart += tickLength;
-							tickIndex ++;
-							if( tickIndex <= tickCount ){
-								this.player.getOutputTransmitter().sendNoteOn(9, 37, TGVelocities.DEFAULT);
-								synchronized (timerLock) {
-									timerLock.wait( 1 );
+			int channelId = this.player.getPercussionChannelId();
+			if( channelId >= 0 ){
+				TGMeasureHeader header = this.findMeasureHeader();
+				if( header != null ){
+					Object timerLock = new Object();
+					
+					int  tgTempo = header.getTempo().getValue();
+					long tgLength = header.getTimeSignature().getDenominator().getTime();
+					long tickLength = (long)(1000.00 * (60.00 / tgTempo * tgLength) / TGDuration.QUARTER_TIME);
+					long tickStart = System.currentTimeMillis();
+					
+					int tickIndex = 0;
+					int tickCount = header.getTimeSignature().getNumerator();
+					
+					while( this.isRunning() && tickIndex <= tickCount ){
+							long currentTime = System.currentTimeMillis();
+							if( tickStart <= currentTime ){
+								tickStart += tickLength;
+								tickIndex ++;
+								if( tickIndex <= tickCount ){
+									this.player.getOutputTransmitter().sendNoteOn(channelId, 37, TGVelocities.DEFAULT, -1, false);
+									synchronized (timerLock) {
+										timerLock.wait( 1 );
+									}
+									this.player.getOutputTransmitter().sendNoteOff(channelId, 37, TGVelocities.DEFAULT, -1, false);
 								}
-								this.player.getOutputTransmitter().sendNoteOff(9, 37, TGVelocities.DEFAULT);
 							}
+						synchronized (timerLock) {
+							timerLock.wait( 10 );
 						}
-					synchronized (timerLock) {
-						timerLock.wait( 10 );
 					}
 				}
 			}

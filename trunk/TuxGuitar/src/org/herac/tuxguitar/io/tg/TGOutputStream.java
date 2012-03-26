@@ -12,10 +12,12 @@ import java.io.OutputStream;
 import java.util.Iterator;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -62,18 +64,22 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		return new TGFileFormat("TuxGuitar","*.tg");
 	}
 	
-	public void writeSong(TGSong song) throws IOException{
-		this.writeVersion();
-		this.write(song);
-		this.dataOutputStream.flush();
-		this.dataOutputStream.close();
+	public void writeSong(TGSong song) throws TGFileFormatException{
+		try{
+			this.writeVersion();
+			this.write(song);
+			this.dataOutputStream.flush();
+			this.dataOutputStream.close();
+		}catch( Throwable throwable ){
+			throw new TGFileFormatException(throwable);
+		}
 	}
 	
-	private void writeVersion(){
+	private void writeVersion() throws IOException{
 		writeUnsignedByteString(TG_FORMAT_VERSION);
 	}
 	
-	private void write(TGSong song){
+	private void write(TGSong song) throws IOException{
 		//escribo el nombre
 		writeUnsignedByteString(song.getName());
 		
@@ -130,7 +136,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeTrack(TGTrack track){
+	private void writeTrack(TGTrack track) throws IOException{
 		//header
 		int header = 0;
 		if (track.isSolo()) {
@@ -181,7 +187,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeMeasureHeader(TGMeasureHeader measureheader,TGMeasureHeader lastMeasureHeader){
+	private void writeMeasureHeader(TGMeasureHeader measureheader,TGMeasureHeader lastMeasureHeader) throws IOException{
 		int header = 0;
 		if(lastMeasureHeader == null){
 			header |= MEASURE_HEADER_TIMESIGNATURE;
@@ -245,7 +251,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeMeasure(TGMeasure measure,TGMeasure lastMeasure){
+	private void writeMeasure(TGMeasure measure,TGMeasure lastMeasure) throws IOException{
 		int header = 0;
 		if(lastMeasure == null){
 			header |= MEASURE_CLEF;
@@ -278,16 +284,10 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeChannel(TGChannel channel){
+	private void writeChannel(TGChannel channel) throws IOException{
 		//escribo el id
 		writeShort((short)channel.getChannelId());
 		
-		//escribo el canal
-		writeByte(channel.getChannel());
-		
-		//escribo el canal de efectos
-		writeByte(channel.getEffectChannel());
-
 		//escribo el banco de sonidos
 		writeByte(channel.getBank());
 		
@@ -314,9 +314,30 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		
 		//escribo el nombre
 		writeUnsignedByteString(channel.getName());
+		
+		//escribo los parametros
+		writeChannelParameters(channel);
 	}
 	
-	private void writeBeats(TGMeasure measure,TGBeatData data){
+	private void writeChannelParameters(TGChannel channel) throws IOException{
+		//escribo la cantidad de parametros
+		writeShort((short)channel.countParameters());
+		
+		Iterator iterator = channel.getParameters();
+		while( iterator.hasNext() ){
+			writeChannelParameter( (TGChannelParameter)iterator.next() );
+		}
+	}
+	
+	private void writeChannelParameter(TGChannelParameter parameter) throws IOException{
+		//escribo el key
+		writeUnsignedByteString(parameter.getKey());
+		
+		//escribo el value
+		writeIntegerString(parameter.getValue());
+	}
+	
+	private void writeBeats(TGMeasure measure,TGBeatData data) throws IOException{
 		int count = measure.countBeats();
 		for(int i = 0; i < count; i ++){
 			TGBeat beat = measure.getBeat(i);
@@ -324,7 +345,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeBeat(TGBeat beat,TGBeatData data, boolean hasNext){
+	private void writeBeat(TGBeat beat,TGBeatData data, boolean hasNext) throws IOException{
 		int header = hasNext ? BEAT_HAS_NEXT : 0;
 		
 		//Berifico si hay cambios en las voces
@@ -388,7 +409,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeVoices(int header, TGBeat beat,TGBeatData data){
+	private void writeVoices(int header, TGBeat beat,TGBeatData data) throws IOException{
 		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
 			int shift = (i * 2 );
 			if((( header & (BEAT_HAS_VOICE << shift)) != 0)){
@@ -410,7 +431,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeNotes(TGVoice voice,TGBeatData data){
+	private void writeNotes(TGVoice voice,TGBeatData data) throws IOException{
 		for( int i = 0 ; i < voice.countNotes() ; i ++){
 			TGNote note = voice.getNote(i);
 			
@@ -428,7 +449,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeNote(int header,TGNote note){
+	private void writeNote(int header,TGNote note) throws IOException{
 		//escribo el valor
 		writeByte(note.getValue());
 		
@@ -446,7 +467,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeStroke(TGStroke stroke){
+	private void writeStroke(TGStroke stroke) throws IOException{
 		//escribo la direccion
 		writeByte(stroke.getDirection());
 		
@@ -454,7 +475,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeByte(stroke.getValue());
 	}
 	
-	private void writeChord(TGChord chord){
+	private void writeChord(TGChord chord) throws IOException{
 		//escribo la cantidad de cuerdas
 		writeByte(chord.countStrings());
 		
@@ -470,22 +491,22 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeText(TGText text){
+	private void writeText(TGText text) throws IOException{
 		//escribo el texto
 		writeUnsignedByteString(text.getValue());
 	}
 	
-	private void writeInstrumentString(TGString string){
+	private void writeInstrumentString(TGString string) throws IOException{
 		//escribo el valor
 		writeByte(string.getValue());
 	}
 	
-	private void writeTempo(TGTempo tempo){
+	private void writeTempo(TGTempo tempo) throws IOException{
 		//escribo el valor
 		writeShort((short)tempo.getValue());
 	}
 	
-	private void writeTimeSignature(TGTimeSignature timeSignature){
+	private void writeTimeSignature(TGTimeSignature timeSignature) throws IOException{
 		//escribo el numerador
 		writeByte(timeSignature.getNumerator());
 		
@@ -493,7 +514,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeDuration(timeSignature.getDenominator());
 	}
 	
-	private void writeDuration(TGDuration duration){
+	private void writeDuration(TGDuration duration) throws IOException{
 		int header = 0;
 		header = (duration.isDotted())?header |= DURATION_DOTTED:header;
 		header = (duration.isDoubleDotted())?header |= DURATION_DOUBLE_DOTTED:header;
@@ -509,7 +530,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeDivisionType(TGDivisionType divisionType){
+	private void writeDivisionType(TGDivisionType divisionType) throws IOException{
 		//escribo los enters
 		writeByte(divisionType.getEnters());
 		
@@ -517,7 +538,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeByte(divisionType.getTimes());
 	}
 	
-	private void writeNoteEffect(TGNoteEffect effect){
+	private void writeNoteEffect(TGNoteEffect effect) throws IOException{
 		int header = 0;
 		
 		header = (effect.isBend())?header |= EFFECT_BEND:header;
@@ -574,7 +595,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeBendEffect(TGEffectBend effect){
+	private void writeBendEffect(TGEffectBend effect) throws IOException{
 		//escribo la cantidad de puntos
 		writeByte(effect.getPoints().size());
 		
@@ -590,7 +611,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeTremoloBarEffect(TGEffectTremoloBar effect){
+	private void writeTremoloBarEffect(TGEffectTremoloBar effect) throws IOException{
 		//escribo la cantidad de puntos
 		writeByte(effect.getPoints().size());
 		
@@ -606,7 +627,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeHarmonicEffect(TGEffectHarmonic effect){
+	private void writeHarmonicEffect(TGEffectHarmonic effect) throws IOException{
 		//excribo el tipo
 		writeByte(effect.getType());
 		
@@ -616,7 +637,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		}
 	}
 	
-	private void writeGraceEffect(TGEffectGrace effect){
+	private void writeGraceEffect(TGEffectGrace effect) throws IOException{
 		int header = 0;
 		header = (effect.isDead())?header |= GRACE_FLAG_DEAD:header;
 		header = (effect.isOnBeat())?header |= GRACE_FLAG_ON_BEAT:header;
@@ -637,12 +658,12 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeByte(effect.getTransition());
 	}
 	
-	private void writeTremoloPickingEffect(TGEffectTremoloPicking effect){
+	private void writeTremoloPickingEffect(TGEffectTremoloPicking effect) throws IOException{
 		//excribo la duracion
 		writeByte(effect.getDuration().getValue());
 	}
 	
-	private void writeTrillEffect(TGEffectTrill effect){
+	private void writeTrillEffect(TGEffectTrill effect) throws IOException{
 		//excribo el fret
 		writeByte(effect.getFret());
 		
@@ -650,7 +671,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeByte(effect.getDuration().getValue());
 	}
 	
-	private void writeMarker(TGMarker marker){
+	private void writeMarker(TGMarker marker) throws IOException{
 		//escribo el titulo
 		writeUnsignedByteString(marker.getTitle());
 		
@@ -658,14 +679,14 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeRGBColor(marker.getColor());
 	}
 	
-	private void writeRGBColor(TGColor color){
+	private void writeRGBColor(TGColor color) throws IOException{
 		//escribo el RGB
 		writeByte(color.getR());
 		writeByte(color.getG());
 		writeByte(color.getB());
 	}
 	
-	private void writeLyrics(TGLyric lyrics){
+	private void writeLyrics(TGLyric lyrics) throws IOException{
 		//escribo el compas de comienzo
 		writeShort((short)lyrics.getFrom());
 		
@@ -673,52 +694,32 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeIntegerString(lyrics.getLyrics());
 	}
 	
-	public void writeByte(int v){
-		try {
-			this.dataOutputStream.write(v);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void writeByte(int v) throws IOException{
+		this.dataOutputStream.write(v);
 	}
 	
-	private void writeUnsignedByteString(String v){
-		try {
-			String byteString = (v == null ? new String() : ((v.length() > 0xFF)?v.substring(0, 0xFF):v) );
-			this.dataOutputStream.write(byteString.length());
-			this.dataOutputStream.writeChars(byteString);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void writeUnsignedByteString(String v) throws IOException{
+		String byteString = (v == null ? new String() : ((v.length() > 0xFF)?v.substring(0, 0xFF):v) );
+		this.dataOutputStream.write(byteString.length());
+		this.dataOutputStream.writeChars(byteString);
 	}
 	
-	private void writeIntegerString(String v){
-		try {
-			this.dataOutputStream.writeInt(v.length());
-			this.dataOutputStream.writeChars(v);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void writeIntegerString(String v) throws IOException{
+		this.dataOutputStream.writeInt(v.length());
+		this.dataOutputStream.writeChars(v);
 	}
 	
-	public void writeHeader(int v){
-		try {
-			this.dataOutputStream.write(v);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void writeHeader(int v) throws IOException{
+		this.dataOutputStream.write(v);
 	}
 	
-	public void writeHeader(int v,int bCount){
+	public void writeHeader(int v,int bCount) throws IOException{
 		for(int i = bCount; i > 0; i --){
 			writeHeader( (v >>> ( (8 * i) - 8 ) )  &  0xFF);
 		}
 	}
 	
-	public void writeShort(short v){
-		try {
-			this.dataOutputStream.writeShort(v);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void writeShort(short v) throws IOException{
+		this.dataOutputStream.writeShort(v);
 	}
 }

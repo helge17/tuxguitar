@@ -27,6 +27,7 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 	
 	private TGChannelHandle channelHandle;
 	private TGChannelList channelList;
+	private TGChannelSettingsHandlerManager channelSettingsHandlerManager;
 	
 	private Button addChannelButton;
 	
@@ -38,6 +39,7 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 	
 	public TGChannelManagerDialog(){
 		this.channelHandle = new TGChannelHandle();
+		this.channelSettingsHandlerManager = new TGChannelSettingsHandlerManager();
 	}
 	
 	public void show(){
@@ -59,6 +61,10 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 		});
 		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+	}
+	
+	public Shell getShell(){
+		return this.dialog;
 	}
 	
 	public boolean isDisposed() {
@@ -93,6 +99,7 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 		
 		updateItems();
 		loadProperties();
+		loadIcons();
 	}
 	
 	private void createRightComposite(Composite composite){
@@ -216,7 +223,9 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 	}
 
 	public void loadIcons() {
-		// TODO Auto-generated method stub
+		if(!isDisposed()){
+			this.channelList.loadIcons();
+		}
 	}
 
 	public void doUpdate(int type) {
@@ -233,5 +242,9 @@ public class TGChannelManagerDialog implements TGUpdateListener,IconLoader,Langu
 	
 	public TGChannelHandle getHandle(){
 		return this.channelHandle;
+	}
+	
+	public TGChannelSettingsHandlerManager getChannelSettingsHandlerManager() {
+		return this.channelSettingsHandlerManager;
 	}
 }

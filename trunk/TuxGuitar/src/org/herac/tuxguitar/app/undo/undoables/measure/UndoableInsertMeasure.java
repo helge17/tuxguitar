@@ -25,7 +25,7 @@ public class UndoableInsertMeasure implements UndoableEdit{
 		this.doAction = UNDO_ACTION;
 		this.toTrack = toTrack;
 		this.undoCaret = new UndoableCaretHelper();
-		this.insertPosition = caret.getPosition();
+		this.insertPosition = caret.getMeasure().getStart();
 	}
 	
 	public void redo() throws CannotRedoException {

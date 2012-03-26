@@ -489,7 +489,7 @@ public class ChordEditor extends Composite {
 				TGChannel channel = TuxGuitar.instance().getSongManager().getChannel(getCurrentTrack().getChannelId());
 				if( channel != null ){
 					TuxGuitar.instance().getPlayer().playBeat(
-						channel.getChannel(),
+						channel.getChannelId(),
 						channel.getBank(),
 						channel.getProgram(),
 						channel.getVolume(),
