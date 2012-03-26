@@ -1178,9 +1178,6 @@ public class ABCOutputStream {
 		}
 		if( this.channelAux == null ){
 			this.channelAux = this.manager.createChannel();
-			if( this.channelAux.getChannel() < 0 && this.manager.getSong().countChannels() > 0 ){
-				this.channelAux = (this.manager.getSong().getChannel(this.manager.getSong().countChannels() - 1));
-			}
 		}
 		return this.channelAux;
 	}
