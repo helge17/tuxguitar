@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiReceiver;
+import org.herac.tuxguitar.gm.port.GMOutputPort;
+import org.herac.tuxguitar.gm.port.GMReceiver;
 
-public class MidiPortImpl implements MidiOutputPort{
+public class MidiPortImpl extends GMOutputPort{
 	
 	private String key;
 	private String name;
@@ -25,7 +25,7 @@ public class MidiPortImpl implements MidiOutputPort{
 		this.receiver.disconnect();
 	}
 	
-	public MidiReceiver getReceiver(){
+	public GMReceiver getReceiver(){
 		this.open();
 		return this.receiver;
 	}

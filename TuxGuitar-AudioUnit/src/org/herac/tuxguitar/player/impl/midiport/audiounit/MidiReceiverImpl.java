@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiReceiverImpl extends MidiReceiverJNI implements MidiReceiver{
+public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
 	private boolean open; // unncessary
     private boolean connected;	
 	private List ports;

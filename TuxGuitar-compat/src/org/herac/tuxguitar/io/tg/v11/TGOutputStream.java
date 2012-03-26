@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.gm.GMChannelRouter;
+import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
@@ -51,7 +54,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
 	private TGFactory factory;
-	private TGChannel channelAux;
+	private GMChannelRouter channelRouter;
 	private DataOutputStream dataOutputStream;
 	
 	public boolean isSupportedExtension(String extension) {
@@ -72,12 +75,12 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
 	public void init(TGFactory factory,OutputStream stream){
 		this.factory = factory;
-		this.channelAux = null;
 		this.dataOutputStream = new DataOutputStream(stream);
 	}
 	
 	public void exportSong(TGSong song) throws TGFileFormatException {
 		try{
+			this.configureChannelRouter(song);
 			this.writeVersion();
 			this.write(song);
 			this.dataOutputStream.flush();
@@ -275,11 +278,13 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	}
 	
 	private void writeChannel(TGChannel channel){
+		GMChannelRoute gmChannelRoute = getChannelRoute(channel.getChannelId());
+		
 		//escribo el canal
-		writeByte(channel.getChannel());
+		writeByte(gmChannelRoute.getChannel1());
 		
 		//escribo el canal de efectos
-		writeByte(channel.getEffectChannel());
+		writeByte(gmChannelRoute.getChannel2());
 		
 		//escribo el instrumento
 		writeByte(channel.getProgram());
@@ -713,15 +718,28 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		tgSongManager.setSong( song );
 		
 		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
-		if( tgChannel != null ){
-			return tgChannel;
+		if( tgChannel == null ){
+			tgChannel = this.factory.newChannel();
 		}
-		if( this.channelAux == null ){
-			this.channelAux = tgSongManager.createChannel();
-			if( this.channelAux.getChannel() < 0 && song.countChannels() > 0 ){
-				this.channelAux = (song.getChannel(song.countChannels() - 1));
-			}
+		
+		return tgChannel;
+	}
+	
+	private GMChannelRoute getChannelRoute( int channelId ){
+		GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(channelId);
+		if( gmChannelRoute == null ){
+			gmChannelRoute = new GMChannelRoute(GMChannelRoute.NULL_VALUE);
+			gmChannelRoute.setChannel1(15);
+			gmChannelRoute.setChannel2(15);
 		}
-		return this.channelAux;
+		
+		return gmChannelRoute;
+	}
+	
+	private void configureChannelRouter( TGSong song ){
+		this.channelRouter = new GMChannelRouter();
+		
+		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.channelRouter);
+		gmChannelRouterConfigurator.configureRouter(song);
 	}
 }
