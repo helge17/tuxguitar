@@ -10,14 +10,17 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGLyric;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -32,7 +35,6 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -279,12 +281,21 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	
 	private void readChannel(TGSong song, TGTrack track){
 		TGChannel channel = this.factory.newChannel();
+		TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
+		TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
 		
 		//leo el canal
-		channel.setChannel(readByte());
+		int channel1 = (readByte() & 0xff);
+		gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
+		gmChannel1Param.setValue(Integer.toString(channel1));
 		
 		//leo el canal de efectos
-		channel.setEffectChannel(readByte());
+		int channel2 = (readByte() & 0xff);
+		gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
+		gmChannel2Param.setValue(Integer.toString(channel2));
+		
+		// Parseo el banco de sonidos
+		channel.setBank( channel1 == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 		
 		//leo el instrumento
 		channel.setProgram(readByte());
@@ -310,13 +321,20 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		//------------------------------------------//
 		for( int i = 0 ; i < song.countChannels() ; i ++ ){
 			TGChannel channelAux = song.getChannel(i);
-			if( channelAux.getChannel() == channel.getChannel() ){
-				channel.setChannelId(channelAux.getChannelId());
+			for( int n = 0 ; n < channelAux.countParameters() ; n ++ ){
+				TGChannelParameter channelParameter = channelAux.getParameter( n );
+				if( channelParameter.getKey().equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1) ){
+					if( Integer.toString(channel1).equals(channelParameter.getValue()) ){
+						channel.setChannelId(channelAux.getChannelId());
+					}
+				}
 			}
 		}
 		if( channel.getChannelId() <= 0 ){
 			channel.setChannelId( song.countChannels() + 1 );
 			channel.setName(("#" + channel.getChannelId()));
+			channel.addParameter(gmChannel1Param);
+			channel.addParameter(gmChannel2Param);
 			song.addChannel(channel);
 		}
 		track.setChannelId(channel.getChannelId());
