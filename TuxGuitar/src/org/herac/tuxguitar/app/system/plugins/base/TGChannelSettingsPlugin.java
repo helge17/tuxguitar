@@ -1,18 +1,18 @@
 package org.herac.tuxguitar.app.system.plugins.base;
 
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsHandler;
 import org.herac.tuxguitar.app.system.plugins.TGPluginException;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 
-public abstract class TGBrowserPlugin extends TGPluginAdapter{
+public abstract class TGChannelSettingsPlugin extends TGPluginAdapter{
 	
 	private boolean loaded;
-	private TGBrowserFactory factory;
+	private TGChannelSettingsHandler handler;
 	
-	protected abstract TGBrowserFactory getFactory() throws TGPluginException;
+	protected abstract TGChannelSettingsHandler getHandler() throws TGPluginException;
 	
 	public void init() throws TGPluginException {
-		this.factory = getFactory();
+		this.handler = getHandler();
 		this.loaded = false;
 	}
 	
@@ -30,14 +30,14 @@ public abstract class TGBrowserPlugin extends TGPluginAdapter{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TGBrowserManager.instance().addFactory(this.factory);
+			TuxGuitar.instance().getChannelManager().getChannelSettingsHandlerManager().addChannelSettingsHandler(this.handler);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TGBrowserManager.instance().removeFactory(this.factory);
+			TuxGuitar.instance().getChannelManager().getChannelSettingsHandlerManager().removeChannelSettingsHandler(this.handler);
 			this.loaded = false;
 		}
 	}

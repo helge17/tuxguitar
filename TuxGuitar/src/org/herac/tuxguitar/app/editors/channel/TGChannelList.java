@@ -66,6 +66,14 @@ public class TGChannelList {
 		}
 	}
 	
+	public void loadIcons(){
+		Iterator it = this.channelItems.iterator();
+		while( it.hasNext() ){
+			TGChannelItem tgChannelItem = (TGChannelItem)it.next();
+			tgChannelItem.loadIcons();
+		}
+	}
+	
 	public void updateItems(){
 		List channels = this.dialog.getHandle().getChannels();
 		

@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
 public abstract class TGMidiOutputPortProviderPlugin extends TGPluginAdapter{
+	
 	private boolean loaded;
 	private MidiOutputPortProvider provider;
 	

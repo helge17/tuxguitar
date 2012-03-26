@@ -43,31 +43,31 @@ public class MidiEvent {
 		return this.data;
 	}
 	
-	public static MidiEvent systemReset(final long tick){
+	public static MidiEvent systemReset(long tick){
 		return new MidiEvent(tick,MIDI_SYSTEM_EVENT,ALL_TRACKS,null);
 	}
 	
-	public static MidiEvent noteOn(final long tick,final int track,final int channel,final int key,final int velocity){
-		return new MidiEvent(tick,MIDI_EVENT_NOTEON,track,new byte[]{(byte)channel,(byte)key,(byte)velocity});
+	public static MidiEvent noteOn(long tick,int track,int channel,int key,int velocity,int voice,boolean bendMode){
+		return new MidiEvent(tick,MIDI_EVENT_NOTEON,track,new byte[]{(byte)channel,(byte)key,(byte)velocity,(byte)voice,(byte)(bendMode?1:0)});
 	}
 	
-	public static MidiEvent noteOff(final long tick,final int track,final int channel,final int key,final int velocity){
-		return new MidiEvent(tick,MIDI_EVENT_NOTEOFF,track,new byte[]{(byte)channel,(byte)key,(byte)velocity});
+	public static MidiEvent noteOff(long tick,int track,int channel,int key,int velocity,int voice,boolean bendMode){
+		return new MidiEvent(tick,MIDI_EVENT_NOTEOFF,track,new byte[]{(byte)channel,(byte)key,(byte)velocity,(byte)voice,(byte)(bendMode?1:0)});
 	}
 	
-	public static MidiEvent controlChange(final long tick,final int track,final int channel,final int controller,final int value){
+	public static MidiEvent pitchBend(long tick,int track,int channel,int value,int voice,boolean bendMode){
+		return new MidiEvent(tick,MIDI_EVENT_PITCH_BEND,track,new byte[]{(byte)channel,(byte)value,(byte)voice,(byte)(bendMode?1:0)});
+	}
+	
+	public static MidiEvent controlChange(long tick,int track,int channel,int controller,int value){
 		return new MidiEvent(tick,MIDI_EVENT_CONTROL_CHANGE,track,new byte[]{(byte)channel,(byte)controller,(byte)value});
 	}
 	
-	public static MidiEvent programChange(final long tick,final int track,final int channel,final int value){
+	public static MidiEvent programChange(long tick,int track,int channel,int value){
 		return new MidiEvent(tick,MIDI_EVENT_PROGRAM_CHANGE,track,new byte[]{(byte)channel,(byte)value});
 	}
 	
-	public static MidiEvent pitchBend(final long tick,final int track,final int channel,final int value){
-		return new MidiEvent(tick,MIDI_EVENT_PITCH_BEND,track,new byte[]{(byte)channel,(byte)value});
-	}
-	
-	public static MidiEvent tempoInUSQ(final long tick,final int usq){
+	public static MidiEvent tempoInUSQ(long tick,int usq){
 		return new MidiEvent(tick,MIDI_SYSTEM_EVENT,new byte[]{0x51,(byte) (usq & 0xff),(byte) ((usq >> 8) & 0xff),(byte) ((usq >> 16) & 0xff)});
 	}
 }

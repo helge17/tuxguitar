@@ -686,7 +686,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 					int reverb = tgChannel.getReverb();
 					int phaser = tgChannel.getPhaser();
 					int tremolo = tgChannel.getTremolo();
-					int channel = tgChannel.getChannel();
+					int channel = tgChannel.getChannelId();
 					int program = tgChannel.getProgram();
 					int bank = tgChannel.getBank();
 					int[][] beat = new int[][]{ new int[]{ (tgTrack.getOffset() + value) , TGVelocities.DEFAULT } };

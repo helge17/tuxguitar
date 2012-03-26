@@ -38,7 +38,7 @@ public class TGChannelHandle {
 		TuxGuitar.instance().updateCache(true);
 	}
 	
-	public void updateChannel(int id,short c1,short c2,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
+	public void updateChannel(int id,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
 		TGChannel channel = getManager().getChannel(id);
 		if( channel != null ){
 			boolean programChange = (bnk != channel.getBank() || prg != channel.getProgram());
@@ -46,7 +46,7 @@ public class TGChannelHandle {
 			// Comienza el Undoable
 			UndoableModifyChannel undoable = UndoableModifyChannel.startUndo(id);
 			
-			getManager().updateChannel(id, c1, c2, bnk, prg, vol, bal, cho, rev, pha, tre, name);
+			getManager().updateChannel(id, bnk, prg, vol, bal, cho, rev, pha, tre, name);
 			
 			// Termina el Undoable
 			TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo() );
@@ -65,10 +65,6 @@ public class TGChannelHandle {
 	
 	public List getChannels(){
 		return getManager().getChannels();
-	}
-	
-	public List getFreeChannels( TGChannel forChannel ){
-		return getManager().getFreeChannels(forChannel);
 	}
 	
 	public boolean isAnyTrackConnectedToChannel(TGChannel channel){

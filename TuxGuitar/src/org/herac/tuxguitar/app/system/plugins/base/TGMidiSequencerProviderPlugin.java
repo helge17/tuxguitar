@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 
 public abstract class TGMidiSequencerProviderPlugin extends TGPluginAdapter{
+	
 	private boolean loaded;
 	private MidiSequencerProvider provider;
 	

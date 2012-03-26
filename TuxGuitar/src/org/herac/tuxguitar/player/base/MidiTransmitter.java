@@ -11,24 +11,24 @@ public class MidiTransmitter {
 		this.receivers = new ArrayList();
 	}
 	
-	public void sendAllNotesOff() throws MidiPlayerException {
+	public void sendNoteOn(int channel, int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
 		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
-			receiver.getReceiver().sendAllNotesOff();
+			receiver.getReceiver().sendNoteOn(channel, key, velocity, voice, bendMode);
 		}
 	}
 	
-	public void sendNoteOn(int channel, int key, int velocity) throws MidiPlayerException {
+	public void sendNoteOff(int channel, int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
 		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
-			receiver.getReceiver().sendNoteOn(channel, key, velocity);
+			receiver.getReceiver().sendNoteOff(channel, key, velocity, voice, bendMode);
 		}
 	}
 	
-	public void sendNoteOff(int channel, int key, int velocity) throws MidiPlayerException {
+	public void sendPitchBend(int channel, int value, int voice, boolean bendMode) throws MidiPlayerException {
 		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
-			receiver.getReceiver().sendNoteOff(channel, key, velocity);
+			receiver.getReceiver().sendPitchBend(channel, value, voice, bendMode);
 		}
 	}
 	
@@ -46,10 +46,24 @@ public class MidiTransmitter {
 		}
 	}
 	
-	public void sendPitchBend(int channel, int value) throws MidiPlayerException {
+	public void sendParameter(int channel, String key, String value) throws MidiPlayerException{
 		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
 			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
-			receiver.getReceiver().sendPitchBend(channel, value);
+			receiver.getReceiver().sendParameter(channel, key, value);
+		}
+	}
+	
+	public void sendAllNotesOff() throws MidiPlayerException {
+		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
+			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
+			receiver.getReceiver().sendAllNotesOff();
+		}
+	}
+	
+	public void sendPitchBendReset() throws MidiPlayerException {
+		for( int i = 0 ; i < this.receivers.size() ; i ++ ){
+			MidiReceiverItem receiver = (MidiReceiverItem) this.receivers.get( i );
+			receiver.getReceiver().sendPitchBendReset();
 		}
 	}
 	
