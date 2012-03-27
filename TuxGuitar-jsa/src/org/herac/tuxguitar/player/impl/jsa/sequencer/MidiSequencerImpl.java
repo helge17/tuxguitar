@@ -186,9 +186,7 @@ public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 	public void reset(){
 		try {
 			this.getTransmitter().sendAllNotesOff();
-			for(int channel = 0; channel < 16;channel ++){
-				this.getTransmitter().sendPitchBend(channel, 64);
-			}
+			this.getTransmitter().sendPitchBendReset();
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}

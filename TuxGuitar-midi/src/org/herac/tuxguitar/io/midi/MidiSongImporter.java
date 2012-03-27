@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
@@ -39,6 +41,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 	private List tempNotes;
 	private List tempChannels;
 	private List trackTuningHelpers;
+	private GMChannelRouter channelRouter;
 	private MidiSettings settings;
 	protected TGFactory factory;
 	protected InputStream stream;
@@ -111,6 +114,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		this.tempNotes = new ArrayList();
 		this.tempChannels = new ArrayList();
 		this.trackTuningHelpers = new ArrayList();
+		this.channelRouter = new GMChannelRouter();
 	}
 	
 	private int getNextTrackNumber(){
@@ -436,32 +440,39 @@ public class MidiSongImporter implements TGLocalFileImporter{
 				boolean channelExists = false;
 				for(int c = 0 ; c < this.channels.size() ; c ++ ){
 					TGChannel tgChannel = (TGChannel) this.channels.get(c);
-					if( tgChannel.getChannel() == tempChannel.getChannel() || tgChannel.getEffectChannel() == tempChannel.getChannel() ){
-						channelExists = true;
+					GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
+					if( gmChannelRoute != null ){
+						if( gmChannelRoute.getChannel1() == tempChannel.getChannel() || gmChannelRoute.getChannel2() == tempChannel.getChannel() ){
+							channelExists = true;
+						}
 					}
 				}
 				
 				if(!channelExists){
 					TGChannel tgChannel = this.factory.newChannel();
 					tgChannel.setChannelId(this.channels.size() + 1);
-					tgChannel.setChannel((short)tempChannel.getChannel());
-					tgChannel.setEffectChannel((short)tempChannel.getChannel());
 					tgChannel.setProgram((short)tempChannel.getInstrument());
 					tgChannel.setVolume((short)tempChannel.getVolume());
 					tgChannel.setBalance((short)tempChannel.getBalance());
 					tgChannel.setName(("#" + tgChannel.getChannelId()));
+					tgChannel.setBank(tempChannel.getChannel() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+					
+					GMChannelRoute gmChannelRoute = new GMChannelRoute(tgChannel.getChannelId());
+					gmChannelRoute.setChannel1(tempChannel.getChannel());
+					gmChannelRoute.setChannel2(tempChannel.getChannel());
 					
 					for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
 						TempChannel tempChannelAux = (TempChannel)this.tempChannels.get( tcAux );
 						if( tempChannel.getTrack() == tempChannelAux.getTrack() ){
-							if( tgChannel.getEffectChannel() ==  tgChannel.getChannel() ){
-								tgChannel.setEffectChannel((short)tempChannelAux.getChannel());
+							if( gmChannelRoute.getChannel2() == gmChannelRoute.getChannel1() ){
+								gmChannelRoute.setChannel2( tempChannelAux.getChannel() );
 							}else{
 								tempChannelAux.setTrack(-1);
 							}
 						}
 					}
 					
+					this.channelRouter.configureRoutes(gmChannelRoute, (tempChannel.getChannel() == 9));
 					this.channels.add( tgChannel );
 				}
 			}
@@ -481,7 +492,8 @@ public class MidiSongImporter implements TGLocalFileImporter{
 					Iterator channelIt = this.channels.iterator();
 					while( channelIt.hasNext() ){
 						TGChannel tgChannel = (TGChannel)channelIt.next();
-						if( tempChannel.getChannel() == tgChannel.getChannel() ){
+						GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
+						if( gmChannelRoute != null && tempChannel.getChannel() == gmChannelRoute.getChannel1() ){
 							trackChannel = tgChannel;
 						}
 					}

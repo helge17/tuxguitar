@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.jack.synthesizer;
 
+import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class JackReceiver implements MidiReceiver{
+public class JackReceiver implements GMReceiver{
 	
 	private JackClient jackClient;
 	private JackOutputPort jackOutputPort;

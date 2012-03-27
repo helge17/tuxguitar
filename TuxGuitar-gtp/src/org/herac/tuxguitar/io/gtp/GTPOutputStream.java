@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.gm.GMChannelRouter;
+import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
 
 public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputStreamBase{
 	
-	private TGChannel channelAux;
+	private GMChannelRouter channelRouter;
 	private OutputStream outputStream;
 	
 	public GTPOutputStream(GTPSettings settings){
@@ -22,7 +23,6 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 	
 	public void init(TGFactory factory,OutputStream stream) {
 		super.init(factory);
-		this.channelAux = null;
 		this.outputStream = stream;
 	}
 	
@@ -96,21 +96,22 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 		this.outputStream.close();
 	}
 	
-	protected TGChannel getChannel( TGSong song, TGTrack track ){
-		TGSongManager tgSongManager = new TGSongManager(getFactory());
-		tgSongManager.setSong( song );
+	protected void configureChannelRouter( TGSong song ){
+		this.channelRouter = new GMChannelRouter();
 		
-		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
-		if( tgChannel != null ){
-			return tgChannel;
+		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.channelRouter);
+		gmChannelRouterConfigurator.configureRouter(song);
+	}
+	
+	protected GMChannelRoute getChannelRoute( int channelId ){
+		GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(channelId);
+		if( gmChannelRoute == null ){
+			gmChannelRoute = new GMChannelRoute(GMChannelRoute.NULL_VALUE);
+			gmChannelRoute.setChannel1(15);
+			gmChannelRoute.setChannel2(15);
 		}
-		if( this.channelAux == null ){
-			this.channelAux = tgSongManager.createChannel();
-			if( this.channelAux.getChannel() < 0 && song.countChannels() > 0 ){
-				this.channelAux = (song.getChannel(song.countChannels() - 1));
-			}
-		}
-		return this.channelAux;
+		
+		return gmChannelRoute;
 	}
 	
 	protected boolean isPercussionChannel( TGSong song, int channelId ){

@@ -6,7 +6,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.player.impl.jsa.utils.MidiMessageUtils;
+import org.herac.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 
@@ -44,32 +44,32 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 		}
 	}
 	
+	public void addNoteOff(long tick,int track,int channel, int note, int velocity,int voice,boolean bendMode) {
+		addEvent(track,new MidiEvent(MidiMessageFactory.noteOff(channel, note, velocity, voice, bendMode), tick ));
+	}
+	
+	public void addNoteOn(long tick,int track,int channel, int note, int velocity,int voice,boolean bendMode) {
+		addEvent(track,new MidiEvent(MidiMessageFactory.noteOn(channel, note, velocity, voice, bendMode), tick ));
+	}
+	
+	public void addPitchBend(long tick,int track,int channel, int value,int voice,boolean bendMode) {
+		addEvent(track,new MidiEvent(MidiMessageFactory.pitchBend(channel, value, voice, bendMode), tick ));
+	}
+	
 	public void addControlChange(long tick,int track,int channel, int controller, int value) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.controlChange(channel, controller, value), tick ));
-	}
-	
-	public void addNoteOff(long tick,int track,int channel, int note, int velocity) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.noteOff(channel, note, velocity), tick ));
-	}
-	
-	public void addNoteOn(long tick,int track,int channel, int note, int velocity) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.noteOn(channel, note, velocity), tick ));
-	}
-	
-	public void addPitchBend(long tick,int track,int channel, int value) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.pitchBend(channel, value), tick ));
+		addEvent(track,new MidiEvent(MidiMessageFactory.controlChange(channel, controller, value), tick ));
 	}
 	
 	public void addProgramChange(long tick,int track,int channel, int instrument) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.programChange(channel, instrument), tick ));
+		addEvent(track,new MidiEvent(MidiMessageFactory.programChange(channel, instrument), tick ));
 	}
 	
 	public void addTempoInUSQ(long tick,int track,int usq) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.tempoInUSQ(usq), tick ));
+		addEvent(track,new MidiEvent(MidiMessageFactory.tempoInUSQ(usq), tick ));
 	}
 	
 	public void addTimeSignature(long tick,int track,TGTimeSignature ts) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.timeSignature(ts), tick ));
+		addEvent(track,new MidiEvent(MidiMessageFactory.timeSignature(ts), tick ));
 	}
 	
 	public void notifyFinish(){

@@ -43,31 +43,31 @@ public class JackEvent {
 		return this.data;
 	}
 	
-	public static JackEvent systemReset(final long tick){
+	public static JackEvent systemReset(long tick){
 		return new JackEvent(tick,MIDI_SYSTEM_EVENT,ALL_TRACKS,null);
 	}
 	
-	public static JackEvent noteOn(final long tick,final int track,final int channel,final int key,final int velocity){
-		return new JackEvent(tick,MIDI_EVENT_NOTEON,track,new byte[]{(byte)channel,(byte)key,(byte)velocity});
+	public static JackEvent noteOn(long tick,int track,int channel,int key,int velocity,int voice,boolean bendMode){
+		return new JackEvent(tick,MIDI_EVENT_NOTEON,track,new byte[]{(byte)channel,(byte)key,(byte)velocity,(byte)voice,(byte)(bendMode?1:0)});
 	}
 	
-	public static JackEvent noteOff(final long tick,final int track,final int channel,final int key,final int velocity){
-		return new JackEvent(tick,MIDI_EVENT_NOTEOFF,track,new byte[]{(byte)channel,(byte)key,(byte)velocity});
+	public static JackEvent noteOff(long tick,int track,int channel,int key,int velocity,int voice,boolean bendMode){
+		return new JackEvent(tick,MIDI_EVENT_NOTEOFF,track,new byte[]{(byte)channel,(byte)key,(byte)velocity,(byte)voice,(byte)(bendMode?1:0)});
 	}
 	
-	public static JackEvent controlChange(final long tick,final int track,final int channel,final int controller,final int value){
+	public static JackEvent pitchBend(long tick,int track,int channel,int value,int voice,boolean bendMode){
+		return new JackEvent(tick,MIDI_EVENT_PITCH_BEND,track,new byte[]{(byte)channel,(byte)value,(byte)voice,(byte)(bendMode?1:0)});
+	}
+	
+	public static JackEvent controlChange(long tick,int track,int channel,int controller,int value){
 		return new JackEvent(tick,MIDI_EVENT_CONTROL_CHANGE,track,new byte[]{(byte)channel,(byte)controller,(byte)value});
 	}
 	
-	public static JackEvent programChange(final long tick,final int track,final int channel,final int value){
+	public static JackEvent programChange(long tick,int track,int channel,int value){
 		return new JackEvent(tick,MIDI_EVENT_PROGRAM_CHANGE,track,new byte[]{(byte)channel,(byte)value});
 	}
 	
-	public static JackEvent pitchBend(final long tick,final int track,final int channel,final int value){
-		return new JackEvent(tick,MIDI_EVENT_PITCH_BEND,track,new byte[]{(byte)channel,(byte)value});
-	}
-	
-	public static JackEvent tempoInUSQ(final long tick,final int usq){
+	public static JackEvent tempoInUSQ(long tick,int usq){
 		return new JackEvent(tick,MIDI_SYSTEM_EVENT,new byte[]{0x51,(byte) (usq & 0xff),(byte) ((usq >> 8) & 0xff),(byte) ((usq >> 16) & 0xff)});
 	}
 }

@@ -5,36 +5,61 @@ import java.util.List;
 
 import javax.sound.midi.MidiEvent;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	
 	private List events;
+	private GMChannelRouter router;
 	
-	public MidiSequenceHandlerImpl(int tracks ){
+	public MidiSequenceHandlerImpl(int tracks, GMChannelRouter router){
 		super(tracks);
+		this.router = router;
 		this.events = new ArrayList();
 	}
 	
-	public void addControlChange(long tick,int track,int channel, int controller, int value) {
-		this.events.add(new MidiEvent(MidiMessageUtils.controlChange(channel, controller, value), tick ));
+	public void addNoteOff(long tick,int track,int channelId, int note, int velocity, int voice, boolean bendMode) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			this.events.add(new MidiEvent(MidiMessageUtils.noteOff(resolveChannel(gmChannel,bendMode), note, velocity), tick ));
+		}
 	}
 	
-	public void addNoteOff(long tick,int track,int channel, int note, int velocity) {
-		this.events.add(new MidiEvent(MidiMessageUtils.noteOff(channel, note, velocity), tick ));
+	public void addNoteOn(long tick,int track,int channelId, int note, int velocity, int voice, boolean bendMode) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			this.events.add(new MidiEvent(MidiMessageUtils.noteOn(resolveChannel(gmChannel,bendMode), note, velocity), tick ));
+		}
 	}
 	
-	public void addNoteOn(long tick,int track,int channel, int note, int velocity) {
-		this.events.add(new MidiEvent(MidiMessageUtils.noteOn(channel, note, velocity), tick ));
+	public void addPitchBend(long tick,int track,int channelId, int value, int voice, boolean bendMode) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			this.events.add(new MidiEvent(MidiMessageUtils.pitchBend(resolveChannel(gmChannel,bendMode), value), tick ));
+		}
 	}
 	
-	public void addPitchBend(long tick,int track,int channel, int value) {
-		this.events.add(new MidiEvent(MidiMessageUtils.pitchBend(channel, value), tick ));
+	public void addControlChange(long tick,int track,int channelId, int controller, int value) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			this.events.add(new MidiEvent(MidiMessageUtils.controlChange(gmChannel.getChannel1(), controller, value), tick ));
+			if( gmChannel.getChannel1() != gmChannel.getChannel2() ){
+				this.events.add(new MidiEvent(MidiMessageUtils.controlChange(gmChannel.getChannel2(), controller, value), tick ));
+			}
+		}
 	}
 	
-	public void addProgramChange(long tick,int track,int channel, int instrument) {
-		this.events.add(new MidiEvent(MidiMessageUtils.programChange(channel, instrument), tick ));
+	public void addProgramChange(long tick,int track,int channelId, int instrument) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			this.events.add(new MidiEvent(MidiMessageUtils.programChange(gmChannel.getChannel1(), instrument), tick ));
+			if( gmChannel.getChannel1() != gmChannel.getChannel2() ){
+				this.events.add(new MidiEvent(MidiMessageUtils.programChange(gmChannel.getChannel2(), instrument), tick ));
+			}
+		}
 	}
 	
 	public void addTempoInUSQ(long tick,int track,int usq) {
@@ -51,5 +76,9 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	
 	public List getEvents(){
 		return this.events;
+	}
+	
+	private int resolveChannel(GMChannelRoute gmChannel, boolean bendMode){
+		return (bendMode ? gmChannel.getChannel2() : gmChannel.getChannel1());
 	}
 }

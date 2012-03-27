@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -51,43 +54,47 @@ public class GP3InputStream extends GTPInputStream {
 		return new TGFileFormat("Guitar Pro 3","*.gp3");
 	}
 	
-	public TGSong readSong() throws GTPFormatException, IOException {
-		readVersion();
-		if (!isSupportedVersion(getVersion())) {
+	public TGSong readSong() throws TGFileFormatException {
+		try{
+			readVersion();
+			if (!isSupportedVersion(getVersion())) {
+				this.close();
+				throw new GTPFormatException("Unsupported Version");
+			}
+			TGSong song = getFactory().newSong();
+			
+			readInfo(song);
+			
+			this.tripletFeel = ((readBoolean())?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
+			
+			int tempoValue = readInt();
+					
+			this.keySignature = readKeySignature();
+			this.skip(3);
+			
+			List channels = readChannels();
+			
+			int measures = readInt();
+			int tracks = readInt();
+			
+			readMeasureHeaders(song, measures);
+			readTracks(song, tracks, channels);
+			readMeasures(song, measures, tracks, tempoValue);
+			
 			this.close();
-			throw new GTPFormatException("Unsupported Version");
+			
+			return song;
+		} catch (GTPFormatException gtpFormatException) {
+			throw gtpFormatException;
+		} catch (Throwable throwable) {
+			throw new TGFileFormatException(throwable);
 		}
-		TGSong song = getFactory().newSong();
-		
-		readInfo(song);
-		
-		this.tripletFeel = ((readBoolean())?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
-		
-		int tempoValue = readInt();
-				
-		this.keySignature = readKeySignature();
-		this.skip(3);
-		
-		List channels = readChannels();
-		
-		int measures = readInt();
-		int tracks = readInt();
-		
-		readMeasureHeaders(song, measures);
-		readTracks(song, tracks, channels);
-		readMeasures(song, measures, tracks, tempoValue);
-		
-		this.close();
-		
-		return song;
 	}
 	
 	private List readChannels() throws IOException{
 		List channels = new ArrayList();
 		for (int i = 0; i < 64; i++) {
 			TGChannel channel = getFactory().newChannel();
-			channel.setChannel((short)i);
-			channel.setEffectChannel((short)i);
 			channel.setProgram((short)readInt());
 			channel.setVolume(toChannelShort(readByte()));
 			channel.setBalance(toChannelShort(readByte()));
@@ -95,6 +102,10 @@ public class GP3InputStream extends GTPInputStream {
 			channel.setReverb(toChannelShort(readByte()));
 			channel.setPhaser(toChannelShort(readByte()));
 			channel.setTremolo(toChannelShort(readByte()));
+			channel.setBank( i == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+			if (channel.getProgram() < 0) {
+				channel.setProgram((short)0);
+			}
 			channels.add(channel);
 			skip(2);
 		}
@@ -368,29 +379,37 @@ public class GP3InputStream extends GTPInputStream {
 	}
 	
 	private void readChannel(TGSong song, TGTrack track,List channels) throws IOException {
-		int index = (readInt() - 1);
-		int effectChannel = (readInt() - 1);
-		if(index >= 0 && index < channels.size()){
+		int gmChannel1 = (readInt() - 1);
+		int gmChannel2 = (readInt() - 1);
+		if( gmChannel1 >= 0 && gmChannel1 < channels.size()){
 			TGChannel channel = getFactory().newChannel();
+			TGChannelParameter gmChannel1Param = getFactory().newChannelParameter();
+			TGChannelParameter gmChannel2Param = getFactory().newChannelParameter();
 			
-			((TGChannel) channels.get(index)).copy(channel);
-			if (channel.getProgram() < 0) {
-				channel.setProgram((short)0);
-			}
-			if(!channel.isPercussionChannel()){
-				channel.setEffectChannel((short)effectChannel);
-			}
+			gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
+			gmChannel1Param.setValue(Integer.toString(gmChannel1));
+			gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
+			gmChannel2Param.setValue(Integer.toString(gmChannel1 != 9 ? gmChannel2 : gmChannel1));
+			
+			((TGChannel) channels.get(gmChannel1)).copy(channel);
 			
 			//------------------------------------------//
 			for( int i = 0 ; i < song.countChannels() ; i ++ ){
 				TGChannel channelAux = song.getChannel(i);
-				if( channelAux.getChannel() == channel.getChannel() ){
-					channel.setChannelId(channelAux.getChannelId());
+				for( int n = 0 ; n < channelAux.countParameters() ; n ++ ){
+					TGChannelParameter channelParameter = channelAux.getParameter( n );
+					if( channelParameter.getKey().equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1) ){
+						if( Integer.toString(gmChannel1).equals(channelParameter.getValue()) ){
+							channel.setChannelId(channelAux.getChannelId());
+						}
+					}
 				}
 			}
 			if( channel.getChannelId() <= 0 ){
 				channel.setChannelId( song.countChannels() + 1 );
 				channel.setName(("#" + channel.getChannelId()));
+				channel.addParameter(gmChannel1Param);
+				channel.addParameter(gmChannel2Param);
 				song.addChannel(channel);
 			}
 			track.setChannelId(channel.getChannelId());
