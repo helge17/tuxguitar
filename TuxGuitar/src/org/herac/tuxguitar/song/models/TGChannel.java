@@ -35,8 +35,6 @@ public abstract class TGChannel {
 	
 	public TGChannel() {
 		this.channelId = 0;
-		this.channel = 0;
-		this.effectChannel = 0;
 		this.bank = DEFAULT_BANK;
 		this.program = DEFAULT_PROGRAM;
 		this.volume = DEFAULT_VOLUME;
