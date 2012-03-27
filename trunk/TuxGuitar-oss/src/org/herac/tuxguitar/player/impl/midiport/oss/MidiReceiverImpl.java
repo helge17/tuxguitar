@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.player.impl.midiport.oss;
 
+import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiReceiver;
 
-public class MidiReceiverImpl implements MidiReceiver{
+public class MidiReceiverImpl implements GMReceiver{
 	
 	private boolean connected;
 	private MidiOutputPortImpl midiPort;

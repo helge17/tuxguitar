@@ -2,6 +2,8 @@ package org.herac.tuxguitar.io.midi;
 
 import java.io.OutputStream;
 
+import org.herac.tuxguitar.gm.GMChannelRouter;
+import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.player.base.MidiSequenceParser;
@@ -31,13 +33,18 @@ public class MidiSongExporter implements TGLocalFileExporter{
 		this.stream = stream;
 	}
 	
-	public void exportSong(TGSong song) {
+	public void exportSong(TGSong tgSong) {
 		if( this.stream != null && this.settings != null ){
-			TGSongManager manager = new TGSongManager();
-			manager.setSong(song);
-			MidiSequenceParser parser = new MidiSequenceParser(manager,MidiSequenceParser.DEFAULT_EXPORT_FLAGS,100,this.settings.getTranspose());
-			MidiSequenceHandlerImpl sequence = new MidiSequenceHandlerImpl( (song.countTracks() + 1) , this.stream);
-			parser.parse(sequence);
+			TGSongManager tgSongManager = new TGSongManager();
+			tgSongManager.setSong(tgSong);
+
+			GMChannelRouter gmChannelRouter = new GMChannelRouter();
+			GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
+			gmChannelRouterConfigurator.configureRouter(tgSong);
+			
+			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSongManager,MidiSequenceParser.DEFAULT_EXPORT_FLAGS);
+			midiSequenceParser.setTranspose(this.settings.getTranspose());
+			midiSequenceParser.parse(new MidiSequenceHandlerImpl((tgSong.countTracks() + 1), gmChannelRouter, this.stream));
 		}
 	}
 }

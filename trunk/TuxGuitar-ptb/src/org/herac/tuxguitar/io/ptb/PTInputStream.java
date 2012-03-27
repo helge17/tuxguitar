@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.io.ptb.base.PTBar;
 import org.herac.tuxguitar.io.ptb.base.PTBeat;
@@ -64,18 +65,22 @@ public class PTInputStream implements TGInputStreamBase{
 		}
 	}
 	
-	public TGSong readSong() throws IOException{
-		this.readVersion();
-		if (!isSupportedVersion(this.version)) {
-			throw new IOException("Unsupported Version");
+	public TGSong readSong() throws TGFileFormatException{
+		try{
+			this.readVersion();
+			if (!isSupportedVersion(this.version)) {
+				throw new IOException("Unsupported Version");
+			}
+			this.song = new PTSong();
+			this.readSongInfo();
+			this.readDataInstruments(this.song.getTrack1());
+			this.readDataInstruments(this.song.getTrack2());
+			this.close();
+			
+			return this.parser.parseSong(this.song);
+		} catch (Throwable throwable) {
+			throw new TGFileFormatException(throwable);
 		}
-		this.song = new PTSong();
-		this.readSongInfo();
-		this.readDataInstruments(this.song.getTrack1());
-		this.readDataInstruments(this.song.getTrack2());
-		this.close();
-		
-		return this.parser.parseSong(this.song);
 	}
 	
 	private void readSongInfo(){

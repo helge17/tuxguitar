@@ -3,10 +3,13 @@ package org.herac.tuxguitar.io.gtp;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -56,77 +59,91 @@ public class GP1InputStream extends GTPInputStream {
 		return new TGFileFormat("Guitar Pro","*.gtp");
 	}
 	
-	public TGSong readSong() throws GTPFormatException, IOException {
-		readVersion();
-		if (!isSupportedVersion(getVersion())) {
-			this.close();
-			throw new GTPFormatException("Unsupported Version");
-		}
-		this.trackCount = ((getVersionIndex() > 2)?8:1);
-		
-		TGSong song = getFactory().newSong();
-		
-		readInfo(song);
-		
-		int tempo = readInt();
-		int tripletFeel = ((readInt() == 1)?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
-		
-		if(getVersionIndex() > 2){
-			readInt(); //key
-		}
-		
-		for (int i = 0; i < this.trackCount; i++) {
-			TGChannel channel = getFactory().newChannel();
-			channel.setChannelId(TRACK_CHANNELS[ i ][0]);
-			channel.setChannel(TRACK_CHANNELS[ i ][1]);
-			channel.setEffectChannel(TRACK_CHANNELS[ i ][2]);
-			song.addChannel(channel);
-		}
-		for (int i = 0; i < this.trackCount; i++) {
-			TGTrack track = getFactory().newTrack();
-			track.setNumber( (i + 1) );
-			track.setChannelId(TRACK_CHANNELS[ i ][0]);
-			TGColor.RED.copy(track.getColor());
-			
-			int strings = ((getVersionIndex() > 1)?readInt():6);
-			for (int j = 0; j < strings; j++) {
-				TGString string = getFactory().newString();
-				string.setNumber( j + 1 );
-				string.setValue( readInt() );
-				track.getStrings().add( string  );
+	public TGSong readSong() throws TGFileFormatException {
+		try{
+			readVersion();
+			if (!isSupportedVersion(getVersion())) {
+				this.close();
+				throw new GTPFormatException("Unsupported Version");
 			}
-			song.addTrack(track);
+			this.trackCount = ((getVersionIndex() > 2)?8:1);
+			
+			TGSong song = getFactory().newSong();
+			
+			readInfo(song);
+			
+			int tempo = readInt();
+			int tripletFeel = ((readInt() == 1)?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
+			
+			if(getVersionIndex() > 2){
+				readInt(); //key
+			}
+			
+			for (int i = 0; i < this.trackCount; i++) {
+				TGChannel channel = getFactory().newChannel();
+				TGChannelParameter gmChannel1Param = getFactory().newChannelParameter();
+				TGChannelParameter gmChannel2Param = getFactory().newChannelParameter();
+				
+				gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
+				gmChannel1Param.setValue(Integer.toString(TRACK_CHANNELS[ i ][1]));
+				gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
+				gmChannel2Param.setValue(Integer.toString(TRACK_CHANNELS[ i ][2]));
+				
+				channel.setChannelId(TRACK_CHANNELS[ i ][0]);
+				channel.addParameter(gmChannel1Param);
+				channel.addParameter(gmChannel2Param);
+				song.addChannel(channel);
+			}
+			for (int i = 0; i < this.trackCount; i++) {
+				TGTrack track = getFactory().newTrack();
+				track.setNumber( (i + 1) );
+				track.setChannelId(TRACK_CHANNELS[ i ][0]);
+				TGColor.RED.copy(track.getColor());
+				
+				int strings = ((getVersionIndex() > 1)?readInt():6);
+				for (int j = 0; j < strings; j++) {
+					TGString string = getFactory().newString();
+					string.setNumber( j + 1 );
+					string.setValue( readInt() );
+					track.getStrings().add( string  );
+				}
+				song.addTrack(track);
+			}
+			
+			int measureCount = readInt();
+			
+			for (int i = 0; i < this.trackCount; i++) {
+				readTrack(song.getTrack(i), song.getChannel(i));
+			}
+			
+			if(getVersionIndex() > 2){
+				skip(10);
+			}
+			
+			TGMeasureHeader previous = null;
+			long[] lastReadedStarts = new long[this.trackCount];
+			for (int i = 0; i < measureCount; i++) {
+				TGMeasureHeader header = getFactory().newHeader();
+				header.setStart( (previous == null)?TGDuration.QUARTER_TIME:(previous.getStart() + previous.getLength()) );
+				header.setNumber( (previous == null)?1:previous.getNumber() + 1 );
+				header.getTempo().setValue( (previous == null)?tempo:previous.getTempo().getValue() );
+				header.setTripletFeel(tripletFeel);
+				readTrackMeasures(song,header,lastReadedStarts);
+				previous = header;
+			}
+			
+			TGSongManager manager = new TGSongManager(getFactory());
+			manager.setSong(song);
+			manager.autoCompleteSilences();
+			
+			this.close();
+			
+			return song;
+		} catch (GTPFormatException gtpFormatException) {
+			throw gtpFormatException;
+		} catch (Throwable throwable) {
+			throw new TGFileFormatException(throwable);
 		}
-		
-		int measureCount = readInt();
-		
-		for (int i = 0; i < this.trackCount; i++) {
-			readTrack(song.getTrack(i), song.getChannel(i));
-		}
-		
-		if(getVersionIndex() > 2){
-			skip(10);
-		}
-		
-		TGMeasureHeader previous = null;
-		long[] lastReadedStarts = new long[this.trackCount];
-		for (int i = 0; i < measureCount; i++) {
-			TGMeasureHeader header = getFactory().newHeader();
-			header.setStart( (previous == null)?TGDuration.QUARTER_TIME:(previous.getStart() + previous.getLength()) );
-			header.setNumber( (previous == null)?1:previous.getNumber() + 1 );
-			header.getTempo().setValue( (previous == null)?tempo:previous.getTempo().getValue() );
-			header.setTripletFeel(tripletFeel);
-			readTrackMeasures(song,header,lastReadedStarts);
-			previous = header;
-		}
-		
-		TGSongManager manager = new TGSongManager(getFactory());
-		manager.setSong(song);
-		manager.autoCompleteSilences();
-		
-		this.close();
-		
-		return song;
 	}
 	
 	private void readInfo(TGSong song) throws IOException{

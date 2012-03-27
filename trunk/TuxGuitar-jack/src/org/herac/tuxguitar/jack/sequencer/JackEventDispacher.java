@@ -11,19 +11,19 @@ public class JackEventDispacher{
 	
 	public void dispatch(JackEvent event) throws MidiPlayerException{
 		if(event.getType() == JackEvent.MIDI_EVENT_NOTEON){
-			this.sequencer.getTransmitter().sendNoteOn(event.getData()[0],event.getData()[1],event.getData()[2]);
+			this.sequencer.getTransmitter().sendNoteOn(event.getData()[0],event.getData()[1],event.getData()[2],event.getData()[3],(event.getData()[4] == 1));
 		}
 		else if(event.getType() == JackEvent.MIDI_EVENT_NOTEOFF){
-			this.sequencer.getTransmitter().sendNoteOff(event.getData()[0],event.getData()[1],event.getData()[2]);
+			this.sequencer.getTransmitter().sendNoteOff(event.getData()[0],event.getData()[1],event.getData()[2],event.getData()[3],(event.getData()[4] == 1));
+		}
+		else if(event.getType() == JackEvent.MIDI_EVENT_PITCH_BEND){
+			this.sequencer.getTransmitter().sendPitchBend(event.getData()[0],event.getData()[1],event.getData()[2],(event.getData()[3] == 1));
 		}
 		else if(event.getType() == JackEvent.MIDI_EVENT_CONTROL_CHANGE){
 			this.sequencer.getTransmitter().sendControlChange(event.getData()[0],event.getData()[1],event.getData()[2]);
 		}
 		else if(event.getType() == JackEvent.MIDI_EVENT_PROGRAM_CHANGE){
 			this.sequencer.getTransmitter().sendProgramChange(event.getData()[0],event.getData()[1]);
-		}
-		else if(event.getType() == JackEvent.MIDI_EVENT_PITCH_BEND){
-			this.sequencer.getTransmitter().sendPitchBend(event.getData()[0],event.getData()[1]);
 		}
 		else if(event.getType() == JackEvent.MIDI_SYSTEM_EVENT){
 			if(event.getData()[0] == 0x51){

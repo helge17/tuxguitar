@@ -3,6 +3,8 @@ package org.herac.tuxguitar.io.midi;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.io.midi.base.MidiEvent;
 import org.herac.tuxguitar.io.midi.base.MidiSequence;
 import org.herac.tuxguitar.io.midi.base.MidiTrack;
@@ -14,9 +16,11 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	
 	private OutputStream stream;
 	private MidiSequence sequence;
+	private GMChannelRouter router;
 	
-	public MidiSequenceHandlerImpl(int tracks,OutputStream stream){
+	public MidiSequenceHandlerImpl(int tracks, GMChannelRouter router, OutputStream stream){
 		super(tracks);
+		this.router = router;
 		this.stream = stream;
 		this.init();
 	}
@@ -32,30 +36,55 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 		return this.sequence;
 	}
 	
+	private int resolveChannel(GMChannelRoute gmChannel, boolean bendMode){
+		return (bendMode ? gmChannel.getChannel2() : gmChannel.getChannel1());
+	}
+	
 	public void addEvent(int track, MidiEvent event) {
 		if(track >= 0 && track < getSequence().countTracks()){
 			getSequence().getTrack(track).add(event);
 		}
 	}
 	
-	public void addControlChange(long tick,int track,int channel, int controller, int value) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.controlChange(channel, controller, value), tick ));
+	public void addNoteOff(long tick,int track,int channelId, int note, int velocity, int voice, boolean bendMode) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			addEvent(track,new MidiEvent(MidiMessageUtils.noteOff(resolveChannel(gmChannel,bendMode), note, velocity), tick ));
+		}
 	}
 	
-	public void addNoteOff(long tick,int track,int channel, int note, int velocity) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.noteOff(channel, note, velocity), tick ));
+	public void addNoteOn(long tick,int track,int channelId, int note, int velocity, int voice, boolean bendMode) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			addEvent(track,new MidiEvent(MidiMessageUtils.noteOn(resolveChannel(gmChannel,bendMode), note, velocity), tick ));
+		}
 	}
 	
-	public void addNoteOn(long tick,int track,int channel, int note, int velocity) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.noteOn(channel, note, velocity), tick ));
+	public void addPitchBend(long tick,int track,int channelId, int value, int voice, boolean bendMode) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			addEvent(track,new MidiEvent(MidiMessageUtils.pitchBend(resolveChannel(gmChannel,bendMode), value), tick ));
+		}
 	}
 	
-	public void addPitchBend(long tick,int track,int channel, int value) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.pitchBend(channel, value), tick ));
+	public void addControlChange(long tick,int track,int channelId, int controller, int value) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			addEvent(track,new MidiEvent(MidiMessageUtils.controlChange(gmChannel.getChannel1(), controller, value), tick ));
+			if( gmChannel.getChannel1() != gmChannel.getChannel2() ){
+				addEvent(track,new MidiEvent(MidiMessageUtils.controlChange(gmChannel.getChannel2(), controller, value), tick ));
+			}
+		}
 	}
 	
-	public void addProgramChange(long tick,int track,int channel, int instrument) {
-		addEvent(track,new MidiEvent(MidiMessageUtils.programChange(channel, instrument), tick ));
+	public void addProgramChange(long tick,int track,int channelId, int instrument) {
+		GMChannelRoute gmChannel = this.router.getRoute(channelId);
+		if( gmChannel != null ){
+			addEvent(track,new MidiEvent(MidiMessageUtils.programChange(gmChannel.getChannel1(), instrument), tick ));
+			if( gmChannel.getChannel1() != gmChannel.getChannel2() ){
+				addEvent(track,new MidiEvent(MidiMessageUtils.programChange(gmChannel.getChannel2(), instrument), tick ));
+			}
+		}
 	}
 	
 	public void addTempoInUSQ(long tick,int track,int usq) {

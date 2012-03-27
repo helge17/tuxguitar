@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -81,6 +82,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			if(song.isEmpty()){
 				throw new TGFileFormatException("Empty Song!!!");
 			}
+			configureChannelRouter(song);
 			TGMeasureHeader header = song.getMeasureHeader(0);
 			writeStringByte(GP5_VERSION, 30, DEFAULT_VERSION_CHARSET);
 			writeInfo(song);
@@ -255,7 +257,7 @@ public class GP5OutputStream extends GTPOutputStream {
 	}
 	
 	private void writeTrack(TGTrack track) throws IOException {
-		TGChannel channel = getChannel(track.getSong(), track);
+		GMChannelRoute channel = getChannelRoute(track.getChannelId());
 		
 		int flags = 0;
 		if (isPercussionChannel(track.getSong(),track.getChannelId())) {
@@ -274,8 +276,8 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeInt(value);
 		}
 		writeInt(1);
-		writeInt(channel.getChannel() + 1);
-		writeInt(channel.getEffectChannel() + 1);
+		writeInt(channel.getChannel1() + 1);
+		writeInt(channel.getChannel2() + 1);
 		writeInt(24);
 		writeInt(track.getOffset());
 		writeColor(track.getColor());
@@ -724,8 +726,6 @@ public class GP5OutputStream extends GTPOutputStream {
 		TGChannel[] channels = new TGChannel[64];
 		for (int i = 0; i < channels.length; i++) {
 			channels[i] = getFactory().newChannel();
-			channels[i].setChannel((short)i);
-			channels[i].setEffectChannel((short)i);
 			channels[i].setProgram((short)24);
 			channels[i].setVolume((short)13);
 			channels[i].setBalance((short)8);
@@ -738,12 +738,13 @@ public class GP5OutputStream extends GTPOutputStream {
 		Iterator it = song.getChannels();
 		while (it.hasNext()) {
 			TGChannel tgChannel = (TGChannel) it.next();
-			channels[tgChannel.getChannel()].setProgram(tgChannel.getProgram());
-			channels[tgChannel.getChannel()].setVolume(tgChannel.getVolume());
-			channels[tgChannel.getChannel()].setBalance(tgChannel.getBalance());
-			channels[tgChannel.getEffectChannel()].setProgram(tgChannel.getProgram());
-			channels[tgChannel.getEffectChannel()].setVolume(tgChannel.getVolume());
-			channels[tgChannel.getEffectChannel()].setBalance(tgChannel.getBalance());
+			GMChannelRoute gmChannelRoute = getChannelRoute(tgChannel.getChannelId());
+			channels[gmChannelRoute.getChannel1()].setProgram(tgChannel.getProgram());
+			channels[gmChannelRoute.getChannel1()].setVolume(tgChannel.getVolume());
+			channels[gmChannelRoute.getChannel1()].setBalance(tgChannel.getBalance());
+			channels[gmChannelRoute.getChannel2()].setProgram(tgChannel.getProgram());
+			channels[gmChannelRoute.getChannel2()].setVolume(tgChannel.getVolume());
+			channels[gmChannelRoute.getChannel1()].setBalance(tgChannel.getBalance());
 		}
 		
 		return channels;

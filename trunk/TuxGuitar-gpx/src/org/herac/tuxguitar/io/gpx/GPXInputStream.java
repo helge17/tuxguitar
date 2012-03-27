@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.io.gpx;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
@@ -37,7 +36,7 @@ public class GPXInputStream implements TGInputStreamBase{
 		}
 	}
 	
-	public TGSong readSong() throws TGFileFormatException, IOException {
+	public TGSong readSong() throws TGFileFormatException {
 		try {
 			this.gpxFileSystem.load(this.gpxHeader, this.gpxStream);
 			

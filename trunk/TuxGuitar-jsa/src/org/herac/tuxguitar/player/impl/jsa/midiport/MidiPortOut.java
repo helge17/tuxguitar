@@ -3,14 +3,14 @@ package org.herac.tuxguitar.player.impl.jsa.midiport;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Receiver;
 
+import org.herac.tuxguitar.gm.port.GMOutputPort;
+import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiReceiver;
-import org.herac.tuxguitar.player.impl.jsa.utils.MidiMessageUtils;
+import org.herac.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class MidiPortOut implements MidiOutputPort {
+public class MidiPortOut extends GMOutputPort {
 	
 	private String key;
 	private String name;
@@ -22,7 +22,7 @@ public class MidiPortOut implements MidiOutputPort {
 		this.receiver = new MidiReceiverImpl(device);
 	}
 	
-	public MidiReceiver getReceiver(){
+	public GMReceiver getReceiver(){
 		return this.receiver;
 	}
 	
@@ -59,7 +59,7 @@ public class MidiPortOut implements MidiOutputPort {
 	}
 }
 
-class MidiReceiverImpl implements MidiReceiver{
+class MidiReceiverImpl implements GMReceiver{
 	
 	private MidiDevice device;
 	private Receiver receiver;
@@ -117,45 +117,45 @@ class MidiReceiverImpl implements MidiReceiver{
 	
 	public void sendSystemReset(){
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.systemReset(),-1);
+			getReceiver().send(MidiMessageFactory.systemReset(),-1);
 		}
 	}
 	
 	public void sendAllNotesOff(){
 		if(getReceiver() != null){
 			for(int channel = 0; channel < 16; channel ++){
-				getReceiver().send(MidiMessageUtils.controlChange(channel, MidiControllers.ALL_NOTES_OFF,0),-1);
+				getReceiver().send(MidiMessageFactory.controlChange(channel, MidiControllers.ALL_NOTES_OFF,0),-1);
 			}
 		}
 	}
 	
 	public void sendNoteOn(int channel, int key, int velocity) {
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.noteOn(channel, key, velocity),-1);
+			getReceiver().send(MidiMessageFactory.noteOn(channel, key, velocity),-1);
 		}
 	}
 	
 	public void sendNoteOff(int channel, int key, int velocity) {
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.noteOff(channel, key, velocity),-1);
+			getReceiver().send(MidiMessageFactory.noteOff(channel, key, velocity),-1);
 		}
 	}
 	
 	public void sendControlChange(int channel, int controller, int value) {
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.controlChange(channel,controller, value),-1);
+			getReceiver().send(MidiMessageFactory.controlChange(channel,controller, value),-1);
 		}
 	}
 	
 	public void sendProgramChange(int channel, int value) {
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.programChange(channel, value),-1);
+			getReceiver().send(MidiMessageFactory.programChange(channel, value),-1);
 		}
 	}
 	
 	public void sendPitchBend(int channel, int value) {
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageUtils.pitchBend(channel, value),-1);
+			getReceiver().send(MidiMessageFactory.pitchBend(channel, value),-1);
 		}
 	}
 }

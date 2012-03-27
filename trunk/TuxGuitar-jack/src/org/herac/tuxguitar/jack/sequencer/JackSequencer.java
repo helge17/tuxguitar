@@ -143,9 +143,7 @@ public class JackSequencer implements MidiSequencer{
 	
 	public void reset()  throws MidiPlayerException{
 		this.getTransmitter().sendAllNotesOff();
-		for(int channel = 0; channel < 16;channel ++){
-			this.getTransmitter().sendPitchBend(channel, 64);
-		}
+		this.getTransmitter().sendPitchBendReset();
 	}
 	
 	protected void startPlayer(){
