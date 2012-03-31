@@ -158,17 +158,6 @@ public abstract class TGChannel {
 		return (this.getBank() == DEFAULT_PERCUSSION_BANK);
 	}
 	
-	public static void setPercussionChannel(TGChannel channel){
-		channel.setProgram(DEFAULT_PERCUSSION_PROGRAM);
-		channel.setBank(DEFAULT_PERCUSSION_BANK);
-	}
-	
-	public static TGChannel newPercussionChannel(TGFactory factory){
-		TGChannel channel = factory.newChannel();
-		TGChannel.setPercussionChannel(channel);
-		return channel;
-	}
-	
 	public TGChannel clone(TGFactory factory){
 		TGChannel channel = factory.newChannel();
 		copy(channel);
