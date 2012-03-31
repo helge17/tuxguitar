@@ -116,9 +116,8 @@ public class TESongImporter implements TGLocalFileImporter{
 			tgChannel.setVolume((short)((  (15 - tracks[i].getVolume()) * 127) / 15));
 			tgChannel.setBalance((short)(( tracks[i].getPan() * 127) / 15));
 			tgChannel.setProgram((short)tracks[i].getInstrument());
-			if(tracks[i].isPercussion()){
-				TGChannel.setPercussionChannel(tgChannel);
-			}
+			tgChannel.setBank( tracks[i].isPercussion() ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+			
 			track.setChannelId(tgChannel.getChannelId());
 			
 			track.getStrings().clear();
