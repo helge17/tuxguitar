@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiDevice;
+import org.herac.tuxguitar.song.models.TGChannel;
 
 public class TGChannelSettingsHandlerManager {
 	
@@ -40,10 +41,10 @@ public class TGChannelSettingsHandlerManager {
 		return null;
 	}
 	
-	public TGChannelSettingsDialog findChannelSettingsDialog(){
+	public TGChannelSettingsDialog findChannelSettingsDialog(TGChannel channel) {
 		TGChannelSettingsHandler channelSettingsHandler = findSupportedChannelSettingsHandler();
 		if( channelSettingsHandler != null ){
-			return channelSettingsHandler.getChannelSettingsDialog();
+			return channelSettingsHandler.createChannelSettingsDialog(getMidiDevice() ,channel);
 		}
 		return null;
 	}
