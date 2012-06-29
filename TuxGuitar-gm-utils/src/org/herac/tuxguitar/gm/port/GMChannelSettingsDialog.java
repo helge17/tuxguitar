@@ -23,15 +23,17 @@ import org.herac.tuxguitar.song.models.TGChannelParameter;
 
 public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	
+	private TGChannel channel;
 	private GMChannelRouter router;
 	private Combo gmChannel1Combo;
 	private Combo gmChannel2Combo;
 	
-	public GMChannelSettingsDialog(){
+	public GMChannelSettingsDialog(TGChannel channel){
+		this.channel = channel;
 		this.router = new GMChannelRouter();
 	}
 	
-	public void show(final Shell parent, final TGChannel tgChannel) {
+	public void show(final Shell parent) {
 		this.configureRouter();
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM);
@@ -53,7 +55,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.gmChannel1Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		this.gmChannel1Combo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel(tgChannel);
+				updateChannel();
 			}
 		});
 		
@@ -65,11 +67,11 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.gmChannel2Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
 		this.gmChannel2Combo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				updateChannel(tgChannel);
+				updateChannel();
 			}
 		});
 		
-		updateChannelCombos(tgChannel);
+		updateChannelCombos();
 		
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
@@ -86,8 +88,8 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		gmChannelRouterConfigurator.configureRouter(TuxGuitar.instance().getSongManager().getSong());
 	}
 	
-	private void updateChannelCombos(TGChannel tgChannel){
-		GMChannelRoute route = this.router.getRoute(tgChannel.getChannelId());
+	private void updateChannelCombos(){
+		GMChannelRoute route = this.router.getRoute(this.channel.getChannelId());
 		
 		List channels = this.router.getFreeChannels(route);
 		
@@ -99,8 +101,8 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		
 		boolean playerRunning = TuxGuitar.instance().getPlayer().isRunning();
 		
-		this.gmChannel1Combo.setEnabled(!playerRunning && !tgChannel.isPercussionChannel() && this.gmChannel1Combo.getItemCount() > 0);
-		this.gmChannel2Combo.setEnabled(!playerRunning && !tgChannel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
+		this.gmChannel1Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel1Combo.getItemCount() > 0);
+		this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
 	}
 	
 	private void reloadChannelCombo(Combo combo, List channels, int selected, String prefix){
@@ -121,7 +123,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		}
 	}
 	
-	public void updateChannel(TGChannel tgChannel){
+	public void updateChannel(){
 		int channel1 = -1;
 		int channel2 = -1;
 		int channel1Selection = this.gmChannel1Combo.getSelectionIndex();
@@ -137,8 +139,8 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 			channel2 = ((Integer)((List)channel2Data).get(channel2Selection)).intValue();
 		}
 		
-		setChannelParameter(tgChannel, GMChannelRoute.PARAMETER_GM_CHANNEL_1, Integer.toString(channel1));
-		setChannelParameter(tgChannel, GMChannelRoute.PARAMETER_GM_CHANNEL_2, Integer.toString(channel2));
+		setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_1, Integer.toString(channel1));
+		setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_2, Integer.toString(channel2));
 		
 		configureRouter();
 	}
