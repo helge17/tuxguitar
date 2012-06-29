@@ -363,9 +363,9 @@ public class TGChannelItem {
 	
 	public void setupChannel(){
 		if( getChannel() != null && !isDisposed() ){
-			TGChannelSettingsDialog settingsDialog = this.dialog.getChannelSettingsHandlerManager().findChannelSettingsDialog();
+			TGChannelSettingsDialog settingsDialog = this.dialog.getChannelSettingsHandlerManager().findChannelSettingsDialog(getChannel());
 			if( settingsDialog != null ){
-				settingsDialog.show(this.dialog.getShell(), getChannel());
+				settingsDialog.show(this.dialog.getShell());
 			}
 		}
 	}
