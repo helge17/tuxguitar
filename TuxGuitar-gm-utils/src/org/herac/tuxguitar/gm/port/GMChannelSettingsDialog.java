@@ -49,7 +49,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		
 		Label gmChannel1Label = new Label(group, SWT.NULL);
 		gmChannel1Label.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
-		gmChannel1Label.setText(TuxGuitar.getProperty("gm.settings.channel-1") + ":");
+		gmChannel1Label.setText(TuxGuitar.getProperty("gm.settings.channel.label-1") + ":");
 		
 		this.gmChannel1Combo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.gmChannel1Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
@@ -61,7 +61,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		
 		Label gmChannel2Label = new Label(group, SWT.NULL);
 		gmChannel2Label.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
-		gmChannel2Label.setText(TuxGuitar.getProperty("gm.settings.channel-2") + ":");
+		gmChannel2Label.setText(TuxGuitar.getProperty("gm.settings.channel.label-2") + ":");
 		
 		this.gmChannel2Combo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.gmChannel2Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
@@ -93,11 +93,8 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		
 		List channels = this.router.getFreeChannels(route);
 		
-		String channel1Prefix = TuxGuitar.getProperty("instrument.channel");
-		String channel2Prefix = TuxGuitar.getProperty("instrument.effect-channel");
-		
-		this.reloadChannelCombo(this.gmChannel1Combo, channels, route.getChannel1(), channel1Prefix);
-		this.reloadChannelCombo(this.gmChannel2Combo, channels, route.getChannel2(), channel2Prefix);
+		this.reloadChannelCombo(this.gmChannel1Combo, channels, route.getChannel1(), "gm.settings.channel.value-1");
+		this.reloadChannelCombo(this.gmChannel2Combo, channels, route.getChannel2(), "gm.settings.channel.value-2");
 		
 		boolean playerRunning = TuxGuitar.instance().getPlayer().isRunning();
 		
@@ -105,14 +102,12 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
 	}
 	
-	private void reloadChannelCombo(Combo combo, List channels, int selected, String prefix){
+	private void reloadChannelCombo(Combo combo, List channels, int selected, String valueKey){
 		if(!(combo.getData() instanceof List) || isDifferentList(channels, (List)combo.getData())){
 			combo.removeAll();
 			combo.setData(channels);
 			for( int i = 0 ; i < channels.size() ; i ++ ){
-				Integer channel = (Integer)channels.get(i);
-				
-				combo.add(prefix + " #" + channel.toString() );
+				combo.add(TuxGuitar.getProperty(valueKey, new String[]{channels.get(i).toString()}));
 			}
 		}
 		for( int i = 0 ; i < channels.size() ; i ++ ){
