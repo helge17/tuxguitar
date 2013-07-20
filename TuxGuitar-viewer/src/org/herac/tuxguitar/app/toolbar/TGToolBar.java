@@ -45,6 +45,9 @@ public class TGToolBar {
 			this.init();
 			
 			this.buttons = new JPanel(){
+				
+				private static final long serialVersionUID = 9136810316642761074L;
+
 				public void update( Graphics g ){
 					this.paint( g );
 				}
