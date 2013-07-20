@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.effects.ChangeAccentuatedNoteAction;
 import org.herac.tuxguitar.app.actions.effects.ChangeBendNoteAction;
 import org.herac.tuxguitar.app.actions.effects.ChangeDeadNoteAction;
@@ -71,91 +72,91 @@ public class NoteEffectToolItems  extends ToolItems{
 	public void showItems(ToolBar toolBar){
 		//--DEAD NOTE--
 		this.deadNote = new ToolItem(toolBar, SWT.CHECK);
-		this.deadNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeDeadNoteAction.NAME));
+		this.deadNote.addSelectionListener(new TGActionProcessor(ChangeDeadNoteAction.NAME));
 		
 		//--GHOST NOTE--
 		this.ghostNote = new ToolItem(toolBar, SWT.CHECK);
-		this.ghostNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeGhostNoteAction.NAME));
+		this.ghostNote.addSelectionListener(new TGActionProcessor(ChangeGhostNoteAction.NAME));
 		
 		//--ACCENTUATED NOTE--
 		this.accentuatedNote = new ToolItem(toolBar, SWT.CHECK);
-		this.accentuatedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeAccentuatedNoteAction.NAME));
+		this.accentuatedNote.addSelectionListener(new TGActionProcessor(ChangeAccentuatedNoteAction.NAME));
 		
 		//--HEAVY ACCENTUATED NOTE--
 		this.heavyAccentuatedNote = new ToolItem(toolBar, SWT.CHECK);
-		this.heavyAccentuatedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeHeavyAccentuatedNoteAction.NAME));
+		this.heavyAccentuatedNote.addSelectionListener(new TGActionProcessor(ChangeHeavyAccentuatedNoteAction.NAME));
 		
 		//--HARMONIC NOTE--
 		this.harmonicNote = new ToolItem(toolBar, SWT.CHECK);
-		this.harmonicNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeHarmonicNoteAction.NAME));
+		this.harmonicNote.addSelectionListener(new TGActionProcessor(ChangeHarmonicNoteAction.NAME));
 		
 		//--GRACE NOTE--
 		this.graceNote = new ToolItem(toolBar, SWT.CHECK);
-		this.graceNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeGraceNoteAction.NAME));
+		this.graceNote.addSelectionListener(new TGActionProcessor(ChangeGraceNoteAction.NAME));
 		
 		//--SEPARATOR--
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		//--VIBRATO--
 		this.vibrato = new ToolItem(toolBar, SWT.CHECK);
-		this.vibrato.addSelectionListener(TuxGuitar.instance().getAction(ChangeVibratoNoteAction.NAME));
+		this.vibrato.addSelectionListener(new TGActionProcessor(ChangeVibratoNoteAction.NAME));
 		
 		//--BEND--
 		this.bend = new ToolItem(toolBar, SWT.CHECK);
-		this.bend.addSelectionListener(TuxGuitar.instance().getAction(ChangeBendNoteAction.NAME));
+		this.bend.addSelectionListener(new TGActionProcessor(ChangeBendNoteAction.NAME));
 		
 		//--BEND--
 		this.tremoloBar = new ToolItem(toolBar, SWT.CHECK);
-		this.tremoloBar.addSelectionListener(TuxGuitar.instance().getAction(ChangeTremoloBarAction.NAME));
+		this.tremoloBar.addSelectionListener(new TGActionProcessor(ChangeTremoloBarAction.NAME));
 		
 		//--SLIDE--
 		this.slide = new ToolItem(toolBar, SWT.CHECK);
-		this.slide.addSelectionListener(TuxGuitar.instance().getAction(ChangeSlideNoteAction.NAME));
+		this.slide.addSelectionListener(new TGActionProcessor(ChangeSlideNoteAction.NAME));
 		
 		//--HAMMER--
 		this.hammer = new ToolItem(toolBar, SWT.CHECK);
-		this.hammer.addSelectionListener(TuxGuitar.instance().getAction(ChangeHammerNoteAction.NAME));
+		this.hammer.addSelectionListener(new TGActionProcessor(ChangeHammerNoteAction.NAME));
 		
 		//--SEPARATOR--
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		//--TRILL--
 		this.trill = new ToolItem(toolBar, SWT.CHECK);
-		this.trill.addSelectionListener(TuxGuitar.instance().getAction(ChangeTrillNoteAction.NAME));
+		this.trill.addSelectionListener(new TGActionProcessor(ChangeTrillNoteAction.NAME));
 		
 		//--TREMOLO PICKING--
 		this.tremoloPicking = new ToolItem(toolBar, SWT.CHECK);
-		this.tremoloPicking.addSelectionListener(TuxGuitar.instance().getAction(ChangeTremoloPickingAction.NAME));
+		this.tremoloPicking.addSelectionListener(new TGActionProcessor(ChangeTremoloPickingAction.NAME));
 		
 		//--PALM MUTE--
 		this.palmMute = new ToolItem(toolBar, SWT.CHECK);
-		this.palmMute.addSelectionListener(TuxGuitar.instance().getAction(ChangePalmMuteAction.NAME));
+		this.palmMute.addSelectionListener(new TGActionProcessor(ChangePalmMuteAction.NAME));
 		
 		//--STACCATO
 		this.staccato = new ToolItem(toolBar, SWT.CHECK);
-		this.staccato.addSelectionListener(TuxGuitar.instance().getAction(ChangeStaccatoAction.NAME));
+		this.staccato.addSelectionListener(new TGActionProcessor(ChangeStaccatoAction.NAME));
 		
 		//--SEPARATOR--
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		//--TAPPING
 		this.tapping = new ToolItem(toolBar, SWT.CHECK);
-		this.tapping.addSelectionListener(TuxGuitar.instance().getAction(ChangeTappingAction.NAME));
+		this.tapping.addSelectionListener(new TGActionProcessor(ChangeTappingAction.NAME));
 		
 		//--SLAPPING
 		this.slapping = new ToolItem(toolBar, SWT.CHECK);
-		this.slapping.addSelectionListener(TuxGuitar.instance().getAction(ChangeSlappingAction.NAME));
+		this.slapping.addSelectionListener(new TGActionProcessor(ChangeSlappingAction.NAME));
 		
 		//--POPPING
 		this.popping = new ToolItem(toolBar, SWT.CHECK);
-		this.popping.addSelectionListener(TuxGuitar.instance().getAction(ChangePoppingAction.NAME));
+		this.popping.addSelectionListener(new TGActionProcessor(ChangePoppingAction.NAME));
 		
 		//--SEPARATOR--
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		//--FADE IN
 		this.fadeIn = new ToolItem(toolBar, SWT.CHECK);
-		this.fadeIn.addSelectionListener(TuxGuitar.instance().getAction(ChangeFadeInAction.NAME));
+		this.fadeIn.addSelectionListener(new TGActionProcessor(ChangeFadeInAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

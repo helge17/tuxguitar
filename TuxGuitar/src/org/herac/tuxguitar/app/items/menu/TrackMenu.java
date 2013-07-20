@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.track.AddTrackAction;
 import org.herac.tuxguitar.app.actions.track.ChangeTrackMuteAction;
 import org.herac.tuxguitar.app.actions.track.ChangeTrackSoloAction;
@@ -66,51 +67,51 @@ public class TrackMenu extends MenuItems{
 		if(!isDisposed()){
 			//--First--
 			this.first = new MenuItem(this.menu, SWT.PUSH);
-			this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstTrackAction.NAME));
+			this.first.addSelectionListener(new TGActionProcessor(GoFirstTrackAction.NAME));
 			//--previous--
 			this.previous = new MenuItem(this.menu, SWT.PUSH);
-			this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousTrackAction.NAME));
+			this.previous.addSelectionListener(new TGActionProcessor(GoPreviousTrackAction.NAME));
 			//--next--
 			this.next = new MenuItem(this.menu, SWT.PUSH);
-			this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextTrackAction.NAME));
+			this.next.addSelectionListener(new TGActionProcessor(GoNextTrackAction.NAME));
 			//--last--
 			this.last = new MenuItem(this.menu, SWT.PUSH);
-			this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastTrackAction.NAME));
+			this.last.addSelectionListener(new TGActionProcessor(GoLastTrackAction.NAME));
 			//--SEPARATOR
 			new MenuItem(this.menu, SWT.SEPARATOR);
 			//--ADD TRACK--
 			this.addTrack = new MenuItem(this.menu, SWT.PUSH);
-			this.addTrack.addSelectionListener(TuxGuitar.instance().getAction(AddTrackAction.NAME));
+			this.addTrack.addSelectionListener(new TGActionProcessor(AddTrackAction.NAME));
 			//--CLONE TRACK--
 			this.cloneTrack = new MenuItem(this.menu, SWT.PUSH);
-			this.cloneTrack.addSelectionListener(TuxGuitar.instance().getAction(CloneTrackAction.NAME));
+			this.cloneTrack.addSelectionListener(new TGActionProcessor(CloneTrackAction.NAME));
 			//--REMOVE TRACK--
 			this.removeTrack = new MenuItem(this.menu, SWT.PUSH);
-			this.removeTrack.addSelectionListener(TuxGuitar.instance().getAction(RemoveTrackAction.NAME));
+			this.removeTrack.addSelectionListener(new TGActionProcessor(RemoveTrackAction.NAME));
 			//--SEPARATOR
 			new MenuItem(this.menu, SWT.SEPARATOR);
 			//--MOVE UP--
 			this.moveUp = new MenuItem(this.menu, SWT.PUSH);
-			this.moveUp.addSelectionListener(TuxGuitar.instance().getAction(MoveTrackUpAction.NAME));
+			this.moveUp.addSelectionListener(new TGActionProcessor(MoveTrackUpAction.NAME));
 			//--MOVE DOWN--
 			this.moveDown = new MenuItem(this.menu, SWT.PUSH);
-			this.moveDown.addSelectionListener(TuxGuitar.instance().getAction(MoveTrackDownAction.NAME));
+			this.moveDown.addSelectionListener(new TGActionProcessor(MoveTrackDownAction.NAME));
 			//--SEPARATOR
 			new MenuItem(this.menu, SWT.SEPARATOR);
 			//--SOLO--
 			this.changeSolo = new MenuItem(this.menu, SWT.CHECK);
-			this.changeSolo.addSelectionListener(TuxGuitar.instance().getAction(ChangeTrackSoloAction.NAME));
+			this.changeSolo.addSelectionListener(new TGActionProcessor(ChangeTrackSoloAction.NAME));
 			//--MUTE--
 			this.changeMute = new MenuItem(this.menu, SWT.CHECK);
-			this.changeMute.addSelectionListener(TuxGuitar.instance().getAction(ChangeTrackMuteAction.NAME));
+			this.changeMute.addSelectionListener(new TGActionProcessor(ChangeTrackMuteAction.NAME));
 			//--SEPARATOR
 			new MenuItem(this.menu, SWT.SEPARATOR);
 			//--LYRICS--
 			this.lyrics = new MenuItem(this.menu, SWT.PUSH);
-			this.lyrics.addSelectionListener(TuxGuitar.instance().getAction(EditLyricsAction.NAME));
+			this.lyrics.addSelectionListener(new TGActionProcessor(EditLyricsAction.NAME));
 			//--PROPERTIES--
 			this.properties = new MenuItem(this.menu, SWT.PUSH);
-			this.properties.addSelectionListener(TuxGuitar.instance().getAction(TrackPropertiesAction.NAME));
+			this.properties.addSelectionListener(new TGActionProcessor(TrackPropertiesAction.NAME));
 			
 			this.loadIcons();
 			this.loadProperties();

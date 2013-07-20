@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.insert;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeOpenRepeat;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 
@@ -18,7 +18,7 @@ import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class RepeatOpenAction extends Action{
+public class RepeatOpenAction extends TGActionBase{
 	
 	public static final String NAME = "action.insert.open-repeat";
 	
@@ -26,7 +26,7 @@ public class RepeatOpenAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		//comienza el undoable
 		UndoableChangeOpenRepeat undoable = UndoableChangeOpenRepeat.startUndo();
 		TuxGuitar.instance().getFileHistory().setUnsavedFile();
@@ -37,8 +37,6 @@ public class RepeatOpenAction extends Action{
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());
-		
-		return 0;
 	}
 	
 	public void updateTablature() {

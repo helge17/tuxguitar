@@ -6,6 +6,9 @@
  */
 package org.herac.tuxguitar.app.items.tool;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -16,13 +19,16 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.insert.InsertChordAction;
 import org.herac.tuxguitar.app.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.app.items.ToolItems;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -45,7 +51,7 @@ public class BeatToolItems  extends ToolItems{
 		this.toolBar = toolBar;
 		
 		this.tiedNote = new ToolItem(toolBar, SWT.CHECK);
-		this.tiedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeTiedNoteAction.NAME));
+		this.tiedNote.addSelectionListener(new TGActionProcessor(ChangeTiedNoteAction.NAME));
 		
 		this.chordItems = new ChordMenuItem();
 		this.chordItems.addItems();
@@ -102,13 +108,13 @@ public class BeatToolItems  extends ToolItems{
 			this.subMenuItems = new MenuItem[TuxGuitar.instance().getCustomChordManager().countChords()];
 			for(int i = 0;i < this.subMenuItems.length; i++){
 				TGChord chord = TuxGuitar.instance().getCustomChordManager().getChord(i);
-				ActionData actionData = new ActionData();
+				Map actionData = new HashMap();
 				actionData.put(InsertChordAction.PROPERTY_CHORD, chord);
 				
 				this.subMenuItems[i] = new MenuItem(this.subMenu, SWT.PUSH);
 				this.subMenuItems[i].setData(actionData);
 				this.subMenuItems[i].setText(chord.getName());
-				this.subMenuItems[i].addSelectionListener(TuxGuitar.instance().getAction(InsertChordAction.NAME));
+				this.subMenuItems[i].addSelectionListener(new TGActionProcessor(InsertChordAction.NAME));
 			}
 		}
 		
@@ -128,7 +134,11 @@ public class BeatToolItems  extends ToolItems{
 				this.subMenu.setLocation(pt.x, pt.y + rect.height);
 				this.subMenu.setVisible(true);
 			}else{
-				TuxGuitar.instance().getAction(InsertChordAction.NAME).process(new ActionData());
+				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
+						TGActionManager.getInstance().execute(InsertChordAction.NAME);
+					}
+				});
 			}
 		}
 		

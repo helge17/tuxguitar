@@ -12,9 +12,9 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.helper.SyncThread;
@@ -30,6 +30,7 @@ import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -38,7 +39,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class PrintPreviewAction extends Action{
+public class PrintPreviewAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.print-preview";
 	
@@ -46,7 +47,7 @@ public class PrintPreviewAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		try{
 			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.instance().getShell());
 			if(data != null){
@@ -57,7 +58,6 @@ public class PrintPreviewAction extends Action{
 		}catch(Throwable throwable){
 			MessageDialog.errorMessage(throwable);
 		}
-		return 0;
 	}
 	
 	public void printPreview(final PrintStyles data){
@@ -144,8 +144,8 @@ public class PrintPreviewAction extends Action{
 			final TGRectangle bounds = this.bounds;
 			final List pages = this.pages;
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable(){
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable(){
+					public void run() throws TGException {
 						PrintPreview preview = new PrintPreview(pages,bounds);
 						preview.showPreview(getEditor().getTablature().getShell());
 						Iterator it = pages.iterator();

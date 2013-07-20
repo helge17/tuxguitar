@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.track.AddTrackAction;
 import org.herac.tuxguitar.app.actions.track.RemoveTrackAction;
 import org.herac.tuxguitar.app.items.ToolItems;
@@ -32,10 +33,10 @@ public class TrackToolItems extends ToolItems{
 	
 	public void showItems(ToolBar toolBar){
 		this.add = new ToolItem(toolBar, SWT.PUSH);
-		this.add.addSelectionListener(TuxGuitar.instance().getAction(AddTrackAction.NAME));
+		this.add.addSelectionListener(new TGActionProcessor(AddTrackAction.NAME));
 		
 		this.remove = new ToolItem(toolBar, SWT.PUSH);
-		this.remove.addSelectionListener(TuxGuitar.instance().getAction(RemoveTrackAction.NAME));
+		this.remove.addSelectionListener(new TGActionProcessor(RemoveTrackAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

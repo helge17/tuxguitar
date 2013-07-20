@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.duration;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -21,7 +21,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class SetSixteenthDurationAction extends Action{
+public class SetSixteenthDurationAction extends TGActionBase{
 	
 	public static final String NAME = "action.note.duration.set-sixteenth";
 	
@@ -31,7 +31,7 @@ public class SetSixteenthDurationAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
 		TGBeat beat = caret.getSelectedBeat();
 		if(beat != null){
@@ -50,7 +50,6 @@ public class SetSixteenthDurationAction extends Action{
 				addUndoableEdit(undoable.endUndo());
 			}
 		}
-		return 0;
 	}
 	
 	private void setDurations() {

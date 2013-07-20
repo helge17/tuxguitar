@@ -6,12 +6,15 @@
  */
 package org.herac.tuxguitar.app.items.menu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.note.ChangeVelocityAction;
 import org.herac.tuxguitar.app.items.MenuItems;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -44,35 +47,35 @@ public class DynamicMenuItem extends MenuItems{
 		
 		this.pianoPianissimo = new MenuItem(this.menu, SWT.CHECK);
 		this.pianoPianissimo.setData(createChangeVelocityActionData(TGVelocities.PIANO_PIANISSIMO));
-		this.pianoPianissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.pianoPianissimo.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.pianissimo = new MenuItem(this.menu, SWT.CHECK);
 		this.pianissimo.setData(createChangeVelocityActionData(TGVelocities.PIANISSIMO));
-		this.pianissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.pianissimo.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.piano = new MenuItem(this.menu, SWT.CHECK);
 		this.piano.setData(createChangeVelocityActionData(TGVelocities.PIANO));
-		this.piano.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.piano.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.mezzoPiano = new MenuItem(this.menu, SWT.CHECK);
 		this.mezzoPiano.setData(createChangeVelocityActionData(TGVelocities.MEZZO_PIANO));
-		this.mezzoPiano.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.mezzoPiano.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.mezzoForte = new MenuItem(this.menu, SWT.CHECK);
 		this.mezzoForte.setData(createChangeVelocityActionData(TGVelocities.MEZZO_FORTE));
-		this.mezzoForte.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.mezzoForte.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.forte = new MenuItem(this.menu, SWT.CHECK);
 		this.forte.setData(createChangeVelocityActionData(TGVelocities.FORTE));
-		this.forte.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.forte.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.fortissimo = new MenuItem(this.menu, SWT.CHECK);
 		this.fortissimo.setData(createChangeVelocityActionData(TGVelocities.FORTISSIMO));
-		this.fortissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.fortissimo.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.forteFortissimo = new MenuItem(this.menu, SWT.CHECK);
 		this.forteFortissimo.setData(createChangeVelocityActionData(TGVelocities.FORTE_FORTISSIMO));
-		this.forteFortissimo.addSelectionListener(TuxGuitar.instance().getAction(ChangeVelocityAction.NAME));
+		this.forteFortissimo.addSelectionListener(new TGActionProcessor(ChangeVelocityAction.NAME));
 		
 		this.dynamicMenuItem.setMenu(this.menu);
 		
@@ -118,8 +121,8 @@ public class DynamicMenuItem extends MenuItems{
 		//Nothing to do
 	}
 	
-	private ActionData createChangeVelocityActionData(int velocity){
-		ActionData actionData = new ActionData();
+	private Map createChangeVelocityActionData(int velocity){
+		Map actionData = new HashMap();
 		actionData.put(ChangeVelocityAction.PROPERTY_VELOCITY, new Integer(velocity));
 		return actionData;
 	}

@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -109,7 +110,7 @@ public class ChordRecognizer extends Composite {
 		this.clearProposals();
 		
 		new Thread( new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				if(!getDialog().isDisposed() && isValidProcess(processId)){
 					
 					final int params[] = makeProposals(processId, chord,sharp);
@@ -117,8 +118,8 @@ public class ChordRecognizer extends Composite {
 					if (params == null) { // could not recognize anything!?
 						if (isValidProcess(processId) && setChordName) {
 							try {
-								TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-									public void run() {
+								TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+									public void run() throws TGException {
 										if(!getDialog().isDisposed() && isValidProcess(processId)){
 											getDialog().getEditor().setChordName("");
 										}
@@ -136,8 +137,8 @@ public class ChordRecognizer extends Composite {
 					// Sets all the ChordSelector fields into recognized chord (tonic, bass, chord, alterations)
 					if (isValidProcess(processId) && redecorate) {
 						try {
-							TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-								public void run() {
+							TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+								public void run() throws TGException {
 									if(!getDialog().isDisposed()){
 										redecorate(params);
 									}
@@ -150,8 +151,8 @@ public class ChordRecognizer extends Composite {
 					
 					if (isValidProcess(processId) && setChordName) {
 						try {
-							TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-								public void run() {
+							TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+								public void run() throws TGException {
 									if(!getDialog().isDisposed()){
 										getDialog().getEditor().setChordName( (chordName != null ? chordName : "" ) );
 									}
@@ -352,8 +353,8 @@ public class ChordRecognizer extends Composite {
 			
 			if (current.unusualGrade > (firstNegative>=0 ? 0 : firstNegative)-60){
 				try {
-					TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-						public void run() {
+					TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+						public void run() throws TGException {
 							if(!getDialog().isDisposed() && isValidProcess(processId)){
 								addProposal(current.params, getChordName(current.params,sharp)+" ("+Math.round(100+current.dontHaveGrade*7/10)+"%)" );
 							}

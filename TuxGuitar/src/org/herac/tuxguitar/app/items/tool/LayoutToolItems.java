@@ -10,15 +10,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.layout.SetCompactViewAction;
 import org.herac.tuxguitar.app.actions.layout.SetLinearLayoutAction;
 import org.herac.tuxguitar.app.actions.layout.SetMultitrackViewAction;
 import org.herac.tuxguitar.app.actions.layout.SetPageLayoutAction;
 import org.herac.tuxguitar.app.actions.layout.SetScoreEnabledAction;
 import org.herac.tuxguitar.app.items.ToolItems;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.graphics.control.TGLayout;
 
 /**
  * @author julian
@@ -41,19 +42,19 @@ public class LayoutToolItems extends ToolItems{
 	
 	public void showItems(ToolBar toolBar){
 		this.pageLayout = new ToolItem(toolBar, SWT.RADIO);
-		this.pageLayout.addSelectionListener(TuxGuitar.instance().getAction(SetPageLayoutAction.NAME));
+		this.pageLayout.addSelectionListener(new TGActionProcessor(SetPageLayoutAction.NAME));
 		
 		this.linearLayout = new ToolItem(toolBar, SWT.RADIO);
-		this.linearLayout.addSelectionListener(TuxGuitar.instance().getAction(SetLinearLayoutAction.NAME));
+		this.linearLayout.addSelectionListener(new TGActionProcessor(SetLinearLayoutAction.NAME));
 		
 		this.multitrack = new ToolItem(toolBar, SWT.CHECK);
-		this.multitrack.addSelectionListener(TuxGuitar.instance().getAction(SetMultitrackViewAction.NAME));
+		this.multitrack.addSelectionListener(new TGActionProcessor(SetMultitrackViewAction.NAME));
 		
 		this.scoreEnabled = new ToolItem(toolBar, SWT.CHECK);
-		this.scoreEnabled.addSelectionListener(TuxGuitar.instance().getAction(SetScoreEnabledAction.NAME));
+		this.scoreEnabled.addSelectionListener(new TGActionProcessor(SetScoreEnabledAction.NAME));
 		
 		this.compact = new ToolItem(toolBar, SWT.CHECK);
-		this.compact.addSelectionListener(TuxGuitar.instance().getAction(SetCompactViewAction.NAME));
+		this.compact.addSelectionListener(new TGActionProcessor(SetCompactViewAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

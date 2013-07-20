@@ -8,9 +8,9 @@ package org.herac.tuxguitar.app.actions.note;
 
 import java.util.Iterator;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.graphics.control.TGBeatGroup;
@@ -24,7 +24,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class SetVoiceDownAction extends Action{
+public class SetVoiceDownAction extends TGActionBase{
 	
 	public static final String NAME = "action.beat.general.voice-down";
 	
@@ -32,7 +32,7 @@ public class SetVoiceDownAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
 		TGBeatImpl beat = caret.getSelectedBeat();
 		if( beat != null ){
@@ -55,7 +55,6 @@ public class SetVoiceDownAction extends Action{
 				updateTablature();
 			}
 		}
-		return 0;
 	}
 	
 	public void updateTablature() {

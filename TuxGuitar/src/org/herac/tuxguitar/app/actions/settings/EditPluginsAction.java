@@ -26,9 +26,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.system.plugins.TGPlugin;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.app.util.DialogUtils;
@@ -40,7 +40,7 @@ import org.herac.tuxguitar.app.util.MessageDialog;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class EditPluginsAction extends Action{
+public class EditPluginsAction extends TGActionBase{
 	
 	public static final String NAME = "action.settings.plugins";
 	
@@ -51,9 +51,8 @@ public class EditPluginsAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		showDialog();
-		return 0;
 	}
 	
 	public void showDialog() {

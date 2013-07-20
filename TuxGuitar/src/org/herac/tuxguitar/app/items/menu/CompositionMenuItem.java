@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.composition.ChangeClefAction;
 import org.herac.tuxguitar.app.actions.composition.ChangeInfoAction;
 import org.herac.tuxguitar.app.actions.composition.ChangeKeySignatureAction;
@@ -50,36 +51,36 @@ public class CompositionMenuItem extends MenuItems{
 	public void showItems(){
 		//--TIME SIGNATURE--
 		this.timeSignature = new MenuItem(this.menu, SWT.PUSH);
-		this.timeSignature.addSelectionListener(TuxGuitar.instance().getAction(ChangeTimeSignatureAction.NAME));
+		this.timeSignature.addSelectionListener(new TGActionProcessor(ChangeTimeSignatureAction.NAME));
 		//--TEMPO--
 		this.tempo = new MenuItem(this.menu, SWT.PUSH);
-		this.tempo.addSelectionListener(TuxGuitar.instance().getAction(ChangeTempoAction.NAME));
+		this.tempo.addSelectionListener(new TGActionProcessor(ChangeTempoAction.NAME));
 		//--CLEF--
 		this.clef = new MenuItem(this.menu, SWT.PUSH);
-		this.clef.addSelectionListener(TuxGuitar.instance().getAction(ChangeClefAction.NAME));
+		this.clef.addSelectionListener(new TGActionProcessor(ChangeClefAction.NAME));
 		//--KEY SIGNATURE--
 		this.keySignature = new MenuItem(this.menu, SWT.PUSH);
-		this.keySignature.addSelectionListener(TuxGuitar.instance().getAction(ChangeKeySignatureAction.NAME));
+		this.keySignature.addSelectionListener(new TGActionProcessor(ChangeKeySignatureAction.NAME));
 		//--TRIPLET FEEL--
 		this.tripletFeel = new MenuItem(this.menu, SWT.PUSH);
-		this.tripletFeel.addSelectionListener(TuxGuitar.instance().getAction(ChangeTripletFeelAction.NAME));
+		this.tripletFeel.addSelectionListener(new TGActionProcessor(ChangeTripletFeelAction.NAME));
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--REPEAT OPEN--
 		this.repeatOpen = new MenuItem(this.menu, SWT.PUSH);
-		this.repeatOpen.addSelectionListener(TuxGuitar.instance().getAction(RepeatOpenAction.NAME));
+		this.repeatOpen.addSelectionListener(new TGActionProcessor(RepeatOpenAction.NAME));
 		//--REPEAT CLOSE--
 		this.repeatClose = new MenuItem(this.menu, SWT.PUSH);
-		this.repeatClose.addSelectionListener(TuxGuitar.instance().getAction(RepeatCloseAction.NAME));
+		this.repeatClose.addSelectionListener(new TGActionProcessor(RepeatCloseAction.NAME));
 		//--REPEAT ALTERNATIVE--
 		this.repeatAlternative = new MenuItem(this.menu, SWT.PUSH);
-		this.repeatAlternative.addSelectionListener(TuxGuitar.instance().getAction(RepeatAlternativeAction.NAME));
+		this.repeatAlternative.addSelectionListener(new TGActionProcessor(RepeatAlternativeAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--INFO--
 		this.properties = new MenuItem(this.menu, SWT.PUSH);
-		this.properties.addSelectionListener(TuxGuitar.instance().getAction(ChangeInfoAction.NAME));
+		this.properties.addSelectionListener(new TGActionProcessor(ChangeInfoAction.NAME));
 		
 		this.compositionMenuItem.setMenu(this.menu);
 		

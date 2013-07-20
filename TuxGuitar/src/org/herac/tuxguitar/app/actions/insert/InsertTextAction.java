@@ -17,9 +17,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -30,7 +30,7 @@ import org.herac.tuxguitar.song.models.TGText;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class InsertTextAction extends Action {
+public class InsertTextAction extends TGActionBase {
 	
 	public static final String NAME = "action.insert.text";
 	
@@ -38,12 +38,10 @@ public class InsertTextAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		final TGBeat beat = getEditor().getTablature().getCaret().getSelectedBeat();
 		
 		showInsertDialog(beat,(beat.getText() == null?new String():beat.getText().getValue()));
-		
-		return 0;
 	}
 	
 	public void updateTablature() {

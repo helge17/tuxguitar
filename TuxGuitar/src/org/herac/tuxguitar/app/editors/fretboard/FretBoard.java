@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.app.actions.caret.GoRightAction;
 import org.herac.tuxguitar.app.actions.duration.DecrementDurationAction;
@@ -121,11 +121,11 @@ public class FretBoard extends Composite {
 		// position
 		layout.numColumns ++;
 		Button goLeft = new Button(this.toolComposite, SWT.ARROW | SWT.LEFT);
-		goLeft.addSelectionListener(TuxGuitar.instance().getAction(GoLeftAction.NAME));
+		goLeft.addSelectionListener(new TGActionProcessor(GoLeftAction.NAME));
 		
 		layout.numColumns ++;
 		Button goRight = new Button(this.toolComposite, SWT.ARROW | SWT.RIGHT);
-		goRight.addSelectionListener(TuxGuitar.instance().getAction(GoRightAction.NAME));
+		goRight.addSelectionListener(new TGActionProcessor(GoRightAction.NAME));
 		
 		// separator
 		layout.numColumns ++;
@@ -134,14 +134,14 @@ public class FretBoard extends Composite {
 		// duration
 		layout.numColumns ++;
 		Button decrement = new Button(this.toolComposite, SWT.ARROW | SWT.MIN);
-		decrement.addSelectionListener(TuxGuitar.instance().getAction(DecrementDurationAction.NAME));
+		decrement.addSelectionListener(new TGActionProcessor(DecrementDurationAction.NAME));
 		
 		layout.numColumns ++;
 		this.durationLabel = new Label(this.toolComposite, SWT.BORDER);
 		
 		layout.numColumns ++;
 		Button increment = new Button(this.toolComposite, SWT.ARROW | SWT.MAX);
-		increment.addSelectionListener(TuxGuitar.instance().getAction(IncrementDurationAction.NAME));
+		increment.addSelectionListener(new TGActionProcessor(IncrementDurationAction.NAME));
 		
 		// separator
 		layout.numColumns ++;
@@ -167,7 +167,7 @@ public class FretBoard extends Composite {
 		layout.numColumns ++;
 		this.scale = new Button(this.toolComposite, SWT.PUSH);
 		this.scale.setText(TuxGuitar.getProperty("scale"));
-		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));
+		this.scale.addSelectionListener(new TGActionProcessor(ScaleAction.NAME));
 		
 		// scale name
 		layout.numColumns ++;
@@ -721,18 +721,18 @@ public class FretBoard extends Composite {
 		public void mouseUp(MouseEvent e) {
 			getFretBoardComposite().setFocus();
 			if(e.button == 1){
-				if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
-					ActionLock.lock();
+				if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+					TGActionLock.lock();
 					if( getExternalBeat() == null ){
 						hit(e.x, e.y);
 					}else{
 						setExternalBeat( null );
 					}
 					afterAction();
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}else{
-				TuxGuitar.instance().getAction(GoRightAction.NAME).process(new ActionData());
+				new TGActionProcessor(GoRightAction.NAME).mouseUp(e);
 			}
 		}
 		

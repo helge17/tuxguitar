@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.measure;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableAddMeasure;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
@@ -20,7 +20,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class GoNextMeasureAction extends Action{
+public class GoNextMeasureAction extends TGActionBase{
 	
 	public static final String NAME = "action.measure.go-next";
 	
@@ -28,7 +28,7 @@ public class GoNextMeasureAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
 		//si es el ultimo compas, agrego uno nuevo
 		if(getSongManager().getTrackManager().isLastMeasure(caret.getMeasure())){
@@ -47,8 +47,6 @@ public class GoNextMeasureAction extends Action{
 		else{
 			this.moveToNext();
 		}
-		
-		return 0;
 	}
 	
 	private void moveToNext(){

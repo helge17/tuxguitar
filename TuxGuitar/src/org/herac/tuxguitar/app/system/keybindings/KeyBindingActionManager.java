@@ -6,12 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Control;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class KeyBindingActionManager {
 	
@@ -33,12 +34,14 @@ public class KeyBindingActionManager {
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "shortcuts.xml";
 	}
 	
-	public Action getActionForKeyBinding(KeyBinding kb){
+	public String getActionForKeyBinding(KeyBinding kb){
 		Iterator it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
-			if(keyBindingAction.getKeyBinding() != null && kb.isSameAs( keyBindingAction.getKeyBinding() )){
-				return TuxGuitar.instance().getAction(keyBindingAction.getAction());
+			if( keyBindingAction.getKeyBinding() != null && kb.isSameAs( keyBindingAction.getKeyBinding() )){
+				if( isKeyBindingAvailable(keyBindingAction) ){
+					return keyBindingAction.getAction();
+				}
 			}
 		}
 		return null;
@@ -49,10 +52,20 @@ public class KeyBindingActionManager {
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
 			if(action.equals( keyBindingAction.getAction() )){
-				return keyBindingAction.getKeyBinding();
+				if( isKeyBindingAvailable(keyBindingAction) ){
+					return keyBindingAction.getKeyBinding();
+				}
 			}
 		}
 		return null;
+	}
+	
+	public boolean isKeyBindingAvailable(KeyBindingAction keyBindingAction){
+		String actionId = keyBindingAction.getAction();
+		if( actionId != null ){
+			return TuxGuitar.instance().getActionAdapterManager().getKeyBindingActionIds().hasActionId(actionId);
+		}
+		return false;
 	}
 	
 	public void reset(List keyBindings){
@@ -73,9 +86,13 @@ public class KeyBindingActionManager {
 	}
 	
 	public void processKeyBinding(KeyBinding kb){
-		Action action = getActionForKeyBinding(kb);
-		if (action != null){
-			action.process(new ActionData());
+		final String actionId = getActionForKeyBinding(kb);
+		if( actionId != null ){
+			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
+					TGActionManager.getInstance().execute(actionId);
+				}
+			});
 		}
 	}
 }

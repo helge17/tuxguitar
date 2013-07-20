@@ -29,7 +29,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.app.actions.caret.GoRightAction;
 import org.herac.tuxguitar.app.actions.duration.DecrementDurationAction;
@@ -163,11 +164,11 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		// position
 		layout.numColumns ++;
 		Button goLeft = new Button(this.toolbar, SWT.ARROW | SWT.LEFT);
-		goLeft.addSelectionListener(TuxGuitar.instance().getAction(GoLeftAction.NAME));
+		goLeft.addSelectionListener(new TGActionProcessor(GoLeftAction.NAME));
 		
 		layout.numColumns ++;
 		Button goRight = new Button(this.toolbar, SWT.ARROW | SWT.RIGHT);
-		goRight.addSelectionListener(TuxGuitar.instance().getAction(GoRightAction.NAME));
+		goRight.addSelectionListener(new TGActionProcessor(GoRightAction.NAME));
 		
 		// separator
 		layout.numColumns ++;
@@ -176,14 +177,14 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		// duration
 		layout.numColumns ++;
 		Button decrement = new Button(this.toolbar, SWT.ARROW | SWT.MIN);
-		decrement.addSelectionListener(TuxGuitar.instance().getAction(DecrementDurationAction.NAME));
+		decrement.addSelectionListener(new TGActionProcessor(DecrementDurationAction.NAME));
 		
 		layout.numColumns ++;
 		this.durationLabel = new Label(this.toolbar, SWT.BORDER);
 		
 		layout.numColumns ++;
 		Button increment = new Button(this.toolbar, SWT.ARROW | SWT.MAX);
-		increment.addSelectionListener(TuxGuitar.instance().getAction(IncrementDurationAction.NAME));
+		increment.addSelectionListener(new TGActionProcessor(IncrementDurationAction.NAME));
 		
 		// separator
 		layout.numColumns ++;
@@ -915,28 +916,28 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		public void mouseUp(MouseEvent e) {
 			getEditor().setFocus();
 			if(e.button == 1){
-				if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
-					ActionLock.lock();
+				if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+					TGActionLock.lock();
 					hit(e.x,e.y);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}
 		
 		public void mouseMove(MouseEvent e) {
-			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
 				updateSelection(e.y);
 			}
 		}
 		
 		public void mouseExit(MouseEvent e) {
-			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
 				updateSelection(-1);
 			}
 		}
 		
 		public void mouseEnter(MouseEvent e) {
-			if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked()){
+			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
 				redrawLocked();
 			}
 		}

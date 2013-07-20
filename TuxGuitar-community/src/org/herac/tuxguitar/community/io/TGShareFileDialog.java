@@ -16,6 +16,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGShareFileDialog {
@@ -32,8 +33,8 @@ public class TGShareFileDialog {
 	
 	public void open() {
 		try {
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					if( !TuxGuitar.isDisposed() ){
 						open( TuxGuitar.instance().getShell() );
 					}

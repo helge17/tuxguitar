@@ -7,10 +7,10 @@
 package org.herac.tuxguitar.app.actions.file;
 
 import org.eclipse.swt.SWT;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.tools.template.TGTemplate;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
@@ -21,7 +21,7 @@ import org.herac.tuxguitar.app.util.ConfirmDialog;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class NewFileAction extends Action{
+public class NewFileAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.new";
 	
@@ -31,20 +31,22 @@ public class NewFileAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
-		final Object propertyTemplate = actionData.get(PROPERTY_TEMPLATE);
+	protected void processAction(TGActionContext context){
+		final Object propertyTemplate = context.getAttribute(PROPERTY_TEMPLATE);
 		
 		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
 			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 			int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
 			if(status == ConfirmDialog.STATUS_CANCEL){
-				return AUTO_UNLOCK;
+				TGActionLock.unlock();
+				return;
 			}
 			if(status == ConfirmDialog.STATUS_YES){
 				final String fileName = FileActionUtils.getFileName();
-				if(fileName == null){
-					return AUTO_UNLOCK;
+				if( fileName == null ){
+					TGActionLock.unlock();
+					return;
 				}
 				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 				new Thread(new Runnable() {
@@ -62,12 +64,10 @@ public class NewFileAction extends Action{
 						}
 					}
 				}).start();
-				return 0;
+				return;
 			}
 		}
 		newSong(propertyTemplate);
-		
-		return 0;
 	}
 	
 	protected void newSong(final Object propertyTemplate){
@@ -77,7 +77,7 @@ public class NewFileAction extends Action{
 				if(!TuxGuitar.isDisposed()){
 					TuxGuitar.instance().newSong(getTemplate(propertyTemplate));
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}).start();

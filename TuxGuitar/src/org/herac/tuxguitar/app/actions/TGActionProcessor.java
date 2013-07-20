@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.app.actions;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
@@ -13,19 +16,47 @@ import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
-public abstract class ActionAdapter implements SelectionListener,MouseListener,MenuListener,ShellListener{
+public class TGActionProcessor implements SelectionListener,MouseListener,MenuListener,ShellListener{
 	
 	public static final String PROPERTY_TYPED_EVENT = "typedEvent";
 	
-	public abstract void process(ActionData actionData);
+	private String actionName; 
 	
-	public synchronized void processEvent(TypedEvent e) {
-		Object widgetData = (e.widget != null ? e.widget.getData() : null);
+	public TGActionProcessor(String actionName){
+		this.actionName = actionName;
+	}
+	
+	public void processEvent(TypedEvent e) {
+		TGActionContext tgActionContext = TGActionManager.getInstance().createActionContext();
+		tgActionContext.setAttribute(PROPERTY_TYPED_EVENT, e);
 		
-		ActionData actionData = (widgetData instanceof ActionData ? (ActionData)widgetData : new ActionData());
-		actionData.put(PROPERTY_TYPED_EVENT, e);
-		this.process(actionData);
+		this.fillWidgetAttributes(tgActionContext, e);
+		this.processAction(tgActionContext);
+	}
+	
+	public void processAction(final TGActionContext context){
+		final String actionName = this.actionName;
+		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+			public void run() throws TGException {
+				TGActionManager.getInstance().execute(actionName, context);
+			}
+		});
+	}
+	
+	public void fillWidgetAttributes(TGActionContext context, TypedEvent e){
+		Object widgetData = (e.widget != null ? e.widget.getData() : null);
+		if( widgetData instanceof Map ){
+			Iterator it = ((Map)widgetData).entrySet().iterator();
+			while( it.hasNext() ){
+				Map.Entry entry = (Map.Entry)it.next();
+				context.setAttribute(entry.getKey().toString(), entry.getValue());
+			}
+		}
 	}
 	
 	public void widgetSelected(SelectionEvent e) {
@@ -86,6 +117,5 @@ public abstract class ActionAdapter implements SelectionListener,MouseListener,M
 	
 	public void shellIconified(ShellEvent e) {
 		//Override me
-	}
-	
+	}	
 }

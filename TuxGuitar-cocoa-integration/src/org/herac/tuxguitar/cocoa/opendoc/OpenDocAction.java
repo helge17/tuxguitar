@@ -2,7 +2,7 @@ package org.herac.tuxguitar.cocoa.opendoc;
 
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
@@ -10,7 +10,7 @@ import org.herac.tuxguitar.app.util.ConfirmDialog;
 public class OpenDocAction {
 	
 	public static void saveAndOpen(final String file){
-		ActionLock.lock();
+		TGActionLock.lock();
 		
 		TuxGuitar.instance().getPlayer().reset();
 		
@@ -19,13 +19,13 @@ public class OpenDocAction {
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 			int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
 			if(status == ConfirmDialog.STATUS_CANCEL){
-				ActionLock.unlock();
+				TGActionLock.unlock();
 				return;
 			}
 			if(status == ConfirmDialog.STATUS_YES){
 				final String fileName = FileActionUtils.getFileName();
 				if(fileName == null){
-					ActionLock.unlock();
+					TGActionLock.unlock();
 					return;
 				}
 				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
@@ -52,7 +52,7 @@ public class OpenDocAction {
 	
 	protected static void openFile(final String url){
 		if(url == null){
-			ActionLock.unlock();
+			TGActionLock.unlock();
 			return;
 		}
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
@@ -61,7 +61,7 @@ public class OpenDocAction {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.open(url);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}).start();

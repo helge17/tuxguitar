@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.composition.ChangeTempoAction;
 import org.herac.tuxguitar.app.actions.composition.ChangeTimeSignatureAction;
 import org.herac.tuxguitar.app.actions.insert.RepeatAlternativeAction;
@@ -39,21 +40,21 @@ public class CompositionToolItems extends ToolItems{
 	
 	public void showItems(ToolBar toolBar){
 		this.tempo = new ToolItem(toolBar, SWT.PUSH);
-		this.tempo.addSelectionListener(TuxGuitar.instance().getAction(ChangeTempoAction.NAME));
+		this.tempo.addSelectionListener(new TGActionProcessor(ChangeTempoAction.NAME));
 		
 		this.timeSignature = new ToolItem(toolBar, SWT.PUSH);
-		this.timeSignature.addSelectionListener(TuxGuitar.instance().getAction(ChangeTimeSignatureAction.NAME));
+		this.timeSignature.addSelectionListener(new TGActionProcessor(ChangeTimeSignatureAction.NAME));
 		
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		this.repeatOpen = new ToolItem(toolBar, SWT.CHECK);
-		this.repeatOpen.addSelectionListener(TuxGuitar.instance().getAction(RepeatOpenAction.NAME));
+		this.repeatOpen.addSelectionListener(new TGActionProcessor(RepeatOpenAction.NAME));
 		
 		this.repeatClose = new ToolItem(toolBar, SWT.CHECK);
-		this.repeatClose.addSelectionListener(TuxGuitar.instance().getAction(RepeatCloseAction.NAME));
+		this.repeatClose.addSelectionListener(new TGActionProcessor(RepeatCloseAction.NAME));
 		
 		this.repeatAlternative = new ToolItem(toolBar, SWT.CHECK);
-		this.repeatAlternative.addSelectionListener(TuxGuitar.instance().getAction(RepeatAlternativeAction.NAME));
+		this.repeatAlternative.addSelectionListener(new TGActionProcessor(RepeatAlternativeAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

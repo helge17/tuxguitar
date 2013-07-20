@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.marker.AddMarkerAction;
 import org.herac.tuxguitar.app.actions.marker.GoFirstMarkerAction;
 import org.herac.tuxguitar.app.actions.marker.GoLastMarkerAction;
@@ -43,30 +44,30 @@ public class MarkerMenuItem extends MenuItems{
 	public void showItems(){
 		//--ADD--
 		this.add = new MenuItem(this.menu, SWT.PUSH);
-		this.add.addSelectionListener(TuxGuitar.instance().getAction(AddMarkerAction.NAME));
+		this.add.addSelectionListener(new TGActionProcessor(AddMarkerAction.NAME));
 		
 		//--LIST--
 		this.list = new MenuItem(this.menu, SWT.PUSH);
-		this.list.addSelectionListener(TuxGuitar.instance().getAction(ListMarkersAction.NAME));
+		this.list.addSelectionListener(new TGActionProcessor(ListMarkersAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--FIRST--
 		this.first = new MenuItem(this.menu, SWT.PUSH);
-		this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstMarkerAction.NAME));
+		this.first.addSelectionListener(new TGActionProcessor(GoFirstMarkerAction.NAME));
 		
 		//--PREVIOUS--
 		this.previous = new MenuItem(this.menu, SWT.PUSH);
-		this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousMarkerAction.NAME));
+		this.previous.addSelectionListener(new TGActionProcessor(GoPreviousMarkerAction.NAME));
 		
 		//--PREVIOUS--
 		this.next = new MenuItem(this.menu, SWT.PUSH);
-		this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextMarkerAction.NAME));
+		this.next.addSelectionListener(new TGActionProcessor(GoNextMarkerAction.NAME));
 		
 		//--LAST--
 		this.last = new MenuItem(this.menu, SWT.PUSH);
-		this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastMarkerAction.NAME));
+		this.last.addSelectionListener(new TGActionProcessor(GoLastMarkerAction.NAME));
 		
 		this.markerMenuItem.setMenu(this.menu);
 		

@@ -7,17 +7,17 @@
 package org.herac.tuxguitar.app.actions.file;
 
 import org.eclipse.swt.SWT;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class SaveAsFileAction extends Action {
+public class SaveAsFileAction extends TGActionBase {
 	
 	public static final String NAME = "action.file.save-as";
 	
@@ -25,10 +25,11 @@ public class SaveAsFileAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE );
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		final String fileName = FileActionUtils.chooseFileName();
-		if(fileName == null){
-			return AUTO_UNLOCK;
+		if( fileName == null ){
+			TGActionLock.unlock();
+			return;
 		}
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
@@ -36,11 +37,9 @@ public class SaveAsFileAction extends Action {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.save(fileName);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}).start();
-		
-		return 0;
 	}
 }

@@ -4,11 +4,13 @@ import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.actions.file.ExitAction;
 import org.herac.tuxguitar.app.actions.help.ShowAboutAction;
 import org.herac.tuxguitar.app.actions.settings.EditConfigAction;
 import org.herac.tuxguitar.cocoa.TGCocoa;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MacMenu {
 	
@@ -82,17 +84,25 @@ public class MacMenu {
 	}
 	
 	public long handleQuitCommand(){
-		TuxGuitar.instance().getAction(ExitAction.NAME).process(null);
+		this.executeAction(ExitAction.NAME);
 		return TGCocoa.noErr;
 	}
 	
 	public long handleAboutCommand(){
-		TuxGuitar.instance().getAction(ShowAboutAction.NAME).process(null);
+		this.executeAction(ShowAboutAction.NAME);
 		return TGCocoa.noErr;
 	}
 	
 	public long handlePreferencesCommand(){
-		TuxGuitar.instance().getAction(EditConfigAction.NAME).process(null);
+		this.executeAction(EditConfigAction.NAME);
 		return TGCocoa.noErr;
+	}
+	
+	private void executeAction(final String actionId){
+		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+			public void run() throws TGException {
+				TGActionManager.getInstance().execute(actionId);
+			}
+		});
 	}
 }

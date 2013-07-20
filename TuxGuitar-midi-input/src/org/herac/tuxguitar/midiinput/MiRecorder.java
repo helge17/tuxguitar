@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.midiinput;
 
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
 import org.herac.tuxguitar.app.actions.transport.TransportStopAction;
@@ -9,6 +10,8 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 class MiRecorder
 {
@@ -87,7 +90,11 @@ static	private	MiRecorder	s_Instance;
 	TuxGuitar.instance().fireUpdate();
 	TuxGuitar.instance().getMixer().update();
 */
-	TuxGuitar.instance().getAction(TransportPlayAction.NAME).process(null);
+	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+		public void run() throws TGException {
+			TGActionManager.getInstance().execute(TransportPlayAction.NAME);
+		}
+	});
 
 	// come si sincronizza il timestamp iniziale con il playback?
 	f_Buffer.startRecording(MiPort.getNotesPortTimeStamp());
@@ -102,7 +109,11 @@ static	private	MiRecorder	s_Instance;
 	f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
 	f_IsRecording = false;
 
-	TuxGuitar.instance().getAction(TransportStopAction.NAME).process(null);
+	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+		public void run() throws TGException {
+			TGActionManager.getInstance().execute(TransportStopAction.NAME);
+		}
+	});
 	TuxGuitar.instance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);
 	
 	// qui deve cancellare la traccia di servizio...

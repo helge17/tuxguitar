@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.actions.tools;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 
-public class TGBrowserAction extends Action{
+public class TGBrowserAction extends TGActionBase{
 	
 	public static final String NAME = "action.tools.browser";
 	
@@ -12,12 +12,11 @@ public class TGBrowserAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		if(TuxGuitar.instance().getBrowser().isDisposed()){
 			TuxGuitar.instance().getBrowser().show();
 		}else{
 			TuxGuitar.instance().getBrowser().dispose();
 		}
-		return 0;
 	}
 }

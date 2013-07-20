@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.marker;
 
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.marker.MarkerList;
 
 /**
@@ -16,7 +16,7 @@ import org.herac.tuxguitar.app.marker.MarkerList;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ListMarkersAction extends Action{
+public class ListMarkersAction extends TGActionBase{
 	
 	public static final String NAME = "action.marker.list";
 	
@@ -24,13 +24,12 @@ public class ListMarkersAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(ActionData actionData){
-		if(MarkerList.instance().isDisposed()){
+	protected void processAction(TGActionContext context){
+		if( MarkerList.instance().isDisposed() ){
 			MarkerList.instance().show();
 		}
 		else{
 			MarkerList.instance().dispose();
 		}
-		return 0;
 	}
 }

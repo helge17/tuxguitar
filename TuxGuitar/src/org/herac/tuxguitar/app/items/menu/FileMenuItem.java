@@ -10,15 +10,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.file.ExitAction;
 import org.herac.tuxguitar.app.actions.file.ExportSongAction;
 import org.herac.tuxguitar.app.actions.file.ImportSongAction;
@@ -78,27 +80,26 @@ public class FileMenuItem extends MenuItems {
 		//---------------------------------------------------
 		//--NEW--
 		this.newSong = new MenuItem(this.menu, SWT.CASCADE);
-		this.newSong.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
 		this.newSongMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
 		this.newSongDefault = new MenuItem(this.newSongMenu, SWT.PUSH);
-		this.newSongDefault.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
+		this.newSongDefault.addSelectionListener(new TGActionProcessor(NewFileAction.NAME));
 		
 		this.addNewSongTemplates();
 		
 		//--OPEN--
 		this.open = new MenuItem(this.menu, SWT.PUSH);
-		this.open.addSelectionListener(TuxGuitar.instance().getAction(OpenFileAction.NAME));
+		this.open.addSelectionListener(new TGActionProcessor(OpenFileAction.NAME));
 		//--OPEN--
 		this.openURL = new MenuItem(this.menu, SWT.PUSH);
-		this.openURL.addSelectionListener(TuxGuitar.instance().getAction(OpenURLAction.NAME));
+		this.openURL.addSelectionListener(new TGActionProcessor(OpenURLAction.NAME));
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--SAVE--
 		this.save = new MenuItem(this.menu, SWT.PUSH);
-		this.save.addSelectionListener(TuxGuitar.instance().getAction(SaveFileAction.NAME));
+		this.save.addSelectionListener(new TGActionProcessor(SaveFileAction.NAME));
 		//--SAVE AS--
 		this.saveAs = new MenuItem(this.menu, SWT.PUSH);
-		this.saveAs.addSelectionListener(TuxGuitar.instance().getAction(SaveAsFileAction.NAME));
+		this.saveAs.addSelectionListener(new TGActionProcessor(SaveAsFileAction.NAME));
 		
 		//-- IMPORT | EXPORT --
 		int countImporters = TGFileFormatManager.instance().countImporters();
@@ -129,10 +130,10 @@ public class FileMenuItem extends MenuItems {
 		
 		//--PRINT PREVIEW--
 		this.printPreview = new MenuItem(this.menu, SWT.PUSH);
-		this.printPreview.addSelectionListener(TuxGuitar.instance().getAction(PrintPreviewAction.NAME));
+		this.printPreview.addSelectionListener(new TGActionProcessor(PrintPreviewAction.NAME));
 		//--PRINT--
 		this.print = new MenuItem(this.menu, SWT.PUSH);
-		this.print.addSelectionListener(TuxGuitar.instance().getAction(PrintAction.NAME));
+		this.print.addSelectionListener(new TGActionProcessor(PrintAction.NAME));
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
@@ -144,7 +145,7 @@ public class FileMenuItem extends MenuItems {
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--EXIT--
 		this.exit = new MenuItem(this.menu, SWT.PUSH);
-		this.exit.addSelectionListener(TuxGuitar.instance().getAction(ExitAction.NAME));
+		this.exit.addSelectionListener(new TGActionProcessor(ExitAction.NAME));
 		
 		//---------------------------------------------------
 		if( this.importItem != null ){
@@ -170,13 +171,13 @@ public class FileMenuItem extends MenuItems {
 			while( it.hasNext() ){
 				TGTemplate tgTemplate = (TGTemplate)it.next();
 				
-				ActionData actionData = new ActionData();
+				Map actionData = new HashMap();
 				actionData.put(NewFileAction.PROPERTY_TEMPLATE, tgTemplate);
 				
 				MenuItem menuItem = new MenuItem(this.newSongMenu, SWT.PUSH);
 				menuItem.setText(tgTemplate.getName());
 				menuItem.setData(actionData);
-				menuItem.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
+				menuItem.addSelectionListener(new TGActionProcessor(NewFileAction.NAME));
 			}
 		}
 	}
@@ -196,12 +197,12 @@ public class FileMenuItem extends MenuItems {
 		}
 		
 		for( int i = 0 ; i < importersFile.size() ; i ++ ){
-			ActionData actionData = new ActionData();
+			Map actionData = new HashMap();
 			actionData.put(ImportSongAction.PROPERTY_IMPORTER, importersFile.get( i ));
 			
 			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
 			item.setData(actionData);
-			item.addSelectionListener(TuxGuitar.instance().getAction(ImportSongAction.NAME));
+			item.addSelectionListener(new TGActionProcessor(ImportSongAction.NAME));
 			this.importItems.add( item );
 		}
 		
@@ -211,12 +212,12 @@ public class FileMenuItem extends MenuItems {
 		}
 		
 		for( int i = 0 ; i < importersRaw.size() ; i ++ ){
-			ActionData actionData = new ActionData();
+			Map actionData = new HashMap();
 			actionData.put(ImportSongAction.PROPERTY_IMPORTER, importersRaw.get( i ));
 			
 			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
 			item.setData(actionData);
-			item.addSelectionListener(TuxGuitar.instance().getAction(ImportSongAction.NAME));
+			item.addSelectionListener(new TGActionProcessor(ImportSongAction.NAME));
 			this.importItems.add( item );
 		}
 	}
@@ -236,12 +237,12 @@ public class FileMenuItem extends MenuItems {
 		}
 		
 		for( int i = 0 ; i < exportersFile.size() ; i ++ ){
-			ActionData actionData = new ActionData();
+			Map actionData = new HashMap();
 			actionData.put(ExportSongAction.PROPERTY_EXPORTER, exportersFile.get( i ));
 			
 			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
 			item.setData(actionData);
-			item.addSelectionListener(TuxGuitar.instance().getAction(ExportSongAction.NAME));
+			item.addSelectionListener(new TGActionProcessor(ExportSongAction.NAME));
 			this.exportItems.add( item );
 		}
 		
@@ -251,12 +252,12 @@ public class FileMenuItem extends MenuItems {
 		}
 		
 		for( int i = 0 ; i < exportersRaw.size() ; i ++ ){
-			ActionData actionData = new ActionData();
+			Map actionData = new HashMap();
 			actionData.put(ExportSongAction.PROPERTY_EXPORTER, exportersRaw.get( i ));
 			
 			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
 			item.setData(actionData);
-			item.addSelectionListener(TuxGuitar.instance().getAction(ExportSongAction.NAME));
+			item.addSelectionListener(new TGActionProcessor(ExportSongAction.NAME));
 			this.exportItems.add( item );
 		}
 	}
@@ -272,12 +273,12 @@ public class FileMenuItem extends MenuItems {
 		this.historyFiles = new MenuItem[urls.size()];
 		for(int i = 0;i < this.historyFiles.length; i++){
 			URL url = (URL)urls.get(i);
-			ActionData actionData = new ActionData();
+			Map actionData = new HashMap();
 			actionData.put(OpenFileAction.PROPERTY_URL, url);
 			this.historyFiles[i] = new MenuItem(this.historyMenu, SWT.PUSH);
 			this.historyFiles[i].setText(decode(url.toString()));
 			this.historyFiles[i].setData(actionData);
-			this.historyFiles[i].addSelectionListener(TuxGuitar.instance().getAction(OpenFileAction.NAME));
+			this.historyFiles[i].addSelectionListener(new TGActionProcessor(OpenFileAction.NAME));
 		}
 		this.historyItem.setEnabled(this.historyFiles.length > 0);
 	}
@@ -319,7 +320,7 @@ public class FileMenuItem extends MenuItems {
 			while(importItems.hasNext()){
 				MenuItem item = (MenuItem)importItems.next();
 				
-				Object itemImporter = ((ActionData)item.getData()).get(ImportSongAction.PROPERTY_IMPORTER);
+				Object itemImporter = ((Map)item.getData()).get(ImportSongAction.PROPERTY_IMPORTER);
 				if( itemImporter instanceof TGLocalFileImporter ){
 					item.setText(TuxGuitar.getProperty("file.import") + " " + ((TGRawImporter)itemImporter).getImportName());
 				}else if( itemImporter instanceof TGRawImporter ){
@@ -334,7 +335,7 @@ public class FileMenuItem extends MenuItems {
 			while(exportItems.hasNext()){
 				MenuItem item = (MenuItem)exportItems.next();
 				
-				Object itemExporter = ((ActionData)item.getData()).get(ExportSongAction.PROPERTY_EXPORTER);
+				Object itemExporter = ((Map)item.getData()).get(ExportSongAction.PROPERTY_EXPORTER);
 				if( itemExporter instanceof TGLocalFileExporter ){
 					item.setText(TuxGuitar.getProperty("file.export") + " " + ((TGRawExporter)itemExporter).getExportName());
 				}else if( itemExporter instanceof TGRawExporter ){

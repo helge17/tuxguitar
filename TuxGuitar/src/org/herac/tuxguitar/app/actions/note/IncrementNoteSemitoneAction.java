@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.note;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.song.models.TGNote;
 
@@ -18,7 +18,7 @@ import org.herac.tuxguitar.song.models.TGNote;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class IncrementNoteSemitoneAction extends Action{
+public class IncrementNoteSemitoneAction extends TGActionBase{
 	
 	public static final String NAME = "action.note.general.increment-semitone";
 	
@@ -26,7 +26,7 @@ public class IncrementNoteSemitoneAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		TGNote note = getEditor().getTablature().getCaret().getSelectedNote();
 		if(note != null){
 			//comienza el undoable
@@ -39,7 +39,6 @@ public class IncrementNoteSemitoneAction extends Action{
 			}
 			updateTablature();
 		}
-		return 0;
 	}
 	
 	public void updateTablature() {

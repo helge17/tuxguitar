@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.track;
 
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 
 /**
@@ -16,7 +16,7 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class GoToTrackAction extends Action{
+public class GoToTrackAction extends TGActionBase{
 	
 	public static final String NAME = "action.track.goto";
 	
@@ -26,12 +26,11 @@ public class GoToTrackAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(ActionData actionData){
-		Object data = actionData.get(PROPERTY_TRACK);
+	protected void processAction(TGActionContext context){
+		Object data = context.getAttribute(PROPERTY_TRACK);
 		if(data instanceof TGTrackImpl){
 			TGTrackImpl track = (TGTrackImpl)data;
 			getEditor().getTablature().getCaret().update(track.getNumber());
 		}
-		return 0;
 	}
 }

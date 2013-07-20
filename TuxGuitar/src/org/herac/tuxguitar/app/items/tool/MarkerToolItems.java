@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.marker.AddMarkerAction;
 import org.herac.tuxguitar.app.actions.marker.GoFirstMarkerAction;
 import org.herac.tuxguitar.app.actions.marker.GoLastMarkerAction;
@@ -40,30 +41,30 @@ public class MarkerToolItems  extends ToolItems{
 	public void showItems(ToolBar toolBar){
 		//--ADD--
 		this.add = new ToolItem(toolBar, SWT.PUSH);
-		this.add.addSelectionListener(TuxGuitar.instance().getAction(AddMarkerAction.NAME));
+		this.add.addSelectionListener(new TGActionProcessor(AddMarkerAction.NAME));
 		
 		//--LIST--
 		this.list = new ToolItem(toolBar, SWT.PUSH);
-		this.list.addSelectionListener(TuxGuitar.instance().getAction(ListMarkersAction.NAME));
+		this.list.addSelectionListener(new TGActionProcessor(ListMarkersAction.NAME));
 		
 		//--SEPARATOR--
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		//--FIRST--
 		this.first = new ToolItem(toolBar, SWT.PUSH);
-		this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstMarkerAction.NAME));
+		this.first.addSelectionListener(new TGActionProcessor(GoFirstMarkerAction.NAME));
 		
 		//--PREVIOUS--
 		this.previous = new ToolItem(toolBar, SWT.PUSH);
-		this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousMarkerAction.NAME));
+		this.previous.addSelectionListener(new TGActionProcessor(GoPreviousMarkerAction.NAME));
 		
 		//--PREVIOUS--
 		this.next = new ToolItem(toolBar, SWT.PUSH);
-		this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextMarkerAction.NAME));
+		this.next.addSelectionListener(new TGActionProcessor(GoNextMarkerAction.NAME));
 		
 		//--LAST--
 		this.last = new ToolItem(toolBar, SWT.PUSH);
-		this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastMarkerAction.NAME));
+		this.last.addSelectionListener(new TGActionProcessor(GoLastMarkerAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

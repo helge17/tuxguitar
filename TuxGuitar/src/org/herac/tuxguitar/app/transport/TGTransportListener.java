@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiPlayerListener;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGTransportListener implements MidiPlayerListener{
@@ -18,12 +19,12 @@ public class TGTransportListener implements MidiPlayerListener{
 	
 	public void notifyStarted() {
 		new Thread(new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				try {
 					TuxGuitar.instance().updateCache(true);
 					while (TuxGuitar.instance().getPlayer().isRunning()) {
 						synchronized( TGTransportListener.this.sync ){
-							TGSynchronizer.instance().addRunnable( TGTransportListener.this.startedRunnable );
+							TGSynchronizer.instance().execute( TGTransportListener.this.startedRunnable );
 							TGTransportListener.this.sync.wait(25);
 						}
 					}
@@ -38,7 +39,7 @@ public class TGTransportListener implements MidiPlayerListener{
 	public void notifyStopped() {
 		try {
 			if(!TuxGuitar.instance().getDisplay().isDisposed()){
-				TGSynchronizer.instance().runLater( TGTransportListener.this.stoppedRunnable );
+				TGSynchronizer.instance().executeLater( TGTransportListener.this.stoppedRunnable );
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
@@ -51,7 +52,7 @@ public class TGTransportListener implements MidiPlayerListener{
 	
 	private TGSynchronizer.TGRunnable getStartedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
-			public void run() {
+			public void run() throws TGException {
 				if(TuxGuitar.instance().getPlayer().isRunning()){
 					TuxGuitar.instance().redrawPlayingMode();
 				}
@@ -61,7 +62,7 @@ public class TGTransportListener implements MidiPlayerListener{
 	
 	private TGSynchronizer.TGRunnable getStoppedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
-			public void run() {
+			public void run() throws TGException {
 				TuxGuitar.instance().getTransport().gotoPlayerPosition();
 			}
 		};

@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.duration.ChangeDivisionTypeAction;
 import org.herac.tuxguitar.app.actions.duration.ChangeDottedDurationAction;
 import org.herac.tuxguitar.app.actions.duration.ChangeDoubleDottedDurationAction;
@@ -51,39 +52,39 @@ public class DurationMenuItem  extends MenuItems{
 	public void showItems(){
 		//--whole--
 		this.whole = new MenuItem(this.menu, SWT.PUSH);
-		this.whole.addSelectionListener(TuxGuitar.instance().getAction(SetWholeDurationAction.NAME));
+		this.whole.addSelectionListener(new TGActionProcessor(SetWholeDurationAction.NAME));
 		//--half--
 		this.half = new MenuItem(this.menu, SWT.PUSH);
-		this.half.addSelectionListener(TuxGuitar.instance().getAction(SetHalfDurationAction.NAME));
+		this.half.addSelectionListener(new TGActionProcessor(SetHalfDurationAction.NAME));
 		//--quarter--
 		this.quarter = new MenuItem(this.menu, SWT.PUSH);
-		this.quarter.addSelectionListener(TuxGuitar.instance().getAction(SetQuarterDurationAction.NAME));
+		this.quarter.addSelectionListener(new TGActionProcessor(SetQuarterDurationAction.NAME));
 		//--Eighth--
 		this.eighth = new MenuItem(this.menu, SWT.PUSH);
-		this.eighth.addSelectionListener(TuxGuitar.instance().getAction(SetEighthDurationAction.NAME));
+		this.eighth.addSelectionListener(new TGActionProcessor(SetEighthDurationAction.NAME));
 		//--sixteenth--
 		this.sixteenth = new MenuItem(this.menu, SWT.PUSH);
-		this.sixteenth.addSelectionListener(TuxGuitar.instance().getAction(SetSixteenthDurationAction.NAME));
+		this.sixteenth.addSelectionListener(new TGActionProcessor(SetSixteenthDurationAction.NAME));
 		//--thirtySecond--
 		this.thirtySecond = new MenuItem(this.menu, SWT.PUSH);
-		this.thirtySecond.addSelectionListener(TuxGuitar.instance().getAction(SetThirtySecondDurationAction.NAME));
+		this.thirtySecond.addSelectionListener(new TGActionProcessor(SetThirtySecondDurationAction.NAME));
 		//--sixtyFourth--
 		this.sixtyFourth = new MenuItem(this.menu, SWT.PUSH);
-		this.sixtyFourth.addSelectionListener(TuxGuitar.instance().getAction(SetSixtyFourthDurationAction.NAME));
+		this.sixtyFourth.addSelectionListener(new TGActionProcessor(SetSixtyFourthDurationAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--dotted---
 		this.dotted = new MenuItem(this.menu, SWT.PUSH);
-		this.dotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDottedDurationAction.NAME));
+		this.dotted.addSelectionListener(new TGActionProcessor(ChangeDottedDurationAction.NAME));
 		
 		this.doubleDotted = new MenuItem(this.menu, SWT.PUSH);
-		this.doubleDotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDoubleDottedDurationAction.NAME));
+		this.doubleDotted.addSelectionListener(new TGActionProcessor(ChangeDoubleDottedDurationAction.NAME));
 		
 		//--division---
 		this.division = new MenuItem(this.menu, SWT.PUSH);
-		this.division.addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
+		this.division.addSelectionListener(new TGActionProcessor(ChangeDivisionTypeAction.NAME));
 		
 		this.durationMenuItem.setMenu(this.menu);
 		

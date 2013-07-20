@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.tg.TGOutputStream;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGShareSong {
@@ -34,8 +35,8 @@ public class TGShareSong {
 	
 	public void processDialog( final TGShareFile file , final String errors ) {
 		try {
-			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					TGShareFileDialog fileDialog = new TGShareFileDialog( file , errors );
 					fileDialog.open();
 					if( fileDialog.isAccepted() ){
@@ -50,8 +51,8 @@ public class TGShareSong {
 	
 	public void processAuthDialog( final TGShareFile file ) {
 		try {
-			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog();
 					authDialog.open();
 					if( authDialog.isAccepted() ){
@@ -68,7 +69,7 @@ public class TGShareSong {
 		this.setActiveMode();
 		
 		new Thread( new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				try {
 					TGShareSongConnection share = new TGShareSongConnection();
 					share.uploadFile(file , TGShareSong.this );
@@ -120,11 +121,11 @@ public class TGShareSong {
 	public void setActiveMode(){
 		TuxGuitar.instance().lock();
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-		ActionLock.lock();
+		TGActionLock.lock();
 	}
 	
 	public void setPasiveMode(){
-		ActionLock.unlock();
+		TGActionLock.unlock();
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 		TuxGuitar.instance().unlock();
 	}

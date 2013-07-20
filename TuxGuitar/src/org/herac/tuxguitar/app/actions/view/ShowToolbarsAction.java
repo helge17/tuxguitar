@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.view;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 
 /**
  * @author julian
@@ -16,7 +16,7 @@ import org.herac.tuxguitar.app.actions.ActionData;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ShowToolbarsAction extends Action{
+public class ShowToolbarsAction extends TGActionBase{
 	
 	public static final String NAME = "action.view.show-toolbars";
 	
@@ -24,9 +24,7 @@ public class ShowToolbarsAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		TuxGuitar.instance().getItemManager().toogleToolbarVisibility();
-		
-		return 0;
 	}
 }

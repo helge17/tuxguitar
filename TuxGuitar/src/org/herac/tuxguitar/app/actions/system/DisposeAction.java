@@ -9,15 +9,17 @@ package org.herac.tuxguitar.app.actions.system;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TypedEvent;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionAdapter;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -25,7 +27,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class DisposeAction extends Action {
+public class DisposeAction extends TGActionBase {
 	
 	public static final String NAME = "action.system.dispose";
 	
@@ -33,8 +35,8 @@ public class DisposeAction extends Action {
 		super(NAME, AUTO_LOCK);
 	}
 	
-	protected int execute(ActionData actionData){
-		TypedEvent e = (TypedEvent)actionData.get(ActionAdapter.PROPERTY_TYPED_EVENT);
+	protected void processAction(TGActionContext context){
+		TypedEvent e = (TypedEvent)context.getAttribute(TGActionProcessor.PROPERTY_TYPED_EVENT);
 		
 		if(e instanceof ShellEvent){
 			TuxGuitar.instance().getPlayer().reset();
@@ -44,16 +46,18 @@ public class DisposeAction extends Action {
 				confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 				int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
 				if(status == ConfirmDialog.STATUS_CANCEL){
-					return AUTO_UNLOCK;
+					TGActionLock.unlock();
+					return;
 				}
 				if(status == ConfirmDialog.STATUS_YES){
 					final String fileName = FileActionUtils.getFileName();
 					if(fileName == null){
-						return AUTO_UNLOCK;
+						TGActionLock.unlock();
+						return;
 					}
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 					new Thread(new Runnable() {
-						public void run() {
+						public void run() throws TGException {
 							if(!TuxGuitar.isDisposed()){
 								FileActionUtils.save(fileName);
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
@@ -62,18 +66,17 @@ public class DisposeAction extends Action {
 							}
 						}
 					}).start();
-					return 0;
+					return;
 				}
 			}
 			exit();
 		}
-		return 0;
 	}
 	
 	protected void exit(){
 		try {
-			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					TuxGuitar.instance().lock();
 					closeModules();
 					saveConfig();

@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.caret;
 
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 
 /**
  * @author julian
@@ -15,7 +15,7 @@ import org.herac.tuxguitar.app.actions.ActionData;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class GoUpAction extends Action{
+public class GoUpAction extends TGActionBase{
 	
 	public static final String NAME = "action.caret.go-up";
 	
@@ -23,8 +23,7 @@ public class GoUpAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		getEditor().getTablature().getCaret().moveUp();
-		return 0;
 	}
 }

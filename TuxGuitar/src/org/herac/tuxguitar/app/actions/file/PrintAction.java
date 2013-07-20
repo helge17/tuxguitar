@@ -13,9 +13,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.helper.SyncThread;
@@ -29,6 +29,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -37,7 +38,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class PrintAction extends Action{
+public class PrintAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.print";
 	
@@ -45,7 +46,7 @@ public class PrintAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		try{
 			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.instance().getShell());
 			if(data != null){
@@ -61,7 +62,6 @@ public class PrintAction extends Action{
 		}catch(Throwable throwable ){
 			MessageDialog.errorMessage(throwable);
 		}
-		return 0;
 	}
 	
 	public void print(final PrinterData printerData ,final PrintStyles data){
@@ -179,8 +179,8 @@ public class PrintAction extends Action{
 				this.printer.endJob();
 				this.started = false;
 				try {
-					TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable(){
-						public void run() {
+					TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable(){
+						public void run() throws TGException {
 							dispose();
 						}
 					});

@@ -9,9 +9,9 @@ package org.herac.tuxguitar.app.actions.insert;
 import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.chord.ChordDialog;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
@@ -29,7 +29,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class InsertChordAction extends Action {
+public class InsertChordAction extends TGActionBase {
 	
 	public static final String NAME = "action.insert.chord";
 	
@@ -39,8 +39,8 @@ public class InsertChordAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
-		Object propertyChord = actionData.get(PROPERTY_CHORD);
+	protected void processAction(TGActionContext context){
+		Object propertyChord = context.getAttribute(PROPERTY_CHORD);
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		TGTrackImpl track = caret.getTrack();
@@ -66,7 +66,6 @@ public class InsertChordAction extends Action {
 				}
 			}
 		}
-		return 0;
 	}
 	
 	protected void insertChord(TGChord chord, TGTrackImpl track, TGMeasureImpl measure, TGBeat beat, int voiceIndex) {

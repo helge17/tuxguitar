@@ -20,6 +20,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.utils.TGCommunityWeb;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGCommunityStartupScreen {
@@ -34,8 +35,8 @@ public class TGCommunityStartupScreen {
 	public void open(){
 		try {
 			final Shell parent = TuxGuitar.instance().getShell();
-			TGSynchronizer.instance().runLater( new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().executeLater( new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					open( parent );
 				}
 			} );
@@ -152,7 +153,7 @@ public class TGCommunityStartupScreen {
 				final String href = event.text;
 				if( href != null ){
 					new Thread( new Runnable() {
-						public void run() {
+						public void run() throws TGException {
 							TGCommunityWeb.open( href );
 						}
 					} ).start();

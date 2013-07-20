@@ -15,16 +15,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeTripletFeel;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -33,7 +34,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ChangeTripletFeelAction extends Action{
+public class ChangeTripletFeelAction extends TGActionBase{
 	
 	public static final String NAME = "action.composition.change-triplet-feel";
 	
@@ -41,9 +42,8 @@ public class ChangeTripletFeelAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		showDialog(getEditor().getTablature().getShell());
-		return 0;
 	}
 	
 	public void showDialog(Shell shell) {
@@ -98,14 +98,14 @@ public class ChangeTripletFeelAction extends Action{
 					
 					dialog.dispose();
 					try {
-						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-							public void run() throws Throwable {
-								ActionLock.lock();
+						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws TGException {
+								TGActionLock.lock();
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 								setTripletFeel(tripletFeel,toEndValue);
 								TuxGuitar.instance().updateCache( true );
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-								ActionLock.unlock();
+								TGActionLock.unlock();
 							}
 						});
 					} catch (Throwable throwable) {
