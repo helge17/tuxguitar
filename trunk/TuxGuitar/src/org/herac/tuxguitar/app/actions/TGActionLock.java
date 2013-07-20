@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.app.actions;
 
-public class ActionLock {
+public class TGActionLock {
 	
 	private static boolean working;
 	
@@ -19,8 +19,8 @@ public class ActionLock {
 	public synchronized static void waitFor(){
 		try {
 			while(isLocked()){
-				synchronized( ActionLock.class ) {
-					ActionLock.class.wait(1);
+				synchronized( TGActionLock.class ) {
+					TGActionLock.class.wait(1);
 				}
 			}
 		} catch (InterruptedException e) {

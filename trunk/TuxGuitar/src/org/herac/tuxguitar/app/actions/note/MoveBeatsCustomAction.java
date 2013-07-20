@@ -17,10 +17,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackGeneric;
 import org.herac.tuxguitar.app.util.DialogUtils;
@@ -30,9 +30,10 @@ import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class MoveBeatsCustomAction extends Action{
+public class MoveBeatsCustomAction extends TGActionBase{
 	
 	public static final String NAME = "action.beat.general.move-custom";
 	
@@ -63,9 +64,8 @@ public class MoveBeatsCustomAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		this.showDialog(getEditor().getTablature().getShell());
-		return 0;
 	}
 	
 	protected void showDialog(Shell shell){
@@ -206,14 +206,14 @@ public class MoveBeatsCustomAction extends Action{
 				
 				dialog.dispose();
 				try {
-					TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-						public void run() throws Throwable {
-							ActionLock.lock();
+					TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+						public void run() throws TGException {
+							TGActionLock.lock();
 							TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 							moveBeats(duration);
 							TuxGuitar.instance().updateCache( true );
 							TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-							ActionLock.unlock();
+							TGActionLock.unlock();
 						}
 					});
 				} catch (Throwable throwable) {

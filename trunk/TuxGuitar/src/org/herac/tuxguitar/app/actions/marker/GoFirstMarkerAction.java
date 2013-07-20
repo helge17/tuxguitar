@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app.actions.marker;
 
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.marker.MarkerNavigator;
 
 /**
@@ -16,7 +16,7 @@ import org.herac.tuxguitar.app.marker.MarkerNavigator;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class GoFirstMarkerAction extends Action{
+public class GoFirstMarkerAction extends TGActionBase{
 	
 	public static final String NAME = "action.marker.go-first";
 	
@@ -24,9 +24,7 @@ public class GoFirstMarkerAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		new MarkerNavigator().goToSelectedMarker(getSongManager().getFirstMarker());
-		
-		return 0;
 	}
 }

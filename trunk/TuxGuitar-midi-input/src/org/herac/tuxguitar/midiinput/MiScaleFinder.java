@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 class MiScaleFinder
@@ -175,8 +176,8 @@ class MiScaleFinder
 	static public void		selectScale(final int inIndex, final int inKey)
 	{
 	try	{
-		TGSynchronizer.instance().addRunnable( new TGSynchronizer.TGRunnable() {
-			public void run() throws Throwable {
+		TGSynchronizer.instance().execute( new TGSynchronizer.TGRunnable() {
+			public void run() throws TGException {
 				TuxGuitar.instance().getScaleManager().selectScale(inIndex, inKey);
 			}
 		});

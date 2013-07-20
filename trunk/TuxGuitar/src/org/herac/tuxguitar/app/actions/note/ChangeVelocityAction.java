@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.note;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 
@@ -18,18 +18,18 @@ import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ChangeVelocityAction extends Action{
+public class ChangeVelocityAction extends TGActionBase{
 	
 	public static final String NAME = "action.note.general.velocity";
 	
 	public static final String PROPERTY_VELOCITY = "velocity";
 	
 	public ChangeVelocityAction() {
-		super(NAME, AUTO_LOCK | AUTO_UNLOCK | DISABLE_ON_PLAYING);
+		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING);
 	}
 	
-	protected int execute(ActionData actionData){
-		Object propertyVelocity = actionData.get(PROPERTY_VELOCITY);
+	protected void processAction(TGActionContext context){
+		Object propertyVelocity = context.getAttribute(PROPERTY_VELOCITY);
 		if( propertyVelocity instanceof Integer){
 			int velocity = ((Integer)propertyVelocity).intValue();
 			
@@ -44,10 +44,7 @@ public class ChangeVelocityAction extends Action{
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
-			
-			return AUTO_UPDATE;
 		}
-		return 0;
 	}
 	
 	public void updateTablature() {

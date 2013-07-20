@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
-import org.herac.tuxguitar.app.actions.ActionManager;
+import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.actions.TGActionAdapterManager;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.actions.file.NewFileAction;
 import org.herac.tuxguitar.app.actions.system.DisposeAction;
@@ -73,6 +73,7 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -135,7 +136,7 @@ public class TuxGuitar {
 	
 	private ScaleManager scaleManager;
 	
-	private ActionManager actionManager;
+	private TGActionAdapterManager actionAdapterManager;
 	
 	private ItemManager itemManager;
 	
@@ -171,7 +172,7 @@ public class TuxGuitar {
 				final Display display = getDisplay();
 				if(display != null && !display.isDisposed()){
 					display.syncExec(new Runnable() {
-						public void run() {
+						public void run() throws TGException {
 							task.run();
 						}
 					});
@@ -182,7 +183,7 @@ public class TuxGuitar {
 				final Display display = getDisplay();
 				if(display != null && !display.isDisposed()){
 					display.asyncExec(new Runnable() {
-						public void run() {
+						public void run() throws TGException {
 							task.run();
 						}
 					});
@@ -217,6 +218,7 @@ public class TuxGuitar {
 		this.createComposites(getShell());
 		
 		// Priority 3 ----------------------------------------------//
+		this.getActionAdapterManager().initialize();
 		this.getPluginManager().openPlugins();
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
@@ -226,7 +228,7 @@ public class TuxGuitar {
 		TGSplash.instance().finish();
 		
 		// Priority 4 ----------------------------------------------//
-		this.shell.addShellListener(getAction(DisposeAction.NAME));
+		this.shell.addShellListener(new TGActionProcessor(DisposeAction.NAME));
 		this.shell.open();
 		this.startSong(argumentParser);
 		this.setInitialized( true );
@@ -248,23 +250,27 @@ public class TuxGuitar {
 	private void startSong(final ArgumentParser parser){
 		final URL url = parser.getURL();
 		if(url != null){
-			ActionLock.lock();
+			TGActionLock.lock();
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 					new Thread(new Runnable() {
-						public void run() {
+						public void run() throws TGException {
 							if(!TuxGuitar.isDisposed()){
 								FileActionUtils.open(url);
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-								ActionLock.unlock();
+								TGActionLock.unlock();
 							}
 						}
 					}).start();
 				}
 			}).start();
 		}else{
-			getAction(NewFileAction.NAME).process(new ActionData());
+			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
+					TGActionManager.getInstance().execute(NewFileAction.NAME);
+				}
+			});
 		}
 	}
 	
@@ -367,7 +373,7 @@ public class TuxGuitar {
 		//---Instruments---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_INSTRUMENTS)){
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					getChannelManager().show();
 				}
 			}).start();
@@ -375,7 +381,7 @@ public class TuxGuitar {
 		//---Transport---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_TRANSPORT)){
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					getTransport().show();
 				}
 			}).start();
@@ -383,7 +389,7 @@ public class TuxGuitar {
 		//---Matrix---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MATRIX)){
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					getMatrixEditor().show();
 				}
 			}).start();
@@ -391,7 +397,7 @@ public class TuxGuitar {
 		//---Piano---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_PIANO)){
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					getPianoEditor().show();
 				}
 			}).start();
@@ -399,7 +405,7 @@ public class TuxGuitar {
 		//---Markers---
 		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MARKERS)){
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					MarkerList.instance().show();
 				}
 			}).start();
@@ -558,11 +564,11 @@ public class TuxGuitar {
 		return this.itemManager;
 	}
 	
-	public ActionManager getActionManager() {
-		if(this.actionManager == null){
-			this.actionManager = new ActionManager();
+	public TGActionAdapterManager getActionAdapterManager() {
+		if( this.actionAdapterManager == null ){
+			this.actionAdapterManager = new TGActionAdapterManager();
 		}
-		return this.actionManager;
+		return this.actionAdapterManager;
 	}
 	
 	public LanguageManager getLanguageManager() {
@@ -603,7 +609,7 @@ public class TuxGuitar {
 	}
 	
 	public MidiPlayer getPlayer(){
-		if(this.player == null){
+		if( this.player == null ){
 			this.player = new MidiPlayer();
 			this.player.init(getSongManager());
 			this.player.addListener( new TGTransportListener() );
@@ -626,7 +632,7 @@ public class TuxGuitar {
 	
 	public void showTitle(){
 		new SyncThread(new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				if(!isDisposed()){
 					getShell().setText(WindowTitleUtil.parseTitle());
 				}
@@ -640,7 +646,7 @@ public class TuxGuitar {
 			this.getEditorCache().updateEditMode();
 			this.unlock();
 			new SyncThread(new Runnable() {
-				public void run() {
+				public void run() throws TGException {
 					if(!isDisposed() && !isLocked()){
 						if(updateItems){
 							lock();
@@ -695,10 +701,6 @@ public class TuxGuitar {
 	
 	public Shell getShell(){
 		return this.shell;
-	}
-	
-	public Action getAction(String name) {
-		return this.getActionManager().getAction(name);
 	}
 	
 	public static String getProperty(String key) {
@@ -804,8 +806,8 @@ public class TuxGuitar {
 	
 	public void loadCursor(final Control control,final int style){
 		try {
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					if(!control.isDisposed()){
 						control.setCursor(getDisplay().getSystemCursor(style));
 					}
@@ -818,7 +820,7 @@ public class TuxGuitar {
 	
 	public void playBeat( final TGBeat beat ){
 		new Thread(new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				if(!isDisposed() && !getPlayer().isRunning() ){
 					getPlayer().playBeat(beat);
 				}

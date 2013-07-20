@@ -20,18 +20,18 @@ public class TGSynchronizer {
 		return instance;
 	}
 	
-	public void addRunnable(TGRunnable runnable) throws Throwable {
+	public void execute(TGRunnable runnable) throws TGException {
 		TGSynchronizerTask task = new TGSynchronizerTask(runnable);
 		this.controller.execute(task);
-		if(task.getThrowable() != null){
+		if( task.getThrowable() != null ){
 			throw task.getThrowable();
 		}
 	}
 	
-	public void runLater(TGRunnable runnable) throws Throwable {
+	public void executeLater(TGRunnable runnable) throws TGException {
 		TGSynchronizerTask task = new TGSynchronizerTask(runnable);
 		this.controller.executeLater(task);
-		if(task.getThrowable() != null){
+		if( task.getThrowable() != null ){
 			throw task.getThrowable();
 		}
 	}
@@ -41,29 +41,31 @@ public class TGSynchronizer {
 	}
 	
 	public class TGSynchronizerTask{
-		private Throwable throwable;
 		private TGRunnable runnable;
+		private TGException throwable;
 		
 		public TGSynchronizerTask(TGRunnable runnable){
 			this.runnable = runnable;
 			this.throwable = null;
 		}
 		
-		public Throwable getThrowable(){
+		public TGException getThrowable(){
 			return this.throwable;
 		}
 		
 		public void run(){
 			try{
 				this.runnable.run();
-			}catch(Throwable throwable){
-				this.throwable = throwable;
+			} catch(TGException tgException){
+				this.throwable = tgException;
+			} catch(Throwable throwable){
+				this.throwable = new TGException(throwable);
 			}
 		}
 	}
 	
 	public interface TGRunnable {
-		public void run() throws Throwable;
+		public void run() throws TGException;
 	}
 	
 	public interface TGSynchronizerController{

@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.editors.TGUpdateListener;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.helper.SyncThread;
@@ -94,8 +94,8 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 		this.buttonAdd.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonAdd.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
-					ActionLock.lock();
+				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					TGActionLock.lock();
 					Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
 					TGMarker marker = TuxGuitar.instance().getSongManager().getFactory().newMarker();
 					marker.setMeasure(caret.getMeasure().getNumber());
@@ -103,7 +103,7 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 						TuxGuitar.instance().updateCache(true);
 						loadTableItems(true);
 					}
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		});
@@ -112,8 +112,8 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 		this.buttonEdit.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonEdit.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
-					ActionLock.lock();
+				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					TGActionLock.lock();
 					TGMarker marker = getSelectedMarker();
 					if(marker != null){
 						if(new MarkerEditor(marker,MarkerEditor.STATUS_EDIT).open(MarkerList.this.dialog)){
@@ -121,7 +121,7 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 							loadTableItems(true);
 						}
 					}
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		});
@@ -130,8 +130,8 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 		this.buttonDelete.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonDelete.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
-					ActionLock.lock();
+				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					TGActionLock.lock();
 					TGMarker marker = getSelectedMarker();
 					// comienza el undoable
 					UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(marker);
@@ -143,7 +143,7 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 					TuxGuitar.instance().getFileHistory().setUnsavedFile();
 					TuxGuitar.instance().updateCache(true);
 					loadTableItems(true);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		});
@@ -152,11 +152,11 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 		this.buttonGo.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,true));
 		this.buttonGo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(!ActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
-					ActionLock.lock();
+				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+					TGActionLock.lock();
 					new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
 					TuxGuitar.instance().updateCache(true);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		});

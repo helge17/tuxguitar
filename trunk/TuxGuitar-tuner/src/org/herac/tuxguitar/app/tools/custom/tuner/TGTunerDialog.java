@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -129,8 +130,8 @@ public class TGTunerDialog implements TGTunerListener {
 	public void fireFrequency(final double freq) {
 		if (!this.dialog.isDisposed()) {
 			 try {
-				 TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {				
-					 public void run() {
+				 TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {				
+					 public void run() throws TGException {
 						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()) {
 							TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
 							TGTunerDialog.this.roughTuner.setCurrentFrequency(freq);
@@ -157,8 +158,8 @@ public class TGTunerDialog implements TGTunerListener {
 
 	public void fireException(final Exception ex) {
 		try {
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() {
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					if (!TGTunerDialog.this.dialog.isDisposed())
 						MessageDialog.errorMessage(ex);
 				}

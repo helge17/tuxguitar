@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.edit.RedoAction;
 import org.herac.tuxguitar.app.actions.edit.SetMouseModeEditionAction;
 import org.herac.tuxguitar.app.actions.edit.SetMouseModeSelectionAction;
@@ -48,29 +49,29 @@ public class EditMenuItem extends MenuItems{
 		//---------------------------------------------------
 		//--UNDO--
 		this.undo = new MenuItem(this.menu, SWT.PUSH);
-		this.undo.addSelectionListener(TuxGuitar.instance().getAction(UndoAction.NAME));
+		this.undo.addSelectionListener(new TGActionProcessor(UndoAction.NAME));
 		//--REDO--
 		this.redo = new MenuItem(this.menu, SWT.PUSH);
-		this.redo.addSelectionListener(TuxGuitar.instance().getAction(RedoAction.NAME));
+		this.redo.addSelectionListener(new TGActionProcessor(RedoAction.NAME));
 		//--SEPARATOR
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--TABLATURE EDIT MODE
 		this.modeSelection = new MenuItem(this.menu, SWT.RADIO);
-		this.modeSelection.addSelectionListener(TuxGuitar.instance().getAction(SetMouseModeSelectionAction.NAME));
+		this.modeSelection.addSelectionListener(new TGActionProcessor(SetMouseModeSelectionAction.NAME));
 		//--SCORE EDIT MODE
 		this.modeEdition = new MenuItem(this.menu, SWT.RADIO);
-		this.modeEdition.addSelectionListener(TuxGuitar.instance().getAction(SetMouseModeEditionAction.NAME));
+		this.modeEdition.addSelectionListener(new TGActionProcessor(SetMouseModeEditionAction.NAME));
 		//--NATURAL NOTES
 		this.notNaturalKey = new MenuItem(this.menu, SWT.CHECK);
-		this.notNaturalKey.addSelectionListener(TuxGuitar.instance().getAction(SetNaturalKeyAction.NAME));
+		this.notNaturalKey.addSelectionListener(new TGActionProcessor(SetNaturalKeyAction.NAME));
 		//--SEPARATOR
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--VOICE 1
 		this.voice1 = new MenuItem(this.menu, SWT.RADIO);
-		this.voice1.addSelectionListener(TuxGuitar.instance().getAction(SetVoice1Action.NAME));
+		this.voice1.addSelectionListener(new TGActionProcessor(SetVoice1Action.NAME));
 		//--VOICE 2
 		this.voice2 = new MenuItem(this.menu, SWT.RADIO);
-		this.voice2.addSelectionListener(TuxGuitar.instance().getAction(SetVoice2Action.NAME));
+		this.voice2.addSelectionListener(new TGActionProcessor(SetVoice2Action.NAME));
 		
 		this.editMenuItem.setMenu(this.menu);
 		

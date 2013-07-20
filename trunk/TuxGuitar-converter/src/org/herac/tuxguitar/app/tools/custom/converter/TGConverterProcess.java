@@ -19,6 +19,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.language.LanguageLoader;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGConverterProcess implements TGConverterListener,LanguageLoader,IconLoader{
@@ -46,7 +47,7 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 		this.showProcess();
 		
 		new Thread(new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				TGConverterProcess.this.converter.process();
 			}
 		}).start();
@@ -156,8 +157,8 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 	public void notifyFileProcess(final String filename) {
 		if(!isDisposed() ){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed() ){
 							TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
 							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
@@ -173,8 +174,8 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 	public void notifyFileResult(final String filename, final int result) {
 		if(!isDisposed() ){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed() ){
 							TGConverterProcess.this.appendLogMessage(result, filename);
 							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
@@ -190,8 +191,8 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 	public void notifyStart() {
 		if(!isDisposed() ){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed() ){
 							TGConverterProcess.this.finished = false;
 							TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
@@ -209,8 +210,8 @@ public class TGConverterProcess implements TGConverterListener,LanguageLoader,Ic
 	public void notifyFinish() {
 		if(!isDisposed() ){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed() ){
 							TGConverterProcess.this.finished = true;
 							TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );

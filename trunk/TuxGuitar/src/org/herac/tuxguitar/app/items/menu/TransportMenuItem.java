@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.transport.TransportCountDownAction;
 import org.herac.tuxguitar.app.actions.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.app.actions.transport.TransportModeAction;
@@ -52,31 +53,31 @@ public class TransportMenuItem extends MenuItems{
 	
 	public void showItems(){
 		this.play = new MenuItem(this.menu,SWT.PUSH);
-		this.play.addSelectionListener(TuxGuitar.instance().getAction(TransportPlayAction.NAME));
+		this.play.addSelectionListener(new TGActionProcessor(TransportPlayAction.NAME));
 		
 		this.stop = new MenuItem(this.menu, SWT.PUSH);
-		this.stop.addSelectionListener(TuxGuitar.instance().getAction(TransportStopAction.NAME));
+		this.stop.addSelectionListener(new TGActionProcessor(TransportStopAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		this.metronome = new MenuItem(this.menu, SWT.CHECK);
-		this.metronome.addSelectionListener(TuxGuitar.instance().getAction(TransportMetronomeAction.NAME));
+		this.metronome.addSelectionListener(new TGActionProcessor(TransportMetronomeAction.NAME));
 		
 		this.countDown = new MenuItem(this.menu, SWT.CHECK);
-		this.countDown.addSelectionListener(TuxGuitar.instance().getAction(TransportCountDownAction.NAME));
+		this.countDown.addSelectionListener(new TGActionProcessor(TransportCountDownAction.NAME));
 		
 		this.mode = new MenuItem(this.menu, SWT.PUSH);
-		this.mode.addSelectionListener(TuxGuitar.instance().getAction(TransportModeAction.NAME));
+		this.mode.addSelectionListener(new TGActionProcessor(TransportModeAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		this.loopSHeader = new MenuItem(this.menu, SWT.CHECK);
-		this.loopSHeader.addSelectionListener(TuxGuitar.instance().getAction(TransportSetLoopSHeaderAction.NAME));
+		this.loopSHeader.addSelectionListener(new TGActionProcessor(TransportSetLoopSHeaderAction.NAME));
 		
 		this.loopEHeader = new MenuItem(this.menu, SWT.CHECK);
-		this.loopEHeader.addSelectionListener(TuxGuitar.instance().getAction(TransportSetLoopEHeaderAction.NAME));
+		this.loopEHeader.addSelectionListener(new TGActionProcessor(TransportSetLoopEHeaderAction.NAME));
 		
 		this.transportMenuItem.setMenu(this.menu);
 		

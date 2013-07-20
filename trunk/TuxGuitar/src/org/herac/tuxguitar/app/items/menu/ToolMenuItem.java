@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.settings.EditConfigAction;
 import org.herac.tuxguitar.app.actions.settings.EditKeyBindingsAction;
 import org.herac.tuxguitar.app.actions.settings.EditPluginsAction;
@@ -45,20 +46,20 @@ public class ToolMenuItem extends MenuItems {
 	
 	public void showItems(){
 		this.transpose = new MenuItem(this.menu, SWT.PUSH);
-		this.transpose.addSelectionListener(TuxGuitar.instance().getAction(TransposeAction.NAME));
+		this.transpose.addSelectionListener(new TGActionProcessor(TransposeAction.NAME));
 		
 		this.scale = new MenuItem(this.menu, SWT.PUSH);
-		this.scale.addSelectionListener(TuxGuitar.instance().getAction(ScaleAction.NAME));
+		this.scale.addSelectionListener(new TGActionProcessor(ScaleAction.NAME));
 		
 		this.browser = new MenuItem(this.menu, SWT.PUSH);
-		this.browser.addSelectionListener(TuxGuitar.instance().getAction(TGBrowserAction.NAME));
+		this.browser.addSelectionListener(new TGActionProcessor(TGBrowserAction.NAME));
 		
 		Iterator it = TGCustomToolManager.instance().getCustomTools();
 		while(it.hasNext()){
 			TGCustomTool tool = (TGCustomTool)it.next();
 			MenuItem menuItem = new MenuItem(this.menu, SWT.PUSH);
 			menuItem.setText(tool.getName());
-			menuItem.addSelectionListener(TuxGuitar.instance().getAction(tool.getAction()));
+			menuItem.addSelectionListener(new TGActionProcessor(tool.getAction()));
 		}
 		
 		//--SEPARATOR--
@@ -66,15 +67,15 @@ public class ToolMenuItem extends MenuItems {
 		
 		//--PLUGINS--
 		this.plugins = new MenuItem(this.menu, SWT.PUSH);
-		this.plugins.addSelectionListener(TuxGuitar.instance().getAction(EditPluginsAction.NAME));
+		this.plugins.addSelectionListener(new TGActionProcessor(EditPluginsAction.NAME));
 		
 		//--KEY BINDINGS--
 		this.keyBindings = new MenuItem(this.menu, SWT.PUSH);
-		this.keyBindings.addSelectionListener(TuxGuitar.instance().getAction(EditKeyBindingsAction.NAME));
+		this.keyBindings.addSelectionListener(new TGActionProcessor(EditKeyBindingsAction.NAME));
 		
 		//--CONFIG--
 		this.config = new MenuItem(this.menu, SWT.PUSH);
-		this.config.addSelectionListener(TuxGuitar.instance().getAction(EditConfigAction.NAME));
+		this.config.addSelectionListener(new TGActionProcessor(EditConfigAction.NAME));
 		
 		this.settingsMenuItem.setMenu(this.menu);
 		

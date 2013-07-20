@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.editors.TGImageImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.editors.tab.Caret;
@@ -47,7 +47,7 @@ public class MouseKit {
 	}
 	
 	public void tryBack(){
-		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
+		if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.kit.getTablature().isPainting()){
 			TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
 			if(this.back != null && !this.back.isDisposed()){
 				painter.drawImage(this.back,this.lastx,this.lasty);
@@ -65,7 +65,7 @@ public class MouseKit {
 	
 	public void mouseMove(MouseEvent e) {
 		this.tryBack();
-		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
+		if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.kit.getTablature().isPainting()){
 			
 			TGTrackImpl track = this.kit.findSelectedTrack(e.y);
 			if (track != null) {
@@ -138,8 +138,8 @@ public class MouseKit {
 	}
 	
 	public void mouseUp(MouseEvent e) {
-		if(!TuxGuitar.instance().isLocked() && !ActionLock.isLocked() && !this.kit.getTablature().isPainting()){
-			ActionLock.lock();
+		if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.kit.getTablature().isPainting()){
+			TGActionLock.lock();
 			
 			TGLayout.TrackPosition pos = getTrackPosition(e.y) ;
 			if(pos != null){
@@ -190,7 +190,7 @@ public class MouseKit {
 					}
 				}
 			}
-			ActionLock.unlock();
+			TGActionLock.unlock();
 		}
 	}
 	

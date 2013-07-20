@@ -6,9 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions.measure;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
@@ -19,7 +19,7 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class GoLastMeasureAction extends Action{
+public class GoLastMeasureAction extends TGActionBase{
 	
 	public static final String NAME = "action.measure.go-last";
 	
@@ -27,7 +27,7 @@ public class GoLastMeasureAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		if(TuxGuitar.instance().getPlayer().isRunning()){
 			TuxGuitar.instance().getTransport().gotoLast();
 		}
@@ -39,6 +39,5 @@ public class GoLastMeasureAction extends Action{
 				caret.update(track.getNumber(),measure.getStart(),caret.getSelectedString().getNumber());
 			}
 		}
-		return 0;
 	}
 }

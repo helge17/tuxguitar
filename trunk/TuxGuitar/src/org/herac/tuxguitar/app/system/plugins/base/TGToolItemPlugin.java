@@ -1,8 +1,9 @@
 package org.herac.tuxguitar.app.system.plugins.base;
 
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.app.tools.custom.TGCustomTool;
 import org.herac.tuxguitar.app.tools.custom.TGCustomToolManager;
@@ -37,7 +38,7 @@ public abstract class TGToolItemPlugin extends TGPluginAdapter{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TuxGuitar.instance().getActionManager().addAction(this.toolAction);
+			TGActionManager.getInstance().mapAction(this.tool.getAction(), this.toolAction);
 			TGCustomToolManager.instance().addCustomTool(this.tool);
 			TuxGuitar.instance().getItemManager().createMenu();
 			this.loaded = true;
@@ -47,21 +48,20 @@ public abstract class TGToolItemPlugin extends TGPluginAdapter{
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
 			TGCustomToolManager.instance().removeCustomTool(this.tool);
-			TuxGuitar.instance().getActionManager().removeAction(this.tool.getAction());
+			TGActionManager.getInstance().unmapAction(this.tool.getAction());
 			TuxGuitar.instance().getItemManager().createMenu();
 			this.loaded = false;
 		}
 	}
 	
-	protected class TGCustomToolAction extends Action{
+	protected class TGCustomToolAction extends TGActionBase {
 		
 		public TGCustomToolAction(String name) {
 			super(name, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 		}
 		
-		protected int execute(ActionData actionData) {
+		protected void processAction(TGActionContext context) {
 			doAction();
-			return 0;
 		}
 	}
 }

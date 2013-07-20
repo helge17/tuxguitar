@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.editors.channel;
 
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGScaleSelectionListener extends SelectionAdapter implements Runnable{
@@ -63,8 +64,8 @@ public class TGScaleSelectionListener extends SelectionAdapter implements Runnab
 	}
 	
 	public void doActionSynchronized() throws Throwable {
-		TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-			public void run() throws Throwable {
+		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+			public void run() throws TGException {
 				doAction();		
 			}
 		});

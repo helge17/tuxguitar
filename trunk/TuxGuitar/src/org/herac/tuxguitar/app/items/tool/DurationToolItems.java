@@ -6,6 +6,9 @@
  */
 package org.herac.tuxguitar.app.items.tool;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -16,8 +19,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.duration.ChangeDivisionTypeAction;
 import org.herac.tuxguitar.app.actions.duration.ChangeDottedDurationAction;
 import org.herac.tuxguitar.app.actions.duration.ChangeDoubleDottedDurationAction;
@@ -32,6 +37,8 @@ import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.items.ToolItems;
 import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -40,7 +47,9 @@ import org.herac.tuxguitar.song.models.TGDuration;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class DurationToolItems  extends ToolItems{
+	
 	public static final String NAME = "duration.items";
+	
 	protected ToolBar toolBar;
 	private ToolItem[] durationItems;
 	private ToolItem dotted;
@@ -56,34 +65,34 @@ public class DurationToolItems  extends ToolItems{
 		this.durationItems = new ToolItem[7];
 		
 		this.durationItems[0] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[0].addSelectionListener(TuxGuitar.instance().getAction(SetWholeDurationAction.NAME));
+		this.durationItems[0].addSelectionListener(new TGActionProcessor(SetWholeDurationAction.NAME));
 		
 		this.durationItems[1] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[1].addSelectionListener(TuxGuitar.instance().getAction(SetHalfDurationAction.NAME));
+		this.durationItems[1].addSelectionListener(new TGActionProcessor(SetHalfDurationAction.NAME));
 		
 		this.durationItems[2] = new ToolItem(toolBar, SWT.RADIO);
 		this.durationItems[2].setSelection(true);
-		this.durationItems[2].addSelectionListener(TuxGuitar.instance().getAction(SetQuarterDurationAction.NAME));
+		this.durationItems[2].addSelectionListener(new TGActionProcessor(SetQuarterDurationAction.NAME));
 		
 		this.durationItems[3] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[3].addSelectionListener(TuxGuitar.instance().getAction(SetEighthDurationAction.NAME));
+		this.durationItems[3].addSelectionListener(new TGActionProcessor(SetEighthDurationAction.NAME));
 		
 		this.durationItems[4] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[4].addSelectionListener(TuxGuitar.instance().getAction(SetSixteenthDurationAction.NAME));
+		this.durationItems[4].addSelectionListener(new TGActionProcessor(SetSixteenthDurationAction.NAME));
 		
 		this.durationItems[5] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[5].addSelectionListener(TuxGuitar.instance().getAction(SetThirtySecondDurationAction.NAME));
+		this.durationItems[5].addSelectionListener(new TGActionProcessor(SetThirtySecondDurationAction.NAME));
 		
 		this.durationItems[6] = new ToolItem(toolBar, SWT.RADIO);
-		this.durationItems[6].addSelectionListener(TuxGuitar.instance().getAction(SetSixtyFourthDurationAction.NAME));
+		this.durationItems[6].addSelectionListener(new TGActionProcessor(SetSixtyFourthDurationAction.NAME));
 		
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		this.dotted = new ToolItem(toolBar, SWT.CHECK);
-		this.dotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDottedDurationAction.NAME));
+		this.dotted.addSelectionListener(new TGActionProcessor(ChangeDottedDurationAction.NAME));
 		
 		this.doubleDotted = new ToolItem(toolBar, SWT.CHECK);
-		this.doubleDotted.addSelectionListener(TuxGuitar.instance().getAction(ChangeDoubleDottedDurationAction.NAME));
+		this.doubleDotted.addSelectionListener(new TGActionProcessor(ChangeDoubleDottedDurationAction.NAME));
 		
 		this.divisionTypeItems = new DivisionTypeMenuItem();
 		this.divisionTypeItems.addItems();
@@ -171,7 +180,7 @@ public class DurationToolItems  extends ToolItems{
 				this.subMenuItems[i] = new MenuItem(this.subMenu, SWT.CHECK);
 				this.subMenuItems[i].setText(new Integer(TGDivisionType.ALTERED_DIVISION_TYPES[i].getEnters()).toString());
 				this.subMenuItems[i].setData(createDivisionTypeActionData(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
-				this.subMenuItems[i].addSelectionListener(TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME));
+				this.subMenuItems[i].addSelectionListener(new TGActionProcessor(ChangeDivisionTypeAction.NAME));
 			}
 		}
 		
@@ -189,7 +198,13 @@ public class DurationToolItems  extends ToolItems{
 				}else{
 					TGDivisionType.NORMAL.copy(this.divisionType);
 				}
-				TuxGuitar.instance().getAction(ChangeDivisionTypeAction.NAME).process(createDivisionTypeActionData(this.divisionType));
+				
+				final TGActionContext context = createDivisionTypeActionContext(this.divisionType);
+				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
+						TGActionManager.getInstance().execute(ChangeDivisionTypeAction.NAME, context);
+					}
+				});
 			}
 		}
 		
@@ -197,7 +212,7 @@ public class DurationToolItems  extends ToolItems{
 			TGDuration duration = getEditor().getTablature().getCaret().getDuration();
 			
 			for(int i = 0;i < this.subMenuItems.length;i++){
-				ActionData actionData = (ActionData)this.subMenuItems[i].getData();
+				Map actionData = (Map)this.subMenuItems[i].getData();
 				TGDivisionType divisionType = (TGDivisionType)actionData.get(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE);
 				
 				this.subMenuItems[i].setSelection((divisionType.isEqual(duration.getDivision())));
@@ -210,10 +225,16 @@ public class DurationToolItems  extends ToolItems{
 			return tgDivisionTypeDst;
 		}
 		
-		private ActionData createDivisionTypeActionData(TGDivisionType tgDivisionType){
-			ActionData actionData = new ActionData();
+		private Map createDivisionTypeActionData(TGDivisionType tgDivisionType){
+			Map actionData = new HashMap();
 			actionData.put(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
 			return actionData;
+		}
+		
+		private TGActionContext createDivisionTypeActionContext(TGDivisionType tgDivisionType){
+			TGActionContext tgActionContext = TGActionManager.getInstance().createActionContext();
+			tgActionContext.setAttribute(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
+			return tgActionContext;
 		}
 	}
 }

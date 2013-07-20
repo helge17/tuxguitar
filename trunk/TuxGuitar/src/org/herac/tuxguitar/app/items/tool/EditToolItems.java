@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.edit.RedoAction;
 import org.herac.tuxguitar.app.actions.edit.SetMouseModeEditionAction;
 import org.herac.tuxguitar.app.actions.edit.SetMouseModeSelectionAction;
@@ -43,29 +44,29 @@ public class EditToolItems extends ToolItems {
 	
 	public void showItems(ToolBar toolBar){
 		this.undo = new ToolItem(toolBar, SWT.PUSH);
-		this.undo.addSelectionListener(TuxGuitar.instance().getAction(UndoAction.NAME));
+		this.undo.addSelectionListener(new TGActionProcessor(UndoAction.NAME));
 		
 		this.redo = new ToolItem(toolBar, SWT.PUSH);
-		this.redo.addSelectionListener(TuxGuitar.instance().getAction(RedoAction.NAME));
+		this.redo.addSelectionListener(new TGActionProcessor(RedoAction.NAME));
 		
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		this.voice1 = new ToolItem(toolBar, SWT.RADIO);
-		this.voice1.addSelectionListener(TuxGuitar.instance().getAction(SetVoice1Action.NAME));
+		this.voice1.addSelectionListener(new TGActionProcessor(SetVoice1Action.NAME));
 		
 		this.voice2 = new ToolItem(toolBar, SWT.RADIO);
-		this.voice2.addSelectionListener(TuxGuitar.instance().getAction(SetVoice2Action.NAME));
+		this.voice2.addSelectionListener(new TGActionProcessor(SetVoice2Action.NAME));
 		
 		new ToolItem(toolBar, SWT.SEPARATOR);
 		
 		this.modeSelection = new ToolItem(toolBar, SWT.RADIO);
-		this.modeSelection.addSelectionListener(TuxGuitar.instance().getAction(SetMouseModeSelectionAction.NAME));
+		this.modeSelection.addSelectionListener(new TGActionProcessor(SetMouseModeSelectionAction.NAME));
 		
 		this.modeEdition = new ToolItem(toolBar, SWT.RADIO);
-		this.modeEdition.addSelectionListener(TuxGuitar.instance().getAction(SetMouseModeEditionAction.NAME));
+		this.modeEdition.addSelectionListener(new TGActionProcessor(SetMouseModeEditionAction.NAME));
 		
 		this.notNaturalKey = new ToolItem(toolBar, SWT.CHECK);
-		this.notNaturalKey.addSelectionListener(TuxGuitar.instance().getAction(SetNaturalKeyAction.NAME));
+		this.notNaturalKey.addSelectionListener(new TGActionProcessor(SetNaturalKeyAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

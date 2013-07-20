@@ -17,14 +17,15 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeInfo;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -33,7 +34,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ChangeInfoAction extends Action{
+public class ChangeInfoAction extends TGActionBase{
 	
 	public static final String NAME = "action.composition.change-info";
 	
@@ -44,9 +45,8 @@ public class ChangeInfoAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		showDialog(getEditor().getTablature().getShell());
-		return 0;
 	}
 	
 	public void showDialog(Shell shell) {
@@ -159,14 +159,14 @@ public class ChangeInfoAction extends Action{
 					
 					dialog.dispose();
 					try {
-						TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-							public void run() throws Throwable {
-								ActionLock.lock();
+						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+							public void run() throws TGException {
+								TGActionLock.lock();
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 								setProperties(name,artist,album,author,date,copyright,writer,transcriber,comments);
 								TuxGuitar.instance().updateCache( true );
 								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-								ActionLock.unlock();
+								TGActionLock.unlock();
 							}
 						});
 					} catch (Throwable throwable) {

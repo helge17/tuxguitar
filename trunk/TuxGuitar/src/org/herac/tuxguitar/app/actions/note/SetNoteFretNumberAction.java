@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.app.actions.note;
 
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 
 public class SetNoteFretNumberAction extends ChangeNoteAction {
@@ -17,11 +17,11 @@ public class SetNoteFretNumberAction extends ChangeNoteAction {
 	private int number;
 	
 	public SetNoteFretNumberAction(int number){
-		super(getActionName(number), AUTO_LOCK | AUTO_UNLOCK | KEY_BINDING_AVAILABLE | DISABLE_ON_PLAYING);
+		super(getActionName(number), AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE | DISABLE_ON_PLAYING);
 		this.number = number;
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
 		
 		int fret = this.number;
@@ -44,11 +44,11 @@ public class SetNoteFretNumberAction extends ChangeNoteAction {
 			lastAddedTime = time;
 		}
 		
-		actionData.put(PROPERTY_START, new Long(start) );
-		actionData.put(PROPERTY_FRET, new Integer(fret));
-		actionData.put(PROPERTY_STRING, new Integer(string));
+		context.setAttribute(PROPERTY_START, new Long(start) );
+		context.setAttribute(PROPERTY_FRET, new Integer(fret));
+		context.setAttribute(PROPERTY_STRING, new Integer(string));
 		
-		return super.execute(actionData);
+		super.processAction(context);
 	}
 	
 	public static final String getActionName(int number){

@@ -137,7 +137,7 @@ public class KeyBindingEditor {
 	}
 	
 	protected void loadAvailableActionKeyBindings(){
-		List list = TuxGuitar.instance().getActionManager().getAvailableKeyBindingActions();
+		List list = TuxGuitar.instance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
 		Collections.sort(list);
 		Iterator it = list.iterator();
 		while (it.hasNext()) {

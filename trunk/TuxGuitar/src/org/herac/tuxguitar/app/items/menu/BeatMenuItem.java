@@ -11,16 +11,17 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.insert.InsertTextAction;
 import org.herac.tuxguitar.app.actions.note.ChangeTiedNoteAction;
 import org.herac.tuxguitar.app.actions.note.CleanBeatAction;
 import org.herac.tuxguitar.app.actions.note.DecrementNoteSemitoneAction;
+import org.herac.tuxguitar.app.actions.note.DeleteNoteOrRestAction;
 import org.herac.tuxguitar.app.actions.note.IncrementNoteSemitoneAction;
 import org.herac.tuxguitar.app.actions.note.InsertRestBeatAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsCustomAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsLeftAction;
 import org.herac.tuxguitar.app.actions.note.MoveBeatsRightAction;
-import org.herac.tuxguitar.app.actions.note.DeleteNoteOrRestAction;
 import org.herac.tuxguitar.app.actions.note.RemoveUnusedVoiceAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeDownAction;
 import org.herac.tuxguitar.app.actions.note.SetStrokeUpAction;
@@ -76,23 +77,23 @@ public class BeatMenuItem extends MenuItems{
 	public void showItems(){
 		//--Tied Note
 		this.tiedNote = new MenuItem(this.menu, SWT.CHECK);
-		this.tiedNote.addSelectionListener(TuxGuitar.instance().getAction(ChangeTiedNoteAction.NAME));
+		this.tiedNote.addSelectionListener(new TGActionProcessor(ChangeTiedNoteAction.NAME));
 		
 		//--Insert Rest Beat
 		this.insertRestBeat = new MenuItem(this.menu, SWT.PUSH);
-		this.insertRestBeat.addSelectionListener(TuxGuitar.instance().getAction(InsertRestBeatAction.NAME));
+		this.insertRestBeat.addSelectionListener(new TGActionProcessor(InsertRestBeatAction.NAME));
 		
 		//--Delete Note or Rest
 		this.deleteNoteOrRest = new MenuItem(this.menu, SWT.PUSH);
-		this.deleteNoteOrRest.addSelectionListener(TuxGuitar.instance().getAction(DeleteNoteOrRestAction.NAME));
+		this.deleteNoteOrRest.addSelectionListener(new TGActionProcessor(DeleteNoteOrRestAction.NAME));
 		
 		//--Clean Beat
 		this.cleanBeat = new MenuItem(this.menu, SWT.PUSH);
-		this.cleanBeat.addSelectionListener(TuxGuitar.instance().getAction(CleanBeatAction.NAME));
+		this.cleanBeat.addSelectionListener(new TGActionProcessor(CleanBeatAction.NAME));
 		
 		//--Remove Voice
 		this.removeVoice = new MenuItem(this.menu, SWT.PUSH);
-		this.removeVoice.addSelectionListener(TuxGuitar.instance().getAction(RemoveUnusedVoiceAction.NAME));
+		this.removeVoice.addSelectionListener(new TGActionProcessor(RemoveUnusedVoiceAction.NAME));
 		
 		//--Duration--
 		this.durationMenuItem = new DurationMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
@@ -114,70 +115,70 @@ public class BeatMenuItem extends MenuItems{
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		this.insertText = new MenuItem(this.menu, SWT.PUSH);
-		this.insertText.addSelectionListener(TuxGuitar.instance().getAction(InsertTextAction.NAME));
+		this.insertText.addSelectionListener(new TGActionProcessor(InsertTextAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--Semitone Down
 		this.voiceAuto = new MenuItem(this.menu, SWT.PUSH);
-		this.voiceAuto.addSelectionListener(TuxGuitar.instance().getAction(SetVoiceAutoAction.NAME));
+		this.voiceAuto.addSelectionListener(new TGActionProcessor(SetVoiceAutoAction.NAME));
 		
 		//--Semitone Up
 		this.voiceUp = new MenuItem(this.menu, SWT.PUSH);
-		this.voiceUp.addSelectionListener(TuxGuitar.instance().getAction(SetVoiceUpAction.NAME));
+		this.voiceUp.addSelectionListener(new TGActionProcessor(SetVoiceUpAction.NAME));
 		
 		//--Semitone Down
 		this.voiceDown = new MenuItem(this.menu, SWT.PUSH);
-		this.voiceDown.addSelectionListener(TuxGuitar.instance().getAction(SetVoiceDownAction.NAME));
+		this.voiceDown.addSelectionListener(new TGActionProcessor(SetVoiceDownAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--Semitone Up
 		this.strokeUp = new MenuItem(this.menu, SWT.CHECK);
-		this.strokeUp.addSelectionListener(TuxGuitar.instance().getAction(SetStrokeUpAction.NAME));
+		this.strokeUp.addSelectionListener(new TGActionProcessor(SetStrokeUpAction.NAME));
 		
 		//--Semitone Down
 		this.strokeDown = new MenuItem(this.menu, SWT.CHECK);
-		this.strokeDown.addSelectionListener(TuxGuitar.instance().getAction(SetStrokeDownAction.NAME));
+		this.strokeDown.addSelectionListener(new TGActionProcessor(SetStrokeDownAction.NAME));
 				
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--Semitone Up
 		this.semitoneUp = new MenuItem(this.menu, SWT.PUSH);
-		this.semitoneUp.addSelectionListener(TuxGuitar.instance().getAction(IncrementNoteSemitoneAction.NAME));
+		this.semitoneUp.addSelectionListener(new TGActionProcessor(IncrementNoteSemitoneAction.NAME));
 		
 		//--Semitone Down
 		this.semitoneDown = new MenuItem(this.menu, SWT.PUSH);
-		this.semitoneDown.addSelectionListener(TuxGuitar.instance().getAction(DecrementNoteSemitoneAction.NAME));
+		this.semitoneDown.addSelectionListener(new TGActionProcessor(DecrementNoteSemitoneAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--Shift Up
 		this.shiftUp = new MenuItem(this.menu, SWT.PUSH);
-		this.shiftUp.addSelectionListener(TuxGuitar.instance().getAction(ShiftNoteUpAction.NAME));
+		this.shiftUp.addSelectionListener(new TGActionProcessor(ShiftNoteUpAction.NAME));
 		
 		//--Shift Down
 		this.shiftDown = new MenuItem(this.menu, SWT.PUSH);
-		this.shiftDown.addSelectionListener(TuxGuitar.instance().getAction(ShiftNoteDownAction.NAME));
+		this.shiftDown.addSelectionListener(new TGActionProcessor(ShiftNoteDownAction.NAME));
 		
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--Move Beats Left
 		this.moveBeatsLeft = new MenuItem(this.menu, SWT.PUSH);
-		this.moveBeatsLeft.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsLeftAction.NAME));
+		this.moveBeatsLeft.addSelectionListener(new TGActionProcessor(MoveBeatsLeftAction.NAME));
 		
 		//--Move Beats Right
 		this.moveBeatsRight = new MenuItem(this.menu, SWT.PUSH);
-		this.moveBeatsRight.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsRightAction.NAME));
+		this.moveBeatsRight.addSelectionListener(new TGActionProcessor(MoveBeatsRightAction.NAME));
 		
 		//--Move Beats Custom
 		this.moveBeatsCustom = new MenuItem(this.menu, SWT.PUSH);
-		this.moveBeatsCustom.addSelectionListener(TuxGuitar.instance().getAction(MoveBeatsCustomAction.NAME));
+		this.moveBeatsCustom.addSelectionListener(new TGActionProcessor(MoveBeatsCustomAction.NAME));
 		
 		this.noteMenuItem.setMenu(this.menu);
 		

@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.system.config.items.LanguageOption;
 import org.herac.tuxguitar.app.system.config.items.MainOption;
@@ -34,6 +34,7 @@ import org.herac.tuxguitar.app.system.config.items.StylesOption;
 import org.herac.tuxguitar.app.system.config.items.ToolBarsOption;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -87,7 +88,7 @@ public class TGConfigEditor{
 				confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
 				if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 					return;
 				}
 				applyConfig(true);
@@ -107,7 +108,7 @@ public class TGConfigEditor{
 				confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
 				if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 					return;
 				}
 				applyConfig(false);
@@ -130,7 +131,7 @@ public class TGConfigEditor{
 		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
 		if(!this.accepted){
-			ActionLock.unlock();
+			TGActionLock.unlock();
 		}
 	}
 	
@@ -252,7 +253,7 @@ public class TGConfigEditor{
 	protected void applyConfig(final boolean force){
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
-			public void run() {
+			public void run() throws TGException {
 				TGConfigEditor.this.runnables = new ArrayList();
 				
 				Iterator it = TGConfigEditor.this.options.iterator();
@@ -261,19 +262,19 @@ public class TGConfigEditor{
 					option.applyConfig(force);
 				}
 				try {
-					TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-						public void run() throws Throwable {
+					TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+						public void run() throws TGException {
 							Iterator it = TGConfigEditor.this.runnables.iterator();
 							while(it.hasNext()){
 								Runnable current = (Runnable)it.next();
 								current.run();
 							}
 							new Thread(new Runnable() {
-								public void run() {
+								public void run() throws TGException {
 									TuxGuitar.instance().fireUpdate();
 									TuxGuitar.instance().updateCache(true);
 									TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-									ActionLock.unlock();
+									TGActionLock.unlock();
 								}
 							}).start();
 						}
@@ -282,7 +283,7 @@ public class TGConfigEditor{
 					TuxGuitar.instance().fireUpdate();
 					TuxGuitar.instance().updateCache(true);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 					throwable.printStackTrace();
 				}
 			}

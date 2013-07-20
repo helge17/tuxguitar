@@ -27,10 +27,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.editors.TGUpdateListener;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.undo.undoables.UndoableJoined;
@@ -45,6 +45,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -52,7 +53,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrackPropertiesAction extends Action implements TGUpdateListener {
+public class TrackPropertiesAction extends TGActionBase implements TGUpdateListener {
 	
 	public static final String NAME = "action.track.properties";
 	
@@ -84,9 +85,8 @@ public class TrackPropertiesAction extends Action implements TGUpdateListener {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		showDialog(getEditor().getTablature().getShell());
-		return 0;
 	}
 	
 	public void showDialog(Shell shell) {
@@ -440,12 +440,12 @@ public class TrackPropertiesAction extends Action implements TGUpdateListener {
 		
 		try {
 			if(infoChanges || tuningChanges || channelChanges){
-				ActionLock.lock();
-				TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-					public void run() throws Throwable {
+				TGActionLock.lock();
+				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 						new Thread( new Runnable() {
-							public void run() {
+							public void run() throws TGException {
 								TuxGuitar.instance().getFileHistory().setUnsavedFile();
 								UndoableJoined undoable = new UndoableJoined();
 								
@@ -486,12 +486,12 @@ public class TrackPropertiesAction extends Action implements TGUpdateListener {
 								addUndoableEdit(undoable.endUndo());
 								
 								new SyncThread(new Runnable() {
-									public void run() {
+									public void run() throws TGException {
 										if(!TuxGuitar.isDisposed()){
 											updateTablature();
 											TuxGuitar.instance().updateCache( true );
 											TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-											ActionLock.unlock();
+											TGActionLock.unlock();
 										}
 									}
 								}).start();
@@ -502,7 +502,7 @@ public class TrackPropertiesAction extends Action implements TGUpdateListener {
 			}
 		} catch (Throwable throwable) {
 			TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-			ActionLock.unlock();
+			TGActionLock.unlock();
 			throwable.printStackTrace();
 		}
 	}

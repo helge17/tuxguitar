@@ -17,9 +17,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
 import org.herac.tuxguitar.app.undo.undoables.UndoableJoined;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeAlternativeRepeat;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeCloseRepeat;
@@ -33,7 +33,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class RepeatAlternativeAction extends Action{
+public class RepeatAlternativeAction extends TGActionBase{
 	
 	public static final String NAME = "action.insert.repeat-alternative";
 	
@@ -41,10 +41,9 @@ public class RepeatAlternativeAction extends Action{
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | DISABLE_ON_PLAYING | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
+	protected void processAction(TGActionContext context){
 		TGMeasure measure = getEditor().getTablature().getCaret().getMeasure();
 		showCloseRepeatDialog(getEditor().getTablature().getShell(), measure);
-		return 0;
 	}
 	
 	public void showCloseRepeatDialog(Shell shell, final TGMeasure measure) {

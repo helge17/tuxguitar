@@ -22,6 +22,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class SBInstallerGui implements SBInstallerlistener{
@@ -117,7 +118,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 
 	private void process(){
 		new Thread(new Runnable() {
-			public void run() {				
+			public void run() throws TGException {				
 				if(!isDisposed()){
 					getInstaller().process();
 				}
@@ -128,8 +129,8 @@ public class SBInstallerGui implements SBInstallerlistener{
 	public void notifyProcess(final String process){
 		if(!isDisposed()){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed()){
 							getProgressLabel().setText(process);
 						}
@@ -144,8 +145,8 @@ public class SBInstallerGui implements SBInstallerlistener{
 	public void notifyFinish(){
 		if(!isDisposed()){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed()){
 							getDialog().dispose();
 						}
@@ -160,8 +161,8 @@ public class SBInstallerGui implements SBInstallerlistener{
 	public void notifyFailed(final Throwable throwable){
 		if(!isDisposed()){
 			try {
-				TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-					public void run() {
+				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+					public void run() throws TGException {
 						if(!isDisposed()){
 							getDialog().dispose();
 							MessageDialog.errorMessage( throwable );

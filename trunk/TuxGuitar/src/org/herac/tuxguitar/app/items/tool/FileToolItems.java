@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.file.NewFileAction;
 import org.herac.tuxguitar.app.actions.file.OpenFileAction;
 import org.herac.tuxguitar.app.actions.file.PrintAction;
@@ -38,22 +39,22 @@ public class FileToolItems extends ToolItems {
 	
 	public void showItems(ToolBar toolBar){
 		this.newSong = new ToolItem(toolBar, SWT.PUSH);
-		this.newSong.addSelectionListener(TuxGuitar.instance().getAction(NewFileAction.NAME));
+		this.newSong.addSelectionListener(new TGActionProcessor(NewFileAction.NAME));
 		
 		this.openSong = new ToolItem(toolBar, SWT.PUSH);
-		this.openSong.addSelectionListener(TuxGuitar.instance().getAction(OpenFileAction.NAME));
+		this.openSong.addSelectionListener(new TGActionProcessor(OpenFileAction.NAME));
 		
 		this.saveSong = new ToolItem(toolBar, SWT.PUSH);
-		this.saveSong.addSelectionListener(TuxGuitar.instance().getAction(SaveFileAction.NAME));
+		this.saveSong.addSelectionListener(new TGActionProcessor(SaveFileAction.NAME));
 		
 		this.saveAsSong = new ToolItem(toolBar, SWT.PUSH);
-		this.saveAsSong.addSelectionListener(TuxGuitar.instance().getAction(SaveAsFileAction.NAME));
+		this.saveAsSong.addSelectionListener(new TGActionProcessor(SaveAsFileAction.NAME));
 		
 		this.printSong = new ToolItem(toolBar, SWT.PUSH);
-		this.printSong.addSelectionListener(TuxGuitar.instance().getAction(PrintAction.NAME));
+		this.printSong.addSelectionListener(new TGActionProcessor(PrintAction.NAME));
 		
 		this.printPreviewSong = new ToolItem(toolBar, SWT.PUSH);
-		this.printPreviewSong.addSelectionListener(TuxGuitar.instance().getAction(PrintPreviewAction.NAME));
+		this.printPreviewSong.addSelectionListener(new TGActionProcessor(PrintPreviewAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

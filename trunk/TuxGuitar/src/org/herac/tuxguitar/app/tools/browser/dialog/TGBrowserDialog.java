@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
@@ -292,7 +292,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 	
 	public void notifyStream(int callId,final InputStream stream,final TGBrowserElement element) {
 		if(!isDisposed()){
-			ActionLock.lock();
+			TGActionLock.lock();
 			new SyncThread(new Runnable() {
 				public void run() {
 					if(!TuxGuitar.isDisposed()){
@@ -303,14 +303,14 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 							int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
 							if(status == ConfirmDialog.STATUS_CANCEL){
 								getConnection().release();
-								ActionLock.unlock();
+								TGActionLock.unlock();
 								return;
 							}
 							if(status == ConfirmDialog.STATUS_YES){
 								final String fileName = FileActionUtils.getFileName();
 								if(fileName == null){
 									getConnection().release();
-									ActionLock.unlock();
+									TGActionLock.unlock();
 									return;
 								}
 								new Thread(new Runnable() {
@@ -349,7 +349,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 						MessageDialog.errorMessage(getShell(),new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}),throwable));
 					}
 					getConnection().release();
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}).start();

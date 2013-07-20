@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.measure.AddMeasureAction;
 import org.herac.tuxguitar.app.actions.measure.CleanMeasureAction;
 import org.herac.tuxguitar.app.actions.measure.CopyMeasureAction;
@@ -51,38 +52,38 @@ public class MeasureMenuItem extends MenuItems{
 	public void showItems(){
 		//--first--
 		this.first = new MenuItem(this.menu, SWT.PUSH);
-		this.first.addSelectionListener(TuxGuitar.instance().getAction(GoFirstMeasureAction.NAME));
+		this.first.addSelectionListener(new TGActionProcessor(GoFirstMeasureAction.NAME));
 		//--previous--
 		this.previous = new MenuItem(this.menu, SWT.PUSH);
-		this.previous.addSelectionListener(TuxGuitar.instance().getAction(GoPreviousMeasureAction.NAME));
+		this.previous.addSelectionListener(new TGActionProcessor(GoPreviousMeasureAction.NAME));
 		//--next--
 		this.next = new MenuItem(this.menu, SWT.PUSH);
-		this.next.addSelectionListener(TuxGuitar.instance().getAction(GoNextMeasureAction.NAME));
+		this.next.addSelectionListener(new TGActionProcessor(GoNextMeasureAction.NAME));
 		//--last--
 		this.last = new MenuItem(this.menu, SWT.PUSH);
-		this.last.addSelectionListener(TuxGuitar.instance().getAction(GoLastMeasureAction.NAME));
+		this.last.addSelectionListener(new TGActionProcessor(GoLastMeasureAction.NAME));
 		
 		//--SEPARATOR
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--add--
 		this.addMeasure = new MenuItem(this.menu, SWT.PUSH);
-		this.addMeasure.addSelectionListener(TuxGuitar.instance().getAction(AddMeasureAction.NAME));
+		this.addMeasure.addSelectionListener(new TGActionProcessor(AddMeasureAction.NAME));
 		//--clean--
 		this.cleanMeasure = new MenuItem(this.menu, SWT.PUSH);
-		this.cleanMeasure.addSelectionListener(TuxGuitar.instance().getAction(CleanMeasureAction.NAME));
+		this.cleanMeasure.addSelectionListener(new TGActionProcessor(CleanMeasureAction.NAME));
 		//--remove--
 		this.removeMeasure = new MenuItem(this.menu, SWT.PUSH);
-		this.removeMeasure.addSelectionListener(TuxGuitar.instance().getAction(RemoveMeasureAction.NAME));
+		this.removeMeasure.addSelectionListener(new TGActionProcessor(RemoveMeasureAction.NAME));
 		
 		//--SEPARATOR
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--copy--
 		this.copyMeasure = new MenuItem(this.menu, SWT.PUSH);
-		this.copyMeasure.addSelectionListener(TuxGuitar.instance().getAction(CopyMeasureAction.NAME));
+		this.copyMeasure.addSelectionListener(new TGActionProcessor(CopyMeasureAction.NAME));
 		//--paste--
 		this.pasteMeasure = new MenuItem(this.menu, SWT.PUSH);
 		
-		this.pasteMeasure.addSelectionListener(TuxGuitar.instance().getAction(PasteMeasureAction.NAME));
+		this.pasteMeasure.addSelectionListener(new TGActionProcessor(PasteMeasureAction.NAME));
 		
 		this.measureMenuItem.setMenu(this.menu);
 		

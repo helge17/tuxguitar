@@ -6,12 +6,9 @@
  */
 package org.herac.tuxguitar.app.actions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import org.herac.tuxguitar.action.TGAction;
+import org.herac.tuxguitar.action.TGActionContextFactory;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.actions.caret.GoDownAction;
 import org.herac.tuxguitar.app.actions.caret.GoLeftAction;
 import org.herac.tuxguitar.app.actions.caret.GoRightAction;
@@ -162,219 +159,265 @@ import org.herac.tuxguitar.app.actions.view.ShowTransportAction;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ActionManager {
+public class TGActionAdapterManager {
 	
-	private Map actions;
+	private TGActionContextFactory actionContextFactory;
+	private TGActionAccessInterceptor actionAccessInterceptor;
+	private TGActionIdList autoLockActionIds;
+	private TGActionIdList autoUnlockActionIds;
+	private TGActionIdList autoUpdateActionIds;
+	private TGActionIdList keyBindingActionIds;
+	private TGActionIdList disableOnPlayingActionIds;
 	
-	public ActionManager(){
-		this.actions = new HashMap();
-		this.init();
+	public TGActionAdapterManager(){
+		this.actionContextFactory = new TGActionContextFactoryImpl();
+		this.actionAccessInterceptor = new TGActionAccessInterceptor(this);
+		this.autoLockActionIds = new TGActionIdList();
+		this.autoUnlockActionIds = new TGActionIdList();
+		this.autoUpdateActionIds = new TGActionIdList();
+		this.keyBindingActionIds = new TGActionIdList();
+		this.disableOnPlayingActionIds = new TGActionIdList();
 	}
 	
-	public void init(){
+	public void initialize(){
+		this.initializeHandlers();
+		this.initializeDefaultActions();
+	}
+	
+	private void initializeHandlers(){
+		TGActionManager.getInstance().setActionContextFactory(this.actionContextFactory);
+		TGActionManager.getInstance().addInterceptor(this.actionAccessInterceptor);
+		TGActionManager.getInstance().addPreExecutionListener(new TGActionAutoLockListener(this));
+		TGActionManager.getInstance().addPostExecutionListener(new TGActionAutoUpdateListener(this));
+		TGActionManager.getInstance().addPostExecutionListener(new TGActionAutoUnlockListener(this));
+	}
+	
+	private void initializeDefaultActions(){
 		//file actions
-		addAction(new NewFileAction());
-		addAction(new OpenFileAction());
-		addAction(new SaveFileAction());
-		addAction(new SaveAsFileAction());
-		addAction(new ImportSongAction());
-		addAction(new ExportSongAction());
-		addAction(new PrintAction());
-		addAction(new PrintPreviewAction());
-		addAction(new OpenURLAction());
-		addAction(new ExitAction());
+		installAction(new NewFileAction());
+		installAction(new OpenFileAction());
+		installAction(new SaveFileAction());
+		installAction(new SaveAsFileAction());
+		installAction(new ImportSongAction());
+		installAction(new ExportSongAction());
+		installAction(new PrintAction());
+		installAction(new PrintPreviewAction());
+		installAction(new OpenURLAction());
+		installAction(new ExitAction());
 		
 		//edit actions
-		addAction(new UndoAction());
-		addAction(new RedoAction());
-		addAction(new SetMouseModeSelectionAction());
-		addAction(new SetMouseModeEditionAction());
-		addAction(new SetNaturalKeyAction());
-		addAction(new SetVoice1Action());
-		addAction(new SetVoice2Action());
+		installAction(new UndoAction());
+		installAction(new RedoAction());
+		installAction(new SetMouseModeSelectionAction());
+		installAction(new SetMouseModeEditionAction());
+		installAction(new SetNaturalKeyAction());
+		installAction(new SetVoice1Action());
+		installAction(new SetVoice2Action());
 		
 		//layout actions
-		addAction(new SetPageLayoutAction());
-		addAction(new SetLinearLayoutAction());
-		addAction(new SetMultitrackViewAction());
-		addAction(new SetScoreEnabledAction());
-		addAction(new SetTablatureEnabledAction());
-		addAction(new SetCompactViewAction());
-		addAction(new SetChordNameEnabledAction());
-		addAction(new SetChordDiagramEnabledAction());
+		installAction(new SetPageLayoutAction());
+		installAction(new SetLinearLayoutAction());
+		installAction(new SetMultitrackViewAction());
+		installAction(new SetScoreEnabledAction());
+		installAction(new SetTablatureEnabledAction());
+		installAction(new SetCompactViewAction());
+		installAction(new SetChordNameEnabledAction());
+		installAction(new SetChordDiagramEnabledAction());
 		
 		//view actions
-		addAction(new ShowToolbarsAction());
-		addAction(new ShowFretBoardAction());
-		addAction(new ShowPianoAction());
-		addAction(new ShowInstrumentsAction());
-		addAction(new ShowTransportAction());
-		addAction(new ShowMatrixAction());
+		installAction(new ShowToolbarsAction());
+		installAction(new ShowFretBoardAction());
+		installAction(new ShowPianoAction());
+		installAction(new ShowInstrumentsAction());
+		installAction(new ShowTransportAction());
+		installAction(new ShowMatrixAction());
 		
 		//composition actions
-		addAction(new ChangeTimeSignatureAction());
-		addAction(new ChangeTempoAction());
-		addAction(new ChangeClefAction());
-		addAction(new ChangeKeySignatureAction());
-		addAction(new ChangeTripletFeelAction());
-		addAction(new ChangeInfoAction());
+		installAction(new ChangeTimeSignatureAction());
+		installAction(new ChangeTempoAction());
+		installAction(new ChangeClefAction());
+		installAction(new ChangeKeySignatureAction());
+		installAction(new ChangeTripletFeelAction());
+		installAction(new ChangeInfoAction());
 		
 		//track actions
-		addAction(new AddTrackAction());
-		addAction(new RemoveTrackAction());
-		addAction(new CloneTrackAction());
-		addAction(new GoFirstTrackAction());
-		addAction(new GoLastTrackAction());
-		addAction(new GoNextTrackAction());
-		addAction(new GoToTrackAction());
-		addAction(new GoPreviousTrackAction());
-		addAction(new MoveTrackUpAction());
-		addAction(new MoveTrackDownAction());
-		addAction(new ChangeTrackMuteAction());
-		addAction(new ChangeTrackSoloAction());
-		addAction(new EditLyricsAction());
-		addAction(new TrackPropertiesAction());
+		installAction(new AddTrackAction());
+		installAction(new RemoveTrackAction());
+		installAction(new CloneTrackAction());
+		installAction(new GoFirstTrackAction());
+		installAction(new GoLastTrackAction());
+		installAction(new GoNextTrackAction());
+		installAction(new GoToTrackAction());
+		installAction(new GoPreviousTrackAction());
+		installAction(new MoveTrackUpAction());
+		installAction(new MoveTrackDownAction());
+		installAction(new ChangeTrackMuteAction());
+		installAction(new ChangeTrackSoloAction());
+		installAction(new EditLyricsAction());
+		installAction(new TrackPropertiesAction());
 		
 		//measure actions
-		addAction(new AddMeasureAction());
-		addAction(new RemoveMeasureAction());
-		addAction(new CopyMeasureAction());
-		addAction(new PasteMeasureAction());
-		addAction(new GoFirstMeasureAction());
-		addAction(new GoLastMeasureAction());
-		addAction(new GoNextMeasureAction());
-		addAction(new GoPreviousMeasureAction());
-		addAction(new CleanMeasureAction());
+		installAction(new AddMeasureAction());
+		installAction(new RemoveMeasureAction());
+		installAction(new CopyMeasureAction());
+		installAction(new PasteMeasureAction());
+		installAction(new GoFirstMeasureAction());
+		installAction(new GoLastMeasureAction());
+		installAction(new GoNextMeasureAction());
+		installAction(new GoPreviousMeasureAction());
+		installAction(new CleanMeasureAction());
 		
 		//note actions
-		addAction(new ChangeNoteAction());
-		addAction(new InsertRestBeatAction());
-		addAction(new DeleteNoteOrRestAction());
-		addAction(new RemoveUnusedVoiceAction());
-		addAction(new CleanBeatAction());
-		addAction(new ChangeTiedNoteAction());
-		addAction(new ChangeVelocityAction());
-		addAction(new ShiftNoteUpAction());
-		addAction(new ShiftNoteDownAction());
-		addAction(new IncrementNoteSemitoneAction());
-		addAction(new DecrementNoteSemitoneAction());
-		addAction(new SetStrokeUpAction());
-		addAction(new SetStrokeDownAction());
-		addAction(new MoveBeatsRightAction());
-		addAction(new MoveBeatsLeftAction());
-		addAction(new MoveBeatsCustomAction());
+		installAction(new ChangeNoteAction());
+		installAction(new InsertRestBeatAction());
+		installAction(new DeleteNoteOrRestAction());
+		installAction(new RemoveUnusedVoiceAction());
+		installAction(new CleanBeatAction());
+		installAction(new ChangeTiedNoteAction());
+		installAction(new ChangeVelocityAction());
+		installAction(new ShiftNoteUpAction());
+		installAction(new ShiftNoteDownAction());
+		installAction(new IncrementNoteSemitoneAction());
+		installAction(new DecrementNoteSemitoneAction());
+		installAction(new SetStrokeUpAction());
+		installAction(new SetStrokeDownAction());
+		installAction(new MoveBeatsRightAction());
+		installAction(new MoveBeatsLeftAction());
+		installAction(new MoveBeatsCustomAction());
 		for( int i = 0 ; i < 10 ; i ++ ){
-			addAction(new SetNoteFretNumberAction(i));
+			installAction(new SetNoteFretNumberAction(i));
 		}
 		
 		//duration actions
-		addAction(new SetWholeDurationAction());
-		addAction(new SetHalfDurationAction());
-		addAction(new SetQuarterDurationAction());
-		addAction(new SetEighthDurationAction());
-		addAction(new SetSixteenthDurationAction());
-		addAction(new SetThirtySecondDurationAction());
-		addAction(new SetSixtyFourthDurationAction());
-		addAction(new ChangeDottedDurationAction());
-		addAction(new ChangeDoubleDottedDurationAction());
-		addAction(new ChangeDivisionTypeAction());
-		addAction(new IncrementDurationAction());
-		addAction(new DecrementDurationAction());
+		installAction(new SetWholeDurationAction());
+		installAction(new SetHalfDurationAction());
+		installAction(new SetQuarterDurationAction());
+		installAction(new SetEighthDurationAction());
+		installAction(new SetSixteenthDurationAction());
+		installAction(new SetThirtySecondDurationAction());
+		installAction(new SetSixtyFourthDurationAction());
+		installAction(new ChangeDottedDurationAction());
+		installAction(new ChangeDoubleDottedDurationAction());
+		installAction(new ChangeDivisionTypeAction());
+		installAction(new IncrementDurationAction());
+		installAction(new DecrementDurationAction());
 		
 		//insert actions
-		addAction(new RepeatOpenAction());
-		addAction(new RepeatCloseAction());
-		addAction(new RepeatAlternativeAction());
-		addAction(new InsertChordAction());
-		addAction(new InsertTextAction());
+		installAction(new RepeatOpenAction());
+		installAction(new RepeatCloseAction());
+		installAction(new RepeatAlternativeAction());
+		installAction(new InsertChordAction());
+		installAction(new InsertTextAction());
 		
 		//note effects action
-		addAction(new ChangeVibratoNoteAction());
-		addAction(new ChangeBendNoteAction());
-		addAction(new ChangeDeadNoteAction());
-		addAction(new ChangeSlideNoteAction());
-		addAction(new ChangeHammerNoteAction());
-		addAction(new ChangeGhostNoteAction());
-		addAction(new ChangeAccentuatedNoteAction());
-		addAction(new ChangeHeavyAccentuatedNoteAction());
-		addAction(new ChangeHarmonicNoteAction());
-		addAction(new ChangeGraceNoteAction());
-		addAction(new ChangeTrillNoteAction());
-		addAction(new ChangeTremoloPickingAction());
-		addAction(new ChangePalmMuteAction());
-		addAction(new ChangeLetRingAction());
-		addAction(new ChangeStaccatoAction());
-		addAction(new ChangeTappingAction());
-		addAction(new ChangeSlappingAction());
-		addAction(new ChangePoppingAction());
-		addAction(new ChangeTremoloBarAction());
-		addAction(new ChangeFadeInAction());
-		addAction(new SetVoiceAutoAction());
-		addAction(new SetVoiceUpAction());
-		addAction(new SetVoiceDownAction());
+		installAction(new ChangeVibratoNoteAction());
+		installAction(new ChangeBendNoteAction());
+		installAction(new ChangeDeadNoteAction());
+		installAction(new ChangeSlideNoteAction());
+		installAction(new ChangeHammerNoteAction());
+		installAction(new ChangeGhostNoteAction());
+		installAction(new ChangeAccentuatedNoteAction());
+		installAction(new ChangeHeavyAccentuatedNoteAction());
+		installAction(new ChangeHarmonicNoteAction());
+		installAction(new ChangeGraceNoteAction());
+		installAction(new ChangeTrillNoteAction());
+		installAction(new ChangeTremoloPickingAction());
+		installAction(new ChangePalmMuteAction());
+		installAction(new ChangeLetRingAction());
+		installAction(new ChangeStaccatoAction());
+		installAction(new ChangeTappingAction());
+		installAction(new ChangeSlappingAction());
+		installAction(new ChangePoppingAction());
+		installAction(new ChangeTremoloBarAction());
+		installAction(new ChangeFadeInAction());
+		installAction(new SetVoiceAutoAction());
+		installAction(new SetVoiceUpAction());
+		installAction(new SetVoiceDownAction());
 		
 		//marker actions
-		addAction(new AddMarkerAction());
-		addAction(new ListMarkersAction());
-		addAction(new GoPreviousMarkerAction());
-		addAction(new GoNextMarkerAction());
-		addAction(new GoFirstMarkerAction());
-		addAction(new GoLastMarkerAction());
+		installAction(new AddMarkerAction());
+		installAction(new ListMarkersAction());
+		installAction(new GoPreviousMarkerAction());
+		installAction(new GoNextMarkerAction());
+		installAction(new GoFirstMarkerAction());
+		installAction(new GoLastMarkerAction());
 		
 		//player actions
-		addAction(new TransportPlayAction());
-		addAction(new TransportStopAction());
-		addAction(new TransportMetronomeAction());
-		addAction(new TransportCountDownAction());
-		addAction(new TransportModeAction());
-		addAction(new TransportSetLoopSHeaderAction());
-		addAction(new TransportSetLoopEHeaderAction());
+		installAction(new TransportPlayAction());
+		installAction(new TransportStopAction());
+		installAction(new TransportMetronomeAction());
+		installAction(new TransportCountDownAction());
+		installAction(new TransportModeAction());
+		installAction(new TransportSetLoopSHeaderAction());
+		installAction(new TransportSetLoopEHeaderAction());
 		
 		//setting actions
-		addAction(new EditPluginsAction());
-		addAction(new EditConfigAction()); 
-		addAction(new EditKeyBindingsAction()); 
+		installAction(new EditPluginsAction());
+		installAction(new EditConfigAction()); 
+		installAction(new EditKeyBindingsAction()); 
 		
 		//caret actions
-		addAction(new GoRightAction());
-		addAction(new GoLeftAction());
-		addAction(new GoUpAction());
-		addAction(new GoDownAction());
+		installAction(new GoRightAction());
+		installAction(new GoLeftAction());
+		installAction(new GoUpAction());
+		installAction(new GoDownAction());
 		
 		//help actions
-		addAction(new ShowDocAction());
-		addAction(new ShowAboutAction());
+		installAction(new ShowDocAction());
+		installAction(new ShowAboutAction());
 		
 		//tools
-		addAction(new TransposeAction() );
-		addAction(new ScaleAction());
-		addAction(new TGBrowserAction());
+		installAction(new TransposeAction() );
+		installAction(new ScaleAction());
+		installAction(new TGBrowserAction());
 		
 		//exit
-		addAction(new DisposeAction());
+		installAction(new DisposeAction());
 	}
 	
-	public void addAction(Action action){
-		this.actions.put(action.getName(),action);
+	private void installAction(TGActionBase action){
+		String actionId = action.getName();
+		int flags = action.getFlags();
+		
+		this.mapAction(actionId, action);
+		this.mapActionIdToList(this.autoLockActionIds, actionId, flags, TGActionBase.AUTO_LOCK);
+		this.mapActionIdToList(this.autoUnlockActionIds, actionId, flags, TGActionBase.AUTO_UNLOCK);
+		this.mapActionIdToList(this.autoUpdateActionIds, actionId, flags, TGActionBase.AUTO_UPDATE);
+		this.mapActionIdToList(this.keyBindingActionIds, actionId, flags, TGActionBase.KEY_BINDING_AVAILABLE);
+		this.mapActionIdToList(this.disableOnPlayingActionIds, actionId, flags, TGActionBase.DISABLE_ON_PLAYING);
 	}
 	
-	public void removeAction(String name){
-		this.actions.remove(name);
+	private void mapAction(String actionId, TGAction action){
+		TGActionManager.getInstance().mapAction(actionId,action);
 	}
 	
-	public Action getAction(String name){
-		return (Action)this.actions.get(name);
-	}
-	
-	public List getAvailableKeyBindingActions(){
-		List availableKeyBindingActions = new ArrayList();
-		Iterator it = this.actions.keySet().iterator();
-		while(it.hasNext()){
-			String actionName = (String)it.next();
-			if(getAction(actionName).isKeyBindingAvailable()){
-				availableKeyBindingActions.add(actionName);
-			}
+	private void mapActionIdToList(TGActionIdList actionIdList, String actionId, int flags, int matchFlag){
+		if((flags & matchFlag) != 0) {
+			actionIdList.addActionId(actionId);
 		}
-		return availableKeyBindingActions;
+	}
+	
+	public TGActionAccessInterceptor getActionAccessInterceptor() {
+		return this.actionAccessInterceptor;
+	}
+	
+	public TGActionIdList getAutoLockActionIds() {
+		return this.autoLockActionIds;
+	}
+
+	public TGActionIdList getAutoUnlockActionIds() {
+		return this.autoUnlockActionIds;
+	}
+
+	public TGActionIdList getAutoUpdateActionIds() {
+		return this.autoUpdateActionIds;
+	}
+
+	public TGActionIdList getKeyBindingActionIds() {
+		return this.keyBindingActionIds;
+	}
+
+	public TGActionIdList getDisableOnPlayingActionIds() {
+		return this.disableOnPlayingActionIds;
 	}
 }

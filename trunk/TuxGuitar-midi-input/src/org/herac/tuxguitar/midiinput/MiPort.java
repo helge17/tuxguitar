@@ -1,12 +1,14 @@
 package org.herac.tuxguitar.midiinput;
 
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MiPort
@@ -46,22 +48,30 @@ public class MiPort
 	try {
 		if(!f_Device.isOpen()) {
 			final MidiDevice device = f_Device;
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
-					device.open();
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
+					try {
+						device.open();
+					} catch(MidiUnavailableException e){
+						throw new TGException(e);
 					}
-				});
-			}
+				}
+			});
+		}
 
 		if(f_Transmitter == null) {
 			final MidiDevice device = f_Device;
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
-					connectTransmitter(device.getTransmitter());
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
+					try {
+						connectTransmitter(device.getTransmitter());
+					} catch(MidiUnavailableException e){
+						throw new TGException(e);
 					}
-				});
-			}
+				}
+			});
 		}
+	}
 	catch(Throwable t) {
 		throw new MiException(TuxGuitar.getProperty("midiinput.error.midi.port.open"), t);
 		}
@@ -74,8 +84,8 @@ public class MiPort
 	try {
 		if(f_Transmitter != null) {
 			final Transmitter transmitter = f_Transmitter;
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					transmitter.close();
 					connectTransmitter(null);
 					}
@@ -84,8 +94,8 @@ public class MiPort
 
 		if(f_Device.isOpen()) {
 			final MidiDevice device = f_Device;
-			TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					device.close();
 					}
 				});

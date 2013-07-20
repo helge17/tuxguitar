@@ -7,10 +7,10 @@
 package org.herac.tuxguitar.app.actions.file;
 
 import org.eclipse.swt.SWT;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionData;
-import org.herac.tuxguitar.app.actions.ActionLock;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionLock;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 
@@ -19,7 +19,7 @@ import org.herac.tuxguitar.io.base.TGRawExporter;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ExportSongAction extends Action {
+public class ExportSongAction extends TGActionBase {
 	
 	public static final String NAME = "action.file.export";
 	
@@ -29,27 +29,31 @@ public class ExportSongAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UPDATE );
 	}
 	
-	protected int execute(ActionData actionData){
-		Object propertyExporter = actionData.get(PROPERTY_EXPORTER);
+	protected void processAction(TGActionContext context){
+		Object propertyExporter = context.getAttribute(PROPERTY_EXPORTER);
 		if(!(propertyExporter instanceof TGRawExporter) ){
-			return AUTO_UNLOCK;
+			TGActionLock.unlock();
+			return;
 		}
 		
 		final TGRawExporter exporter = (TGRawExporter)propertyExporter;
 		if( exporter instanceof TGLocalFileExporter ){
-			return this.processLocalFileExporter( (TGLocalFileExporter)exporter );
+			this.processLocalFileExporter( (TGLocalFileExporter)exporter );
+			return;
 		}
-		return this.processRawExporter( exporter );
+		this.processRawExporter( exporter );
 	}
 	
-	private int processLocalFileExporter( final TGLocalFileExporter exporter ){
+	private void processLocalFileExporter( final TGLocalFileExporter exporter ){
 		if(!exporter.configure(false)){
-			return AUTO_UNLOCK;
+			TGActionLock.unlock();
+			return;
 		}
 		
 		final String fileName = FileActionUtils.chooseFileName(exporter.getFileFormat());
-		if(fileName == null){
-			return AUTO_UNLOCK;
+		if( fileName == null ){
+			TGActionLock.unlock();
+			return;
 		}
 		
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
@@ -58,26 +62,22 @@ public class ExportSongAction extends Action {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.exportSong(exporter, fileName);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}).start();
-		
-		return 0;
 	}
 	
-	private int processRawExporter( final TGRawExporter exporter ){
+	private void processRawExporter( final TGRawExporter exporter ){
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.exportSong(exporter);
 					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-					ActionLock.unlock();
+					TGActionLock.unlock();
 				}
 			}
 		}).start();
-		
-		return 0;
 	}
 }

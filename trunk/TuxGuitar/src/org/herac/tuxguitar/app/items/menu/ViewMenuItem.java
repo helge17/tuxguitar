@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.layout.SetChordDiagramEnabledAction;
 import org.herac.tuxguitar.app.actions.layout.SetChordNameEnabledAction;
 import org.herac.tuxguitar.app.actions.layout.SetCompactViewAction;
@@ -66,53 +67,53 @@ public class ViewMenuItem extends MenuItems{
 	public void showItems(){
 		//--TOOLBARS--
 		this.showToolbars = new MenuItem(this.menu, SWT.CHECK);
-		this.showToolbars.addSelectionListener(TuxGuitar.instance().getAction(ShowToolbarsAction.NAME));
+		this.showToolbars.addSelectionListener(new TGActionProcessor(ShowToolbarsAction.NAME));
 		
 		//--INSTRUMENTS--
 		this.showInstruments = new MenuItem(this.menu, SWT.CHECK);
-		this.showInstruments.addSelectionListener(TuxGuitar.instance().getAction(ShowInstrumentsAction.NAME));
+		this.showInstruments.addSelectionListener(new TGActionProcessor(ShowInstrumentsAction.NAME));
 		
 		//--TRANSPORT--
 		this.showTransport = new MenuItem(this.menu, SWT.CHECK);
-		this.showTransport.addSelectionListener(TuxGuitar.instance().getAction(ShowTransportAction.NAME));
+		this.showTransport.addSelectionListener(new TGActionProcessor(ShowTransportAction.NAME));
 		
 		//--FRETBOARD--
 		this.showFretBoard = new MenuItem(this.menu, SWT.CHECK);
-		this.showFretBoard.addSelectionListener(TuxGuitar.instance().getAction(ShowFretBoardAction.NAME));
+		this.showFretBoard.addSelectionListener(new TGActionProcessor(ShowFretBoardAction.NAME));
 		
 		//--PIANO--
 		this.showPiano = new MenuItem(this.menu, SWT.CHECK);
-		this.showPiano.addSelectionListener(TuxGuitar.instance().getAction(ShowPianoAction.NAME));
+		this.showPiano.addSelectionListener(new TGActionProcessor(ShowPianoAction.NAME));
 		
 		//--MATRIX--
 		this.showMatrix = new MenuItem(this.menu, SWT.CHECK);
-		this.showMatrix.addSelectionListener(TuxGuitar.instance().getAction(ShowMatrixAction.NAME));
+		this.showMatrix.addSelectionListener(new TGActionProcessor(ShowMatrixAction.NAME));
 		
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
 		//--PAGE LAYOUT--
 		this.pageLayout = new MenuItem(this.menu, SWT.RADIO);
-		this.pageLayout.addSelectionListener(TuxGuitar.instance().getAction(SetPageLayoutAction.NAME));
+		this.pageLayout.addSelectionListener(new TGActionProcessor(SetPageLayoutAction.NAME));
 		
 		//--LINEAR LAYOUT--
 		this.linearLayout = new MenuItem(this.menu, SWT.RADIO);
-		this.linearLayout.addSelectionListener(TuxGuitar.instance().getAction(SetLinearLayoutAction.NAME));
+		this.linearLayout.addSelectionListener(new TGActionProcessor(SetLinearLayoutAction.NAME));
 		
 		//--MULTITRACK--
 		this.multitrack = new MenuItem(this.menu, SWT.CHECK);
-		this.multitrack.addSelectionListener(TuxGuitar.instance().getAction(SetMultitrackViewAction.NAME));
+		this.multitrack.addSelectionListener(new TGActionProcessor(SetMultitrackViewAction.NAME));
 		
 		//--SCORE
 		this.scoreEnabled = new MenuItem(this.menu, SWT.CHECK);
-		this.scoreEnabled.addSelectionListener(TuxGuitar.instance().getAction(SetScoreEnabledAction.NAME));
+		this.scoreEnabled.addSelectionListener(new TGActionProcessor(SetScoreEnabledAction.NAME));
 		
 		//--SCORE
 		this.tablatureEnabled = new MenuItem(this.menu, SWT.CHECK);
-		this.tablatureEnabled.addSelectionListener(TuxGuitar.instance().getAction(SetTablatureEnabledAction.NAME));
+		this.tablatureEnabled.addSelectionListener(new TGActionProcessor(SetTablatureEnabledAction.NAME));
 		
 		//--COMPACT
 		this.compact = new MenuItem(this.menu, SWT.CHECK);
-		this.compact.addSelectionListener(TuxGuitar.instance().getAction(SetCompactViewAction.NAME));
+		this.compact.addSelectionListener(new TGActionProcessor(SetCompactViewAction.NAME));
 		
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		
@@ -121,10 +122,10 @@ public class ViewMenuItem extends MenuItems{
 		this.chordMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
 		
 		this.chordName = new MenuItem(this.chordMenu, SWT.CHECK);
-		this.chordName.addSelectionListener(TuxGuitar.instance().getAction(SetChordNameEnabledAction.NAME));
+		this.chordName.addSelectionListener(new TGActionProcessor(SetChordNameEnabledAction.NAME));
 		
 		this.chordDiagram = new MenuItem(this.chordMenu, SWT.CHECK);
-		this.chordDiagram.addSelectionListener(TuxGuitar.instance().getAction(SetChordDiagramEnabledAction.NAME));
+		this.chordDiagram.addSelectionListener(new TGActionProcessor(SetChordDiagramEnabledAction.NAME));
 		
 		this.chordMenuItem.setMenu(this.chordMenu);
 		this.layoutMenuItem.setMenu(this.menu);

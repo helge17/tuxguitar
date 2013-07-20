@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -97,7 +98,7 @@ public class ChordSelector extends Composite{
 			public void widgetSelected(SelectionEvent arg0) {
 				if(new ChordSettingsDialog().open(ChordSelector.this.getShell())){
 					new SyncThread(new Runnable() {
-						public void run() {
+						public void run() throws TGException {
 							ChordSelector.this.showChord();
 							getChordList().redraw();
 						}
@@ -368,8 +369,8 @@ public class ChordSelector extends Composite{
 		ChordCreatorListener listener = new ChordCreatorListener() {
 			public void notifyChords(final ChordCreatorUtil instance,final java.util.List chords) {
 				try {
-					TGSynchronizer.instance().addRunnable(new TGSynchronizer.TGRunnable() {
-						public void run() {
+					TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+						public void run() throws TGException {
 							if(instance.isValidProcess() && !getDialog().isDisposed()){
 								getDialog().getList().setChords(chords);
 								TuxGuitar.instance().loadCursor(getShell(),SWT.CURSOR_ARROW);

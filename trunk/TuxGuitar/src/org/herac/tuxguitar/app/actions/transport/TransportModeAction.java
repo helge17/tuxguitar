@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionAdapter;
-import org.herac.tuxguitar.app.actions.ActionData;
+import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.actions.TGActionProcessor;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -39,7 +39,7 @@ import org.herac.tuxguitar.song.models.TGSong;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class TransportModeAction extends Action {
+public class TransportModeAction extends TGActionBase {
 	
 	public static final String NAME = "action.transport.mode";
 	
@@ -63,11 +63,10 @@ public class TransportModeAction extends Action {
 		super(NAME, AUTO_LOCK | AUTO_UNLOCK | AUTO_UPDATE | KEY_BINDING_AVAILABLE);
 	}
 	
-	protected int execute(ActionData actionData){
-		TypedEvent e = (TypedEvent)actionData.get(ActionAdapter.PROPERTY_TYPED_EVENT);
+	protected void processAction(TGActionContext context){
+		TypedEvent e = (TypedEvent)context.getAttribute(TGActionProcessor.PROPERTY_TYPED_EVENT);
 		
 		this.showDialog(e.widget.getDisplay().getActiveShell(), TuxGuitar.instance().getPlayer().getMode());
-		return 0;
 	}
 	
 	public void showDialog(final Shell parent,final MidiPlayerMode mode) {

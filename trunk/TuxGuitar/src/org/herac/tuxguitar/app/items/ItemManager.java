@@ -55,6 +55,7 @@ import org.herac.tuxguitar.app.items.xml.ToolBarsWriter;
 import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.language.LanguageLoader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -219,8 +220,8 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 	
 	protected void layoutShellLater(){
 		try {
-			TGSynchronizer.instance().runLater(new TGSynchronizer.TGRunnable() {
-				public void run() throws Throwable {
+			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+				public void run() throws TGException {
 					layoutShell();
 				}
 			});
