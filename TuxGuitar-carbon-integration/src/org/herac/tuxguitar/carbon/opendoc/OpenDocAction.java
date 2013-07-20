@@ -2,7 +2,7 @@ package org.herac.tuxguitar.carbon.opendoc;
 
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.actions.file.FileActionUtils;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.util.ConfirmDialog;

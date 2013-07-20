@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionProcessor;
+import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.note.ChangeVelocityAction;
 import org.herac.tuxguitar.app.items.MenuItems;
 import org.herac.tuxguitar.song.models.TGNote;

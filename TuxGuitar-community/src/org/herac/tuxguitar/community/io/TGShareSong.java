@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;

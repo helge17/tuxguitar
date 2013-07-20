@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.actions.composition.ChangeInfoAction;
 import org.herac.tuxguitar.app.actions.track.GoToTrackAction;
 import org.herac.tuxguitar.app.actions.track.TrackPropertiesAction;

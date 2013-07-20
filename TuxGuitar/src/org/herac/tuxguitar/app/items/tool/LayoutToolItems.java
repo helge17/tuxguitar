@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionProcessor;
+import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.layout.SetCompactViewAction;
 import org.herac.tuxguitar.app.actions.layout.SetLinearLayoutAction;
 import org.herac.tuxguitar.app.actions.layout.SetMultitrackViewAction;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.actions;
+package org.herac.tuxguitar.app.action;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionContextFactory;
