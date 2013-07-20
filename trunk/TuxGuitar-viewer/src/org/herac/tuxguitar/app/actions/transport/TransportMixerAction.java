@@ -189,6 +189,8 @@ public class TransportMixerAction extends ActionDialog {
 	
 	private class TrackPanel extends JPanel{
 		
+		private static final long serialVersionUID = 3290312295563628800L;
+
 		private TGTrack track;
 		
 		private JCheckBox trackSolo;

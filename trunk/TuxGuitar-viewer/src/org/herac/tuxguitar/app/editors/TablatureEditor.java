@@ -16,6 +16,8 @@ import org.herac.tuxguitar.app.system.config.TGConfig;
 
 public class TablatureEditor extends Canvas{
 	
+	private static final long serialVersionUID = 3033840631768147247L;
+	
 	private Tablature tablature;
 	private TGScrollBar scrollBar;
 	private Dimension size;

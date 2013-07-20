@@ -20,6 +20,8 @@ import org.herac.tuxguitar.util.TGSynchronizer.TGSynchronizerTask;
 
 public class TGApplet extends Applet{
 	
+	private static final long serialVersionUID = -5282932001028049828L;
+
 	public TGApplet(){
 		super();
 	}
