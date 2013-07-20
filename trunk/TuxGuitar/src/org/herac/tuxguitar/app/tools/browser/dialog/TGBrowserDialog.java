@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionLock;
-import org.herac.tuxguitar.app.actions.file.FileActionUtils;
+import org.herac.tuxguitar.app.action.impl.file.FileActionUtils;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.IconLoader;

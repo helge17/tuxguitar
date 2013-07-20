@@ -12,15 +12,15 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.composition.ChangeClefAction;
-import org.herac.tuxguitar.app.actions.composition.ChangeInfoAction;
-import org.herac.tuxguitar.app.actions.composition.ChangeKeySignatureAction;
-import org.herac.tuxguitar.app.actions.composition.ChangeTempoAction;
-import org.herac.tuxguitar.app.actions.composition.ChangeTimeSignatureAction;
-import org.herac.tuxguitar.app.actions.composition.ChangeTripletFeelAction;
-import org.herac.tuxguitar.app.actions.insert.RepeatAlternativeAction;
-import org.herac.tuxguitar.app.actions.insert.RepeatCloseAction;
-import org.herac.tuxguitar.app.actions.insert.RepeatOpenAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeClefAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeInfoAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeKeySignatureAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeTempoAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeTimeSignatureAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeTripletFeelAction;
+import org.herac.tuxguitar.app.action.impl.insert.RepeatAlternativeAction;
+import org.herac.tuxguitar.app.action.impl.insert.RepeatCloseAction;
+import org.herac.tuxguitar.app.action.impl.insert.RepeatOpenAction;
 import org.herac.tuxguitar.app.items.MenuItems;
 
 /**

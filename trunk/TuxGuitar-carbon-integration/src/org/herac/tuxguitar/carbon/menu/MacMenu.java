@@ -6,9 +6,9 @@ import org.eclipse.swt.internal.carbon.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.actions.file.ExitAction;
-import org.herac.tuxguitar.app.actions.help.ShowAboutAction;
-import org.herac.tuxguitar.app.actions.settings.EditConfigAction;
+import org.herac.tuxguitar.app.action.impl.file.ExitAction;
+import org.herac.tuxguitar.app.action.impl.help.ShowAboutAction;
+import org.herac.tuxguitar.app.action.impl.settings.EditConfigAction;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 

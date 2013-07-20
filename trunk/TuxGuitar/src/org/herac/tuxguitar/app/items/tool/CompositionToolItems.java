@@ -11,11 +11,11 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.composition.ChangeTempoAction;
-import org.herac.tuxguitar.app.actions.composition.ChangeTimeSignatureAction;
-import org.herac.tuxguitar.app.actions.insert.RepeatAlternativeAction;
-import org.herac.tuxguitar.app.actions.insert.RepeatCloseAction;
-import org.herac.tuxguitar.app.actions.insert.RepeatOpenAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeTempoAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeTimeSignatureAction;
+import org.herac.tuxguitar.app.action.impl.insert.RepeatAlternativeAction;
+import org.herac.tuxguitar.app.action.impl.insert.RepeatCloseAction;
+import org.herac.tuxguitar.app.action.impl.insert.RepeatOpenAction;
 import org.herac.tuxguitar.app.items.ToolItems;
 import org.herac.tuxguitar.song.models.TGMeasure;
 

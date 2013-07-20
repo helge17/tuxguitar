@@ -5,9 +5,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.file.ExitAction;
-import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
-import org.herac.tuxguitar.app.actions.transport.TransportStopAction;
+import org.herac.tuxguitar.app.action.impl.file.ExitAction;
+import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TransportStopAction;
 
 public class TGTrayMenu {
 	

@@ -12,12 +12,12 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.marker.AddMarkerAction;
-import org.herac.tuxguitar.app.actions.marker.GoFirstMarkerAction;
-import org.herac.tuxguitar.app.actions.marker.GoLastMarkerAction;
-import org.herac.tuxguitar.app.actions.marker.GoNextMarkerAction;
-import org.herac.tuxguitar.app.actions.marker.GoPreviousMarkerAction;
-import org.herac.tuxguitar.app.actions.marker.ListMarkersAction;
+import org.herac.tuxguitar.app.action.impl.marker.AddMarkerAction;
+import org.herac.tuxguitar.app.action.impl.marker.GoFirstMarkerAction;
+import org.herac.tuxguitar.app.action.impl.marker.GoLastMarkerAction;
+import org.herac.tuxguitar.app.action.impl.marker.GoNextMarkerAction;
+import org.herac.tuxguitar.app.action.impl.marker.GoPreviousMarkerAction;
+import org.herac.tuxguitar.app.action.impl.marker.ListMarkersAction;
 import org.herac.tuxguitar.app.items.MenuItems;
 
 /**
