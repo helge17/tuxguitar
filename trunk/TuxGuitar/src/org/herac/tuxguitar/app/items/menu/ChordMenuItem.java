@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionProcessor;
+import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.insert.InsertChordAction;
 import org.herac.tuxguitar.app.items.MenuItems;
 import org.herac.tuxguitar.song.models.TGChord;

@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionProcessor;
+import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.duration.ChangeDivisionTypeAction;
 import org.herac.tuxguitar.app.actions.duration.ChangeDottedDurationAction;
 import org.herac.tuxguitar.app.actions.duration.ChangeDoubleDottedDurationAction;

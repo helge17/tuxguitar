@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.actions.TGActionProcessor;
+import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.help.ShowAboutAction;
 import org.herac.tuxguitar.app.actions.help.ShowDocAction;
 import org.herac.tuxguitar.app.items.MenuItems;

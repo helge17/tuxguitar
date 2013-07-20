@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.helper.SyncThread;
 
 /**

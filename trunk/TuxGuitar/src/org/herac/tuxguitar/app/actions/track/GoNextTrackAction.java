@@ -7,7 +7,7 @@
 package org.herac.tuxguitar.app.actions.track;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.song.models.TGTrack;
 

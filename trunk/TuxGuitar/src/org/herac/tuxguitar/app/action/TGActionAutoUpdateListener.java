@@ -1,20 +1,19 @@
-package org.herac.tuxguitar.app.actions;
+package org.herac.tuxguitar.app.action;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionPostExecutionListener;
+import org.herac.tuxguitar.app.TuxGuitar;
 
-public class TGActionAutoUnlockListener implements TGActionPostExecutionListener {
+public class TGActionAutoUpdateListener implements TGActionPostExecutionListener {
 	
 	private TGActionAdapterManager manager;
 	
-	public TGActionAutoUnlockListener(TGActionAdapterManager manager){
+	public TGActionAutoUpdateListener(TGActionAdapterManager manager){
 		this.manager = manager;
 	}
 	
 	public void doPostExecution(String id, TGActionContext context) throws TGActionException {
-		if( this.manager.getAutoUnlockActionIds().hasActionId(id) ) {
-			TGActionLock.unlock();
-		}
+		TuxGuitar.instance().updateCache( this.manager.getAutoUpdateActionIds().hasActionId(id) );
 	}
 }

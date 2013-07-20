@@ -9,8 +9,8 @@ package org.herac.tuxguitar.app.actions.file;
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionBase;
-import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.action.TGActionBase;
+import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 

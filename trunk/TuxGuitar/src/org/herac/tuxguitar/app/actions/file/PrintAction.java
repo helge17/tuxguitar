@@ -15,7 +15,7 @@ import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.helper.SyncThread;

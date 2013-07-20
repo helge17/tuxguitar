@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionLock;
+import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.editors.TGImageImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.editors.tab.Caret;
@@ -21,7 +21,6 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
 import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
-
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;

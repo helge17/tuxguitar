@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionBase;
+import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.system.plugins.TGPlugin;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.app.util.DialogUtils;

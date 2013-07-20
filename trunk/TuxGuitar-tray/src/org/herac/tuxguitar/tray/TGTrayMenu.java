@@ -4,7 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.TGActionProcessor;
+import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.actions.file.ExitAction;
 import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
 import org.herac.tuxguitar.app.actions.transport.TransportStopAction;
