@@ -11,8 +11,8 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.track.AddTrackAction;
-import org.herac.tuxguitar.app.actions.track.RemoveTrackAction;
+import org.herac.tuxguitar.app.action.impl.track.AddTrackAction;
+import org.herac.tuxguitar.app.action.impl.track.RemoveTrackAction;
 import org.herac.tuxguitar.app.items.ToolItems;
 
 /**

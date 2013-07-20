@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.composition.ChangeInfoAction;
+import org.herac.tuxguitar.app.action.impl.composition.ChangeInfoAction;
 import org.herac.tuxguitar.app.items.ToolItems;
 
 /**

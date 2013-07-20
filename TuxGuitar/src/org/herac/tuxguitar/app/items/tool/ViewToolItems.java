@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
-import org.herac.tuxguitar.app.actions.view.ShowFretBoardAction;
-import org.herac.tuxguitar.app.actions.view.ShowInstrumentsAction;
-import org.herac.tuxguitar.app.actions.view.ShowTransportAction;
+import org.herac.tuxguitar.app.action.impl.view.ShowFretBoardAction;
+import org.herac.tuxguitar.app.action.impl.view.ShowInstrumentsAction;
+import org.herac.tuxguitar.app.action.impl.view.ShowTransportAction;
 import org.herac.tuxguitar.app.items.ToolItems;
 
 /**
