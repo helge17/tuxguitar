@@ -8,19 +8,17 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionLock;
-import org.herac.tuxguitar.app.editors.TGImageImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
-import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
 import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -33,9 +31,7 @@ public class MouseKit {
 	private static final int FIRST_LINE_VALUES[] = new int[] {65,45,52,55};
 	
 	private EditorKit kit;
-	private TGImage back = null;
-	private int lastx;
-	private int lasty;
+	private TGMeasureImpl lastMeasure;
 	
 	public MouseKit(EditorKit kit){
 		this.kit = kit;
@@ -45,78 +41,61 @@ public class MouseKit {
 		return this.kit.getTablature().getViewLayout().getTrackPositionAt(y);
 	}
 	
+	public void reset(){
+		this.lastMeasure = null;
+	}
+	
 	public void tryBack(){
-		if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.kit.getTablature().isPainting()){
-			TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
-			if(this.back != null && !this.back.isDisposed()){
-				painter.drawImage(this.back,this.lastx,this.lasty);
+		if( this.lastMeasure != null ){
+			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.kit.getTablature().isPainting()){
+				TuxGuitar.instance().updateCache(false);
 			}
-			painter.dispose();
-		}
-		if(this.back != null){
-			this.back.dispose();
+			this.reset();
 		}
 	}
 	
 	public void mouseExit() {
-		tryBack();
+		this.tryBack();
 	}
 	
 	public void mouseMove(MouseEvent e) {
-		this.tryBack();
+		TGMeasureImpl measure = null;
 		if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.kit.getTablature().isPainting()){
-			
 			TGTrackImpl track = this.kit.findSelectedTrack(e.y);
-			if (track != null) {
-				TGMeasureImpl measure = this.kit.findSelectedMeasure(track,e.x,e.y);
+			if( track != null ) {
+				measure = this.kit.findSelectedMeasure(track,e.x,e.y);
 				
 				if(measure != null && measure.getTs() != null){
-					float scale = this.kit.getTablature().getViewLayout().getScale();
+					TGLayout layout = this.kit.getTablature().getViewLayout();
+					TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
+					
+					float scale = layout.getScale();
 					int minValue = track.getString(track.stringCount()).getValue();
 					int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
-					int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
-					int lineSpacing = this.kit.getTablature().getViewLayout().getScoreLineSpacing();
+					int lineSpacing = layout.getScoreLineSpacing();
 					int width = (int)(10.0f * scale);
 					int topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 					int bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
+					int tempValue = 0;
 					
-					int x1 = (int)(e.x - (width / 2.0f));
-					int x2 = (int)(e.x + (width / 2.0f));
+					int x1 = 0;
+					int x2 = 0;
 					int y1 = (measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 					int y2 = (y1 + (lineSpacing * 5));
 					
-					if(e.y < (y1 + 3) && e.y >= (y1 - topHeight)){
-						this.back = new TGImageImpl(TuxGuitar.instance().getDisplay(),width + 1,topHeight + 1);
-						TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
-						painter.copyArea(this.back,x1, (y1 - topHeight));
-						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
-						for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
-							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
-							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
-							if(y < e.y - 5 || tempValue > maxValue){
-								break;
-							}
-							painter.initPath();
-							painter.setAntialias(false);
-							painter.moveTo(x1, y);
-							painter.lineTo(x2, y);
-							painter.closePath();
-						}
-						painter.dispose();
-						
-						this.lastx = x1;
-						this.lasty = (y1 - topHeight);
-					}else if(e.y > (y2 - 3) && e.y  < y2 + bottomHeight){
-						this.back = new TGImageImpl(TuxGuitar.instance().getDisplay(),width + 1,bottomHeight + 1);
-						TGPainter painter = new TGPainterImpl(new GC(this.kit.getTablature()));
-						painter.copyArea(this.back,x1, y2);	
-						painter.setForeground(this.kit.getTablature().getViewLayout().getResources().getLineColor());
-						tempValue -= 14;
-						for(int y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
-							if(tempValue > 0){
-								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
-								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
-								if(y > e.y + 5 || tempValue < minValue){
+					for(int b = 0 ; b < measure.countBeats() ; b++ ){
+						TGBeatImpl beat = (TGBeatImpl)measure.getBeat(b);
+						if(!beat.getVoice(this.kit.getTablature().getCaret().getVoice()).isEmpty()){
+							x1 = (measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX() + beat.getPosX() + beat.getSpacing());
+							x2 = x1 + width;
+							
+							painter.setForeground(layout.getResources().getLineColor());
+							
+							tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
+							for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
+								tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
+								tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
+								if( tempValue > maxValue ){
 									break;
 								}
 								painter.initPath();
@@ -125,15 +104,33 @@ public class MouseKit {
 								painter.lineTo(x2, y);
 								painter.closePath();
 							}
+							
+							tempValue = FIRST_LINE_VALUES[measure.getClef() - 1] - 14;
+							for(int y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
+								if(tempValue > 0){
+									tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
+									tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
+									if( tempValue < minValue ){
+										break;
+									}
+									painter.initPath();
+									painter.setAntialias(false);
+									painter.moveTo(x1, y);
+									painter.lineTo(x2, y);
+									painter.closePath();
+								}
+							}
 						}
-						painter.dispose();
-						
-						this.lastx = x1;
-						this.lasty = y2;
 					}
 				}
 			}
+			if( this.lastMeasure != null ){
+				if( measure == null || !this.lastMeasure.equals(measure) ){
+					this.tryBack();
+				}
+			}
 		}
+		this.lastMeasure = measure;
 	}
 	
 	public void mouseUp(MouseEvent e) {
