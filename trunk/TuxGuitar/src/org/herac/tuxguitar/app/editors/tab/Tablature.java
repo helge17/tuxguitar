@@ -232,7 +232,7 @@ public class Tablature extends Composite implements TGController {
 		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
 			this.playedBeat = null;
 			this.playedMeasure = null;
-			this.editorKit.tryBack();
+			this.editorKit.reset();
 			this.setPainting(true);
 			super.redraw();
 		}
@@ -242,7 +242,7 @@ public class Tablature extends Composite implements TGController {
 		if(!super.isDisposed() && !isPainting() && !TuxGuitar.instance().isLocked()){
 			//TuxGuitar.instance().lock();
 			if(TuxGuitar.instance().getPlayer().isRunning()){
-				this.editorKit.tryBack();
+				this.editorKit.reset();
 				this.setPainting(true);
 				
 				TGPainter painter = new TGPainterImpl(new GC(this));

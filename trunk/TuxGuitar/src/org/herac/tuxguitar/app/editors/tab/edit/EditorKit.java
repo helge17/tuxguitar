@@ -68,8 +68,8 @@ public class EditorKit implements MouseListener,MouseMoveListener,MouseTrackList
 		return this.tablature;
 	}	
 	
-	public void tryBack(){
-		this.mouseKit.tryBack();
+	public void reset(){
+		this.mouseKit.reset();
 	}
 	
 	public boolean select() {

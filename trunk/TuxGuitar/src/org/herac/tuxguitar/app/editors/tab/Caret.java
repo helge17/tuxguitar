@@ -137,7 +137,7 @@ public class Caret {
 		this.setChanges(true);
 	}
 	
-	public void paintCaret(TGLayout layout,TGPainter painter) {
+	public void paintCaret(TGLayout layout, TGPainter painter) {
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && !this.selectedMeasure.isOutOfBounds() && this.selectedBeat instanceof TGBeatImpl) {
 				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
