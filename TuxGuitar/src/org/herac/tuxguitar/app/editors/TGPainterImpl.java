@@ -88,10 +88,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		return this.gc.isDisposed();
 	}
 	
-	public void copyArea(TGImage image, int x, int y) {
-		this.gc.copyArea(getImage(image), x, y);
-	}
-	
 	public void drawString(String string, int x, int y) {
 		this.setAdvanced(false);
 		this.gc.drawString(string, x, y);
