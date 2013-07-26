@@ -12,8 +12,6 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public void closePath();
 	
-	public void copyArea(TGImage image, int x, int y);
-	
 	public void drawString(String string, int x, int y);
 	
 	public void drawString(String string, int x, int y, boolean isTransparent);

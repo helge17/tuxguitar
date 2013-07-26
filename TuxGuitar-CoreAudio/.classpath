@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar-gm-utils"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar-lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
