@@ -5,6 +5,7 @@
 		TuxGuitar-viewer
 	</description>
 	
+	<property file="build.properties" />
 	<property name="ant.build.javac.source" value="1.4" />
 	<property name="ant.build.javac.target" value="1.4" />
 	
@@ -15,6 +16,10 @@
 	
 	<property name="dist.dst.path" value="" />
 	<property name="dist.jar.path" value="." />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar-lib}"/>
+	</path >
 	
 	<target name="all" depends="package" />
 	
@@ -31,6 +36,7 @@
 		<mkdir dir="${build.path}" />
 		
 		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<classpath refid="class.path"/>
 			<include name="**/*.java"/>
 		</javac>
 		

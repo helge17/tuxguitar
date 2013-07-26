@@ -14,6 +14,7 @@
 	<property name="service.provider" value="org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin" />
 	
 	<path id="class.path">
+		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.swt}"/>
 	</path >
