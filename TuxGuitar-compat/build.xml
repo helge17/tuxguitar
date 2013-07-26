@@ -12,6 +12,8 @@
 	<property name="build.jar" value="tuxguitar-compat.jar" />
 	
 	<path id="class.path">
+		<pathelement location="${path.tuxguitar-lib}"/>
+		<pathelement location="${path.tuxguitar-gm-utils}"/>
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.swt}"/>
 	</path >

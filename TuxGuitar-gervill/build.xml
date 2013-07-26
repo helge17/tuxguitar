@@ -12,6 +12,7 @@
 	<property name="build.jar" value="tuxguitar-gervill.jar" />
 	
 	<path id="class.path">
+		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.gervill}"/>
 		<pathelement location="${path.swt}"/>
