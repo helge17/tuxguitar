@@ -447,14 +447,14 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		int header = 0;
 		header = (duration.isDotted())?header |= DURATION_DOTTED:header;
 		header = (duration.isDoubleDotted())?header |= DURATION_DOUBLE_DOTTED:header;
-		header = (!duration.getDivision().isEqual(TGDivisionType.NORMAL))?header |= DURATION_NO_TUPLE:header;
+		header = (!duration.getDivision().isEqual(TGDivisionType.NORMAL))?header |= DURATION_NO_TUPLET:header;
 		writeHeader(header);
 		
 		//escribo el valor
 		writeByte(duration.getValue());
 		
 		//escribo el tipo de divisiones
-		if(((header & DURATION_NO_TUPLE) != 0)){
+		if(((header & DURATION_NO_TUPLET) != 0)){
 			writeDivisionType(duration.getDivision());
 		}
 	}
