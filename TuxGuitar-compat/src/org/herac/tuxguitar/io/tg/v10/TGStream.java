@@ -60,7 +60,7 @@ public class TGStream {
 	
 	protected static final int DURATION_DOUBLE_DOTTED = 0x02;
 	
-	protected static final int DURATION_NO_TUPLE = 0x04;
+	protected static final int DURATION_NO_TUPLET = 0x04;
 	
 	protected static final int EFFECT_BEND = 0x01;
 	

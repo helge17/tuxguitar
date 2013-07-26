@@ -465,7 +465,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		duration.setValue(readByte());
 		
 		//leo el tipo de divisiones
-		if(((header & DURATION_NO_TUPLE) != 0)){
+		if(((header & DURATION_NO_TUPLET) != 0)){
 			readDivisionType(duration.getDivision());
 		}
 		else{
