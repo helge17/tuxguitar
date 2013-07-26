@@ -14,7 +14,7 @@ public abstract class MenuItems implements ItemBase {
 		if (action != null) {
 			KeyBinding keyBinding = TuxGuitar.instance().getkeyBindingManager().getKeyBindingForAction(action);
 			if (keyBinding != null) {
-				text += "\t" + keyBinding.toString();
+				text += "\t" + keyBinding.toString() + "\u0000";
 			}
 		}
 		menuItem.setText(text);
