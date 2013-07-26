@@ -237,10 +237,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	public void addString(String arg0, float arg1, float arg2, TGFont arg3) {
 		// TODO Auto-generated method stub
 	}
-	
-	public void copyArea(TGImage image, int x, int y) {
-		// TODO Auto-generated method stub		
-	}
 
 	public void drawPolygon(int[] arg0) {
 		// TODO Auto-generated method stub

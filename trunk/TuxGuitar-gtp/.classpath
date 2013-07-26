@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar"/>
 	<classpathentry kind="var" path="SWT_LIBRARY" sourcepath="/SWT_SOURCE"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar-gm-utils"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar-lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

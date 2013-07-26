@@ -11,5 +11,24 @@
 	<classpathentry kind="var" path="ITEXT_LIBRARY"/>
 	<classpathentry kind="var" path="SWT_LIBRARY" sourcepath="/SWT_SOURCE"/>
 	<classpathentry kind="var" path="SWT_SOURCE"/>
+	<classpathentry kind="lib" path="/TuxGuitar-alsa/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-community/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-compat/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-converter/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-fluidsynth/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-gervill/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-gm-utils/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-gpx/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-gtp/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-image/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-jsa/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-lilypond/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-midi/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-musicxml/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-ptb/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-svg/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-tef/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-tuner/bin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar-lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
