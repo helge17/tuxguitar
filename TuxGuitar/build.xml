@@ -24,6 +24,7 @@
 	
 	<path id="class.path">
 		<pathelement path="${lib.swt.jar}"/>
+		<pathelement path="${lib.tuxguitar.jar}"/>
 	</path >
 	
 	<target name="all">
