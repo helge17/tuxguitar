@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -75,16 +74,10 @@ public class TransportMixerAction extends ActionDialog {
 			ChangeBalanceListener balanceListener = new ChangeBalanceListener(trackPanels[i],trackPanels);
 			
 			trackPanels[i].getTrackVolume().addChangeListener(volumeListener);
-			
 			trackPanels[i].getTrackBalance().addChangeListener(balanceListener);
-			
 			trackPanels[i].getTrackSolo().addActionListener(new ChangeSoloListener(trackPanels[i],trackPanels));
 			trackPanels[i].getTrackMute().addActionListener(new ChangeMuteListener(trackPanels[i],trackPanels));
 		}
-		
-		this.setLocked(true);
-		this.fireUpdate(trackPanels, CHANGE_ALL);
-		this.setLocked(false);
 		
 		//---Player things--------------------------------------
 		final JSlider playerVolume = new JSlider(JSlider.VERTICAL);
@@ -151,39 +144,46 @@ public class TransportMixerAction extends ActionDialog {
 		dialog.setVisible(true);
 	}
 	
-	public void fireChannelChanges(TrackPanel[] trackPanels, TGChannel channel, int type){
-		Iterator it = getSongManager().getSong().getTracks();
-		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();
-			if(track.getChannel().getChannel() == channel.getChannel()){
-				channel.copy(track.getChannel());
-			}
+	
+	public void fireChannelChanges(TrackPanel[] trackPanels, int channelId){
+		TGChannel channel = getSongManager().getChannel(channelId);
+		if( channel != null ){
+			this.fireChannelChanges(trackPanels, channel);
 		}
+	}
+	
+	public void fireChannelChanges(TrackPanel[] trackPanels, TGChannel channel){
 		if (TuxGuitar.instance().getPlayer().isRunning()) {
 			TuxGuitar.instance().getPlayer().updateControllers();
 		}
-		fireUpdate(trackPanels, type);
 	}
 	
-	protected void fireUpdate(TrackPanel[] trackPanels, int type){
+	public void fireTrackChanges(TrackPanel[] trackPanels){
+		if (TuxGuitar.instance().getPlayer().isRunning()) {
+			TuxGuitar.instance().getPlayer().updateTracks();
+		}
+	}
+	
+	protected void xxfireUpdate(TrackPanel[] trackPanels, int type){
 		for(int i = 0 ; i < trackPanels.length ; i ++){
-			fireUpdate(trackPanels[i], type);
+			xxfireUpdate(trackPanels[i], type);
 		}
 	}
 	
-	private void fireUpdate(TrackPanel track, int type){
-		TGChannel channel = track.getTrack().getChannel();
-		
-		if((type & SOLO) != 0 || (type & MUTE) != 0){
-			track.getTrackSolo().setSelected( track.getTrack().isSolo() );
-			track.getTrackMute().setSelected( track.getTrack().isMute() );
-		}
-		if((type & VOLUME) != 0){
-			track.getTrackVolume().setValue( channel.getVolume() );
-			track.getTrackVolumeValue().setText( Integer.toString( channel.getVolume() ) );
-		}
-		if((type & BALANCE) != 0){
-			track.getTrackBalance().setValue( channel.getBalance() );
+	private void xxfireUpdate(TrackPanel track, int type){
+		TGChannel channel = getSongManager().getChannel(track.getTrack().getChannelId());
+		if( channel != null ){
+			if((type & SOLO) != 0 || (type & MUTE) != 0){
+				track.getTrackSolo().setSelected( track.getTrack().isSolo() );
+				track.getTrackMute().setSelected( track.getTrack().isMute() );
+			}
+			if((type & VOLUME) != 0){
+				track.getTrackVolume().setValue( channel.getVolume() );
+				track.getTrackVolumeValue().setText( Integer.toString( channel.getVolume() ) );
+			}
+			if((type & BALANCE) != 0){
+				track.getTrackBalance().setValue( channel.getBalance() );
+			}
 		}
 	}
 	
@@ -207,9 +207,11 @@ public class TransportMixerAction extends ActionDialog {
 		public void init(){
 			this.trackSolo = new JCheckBox("Solo");
 			this.trackSolo.setFont( TGConfig.FONT_WIDGETS );
+			this.trackSolo.setSelected( this.track.isSolo() );
 			
 			this.trackMute = new JCheckBox("Mute");
 			this.trackMute.setFont( TGConfig.FONT_WIDGETS );
+			this.trackMute.setSelected( this.track.isMute() );
 			
 			this.trackBalance = new JSlider(JSlider.HORIZONTAL);
 			this.trackBalance.setMinimum(0);
@@ -256,6 +258,13 @@ public class TransportMixerAction extends ActionDialog {
 			this.add(northPanel, BorderLayout.NORTH);
 			this.add(trackVolumePanel, BorderLayout.CENTER);
 			this.add(trackVolumeValuePanel, BorderLayout.SOUTH);
+			
+			TGChannel channel = getSongManager().getChannel(this.track.getChannelId());
+			if( channel != null ){
+				this.trackVolume.setValue( channel.getVolume() );
+				this.trackVolumeValue.setText( Integer.toString( channel.getVolume() ) );
+				this.trackBalance.setValue( channel.getBalance() );
+			}
 		}
 		
 		public TGTrack getTrack(){
@@ -298,12 +307,13 @@ public class TransportMixerAction extends ActionDialog {
 				setLocked(true);
 				
 				int value = this.track.getTrackVolume().getValue();
-				TGChannel channel = this.track.getTrack().getChannel();
-				if(value != channel.getVolume()){
-					channel.setVolume((short)value );
-					fireChannelChanges(this.tracks, channel, VOLUME);
+				TGChannel channel = getSongManager().getChannel(this.track.getTrack().getChannelId());
+				if( channel != null ){
+					if(value != channel.getVolume()){
+						channel.setVolume((short)value );
+						fireChannelChanges(this.tracks, channel);
+					}
 				}
-				
 				setLocked(false);
 			}
 		}
@@ -324,12 +334,13 @@ public class TransportMixerAction extends ActionDialog {
 				setLocked(true);
 				
 				int value = this.track.getTrackBalance().getValue();
-				TGChannel channel = this.track.getTrack().getChannel();
-				if(value != channel.getBalance()){
-					channel.setBalance((short)value );
-					fireChannelChanges(this.tracks, channel, BALANCE);
+				TGChannel channel = getSongManager().getChannel(this.track.getTrack().getChannelId());
+				if( channel != null ){
+					if(value != channel.getBalance()){
+						channel.setBalance((short)value );
+						fireChannelChanges(this.tracks, channel);
+					}
 				}
-				
 				setLocked(false);
 			}
 		}
@@ -351,10 +362,10 @@ public class TransportMixerAction extends ActionDialog {
 				
 				TGTrack track = this.track.getTrack();
 				track.setSolo(this.track.getTrackSolo().isSelected());
-				if(track.isSolo()){
+				if( track.isSolo() ){
 					track.setMute(false);
 				}
-				fireChannelChanges(this.tracks, track.getChannel(), SOLO);
+				fireTrackChanges(this.tracks);
 				
 				setLocked(false);
 			}
@@ -377,10 +388,10 @@ public class TransportMixerAction extends ActionDialog {
 				
 				TGTrack track = this.track.getTrack();
 				track.setMute(this.track.getTrackMute().isSelected());
-				if(track.isMute()){
+				if( track.isMute() ){
 					track.setSolo(false);
 				}
-				fireChannelChanges(this.tracks, track.getChannel(), MUTE);
+				fireTrackChanges(this.tracks);
 				
 				setLocked(false);
 			}

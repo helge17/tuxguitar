@@ -1,40 +1,55 @@
 package org.herac.tuxguitar.player.impl.jsa.midiport;
 
+import java.io.File;
+
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
+import org.herac.tuxguitar.gm.port.GMOutputPort;
+import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiReceiver;
 import org.herac.tuxguitar.player.impl.jsa.assistant.SBAssistant;
 
-public class MidiPortSynthesizer extends MidiOutputPort{
+public class MidiPortSynthesizer extends GMOutputPort{
 	
-	private Synthesizer synthesizer;
-	private MidiReceiver receiver;
+	private String key;
+	private String name;
+	private Synthesizer synth;
+	private GMReceiver receiver;
 	private boolean synthesizerLoaded;
 	private boolean soundbankLoaded;
 	
 	public MidiPortSynthesizer(Synthesizer synthesizer){
-		super(synthesizer.getDeviceInfo().getName(),synthesizer.getDeviceInfo().getName());
-		this.synthesizer = synthesizer;
+		this.key = synthesizer.getDeviceInfo().getName();
+		this.name = synthesizer.getDeviceInfo().getName();
+		this.synth = synthesizer;
 		this.receiver = new MidiPortSynthesizerReceiver(this);
 	}
 	
+	public String getKey() {
+		return this.key;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
 	public void open(){
-		getSynthesizer();
+		getSynth();
 	}
 	
 	public void close(){
-		if(this.synthesizer != null && this.synthesizer.isOpen()){
-			this.synthesizer.close();
+		if(this.synth != null && this.synth.isOpen()){
+			this.unloadSoundbank();
+			this.synth.close();
 		}
 	}
 	
-	public MidiReceiver getReceiver(){
+	public GMReceiver getReceiver(){
 		return this.receiver;
 	}
 	
@@ -47,53 +62,72 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 		}
 	}
 	
-	public Synthesizer getSynthesizer() {
+	public Synthesizer getSynth() {
 		try {
-			if(!this.synthesizer.isOpen()){
-				this.synthesizer.open();
+			if(!this.synth.isOpen()){
+				this.synth.open();
 
 				if(!isSoundbankLoaded()){
-					this.loadSoundbank( this.synthesizer.getDefaultSoundbank() );
+					this.loadSoundbank( this.synth.getDefaultSoundbank() );
 				}
 				
 				if(!isSoundbankLoaded()){
 					this.loadSoundbank( SBAssistant.instance().getSoundbank() );
 				}
 			}
-			this.synthesizerLoaded = this.synthesizer.isOpen();
+			this.synthesizerLoaded = this.synth.isOpen();
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
-		return this.synthesizer;
+		return this.synth;
+	}
+	
+	public boolean loadSoundbank(File file){
+		try {
+			return loadSoundbank( MidiSystem.getSoundbank(file) );
+		}catch (Throwable throwable) {
+			new MidiPlayerException(throwable.getMessage(), throwable);
+		}
+		return false;
 	}
 	
 	public boolean loadSoundbank(Soundbank sb) {
 		try {
-			if (sb != null && getSynthesizer().isSoundbankSupported(sb)){
-				this.soundbankLoaded = false;
-				
-				//unload all instruments
-				Instrument[] available = this.synthesizer.getAvailableInstruments();
-				if(available != null){
-					for(int i = 0; i < available.length; i++){
-						getSynthesizer().unloadInstrument(available[i]);
-					}
-				}
-				
-				Instrument[] loaded = this.synthesizer.getLoadedInstruments();
-				if(loaded != null){
-					for(int i = 0; i < loaded.length; i++){
-						getSynthesizer().unloadInstrument(loaded[i]);
-					}
-				}
+			if (sb != null && getSynth().isSoundbankSupported(sb)){
+				//unload the old soundbank
+				this.unloadSoundbank();
 				
 				//load all soundbank instruments
-				this.soundbankLoaded = getSynthesizer().loadAllInstruments(sb);
+				this.soundbankLoaded = getSynth().loadAllInstruments(sb);
 			}
 		}catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
 		return this.soundbankLoaded;
+	}
+	
+	public void unloadSoundbank(){
+		try {
+			this.soundbankLoaded = false;
+			
+			//unload all available instruments
+			Instrument[] available = this.synth.getAvailableInstruments();
+			if(available != null){
+				for(int i = 0; i < available.length; i++){
+					getSynth().unloadInstrument(available[i]);
+				}
+			}
+			
+			//unload all loaded instruments
+			Instrument[] loaded = this.synth.getLoadedInstruments();
+			if(loaded != null){
+				for(int i = 0; i < loaded.length; i++){
+					getSynth().unloadInstrument(loaded[i]);
+				}
+			}
+		}catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
 	}
 	
 	public boolean isSynthesizerLoaded(){
@@ -105,7 +139,7 @@ public class MidiPortSynthesizer extends MidiOutputPort{
 	}
 }
 
-class MidiPortSynthesizerReceiver implements MidiReceiver{
+class MidiPortSynthesizerReceiver implements GMReceiver{
 	
 	private MidiPortSynthesizer port;
 	private MidiChannel[] channels;
@@ -115,8 +149,8 @@ class MidiPortSynthesizerReceiver implements MidiReceiver{
 	}
 	
 	private MidiChannel[] getChannels(){
-		if(this.channels == null && this.port.getSynthesizer() != null){
-			this.channels = this.port.getSynthesizer().getChannels();
+		if(this.channels == null && this.port.getSynth() != null){
+			this.channels = this.port.getSynth().getChannels();
 		}
 		return this.channels;
 	}
