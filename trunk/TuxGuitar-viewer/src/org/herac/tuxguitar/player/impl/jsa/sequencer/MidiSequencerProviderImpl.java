@@ -40,12 +40,12 @@ public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 						}
 					}
 				} catch (MidiUnavailableException e) {
-					e.printStackTrace();
+					throw new MidiPlayerException("MIDI System is unavailable", e);
 				}
 			}
 			return sequencers;
 		}catch (Throwable t) {
-			throw new MidiPlayerException(t.getMessage(),t);
+			throw new MidiPlayerException(t.getMessage(), t);
 		}
 	}
 	

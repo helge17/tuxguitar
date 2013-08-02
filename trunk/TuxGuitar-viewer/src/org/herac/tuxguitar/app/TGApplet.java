@@ -139,6 +139,10 @@ public class TGApplet extends Applet{
 	public void loadSong(){
 		try{
 			if(TGConfig.SONG_URL != null){
+				TGFileFormatManager.instance().addInputStream(new org.herac.tuxguitar.io.tg10.TGInputStream());
+				TGFileFormatManager.instance().addInputStream(new org.herac.tuxguitar.io.tg11.TGInputStream());
+				TGFileFormatManager.instance().addInputStream(new org.herac.tuxguitar.io.tg12.TGInputStream());
+				
 				URL url = new URL(TGConfig.SONG_URL);
 				InputStream stream = getInputStream(url.openStream());
 				TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream);

@@ -6,6 +6,7 @@
  */
 package org.herac.tuxguitar.app.util;
 
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -23,7 +24,7 @@ public class SyncThread extends Thread {
 	
 	public SyncThread(final Runnable runnable) {
 		this(new TGSynchronizer.TGRunnable() {
-			public void run() throws Throwable {
+			public void run() throws TGException{
 				runnable.run();
 			}
 		});
@@ -31,7 +32,7 @@ public class SyncThread extends Thread {
 	
 	public void run() {
 		try {
-			TGSynchronizer.instance().addRunnable(this.runnable);
+			TGSynchronizer.instance().execute(this.runnable);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
