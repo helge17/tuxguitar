@@ -163,10 +163,10 @@ public class TGCommunityStartupScreen {
 	}
 	
 	public void setDisabled( boolean enabled ){
-		TGCommunitySingleton.getInstance().getConfig().setProperty("community.welcome.disabled",enabled);
+		TGCommunitySingleton.getInstance().getConfig().setValue("community.welcome.disabled",enabled);
 	}
 	
 	public boolean isDisabled(){
-		return TGCommunitySingleton.getInstance().getConfig().getBooleanConfigValue("community.welcome.disabled");
+		return TGCommunitySingleton.getInstance().getConfig().getBooleanValue("community.welcome.disabled");
 	}
 }

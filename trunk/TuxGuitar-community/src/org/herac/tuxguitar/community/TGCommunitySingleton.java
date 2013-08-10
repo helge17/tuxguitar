@@ -1,8 +1,7 @@
 package org.herac.tuxguitar.community;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.community.auth.TGCommunityAuth;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class TGCommunitySingleton {
 	
@@ -25,9 +24,8 @@ public class TGCommunitySingleton {
 	}
 	
 	public TGConfigManager getConfig(){
-		if(this.config == null){ 
-			this.config = new TGPluginConfigManager("tuxguitar-community");
-			this.config.init();
+		if( this.config == null ){ 
+			this.config = new TGConfigManager("tuxguitar-community");
 		}
 		return this.config;
 	}

@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.app.editors.matrix;
 
-import java.util.Properties;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -23,9 +21,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class MatrixConfig {
 	
@@ -91,16 +91,16 @@ public class MatrixConfig {
 	
 	public void defaults(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		Properties defaults = config.getDefaults();
-		config.setProperty(TGConfigKeys.MATRIX_FONT,defaults.getProperty(TGConfigKeys.MATRIX_FONT));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_BORDER,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_BORDER));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_POSITION,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_POSITION));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_NOTE,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_NOTE));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_1,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_LINE_1));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_2,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_LINE_2));
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_3,defaults.getProperty(TGConfigKeys.MATRIX_COLOR_LINE_3));
+		TGProperties defaults = TGConfigDefaults.createDefaults();
+		config.setValue(TGConfigKeys.MATRIX_FONT,defaults.getValue(TGConfigKeys.MATRIX_FONT));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND,defaults.getValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_BORDER,defaults.getValue(TGConfigKeys.MATRIX_COLOR_BORDER));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_POSITION,defaults.getValue(TGConfigKeys.MATRIX_COLOR_POSITION));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_NOTE,defaults.getValue(TGConfigKeys.MATRIX_COLOR_NOTE));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE,defaults.getValue(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_1,defaults.getValue(TGConfigKeys.MATRIX_COLOR_LINE_1));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_2,defaults.getValue(TGConfigKeys.MATRIX_COLOR_LINE_2));
+		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_3,defaults.getValue(TGConfigKeys.MATRIX_COLOR_LINE_3));
 	}
 	
 	public void save(FontData fontData,
@@ -112,15 +112,15 @@ public class MatrixConfig {
 					 RGB rgbLines[]){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		
-		config.setProperty(TGConfigKeys.MATRIX_FONT,fontData);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_FOREGROUND,rgbForeground);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_BORDER,rgbBorder);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_POSITION,rgbPosition);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_NOTE,rgbNote);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE,rgbPlay);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_1,rgbLines[0]);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_2,rgbLines[1]);
-		config.setProperty(TGConfigKeys.MATRIX_COLOR_LINE_3,rgbLines[2]);
+		config.setValue(TGConfigKeys.MATRIX_FONT,fontData);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND,rgbForeground);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_BORDER,rgbBorder);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_POSITION,rgbPosition);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_NOTE,rgbNote);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE,rgbPlay);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_1,rgbLines[0]);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_2,rgbLines[1]);
+		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_3,rgbLines[2]);
 	}
 	
 	public void dispose(){

@@ -11,20 +11,17 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.FileChooser;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiConfigUtils {
 	
 	public static final String SOUNDBANK_KEY = "soundbank.custom.path";
 	
 	public static TGConfigManager getConfig(){
-		TGConfigManager config = new TGPluginConfigManager("tuxguitar-jsa");
-		config.init();
-		return config;
+		return new TGConfigManager("tuxguitar-jsa");
 	}
 	
 	public static String getSoundbankPath(){
@@ -32,7 +29,7 @@ public class MidiConfigUtils {
 	}
 	
 	public static String getSoundbankPath(final TGConfigManager config){
-		return config.getStringConfigValue(SOUNDBANK_KEY);
+		return config.getStringValue(SOUNDBANK_KEY);
 	}
 	
 	public static void setupDialog(Shell parent) {
@@ -101,9 +98,9 @@ public class MidiConfigUtils {
 				changed = changed || (selection != null && !selection.equals(soundbank) ) ;
 				if(changed){
 					if(selection != null){
-						config.setProperty(SOUNDBANK_KEY,selection);
+						config.setValue(SOUNDBANK_KEY,selection);
 					}else{
-						config.removeProperty(SOUNDBANK_KEY);
+						config.remove(SOUNDBANK_KEY);
 					}
 					config.save();
 					

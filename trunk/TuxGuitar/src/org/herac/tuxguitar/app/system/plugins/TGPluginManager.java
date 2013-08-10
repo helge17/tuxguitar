@@ -70,7 +70,7 @@ public class TGPluginManager {
 	
 	public void setEnabled(TGPlugin plugin,boolean enabled){
 		try{
-			TGPluginProperties.instance().setProperty(getEnabledProperty(plugin),enabled);
+			TGPluginProperties.instance().setValue(getEnabledProperty(plugin),enabled);
 			TGPluginProperties.instance().save();
 			plugin.setEnabled(enabled);
 		}catch(TGPluginException exception){
@@ -82,7 +82,7 @@ public class TGPluginManager {
 	
 	public boolean isEnabled(TGPlugin plugin){
 		try{
-			return TGPluginProperties.instance().getBooleanConfigValue(getEnabledProperty(plugin),true);
+			return TGPluginProperties.instance().getBooleanValue(getEnabledProperty(plugin), true);
 		}catch(Throwable throwable){
 			MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to get plugin status",throwable));
 		}

@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.jack.synthesizer;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.gm.port.GMOutputPort;
 import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.settings.JackSettings;
 import org.herac.tuxguitar.jack.settings.JackSettingsListener;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class JackOutputPort extends GMOutputPort implements JackSettingsListener {
 	

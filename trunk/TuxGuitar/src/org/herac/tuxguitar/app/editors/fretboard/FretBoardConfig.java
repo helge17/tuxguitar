@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.app.editors.fretboard;
 
-import java.util.Properties;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -23,9 +21,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class FretBoardConfig {
 	
@@ -85,8 +85,8 @@ public class FretBoardConfig {
 	public void load(){
 		Display display = TuxGuitar.instance().getDisplay();
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		this.style = config.getIntConfigValue(TGConfigKeys.FRETBOARD_STYLE);
-		this.direction = config.getIntConfigValue(TGConfigKeys.FRETBOARD_DIRECTION, DIRECTION_RIGHT );
+		this.style = config.getIntegerValue(TGConfigKeys.FRETBOARD_STYLE);
+		this.direction = config.getIntegerValue(TGConfigKeys.FRETBOARD_DIRECTION, DIRECTION_RIGHT );
 		this.font = new Font(display,config.getFontDataConfigValue(TGConfigKeys.FRETBOARD_FONT));
 		this.colorBackground = new Color(display,config.getRGBConfigValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
 		this.colorString = new Color(display,config.getRGBConfigValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
@@ -97,32 +97,32 @@ public class FretBoardConfig {
 	
 	public void defaults(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		Properties defaults = config.getDefaults();
-		config.setProperty(TGConfigKeys.FRETBOARD_STYLE,defaults.getProperty(TGConfigKeys.FRETBOARD_STYLE));
-		config.setProperty(TGConfigKeys.FRETBOARD_DIRECTION,defaults.getProperty(TGConfigKeys.FRETBOARD_DIRECTION));
-		config.setProperty(TGConfigKeys.FRETBOARD_FONT,defaults.getProperty(TGConfigKeys.FRETBOARD_FONT));
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_STRING,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_STRING));
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_NOTE,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_NOTE));
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_SCALE,defaults.getProperty(TGConfigKeys.FRETBOARD_COLOR_SCALE));
+		TGProperties defaults = TGConfigDefaults.createDefaults();
+		config.setValue(TGConfigKeys.FRETBOARD_STYLE,defaults.getValue(TGConfigKeys.FRETBOARD_STYLE));
+		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,defaults.getValue(TGConfigKeys.FRETBOARD_DIRECTION));
+		config.setValue(TGConfigKeys.FRETBOARD_FONT,defaults.getValue(TGConfigKeys.FRETBOARD_FONT));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_STRING,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_SCALE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
 	}
 	
 	public void save(int style, int direction, FontData fontData,RGB rgbBackground,RGB rgbString,RGB rgbFretPoint,RGB rgbNote,RGB rgbScale){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		config.setProperty(TGConfigKeys.FRETBOARD_STYLE,style);
-		config.setProperty(TGConfigKeys.FRETBOARD_DIRECTION,direction);
-		config.setProperty(TGConfigKeys.FRETBOARD_FONT,fontData);
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,rgbBackground);
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_STRING,rgbString);
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,rgbFretPoint);
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_NOTE,rgbNote);
-		config.setProperty(TGConfigKeys.FRETBOARD_COLOR_SCALE,rgbScale);
+		config.setValue(TGConfigKeys.FRETBOARD_STYLE,style);
+		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,direction);
+		config.setValue(TGConfigKeys.FRETBOARD_FONT,fontData);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,rgbBackground);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_STRING,rgbString);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,rgbFretPoint);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE,rgbNote);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_SCALE,rgbScale);
 	}
 	
 	public void saveDirection( int direction ){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		config.setProperty(TGConfigKeys.FRETBOARD_DIRECTION,direction);
+		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,direction);
 		
 		this.direction = direction;
 	}

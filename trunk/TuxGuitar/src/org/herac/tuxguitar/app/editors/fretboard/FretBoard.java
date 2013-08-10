@@ -66,7 +66,7 @@ public class FretBoard extends Composite {
 	public static final int TOP_SPACING = 10;
 	public static final int BOTTOM_SPACING = 10;
 	
-	private static final int STRING_SPACING = TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.FRETBOARD_STRING_SPACING);
+	private static final int STRING_SPACING = TuxGuitar.instance().getConfig().getIntegerValue(TGConfigKeys.FRETBOARD_STRING_SPACING);
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_FRETBOARD);
 	
 	private FretBoardListener listener;

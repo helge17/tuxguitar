@@ -92,9 +92,9 @@ public class MainOption  extends Option{
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				final String windowTitle = getConfig().getStringConfigValue(TGConfigKeys.WINDOW_TITLE);
-				final boolean showSplash = getConfig().getBooleanConfigValue(TGConfigKeys.SHOW_SPLASH);
-				final boolean autoSizeTable = getConfig().getBooleanConfigValue(TGConfigKeys.TABLE_AUTO_SIZE);
+				final String windowTitle = getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE);
+				final boolean showSplash = getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH);
+				final boolean autoSizeTable = getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
 				new SyncThread(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
@@ -112,17 +112,17 @@ public class MainOption  extends Option{
 	
 	public void updateConfig(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.WINDOW_TITLE,this.windowTitle.getText());
-			getConfig().setProperty(TGConfigKeys.SHOW_SPLASH,this.showSplash.getSelection());
-			getConfig().setProperty(TGConfigKeys.TABLE_AUTO_SIZE,this.autoSizeTable.getSelection());
+			getConfig().setValue(TGConfigKeys.WINDOW_TITLE,this.windowTitle.getText());
+			getConfig().setValue(TGConfigKeys.SHOW_SPLASH,this.showSplash.getSelection());
+			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE,this.autoSizeTable.getSelection());
 		}
 	}
 	
 	public void updateDefaults(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.WINDOW_TITLE,getDefaults().getProperty(TGConfigKeys.WINDOW_TITLE));
-			getConfig().setProperty(TGConfigKeys.SHOW_SPLASH,getDefaults().getProperty(TGConfigKeys.SHOW_SPLASH));
-			getConfig().setProperty(TGConfigKeys.TABLE_AUTO_SIZE,getDefaults().getProperty(TGConfigKeys.TABLE_AUTO_SIZE));
+			getConfig().setValue(TGConfigKeys.WINDOW_TITLE, getDefaults().getValue(TGConfigKeys.WINDOW_TITLE));
+			getConfig().setValue(TGConfigKeys.SHOW_SPLASH, getDefaults().getValue(TGConfigKeys.SHOW_SPLASH));
+			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE, getDefaults().getValue(TGConfigKeys.TABLE_AUTO_SIZE));
 		}
 	}
 	

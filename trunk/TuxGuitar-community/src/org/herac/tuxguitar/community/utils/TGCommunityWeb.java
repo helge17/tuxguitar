@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class TGCommunityWeb {
 	
-	public static String HOME_URL = TGCommunitySingleton.getInstance().getConfig().getStringConfigValue("community.url");
+	public static String HOME_URL = TGCommunitySingleton.getInstance().getConfig().getStringValue("community.url");
 	
 	public static void open( String suffix ){
 		try {
@@ -52,7 +52,7 @@ public class TGCommunityWeb {
 	private static boolean openCommandLineBrowser( URL url ){
 		TGConfigManager config = TGCommunitySingleton.getInstance().getConfig();
 		
-		String[] browserCmds = config.getStringConfigValue("community.browser","").split(";");
+		String[] browserCmds = config.getStringValue("community.browser","").split(";");
 		for( int i = 0 ; i < browserCmds.length ; i ++ ){
 			try {
 				String browserCmd = browserCmds[i];

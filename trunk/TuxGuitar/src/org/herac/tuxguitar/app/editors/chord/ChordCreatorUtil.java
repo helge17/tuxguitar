@@ -12,15 +12,11 @@ package org.herac.tuxguitar.app.editors.chord;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.util.Comparator;
-
 import java.util.Iterator;
-
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-
 import org.herac.tuxguitar.song.models.TGChord;
 
 /**

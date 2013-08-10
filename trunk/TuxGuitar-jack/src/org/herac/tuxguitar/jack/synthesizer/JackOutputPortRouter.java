@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.jack.synthesizer;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class JackOutputPortRouter {
 	
@@ -188,7 +188,7 @@ public class JackOutputPortRouter {
 	}
 	
 	public void loadSettings( TGConfigManager config ){
-		int type = config.getIntConfigValue("jack.midi.ports.type", CREATE_UNIQUE_PORT );
+		int type = config.getIntegerValue("jack.midi.ports.type", CREATE_UNIQUE_PORT );
 		if( type == CREATE_MULTIPLE_PORTS_BY_PROGRAM ){
 			// 128 instruments bank + 1 percussion kit bank
 			int[][][] routing = new int[129][128][];
@@ -197,10 +197,10 @@ public class JackOutputPortRouter {
 					String portId = (bank + "-" + prg);
 					routing[bank][prg] = new int[5];
 					routing[bank][prg][0] = prg;
-					routing[bank][prg][1] = config.getIntConfigValue("jack.midi.port.program-routing.port-" + portId , 0 );
-					routing[bank][prg][2] = config.getIntConfigValue("jack.midi.port.program-routing.to-channel-" + portId , -1 );
-					routing[bank][prg][3] = config.getIntConfigValue("jack.midi.port.program-routing.to-program-" + portId , -1 );
-					routing[bank][prg][4] = config.getIntConfigValue("jack.midi.port.program-routing.to-bank-" + portId , -1 );
+					routing[bank][prg][1] = config.getIntegerValue("jack.midi.port.program-routing.port-" + portId , 0 );
+					routing[bank][prg][2] = config.getIntegerValue("jack.midi.port.program-routing.to-channel-" + portId , -1 );
+					routing[bank][prg][3] = config.getIntegerValue("jack.midi.port.program-routing.to-program-" + portId , -1 );
+					routing[bank][prg][4] = config.getIntegerValue("jack.midi.port.program-routing.to-bank-" + portId , -1 );
 				}
 			}
 			this.createMultiplePortsByProgram( routing );
@@ -210,9 +210,9 @@ public class JackOutputPortRouter {
 			for( int i = 0 ; i < routing.length ; i ++ ){
 				routing[i] = new int[4];
 				routing[i][0] = i;
-				routing[i][1] = config.getIntConfigValue("jack.midi.port.channel-routing.to-channel-" + i , -1 );
-				routing[i][2] = config.getIntConfigValue("jack.midi.port.channel-routing.to-program-" + i , -1 );
-				routing[i][3] = config.getIntConfigValue("jack.midi.port.channel-routing.to-bank-" + i , -1 );
+				routing[i][1] = config.getIntegerValue("jack.midi.port.channel-routing.to-channel-" + i , -1 );
+				routing[i][2] = config.getIntegerValue("jack.midi.port.channel-routing.to-program-" + i , -1 );
+				routing[i][3] = config.getIntegerValue("jack.midi.port.channel-routing.to-bank-" + i , -1 );
 			}
 			this.createMultiplePortsByChannel( routing );
 		}else{

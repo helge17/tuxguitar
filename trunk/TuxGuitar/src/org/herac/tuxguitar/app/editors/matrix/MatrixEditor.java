@@ -658,7 +658,7 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	protected int loadGrids(){
-		int grids = TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.MATRIX_GRIDS);
+		int grids = TuxGuitar.instance().getConfig().getIntegerValue(TGConfigKeys.MATRIX_GRIDS);
 		// check if is valid value
 		for(int i = 0 ; i < DIVISIONS.length ; i ++ ){
 			if(grids == DIVISIONS[i]){

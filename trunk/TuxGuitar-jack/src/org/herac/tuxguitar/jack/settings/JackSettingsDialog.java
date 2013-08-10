@@ -49,7 +49,7 @@ public class JackSettingsDialog {
 		final TabItem[] routingTabs = new TabItem[2];
 		
 		// ----------------------------------------------------------------------
-		int synthRouteType = this.settings.getConfig().getIntConfigValue("jack.midi.ports.type", JackOutputPortRouter.CREATE_UNIQUE_PORT );
+		int synthRouteType = this.settings.getConfig().getIntegerValue("jack.midi.ports.type", JackOutputPortRouter.CREATE_UNIQUE_PORT );
 		
 		Composite tabControl = new Composite( tabFolder, SWT.NONE);
 		tabControl.setLayout(new GridLayout());
@@ -155,7 +155,7 @@ public class JackSettingsDialog {
 		else if( type == JackOutputPortRouter.CREATE_MULTIPLE_PORTS_BY_PROGRAM ){
 			this.setProgramRoutingSettings(programRouting);
 		}
-		this.settings.getConfig().setProperty("jack.midi.ports.type", type );
+		this.settings.getConfig().setValue("jack.midi.ports.type", type );
 		this.settings.notifyChanges();
 	}
 	
@@ -164,9 +164,9 @@ public class JackSettingsDialog {
 		for( int i = 0 ; i < channelsRoute.length ; i ++ ){
 			channelsRoute[i] = new int[4];
 			channelsRoute[i][0] = i;
-			channelsRoute[i][1] = this.settings.getConfig().getIntConfigValue("jack.midi.port.channel-routing.to-channel-" + i , -1 );
-			channelsRoute[i][2] = this.settings.getConfig().getIntConfigValue("jack.midi.port.channel-routing.to-program-" + i , -1 );
-			channelsRoute[i][3] = this.settings.getConfig().getIntConfigValue("jack.midi.port.channel-routing.to-bank-" + i , -1 );
+			channelsRoute[i][1] = this.settings.getConfig().getIntegerValue("jack.midi.port.channel-routing.to-channel-" + i , -1 );
+			channelsRoute[i][2] = this.settings.getConfig().getIntegerValue("jack.midi.port.channel-routing.to-program-" + i , -1 );
+			channelsRoute[i][3] = this.settings.getConfig().getIntegerValue("jack.midi.port.channel-routing.to-bank-" + i , -1 );
 		}
 		return channelsRoute;
 	}
@@ -174,9 +174,9 @@ public class JackSettingsDialog {
 	protected void setChannelRoutingSettings(int[][] channelsRoute){
 		for( int i = 0 ; i < channelsRoute.length ; i ++ ){
 			if( channelsRoute[i].length == 4 ){
-				this.settings.getConfig().setProperty("jack.midi.port.channel-routing.to-channel-" + channelsRoute[i][0] , channelsRoute[i][1] );
-				this.settings.getConfig().setProperty("jack.midi.port.channel-routing.to-program-" + channelsRoute[i][0] , channelsRoute[i][2] );
-				this.settings.getConfig().setProperty("jack.midi.port.channel-routing.to-bank-" + channelsRoute[i][0] , channelsRoute[i][3] );
+				this.settings.getConfig().setValue("jack.midi.port.channel-routing.to-channel-" + channelsRoute[i][0] , channelsRoute[i][1] );
+				this.settings.getConfig().setValue("jack.midi.port.channel-routing.to-program-" + channelsRoute[i][0] , channelsRoute[i][2] );
+				this.settings.getConfig().setValue("jack.midi.port.channel-routing.to-bank-" + channelsRoute[i][0] , channelsRoute[i][3] );
 			}
 		}
 	}
@@ -188,10 +188,10 @@ public class JackSettingsDialog {
 				String portId = (bank + "-" + prg);
 				routing[bank][prg] = new int[5];
 				routing[bank][prg][0] = prg;
-				routing[bank][prg][1] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.port-" + portId , 0 );
-				routing[bank][prg][2] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-channel-" + portId , -1 );
-				routing[bank][prg][3] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-program-" + portId , -1 );
-				routing[bank][prg][4] = this.settings.getConfig().getIntConfigValue("jack.midi.port.program-routing.to-bank-" + portId , -1 );
+				routing[bank][prg][1] = this.settings.getConfig().getIntegerValue("jack.midi.port.program-routing.port-" + portId , 0 );
+				routing[bank][prg][2] = this.settings.getConfig().getIntegerValue("jack.midi.port.program-routing.to-channel-" + portId , -1 );
+				routing[bank][prg][3] = this.settings.getConfig().getIntegerValue("jack.midi.port.program-routing.to-program-" + portId , -1 );
+				routing[bank][prg][4] = this.settings.getConfig().getIntegerValue("jack.midi.port.program-routing.to-bank-" + portId , -1 );
 			}
 		}
 		return routing;
@@ -202,10 +202,10 @@ public class JackSettingsDialog {
 			for( int prg = 0 ; prg < routing[bank].length ; prg ++ ){
 				if( routing[bank][prg].length == 5 ){
 					String portId = (bank + "-" + prg);
-					this.settings.getConfig().setProperty("jack.midi.port.program-routing.port-" + portId , routing[bank][prg][1] );
-					this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-channel-" + portId , routing[bank][prg][2] );
-					this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-program-" + portId , routing[bank][prg][3] );
-					this.settings.getConfig().setProperty("jack.midi.port.program-routing.to-bank-" + portId , routing[bank][prg][4] );
+					this.settings.getConfig().setValue("jack.midi.port.program-routing.port-" + portId , routing[bank][prg][1] );
+					this.settings.getConfig().setValue("jack.midi.port.program-routing.to-channel-" + portId , routing[bank][prg][2] );
+					this.settings.getConfig().setValue("jack.midi.port.program-routing.to-program-" + portId , routing[bank][prg][3] );
+					this.settings.getConfig().setValue("jack.midi.port.program-routing.to-bank-" + portId , routing[bank][prg][4] );
 				}
 			}
 		}

@@ -18,7 +18,7 @@ public class WindowTitleUtil {
 	public static final String VAR_SONG_ARTIST = "songartist";
 	
 	public static String parseTitle(){
-		String title = parseString(TuxGuitar.instance().getConfig().getStringConfigValue(TGConfigKeys.WINDOW_TITLE));
+		String title = parseString(TuxGuitar.instance().getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE));
 		return ((title == null)?TuxGuitar.APPLICATION_NAME:title);
 	}
 	

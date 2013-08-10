@@ -9,6 +9,6 @@ public class TGPainterUtils {
 	public static final boolean FORCE_OS_DEFAULTS = getValue(TGConfigKeys.FORCE_OS_DEFAULTS);
 	
 	private static boolean getValue(String key){
-		return TuxGuitar.instance().getConfig().getBooleanConfigValue(key);
+		return TuxGuitar.instance().getConfig().getBooleanValue(key);
 	}
 }

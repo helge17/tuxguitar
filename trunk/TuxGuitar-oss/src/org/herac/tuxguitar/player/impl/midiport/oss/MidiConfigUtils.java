@@ -12,9 +12,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiConfigUtils {
 	
@@ -23,9 +22,7 @@ public class MidiConfigUtils {
 	public static final String DEVICE_DEFAULT = "/dev/sequencer";
 	
 	public static TGConfigManager getConfig(){
-		TGConfigManager config = new TGPluginConfigManager("tuxguitar-oss");
-		config.init();
-		return config;
+		return new TGConfigManager("tuxguitar-oss");
 	}
 	
 	public static String getDevice(){
@@ -33,7 +30,7 @@ public class MidiConfigUtils {
 	}
 	
 	public static String getDevice(final TGConfigManager config){
-		return config.getStringConfigValue(DEVICE_KEY,DEVICE_DEFAULT);
+		return config.getStringValue(DEVICE_KEY,DEVICE_DEFAULT);
 	}
 	
 	public static void setupDialog(Shell parent,final MidiOutputPortProviderImpl provider) {
@@ -80,9 +77,9 @@ public class MidiConfigUtils {
 				String value2 = (selection == null ? new String() : selection);
 				if(!value1.equals(value2)){
 					if(selection != null){
-						config.setProperty(DEVICE_KEY,selection);
+						config.setValue(DEVICE_KEY,selection);
 					}else{
-						config.removeProperty(DEVICE_KEY);
+						config.remove(DEVICE_KEY);
 					}
 					config.save();
 					provider.updateDevice(selection);

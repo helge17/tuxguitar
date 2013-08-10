@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class JackSettings {
 	
@@ -14,8 +13,7 @@ public class JackSettings {
 	
 	public JackSettings(){
 		this.listeners = new ArrayList();
-		this.config = new TGPluginConfigManager("tuxguitar-jack");
-		this.config.init();
+		this.config = new TGConfigManager("tuxguitar-jack");
 	}
 	
 	public TGConfigManager getConfig(){

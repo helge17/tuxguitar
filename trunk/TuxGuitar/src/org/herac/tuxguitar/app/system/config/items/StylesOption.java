@@ -256,39 +256,39 @@ public class StylesOption extends Option{
 	
 	public void updateConfig(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.FONT_DEFAULT,this.defaultFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_NOTE,this.noteFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_TIME_SIGNATURE,this.timeSignatureFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_TEXT,this.textFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_LYRIC,this.lyricFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_DEFAULT,this.printerDefaultFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_NOTE,this.printerNoteFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE,this.printerTSFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_TEXT,this.printerTextFontData);
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_LYRIC,this.printerLyricFontData);
-			getConfig().setProperty(TGConfigKeys.COLOR_SCORE_NOTE,this.scoreNoteColorButton.getValue());
-			getConfig().setProperty(TGConfigKeys.COLOR_TAB_NOTE,this.tabNoteColorButton.getValue());
-			getConfig().setProperty(TGConfigKeys.COLOR_PLAY_NOTE,this.playNoteColorButton.getValue());
-			getConfig().setProperty(TGConfigKeys.COLOR_LINE,this.linesColorButton.getValue());
+			getConfig().setValue(TGConfigKeys.FONT_DEFAULT,this.defaultFontData);
+			getConfig().setValue(TGConfigKeys.FONT_NOTE,this.noteFontData);
+			getConfig().setValue(TGConfigKeys.FONT_TIME_SIGNATURE,this.timeSignatureFontData);
+			getConfig().setValue(TGConfigKeys.FONT_TEXT,this.textFontData);
+			getConfig().setValue(TGConfigKeys.FONT_LYRIC,this.lyricFontData);
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_DEFAULT,this.printerDefaultFontData);
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_NOTE,this.printerNoteFontData);
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE,this.printerTSFontData);
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TEXT,this.printerTextFontData);
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_LYRIC,this.printerLyricFontData);
+			getConfig().setValue(TGConfigKeys.COLOR_SCORE_NOTE,this.scoreNoteColorButton.getValue());
+			getConfig().setValue(TGConfigKeys.COLOR_TAB_NOTE,this.tabNoteColorButton.getValue());
+			getConfig().setValue(TGConfigKeys.COLOR_PLAY_NOTE,this.playNoteColorButton.getValue());
+			getConfig().setValue(TGConfigKeys.COLOR_LINE,this.linesColorButton.getValue());
 		}
 	}
 	
 	public void updateDefaults(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.FONT_DEFAULT,getDefaults().getProperty(TGConfigKeys.FONT_DEFAULT));
-			getConfig().setProperty(TGConfigKeys.FONT_NOTE,getDefaults().getProperty(TGConfigKeys.FONT_NOTE));
-			getConfig().setProperty(TGConfigKeys.FONT_TIME_SIGNATURE,getDefaults().getProperty(TGConfigKeys.FONT_TIME_SIGNATURE));
-			getConfig().setProperty(TGConfigKeys.FONT_TEXT,getDefaults().getProperty(TGConfigKeys.FONT_TEXT));
-			getConfig().setProperty(TGConfigKeys.FONT_LYRIC,getDefaults().getProperty(TGConfigKeys.FONT_LYRIC));
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_DEFAULT,getDefaults().getProperty(TGConfigKeys.FONT_PRINTER_DEFAULT));
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_NOTE,getDefaults().getProperty(TGConfigKeys.FONT_PRINTER_NOTE));
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE,getDefaults().getProperty(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_TEXT,getDefaults().getProperty(TGConfigKeys.FONT_PRINTER_TEXT));
-			getConfig().setProperty(TGConfigKeys.FONT_PRINTER_LYRIC,getDefaults().getProperty(TGConfigKeys.FONT_PRINTER_LYRIC));
-			getConfig().setProperty(TGConfigKeys.COLOR_SCORE_NOTE,getDefaults().getProperty(TGConfigKeys.COLOR_SCORE_NOTE));
-			getConfig().setProperty(TGConfigKeys.COLOR_TAB_NOTE,getDefaults().getProperty(TGConfigKeys.COLOR_TAB_NOTE));
-			getConfig().setProperty(TGConfigKeys.COLOR_PLAY_NOTE,getDefaults().getProperty(TGConfigKeys.COLOR_PLAY_NOTE));
-			getConfig().setProperty(TGConfigKeys.COLOR_LINE,getDefaults().getProperty(TGConfigKeys.COLOR_LINE));
+			getConfig().setValue(TGConfigKeys.FONT_DEFAULT, getDefaults().getValue(TGConfigKeys.FONT_DEFAULT));
+			getConfig().setValue(TGConfigKeys.FONT_NOTE, getDefaults().getValue(TGConfigKeys.FONT_NOTE));
+			getConfig().setValue(TGConfigKeys.FONT_TIME_SIGNATURE, getDefaults().getValue(TGConfigKeys.FONT_TIME_SIGNATURE));
+			getConfig().setValue(TGConfigKeys.FONT_TEXT, getDefaults().getValue(TGConfigKeys.FONT_TEXT));
+			getConfig().setValue(TGConfigKeys.FONT_LYRIC, getDefaults().getValue(TGConfigKeys.FONT_LYRIC));
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_DEFAULT, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_NOTE, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_NOTE));
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TEXT, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_TEXT));
+			getConfig().setValue(TGConfigKeys.FONT_PRINTER_LYRIC, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_LYRIC));
+			getConfig().setValue(TGConfigKeys.COLOR_SCORE_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_SCORE_NOTE));
+			getConfig().setValue(TGConfigKeys.COLOR_TAB_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_TAB_NOTE));
+			getConfig().setValue(TGConfigKeys.COLOR_PLAY_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_PLAY_NOTE));
+			getConfig().setValue(TGConfigKeys.COLOR_LINE, getDefaults().getValue(TGConfigKeys.COLOR_LINE));
 		}
 	}
 	

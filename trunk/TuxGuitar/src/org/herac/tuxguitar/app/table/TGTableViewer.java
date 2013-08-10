@@ -366,7 +366,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	}
 	
 	public void loadConfig(){
-		this.autoSizeEnabled = TuxGuitar.instance().getConfig().getBooleanConfigValue(TGConfigKeys.TABLE_AUTO_SIZE);
+		this.autoSizeEnabled = TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
 		this.trackCount = 0;
 	}
 	

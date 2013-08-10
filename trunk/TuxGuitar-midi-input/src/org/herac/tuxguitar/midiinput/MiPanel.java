@@ -96,7 +96,7 @@ class MiPanel
 
 					if(mode != MiConfig.instance().getMode())
 						{
-						MiConfig.getConfig().setProperty(MiConfig.KEY_MODE, mode);
+						MiConfig.getConfig().setValue(MiConfig.KEY_MODE, mode);
 						MiConfig.getConfig().save();
 
 						MiProvider.instance().setMode(mode);

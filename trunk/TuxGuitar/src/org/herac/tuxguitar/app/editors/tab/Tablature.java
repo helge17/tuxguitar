@@ -328,7 +328,7 @@ public class Tablature extends Composite implements TGController {
 	public void reloadViewLayout(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		
-		this.loadViewLayout(config.getIntConfigValue(TGConfigKeys.LAYOUT_STYLE), config.getIntConfigValue(TGConfigKeys.LAYOUT_MODE));
+		this.loadViewLayout(config.getIntegerValue(TGConfigKeys.LAYOUT_STYLE), config.getIntegerValue(TGConfigKeys.LAYOUT_MODE));
 	}
 	
 	private void loadViewLayout( int style, int mode ){
@@ -389,14 +389,14 @@ public class Tablature extends Composite implements TGController {
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		
 		styles.setBufferEnabled(true);
-		styles.setStringSpacing(config.getIntConfigValue(TGConfigKeys.TAB_LINE_SPACING));
-		styles.setScoreLineSpacing(config.getIntConfigValue(TGConfigKeys.SCORE_LINE_SPACING));
+		styles.setStringSpacing(config.getIntegerValue(TGConfigKeys.TAB_LINE_SPACING));
+		styles.setScoreLineSpacing(config.getIntegerValue(TGConfigKeys.SCORE_LINE_SPACING));
 		styles.setFirstMeasureSpacing(20);
 		styles.setMinBufferSeparator(20);
 		styles.setMinTopSpacing(30);
-		styles.setMinScoreTabSpacing(config.getIntConfigValue(TGConfigKeys.MIN_SCORE_TABLATURE_SPACING));
-		styles.setFirstTrackSpacing(config.getIntConfigValue(TGConfigKeys.FIRST_TRACK_SPACING));
-		styles.setTrackSpacing(config.getIntConfigValue(TGConfigKeys.TRACK_SPACING));
+		styles.setMinScoreTabSpacing(config.getIntegerValue(TGConfigKeys.MIN_SCORE_TABLATURE_SPACING));
+		styles.setFirstTrackSpacing(config.getIntegerValue(TGConfigKeys.FIRST_TRACK_SPACING));
+		styles.setTrackSpacing(config.getIntegerValue(TGConfigKeys.TRACK_SPACING));
 		styles.setChordFretIndexSpacing(8);
 		styles.setChordStringSpacing(5);
 		styles.setChordFretSpacing(6);

@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.app.system.config.items;
 
-import java.util.Properties;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -26,6 +24,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.system.config.TGConfigEditor;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.util.properties.TGProperties;
 
 public abstract class Option extends SelectionAdapter{
 	
@@ -138,7 +137,7 @@ public abstract class Option extends SelectionAdapter{
 		return this.configEditor.getConfig();
 	}
 	
-	public Properties getDefaults(){
+	public TGProperties getDefaults(){
 		return this.configEditor.getDefaults();
 	}
 	

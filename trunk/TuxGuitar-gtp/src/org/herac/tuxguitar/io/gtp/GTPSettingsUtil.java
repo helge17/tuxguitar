@@ -18,9 +18,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class GTPSettingsUtil {
 	
@@ -49,8 +48,7 @@ public class GTPSettingsUtil {
 	
 	public TGConfigManager getConfig(){
 		if(this.config == null){ 
-			this.config = new TGPluginConfigManager("tuxguitar-gtp");
-			this.config.init();
+			this.config = new TGConfigManager("tuxguitar-gtp");
 		}
 		return this.config;
 	}
@@ -60,7 +58,7 @@ public class GTPSettingsUtil {
 		if( charsetDefault == null ){
 			charsetDefault = GTPSettings.DEFAULT_CHARSET;
 		}
-		this.settings.setCharset( getConfig().getStringConfigValue(KEY_CHARSET, charsetDefault) );
+		this.settings.setCharset( getConfig().getStringValue(KEY_CHARSET, charsetDefault) );
 	}
 	
 	public void configure(Shell parent) {
@@ -106,7 +104,7 @@ public class GTPSettingsUtil {
 				int selection = value.getSelectionIndex();
 				if(selection >= 0 && selection < charsets.size() ){
 					TGConfigManager config = getConfig();
-					config.setProperty(KEY_CHARSET, (String)charsets.get(selection));
+					config.setValue(KEY_CHARSET, (String)charsets.get(selection));
 					config.save();
 					load();
 				}
