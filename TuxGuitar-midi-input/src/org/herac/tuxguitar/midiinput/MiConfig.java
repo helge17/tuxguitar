@@ -15,10 +15,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 class MiConfig
 {
@@ -65,8 +64,7 @@ class MiConfig
 
 	private	MiConfig()
 	{
-	f_Config = new TGPluginConfigManager("tuxguitar-midi-input");
-	f_Config.init();
+	f_Config = new TGConfigManager("tuxguitar-midi-input");
 	}
 
 
@@ -85,14 +83,14 @@ class MiConfig
 	}
 
 
-	String	getMidiInputPortName()	{ return s_Instance.f_Config.getStringConfigValue(KEY_MIDI_INPUT_PORT); }
-	int		getMidiBaseChannel()	{ return s_Instance.f_Config.getIntConfigValue(KEY_MIDI_BASE_CHANNEL, 0); }
-	int		getMode()				{ return s_Instance.f_Config.getIntConfigValue(KEY_MODE, MODE_FRETBOARD_ECHO); }
-	int		getMinVelocity()		{ return s_Instance.f_Config.getIntConfigValue(KEY_MIN_VELOCITY, DEF_VELOCITY_THRESHOLD); }
-	int		getMinDuration()		{ return s_Instance.f_Config.getIntConfigValue(KEY_MIN_DURATION, DEF_DURATION_THRESHOLD); }
-	int		getEchoTimeOut()		{ return s_Instance.f_Config.getIntConfigValue(KEY_ECHO_TIMEOUT, DEF_INPUT_TIMEOUT); }
-	int		getInputTimeOut()		{ return s_Instance.f_Config.getIntConfigValue(KEY_INPUT_TIMEOUT, DEF_INPUT_TIMEOUT); }
-	int		getChordMode()			{ return s_Instance.f_Config.getIntConfigValue(KEY_CHORD_MODE, CHORD_MODE_DIAGRAM); }
+	String	getMidiInputPortName()	{ return s_Instance.f_Config.getStringValue(KEY_MIDI_INPUT_PORT); }
+	int		getMidiBaseChannel()	{ return s_Instance.f_Config.getIntegerValue(KEY_MIDI_BASE_CHANNEL, 0); }
+	int		getMode()				{ return s_Instance.f_Config.getIntegerValue(KEY_MODE, MODE_FRETBOARD_ECHO); }
+	int		getMinVelocity()		{ return s_Instance.f_Config.getIntegerValue(KEY_MIN_VELOCITY, DEF_VELOCITY_THRESHOLD); }
+	int		getMinDuration()		{ return s_Instance.f_Config.getIntegerValue(KEY_MIN_DURATION, DEF_DURATION_THRESHOLD); }
+	int		getEchoTimeOut()		{ return s_Instance.f_Config.getIntegerValue(KEY_ECHO_TIMEOUT, DEF_INPUT_TIMEOUT); }
+	int		getInputTimeOut()		{ return s_Instance.f_Config.getIntegerValue(KEY_INPUT_TIMEOUT, DEF_INPUT_TIMEOUT); }
+	int		getChordMode()			{ return s_Instance.f_Config.getIntegerValue(KEY_CHORD_MODE, CHORD_MODE_DIAGRAM); }
 
 
 	void	showDialog(Shell parent)
@@ -264,7 +262,7 @@ class MiConfig
 					{
 					String	portName = (String)portsNames.get(portSelection);
 
-					s_Instance.f_Config.setProperty(KEY_MIDI_INPUT_PORT, portName);
+					s_Instance.f_Config.setValue(KEY_MIDI_INPUT_PORT, portName);
 					s_Instance.f_Config.save();
 
 					try {
@@ -281,7 +279,7 @@ class MiConfig
 				if(	baseChannel >= 0 &&
 					baseChannel < 16)
 					{
-					s_Instance.f_Config.setProperty(KEY_MIDI_BASE_CHANNEL, baseChannel);
+					s_Instance.f_Config.setValue(KEY_MIDI_BASE_CHANNEL, baseChannel);
 					s_Instance.f_Config.save();
 
 					MiProvider.instance().setBaseChannel(baseChannel);
@@ -292,7 +290,7 @@ class MiConfig
 				if(	minVelocity >= MIN_VELOCITY_THRESHOLD &&
 					minVelocity <= MAX_VELOCITY_THRESHOLD)
 					{
-					s_Instance.f_Config.setProperty(KEY_MIN_VELOCITY, minVelocity);
+					s_Instance.f_Config.setValue(KEY_MIN_VELOCITY, minVelocity);
 					s_Instance.f_Config.save();
 
 					MiProvider.instance().setMinVelocity((byte)minVelocity);
@@ -303,7 +301,7 @@ class MiConfig
 				if(	minDuration >= MIN_DURATION_THRESHOLD &&
 					minDuration <= MAX_DURATION_THRESHOLD)
 					{
-					s_Instance.f_Config.setProperty(KEY_MIN_DURATION, minDuration);
+					s_Instance.f_Config.setValue(KEY_MIN_DURATION, minDuration);
 					s_Instance.f_Config.save();
 
 					MiProvider.instance().setMinDuration(minDuration);
@@ -314,7 +312,7 @@ class MiConfig
 				if(	echoTimeOut >= MIN_ECHO_TIMEOUT &&
 					echoTimeOut <= MAX_ECHO_TIMEOUT)
 					{
-					s_Instance.f_Config.setProperty(KEY_ECHO_TIMEOUT, echoTimeOut);
+					s_Instance.f_Config.setValue(KEY_ECHO_TIMEOUT, echoTimeOut);
 					s_Instance.f_Config.save();
 
 					MiProvider.instance().setEchoTimeOut(echoTimeOut);
@@ -325,7 +323,7 @@ class MiConfig
 				if(	inputTimeOut >= MIN_INPUT_TIMEOUT &&
 					inputTimeOut <= MAX_INPUT_TIMEOUT)
 					{
-					s_Instance.f_Config.setProperty(KEY_INPUT_TIMEOUT, inputTimeOut);
+					s_Instance.f_Config.setValue(KEY_INPUT_TIMEOUT, inputTimeOut);
 					s_Instance.f_Config.save();
 
 					MiProvider.instance().setInputTimeOut(inputTimeOut);
@@ -333,7 +331,7 @@ class MiConfig
 
 				int		chordMode = cmbChordMode.getSelectionIndex();
 
-				s_Instance.f_Config.setProperty(KEY_CHORD_MODE, chordMode);
+				s_Instance.f_Config.setValue(KEY_CHORD_MODE, chordMode);
 				s_Instance.f_Config.save();
 
 				MiProvider.instance().setChordMode(chordMode);

@@ -31,7 +31,7 @@ public class TGSplash {
 	}
 	
 	public void init() {
-		if(TuxGuitar.instance().getConfig().getBooleanConfigValue(TGConfigKeys.SHOW_SPLASH)){
+		if(TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH)){
 			final Image image = TuxGuitar.instance().getIconManager().getAppSplash();
 			
 			this.shell = new Shell(TuxGuitar.instance().getDisplay(), SWT.NO_TRIM | SWT.NO_BACKGROUND);

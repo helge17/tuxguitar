@@ -48,12 +48,12 @@ import org.herac.tuxguitar.app.items.ItemManager;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.config.TGConfigManagerImpl;
 import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.icons.IconManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.system.language.LanguageManager;
 import org.herac.tuxguitar.app.system.plugins.TGPluginManager;
+import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.table.TGTableViewer;
 import org.herac.tuxguitar.app.tools.browser.dialog.TGBrowserDialog;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
@@ -202,6 +202,7 @@ public class TuxGuitar {
 		// Priority 1 ----------------------------------------------//
 		TGFileUtils.loadLibraries();
 		TGFileUtils.loadClasspath();
+		TGPropertiesAdapter.initialize();
 		
 		// Priority 2 ----------------------------------------------//
 		Display.setAppName(APPLICATION_NAME);
@@ -354,24 +355,24 @@ public class TuxGuitar {
 		final TGConfigManager config = getConfig();
 		
 		//---Main Shell---
-		boolean maximized = config.getBooleanConfigValue(TGConfigKeys.MAXIMIZED);
+		boolean maximized = config.getBooleanValue(TGConfigKeys.MAXIMIZED);
 		getShell().setMaximized(maximized);
 		if(!maximized){
-			int width = config.getIntConfigValue(TGConfigKeys.WIDTH);
-			int height = config.getIntConfigValue(TGConfigKeys.HEIGHT);
+			int width = config.getIntegerValue(TGConfigKeys.WIDTH);
+			int height = config.getIntegerValue(TGConfigKeys.HEIGHT);
 			if(width > 0 && height > 0){
 				getShell().setSize(width,height);
 			}
 		}
 		getShell().setMinimumSize(640,480);
 		//---Fretboard---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_FRETBOARD)){
+		if(config.getBooleanValue(TGConfigKeys.SHOW_FRETBOARD)){
 			getFretBoardEditor().showFretBoard();
 		}else{
 			getFretBoardEditor().hideFretBoard();
 		}
 		//---Instruments---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_INSTRUMENTS)){
+		if(config.getBooleanValue(TGConfigKeys.SHOW_INSTRUMENTS)){
 			new SyncThread(new Runnable() {
 				public void run() throws TGException {
 					getChannelManager().show();
@@ -379,7 +380,7 @@ public class TuxGuitar {
 			}).start();
 		}
 		//---Transport---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_TRANSPORT)){
+		if(config.getBooleanValue(TGConfigKeys.SHOW_TRANSPORT)){
 			new SyncThread(new Runnable() {
 				public void run() throws TGException {
 					getTransport().show();
@@ -387,7 +388,7 @@ public class TuxGuitar {
 			}).start();
 		}
 		//---Matrix---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MATRIX)){
+		if(config.getBooleanValue(TGConfigKeys.SHOW_MATRIX)){
 			new SyncThread(new Runnable() {
 				public void run() throws TGException {
 					getMatrixEditor().show();
@@ -395,7 +396,7 @@ public class TuxGuitar {
 			}).start();
 		}
 		//---Piano---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_PIANO)){
+		if(config.getBooleanValue(TGConfigKeys.SHOW_PIANO)){
 			new SyncThread(new Runnable() {
 				public void run() throws TGException {
 					getPianoEditor().show();
@@ -403,7 +404,7 @@ public class TuxGuitar {
 			}).start();
 		}
 		//---Markers---
-		if(config.getBooleanConfigValue(TGConfigKeys.SHOW_MARKERS)){
+		if(config.getBooleanValue(TGConfigKeys.SHOW_MARKERS)){
 			new SyncThread(new Runnable() {
 				public void run() throws TGException {
 					MarkerList.instance().show();
@@ -581,8 +582,7 @@ public class TuxGuitar {
 	
 	public TGConfigManager getConfig(){
 		if(this.configManager == null){
-			this.configManager = new TGConfigManagerImpl();
-			this.configManager.init();
+			this.configManager = new TGConfigManager();
 		}
 		return this.configManager;
 	}
@@ -624,10 +624,10 @@ public class TuxGuitar {
 	
 	public void restorePlayerConfig(){
 		//check midi sequencer
-		getPlayer().openSequencer(getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER), true);
+		getPlayer().openSequencer(getConfig().getStringValue(TGConfigKeys.MIDI_SEQUENCER), true);
 		
 		//check midi port
-		getPlayer().openOutputPort(getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT), true);
+		getPlayer().openOutputPort(getConfig().getStringValue(TGConfigKeys.MIDI_PORT), true);
 	}
 	
 	public void showTitle(){
@@ -718,7 +718,7 @@ public class TuxGuitar {
 	public void loadLanguage(){
 		this.lock();
 		
-		getLanguageManager().setLanguage(getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE));
+		getLanguageManager().setLanguage(getConfig().getStringValue(TGConfigKeys.LANGUAGE));
 		
 		this.unlock();
 	}

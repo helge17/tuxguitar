@@ -177,7 +177,7 @@ public class TGFileUtils {
 	}
 	
 	public static Image loadImage(String name){
-		return loadImage(TuxGuitar.instance().getConfig().getStringConfigValue(TGConfigKeys.SKIN),name);
+		return loadImage(TuxGuitar.instance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
 	}
 	
 	public static Image loadImage(String skin,String name){

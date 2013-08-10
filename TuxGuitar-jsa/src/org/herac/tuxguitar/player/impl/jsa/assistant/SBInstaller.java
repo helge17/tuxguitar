@@ -10,10 +10,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class SBInstaller {
 
@@ -122,7 +122,7 @@ public class SBInstaller {
 			}
 			
 			TGConfigManager config = MidiConfigUtils.getConfig();
-			config.setProperty(MidiConfigUtils.SOUNDBANK_KEY,file.getAbsolutePath());
+			config.setValue(MidiConfigUtils.SOUNDBANK_KEY,file.getAbsolutePath());
 			config.save();
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();

@@ -84,7 +84,7 @@ public class LanguageOption extends Option{
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				final String language = getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE);
+				final String language = getConfig().getStringValue(TGConfigKeys.LANGUAGE);
 				final List languages = getLanguageItems( TuxGuitar.instance().getLanguageManager().getLanguages() );
 				new SyncThread(new Runnable() {
 					public void run() {
@@ -116,13 +116,13 @@ public class LanguageOption extends Option{
 					language = (String)this.table.getItem(index).getData();
 				}
 			}
-			getConfig().setProperty(TGConfigKeys.LANGUAGE, language );
+			getConfig().setValue(TGConfigKeys.LANGUAGE, language );
 		}
 	}
 	
 	public void updateDefaults(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.LANGUAGE,getDefaults().getProperty(TGConfigKeys.LANGUAGE));
+			getConfig().setValue(TGConfigKeys.LANGUAGE, getDefaults().getValue(TGConfigKeys.LANGUAGE));
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class LanguageOption extends Option{
 			
 			if(!changed){
 				String languageLoaded = TuxGuitar.instance().getLanguageManager().getLanguage();
-				String languageConfigured = getConfig().getStringConfigValue(TGConfigKeys.LANGUAGE);
+				String languageConfigured = getConfig().getStringValue(TGConfigKeys.LANGUAGE);
 				if(languageLoaded == null && languageConfigured == null){
 					changed = false;
 				}

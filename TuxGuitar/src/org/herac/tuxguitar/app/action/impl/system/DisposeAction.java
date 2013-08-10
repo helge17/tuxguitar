@@ -17,10 +17,10 @@ import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.action.impl.file.FileActionUtils;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 /**
  * @author julian
@@ -92,19 +92,19 @@ public class DisposeAction extends TGActionBase {
 	protected void saveConfig(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
 		
-		config.setProperty(TGConfigKeys.LAYOUT_MODE,getEditor().getTablature().getViewLayout().getMode());
-		config.setProperty(TGConfigKeys.LAYOUT_STYLE,getEditor().getTablature().getViewLayout().getStyle());
-		config.setProperty(TGConfigKeys.SHOW_PIANO,!TuxGuitar.instance().getPianoEditor().isDisposed());
-		config.setProperty(TGConfigKeys.SHOW_MATRIX,!TuxGuitar.instance().getMatrixEditor().isDisposed());
-		config.setProperty(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.instance().getFretBoardEditor().isVisible());
-		config.setProperty(TGConfigKeys.SHOW_INSTRUMENTS,!TuxGuitar.instance().getChannelManager().isDisposed());
-		config.setProperty(TGConfigKeys.SHOW_TRANSPORT,!TuxGuitar.instance().getTransport().isDisposed());
-		config.setProperty(TGConfigKeys.SHOW_MARKERS,!MarkerList.instance().isDisposed());
-		config.setProperty(TGConfigKeys.MAXIMIZED,TuxGuitar.instance().getShell().getMaximized());
-		config.setProperty(TGConfigKeys.WIDTH,TuxGuitar.instance().getShell().getClientArea().width);
-		config.setProperty(TGConfigKeys.HEIGHT,TuxGuitar.instance().getShell().getClientArea().height);
-		config.setProperty(TGConfigKeys.EDITOR_MOUSE_MODE,getEditor().getTablature().getEditorKit().getMouseMode());
-		config.setProperty(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.instance().getMatrixEditor().getGrids());
+		config.setValue(TGConfigKeys.LAYOUT_MODE,getEditor().getTablature().getViewLayout().getMode());
+		config.setValue(TGConfigKeys.LAYOUT_STYLE,getEditor().getTablature().getViewLayout().getStyle());
+		config.setValue(TGConfigKeys.SHOW_PIANO,!TuxGuitar.instance().getPianoEditor().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_MATRIX,!TuxGuitar.instance().getMatrixEditor().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.instance().getFretBoardEditor().isVisible());
+		config.setValue(TGConfigKeys.SHOW_INSTRUMENTS,!TuxGuitar.instance().getChannelManager().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_TRANSPORT,!TuxGuitar.instance().getTransport().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_MARKERS,!MarkerList.instance().isDisposed());
+		config.setValue(TGConfigKeys.MAXIMIZED,TuxGuitar.instance().getShell().getMaximized());
+		config.setValue(TGConfigKeys.WIDTH,TuxGuitar.instance().getShell().getClientArea().width);
+		config.setValue(TGConfigKeys.HEIGHT,TuxGuitar.instance().getShell().getClientArea().height);
+		config.setValue(TGConfigKeys.EDITOR_MOUSE_MODE,getEditor().getTablature().getEditorKit().getMouseMode());
+		config.setValue(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.instance().getMatrixEditor().getGrids());
 		
 		TuxGuitar.instance().getConfig().save();
 	}

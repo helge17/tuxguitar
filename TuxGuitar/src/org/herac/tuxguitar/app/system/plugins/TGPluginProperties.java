@@ -6,54 +6,56 @@
  */
 package org.herac.tuxguitar.app.system.plugins;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-
+import org.herac.tuxguitar.util.properties.TGProperties;
+import org.herac.tuxguitar.util.properties.TGPropertiesManager;
+import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class TGPluginProperties  extends TGConfigManager{
+public class TGPluginProperties {
 	
-	private static final String FILE_NAME = "plugin.properties";
+	public static final String MODULE = "tuxguitar";
+	public static final String RESOURCE = "plugin-settings";
 	
 	private static TGPluginProperties instance;
 	
+	private TGProperties properties;
+	
 	public static TGPluginProperties instance(){
-		if(instance == null){
+		if( instance == null ){
 			instance = new TGPluginProperties();
-			instance.init();
 		}
 		return instance;
 	}
 	
+	public void save(){
+		TGPropertiesManager.getInstance().writeProperties(properties, RESOURCE, MODULE);
+	}
+	
+	public void load(){
+		TGPropertiesManager.getInstance().readProperties(properties, RESOURCE, MODULE);
+	}
+	
 	private TGPluginProperties(){
-		super();
+		this.properties = TGPropertiesManager.getInstance().createProperties();
+		this.load();
 	}
 	
-	public String getName() {
-		return "TuxGuitar Plugin Properties";
+	public String getStringValue(String key) {
+		return TGPropertiesUtil.getStringValue(this.properties, key);
 	}
 	
-	public String getFileName(){
-		return TGFileUtils.PATH_USER_CONFIG + File.separator + FILE_NAME;
+	public boolean getBooleanValue(String key, boolean defaultValue) {
+		return TGPropertiesUtil.getBooleanValue(this.properties, key, defaultValue);
 	}
 	
-	public Properties getDefaults() {
-		Properties properties = new Properties();
-		try {
-			InputStream is = TGFileUtils.getResourceAsStream(FILE_NAME);
-			if(is != null){
-				properties.load(is);
-			}
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
-		return properties;
+	public void setValue(String key, String value) {
+		TGPropertiesUtil.setValue(this.properties, key, value);
+	}
+	
+	public void setValue(String key,boolean value){
+		TGPropertiesUtil.setValue(this.properties, key, value);
 	}
 }

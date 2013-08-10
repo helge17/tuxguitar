@@ -9,7 +9,6 @@ package org.herac.tuxguitar.app.system.config;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -36,6 +35,7 @@ import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.properties.TGProperties;
 
 /**
  * @author julian
@@ -48,7 +48,7 @@ public class TGConfigEditor{
 	protected Shell dialog;
 	protected TGConfigManager config;
 	protected List options;
-	protected Properties defaults;
+	protected TGProperties defaults;
 	protected boolean accepted;
 	
 	protected List runnables;
@@ -299,9 +299,9 @@ public class TGConfigEditor{
 		getDialog().dispose();
 	}
 	
-	public Properties getDefaults(){
-		if(this.defaults == null){
-			this.defaults = new TGConfigDefaults().getProperties();
+	public TGProperties getDefaults(){
+		if( this.defaults == null ){
+			this.defaults = TGConfigDefaults.createDefaults();
 		}
 		return this.defaults;
 	}

@@ -3,8 +3,7 @@ package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginConfigManager;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiSettings {
 	
@@ -35,23 +34,22 @@ public class MidiSettings {
 	}
 	
 	public TGConfigManager getConfig(){
-		if(this.config == null){
-			this.config = new TGPluginConfigManager("tuxguitar-fluidsynth");
-			this.config.init();
+		if( this.config == null ){
+			this.config = new TGConfigManager("tuxguitar-fluidsynth");
 		}
 		return this.config;
 	}
 	
 	public double getDoubleValue( String property ){
-		return getConfig().getDoubleConfigValue(property, this.getSynth().getDoubleProperty( property ));
+		return getConfig().getDoubleValue(property, this.getSynth().getDoubleProperty( property ));
 	}
 	
 	public int getIntegerValue( String property ){
-		return getConfig().getIntConfigValue(property, this.getSynth().getIntegerProperty( property ));
+		return getConfig().getIntegerValue(property, this.getSynth().getIntegerProperty( property ));
 	}
 	
 	public String getStringValue( String property ){
-		return getConfig().getStringConfigValue(property, this.getSynth().getStringProperty( property ));
+		return getConfig().getStringValue(property, this.getSynth().getStringProperty( property ));
 	}
 	
 	public boolean getBooleanValue( String property ){
@@ -60,18 +58,18 @@ public class MidiSettings {
 	}
 	
 	public void setDoubleValue( String property , double value ){
-		getConfig().setProperty( property , value );
+		getConfig().setValue( property , value );
 	}
 	
 	public void setIntegerValue( String property , int value ){
-		getConfig().setProperty( property , value );
+		getConfig().setValue( property , value );
 	}
 		
 	public void setStringValue( String property , String value ){
 		if( value == null ){
-			getConfig().removeProperty( property );
+			getConfig().remove( property );
 		}else{
-			getConfig().setProperty( property , value );
+			getConfig().setValue( property , value );
 		}
 	}
 	
@@ -83,9 +81,9 @@ public class MidiSettings {
 		List ports = new ArrayList();
 		TGConfigManager config = getConfig();
 		
-		int count = config.getIntConfigValue("soundfont.count");
+		int count = config.getIntegerValue("soundfont.count");
 		for(int i = 0; i < count;i ++){
-			String path = config.getStringConfigValue("soundfont.path" + i);
+			String path = config.getStringValue("soundfont.path" + i);
 			if(path != null && path.length() > 0 ){
 				ports.add( path );
 			}
@@ -95,10 +93,10 @@ public class MidiSettings {
 	
 	public void setSoundfonts(List soundfonts){
 		TGConfigManager config = getConfig();
-		config.setProperty("soundfont.count", soundfonts.size() );
+		config.setValue("soundfont.count", soundfonts.size() );
 		for( int i = 0 ; i < soundfonts.size() ; i ++ ){
 			String path = (String)soundfonts.get( i );
-			config.setProperty("soundfont.path" + i, path );
+			config.setValue("soundfont.path" + i, path );
 		}
 	}
 	

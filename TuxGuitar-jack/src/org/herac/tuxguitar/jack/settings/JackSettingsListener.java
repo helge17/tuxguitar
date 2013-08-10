@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.jack.settings;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public interface JackSettingsListener {
 	

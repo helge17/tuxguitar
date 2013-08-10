@@ -115,7 +115,7 @@ public class SkinOption extends Option{
 							for(int i = 0;i < SkinOption.this.skins.size();i++){
 								SkinInfo info = (SkinInfo)SkinOption.this.skins.get(i);
 								SkinOption.this.combo.add(info.getName());
-								if(info.getSkin().equals(getConfig().getStringConfigValue(TGConfigKeys.SKIN))){
+								if(info.getSkin().equals(getConfig().getStringValue(TGConfigKeys.SKIN))){
 									SkinOption.this.combo.select(i);
 								}
 							}
@@ -166,14 +166,14 @@ public class SkinOption extends Option{
 			int selection = this.combo.getSelectionIndex();
 			if(selection >= 0 && selection < this.skins.size()){
 				SkinInfo info = (SkinInfo)this.skins.get(selection);
-				getConfig().setProperty(TGConfigKeys.SKIN,info.getSkin());
+				getConfig().setValue(TGConfigKeys.SKIN,info.getSkin());
 			}
 		}
 	}
 	
 	public void updateDefaults(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.SKIN,getDefaults().getProperty(TGConfigKeys.SKIN));
+			getConfig().setValue(TGConfigKeys.SKIN, getDefaults().getValue(TGConfigKeys.SKIN));
 		}
 	}
 	

@@ -67,8 +67,8 @@ public class SoundOption extends Option{
 				SoundOption.this.mpList = TuxGuitar.instance().getPlayer().listOutputPorts();
 				SoundOption.this.msList = TuxGuitar.instance().getPlayer().listSequencers();
 				
-				SoundOption.this.mpCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT);
-				SoundOption.this.msCurrentKey = getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER);
+				SoundOption.this.mpCurrentKey = getConfig().getStringValue(TGConfigKeys.MIDI_PORT);
+				SoundOption.this.msCurrentKey = getConfig().getStringValue(TGConfigKeys.MIDI_SEQUENCER);
 				
 				MidiSequencer sequencer = TuxGuitar.instance().getPlayer().getSequencer();
 				MidiOutputPort outputPort = TuxGuitar.instance().getPlayer().getOutputPort();
@@ -124,30 +124,30 @@ public class SoundOption extends Option{
 		if(this.initialized){
 			int msIndex = this.msCombo.getSelectionIndex();
 			if(msIndex >= 0 && msIndex < this.msList.size()){
-				getConfig().setProperty(TGConfigKeys.MIDI_SEQUENCER, ((MidiSequencer)this.msList.get(msIndex)).getKey());
+				getConfig().setValue(TGConfigKeys.MIDI_SEQUENCER, ((MidiSequencer)this.msList.get(msIndex)).getKey());
 			}
 			int mpIndex = this.mpCombo.getSelectionIndex();
 			if(mpIndex >= 0 && mpIndex < this.mpList.size()){
 				MidiOutputPort midiPort = (MidiOutputPort)this.mpList.get(mpIndex);
-				getConfig().setProperty(TGConfigKeys.MIDI_PORT, midiPort.getKey());
+				getConfig().setValue(TGConfigKeys.MIDI_PORT, midiPort.getKey());
 			}
 		}
 	}
 	
 	public void updateDefaults(){
 		if(this.initialized){
-			getConfig().setProperty(TGConfigKeys.MIDI_PORT,getDefaults().getProperty(TGConfigKeys.MIDI_PORT));
-			getConfig().setProperty(TGConfigKeys.MIDI_SEQUENCER,getDefaults().getProperty(TGConfigKeys.MIDI_SEQUENCER));
+			getConfig().setValue(TGConfigKeys.MIDI_PORT, getDefaults().getValue(TGConfigKeys.MIDI_PORT));
+			getConfig().setValue(TGConfigKeys.MIDI_SEQUENCER, getDefaults().getValue(TGConfigKeys.MIDI_SEQUENCER));
 		}
 	}
 	
 	public void applyConfig(final boolean force){
 		if(force || this.initialized){
-			String midiSequencer = getConfig().getStringConfigValue(TGConfigKeys.MIDI_SEQUENCER);
+			String midiSequencer = getConfig().getStringValue(TGConfigKeys.MIDI_SEQUENCER);
 			if(force || !TuxGuitar.instance().getPlayer().isSequencerOpen(midiSequencer)){
 				TuxGuitar.instance().getPlayer().openSequencer(midiSequencer);
 			}
-			String midiPort = getConfig().getStringConfigValue(TGConfigKeys.MIDI_PORT);
+			String midiPort = getConfig().getStringValue(TGConfigKeys.MIDI_PORT);
 			if(force || !TuxGuitar.instance().getPlayer().isOutputPortOpen(midiPort)){
 				TuxGuitar.instance().getPlayer().openOutputPort(midiPort);
 			}

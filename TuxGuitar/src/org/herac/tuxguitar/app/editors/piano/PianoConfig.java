@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.app.editors.piano;
 
-import java.util.Properties;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -19,9 +17,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class PianoConfig {
 	
@@ -65,19 +65,19 @@ public class PianoConfig {
 	
 	public void defaults(){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		Properties defaults = config.getDefaults();
-		config.setProperty(TGConfigKeys.PIANO_COLOR_KEY_NATURAL,defaults.getProperty(TGConfigKeys.PIANO_COLOR_KEY_NATURAL));
-		config.setProperty(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL,defaults.getProperty(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
-		config.setProperty(TGConfigKeys.PIANO_COLOR_NOTE,defaults.getProperty(TGConfigKeys.PIANO_COLOR_NOTE));
-		config.setProperty(TGConfigKeys.PIANO_COLOR_SCALE,defaults.getProperty(TGConfigKeys.PIANO_COLOR_SCALE));
+		TGProperties defaults = TGConfigDefaults.createDefaults();
+		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL, defaults.getValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL));
+		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL, defaults.getValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
+		config.setValue(TGConfigKeys.PIANO_COLOR_NOTE, defaults.getValue(TGConfigKeys.PIANO_COLOR_NOTE));
+		config.setValue(TGConfigKeys.PIANO_COLOR_SCALE, defaults.getValue(TGConfigKeys.PIANO_COLOR_SCALE));
 	}
 	
 	public void save(RGB rgbNatural,RGB rgbNotNatural,RGB rgbNote,RGB rgbScale){
 		TGConfigManager config = TuxGuitar.instance().getConfig();
-		config.setProperty(TGConfigKeys.PIANO_COLOR_KEY_NATURAL,rgbNatural);
-		config.setProperty(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL,rgbNotNatural);
-		config.setProperty(TGConfigKeys.PIANO_COLOR_NOTE,rgbNote);
-		config.setProperty(TGConfigKeys.PIANO_COLOR_SCALE,rgbScale);
+		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL,rgbNatural);
+		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL,rgbNotNatural);
+		config.setValue(TGConfigKeys.PIANO_COLOR_NOTE,rgbNote);
+		config.setValue(TGConfigKeys.PIANO_COLOR_SCALE,rgbScale);
 	}
 	
 	public void dispose(){

@@ -116,7 +116,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 	private void initTable(Composite parent){
 		this.table = new Table(parent, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 		this.table.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.table.setLinesVisible(TuxGuitar.instance().getConfig().getBooleanConfigValue(TGConfigKeys.BROWSER_LINES_VISIBLE));
+		this.table.setLinesVisible(TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.BROWSER_LINES_VISIBLE));
 		this.table.setHeaderVisible(false);
 		
 		this.column = new TableColumn(this.table, SWT.LEFT);

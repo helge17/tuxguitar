@@ -50,8 +50,8 @@ public class EditorKit {
 	}
 	
 	private void setDefaults(){
-		this.setMouseMode(TuxGuitar.instance().getConfig().getIntConfigValue(TGConfigKeys.EDITOR_MOUSE_MODE,MOUSE_MODE_EDITION));
-		this.setNatural(TuxGuitar.instance().getConfig().getBooleanConfigValue(TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true));
+		this.setMouseMode(TuxGuitar.instance().getConfig().getIntegerValue(TGConfigKeys.EDITOR_MOUSE_MODE,MOUSE_MODE_EDITION));
+		this.setNatural(TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true));
 	}
 	
 	public int getMouseMode() {
