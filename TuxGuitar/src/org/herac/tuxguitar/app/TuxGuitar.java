@@ -48,6 +48,7 @@ import org.herac.tuxguitar.app.items.ItemManager;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.system.error.TGErrorAdapter;
 import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.icons.IconManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
@@ -202,6 +203,7 @@ public class TuxGuitar {
 		// Priority 1 ----------------------------------------------//
 		TGFileUtils.loadLibraries();
 		TGFileUtils.loadClasspath();
+		TGErrorAdapter.initialize();
 		TGPropertiesAdapter.initialize();
 		
 		// Priority 2 ----------------------------------------------//

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.util.TGClassLoader;
 import org.herac.tuxguitar.util.TGServiceReader;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGPluginManager {
 	
@@ -31,13 +31,13 @@ public class TGPluginManager {
 					plugin.init();
 					this.plugins.add(plugin);
 				}catch(TGPluginException exception){
-					MessageDialog.errorMessage(exception);
+					TGErrorManager.getInstance().handleError(exception);
 				}catch(Throwable throwable){
-					MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to init plugin",throwable));
+					TGErrorManager.getInstance().handleError(new TGPluginException("An error ocurred when trying to init plugin",throwable));
 				}
 			}
 		}catch(Throwable throwable){
-			MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to init plugin",throwable));
+			TGErrorManager.getInstance().handleError(new TGPluginException("An error ocurred when trying to init plugin",throwable));
 		}
 	}
 	
@@ -47,9 +47,9 @@ public class TGPluginManager {
 			try{
 				((TGPlugin)it.next()).close();
 			}catch(TGPluginException exception){
-				MessageDialog.errorMessage(exception);
+				TGErrorManager.getInstance().handleError(exception);
 			}catch(Throwable throwable){
-				MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to close plugin",throwable));
+				TGErrorManager.getInstance().handleError(new TGPluginException("An error ocurred when trying to close plugin",throwable));
 			}
 		}
 	}
@@ -61,9 +61,9 @@ public class TGPluginManager {
 				TGPlugin plugin = (TGPlugin)it.next();
 				plugin.setEnabled(isEnabled(plugin));
 			}catch(TGPluginException exception){
-				MessageDialog.errorMessage(exception);
+				TGErrorManager.getInstance().handleError(exception);
 			}catch(Throwable throwable){
-				MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to set plugin status",throwable));
+				TGErrorManager.getInstance().handleError(new TGPluginException("An error ocurred when trying to set plugin status",throwable));
 			}
 		}
 	}
@@ -74,9 +74,9 @@ public class TGPluginManager {
 			TGPluginProperties.instance().save();
 			plugin.setEnabled(enabled);
 		}catch(TGPluginException exception){
-			MessageDialog.errorMessage(exception);
+			TGErrorManager.getInstance().handleError(exception);
 		}catch(Throwable throwable){
-			MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to set plugin status",throwable));
+			TGErrorManager.getInstance().handleError(new TGPluginException("An error ocurred when trying to set plugin status",throwable));
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class TGPluginManager {
 		try{
 			return TGPluginProperties.instance().getBooleanValue(getEnabledProperty(plugin), true);
 		}catch(Throwable throwable){
-			MessageDialog.errorMessage(new TGPluginException("An error ocurred when trying to get plugin status",throwable));
+			TGErrorManager.getInstance().handleError(new TGPluginException("An error ocurred when trying to get plugin status",throwable));
 		}
 		return false;
 	}
@@ -92,5 +92,4 @@ public class TGPluginManager {
 	public String getEnabledProperty(TGPlugin plugin){
 		return (plugin.getClass().getName() + ".enabled");
 	}
-	
 }
