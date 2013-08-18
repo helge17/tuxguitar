@@ -4,25 +4,14 @@ import org.herac.tuxguitar.app.system.plugins.base.TGMidiOutputPortProviderPlugi
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
 public class MidiPortReaderPlugin extends TGMidiOutputPortProviderPlugin{
-
+	
+	public static final String MODULE_ID = "tuxguitar-audiounit";
+	
 	protected MidiOutputPortProvider getProvider() {
 		return new MidiPortReaderAudioUnit();
 	}
 
-	public String getAuthor() {
-		return "Auria";
+	public String getModuleId() {
+		return MODULE_ID;
 	}
-
-	public String getDescription() {		
-		return "Core Audio output plugin";
-	}
-
-	public String getName() {
-		return "Core Audio output plugin";
-	}
-
-	public String getVersion() {
-		return "1.0";
-	}
-	
 }

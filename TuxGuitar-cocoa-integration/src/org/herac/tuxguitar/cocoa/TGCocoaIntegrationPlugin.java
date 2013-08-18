@@ -3,14 +3,16 @@ package org.herac.tuxguitar.cocoa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.app.system.plugins.base.TGPluginList;
 import org.herac.tuxguitar.cocoa.menu.MacMenuPlugin;
 import org.herac.tuxguitar.cocoa.modifiedmarker.ModifiedMarkerPlugin;
 import org.herac.tuxguitar.cocoa.opendoc.OpenDocPlugin;
 import org.herac.tuxguitar.cocoa.toolbar.MacToolbarPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGCocoaIntegrationPlugin extends TGPluginList {
+	
+	public static final String MODULE_ID = "tuxguitar-cocoa-integration";
 	
 	private List plugins; 
 	
@@ -26,19 +28,7 @@ public class TGCocoaIntegrationPlugin extends TGPluginList {
 		return this.plugins;
 	}
 	
-	public String getAuthor() {
-		return "Auria & Julian Casadesus";
-	}
-	
-	public String getDescription() {
-		return "Cocoa Integration Plugin";
-	}
-	
-	public String getName() {
-		return "Cocoa Integration Plugin";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId() {
+		return MODULE_ID;
 	}
 }

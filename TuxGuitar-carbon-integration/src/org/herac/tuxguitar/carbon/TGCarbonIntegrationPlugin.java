@@ -9,6 +9,8 @@ import org.herac.tuxguitar.carbon.opendoc.OpenDocPlugin;
 
 public class TGCarbonIntegrationPlugin extends TGPluginList {
 
+	public static final String MODULE_ID = "tuxguitar-carbon-integration";
+	
 	private List plugins; 
 	
 	protected List getPlugins() {
@@ -20,7 +22,8 @@ public class TGCarbonIntegrationPlugin extends TGPluginList {
 		}
 		return this.plugins;
 	}
-	
-	
 
+	public String getModuleId() {
+		return MODULE_ID;
+	}
 }

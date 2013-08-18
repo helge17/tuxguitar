@@ -1,10 +1,11 @@
 package org.herac.tuxguitar.carbon.menu;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
-import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.carbon.TGCarbonIntegrationPlugin;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public class MacMenuPlugin extends TGPluginAdapter {
+public class MacMenuPlugin implements TGPlugin {
 	
 	private MacMenu macMenu;
 	
@@ -26,4 +27,7 @@ public class MacMenuPlugin extends TGPluginAdapter {
 		}
 	}
 
+	public String getModuleId() {
+		return TGCarbonIntegrationPlugin.MODULE_ID;
+	}
 }

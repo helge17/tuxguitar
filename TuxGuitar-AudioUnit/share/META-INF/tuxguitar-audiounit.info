@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Audio Unit output plugin
+plugin.description=Audio Unit output plugin
+plugin.author=Auria
+plugin.version=1.0

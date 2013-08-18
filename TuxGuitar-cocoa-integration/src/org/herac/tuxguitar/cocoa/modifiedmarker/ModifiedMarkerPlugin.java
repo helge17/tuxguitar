@@ -1,9 +1,10 @@
 package org.herac.tuxguitar.cocoa.modifiedmarker;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
-import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public class ModifiedMarkerPlugin extends TGPluginAdapter {
+public class ModifiedMarkerPlugin implements TGPlugin {
 	
 	private ModifiedMarker modifiedMarker;
 	
@@ -27,5 +28,9 @@ public class ModifiedMarkerPlugin extends TGPluginAdapter {
 		} catch( Throwable throwable ){
 			throw new TGPluginException( throwable );
 		}
+	}
+	
+	public String getModuleId() {
+		return TGCocoaIntegrationPlugin.MODULE_ID;
 	}
 }

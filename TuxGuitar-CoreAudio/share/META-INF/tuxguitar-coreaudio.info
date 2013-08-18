@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Core Audio output plugin
+plugin.description=Core Audio output plugin
+plugin.author=Auria
+plugin.version=1.0
