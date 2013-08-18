@@ -1,10 +1,11 @@
 package org.herac.tuxguitar.app.system.plugins.base;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public abstract class TGBrowserPlugin extends TGPluginAdapter{
+public abstract class TGBrowserPlugin implements TGPlugin{
 	
 	private boolean loaded;
 	private TGBrowserFactory factory;

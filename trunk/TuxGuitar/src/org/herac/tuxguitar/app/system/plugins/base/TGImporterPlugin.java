@@ -1,11 +1,12 @@
 package org.herac.tuxguitar.app.system.plugins.base;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public abstract class TGImporterPlugin extends TGPluginAdapter{
+public abstract class TGImporterPlugin implements TGPlugin{
 	
 	private boolean loaded;
 	private TGRawImporter importer;

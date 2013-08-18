@@ -4,11 +4,12 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionBase;
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.app.tools.custom.TGCustomTool;
 import org.herac.tuxguitar.app.tools.custom.TGCustomToolManager;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public abstract class TGToolItemPlugin extends TGPluginAdapter{
+public abstract class TGToolItemPlugin implements TGPlugin{
 	
 	private boolean loaded;
 	private TGCustomTool tool;

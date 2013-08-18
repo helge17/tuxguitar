@@ -3,10 +3,10 @@ package org.herac.tuxguitar.app.system.plugins.base;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.plugins.TGPlugin;
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public abstract class TGPluginList extends TGPluginAdapter{
+public abstract class TGPluginList implements TGPlugin{
 	
 	private List plugins;
 	

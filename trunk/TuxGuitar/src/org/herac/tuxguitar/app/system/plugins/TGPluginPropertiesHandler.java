@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.herac.tuxguitar.app.system.properties.TGDefaultAndStoredPropertiesHandler;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.plugin.TGPluginProperties;
 
 public class TGPluginPropertiesHandler extends TGDefaultAndStoredPropertiesHandler {
 	

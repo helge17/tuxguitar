@@ -23,11 +23,15 @@ import org.herac.tuxguitar.util.properties.TGPropertiesManager;
  */
 public class TGConfigDefaults{
 	
+	public static final String RESOURCE = "config-defaults";
+	public static final String MODULE = "tuxguitar";
+	
 	private static final String DEFAULT_FONT_NAME = getDefaultFontName();
 	
 	public static TGProperties createDefaults(){
 		TGProperties properties = TGPropertiesManager.getInstance().createProperties();
 		TGConfigDefaults.loadProperties( properties );
+		TGPropertiesManager.getInstance().readProperties(properties, RESOURCE, MODULE);
 		
 		return properties;
 	}

@@ -1,23 +1,22 @@
-package org.herac.tuxguitar.app.system.plugins.base;
+package org.herac.tuxguitar.app.system.plugins;
 
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public abstract class TGInputStreamPlugin implements TGPlugin{
+public abstract class TGPluginSettingsAdapter implements TGPlugin{
 	
 	private boolean loaded;
-	private TGInputStreamBase stream;
+	private TGPluginSettingsHandler handler;
 	
-	protected abstract TGInputStreamBase getInputStream() throws TGPluginException ;
+	protected abstract TGPluginSettingsHandler getHandler() throws TGPluginException;
 	
 	public void init() throws TGPluginException {
-		this.stream = getInputStream();
+		this.handler = getHandler();
+		this.loaded = false;
 	}
 	
 	public void close() throws TGPluginException {
-		this.removePlugin();
+		this.loaded = false;
 	}
 	
 	public void setEnabled(boolean enabled) throws TGPluginException {
@@ -30,14 +29,14 @@ public abstract class TGInputStreamPlugin implements TGPlugin{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TGFileFormatManager.instance().addInputStream(this.stream);
+			TGPluginSettingsManager.getInstance().addPluginSettingsHandler(getModuleId(), this.handler);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TGFileFormatManager.instance().removeInputStream(this.stream);
+			TGPluginSettingsManager.getInstance().removePluginSettingsHandler(getModuleId());
 			this.loaded = false;
 		}
 	}
