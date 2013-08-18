@@ -9,19 +9,7 @@ public class ABCPluginImporter extends TGImporterPlugin{
 		return new ABCSongImporter();
 	}
 	
-	public String getAuthor() {
-		return "Peter Grootswagers <pgrootswagers@planet.nl>";
-	}
-	
-	public String getName() {
-		return "ABCF file format importer";
-	}
-	
-	public String getDescription() {
-		return "ABCF file format importer";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId() {
+		return ABCPlugin.MODULE_ID;
 	}
 }
