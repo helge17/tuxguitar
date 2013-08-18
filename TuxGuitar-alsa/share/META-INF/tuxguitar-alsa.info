@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=ALSA output plugin
+plugin.description=ALSA output plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0
