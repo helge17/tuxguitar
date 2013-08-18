@@ -30,5 +30,12 @@
 	<classpathentry kind="lib" path="/TuxGuitar-tef/bin"/>
 	<classpathentry kind="lib" path="/TuxGuitar-tuner/bin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TuxGuitar-lib"/>
+	<classpathentry kind="lib" path="/TuxGuitar-jack/bin" sourcepath="/TuxGuitar-jack"/>
+	<classpathentry kind="lib" path="/TuxGuitar-midi-input/bin"/>
+	<classpathentry kind="lib" path="/TuxGuitar-oss/bin">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="TuxGuitar-oss/jni"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
