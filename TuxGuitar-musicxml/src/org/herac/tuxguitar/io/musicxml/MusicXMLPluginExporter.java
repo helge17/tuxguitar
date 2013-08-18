@@ -5,23 +5,13 @@ import org.herac.tuxguitar.io.base.TGRawExporter;
 
 public class MusicXMLPluginExporter extends TGExporterPlugin{
 	
+	public static final String MODULE_ID = "tuxguitar-musicxml";
+	
 	protected TGRawExporter getExporter() {
 		return new MusicXMLSongExporter();
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
-	}
-	
-	public String getDescription() {
-		return "MusicXML exporter plugin";
-	}
-	
-	public String getName() {
-		return "MusicXML exporter";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId(){
+		return MODULE_ID;
 	}
 }

@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=MIDI input plugin
+plugin.description=Supports MIDI equipped guitars
+plugin.author=Amedeo Farello <afarello@tiscalinet.it>
+plugin.version=1.0

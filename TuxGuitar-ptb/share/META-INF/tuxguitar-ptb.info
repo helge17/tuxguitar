@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=PTB File Format plugin
+plugin.description=PTB File Format plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

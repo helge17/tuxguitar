@@ -1,28 +1,18 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
 import org.herac.tuxguitar.app.system.plugins.base.TGExporterPlugin;
 import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class SVGExporterPlugin extends TGExporterPlugin {
+	
+	public static final String MODULE_ID = "tuxguitar-svg";
 	
 	protected TGRawExporter getExporter() throws TGPluginException {
 		return new SVGExporter(new SVGExporterStylesDialog());
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
-	}
-	
-	public String getDescription() {
-		return "SVG exporter plugin";
-	}
-	
-	public String getName() {
-		return "SVG exporter";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId(){
+		return MODULE_ID;
 	}
 }

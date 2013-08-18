@@ -1,8 +1,9 @@
 package org.herac.tuxguitar.community.startup;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.community.TGCommunityPluginImpl;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
 
-public class TGCommunityStartupPlugin extends TGPluginAdapter {
+public class TGCommunityStartupPlugin implements TGPlugin {
 	
 	private boolean done;
 	
@@ -26,5 +27,9 @@ public class TGCommunityStartupPlugin extends TGPluginAdapter {
 			}
 		}
 		this.done = true;
+	}
+	
+	public String getModuleId(){
+		return TGCommunityPluginImpl.MODULE_ID;
 	}
 }

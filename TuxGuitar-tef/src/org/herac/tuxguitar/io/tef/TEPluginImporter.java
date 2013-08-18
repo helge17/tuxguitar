@@ -5,23 +5,13 @@ import org.herac.tuxguitar.io.base.TGRawImporter;
 
 public class TEPluginImporter extends TGImporterPlugin{
 	
+	public static final String MODULE_ID = "tuxguitar-tef";
+	
 	protected TGRawImporter getImporter() {
 		return new TESongImporter();
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
-	}
-	
-	public String getName() {
-		return "TEF file format importer";
-	}
-	
-	public String getDescription() {
-		return "TEF file format importer";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId(){
+		return MODULE_ID;
 	}
 }

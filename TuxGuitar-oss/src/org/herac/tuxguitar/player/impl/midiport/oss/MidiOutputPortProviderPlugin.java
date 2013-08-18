@@ -1,38 +1,20 @@
 package org.herac.tuxguitar.player.impl.midiport.oss;
 
-import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.app.system.plugins.base.TGMidiOutputPortProviderPlugin;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
-public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin implements TGPluginSetup{
+public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin {
 	
 	private MidiOutputPortProviderImpl portReader;
 	
-	protected MidiOutputPortProvider getProvider() {
-		if(this.portReader == null){
+	public MidiOutputPortProvider getProvider() {
+		if( this.portReader == null ){
 			this.portReader = new MidiOutputPortProviderImpl();
 		}
 		return this.portReader;
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
-	}
-	
-	public String getDescription() {
-		return "OSS output plugin";
-	}
-	
-	public String getName() {
-		return "OSS output plugin";
-	}
-	
-	public String getVersion() {
-		return "1.0";
-	}
-	
-	public void setupDialog(Shell parent) {
-		MidiConfigUtils.setupDialog(parent,(MidiOutputPortProviderImpl)getProvider());
+	public String getModuleId() {
+		return MidiPlugin.MODULE_ID;
 	}
 }

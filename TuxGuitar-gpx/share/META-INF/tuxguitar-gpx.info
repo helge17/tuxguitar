@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=GPX File Format plugin
+plugin.description=GPX File Format plugin based on code contributed by J.J\u00f8rgen von Bargen, updates by b4dc0d3r
+plugin.author=J.J\u00f8rgen von Bargen, Julian Casadesus <julian@casadesus.com.ar>, b4dc0d3r
+plugin.version=0.2

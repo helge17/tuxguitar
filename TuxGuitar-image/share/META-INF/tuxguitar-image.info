@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Image exporter
+plugin.description=Image exporter
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=0.1

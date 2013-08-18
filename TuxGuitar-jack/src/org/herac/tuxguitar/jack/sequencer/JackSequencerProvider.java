@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackClient;
+import org.herac.tuxguitar.jack.provider.JackClientProvider;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
@@ -12,16 +12,16 @@ import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 public class JackSequencerProvider implements MidiSequencerProvider{
 	
 	private List jackSequencerProviders;
-	private JackClient jackClient;
+	private JackClientProvider jackClientProvider;
 	
-	public JackSequencerProvider(JackClient jackClient){
-		this.jackClient = jackClient;
+	public JackSequencerProvider(JackClientProvider jackClientProvider){
+		this.jackClientProvider = jackClientProvider;
 	}
 	
 	public List listSequencers() throws MidiPlayerException {
-		if(this.jackSequencerProviders == null){
+		if( this.jackSequencerProviders == null ){
 			this.jackSequencerProviders = new ArrayList();
-			this.jackSequencerProviders.add(new JackSequencer(this.jackClient));
+			this.jackSequencerProviders.add(new JackSequencer(this.jackClientProvider.getJackClient()));
 		}
 		return this.jackSequencerProviders;
 	}
