@@ -4,6 +4,10 @@ public class TGException extends RuntimeException {
 	
 	private static final long serialVersionUID = 8298443126251976034L;
 
+	public TGException(){
+		super();
+	}
+	
 	public TGException(String message){
 		super(message);
 	}
