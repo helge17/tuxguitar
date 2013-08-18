@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=ABC file format import-export plugin
+plugin.description=ABC file format import-export plugin
+plugin.author=Peter Grootswagers <pgrootswagers@planet.nl>
+plugin.version=1.0

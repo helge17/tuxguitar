@@ -9,19 +9,7 @@ public class ABCPluginExporter extends TGExporterPlugin{
 		return new ABCSongExporter();
 	}
 	
-	public String getAuthor() {
-		return "Peter Grootswagers <pgrootswagers@planet.nl>";
-	}
-	
-	public String getDescription() {
-		return "ABC 2.10.5 exporter plugin";
-	}
-	
-	public String getName() {
-		return "ABC exporter";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId() {
+		return ABCPlugin.MODULE_ID;
 	}
 }
