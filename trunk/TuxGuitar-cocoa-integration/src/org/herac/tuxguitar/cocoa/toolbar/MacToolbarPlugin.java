@@ -1,10 +1,11 @@
 package org.herac.tuxguitar.cocoa.toolbar;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
-import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public class MacToolbarPlugin extends TGPluginAdapter {
+public class MacToolbarPlugin implements TGPlugin {
 	
 	private MacToolbar macToolbar;
 	
@@ -34,5 +35,9 @@ public class MacToolbarPlugin extends TGPluginAdapter {
 		} catch( Throwable throwable ){
 			throw new TGPluginException( throwable );
 		}
+	}
+	
+	public String getModuleId() {
+		return TGCocoaIntegrationPlugin.MODULE_ID;
 	}
 }
