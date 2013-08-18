@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=PDF file format exporter
+plugin.description=TuxGuitar-pdf is an \"iText\" based *.pdf exporter plugin.\niText Homepage: http://www.lowagie.com/iText/index.html
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

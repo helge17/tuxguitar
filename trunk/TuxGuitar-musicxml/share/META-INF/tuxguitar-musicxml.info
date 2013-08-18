@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=MusicXML exporter
+plugin.description=MusicXML exporter plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

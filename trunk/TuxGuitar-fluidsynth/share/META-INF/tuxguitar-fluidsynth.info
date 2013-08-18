@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=FluidSynth output plugin
+plugin.description=FluidSynth output plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

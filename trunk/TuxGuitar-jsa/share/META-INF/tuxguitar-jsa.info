@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Java Sound Api plugin
+plugin.description=Java Sound Api plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

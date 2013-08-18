@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=TEF file format importer
+plugin.description=TEF file format importer
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

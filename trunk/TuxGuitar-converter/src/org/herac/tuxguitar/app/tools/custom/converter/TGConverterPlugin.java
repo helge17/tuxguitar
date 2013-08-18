@@ -1,6 +1,9 @@
 package org.herac.tuxguitar.app.tools.custom.converter;
 
+
 public class TGConverterPlugin extends org.herac.tuxguitar.app.system.plugins.base.TGToolItemPlugin {
+	
+	public static final String MODULE_ID = "tuxguitar-converter";
 	
 	protected void doAction() {
 		new TGConverterDialog().show();
@@ -10,20 +13,7 @@ public class TGConverterPlugin extends org.herac.tuxguitar.app.system.plugins.ba
 		return "File format batch converter";
 	}
 	
-	public String getName() {
-		return "BatchConverter";
-	}
-	
-	public String getAuthor() {
-		return "Nikola Kolarovic & Julian Casadesus";
-	}
-	
-	public String getDescription() {
-		return "Converts folder containing various tab formats into wanted file format.\n" +
-		       "Depending on your loaded file format plugins, you can read and write.";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId(){
+		return MODULE_ID;
 	}
 }

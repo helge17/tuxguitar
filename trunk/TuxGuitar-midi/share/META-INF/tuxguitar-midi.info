@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Midi file format import-export plugin
+plugin.description=Midi file format import-export plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

@@ -1,0 +1,22 @@
+package org.herac.tuxguitar.io.tg;
+
+import org.herac.tuxguitar.app.system.plugins.base.TGInputStreamPlugin;
+import org.herac.tuxguitar.io.base.TGInputStreamBase;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
+
+public class TGInputStreamPluginImpl extends TGInputStreamPlugin{
+	
+	private TGInputStreamBase inputStreamBase;
+	
+	public TGInputStreamPluginImpl(TGInputStreamBase inputStreamBase){
+		this.inputStreamBase = inputStreamBase;
+	}
+	
+	protected TGInputStreamBase getInputStream() throws TGPluginException {
+		return this.inputStreamBase;
+	}
+	
+	public String getModuleId(){
+		return TGCompatPlugin.MODULE_ID;
+	}
+}

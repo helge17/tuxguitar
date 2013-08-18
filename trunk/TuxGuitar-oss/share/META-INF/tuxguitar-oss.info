@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=OSS output plugin
+plugin.description=OSS output plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

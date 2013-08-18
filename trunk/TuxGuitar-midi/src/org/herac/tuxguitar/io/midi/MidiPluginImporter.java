@@ -8,4 +8,8 @@ public class MidiPluginImporter extends TGImporterPlugin{
 	protected TGRawImporter getImporter() {
 		return new MidiSongImporter();
 	}
+	
+	public String getModuleId(){
+		return MidiPluginList.MODULE_ID;
+	}
 }

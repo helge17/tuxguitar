@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=FTP Plugin for TGBrowser
+plugin.description=FTP Plugin for TGBrowser
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

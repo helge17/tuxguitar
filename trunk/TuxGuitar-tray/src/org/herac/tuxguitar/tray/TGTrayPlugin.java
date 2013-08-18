@@ -1,8 +1,10 @@
 package org.herac.tuxguitar.tray;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
 
-public class TGTrayPlugin extends TGPluginAdapter {
+public class TGTrayPlugin implements TGPlugin {
+	
+	public static final String MODULE_ID = "tuxguitar-tray";
 	
 	private boolean loaded;
 	private TGTray tray;
@@ -41,19 +43,7 @@ public class TGTrayPlugin extends TGPluginAdapter {
 		}
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
-	}
-	
-	public String getName() {
-		return "System Tray plugin";
-	}
-	
-	public String getDescription() {
-		return "System Tray plugin for tuxguitar";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId(){
+		return MODULE_ID;
 	}
 }

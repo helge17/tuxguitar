@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Guitar Pro File Format plugin
+plugin.description=Guitar Pro File Format plugin for TuxGuitar
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

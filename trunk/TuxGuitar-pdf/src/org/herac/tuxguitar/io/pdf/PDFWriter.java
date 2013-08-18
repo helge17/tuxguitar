@@ -9,10 +9,10 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
-import com.lowagie.text.Image;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class PDFWriter {
 	

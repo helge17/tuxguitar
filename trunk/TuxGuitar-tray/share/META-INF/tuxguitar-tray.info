@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=System Tray plugin
+plugin.description=System Tray plugin for tuxguitar
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

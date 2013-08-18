@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Lilypond exporter
+plugin.description=Lilypond exporter plugin
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>, updates by b4dc0d3r
+plugin.version=1.1

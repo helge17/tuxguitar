@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Gervill Plugin
+plugin.description=The purpose of this plugin is to add gervill support to tuxguitar.\nThe current version of this plugin includes \"Export to Audio\" feature.\nSee more about Gervill: https://gervill.dev.java.net/\n\nThis plugin will only work if gervill synthesizer is installed in your JVM
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.1

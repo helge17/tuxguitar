@@ -8,4 +8,8 @@ public class MidiPluginExporter extends TGExporterPlugin{
 	protected TGRawExporter getExporter() {
 		return new MidiSongExporter();
 	}
+	
+	public String getModuleId(){
+		return MidiPluginList.MODULE_ID;
+	}
 }

@@ -5,6 +5,8 @@ import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 
 public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 	
+	public static final String MODULE_ID = "tuxguitar-winmm";
+	
 	private MidiOutputPortProviderImpl portReader;
 	
 	protected MidiOutputPortProvider getProvider() {
@@ -14,19 +16,7 @@ public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin
 		return this.portReader;
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
-	}
-	
-	public String getDescription() {
-		return "WinMM output plugin";
-	}
-	
-	public String getName() {
-		return "WinMM output plugin";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+	public String getModuleId(){
+		return MODULE_ID;
 	}
 }

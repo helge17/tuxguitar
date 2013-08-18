@@ -1,16 +1,12 @@
 package org.herac.tuxguitar.midiinput;
 
-import org.eclipse.swt.widgets.Shell;
-
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.plugins.TGPluginException;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
 import org.herac.tuxguitar.app.system.plugins.base.TGToolItemPlugin;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiInputPlugin
 	extends TGToolItemPlugin
-	implements TGPluginSetup
 {
 	public void setEnabled(boolean enabled)
 		throws TGPluginException
@@ -59,37 +55,9 @@ public class MidiInputPlugin
 	/*
 	 *	TGPlugin implementation
 	 */
-
-	public String getAuthor()
+	public String getModuleId()
 	{
-	return "Amedeo Farello <afarello@tiscalinet.it>";
-	}
-
-
-	public String getDescription()
-	{
-	return "Supports MIDI equipped guitars";
-	}
-
-
-	public String getName()
-	{
-	return "MIDI input plugin";
-	}
-
-
-	public String getVersion()
-	{
-	return "1.0";
-	}
-
-	/*
-	 *	TGPluginSetup implementation
-	 */
-
-	public void setupDialog(Shell parent)
-	{
-	MiConfig.instance().showDialog(parent);
+	return MiPlugin.MODULE_ID;
 	}
 
 	/*

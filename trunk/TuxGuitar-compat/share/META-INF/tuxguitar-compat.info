@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=TuxGuitar file format compatibility
+plugin.description=This plugin, provides support for other tuxguitar file format versions.
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0

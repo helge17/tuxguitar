@@ -1,1 +1,2 @@
 org.herac.tuxguitar.player.impl.midiport.oss.MidiOutputPortProviderPlugin
+org.herac.tuxguitar.player.impl.midiport.oss.MidiSettingsPlugin
