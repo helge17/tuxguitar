@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=ASCII tab exporter
+plugin.description=ASCII tab exporter
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0
