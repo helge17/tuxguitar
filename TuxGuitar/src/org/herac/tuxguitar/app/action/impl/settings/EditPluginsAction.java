@@ -6,7 +6,9 @@
  */
 package org.herac.tuxguitar.app.action.impl.settings;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -29,10 +31,12 @@ import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionBase;
-import org.herac.tuxguitar.app.system.plugins.TGPlugin;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGPluginInfo;
+import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 /**
  * @author julian
@@ -73,13 +77,20 @@ public class EditPluginsAction extends TGActionBase{
 		columnEnabled.setWidth( (TABLE_WIDTH / 4) );
 		columnPlugin.setWidth( (TABLE_WIDTH - (TABLE_WIDTH / 4)) );
 		
-		Iterator it = TuxGuitar.instance().getPluginManager().getPlugins().iterator();
+		Iterator it = getModuleIds().iterator();
 		while(it.hasNext()){
-			TGPlugin plugin = (TGPlugin)it.next();
+			String moduleId = (String)it.next();
+			TGPluginInfo pluginInfo = new TGPluginInfo(moduleId);
+			
+			String pluginName = pluginInfo.getName();
+			if( pluginName == null ){
+				pluginName = moduleId;
+			}
+			
 			TableItem item = new TableItem(table, SWT.NONE);
-			item.setData(plugin);
-			item.setText(1,((plugin.getName() != null)?plugin.getName():"Undefined Plugin"));
-			item.setChecked(TuxGuitar.instance().getPluginManager().isEnabled(plugin));
+			item.setData(moduleId);
+			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin") );
+			item.setChecked(TGPluginManager.getInstance().isEnabled(moduleId));
 		}
 		
 		//------------------BUTTONS--------------------------
@@ -94,9 +105,12 @@ public class EditPluginsAction extends TGActionBase{
 		buttonSetup.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TableItem item = table.getItem(table.getSelectionIndex());
-				if(item != null && item.getData() instanceof TGPluginSetup){
+				if(item != null && item.getData() instanceof String){
 					try {
-						((TGPluginSetup)item.getData()).setupDialog(dialog);
+						String moduleId = (String)item.getData();
+						if( isConfigurable(moduleId) ){
+							configure(moduleId, dialog);
+						}
 					}catch(Throwable throwable){
 						MessageDialog.errorMessage(dialog, throwable);
 					}
@@ -111,9 +125,9 @@ public class EditPluginsAction extends TGActionBase{
 		buttonInfo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TableItem item = table.getItem(table.getSelectionIndex());
-				if(item != null && item.getData() instanceof TGPlugin){
+				if(item != null && item.getData() instanceof String){
 					try {
-						showInfo(dialog,(TGPlugin)item.getData());
+						showInfo(dialog, (String)item.getData());
 					}catch(Throwable throwable){
 						MessageDialog.errorMessage(dialog, throwable);
 					}
@@ -134,16 +148,16 @@ public class EditPluginsAction extends TGActionBase{
 			public void handleEvent (Event event) {
 				buttonInfo.setEnabled(false);
 				buttonSetup.setEnabled(false);
-				if(event.item instanceof TableItem && event.item.getData() instanceof TGPlugin){
+				if(event.item instanceof TableItem && event.item.getData() instanceof String){
 					final TableItem item = (TableItem)event.item;
 					if(event.detail == SWT.CHECK){
 						TuxGuitar.instance().loadCursor(dialog,SWT.CURSOR_WAIT);
-						TuxGuitar.instance().getPluginManager().setEnabled((TGPlugin)item.getData(),item.getChecked());
+						TuxGuitar.instance().getPluginManager().setEnabled((String)item.getData(), item.getChecked());
 						TuxGuitar.instance().loadCursor(dialog,SWT.CURSOR_ARROW);
 						table.setSelection(item);
 					}
 					buttonInfo.setEnabled(true);
-					buttonSetup.setEnabled((item.getData() instanceof TGPluginSetup));
+					buttonSetup.setEnabled(isConfigurable((String)item.getData()));
 				}
 			}
 		});
@@ -153,7 +167,9 @@ public class EditPluginsAction extends TGActionBase{
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
-	public void showInfo(Shell parent,TGPlugin plugin) {
+	public void showInfo(Shell parent, String moduleId) {
+		TGPluginInfo pluginInfo = new TGPluginInfo(moduleId);
+		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -162,10 +178,10 @@ public class EditPluginsAction extends TGActionBase{
 		Composite info = new Composite(dialog,SWT.NONE);
 		info.setLayout(new GridLayout(2,false));
 		
-		showInfoString(info,TuxGuitar.getProperty("name") + ":",plugin.getName());
-		showInfoString(info,TuxGuitar.getProperty("version") + ":",plugin.getVersion());
-		showInfoString(info,TuxGuitar.getProperty("author") + ":",plugin.getAuthor());
-		showInfoString(info,TuxGuitar.getProperty("description") + ":",plugin.getDescription());
+		showInfoString(info,TuxGuitar.getProperty("name") + ":", pluginInfo.getName());
+		showInfoString(info,TuxGuitar.getProperty("version") + ":", pluginInfo.getVersion());
+		showInfoString(info,TuxGuitar.getProperty("author") + ":", pluginInfo.getAuthor());
+		showInfoString(info,TuxGuitar.getProperty("description") + ":", pluginInfo.getDescription());
 		
 		//------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
@@ -214,5 +230,25 @@ public class EditPluginsAction extends TGActionBase{
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
 		return data;
+	}
+	
+	private List getModuleIds(){
+		List moduleIds = new ArrayList();
+		Iterator it = TuxGuitar.instance().getPluginManager().getPlugins().iterator();
+		while(it.hasNext()){
+			TGPlugin plugin = (TGPlugin)it.next();
+			if(!moduleIds.contains( plugin.getModuleId() )){
+				moduleIds.add( plugin.getModuleId() );
+			}
+		}
+		return moduleIds;
+	}
+	
+	private boolean isConfigurable(String moduleId){
+		return TGPluginSettingsManager.getInstance().containsPluginSettingsHandler(moduleId);
+	}
+	
+	private void configure(String moduleId, Shell parent){
+		TGPluginSettingsManager.getInstance().openPluginSettingsDialog(moduleId, parent);
 	}
 }

@@ -9,7 +9,7 @@ import org.herac.tuxguitar.app.util.TGFileUtils;
 
 public class KeyBindingActionDefaults {
 
-	private static final String DEFAULT_SHORTCUT_FILE = "shortcuts-default.xml";
+	private static final String DEFAULT_SHORTCUT_FILE = "tuxguitar-shortcuts.xml";
 
 	public static List getDefaultKeyBindings() {
 		List list = new ArrayList();

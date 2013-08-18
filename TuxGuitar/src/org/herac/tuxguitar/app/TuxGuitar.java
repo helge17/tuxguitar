@@ -53,7 +53,6 @@ import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.icons.IconManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.system.language.LanguageManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.table.TGTableViewer;
 import org.herac.tuxguitar.app.tools.browser.dialog.TGBrowserDialog;
@@ -77,6 +76,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 /**
  * @author julian
@@ -146,8 +146,6 @@ public class TuxGuitar {
 	private FileHistory fileHistory;
 	
 	private TGTemplateManager templateManager;
-	
-	private TGPluginManager pluginManager;
 	
 	protected Sash sash;
 	
@@ -534,10 +532,7 @@ public class TuxGuitar {
 	}
 	
 	public TGPluginManager getPluginManager(){
-		if(this.pluginManager == null){
-			this.pluginManager = new TGPluginManager();
-		}
-		return this.pluginManager;
+		return TGPluginManager.getInstance();
 	}
 	
 	public IconManager getIconManager(){
