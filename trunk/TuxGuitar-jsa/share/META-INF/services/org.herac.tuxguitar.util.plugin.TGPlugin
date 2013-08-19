@@ -1,2 +1,3 @@
-org.herac.tuxguitar.player.impl.jsa.MidiPluginList
+org.herac.tuxguitar.player.impl.jsa.midiport.MidiOutputPortProviderPlugin
+org.herac.tuxguitar.player.impl.jsa.sequencer.MidiSequencerProviderPlugin
 org.herac.tuxguitar.player.impl.jsa.settings.MidiSettingsPlugin

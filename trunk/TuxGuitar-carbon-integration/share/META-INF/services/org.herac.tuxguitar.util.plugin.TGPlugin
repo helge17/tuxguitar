@@ -1,1 +1,2 @@
-org.herac.tuxguitar.carbon.TGCarbonIntegrationPlugin
+org.herac.tuxguitar.carbon.menu.MacMenuPlugin
+org.herac.tuxguitar.carbon.opendoc.OpenDocPlugin
