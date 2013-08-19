@@ -10,6 +10,6 @@ public class MidiPluginExporter extends TGExporterPlugin{
 	}
 	
 	public String getModuleId(){
-		return MidiPluginList.MODULE_ID;
+		return MidiPlugin.MODULE_ID;
 	}
 }

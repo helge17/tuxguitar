@@ -1,1 +1,4 @@
-org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin
+org.herac.tuxguitar.cocoa.opendoc.OpenDocPlugin
+org.herac.tuxguitar.cocoa.menu.MacMenuPlugin
+org.herac.tuxguitar.cocoa.toolbar.MacToolbarPlugin
+org.herac.tuxguitar.cocoa.modifiedmarker.ModifiedMarkerPlugin

@@ -1,1 +1,2 @@
-org.herac.tuxguitar.io.midi.MidiPluginList
+org.herac.tuxguitar.io.midi.MidiPluginImporter
+org.herac.tuxguitar.io.midi.MidiPluginExporter

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.community.io;
 
 import org.herac.tuxguitar.app.system.plugins.base.TGExporterPlugin;
-import org.herac.tuxguitar.community.TGCommunityPluginImpl;
+import org.herac.tuxguitar.community.TGCommunityPlugin;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -12,6 +12,6 @@ public class TGShareSongPlugin extends TGExporterPlugin {
 	}
 	
 	public String getModuleId(){
-		return TGCommunityPluginImpl.MODULE_ID;
+		return TGCommunityPlugin.MODULE_ID;
 	}
 }

@@ -1,1 +1,9 @@
-org.herac.tuxguitar.io.tg.TGPluginListImpl
+org.herac.tuxguitar.io.tg.v12.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v11.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v10.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v09.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v08.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v07.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v12.TGExporterPlugin
+org.herac.tuxguitar.io.tg.v11.TGExporterPlugin
+org.herac.tuxguitar.io.tg.v10.TGExporterPlugin
