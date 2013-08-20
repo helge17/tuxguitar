@@ -25,7 +25,10 @@
 		<profile>
 			<id>native-modules</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>native-modules</name>
+					<value>true</value>
+				</property>
 			</activation>
 			<build>
 				<plugins>
