@@ -24,13 +24,37 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-abc</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-alsa</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-gm-utils</artifactId>
+				<artifactId>tuxguitar-ascii</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-AudioUnit</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-browser-ftp</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-community</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -48,7 +72,127 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-CoreAudio</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-fluidsynth</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-gervill</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-gm-utils</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-gpx</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-gtp</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-image</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-jack</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-jsa</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-lilypond</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-midi</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-midi-input</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-musicxml</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-oss</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-pdf</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-ptb</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-svg</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-tef</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-tray</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-tuner</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-winmm</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
