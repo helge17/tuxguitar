@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.abc;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGImporterPlugin;
 import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.io.plugin.TGImporterPlugin;
 
 public class ABCPluginImporter extends TGImporterPlugin{
 	

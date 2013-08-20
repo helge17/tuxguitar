@@ -1,7 +1,6 @@
-package org.herac.tuxguitar.app.system.plugins.base;
+package org.herac.tuxguitar.app.editors.channel;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsHandler;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 

@@ -1,23 +1,24 @@
-package org.herac.tuxguitar.app.system.plugins.base;
+package org.herac.tuxguitar.app.tools.browser.plugin;
 
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGInputStreamBase;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public abstract class TGInputStreamPlugin implements TGPlugin{
+public abstract class TGBrowserPlugin implements TGPlugin{
 	
 	private boolean loaded;
-	private TGInputStreamBase stream;
+	private TGBrowserFactory factory;
 	
-	protected abstract TGInputStreamBase getInputStream() throws TGPluginException ;
+	protected abstract TGBrowserFactory getFactory() throws TGPluginException;
 	
 	public void init() throws TGPluginException {
-		this.stream = getInputStream();
+		this.factory = getFactory();
+		this.loaded = false;
 	}
 	
 	public void close() throws TGPluginException {
-		this.removePlugin();
+		this.loaded = false;
 	}
 	
 	public void setEnabled(boolean enabled) throws TGPluginException {
@@ -30,14 +31,14 @@ public abstract class TGInputStreamPlugin implements TGPlugin{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TGFileFormatManager.instance().addInputStream(this.stream);
+			TGBrowserManager.instance().addFactory(this.factory);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TGFileFormatManager.instance().removeInputStream(this.stream);
+			TGBrowserManager.instance().removeFactory(this.factory);
 			this.loaded = false;
 		}
 	}

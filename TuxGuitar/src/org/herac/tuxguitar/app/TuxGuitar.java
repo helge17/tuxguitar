@@ -99,8 +99,6 @@ public class TuxGuitar {
 	
 	private Shell shell;
 	
-	private MidiPlayer player;
-	
 	private TGSongManager songManager;
 	
 	private TGConfigManager configManager;
@@ -219,6 +217,7 @@ public class TuxGuitar {
 		this.createComposites(getShell());
 		
 		// Priority 3 ----------------------------------------------//
+		this.initMidiPlayer();
 		this.getActionAdapterManager().initialize();
 		this.getPluginManager().openPlugins();
 		this.restoreControlsConfig();
@@ -606,20 +605,24 @@ public class TuxGuitar {
 	}
 	
 	public MidiPlayer getPlayer(){
-		if( this.player == null ){
-			this.player = new MidiPlayer();
-			this.player.init(getSongManager());
-			this.player.addListener( new TGTransportListener() );
-			try {
-				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), false);
-			} catch (MidiPlayerException e) {
-				e.printStackTrace();
-			}
+		return MidiPlayer.getInstance();
+	}
+	
+	public void initMidiPlayer(){
+		MidiPlayer midiPlayer = MidiPlayer.getInstance();
+		midiPlayer.init(getSongManager());
+		midiPlayer.addListener( new TGTransportListener() );
+		try {
+			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), false);
+		} catch (MidiPlayerException e) {
+			e.printStackTrace();
 		}
-		return this.player;
 	}
 	
 	public void restorePlayerConfig(){
+		//try to open first device when the configured port not found.
+		getPlayer().setTryOpenFistDevice( true );
+		
 		//check midi sequencer
 		getPlayer().openSequencer(getConfig().getStringValue(TGConfigKeys.MIDI_SEQUENCER), true);
 		

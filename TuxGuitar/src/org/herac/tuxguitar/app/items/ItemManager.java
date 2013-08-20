@@ -55,6 +55,13 @@ import org.herac.tuxguitar.app.items.xml.ToolBarsWriter;
 import org.herac.tuxguitar.app.system.icons.IconLoader;
 import org.herac.tuxguitar.app.system.language.LanguageLoader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.io.base.event.TGRawExporterAddedListener;
+import org.herac.tuxguitar.io.base.event.TGRawExporterRemovedListener;
+import org.herac.tuxguitar.io.base.event.TGRawImporterAddedListener;
+import org.herac.tuxguitar.io.base.event.TGRawImporterRemovedListener;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -64,7 +71,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
+public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader, TGRawImporterAddedListener, TGRawImporterRemovedListener, TGRawExporterAddedListener, TGRawExporterRemovedListener{
 	
 	private Menu menu;
 	private Menu popupMenu;
@@ -89,6 +96,10 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TGFileFormatManager.instance().getEventManager().addRawExporterAddedListener(this);
+		TGFileFormatManager.instance().getEventManager().addRawExporterRemovedListener(this);
+		TGFileFormatManager.instance().getEventManager().addRawImporterAddedListener(this);
+		TGFileFormatManager.instance().getEventManager().addRawImporterRemovedListener(this);
 	}
 	
 	public void loadItems(){
@@ -455,5 +466,21 @@ public class ItemManager implements TGUpdateListener,IconLoader,LanguageLoader{
 			this.coolBar.setWrapIndices( null );
 		}
 		this.updateCoolBarWrapIndicesEnabled = false;
+	}
+
+	public void onRawExporterRemoved(TGRawExporter exporter) {
+		this.createMenu();
+	}
+
+	public void onRawExporterAdded(TGRawExporter exporter) {
+		this.createMenu();
+	}
+
+	public void onRawImporterRemoved(TGRawImporter importer) {
+		this.createMenu();
+	}
+
+	public void onRawImporterAdded(TGRawImporter importer) {
+		this.createMenu();
 	}
 }

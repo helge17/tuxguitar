@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.abc;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGExporterPlugin;
 import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.plugin.TGExporterPlugin;
 
 public class ABCPluginExporter extends TGExporterPlugin{
 	
