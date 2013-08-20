@@ -116,7 +116,7 @@ public class TuxGuitar {
 	
 	public MidiPlayer getPlayer(){
 		if(this.player == null){
-			this.player = new MidiPlayer();
+			this.player = MidiPlayer.getInstance();
 			this.player.init(getSongManager());
 			try {
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());

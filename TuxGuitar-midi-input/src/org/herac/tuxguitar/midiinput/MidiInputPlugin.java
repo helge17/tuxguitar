@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.midiinput;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.plugins.base.TGToolItemPlugin;
+import org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 

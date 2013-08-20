@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.player.impl.midiport.audiounit;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGMidiOutputPortProviderPlugin;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import org.herac.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
 
 public class MidiPortReaderPlugin extends TGMidiOutputPortProviderPlugin{
 	

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGOutputStreamPlugin;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
+import org.herac.tuxguitar.io.plugin.TGOutputStreamPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class GTPOutputStreamPlugin extends TGOutputStreamPlugin{

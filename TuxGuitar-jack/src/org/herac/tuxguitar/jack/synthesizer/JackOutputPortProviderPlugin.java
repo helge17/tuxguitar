@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.jack.synthesizer;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGMidiOutputPortProviderPlugin;
 import org.herac.tuxguitar.jack.JackPlugin;
 import org.herac.tuxguitar.jack.singleton.JackClientInstanceProvider;
 import org.herac.tuxguitar.jack.singleton.JackSettingsInstanceProvider;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import org.herac.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
 
 public class JackOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin {
 	
