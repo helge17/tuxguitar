@@ -1,11 +1,9 @@
-package org.herac.tuxguitar.app.system.plugins.base;
+package org.herac.tuxguitar.app.tools.custom;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionBase;
-import org.herac.tuxguitar.app.tools.custom.TGCustomTool;
-import org.herac.tuxguitar.app.tools.custom.TGCustomToolManager;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 

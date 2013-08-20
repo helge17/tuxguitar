@@ -145,11 +145,11 @@ public class SoundOption extends Option{
 		if(force || this.initialized){
 			String midiSequencer = getConfig().getStringValue(TGConfigKeys.MIDI_SEQUENCER);
 			if(force || !TuxGuitar.instance().getPlayer().isSequencerOpen(midiSequencer)){
-				TuxGuitar.instance().getPlayer().openSequencer(midiSequencer);
+				TuxGuitar.instance().getPlayer().openSequencer(midiSequencer, false);
 			}
 			String midiPort = getConfig().getStringValue(TGConfigKeys.MIDI_PORT);
 			if(force || !TuxGuitar.instance().getPlayer().isOutputPortOpen(midiPort)){
-				TuxGuitar.instance().getPlayer().openOutputPort(midiPort);
+				TuxGuitar.instance().getPlayer().openOutputPort(midiPort, false);
 			}
 		}
 	}
