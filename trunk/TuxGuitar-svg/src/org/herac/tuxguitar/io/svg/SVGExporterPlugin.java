@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGExporterPlugin;
 import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.plugin.TGExporterPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class SVGExporterPlugin extends TGExporterPlugin {

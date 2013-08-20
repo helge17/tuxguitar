@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.io.base.event.TGFileFormatEventManager;
 import org.herac.tuxguitar.io.tg.TGInputStream;
 import org.herac.tuxguitar.io.tg.TGOutputStream;
 import org.herac.tuxguitar.io.tg.TGStream;
@@ -14,6 +15,7 @@ public class TGFileFormatManager {
 	
 	private static TGFileFormatManager instance;
 	
+	private TGFileFormatEventManager eventManager;
 	private TGSongLoader loader;
 	private TGSongWriter writer;
 	private List inputStreams;
@@ -22,6 +24,7 @@ public class TGFileFormatManager {
 	private List importers;
 	
 	private TGFileFormatManager(){
+		this.eventManager = new TGFileFormatEventManager();
 		this.loader = new TGSongLoader();
 		this.writer = new TGSongWriter();
 		this.inputStreams = new ArrayList();
@@ -38,6 +41,10 @@ public class TGFileFormatManager {
 		return instance;
 	}
 	
+	public TGFileFormatEventManager getEventManager() {
+		return this.eventManager;
+	}
+
 	public TGSongLoader getLoader(){
 		return this.loader;
 	}
@@ -47,11 +54,17 @@ public class TGFileFormatManager {
 	}
 	
 	public void addInputStream(TGInputStreamBase stream){
-		this.inputStreams.add(stream);
+		if(!this.inputStreams.contains(stream)){
+			this.inputStreams.add(stream);
+			this.eventManager.onInputStreamAdded(stream);
+		}
 	}
 	
 	public void removeInputStream(TGInputStreamBase stream){
-		this.inputStreams.remove(stream);
+		if( this.inputStreams.contains(stream)){
+			this.inputStreams.remove(stream);
+			this.eventManager.onInputStreamRemoved(stream);
+		}
 	}
 	
 	public int countInputStreams(){
@@ -59,11 +72,17 @@ public class TGFileFormatManager {
 	}
 	
 	public void addOutputStream(TGOutputStreamBase stream){
-		this.outputStreams.add(stream);
+		if(!this.outputStreams.contains(stream)){
+			this.outputStreams.add(stream);
+			this.eventManager.onOutputStreamAdded(stream);
+		}
 	}
 	
 	public void removeOutputStream(TGOutputStreamBase stream){
-		this.outputStreams.remove(stream);
+		if( this.outputStreams.contains(stream)){
+			this.outputStreams.remove(stream);
+			this.eventManager.onOutputStreamRemoved(stream);
+		}
 	}
 	
 	public int countOutputStreams(){
@@ -71,11 +90,17 @@ public class TGFileFormatManager {
 	}
 	
 	public void addImporter(TGRawImporter importer){
-		this.importers.add(importer);
+		if(!this.importers.contains(importer)){
+			this.importers.add(importer);
+			this.eventManager.onRawImporterAdded(importer);
+		}
 	}
 	
 	public void removeImporter(TGRawImporter importer){
-		this.importers.remove(importer);
+		if( this.importers.contains(importer)){
+			this.importers.remove(importer);
+			this.eventManager.onRawImporterRemoved(importer);
+		}
 	}
 	
 	public int countImporters(){
@@ -83,11 +108,17 @@ public class TGFileFormatManager {
 	}
 	
 	public void addExporter(TGRawExporter exporter){
-		this.exporters.add(exporter);
+		if(!this.exporters.contains(exporter)){
+			this.exporters.add(exporter);
+			this.eventManager.onRawExporterAdded(exporter);
+		}
 	}
 	
 	public void removeExporter(TGRawExporter exporter){
-		this.exporters.remove(exporter);
+		if( this.exporters.contains(exporter)){
+			this.exporters.remove(exporter);
+			this.eventManager.onRawExporterRemoved(exporter);
+		}
 	}
 	
 	public int countExporters(){

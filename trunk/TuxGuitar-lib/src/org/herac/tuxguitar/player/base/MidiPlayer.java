@@ -20,6 +20,8 @@ public class MidiPlayer{
 	
 	private static final int TIMER_DELAY = 10;
 	
+	private static MidiPlayer instance;
+	
 	private TGSongManager songManager;
 	
 	private MidiSequencer sequencer;
@@ -72,11 +74,22 @@ public class MidiPlayer{
 	
 	protected long tickPosition;
 	
+	private boolean tryOpenFistDevice;
+	
 	protected TGLock lock = new TGLock();
 	
-	public MidiPlayer() {
+	private MidiPlayer() {
 		this.lock = new TGLock();
 		this.volume = MAX_VOLUME;
+	}
+	
+	public static MidiPlayer getInstance(){
+		synchronized (MidiPlayer.class) {
+			if( instance == null ){
+				instance = new MidiPlayer();
+			}
+			return instance;
+		}
 	}
 	
 	public void init(TGSongManager songManager) {
@@ -84,6 +97,7 @@ public class MidiPlayer{
 		this.outputPortProviders = new ArrayList();
 		this.sequencerProviders = new ArrayList();
 		this.listeners = new ArrayList();
+		this.tryOpenFistDevice = false;
 		this.getSequencer();
 		this.getMode();
 		this.reset();
@@ -268,6 +282,14 @@ public class MidiPlayer{
 		return this.loopSPosition;
 	}
 	
+	public boolean isTryOpenFistDevice() {
+		return tryOpenFistDevice;
+	}
+
+	public void setTryOpenFistDevice(boolean tryOpenFistDevice) {
+		this.tryOpenFistDevice = tryOpenFistDevice;
+	}
+
 	public void checkDevices() throws Throwable {
 		this.getSequencer().check();
 		if( this.getOutputPort() != null ){
@@ -798,7 +820,7 @@ public class MidiPlayer{
 	}
 	
 	public void addOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
-		this.addOutputPortProvider(provider, false);
+		this.addOutputPortProvider(provider, this.isTryOpenFistDevice());
 	}
 	
 	public void addOutputPortProvider(MidiOutputPortProvider provider, boolean tryFirst) throws MidiPlayerException {
@@ -807,7 +829,7 @@ public class MidiPlayer{
 	}
 	
 	public void addSequencerProvider(MidiSequencerProvider provider) throws MidiPlayerException {
-		this.addSequencerProvider(provider, false);
+		this.addSequencerProvider(provider, this.isTryOpenFistDevice());
 	}
 	
 	public void addSequencerProvider(MidiSequencerProvider provider, boolean tryFirst) throws MidiPlayerException {

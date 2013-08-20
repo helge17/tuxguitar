@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.musicxml;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGExporterPlugin;
 import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.plugin.TGExporterPlugin;
 
 public class MusicXMLPluginExporter extends TGExporterPlugin{
 	

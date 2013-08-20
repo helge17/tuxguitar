@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.tg;
 
-import org.herac.tuxguitar.app.system.plugins.base.TGInputStreamPlugin;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
+import org.herac.tuxguitar.io.plugin.TGInputStreamPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGInputStreamPluginImpl extends TGInputStreamPlugin{

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.song.models.TGString;
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
  *
  */
-public class TGTunerPlugin extends org.herac.tuxguitar.app.system.plugins.base.TGToolItemPlugin {
+public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin {
 	
 	public static final String MODULE_ID = "tuxguitar-tuner";
 	
