@@ -9,14 +9,14 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-x86</artifactId>
+	<artifactId>tuxguitar-linux-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-x86</project.finalName>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
+		<project.finalName>tuxguitar-${project.version}-linux-x86_64</project.finalName>
+		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
 	</properties>
 	
 	<modules>
