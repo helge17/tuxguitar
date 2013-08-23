@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class TGFileUtils {
 			}
 			URL url = TGClassLoader.instance().getClassLoader().getResource(resource);
 			if(url != null){
-				return new File(URLDecoder.decode(url.getPath(), "UTF-8")).getAbsolutePath() + File.separator;
+				return getUrlPath(url);
 			}
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
@@ -120,7 +121,7 @@ public class TGFileUtils {
 			Enumeration plugins = getResourceUrls("plugins");
 			while( plugins.hasMoreElements() ){
 				URL url = (URL)plugins.nextElement();
-				TGClassLoader.instance().addPaths(new File(url.getFile()));
+				TGClassLoader.instance().addPaths(new File(getUrlPath(url)));
 			}
 			
 			String custompath = System.getProperty(TG_CLASS_PATH);
@@ -261,6 +262,10 @@ public class TGFileUtils {
 			staticSharedPaths += (File.pathSeparator + staticSharedPathsProperty);
 		}
 		return staticSharedPaths.split(File.pathSeparator);
+	}
+	
+	private static String getUrlPath( URL url ) throws UnsupportedEncodingException{
+		return (new File(URLDecoder.decode(url.getPath(), "UTF-8")).getAbsolutePath() + File.separator);
 	}
 	
 	private static boolean isExistentAndReadable( File file ){
