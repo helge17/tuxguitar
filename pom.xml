@@ -249,7 +249,7 @@
 			<!-- /iText -->
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -265,7 +265,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<repositories>
 		<repository>
 			<id>swt-repo</id>
@@ -276,7 +276,37 @@
 	<!-- We need a cross platform SWT version to compile projects -->
 	<properties>
 		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86</org.eclipse.swt.artifactId>
+		<org.eclipse.swt.artifactId>org.eclipse.swt</org.eclipse.swt.artifactId>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>platform-windows-x86</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86</org.eclipse.swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>platform-linux-x86</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>linux</name>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
