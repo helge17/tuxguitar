@@ -23,7 +23,14 @@ LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}
 ##CLASSPATH
-CLASSPATH=$CLASSPATH:./lib/tuxguitar.jar:./lib/tuxguitar-lib.jar:lib/swt.jar:lib/itextpdf.jar:lib/xmlworker.jar:share/:dist/
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar.jar
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar-lib.jar
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar-gm-utils.jar
+CLASSPATH=${CLASSPATH}:./lib/swt.jar
+CLASSPATH=${CLASSPATH}:./lib/itext-pdf.jar
+CLASSPATH=${CLASSPATH}:./lib/itext-xmlworker.jar
+CLASSPATH=${CLASSPATH}:./share/
+CLASSPATH=${CLASSPATH}:./dist/
 ##MAINCLASS
 MAINCLASS=org.herac.tuxguitar.app.TGMain
 ##JVM ARGUMENTS

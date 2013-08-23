@@ -29,6 +29,7 @@
 		<module>../../TuxGuitar-compat</module>
 		<module>../../TuxGuitar-converter</module>
 		<module>../../TuxGuitar-gervill</module>
+		<module>../../TuxGuitar-gm-settings</module>
 		<module>../../TuxGuitar-gtp</module>
 		<module>../../TuxGuitar-jsa</module>
 		<module>../../TuxGuitar-lilypond</module>
@@ -69,6 +70,12 @@
                   					<destFileName>tuxguitar-lib.jar</destFileName>
                   					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gm-utils</artifactId>
+                  					<destFileName>tuxguitar-gm-utils.jar</destFileName>
+                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
 								<!-- /LIBRARIES -->
 								
 								<!-- 3RD PARTY LIBRARIES -->
@@ -82,24 +89,18 @@
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
-									<destFileName>itextpdf.jar</destFileName>
+									<destFileName>itext-pdf.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>com.itextpdf.tool</groupId>
 									<artifactId>xmlworker</artifactId>
-									<destFileName>xmlworker.jar</destFileName>
+									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
 								
 								<!-- PLUGINS  -->
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-gm-utils</artifactId>
-									<destFileName>tuxguitar-gm-utils.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
-								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ascii</artifactId>
@@ -134,6 +135,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gervill</artifactId>
 									<destFileName>tuxguitar-gervill.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gm-settings</artifactId>
+									<destFileName>tuxguitar-gm-settings.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
