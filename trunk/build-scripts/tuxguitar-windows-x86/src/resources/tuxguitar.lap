@@ -1,0 +1,24 @@
+-Djava.class.path=${FOUND_EXE_FOLDER}\lib\tuxguitar.jar;${FOUND_EXE_FOLDER}\lib\tuxguitar-lib.jar;${FOUND_EXE_FOLDER}\lib\swt.jar;${FOUND_EXE_FOLDER}\lib\itext-pdf.jar;${FOUND_EXE_FOLDER}\lib\itext-xmlworker.jar;${FOUND_EXE_FOLDER}\share\;${FOUND_EXE_FOLDER}\dist\
+# Java class to call, ex. mypackage.Start or mypackage/Start
+janel.main.class=org.herac.tuxguitar.app.TGMain
+
+# the minimum version of the JVM, ex. 1.4.1
+janel.min.java.version=1.4.2
+
+# the path to be added to Java system property java.library.path. which is used to locate native DLLs. Multiple
+# instances of this property may be used.
+#
+janel.library.path.dir=${FOUND_EXE_FOLDER}\lib\
+
+# overrides the default error text ("Error in Java launcher.") with a custom error message.
+#
+janel.error.default.text=Error in TuxGuitar
+
+# allows the detailed error messages to be disabled (true/false, yes/no - defaults to true). If true, the default
+# error message will be displayed followed by the details.
+#
+janel.error.show.detail=true
+
+# sets the max memory via -Xmx as percent of total physical memory. See above for percent explanation.
+#
+janel.memory.max.total.percent=50
