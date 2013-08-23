@@ -24,6 +24,12 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-gm-utils</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-abc</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
@@ -90,7 +96,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-gm-utils</artifactId>
+				<artifactId>tuxguitar-gm-settings</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
