@@ -6,7 +6,7 @@ SET "JAVA_LIBRARY_PATH=%JAVA_LIBRARY_PATH%;lib\"
 
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-lib.jar"
-SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-gm-utils"
+SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-gm-utils.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\swt.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\itext-pdf.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\itext-xmlworker.jar"
