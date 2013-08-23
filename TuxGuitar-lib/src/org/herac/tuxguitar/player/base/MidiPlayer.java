@@ -7,6 +7,7 @@ import java.util.List;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -375,6 +376,58 @@ public class MidiPlayer{
 		}
 	}
 	
+	public void updateChannels() throws MidiPlayerException{
+		List channelIds = getChannelRouter().getMidiChannelIds();
+		
+		// Remove unused channels.
+		Iterator iterator = channelIds.iterator();
+		while( iterator.hasNext() ){
+			int channelId = ((Integer) iterator.next()).intValue();
+			if( this.songManager.getChannel(channelId) == null ){
+				this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
+				this.getChannelRouter().removeMidiChannel(channelId);
+			}
+		}
+		
+		// Add channels 
+		Iterator tgChannels = this.songManager.getSong().getChannels();
+		while( tgChannels.hasNext() ){
+			TGChannel tgChannel = (TGChannel) tgChannels.next();
+			if(!channelIds.contains(new Integer(tgChannel.getChannelId())) ){
+				MidiChannel midiChannel = this.getSynthesizerProxy().openChannel(tgChannel.getChannelId());
+				if( midiChannel != null ){
+					this.getChannelRouter().addMidiChannel(tgChannel.getChannelId(), midiChannel);
+				}
+			}
+		}
+		
+		this.updateParameters();
+	}
+	
+	public void updateParameters(){
+		Iterator tgChannels = this.songManager.getSong().getChannels();
+		while( tgChannels.hasNext() ){
+			TGChannel tgChannel = (TGChannel) tgChannels.next();
+			this.updateParameters(tgChannel);
+		}
+	}
+	
+	public void updateParameters(TGChannel tgChannel){
+		Iterator parameters = tgChannel.getParameters();
+		while( parameters.hasNext() ){
+			TGChannelParameter tgChannelParameter = (TGChannelParameter) parameters.next();
+			this.updateParameters(tgChannel, tgChannelParameter);
+		}
+	}
+	
+	public void updateParameters(TGChannel tgChannel, TGChannelParameter tgChannelParameter){
+		try {
+			getOutputTransmitter().sendParameter(tgChannel.getChannelId(), tgChannelParameter.getKey(), tgChannelParameter.getValue());
+		} catch (MidiPlayerException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void updateDefaultControllers(){
 		try{
 			Iterator tgChannels = this.songManager.getSong().getChannels();
@@ -605,32 +658,6 @@ public class MidiPlayer{
 			this.sequencer = new MidiSequencerEmpty();
 		}
 		return this.sequencer;
-	}
-	
-	public void updateChannels() throws MidiPlayerException{
-		List channelIds = getChannelRouter().getMidiChannelIds();
-		
-		// Remove unused channels.
-		Iterator iterator = channelIds.iterator();
-		while( iterator.hasNext() ){
-			int channelId = ((Integer) iterator.next()).intValue();
-			if( this.songManager.getChannel(channelId) == null ){
-				this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
-				this.getChannelRouter().removeMidiChannel(channelId);
-			}
-		}
-		
-		// Add channels 
-		Iterator tgChannels = this.songManager.getSong().getChannels();
-		while( tgChannels.hasNext() ){
-			TGChannel tgChannel = (TGChannel) tgChannels.next();
-			if(!channelIds.contains(new Integer(tgChannel.getChannelId())) ){
-				MidiChannel midiChannel = this.getSynthesizerProxy().openChannel(tgChannel.getChannelId());
-				if( midiChannel != null ){
-					this.getChannelRouter().addMidiChannel(tgChannel.getChannelId(), midiChannel);
-				}
-			}
-		}
 	}
 	
 	public int getPercussionChannelId(){
