@@ -14,6 +14,14 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>share</directory>
+			</resource>
+			<resource>
+				<directory>dist</directory>
+			</resource>
+		</resources>
 	</build>
 
 	<dependencies>
