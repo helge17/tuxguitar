@@ -7,13 +7,17 @@ import org.herac.tuxguitar.song.models.TGVelocities;
 
 public class MidiPlayerCountDown {
 	
+	public static final int DEFAULT_TEMPO_PERCENT = 100;
+	
 	private MidiPlayer player;
 	private boolean enabled;
 	private boolean running;
+	private int tempoPercent;
 	
 	public MidiPlayerCountDown(MidiPlayer player){
 		this.player = player;
 		this.enabled = false;
+		this.tempoPercent = DEFAULT_TEMPO_PERCENT;
 	}
 	
 	public void start(){
@@ -26,7 +30,7 @@ public class MidiPlayerCountDown {
 				if( header != null ){
 					Object timerLock = new Object();
 					
-					int  tgTempo = header.getTempo().getValue();
+					int  tgTempo = ((header.getTempo().getValue() * this.getTempoPercent()) / DEFAULT_TEMPO_PERCENT);
 					long tgLength = header.getTimeSignature().getDenominator().getTime();
 					long tickLength = (long)(1000.00 * (60.00 / tgTempo * tgLength) / TGDuration.QUARTER_TIME);
 					long tickStart = System.currentTimeMillis();
@@ -95,5 +99,13 @@ public class MidiPlayerCountDown {
 	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public int getTempoPercent() {
+		return tempoPercent;
+	}
+
+	public void setTempoPercent(int tempoPercent) {
+		this.tempoPercent = tempoPercent;
 	}
 }
