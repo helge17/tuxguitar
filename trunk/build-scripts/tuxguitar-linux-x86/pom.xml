@@ -18,7 +18,7 @@
 		<project.finalName>tuxguitar-${project.version}-linux-x86</project.finalName>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
 	</properties>
-	
+
 	<modules>
 		<module>../../TuxGuitar</module>
 		<module>../../TuxGuitar-lib</module>
@@ -40,7 +40,7 @@
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 	</modules>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -67,17 +67,17 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-lib</artifactId>
-                  					<destFileName>tuxguitar-lib.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-lib.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
-                  					<destFileName>tuxguitar-gm-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-gm-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /LIBRARIES -->
-								
+
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
 									<groupId>${org.eclipse.swt.groupId}</groupId>
@@ -85,7 +85,7 @@
 									<destFileName>swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -99,8 +99,8 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
-								
-								<!-- PLUGINS  -->
+
+								<!-- PLUGINS -->
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ascii</artifactId>
@@ -197,8 +197,8 @@
 									<destFileName>tuxguitar-tuner.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
-								<!-- /PLUGINS  -->
-								
+								<!-- /PLUGINS -->
+
 							</artifactItems>
 						</configuration>
 					</execution>
@@ -219,24 +219,27 @@
 								<mkdir dir="${project.build.directory}/${project.finalName}/lib" />
 								<mkdir dir="${project.build.directory}/${project.finalName}/share" />
 								<mkdir dir="${project.build.directory}/${project.finalName}/doc" />
-								
+
 								<copy todir="${project.build.directory}/${project.finalName}/share">
-									<fileset dir="${project.rootPath}/TuxGuitar/share/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
-									<fileset dir="${project.rootPath}/TuxGuitar/doc/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/doc/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist">
-									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
-									<fileset dir="./src/resources/dist/"/>
+								<copy todir="${project.build.directory}/${project.finalName}/dist"
+									overwrite="true">
+									<fileset dir="./src/resources/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/">
-									<fileset file="./src/resources/tuxguitar.sh"/>
+									<fileset file="./src/resources/tuxguitar.sh" />
 								</copy>
-								
-								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
+
+								<chmod
+									file="${project.build.directory}/${project.finalName}/tuxguitar.sh"
+									perm="755" />
 							</target>
 						</configuration>
 						<goals>
@@ -247,7 +250,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>native-modules</id>
@@ -263,7 +266,7 @@
 				<module>../../TuxGuitar-jack</module>
 				<module>../../TuxGuitar-oss</module>
 			</modules>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -279,38 +282,38 @@
 								</goals>
 								<configuration>
 									<artifactItems>
-										<!-- PLUGINS  -->
+										<!-- PLUGINS -->
 										<artifactItem>
 											<groupId>${project.groupId}</groupId>
 											<artifactId>tuxguitar-alsa</artifactId>
-		                  					<destFileName>tuxguitar-alsa.jar</destFileName>
-		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+											<destFileName>tuxguitar-alsa.jar</destFileName>
+											<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 										</artifactItem>
 										<artifactItem>
 											<groupId>${project.groupId}</groupId>
 											<artifactId>tuxguitar-fluidsynth</artifactId>
-		                  					<destFileName>tuxguitar-fluidsynth.jar</destFileName>
-		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+											<destFileName>tuxguitar-fluidsynth.jar</destFileName>
+											<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 										</artifactItem>
 										<artifactItem>
 											<groupId>${project.groupId}</groupId>
 											<artifactId>tuxguitar-jack</artifactId>
-		                  					<destFileName>tuxguitar-jack.jar</destFileName>
-		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+											<destFileName>tuxguitar-jack.jar</destFileName>
+											<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 										</artifactItem>
 										<artifactItem>
 											<groupId>${project.groupId}</groupId>
 											<artifactId>tuxguitar-oss</artifactId>
-		                  					<destFileName>tuxguitar-oss.jar</destFileName>
-		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+											<destFileName>tuxguitar-oss.jar</destFileName>
+											<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 										</artifactItem>
-										<!-- /PLUGINS  -->
+										<!-- /PLUGINS -->
 									</artifactItems>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
-		
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
@@ -323,17 +326,19 @@
 									<target name="copy-files">
 										<!-- PLUGIN FILES -->
 										<copy todir="${project.build.directory}/${project.finalName}/lib">
-											<fileset file="${project.rootPath}/TuxGuitar-alsa/jni/*.so"/>
+											<fileset file="${project.rootPath}/TuxGuitar-alsa/jni/*.so" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/lib">
-											<fileset file="${project.rootPath}/TuxGuitar-fluidsynth/jni/*.so"/>
+											<fileset file="${project.rootPath}/TuxGuitar-fluidsynth/jni/*.so" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/lib">
-											<fileset file="${project.rootPath}/TuxGuitar-jack/jni/*.so"/>
+											<fileset file="${project.rootPath}/TuxGuitar-jack/jni/*.so" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/lib">
-											<fileset file="${project.rootPath}/TuxGuitar-oss/jni/*.so"/>
+											<fileset file="${project.rootPath}/TuxGuitar-oss/jni/*.so" />
 										</copy>
+
+										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>
