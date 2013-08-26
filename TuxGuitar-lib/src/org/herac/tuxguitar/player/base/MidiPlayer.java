@@ -169,6 +169,7 @@ public class MidiPlayer{
 			this.updateControllers();
 			this.updateDefaultControllers();
 			this.setMetronomeEnabled(isMetronomeEnabled());
+			this.getCountDown().setTempoPercent(getMode().getCurrentPercent());
 			this.changeTickPosition();
 			
 			new Thread(new Runnable() {
