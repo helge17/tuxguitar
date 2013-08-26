@@ -334,6 +334,8 @@
 										<copy todir="${project.build.directory}/${project.finalName}/lib">
 											<fileset file="${project.rootPath}/TuxGuitar-oss/jni/*.so"/>
 										</copy>
+										
+										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>
