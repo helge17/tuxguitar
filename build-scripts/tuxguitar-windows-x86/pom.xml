@@ -268,6 +268,7 @@
 <!-- 				<module>../../TuxGuitar-winmm</module> -->
 <!-- 				<module>../../TuxGuitar-fluidsynth</module> -->
 <!-- 				<module>../../TuxGuitar-jack</module> -->
+<!-- 				<module>../../TuxGuitar-jack-settings</module> -->
 <!-- 			</modules> -->
 			
 <!-- 			<build> -->
@@ -302,6 +303,12 @@
 <!-- 											<groupId>${project.groupId}</groupId> -->
 <!-- 											<artifactId>tuxguitar-jack</artifactId> -->
 <!-- 		                  					<destFileName>tuxguitar-jack.jar</destFileName> -->
+<!-- 		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory> -->
+<!-- 										</artifactItem> -->
+<!-- 										<artifactItem> -->
+<!-- 											<groupId>${project.groupId}</groupId> -->
+<!-- 											<artifactId>tuxguitar-jack-settings</artifactId> -->
+<!-- 		                  					<destFileName>tuxguitar-jack-settings.jar</destFileName> -->
 <!-- 		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory> -->
 <!-- 										</artifactItem> -->
 <!-- 										/PLUGINS  -->
