@@ -377,24 +377,53 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void updateChannels() throws MidiPlayerException{
-		List channelIds = getChannelRouter().getMidiChannelIds();
-		
-		// Remove unused channels.
-		Iterator iterator = channelIds.iterator();
+	public void resetChannels() {
+		try{
+			this.closeChannels();
+			this.updateChannels();
+		} catch (MidiPlayerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void closeChannels() throws MidiPlayerException{
+		// Remove all channels.
+		Iterator iterator = getChannelRouter().getMidiChannelIds().iterator();
 		while( iterator.hasNext() ){
 			int channelId = ((Integer) iterator.next()).intValue();
-			if( this.songManager.getChannel(channelId) == null ){
+			
+			this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
+			this.getChannelRouter().removeMidiChannel(channelId);
+		}
+	}
+	
+	public void updateChannels() throws MidiPlayerException{
+		// Remove unused channels.
+		List oldChannelIds = getChannelRouter().getMidiChannelIds();
+		Iterator iterator = oldChannelIds.iterator();
+		while( iterator.hasNext() ){
+			int channelId = ((Integer) iterator.next()).intValue();
+			
+			boolean removableChannel = ( this.songManager.getChannel(channelId) == null );
+			if(!removableChannel ){
+				MidiChannel midiChannel = getChannelRouter().getMidiChannel(channelId);
+				if( midiChannel != null ){
+					removableChannel = (!this.getSynthesizerProxy().isChannelOpen(midiChannel));
+				}
+			}
+			
+			if( removableChannel ){
 				this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
 				this.getChannelRouter().removeMidiChannel(channelId);
 			}
 		}
 		
-		// Add channels 
+		// Add channels
+		List newChannelIds = getChannelRouter().getMidiChannelIds();
 		Iterator tgChannels = this.songManager.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
-			if(!channelIds.contains(new Integer(tgChannel.getChannelId())) ){
+			if(!newChannelIds.contains(new Integer(tgChannel.getChannelId())) ){
 				MidiChannel midiChannel = this.getSynthesizerProxy().openChannel(tgChannel.getChannelId());
 				if( midiChannel != null ){
 					this.getChannelRouter().addMidiChannel(tgChannel.getChannelId(), midiChannel);

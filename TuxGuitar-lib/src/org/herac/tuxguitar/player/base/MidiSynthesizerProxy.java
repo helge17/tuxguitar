@@ -20,11 +20,18 @@ public class MidiSynthesizerProxy implements MidiSynthesizer{
 			this.midiSynthesizer.closeChannel(midiChannel);
 		}
 	}
-
+	
+	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException{
+		if( this.midiSynthesizer != null ){
+			return this.midiSynthesizer.isChannelOpen(midiChannel);
+		}
+		return false;
+	}
+	
 	public MidiSynthesizer getMidiSynthesizer() {
 		return this.midiSynthesizer;
 	}
-
+	
 	public void setMidiSynthesizer(MidiSynthesizer midiSynthesizer) {
 		this.midiSynthesizer = midiSynthesizer;
 	}

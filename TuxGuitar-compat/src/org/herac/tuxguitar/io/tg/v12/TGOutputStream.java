@@ -756,6 +756,6 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		this.channelRouter = new GMChannelRouter();
 		
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.channelRouter);
-		gmChannelRouterConfigurator.configureRouter(song);
+		gmChannelRouterConfigurator.configureRouter(song.getChannels());
 	}
 }

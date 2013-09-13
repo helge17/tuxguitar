@@ -1,4 +1,6 @@
 org.herac.tuxguitar.jack.singleton.JackSingletonPlugin
-org.herac.tuxguitar.jack.synthesizer.JackOutputPortProviderPlugin
+#org.herac.tuxguitar.jack.synthesizer.JackOutputPortProviderPlugin
+org.herac.tuxguitar.jack.synth.JackOutputPortProviderPlugin
+org.herac.tuxguitar.jack.synth.settings.JackChannelSettingsPlugin
 org.herac.tuxguitar.jack.sequencer.JackSequencerProviderPlugin
 org.herac.tuxguitar.jack.settings.JackSettingsPlugin

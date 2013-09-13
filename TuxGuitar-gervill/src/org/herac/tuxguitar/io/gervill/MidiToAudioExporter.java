@@ -51,7 +51,7 @@ public class MidiToAudioExporter implements TGLocalFileExporter{
 				
 				GMChannelRouter gmChannelRouter = new GMChannelRouter();
 				GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
-				gmChannelRouterConfigurator.configureRouter(tgSong);
+				gmChannelRouterConfigurator.configureRouter(tgSong.getChannels());
 				
 				MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSongManager,MidiSequenceParser.DEFAULT_EXPORT_FLAGS);
 				MidiSequenceHandlerImpl midiSequenceHandler = new MidiSequenceHandlerImpl((tgSong.countTracks() + 1), gmChannelRouter);

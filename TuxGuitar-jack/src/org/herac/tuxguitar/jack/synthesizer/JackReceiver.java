@@ -25,7 +25,7 @@ public class JackReceiver implements GMReceiver{
 		event[0] = (byte)(0x90 | this.jackOutputPort.getRouter().getChannelRoute(channel) );
 		event[1] = (byte)key;
 		event[2] = (byte)velocity;
-		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
+//		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
 	}
 	
 	public void sendNoteOff(int channel, int key, int velocity) {
@@ -33,7 +33,7 @@ public class JackReceiver implements GMReceiver{
 		event[0] = (byte)(0x80 | this.jackOutputPort.getRouter().getChannelRoute(channel) );
 		event[1] = (byte)key;
 		event[2] = (byte)velocity;
-		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
+//		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
 	}
 	
 	public void sendPitchBend(int channel, int value) {
@@ -41,7 +41,7 @@ public class JackReceiver implements GMReceiver{
 		event[0] = (byte)(0xE0 | this.jackOutputPort.getRouter().getChannelRoute(channel) );
 		event[1] = (byte)0;
 		event[2] = (byte)value;
-		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
+//		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
 	}
 	
 	public void sendProgramChange(int channel, int value) {
@@ -56,8 +56,8 @@ public class JackReceiver implements GMReceiver{
 		event2[0] = (byte)(0xC0 | this.jackOutputPort.getRouter().getChannelRoute(channel) );
 		event2[1] = (byte)this.jackOutputPort.getRouter().getProgramRoute(channel , value);
 		
-		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event1);
-		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event2);
+//		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event1);
+//		this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event2);
 	}
 	
 	public void sendControlChange(int channel, int controller, int value) {
@@ -68,7 +68,7 @@ public class JackReceiver implements GMReceiver{
 			event[0] = (byte)(0xB0 | this.jackOutputPort.getRouter().getChannelRoute(channel) );
 			event[1] = (byte)controller;
 			event[2] = (byte)value;
-			this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
+//			this.jackClient.addEventToQueue( this.jackOutputPort.getRouter().getPortRoute(channel) , event);
 		}
 	}
 	

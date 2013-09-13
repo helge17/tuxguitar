@@ -112,7 +112,7 @@ public class MusicXMLWriter {
 		
 		GMChannelRouter gmChannelRouter = new GMChannelRouter();
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
-		gmChannelRouterConfigurator.configureRouter(this.manager.getSong());
+		gmChannelRouterConfigurator.configureRouter(this.manager.getSong().getChannels());
 		
 		Iterator tracks = this.manager.getSong().getTracks();
 		while(tracks.hasNext()){
