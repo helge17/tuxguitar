@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synthesizer;
+package org.herac.tuxguitar.jack.synth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +27,13 @@ public class JackOutputPortProvider implements MidiOutputPortProvider{
 			JackClient jackClient = this.jackClientProvider.getJackClient();
 			JackSettings jackSettings = this.jackSettingsProvider.getJackSettings();
 			if( jackClient != null && jackSettings != null ){
-				this.jackOutputPorts.add(new JackOutputPort( jackClient, jackSettings ));
+				this.jackOutputPorts.add(new JackSynthesizerPort(jackClient));
 			}
 		}
 		return this.jackOutputPorts;
 	}
 	
 	public void closeAll(){
-		JackClient jackClient = this.jackClientProvider.getJackClient();
-//		if( jackClient != null && jackClient.isPortsOpen() ){
-//			jackClient.closePorts();
-//		}
+		// TODO
 	}
 }

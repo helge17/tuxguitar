@@ -1,5 +1,9 @@
 package org.herac.tuxguitar.jack;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class JackClient{
 	
 	private static final String JNI_LIBRARY_NAME = new String("tuxguitar-jack-jni");
@@ -9,14 +13,12 @@ public class JackClient{
 	}
 	
 	private long instance;
-	private boolean open;
-	private boolean openPorts;
 	private boolean openTransport;
+	private List jackPorts;
 	
 	public JackClient() {
 		this.instance = malloc();
-		this.open = false;
-		this.openPorts = false;
+		this.jackPorts = new ArrayList();
 	}
 	
 	public void finalize(){
@@ -26,23 +28,9 @@ public class JackClient{
 		}
 	}
 	
-	private void open(){
-		if(this.instance != 0 && !this.open){
+	public void open(){
+		if(this.instance != 0 && !this.isOpen() ){
 			this.open(this.instance);
-			this.open = true;
-		}
-	}
-	
-	private void close( boolean force ){
-		if( force ){
-			this.closePorts();
-			this.closeTransport();
-		}
-		if( !this.isPortsOpen() && !this.isTransportOpen() ){
-			if(this.instance != 0 && this.open){
-				this.close(this.instance);
-				this.open = false;
-			}
 		}
 	}
 	
@@ -50,30 +38,83 @@ public class JackClient{
 		this.close( true );
 	}
 	
-	public boolean isOpen(){
-		return (this.instance != 0 && this.open);
-	}
-	
-	public boolean isPortsOpen(){
-		return (this.isOpen() && this.openPorts);
-	}
-	
-	public void openPorts(int count){
-		if(!this.isOpen()){
-			this.open();
+	public void close( boolean force ){
+		if( force ){
+			this.closePorts();
+			this.closeTransport();
 		}
-		if(this.isOpen() && !this.openPorts){
-			this.openPorts(this.instance, count);
-			this.openPorts = true;
+		if( !this.isAnyJackPortOpen() && !this.isTransportOpen() ){
+			if( this.isOpen() ){
+				this.close(this.instance);
+			}
+		}
+	}
+	
+	public boolean isOpen(){
+		if( this.instance != 0 ){
+			return this.isOpen(this.instance);
+		}
+		return false;
+	}
+	
+	public JackPort openPort(String jackPortName){
+		if( this.isOpen() ){
+			JackPort jackPort = this.findPort(jackPortName);
+			if( jackPort == null ){
+				long jackPortId = this.openPort(this.instance, jackPortName);
+				if( jackPortId != 0 ){
+					jackPort = new JackPort(jackPortId, jackPortName);
+					
+					this.jackPorts.add(jackPort);
+				}
+			}
+			return jackPort;
+		}
+		return null;
+	}
+	
+	public void closePort(JackPort jackPort){
+		if( this.isOpen() ){
+			JackPort jackPortToClose = this.findPort(jackPort.getJackPortName());
+			if( jackPortToClose != null ) {
+				this.closePort(this.instance, jackPortToClose.getJackPortId());
+				this.jackPorts.remove( jackPortToClose );
+			}
 		}
 	}
 	
 	public void closePorts(){
-		if(this.isOpen() && this.openPorts){
-			this.closePorts(this.instance);
-			this.openPorts = false;
+		if( this.isOpen() ) {
+			List jackPorts = new ArrayList(this.jackPorts);
+			Iterator it = jackPorts.iterator();
+			while( it.hasNext() ){
+				this.closePort((JackPort) it.next());
+			}
 		}
-		this.close( false );
+	}
+	
+	public JackPort findPort(String jackPortName){
+		if( this.isOpen() ){
+			Iterator it = this.jackPorts.iterator();
+			while( it.hasNext() ){
+				JackPort jackPort = (JackPort) it.next();
+				if( jackPort.getJackPortName().equals(jackPortName) ){
+					return jackPort;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean isPortOpen(JackPort jackPort){
+		if( this.isOpen() ){
+			return this.isPortOpen(this.instance, jackPort.getJackPortId());
+		}
+		return false;
+	}
+	
+	public boolean isAnyJackPortOpen(){
+		return (this.isOpen() && !this.jackPorts.isEmpty());
 	}
 	
 	public boolean isTransportOpen(){
@@ -81,9 +122,6 @@ public class JackClient{
 	}
 	
 	public void openTransport(){
-		if(!this.isOpen()){
-			this.open();
-		}
 		if(this.isOpen() && !this.openTransport){
 			this.openTransport = true;
 		}
@@ -96,64 +134,54 @@ public class JackClient{
 		this.close( false );
 	}
 	
-	public void addEventToQueue( int port , byte[] data){
-		if(this.instance != 0 && this.open){
-			this.addEventToQueue(this.instance, port, data );
+	public void addEventToQueue(JackPort jackPort , byte[] data){
+		if( this.isOpen() ){
+			this.addEventToQueue(this.instance, jackPort.getJackPortId(), data );
 		}
 	}
 	
 	public long getTransportUID(){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			return this.getTransportUID(this.instance);
 		}
 		return 0;
 	}
 	
 	public long getTransportFrame(){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			return this.getTransportFrame(this.instance);
 		}
 		return 0;
 	}
 	
 	public long getTransportFrameRate(){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			return this.getTransportFrameRate(this.instance);
 		}
 		return 0;
 	}
 	
 	public void setTransportFrame( long frame ){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			this.setTransportFrame(this.instance, frame );
 		}
 	}
 	
 	public void setTransportStart(){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			this.setTransportStart(this.instance);
 		}
 	}
 	
 	public void setTransportStop(){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			this.setTransportStop(this.instance);
 		}
 	}
 	
 	public boolean isTransportRunning(){
-		if(this.instance != 0 && this.open){
+		if( this.isOpen() ){
 			return this.isTransportRunning(this.instance);
-		}
-		return false;
-	}
-	
-	public boolean isServerRunning(){
-		if(this.instance != 0 && this.open){
-			if( this.isServerRunning(this.instance) ){
-				return true;
-			}
-			this.close( true );
 		}
 		return false;
 	}
@@ -166,9 +194,9 @@ public class JackClient{
 	
 	private native void close(long instance);
 	
-	private native void openPorts(long instance, int count);
+	private native long openPort(long instance, String portName);
 	
-	private native void closePorts(long instance);
+	private native void closePort(long instance, long portId);
 	
 	private native long getTransportUID(long instance);
 	
@@ -182,9 +210,11 @@ public class JackClient{
 	
 	private native void setTransportStop(long instance);
 	
+	private native void addEventToQueue(long instance, long portId, byte[] data);
+	
+	private native boolean isOpen(long instance);
+	
+	private native boolean isPortOpen(long instance, long portId);
+	
 	private native boolean isTransportRunning(long instance);
-	
-	private native boolean isServerRunning(long instance);
-	
-	private native void addEventToQueue(long instance, int port, byte[] data);
 }

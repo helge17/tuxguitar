@@ -23,27 +23,27 @@ public class JackOutputPort extends GMOutputPort implements JackSettingsListener
 	}
 	
 	public void open(){
-		if(!this.jackClient.isPortsOpen()){
-			this.loadSettings( this.jackSettings.getConfig() );
-			this.jackSettings.addListener( this );
-			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
-		}
+//		if(!this.jackClient.isPortsOpen()){
+//			this.loadSettings( this.jackSettings.getConfig() );
+//			this.jackSettings.addListener( this );
+//			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
+//		}
 	}
 	
 	public void close(){
-		if(this.jackClient.isPortsOpen()){
-			this.jackClient.closePorts();
-			this.jackSettings.removeListener( this );
-		}
+//		if(this.jackClient.isPortsOpen()){
+//			this.jackClient.closePorts();
+//			this.jackSettings.removeListener( this );
+//		}
 	}
 	
 	public void check() throws MidiPlayerException {
-		if( !this.jackClient.isServerRunning() || !this.jackClient.isPortsOpen() ){
-			this.open();
-			if( !this.jackClient.isServerRunning() || !this.jackClient.isPortsOpen() ){
-				throw new MidiPlayerException("Jack server not running?");
-			}
-		}
+//		if( !this.jackClient.isServerRunning() || !this.jackClient.isPortsOpen() ){
+//			this.open();
+//			if( !this.jackClient.isServerRunning() || !this.jackClient.isPortsOpen() ){
+//				throw new MidiPlayerException("Jack server not running?");
+//			}
+//		}
 	}
 	
 	public GMReceiver getReceiver(){
@@ -55,14 +55,14 @@ public class JackOutputPort extends GMOutputPort implements JackSettingsListener
 	}
 	
 	public void loadSettings(TGConfigManager config) {
-		boolean connected = this.jackClient.isPortsOpen();
-		if( connected ){
-			this.jackClient.closePorts();
-		}
-		this.jackOutputPortRouter.loadSettings(config);
-		if( connected ){
-			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
-		}
+//		boolean connected = this.jackClient.isPortsOpen();
+//		if( connected ){
+//			this.jackClient.closePorts();
+//		}
+//		this.jackOutputPortRouter.loadSettings(config);
+//		if( connected ){
+//			this.jackClient.openPorts(this.jackOutputPortRouter.getPortCount());
+//		}
 	}
 	
 	public String getKey(){

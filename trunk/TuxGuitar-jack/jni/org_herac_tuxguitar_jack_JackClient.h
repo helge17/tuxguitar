@@ -41,19 +41,19 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close
 
 /*
  * Class:     org_herac_tuxguitar_jack_JackClient
- * Method:    openPorts
- * Signature: (JI)V
+ * Method:    openPort
+ * Signature: (JLjava/lang/String;)J
  */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPorts
-  (JNIEnv *, jobject, jlong, jint);
+JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPort
+  (JNIEnv *, jobject, jlong, jstring);
 
 /*
  * Class:     org_herac_tuxguitar_jack_JackClient
- * Method:    closePorts
- * Signature: (J)V
+ * Method:    closePort
+ * Signature: (JJ)V
  */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePorts
-  (JNIEnv *, jobject, jlong);
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePort
+  (JNIEnv *, jobject, jlong, jlong);
 
 /*
  * Class:     org_herac_tuxguitar_jack_JackClient
@@ -105,27 +105,35 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStop
 
 /*
  * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    addEventToQueue
+ * Signature: (JJ[B)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue
+  (JNIEnv *, jobject, jlong, jlong, jbyteArray);
+
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    isOpen
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isOpen
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    isPortOpen
+ * Signature: (JJ)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isPortOpen
+  (JNIEnv *, jobject, jlong, jlong);
+
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
  * Method:    isTransportRunning
  * Signature: (J)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportRunning
   (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     org_herac_tuxguitar_jack_JackClient
- * Method:    isServerRunning
- * Signature: (J)Z
- */
-JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isServerRunning
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     org_herac_tuxguitar_jack_JackClient
- * Method:    addEventToQueue
- * Signature: (JI[B)V
- */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue
-  (JNIEnv *, jobject, jlong, jint, jbyteArray);
 
 #ifdef __cplusplus
 }

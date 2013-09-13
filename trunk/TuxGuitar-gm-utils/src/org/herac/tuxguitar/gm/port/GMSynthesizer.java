@@ -2,6 +2,7 @@ package org.herac.tuxguitar.gm.port;
 
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.player.base.MidiChannel;
+import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSynthesizer;
 
 public class GMSynthesizer implements MidiSynthesizer{
@@ -22,5 +23,9 @@ public class GMSynthesizer implements MidiSynthesizer{
 	
 	public MidiChannel openChannel(int channelId){
 		return new GMChannel(channelId, this.gmChannelRouter, this.midiOutputPort.getReceiver());
+	}
+
+	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException {
+		return true;
 	}
 }

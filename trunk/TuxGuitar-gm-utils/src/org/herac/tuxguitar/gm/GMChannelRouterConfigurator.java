@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
-import org.herac.tuxguitar.song.models.TGSong;
 
 public class GMChannelRouterConfigurator {
 	
@@ -14,10 +13,9 @@ public class GMChannelRouterConfigurator {
 		this.router = router;
 	}
 	
-	public void configureRouter(TGSong tgSong){
+	public void configureRouter(Iterator tgChannels){
 		this.router.resetRoutes();
 		
-		Iterator tgChannels = tgSong.getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			

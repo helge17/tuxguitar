@@ -85,7 +85,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	
 	private void configureRouter(){
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.router);
-		gmChannelRouterConfigurator.configureRouter(TuxGuitar.instance().getSongManager().getSong());
+		gmChannelRouterConfigurator.configureRouter(TuxGuitar.instance().getSongManager().getSong().getChannels());
 	}
 	
 	private void updateChannelCombos(){

@@ -163,6 +163,9 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	public void open() {
+		if(!this.jackClient.isOpen()){
+			this.jackClient.open();
+		}
 		if(!this.jackClient.isTransportOpen() ){
 			this.jackClient.openTransport();
 		}
@@ -182,9 +185,9 @@ public class JackSequencer implements MidiSequencer{
 	}
 	
 	public void check() throws MidiPlayerException {
-		if( !this.jackClient.isServerRunning() || !this.jackClient.isTransportOpen() ){
+		if(!this.jackClient.isOpen() || !this.jackClient.isTransportOpen() ){
 			this.open();
-			if( !this.jackClient.isServerRunning() || !this.jackClient.isTransportOpen() ){
+			if(!this.jackClient.isOpen() || !this.jackClient.isTransportOpen() ){
 				throw new MidiPlayerException("Jack server not running?");
 			}
 		}

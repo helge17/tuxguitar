@@ -100,7 +100,7 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 		this.channelRouter = new GMChannelRouter();
 		
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.channelRouter);
-		gmChannelRouterConfigurator.configureRouter(song);
+		gmChannelRouterConfigurator.configureRouter(song.getChannels());
 	}
 	
 	protected GMChannelRoute getChannelRoute( int channelId ){
