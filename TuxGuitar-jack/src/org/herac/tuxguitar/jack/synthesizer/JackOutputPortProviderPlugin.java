@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synth;
+package org.herac.tuxguitar.jack.synthesizer;
 
 import org.herac.tuxguitar.jack.JackPlugin;
 import org.herac.tuxguitar.jack.singleton.JackClientInstanceProvider;

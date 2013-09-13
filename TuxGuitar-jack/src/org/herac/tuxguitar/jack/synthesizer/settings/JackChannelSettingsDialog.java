@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synth.settings;
+package org.herac.tuxguitar.jack.synthesizer.settings;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,7 +20,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.jack.synth.JackChannelParameter;
+import org.herac.tuxguitar.jack.synthesizer.JackChannelParameter;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGChannel;

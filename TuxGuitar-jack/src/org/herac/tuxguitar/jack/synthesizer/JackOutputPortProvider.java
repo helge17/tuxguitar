@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synth;
+package org.herac.tuxguitar.jack.synthesizer;
 
 import java.util.ArrayList;
 import java.util.List;
