@@ -2,7 +2,6 @@ package org.herac.tuxguitar.jack.singleton;
 
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.JackPlugin;
-import org.herac.tuxguitar.jack.settings.JackSettings;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -11,15 +10,13 @@ public class JackSingletonPlugin implements TGPlugin {
 	public static final String MODULE_ID = "tuxguitar-jack";
 	
 	private JackClient jackClient;
-	private JackSettings jackSettings;
 	
 	public JackSingletonPlugin(){
 		super();
 	}
 	
 	public void init() throws TGPluginException {
-		this.jackClient = new JackClient();
-		this.jackSettings = new JackSettings();	
+		this.jackClient = new JackClient();	
 	}
 	
 	public void close(){
@@ -30,15 +27,10 @@ public class JackSingletonPlugin implements TGPlugin {
 			this.jackClient.finalize();
 		}
 		this.jackClient = null;
-		this.jackSettings = null;
 	}
 	
 	public JackClient getJackClient() {
 		return this.jackClient;
-	}
-
-	public JackSettings getJackSettings() {
-		return this.jackSettings;
 	}
 
 	public void setEnabled(boolean enabled) throws TGPluginException {
