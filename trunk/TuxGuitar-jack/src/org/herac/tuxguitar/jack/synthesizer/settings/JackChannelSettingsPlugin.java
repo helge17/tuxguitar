@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synth.settings;
+package org.herac.tuxguitar.jack.synthesizer.settings;
 
 import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsHandler;
 import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsPlugin;

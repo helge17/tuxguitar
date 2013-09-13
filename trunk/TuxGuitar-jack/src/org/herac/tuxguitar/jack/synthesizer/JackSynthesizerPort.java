@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synth;
+package org.herac.tuxguitar.jack.synthesizer;
 
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
