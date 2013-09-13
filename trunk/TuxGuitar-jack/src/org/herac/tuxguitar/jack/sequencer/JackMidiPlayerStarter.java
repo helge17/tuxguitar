@@ -14,7 +14,7 @@ public class JackMidiPlayerStarter implements MidiPlayerListener{
 	}
 	
 	private MidiPlayer getPlayer(){
-		return TuxGuitar.instance().getPlayer();
+		return MidiPlayer.getInstance();
 	}
 	
 	public void open(){
