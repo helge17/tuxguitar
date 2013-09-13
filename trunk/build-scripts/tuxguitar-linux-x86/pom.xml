@@ -264,6 +264,7 @@
 				<module>../../TuxGuitar-alsa</module>
 				<module>../../TuxGuitar-fluidsynth</module>
 				<module>../../TuxGuitar-jack</module>
+				<module>../../TuxGuitar-jack-settings</module>
 				<module>../../TuxGuitar-oss</module>
 			</modules>
 
@@ -300,6 +301,12 @@
 											<artifactId>tuxguitar-jack</artifactId>
 											<destFileName>tuxguitar-jack.jar</destFileName>
 											<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>${project.groupId}</groupId>
+											<artifactId>tuxguitar-jack-settings</artifactId>
+		                  					<destFileName>tuxguitar-jack-settings.jar</destFileName>
+		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 										</artifactItem>
 										<artifactItem>
 											<groupId>${project.groupId}</groupId>
