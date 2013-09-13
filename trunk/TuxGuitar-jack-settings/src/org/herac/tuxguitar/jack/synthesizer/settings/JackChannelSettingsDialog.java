@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -36,25 +38,28 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	
 	private TGChannel channel;
 	private GMChannelRouter router;
+	private Shell dialog;
 	private Combo gmChannel1Combo;
 	private Combo gmChannel2Combo;
 	private Button exclusiveButton;
+	private JackMidiPlayerListener jackMidiPlayerListener;
 	
 	public JackChannelSettingsDialog(TGChannel channel){
 		this.channel = channel;
 		this.router = new GMChannelRouter();
+		this.jackMidiPlayerListener = new JackMidiPlayerListener(this);
 	}
 	
 	public void show(final Shell parent) {
 		this.configureRouter(true);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM);
-		dialog.setLayout(new GridLayout(1,false));
-		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		dialog.setText(TuxGuitar.getProperty("jack.settings.channel.dialog"));
+		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM);
+		this.dialog.setLayout(new GridLayout(1,false));
+		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.dialog.setText(TuxGuitar.getProperty("jack.settings.channel.dialog"));
 		
 		//-------------------- GM Channels -------------------------------
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
 		group.setLayout(new GridLayout(2,false));
 		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		group.setText(TuxGuitar.getProperty("jack.settings.channel.gm.tip"));
@@ -84,7 +89,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		});
 		
 		//-------------------- Jack Options-------------------------------
-		Group optionsGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
+		Group optionsGroup = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
 		optionsGroup.setLayout(new GridLayout());
 		optionsGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		optionsGroup.setText(TuxGuitar.getProperty("options"));
@@ -102,15 +107,34 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		
 		this.updateDefaultExclusiveChannels();
 		this.updateChannelCombos();
+		this.updateControls();
 		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		this.addMidiPlayerListener();
+		this.dialog.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent arg0) {
+				removeMidiPlayerListener();
+			}
+		});
+		
+		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
-	protected GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+	public void addMidiPlayerListener(){
+		MidiPlayer.getInstance().addListener(this.jackMidiPlayerListener);
+	}
+	
+	public void removeMidiPlayerListener(){
+		MidiPlayer.getInstance().removeListener(this.jackMidiPlayerListener);
+	}
+	
+	public void updateControls(){
+		if( this.dialog != null && !this.dialog.isDisposed() ){
+			boolean playerRunning = TuxGuitar.instance().getPlayer().isRunning();
+			
+			this.gmChannel1Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel1Combo.getItemCount() > 0);
+			this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
+			this.exclusiveButton.setEnabled(!playerRunning);
+		}
 	}
 	
 	private void configureRouter( boolean updateChannel ){
@@ -129,10 +153,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		} else { 
 			this.reloadGMChannelCombos();
 		}
-		boolean playerRunning = TuxGuitar.instance().getPlayer().isRunning();
-		
-		this.gmChannel1Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel1Combo.getItemCount() > 0);
-		this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
+		this.updateControls();
 	}
 	
 	private void reloadExclusiveChannelCombos(){
