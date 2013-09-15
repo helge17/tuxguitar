@@ -6,7 +6,7 @@ import javax.sound.midi.ShortMessage;
 public class MidiProgramChangeMessage extends MidiShortMessage{
 	
 	public MidiProgramChangeMessage(int channel,int instrument) throws InvalidMidiDataException{
-		this.setMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument);
+		this.setMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument, 0);
 		this.setVoice(MidiShortMessage.DEFAULT_VOICE);
 		this.setBendMode(MidiShortMessage.DEFAULT_BEND_MODE);
 	}
