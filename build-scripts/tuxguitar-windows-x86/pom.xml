@@ -267,6 +267,7 @@
 			<modules>
 				<module>./src/native/tuxguitar-winmm</module>
 				<module>./src/native/tuxguitar-fluidsynth</module>
+				<module>./src/native/tuxguitar-jack</module>
 			</modules>
 			
 			<build>
@@ -287,6 +288,9 @@
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="./src/native/tuxguitar-fluidsynth/target/build" />
+										</copy>
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="./src/native/tuxguitar-jack/target/build" />
 										</copy>
 										
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
