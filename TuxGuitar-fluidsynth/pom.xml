@@ -20,55 +20,6 @@
 			</resource>
 		</resources>
 	</build>
-	
-	<profiles>
-		<profile>
-			<id>native-modules</id>
-			<activation>
-				<property>
-					<name>native-modules</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<id>compile-native</id>
-								<phase>compile</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<target name="compile-native">
-										<exec dir="jni" executable="make" failonerror="true" />
-									</target>
-								</configuration>
-							</execution>
-							<execution>
-								<id>clean-native</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<target name="clean-native">
-										<exec dir="jni" executable="make" failonerror="true" >
-											<arg value="clean"/>
-										</exec>
-									</target>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 	<dependencies>
 		<dependency>

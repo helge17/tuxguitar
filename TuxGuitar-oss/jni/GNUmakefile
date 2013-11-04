@@ -1,13 +1,12 @@
-CFLAGS?=-I$(shell gcj -print-file-name=include/)
-CFLAGS+=-fPIC
+CFLAGS?=-I$(shell gcj -print-file-name=include/) -fPIC
 LDFLAGS?=
 LDLIBS?=
 LDPATH?=
-LIBRARY_PREFIX?=lib
 LIBRARY_NAME?=tuxguitar-oss-jni
-LIBRARY_EXTENSION?=.so
+LIBRARY_PREFIX?=lib
+LIBRARY_SUFFIX?=.so
 
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_EXTENSION)
+LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=org_herac_tuxguitar_player_impl_midiport_oss_MidiSystem.o
 
 %.o: %.c
