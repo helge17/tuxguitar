@@ -1,13 +1,12 @@
-CFLAGS?=-I$(shell gcj -print-file-name=include/)
-CFLAGS+=-fPIC
+CFLAGS?=-I$(shell gcj -print-file-name=include/) -fPIC
 LDFLAGS?=
 LDLIBS?=`pkg-config --libs jack`
 LDPATH?=
-LIBRARY_PREFIX?=lib
 LIBRARY_NAME?=tuxguitar-jack-jni
-LIBRARY_EXTENSION?=.so
+LIBRARY_PREFIX?=lib
+LIBRARY_SUFFIX?=.so
 
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_EXTENSION)
+LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=org_herac_tuxguitar_jack_JackClient.o
 
 %.o: %.c

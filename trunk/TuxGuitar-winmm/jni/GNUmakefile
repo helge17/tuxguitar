@@ -2,11 +2,11 @@ CFLAGS?=-mno-cygwin -I$(shell gcj -print-file-name=include/)
 LDFLAGS?=-mno-cygwin -Wl,--kill-at
 LDLIBS?=-lwinmm
 LDPATH?=
-LIBRARY_PREFIX?=
 LIBRARY_NAME?=tuxguitar-winmm-jni
-LIBRARY_EXTENSION?=.dll
+LIBRARY_PREFIX?=
+LIBRARY_SUFFIX?=.dll
 
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_EXTENSION)
+LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem.o
 
 %.o: %.c

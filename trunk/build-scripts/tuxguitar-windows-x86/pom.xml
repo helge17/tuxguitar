@@ -255,100 +255,52 @@
 		</plugins>
 	</build>
 	
-<!-- 	<profiles> -->
-<!-- 		<profile> -->
-<!-- 			<id>native-modules</id> -->
-<!-- 			<activation> -->
-<!-- 				<property> -->
-<!-- 					<name>native-modules</name> -->
-<!-- 					<value>true</value> -->
-<!-- 				</property> -->
-<!-- 			</activation> -->
-<!-- 			<modules> -->
-<!-- 				<module>../../TuxGuitar-winmm</module> -->
-<!-- 				<module>../../TuxGuitar-fluidsynth</module> -->
-<!-- 				<module>../../TuxGuitar-jack</module> -->
-<!-- 				<module>../../TuxGuitar-jack-settings</module> -->
-<!-- 			</modules> -->
+	<profiles>
+		<profile>
+			<id>native-modules</id>
+			<activation>
+				<property>
+					<name>native-modules</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>./src/native/tuxguitar-winmm</module>
+				<module>./src/native/tuxguitar-fluidsynth</module>
+			</modules>
 			
-<!-- 			<build> -->
-<!-- 				<plugins> -->
-<!-- 					<plugin> -->
-<!-- 						<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 						<artifactId>maven-dependency-plugin</artifactId> -->
-<!-- 						<version>2.4</version> -->
-<!-- 						<executions> -->
-<!-- 							<execution> -->
-<!-- 								<id>native-module-copy-libs</id> -->
-<!-- 								<phase>package</phase> -->
-<!-- 								<goals> -->
-<!-- 									<goal>copy</goal> -->
-<!-- 								</goals> -->
-<!-- 								<configuration> -->
-<!-- 									<artifactItems> -->
-<!-- 										PLUGINS  -->
-<!-- 										<artifactItem> -->
-<!-- 											<groupId>${project.groupId}</groupId> -->
-<!-- 											<artifactId>tuxguitar-winmm</artifactId> -->
-<!-- 		                  					<destFileName>tuxguitar-winmm.jar</destFileName> -->
-<!-- 		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory> -->
-<!-- 										</artifactItem> -->
-<!-- 										<artifactItem> -->
-<!-- 											<groupId>${project.groupId}</groupId> -->
-<!-- 											<artifactId>tuxguitar-fluidsynth</artifactId> -->
-<!-- 		                  					<destFileName>tuxguitar-fluidsynth.jar</destFileName> -->
-<!-- 		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory> -->
-<!-- 										</artifactItem> -->
-<!-- 										<artifactItem> -->
-<!-- 											<groupId>${project.groupId}</groupId> -->
-<!-- 											<artifactId>tuxguitar-jack</artifactId> -->
-<!-- 		                  					<destFileName>tuxguitar-jack.jar</destFileName> -->
-<!-- 		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory> -->
-<!-- 										</artifactItem> -->
-<!-- 										<artifactItem> -->
-<!-- 											<groupId>${project.groupId}</groupId> -->
-<!-- 											<artifactId>tuxguitar-jack-settings</artifactId> -->
-<!-- 		                  					<destFileName>tuxguitar-jack-settings.jar</destFileName> -->
-<!-- 		                  					<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory> -->
-<!-- 										</artifactItem> -->
-<!-- 										/PLUGINS  -->
-<!-- 									</artifactItems> -->
-<!-- 								</configuration> -->
-<!-- 							</execution> -->
-<!-- 						</executions> -->
-<!-- 					</plugin> -->
-		
-<!-- 					<plugin> -->
-<!-- 						<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 						<artifactId>maven-antrun-plugin</artifactId> -->
-<!-- 						<version>1.7</version> -->
-<!-- 						<executions> -->
-<!-- 							<execution> -->
-<!-- 								<id>native-module-copy</id> -->
-<!-- 								<phase>package</phase> -->
-<!-- 								<configuration> -->
-<!-- 									<target name="copy-files"> -->
-<!-- 										PLUGIN FILES -->
-<!-- 										<copy todir="${project.build.directory}/${project.finalName}/lib"> -->
-<!-- 											<fileset file="${project.rootPath}/TuxGuitar-winmm/jni/*.dll"/> -->
-<!-- 										</copy> -->
-<!-- 										<copy todir="${project.build.directory}/${project.finalName}/lib"> -->
-<!-- 											<fileset file="${project.rootPath}/TuxGuitar-fluidsynth/jni/*.dll"/> -->
-<!-- 										</copy> -->
-<!-- 										<copy todir="${project.build.directory}/${project.finalName}/lib"> -->
-<!-- 											<fileset file="${project.rootPath}/TuxGuitar-jack/jni/*.dll"/> -->
-<!-- 										</copy> -->
-<!-- 										/PLUGINS FILES -->
-<!-- 									</target> -->
-<!-- 								</configuration> -->
-<!-- 								<goals> -->
-<!-- 									<goal>run</goal> -->
-<!-- 								</goals> -->
-<!-- 							</execution> -->
-<!-- 						</executions> -->
-<!-- 					</plugin> -->
-<!-- 				</plugins> -->
-<!-- 			</build> -->
-<!-- 		</profile> -->
-<!-- 	</profiles> -->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<id>native-module-copy</id>
+								<phase>package</phase>
+								<configuration>
+									<target name="copy-files">
+										<!-- PLUGIN FILES -->
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="./src/native/tuxguitar-winmm/target/build" />
+										</copy>
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="./src/native/tuxguitar-fluidsynth/target/build" />
+										</copy>
+										
+										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
+										<!-- /PLUGINS FILES -->
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
