@@ -7,6 +7,7 @@ public class MidiShortMessage extends ShortMessage{
 	public static final int DEFAULT_VOICE = -1;
 	public static final boolean DEFAULT_BEND_MODE = false;
 	
+	private int channel;
 	private int voice;
 	private boolean bendMode;
 	
@@ -14,6 +15,14 @@ public class MidiShortMessage extends ShortMessage{
 		super();
 	}
 	
+	public int getChannel() {
+		return channel;
+	}
+
+	public void setChannel(int channel) {
+		this.channel = channel;
+	}
+
 	public int getVoice() {
 		return this.voice;
 	}

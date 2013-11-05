@@ -34,76 +34,84 @@ public class MidiReceiverImpl implements Receiver{
 		if( data.length > 0 ){
 			//NOTE ON
 			if(((data[0] & 0xFF) & 0xF0) == ShortMessage.NOTE_ON){
-				parseNoteOn(data, findVoice(message), findBendMode(message));
+				parseNoteOn(data, findChannel(message), findVoice(message), findBendMode(message));
 			}
 			//NOTE OFF
 			else if(((data[0] & 0xFF) & 0xF0) == ShortMessage.NOTE_OFF){
-				parseNoteOff(data, findVoice(message), findBendMode(message));
+				parseNoteOff(data, findChannel(message), findVoice(message), findBendMode(message));
 			}
 			//PITCH BEND
 			else if(((data[0] & 0xFF) & 0xF0) == ShortMessage.PITCH_BEND){
-				parsePitchBend(data, findVoice(message), findBendMode(message));
+				parsePitchBend(data, findChannel(message), findVoice(message), findBendMode(message));
 			}
 			//PROGRAM CHANGE
 			else if(((data[0] & 0xFF) & 0xF0) == ShortMessage.PROGRAM_CHANGE){
-				parseProgramChange(data);
+				parseProgramChange(data, findChannel(message));
 			}
 			//CONTROL CHANGE
 			else if(((data[0] & 0xFF) & 0xF0) == ShortMessage.CONTROL_CHANGE){
-				parseControlChange(data);
+				parseControlChange(data, findChannel(message));
 			}
 		}
 	}
 	
-	private void parseNoteOn(byte[] data, int voice, boolean bendMode) throws MidiPlayerException{
+	private void parseNoteOn(byte[] data, int channel, int voice, boolean bendMode) throws MidiPlayerException{
 		int length = data.length;
-		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		int velocity = (length > 2)?(data[2] & 0xFF):0;
 		
-		if( velocity == 0 ){
-			parseNoteOff(data, voice, bendMode);
-		}else if(value > 0){
-			this.sequencer.getTransmitter().sendNoteOn(channel,value,velocity,voice,bendMode);
+		if( channel >= 0 ){
+			if( velocity == 0 ){
+				this.parseNoteOff(data, channel, voice, bendMode);
+			}else if(value > 0){
+				this.sequencer.getTransmitter().sendNoteOn(channel,value,velocity,voice,bendMode);
+			}
 		}
 	}
 	
-	private void parseNoteOff(byte[] data, int voice, boolean bendMode) throws MidiPlayerException{
+	private void parseNoteOff(byte[] data, int channel, int voice, boolean bendMode) throws MidiPlayerException{
 		int length = data.length;
-		
-		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		int velocity = (length > 2)?(data[2] & 0xFF):0;
-		
-		this.sequencer.getTransmitter().sendNoteOff(channel,value,velocity,voice,bendMode);
+		if( channel >= 0 ){
+			this.sequencer.getTransmitter().sendNoteOff(channel,value,velocity,voice,bendMode);
+		}
 	}
 	
-	private void parsePitchBend(byte[] data, int voice, boolean bendMode) throws MidiPlayerException{
+	private void parsePitchBend(byte[] data, int channel, int voice, boolean bendMode) throws MidiPlayerException{
 		int length = data.length;
-		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
 		if(channel != -1 && value != -1){
 			this.sequencer.getTransmitter().sendPitchBend(channel,value,voice,bendMode);
 		}
 	}
 	
-	private void parseProgramChange(byte[] data) throws MidiPlayerException{
+	private void parseProgramChange(byte[] data, int channel) throws MidiPlayerException{
 		int length = data.length;
-		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int instrument = (length > 1)?(data[1] & 0xFF):-1;
 		if(channel != -1 && instrument != -1){
 			this.sequencer.getTransmitter().sendProgramChange(channel,instrument);
 		}
 	}
 	
-	private void parseControlChange(byte[] data) throws MidiPlayerException{
+	private void parseControlChange(byte[] data, int channel) throws MidiPlayerException{
 		int length = data.length;
-		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):-1;
 		int control = (length > 1)?(data[1] & 0xFF):-1;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
 		if(channel != -1 && control != -1 && value != -1){
 			this.sequencer.getTransmitter().sendControlChange(channel,control,value);
 		}
+	}
+	
+	private int findChannel(MidiMessage midiMessage){
+		if( midiMessage instanceof MidiShortMessage ){
+			return ((MidiShortMessage)midiMessage).getChannel();
+		}
+		byte[] data = midiMessage.getMessage();
+		if( data != null && data.length > 0){
+			return ((data[0] & 0xFF) & 0x0F);
+		}
+		return -1;
 	}
 	
 	private int findVoice(MidiMessage midiMessage){

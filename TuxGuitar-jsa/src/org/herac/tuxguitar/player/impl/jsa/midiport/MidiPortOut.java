@@ -124,48 +124,48 @@ class MidiReceiverImpl implements GMReceiver{
 	protected Receiver getReceiver(){
 		return this.receiver;
 	}
+
+	public void sendNoteOn(int channel, int key, int velocity) {
+		if(getReceiver() != null){
+			getReceiver().send(MidiMessageFactory.noteOnGM(channel, key, velocity),-1);
+		}
+	}
+	
+	public void sendNoteOff(int channel, int key, int velocity) {
+		if(getReceiver() != null){
+			getReceiver().send(MidiMessageFactory.noteOffGM(channel, key, velocity),-1);
+		}
+	}
+	
+	public void sendControlChange(int channel, int controller, int value) {
+		if(getReceiver() != null){
+			getReceiver().send(MidiMessageFactory.controlChangeGM(channel,controller, value),-1);
+		}
+	}
+	
+	public void sendProgramChange(int channel, int value) {
+		if(getReceiver() != null){
+			getReceiver().send(MidiMessageFactory.programChangeGM(channel, value),-1);
+		}
+	}
+	
+	public void sendPitchBend(int channel, int value) {
+		if(getReceiver() != null){
+			getReceiver().send(MidiMessageFactory.pitchBendGM(channel, value),-1);
+		}
+	}
 	
 	public void sendSystemReset(){
 		if(getReceiver() != null){
-			getReceiver().send(MidiMessageFactory.systemReset(),-1);
+			getReceiver().send(MidiMessageFactory.systemResetGM(),-1);
 		}
 	}
 	
 	public void sendAllNotesOff(){
 		if(getReceiver() != null){
 			for(int channel = 0; channel < 16; channel ++){
-				getReceiver().send(MidiMessageFactory.controlChange(channel, MidiControllers.ALL_NOTES_OFF,0),-1);
+				sendControlChange(channel, MidiControllers.ALL_NOTES_OFF,0);
 			}
-		}
-	}
-	
-	public void sendNoteOn(int channel, int key, int velocity) {
-		if(getReceiver() != null){
-			getReceiver().send(MidiMessageFactory.noteOn(channel, key, velocity),-1);
-		}
-	}
-	
-	public void sendNoteOff(int channel, int key, int velocity) {
-		if(getReceiver() != null){
-			getReceiver().send(MidiMessageFactory.noteOff(channel, key, velocity),-1);
-		}
-	}
-	
-	public void sendControlChange(int channel, int controller, int value) {
-		if(getReceiver() != null){
-			getReceiver().send(MidiMessageFactory.controlChange(channel,controller, value),-1);
-		}
-	}
-	
-	public void sendProgramChange(int channel, int value) {
-		if(getReceiver() != null){
-			getReceiver().send(MidiMessageFactory.programChange(channel, value),-1);
-		}
-	}
-	
-	public void sendPitchBend(int channel, int value) {
-		if(getReceiver() != null){
-			getReceiver().send(MidiMessageFactory.pitchBend(channel, value),-1);
 		}
 	}
 }
