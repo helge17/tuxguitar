@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<project name="TuxGuitar-gtp" basedir="." default="all">
+<project name="TuxGuitar-jack-settings" basedir="." default="all">
 	<description>
-	TuxGuitar GPx File Format Support
+	TuxGuitar JACK Audio Connection Kit
 	</description>
 		
 	<property file="build.properties" />
 	<property name="build.src.path" value="src${file.separator}" />
 	<property name="build.share.path" value="share${file.separator}" />
 	<property name="build.path" value="build${file.separator}" />
-	<property name="build.jar" value="tuxguitar-gtp.jar" />
+	<property name="build.jar" value="tuxguitar-jack-settings.jar" />
 	
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar-gm-utils}"/>
+		<pathelement location="${path.tuxguitar-jack}"/>
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.swt}"/>
 	</path >
