@@ -12,4 +12,7 @@ public class MidiPlayerException extends Exception{
 		super(message, cause);
 	}
 	
+	public MidiPlayerException(Throwable cause) {
+		super(cause);
+	}
 }
