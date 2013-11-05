@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<project name="TuxGuitar-gtp" basedir="." default="all">
+<project name="TuxGuitar-gm-settings" basedir="." default="all">
 	<description>
-	TuxGuitar GPx File Format Support
+		TuxGuitar GM Settings
 	</description>
-		
+	
 	<property file="build.properties" />
-	<property name="build.src.path" value="src${file.separator}" />
-	<property name="build.share.path" value="share${file.separator}" />
-	<property name="build.path" value="build${file.separator}" />
-	<property name="build.jar" value="tuxguitar-gtp.jar" />
+	<property name="build.src.path" value="src" />
+	<property name="build.share.path" value="share" />
+	<property name="build.path" value="build" />
+	<property name="build.jar" value="tuxguitar-gm-settings.jar" />
 	
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar-lib}"/>
