@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>1.3-SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-fluidsynth-windows-x86</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<tuxguitar-fluidsynth.jni.path>${parent.relativePath}/TuxGuitar-fluidsynth/jni/</tuxguitar-fluidsynth.jni.path>
+		<tuxguitar-fluidsynth.jni.cc>gcc</tuxguitar-fluidsynth.jni.cc>
+		<tuxguitar-fluidsynth.jni.cflags>-mno-cygwin -I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-fluidsynth.jni.cflags>
+		<tuxguitar-fluidsynth.jni.ldflags>-mno-cygwin -Wl,--kill-at</tuxguitar-fluidsynth.jni.ldflags>
+		<tuxguitar-fluidsynth.jni.ldlibs>-lfluidsynth</tuxguitar-fluidsynth.jni.ldlibs>
+		<tuxguitar-fluidsynth.jni.ldpath>-L${basedir}/lib/</tuxguitar-fluidsynth.jni.ldpath>
+		<tuxguitar-fluidsynth.jni.library.name>tuxguitar-fluidsynth-jni</tuxguitar-fluidsynth.jni.library.name>
+		<tuxguitar-fluidsynth.jni.library.prefix></tuxguitar-fluidsynth.jni.library.prefix>
+		<tuxguitar-fluidsynth.jni.library.suffix>.dll</tuxguitar-fluidsynth.jni.library.suffix>
+	</properties>
+	
+	<modules>
+		<module>${parent.relativePath}/TuxGuitar-fluidsynth</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>compile-native</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="compile-native">
+								<exec dir="${tuxguitar-fluidsynth.jni.path}" executable="make" failonerror="true" >
+									<env key="CC" value="${tuxguitar-fluidsynth.jni.cc}" />
+									<env key="CFLAGS" value="${tuxguitar-fluidsynth.jni.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-fluidsynth.jni.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-fluidsynth.jni.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-fluidsynth.jni.ldpath}" />
+									<env key="LIBRARY_NAME" value="${tuxguitar-fluidsynth.jni.library.name}" />
+									<env key="LIBRARY_PREFIX" value="${tuxguitar-fluidsynth.jni.library.prefix}" />
+									<env key="LIBRARY_SUFFIX" value="${tuxguitar-fluidsynth.jni.library.suffix}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>clean-native</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="clean-native">
+								<exec dir="${tuxguitar-fluidsynth.jni.path}" executable="make" failonerror="true" >
+									<arg value="clean"/>
+									<env key="LIBRARY_NAME" value="${tuxguitar-fluidsynth.jni.library.name}" />
+									<env key="LIBRARY_PREFIX" value="${tuxguitar-fluidsynth.jni.library.prefix}" />
+									<env key="LIBRARY_SUFFIX" value="${tuxguitar-fluidsynth.jni.library.suffix}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>native-module-copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="copy-files">
+								<mkdir dir="${project.build.directory}/build" />
+								<copy todir="${project.build.directory}/build">
+									<fileset file="${basedir}/lib/*.dll" />
+								</copy>
+								
+								<mkdir dir="${project.build.directory}/build/lib" />
+								<copy todir="${project.build.directory}/build/lib">
+									<fileset file="${tuxguitar-fluidsynth.jni.path}/${tuxguitar-fluidsynth.jni.library.prefix}${tuxguitar-fluidsynth.jni.library.name}${tuxguitar-fluidsynth.jni.library.suffix}" />
+								</copy>
+								<chmod file="${project.build.directory}/build/lib/${tuxguitar-fluidsynth.jni.library.prefix}${tuxguitar-fluidsynth.jni.library.name}${tuxguitar-fluidsynth.jni.library.suffix}" perm="775" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>native-module-copy-libs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-fluidsynth</artifactId>
+									<destFileName>tuxguitar-fluidsynth.jar</destFileName>
+									<outputDirectory>${project.build.directory}/build/share/plugins</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+	
+	
+	<profiles>
+		<profile>
+			<id>platform-linux-x86</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>linux</name>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<tuxguitar-fluidsynth.jni.cc>i586-mingw32msvc-gcc</tuxguitar-fluidsynth.jni.cc>
+			</properties>
+		</profile>
+	</profiles>
+</project>
