@@ -265,9 +265,9 @@
 				</property>
 			</activation>
 			<modules>
-				<module>./src/native/tuxguitar-winmm</module>
-				<module>./src/native/tuxguitar-fluidsynth</module>
-				<module>./src/native/tuxguitar-jack</module>
+				<module>../native-modules/tuxguitar-winmm-windows-x86</module>
+				<module>../native-modules/tuxguitar-fluidsynth-windows-x86</module>
+				<module>../native-modules/tuxguitar-jack-windows-x86</module>
 			</modules>
 			
 			<build>
@@ -284,16 +284,14 @@
 									<target name="copy-files">
 										<!-- PLUGIN FILES -->
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-winmm/target/build" />
+											<fileset dir="../native-modules/tuxguitar-winmm-windows-x86/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-fluidsynth/target/build" />
+											<fileset dir="../native-modules/tuxguitar-fluidsynth-windows-x86/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-jack/target/build" />
+											<fileset dir="../native-modules/tuxguitar-jack-windows-x86/target/build" />
 										</copy>
-										
-										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>
