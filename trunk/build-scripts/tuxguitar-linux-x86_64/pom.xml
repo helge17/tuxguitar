@@ -258,10 +258,10 @@
 				</property>
 			</activation>
 			<modules>
-				<module>./src/native/tuxguitar-alsa</module>
-				<module>./src/native/tuxguitar-jack</module>
-				<module>./src/native/tuxguitar-oss</module>
-				<module>./src/native/tuxguitar-fluidsynth</module>
+				<module>../native-modules/tuxguitar-alsa-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-jack-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-oss-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-fluidsynth-linux-x86_64</module>
 			</modules>
 			
 			<build>
@@ -278,16 +278,16 @@
 									<target name="copy-files">
 										<!-- PLUGIN FILES -->				
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-alsa/target/build" />
+											<fileset dir="../native-modules/tuxguitar-alsa-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-jack/target/build" />
+											<fileset dir="../native-modules/tuxguitar-jack-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-oss/target/build" />
+											<fileset dir="../native-modules/tuxguitar-oss-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="./src/native/tuxguitar-fluidsynth/target/build" />
+											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86_64/target/build" />
 										</copy>
 										
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
