@@ -81,8 +81,8 @@ public class Piano extends Composite{
 		this.loadIcons();
 		this.loadProperties();
 		
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolComposite);
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.pianoComposite);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.toolComposite);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.pianoComposite);
 	}
 	
 	private void initToolBar() {

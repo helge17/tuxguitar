@@ -89,7 +89,7 @@ public class NewFileAction extends TGActionBase{
 			tgTemplate = (TGTemplate)propertyTemplate;
 		}
 		if( tgTemplate == null ){
-			tgTemplate = TuxGuitar.instance().getTemplateManager().getDefatulTemplate();
+			tgTemplate = TuxGuitar.instance().getTemplateManager().getDefaultTemplate();
 		}
 		return tgTemplate;
 	}

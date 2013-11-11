@@ -44,7 +44,7 @@ public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
 	}
 	
 	private void initKeyActions(){
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.tablature);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.tablature);
 	}
 	
 	private void initMenu(){

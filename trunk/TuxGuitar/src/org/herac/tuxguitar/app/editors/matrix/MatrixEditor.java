@@ -133,8 +133,8 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolbar);
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.editor);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.toolbar);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.editor);
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 		TuxGuitar.instance().getEditorManager().addRedrawListener( this );

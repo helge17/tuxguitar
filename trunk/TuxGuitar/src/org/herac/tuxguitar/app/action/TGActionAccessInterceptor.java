@@ -22,7 +22,7 @@ public class TGActionAccessInterceptor implements TGActionInterceptor {
 			boolean intercepted = true;
 			
 			if(!TuxGuitar.instance().isLocked()){
-				if(!TGActionLock.isLocked() || hastLockAccessToThread(Thread.currentThread())){
+				if(!TGActionLock.isLocked() || hasLockAccessToThread(Thread.currentThread())){
 					boolean running = TuxGuitar.instance().getPlayer().isRunning();
 					if(!running || !this.manager.getDisableOnPlayingActionIds().hasActionId(id)){
 						intercepted = false;
@@ -46,7 +46,7 @@ public class TGActionAccessInterceptor implements TGActionInterceptor {
 		}
 	}
 	
-	public boolean hastLockAccessToThread(Thread thread){
+	public boolean hasLockAccessToThread(Thread thread){
 		synchronized( this.lock ){
 			return (this.lockThreadAccess != null && this.lockThreadAccess != thread);
 		}

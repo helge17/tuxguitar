@@ -51,15 +51,15 @@ public class Base64Decoder {
 			int ready = 0;
 			
 			fill: while ((got = in.read(buffer)) > 0) {
-				int skiped = 0;
+				int skipped = 0;
 				
-				while (skiped < got) {
+				while (skipped < got) {
 					
 					while (ready < 4) {
-						if (skiped >= got){ 
+						if (skipped >= got){ 
 							continue fill;
 						}
-						int ch = check(buffer[skiped++]);
+						int ch = check(buffer[skipped++]);
 						if (ch >= 0) {
 							chunk[ready++] = (byte) ch;
 						}

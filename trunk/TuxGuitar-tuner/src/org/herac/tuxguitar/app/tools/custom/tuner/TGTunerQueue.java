@@ -24,8 +24,8 @@ public class TGTunerQueue {
 	
 	
 	// TODO: tweak the tollerances
-	private final double upperTollerance = 1.05; // +5%
-	private final double lowerTollerance = 0.95; // -5%
+	private final double upperTolerance = 1.05; // +5%
+	private final double lowerTolerance = 0.95; // -5%
 	
 	
 	public TGTunerQueue() {
@@ -53,18 +53,18 @@ public class TGTunerQueue {
 			if (this.queue[i]!=-1)
 				for (int j=0; j<this.QUEUE_SIZE; j++) {
 					// exact frequency with tollerance
-					if (this.queue[i] > (this.queue[j]*this.lowerTollerance) && 
-						this.queue[i] < (this.queue[j]*this.upperTollerance) )
+					if (this.queue[i] > (this.queue[j]*this.lowerTolerance) && 
+						this.queue[i] < (this.queue[j]*this.upperTolerance) )
 							this.similars[i]=this.similars[i]+2;
 					
 					// half frequency with tollerance
-					if (this.queue[i]/2 > (this.queue[j]*this.lowerTollerance) &&
-						this.queue[i]/2 < (this.queue[j]*this.upperTollerance) )
+					if (this.queue[i]/2 > (this.queue[j]*this.lowerTolerance) &&
+						this.queue[i]/2 < (this.queue[j]*this.upperTolerance) )
 							this.similars[i]++;
 					
 					// double frequency with tollerance
-					if (this.queue[i]*2 > (this.queue[j]*this.lowerTollerance) &&
-						this.queue[i]*2 < (this.queue[j]*this.upperTollerance) )
+					if (this.queue[i]*2 > (this.queue[j]*this.lowerTolerance) &&
+						this.queue[i]*2 < (this.queue[j]*this.upperTolerance) )
 							this.similars[i]++;
 				}
 		}

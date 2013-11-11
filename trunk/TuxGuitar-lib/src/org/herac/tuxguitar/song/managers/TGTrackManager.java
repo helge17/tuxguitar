@@ -198,7 +198,7 @@ public class TGTrackManager {
 		for( int i = 0 ; i < measures.size() ; i ++ ){
 			TGMeasure measure = (TGMeasure)measures.get(i);
 			if( moveStart + theMove < moveStart ){
-				getSongManager().getMeasureManager().removeBeatsBeetween(measure, moveStart, (moveStart + Math.abs(theMove)));
+				getSongManager().getMeasureManager().removeBeatsBetween(measure, moveStart, (moveStart + Math.abs(theMove)));
 			}
 			getSongManager().getMeasureManager().moveBeats(measure, moveStart, theMove);
 		}

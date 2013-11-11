@@ -100,7 +100,7 @@ public class TGTuner extends Thread {
 					
 					// ------ determine the dominant frequency -------
 					double frequency = -1;
-					double maxAmplitude = this.settings.getTreshold(); // noise gate
+					double maxAmplitude = this.settings.getThreshold(); // noise gate
 					
 					
 					// TODO: maybe to analyze only the data around the area of interest

@@ -518,11 +518,11 @@ public class MidiSequenceParser {
 		if( (this.flags & ADD_DEFAULT_CONTROLS) != 0) {
 			Iterator it = tgSong.getChannels();
 			while ( it.hasNext() ){
-				int channeld = ((TGChannel) it.next()).getChannelId();
-				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channeld,MidiControllers.RPN_MSB,0);
-				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channeld,MidiControllers.RPN_LSB,0);
-				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channeld,MidiControllers.DATA_ENTRY_MSB,12);
-				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channeld,MidiControllers.DATA_ENTRY_LSB, 0);
+				int channelId = ((TGChannel) it.next()).getChannelId();
+				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channelId,MidiControllers.RPN_MSB,0);
+				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channelId,MidiControllers.RPN_LSB,0);
+				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channelId,MidiControllers.DATA_ENTRY_MSB,12);
+				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channelId,MidiControllers.DATA_ENTRY_LSB, 0);
 			}
 		}
 	}

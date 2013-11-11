@@ -81,7 +81,7 @@ public class TGShareSong {
 	}
 	
 	public void processResult( TGShareSongResponse response, TGShareFile file ){
-		this.setPasiveMode();
+		this.setPassiveMode();
 		
 		try {
 			String status = response.getStatus();
@@ -124,7 +124,7 @@ public class TGShareSong {
 		TGActionLock.lock();
 	}
 	
-	public void setPasiveMode(){
+	public void setPassiveMode(){
 		TGActionLock.unlock();
 		TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
 		TuxGuitar.instance().unlock();

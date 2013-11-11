@@ -126,7 +126,7 @@ public class TGMeasureManager {
 		}
 	}
 	
-	public void removeBeatsBeetween(TGMeasure measure,long p1, long p2){
+	public void removeBeatsBetween(TGMeasure measure,long p1, long p2){
 		List beats = getBeatsBeetween( measure.getBeats() , p1, p2 );
 		Iterator it = beats.iterator();
 		while(it.hasNext()){
@@ -1929,12 +1929,12 @@ public class TGMeasureManager {
 				if(requiredLength <= (nextSilenceLength + errorMargin)){
 					List voices = getVoicesBeforeEnd(measure.getBeats(),nextVoice.getBeat().getStart(), voice);
 					while(!voices.isEmpty()){
-						TGVoice currentVocie = (TGVoice)voices.get(0);
-						if(currentVocie.isRestVoice()){
-							requiredLength -= currentVocie.getDuration().getTime();
-							removeVoice(currentVocie, false);
+						TGVoice currVoice = (TGVoice)voices.get(0);
+						if(currVoice.isRestVoice()){
+							requiredLength -= currVoice.getDuration().getTime();
+							removeVoice(currVoice, false);
 						}else if(requiredLength > 0){
-							moveVoice(currentVocie,requiredLength);
+							moveVoice(currVoice,requiredLength);
 						}
 						voices.remove(0);
 					}

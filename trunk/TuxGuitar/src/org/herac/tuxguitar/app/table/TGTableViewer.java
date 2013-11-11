@@ -41,7 +41,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class TGTableViewer implements TGRedrawListener, TGUpdateListener, LanguageLoader {
 	
 	private Composite composite;
-	private ScrollBar hSroll;
+	private ScrollBar hScroll;
 	private Color[] backgrounds;
 	private Color[] foregrounds;
 	private TGTable table;
@@ -95,8 +95,8 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	}
 	
 	private void addHScroll(){
-		this.hSroll = getComposite().getHorizontalBar();
-		this.hSroll.addListener(SWT.Selection, new Listener() {
+		this.hScroll = getComposite().getHorizontalBar();
+		this.hScroll.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				redrawLocked();
 			}
@@ -145,9 +145,9 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	
 	public void updateHScroll(){
 		int width = (getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());
-		this.hSroll.setIncrement(this.table.getScrollIncrement());
-		this.hSroll.setMaximum(width);
-		this.hSroll.setThumb(Math.min(width ,this.table.getColumnCanvas().getControl().getClientArea().width));
+		this.hScroll.setIncrement(this.table.getScrollIncrement());
+		this.hScroll.setMaximum(width);
+		this.hScroll.setThumb(Math.min(width ,this.table.getColumnCanvas().getControl().getClientArea().width));
 	}
 	
 	public TGTable getTable(){
@@ -155,7 +155,7 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	}
 	
 	public int getHScrollSelection(){
-		return this.hSroll.getSelection();
+		return this.hScroll.getSelection();
 	}
 	
 	public TablatureEditor getEditor(){
@@ -354,14 +354,14 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 	}
 	
 	private void followHorizontalScroll(int selectedMeasure){
-		int hScrollSelection = this.hSroll.getSelection();
-		int hScrollThumb = this.hSroll.getThumb();
+		int hScrollSelection = this.hScroll.getSelection();
+		int hScrollThumb = this.hScroll.getThumb();
 		
 		int measureSize = this.table.getRowHeight();
 		int measurePosition = ( (selectedMeasure * measureSize) - measureSize );
 		
 		if( (measurePosition - hScrollSelection) < 0 || (measurePosition + measureSize - hScrollSelection ) > hScrollThumb){
-			this.hSroll.setSelection(measurePosition);
+			this.hScroll.setSelection(measurePosition);
 		}
 	}
 	
