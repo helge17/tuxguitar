@@ -7,3 +7,5 @@ org.herac.tuxguitar.io.tg.v07.TGInputStreamPlugin
 org.herac.tuxguitar.io.tg.v12.TGExporterPlugin
 org.herac.tuxguitar.io.tg.v11.TGExporterPlugin
 org.herac.tuxguitar.io.tg.v10.TGExporterPlugin
+
+org.herac.tuxguitar.io.tg.dev.TGInputStreamPlugin
