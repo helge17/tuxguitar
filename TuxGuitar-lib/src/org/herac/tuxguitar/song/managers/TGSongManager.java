@@ -947,15 +947,15 @@ public class TGSongManager {
 	}
 	
 	public static long getDivisionLength(TGMeasureHeader header){
-		long defaultLenght = TGDuration.QUARTER_TIME;
+		long defaultLength = TGDuration.QUARTER_TIME;
 		int denominator = header.getTimeSignature().getDenominator().getValue();
 		switch(denominator){
 			case TGDuration.EIGHTH:
 				if(header.getTimeSignature().getNumerator() % 3 == 0){
-					defaultLenght += TGDuration.QUARTER_TIME / 2;
+					defaultLength += TGDuration.QUARTER_TIME / 2;
 				}
 				break;
 		}
-		return defaultLenght;
+		return defaultLength;
 	}
 }

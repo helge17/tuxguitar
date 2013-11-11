@@ -101,8 +101,8 @@ public class FretBoard extends Composite {
 		this.loadIcons();
 		this.loadProperties();
 		
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.toolComposite);
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.fretBoardComposite);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.toolComposite);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.fretBoardComposite);
 	}
 	
 	private void initToolBar() {

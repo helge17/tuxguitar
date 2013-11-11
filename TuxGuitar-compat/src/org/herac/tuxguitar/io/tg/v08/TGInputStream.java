@@ -86,7 +86,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 				this.dataInputStream.close();
 				return song;
 			}
-			throw new TGFileFormatException("Unsopported Version");
+			throw new TGFileFormatException("Unsupported Version");
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}

@@ -45,7 +45,7 @@ public class TGTableColumn {
 	}
 	
 	public void appendListeners(Control control){
-		TuxGuitar.instance().getkeyBindingManager().appendListenersTo(control);
+		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(control);
 	}
 	
 	public void layout(){

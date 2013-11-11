@@ -44,7 +44,7 @@ public class TGTemplateManager {
 		}
 	}
 	
-	public TGTemplate getDefatulTemplate(){
+	public TGTemplate getDefaultTemplate(){
 		TGTemplate tgTemplate = new TGTemplate();
 		tgTemplate.setName(new String());
 		tgTemplate.setResource(TEMPLATE_DEFAULT_RESOURCE);

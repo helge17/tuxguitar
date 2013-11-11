@@ -16,7 +16,7 @@ public class TGTunerSettings {
 	protected int sampleSize;
 	protected float sampleRate;
 	protected String deviceName;
-	protected double treshold;
+	protected double threshold;
 	protected int bufferSize;
 	protected int fftSize;
 	protected int waitPeriod;
@@ -33,7 +33,7 @@ public class TGTunerSettings {
 		retValue.setSampleSize(8);
 		retValue.setBufferSize(DEFAULT_BUFFER_SIZE);
 		retValue.setFFTSize(DEFAULT_FFT_SIZE);
-		retValue.setTreshold(0.03);
+		retValue.setThreshold(0.03);
 		retValue.setWaitPeriod(100);
 		return retValue;
 	}
@@ -111,12 +111,12 @@ public class TGTunerSettings {
 		return this.sampleRate;
 	}
 	
-	public double getTreshold() {
-		return this.treshold;
+	public double getThreshold() {
+		return this.threshold;
 	}
 	
-	public void setTreshold(double nt) {
-		this.treshold = nt;
+	public void setThreshold(double nt) {
+		this.threshold = nt;
 	}
 	
 	public void setSampleRate(float sampleRate) {

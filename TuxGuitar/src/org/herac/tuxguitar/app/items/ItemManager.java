@@ -137,7 +137,7 @@ public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader
 				}
 			});
 			
-			TuxGuitar.instance().getkeyBindingManager().appendListenersTo(this.coolBar);
+			TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.coolBar);
 		}
 		
 		if( this.coolbarVisible ) {
@@ -191,8 +191,8 @@ public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader
 		
 		CoolItem[] items = this.coolBar.getItems();
 		for(int i = 0;i < items.length; i ++){
-			Point controlSise = items[i].getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-			Point itemSize = items[i].computeSize(controlSise.x, controlSise.y);
+			Point controlSize = items[i].getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			Point itemSize = items[i].computeSize(controlSize.x, controlSize.y);
 			
 			int nextCoolItemsWidth = ( coolItemsWidth + itemSize.x );
 			if( nextCoolItemsWidth > coolBarWidth ){

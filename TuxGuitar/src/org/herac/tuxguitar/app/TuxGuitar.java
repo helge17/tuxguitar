@@ -583,7 +583,7 @@ public class TuxGuitar {
 		return this.configManager;
 	}
 	
-	public KeyBindingActionManager getkeyBindingManager(){
+	public KeyBindingActionManager getKeyBindingManager(){
 		if(this.keyBindingManager == null){
 			this.keyBindingManager = new KeyBindingActionManager();
 		}
@@ -748,7 +748,7 @@ public class TuxGuitar {
 	}
 	
 	public void newSong(){
-		this.newSong(TuxGuitar.instance().getTemplateManager().getDefatulTemplate());
+		this.newSong(TuxGuitar.instance().getTemplateManager().getDefaultTemplate());
 	}
 	
 	public void newSong(TGTemplate tgTemplate){
