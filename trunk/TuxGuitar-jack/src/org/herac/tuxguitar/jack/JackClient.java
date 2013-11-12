@@ -60,6 +60,11 @@ public class JackClient{
 	public JackPort openPort(String jackPortName){
 		if( this.isOpen() ){
 			JackPort jackPort = this.findPort(jackPortName);
+			if( jackPort != null && !this.isPortOpen(jackPort) ){
+				this.closePort(jackPort);
+				
+				jackPort = null;
+			}
 			if( jackPort == null ){
 				long jackPortId = this.openPort(this.instance, jackPortName);
 				if( jackPortId != 0 ){

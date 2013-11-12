@@ -7,8 +7,10 @@ import java.util.List;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.JackPort;
 import org.herac.tuxguitar.player.base.MidiChannel;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSynthesizer;
+import org.herac.tuxguitar.song.models.TGChannel;
 
 public class JackSynthesizer implements MidiSynthesizer{
 	
@@ -62,7 +64,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 			this.jackGmPort = null;
 		}
 		if( this.jackGmPort == null ) {
-			JackPort jackPort = this.jackClient.openPort("GM Port");
+			JackPort jackPort = this.jackClient.openPort(createJackPortName(jackChannelProxy));
 			if( jackPort != null ){
 				this.jackGmPort = new JackGmPort(this.jackClient, jackPort);
 			}
@@ -79,7 +81,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 	}
 	
 	public boolean loadExclusiveChannel(JackChannelProxy jackChannelProxy) throws MidiPlayerException{
-		JackPort jackPort = this.jackClient.openPort("Channel-" + jackChannelProxy.getJackChannelId());
+		JackPort jackPort = this.jackClient.openPort(createJackPortName(jackChannelProxy));
 		if( jackPort != null ){
 			jackChannelProxy.setExclusive(true);
 			jackChannelProxy.setMidiChannel(new JackChannel(this.jackClient, jackPort));
@@ -111,7 +113,9 @@ public class JackSynthesizer implements MidiSynthesizer{
 	public boolean isChannelOpen(MidiChannel midiChannel) {
 		JackChannelProxy jackChannelProxy = findChannel(((JackChannelProxy)midiChannel).getJackChannelId());
 		if( jackChannelProxy != null && jackChannelProxy.getJackPort() != null && jackChannelProxy == midiChannel ){
-			return this.jackClient.isPortOpen( jackChannelProxy.getJackPort() );
+			if( this.jackClient.isPortOpen( jackChannelProxy.getJackPort() ) ){
+				return jackChannelProxy.getJackPort().getJackPortName().equals(createJackPortName(jackChannelProxy));
+			}
 		}
 		return false;
 	}
@@ -142,5 +146,16 @@ public class JackSynthesizer implements MidiSynthesizer{
 			}
 		}
 		return false;
+	}
+	
+	public String createJackPortName(JackChannelProxy jackChannelProxy){
+		if(!jackChannelProxy.isExclusive() ){
+			return ("GM Port");
+		}
+		TGChannel tgChannel = MidiPlayer.getInstance().getSongManager().getChannel(jackChannelProxy.getJackChannelId());
+		if( tgChannel != null ){
+			return tgChannel.getName();
+		}
+		return ("Channel-" + jackChannelProxy.getJackChannelId());
 	}
 }
