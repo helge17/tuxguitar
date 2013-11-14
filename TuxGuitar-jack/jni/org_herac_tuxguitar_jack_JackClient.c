@@ -18,7 +18,7 @@ typedef struct {
 typedef struct {
 	int event_count;
 	int event_port_count;
-	jack_jni_event_t event_queue[ EVENT_BUFFER_SIZE ];
+	jack_jni_event_t **event_queue;
 	jack_port_t **event_ports;
 } jack_jni_synth_t;
 
@@ -77,15 +77,10 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env
 				
 				handle->midi = (jack_jni_synth_t *) malloc( sizeof(jack_jni_synth_t) );
 				if( handle->midi != NULL ) {
-					int index = 0;
-					for(index = 0 ; index < EVENT_BUFFER_SIZE ; index ++){
-						handle->midi->event_queue[ index ].event_size = 0;
-						handle->midi->event_queue[ index ].event_port = NULL;
-						handle->midi->event_queue[ index ].event_data = NULL;
-					}
-					handle->midi->event_count = 0;
-					handle->midi->event_ports = NULL;
 					handle->midi->event_port_count = 0;
+					handle->midi->event_ports = NULL;
+					handle->midi->event_count = 0;
+					handle->midi->event_queue = (jack_jni_event_t **) malloc( EVENT_BUFFER_SIZE * sizeof(jack_jni_event_t *) );
 				}
 			}
 			
@@ -115,6 +110,21 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* en
 					handle->midi->event_ports = NULL;
 					handle->midi->event_port_count = 0;
 				}
+				
+				if( handle->midi->event_queue != NULL )
+				{
+					int event_index = 0;
+					for(event_index = 0 ; event_index < handle->midi->event_count ; event_index ++){
+						free ( handle->midi->event_queue[ event_index ]->event_data );
+						free ( handle->midi->event_queue[ event_index ] );
+						handle->midi->event_queue[ event_index ] = NULL;
+					}
+					
+					free( handle->midi->event_queue );
+					handle->midi->event_queue = NULL;
+					handle->midi->event_count = 0;
+				}
+				
 				free( handle->midi );
 				handle->midi = NULL;
 			}
@@ -179,17 +189,31 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePort(JNIEnv
 				memcpy(&jack_port, &jack_port_id, sizeof(jack_port));
 				if( jack_port != NULL )
 				{
-					int event_index = 0;
-					for(event_index = 0 ; event_index < EVENT_BUFFER_SIZE ; event_index ++){
-						if( handle->midi->event_queue[ event_index ].event_port == jack_port ) {
-							free ( handle->midi->event_queue[ event_index ].event_data );
-							
-							handle->midi->event_queue[ event_index ].event_data = NULL;
-							handle->midi->event_queue[ event_index ].event_port = NULL;
-							handle->midi->event_queue[ event_index ].event_size = 0;
+					if( handle->midi->event_count > 0 )
+					{
+						jack_jni_event_t **event_queue_aux = (jack_jni_event_t **) malloc( EVENT_BUFFER_SIZE * sizeof(jack_jni_event_t *) );
+						int event_index = 0;
+						int event_count = handle->midi->event_count;
+						
+						for(event_index = 0 ; event_index < event_count ; event_index ++){
+							event_queue_aux[event_index] = handle->midi->event_queue[event_index];
 						}
+						
+						event_index = 0;
+						handle->midi->event_count = 0;
+						for(event_index = 0 ; event_index < event_count ; event_index ++){
+							if( event_queue_aux[ event_index ]->event_port != jack_port ) {
+								handle->midi->event_queue[handle->midi->event_count ++] = event_queue_aux[event_index];
+							} else {
+								free ( event_queue_aux[event_index]->event_data );
+								free ( event_queue_aux[event_index]);
+								event_queue_aux[event_index] = NULL;
+							}
+						}
+						
+						free( event_queue_aux );
+						event_queue_aux = NULL;
 					}
-					
 					if( handle->midi->event_port_count > 0 )
 					{
 						jack_port_t **event_ports_aux = handle->midi->event_ports;
@@ -430,20 +454,19 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(
 					if( count > 0 ){
 						jbyte* jdataArray = (*env)->GetByteArrayElements( env , jdata, 0);
 						if( jdataArray != NULL ) {
-							if( handle->midi->event_queue[ handle->midi->event_count ].event_data != NULL ) {
-								free ( handle->midi->event_queue[ handle->midi->event_count ].event_data );
-								handle->midi->event_queue[ handle->midi->event_count ].event_data = NULL;
-							}
-							handle->midi->event_queue[ handle->midi->event_count ].event_port = jack_port;
-							handle->midi->event_queue[ handle->midi->event_count ].event_size = count;
-							handle->midi->event_queue[ handle->midi->event_count ].event_data = (jack_midi_data_t *)malloc( sizeof( jack_midi_data_t ) * count );
-							if( handle->midi->event_queue[ handle->midi->event_count ].event_data != NULL ) {
-								int index = 0;
-								for( index = 0 ; index < count ; index ++ ){
-									handle->midi->event_queue[ handle->midi->event_count ].event_data[ index ] = (jack_midi_data_t)jdataArray[ index ];
+							handle->midi->event_queue[ handle->midi->event_count ] = (jack_jni_event_t *) malloc( sizeof(jack_jni_event_t) );
+							if( handle->midi->event_queue[ handle->midi->event_count ] != NULL ) {
+								handle->midi->event_queue[ handle->midi->event_count ]->event_port = jack_port;
+								handle->midi->event_queue[ handle->midi->event_count ]->event_size = count;
+								handle->midi->event_queue[ handle->midi->event_count ]->event_data = (jack_midi_data_t *)malloc( sizeof( jack_midi_data_t ) * count );
+								if( handle->midi->event_queue[ handle->midi->event_count ]->event_data != NULL ) {
+									int index = 0;
+									for( index = 0 ; index < count ; index ++ ){
+										handle->midi->event_queue[ handle->midi->event_count ]->event_data[ index ] = (jack_midi_data_t)jdataArray[ index ];
+									}
+									handle->midi->event_count ++;
+									(*env)->ReleaseByteArrayElements( env , jdata, jdataArray, 0);
 								}
-								handle->midi->event_count ++;
-								(*env)->ReleaseByteArrayElements( env , jdata, jdataArray, 0);
 							}
 						}
 					}
@@ -480,20 +503,21 @@ int JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr){
 					int index = 0;
 					int count = handle->midi->event_count;
 					for( index = 0 ; index < count ; index ++ ){
-						void *buffer = jack_port_get_buffer(handle->midi->event_queue[index].event_port, jack_get_buffer_size(handle->client) );
-						
+						void *buffer = jack_port_get_buffer(handle->midi->event_queue[index]->event_port, jack_get_buffer_size(handle->client) );
 						if( buffer != NULL ){
-							jack_midi_data_t *data = jack_midi_event_reserve ( buffer , 0, handle->midi->event_queue[index].event_size);
+							jack_midi_data_t *data = jack_midi_event_reserve ( buffer , 0, handle->midi->event_queue[index]->event_size);
 							if( data != NULL ){
 								int data_index = 0;
-								for( data_index = 0 ; data_index < handle->midi->event_queue[index].event_size ; data_index ++ ){
-									data[ data_index ] = handle->midi->event_queue[index].event_data[ data_index ];
+								for( data_index = 0 ; data_index < handle->midi->event_queue[index]->event_size ; data_index ++ ){
+									data[ data_index ] = handle->midi->event_queue[index]->event_data[ data_index ];
 								}
 							}
 						}
 						
+						free ( handle->midi->event_queue[index]->event_data );
+						free ( handle->midi->event_queue[index] );
+						handle->midi->event_queue[index] = NULL;
 						handle->midi->event_count --;
-						handle->midi->event_queue[index].event_size = 0;
 					}
 				}
 			}
