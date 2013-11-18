@@ -1,3 +1,4 @@
+RM?=rm -f
 CFLAGS?=-I$(shell gcj -print-file-name=include/) -fPIC
 LDFLAGS?=
 LDLIBS?=`pkg-config --libs jack`
@@ -18,6 +19,6 @@ $(LIBRARY):	$(OBJECTS)
 	$(CC) $(LDFLAGS) -shared -o $(LIBRARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
 
 clean: 
-	rm -f $(OBJECTS) $(LIBRARY)
+	$(RM) $(OBJECTS) $(LIBRARY)
 
 #eof "$Id: GNUmakefile,v 1.10 2008/04/17 20:06:34 rzr Exp $"
