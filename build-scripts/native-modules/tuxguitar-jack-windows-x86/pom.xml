@@ -16,6 +16,7 @@
 
 	<properties>
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
+		<tuxguitar-jack.jni.rm>del</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>gcc</tuxguitar-jack.jni.cc>
 		<tuxguitar-jack.jni.cflags>-mno-cygwin -I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-jack.jni.cflags>
 		<tuxguitar-jack.jni.ldflags>-mno-cygwin -Wl,--kill-at</tuxguitar-jack.jni.ldflags>
@@ -70,6 +71,7 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-jack.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-jack.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-jack.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-jack.jni.library.prefix}" />
 									<env key="LIBRARY_SUFFIX" value="${tuxguitar-jack.jni.library.suffix}" />
@@ -149,6 +151,7 @@
 			</activation>
 			<properties>
 				<tuxguitar-jack.jni.cc>i586-mingw32msvc-gcc</tuxguitar-jack.jni.cc>
+				<tuxguitar-jack.jni.rm>rm -f</tuxguitar-jack.jni.rm>
 			</properties>
 		</profile>
 	</profiles>

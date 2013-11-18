@@ -16,6 +16,7 @@
 
 	<properties>
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
+		<tuxguitar-jack.jni.rm>rm -f</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>gcc</tuxguitar-jack.jni.cc>
 		<tuxguitar-jack.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-jack.jni.cflags>
 		<tuxguitar-jack.jni.ldflags></tuxguitar-jack.jni.ldflags>
@@ -70,6 +71,7 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-jack.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-jack.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-jack.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-jack.jni.library.prefix}" />
 									<env key="LIBRARY_SUFFIX" value="${tuxguitar-jack.jni.library.suffix}" />
