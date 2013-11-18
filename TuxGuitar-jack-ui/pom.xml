@@ -8,7 +8,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-jack-settings</artifactId>
+	<artifactId>tuxguitar-jack-ui</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 

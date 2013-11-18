@@ -126,7 +126,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-jack-settings</artifactId>
+				<artifactId>tuxguitar-jack-ui</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -208,7 +208,31 @@
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
-
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-cocoa-integration</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-carbon-integration</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-audiounit</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-coreaudio</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			
 			<!-- SWT Platforms -->
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
