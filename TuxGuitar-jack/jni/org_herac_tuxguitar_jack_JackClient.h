@@ -135,6 +135,30 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isPortOpen
 JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportRunning
   (JNIEnv *, jobject, jlong);
 
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    connectPorts
+ * Signature: (JLjava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_connectPorts
+  (JNIEnv *, jobject, jlong, jstring, jstring);
+
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    getPortNames
+ * Signature: (JLjava/lang/String;J)Ljava/util/List;
+ */
+JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortNames
+  (JNIEnv *, jobject, jlong, jstring, jlong);
+
+/*
+ * Class:     org_herac_tuxguitar_jack_JackClient
+ * Method:    getPortConnections
+ * Signature: (JLjava/lang/String;)Ljava/util/List;
+ */
+JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortConnections
+  (JNIEnv *, jobject, jlong, jstring);
+
 #ifdef __cplusplus
 }
 #endif

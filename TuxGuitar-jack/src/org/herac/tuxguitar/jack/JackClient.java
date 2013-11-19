@@ -15,10 +15,12 @@ public class JackClient{
 	private long instance;
 	private boolean openTransport;
 	private List jackPorts;
+	private List jackPortRegisterListeners;
 	
 	public JackClient() {
 		this.instance = malloc();
 		this.jackPorts = new ArrayList();
+		this.jackPortRegisterListeners = new ArrayList();
 	}
 	
 	public void finalize(){
@@ -71,6 +73,7 @@ public class JackClient{
 					jackPort = new JackPort(jackPortId, jackPortName);
 					
 					this.jackPorts.add(jackPort);
+					this.onPortRegistered();
 				}
 			}
 			return jackPort;
@@ -191,6 +194,46 @@ public class JackClient{
 		return false;
 	}
 	
+	public List getPortNames(String type, long flags) {
+		if( this.isOpen() ){
+			return this.getPortNames(this.instance, type, flags);
+		}
+		return null;
+	}
+	
+	public List getPortConnections(String portName){
+		if( this.isOpen() ){
+			return this.getPortConnections(this.instance, portName);
+		}
+		return null;
+	}
+	
+	public void connectPorts(String srcPortName, String dstPortName){
+		if( this.isOpen() ){
+			this.connectPorts(this.instance, srcPortName, dstPortName);
+		}
+	}
+	
+	public void onPortRegistered(){
+		Iterator it = this.jackPortRegisterListeners.iterator();
+		while( it.hasNext() ){
+			JackPortRegisterListener jackPortRegisterListener = (JackPortRegisterListener) it.next();
+			jackPortRegisterListener.onPortRegistered();
+		}
+	}
+	
+	public void addPortRegisterListener( JackPortRegisterListener listener ){
+		if(!this.jackPortRegisterListeners.contains( listener ) ){
+			this.jackPortRegisterListeners.add( listener );
+		}
+	}
+	
+	public void removePortRegisterListener( JackPortRegisterListener listener ){
+		if( this.jackPortRegisterListeners.contains( listener ) ){
+			this.jackPortRegisterListeners.remove( listener );
+		}
+	}
+
 	private native long malloc();
 	
 	private native void free(long instance);
@@ -222,4 +265,11 @@ public class JackClient{
 	private native boolean isPortOpen(long instance, long portId);
 	
 	private native boolean isTransportRunning(long instance);
+	
+	private native void connectPorts(long instance, String srcPortName, String dstPortName);
+	
+	private native List getPortNames(long instance, String type, long flags);
+	
+	private native List getPortConnections(long instance, String portName);
+	
 }
