@@ -33,6 +33,10 @@ public class JackConnectionManager {
 			this.jackClient = this.jackClientProvider.getJackClient();
 			this.jackClient.addPortRegisterListener(this.jackConnectionListener);
 			this.loadConfig();
+			this.openJackClient(true);
+			if( this.isAutoConnectPorts() && this.isJackClientOpen() ){
+				this.connectAllPorts();
+			}
 		}
 	}
 	
@@ -44,14 +48,14 @@ public class JackConnectionManager {
 		}
 	}
 	
-	public void validateJackClientOpen() throws TGException {
+	public void openJackClient(boolean quiet) throws TGException {
 		if(!this.isJackClientOpen() ){
 			if( this.jackClient != null ){
 				this.jackClient.open();
 			}
-			if(!this.isJackClientOpen()){
-				throw new TGException("Jack server not running?");
-			}
+		}
+		if(!this.isJackClientOpen() && !quiet){
+			throw new TGException("Jack server not running?");
 		}
 	}
 	
@@ -64,7 +68,7 @@ public class JackConnectionManager {
 	}
 	
 	public void connectAllPorts(){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		Iterator it = this.jackConnections.iterator();
 		while( it.hasNext() ){
@@ -75,7 +79,7 @@ public class JackConnectionManager {
 	}
 	
 	public void connectPorts(JackConnection jackConnection){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		List portNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0);
 		String srcPortName = findPortNameById(jackConnection.getSrcPortId(), portNames);
@@ -86,7 +90,7 @@ public class JackConnectionManager {
 	}
 	
 	public void loadExistingConnections(){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		List existingConnections = new ArrayList();
 		List existingPortNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0);
@@ -98,7 +102,7 @@ public class JackConnectionManager {
 	}
 	
 	public void loadExistingConnections(List existingConnections){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		List srcPortNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, JackPortFlags.JACK_PORT_IS_OUTPUT);
 		if( srcPortNames != null ){
@@ -110,7 +114,7 @@ public class JackConnectionManager {
 	}
 	
 	public void loadExistingConnections(List existingConnections, String srcPortName){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		List dstPortNames = this.jackClient.getPortConnections(srcPortName);
 		if( dstPortNames != null ){
@@ -122,7 +126,7 @@ public class JackConnectionManager {
 	}
 	
 	public void loadExistingConnection(List existingConnections, String srcPortName, String dstPortName){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		JackConnection jackConnection = new JackConnection(createPortId(srcPortName), createPortId(dstPortName));
 		if(!existingConnections.contains(jackConnection)){
@@ -131,7 +135,7 @@ public class JackConnectionManager {
 	}
 	
 	public void loadPreviousConnectionsToExistingList(List existingConnections, List existingPortNames){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		Iterator it = this.jackConnections.iterator();
 		while( it.hasNext() ){
@@ -147,13 +151,13 @@ public class JackConnectionManager {
 	}
 	
 	public String findPortNameById(long portId){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		return findPortNameById(portId, this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0));
 	}
 	
 	public String findPortNameById(long portId, List portNames){
-		this.validateJackClientOpen();
+		this.openJackClient(false);
 		
 		if( portNames != null ){
 			Iterator it = portNames.iterator();
