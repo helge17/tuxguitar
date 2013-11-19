@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>CFBundleExecutable</key>
+<string>tuxguitar</string>
+<key>CFBundleGetInfoString</key>
+<string>TuxGuitar 1.2 for Mac OS X</string>
+<key>CFBundleIconFile</key>
+<string>icon.icns</string>
+<key>CFBundleIdentifier</key>
+<string>org.herac.tuxguitar</string>
+<key>CFBundleInfoDictionaryVersion</key>
+<string>6.0</string>
+<key>CFBundleName</key>
+<string>TuxGuitar</string>
+<key>CFBundlePackageType</key>
+<string>APPL</string>
+<key>CFBundleShortVersionString</key>
+<string>1.2</string>
+<key>CFBundleSignature</key>
+<string>?????</string>
+<key>CFBundleVersion</key>
+<string>1.2</string>
+<key>NSPrincipalClass</key>
+<string>NSApplication</string>
+<key>CFBundleDocumentTypes</key>
+<array>
+<dict>
+<key>CFBundleTypeExtensions</key>
+<array>
+<string>tg</string>
+</array>
+<key>CFBundleTypeIconFile</key>
+<string>tgdoc.icns</string>
+<key>CFBundleTypeName</key>
+<string>TuxGuitar Document</string>
+<key>CFBundleTypeRole</key>
+<string>Editor</string>
+<key>LSIsAppleDefaultForType</key>
+<true/>
+<key>LSTypeIsPackage</key>
+<false/>
+</dict>
+<dict>
+<key>CFBundleTypeExtensions</key>
+<array>
+<string>gp</string>
+<string>gtp</string>
+<string>gp2</string>
+<string>gp3</string>
+<string>gp4</string>
+<string>gp5</string>
+</array>
+<key>CFBundleTypeIconFile</key>
+<string>tgdoc.icns</string>
+<key>CFBundleTypeName</key>
+<string>Guitar Pro Document</string>
+<key>CFBundleTypeRole</key>
+<string>Editor</string>
+<key>LSIsAppleDefaultForType</key>
+<true/>
+<key>LSTypeIsPackage</key>
+<false/>
+</dict>
+<dict>
+<key>CFBundleTypeExtensions</key>
+<array>
+<string>ptb</string>
+</array>
+<key>CFBundleTypeIconFile</key>
+<string>tgdoc.icns</string>
+<key>CFBundleTypeName</key>
+<string>PowerTab Document</string>
+<key>CFBundleTypeRole</key>
+<string>Editor</string>
+<key>LSIsAppleDefaultForType</key>
+<true/>
+<key>LSTypeIsPackage</key>
+<false/>
+</dict>
+</array>
+</dict>
+</plist>
