@@ -9,6 +9,8 @@
 
 #define EVENT_BUFFER_SIZE 512
 
+static JavaVM* JNI_JVM = NULL;
+
 typedef struct {
 	int event_size;
 	jack_port_t *event_port;
@@ -26,16 +28,25 @@ typedef struct {
 	pthread_mutex_t lock;
 	jack_client_t *client;
 	jack_jni_synth_t *midi;
+	jobject jni_object;
 } jack_jni_handle_t;
 
 int  JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr);
 void JackShutdownCallbackImpl(void *ptr);
+void JackPortRegistrationCallbackImpl(jack_port_id_t port, int registered, void *ptr);
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
+{
+	JNI_JVM = vm;
+	return JNI_VERSION_1_4;
+}
 
 JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
 	
 	jack_jni_handle_t *handle = (jack_jni_handle_t *) malloc( sizeof(jack_jni_handle_t) );
+	handle->jni_object = (*env)->NewGlobalRef(env, obj);
 	handle->client = NULL;
 	handle->midi = NULL;
 	
@@ -53,6 +64,11 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_free(JNIEnv* env
 	if(handle != NULL){
 		
 		pthread_mutex_destroy( &handle->lock );
+		(*env)->DeleteGlobalRef(env, handle->jni_object);
+		
+		handle->jni_object = NULL;
+		handle->client = NULL;
+		handle->midi = NULL;
 		
 		free( handle );
 	}
@@ -72,6 +88,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env
 				if( handle->client != NULL ){
 					jack_on_shutdown(handle->client, JackShutdownCallbackImpl, handle);
 					jack_set_process_callback (handle->client, JackProcessCallbackImpl , handle);
+					jack_set_port_registration_callback	(handle->client, JackPortRegistrationCallbackImpl, handle);
 					jack_activate (handle->client);
 				}
 				
@@ -435,6 +452,132 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isPortOpen(J
 	return result;
 }
 
+JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_connectPorts(JNIEnv* env, jobject obj, jlong ptr, jstring src_port_name, jstring dst_port_name)
+{
+	jack_jni_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL){
+		if( pthread_mutex_lock( &handle->lock ) == 0 ){
+			
+			if(handle->client != NULL)
+			{
+				const char* jack_src_port_name = (*env)->GetStringUTFChars(env, src_port_name, 0);
+				const char* jack_dst_port_name = (*env)->GetStringUTFChars(env, dst_port_name, 0);
+				
+				jack_connect(handle->client, jack_src_port_name, jack_dst_port_name);
+				
+				(*env)->ReleaseStringUTFChars(env, src_port_name, jack_src_port_name);
+				(*env)->ReleaseStringUTFChars(env, dst_port_name, jack_dst_port_name);
+			}
+			
+			pthread_mutex_unlock( &handle->lock );
+		}
+	}
+}
+
+JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortNames(JNIEnv* env, jobject obj, jlong ptr, jstring type, jlong flags)
+{
+	jobject jlist = NULL;
+	
+	jack_jni_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL){
+		
+		if( pthread_mutex_trylock( &handle->lock ) == 0 ){
+			
+			if( handle->client != NULL ) {
+				
+				jclass jlistCls = NULL;
+				jmethodID jlistInit = NULL;
+				jmethodID jlistAddMid = NULL;
+				
+				jlistCls = (*env)->FindClass(env, "java/util/ArrayList");
+				if( jlistCls != NULL ) {
+					jlistInit = (*env)->GetMethodID(env, jlistCls, "<init>", "()V");
+					jlistAddMid = (*env)->GetMethodID(env, jlistCls, "add", "(Ljava/lang/Object;)Z");
+					if( jlistInit != NULL && jlistAddMid != NULL) {
+						jlist = (*env)->NewObject(env, jlistCls, jlistInit);
+					}
+				}
+				
+				if( jlist != NULL && jlistAddMid != NULL ){
+					const char* jack_port_type = (type != NULL ? (*env)->GetStringUTFChars(env, type, 0) : NULL);
+					const char** jack_ports = jack_get_ports(handle->client, NULL, jack_port_type, flags);
+					
+					if( jack_ports != NULL ){
+						
+						while( (*jack_ports) ) {
+							jstring jack_port_name = (*env)->NewStringUTF(env, (*jack_ports));
+							
+							(*env)->CallBooleanMethod( env, jlist , jlistAddMid , jack_port_name );
+							
+							jack_ports ++;
+						}
+					}
+					
+					if( type != NULL && jack_port_type != NULL ){
+						(*env)->ReleaseStringUTFChars(env, type, jack_port_type);
+					}
+				}
+			}
+			
+			pthread_mutex_unlock( &handle->lock );
+		}
+	}
+	return jlist;
+}
+
+JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortConnections(JNIEnv* env, jobject obj, jlong ptr, jstring port_name)
+{
+	jobject jlist = NULL;
+	
+	jack_jni_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL){
+		
+		if( pthread_mutex_trylock( &handle->lock ) == 0 ){
+			
+			if( handle->client != NULL ) {
+				const char* jack_port_name = (*env)->GetStringUTFChars(env, port_name, 0);
+				jack_port_t* jack_port = jack_port_by_name(handle->client, jack_port_name);
+				if( jack_port != NULL ){
+					jclass jlistCls = NULL;
+					jmethodID jlistInit = NULL;
+					jmethodID jlistAddMid = NULL;
+					
+					jlistCls = (*env)->FindClass(env, "java/util/ArrayList");
+					if( jlistCls != NULL ) {
+						jlistInit = (*env)->GetMethodID(env, jlistCls, "<init>", "()V");
+						jlistAddMid = (*env)->GetMethodID(env, jlistCls, "add", "(Ljava/lang/Object;)Z");
+						if( jlistInit != NULL && jlistAddMid != NULL) {
+							jlist = (*env)->NewObject(env, jlistCls, jlistInit);
+						}
+					}
+					
+					if( jlist != NULL && jlistAddMid != NULL ){
+						const char** jack_ports = jack_port_get_all_connections(handle->client, jack_port);
+						
+						if( jack_ports != NULL ){
+							
+							while( (*jack_ports) ) {
+								jstring jack_port_name = (*env)->NewStringUTF(env, (*jack_ports));
+								
+								(*env)->CallBooleanMethod( env, jlist , jlistAddMid , jack_port_name );
+								
+								jack_ports ++;
+							}
+						}
+					}
+				}
+				(*env)->ReleaseStringUTFChars(env, port_name, jack_port_name);
+			}
+			
+			pthread_mutex_unlock( &handle->lock );
+		}
+	}
+	return jlist;
+}
+
 JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(JNIEnv* env, jobject obj, jlong ptr, jlong jack_port_id, jbyteArray jdata)
 {
 	
@@ -526,6 +669,33 @@ int JackProcessCallbackImpl(jack_nframes_t nframes, void *ptr){
 		}
 	}
 	return 0;
+}
+
+void JackPortRegistrationCallbackImpl(jack_port_id_t port, int registered, void *ptr)
+{
+	jack_jni_handle_t *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if(handle != NULL){
+		
+		if( pthread_mutex_trylock( &handle->lock ) == 0 ){
+			
+			if( handle->client != NULL && handle->jni_object != NULL ){
+				
+				JNIEnv* jni_env = NULL;
+				(*JNI_JVM)->AttachCurrentThread(JNI_JVM, (void **)&jni_env, 0);
+				if( jni_env != NULL ){
+					jclass cl = (*jni_env)->GetObjectClass(jni_env, handle->jni_object);
+					jmethodID mid = (*jni_env)->GetMethodID(jni_env, cl, "onPortRegistered", "()V");
+					if (mid != 0){
+						(*jni_env)->CallVoidMethod(jni_env, handle->jni_object, mid);
+					}
+				}
+				(*JNI_JVM)->DetachCurrentThread(JNI_JVM);
+			}
+			
+			pthread_mutex_unlock( &handle->lock );
+		}
+	}
 }
 
 void JackShutdownCallbackImpl(void *ptr)
