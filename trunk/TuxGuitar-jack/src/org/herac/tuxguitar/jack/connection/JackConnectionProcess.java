@@ -20,11 +20,11 @@ public class JackConnectionProcess implements Runnable {
 			
 			this.JackConnectionProcessWaiting = false;
 			
-			if( this.jackConnectionManager.isAutoConnectPorts() ){
+			if( this.jackConnectionManager.isJackClientOpen() && this.jackConnectionManager.isAutoConnectPorts() ){
 				this.jackConnectionManager.connectAllPorts();
 			}
-		} catch (InterruptedException e) {
-			TGErrorManager.getInstance().handleError(e);
+		} catch (Throwable throwable) {
+			TGErrorManager.getInstance().handleError(throwable);
 		}
 	}
 	
