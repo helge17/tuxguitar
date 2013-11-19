@@ -31,6 +31,7 @@
 		<module>../../TuxGuitar-gervill</module>
 		<module>../../TuxGuitar-gm-settings</module>
 		<module>../../TuxGuitar-gtp</module>
+		<module>../../TuxGuitar-gpx</module>
 		<module>../../TuxGuitar-jsa</module>
 		<module>../../TuxGuitar-lilypond</module>
 		<module>../../TuxGuitar-midi</module>
@@ -39,6 +40,8 @@
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
+		<module>../../TuxGuitar-svg</module>
+		<module>../../TuxGuitar-image</module>
 	</modules>
 
 	<build>
@@ -151,6 +154,12 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gpx</artifactId>
+									<destFileName>tuxguitar-gpx.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-jsa</artifactId>
 									<destFileName>tuxguitar-jsa.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
@@ -195,6 +204,18 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-tuner</artifactId>
 									<destFileName>tuxguitar-tuner.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-svg</artifactId>
+									<destFileName>tuxguitar-svg.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-image</artifactId>
+									<destFileName>tuxguitar-image.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->
