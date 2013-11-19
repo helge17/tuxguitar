@@ -17,6 +17,7 @@ import org.herac.tuxguitar.app.system.language.LanguageLoader;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.jack.connection.JackConnectionManager;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class JackConsoleDialog implements LanguageLoader,IconLoader{
 	
@@ -142,19 +143,31 @@ public class JackConsoleDialog implements LanguageLoader,IconLoader{
 	}
 	
 	public void updateAutoConnectPorts( boolean autoConnectPorts ){
-		this.jackConnectionManager.setAutoConnectPorts(autoConnectPorts);
-		this.jackConnectionManager.saveConfig();
+		try {
+			this.jackConnectionManager.setAutoConnectPorts(autoConnectPorts);
+			this.jackConnectionManager.saveConfig();
+		} catch (Throwable throwable){
+			TGErrorManager.getInstance().handleError(throwable);
+		}
 	}
 	
 	public void storeConnections(){
-		this.jackConnectionManager.loadExistingConnections();
-		this.jackConnectionManager.saveConfig();
-		this.showInfoMessage("jack.console.info.message.title", "jack.console.store.connections.success");
+		try {
+			this.jackConnectionManager.loadExistingConnections();
+			this.jackConnectionManager.saveConfig();
+			this.showInfoMessage("jack.console.info.message.title", "jack.console.store.connections.success");
+		} catch (Throwable throwable){
+			TGErrorManager.getInstance().handleError(throwable);
+		}
 	}
 	
 	public void restoreConnections(){
-		this.jackConnectionManager.connectAllPorts();
-		this.showInfoMessage("jack.console.info.message.title", "jack.console.restore.connections.success");
+		try {
+			this.jackConnectionManager.connectAllPorts();
+			this.showInfoMessage("jack.console.info.message.title", "jack.console.restore.connections.success");
+		} catch (Throwable throwable){
+			TGErrorManager.getInstance().handleError(throwable);
+		}
 	}
 	
 	public void showInfoMessage(String title, String message){

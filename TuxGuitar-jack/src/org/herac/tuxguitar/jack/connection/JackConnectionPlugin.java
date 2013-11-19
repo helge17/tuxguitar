@@ -17,19 +17,23 @@ public class JackConnectionPlugin implements TGPlugin{
 		this.jackConnectionManager = null;
 	}
 
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		if( enabled ){
-			this.jackConnectionManager.initialize();
-		} else {
-			this.jackConnectionManager.destroy();
-		}
-	}
-
 	public JackConnectionManager getJackConnectionManager() {
 		return this.jackConnectionManager;
 	}
 
 	public String getModuleId() {
 		return JackPlugin.MODULE_ID;
+	}
+
+	public void setEnabled(boolean enabled) throws TGPluginException {
+		try {
+			if( enabled ){
+				this.jackConnectionManager.initialize();
+			} else {
+				this.jackConnectionManager.destroy();
+			}
+		} catch (Throwable throwable){
+			throw new TGPluginException(throwable);
+		}
 	}
 }
