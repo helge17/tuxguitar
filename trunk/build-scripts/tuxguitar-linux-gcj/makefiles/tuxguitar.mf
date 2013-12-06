@@ -1,0 +1,118 @@
+#! /usr/bin/make -f
+# -*- makefile -*-
+#ident "$Id: GNUmakefile,v 1.7 2008/02/29 12:55:24 akdmia Exp $"
+#@author: created by www.philippe.coval.online.fr -- revision: $Author: akdmia $
+#licence: LGPL
+#------------------------------------------------------------------------------
+TG_ROOT_PATH?=../../..
+TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar
+
+OS_LIBRARY_PREFIX?=lib
+OS_LIBRARY_EXTENSION?=.so
+
+PACKAGE?=tuxguitar
+BINARY?=$(PACKAGE).bin
+LIBRARY?=$(OS_LIBRARY_PREFIX)$(PACKAGE)$(OS_LIBRARY_EXTENSION)
+
+# constants
+SHARE_DIR?=$(TG_PROJECT_HOME)/share/
+DOC_DIR?=$(TG_PROJECT_HOME)/doc/
+
+# dependencies
+SWT_PATH?=/usr/share/java/swt.jar
+
+# tuxguitar lib paths
+TG_LIB_PREFIX?=$(PREFIX)
+TG_LIB_SOURCE_PATH?=$(TG_LIB_PREFIX)/src
+TG_LIB_LIBRARY_PATH?=$(TG_LIB_PREFIX)/lib
+
+# install
+PREFIX?=/usr
+TG_BINARY_PATH?=$(PREFIX)/bin
+TG_LIBRARY_PATH?=$(PREFIX)/lib
+TG_LIBRARY_PATH_JNI?=$(TG_LIBRARY_PATH)/jni
+TG_LIBRARY_PATH_EXT?=$(TG_LIBRARY_PATH)/ext
+TG_LIBRARY_PATH_PLUGINS?=$(TG_SHARE_PATH)/plugins
+TG_LIBRARY_PATH_PROPERTY?=$(TG_LIBRARY_PATH_EXT):$(TG_LIBRARY_PATH_PLUGINS)
+TG_SHARE_PATH?=$(PREFIX)/share/$(PACKAGE)
+TG_DOC_PATH?=$(PREFIX)/share/doc/$(PACKAGE)
+
+
+# jar dependencies
+SWT_JAR?=$(SWT_PATH)
+
+# sources
+SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
+SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
+RESOURCE_PATH?=$(TG_PROJECT_HOME)/dist/
+RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
+RESOURCES_DIST?=$(shell find $(RESOURCE_PATH) -name "*.dist")
+DEPENDENCIES?=$(SWT_JAR)
+OBJECTS?=\
+ $(PACKAGE).o\
+ $(RESOURCES_DIST:%.dist=%.o)\
+ $(RESOURCES_XML:%.xml=%.o)\
+ $(DEPENDENCIES:%.jar=%.o)\
+
+# runtime
+MAINCLASS?=org.herac.tuxguitar.app.TGMain
+PROPERTIES?=\
+ -Djava.library.path=$(TG_LIBRARY_PATH_JNI) \
+ -Djava.class.path=$(TG_SHARE_PATH) \
+ -Dtuxguitar.share.path=$(TG_SHARE_PATH) \
+ -Dtuxguitar.library.path=$(TG_LIBRARY_PATH_PROPERTY) \
+ -Dtuxguitar.library.prefix=$(OS_LIBRARY_PREFIX) \
+ -Dtuxguitar.library.extension=$(OS_LIBRARY_EXTENSION) \
+
+GCJ?=gcj
+GCJFLAGS+=-fbootstrap-classes -fjni -I$(TG_LIB_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.4
+LDFLAGS?=
+BINFLAGS?=-l$(PACKAGE) -ltuxguitar-lib -L$(TG_LIBRARY_PATH) -L$(TG_LIB_LIBRARY_PATH)  -L./
+
+default: all
+
+all: objects library binary
+
+objects: $(OBJECTS)
+
+library: $(LIBRARY)
+
+binary: $(BINARY)
+
+install:
+	-install -d $(DESTDIR)$(PREFIX)/
+	-install -d $(DESTDIR)$(TG_BINARY_PATH)/
+	-install -d $(DESTDIR)$(TG_LIBRARY_PATH)/
+	-install -d $(DESTDIR)$(TG_SHARE_PATH)/
+	-install -d $(DESTDIR)$(TG_DOC_PATH)/
+	-install $(BINARY) $(DESTDIR)$(TG_BINARY_PATH)/$(BINARY)
+	-install $(LIBRARY) $(DESTDIR)$(TG_LIBRARY_PATH)/$(LIBRARY)
+	cp -rfa $(SHARE_DIR)/* $(DESTDIR)$(TG_SHARE_PATH)/
+	cp -rfa $(DOC_DIR)/* $(DESTDIR)$(TG_DOC_PATH)/
+
+uninstall:
+	-rm $(DESTDIR)$(TG_BINARY_PATH)/$(BINARY)
+	-rm $(DESTDIR)$(TG_LIBRARY_PATH)/$(LIBRARY)
+
+clean:
+	-rm *.bin -f
+	-rm *.so -f
+	-rm *.o -f
+
+%.o: %.jar
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $<
+
+%.o: %.dist
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
+
+%.o: %.xml
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
+
+$(PACKAGE).o: $(SOURCES)
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
+
+$(LIBRARY): $(OBJECTS)
+	$(GCJ) -shared -o $@ $(^F) $(LDFLAGS)
+
+$(BINARY):
+	$(GCJ) -o $@ --main=$(MAINCLASS) $(PROPERTIES) $(BINFLAGS)
