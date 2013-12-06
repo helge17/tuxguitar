@@ -1,0 +1,50 @@
+#! /usr/bin/make -f
+# -*- makefile -*-
+#ident "$Id: GNUmakefile,v 1.4 2008/02/26 15:25:26 akdmia Exp $"
+#@author: created by www.philippe.coval.online.fr -- revision: $Author: akdmia $
+#licence: LGPL
+#------------------------------------------------------------------------------
+TG_ROOT_PATH?=../../..
+TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar-lib
+
+PACKAGE?=tuxguitar-lib
+LIBRARY?=lib$(PACKAGE).so
+
+
+PREFIX?=/usr
+
+# install paths
+INSTALL_LIBRARY_DIR?=$(PREFIX)/lib
+
+# build paths
+SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
+SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
+OBJECTS?=$(PACKAGE).o
+
+GCJ?=gcj
+GCJFLAGS?=-fbootstrap-classes -fsource=1.4
+
+default: all
+
+all: library
+
+library: $(LIBRARY)
+
+install:
+	-install -d $(DESTDIR)$(INSTALL_LIBRARY_DIR)/
+	-install $(LIBRARY) $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+
+uninstall:
+	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+
+clean:
+	-rm *.so -f
+	-rm *.o -f
+
+$(PACKAGE).o: $(SOURCES)
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
+
+$(LIBRARY): $(OBJECTS)
+	$(GCJ) -shared -o $@ $(^F)
+
+#eof "$Id: GNUmakefile,v 1.4 2008/02/26 15:25:26 akdmia Exp $"

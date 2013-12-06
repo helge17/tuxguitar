@@ -1,0 +1,53 @@
+#! /usr/bin/make -f
+# -*- makefile -*-
+#ident "$Id: GNUmakefile,v 1.3 2008/02/26 15:24:13 akdmia Exp $"
+#@author: created by www.philippe.coval.online.fr -- revision: $Author: akdmia $
+#licence: LGPL
+#------------------------------------------------------------------------------
+TG_ROOT_PATH?=../../..
+TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar-gm-utils
+
+PACKAGE?=tuxguitar-gm-utils
+LIBRARY?=lib$(PACKAGE).so
+
+PREFIX?=/usr
+
+# tuxguitar lib paths
+TG_LIB_PREFIX?=$(PREFIX)
+TG_LIB_SOURCE_PATH?=$(TG_LIB_PREFIX)/src
+
+# install paths
+INSTALL_LIBRARY_DIR?=$(PREFIX)/lib/ext
+
+# build paths
+SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
+SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
+OBJECTS?=$(PACKAGE).o
+
+GCJ?=gcj
+GCJFLAGS?=-I$(TG_LIB_SOURCE_PATH) -fsource=1.4
+LDFLAGS?=
+
+default: all
+
+all: library
+
+library: $(LIBRARY)
+
+install:
+	-install -d $(DESTDIR)$(INSTALL_LIBRARY_DIR)/
+	-install $(LIBRARY) $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+
+uninstall:
+	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+
+clean:
+	-rm *.so -f
+	-rm *.o -f
+
+$(PACKAGE).o: $(SOURCES)
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
+
+$(LIBRARY): $(OBJECTS)
+	$(GCJ) -shared -o $@ $(^F) $(LDFLAGS)
+
