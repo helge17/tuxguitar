@@ -2,6 +2,7 @@ package org.herac.tuxguitar.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 
 public class TGLibraryLoader {
 	
@@ -41,6 +42,7 @@ public class TGLibraryLoader {
 				}
 			};
 			String[] files = folder.list(filter);
+			Arrays.sort(files);
 			for(int i = 0; i < files.length; i ++){
 				File file = new File(folder.getAbsolutePath() + File.separator + files[i]);
 				if(file.exists() && !file.isDirectory()){
