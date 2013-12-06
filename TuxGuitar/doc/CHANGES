@@ -6,11 +6,12 @@ TuxGuitar Dev changes:
 * Add count down support
 * Add bank selection support
 * Soundfont selection support in gervill plugin
+* Better support in jack plugin
 * New oxygen skin
+* New gpx importer plugin
+* New svg exporter plugin
+* New image exporter plugin 
 --* New abc exporter and importer plugin.
---* New svg exporter plugin
---* New image exporter plugin 
-
 
 TuxGuitar 1.2 changes:
 
