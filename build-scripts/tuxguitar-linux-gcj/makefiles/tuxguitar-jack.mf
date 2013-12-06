@@ -4,7 +4,7 @@ TG_ROOT_PATH?=../../..
 TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar-jack
 
 PACKAGE?=tuxguitar-jack
-LIBRARY?=lib$(PACKAGE)-a.so
+LIBRARY?=lib$(PACKAGE).so
 LIBRARY_JNI?=lib$(PACKAGE)-jni.so
 
 PREFIX?=/usr

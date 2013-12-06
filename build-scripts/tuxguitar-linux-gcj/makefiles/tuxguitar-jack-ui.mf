@@ -56,11 +56,13 @@ install:
 	-install -d $(DESTDIR)$(INSTALL_LIBRARY_DIR)/
 	-install -d $(DESTDIR)$(INSTALL_SHARED_DIR)/
 	-install $(LIBRARY) $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+	-echo "libtuxguitar-jack.so" > $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY).deps
 	-cp -rfa $(SHARE_PATH)/* $(DESTDIR)$(INSTALL_SHARED_DIR)
 
 uninstall:
 	-rm -rf $(DESTDIR)$(INSTALL_SHARED_DIR)/
 	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY).deps
 
 clean:
 	-rm *.so -f
