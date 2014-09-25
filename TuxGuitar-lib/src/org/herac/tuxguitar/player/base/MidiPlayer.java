@@ -846,7 +846,6 @@ public class MidiPlayer{
 			if (this.outputPort != null) {
 				this.closeChannels();
 				this.getSynthesizerProxy().setMidiSynthesizer(null);
-				this.getOutputTransmitter().removeReceiver(this.outputPort.getKey());
 				this.outputPort.close();
 				this.outputPort = null;
 			}
