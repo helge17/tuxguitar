@@ -1,10 +1,12 @@
 package org.herac.tuxguitar.jack.sequencer;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerListener;
+import org.herac.tuxguitar.player.base.MidiPlayerEvent;
 
-public class JackMidiPlayerStarter implements MidiPlayerListener{
+public class JackMidiPlayerStarter implements TGEventListener {
 	
 	private JackSequencer jackSequencer;
 	private boolean countDownByPass;
@@ -29,29 +31,28 @@ public class JackMidiPlayerStarter implements MidiPlayerListener{
 		TuxGuitar.instance().getTransport().play();
 	}
 	
-	public void notifyCountDownStarted() {
+	public void processCountDownStarted() {
 		this.countDownByPass = (this.jackSequencer.getJackClient().isTransportRunning() && getPlayer().getCountDown().isEnabled());
 		if( this.countDownByPass ){
 			this.getPlayer().getCountDown().setEnabled( false );
 		}
 	}
 	
-	public void notifyCountDownStopped() {
+	public void processCountDownStopped() {
 		if( this.countDownByPass ){
 			this.countDownByPass = false;
 			this.getPlayer().getCountDown().setEnabled( true );
 		}
 	}
 	
-	public void notifyStarted() {
-		// TODO Auto-generated method stub
-	}
-	
-	public void notifyStopped() {
-		// TODO Auto-generated method stub
-	}
-	
-	public void notifyLoop() {
-		// TODO Auto-generated method stub
+	public void processEvent(TGEvent event) {
+		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			int type = ((Integer)event.getProperty(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
+			if( type == MidiPlayerEvent.NOTIFY_COUNT_DOWN_STARTED ){
+				this.processCountDownStarted();
+			} else if( type == MidiPlayerEvent.NOTIFY_COUNT_DOWN_STOPPED ){
+				this.processCountDownStopped();
+			}
+		}
 	}
 }

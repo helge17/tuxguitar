@@ -1,7 +1,9 @@
 package org.herac.tuxguitar.app.util;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 
 public class TGMusicKeyUtils {
 	
@@ -77,7 +79,7 @@ public class TGMusicKeyUtils {
 	}
 }
 
-class TGMusicKeyNames implements LanguageLoader{
+class TGMusicKeyNames implements TGEventListener{
 	
 	private boolean sharp;
 	private String prefix;
@@ -98,5 +100,11 @@ class TGMusicKeyNames implements LanguageLoader{
 	
 	public void loadProperties() {
 		TGMusicKeyUtils.loadKeyNames(this.names, this.prefix, this.sharp);
+	}
+
+	public void processEvent(TGEvent event) {
+		if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
 	}
 }

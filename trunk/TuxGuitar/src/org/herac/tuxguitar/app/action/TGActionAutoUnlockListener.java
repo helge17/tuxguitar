@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.action;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionPostExecutionListener;
+import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 
-public class TGActionAutoUnlockListener implements TGActionPostExecutionListener {
+public class TGActionAutoUnlockListener implements TGEventListener {
 	
 	private TGActionAdapterManager manager;
 	
@@ -12,9 +12,12 @@ public class TGActionAutoUnlockListener implements TGActionPostExecutionListener
 		this.manager = manager;
 	}
 	
-	public void doPostExecution(String id, TGActionContext context) throws TGActionException {
-		if( this.manager.getAutoUnlockActionIds().hasActionId(id) ) {
-			TGActionLock.unlock();
+	public void processEvent(TGEvent event) {
+		if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			String id = (String) event.getProperty(TGActionPostExecutionEvent.PROPERTY_ACTION_ID);
+			if( this.manager.getAutoUnlockActionIds().hasActionId(id) ) {
+				TGActionLock.unlock();
+			}
 		}
 	}
 }

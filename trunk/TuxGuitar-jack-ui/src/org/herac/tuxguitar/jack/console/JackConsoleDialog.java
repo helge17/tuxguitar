@@ -12,14 +12,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.jack.connection.JackConnectionManager;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
-public class JackConsoleDialog implements LanguageLoader,IconLoader{
+public class JackConsoleDialog implements TGEventListener {
 	
 	private static final int SHELL_WIDTH = 350;
 	
@@ -172,5 +174,14 @@ public class JackConsoleDialog implements LanguageLoader,IconLoader{
 	
 	public void showInfoMessage(String title, String message){
 		MessageDialog.infoMessage(this.dialog, TuxGuitar.getProperty(title), TuxGuitar.getProperty(message));
+	}
+
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
 	}
 }

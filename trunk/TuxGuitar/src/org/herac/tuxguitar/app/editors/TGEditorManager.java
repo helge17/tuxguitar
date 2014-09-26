@@ -1,83 +1,52 @@
 package org.herac.tuxguitar.app.editors;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 
 public class TGEditorManager {
 	
-	private List redrawListeners;
-	private List updateListeners;
-	private List beatViewerListeners;
-	
 	public TGEditorManager(){
-		this.redrawListeners = new ArrayList();
-		this.updateListeners = new ArrayList();
-		this.beatViewerListeners = new ArrayList();
+		super();
 	}
 	
 	public void doRedraw( int type ){
-		for(int i = 0; i < this.redrawListeners.size(); i ++){
-			TGRedrawListener listener = (TGRedrawListener) this.redrawListeners.get( i );
-			listener.doRedraw( type );
-		}
+		TGEventManager.getInstance().fireEvent(new TGRedrawEvent(type));
 	}
 	
 	public void doUpdate( int type ){
-		for(int i = 0; i < this.updateListeners.size(); i ++){
-			TGUpdateListener listener = (TGUpdateListener) this.updateListeners.get( i );
-			listener.doUpdate( type );
-		}
+		TGEventManager.getInstance().fireEvent(new TGUpdateEvent(type));
 	}
 	
 	public void showExternalBeat( TGBeat beat ){
-		for(int i = 0; i < this.beatViewerListeners.size(); i ++){
-			TGExternalBeatViewerListener listener = (TGExternalBeatViewerListener) this.beatViewerListeners.get( i );
-			listener.showExternalBeat(beat);
-		}
+		TGEventManager.getInstance().fireEvent(new TGExternalBeatViewerEvent(TGExternalBeatViewerEvent.ACTION_SHOW, beat));
 	}
 	
 	public void hideExternalBeat(){
-		for(int i = 0; i < this.beatViewerListeners.size(); i ++){
-			TGExternalBeatViewerListener listener = (TGExternalBeatViewerListener) this.beatViewerListeners.get( i );
-			listener.hideExternalBeat();
-		}
+		TGEventManager.getInstance().fireEvent(new TGExternalBeatViewerEvent(TGExternalBeatViewerEvent.ACTION_HIDE));
 	}
 	
-	public void addRedrawListener( TGRedrawListener listener){
-		if(!this.redrawListeners.contains( listener )){
-			this.redrawListeners.add( listener );
-		}
+	public void addRedrawListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGRedrawEvent.EVENT_TYPE, listener);
 	}
 	
-	public void removeRedrawListener( TGRedrawListener listener){
-		if(this.redrawListeners.contains( listener )){
-			this.redrawListeners.remove( listener );
-		}
+	public void removeRedrawListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGRedrawEvent.EVENT_TYPE, listener);
 	}
 	
-	public void addUpdateListener( TGUpdateListener listener){
-		if(!this.updateListeners.contains( listener )){
-			this.updateListeners.add( listener );
-		}
+	public void addUpdateListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGUpdateEvent.EVENT_TYPE, listener);
 	}
 	
-	public void removeUpdateListener( TGUpdateListener listener){
-		if(this.updateListeners.contains( listener )){
-			this.updateListeners.remove( listener );
-		}
+	public void removeUpdateListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGUpdateEvent.EVENT_TYPE, listener);
 	}
 	
-	public void addBeatViewerListener( TGExternalBeatViewerListener listener){
-		if(!this.beatViewerListeners.contains( listener )){
-			this.beatViewerListeners.add( listener );
-		}
+	public void addBeatViewerListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGExternalBeatViewerEvent.EVENT_TYPE, listener);
 	}
 	
-	public void removeBeatViewerListener( TGExternalBeatViewerListener listener){
-		if(this.beatViewerListeners.contains( listener )){
-			this.beatViewerListeners.remove( listener );
-		}
+	public void removeBeatViewerListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGExternalBeatViewerEvent.EVENT_TYPE, listener);
 	}
 }

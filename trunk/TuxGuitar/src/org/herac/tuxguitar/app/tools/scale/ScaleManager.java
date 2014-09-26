@@ -7,9 +7,12 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.scale.xml.ScaleReader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGScale;
 
 public class ScaleManager {
+	
 	private static final String[] KEY_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_SCALE);
 	
 	private static final String KEY_SEPARATOR = ",";
@@ -17,8 +20,6 @@ public class ScaleManager {
 	public static final int NONE_SELECTION = -1;
 	
 	private List scales;
-	
-	private List scaleListeners;
 	
 	private TGScale scale;
 	
@@ -28,30 +29,22 @@ public class ScaleManager {
 	
 	public ScaleManager(){
 		this.scales = new ArrayList();
-		this.scaleListeners = new ArrayList();
 		this.scale = TuxGuitar.instance().getSongManager().getFactory().newScale();
 		this.selectionKey = 0;
 		this.selectionIndex = NONE_SELECTION;
 		this.loadScales();
 	}
 	
-	public void addListener( ScaleListener listener){
-		if(!this.scaleListeners.contains( listener )){
-			this.scaleListeners.add( listener );
-		}
+	public void addListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(ScaleEvent.EVENT_TYPE, listener);
 	}
 	
-	public void removeListener( ScaleListener listener){
-		if(this.scaleListeners.contains( listener )){
-			this.scaleListeners.remove( listener );
-		}
+	public void removeListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(ScaleEvent.EVENT_TYPE, listener);
 	}
 	
 	public void fireListeners(){
-		for(int i = 0; i < this.scaleListeners.size(); i ++){
-			ScaleListener listener = (ScaleListener) this.scaleListeners.get( i );
-			listener.loadScale();
-		}
+		TGEventManager.getInstance().fireEvent(new ScaleEvent());
 	}
 		
 	public void selectScale(int index,int key){

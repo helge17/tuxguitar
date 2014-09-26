@@ -20,16 +20,18 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionLock;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.helper.SyncThread;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeMarker;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGMarker;
 
-public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
+public class MarkerList implements TGEventListener {
 	
 	private static MarkerList instance;
 	
@@ -290,9 +292,22 @@ public class MarkerList implements TGUpdateListener, IconLoader,LanguageLoader{
 		}
 	}
 	
-	public void doUpdate(int type) {
-		if( type ==  TGUpdateListener.SONG_LOADED ){
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type ==  TGUpdateEvent.SONG_LOADED ){
 			this.update();
+		}
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
 		}
 	}
 }

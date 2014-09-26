@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGLock;
 
 public class TGActionManager {
@@ -15,16 +17,12 @@ public class TGActionManager {
 	private TGLock lock;
 	private Map actions;
 	private List interceptors;
-	private List preExecutionListeners;
-	private List postExecutionListeners;
 	private TGActionContextFactory actionContextFactory;
 	
 	private TGActionManager(){
 		this.lock = new TGLock();
 		this.actions = new HashMap();
 		this.interceptors = new ArrayList();
-		this.preExecutionListeners = new ArrayList();
-		this.postExecutionListeners = new ArrayList();
 		this.actionContextFactory = null;
 	}
 	
@@ -100,19 +98,27 @@ public class TGActionManager {
 	}
 	
 	public void doPreExecution(String id, TGActionContext context) throws TGActionException{
-		Iterator it = this.preExecutionListeners.iterator();
-		while( it.hasNext() ){
-			TGActionPreExecutionListener listener = (TGActionPreExecutionListener) it.next();
-			listener.doPreExecution(id, context);
-		}
+		TGEventManager.getInstance().fireEvent(new TGActionPreExecutionEvent(id, context));
 	}
 	
 	public void doPostExecution(String id, TGActionContext context) throws TGActionException{
-		Iterator it = this.postExecutionListeners.iterator();
-		while( it.hasNext() ){
-			TGActionPostExecutionListener listener = (TGActionPostExecutionListener) it.next();
-			listener.doPostExecution(id, context);
-		}
+		TGEventManager.getInstance().fireEvent(new TGActionPostExecutionEvent(id, context));
+	}
+	
+	public void addPreExecutionListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
+	}
+	
+	public void removePreExecutionListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
+	}
+	
+	public void addPostExecutionListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
+	}
+	
+	public void removePostExecutionListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
 	}
 	
 	public void addInterceptor(TGActionInterceptor interceptor){
@@ -124,30 +130,6 @@ public class TGActionManager {
 	public void removeInterceptor(TGActionInterceptor interceptor){
 		if( this.interceptors.contains(interceptor) ){
 			this.interceptors.remove(interceptor);
-		}
-	}
-	
-	public void addPreExecutionListener(TGActionPreExecutionListener listener){
-		if(!this.preExecutionListeners.contains(listener)){
-			this.preExecutionListeners.add(listener);
-		}
-	}
-	
-	public void removePreExecutionListener(TGActionPreExecutionListener listener){
-		if( this.preExecutionListeners.contains(listener) ){
-			this.preExecutionListeners.remove(listener);
-		}
-	}
-	
-	public void addPostExecutionListener(TGActionPostExecutionListener listener){
-		if(!this.postExecutionListeners.contains(listener)){
-			this.postExecutionListeners.add(listener);
-		}
-	}
-	
-	public void removePostExecutionListener(TGActionPostExecutionListener listener){
-		if( this.postExecutionListeners.contains(listener) ){
-			this.postExecutionListeners.remove(listener);
 		}
 	}
 	

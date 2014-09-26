@@ -39,14 +39,16 @@ import org.herac.tuxguitar.app.editors.TGColorImpl;
 import org.herac.tuxguitar.app.editors.TGFontImpl;
 import org.herac.tuxguitar.app.editors.TGImageImpl;
 import org.herac.tuxguitar.app.editors.TGPainterImpl;
-import org.herac.tuxguitar.app.editors.TGRedrawListener;
+import org.herac.tuxguitar.app.editors.TGRedrawEvent;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
@@ -62,7 +64,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 
-public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
+public class MatrixEditor implements TGEventListener {
 	
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
@@ -907,11 +909,24 @@ public class MatrixEditor implements TGRedrawListener,IconLoader,LanguageLoader{
 		}
 	}
 	
-	public void doRedraw(int type) {
-		if( type == TGRedrawListener.NORMAL ){
+	public void processRedrawEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
+		if( type == TGRedrawEvent.NORMAL ){
 			this.redraw();
-		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
 			this.redrawPlayingMode();
+		}
+	}
+
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processRedrawEvent(event);
 		}
 	}
 }

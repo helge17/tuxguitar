@@ -22,6 +22,7 @@ import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 
 public class TGBrowserToolBar extends TGBrowserBar{
+	
 	private Composite composite;
 	private ToolBar toolBar;
 	private ToolItem newBrowser;

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
 import org.herac.tuxguitar.app.items.menu.BeatMenuItem;
 import org.herac.tuxguitar.app.items.menu.CompositionMenuItem;
 import org.herac.tuxguitar.app.items.menu.EditMenuItem;
@@ -52,16 +52,13 @@ import org.herac.tuxguitar.app.items.tool.TransportToolItems;
 import org.herac.tuxguitar.app.items.tool.ViewToolItems;
 import org.herac.tuxguitar.app.items.xml.ToolBarsReader;
 import org.herac.tuxguitar.app.items.xml.ToolBarsWriter;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGRawExporter;
-import org.herac.tuxguitar.io.base.TGRawImporter;
-import org.herac.tuxguitar.io.base.event.TGRawExporterAddedListener;
-import org.herac.tuxguitar.io.base.event.TGRawExporterRemovedListener;
-import org.herac.tuxguitar.io.base.event.TGRawImporterAddedListener;
-import org.herac.tuxguitar.io.base.event.TGRawImporterRemovedListener;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -71,7 +68,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader, TGRawImporterAddedListener, TGRawImporterRemovedListener, TGRawExporterAddedListener, TGRawExporterRemovedListener{
+public class ItemManager implements TGEventListener {
 	
 	private Menu menu;
 	private Menu popupMenu;
@@ -96,10 +93,7 @@ public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader
 		TuxGuitar.instance().getIconManager().addLoader(this);
 		TuxGuitar.instance().getLanguageManager().addLoader(this);
 		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
-		TGFileFormatManager.instance().getEventManager().addRawExporterAddedListener(this);
-		TGFileFormatManager.instance().getEventManager().addRawExporterRemovedListener(this);
-		TGFileFormatManager.instance().getEventManager().addRawImporterAddedListener(this);
-		TGFileFormatManager.instance().getEventManager().addRawImporterRemovedListener(this);
+		TGFileFormatManager.instance().addFileFormatAvailabilityListener(this);
 	}
 	
 	public void loadItems(){
@@ -454,12 +448,6 @@ public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader
 	private String getCoolItemsFileName(){
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "toolbars.xml";
 	}
-
-	public void doUpdate(int type) {
-		if( type == TGUpdateListener.SELECTION ){
-			this.updateItems();
-		}
-	}
 	
 	public void disableUpdateCoolBarWrapIndices() {
 		if( this.updateCoolBarWrapIndicesEnabled ){
@@ -467,20 +455,26 @@ public class ItemManager implements TGUpdateListener, IconLoader, LanguageLoader
 		}
 		this.updateCoolBarWrapIndicesEnabled = false;
 	}
-
-	public void onRawExporterRemoved(TGRawExporter exporter) {
-		this.createMenu();
+	
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type == TGUpdateEvent.SELECTION ){
+			this.updateItems();
+		}
 	}
-
-	public void onRawExporterAdded(TGRawExporter exporter) {
-		this.createMenu();
-	}
-
-	public void onRawImporterRemoved(TGRawImporter importer) {
-		this.createMenu();
-	}
-
-	public void onRawImporterAdded(TGRawImporter importer) {
-		this.createMenu();
+	
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
+		}
+		else if( TGFileFormatAvailabilityEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.createMenu();
+		}
 	}
 }

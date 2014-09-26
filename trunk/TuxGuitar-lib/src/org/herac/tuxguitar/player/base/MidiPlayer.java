@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -46,8 +48,6 @@ public class MidiPlayer{
 	private List outputPortProviders;
 	
 	private List sequencerProviders;
-	
-	private List listeners;
 	
 	private int volume;
 	
@@ -97,7 +97,6 @@ public class MidiPlayer{
 		this.songManager = songManager;
 		this.outputPortProviders = new ArrayList();
 		this.sequencerProviders = new ArrayList();
-		this.listeners = new ArrayList();
 		this.tryOpenFistDevice = false;
 		this.getSequencer();
 		this.getMode();
@@ -927,55 +926,31 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void addListener( MidiPlayerListener listener ){
-		if( !this.listeners.contains( listener ) ){
-			this.listeners.add( listener );
-		}
+	public void addListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(MidiPlayerEvent.EVENT_TYPE, listener);
 	}
 	
-	public void removeListener( MidiPlayerListener listener ){
-		if( this.listeners.contains( listener ) ){
-			this.listeners.remove( listener );
-		}
+	public void removeListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(MidiPlayerEvent.EVENT_TYPE, listener);
 	}
 	
 	public void notifyStarted(){
-		Iterator it = this.listeners.iterator();
-		while( it.hasNext() ){
-			MidiPlayerListener listener = (MidiPlayerListener) it.next();
-			listener.notifyStarted();
-		}
+		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STARTED));
 	}
 	
 	public void notifyStopped(){
-		Iterator it = this.listeners.iterator();
-		while( it.hasNext() ){
-			MidiPlayerListener listener = (MidiPlayerListener) it.next();
-			listener.notifyStopped();
-		}
+		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STOPPED));
 	}
 	
 	public void notifyCountDownStarted(){
-		Iterator it = this.listeners.iterator();
-		while( it.hasNext() ){
-			MidiPlayerListener listener = (MidiPlayerListener) it.next();
-			listener.notifyCountDownStarted();
-		}
+		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STARTED));
 	}
 	
 	public void notifyCountDownStopped(){
-		Iterator it = this.listeners.iterator();
-		while( it.hasNext() ){
-			MidiPlayerListener listener = (MidiPlayerListener) it.next();
-			listener.notifyCountDownStopped();
-		}
+		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STOPPED));
 	}
 	
 	public void notifyLoop(){
-		Iterator it = this.listeners.iterator();
-		while( it.hasNext() ){
-			MidiPlayerListener listener = (MidiPlayerListener) it.next();
-			listener.notifyLoop();
-		}
+		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_LOOP));
 	}
 }

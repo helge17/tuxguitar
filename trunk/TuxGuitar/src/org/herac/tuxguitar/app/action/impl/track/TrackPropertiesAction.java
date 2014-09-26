@@ -31,7 +31,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.action.TGActionLock;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.undo.undoables.UndoableJoined;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackGeneric;
@@ -39,6 +39,8 @@ import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackInfo;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableTrackInstrument;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -53,7 +55,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrackPropertiesAction extends TGActionBase implements TGUpdateListener {
+public class TrackPropertiesAction extends TGActionBase implements TGEventListener {
 	
 	public static final String NAME = "action.track.properties";
 	
@@ -708,9 +710,16 @@ public class TrackPropertiesAction extends TGActionBase implements TGUpdateListe
 		}
 	}
 	
-	public void doUpdate(int type) {
-		if( type == TGUpdateListener.SELECTION ){
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItems();
+		}
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
 		}
 	}
 }

@@ -9,11 +9,12 @@ import org.eclipse.swt.graphics.Resource;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 
-public class IconManager {
+public class TGIconManager {
 	private String theme;
-	private List loaders;
 	private List disposableIcons;
 	
 	private Image[] durations;
@@ -142,30 +143,21 @@ public class IconManager {
 	private Image browserRefresh;
 	private Image settings;
 	
-	public IconManager(){
-		this.loaders = new ArrayList();
+	public TGIconManager(){
 		this.disposableIcons = new ArrayList();
 		this.loadIcons();
 	}
 	
-	public void addLoader(IconLoader loader){
-		if( !this.loaders.contains( loader )){
-			this.loaders.add(loader);
-		}
+	public void addLoader(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGIconEvent.EVENT_TYPE, listener);
 	}
 	
-	public void removeLoader(IconLoader loader){
-		if( this.loaders.contains( loader )){
-			this.loaders.remove(loader);
-		}
+	public void removeLoader(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGIconEvent.EVENT_TYPE, listener);
 	}
 	
 	private void fireChanges(){
-		Iterator it = this.loaders.iterator();
-		while(it.hasNext()){
-			IconLoader loader = (IconLoader)it.next();
-			loader.loadIcons();
-		}
+		TGEventManager.getInstance().fireEvent(new TGIconEvent());
 	}
 	
 	public void reloadIcons(){
