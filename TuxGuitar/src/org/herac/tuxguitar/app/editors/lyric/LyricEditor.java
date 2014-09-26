@@ -21,16 +21,19 @@ import org.herac.tuxguitar.app.action.impl.edit.RedoAction;
 import org.herac.tuxguitar.app.action.impl.edit.UndoAction;
 import org.herac.tuxguitar.app.action.impl.track.GoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.GoPreviousTrackAction;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
+public class LyricEditor implements TGEventListener {
+	
 	private static int EDITOR_WIDTH = 450;
 	private static int EDITOR_HEIGHT = 200;
 	
@@ -268,11 +271,24 @@ public class LyricEditor implements TGUpdateListener,IconLoader,LanguageLoader{
 		}
 	}
 
-	public void doUpdate(int type) {
-		if( type == TGUpdateListener.SELECTION ){
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItems();
-		}else if( type == TGUpdateListener.SONG_UPDATED || type == TGUpdateListener.SONG_LOADED){
+		}else if( type == TGUpdateEvent.SONG_UPDATED || type == TGUpdateEvent.SONG_LOADED){
 			this.update();
+		}
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
 		}
 	}
 }

@@ -1,37 +1,19 @@
 package org.herac.tuxguitar.jack.synthesizer.settings;
 
-import org.herac.tuxguitar.player.base.MidiPlayerListener;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiPlayerEvent;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class JackMidiPlayerListener implements MidiPlayerListener{
+public class JackMidiPlayerListener implements TGEventListener {
 	
 	private JackChannelSettingsDialog jackChannelSettingsDialog;
 	
 	public JackMidiPlayerListener(JackChannelSettingsDialog jackChannelSettingsDialog){
 		this.jackChannelSettingsDialog = jackChannelSettingsDialog;
 	}
-	
-	public void notifyStarted() {
-		this.updateControlsSynchronized();
-	}
 
-	public void notifyStopped() {
-		this.updateControlsSynchronized();
-	}
-
-	public void notifyCountDownStarted() {
-		// Not implemented
-	}
-
-	public void notifyCountDownStopped() {
-		// Not implemented
-	}
-
-	public void notifyLoop() {
-		// Not implemented
-	}
-	
 	public void updateControls(){
 		this.jackChannelSettingsDialog.updateControls();
 	}
@@ -42,5 +24,24 @@ public class JackMidiPlayerListener implements MidiPlayerListener{
 				updateControls();
 			}
 		});
+	}
+	
+	public void processStarted() {
+		this.updateControlsSynchronized();
+	}
+
+	public void processStopped() {
+		this.updateControlsSynchronized();
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			int type = ((Integer)event.getProperty(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
+			if( type == MidiPlayerEvent.NOTIFY_STARTED ){
+				this.processStarted();
+			} else if( type == MidiPlayerEvent.NOTIFY_STOPPED ){
+				this.processStopped();
+			}
+		}
 	}
 }

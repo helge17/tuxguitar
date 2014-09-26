@@ -12,13 +12,15 @@ import org.eclipse.swt.widgets.Menu;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.clipboard.ClipBoard;
 import org.herac.tuxguitar.app.editors.tab.Tablature;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
+public class TablatureEditor implements TGEventListener{
 	private Tablature tablature;
 	private ClipBoard clipBoard;
 	
@@ -65,21 +67,32 @@ public class TablatureEditor implements TGRedrawListener, TGUpdateListener{
 		return this.clipBoard;
 	}
 	
-	public void doRedraw(int type) {
-		if( type == TGRedrawListener.NORMAL ){
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type == TGUpdateEvent.SONG_UPDATED ){
+			getTablature().updateTablature();
+		}else if( type == TGUpdateEvent.SONG_LOADED ){
+			getTablature().updateTablature();
+			getTablature().resetScroll();
+			getTablature().resetCaret();
+		}
+	}
+	
+	public void processRedrawEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
+		if( type == TGRedrawEvent.NORMAL ){
 			getTablature().redraw();
-		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
 			getTablature().redrawPlayingMode();
 		}
 	}
 	
-	public void doUpdate(int type) {
-		if( type == TGUpdateListener.SONG_UPDATED ){
-			getTablature().updateTablature();
-		}else if( type == TGUpdateListener.SONG_LOADED ){
-			getTablature().updateTablature();
-			getTablature().resetScroll();
-			getTablature().resetCaret();
+	public void processEvent(TGEvent event) {
+		if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processRedrawEvent(event);
+		} 
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
 		}
 	}
 }

@@ -35,8 +35,8 @@ import org.herac.tuxguitar.app.editors.EditorCache;
 import org.herac.tuxguitar.app.editors.FretBoardEditor;
 import org.herac.tuxguitar.app.editors.PianoEditor;
 import org.herac.tuxguitar.app.editors.TGEditorManager;
-import org.herac.tuxguitar.app.editors.TGRedrawListener;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGRedrawEvent;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.editors.channel.TGChannelManagerDialog;
 import org.herac.tuxguitar.app.editors.chord.CustomChordManager;
@@ -49,10 +49,9 @@ import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.error.TGErrorAdapter;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.icons.IconManager;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
-import org.herac.tuxguitar.app.system.language.LanguageManager;
+import org.herac.tuxguitar.app.system.language.TGLanguageManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.table.TGTableViewer;
 import org.herac.tuxguitar.app.tools.browser.dialog.TGBrowserDialog;
@@ -66,6 +65,8 @@ import org.herac.tuxguitar.app.util.ArgumentParser;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGSplash;
 import org.herac.tuxguitar.app.util.WindowTitleUtil;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
@@ -103,11 +104,11 @@ public class TuxGuitar {
 	
 	private TGConfigManager configManager;
 	
-	private LanguageManager languageManager;
+	private TGLanguageManager languageManager;
 	
 	private KeyBindingActionManager keyBindingManager;
 	
-	private IconManager iconManager;
+	private TGIconManager iconManager;
 	
 	private EditorCache editorCache;
 	
@@ -534,11 +535,11 @@ public class TuxGuitar {
 		return TGPluginManager.getInstance();
 	}
 	
-	public IconManager getIconManager(){
-		if(this.iconManager == null){
-			this.iconManager = new IconManager();
-			this.iconManager.addLoader( new IconLoader() {
-				public void loadIcons() {
+	public TGIconManager getIconManager(){
+		if( this.iconManager == null ){
+			this.iconManager = new TGIconManager();
+			this.iconManager.addLoader(new TGEventListener() {
+				public void processEvent(TGEvent event) {
 					getShell().setImage(getIconManager().getAppIcon());
 					getShell().layout(true);
 				}
@@ -568,9 +569,9 @@ public class TuxGuitar {
 		return this.actionAdapterManager;
 	}
 	
-	public LanguageManager getLanguageManager() {
+	public TGLanguageManager getLanguageManager() {
 		if(this.languageManager == null){
-			this.languageManager = new LanguageManager();
+			this.languageManager = new TGLanguageManager();
 			this.loadLanguage();
 		}
 		return this.languageManager;
@@ -650,7 +651,7 @@ public class TuxGuitar {
 					if(!isDisposed() && !isLocked()){
 						if(updateItems){
 							lock();
-							getEditorManager().doUpdate( TGUpdateListener.SELECTION );
+							getEditorManager().doUpdate(TGUpdateEvent.SELECTION);
 							unlock();
 						}
 						redraw();
@@ -663,7 +664,7 @@ public class TuxGuitar {
 	protected void redraw(){
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
-			this.getEditorManager().doRedraw( TGRedrawListener.NORMAL );
+			this.getEditorManager().doRedraw(TGRedrawEvent.NORMAL);
 			this.unlock();
 		}
 	}
@@ -672,7 +673,7 @@ public class TuxGuitar {
 		if(!isDisposed() && !this.isLocked()){
 			this.lock();
 			this.getEditorCache().updatePlayMode();
-			this.getEditorManager().doRedraw( this.getEditorCache().shouldRedraw() ? TGRedrawListener.PLAYING_NEW_BEAT : TGRedrawListener.PLAYING_THREAD );
+			this.getEditorManager().doRedraw( this.getEditorCache().shouldRedraw() ? TGRedrawEvent.PLAYING_NEW_BEAT : TGRedrawEvent.PLAYING_THREAD );
 			this.unlock();
 		}
 	}
@@ -772,7 +773,7 @@ public class TuxGuitar {
 		getPlayer().resetChannels();
 		getEditorCache().reset();
 		getUndoableManager().discardAllEdits();
-		getEditorManager().doUpdate( TGUpdateListener.SONG_LOADED );
+		getEditorManager().doUpdate(TGUpdateEvent.SONG_LOADED);
 		
 		this.unlock();
 		
@@ -786,7 +787,7 @@ public class TuxGuitar {
 		getFileHistory().reset(url);
 		getEditorCache().reset();
 		getUndoableManager().discardAllEdits();
-		getEditorManager().doUpdate( TGUpdateListener.SONG_SAVED );
+		getEditorManager().doUpdate(TGUpdateEvent.SONG_SAVED);
 		
 		this.unlock();
 		
@@ -797,7 +798,7 @@ public class TuxGuitar {
 	public void fireUpdate(){
 		this.lock();
 		this.getEditorCache().reset();
-		this.getEditorManager().doUpdate( TGUpdateListener.SONG_UPDATED );
+		this.getEditorManager().doUpdate(TGUpdateEvent.SONG_UPDATED);
 		this.unlock();
 	}
 	

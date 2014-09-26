@@ -22,13 +22,14 @@ import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.action.impl.composition.ChangeInfoAction;
 import org.herac.tuxguitar.app.action.impl.track.GoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TrackPropertiesAction;
-import org.herac.tuxguitar.app.editors.TGRedrawListener;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGRedrawEvent;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.items.menu.TrackMenu;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -38,7 +39,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class TGTableViewer implements TGRedrawListener, TGUpdateListener, LanguageLoader {
+public class TGTableViewer implements TGEventListener {
 	
 	private Composite composite;
 	private ScrollBar hScroll;
@@ -379,22 +380,23 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		trackMenu.showItems();
 		trackMenu.update();
 		
-		final TGUpdateListener trackMenuUpdateListener = new TGUpdateListener() {
-			public void doUpdate(int type) {
-				if(!trackMenu.isDisposed() && type == TGUpdateListener.SELECTION ){
+		final TGEventListener trackMenuUpdateListener = new TGEventListener() {
+			public void processEvent(TGEvent event) {
+				int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+				if(!trackMenu.isDisposed() && type == TGUpdateEvent.SELECTION ){
 					trackMenu.update();
-				}	
+				}
 			}
 		};
-		final LanguageLoader trackMenuLanguageLoader = new LanguageLoader() {
-			public void loadProperties() {
+		final TGEventListener trackMenuLanguageLoader = new TGEventListener() {
+			public void processEvent(TGEvent event) {
 				if(!trackMenu.isDisposed()){
 					trackMenu.loadProperties();
 				}
 			}
 		};
-		final IconLoader trackMenuIconLoader = new IconLoader() {
-			public void loadIcons() {
+		final TGEventListener trackMenuIconLoader = new TGEventListener() {
+			public void processEvent(TGEvent event) {
 				if(!trackMenu.isDisposed()){
 					trackMenu.loadIcons();
 				}
@@ -454,21 +456,35 @@ public class TGTableViewer implements TGRedrawListener, TGUpdateListener, Langua
 		};
 	}
 
-	public void doRedraw(int type) {
-		if( type == TGRedrawListener.NORMAL ){
+	public void processRedrawEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
+		if( type == TGRedrawEvent.NORMAL ){
 			this.redraw();
-		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
+		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
 			this.redrawPlayingMode();
 		}
 	}
 	
-	public void doUpdate(int type) {
-		if( type == TGUpdateListener.SELECTION ){
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItems();
-		}else if( type == TGUpdateListener.SONG_UPDATED ){
+		}else if( type == TGUpdateEvent.SONG_UPDATED ){
 			this.fireUpdate( false );
-		}else if( type == TGUpdateListener.SONG_LOADED ){
+		}else if( type == TGUpdateEvent.SONG_LOADED ){
 			this.fireUpdate( true );
+		}
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processRedrawEvent(event);
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
 		}
 	}
 }

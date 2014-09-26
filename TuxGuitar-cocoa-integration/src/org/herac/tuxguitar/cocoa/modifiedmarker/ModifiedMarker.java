@@ -3,22 +3,16 @@ package org.herac.tuxguitar.cocoa.modifiedmarker;
 import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 
-public class ModifiedMarker implements TGUpdateListener {
+public class ModifiedMarker implements TGEventListener {
 	
 	private boolean enabled;
 	
 	public ModifiedMarker(){
 		super();
-	}
-	
-	/** From 'TGUpdateListener' */
-	public void doUpdate( int type ){
-	    if (!enabled) return;
-	    
-	    final boolean isEdited = TuxGuitar.instance().getFileHistory().isUnsavedFile();
-	    setFrameState( isEdited );
 	}
 	
 	public void init() throws Throwable{
@@ -41,4 +35,10 @@ public class ModifiedMarker implements TGUpdateListener {
         nsWindow.setDocumentEdited(modified);
 	}
 	
+	/** From 'TGEventListener' */
+	public void processEvent(TGEvent event) {
+		if( this.isEnabled() && TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		    this.setFrameState(TuxGuitar.instance().getFileHistory().isUnsavedFile());
+		}
+	}
 }

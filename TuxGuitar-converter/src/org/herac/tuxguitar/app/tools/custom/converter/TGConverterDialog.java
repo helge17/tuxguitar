@@ -20,17 +20,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 
-public class TGConverterDialog implements LanguageLoader,IconLoader{
+public class TGConverterDialog implements TGEventListener{
 	
 	private static final int SHELL_WIDTH = 500;
 	
@@ -249,6 +251,15 @@ public class TGConverterDialog implements LanguageLoader,IconLoader{
 			if(layout){
 				this.dialog.layout(true, true);
 			}
+		}
+	}
+
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
 		}
 	}
 }

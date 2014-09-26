@@ -21,8 +21,8 @@ import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.action.impl.file.FileActionUtils;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnectionHandler;
@@ -33,11 +33,13 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnectionHandler,IconLoader,LanguageLoader{
+public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnectionHandler,TGEventListener{
 	
 	private static final int SHELL_WIDTH = 500;
 	private static final int SHELL_HEIGHT = 350;
@@ -388,6 +390,15 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 			this.updateTable();
 			this.updateCollections(getCollection());
 			this.getShell().layout();
+		}
+	}
+
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
 		}
 	}
 }

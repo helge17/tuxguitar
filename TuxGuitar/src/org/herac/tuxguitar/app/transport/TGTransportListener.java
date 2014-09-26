@@ -1,11 +1,13 @@
 package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.player.base.MidiPlayerListener;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiPlayerEvent;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class TGTransportListener implements MidiPlayerListener{
+public class TGTransportListener implements TGEventListener{
 	
 	protected Object sync;
 	protected TGSynchronizer.TGRunnable startedRunnable;
@@ -46,10 +48,6 @@ public class TGTransportListener implements MidiPlayerListener{
 		}
 	}
 	
-	public void notifyLoop(){
-		// Not implemented
-	}
-	
 	private TGSynchronizer.TGRunnable getStartedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
@@ -68,11 +66,14 @@ public class TGTransportListener implements MidiPlayerListener{
 		};
 	}
 
-	public void notifyCountDownStarted() {
-		// Not implemented
-	}
-	
-	public void notifyCountDownStopped() {
-		// Not implemented
+	public void processEvent(TGEvent event) {
+		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			int type = ((Integer)event.getProperty(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
+			if( type == MidiPlayerEvent.NOTIFY_STARTED ){
+				this.notifyStarted();
+			} else if( type == MidiPlayerEvent.NOTIFY_STOPPED ){
+				this.notifyStopped();
+			}
+		}
 	}
 }

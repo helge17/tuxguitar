@@ -14,6 +14,7 @@ import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 
 public class TGBrowserMenuBar extends TGBrowserBar{
+	
 	private Menu menu;
 	private Menu newCollection;
 	private Menu openCollection;

@@ -28,14 +28,16 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.action.impl.transport.TransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TransportModeAction;
-import org.herac.tuxguitar.app.editors.TGRedrawListener;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.app.editors.TGRedrawEvent;
+import org.herac.tuxguitar.app.editors.TGUpdateEvent;
 import org.herac.tuxguitar.app.helper.SyncThread;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -49,7 +51,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoader,LanguageLoader{
+public class TGTransport implements TGEventListener {
 	private static final int PLAY_MODE_DELAY = 250;
 	
 	public static final int STATUS_STOPPED = 1;
@@ -487,15 +489,32 @@ public class TGTransport implements TGRedrawListener, TGUpdateListener, IconLoad
 		}
 	}
 	
-	public void doRedraw(int type) {
-		if( type == TGRedrawListener.PLAYING_THREAD || type == TGRedrawListener.PLAYING_NEW_BEAT ){
+	public void processRedrawEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
+		if( type == TGRedrawEvent.PLAYING_THREAD || type == TGRedrawEvent.PLAYING_NEW_BEAT ){
 			this.redrawPlayingMode();
 		}
 	}
 	
-	public void doUpdate(int type) {
-		if( type == TGUpdateListener.SELECTION ){
+	public void processUpdateEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItems();
+		}
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processRedrawEvent(event);
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
 		}
 	}
 }

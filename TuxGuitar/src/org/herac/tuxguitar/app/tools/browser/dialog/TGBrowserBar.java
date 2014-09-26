@@ -1,13 +1,16 @@
 package org.herac.tuxguitar.app.tools.browser.dialog;
 
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 
-public abstract class TGBrowserBar implements LanguageLoader{
+public abstract class TGBrowserBar implements TGEventListener{
+	
 	private TGBrowserDialog browser;
 	
 	public TGBrowserBar(TGBrowserDialog browser){
@@ -19,6 +22,8 @@ public abstract class TGBrowserBar implements LanguageLoader{
 	public abstract void updateItems();
 	
 	public abstract void updateCollections(TGBrowserCollection selection);
+	
+	public abstract void loadProperties();
 	
 	protected TGBrowserDialog getBrowser(){
 		return this.browser;
@@ -62,4 +67,9 @@ public abstract class TGBrowserBar implements LanguageLoader{
 		getBrowser().closeCollection();
 	}
 	
+	public void processEvent(TGEvent event) {
+		if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+	}
 }

@@ -5,12 +5,14 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.fretboard.FretBoard;
-import org.herac.tuxguitar.app.system.icons.IconLoader;
-import org.herac.tuxguitar.app.system.language.LanguageLoader;
-import org.herac.tuxguitar.app.tools.scale.ScaleListener;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.tools.scale.ScaleEvent;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGBeat;
 
-public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerListener, IconLoader, LanguageLoader, ScaleListener{
+public class FretBoardEditor implements TGEventListener{
 	
 	private FretBoard fretBoard;
 	private boolean visible;
@@ -92,14 +94,6 @@ public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerLi
 		}
 	}
 	
-	public void doRedraw(int type) {
-		if( type == TGRedrawListener.NORMAL ){
-			this.redraw();
-		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
-			this.redrawPlayingMode();
-		}
-	}
-	
 	public void showExternalBeat(TGBeat beat) {
 		if(getFretBoard() != null && !getFretBoard().isDisposed()){
 			getFretBoard().setExternalBeat(beat);
@@ -109,6 +103,42 @@ public class FretBoardEditor implements TGRedrawListener, TGExternalBeatViewerLi
 	public void hideExternalBeat() {
 		if(getFretBoard() != null && !getFretBoard().isDisposed()){
 			getFretBoard().setExternalBeat(null);
+		}
+	}
+	
+	public void processRedrawEvent(TGEvent event) {
+		int type = ((Integer)event.getProperty(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
+		if( type == TGRedrawEvent.NORMAL ){
+			this.redraw();
+		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
+		}
+	}
+	
+	public void processExternalBeatEvent(TGEvent event) {
+		if( TGExternalBeatViewerEvent.ACTION_SHOW.equals(event.getProperty(TGExternalBeatViewerEvent.PROPERTY_ACTION)) ) {
+			this.showExternalBeat((TGBeat) event.getProperty(TGExternalBeatViewerEvent.PROPERTY_BEAT));
+		}
+		else if( TGExternalBeatViewerEvent.ACTION_HIDE.equals(event.getProperty(TGExternalBeatViewerEvent.PROPERTY_ACTION)) ) {
+			this.hideExternalBeat();
+		}
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIcons();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadProperties();
+		}
+		else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processRedrawEvent(event);
+		}
+		else if( TGExternalBeatViewerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processExternalBeatEvent(event);
+		}
+		else if( ScaleEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadScale();
 		}
 	}
 }
