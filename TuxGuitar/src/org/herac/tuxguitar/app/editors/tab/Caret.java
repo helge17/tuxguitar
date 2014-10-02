@@ -145,10 +145,12 @@ public class Caret {
 					boolean expectedVoice = (getSelectedNote() == null || getSelectedNote().getVoice().getIndex() == getVoice());
 					int stringSpacing = this.tablature.getViewLayout().getStringSpacing();
 					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
-					int x = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - 5;
-					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
-					int width = 14;
-					int height = 14;
+					float width = ((stringSpacing - (3.0f * layout.getScale())) * 2);
+					float height = ((stringSpacing - (3.0f * layout.getScale())) * 2);
+					float xMargin = ((width / 2.0f) - (2.0f * layout.getScale()));
+					float yMargin = (height / 2.0f);
+					float x = (this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - xMargin);
+					float y = (this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - yMargin);
 					this.setPaintStyle(painter, expectedVoice);
 					
 					painter.initPath();
