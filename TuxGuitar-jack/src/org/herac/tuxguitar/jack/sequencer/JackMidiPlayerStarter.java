@@ -28,7 +28,7 @@ public class JackMidiPlayerStarter implements TGEventListener {
 	}
 	
 	public void start(){
-		TuxGuitar.instance().getTransport().play();
+		TuxGuitar.getInstance().getTransport().play();
 	}
 	
 	public void processCountDownStarted() {

@@ -69,11 +69,11 @@ public class LayoutToolItems extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.pageLayout.setImage(TuxGuitar.instance().getIconManager().getLayoutPage());
-		this.linearLayout.setImage(TuxGuitar.instance().getIconManager().getLayoutLinear());
-		this.multitrack.setImage(TuxGuitar.instance().getIconManager().getLayoutMultitrack());
-		this.scoreEnabled.setImage(TuxGuitar.instance().getIconManager().getLayoutScore());
-		this.compact.setImage(TuxGuitar.instance().getIconManager().getLayoutCompact());
+		this.pageLayout.setImage(TuxGuitar.getInstance().getIconManager().getLayoutPage());
+		this.linearLayout.setImage(TuxGuitar.getInstance().getIconManager().getLayoutLinear());
+		this.multitrack.setImage(TuxGuitar.getInstance().getIconManager().getLayoutMultitrack());
+		this.scoreEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutScore());
+		this.compact.setImage(TuxGuitar.getInstance().getIconManager().getLayoutCompact());
 	}
 	
 	public void update(){

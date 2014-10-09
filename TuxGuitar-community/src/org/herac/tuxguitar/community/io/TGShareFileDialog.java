@@ -36,7 +36,7 @@ public class TGShareFileDialog {
 			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
 					if( !TuxGuitar.isDisposed() ){
-						open( TuxGuitar.instance().getShell() );
+						open( TuxGuitar.getInstance().getShell() );
 					}
 				}
 			});
@@ -52,7 +52,7 @@ public class TGShareFileDialog {
 		
 		dialog.setLayout(new GridLayout());
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.title"));
 		
 		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);

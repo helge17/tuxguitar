@@ -32,8 +32,8 @@ public class UndoableChangeClef implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.instance().getSongManager().getTrackManager().changeClef(this.track,this.position,this.redoableClef,this.toEnd);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getSongManager().getTrackManager().changeClef(this.track,this.position,this.redoableClef,this.toEnd);
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
@@ -43,15 +43,15 @@ public class UndoableChangeClef implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.instance().getSongManager().getTrackManager().changeClef(this.track,this.position,this.undoableClef,this.toEnd);
+		TuxGuitar.getInstance().getSongManager().getTrackManager().changeClef(this.track,this.position,this.undoableClef,this.toEnd);
 		if(this.toEnd){
 			Iterator it = this.nextClefPositions.iterator();
 			while(it.hasNext()){
 				ClefPosition ksp = (ClefPosition)it.next();
-				TuxGuitar.instance().getSongManager().getTrackManager().changeClef(this.track,ksp.getPosition(),ksp.getClef(),true);
+				TuxGuitar.getInstance().getSongManager().getTrackManager().changeClef(this.track,ksp.getPosition(),ksp.getClef(),true);
 			}
 		}
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
@@ -100,7 +100,7 @@ public class UndoableChangeClef implements UndoableEdit{
 	}
 	
 	private static Caret getCaret(){
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
 	private class ClefPosition{

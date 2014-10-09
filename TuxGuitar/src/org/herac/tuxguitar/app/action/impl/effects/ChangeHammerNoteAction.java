@@ -32,14 +32,14 @@ public class ChangeHammerNoteAction extends TGActionBase{
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		getSongManager().getMeasureManager().changeHammerNote(caret.getMeasure(),caret.getPosition(),caret.getSelectedString().getNumber());
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		updateTablature();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

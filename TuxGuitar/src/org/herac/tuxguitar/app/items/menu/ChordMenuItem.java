@@ -49,9 +49,9 @@ public class ChordMenuItem extends MenuItems{
 	
 	public void addItems() {
 		this.disposeItems();
-		this.subMenuItems = new MenuItem[TuxGuitar.instance().getCustomChordManager().countChords()];
+		this.subMenuItems = new MenuItem[TuxGuitar.getInstance().getCustomChordManager().countChords()];
 		for(int i = 0;i < this.subMenuItems.length; i++){
-			TGChord chord = TuxGuitar.instance().getCustomChordManager().getChord(i);
+			TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
 			Map actionData = new HashMap();
 			actionData.put(InsertChordAction.PROPERTY_CHORD, chord);
 			
@@ -80,17 +80,17 @@ public class ChordMenuItem extends MenuItems{
 		}else{
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TuxGuitar.instance().getActionManager().execute(InsertChordAction.NAME);
+					TuxGuitar.getInstance().getActionManager().execute(InsertChordAction.NAME);
 				}
 			});
 		}
 	}
 	
 	public void update(){
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
-		if(this.lastEdit != TuxGuitar.instance().getCustomChordManager().getLastEdit()){
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		if(this.lastEdit != TuxGuitar.getInstance().getCustomChordManager().getLastEdit()){
 			this.addItems();
-			this.lastEdit = TuxGuitar.instance().getCustomChordManager().getLastEdit();
+			this.lastEdit = TuxGuitar.getInstance().getCustomChordManager().getLastEdit();
 		}
 		this.insertChord.setEnabled(!running);
 		for(int i = 0;i < this.subMenuItems.length; i++){

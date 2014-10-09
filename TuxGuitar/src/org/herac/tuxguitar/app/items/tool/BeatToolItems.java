@@ -60,8 +60,8 @@ public class BeatToolItems  extends ToolItems{
 	}
 	
 	public void update(){
-		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
 		this.tiedNote.setSelection(note != null && note.isTiedNote());
 		this.chordItems.setEnabled(!running);
@@ -74,8 +74,8 @@ public class BeatToolItems  extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.tiedNote.setImage(TuxGuitar.instance().getIconManager().getNoteTied());
-		this.chordItems.setImage(TuxGuitar.instance().getIconManager().getChord());
+		this.tiedNote.setImage(TuxGuitar.getInstance().getIconManager().getNoteTied());
+		this.chordItems.setImage(TuxGuitar.getInstance().getIconManager().getChord());
 	}
 	
 	private class ChordMenuItem extends SelectionAdapter {
@@ -104,9 +104,9 @@ public class BeatToolItems  extends ToolItems{
 		
 		public void addItems() {
 			this.disposeItems();
-			this.subMenuItems = new MenuItem[TuxGuitar.instance().getCustomChordManager().countChords()];
+			this.subMenuItems = new MenuItem[TuxGuitar.getInstance().getCustomChordManager().countChords()];
 			for(int i = 0;i < this.subMenuItems.length; i++){
-				TGChord chord = TuxGuitar.instance().getCustomChordManager().getChord(i);
+				TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
 				Map actionData = new HashMap();
 				actionData.put(InsertChordAction.PROPERTY_CHORD, chord);
 				
@@ -135,16 +135,16 @@ public class BeatToolItems  extends ToolItems{
 			}else{
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TuxGuitar.instance().getActionManager().execute(InsertChordAction.NAME);
+						TuxGuitar.getInstance().getActionManager().execute(InsertChordAction.NAME);
 					}
 				});
 			}
 		}
 		
 		public void update(){
-			if(this.lastEdit != TuxGuitar.instance().getCustomChordManager().getLastEdit()){
+			if(this.lastEdit != TuxGuitar.getInstance().getCustomChordManager().getLastEdit()){
 				this.addItems();
-				this.lastEdit = TuxGuitar.instance().getCustomChordManager().getLastEdit();
+				this.lastEdit = TuxGuitar.getInstance().getCustomChordManager().getLastEdit();
 			}
 		}
 	}

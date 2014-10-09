@@ -25,10 +25,10 @@ public class ShowTransportAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getTransport().isDisposed()){
-			TuxGuitar.instance().getTransport().show();
+		if(TuxGuitar.getInstance().getTransport().isDisposed()){
+			TuxGuitar.getInstance().getTransport().show();
 		}else{
-			TuxGuitar.instance().getTransport().dispose();
+			TuxGuitar.getInstance().getTransport().dispose();
 		}
 	}
 }

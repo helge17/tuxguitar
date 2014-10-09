@@ -55,8 +55,8 @@ public class PianoConfig {
 	}
 	
 	public void load(){
-		Display display = TuxGuitar.instance().getDisplay();
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		Display display = TuxGuitar.getInstance().getDisplay();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		this.colorNatural = new Color(display,config.getRGBConfigValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL));
 		this.colorNotNatural = new Color(display,config.getRGBConfigValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
 		this.colorNote = new Color(display,config.getRGBConfigValue(TGConfigKeys.PIANO_COLOR_NOTE));
@@ -64,7 +64,7 @@ public class PianoConfig {
 	}
 	
 	public void defaults(){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		TGProperties defaults = TGConfigDefaults.createDefaults();
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL, defaults.getValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL));
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL, defaults.getValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
@@ -73,7 +73,7 @@ public class PianoConfig {
 	}
 	
 	public void save(RGB rgbNatural,RGB rgbNotNatural,RGB rgbNote,RGB rgbScale){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL,rgbNatural);
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL,rgbNotNatural);
 		config.setValue(TGConfigKeys.PIANO_COLOR_NOTE,rgbNote);

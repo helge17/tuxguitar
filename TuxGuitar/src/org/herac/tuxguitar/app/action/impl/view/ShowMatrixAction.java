@@ -25,10 +25,10 @@ public class ShowMatrixAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getMatrixEditor().isDisposed()){
-			TuxGuitar.instance().getMatrixEditor().show();
+		if(TuxGuitar.getInstance().getMatrixEditor().isDisposed()){
+			TuxGuitar.getInstance().getMatrixEditor().show();
 		}else{
-			TuxGuitar.instance().getMatrixEditor().dispose();
+			TuxGuitar.getInstance().getMatrixEditor().dispose();
 		}
 	}
 }

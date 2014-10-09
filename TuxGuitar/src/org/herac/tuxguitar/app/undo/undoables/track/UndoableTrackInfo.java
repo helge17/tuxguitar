@@ -29,9 +29,9 @@ public class UndoableTrackInfo implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		manager.getTrackManager().changeInfo(manager.getTrack(this.trackNumber),this.redoName,this.redoColor.clone(manager.getFactory()),this.redoOffset);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -40,9 +40,9 @@ public class UndoableTrackInfo implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		manager.getTrackManager().changeInfo(manager.getTrack(this.trackNumber),this.undoName,this.undoColor.clone(manager.getFactory()),this.undoOffset);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
@@ -62,7 +62,7 @@ public class UndoableTrackInfo implements UndoableEdit{
 		undoable.trackNumber = track.getNumber();
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.undoName = track.getName();
-		undoable.undoColor = track.getColor().clone(TuxGuitar.instance().getSongManager().getFactory());
+		undoable.undoColor = track.getColor().clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		undoable.undoOffset = track.getOffset();
 		
 		return undoable;
@@ -71,7 +71,7 @@ public class UndoableTrackInfo implements UndoableEdit{
 	public UndoableTrackInfo endUndo(TGTrack track){
 		this.redoCaret = new UndoableCaretHelper();
 		this.redoName = track.getName();
-		this.redoColor = track.getColor().clone(TuxGuitar.instance().getSongManager().getFactory());
+		this.redoColor = track.getColor().clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		this.redoOffset = track.getOffset();
 		
 		return this;

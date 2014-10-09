@@ -32,12 +32,12 @@ public class SaveFileAction extends TGActionBase{
 			TGActionLock.unlock();
 			return;
 		}
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.save(fileName);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 				}
 			}

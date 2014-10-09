@@ -74,11 +74,11 @@ public class FileToolItems extends ToolItems {
 	}
 	
 	public void loadIcons(){
-		this.newSong.setImage(TuxGuitar.instance().getIconManager().getFileNew());
-		this.openSong.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
-		this.saveSong.setImage(TuxGuitar.instance().getIconManager().getFileSave());
-		this.saveAsSong.setImage(TuxGuitar.instance().getIconManager().getFileSaveAs());
-		this.printSong.setImage(TuxGuitar.instance().getIconManager().getFilePrint());
-		this.printPreviewSong.setImage(TuxGuitar.instance().getIconManager().getFilePrintPreview());
+		this.newSong.setImage(TuxGuitar.getInstance().getIconManager().getFileNew());
+		this.openSong.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+		this.saveSong.setImage(TuxGuitar.getInstance().getIconManager().getFileSave());
+		this.saveAsSong.setImage(TuxGuitar.getInstance().getIconManager().getFileSaveAs());
+		this.printSong.setImage(TuxGuitar.getInstance().getIconManager().getFilePrint());
+		this.printPreviewSong.setImage(TuxGuitar.getInstance().getIconManager().getFilePrintPreview());
 	}
 }

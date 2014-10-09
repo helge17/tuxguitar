@@ -138,11 +138,11 @@ public class TrackMenu extends MenuItems{
 	
 	public void update(){
 		if(!isDisposed()){
-			TGTrackImpl track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+			TGTrackImpl track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 			int tracks = track.getSong().countTracks();
 			boolean isFirst = (track.getNumber() == 1);
 			boolean isLast = (track.getNumber() == tracks);
-			boolean running = TuxGuitar.instance().getPlayer().isRunning();
+			boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 			this.addTrack.setEnabled(!running);
 			this.cloneTrack.setEnabled(!running);
 			this.removeTrack.setEnabled(!running);

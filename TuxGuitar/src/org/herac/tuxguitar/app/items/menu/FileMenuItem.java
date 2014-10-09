@@ -163,11 +163,11 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	private void addNewSongTemplates(){		
-		if( TuxGuitar.instance().getTemplateManager().countTemplates() > 0 ){
+		if( TuxGuitar.getInstance().getTemplateManager().countTemplates() > 0 ){
 			//--SEPARATOR--
 			new MenuItem(this.newSongMenu, SWT.SEPARATOR);
 			
-			Iterator it = TuxGuitar.instance().getTemplateManager().getTemplates();
+			Iterator it = TuxGuitar.getInstance().getTemplateManager().getTemplates();
 			while( it.hasNext() ){
 				TGTemplate tgTemplate = (TGTemplate)it.next();
 				
@@ -269,7 +269,7 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	private void updateHistoryFiles(){
-		List urls = TuxGuitar.instance().getFileHistory().getURLs();
+		List urls = TuxGuitar.getInstance().getFileHistory().getURLs();
 		this.historyFiles = new MenuItem[urls.size()];
 		for(int i = 0;i < this.historyFiles.length; i++){
 			URL url = (URL)urls.get(i);
@@ -293,10 +293,10 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	public void update(){
-		if(TuxGuitar.instance().getFileHistory().isChanged()){
+		if(TuxGuitar.getInstance().getFileHistory().isChanged()){
 			disposeHistoryFiles();
 			updateHistoryFiles();
-			TuxGuitar.instance().getFileHistory().setChanged(false);
+			TuxGuitar.getInstance().getFileHistory().setChanged(false);
 		}
 	}
 	
@@ -346,11 +346,11 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	public void loadIcons(){
-		this.newSong.setImage(TuxGuitar.instance().getIconManager().getFileNew());
-		this.open.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
-		this.save.setImage(TuxGuitar.instance().getIconManager().getFileSave());
-		this.saveAs.setImage(TuxGuitar.instance().getIconManager().getFileSaveAs());
-		this.printPreview.setImage(TuxGuitar.instance().getIconManager().getFilePrintPreview());
-		this.print.setImage(TuxGuitar.instance().getIconManager().getFilePrint());
+		this.newSong.setImage(TuxGuitar.getInstance().getIconManager().getFileNew());
+		this.open.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+		this.save.setImage(TuxGuitar.getInstance().getIconManager().getFileSave());
+		this.saveAs.setImage(TuxGuitar.getInstance().getIconManager().getFileSaveAs());
+		this.printPreview.setImage(TuxGuitar.getInstance().getIconManager().getFilePrintPreview());
+		this.print.setImage(TuxGuitar.getInstance().getIconManager().getFilePrint());
 	}
 }

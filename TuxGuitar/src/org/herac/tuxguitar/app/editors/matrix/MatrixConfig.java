@@ -74,8 +74,8 @@ public class MatrixConfig {
 	}
 	
 	public void load(){
-		Display display = TuxGuitar.instance().getDisplay();
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		Display display = TuxGuitar.getInstance().getDisplay();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		this.font = new Font(display,config.getFontDataConfigValue(TGConfigKeys.MATRIX_FONT));
 		this.colorForeground = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
 		this.colorBorder = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_BORDER));
@@ -90,7 +90,7 @@ public class MatrixConfig {
 	}
 	
 	public void defaults(){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		TGProperties defaults = TGConfigDefaults.createDefaults();
 		config.setValue(TGConfigKeys.MATRIX_FONT,defaults.getValue(TGConfigKeys.MATRIX_FONT));
 		config.setValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND,defaults.getValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
@@ -110,7 +110,7 @@ public class MatrixConfig {
 					 RGB rgbNote,
 					 RGB rgbPlay,
 					 RGB rgbLines[]){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		config.setValue(TGConfigKeys.MATRIX_FONT,fontData);
 		config.setValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND,rgbForeground);

@@ -101,10 +101,10 @@ public class ChangeClefAction extends TGActionBase{
 						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 							public void run() throws TGException {
 								TGActionLock.lock();
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 								setClef(clef,toEndValue);
-								TuxGuitar.instance().updateCache( true );
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().updateCache( true );
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						});
@@ -150,10 +150,10 @@ public class ChangeClefAction extends TGActionBase{
 		TGTrack track = getEditor().getTablature().getCaret().getTrack();
 		getSongManager().getTrackManager().changeClef(track,measure.getStart(),clef,toEnd);
 		
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		//actualizo la tablatura
-		updateTablature();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo(clef,toEnd));

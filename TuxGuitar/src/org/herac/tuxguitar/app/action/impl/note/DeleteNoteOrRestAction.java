@@ -31,7 +31,7 @@ public class DeleteNoteOrRestAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		//comienza el undoable
 		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		TGBeat beat = caret.getSelectedBeat();
@@ -47,10 +47,10 @@ public class DeleteNoteOrRestAction extends TGActionBase{
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());
-		updateTablature();
+		updateSong();
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

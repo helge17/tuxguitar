@@ -54,7 +54,7 @@ public class InsertChordAction extends TGActionBase {
 			}
 			//sino muestro el editor de acordes
 			else{
-				Shell shell = TuxGuitar.instance().getShell();
+				Shell shell = TuxGuitar.getInstance().getShell();
 				ChordDialog dialog = new ChordDialog();
 				
 				int result = dialog.open(shell, measure,beat, caret.getPosition());
@@ -100,8 +100,8 @@ public class InsertChordAction extends TGActionBase {
 			}
 			
 			getSongManager().getMeasureManager().addChord(beat, chord);
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			fireUpdate(measure.getNumber());
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+			updateMeasure(measure.getNumber());
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
@@ -114,8 +114,8 @@ public class InsertChordAction extends TGActionBase {
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 			
 			getSongManager().getMeasureManager().removeChord(measure, beat.getStart());
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			fireUpdate(measure.getNumber());
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+			updateMeasure(measure.getNumber());
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());

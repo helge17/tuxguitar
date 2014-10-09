@@ -90,9 +90,9 @@ public class ItemManager implements TGEventListener {
 		this.layout_locked = false;
 		this.setDefaultToolBars();
 		this.loadItems();
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 		TGFileFormatManager.instance().addFileFormatAvailabilityListener(this);
 	}
 	
@@ -117,7 +117,7 @@ public class ItemManager implements TGEventListener {
 			coolData.right = new FormAttachment(100);
 			coolData.top = new FormAttachment(0,0);
 			
-			this.coolBar = new CoolBar(TuxGuitar.instance().getShell(),SWT.HORIZONTAL | SWT.FLAT);
+			this.coolBar = new CoolBar(TuxGuitar.getInstance().getShell(),SWT.HORIZONTAL | SWT.FLAT);
 			this.coolBar.setLayoutData(coolData);
 			this.coolBar.setVisible( this.coolbarVisible );
 			this.coolBar.addListener(SWT.Resize, new Listener() {
@@ -131,7 +131,7 @@ public class ItemManager implements TGEventListener {
 				}
 			});
 			
-			TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.coolBar);
+			TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.coolBar);
 		}
 		
 		if( this.coolbarVisible ) {
@@ -218,7 +218,7 @@ public class ItemManager implements TGEventListener {
 	protected void layoutShell(){
 		if(!this.layout_locked){
 			this.layout_locked = true;
-			TuxGuitar.instance().getShell().layout(true,true);
+			TuxGuitar.getInstance().getShell().layout(true,true);
 			this.layout_locked = false;
 		}
 	}
@@ -262,7 +262,7 @@ public class ItemManager implements TGEventListener {
 	}
 	
 	public void createMenu() {
-		Shell shell = TuxGuitar.instance().getShell();
+		Shell shell = TuxGuitar.getInstance().getShell();
 		if(this.menu == null || this.menu.isDisposed()){
 			this.menu = new Menu(shell, SWT.BAR);
 		}
@@ -288,7 +288,7 @@ public class ItemManager implements TGEventListener {
 	}
 	
 	public void createPopupMenu() {
-		Shell shell = TuxGuitar.instance().getShell();
+		Shell shell = TuxGuitar.getInstance().getShell();
 		if(this.popupMenu == null || this.popupMenu.isDisposed()){
 			this.popupMenu = new Menu(shell, SWT.POP_UP);
 		}

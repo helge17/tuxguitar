@@ -31,7 +31,7 @@ public class MacToolbarPlugin implements TGPlugin {
 			}else if(enabled){
 				this.macToolbar = new MacToolbar();
 				this.macToolbar.setEnabled(true);
-				this.macToolbar.init( TuxGuitar.instance().getShell() );
+				this.macToolbar.init( TuxGuitar.getInstance().getShell() );
 			}
 		} catch( Throwable throwable ){
 			throw new TGPluginException( throwable );

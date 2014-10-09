@@ -39,16 +39,16 @@ public class MeasureTransferable implements Transferable {
 	
 	private void getTransfer(int p1, int p2,boolean allTracks) {
 		if(allTracks){
-			this.segment = new TGSongSegmentHelper(TuxGuitar.instance().getSongManager()).copyMeasures(p1,p2);
+			this.segment = new TGSongSegmentHelper(TuxGuitar.getInstance().getSongManager()).copyMeasures(p1,p2);
 		}else{
 			TGTrack track = this.tablatureEditor.getTablature().getCaret().getTrack();
-			this.segment = new TGSongSegmentHelper(TuxGuitar.instance().getSongManager()).copyMeasures(p1,p2,track);
+			this.segment = new TGSongSegmentHelper(TuxGuitar.getInstance().getSongManager()).copyMeasures(p1,p2,track);
 		}
 		skipMarkers(this.segment);
 	}
 	
 	public void insertTransfer() throws CannotInsertTransferException {
-		TGSongSegmentHelper helper = new TGSongSegmentHelper(TuxGuitar.instance().getSongManager());
+		TGSongSegmentHelper helper = new TGSongSegmentHelper(TuxGuitar.getInstance().getSongManager());
 		TGSongSegment segment = helper.createSegmentCopies(this.segment, this.pasteCount );
 		if(this.transferType == TRANSFER_TYPE_REPLACE){
 			replaceMeasures(helper, segment);
@@ -69,16 +69,16 @@ public class MeasureTransferable implements Transferable {
 		
 		//comienza el undoable
 		UndoableInsertMeasure undoable = new UndoableInsertMeasure(toTrack);
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		TGMeasureHeader first = (TGMeasureHeader)segment.getHeaders().get(0);
 		int fromNumber = measure.getNumber();
 		long theMove = (measure.getStart() - first.getStart());
 		
-		helper.insertMeasures(segment.clone(TuxGuitar.instance().getSongManager().getFactory()),fromNumber,theMove,toTrack);
+		helper.insertMeasures(segment.clone(TuxGuitar.getInstance().getSongManager().getFactory()),fromNumber,theMove,toTrack);
 		
 		//termia el undoable
-		TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(segment.clone(TuxGuitar.instance().getSongManager().getFactory()),segment.getHeaders().size(),fromNumber,theMove));
+		TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(segment.clone(TuxGuitar.getInstance().getSongManager().getFactory()),segment.getHeaders().size(),fromNumber,theMove));
 	}
 	
 	public void replaceMeasures(TGSongSegmentHelper helper, TGSongSegment segment) throws CannotInsertTransferException {
@@ -101,15 +101,15 @@ public class MeasureTransferable implements Transferable {
 		
 		//comienza el undoable
 		UndoableReplaceMeasures undoable = new UndoableReplaceMeasures(current, (current + count) , toTrack);
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		for(int i = freeSpace;i < count;i ++){
-			TuxGuitar.instance().getSongManager().addNewMeasureBeforeEnd();
+			TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd();
 		}
-		helper.replaceMeasures(segment.clone(TuxGuitar.instance().getSongManager().getFactory()),theMove,toTrack);
+		helper.replaceMeasures(segment.clone(TuxGuitar.getInstance().getSongManager().getFactory()),theMove,toTrack);
 		
 		//Termina el undoable
-		TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(segment.clone(TuxGuitar.instance().getSongManager().getFactory()),count,freeSpace,theMove));
+		TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(segment.clone(TuxGuitar.getInstance().getSongManager().getFactory()),count,freeSpace,theMove));
 	}
 	
 	public void setTransferType(int transferType){

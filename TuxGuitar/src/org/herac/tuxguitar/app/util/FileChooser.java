@@ -51,9 +51,9 @@ public class FileChooser {
 	}
 	
 	public String open(Shell parent,List formats) {
-		String currentPath = TuxGuitar.instance().getFileHistory().getCurrentFilePath();
-		String chooserPath = TuxGuitar.instance().getFileHistory().getOpenPath();
-		boolean localFile = TuxGuitar.instance().getFileHistory().isLocalFile();
+		String currentPath = TuxGuitar.getInstance().getFileHistory().getCurrentFilePath();
+		String chooserPath = TuxGuitar.getInstance().getFileHistory().getOpenPath();
+		boolean localFile = TuxGuitar.getInstance().getFileHistory().isLocalFile();
 		boolean existentFile = (localFile && currentPath != null && chooserPath != null && currentPath.equals(chooserPath));
 		
 		FilterList filter = new FilterList(formats);
@@ -70,7 +70,7 @@ public class FileChooser {
 	}
 	
 	public String save(Shell parent,List formats) {
-		String chooserPath = TuxGuitar.instance().getFileHistory().getSavePath();
+		String chooserPath = TuxGuitar.getInstance().getFileHistory().getSavePath();
 		
 		FilterList filter = new FilterList(formats);
 		FileDialog dialog = new FileDialog(parent,SWT.SAVE);
@@ -87,7 +87,7 @@ public class FileChooser {
 			File file = new File(path);
 			File parent = file.getParentFile();
 			if( parent != null && parent.exists() && parent.isDirectory() ){
-				TuxGuitar.instance().getFileHistory().setChooserPath( parent.getAbsolutePath() );
+				TuxGuitar.getInstance().getFileHistory().setChooserPath( parent.getAbsolutePath() );
 			}
 		}
 		return path;
@@ -97,7 +97,7 @@ public class FileChooser {
 		if(formats == null || formats.isEmpty()){
 			return defaultName;
 		}
-		String file = TuxGuitar.instance().getFileHistory().getCurrentFileName(defaultName);
+		String file = TuxGuitar.getInstance().getFileHistory().getCurrentFileName(defaultName);
 		if(file != null && file.length() > 0){
 			int index = file.lastIndexOf('.');
 			if(index > 0){

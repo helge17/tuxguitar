@@ -66,7 +66,7 @@ public class TransportModeAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		TypedEvent e = (TypedEvent)context.getAttribute(TGActionProcessor.PROPERTY_TYPED_EVENT);
 		
-		this.showDialog(e.widget.getDisplay().getActiveShell(), TuxGuitar.instance().getPlayer().getMode());
+		this.showDialog(e.widget.getDisplay().getActiveShell(), TuxGuitar.getInstance().getPlayer().getMode());
 	}
 	
 	public void showDialog(final Shell parent,final MidiPlayerMode mode) {
@@ -424,7 +424,7 @@ public class TransportModeAction extends TGActionBase {
 		}
 		
 		public void updateLoopSHeader( int sHeader ){
-			TGSong song = TuxGuitar.instance().getSongManager().getSong();
+			TGSong song = TuxGuitar.getInstance().getSongManager().getSong();
 			this.loopSHeader.clear();
 			this.loopSHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.from-default"), -1 );
 			for(int i = 0; i < song.countMeasureHeaders() ; i ++){
@@ -435,7 +435,7 @@ public class TransportModeAction extends TGActionBase {
 		}
 		
 		public void updateLoopEHeader( int sHeader , int eHeader ){
-			TGSong song = TuxGuitar.instance().getSongManager().getSong();
+			TGSong song = TuxGuitar.getInstance().getSongManager().getSong();
 			this.loopEHeader.clear();
 			this.loopEHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.to-default"), -1 );
 			for(int i = 0; i < song.countMeasureHeaders() ; i ++){

@@ -52,7 +52,7 @@ public class ChangeNoteAction extends TGActionBase {
 		
 		if( track != null && measure != null && fret >= 0) {
 			this.addNote(measure, tgDuration, start, fret, string, velocity);
-			this.fireUpdate(measure.getNumber());
+			this.updateMeasure(measure.getNumber());
 		}
 	}
 	
@@ -64,7 +64,7 @@ public class ChangeNoteAction extends TGActionBase {
 		
 		//comienza el undoable
 		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		getSongManager().getMeasureManager().addNote(measure,start,note,duration.clone(getSongManager().getFactory()), getEditor().getTablature().getCaret().getVoice());
 		
@@ -72,7 +72,7 @@ public class ChangeNoteAction extends TGActionBase {
 		addUndoableEdit(undoable.endUndo());
 		
 		//reprodusco las notas en el pulso
-		TuxGuitar.instance().playBeat(getEditor().getTablature().getCaret().getSelectedBeat());
+		TuxGuitar.getInstance().playBeat(getEditor().getTablature().getCaret().getSelectedBeat());
 	}
 	
 	private long getPropertyStart(TGActionContext context){

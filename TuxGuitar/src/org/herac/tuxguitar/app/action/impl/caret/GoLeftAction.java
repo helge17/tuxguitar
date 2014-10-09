@@ -25,8 +25,8 @@ public class GoLeftAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			TuxGuitar.instance().getTransport().gotoPrevious();
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			TuxGuitar.getInstance().getTransport().gotoPrevious();
 		}
 		else{
 			getEditor().getTablature().getCaret().moveLeft();

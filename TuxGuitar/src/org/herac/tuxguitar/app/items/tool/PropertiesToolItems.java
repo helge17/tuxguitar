@@ -42,7 +42,7 @@ public class PropertiesToolItems extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.info.setImage(TuxGuitar.instance().getIconManager().getSongProperties());
+		this.info.setImage(TuxGuitar.getInstance().getIconManager().getSongProperties());
 	}
 	
 	public void update(){

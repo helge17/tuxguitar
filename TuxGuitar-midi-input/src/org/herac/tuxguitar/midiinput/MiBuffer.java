@@ -256,7 +256,7 @@ class MiBuffer
 
 	public TGChord	toChord(int inStringsCount)
 	{
-	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	TGChord			tgChord		= tgSongMgr.getFactory().newChord(inStringsCount);
 	Iterator		it			= f_Notes.iterator();
 
@@ -273,7 +273,7 @@ class MiBuffer
 
 	public TGBeat	toBeat()
 	{
-	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	TGBeat			tgBeat		= tgSongMgr.getFactory().newBeat();
 	Iterator		it			= f_Notes.iterator();
 

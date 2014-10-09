@@ -20,7 +20,7 @@ public class AboutContentReader {
 	}
 	
 	public StringBuffer read(String doc){
-		String lang = TuxGuitar.instance().getLanguageManager().getLanguage();
+		String lang = TuxGuitar.getInstance().getLanguageManager().getLanguage();
 		InputStream is = TGClassLoader.instance().getClassLoader().getResourceAsStream(PREFIX + doc + "_" + lang + EXTENSION);
 		if(is == null){
 			is = TGClassLoader.instance().getClassLoader().getResourceAsStream(PREFIX + doc + EXTENSION);

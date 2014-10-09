@@ -69,7 +69,7 @@ public class MatrixEditor implements TGEventListener {
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_MATRIX);
-	private static final MidiPercussion[] PERCUSSIONS = TuxGuitar.instance().getPlayer().getPercussions();
+	private static final MidiPercussion[] PERCUSSIONS = TuxGuitar.getInstance().getPlayer().getPercussions();
 	protected static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
 	private MatrixConfig config;
@@ -109,9 +109,9 @@ public class MatrixEditor implements TGEventListener {
 		this.config = new MatrixConfig();
 		this.config.load();
 		
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setText(TuxGuitar.getProperty("matrix.editor"));
-		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.addDisposeListener(new DisposeListenerImpl());
 		this.bufferDisposer = new BufferDisposer();
@@ -128,24 +128,24 @@ public class MatrixEditor implements TGEventListener {
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				removeListeners();
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER);
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.toolbar);
-		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.editor);
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener( this );
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.toolbar);
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.editor);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addRedrawListener( this );
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getIconManager().removeLoader(this);
-		TuxGuitar.instance().getLanguageManager().removeLoader(this);
-		TuxGuitar.instance().getEditorManager().removeRedrawListener( this );
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
+		TuxGuitar.getInstance().getEditorManager().removeRedrawListener( this );
 	}
 	
 	private void initToolBar() {
@@ -215,7 +215,7 @@ public class MatrixEditor implements TGEventListener {
 		// settings
 		layout.numColumns ++;
 		this.settings = new Button(this.toolbar, SWT.PUSH);
-		this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.settings.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
 		this.settings.addSelectionListener(new SelectionAdapter() {
@@ -234,10 +234,10 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	private void loadDurationImage(boolean force) {
-		int duration = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getDuration().getValue();
+		int duration = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration().getValue();
 		if(force || this.duration != duration){
 			this.duration = duration;
-			this.durationLabel.setImage(TuxGuitar.instance().getIconManager().getDuration(this.duration));
+			this.durationLabel.setImage(TuxGuitar.getInstance().getIconManager().getDuration(this.duration));
 		}
 	}
 	
@@ -294,7 +294,7 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected void paintEditor(TGPainter painter){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			this.resetPlayed();
 		}
 		
@@ -326,7 +326,7 @@ public class MatrixEditor implements TGEventListener {
 				TGMeasure measure = getMeasure();
 				this.maxNote = 0;
 				this.minNote = 127;
-				if( TuxGuitar.instance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId()) ){
+				if( TuxGuitar.getInstance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId()) ){
 					names = new String[PERCUSSIONS.length];
 					for(int i = 0; i < names.length;i ++){
 						this.minNote = Math.min(this.minNote,PERCUSSIONS[i].getValue());
@@ -439,7 +439,7 @@ public class MatrixEditor implements TGEventListener {
 					y2 = ( y2 > maximumY ? maximumY : y2 );
 					
 					if((x2 - x1) > 0 && (y2 - y1) > 0){
-						painter.setBackground(new TGColorImpl( (note.getBeatImpl().isPlaying(TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) ));
+						painter.setBackground(new TGColorImpl( (note.getBeatImpl().isPlaying(TuxGuitar.getInstance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) ));
 						painter.initPath(TGPainter.PATH_FILL);
 						painter.setAntialias(false);
 						painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
@@ -467,7 +467,7 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected void paintPosition(TGPainter painter,float fromX, float fromY){
-		if( this.clientArea != null && !TuxGuitar.instance().getPlayer().isRunning()){
+		if( this.clientArea != null && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			Caret caret = getCaret();
 			TGMeasure measure = getMeasure();
 			TGBeat beat = caret.getSelectedBeat();
@@ -489,7 +489,7 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected void paintSelection(TGPainter painter, float fromX, float fromY){
-		if( this.clientArea != null && !TuxGuitar.instance().getPlayer().isRunning()){
+		if( this.clientArea != null && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			if( this.selection >= 0 ){
 				int x = Math.round( fromX );
 				int y = Math.round( fromY + ((this.maxNote - this.selection) * this.lineHeight)  );
@@ -507,7 +507,7 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected void updateSelection(float y){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			int previousSelection = this.selection;
 			this.selection = getValueAt(y);
 			
@@ -518,7 +518,7 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected void hit(float x, float y){
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			TGMeasure measure = getMeasure();
 			Caret caret = getCaret();
 			int value = getValueAt(y);
@@ -526,11 +526,11 @@ public class MatrixEditor implements TGEventListener {
 			
 			if(start >= measure.getStart() && start < (measure.getStart() + measure.getLength())){
 				caret.update(caret.getTrack().getNumber(),start,caret.getStringNumber());
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 			}
 			if(value >= this.minNote || value <= this.maxNote){
 				if(start >= measure.getStart()){
-					TGVoice voice = TuxGuitar.instance().getSongManager().getMeasureManager().getVoiceIn(measure, start, caret.getVoice());
+					TGVoice voice = TuxGuitar.getInstance().getSongManager().getMeasureManager().getVoiceIn(measure, start, caret.getVoice());
 					if( voice != null ){
 						if(!removeNote(voice.getBeat(), value)){
 							addNote(voice.getBeat(), start, value);
@@ -544,7 +544,7 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	private boolean removeNote(TGBeat beat,int value) {
-		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		TGMeasure measure = getMeasure();
 		
 		for(int v = 0; v < beat.countVoices(); v ++){
@@ -558,12 +558,12 @@ public class MatrixEditor implements TGEventListener {
 					//comienza el undoable
 					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 					
-					TGSongManager manager = TuxGuitar.instance().getSongManager();
+					TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 					manager.getMeasureManager().removeNote(note);
 					
 					//termia el undoable
-					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
+					TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
+					TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 					
 					this.afterAction();
 					
@@ -577,7 +577,7 @@ public class MatrixEditor implements TGEventListener {
 	private boolean addNote(TGBeat beat,long start, int value) {
 		if(beat != null){
 			TGMeasure measure = getMeasure();
-			Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+			Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 			
 			List strings = measure.getTrack().getStrings();
 			for(int i = 0;i < strings.size();i ++){
@@ -597,7 +597,7 @@ public class MatrixEditor implements TGEventListener {
 						}
 					}
 					if(emptyString){
-						TGSongManager manager = TuxGuitar.instance().getSongManager();
+						TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 						
 						//comienza el undoable
 						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
@@ -615,11 +615,11 @@ public class MatrixEditor implements TGEventListener {
 						caret.moveTo(caret.getTrack(),caret.getMeasure(),note.getVoice().getBeat(),note.getString());
 						
 						//termia el undoable
-						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-						TuxGuitar.instance().getFileHistory().setUnsavedFile();
+						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
+						TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 						
 						//reprodusco las notas en el pulso
-						TuxGuitar.instance().playBeat(caret.getSelectedBeat());
+						TuxGuitar.getInstance().playBeat(caret.getSelectedBeat());
 						
 						this.afterAction();
 						
@@ -632,8 +632,8 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected void afterAction() {
-		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(getMeasure().getNumber());
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().getTablatureEditor().getTablature().updateMeasure(getMeasure().getNumber());
+		TuxGuitar.getInstance().updateCache(true);
 		this.editor.redraw();
 	}
 	
@@ -641,7 +641,7 @@ public class MatrixEditor implements TGEventListener {
 		new Thread(new Runnable() {
 			public void run() {
 				TGTrack tgTrack = getMeasure().getTrack();
-				TGChannel tgChannel = TuxGuitar.instance().getSongManager().getChannel(tgTrack.getChannelId());
+				TGChannel tgChannel = TuxGuitar.getInstance().getSongManager().getChannel(tgTrack.getChannelId());
 				if( tgChannel != null ){
 					int volume = TGChannel.DEFAULT_VOLUME;
 					int balance = TGChannel.DEFAULT_BALANCE;
@@ -653,14 +653,14 @@ public class MatrixEditor implements TGEventListener {
 					int program = tgChannel.getProgram();
 					int bank = tgChannel.getBank();
 					int[][] beat = new int[][]{ new int[]{ (tgTrack.getOffset() + value) , TGVelocities.DEFAULT } };
-					TuxGuitar.instance().getPlayer().playBeat(channel,bank,program, volume, balance,chorus,reverb,phaser,tremolo,beat);
+					TuxGuitar.getInstance().getPlayer().playBeat(channel,bank,program, volume, balance,chorus,reverb,phaser,tremolo,beat);
 				}
 			}
 		}).start();
 	}
 	
 	protected int loadGrids(){
-		int grids = TuxGuitar.instance().getConfig().getIntegerValue(TGConfigKeys.MATRIX_GRIDS);
+		int grids = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MATRIX_GRIDS);
 		// check if is valid value
 		for(int i = 0 ; i < DIVISIONS.length ; i ++ ){
 			if(grids == DIVISIONS[i]){
@@ -681,17 +681,17 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	protected TGMeasure getMeasure(){
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			TGMeasure measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			TGMeasure measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
 			if(measure != null){
 				return measure;
 			}
 		}
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
+		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
 	}
 	
 	protected Caret getCaret(){
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
 	public boolean isDisposed(){
@@ -705,24 +705,24 @@ public class MatrixEditor implements TGEventListener {
 	}
 	
 	public void redrawLocked(){
-		if(!TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+		if(!TuxGuitar.getInstance().isLocked()){
+			TuxGuitar.getInstance().lock();
 			this.redraw();
-			TuxGuitar.instance().unlock();
+			TuxGuitar.getInstance().unlock();
 		}
 	}
 	
 	public void redraw(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			this.editor.redraw();
 			this.loadDurationImage(false);
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked() && TuxGuitar.instance().getPlayer().isRunning()){
-			TGMeasure measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
-			TGBeat beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked() && TuxGuitar.getInstance().getPlayer().isRunning()){
+			TGMeasure measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
+			TGBeat beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
 			if(measure != null && beat != null){
 				int currentMeasure = measure.getNumber();
 				int currentTrack = measure.getTrack().getNumber();
@@ -764,8 +764,8 @@ public class MatrixEditor implements TGEventListener {
 	
 	public void loadIcons(){
 		if( !isDisposed() ){
-			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
-			this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+			this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 			this.loadDurationImage(true);
 			this.layout();
 			this.redraw();
@@ -833,7 +833,7 @@ public class MatrixEditor implements TGEventListener {
 			int track = measure.getTrack().getNumber();
 			int numerator = measure.getTimeSignature().getNumerator();
 			int denominator = measure.getTimeSignature().getDenominator().getValue();
-			boolean percussion = TuxGuitar.instance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId());
+			boolean percussion = TuxGuitar.getInstance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId());
 			if(width != this.width || height != this.height || this.track != track || this.numerator != numerator || this.denominator != denominator || this.percussion != percussion){
 				disposeBuffer();
 			}
@@ -859,18 +859,18 @@ public class MatrixEditor implements TGEventListener {
 		}
 		
 		public void paintControl(PaintEvent e) {
-			if(!TuxGuitar.instance().isLocked()){
-				TuxGuitar.instance().lock();
+			if(!TuxGuitar.getInstance().isLocked()){
+				TuxGuitar.getInstance().lock();
 				TGPainter painter = new TGPainterImpl(e.gc);
 				paintEditor(painter);
-				TuxGuitar.instance().unlock();
+				TuxGuitar.getInstance().unlock();
 			}
 		}
 		
 		public void mouseUp(MouseEvent e) {
 			getEditor().setFocus();
 			if(e.button == 1){
-				if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+				if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked()){
 					TGActionLock.lock();
 					hit(e.x,e.y);
 					TGActionLock.unlock();
@@ -879,19 +879,19 @@ public class MatrixEditor implements TGEventListener {
 		}
 		
 		public void mouseMove(MouseEvent e) {
-			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+			if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked()){
 				updateSelection(e.y);
 			}
 		}
 		
 		public void mouseExit(MouseEvent e) {
-			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+			if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked()){
 				updateSelection(-1);
 			}
 		}
 		
 		public void mouseEnter(MouseEvent e) {
-			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+			if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked()){
 				redrawLocked();
 			}
 		}

@@ -30,17 +30,17 @@ import org.herac.tuxguitar.song.models.TGSong;
 public class FileActionUtils {
 	
 	public static String getFileName(){
-		if (TuxGuitar.instance().getFileHistory().isNewFile() || !TuxGuitar.instance().getFileHistory().isLocalFile()) {
+		if (TuxGuitar.getInstance().getFileHistory().isNewFile() || !TuxGuitar.getInstance().getFileHistory().isLocalFile()) {
 			return chooseFileName();
 		}
-		String path = TuxGuitar.instance().getFileHistory().getCurrentFilePath();
-		String file = TuxGuitar.instance().getFileHistory().getCurrentFileName(FileChooser.DEFAULT_SAVE_FILENAME);
+		String path = TuxGuitar.getInstance().getFileHistory().getCurrentFilePath();
+		String file = TuxGuitar.getInstance().getFileHistory().getCurrentFileName(FileChooser.DEFAULT_SAVE_FILENAME);
 		String fullPath = path + File.separator + file;
 		return ( isSupportedFormat(fullPath) ? fullPath : chooseFileName() );
 	}
 	
 	public static String chooseFileName(){
-		String fileName = FileChooser.instance().save(TuxGuitar.instance().getShell(),TGFileFormatManager.instance().getOutputFormats());
+		String fileName = FileChooser.instance().save(TuxGuitar.getInstance().getShell(),TGFileFormatManager.instance().getOutputFormats());
 		if (fileName != null) {
 			if (!isSupportedFormat(fileName)) {
 				fileName += TGFileFormatManager.DEFAULT_EXTENSION;
@@ -53,7 +53,7 @@ public class FileActionUtils {
 	}
 	
 	public static String chooseFileName(TGFileFormat format){
-		String fileName = FileChooser.instance().save(TuxGuitar.instance().getShell(),format);
+		String fileName = FileChooser.instance().save(TuxGuitar.getInstance().getShell(),format);
 		if (fileName != null && !canWrite(fileName)){
 			return null;
 		}
@@ -91,19 +91,19 @@ public class FileActionUtils {
 	
 	public static void open(final String fileName){
 		try {
-			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),new FileInputStream(fileName));
-			TuxGuitar.instance().fireNewSong(song,new File(fileName).toURI().toURL());
+			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),new FileInputStream(fileName));
+			TuxGuitar.getInstance().fireNewSong(song,new File(fileName).toURI().toURL());
 		}catch (Throwable throwable) {
-			TuxGuitar.instance().newSong();
+			TuxGuitar.getInstance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{fileName}),throwable));
 		}
 	}
 	
 	public static void save(final String fileName){
 		try {
-			TGSongManager manager = TuxGuitar.instance().getSongManager();
+			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 			TGFileFormatManager.instance().getWriter().write(manager.getFactory(),manager.getSong(), fileName);
-			TuxGuitar.instance().fireSaveSong(new File(fileName).toURI().toURL());
+			TuxGuitar.getInstance().fireSaveSong(new File(fileName).toURI().toURL());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.save.error", new String[]{fileName}),throwable));
 		}
@@ -112,17 +112,17 @@ public class FileActionUtils {
 	public static void open(final URL url){
 		try {
 			InputStream stream = (isLocalFile(url) ? url.openStream() : getInputStream(url.openStream()));
-			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream);
-			TuxGuitar.instance().fireNewSong(song,url);
+			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
+			TuxGuitar.getInstance().fireNewSong(song,url);
 		}catch (Throwable throwable) {
-			TuxGuitar.instance().newSong();
+			TuxGuitar.getInstance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{url.toString()}),throwable));
 		}
 	}
 	
 	public static void exportSong(TGRawExporter exporter){
 		try {
-			TGSongManager manager = TuxGuitar.instance().getSongManager();
+			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 			exporter.exportSong(manager.getSong());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.export.error"),throwable));
@@ -132,7 +132,7 @@ public class FileActionUtils {
 	public static void exportSong(TGLocalFileExporter exporter, String path){
 		try {
 			OutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
-			TGSongManager manager = TuxGuitar.instance().getSongManager();
+			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 			exporter.init( manager.getFactory() , stream );
 			exporter.exportSong(manager.getSong());
 		} catch (Throwable throwable) {
@@ -143,9 +143,9 @@ public class FileActionUtils {
 	public static void importSong(final TGRawImporter importer){
 		try {
 			TGSong song = importer.importSong();
-			TuxGuitar.instance().fireNewSong(song,null);
+			TuxGuitar.getInstance().fireNewSong(song,null);
 		}catch (Throwable throwable) {
-			TuxGuitar.instance().newSong();
+			TuxGuitar.getInstance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.import.error"),throwable));
 		}
 	}
@@ -153,11 +153,11 @@ public class FileActionUtils {
 	public static void importSong(final TGLocalFileImporter importer, String path){
 		try {
 			InputStream stream = new BufferedInputStream(new FileInputStream(new File(path)));
-			importer.init(TuxGuitar.instance().getSongManager().getFactory(),stream);
+			importer.init(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
 			TGSong song = importer.importSong();
-			TuxGuitar.instance().fireNewSong(song,null);
+			TuxGuitar.getInstance().fireNewSong(song,null);
 		}catch (Throwable throwable) {
-			TuxGuitar.instance().newSong();
+			TuxGuitar.getInstance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.import.error", new String[]{path}),throwable));
 		}
 	}

@@ -102,7 +102,7 @@ public class DurationToolItems  extends ToolItems{
 	
 	public void update(){
 		TGDuration duration = getEditor().getTablature().getCaret().getDuration();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		int index = duration.getIndex();
 		for(int i = 0;i < this.durationItems.length;i++){
 			this.durationItems[i].setSelection( (i == index) );
@@ -131,16 +131,16 @@ public class DurationToolItems  extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.durationItems[0].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.WHOLE));
-		this.durationItems[1].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.HALF));
-		this.durationItems[2].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.QUARTER));
-		this.durationItems[3].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.EIGHTH));
-		this.durationItems[4].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTEENTH));
-		this.durationItems[5].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
-		this.durationItems[6].setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
-		this.dotted.setImage(TuxGuitar.instance().getIconManager().getDurationDotted());
-		this.doubleDotted.setImage(TuxGuitar.instance().getIconManager().getDurationDoubleDotted());
-		this.divisionTypeItems.setImage(TuxGuitar.instance().getIconManager().getDivisionType());
+		this.durationItems[0].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.WHOLE));
+		this.durationItems[1].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.HALF));
+		this.durationItems[2].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
+		this.durationItems[3].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
+		this.durationItems[4].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
+		this.durationItems[5].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
+		this.durationItems[6].setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
+		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
+		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
+		this.divisionTypeItems.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType());
 	}
 	
 	protected TablatureEditor getEditor(){
@@ -201,7 +201,7 @@ public class DurationToolItems  extends ToolItems{
 				final TGActionContext context = createDivisionTypeActionContext(this.divisionType);
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TuxGuitar.instance().getActionManager().execute(ChangeDivisionTypeAction.NAME, context);
+						TuxGuitar.getInstance().getActionManager().execute(ChangeDivisionTypeAction.NAME, context);
 					}
 				});
 			}
@@ -219,7 +219,7 @@ public class DurationToolItems  extends ToolItems{
 		}
 		
 		private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc){
-			TGDivisionType tgDivisionTypeDst = TuxGuitar.instance().getSongManager().getFactory().newDivisionType();
+			TGDivisionType tgDivisionTypeDst = TuxGuitar.getInstance().getSongManager().getFactory().newDivisionType();
 			tgDivisionTypeSrc.copy(tgDivisionTypeDst);
 			return tgDivisionTypeDst;
 		}
@@ -231,7 +231,7 @@ public class DurationToolItems  extends ToolItems{
 		}
 		
 		private TGActionContext createDivisionTypeActionContext(TGDivisionType tgDivisionType){
-			TGActionContext tgActionContext = TuxGuitar.instance().getActionManager().createActionContext();
+			TGActionContext tgActionContext = TuxGuitar.getInstance().getActionManager().createActionContext();
 			tgActionContext.setAttribute(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
 			return tgActionContext;
 		}

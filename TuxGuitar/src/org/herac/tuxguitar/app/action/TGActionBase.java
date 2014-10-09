@@ -87,22 +87,22 @@ public abstract class TGActionBase implements TGAction {
 	}
 	
 	public TGSongManager getSongManager() {
-		return TuxGuitar.instance().getSongManager();
+		return TuxGuitar.getInstance().getSongManager();
 	}
 	
 	public TablatureEditor getEditor() {
-		return TuxGuitar.instance().getTablatureEditor();
+		return TuxGuitar.getInstance().getTablatureEditor();
 	}
 	
-	public synchronized void updateTablature() {
-		TuxGuitar.instance().fireUpdate();
+	public void updateSong() {
+		TuxGuitar.getInstance().updateSong();
 	}
 	
-	public void fireUpdate(int number) {
+	public void updateMeasure(int number) {
 		this.getEditor().getTablature().updateMeasure(number);
 	}
 	
 	public void addUndoableEdit(UndoableEdit anEdit) {
-		TuxGuitar.instance().getUndoableManager().addEdit(anEdit);
+		TuxGuitar.getInstance().getUndoableManager().addEdit(anEdit);
 	}
 }

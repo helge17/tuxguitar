@@ -12,7 +12,7 @@ public class MidiTickUtil {
 		long start = startPoint;
 		long length = 0;
 		
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		MidiRepeatController controller = new MidiRepeatController(manager.getSong(), getSHeader() , getEHeader() );
 		while(!controller.finished()){
 			TGMeasureHeader header = manager.getSong().getMeasureHeader(controller.getIndex());
@@ -36,7 +36,7 @@ public class MidiTickUtil {
 		long tick = startPoint;
 		long length = 0;
 		
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		MidiRepeatController controller = new MidiRepeatController(manager.getSong(), getSHeader() , getEHeader() );
 		while(!controller.finished()){
 			TGMeasureHeader header = manager.getSong().getMeasureHeader(controller.getIndex());
@@ -56,15 +56,15 @@ public class MidiTickUtil {
 	}
 	
 	private static long getStartPoint(){
-		TuxGuitar.instance().getPlayer().updateLoop( false );
-		return TuxGuitar.instance().getPlayer().getLoopSPosition();
+		TuxGuitar.getInstance().getPlayer().updateLoop( false );
+		return TuxGuitar.getInstance().getPlayer().getLoopSPosition();
 	}
 	
 	public static int getSHeader() {
-		return TuxGuitar.instance().getPlayer().getLoopSHeader();
+		return TuxGuitar.getInstance().getPlayer().getLoopSHeader();
 	}
 	
 	public static int getEHeader() {
-		return TuxGuitar.instance().getPlayer().getLoopEHeader();
+		return TuxGuitar.getInstance().getPlayer().getLoopEHeader();
 	}
 }

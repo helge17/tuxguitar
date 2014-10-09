@@ -45,7 +45,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	}
 	
 	public void show(){
-		show(TuxGuitar.instance().getShell());
+		show(TuxGuitar.getInstance().getShell());
 	}
 	
 	public void show(Shell parent){
@@ -58,7 +58,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				removeListeners();
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		
@@ -80,15 +80,15 @@ public class TGChannelManagerDialog implements TGEventListener {
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getIconManager().removeLoader(this);
-		TuxGuitar.instance().getLanguageManager().removeLoader(this);
-		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
+		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	private void createWindow(Composite parent, Object layoutData){
@@ -186,9 +186,9 @@ public class TGChannelManagerDialog implements TGEventListener {
 	
 	protected void changeVolume(){
 		int volume = (short)(this.volumeScale.getMaximum() - this.volumeScale.getSelection());
-		if(volume != TuxGuitar.instance().getPlayer().getVolume()){
-			TuxGuitar.instance().getPlayer().setVolume(volume);
-			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
+		if(volume != TuxGuitar.getInstance().getPlayer().getVolume()){
+			TuxGuitar.getInstance().getPlayer().setVolume(volume);
+			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.getInstance().getPlayer().getVolume());
 			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 			this.volumeValue = volume;
 		}
@@ -196,18 +196,18 @@ public class TGChannelManagerDialog implements TGEventListener {
 	
 	private void updateItems(){
 		if(!isDisposed()){
-			TuxGuitar.instance().loadCursor(this.dialog,SWT.CURSOR_WAIT);
+			TuxGuitar.getInstance().loadCursor(this.dialog,SWT.CURSOR_WAIT);
 			
 			this.channelList.updateItems();
 			
-			int volume = TuxGuitar.instance().getPlayer().getVolume();
+			int volume = TuxGuitar.getInstance().getPlayer().getVolume();
 			if(this.volumeValue != volume){
-				this.volumeScale.setSelection(this.volumeScale.getMaximum() - TuxGuitar.instance().getPlayer().getVolume());
+				this.volumeScale.setSelection(this.volumeScale.getMaximum() - TuxGuitar.getInstance().getPlayer().getVolume());
 				this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
 				this.volumeValue = volume;
 			}
 			
-			TuxGuitar.instance().loadCursor(this.dialog,SWT.CURSOR_ARROW);
+			TuxGuitar.getInstance().loadCursor(this.dialog,SWT.CURSOR_ARROW);
 		}
 	}
 
@@ -217,7 +217,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 			
 			this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("instruments.volume") + ":");
 			this.volumeTip = TuxGuitar.getProperty("instruments.volume");
-			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.instance().getPlayer().getVolume());
+			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.getInstance().getPlayer().getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("instruments.dialog-title"));
 			
 			this.channelList.loadProperties();
@@ -231,8 +231,8 @@ public class TGChannelManagerDialog implements TGEventListener {
 	}
 	
 	public void onUpdateChannel(TGChannel channel){
-		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();
+		if (TuxGuitar.getInstance().getPlayer().isRunning()) {
+			TuxGuitar.getInstance().getPlayer().updateControllers();
 		}
 	}
 	

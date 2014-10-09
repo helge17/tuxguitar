@@ -39,7 +39,7 @@ public class MessageDialog {
 	}
 	
 	public static void infoMessage(final String title,final String message){
-		MessageDialog.infoMessage(TuxGuitar.instance().getShell(), title, message);
+		MessageDialog.infoMessage(TuxGuitar.getInstance().getShell(), title, message);
 	}
 	
 	public static void infoMessage(final Shell shell,final String title,final String message){
@@ -53,7 +53,7 @@ public class MessageDialog {
 	}
 	
 	public static void errorMessage(final Throwable throwable){
-		MessageDialog.errorMessage(TuxGuitar.instance().getShell(),throwable);
+		MessageDialog.errorMessage(TuxGuitar.getInstance().getShell(),throwable);
 	}
 	
 	public static void errorMessage(final Shell shell,final Throwable throwable){
@@ -71,7 +71,7 @@ public class MessageDialog {
 				public void run() {
 					if(!shell.isDisposed()){
 						TGActionLock.unlock();
-						TuxGuitar.instance().unlock();
+						TuxGuitar.getInstance().unlock();
 						shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
 						new MessageDialog(TuxGuitar.getProperty("error"),message,SWT.ICON_ERROR).show(shell);
 					}

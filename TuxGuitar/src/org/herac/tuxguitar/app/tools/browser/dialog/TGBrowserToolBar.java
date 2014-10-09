@@ -61,7 +61,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 			});
 		}
 		this.newBrowser = new ToolItem(this.toolBar,SWT.DROP_DOWN);
-		this.newBrowser.setImage(TuxGuitar.instance().getIconManager().getBrowserNew());
+		this.newBrowser.setImage(TuxGuitar.getInstance().getIconManager().getBrowserNew());
 		this.newBrowser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == SWT.ARROW) {
@@ -77,7 +77,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		new ToolItem(this.toolBar, SWT.SEPARATOR);
 		//---Root Folder------------------------------------------------------
 		this.root = new ToolItem(this.toolBar,SWT.PUSH);
-		this.root.setImage(TuxGuitar.instance().getIconManager().getBrowserRoot());
+		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
 		this.root.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().getConnection().cdRoot(TGBrowserDialog.CALL_CD_ROOT);
@@ -86,7 +86,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		
 		//---Back Folder------------------------------------------------------
 		this.back = new ToolItem(this.toolBar,SWT.PUSH);
-		this.back.setImage(TuxGuitar.instance().getIconManager().getBrowserBack());
+		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
 		this.back.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().getConnection().cdUp(TGBrowserDialog.CALL_CD_UP);
@@ -95,7 +95,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		
 		//---Refresh Folder------------------------------------------------------
 		this.refresh = new ToolItem(this.toolBar,SWT.PUSH);
-		this.refresh.setImage(TuxGuitar.instance().getIconManager().getBrowserRefresh());
+		this.refresh.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRefresh());
 		this.refresh.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().getConnection().listElements(TGBrowserDialog.CALL_LIST);

@@ -21,9 +21,9 @@ public class TGChannelHandle {
 		getManager().addChannel();
 		
 		// Termina el Undoable
-		TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo() );
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo() );
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void removeChannel(TGChannel channel){
@@ -33,9 +33,9 @@ public class TGChannelHandle {
 		getManager().removeChannel(channel);
 		
 		// Termina el Undoable
-		TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo() );
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo() );
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void updateChannel(int id,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
@@ -49,15 +49,15 @@ public class TGChannelHandle {
 			getManager().updateChannel(id, bnk, prg, vol, bal, cho, rev, pha, tre, name);
 			
 			// Termina el Undoable
-			TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo() );
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			TuxGuitar.instance().updateCache(true);
+			TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo() );
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().updateCache(true);
 			
-			if (TuxGuitar.instance().getPlayer().isRunning()) {
+			if (TuxGuitar.getInstance().getPlayer().isRunning()) {
 				if(programChange){
-					TuxGuitar.instance().getPlayer().updatePrograms();
+					TuxGuitar.getInstance().getPlayer().updatePrograms();
 				}else{
-					TuxGuitar.instance().getPlayer().updateControllers();
+					TuxGuitar.getInstance().getPlayer().updateControllers();
 				}
 			}
 		}
@@ -76,10 +76,10 @@ public class TGChannelHandle {
 	}
 	
 	public boolean isPlayerRunning(){
-		return TuxGuitar.instance().getPlayer().isRunning();
+		return TuxGuitar.getInstance().getPlayer().isRunning();
 	}
 	
 	private TGSongManager getManager(){
-		return TuxGuitar.instance().getSongManager();
+		return TuxGuitar.getInstance().getSongManager();
 	}
 }

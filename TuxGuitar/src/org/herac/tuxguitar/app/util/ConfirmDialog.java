@@ -31,7 +31,7 @@ public class ConfirmDialog {
 	}
 	
 	public int confirm(int style, int defaultButton){
-		Shell parent = TuxGuitar.instance().getShell();
+		Shell parent = TuxGuitar.getInstance().getShell();
 		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.dialog.setLayout(new GridLayout(1, true));
 		

@@ -34,7 +34,7 @@ public class TGCommunityStartupScreen {
 	
 	public void open(){
 		try {
-			final Shell parent = TuxGuitar.instance().getShell();
+			final Shell parent = TuxGuitar.getInstance().getShell();
 			TGSynchronizer.instance().executeLater( new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
 					open( parent );
@@ -46,10 +46,10 @@ public class TGCommunityStartupScreen {
 	}
 	
 	protected void open(Shell parent){
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM );
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM );
 		dialog.setLayout(new GridLayout());
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.title"));
 		
 		Composite composite = new Composite( dialog, SWT.NONE );
@@ -66,7 +66,7 @@ public class TGCommunityStartupScreen {
 		topLeft.setLayoutData(new GridData(SWT.LEFT,SWT.TOP,false,false));
 		
 		Label image = new Label( topLeft, SWT.NONE );
-		image.setImage( TuxGuitar.instance().getIconManager().getAppIcon() );
+		image.setImage( TuxGuitar.getInstance().getIconManager().getAppIcon() );
 		
 		Composite topRight = new Composite( top , SWT.NONE );
 		topRight.setLayout( new GridLayout(2,false) );

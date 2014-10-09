@@ -41,7 +41,7 @@ public class HarmonicEditor extends SelectionAdapter{
 	public void show(final TGNote note){
 		this.cancelled = true;
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("effects.harmonic-editor"));
@@ -222,7 +222,7 @@ public class HarmonicEditor extends SelectionAdapter{
 	public TGEffectHarmonic getHarmonic(){
 		int type = getSelectedType();
 		if(type > 0){
-			TGEffectHarmonic effect = TuxGuitar.instance().getSongManager().getFactory().newEffectHarmonic();
+			TGEffectHarmonic effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectHarmonic();
 			effect.setType(type);
 			effect.setData(this.harmonicDataCombo.getSelectionIndex());
 			return effect;

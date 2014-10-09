@@ -43,8 +43,8 @@ public class RepeatCloseAction extends TGActionBase{
 		showCloseRepeatDialog(getEditor().getTablature().getShell(), measure);
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 	
 	public void showCloseRepeatDialog(Shell shell, final TGMeasureImpl measure) {
@@ -129,11 +129,11 @@ public class RepeatCloseAction extends TGActionBase{
 			
 			//comienza el undoable
 			UndoableChangeCloseRepeat undoable = UndoableChangeCloseRepeat.startUndo();
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//numberOfRepetitions = Math.abs(numberOfRepetitions);
 			getSongManager().changeCloseRepeat(measure.getStart(), repeatClose);
-			updateTablature();
+			updateSong();
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo(repeatClose));

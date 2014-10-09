@@ -32,9 +32,9 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 		this.position.y = e.y;
 		this.kit.getTablature().setFocus();
 		if( this.kit.select(this.position.x, this.position.y) ){
-			TuxGuitar.instance().updateCache(true);
+			TuxGuitar.getInstance().updateCache(true);
 			if(!this.menuOpen && e.button == 1 && this.kit.isMouseEditionAvailable()){
-				if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !TuxGuitar.instance().getPlayer().isRunning()){
+				if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked() && !TuxGuitar.getInstance().getPlayer().isRunning()){
 					this.kit.addOrRemoveNote(e.x, e.y);
 				}
 			}
@@ -43,7 +43,7 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 	
 	public void mouseMove(MouseEvent e) {
 		if(!this.menuOpen && this.kit.isMouseEditionAvailable()){
-			if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !TuxGuitar.instance().getPlayer().isRunning()){
+			if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked() && !TuxGuitar.getInstance().getPlayer().isRunning()){
 				this.kit.updateSelectedMeasure(e.x, e.y);
 			}
 		}
@@ -51,7 +51,7 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 	
 	public void mouseExit(MouseEvent e) {
 		if(!this.menuOpen && this.kit.isMouseEditionAvailable()){
-			if(!TuxGuitar.instance().getPlayer().isRunning() ){
+			if(!TuxGuitar.getInstance().getPlayer().isRunning() ){
 				this.kit.resetSelectedMeasure();
 			}
 		}
@@ -60,12 +60,12 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 	public void menuShown(MenuEvent e) {
 		this.menuOpen = true;
 		this.kit.select(this.position.x, this.position.y);
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void menuHidden(MenuEvent e){
 		this.menuOpen = false;
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void mouseDoubleClick(MouseEvent e) {

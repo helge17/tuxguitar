@@ -349,7 +349,7 @@ public class BendEditor{
 	
 	public TGEffectBend getBend(){
 		if(this.points != null && !this.points.isEmpty()){
-			TGEffectBend bend = TuxGuitar.instance().getSongManager().getFactory().newEffectBend();//new BendEffect();
+			TGEffectBend bend = TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend();//new BendEffect();
 			Iterator it = this.points.iterator();
 			while(it.hasNext()){
 				Point point = (Point)it.next();
@@ -407,19 +407,19 @@ public class BendEditor{
 	private void resetDefaultBends(){
 		this.defaultBends = new DefaultBend[5];
 		
-		this.defaultBends[0] = new DefaultBend(TuxGuitar.getProperty("bend.bend"),TuxGuitar.instance().getSongManager().getFactory().newEffectBend());
+		this.defaultBends[0] = new DefaultBend(TuxGuitar.getProperty("bend.bend"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend());
 		this.defaultBends[0].getBend().addPoint(0,0);
 		this.defaultBends[0].getBend().addPoint(6,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[0].getBend().addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));
 		
-		this.defaultBends[1] = new DefaultBend(TuxGuitar.getProperty("bend.bend-release"),TuxGuitar.instance().getSongManager().getFactory().newEffectBend());
+		this.defaultBends[1] = new DefaultBend(TuxGuitar.getProperty("bend.bend-release"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend());
 		this.defaultBends[1].getBend().addPoint(0,0);
 		this.defaultBends[1].getBend().addPoint(3,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[1].getBend().addPoint(6,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[1].getBend().addPoint(9,0);
 		this.defaultBends[1].getBend().addPoint(12,0);
 		
-		this.defaultBends[2] = new DefaultBend(TuxGuitar.getProperty("bend.bend-release-bend"),TuxGuitar.instance().getSongManager().getFactory().newEffectBend());
+		this.defaultBends[2] = new DefaultBend(TuxGuitar.getProperty("bend.bend-release-bend"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend());
 		this.defaultBends[2].getBend().addPoint(0,0);
 		this.defaultBends[2].getBend().addPoint(2,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[2].getBend().addPoint(4,(TGEffectBend.SEMITONE_LENGTH * 4));
@@ -428,11 +428,11 @@ public class BendEditor{
 		this.defaultBends[2].getBend().addPoint(10,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[2].getBend().addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));
 		
-		this.defaultBends[3] = new DefaultBend(TuxGuitar.getProperty("bend.prebend"),TuxGuitar.instance().getSongManager().getFactory().newEffectBend());
+		this.defaultBends[3] = new DefaultBend(TuxGuitar.getProperty("bend.prebend"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend());
 		this.defaultBends[3].getBend().addPoint(0,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[3].getBend().addPoint(12,(TGEffectBend.SEMITONE_LENGTH * 4));
 		
-		this.defaultBends[4] = new DefaultBend(TuxGuitar.getProperty("bend.prebend-release"),TuxGuitar.instance().getSongManager().getFactory().newEffectBend());
+		this.defaultBends[4] = new DefaultBend(TuxGuitar.getProperty("bend.prebend-release"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend());
 		this.defaultBends[4].getBend().addPoint(0,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[4].getBend().addPoint(4,(TGEffectBend.SEMITONE_LENGTH * 4));
 		this.defaultBends[4].getBend().addPoint(8,0);

@@ -172,7 +172,7 @@ public class TGChannelItem {
 	
 	public void loadIcons(){
 		if(!isDisposed()){
-			this.setupChannelButton.setImage(TuxGuitar.instance().getIconManager().getSettings());
+			this.setupChannelButton.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		}
 	}
 	
@@ -245,7 +245,7 @@ public class TGChannelItem {
 	private List getProgramNames(){
 		List programNames = new ArrayList();
 		if(!getChannel().isPercussionChannel() ){
-			MidiInstrument[] instruments = TuxGuitar.instance().getPlayer().getInstruments();
+			MidiInstrument[] instruments = TuxGuitar.getInstance().getPlayer().getInstruments();
 			if (instruments != null) {
 				int count = instruments.length;
 				if (count > 128) {

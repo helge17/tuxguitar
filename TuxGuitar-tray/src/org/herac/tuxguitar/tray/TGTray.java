@@ -22,12 +22,12 @@ public class TGTray implements TGEventListener {
 	private TGTrayMenu menu;
 	
 	public TGTray(){
-		this.display = TuxGuitar.instance().getDisplay();
+		this.display = TuxGuitar.getInstance().getDisplay();
 		this.tray = this.display.getSystemTray();
 		this.icon = new TGTrayIcon();
 		this.menu = new TGTrayMenu();
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 	}
 	
 	public void removeTray(){

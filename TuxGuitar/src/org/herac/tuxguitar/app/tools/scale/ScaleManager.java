@@ -29,7 +29,7 @@ public class ScaleManager {
 	
 	public ScaleManager(){
 		this.scales = new ArrayList();
-		this.scale = TuxGuitar.instance().getSongManager().getFactory().newScale();
+		this.scale = TuxGuitar.getInstance().getSongManager().getFactory().newScale();
 		this.selectionKey = 0;
 		this.selectionIndex = NONE_SELECTION;
 		this.loadScales();

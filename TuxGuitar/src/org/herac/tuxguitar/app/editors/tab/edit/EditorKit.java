@@ -50,8 +50,8 @@ public class EditorKit {
 	}
 	
 	private void setDefaults(){
-		this.setMouseMode(TuxGuitar.instance().getConfig().getIntegerValue(TGConfigKeys.EDITOR_MOUSE_MODE,MOUSE_MODE_EDITION));
-		this.setNatural(TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true));
+		this.setMouseMode(TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.EDITOR_MOUSE_MODE,MOUSE_MODE_EDITION));
+		this.setNatural(TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true));
 	}
 	
 	public int getMouseMode() {
@@ -243,7 +243,7 @@ public class EditorKit {
 	}
 	
 	public void addOrRemoveNote(int x, int y) {
-		if(!TuxGuitar.instance().isLocked() && !TGActionLock.isLocked() && !this.getTablature().isPainting()){
+		if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked() && !this.getTablature().isPainting()){
 			TGActionLock.lock();
 			
 			TGLayout.TrackPosition pos = this.getTablature().getViewLayout().getTrackPositionAt(y) ;
@@ -352,8 +352,8 @@ public class EditorKit {
 				manager.getMeasureManager().removeNote(note);
 				
 				//termia el undoable
-				TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
+				TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 				
 				return true;
 			}
@@ -383,18 +383,18 @@ public class EditorKit {
 			caret.moveTo(caret.getTrack(),caret.getMeasure(),note.getVoice().getBeat(),note.getString());
 			
 			//termia el undoable
-			TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//reprodusco las notas en el pulso
-			TuxGuitar.instance().playBeat(caret.getSelectedBeat());
+			TuxGuitar.getInstance().playBeat(caret.getSelectedBeat());
 		}
 	}
 	
 	private void updateTablature(){
 		Caret caret = this.getTablature().getCaret();
 		this.getTablature().updateMeasure(caret.getMeasure().getNumber());
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void updateSelectedMeasure(int x, int y){
@@ -417,7 +417,7 @@ public class EditorKit {
 			selectionUpdated = !this.selectedMeasure.equals(previousSelection);
 		}
 		if( selectionUpdated ){
-			TuxGuitar.instance().updateCache(false);
+			TuxGuitar.getInstance().updateCache(false);
 		}
 	}
 	
@@ -426,7 +426,7 @@ public class EditorKit {
 	}
 	
 	public void paintSelection(TGLayout layout, TGPainter painter) {
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			TGMeasureImpl measure = this.selectedMeasure;
 			if(measure != null && measure.getTs() != null){
 				float scale = layout.getScale();

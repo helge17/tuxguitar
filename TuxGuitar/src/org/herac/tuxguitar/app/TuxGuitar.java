@@ -67,7 +67,6 @@ import org.herac.tuxguitar.app.util.TGSplash;
 import org.herac.tuxguitar.app.util.WindowTitleUtil;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
@@ -102,8 +101,6 @@ public class TuxGuitar {
 	private Shell shell;
 	
 	private TGContext context;
-	
-	private TGSongManager songManager;
 	
 	private TGConfigManager configManager;
 	
@@ -159,7 +156,7 @@ public class TuxGuitar {
 		this.initialized = false;
 	}
 	
-	public static TuxGuitar instance() {
+	public static TuxGuitar getInstance() {
 		if (instance == null) {
 			synchronized (TuxGuitar.class) {
 				instance = new TuxGuitar();
@@ -258,12 +255,12 @@ public class TuxGuitar {
 			TGActionLock.lock();
 			new SyncThread(new Runnable() {
 				public void run() throws TGException {
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 					new Thread(new Runnable() {
 						public void run() throws TGException {
 							if(!TuxGuitar.isDisposed()){
 								FileActionUtils.open(url);
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						}
@@ -471,14 +468,6 @@ public class TuxGuitar {
 		return this.matrixEditor;
 	}
 	
-	public TGSongManager getSongManager(){
-		if(this.songManager == null){
-			this.songManager = new TGSongManager(new TGFactoryImpl());
-			this.songManager.setSong(this.songManager.newSong());
-		}
-		return this.songManager;
-	}
-	
 	public TGChannelManagerDialog getChannelManager(){
 		if( this.channelManager == null ){
 			this.channelManager = new TGChannelManagerDialog();
@@ -533,6 +522,10 @@ public class TuxGuitar {
 			this.scaleManager = new ScaleManager();
 		}
 		return this.scaleManager;
+	}
+	
+	public TGSongManager getSongManager(){
+		return getEditorManager().getActiveContext().getSongManager();
 	}
 	
 	public TGPluginManager getPluginManager(){
@@ -713,15 +706,15 @@ public class TuxGuitar {
 	}
 	
 	public static String getProperty(String key) {
-		return TuxGuitar.instance().getLanguageManager().getProperty(key);
+		return TuxGuitar.getInstance().getLanguageManager().getProperty(key);
 	}
 	
 	public static String getProperty(String key,String[] arguments) {
-		return  TuxGuitar.instance().getLanguageManager().getProperty(key,arguments);
+		return  TuxGuitar.getInstance().getLanguageManager().getProperty(key,arguments);
 	}
 	
 	public static boolean isDisposed(){
-		return (TuxGuitar.instance().getDisplay().isDisposed() || TuxGuitar.instance().getShell().isDisposed());
+		return (TuxGuitar.getInstance().getDisplay().isDisposed() || TuxGuitar.getInstance().getShell().isDisposed());
 	}
 	
 	public void loadLanguage(){
@@ -757,24 +750,24 @@ public class TuxGuitar {
 	}
 	
 	public void newSong(){
-		this.newSong(TuxGuitar.instance().getTemplateManager().getDefaultTemplate());
+		this.newSong(TuxGuitar.getInstance().getTemplateManager().getDefaultTemplate());
 	}
 	
 	public void newSong(TGTemplate tgTemplate){
 		TGSong tgSong = null;
 		if( tgTemplate != null ){
-			tgSong = TuxGuitar.instance().getTemplateManager().getTemplateAsSong(tgTemplate);
+			tgSong = TuxGuitar.getInstance().getTemplateManager().getTemplateAsSong(tgTemplate);
 		}
 		if( tgSong == null ){
-			tgSong = TuxGuitar.instance().getSongManager().newSong();
+			tgSong = TuxGuitar.getInstance().getSongManager().newSong();
 		}
-		TuxGuitar.instance().fireNewSong(tgSong,null);
+		TuxGuitar.getInstance().fireNewSong(tgSong,null);
 	}
 	
 	public void fireNewSong(TGSong song,URL url){
 		this.lock();
 		
-		TuxGuitar.instance().getSongManager().setSong(song);
+		TuxGuitar.getInstance().getSongManager().setSong(song);
 		getFileHistory().reset(url);
 		getPlayer().reset();
 		getPlayer().getMode().clear();
@@ -803,7 +796,13 @@ public class TuxGuitar {
 		showTitle();
 	}
 	
-	public void fireUpdate(){
+	public void updateMeasure(int number){
+		this.lock();
+		this.getEditorManager().doUpdateMeasure(number);
+		this.unlock();
+	}
+	
+	public void updateSong(){
 		this.lock();
 		this.getEditorCache().reset();
 		this.getEditorManager().doUpdate(TGUpdateEvent.SONG_UPDATED);

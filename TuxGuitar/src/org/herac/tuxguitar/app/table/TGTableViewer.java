@@ -55,9 +55,9 @@ public class TGTableViewer implements TGEventListener {
 	private boolean resetTexts;
 	
 	public TGTableViewer() {
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void init(Composite parent){
@@ -116,7 +116,7 @@ public class TGTableViewer implements TGEventListener {
 			public void mouseDoubleClick(MouseEvent e) {
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TuxGuitar.instance().getActionManager().execute(ChangeInfoAction.NAME);
+						TuxGuitar.getInstance().getActionManager().execute(ChangeInfoAction.NAME);
 					}
 				});
 			}
@@ -160,11 +160,11 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public TablatureEditor getEditor(){
-		return TuxGuitar.instance().getTablatureEditor();
+		return TuxGuitar.getInstance().getTablatureEditor();
 	}
 	
 	private String getInstrument(TGTrack track){
-		TGChannel channel = TuxGuitar.instance().getSongManager().getChannel(track.getChannelId());
+		TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(track.getChannelId());
 		if( channel != null ){
 			return ( channel.getName() != null ? channel.getName() : new String() );
 		}
@@ -183,13 +183,13 @@ public class TGTableViewer implements TGEventListener {
 	
 	private void updateTable(){
 		if(this.update){
-			int count = TuxGuitar.instance().getSongManager().getSong().countTracks();
+			int count = TuxGuitar.getInstance().getSongManager().getSong().countTracks();
 			this.table.removeRowsAfter(count);
 			for(int i = this.table.getRowCount(); i < count; i ++){
 				this.table.newRow();
 			}
 			for(int i = 0; i < count; i ++){
-				final TGTrack track = TuxGuitar.instance().getSongManager().getSong().getTrack(i);
+				final TGTrack track = TuxGuitar.getInstance().getSongManager().getSong().getTrack(i);
 				final TGTableRow row = this.table.getRow(i);
 				if(row != null){
 					//Number
@@ -222,7 +222,7 @@ public class TGTableViewer implements TGEventListener {
 							if( track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber() ){
 								TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 									public void run() throws TGException {
-										TGActionManager tgActionManager = TuxGuitar.instance().getActionManager();
+										TGActionManager tgActionManager = TuxGuitar.getInstance().getActionManager();
 										TGActionContext tgActionContext = tgActionManager.createActionContext();
 										tgActionContext.setAttribute(GoToTrackAction.PROPERTY_TRACK, track);
 										tgActionManager.execute(GoToTrackAction.NAME, tgActionContext);
@@ -237,7 +237,7 @@ public class TGTableViewer implements TGEventListener {
 									TGActionLock.waitFor();
 									TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 										public void run() throws TGException {
-											TuxGuitar.instance().getActionManager().execute(TrackPropertiesAction.NAME);
+											TuxGuitar.getInstance().getActionManager().execute(TrackPropertiesAction.NAME);
 										}
 									});
 								}
@@ -254,10 +254,10 @@ public class TGTableViewer implements TGEventListener {
 							int index = ((e.x + getHScrollSelection())/ getTable().getRowHeight());
 							if(index >= 0 && index < track.countMeasures()){
 								TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(index);
-								TGBeat beat = TuxGuitar.instance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+								TGBeat beat = TuxGuitar.getInstance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
 								if(beat != null){
 									getEditor().getTablature().getCaret().moveTo((TGTrackImpl)track,measure,beat,1);
-									TuxGuitar.instance().updateCache(true);
+									TuxGuitar.getInstance().updateCache(true);
 								}
 							}
 						}
@@ -270,7 +270,7 @@ public class TGTableViewer implements TGEventListener {
 			this.selectedMeasure = 0;
 			
 			if(this.autoSizeEnabled && this.trackCount != count){
-				TuxGuitar.instance().setTableHeight( getHeight() );
+				TuxGuitar.getInstance().setTableHeight( getHeight() );
 				this.trackCount = count;
 			}
 			
@@ -309,17 +309,17 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void redrawLocked(){
-		if( !TuxGuitar.instance().isLocked() ){
-			TuxGuitar.instance().lock();
+		if( !TuxGuitar.getInstance().isLocked() ){
+			TuxGuitar.getInstance().lock();
 			redraw();
-			TuxGuitar.instance().unlock();
+			TuxGuitar.getInstance().unlock();
 		}
 	}
 	
 	public void redraw(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			this.updateTable();
-			this.table.getColumnCanvas().setTitle(TuxGuitar.instance().getSongManager().getSong().getName());
+			this.table.getColumnCanvas().setTitle(TuxGuitar.getInstance().getSongManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
 			this.redrawRows(selectedTrack);
 			this.selectedTrack = selectedTrack;
@@ -339,8 +339,8 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
-			TGMeasure measure =  TuxGuitar.instance().getEditorCache().getPlayMeasure();
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
+			TGMeasure measure =  TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
 				int selectedTrack = measure.getTrack().getNumber();
@@ -368,7 +368,7 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void loadConfig(){
-		this.autoSizeEnabled = TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
+		this.autoSizeEnabled = TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
 		this.trackCount = 0;
 	}
 	
@@ -404,15 +404,15 @@ public class TGTableViewer implements TGEventListener {
 			}
 		};
 		
-		TuxGuitar.instance().getEditorManager().addUpdateListener(trackMenuUpdateListener);
-		TuxGuitar.instance().getLanguageManager().addLoader(trackMenuLanguageLoader);
-		TuxGuitar.instance().getIconManager().addLoader(trackMenuIconLoader);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(trackMenuUpdateListener);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(trackMenuLanguageLoader);
+		TuxGuitar.getInstance().getIconManager().addLoader(trackMenuIconLoader);
 		
 		trackMenu.getMenu().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				TuxGuitar.instance().getEditorManager().removeUpdateListener(trackMenuUpdateListener);
-				TuxGuitar.instance().getLanguageManager().removeLoader(trackMenuLanguageLoader);
-				TuxGuitar.instance().getIconManager().removeLoader(trackMenuIconLoader);
+				TuxGuitar.getInstance().getEditorManager().removeUpdateListener(trackMenuUpdateListener);
+				TuxGuitar.getInstance().getLanguageManager().removeLoader(trackMenuLanguageLoader);
+				TuxGuitar.getInstance().getIconManager().removeLoader(trackMenuIconLoader);
 			}
 		});
 		

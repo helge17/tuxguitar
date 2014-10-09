@@ -30,6 +30,6 @@ public class SetTablatureEnabledAction extends TGActionBase{
 		if((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0 && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){
 			layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_SCORE ) );
 		}
-		updateTablature();
+		updateSong();
 	}
 }

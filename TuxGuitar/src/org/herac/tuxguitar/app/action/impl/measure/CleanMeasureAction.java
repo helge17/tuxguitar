@@ -43,7 +43,7 @@ public class CleanMeasureAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		showDialog(TuxGuitar.instance().getShell());
+		showDialog(TuxGuitar.getInstance().getShell());
 	}
 	
 	public void showDialog(Shell shell) {
@@ -171,9 +171,9 @@ public class CleanMeasureAction extends TGActionBase{
 			if( ! undoable.isEmpty()){
 				addUndoableEdit(undoable.endUndo());
 			}
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
-			updateTablature();
+			updateSong();
 		}
 	}
 }

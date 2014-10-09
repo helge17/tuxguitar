@@ -68,22 +68,22 @@ public class UndoableChangeTempo implements UndoableEdit{
 	}
 	
 	private void getTempos(List list){
-		Iterator it = TuxGuitar.instance().getSongManager().getSong().getMeasureHeaders();
+		Iterator it = TuxGuitar.getInstance().getSongManager().getSong().getMeasureHeaders();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
-			list.add(header.getTempo().clone(TuxGuitar.instance().getSongManager().getFactory()));
+			list.add(header.getTempo().clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 		}
 	}
 	
 	private void setTempos(List tempos){
 		int length = tempos.size();
-		if(length != TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders()){
+		if(length != TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders()){
 			return;
 		}
 		for(int i =0; i < length; i ++){
-			TGTempo tempo = ((TGTempo)tempos.get(i)).clone(TuxGuitar.instance().getSongManager().getFactory());
-			TuxGuitar.instance().getSongManager().changeTempo(TuxGuitar.instance().getSongManager().getMeasureHeader(i + 1),tempo);
+			TGTempo tempo = ((TGTempo)tempos.get(i)).clone(TuxGuitar.getInstance().getSongManager().getFactory());
+			TuxGuitar.getInstance().getSongManager().changeTempo(TuxGuitar.getInstance().getSongManager().getMeasureHeader(i + 1),tempo);
 		}
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 	}
 }

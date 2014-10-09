@@ -15,7 +15,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 public class ScaleEditor {
 	
 	public void show() {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("scale.list"));
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -26,20 +26,20 @@ public class ScaleEditor {
 		
 		final List keys = new List(composite,SWT.BORDER | SWT.V_SCROLL);
 		keys.setLayoutData(new GridData(50,200));
-		String[] keyNames = TuxGuitar.instance().getScaleManager().getKeyNames();
+		String[] keyNames = TuxGuitar.getInstance().getScaleManager().getKeyNames();
 		for(int i = 0;i < keyNames.length;i ++){
 			keys.add(keyNames[i]);
 		}
-		keys.select(TuxGuitar.instance().getScaleManager().getSelectionKey());
+		keys.select(TuxGuitar.getInstance().getScaleManager().getSelectionKey());
 		
 		final List scales = new List(composite,SWT.BORDER | SWT.V_SCROLL);
 		scales.setLayoutData(new GridData(SWT.DEFAULT,200));
 		scales.add("None");
-		String[] scaleNames = TuxGuitar.instance().getScaleManager().getScaleNames();
+		String[] scaleNames = TuxGuitar.getInstance().getScaleManager().getScaleNames();
 		for(int i = 0;i < scaleNames.length;i ++){
 			scales.add(scaleNames[i]);
 		}
-		scales.select(TuxGuitar.instance().getScaleManager().getSelectionIndex() + 1);
+		scales.select(TuxGuitar.getInstance().getScaleManager().getSelectionIndex() + 1);
 		
 		//------------------BUTTONS--------------------------
 		Composite buttons = new Composite(dialog, SWT.NONE);
@@ -51,7 +51,7 @@ public class ScaleEditor {
 		buttonOK.setLayoutData(getButtonData());
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				TuxGuitar.instance().getScaleManager().selectScale((scales.getSelectionIndex() - 1), keys.getSelectionIndex());
+				TuxGuitar.getInstance().getScaleManager().selectScale((scales.getSelectionIndex() - 1), keys.getSelectionIndex());
 				dialog.dispose();
 			}
 		});

@@ -47,7 +47,7 @@ public class MarkerEditor {
 	}
 	
 	public MarkerEditor(TGMarker marker,int status) {
-		this.marker = marker.clone(TuxGuitar.instance().getSongManager().getFactory());
+		this.marker = marker.clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		this.status = status;
 	}
 	
@@ -65,7 +65,7 @@ public class MarkerEditor {
 		group.setText(TuxGuitar.getProperty("marker"));
 		
 		// Measure Number
-		final int measureCount = TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders();
+		final int measureCount = TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders();
 		Label measureLabel = new Label(group, SWT.NULL);
 		measureLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true,true));
 		measureLabel.setText(TuxGuitar.getProperty("measure"));
@@ -187,24 +187,24 @@ public class MarkerEditor {
 		int oldMeasure = this.marker.getMeasure();
 		this.marker.setMeasure(this.measureSpinner.getSelection());
 		this.marker.setTitle(this.titleText.getText());
-		this.marker = this.marker.clone(TuxGuitar.instance().getSongManager().getFactory());
+		this.marker = this.marker.clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		
 		//comienza el undoable
 		UndoableJoined joinedUndoable = new UndoableJoined();
 		
 		if(this.status == STATUS_EDIT && oldMeasure != this.marker.getMeasure()){
 			UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(manager.getMarker(oldMeasure));
-			TuxGuitar.instance().getSongManager().removeMarker(oldMeasure);
+			TuxGuitar.getInstance().getSongManager().removeMarker(oldMeasure);
 			joinedUndoable.addUndoableEdit(undoable.endUndo(null));
 		}
 		UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(manager.getMarker(this.marker.getMeasure()));
-		TuxGuitar.instance().getSongManager().updateMarker(this.marker);
+		TuxGuitar.getInstance().getSongManager().updateMarker(this.marker);
 		joinedUndoable.addUndoableEdit(undoable.endUndo(this.marker));
 		
 		// termia el undoable
-		TuxGuitar.instance().getUndoableManager().addEdit(joinedUndoable.endUndo());
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getUndoableManager().addEdit(joinedUndoable.endUndo());
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 	}
 }

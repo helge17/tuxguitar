@@ -17,7 +17,7 @@ public class TGActionAutoUpdateListener implements TGEventListener {
 		if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			String id = (String) event.getProperty(TGActionPostExecutionEvent.PROPERTY_ACTION_ID);
 			
-			TuxGuitar.instance().updateCache( this.manager.getAutoUpdateActionIds().hasActionId(id) );
+			TuxGuitar.getInstance().updateCache( this.manager.getAutoUpdateActionIds().hasActionId(id) );
 		}
 	}
 }

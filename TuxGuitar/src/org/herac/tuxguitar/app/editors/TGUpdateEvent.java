@@ -8,9 +8,10 @@ public class TGUpdateEvent extends TGEvent {
 	public static final String PROPERTY_UPDATE_MODE = "updateMode";
 	
 	public static final int SELECTION = 1;
-	public static final int SONG_UPDATED = 2;
-	public static final int SONG_LOADED = 3;
-	public static final int SONG_SAVED = 4;
+	public static final int MEASURE_UPDATED = 2;
+	public static final int SONG_UPDATED = 3;
+	public static final int SONG_LOADED = 4;
+	public static final int SONG_SAVED = 5;
 	
 	public TGUpdateEvent(int updateMode) {
 		super(EVENT_TYPE);

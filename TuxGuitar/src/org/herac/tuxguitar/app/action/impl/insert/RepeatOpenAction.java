@@ -29,17 +29,17 @@ public class RepeatOpenAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		//comienza el undoable
 		UndoableChangeOpenRepeat undoable = UndoableChangeOpenRepeat.startUndo();
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
 		getSongManager().changeOpenRepeat(measure.getStart());
-		updateTablature();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

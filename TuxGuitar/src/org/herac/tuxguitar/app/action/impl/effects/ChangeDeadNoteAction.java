@@ -46,14 +46,14 @@ public class ChangeDeadNoteAction extends TGActionBase{
 			getSongManager().getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration,caret.getVoice());
 		}
 		getSongManager().getMeasureManager().changeDeadNote(note);
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		updateTablature();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

@@ -73,9 +73,9 @@ public class EditToolItems extends ToolItems {
 	}
 	
 	public void update(){
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
-		this.undo.setEnabled(!running && TuxGuitar.instance().getUndoableManager().canUndo());
-		this.redo.setEnabled(!running && TuxGuitar.instance().getUndoableManager().canRedo());
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
+		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
 		this.voice1.setSelection(getEditor().getTablature().getCaret().getVoice() == 0);
 		this.voice1.setEnabled(!running);
 		this.voice2.setSelection(getEditor().getTablature().getCaret().getVoice() == 1);
@@ -99,12 +99,12 @@ public class EditToolItems extends ToolItems {
 	}
 	
 	public void loadIcons(){
-		this.undo.setImage(TuxGuitar.instance().getIconManager().getEditUndo());
-		this.redo.setImage(TuxGuitar.instance().getIconManager().getEditRedo());
-		this.voice1.setImage(TuxGuitar.instance().getIconManager().getEditVoice1());
-		this.voice2.setImage(TuxGuitar.instance().getIconManager().getEditVoice2());
-		this.modeSelection.setImage(TuxGuitar.instance().getIconManager().getEditModeSelection());
-		this.modeEdition.setImage(TuxGuitar.instance().getIconManager().getEditModeEdition());
-		this.notNaturalKey.setImage(TuxGuitar.instance().getIconManager().getEditModeEditionNotNatural());
+		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getEditUndo());
+		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getEditRedo());
+		this.voice1.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice1());
+		this.voice2.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice2());
+		this.modeSelection.setImage(TuxGuitar.getInstance().getIconManager().getEditModeSelection());
+		this.modeEdition.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEdition());
+		this.notNaturalKey.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEditionNotNatural());
 	}
 }

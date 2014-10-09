@@ -24,6 +24,6 @@ public class TransportPlayAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar.instance().getTransport().play();
+		TuxGuitar.getInstance().getTransport().play();
 	}
 }

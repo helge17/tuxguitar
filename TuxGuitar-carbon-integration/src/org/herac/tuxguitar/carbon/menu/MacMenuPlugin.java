@@ -24,7 +24,7 @@ public class MacMenuPlugin implements TGPlugin {
 		}else if(enabled){
 			this.macMenu = new MacMenu();
 			this.macMenu.setEnabled(true);
-			this.macMenu.hookApplicationMenu(TuxGuitar.instance().getDisplay(), TuxGuitar.instance().getShell());
+			this.macMenu.hookApplicationMenu(TuxGuitar.getInstance().getDisplay(), TuxGuitar.getInstance().getShell());
 		}
 	}
 

@@ -51,9 +51,9 @@ public class ViewToolItems extends ToolItems{
 	}
 	
 	public void update(){
-		this.showFretBoard.setSelection(TuxGuitar.instance().getFretBoardEditor().isVisible());
-		this.showInstruments.setSelection(!TuxGuitar.instance().getChannelManager().isDisposed());
-		this.showTransport.setSelection(!TuxGuitar.instance().getTransport().isDisposed());
+		this.showFretBoard.setSelection(TuxGuitar.getInstance().getFretBoardEditor().isVisible());
+		this.showInstruments.setSelection(!TuxGuitar.getInstance().getChannelManager().isDisposed());
+		this.showTransport.setSelection(!TuxGuitar.getInstance().getTransport().isDisposed());
 	}
 	
 	public void loadProperties(){
@@ -63,8 +63,8 @@ public class ViewToolItems extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.showFretBoard.setImage(TuxGuitar.instance().getIconManager().getFretboard());
-		this.showInstruments.setImage(TuxGuitar.instance().getIconManager().getInstruments());
-		this.showTransport.setImage(TuxGuitar.instance().getIconManager().getTransport());
+		this.showFretBoard.setImage(TuxGuitar.getInstance().getIconManager().getFretboard());
+		this.showInstruments.setImage(TuxGuitar.getInstance().getIconManager().getInstruments());
+		this.showTransport.setImage(TuxGuitar.getInstance().getIconManager().getTransport());
 	}
 }

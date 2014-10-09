@@ -168,7 +168,7 @@ public class TGIconManager {
 	}
 	
 	public void loadIcons(){
-		this.theme = TuxGuitar.instance().getConfig().getStringValue(TGConfigKeys.SKIN);
+		this.theme = TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN);
 		this.durations = new Image[]{
 			loadIcon("1.png"),
 			loadIcon("2.png"),
@@ -334,7 +334,7 @@ public class TGIconManager {
 	}
 	
 	public boolean shouldReload(){
-		return (!this.theme.equals(TuxGuitar.instance().getConfig().getStringValue(TGConfigKeys.SKIN)));
+		return (!this.theme.equals(TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN)));
 	}
 	
 	public Image getDuration(int value){

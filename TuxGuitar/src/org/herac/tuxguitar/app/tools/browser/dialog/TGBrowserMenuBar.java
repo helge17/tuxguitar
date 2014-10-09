@@ -46,7 +46,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.menuFileItem.setMenu(menuFile);
 		
 		this.open = new MenuItem(menuFile,SWT.PUSH);
-		this.open.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
+		this.open.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		this.open.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().openElement();
@@ -69,13 +69,13 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		
 		this.newCollection = new Menu(menuCollection.getShell(), SWT.DROP_DOWN);
 		this.newItem = new MenuItem(menuCollection,SWT.CASCADE);
-		this.newItem.setImage(TuxGuitar.instance().getIconManager().getBrowserNew());
+		this.newItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserNew());
 		this.newItem.setMenu(this.newCollection);
 		this.updateTypes();
 		
 		this.openCollection = new Menu(menuCollection.getShell(), SWT.DROP_DOWN);
 		this.openItem = new MenuItem(menuCollection,SWT.CASCADE);
-		this.openItem.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
+		this.openItem.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		this.openItem.setMenu(this.openCollection);
 		
 		this.removeCollection = new Menu(menuCollection.getShell(), SWT.DROP_DOWN);
@@ -97,7 +97,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.menuGoItem.setMenu(menuGo);
 		
 		this.root = new MenuItem(menuGo,SWT.PUSH);
-		this.root.setImage(TuxGuitar.instance().getIconManager().getBrowserRoot());
+		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
 		this.root.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().getConnection().cdRoot(TGBrowserDialog.CALL_CD_ROOT);
@@ -106,7 +106,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		
 		//---Back Folder------------------------------------------------------
 		this.back = new MenuItem(menuGo,SWT.PUSH);
-		this.back.setImage(TuxGuitar.instance().getIconManager().getBrowserBack());
+		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
 		this.back.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().getConnection().cdUp(TGBrowserDialog.CALL_CD_UP);
@@ -115,7 +115,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		
 		//---Refresh Folder------------------------------------------------------
 		this.refresh = new MenuItem(menuGo,SWT.PUSH);
-		this.refresh.setImage(TuxGuitar.instance().getIconManager().getBrowserRefresh());
+		this.refresh.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRefresh());
 		this.refresh.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getBrowser().getConnection().listElements(TGBrowserDialog.CALL_LIST);

@@ -46,9 +46,9 @@ public class OpenURLAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		final Object propertyUrl = context.getAttribute(PROPERTY_URL);
 		
-		TuxGuitar.instance().getPlayer().reset();
+		TuxGuitar.getInstance().getPlayer().reset();
 		
-		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
+		if(TuxGuitar.getInstance().getFileHistory().isUnsavedFile()){
 			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 			int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
@@ -62,7 +62,7 @@ public class OpenURLAction extends TGActionBase {
 					TGActionLock.unlock();
 					return;
 				}
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				new Thread(new Runnable() {
 					public void run() {
 						if(!TuxGuitar.isDisposed()){
@@ -70,7 +70,7 @@ public class OpenURLAction extends TGActionBase {
 							new SyncThread(new Runnable() {
 								public void run() {
 									if(!TuxGuitar.isDisposed()){
-										TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+										TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 										openURL( propertyUrl );
 									}
 								}
@@ -90,12 +90,12 @@ public class OpenURLAction extends TGActionBase {
 			TGActionLock.unlock();
 			return;
 		}
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.open(url);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 				}
 			}
@@ -116,7 +116,7 @@ public class OpenURLAction extends TGActionBase {
 		protected URL openDialog(){
 			this.url = null;
 			
-			final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			dialog.setLayout(new GridLayout());
 			dialog.setText(TuxGuitar.getProperty("file.open-url"));
 			

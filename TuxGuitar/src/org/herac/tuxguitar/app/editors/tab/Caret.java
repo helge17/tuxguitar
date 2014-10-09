@@ -73,7 +73,7 @@ public class Caret {
 	}
 	
 	public synchronized void update(int trackNumber,long position,int string,int velocity) {
-		long realPosition = ((TuxGuitar.instance().getPlayer().isRunning())?MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition()):position);
+		long realPosition = ((TuxGuitar.getInstance().getPlayer().isRunning())?MidiTickUtil.getStart(TuxGuitar.getInstance().getPlayer().getTickPosition()):position);
 		TGTrackImpl track = findTrack(trackNumber); 
 		TGMeasureImpl measure = findMeasure(realPosition,track);
 		TGBeat beat = findBeat(realPosition,measure);
@@ -132,13 +132,13 @@ public class Caret {
 	}
 	
 	public synchronized void goToTickPosition(){
-		long start = MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition());
+		long start = MidiTickUtil.getStart(TuxGuitar.getInstance().getPlayer().getTickPosition());
 		this.update(this.selectedTrack.getNumber(),start,this.string);
 		this.setChanges(true);
 	}
 	
 	public void paintCaret(TGLayout layout, TGPainter painter) {
-		if(!TuxGuitar.instance().getPlayer().isRunning()){
+		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && !this.selectedMeasure.isOutOfBounds() && this.selectedBeat instanceof TGBeatImpl) {
 				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){
@@ -313,7 +313,7 @@ public class Caret {
 	}
 	
 	private void checkTransport(){
-		TuxGuitar.instance().getTransport().gotoMeasure(getMeasure().getHeader());
+		TuxGuitar.getInstance().getTransport().gotoMeasure(getMeasure().getHeader());
 	}
 	
 	public boolean hasChanges() {

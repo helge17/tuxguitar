@@ -187,11 +187,11 @@ public class BeatMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		TGBeat beat = caret.getSelectedBeat();
 		TGNote note = caret.getSelectedNote();
 		boolean restBeat = caret.isRestBeatSelected();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
 		this.tiedNote.setSelection(note != null && note.isTiedNote());
 		this.insertRestBeat.setEnabled(!running);
@@ -247,6 +247,6 @@ public class BeatMenuItem extends MenuItems{
 	}
 	
 	public void loadIcons(){
-		this.tiedNote.setImage(TuxGuitar.instance().getIconManager().getNoteTied());
+		this.tiedNote.setImage(TuxGuitar.getInstance().getIconManager().getNoteTied());
 	}
 }

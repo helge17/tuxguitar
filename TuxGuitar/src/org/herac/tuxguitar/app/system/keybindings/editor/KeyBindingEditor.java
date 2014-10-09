@@ -72,7 +72,7 @@ public class KeyBindingEditor {
 		shortcutColumn.setText(TuxGuitar.getProperty("key-bindings-editor-shortcut-column"));
 		
 		loadAvailableActionKeyBindings();
-		loadEnableActionKeyBindings(TuxGuitar.instance().getKeyBindingManager().getKeyBindingActions());
+		loadEnableActionKeyBindings(TuxGuitar.getInstance().getKeyBindingManager().getKeyBindingActions());
 		
 		//------------------BUTTONS--------------------------
 		Composite buttons = new Composite(this.dialog, SWT.NONE);
@@ -137,7 +137,7 @@ public class KeyBindingEditor {
 	}
 	
 	protected void loadAvailableActionKeyBindings(){
-		List list = TuxGuitar.instance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
+		List list = TuxGuitar.getInstance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
 		Collections.sort(list);
 		Iterator it = list.iterator();
 		while (it.hasNext()) {
@@ -220,9 +220,9 @@ public class KeyBindingEditor {
 				}
 			}
 		}
-		TuxGuitar.instance().getKeyBindingManager().reset(list);
-		TuxGuitar.instance().getKeyBindingManager().saveKeyBindings();
-		TuxGuitar.instance().loadLanguage();
+		TuxGuitar.getInstance().getKeyBindingManager().reset(list);
+		TuxGuitar.getInstance().getKeyBindingManager().saveKeyBindings();
+		TuxGuitar.getInstance().loadLanguage();
 	}
 	
 	public Shell getDialog(){

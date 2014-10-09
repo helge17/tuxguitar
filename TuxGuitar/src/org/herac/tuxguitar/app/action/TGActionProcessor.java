@@ -32,7 +32,7 @@ public class TGActionProcessor implements SelectionListener,MouseListener,MenuLi
 	}
 	
 	public void processEvent(TypedEvent e) {
-		TGActionContext tgActionContext = TuxGuitar.instance().getActionManager().createActionContext();
+		TGActionContext tgActionContext = TuxGuitar.getInstance().getActionManager().createActionContext();
 		tgActionContext.setAttribute(PROPERTY_TYPED_EVENT, e);
 		
 		this.fillWidgetAttributes(tgActionContext, e);
@@ -43,7 +43,7 @@ public class TGActionProcessor implements SelectionListener,MouseListener,MenuLi
 		final String actionName = this.actionName;
 		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TuxGuitar.instance().getActionManager().execute(actionName, context);
+				TuxGuitar.getInstance().getActionManager().execute(actionName, context);
 			}
 		});
 	}

@@ -32,7 +32,7 @@ public class RemoveUnusedVoiceAction extends TGActionBase{
 		if( caret.getMeasure() != null){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
 				if( caret.getVoice() != v ){
@@ -42,11 +42,11 @@ public class RemoveUnusedVoiceAction extends TGActionBase{
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
-			updateTablature();
+			updateSong();
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

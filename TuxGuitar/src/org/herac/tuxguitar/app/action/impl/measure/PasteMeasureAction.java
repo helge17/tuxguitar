@@ -140,7 +140,7 @@ public class PasteMeasureAction extends TGActionBase{
 					
 					transferable.insertTransfer();
 					
-					updateTablature();
+					updateSong();
 				}
 			}
 		} catch (CannotInsertTransferException ex) {

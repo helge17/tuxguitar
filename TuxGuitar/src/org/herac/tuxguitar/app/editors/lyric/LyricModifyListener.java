@@ -19,7 +19,7 @@ public class LyricModifyListener implements ModifyListener{
 	}
 	
 	public void modifyText(ModifyEvent e) {
-		if(isEnabled() && !TuxGuitar.instance().getPlayer().isRunning()){
+		if(isEnabled() && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			
 			if(e.widget instanceof Text){
 				TGTrack track = this.editor.getTrack();
@@ -29,19 +29,19 @@ public class LyricModifyListener implements ModifyListener{
 				
 				UndoableTrackLyric undoable = UndoableTrackLyric.startUndo(track,this.lastPosition);
 				track.getLyrics().setLyrics(value);
-				TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo(track,position) );
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo(track,position) );
+				TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 				
 				this.lastPosition = position;
 			}else if(e.widget instanceof Spinner){
 				TGTrack track = this.editor.getTrack();
 				UndoableTrackLyric undoable = UndoableTrackLyric.startUndo(track,this.lastPosition);
 				track.getLyrics().setFrom(((Spinner)e.widget).getSelection());
-				TuxGuitar.instance().getUndoableManager().addEdit( undoable.endUndo(track,this.lastPosition) );
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo(track,this.lastPosition) );
+				TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			}
 			
-			TuxGuitar.instance().updateCache(true);
+			TuxGuitar.getInstance().updateCache(true);
 		}
 	}
 	

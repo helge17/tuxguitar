@@ -16,7 +16,7 @@ public class ModifiedMarker implements TGEventListener {
 	}
 	
 	public void init() throws Throwable{
-	    TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+	    TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public boolean isEnabled() {
@@ -30,7 +30,7 @@ public class ModifiedMarker implements TGEventListener {
 	}
 	
 	private void setFrameState(boolean modified) {
-	    Shell shell = TuxGuitar.instance().getShell();
+	    Shell shell = TuxGuitar.getInstance().getShell();
    	    NSWindow nsWindow = shell.view.window();
         nsWindow.setDocumentEdited(modified);
 	}
@@ -38,7 +38,7 @@ public class ModifiedMarker implements TGEventListener {
 	/** From 'TGEventListener' */
 	public void processEvent(TGEvent event) {
 		if( this.isEnabled() && TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-		    this.setFrameState(TuxGuitar.instance().getFileHistory().isUnsavedFile());
+		    this.setFrameState(TuxGuitar.getInstance().getFileHistory().isUnsavedFile());
 		}
 	}
 }

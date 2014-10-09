@@ -13,6 +13,6 @@ public class TransportCountDownAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar.instance().getPlayer().getCountDown().setEnabled(!TuxGuitar.instance().getPlayer().getCountDown().isEnabled());
+		TuxGuitar.getInstance().getPlayer().getCountDown().setEnabled(!TuxGuitar.getInstance().getPlayer().getCountDown().isEnabled());
 	}
 }

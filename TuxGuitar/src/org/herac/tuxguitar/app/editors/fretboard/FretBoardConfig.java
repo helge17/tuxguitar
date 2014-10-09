@@ -83,8 +83,8 @@ public class FretBoardConfig {
 	}
 	
 	public void load(){
-		Display display = TuxGuitar.instance().getDisplay();
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		Display display = TuxGuitar.getInstance().getDisplay();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		this.style = config.getIntegerValue(TGConfigKeys.FRETBOARD_STYLE);
 		this.direction = config.getIntegerValue(TGConfigKeys.FRETBOARD_DIRECTION, DIRECTION_RIGHT );
 		this.font = new Font(display,config.getFontDataConfigValue(TGConfigKeys.FRETBOARD_FONT));
@@ -96,7 +96,7 @@ public class FretBoardConfig {
 	}
 	
 	public void defaults(){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		TGProperties defaults = TGConfigDefaults.createDefaults();
 		config.setValue(TGConfigKeys.FRETBOARD_STYLE,defaults.getValue(TGConfigKeys.FRETBOARD_STYLE));
 		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,defaults.getValue(TGConfigKeys.FRETBOARD_DIRECTION));
@@ -109,7 +109,7 @@ public class FretBoardConfig {
 	}
 	
 	public void save(int style, int direction, FontData fontData,RGB rgbBackground,RGB rgbString,RGB rgbFretPoint,RGB rgbNote,RGB rgbScale){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		config.setValue(TGConfigKeys.FRETBOARD_STYLE,style);
 		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,direction);
 		config.setValue(TGConfigKeys.FRETBOARD_FONT,fontData);
@@ -121,7 +121,7 @@ public class FretBoardConfig {
 	}
 	
 	public void saveDirection( int direction ){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,direction);
 		
 		this.direction = direction;

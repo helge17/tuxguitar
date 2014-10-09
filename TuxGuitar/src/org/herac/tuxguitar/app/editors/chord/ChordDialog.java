@@ -66,7 +66,7 @@ public class ChordDialog {
 		this.dialog.setText(TuxGuitar.getProperty("chord.editor"));
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				TuxGuitar.instance().getCustomChordManager().write();
+				TuxGuitar.getInstance().getCustomChordManager().write();
 			}
 		});
 		
@@ -214,7 +214,7 @@ public class ChordDialog {
 	}
 	
 	protected TGChord findCurrentChord(TGMeasure measure, long start){
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		TGChord chord = manager.getMeasureManager().getChord(measure, start);
 		if(chord == null){
 			chord = manager.getFactory().newChord(measure.getTrack().stringCount());

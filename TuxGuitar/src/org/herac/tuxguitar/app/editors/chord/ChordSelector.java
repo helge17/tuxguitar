@@ -365,7 +365,7 @@ public class ChordSelector extends Composite{
 	}
 	
 	protected void showChord(){
-		TuxGuitar.instance().loadCursor(getShell(),SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(getShell(),SWT.CURSOR_WAIT);
 		ChordCreatorListener listener = new ChordCreatorListener() {
 			public void notifyChords(final ChordCreatorUtil instance,final java.util.List chords) {
 				try {
@@ -373,7 +373,7 @@ public class ChordSelector extends Composite{
 						public void run() throws TGException {
 							if(instance.isValidProcess() && !getDialog().isDisposed()){
 								getDialog().getList().setChords(chords);
-								TuxGuitar.instance().loadCursor(getShell(),SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().loadCursor(getShell(),SWT.CURSOR_ARROW);
 							}
 						}
 					});

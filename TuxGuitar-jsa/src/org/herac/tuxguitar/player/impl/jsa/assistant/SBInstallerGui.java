@@ -52,7 +52,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 	}
 	
 	public void open(){
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.dialog.setLayout(new GridLayout());
 
 		//-----------------------------------------------------
@@ -61,7 +61,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 		header.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));		
         
 		Label headerImage = new Label(header, SWT.NONE);
-		headerImage.setImage(TuxGuitar.instance().getDisplay().getSystemImage(SWT.ICON_INFORMATION));
+		headerImage.setImage(TuxGuitar.getInstance().getDisplay().getSystemImage(SWT.ICON_INFORMATION));
 		headerImage.setLayoutData(new GridData(SWT.LEFT,SWT.TOP,false,false));
 		
 		Label headerTip = new Label(header, SWT.WRAP);

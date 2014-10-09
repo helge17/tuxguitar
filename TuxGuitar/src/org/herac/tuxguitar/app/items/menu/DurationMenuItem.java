@@ -93,7 +93,7 @@ public class DurationMenuItem  extends MenuItems{
 	}
 	
 	public void update(){
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.whole.setEnabled(!running);
 		this.half.setEnabled(!running);
 		this.quarter.setEnabled(!running);
@@ -121,15 +121,15 @@ public class DurationMenuItem  extends MenuItems{
 	}
 	
 	public void loadIcons() {
-		this.whole.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.WHOLE));
-		this.half.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.HALF));
-		this.quarter.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.QUARTER));
-		this.eighth.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.EIGHTH));
-		this.sixteenth.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTEENTH));
-		this.thirtySecond.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
-		this.sixtyFourth.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
-		this.dotted.setImage(TuxGuitar.instance().getIconManager().getDurationDotted());
-		this.doubleDotted.setImage(TuxGuitar.instance().getIconManager().getDurationDoubleDotted());
-		this.division.setImage(TuxGuitar.instance().getIconManager().getDivisionType());
+		this.whole.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.WHOLE));
+		this.half.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.HALF));
+		this.quarter.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
+		this.eighth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
+		this.sixteenth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
+		this.thirtySecond.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
+		this.sixtyFourth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
+		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
+		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
+		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType());
 	}
 }

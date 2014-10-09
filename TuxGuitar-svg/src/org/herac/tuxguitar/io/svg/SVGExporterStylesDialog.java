@@ -22,7 +22,7 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 	}
 	
 	public void configure() {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("options"));
 		
@@ -37,10 +37,10 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 		
 		final Combo trackCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		trackCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			trackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			trackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		trackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		trackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
 		
 		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
 		trackAllCheck.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true,2,1));

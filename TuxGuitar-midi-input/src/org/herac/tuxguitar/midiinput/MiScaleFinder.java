@@ -46,7 +46,7 @@ class MiScaleFinder
 
 	static private TestScale[]	buildReferenceSequences(int inLoPitch, int inHiPitch, int inScaleIndex)
 	{
-	ScaleManager	scaleMgr	= TuxGuitar.instance().getScaleManager();
+	ScaleManager	scaleMgr	= TuxGuitar.getInstance().getScaleManager();
 	int[]			model		= scaleDefToModel(scaleMgr.getScaleKeys(inScaleIndex));
 	int[]			intervals	= scaleModelToIntervals(model);
 	TestScale[]		sequences	= new TestScale[12];
@@ -118,7 +118,7 @@ class MiScaleFinder
 
 	static public int		findMatchingScale(TreeSet inScale)
 	{
-	ScaleManager	scaleMgr		= TuxGuitar.instance().getScaleManager();
+	ScaleManager	scaleMgr		= TuxGuitar.getInstance().getScaleManager();
 	int				scalesCount		= scaleMgr.countScales(),
 					minScaleSize	= 12,
 					maxMatches		= 0,
@@ -178,7 +178,7 @@ class MiScaleFinder
 	try	{
 		TGSynchronizer.instance().execute( new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TuxGuitar.instance().getScaleManager().selectScale(inIndex, inKey);
+				TuxGuitar.getInstance().getScaleManager().selectScale(inIndex, inKey);
 			}
 		});
 		}

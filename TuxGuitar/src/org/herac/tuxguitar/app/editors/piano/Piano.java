@@ -80,8 +80,8 @@ public class Piano extends Composite{
 		this.loadIcons();
 		this.loadProperties();
 		
-		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.toolComposite);
-		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.pianoComposite);
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.toolComposite);
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.pianoComposite);
 	}
 	
 	private void initToolBar() {
@@ -135,7 +135,7 @@ public class Piano extends Composite{
 		// settings
 		layout.numColumns ++;
 		this.settings = new Button(this.toolComposite, SWT.PUSH);
-		this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.settings.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
 		this.settings.addSelectionListener(new SelectionAdapter() {
@@ -154,18 +154,18 @@ public class Piano extends Composite{
 	}
 	
 	private void loadDurationImage(boolean force) {
-		int duration = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getDuration().getValue();
+		int duration = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration().getValue();
 		if(force || this.duration != duration){
 			this.duration = duration;
-			this.durationLabel.setImage(TuxGuitar.instance().getIconManager().getDuration(this.duration));
+			this.durationLabel.setImage(TuxGuitar.getInstance().getIconManager().getDuration(this.duration));
 		}
 	}
 	
 	private void loadScaleName() {
-		int scaleKey = TuxGuitar.instance().getScaleManager().getSelectionKey();
-		int scaleIndex = TuxGuitar.instance().getScaleManager().getSelectionIndex();
-		String key = TuxGuitar.instance().getScaleManager().getKeyName( scaleKey );
-		String name = TuxGuitar.instance().getScaleManager().getScaleName( scaleIndex );
+		int scaleKey = TuxGuitar.getInstance().getScaleManager().getSelectionKey();
+		int scaleIndex = TuxGuitar.getInstance().getScaleManager().getSelectionIndex();
+		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKey );
+		String name = TuxGuitar.getInstance().getScaleManager().getScaleName( scaleIndex );
 		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
 		this.scaleName.pack();
 	}
@@ -244,7 +244,7 @@ public class Piano extends Composite{
 				width = SHARP_WIDTH;
 			}
 			
-			if(TuxGuitar.instance().getScaleManager().getScale().getNote(i)){
+			if(TuxGuitar.getInstance().getScaleManager().getScale().getNote(i)){
 				if(TYPE_NOTES[i % TYPE_NOTES.length] ){
 					int x = posX;
 					if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
@@ -371,12 +371,12 @@ public class Piano extends Composite{
 						//comienza el undoable
 						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 						
-						TGSongManager manager = TuxGuitar.instance().getSongManager();
+						TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 						manager.getMeasureManager().removeNote(note);
 						
 						//termia el undoable
-						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-						TuxGuitar.instance().getFileHistory().setUnsavedFile();
+						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
+						TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 						
 						return true;
 					}
@@ -387,7 +387,7 @@ public class Piano extends Composite{
 	}
 	
 	private boolean addNote(int value) {
-		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		
 		List strings = caret.getTrack().getStrings();
 		for(int i = 0;i < strings.size();i ++){
@@ -409,7 +409,7 @@ public class Piano extends Composite{
 					}
 				}
 				if(emptyString){
-					TGSongManager manager = TuxGuitar.instance().getSongManager();
+					TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 					
 					//comienza el undoable
 					UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
@@ -425,11 +425,11 @@ public class Piano extends Composite{
 					manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration,caret.getVoice());
 					
 					//termia el undoable
-					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
+					TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
+					TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 					
 					//reprodusco las notas en el pulso
-					TuxGuitar.instance().playBeat(caret.getSelectedBeat());
+					TuxGuitar.getInstance().playBeat(caret.getSelectedBeat());
 					
 					return true;
 				}
@@ -439,9 +439,9 @@ public class Piano extends Composite{
 	}
 	
 	protected void afterAction() {
-		TGMeasureHeader measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader();
-		TuxGuitar.instance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
-		TuxGuitar.instance().updateCache(true);
+		TGMeasureHeader measure = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader();
+		TuxGuitar.getInstance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	protected int getRealNoteValue(TGNote note){
@@ -459,7 +459,7 @@ public class Piano extends Composite{
 			}
 		}
 		// If note have no parents, uses current track strings.
-		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		TGTrack track = caret.getTrack();
 		if( track != null ){
 			return ( note.getValue() + track.getString( note.getString() ).getValue() );
@@ -489,18 +489,18 @@ public class Piano extends Composite{
 				this.image.dispose();
 				this.image = makePianoImage();
 			}
-			if(TuxGuitar.instance().getPlayer().isRunning()){
-				this.beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
+			if(TuxGuitar.getInstance().getPlayer().isRunning()){
+				this.beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
 			}else if(this.externalBeat != null){
 				this.beat = this.externalBeat;
 			}else{
-				this.beat = TuxGuitar.instance().getEditorCache().getEditBeat();
+				this.beat = TuxGuitar.getInstance().getEditorCache().getEditBeat();
 			}
 		}
 	}
 	
 	public void redraw() {
-		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!super.isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			super.redraw();
 			this.pianoComposite.redraw();
 			this.loadDurationImage(false);
@@ -508,7 +508,7 @@ public class Piano extends Composite{
 	}
 	
 	public void redrawPlayingMode(){
-		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!super.isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			this.pianoComposite.redraw();
 		}
 	}
@@ -527,8 +527,8 @@ public class Piano extends Composite{
 	}
 	
 	public void loadIcons(){
-		this.getShell().setImage(TuxGuitar.instance().getIconManager().getAppIcon());
-		this.settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+		this.getShell().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.loadDurationImage(true);
 		this.layout(true,true);
 	}
@@ -555,8 +555,8 @@ public class Piano extends Composite{
 		}
 		
 		public void paintControl(PaintEvent e) {
-			if(!TuxGuitar.instance().isLocked()){
-				TuxGuitar.instance().lock();
+			if(!TuxGuitar.getInstance().isLocked()){
+				TuxGuitar.getInstance().lock();
 				updateEditor();
 				
 				TGPainterImpl painter = new TGPainterImpl(e.gc);
@@ -573,14 +573,14 @@ public class Piano extends Composite{
 						}
 					}
 				}
-				TuxGuitar.instance().unlock();
+				TuxGuitar.getInstance().unlock();
 			}
 		}
 		
 		public void mouseUp(MouseEvent e) {
 			getPianoComposite().setFocus();
 			if(e.button == 1){
-				if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !TGActionLock.isLocked()){
+				if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked()){
 					TGActionLock.lock();
 					if( getExternalBeat() == null ){
 						hit(e.x, e.y);
@@ -593,7 +593,7 @@ public class Piano extends Composite{
 			}else{
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TuxGuitar.instance().getActionManager().execute(GoRightAction.NAME);
+						TuxGuitar.getInstance().getActionManager().execute(GoRightAction.NAME);
 					}
 				});
 			}

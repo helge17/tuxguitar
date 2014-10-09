@@ -27,8 +27,8 @@ public class GoRightAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			TuxGuitar.instance().getTransport().gotoNext();
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			TuxGuitar.getInstance().getTransport().gotoNext();
 		}
 		else{
 			Caret caret = getEditor().getTablature().getCaret();
@@ -39,10 +39,10 @@ public class GoRightAction extends TGActionBase{
 				UndoableAddMeasure undoable = UndoableAddMeasure.startUndo(number);
 				
 				getSongManager().addNewMeasure(number);
-				fireUpdate(number);
+				updateMeasure(number);
 				caret.moveRight();
 				
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 				
 				//termia el undoable
 				addUndoableEdit(undoable.endUndo());

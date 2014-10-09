@@ -45,9 +45,9 @@ public class MoveBeatsLeftAction extends TGActionBase{
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo(track));
 			
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
-			updateTablature();
+			updateSong();
 		}
 	}
 }

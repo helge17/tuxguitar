@@ -28,8 +28,8 @@ public class GoFirstMeasureAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			TuxGuitar.instance().getTransport().gotoFirst();
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			TuxGuitar.getInstance().getTransport().gotoFirst();
 		}
 		else{
 			Caret caret = getEditor().getTablature().getCaret();

@@ -31,14 +31,14 @@ public abstract class TGChannelSettingsPlugin implements TGPlugin{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TuxGuitar.instance().getChannelManager().getChannelSettingsHandlerManager().addChannelSettingsHandler(this.handler);
+			TuxGuitar.getInstance().getChannelManager().getChannelSettingsHandlerManager().addChannelSettingsHandler(this.handler);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TuxGuitar.instance().getChannelManager().getChannelSettingsHandlerManager().removeChannelSettingsHandler(this.handler);
+			TuxGuitar.getInstance().getChannelManager().getChannelSettingsHandlerManager().removeChannelSettingsHandler(this.handler);
 			this.loaded = false;
 		}
 	}

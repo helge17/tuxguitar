@@ -66,7 +66,7 @@ public class MidiConfigUtils {
 		sbCustomPath.setText( (soundbank == null ? new String() : soundbank)  );
 		
 		final Button sbCustomChooser = new Button(chooser,SWT.PUSH);
-		sbCustomChooser.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
+		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		sbCustomChooser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				String fileName = FileChooser.instance().open(dialog,FileChooser.ALL_FORMATS);

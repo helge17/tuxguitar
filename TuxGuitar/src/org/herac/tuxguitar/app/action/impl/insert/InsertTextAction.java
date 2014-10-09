@@ -44,12 +44,12 @@ public class InsertTextAction extends TGActionBase {
 		showInsertDialog(beat,(beat.getText() == null?new String():beat.getText().getValue()));
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 	
 	public void showInsertDialog(final TGBeat beat,String value) {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		
 		dialog.setLayout(new GridLayout());
@@ -131,8 +131,8 @@ public class InsertTextAction extends TGActionBase {
 		TGText text = getSongManager().getFactory().newText();
 		text.setValue(value);
 		getSongManager().getMeasureManager().addText(beat, text);
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		updateTablature();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());
@@ -143,8 +143,8 @@ public class InsertTextAction extends TGActionBase {
 		UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 		
 		getSongManager().getMeasureManager().removeText(beat);
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		updateTablature();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());

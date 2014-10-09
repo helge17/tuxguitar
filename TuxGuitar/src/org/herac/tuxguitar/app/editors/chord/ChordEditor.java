@@ -387,7 +387,7 @@ public class ChordEditor extends Composite {
 	}
 	
 	public TGChord getChord() {
-		TGChord chord = TuxGuitar.instance().getSongManager().getFactory().newChord(this.strings.length);
+		TGChord chord = TuxGuitar.getInstance().getSongManager().getFactory().newChord(this.strings.length);
 		chord.setName(this.chordName.getText());
 		chord.setFirstFret(this.fret);
 		for (int i = 0; i < chord.getStrings().length; i++) {
@@ -486,9 +486,9 @@ public class ChordEditor extends Composite {
 					}
 				}
 				
-				TGChannel channel = TuxGuitar.instance().getSongManager().getChannel(getCurrentTrack().getChannelId());
+				TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(getCurrentTrack().getChannelId());
 				if( channel != null ){
-					TuxGuitar.instance().getPlayer().playBeat(
+					TuxGuitar.getInstance().getPlayer().playBeat(
 						channel.getChannelId(),
 						channel.getBank(),
 						channel.getProgram(),

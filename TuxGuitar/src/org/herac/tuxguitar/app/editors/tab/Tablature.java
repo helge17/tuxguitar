@@ -124,8 +124,8 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public synchronized void paintTablature(TGPainter painter){
-		if(!TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+		if(!TuxGuitar.getInstance().isLocked()){
+			TuxGuitar.getInstance().lock();
 			this.setPainting(true);
 			try{
 				this.checkScroll();
@@ -145,7 +145,7 @@ public class Tablature extends Composite implements TGController {
 				
 				this.updateScroll();
 				
-				if(TuxGuitar.instance().getPlayer().isRunning()){
+				if(TuxGuitar.getInstance().getPlayer().isRunning()){
 					redrawPlayingMode(painter,true);
 				}
 				// Si no estoy reproduciendo y hay cambios
@@ -161,7 +161,7 @@ public class Tablature extends Composite implements TGController {
 				throwable.printStackTrace();
 			}
 			this.setPainting(false);
-			TuxGuitar.instance().unlock();
+			TuxGuitar.getInstance().unlock();
 		}
 	}
 	
@@ -230,7 +230,7 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void redraw(){
-		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!super.isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			this.playedBeat = null;
 			this.playedMeasure = null;
 			this.setPainting(true);
@@ -239,8 +239,8 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void redrawPlayingMode(){
-		if(!super.isDisposed() && !isPainting() && !TuxGuitar.instance().isLocked()){
-			if(TuxGuitar.instance().getPlayer().isRunning()){
+		if(!super.isDisposed() && !isPainting() && !TuxGuitar.getInstance().isLocked()){
+			if(TuxGuitar.getInstance().getPlayer().isRunning()){
 				this.setPainting(true);
 				
 				TGPainter painter = new TGPainterImpl(new GC(this));
@@ -253,10 +253,10 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	private void redrawPlayingMode(TGPainter painter,boolean force){
-		if(!super.isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!super.isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			try{
-				TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
-				TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
+				TGMeasureImpl measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
+				TGBeatImpl beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
 				if(measure != null && measure.hasTrack(getCaret().getTrack().getNumber())){
 					if(!moveScrollTo(measure) || force){
 						boolean paintMeasure = (force || this.playedMeasure == null || !this.playedMeasure.equals(measure));
@@ -326,7 +326,7 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void reloadViewLayout(){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		this.loadViewLayout(config.getIntegerValue(TGConfigKeys.LAYOUT_STYLE), config.getIntegerValue(TGConfigKeys.LAYOUT_MODE));
 	}
@@ -368,25 +368,25 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public boolean isRunning(TGBeat beat) {
-		return ( isRunning( beat.getMeasure() ) && TuxGuitar.instance().getEditorCache().isPlaying(beat.getMeasure(),beat) );
+		return ( isRunning( beat.getMeasure() ) && TuxGuitar.getInstance().getEditorCache().isPlaying(beat.getMeasure(),beat) );
 	}
 	
 	public boolean isRunning(TGMeasure measure) {
-		return ( measure.getTrack().equals(getCaret().getTrack()) && TuxGuitar.instance().getEditorCache().isPlaying( measure ) );
+		return ( measure.getTrack().equals(getCaret().getTrack()) && TuxGuitar.getInstance().getEditorCache().isPlaying( measure ) );
 	}
 	
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader){
-		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
 		return ( pm.isLoop() && pm.getLoopSHeader() == measureHeader.getNumber() );
 	}
 	
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader){
-		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
 		return ( pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber() );
 	}
 	
 	public void configureStyles(TGLayoutStyles styles){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		styles.setBufferEnabled(true);
 		styles.setStringSpacing(config.getIntegerValue(TGConfigKeys.TAB_LINE_SPACING));

@@ -17,7 +17,7 @@ public class TGTrayMenu {
 	private MenuItem exit;
 	
 	public void make(){
-		this.menu = new Menu (TuxGuitar.instance().getShell(), SWT.POP_UP);
+		this.menu = new Menu (TuxGuitar.getInstance().getShell(), SWT.POP_UP);
 		
 		this.play = new MenuItem(this.menu,SWT.PUSH);
 		this.play.addSelectionListener(new TGActionProcessor(TransportPlayAction.NAME));
@@ -45,8 +45,8 @@ public class TGTrayMenu {
 	
 	public void loadIcons(){
 		if(this.menu != null && !this.menu.isDisposed()){
-			this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop1());
-			this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPlay1());
+			this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop1());
+			this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay1());
 		}
 	}
 	

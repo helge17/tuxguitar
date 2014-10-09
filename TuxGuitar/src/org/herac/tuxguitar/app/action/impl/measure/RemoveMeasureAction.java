@@ -153,17 +153,17 @@ public class RemoveMeasureAction extends TGActionBase{
 			
 			if(m1 == 1 && m2 == getSongManager().getSong().countMeasureHeaders()){
 				//TuxGuitar.instance().getAction(NewFileAction.NAME).process(event);
-				TuxGuitar.instance().newSong();
+				TuxGuitar.getInstance().newSong();
 				return;
 			}
 			//comienza el undoable
 			UndoableRemoveMeasure undoable = new UndoableRemoveMeasure(m1,m2);
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//borro los compases
 			getSongManager().removeMeasureHeaders(m1,m2);
 			
-			updateTablature();
+			updateSong();
 			
 			int measureCount = getSongManager().getSong().countMeasureHeaders();
 			if(caret.getMeasure().getNumber() > measureCount){

@@ -163,8 +163,8 @@ public class NoteEffectToolItems  extends ToolItems{
 	}
 	
 	public void update(){
-		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.vibrato.setSelection(note != null && note.getEffect().isVibrato());
 		this.vibrato.setEnabled(!running && note != null);
 		this.bend.setSelection(note != null && note.getEffect().isBend());
@@ -229,24 +229,24 @@ public class NoteEffectToolItems  extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.deadNote.setImage(TuxGuitar.instance().getIconManager().getEffectDead());
-		this.ghostNote.setImage(TuxGuitar.instance().getIconManager().getEffectGhost());
-		this.accentuatedNote.setImage(TuxGuitar.instance().getIconManager().getEffectAccentuated());
-		this.heavyAccentuatedNote.setImage(TuxGuitar.instance().getIconManager().getEffectHeavyAccentuated());
-		this.harmonicNote.setImage(TuxGuitar.instance().getIconManager().getEffectHarmonic());
-		this.graceNote.setImage(TuxGuitar.instance().getIconManager().getEffectGrace());
-		this.vibrato.setImage(TuxGuitar.instance().getIconManager().getEffectVibrato());
-		this.bend.setImage(TuxGuitar.instance().getIconManager().getEffectBend());
-		this.tremoloBar.setImage(TuxGuitar.instance().getIconManager().getEffectTremoloBar());
-		this.slide.setImage(TuxGuitar.instance().getIconManager().getEffectSlide());
-		this.hammer.setImage(TuxGuitar.instance().getIconManager().getEffectHammer());
-		this.trill.setImage(TuxGuitar.instance().getIconManager().getEffectTrill());
-		this.tremoloPicking.setImage(TuxGuitar.instance().getIconManager().getEffectTremoloPicking());
-		this.palmMute.setImage(TuxGuitar.instance().getIconManager().getEffectPalmMute());
-		this.staccato.setImage(TuxGuitar.instance().getIconManager().getEffectStaccato());
-		this.tapping.setImage(TuxGuitar.instance().getIconManager().getEffectTapping());
-		this.slapping.setImage(TuxGuitar.instance().getIconManager().getEffectSlapping());
-		this.popping.setImage(TuxGuitar.instance().getIconManager().getEffectPopping());
-		this.fadeIn.setImage(TuxGuitar.instance().getIconManager().getEffectFadeIn());
+		this.deadNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectDead());
+		this.ghostNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectGhost());
+		this.accentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectAccentuated());
+		this.heavyAccentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectHeavyAccentuated());
+		this.harmonicNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectHarmonic());
+		this.graceNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectGrace());
+		this.vibrato.setImage(TuxGuitar.getInstance().getIconManager().getEffectVibrato());
+		this.bend.setImage(TuxGuitar.getInstance().getIconManager().getEffectBend());
+		this.tremoloBar.setImage(TuxGuitar.getInstance().getIconManager().getEffectTremoloBar());
+		this.slide.setImage(TuxGuitar.getInstance().getIconManager().getEffectSlide());
+		this.hammer.setImage(TuxGuitar.getInstance().getIconManager().getEffectHammer());
+		this.trill.setImage(TuxGuitar.getInstance().getIconManager().getEffectTrill());
+		this.tremoloPicking.setImage(TuxGuitar.getInstance().getIconManager().getEffectTremoloPicking());
+		this.palmMute.setImage(TuxGuitar.getInstance().getIconManager().getEffectPalmMute());
+		this.staccato.setImage(TuxGuitar.getInstance().getIconManager().getEffectStaccato());
+		this.tapping.setImage(TuxGuitar.getInstance().getIconManager().getEffectTapping());
+		this.slapping.setImage(TuxGuitar.getInstance().getIconManager().getEffectSlapping());
+		this.popping.setImage(TuxGuitar.getInstance().getIconManager().getEffectPopping());
+		this.fadeIn.setImage(TuxGuitar.getInstance().getIconManager().getEffectFadeIn());
 	}
 }

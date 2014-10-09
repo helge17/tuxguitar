@@ -16,8 +16,8 @@ public class MarkerNavigator {
 	
 	public void goToSelectedMarker(TGMarker marker){
 		if(marker != null){
-			Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
-			TGSongManager manager = TuxGuitar.instance().getSongManager();
+			Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
+			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 			TGTrackImpl track = caret.getTrack();
 			if(track != null){
 				TGMeasureImpl measure = (TGMeasureImpl)manager.getTrackManager().getMeasure(track,marker.getMeasure());

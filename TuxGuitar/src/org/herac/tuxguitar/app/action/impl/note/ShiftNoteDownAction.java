@@ -38,13 +38,13 @@ public class ShiftNoteDownAction extends TGActionBase{
 				
 				//termia el undoable
 				addUndoableEdit(undoable.endUndo());
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			}
-			updateTablature();
+			updateSong();
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

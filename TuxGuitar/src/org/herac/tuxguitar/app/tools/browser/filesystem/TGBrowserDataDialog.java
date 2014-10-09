@@ -60,7 +60,7 @@ public class TGBrowserDataDialog {
 		pathValue.setLayoutData(getTextData(1));
 		
 		final Button pathChooser = new Button(composite,SWT.PUSH);
-		pathChooser.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
+		pathChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		pathChooser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog directoryDialog = new DirectoryDialog(dialog);

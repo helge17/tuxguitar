@@ -43,9 +43,9 @@ public class TGTunerSettingsDialog {
 	}
 
 	public void show() {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
 		dialog.setLayout(new GridLayout());
-		dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuner.settings"));
 		dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
 		

@@ -38,7 +38,7 @@ public class GoNextMeasureAction extends TGActionBase{
 			UndoableAddMeasure undoable = UndoableAddMeasure.startUndo(number);
 			
 			this.getSongManager().addNewMeasure(number);
-			this.fireUpdate(number);
+			this.updateMeasure(number);
 			this.moveToNext();
 			
 			//termia el undoable
@@ -50,8 +50,8 @@ public class GoNextMeasureAction extends TGActionBase{
 	}
 	
 	private void moveToNext(){
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			TuxGuitar.instance().getTransport().gotoNext();
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			TuxGuitar.getInstance().getTransport().gotoNext();
 		}
 		else{
 			Caret caret = getEditor().getTablature().getCaret();

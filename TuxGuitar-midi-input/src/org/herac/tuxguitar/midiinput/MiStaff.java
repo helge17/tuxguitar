@@ -64,7 +64,7 @@ class MiStaff
 		MiBuffer.dump(midiNotes, "converted MIDI notes");
 		}
 
-	TGSongManager	tgSongMgr		= TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr		= TuxGuitar.getInstance().getSongManager();
 	long			startTick		= inStartPosition,
 					stopTick		= inStartPosition + timestampToTicks(inTempo, inStopTime - inStartTime);
 	TGMeasureHeader	mh				= tgSongMgr.getMeasureHeaderAt(startTick);
@@ -180,7 +180,7 @@ class MiStaff
 
 	void	createMeasures()
 	{
-	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	Iterator		it			= f_Events.keySet().iterator();
 
 	while(it.hasNext())
@@ -205,7 +205,7 @@ class MiStaff
 	// creates a TGBeat if needed
 	if(tgBeat == null)
 		{
-		TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
+		TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 		TGTrackManager	tgTrackMgr	= tgSongMgr.getTrackManager();
 		TGMeasure		tgMeasure	= tgTrackMgr.getMeasureAt(f_TgTrack, inTime);
 		
@@ -225,7 +225,7 @@ class MiStaff
 
 	private void	insertNoteIntoTrack(TGBeat inTgBeat, MiStaffNote inSN)
 	{
-	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	TGNote			tgNote		= tgSongMgr.getFactory().newNote();
 	TGDuration		tgDuration	= tgSongMgr.getFactory().newDuration();
 
@@ -260,7 +260,7 @@ class MiStaff
 
 	private void	generateTrack(String inTrackName)
 	{
-	TGSongManager	tgSongMgr	= TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	TGTrack			tgTrack		= tgSongMgr.addTrack();
 	Iterator		eventsIt;
 

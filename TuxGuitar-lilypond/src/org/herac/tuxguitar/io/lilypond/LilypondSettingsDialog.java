@@ -34,7 +34,7 @@ public class LilypondSettingsDialog {
 		this.status = STATUS_NONE;
 		final LilypondSettings settings = LilypondSettings.getDefaults();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout(2, false));
 		dialog.setText(TuxGuitar.getProperty("lilypond.options"));
 		
@@ -58,10 +58,10 @@ public class LilypondSettingsDialog {
 		
 		final Combo trackCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		trackCombo.setLayoutData(getComboData());
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			trackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			trackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		trackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		trackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
 		trackCombo.setEnabled( settings.getTrack() != LilypondSettings.ALL_TRACKS );
 		
 		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
@@ -76,7 +76,7 @@ public class LilypondSettingsDialog {
 		measureGroup.setText(TuxGuitar.getProperty("lilypond.options.measure-range.tip"));
 		
 		final int minSelection = 1;
-		final int maxSelection = TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders();
+		final int maxSelection = TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders();
 		
 		Label measureFromLabel = new Label(measureGroup, SWT.NULL);
 		measureFromLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.from"));

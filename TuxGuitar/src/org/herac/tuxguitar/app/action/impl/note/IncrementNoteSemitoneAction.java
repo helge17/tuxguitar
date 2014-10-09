@@ -35,13 +35,13 @@ public class IncrementNoteSemitoneAction extends TGActionBase{
 			if(getSongManager().getMeasureManager().moveSemitoneUp(getEditor().getTablature().getCaret().getMeasure(),note.getVoice().getBeat().getStart(),note.getString())){
 				//termia el undoable
 				addUndoableEdit(undoable.endUndo());
-				TuxGuitar.instance().getFileHistory().setUnsavedFile();
+				TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			}
-			updateTablature();
+			updateSong();
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

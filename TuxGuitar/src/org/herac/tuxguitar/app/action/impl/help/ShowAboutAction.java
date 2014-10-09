@@ -31,6 +31,6 @@ public class ShowAboutAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		new AboutDialog().open(TuxGuitar.instance().getShell());
+		new AboutDialog().open(TuxGuitar.getInstance().getShell());
 	}
 }

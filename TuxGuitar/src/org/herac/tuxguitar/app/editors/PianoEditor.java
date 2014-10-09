@@ -24,7 +24,7 @@ public class PianoEditor implements TGEventListener{
 	}
 	
 	public void show() {
-		Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
+		Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("piano.editor"));
 		
@@ -34,26 +34,26 @@ public class PianoEditor implements TGEventListener{
 		dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				removeListeners();
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getScaleManager().addListener(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().addBeatViewerListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getScaleManager().addListener(this);
+		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().addBeatViewerListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getIconManager().removeLoader(this);
-		TuxGuitar.instance().getLanguageManager().removeLoader(this);
-		TuxGuitar.instance().getScaleManager().removeListener(this); 
-		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().removeBeatViewerListener(this);
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
+		TuxGuitar.getInstance().getScaleManager().removeListener(this); 
+		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().removeBeatViewerListener(this);
 	}
 	
 	private Piano getPiano(){
@@ -68,13 +68,13 @@ public class PianoEditor implements TGEventListener{
 	}
 	
 	public void redraw(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			getPiano().redraw();
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			getPiano().redrawPlayingMode();
 		}
 	}

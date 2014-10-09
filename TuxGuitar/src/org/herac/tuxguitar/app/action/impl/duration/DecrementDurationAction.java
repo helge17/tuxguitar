@@ -35,8 +35,8 @@ public class DecrementDurationAction extends TGActionBase{
 			
 			this.changeDuration(duration.getValue() / 2);
 			
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			this.updateTablature();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+			this.updateSong();
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
@@ -51,7 +51,7 @@ public class DecrementDurationAction extends TGActionBase{
 		caret.changeDuration(caret.getDuration().clone(getSongManager().getFactory()));
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

@@ -346,7 +346,7 @@ public class TremoloBarEditor{
 	
 	public TGEffectTremoloBar getTremoloBar(){
 		if(this.points != null && !this.points.isEmpty()){
-			TGEffectTremoloBar tremoloBar = TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar();//new TremoloBarEffect();
+			TGEffectTremoloBar tremoloBar = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar();//new TremoloBarEffect();
 			Iterator it = this.points.iterator();
 			while(it.hasNext()){
 				Point point = (Point)it.next();
@@ -404,32 +404,32 @@ public class TremoloBarEditor{
 	private void resetDefaultTremoloBars(){
 		this.defaultTremoloBars = new DefaultTremoloBar[6];
 		
-		this.defaultTremoloBars[0] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.dip"),TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar());
+		this.defaultTremoloBars[0] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.dip"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
 		this.defaultTremoloBars[0].getTremoloBar().addPoint(0,0);
 		this.defaultTremoloBars[0].getTremoloBar().addPoint(6,-2);
 		this.defaultTremoloBars[0].getTremoloBar().addPoint(12,0);
 		
-		this.defaultTremoloBars[1] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.dive"),TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar());
+		this.defaultTremoloBars[1] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.dive"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
 		this.defaultTremoloBars[1].getTremoloBar().addPoint(0,0);
 		this.defaultTremoloBars[1].getTremoloBar().addPoint(9,-2);
 		this.defaultTremoloBars[1].getTremoloBar().addPoint(12,-2);
 		
-		this.defaultTremoloBars[2] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.release-up"),TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar());
+		this.defaultTremoloBars[2] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.release-up"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
 		this.defaultTremoloBars[2].getTremoloBar().addPoint(0,-2);
 		this.defaultTremoloBars[2].getTremoloBar().addPoint(9,-2);
 		this.defaultTremoloBars[2].getTremoloBar().addPoint(12,0);
 		
-		this.defaultTremoloBars[3] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.inverted-dip"),TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar());
+		this.defaultTremoloBars[3] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.inverted-dip"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
 		this.defaultTremoloBars[3].getTremoloBar().addPoint(0,0);
 		this.defaultTremoloBars[3].getTremoloBar().addPoint(6,2);
 		this.defaultTremoloBars[3].getTremoloBar().addPoint(12,0);
 		
-		this.defaultTremoloBars[4] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.return"),TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar());
+		this.defaultTremoloBars[4] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.return"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
 		this.defaultTremoloBars[4].getTremoloBar().addPoint(0,0);
 		this.defaultTremoloBars[4].getTremoloBar().addPoint(9,2);
 		this.defaultTremoloBars[4].getTremoloBar().addPoint(12,2);
 		
-		this.defaultTremoloBars[5] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.release-down"),TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloBar());
+		this.defaultTremoloBars[5] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.release-down"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
 		this.defaultTremoloBars[5].getTremoloBar().addPoint(0,2);
 		this.defaultTremoloBars[5].getTremoloBar().addPoint(9,2);
 		this.defaultTremoloBars[5].getTremoloBar().addPoint(12,0);

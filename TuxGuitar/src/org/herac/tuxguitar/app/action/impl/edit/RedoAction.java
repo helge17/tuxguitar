@@ -27,8 +27,8 @@ public class RedoAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		try {
-			if(TuxGuitar.instance().getUndoableManager().canRedo()){
-				TuxGuitar.instance().getUndoableManager().redo();
+			if(TuxGuitar.getInstance().getUndoableManager().canRedo()){
+				TuxGuitar.getInstance().getUndoableManager().redo();
 			}
 		} catch (CannotRedoException e) {
 			e.printStackTrace();

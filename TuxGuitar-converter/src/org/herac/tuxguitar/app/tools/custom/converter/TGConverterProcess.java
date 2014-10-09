@@ -31,8 +31,8 @@ public class TGConverterProcess implements TGConverterListener,TGEventListener{
 	
 	protected static final String EOL = ("\n");
 	
-	protected static final Color COLOR_INFO  = TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_BLUE);
-	protected static final Color COLOR_ERROR = TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_RED );
+	protected static final Color COLOR_INFO  = TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_BLUE);
+	protected static final Color COLOR_ERROR = TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_RED );
 	
 	protected Shell dialog;
 	protected StyledText output;
@@ -58,13 +58,13 @@ public class TGConverterProcess implements TGConverterListener,TGEventListener{
 	protected void showProcess() {
 		this.finished = false;
 		
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.SHELL_TRIM);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.SHELL_TRIM);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setSize( SHELL_WIDTH , SHELL_HEIGHT );
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				TuxGuitar.instance().getIconManager().removeLoader( TGConverterProcess.this );
-				TuxGuitar.instance().getLanguageManager().removeLoader( TGConverterProcess.this );
+				TuxGuitar.getInstance().getIconManager().removeLoader( TGConverterProcess.this );
+				TuxGuitar.getInstance().getLanguageManager().removeLoader( TGConverterProcess.this );
 			}
 		});
 		this.dialog.addShellListener(new ShellAdapter() {
@@ -107,8 +107,8 @@ public class TGConverterProcess implements TGConverterListener,TGEventListener{
 		this.loadIcons(false);
 		this.loadProperties(false);
 		
-		TuxGuitar.instance().getIconManager().addLoader( this );
-		TuxGuitar.instance().getLanguageManager().addLoader( this );
+		TuxGuitar.getInstance().getIconManager().addLoader( this );
+		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
 		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER);
 	}
@@ -145,7 +145,7 @@ public class TGConverterProcess implements TGConverterListener,TGEventListener{
 	
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
-			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			if(layout){
 				this.dialog.layout(true, true);
 			}

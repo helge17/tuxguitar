@@ -45,14 +45,14 @@ public class TransportToolItems  extends ToolItems{
 		this.first = new ToolItem(toolBar,SWT.PUSH);
 		this.first.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().gotoFirst();
+				TuxGuitar.getInstance().getTransport().gotoFirst();
 			}
 		});
 		
 		this.previous = new ToolItem(toolBar,SWT.PUSH);
 		this.previous.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().gotoPrevious();
+				TuxGuitar.getInstance().getTransport().gotoPrevious();
 			}
 		});
 		
@@ -65,14 +65,14 @@ public class TransportToolItems  extends ToolItems{
 		this.next = new ToolItem(toolBar,SWT.PUSH);
 		this.next.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().gotoNext();
+				TuxGuitar.getInstance().getTransport().gotoNext();
 			}
 		});
 		
 		this.last = new ToolItem(toolBar,SWT.PUSH);
 		this.last.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TuxGuitar.instance().getTransport().gotoLast();
+				TuxGuitar.getInstance().getTransport().gotoLast();
 			}
 		});
 		
@@ -101,9 +101,9 @@ public class TransportToolItems  extends ToolItems{
 	public void loadIcons(boolean force){
 		int lastStatus = this.status;
 		
-		if(TuxGuitar.instance().getPlayer().isRunning()){
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
 			this.status = STATUS_RUNNING;
-		}else if(TuxGuitar.instance().getPlayer().isPaused()){
+		}else if(TuxGuitar.getInstance().getPlayer().isPaused()){
 			this.status = STATUS_PAUSED;
 		}else{
 			this.status = STATUS_STOPPED;
@@ -111,28 +111,28 @@ public class TransportToolItems  extends ToolItems{
 		
 		if(force || lastStatus != this.status){
 			if(this.status == STATUS_RUNNING){
-				this.first.setImage(TuxGuitar.instance().getIconManager().getTransportIconFirst2());
-				this.last.setImage(TuxGuitar.instance().getIconManager().getTransportIconLast2());
-				this.previous.setImage(TuxGuitar.instance().getIconManager().getTransportIconPrevious2());
-				this.next.setImage(TuxGuitar.instance().getIconManager().getTransportIconNext2());
-				this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop2());
-				this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPause());
+				this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconFirst2());
+				this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconLast2());
+				this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPrevious2());
+				this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconNext2());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPause());
 				this.play.setToolTipText(TuxGuitar.getProperty("transport.pause"));
 			}else if(this.status == STATUS_PAUSED){
-				this.first.setImage(TuxGuitar.instance().getIconManager().getTransportIconFirst2());
-				this.last.setImage(TuxGuitar.instance().getIconManager().getTransportIconLast2());
-				this.previous.setImage(TuxGuitar.instance().getIconManager().getTransportIconPrevious2());
-				this.next.setImage(TuxGuitar.instance().getIconManager().getTransportIconNext2());
-				this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop2());
-				this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPlay2());
+				this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconFirst2());
+				this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconLast2());
+				this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPrevious2());
+				this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconNext2());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay2());
 				this.play.setToolTipText(TuxGuitar.getProperty("transport.start"));
 			}else if(this.status == STATUS_STOPPED){
-				this.first.setImage(TuxGuitar.instance().getIconManager().getTransportIconFirst1());
-				this.last.setImage(TuxGuitar.instance().getIconManager().getTransportIconLast1());
-				this.previous.setImage(TuxGuitar.instance().getIconManager().getTransportIconPrevious1());
-				this.next.setImage(TuxGuitar.instance().getIconManager().getTransportIconNext1());
-				this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop1());
-				this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPlay1());
+				this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconFirst1());
+				this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconLast1());
+				this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPrevious1());
+				this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconNext1());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop1());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay1());
 				this.play.setToolTipText(TuxGuitar.getProperty("transport.start"));
 			}
 		}

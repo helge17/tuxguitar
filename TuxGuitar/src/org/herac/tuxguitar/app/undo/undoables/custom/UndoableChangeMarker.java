@@ -24,10 +24,10 @@ public class UndoableChangeMarker implements UndoableEdit{
 			throw new CannotRedoException();
 		}
 		if(this.redoMarker != null){
-			TuxGuitar.instance().getSongManager().updateMarker(this.redoMarker.clone(TuxGuitar.instance().getSongManager().getFactory()));
+			TuxGuitar.getInstance().getSongManager().updateMarker(this.redoMarker.clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 			MarkerList.instance().update(true);
 		}else if(this.undoMarker != null){
-			TuxGuitar.instance().getSongManager().removeMarker(this.undoMarker.clone(TuxGuitar.instance().getSongManager().getFactory()));
+			TuxGuitar.getInstance().getSongManager().removeMarker(this.undoMarker.clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 			MarkerList.instance().update(false);
 		}
 		this.redoCaret.update();
@@ -39,10 +39,10 @@ public class UndoableChangeMarker implements UndoableEdit{
 			throw new CannotUndoException();
 		}
 		if(this.undoMarker != null){
-			TuxGuitar.instance().getSongManager().updateMarker(this.undoMarker.clone(TuxGuitar.instance().getSongManager().getFactory()));
+			TuxGuitar.getInstance().getSongManager().updateMarker(this.undoMarker.clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 			MarkerList.instance().update(true);
 		}else if(this.redoMarker != null){
-			TuxGuitar.instance().getSongManager().removeMarker(this.redoMarker.clone(TuxGuitar.instance().getSongManager().getFactory()));
+			TuxGuitar.getInstance().getSongManager().removeMarker(this.redoMarker.clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 			MarkerList.instance().update(false);
 		}
 		this.undoCaret.update();
@@ -61,14 +61,14 @@ public class UndoableChangeMarker implements UndoableEdit{
 		UndoableChangeMarker undoable = new UndoableChangeMarker();
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoCaret = new UndoableCaretHelper();
-		undoable.undoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.instance().getSongManager().getFactory());
+		undoable.undoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		
 		return undoable;
 	}
 	
 	public UndoableChangeMarker endUndo(TGMarker marker){
 		this.redoCaret = new UndoableCaretHelper();
-		this.redoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.instance().getSongManager().getFactory());
+		this.redoMarker = (marker == null)?null:(TGMarker)marker.clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		return this;
 	}
 }

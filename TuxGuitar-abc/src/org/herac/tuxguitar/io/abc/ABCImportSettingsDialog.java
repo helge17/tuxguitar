@@ -32,7 +32,7 @@ public class ABCImportSettingsDialog {
 		this.status = STATUS_NONE;
 		final ABCSettings settings = ABCSettings.getDefaults();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout(2, false));
 		dialog.setText(TuxGuitar.getProperty("abc.options"));
 		

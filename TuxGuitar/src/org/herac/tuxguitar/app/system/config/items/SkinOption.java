@@ -42,7 +42,7 @@ public class SkinOption extends Option{
 	
 	public void createOption() {
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.skin"));
-		getToolItem().setImage(TuxGuitar.instance().getIconManager().getOptionSkin());
+		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionSkin());
 		getToolItem().addSelectionListener(this);
 		
 		showLabel(getComposite(),SWT.FILL,SWT.TOP,true, false, SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.skin.choose"));
@@ -178,10 +178,10 @@ public class SkinOption extends Option{
 	}
 	
 	public void applyConfig(boolean force){
-		if(force || (this.initialized && TuxGuitar.instance().getIconManager().shouldReload())){
+		if(force || (this.initialized && TuxGuitar.getInstance().getIconManager().shouldReload())){
 			addSyncThread(new Runnable() {
 				public void run() {
-					TuxGuitar.instance().loadSkin();
+					TuxGuitar.getInstance().loadSkin();
 				}
 			});
 		}

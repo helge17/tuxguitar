@@ -24,10 +24,10 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
+		TGSongManager tgSongManager = TuxGuitar.getInstance().getSongManager();
 		tgSongManager.getTrackManager().changeChannel(tgSongManager.getTrack(this.trackNumber),this.redoChannelId);
 		
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 		
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
@@ -37,10 +37,10 @@ public class UndoableTrackInstrument implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
+		TGSongManager tgSongManager = TuxGuitar.getInstance().getSongManager();
 		tgSongManager.getTrackManager().changeChannel(tgSongManager.getTrack(this.trackNumber),this.undoChannelId);
 		
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 		
 		this.undoCaret.update();
 		

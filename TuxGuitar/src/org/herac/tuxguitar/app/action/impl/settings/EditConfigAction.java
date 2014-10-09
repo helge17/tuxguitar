@@ -26,6 +26,6 @@ public class EditConfigAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		new TGConfigEditor().showDialog(TuxGuitar.instance().getShell());
+		new TGConfigEditor().showDialog(TuxGuitar.getInstance().getShell());
 	}
 }

@@ -27,7 +27,7 @@ public abstract class ToolItems implements ItemBase{
 	}
 	
 	protected TablatureEditor getEditor(){
-		return TuxGuitar.instance().getTablatureEditor();
+		return TuxGuitar.getInstance().getTablatureEditor();
 	}
 	
 	public abstract void showItems(ToolBar toolBar);

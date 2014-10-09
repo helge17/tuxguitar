@@ -357,15 +357,15 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 		this.loadChannels(track.getChannelId());
 		
 		Button settings = new Button(top, SWT.PUSH);
-		settings.setImage(TuxGuitar.instance().getIconManager().getSettings());
+		settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		settings.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,false));
 		settings.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if(!TuxGuitar.instance().getChannelManager().isDisposed()){
-					TuxGuitar.instance().getChannelManager().dispose();
+				if(!TuxGuitar.getInstance().getChannelManager().isDisposed()){
+					TuxGuitar.getInstance().getChannelManager().dispose();
 				}
-				TuxGuitar.instance().getChannelManager().show(TrackPropertiesAction.this.dialog);
+				TuxGuitar.getInstance().getChannelManager().show(TrackPropertiesAction.this.dialog);
 			}
 		});
 	}
@@ -445,10 +445,10 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 				TGActionLock.lock();
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+						TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 						new Thread( new Runnable() {
 							public void run() throws TGException {
-								TuxGuitar.instance().getFileHistory().setUnsavedFile();
+								TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 								UndoableJoined undoable = new UndoableJoined();
 								
 								UndoableTrackGeneric undoableGeneric = null;
@@ -490,9 +490,9 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 								new SyncThread(new Runnable() {
 									public void run() throws TGException {
 										if(!TuxGuitar.isDisposed()){
-											updateTablature();
-											TuxGuitar.instance().updateCache( true );
-											TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+											updateSong();
+											TuxGuitar.getInstance().updateCache( true );
+											TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 											TGActionLock.unlock();
 										}
 									}
@@ -503,7 +503,7 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 				});
 			}
 		} catch (Throwable throwable) {
-			TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+			TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 			TGActionLock.unlock();
 			throwable.printStackTrace();
 		}
@@ -697,11 +697,11 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	public void updateItems(){

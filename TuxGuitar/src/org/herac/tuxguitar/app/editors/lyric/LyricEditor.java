@@ -64,7 +64,7 @@ public class LyricEditor implements TGEventListener {
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.RESIZE);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(getDialogLayout());
 		this.dialog.setSize(EDITOR_WIDTH,EDITOR_HEIGHT);
 		this.dialog.addDisposeListener(new DisposeListener() {
@@ -73,7 +73,7 @@ public class LyricEditor implements TGEventListener {
 			}
 		});
 		
-		this.track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+		this.track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 		this.loadComposites();
 		this.loadProperties();
 		this.loadIcons();
@@ -83,15 +83,15 @@ public class LyricEditor implements TGEventListener {
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getIconManager().removeLoader(this);
-		TuxGuitar.instance().getLanguageManager().removeLoader(this);
-		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
+		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	public void onDispose(){
@@ -100,7 +100,7 @@ public class LyricEditor implements TGEventListener {
 		this.text = null;
 		this.dialog = null;
 		this.removeListeners();
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	private GridLayout getDialogLayout(){
@@ -178,7 +178,7 @@ public class LyricEditor implements TGEventListener {
 	
 	public void updateItems(){
 		if(!isDisposed()){
-			boolean enabled = !TuxGuitar.instance().getPlayer().isRunning();
+			boolean enabled = !TuxGuitar.getInstance().getPlayer().isRunning();
 			
 			this.listener.setEnabled(false);
 			if(this.updated){
@@ -186,7 +186,7 @@ public class LyricEditor implements TGEventListener {
 				this.lastTrackName = null;
 				this.lastMeasuseCount = 0;
 			}
-			this.track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+			this.track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 			if( isTrackNameChanged() ){
 				this.label.setText(this.track.getName());
 			}
@@ -257,7 +257,7 @@ public class LyricEditor implements TGEventListener {
 	
 	public void loadIcons(){
 		if(!isDisposed()){
-			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		}
 	}
 	

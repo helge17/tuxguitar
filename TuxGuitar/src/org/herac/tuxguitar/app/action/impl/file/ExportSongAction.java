@@ -56,12 +56,12 @@ public class ExportSongAction extends TGActionBase {
 			return;
 		}
 		
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.exportSong(exporter, fileName);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 				}
 			}
@@ -69,12 +69,12 @@ public class ExportSongAction extends TGActionBase {
 	}
 	
 	private void processRawExporter( final TGRawExporter exporter ){
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					FileActionUtils.exportSong(exporter);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 				}
 			}

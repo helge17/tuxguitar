@@ -26,7 +26,7 @@ public class ImageExporterDialog extends ImageExporter {
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
-					exportSongDialog(song, TuxGuitar.instance().getShell());
+					exportSongDialog(song, TuxGuitar.getInstance().getShell());
 				}catch(Throwable throwable){
 					return;
 				}
@@ -36,7 +36,7 @@ public class ImageExporterDialog extends ImageExporter {
 	
 	public void exportSong(TGSong song, PrintStyles styles, ImageFormat format){
 		try{
-			DirectoryDialog dialog = new DirectoryDialog( TuxGuitar.instance().getShell() );
+			DirectoryDialog dialog = new DirectoryDialog( TuxGuitar.getInstance().getShell() );
 			dialog.setText(TuxGuitar.getProperty("tuxguitar-image.directory-dialog.title"));
 			String path = dialog.open();
 			if( path != null ){
@@ -84,10 +84,10 @@ public class ImageExporterDialog extends ImageExporter {
 		
 		final Combo tracks = new Combo(track, SWT.DROP_DOWN | SWT.READ_ONLY);
 		tracks.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			tracks.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			tracks.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		tracks.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		tracks.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
 		
 		//------------------MEASURE RANGE------------------
 		Group range = new Group(dialog,SWT.SHADOW_ETCHED_IN);
@@ -96,7 +96,7 @@ public class ImageExporterDialog extends ImageExporter {
 		range.setText(TuxGuitar.getProperty("print.range"));
 		
 		final int minSelection = 1;
-		final int maxSelection = TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders();
+		final int maxSelection = TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders();
 		
 		Label fromLabel = new Label(range, SWT.NULL);
 		fromLabel.setText(TuxGuitar.getProperty("edit.from"));

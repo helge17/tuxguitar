@@ -79,8 +79,8 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
-		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
+		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setText(TuxGuitar.getProperty("transport"));
 		this.initComposites();
@@ -91,24 +91,24 @@ public class TGTransport implements TGEventListener {
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				removeListeners();
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getIconManager().removeLoader(this);
-		TuxGuitar.instance().getLanguageManager().removeLoader(this);
-		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
+		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	private void initComposites(){
@@ -266,9 +266,9 @@ public class TGTransport implements TGEventListener {
 		if(!isDisposed()){
 			int lastStatus = getStatus();
 			
-			if(TuxGuitar.instance().getPlayer().isRunning()){
+			if(TuxGuitar.getInstance().getPlayer().isRunning()){
 				setStatus(STATUS_RUNNING);
-			}else if(TuxGuitar.instance().getPlayer().isPaused()){
+			}else if(TuxGuitar.getInstance().getPlayer().isPaused()){
 				setStatus(STATUS_PAUSED);
 			}else{
 				setStatus(STATUS_STOPPED);
@@ -276,26 +276,26 @@ public class TGTransport implements TGEventListener {
 			
 			if(force || lastStatus != getStatus()){
 				if(getStatus() == STATUS_RUNNING){
-					this.first.setImage(TuxGuitar.instance().getIconManager().getTransportFirst2());
-					this.last.setImage(TuxGuitar.instance().getIconManager().getTransportLast2());
-					this.previous.setImage(TuxGuitar.instance().getIconManager().getTransportPrevious2());
-					this.next.setImage(TuxGuitar.instance().getIconManager().getTransportNext2());
-					this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportStop2());
-					this.play.setImage(TuxGuitar.instance().getIconManager().getTransportPause());
+					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst2());
+					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast2());
+					this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious2());
+					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext2());
+					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop2());
+					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPause());
 				}else if(getStatus() == STATUS_PAUSED){
-					this.first.setImage(TuxGuitar.instance().getIconManager().getTransportFirst2());
-					this.last.setImage(TuxGuitar.instance().getIconManager().getTransportLast2());
-					this.previous.setImage(TuxGuitar.instance().getIconManager().getTransportPrevious2());
-					this.next.setImage(TuxGuitar.instance().getIconManager().getTransportNext2());
-					this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportStop2());
-					this.play.setImage(TuxGuitar.instance().getIconManager().getTransportPlay2());
+					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst2());
+					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast2());
+					this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious2());
+					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext2());
+					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop2());
+					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay2());
 				}else if(getStatus() == STATUS_STOPPED){
-					this.first.setImage(TuxGuitar.instance().getIconManager().getTransportFirst1());
-					this.last.setImage(TuxGuitar.instance().getIconManager().getTransportLast1());
-					this.previous.setImage(TuxGuitar.instance().getIconManager().getTransportPrevious1());
-					this.next.setImage(TuxGuitar.instance().getIconManager().getTransportNext1());
-					this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportStop1());
-					this.play.setImage(TuxGuitar.instance().getIconManager().getTransportPlay1());
+					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst1());
+					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast1());
+					this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious1());
+					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext1());
+					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop1());
+					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay1());
 				}
 				this.loadPlayText();
 			}
@@ -303,7 +303,7 @@ public class TGTransport implements TGEventListener {
 			TGMeasureHeader last = getSongManager().getLastMeasureHeader();
 			this.tickProgress.setMinimum((int)first.getStart());
 			this.tickProgress.setMaximum((int)(last.getStart() + last.getLength()) -1);
-			this.metronome.setSelection(TuxGuitar.instance().getPlayer().isMetronomeEnabled());
+			this.metronome.setSelection(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
 			
 			this.redraw();
 		}
@@ -332,15 +332,15 @@ public class TGTransport implements TGEventListener {
 		if(!isDisposed()){
 			this.initToolBar();
 			this.loadOptionIcons();
-			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			this.dialog.layout(true);
 			this.dialog.pack(true);
 		}
 	}
 	
 	private void loadOptionIcons(){
-		this.metronome.setImage(TuxGuitar.instance().getIconManager().getTransportMetronome());
-		this.mode.setImage(TuxGuitar.instance().getIconManager().getTransportMode());
+		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getTransportMetronome());
+		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
 	}
 	
 	public void dispose() {
@@ -362,7 +362,7 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	protected TGSongManager getSongManager(){
-		return TuxGuitar.instance().getSongManager();
+		return TuxGuitar.getInstance().getSongManager();
 	}
 	
 	public void gotoFirst(){
@@ -374,7 +374,7 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void gotoNext(){
-		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			gotoMeasure(getSongManager().getNextMeasureHeader(header),true);
@@ -382,7 +382,7 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void gotoPrevious(){
-		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			gotoMeasure(getSongManager().getPrevMeasureHeader(header),true);
@@ -396,15 +396,15 @@ public class TGTransport implements TGEventListener {
 	public void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
 		if(header != null){
 			TGMeasure playingMeasure = null;
-			if( TuxGuitar.instance().getPlayer().isRunning() ){
-				TuxGuitar.instance().getEditorCache().updatePlayMode();
-				playingMeasure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
+			if( TuxGuitar.getInstance().getPlayer().isRunning() ){
+				TuxGuitar.getInstance().getEditorCache().updatePlayMode();
+				playingMeasure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
 			}
 			if( playingMeasure == null || playingMeasure.getHeader().getNumber() != header.getNumber() ){
-				TuxGuitar.instance().getPlayer().setTickPosition(MidiTickUtil.getTick(header.getStart()));
+				TuxGuitar.getInstance().getPlayer().setTickPosition(MidiTickUtil.getTick(header.getStart()));
 				if(moveCaret){
-					TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
-					TuxGuitar.instance().updateCache(true);
+					TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
+					TuxGuitar.getInstance().updateCache(true);
 				}
 				redraw();
 			}
@@ -412,21 +412,21 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void gotoPlayerPosition(){
-		TuxGuitar.instance().lock();
+		TuxGuitar.getInstance().lock();
 		
-		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
 		}
-		TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
-		TuxGuitar.instance().unlock();
+		TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
+		TuxGuitar.getInstance().unlock();
 		
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void play(){
-		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
 		if(!player.isRunning()){
 			try{
 				player.getMode().reset();
@@ -440,7 +440,7 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void stop(){
-		MidiPlayer player = TuxGuitar.instance().getPlayer();
+		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
 		if(!player.isRunning()){
 			player.reset();
 			this.gotoPlayerPosition();
@@ -450,16 +450,16 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void redraw(){
-		if(!TuxGuitar.instance().isLocked()){
+		if(!TuxGuitar.getInstance().isLocked()){
 			if(!isDisposed()){
 				new SyncThread(new Runnable() {
 					public void run() {
-						if(!isDisposed() && !TuxGuitar.instance().isLocked()){
+						if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 							if(isEditingTickScale()){
 								TGTransport.this.label.setText(Long.toString(TGTransport.this.tickProgress.getSelection()));
 							}
-							else if(!TuxGuitar.instance().getPlayer().isRunning()){
-								long tickPosition = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getPosition();
+							else if(!TuxGuitar.getInstance().getPlayer().isRunning()){
+								long tickPosition = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getPosition();
 								
 								TGTransport.this.label.setText(Long.toString(tickPosition));
 								TGTransport.this.tickProgress.setSelection((int)tickPosition);
@@ -472,13 +472,13 @@ public class TGTransport implements TGEventListener {
 	}
 	
 	public void redrawPlayingMode(){
-		if(!TuxGuitar.instance().isLocked()){
+		if(!TuxGuitar.getInstance().isLocked()){
 			//TuxGuitar.instance().lock();
 			if(!isDisposed()){
-				if(!isEditingTickScale() && TuxGuitar.instance().getPlayer().isRunning()){
+				if(!isEditingTickScale() && TuxGuitar.getInstance().getPlayer().isRunning()){
 					long time = System.currentTimeMillis();
 					if(time > this.redrawTime + PLAY_MODE_DELAY){
-						long position = (TuxGuitar.instance().getEditorCache().getPlayStart() + (TuxGuitar.instance().getPlayer().getTickPosition() - TuxGuitar.instance().getEditorCache().getPlayTick()));
+						long position = (TuxGuitar.getInstance().getEditorCache().getPlayStart() + (TuxGuitar.getInstance().getPlayer().getTickPosition() - TuxGuitar.getInstance().getEditorCache().getPlayTick()));
 						this.label.setText(Long.toString(position));
 						this.tickProgress.setSelection((int)position);
 						this.redrawTime = time;

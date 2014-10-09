@@ -35,19 +35,19 @@ public class ChangeVelocityAction extends TGActionBase{
 			
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			Caret caret = getEditor().getTablature().getCaret();
 			caret.setVelocity(velocity);
 			getSongManager().getMeasureManager().changeVelocity(velocity,caret.getMeasure(),caret.getPosition(),caret.getSelectedString().getNumber());
-			updateTablature();
+			updateSong();
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }
