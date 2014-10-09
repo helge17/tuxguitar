@@ -172,8 +172,8 @@ public class NoteEffectsMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.vibrato.setSelection(note != null && note.getEffect().isVibrato());
 		this.vibrato.setEnabled(!running && note != null);
 		this.bend.setSelection(note != null && note.getEffect().isBend());

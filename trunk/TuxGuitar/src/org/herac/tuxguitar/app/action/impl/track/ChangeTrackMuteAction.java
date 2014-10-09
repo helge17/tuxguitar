@@ -37,9 +37,9 @@ public class ChangeTrackMuteAction extends TGActionBase{
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo(track));
 			
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
-			if (TuxGuitar.instance().getPlayer().isRunning()) {
-				TuxGuitar.instance().getPlayer().updateTracks();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+			if (TuxGuitar.getInstance().getPlayer().isRunning()) {
+				TuxGuitar.getInstance().getPlayer().updateTracks();
 			}
 		}
 	}

@@ -66,7 +66,7 @@ public class MidiInputPlugin
 
 	protected void doAction()
 	{
-	MiPanel.instance().showDialog(TuxGuitar.instance().getShell());
+	MiPanel.instance().showDialog(TuxGuitar.getInstance().getShell());
 	}
 
 

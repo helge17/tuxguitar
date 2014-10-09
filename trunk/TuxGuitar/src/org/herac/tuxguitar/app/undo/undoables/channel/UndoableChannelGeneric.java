@@ -65,7 +65,7 @@ public class UndoableChannelGeneric implements UndoableEdit{
 	
 	private List getChannels(){
 		List channels = new ArrayList();
-		Iterator it = TuxGuitar.instance().getSongManager().getChannels().iterator();
+		Iterator it = TuxGuitar.getInstance().getSongManager().getChannels().iterator();
 		while( it.hasNext() ){
 			channels.add(cloneChannel((TGChannel)it.next()));
 		}
@@ -73,11 +73,11 @@ public class UndoableChannelGeneric implements UndoableEdit{
 	}
 	
 	private TGChannel cloneChannel(TGChannel channel){
-		return channel.clone(TuxGuitar.instance().getSongManager().getFactory());
+		return channel.clone(TuxGuitar.getInstance().getSongManager().getFactory());
 	}
 	
 	private void updateSongChannels( List channels ){
-		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
+		TGSongManager tgSongManager = TuxGuitar.getInstance().getSongManager();
 		tgSongManager.removeAllChannels();
 		
 		Iterator it = channels.iterator();
@@ -85,6 +85,6 @@ public class UndoableChannelGeneric implements UndoableEdit{
 			tgSongManager.addChannel(cloneChannel((TGChannel)it.next()));
 		}
 		
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 }

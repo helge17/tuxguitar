@@ -31,7 +31,7 @@ import org.herac.tuxguitar.app.util.TGFileUtils;
  */
 public class FileHistory {
 	
-	private static final int URL_LIMIT = TuxGuitar.instance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
+	private static final int URL_LIMIT = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
 	
 	private boolean changed;
 	private boolean newFile;

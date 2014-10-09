@@ -101,7 +101,7 @@ public class ImageExporter implements TGRawExporter{
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
-					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.instance().getDisplay());
+					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
 					
 					PrintController controller = new PrintController(manager, factory);
 					PrintLayout layout = new PrintLayout(controller, getStyles());
@@ -154,7 +154,7 @@ public class ImageExporter implements TGRawExporter{
 		}
 		
 		public void pageStart() {
-			this.buffer = new Image(TuxGuitar.instance().getDisplay(),this.bounds.getWidth() + (this.bounds.getX() * 2), this.bounds.getHeight() + (this.bounds.getY() * 2) );
+			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(),this.bounds.getWidth() + (this.bounds.getX() * 2), this.bounds.getHeight() + (this.bounds.getY() * 2) );
 			this.painter.init( this.buffer );
 		}
 		

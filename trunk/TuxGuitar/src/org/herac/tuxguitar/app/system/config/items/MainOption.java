@@ -26,7 +26,7 @@ public class MainOption  extends Option{
 	
 	public void createOption(){
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.main"));
-		getToolItem().setImage(TuxGuitar.instance().getIconManager().getOptionMain());
+		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionMain());
 		getToolItem().addSelectionListener(this);
 		
 		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.main.window-title"));
@@ -128,8 +128,8 @@ public class MainOption  extends Option{
 	
 	public void applyConfig(boolean force){
 		if(force || this.initialized){
-			TuxGuitar.instance().showTitle();
-			TuxGuitar.instance().getTable().loadConfig();
+			TuxGuitar.getInstance().showTitle();
+			TuxGuitar.getInstance().getTable().loadConfig();
 		}
 	}
 }

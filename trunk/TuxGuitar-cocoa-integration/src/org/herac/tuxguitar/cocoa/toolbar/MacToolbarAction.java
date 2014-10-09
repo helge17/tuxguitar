@@ -10,7 +10,7 @@ public class MacToolbarAction {
 		try {
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TuxGuitar.instance().getItemManager().toogleToolbarVisibility();
+					TuxGuitar.getInstance().getItemManager().toogleToolbarVisibility();
 				}
 			});
 		} catch (Throwable e) {

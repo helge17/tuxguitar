@@ -26,8 +26,8 @@ public class UndoableChangeTimeSignature implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.instance().getTablatureEditor().getTablature().getSongManager().changeTimeSignature(this.tsStart,this.ts,this.tsToEnd);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getTablatureEditor().getTablature().getSongManager().changeTimeSignature(this.tsStart,this.ts,this.tsToEnd);
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -36,10 +36,10 @@ public class UndoableChangeTimeSignature implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGFactory factory = TuxGuitar.instance().getTablatureEditor().getTablature().getSongManager().getFactory();
-		TGSong song = TuxGuitar.instance().getTablatureEditor().getTablature().getSongManager().getSong();
+		TGFactory factory = TuxGuitar.getInstance().getTablatureEditor().getTablature().getSongManager().getFactory();
+		TGSong song = TuxGuitar.getInstance().getTablatureEditor().getTablature().getSongManager().getSong();
 		this.song.copy(factory, song);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		this.doAction = REDO_ACTION;
 	}
@@ -54,7 +54,7 @@ public class UndoableChangeTimeSignature implements UndoableEdit{
 	
 	public static UndoableChangeTimeSignature startUndo(){
 		TGFactory factory = new TGFactory();
-		TGSong song = TuxGuitar.instance().getTablatureEditor().getTablature().getSongManager().getSong();
+		TGSong song = TuxGuitar.getInstance().getTablatureEditor().getTablature().getSongManager().getSong();
 		UndoableChangeTimeSignature undoable = new UndoableChangeTimeSignature();
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoCaret = new UndoableCaretHelper();

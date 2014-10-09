@@ -162,10 +162,10 @@ public class ChangeInfoAction extends TGActionBase{
 						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 							public void run() throws TGException {
 								TGActionLock.lock();
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 								setProperties(name,artist,album,author,date,copyright,writer,transcriber,comments);
-								TuxGuitar.instance().updateCache( true );
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().updateCache( true );
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						});
@@ -227,8 +227,8 @@ public class ChangeInfoAction extends TGActionBase{
 		UndoableChangeInfo undoable = UndoableChangeInfo.startUndo();
 		
 		getSongManager().setProperties(name,artist,album,author,date,copyright,writer,transcriber,comments);
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		TuxGuitar.instance().showTitle();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().showTitle();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());

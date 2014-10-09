@@ -23,8 +23,8 @@ public class TGTransportListener implements TGEventListener{
 		new Thread(new Runnable() {
 			public void run() throws TGException {
 				try {
-					TuxGuitar.instance().updateCache(true);
-					while (TuxGuitar.instance().getPlayer().isRunning()) {
+					TuxGuitar.getInstance().updateCache(true);
+					while (TuxGuitar.getInstance().getPlayer().isRunning()) {
 						synchronized( TGTransportListener.this.sync ){
 							TGSynchronizer.instance().execute( TGTransportListener.this.startedRunnable );
 							TGTransportListener.this.sync.wait(25);
@@ -40,7 +40,7 @@ public class TGTransportListener implements TGEventListener{
 	
 	public void notifyStopped() {
 		try {
-			if(!TuxGuitar.instance().getDisplay().isDisposed()){
+			if(!TuxGuitar.getInstance().getDisplay().isDisposed()){
 				TGSynchronizer.instance().executeLater( TGTransportListener.this.stoppedRunnable );
 			}
 		} catch (Throwable throwable) {
@@ -51,8 +51,8 @@ public class TGTransportListener implements TGEventListener{
 	private TGSynchronizer.TGRunnable getStartedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				if(TuxGuitar.instance().getPlayer().isRunning()){
-					TuxGuitar.instance().redrawPlayingMode();
+				if(TuxGuitar.getInstance().getPlayer().isRunning()){
+					TuxGuitar.getInstance().redrawPlayingMode();
 				}
 			}
 		};
@@ -61,7 +61,7 @@ public class TGTransportListener implements TGEventListener{
 	private TGSynchronizer.TGRunnable getStoppedRunnable(){
 		return new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TuxGuitar.instance().getTransport().gotoPlayerPosition();
+				TuxGuitar.getInstance().getTransport().gotoPlayerPosition();
 			}
 		};
 	}

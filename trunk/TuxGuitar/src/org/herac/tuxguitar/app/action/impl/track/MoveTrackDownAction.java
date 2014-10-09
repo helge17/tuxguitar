@@ -35,11 +35,11 @@ public class MoveTrackDownAction extends TGActionBase{
 		TGTrack track = caret.getTrack();
 		
 		if(getSongManager().moveTrackDown(track)){
-			updateTablature();
+			updateSong();
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo(track));
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		}
 	}
 }

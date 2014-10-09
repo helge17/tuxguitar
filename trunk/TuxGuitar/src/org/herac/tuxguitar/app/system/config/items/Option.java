@@ -217,7 +217,7 @@ public abstract class Option extends SelectionAdapter{
 	}
 	
 	public void loadCursor(int style){
-		TuxGuitar.instance().loadCursor(this.configEditor.getDialog(),style);
+		TuxGuitar.getInstance().loadCursor(this.configEditor.getDialog(),style);
 	}
 	
 	protected void addSyncThread(Runnable runnable){

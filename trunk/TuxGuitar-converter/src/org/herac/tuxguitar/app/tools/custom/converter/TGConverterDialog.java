@@ -53,13 +53,13 @@ public class TGConverterDialog implements TGEventListener{
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
 		this.dialog.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				TuxGuitar.instance().getIconManager().removeLoader( TGConverterDialog.this );
-				TuxGuitar.instance().getLanguageManager().removeLoader( TGConverterDialog.this );
+				TuxGuitar.getInstance().getIconManager().removeLoader( TGConverterDialog.this );
+				TuxGuitar.getInstance().getLanguageManager().removeLoader( TGConverterDialog.this );
 			}
 		});
 		
@@ -156,8 +156,8 @@ public class TGConverterDialog implements TGEventListener{
 		this.loadIcons(false);
 		this.loadProperties(false);
 		
-		TuxGuitar.instance().getIconManager().addLoader( this );
-		TuxGuitar.instance().getLanguageManager().addLoader( this );
+		TuxGuitar.getInstance().getIconManager().addLoader( this );
+		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
 		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
@@ -245,9 +245,9 @@ public class TGConverterDialog implements TGEventListener{
 	
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
-			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
-			this.inputFolderChooser.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
-			this.outputFolderChooser.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
+			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+			this.inputFolderChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+			this.outputFolderChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 			if(layout){
 				this.dialog.layout(true, true);
 			}

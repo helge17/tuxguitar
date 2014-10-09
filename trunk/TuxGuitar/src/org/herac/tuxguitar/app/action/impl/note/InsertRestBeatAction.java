@@ -33,7 +33,7 @@ public class InsertRestBeatAction extends TGActionBase{
 		if(beat != null){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			if(beat.getVoice(caret.getVoice()).isEmpty()){
 				getSongManager().getMeasureManager().addSilence(beat, caret.getDuration().clone(getSongManager().getFactory()), caret.getVoice());
@@ -46,12 +46,12 @@ public class InsertRestBeatAction extends TGActionBase{
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
 			
-			updateTablature();
+			updateSong();
 			
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

@@ -26,16 +26,16 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		TGTrack track = manager.getTrack( this.track );
 		if( track != null ){
 			manager.getTrackManager().changeSolo(track, this.redoSolo );
 			manager.getTrackManager().changeMute(track, this.redoMute );
 		}
-		TuxGuitar.instance().getTable().fireUpdate(false);
-		TuxGuitar.instance().updateCache(true);
-		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();
+		TuxGuitar.getInstance().getTable().fireUpdate(false);
+		TuxGuitar.getInstance().updateCache(true);
+		if (TuxGuitar.getInstance().getPlayer().isRunning()) {
+			TuxGuitar.getInstance().getPlayer().updateControllers();
 		}
 		
 		this.redoCaret.update();
@@ -46,16 +46,16 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		TGTrack track = manager.getTrack( this.track );
 		if( track != null ){
 			manager.getTrackManager().changeSolo(track, this.undoSolo );
 			manager.getTrackManager().changeMute(track, this.undoMute );
 		}
-		TuxGuitar.instance().getTable().fireUpdate(false);
-		TuxGuitar.instance().updateCache(true);
-		if (TuxGuitar.instance().getPlayer().isRunning()) {
-			TuxGuitar.instance().getPlayer().updateControllers();
+		TuxGuitar.getInstance().getTable().fireUpdate(false);
+		TuxGuitar.getInstance().updateCache(true);
+		if (TuxGuitar.getInstance().getPlayer().isRunning()) {
+			TuxGuitar.getInstance().getPlayer().updateControllers();
 		}
 		
 		this.undoCaret.update();

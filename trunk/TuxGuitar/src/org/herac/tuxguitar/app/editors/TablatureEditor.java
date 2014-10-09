@@ -29,7 +29,7 @@ public class TablatureEditor implements TGEventListener{
 	}
 	
 	public void showTablature(Composite parent) {
-		this.tablature = new Tablature(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED, TuxGuitar.instance().getSongManager());
+		this.tablature = new Tablature(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED, TuxGuitar.getInstance().getSongManager());
 		this.tablature.initGUI();
 		this.tablature.reloadViewLayout();
 		this.tablature.updateTablature();
@@ -41,16 +41,16 @@ public class TablatureEditor implements TGEventListener{
 	}
 	
 	private void initListener(){
-		TuxGuitar.instance().getEditorManager().addRedrawListener( this );
-		TuxGuitar.instance().getEditorManager().addUpdateListener( this );
+		TuxGuitar.getInstance().getEditorManager().addRedrawListener( this );
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener( this );
 	}
 	
 	private void initKeyActions(){
-		TuxGuitar.instance().getKeyBindingManager().appendListenersTo(this.tablature);
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.tablature);
 	}
 	
 	private void initMenu(){
-		Menu menu = TuxGuitar.instance().getItemManager().getPopupMenu();
+		Menu menu = TuxGuitar.getInstance().getItemManager().getPopupMenu();
 		menu.addMenuListener(getTablature().getEditorKit().getMenuListener());
 		this.tablature.setMenu(menu);
 	}
@@ -69,9 +69,11 @@ public class TablatureEditor implements TGEventListener{
 	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getProperty(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
-		if( type == TGUpdateEvent.SONG_UPDATED ){
+		if( type == TGUpdateEvent.MEASURE_UPDATED ){
+			getTablature().updateMeasure(((Integer) event.getProperty(TGUpdateMeasureEvent.PROPERTY_MEASURE_NUMBER)).intValue());
+		} else if( type == TGUpdateEvent.SONG_UPDATED ){
 			getTablature().updateTablature();
-		}else if( type == TGUpdateEvent.SONG_LOADED ){
+		} else if( type == TGUpdateEvent.SONG_LOADED ){
 			getTablature().updateTablature();
 			getTablature().resetScroll();
 			getTablature().resetCaret();

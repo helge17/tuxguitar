@@ -62,7 +62,7 @@ public class PrintController implements TGController {
 	}
 	
 	public void configureStyles(TGLayoutStyles styles){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		styles.setBufferEnabled(false);
 		styles.setFirstMeasureSpacing(DEFAULT_HORIZONTAL_SPACING);

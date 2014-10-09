@@ -56,7 +56,7 @@ public class AboutDialog {
 		header.setLayout(new GridLayout(2,false));
 		header.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true ,true));
 		
-		this.image = TuxGuitar.instance().getIconManager().getAboutDescription();
+		this.image = TuxGuitar.getInstance().getIconManager().getAboutDescription();
 		
 		this.imageComposite = new Composite(header,SWT.NONE);
 		this.imageComposite.setLayoutData(new GridData(IMAGE_WIDTH,IMAGE_HEIGHT));
@@ -68,7 +68,7 @@ public class AboutDialog {
 			}
 		});
 		
-		final Font titleFont = new Font(dialog.getDisplay(),TuxGuitar.instance().getConfig().getFontDataConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
+		final Font titleFont = new Font(dialog.getDisplay(),TuxGuitar.getInstance().getConfig().getFontDataConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
 		Label title = new Label(header,SWT.NONE);
 		title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true ,true));
 		title.setFont(titleFont);
@@ -98,11 +98,11 @@ public class AboutDialog {
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if(tabFolder.getSelectionIndex() == 0){
-					AboutDialog.this.image = TuxGuitar.instance().getIconManager().getAboutDescription();
+					AboutDialog.this.image = TuxGuitar.getInstance().getIconManager().getAboutDescription();
 				}else if(tabFolder.getSelectionIndex() == 1){
-					AboutDialog.this.image = TuxGuitar.instance().getIconManager().getAboutAuthors();
+					AboutDialog.this.image = TuxGuitar.getInstance().getIconManager().getAboutAuthors();
 				}else if(tabFolder.getSelectionIndex() == 2){
-					AboutDialog.this.image = TuxGuitar.instance().getIconManager().getAboutLicense();
+					AboutDialog.this.image = TuxGuitar.getInstance().getIconManager().getAboutLicense();
 				}
 				AboutDialog.this.imageComposite.redraw();
 			}
@@ -143,7 +143,7 @@ public class AboutDialog {
 		
 		Text text = new Text(control,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		text.setBackground(TuxGuitar.instance().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		text.setBackground(TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		text.setEditable(false);
 		text.append(itemText);
 		text.setSelection(0);

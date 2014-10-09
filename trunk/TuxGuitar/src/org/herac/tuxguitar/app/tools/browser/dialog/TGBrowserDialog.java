@@ -86,13 +86,13 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 		this.getConnection().release();
 		this.getConnection().close(CALL_CLOSE);
 		TGBrowserManager.instance().writeCollections();
-		TuxGuitar.instance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
 	}
 	
 	public void show(){
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(new GridLayout());
-		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		
 		this.menu.init(getShell());
 		this.toolBar.init(getShell());
@@ -110,15 +110,15 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 		this.updateBars();
 		
 		TGBrowserManager.instance().setFactoryHandler(this);
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER);
 	}
 	
 	private void initTable(Composite parent){
 		this.table = new Table(parent, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 		this.table.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.table.setLinesVisible(TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.BROWSER_LINES_VISIBLE));
+		this.table.setLinesVisible(TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.BROWSER_LINES_VISIBLE));
 		this.table.setHeaderVisible(false);
 		
 		this.column = new TableColumn(this.table, SWT.LEFT);
@@ -151,7 +151,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 							while(it.hasNext()){
 								TGBrowserElement element = (TGBrowserElement)it.next();
 								TableItem item = new TableItem(TGBrowserDialog.this.table, SWT.NONE);
-								item.setImage(element.isFolder()?TuxGuitar.instance().getIconManager().getBrowserFolder():TuxGuitar.instance().getIconManager().getBrowserFile());
+								item.setImage(element.isFolder()?TuxGuitar.getInstance().getIconManager().getBrowserFolder():TuxGuitar.getInstance().getIconManager().getBrowserFile());
 								item.setText(element.getName());
 							}
 						}
@@ -241,7 +241,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 			public void run() {
 				if(!isDisposed()){
 					updateBars();
-					TuxGuitar.instance().loadCursor(getShell(),( getConnection().isLocked() ? SWT.CURSOR_WAIT : SWT.CURSOR_ARROW ) );
+					TuxGuitar.getInstance().loadCursor(getShell(),( getConnection().isLocked() ? SWT.CURSOR_WAIT : SWT.CURSOR_ARROW ) );
 				}
 			}
 		}).start();
@@ -298,8 +298,8 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 			new SyncThread(new Runnable() {
 				public void run() {
 					if(!TuxGuitar.isDisposed()){
-						TuxGuitar.instance().getPlayer().reset();
-						if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
+						TuxGuitar.getInstance().getPlayer().reset();
+						if(TuxGuitar.getInstance().getFileHistory().isUnsavedFile()){
 							ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
 							confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 							int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
@@ -344,10 +344,10 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					try {
-						TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream);
-						TuxGuitar.instance().fireNewSong(song,null);
+						TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
+						TuxGuitar.getInstance().fireNewSong(song,null);
 					}catch (Throwable throwable) {
-						TuxGuitar.instance().newSong();
+						TuxGuitar.getInstance().newSong();
 						MessageDialog.errorMessage(getShell(),new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}),throwable));
 					}
 					getConnection().release();
@@ -359,7 +359,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 	
 	public void loadIcons() {
 		if(!isDisposed()){
-			this.getShell().setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+			this.getShell().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			this.reload();
 		}
 	}

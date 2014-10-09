@@ -84,9 +84,9 @@ public class DynamicMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		TGNote note = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
-		int velocity = ((note != null)?note.getVelocity():TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getVelocity());
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
+		int velocity = ((note != null)?note.getVelocity():TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getVelocity());
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.pianoPianissimo.setSelection(velocity == TGVelocities.PIANO_PIANISSIMO);
 		this.pianoPianissimo.setEnabled(!running);
 		this.pianissimo.setSelection(velocity == TGVelocities.PIANISSIMO);

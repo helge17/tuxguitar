@@ -90,9 +90,9 @@ public class DynamicToolItems  extends ToolItems{
 	}
 	
 	public void update(){
-		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		int velocity = ((caret.getSelectedNote() != null)?caret.getSelectedNote().getVelocity():caret.getVelocity());
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.pianoPianissimo.setSelection(velocity == TGVelocities.PIANO_PIANISSIMO);
 		this.pianoPianissimo.setEnabled( !running );
 		this.pianissimo.setSelection(velocity == TGVelocities.PIANISSIMO);
@@ -123,14 +123,14 @@ public class DynamicToolItems  extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.pianoPianissimo.setImage(TuxGuitar.instance().getIconManager().getDynamicPPP());
-		this.pianissimo.setImage(TuxGuitar.instance().getIconManager().getDynamicPP());
-		this.piano.setImage(TuxGuitar.instance().getIconManager().getDynamicP());
-		this.mezzoPiano.setImage(TuxGuitar.instance().getIconManager().getDynamicMP());
-		this.mezzoForte.setImage(TuxGuitar.instance().getIconManager().getDynamicMF());
-		this.forte.setImage(TuxGuitar.instance().getIconManager().getDynamicF());
-		this.fortissimo.setImage(TuxGuitar.instance().getIconManager().getDynamicFF());
-		this.forteFortissimo.setImage(TuxGuitar.instance().getIconManager().getDynamicFFF());
+		this.pianoPianissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicPPP());
+		this.pianissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicPP());
+		this.piano.setImage(TuxGuitar.getInstance().getIconManager().getDynamicP());
+		this.mezzoPiano.setImage(TuxGuitar.getInstance().getIconManager().getDynamicMP());
+		this.mezzoForte.setImage(TuxGuitar.getInstance().getIconManager().getDynamicMF());
+		this.forte.setImage(TuxGuitar.getInstance().getIconManager().getDynamicF());
+		this.fortissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicFF());
+		this.forteFortissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicFFF());
 	}
 	
 	private Map createChangeVelocityActionData(int velocity){

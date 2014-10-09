@@ -26,6 +26,6 @@ public class ExitAction extends TGActionBase {
 	
 	protected void processAction(TGActionContext context){
 		TGActionLock.unlock();
-		TuxGuitar.instance().getShell().close();
+		TuxGuitar.getInstance().getShell().close();
 	}
 }

@@ -31,18 +31,18 @@ public class CleanBeatAction extends TGActionBase{
 		if( beat != null){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//getSongManager().getMeasureManager().removeAllComponentsAt(caret.getMeasure(),caret.getSelectedComponent().getStart());
 			getSongManager().getMeasureManager().cleanBeat(beat);
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
-			updateTablature();
+			updateSong();
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

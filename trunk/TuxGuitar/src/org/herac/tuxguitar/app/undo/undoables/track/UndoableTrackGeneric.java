@@ -64,20 +64,20 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		
 		public UndoTrack(TGTrack track){
 			if(track != null){
-				this.track = track.clone(TuxGuitar.instance().getSongManager().getFactory(),TuxGuitar.instance().getSongManager().getSong());
+				this.track = track.clone(TuxGuitar.getInstance().getSongManager().getFactory(),TuxGuitar.getInstance().getSongManager().getSong());
 			}
 		}
 		
 		public void undo(){
 			if(this.track != null){
-				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
-					TuxGuitar.instance().getSongManager().addNewMeasureBeforeEnd();
+				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd();
 				}
-				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
-					TuxGuitar.instance().getSongManager().removeLastMeasureHeader();
+				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().removeLastMeasureHeader();
 				}
-				TuxGuitar.instance().getSongManager().replaceTrack(this.track);
-				TuxGuitar.instance().fireUpdate();
+				TuxGuitar.getInstance().getSongManager().replaceTrack(this.track);
+				TuxGuitar.getInstance().updateSong();
 			}
 		}
 	}
@@ -87,20 +87,20 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		
 		public RedoTrack(TGTrack track){
 			if(track != null){
-				this.track = track.clone(TuxGuitar.instance().getSongManager().getFactory(),TuxGuitar.instance().getSongManager().getSong());
+				this.track = track.clone(TuxGuitar.getInstance().getSongManager().getFactory(),TuxGuitar.getInstance().getSongManager().getSong());
 			}
 		}
 		
 		public void redo(){
 			if(this.track != null){
-				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
-					TuxGuitar.instance().getSongManager().addNewMeasureBeforeEnd();
+				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd();
 				}
-				while( TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
-					TuxGuitar.instance().getSongManager().removeLastMeasureHeader();
+				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().removeLastMeasureHeader();
 				}
-				TuxGuitar.instance().getSongManager().replaceTrack(this.track);
-				TuxGuitar.instance().fireUpdate();
+				TuxGuitar.getInstance().getSongManager().replaceTrack(this.track);
+				TuxGuitar.getInstance().updateSong();
 			}
 		}
 	}

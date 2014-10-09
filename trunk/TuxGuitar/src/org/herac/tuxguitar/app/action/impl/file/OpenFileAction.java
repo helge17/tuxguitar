@@ -39,9 +39,9 @@ public class OpenFileAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		final Object propertyUrl = context.getAttribute(PROPERTY_URL);
 		
-		TuxGuitar.instance().getPlayer().reset();
+		TuxGuitar.getInstance().getPlayer().reset();
 		
-		if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
+		if(TuxGuitar.getInstance().getFileHistory().isUnsavedFile()){
 			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
 			confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 			int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
@@ -55,7 +55,7 @@ public class OpenFileAction extends TGActionBase {
 					TGActionLock.unlock();
 					return;
 				}
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				new Thread(new Runnable() {
 					public void run() throws TGException {
 						if(!TuxGuitar.isDisposed()){
@@ -63,7 +63,7 @@ public class OpenFileAction extends TGActionBase {
 							new SyncThread(new Runnable() {
 								public void run() throws TGException {
 									if(!TuxGuitar.isDisposed()){
-										TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+										TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 										openFile( propertyUrl );
 									}
 								}
@@ -83,7 +83,7 @@ public class OpenFileAction extends TGActionBase {
 			TGActionLock.unlock();
 			return;
 		}
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		try {
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
@@ -91,7 +91,7 @@ public class OpenFileAction extends TGActionBase {
 						public void run() throws TGException {
 							if(!TuxGuitar.isDisposed()){
 								FileActionUtils.open(url);
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						}
@@ -106,10 +106,10 @@ public class OpenFileAction extends TGActionBase {
 	protected URL getOpenFileName(Object data){
 		try{
 			if(data instanceof URL){
-				TuxGuitar.instance().getFileHistory().setChooserPath( (URL)data );
+				TuxGuitar.getInstance().getFileHistory().setChooserPath( (URL)data );
 				return (URL)data;
 			}
-			String path = FileChooser.instance().open(TuxGuitar.instance().getShell(),TGFileFormatManager.instance().getInputFormats());
+			String path = FileChooser.instance().open(TuxGuitar.getInstance().getShell(),TGFileFormatManager.instance().getInputFormats());
 			if(path != null){
 				File file = new File(path);
 				if( file.exists() && file.isFile() ){

@@ -13,10 +13,10 @@ public class TGBrowserAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getBrowser().isDisposed()){
-			TuxGuitar.instance().getBrowser().show();
+		if(TuxGuitar.getInstance().getBrowser().isDisposed()){
+			TuxGuitar.getInstance().getBrowser().show();
 		}else{
-			TuxGuitar.instance().getBrowser().dispose();
+			TuxGuitar.getInstance().getBrowser().dispose();
 		}
 	}
 }

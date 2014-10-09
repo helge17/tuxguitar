@@ -22,9 +22,9 @@ public class UndoableMoveTrackUp implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		manager.moveTrackUp(manager.getTrack(this.trackNumber + 1));
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -33,9 +33,9 @@ public class UndoableMoveTrackUp implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGSongManager manager = TuxGuitar.instance().getSongManager();
+		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 		manager.moveTrackDown(manager.getTrack(this.trackNumber));
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		this.doAction = REDO_ACTION;
 	}

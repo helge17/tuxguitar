@@ -41,7 +41,7 @@ public class StrokeEditor extends SelectionAdapter{
 	public void open(final TGBeat beat){
 		this.status = STATUS_CANCEL;
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("beat.stroke"));
 		
@@ -60,27 +60,27 @@ public class StrokeEditor extends SelectionAdapter{
 		group.setText( TuxGuitar.getProperty("duration") );
 		
 		this.duration64 = new Button(group,SWT.RADIO);
-		this.duration64.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
+		this.duration64.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.duration64.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.duration64.setSelection(duration == TGDuration.SIXTY_FOURTH);
 		
 		this.duration32 = new Button(group,SWT.RADIO);
-		this.duration32.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
+		this.duration32.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
 		this.duration32.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.duration32.setSelection(duration == TGDuration.THIRTY_SECOND);
 		
 		this.duration16 = new Button(group,SWT.RADIO);
-		this.duration16.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTEENTH));
+		this.duration16.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
 		this.duration16.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.duration16.setSelection(duration == TGDuration.SIXTEENTH);
 		
 		this.duration8 = new Button(group,SWT.RADIO);
-		this.duration8.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.EIGHTH));
+		this.duration8.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
 		this.duration8.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.duration8.setSelection(duration == TGDuration.EIGHTH);
 		
 		this.duration4 = new Button(group,SWT.RADIO);
-		this.duration4.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.QUARTER));
+		this.duration4.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
 		this.duration4.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.duration4.setSelection(duration == TGDuration.QUARTER);
 		//---------------------------------------------------

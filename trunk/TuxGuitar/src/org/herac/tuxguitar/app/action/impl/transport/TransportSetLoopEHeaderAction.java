@@ -17,7 +17,7 @@ public class TransportSetLoopEHeaderAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		TGMeasure measure = getEditor().getTablature().getCaret().getMeasure();
 		if( measure != null ){
-			MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
+			MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
 			if( pm.isLoop() ){
 				pm.setLoopEHeader( pm.getLoopEHeader() != measure.getNumber() ? measure.getNumber() : -1 );
 			}

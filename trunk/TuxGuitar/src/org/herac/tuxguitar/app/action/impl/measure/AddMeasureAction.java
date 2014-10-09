@@ -45,7 +45,7 @@ public class AddMeasureAction extends TGActionBase{
 	
 	public void showDialog() {
 		if (getEditor().getTablature().getCaret().getMeasure() != null) {
-			final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			dialog.setLayout(new GridLayout());
 			dialog.setText(TuxGuitar.getProperty("measure.add"));
 			
@@ -148,7 +148,7 @@ public class AddMeasureAction extends TGActionBase{
 								undoable.addUndoableEdit(mUndoable.endUndo());
 								
 							}
-							updateTablature();
+							updateSong();
 							
 							int trackNumber = getEditor().getTablature().getCaret().getTrack().getNumber();
 							int stringNumber = getEditor().getTablature().getCaret().getStringNumber();
@@ -158,8 +158,8 @@ public class AddMeasureAction extends TGActionBase{
 							//termia el undoable
 							addUndoableEdit( undoable.endUndo() );
 							
-							TuxGuitar.instance().getFileHistory().setUnsavedFile();
-							TuxGuitar.instance().updateCache(true);
+							TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+							TuxGuitar.getInstance().updateCache(true);
 						}
 					}).start();
 				}

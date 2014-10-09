@@ -28,6 +28,6 @@ public class SetPageLayoutAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		Tablature tablature = getEditor().getTablature();
 		tablature.setViewLayout(new TGLayoutVertical(tablature,tablature.getViewLayout().getStyle()));
-		updateTablature();
+		updateSong();
 	}
 }

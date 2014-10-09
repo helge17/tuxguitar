@@ -28,8 +28,8 @@ public class GoLastMeasureAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getPlayer().isRunning()){
-			TuxGuitar.instance().getTransport().gotoLast();
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			TuxGuitar.getInstance().getTransport().gotoLast();
 		}
 		else{
 			Caret caret = getEditor().getTablature().getCaret();

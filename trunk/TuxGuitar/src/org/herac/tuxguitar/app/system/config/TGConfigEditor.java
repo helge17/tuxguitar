@@ -54,7 +54,7 @@ public class TGConfigEditor{
 	protected List runnables;
 	
 	public TGConfigEditor() {
-		this.config = TuxGuitar.instance().getConfig();
+		this.config = TuxGuitar.getInstance().getConfig();
 	}
 	
 	public void showDialog(Shell shell) {
@@ -81,13 +81,13 @@ public class TGConfigEditor{
 		buttonDefaults.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TGConfigEditor.this.accepted = true;
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				dispose();
 				setDefaults();
 				ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("settings.config.apply-changes-question"));
 				confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
 				if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 					return;
 				}
@@ -101,13 +101,13 @@ public class TGConfigEditor{
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				TGConfigEditor.this.accepted = true;
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				updateOptions();
 				dispose();
 				ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("settings.config.apply-changes-question"));
 				confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
 				if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO){
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 					return;
 				}
@@ -120,9 +120,9 @@ public class TGConfigEditor{
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				dispose();
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 			}
 		});
 		
@@ -251,7 +251,7 @@ public class TGConfigEditor{
 	}
 	
 	protected void applyConfig(final boolean force){
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() throws TGException {
 				TGConfigEditor.this.runnables = new ArrayList();
@@ -271,18 +271,18 @@ public class TGConfigEditor{
 							}
 							new Thread(new Runnable() {
 								public void run() throws TGException {
-									TuxGuitar.instance().fireUpdate();
-									TuxGuitar.instance().updateCache(true);
-									TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+									TuxGuitar.getInstance().updateSong();
+									TuxGuitar.getInstance().updateCache(true);
+									TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 									TGActionLock.unlock();
 								}
 							}).start();
 						}
 					});
 				} catch (Throwable throwable) {
-					TuxGuitar.instance().fireUpdate();
-					TuxGuitar.instance().updateCache(true);
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+					TuxGuitar.getInstance().updateSong();
+					TuxGuitar.getInstance().updateCache(true);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 					TGActionLock.unlock();
 					throwable.printStackTrace();
 				}
@@ -311,7 +311,7 @@ public class TGConfigEditor{
 	}
 	
 	public TablatureEditor getEditor(){
-		return TuxGuitar.instance().getTablatureEditor();
+		return TuxGuitar.getInstance().getTablatureEditor();
 	}
 	
 	public Shell getDialog(){

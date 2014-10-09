@@ -80,10 +80,10 @@ public class EditMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		EditorKit kit = TuxGuitar.instance().getTablatureEditor().getTablature().getEditorKit();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
-		this.undo.setEnabled(!running && TuxGuitar.instance().getUndoableManager().canUndo());
-		this.redo.setEnabled(!running && TuxGuitar.instance().getUndoableManager().canRedo());
+		EditorKit kit = TuxGuitar.getInstance().getTablatureEditor().getTablature().getEditorKit();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
+		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
 		this.modeSelection.setSelection(kit.getMouseMode() == EditorKit.MOUSE_MODE_SELECTION);
 		this.modeSelection.setEnabled(!running);
 		this.modeEdition.setSelection(kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
@@ -106,7 +106,7 @@ public class EditMenuItem extends MenuItems{
 	}
 	
 	public void loadIcons(){
-		this.undo.setImage(TuxGuitar.instance().getIconManager().getEditUndo());
-		this.redo.setImage(TuxGuitar.instance().getIconManager().getEditRedo());
+		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getEditUndo());
+		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getEditRedo());
 	}
 }

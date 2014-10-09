@@ -25,6 +25,6 @@ public class ShowToolbarsAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar.instance().getItemManager().toogleToolbarVisibility();
+		TuxGuitar.getInstance().getItemManager().toogleToolbarVisibility();
 	}
 }

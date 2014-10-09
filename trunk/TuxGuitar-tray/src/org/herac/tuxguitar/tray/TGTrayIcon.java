@@ -17,7 +17,7 @@ public class TGTrayIcon {
 	
 	public void loadImage(){
 		if( this.item != null && !this.item.isDisposed() ){
-			this.item.setImage(TuxGuitar.instance().getIconManager().getAppIcon24());
+			this.item.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon24());
 		}
 	}
 }

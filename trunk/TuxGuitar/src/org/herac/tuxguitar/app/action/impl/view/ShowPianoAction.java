@@ -25,10 +25,10 @@ public class ShowPianoAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getPianoEditor().isDisposed()){
-			TuxGuitar.instance().getPianoEditor().show();
+		if(TuxGuitar.getInstance().getPianoEditor().isDisposed()){
+			TuxGuitar.getInstance().getPianoEditor().show();
 		}else{
-			TuxGuitar.instance().getPianoEditor().dispose();
+			TuxGuitar.getInstance().getPianoEditor().dispose();
 		}
 	}
 }

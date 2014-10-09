@@ -62,7 +62,7 @@ public class MarkerList implements TGEventListener {
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout(2,false));
 		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		// ----------------------------------------------------------------------
@@ -76,7 +76,7 @@ public class MarkerList implements TGEventListener {
 		this.table.addListener (SWT.MouseDoubleClick, new Listener() {
 			public void handleEvent (Event event) {
 				new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		this.measureColumn = new TableColumn(this.table, SWT.LEFT);
@@ -96,13 +96,13 @@ public class MarkerList implements TGEventListener {
 		this.buttonAdd.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonAdd.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+				if(!TGActionLock.isLocked() && !TuxGuitar.getInstance().isLocked()){
 					TGActionLock.lock();
-					Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
-					TGMarker marker = TuxGuitar.instance().getSongManager().getFactory().newMarker();
+					Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
+					TGMarker marker = TuxGuitar.getInstance().getSongManager().getFactory().newMarker();
 					marker.setMeasure(caret.getMeasure().getNumber());
 					if(new MarkerEditor(marker,MarkerEditor.STATUS_NEW).open(MarkerList.this.dialog)){
-						TuxGuitar.instance().updateCache(true);
+						TuxGuitar.getInstance().updateCache(true);
 						loadTableItems(true);
 					}
 					TGActionLock.unlock();
@@ -114,12 +114,12 @@ public class MarkerList implements TGEventListener {
 		this.buttonEdit.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonEdit.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+				if(!TGActionLock.isLocked() && !TuxGuitar.getInstance().isLocked()){
 					TGActionLock.lock();
 					TGMarker marker = getSelectedMarker();
 					if(marker != null){
 						if(new MarkerEditor(marker,MarkerEditor.STATUS_EDIT).open(MarkerList.this.dialog)){
-							TuxGuitar.instance().updateCache(true);
+							TuxGuitar.getInstance().updateCache(true);
 							loadTableItems(true);
 						}
 					}
@@ -132,18 +132,18 @@ public class MarkerList implements TGEventListener {
 		this.buttonDelete.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
 		this.buttonDelete.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+				if(!TGActionLock.isLocked() && !TuxGuitar.getInstance().isLocked()){
 					TGActionLock.lock();
 					TGMarker marker = getSelectedMarker();
 					// comienza el undoable
 					UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(marker);
 					
-					TuxGuitar.instance().getSongManager().removeMarker(marker);
+					TuxGuitar.getInstance().getSongManager().removeMarker(marker);
 					
 					// termia el undoable
-					TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo(null));
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
-					TuxGuitar.instance().updateCache(true);
+					TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(null));
+					TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+					TuxGuitar.getInstance().updateCache(true);
 					loadTableItems(true);
 					TGActionLock.unlock();
 				}
@@ -154,10 +154,10 @@ public class MarkerList implements TGEventListener {
 		this.buttonGo.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,true));
 		this.buttonGo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(!TGActionLock.isLocked() && !TuxGuitar.instance().isLocked()){
+				if(!TGActionLock.isLocked() && !TuxGuitar.getInstance().isLocked()){
 					TGActionLock.lock();
 					new MarkerNavigator().goToSelectedMarker(getSelectedMarker());
-					TuxGuitar.instance().updateCache(true);
+					TuxGuitar.getInstance().updateCache(true);
 					TGActionLock.unlock();
 				}
 			}
@@ -186,15 +186,15 @@ public class MarkerList implements TGEventListener {
 	}
 	
 	public void addListeners(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.instance().getIconManager().removeLoader(this);
-		TuxGuitar.instance().getLanguageManager().removeLoader(this);
-		TuxGuitar.instance().getEditorManager().removeUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
+		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
 	
 	public void dispose(){
@@ -235,7 +235,7 @@ public class MarkerList implements TGEventListener {
 		int itemSelected = (keepSelection ? this.table.getSelectionIndex() : -1 );
 		
 		this.table.removeAll();
-		this.markers = TuxGuitar.instance().getSongManager().getMarkers();
+		this.markers = TuxGuitar.getInstance().getSongManager().getMarkers();
 		
 		Iterator it = this.markers.iterator();
 		while (it.hasNext()) {
@@ -264,7 +264,7 @@ public class MarkerList implements TGEventListener {
 	
 	public void loadIcons() {
 		if(!isDisposed()){
-			this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		}
 	}
 	

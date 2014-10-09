@@ -31,13 +31,13 @@ public class TGSplash {
 	}
 	
 	public void init() {
-		if(TuxGuitar.instance().getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH)){
-			final Image image = TuxGuitar.instance().getIconManager().getAppSplash();
+		if(TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH)){
+			final Image image = TuxGuitar.getInstance().getIconManager().getAppSplash();
 			
-			this.shell = new Shell(TuxGuitar.instance().getDisplay(), SWT.NO_TRIM | SWT.NO_BACKGROUND);
+			this.shell = new Shell(TuxGuitar.getInstance().getDisplay(), SWT.NO_TRIM | SWT.NO_BACKGROUND);
 			this.shell.setLayout(new FillLayout());
 			this.shell.setBounds(getBounds(image));
-			this.shell.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+			this.shell.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			this.shell.setText(TuxGuitar.APPLICATION_NAME);
 			this.shell.addPaintListener(new PaintListener() {
 				public void paintControl(PaintEvent e) {

@@ -18,7 +18,7 @@ public class WindowTitleUtil {
 	public static final String VAR_SONG_ARTIST = "songartist";
 	
 	public static String parseTitle(){
-		String title = parseString(TuxGuitar.instance().getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE));
+		String title = parseString(TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE));
 		return ((title == null)?TuxGuitar.APPLICATION_NAME:title);
 	}
 	
@@ -60,17 +60,17 @@ public class WindowTitleUtil {
 		}else if(varName.equals(VAR_APP_VERSION)){
 			varValue = TGVersion.CURRENT.getVersion();
 		}else if(varName.equals(VAR_FILE_NAME)){
-			varValue = TuxGuitar.instance().getFileHistory().getCurrentFileName(FileChooser.DEFAULT_SAVE_FILENAME);
+			varValue = TuxGuitar.getInstance().getFileHistory().getCurrentFileName(FileChooser.DEFAULT_SAVE_FILENAME);
 		}else if(varName.equals(VAR_FILE_PATH)){
-			varValue = TuxGuitar.instance().getFileHistory().getCurrentFilePath();
+			varValue = TuxGuitar.getInstance().getFileHistory().getCurrentFilePath();
 		}else if(varName.equals(VAR_SONG_NAME)){
-			varValue = TuxGuitar.instance().getSongManager().getSong().getName();
+			varValue = TuxGuitar.getInstance().getSongManager().getSong().getName();
 		}else if(varName.equals(VAR_SONG_AUTHOR)){
-			varValue = TuxGuitar.instance().getSongManager().getSong().getAuthor();
+			varValue = TuxGuitar.getInstance().getSongManager().getSong().getAuthor();
 		}else if(varName.equals(VAR_SONG_ALBUM)){
-			varValue = TuxGuitar.instance().getSongManager().getSong().getAlbum();
+			varValue = TuxGuitar.getInstance().getSongManager().getSong().getAlbum();
 		}else if(varName.equals(VAR_SONG_ARTIST)){
-			varValue = TuxGuitar.instance().getSongManager().getSong().getArtist();
+			varValue = TuxGuitar.getInstance().getSongManager().getSong().getArtist();
 		}
 		return varValue;
 	}

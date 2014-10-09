@@ -160,12 +160,12 @@ public class RepeatAlternativeAction extends TGActionBase{
 			
 			//comienza el undoable
 			UndoableJoined undoable = new UndoableJoined();
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//Guardo la repeticion alternativa
 			UndoableChangeAlternativeRepeat u1 = UndoableChangeAlternativeRepeat.startUndo();
 			getSongManager().changeAlternativeRepeat(measure.getStart(), value);
-			fireUpdate(measure.getNumber());
+			updateMeasure(measure.getNumber());
 			undoable.addUndoableEdit(u1.endUndo(value));
 			
 			if(previousRepeatClose){
@@ -174,7 +174,7 @@ public class RepeatAlternativeAction extends TGActionBase{
 				if(previous != null && previous.getRepeatClose() == 0){
 					UndoableChangeCloseRepeat u2 = UndoableChangeCloseRepeat.startUndo(previous.getStart(),previous.getRepeatClose());
 					getSongManager().changeCloseRepeat(previous.getStart(), 1);
-					fireUpdate(previous.getNumber());
+					updateMeasure(previous.getNumber());
 					undoable.addUndoableEdit(u2.endUndo(1));
 				}
 			}

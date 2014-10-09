@@ -87,10 +87,10 @@ public class TransportMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		TGMeasure measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
-		MidiPlayerMode pm = TuxGuitar.instance().getPlayer().getMode();
-		this.metronome.setSelection(TuxGuitar.instance().getPlayer().isMetronomeEnabled());
-		this.countDown.setSelection(TuxGuitar.instance().getPlayer().getCountDown().isEnabled());
+		TGMeasure measure = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
+		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
+		this.metronome.setSelection(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
+		this.countDown.setSelection(TuxGuitar.getInstance().getPlayer().getCountDown().isEnabled());
 		this.loopSHeader.setEnabled( pm.isLoop() );
 		this.loopSHeader.setSelection( measure != null && measure.getNumber() == pm.getLoopSHeader() );
 		this.loopEHeader.setEnabled( pm.isLoop() );
@@ -111,16 +111,16 @@ public class TransportMenuItem extends MenuItems{
 	
 	public void loadIcons(){
 		this.loadIcons(true);
-		this.mode.setImage(TuxGuitar.instance().getIconManager().getTransportMode());
-		this.metronome.setImage(TuxGuitar.instance().getIconManager().getTransportMetronome());
+		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
+		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getTransportMetronome());
 	}
 	
 	public void loadIcons(boolean force){
 		int lastStatus = this.status;
 		
-		if(TuxGuitar.instance().getPlayer().isRunning()){
+		if(TuxGuitar.getInstance().getPlayer().isRunning()){
 			this.status = STATUS_RUNNING;
-		}else if(TuxGuitar.instance().getPlayer().isPaused()){
+		}else if(TuxGuitar.getInstance().getPlayer().isPaused()){
 			this.status = STATUS_PAUSED;
 		}else{
 			this.status = STATUS_STOPPED;
@@ -128,14 +128,14 @@ public class TransportMenuItem extends MenuItems{
 		
 		if(force || lastStatus != this.status){
 			if(this.status == STATUS_RUNNING){
-				this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop2());
-				this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPause());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPause());
 			}else if(this.status == STATUS_PAUSED){
-				this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop2());
-				this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPlay2());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay2());
 			}else if(this.status == STATUS_STOPPED){
-				this.stop.setImage(TuxGuitar.instance().getIconManager().getTransportIconStop1());
-				this.play.setImage(TuxGuitar.instance().getIconManager().getTransportIconPlay1());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop1());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay1());
 			}
 		}
 	}

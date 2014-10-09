@@ -48,12 +48,12 @@ public class TrackToolItems extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.add.setImage(TuxGuitar.instance().getIconManager().getTrackAdd());
-		this.remove.setImage(TuxGuitar.instance().getIconManager().getTrackRemove());
+		this.add.setImage(TuxGuitar.getInstance().getIconManager().getTrackAdd());
+		this.remove.setImage(TuxGuitar.getInstance().getIconManager().getTrackRemove());
 	}
 	
 	public void update(){
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.add.setEnabled(!running);
 		this.remove.setEnabled(!running);
 	}

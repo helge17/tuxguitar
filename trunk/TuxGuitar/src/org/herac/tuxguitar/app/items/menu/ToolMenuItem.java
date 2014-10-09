@@ -98,7 +98,7 @@ public class ToolMenuItem extends MenuItems {
 	}
 	
 	public void update(){
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.transpose.setEnabled( !running );
 	}
 }

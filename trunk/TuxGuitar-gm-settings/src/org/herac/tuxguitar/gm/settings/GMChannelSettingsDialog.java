@@ -85,7 +85,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	
 	private void configureRouter(){
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.router);
-		gmChannelRouterConfigurator.configureRouter(TuxGuitar.instance().getSongManager().getSong().getChannels());
+		gmChannelRouterConfigurator.configureRouter(TuxGuitar.getInstance().getSongManager().getSong().getChannels());
 	}
 	
 	private void updateChannelCombos(){
@@ -96,7 +96,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.reloadChannelCombo(this.gmChannel1Combo, channels, route.getChannel1(), "gm.settings.channel.value-1");
 		this.reloadChannelCombo(this.gmChannel2Combo, channels, route.getChannel2(), "gm.settings.channel.value-2");
 		
-		boolean playerRunning = TuxGuitar.instance().getPlayer().isRunning();
+		boolean playerRunning = TuxGuitar.getInstance().getPlayer().isRunning();
 		
 		this.gmChannel1Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel1Combo.getItemCount() > 0);
 		this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
@@ -159,7 +159,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	private TGChannelParameter findOrCreateChannelParameter( TGChannel tgChannel, String key ){
 		TGChannelParameter tgChannelParameter = findChannelParameter(tgChannel, key);
 		if( tgChannelParameter == null ){
-			tgChannelParameter = TuxGuitar.instance().getSongManager().getFactory().newChannelParameter();
+			tgChannelParameter = TuxGuitar.getInstance().getSongManager().getFactory().newChannelParameter();
 			tgChannelParameter.setKey(key);
 			tgChannel.addParameter(tgChannelParameter);
 		}

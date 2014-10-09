@@ -27,6 +27,6 @@ public class SetCompactViewAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		TGLayout layout = getEditor().getTablature().getViewLayout();
 		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_COMPACT ) );
-		updateTablature();
+		updateSong();
 	}
 }

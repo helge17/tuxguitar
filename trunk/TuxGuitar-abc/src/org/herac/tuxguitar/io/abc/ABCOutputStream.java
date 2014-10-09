@@ -686,7 +686,7 @@ public class ABCOutputStream {
 	}
 
 	private TGMeasure mergeChords(TGMeasure measure, TGMeasure chordsMeasure, TGMeasureHeader header) {
-		TGFactory factory = TuxGuitar.instance().getSongManager().getFactory();
+		TGFactory factory = TuxGuitar.getInstance().getSongManager().getFactory();
 		TGMeasure m=measure.clone(factory, header);
 		for(int i=0;i<chordsMeasure.countBeats();i++) {
 			TGBeat cb=chordsMeasure.getBeat(i).clone(factory);

@@ -30,8 +30,8 @@ public class TGBrowserConnection {
 				response.loadElements( elements );
 			}else if( status != null && status.equals(HTTP_STATUS_UNAUTHORIZED) ){
 				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog();
-				if( !TuxGuitar.instance().getBrowser().isDisposed() ){
-					authDialog.open( TuxGuitar.instance().getBrowser().getShell() );
+				if( !TuxGuitar.getInstance().getBrowser().isDisposed() ){
+					authDialog.open( TuxGuitar.getInstance().getBrowser().getShell() );
 					if( authDialog.isAccepted() ){
 						this.auth.update();
 						this.getElements(elements, element );

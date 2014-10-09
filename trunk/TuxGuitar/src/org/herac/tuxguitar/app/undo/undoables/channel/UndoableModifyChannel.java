@@ -64,15 +64,15 @@ public class UndoableModifyChannel implements UndoableEdit{
 	}
 	
 	private TGChannel cloneChannel(TGChannel channel){
-		return channel.clone(TuxGuitar.instance().getSongManager().getFactory());
+		return channel.clone(TuxGuitar.getInstance().getSongManager().getFactory());
 	}
 	
 	private TGChannel getChannel(){
-		return TuxGuitar.instance().getSongManager().getChannel(this.channelId);
+		return TuxGuitar.getInstance().getSongManager().getChannel(this.channelId);
 	}
 	
 	private void updateSongChannel(TGChannel channel){
-		TGSongManager tgSongManager = TuxGuitar.instance().getSongManager();
+		TGSongManager tgSongManager = TuxGuitar.getInstance().getSongManager();
 		tgSongManager.updateChannel(
 			channel.getChannelId(),  
 			channel.getBank(), 
@@ -86,6 +86,6 @@ public class UndoableModifyChannel implements UndoableEdit{
 			channel.getName()
 		);
 		
-		TuxGuitar.instance().updateCache(true);
+		TuxGuitar.getInstance().updateCache(true);
 	}
 }

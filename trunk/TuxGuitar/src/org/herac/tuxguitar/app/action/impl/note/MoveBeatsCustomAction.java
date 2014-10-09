@@ -209,10 +209,10 @@ public class MoveBeatsCustomAction extends TGActionBase{
 					TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 						public void run() throws TGException {
 							TGActionLock.lock();
-							TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+							TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 							moveBeats(duration);
-							TuxGuitar.instance().updateCache( true );
-							TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+							TuxGuitar.getInstance().updateCache( true );
+							TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 							TGActionLock.unlock();
 						}
 					});
@@ -300,9 +300,9 @@ public class MoveBeatsCustomAction extends TGActionBase{
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo(track));
 			
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
-			updateTablature();
+			updateSong();
 		}
 		return 0;
 	}

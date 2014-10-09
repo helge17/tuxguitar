@@ -89,7 +89,7 @@ public class CompositionMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.timeSignature.setEnabled(!running);
 		this.tempo.setEnabled(!running);
 		this.clef.setEnabled(!running);
@@ -114,11 +114,11 @@ public class CompositionMenuItem extends MenuItems{
 	}
 	
 	public void loadIcons() {
-		this.timeSignature.setImage(TuxGuitar.instance().getIconManager().getCompositionTimeSignature());
-		this.tempo.setImage(TuxGuitar.instance().getIconManager().getCompositionTempo());
-		this.repeatOpen.setImage(TuxGuitar.instance().getIconManager().getCompositionRepeatOpen());
-		this.repeatClose.setImage(TuxGuitar.instance().getIconManager().getCompositionRepeatClose());
-		this.repeatAlternative.setImage(TuxGuitar.instance().getIconManager().getCompositionRepeatAlternative());
-		this.properties.setImage(TuxGuitar.instance().getIconManager().getSongProperties());
+		this.timeSignature.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTimeSignature());
+		this.tempo.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTempo());
+		this.repeatOpen.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatOpen());
+		this.repeatClose.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatClose());
+		this.repeatAlternative.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatAlternative());
+		this.properties.setImage(TuxGuitar.getInstance().getIconManager().getSongProperties());
 	}
 }

@@ -54,6 +54,6 @@ public class TGChannelSettingsHandlerManager {
 	}
 	
 	private MidiDevice getMidiDevice(){
-		return TuxGuitar.instance().getPlayer().getOutputPort();
+		return TuxGuitar.getInstance().getPlayer().getOutputPort();
 	}
 }

@@ -111,13 +111,13 @@ public class ChangeTimeSignatureAction extends TGActionBase{
 						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 							public void run() throws TGException {
 								TGActionLock.lock();
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 								TGTimeSignature timeSignature = getSongManager().getFactory().newTimeSignature();
 								timeSignature.setNumerator(numeratorValue);
 								timeSignature.getDenominator().setValue(denominatorValue);
 								setTimeSignature(timeSignature,toEndValue);
-								TuxGuitar.instance().updateCache( true );
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().updateCache( true );
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						});
@@ -164,10 +164,10 @@ public class ChangeTimeSignatureAction extends TGActionBase{
 		
 		getSongManager().changeTimeSignature(measure.getStart(),timeSignature,toEnd);
 		
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		//actualizo la tablatura
-		updateTablature();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo(timeSignature,measure.getStart(),toEnd));

@@ -25,10 +25,10 @@ public class EditLyricsAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getLyricEditor().isDisposed()){
-			TuxGuitar.instance().getLyricEditor().show();
+		if(TuxGuitar.getInstance().getLyricEditor().isDisposed()){
+			TuxGuitar.getInstance().getLyricEditor().show();
 		}else{
-			TuxGuitar.instance().getLyricEditor().dispose();
+			TuxGuitar.getInstance().getLyricEditor().dispose();
 		}
 	}
 }

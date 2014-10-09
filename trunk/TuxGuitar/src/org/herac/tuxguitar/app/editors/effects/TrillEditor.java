@@ -42,7 +42,7 @@ public class TrillEditor extends SelectionAdapter{
 	public void show(final TGNote note){
 		this.cancelled = true;
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("effects.trill-editor"));
@@ -82,17 +82,17 @@ public class TrillEditor extends SelectionAdapter{
 		durationGroup.setLayout(new GridLayout(3,false));
 		
 		this.sixtyFourthButton = new Button(durationGroup,SWT.RADIO);
-		this.sixtyFourthButton.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
+		this.sixtyFourthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.sixtyFourthButton.setLayoutData(makeGridData(1));
 		this.sixtyFourthButton.setSelection(duration == TGDuration.SIXTY_FOURTH);
 		
 		this.thirtySecondButton = new Button(durationGroup,SWT.RADIO);
-		this.thirtySecondButton.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
+		this.thirtySecondButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
 		this.thirtySecondButton.setLayoutData(makeGridData(1));
 		this.thirtySecondButton.setSelection(duration == TGDuration.THIRTY_SECOND);
 		
 		this.sixTeenthButton = new Button(durationGroup,SWT.RADIO);
-		this.sixTeenthButton.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTEENTH));
+		this.sixTeenthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
 		this.sixTeenthButton.setLayoutData(makeGridData(1));
 		this.sixTeenthButton.setSelection(duration == TGDuration.SIXTEENTH);
 		
@@ -163,7 +163,7 @@ public class TrillEditor extends SelectionAdapter{
 	}
 	
 	public TGEffectTrill getTrill(){
-		TGEffectTrill effect = TuxGuitar.instance().getSongManager().getFactory().newEffectTrill();
+		TGEffectTrill effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTrill();
 		effect.setFret(this.fretSpinner.getSelection());
 		if(this.sixtyFourthButton.getSelection()){
 			effect.getDuration().setValue(TGDuration.SIXTY_FOURTH);

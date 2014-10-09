@@ -30,8 +30,8 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.instance().getSongManager().changeTripletFeel(this.position,this.redoableTripletFeel,this.toEnd);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getSongManager().changeTripletFeel(this.position,this.redoableTripletFeel,this.toEnd);
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
@@ -41,15 +41,15 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.instance().getSongManager().changeTripletFeel(this.position,this.undoableTripletFeel,this.toEnd);
+		TuxGuitar.getInstance().getSongManager().changeTripletFeel(this.position,this.undoableTripletFeel,this.toEnd);
 		if(this.toEnd){
 			Iterator it = this.nextTripletFeelPositions.iterator();
 			while(it.hasNext()){
 				TripletFeelPosition tfp = (TripletFeelPosition)it.next();
-				TuxGuitar.instance().getSongManager().changeTripletFeel(tfp.getPosition(),tfp.getTripletFeel(),true);
+				TuxGuitar.getInstance().getSongManager().changeTripletFeel(tfp.getPosition(),tfp.getTripletFeel(),true);
 			}
 		}
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
@@ -73,7 +73,7 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		undoable.nextTripletFeelPositions = new ArrayList();
 		
 		int prevTripletFeel = undoable.undoableTripletFeel;
-		Iterator it = TuxGuitar.instance().getSongManager().getFirstTrack().getMeasures();
+		Iterator it = TuxGuitar.getInstance().getSongManager().getFirstTrack().getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl measure = (TGMeasureImpl)it.next();
 			if(measure.getStart() > undoable.position){
@@ -96,7 +96,7 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 	}
 	
 	private static Caret getCaret(){
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
 	

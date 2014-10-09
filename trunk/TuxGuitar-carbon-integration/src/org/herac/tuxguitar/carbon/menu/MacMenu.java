@@ -126,7 +126,7 @@ public class MacMenu {
 	private void executeAction(final String actionId){
 		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TuxGuitar.instance().getActionManager().execute(actionId);
+				TuxGuitar.getInstance().getActionManager().execute(actionId);
 			}
 		});
 	}

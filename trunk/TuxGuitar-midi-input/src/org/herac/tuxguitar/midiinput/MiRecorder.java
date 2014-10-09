@@ -56,7 +56,7 @@ static	private	MiRecorder	s_Instance;
 
 	public void		start()
 	{
-	TGSongManager	tgSongMgr = TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
 
 	if(s_TESTING)
 		{
@@ -66,10 +66,10 @@ static	private	MiRecorder	s_Instance;
 		tgSongMgr.changeTempos(TGDuration.QUARTER_TIME, tempo, true);
 		}
 
-	f_SavedMetronomeStatus = TuxGuitar.instance().getPlayer().isMetronomeEnabled();
-	TuxGuitar.instance().getPlayer().setMetronomeEnabled(true);
+	f_SavedMetronomeStatus = TuxGuitar.getInstance().getPlayer().isMetronomeEnabled();
+	TuxGuitar.getInstance().getPlayer().setMetronomeEnabled(true);
 
-	TablatureEditor	editor	= TuxGuitar.instance().getTablatureEditor();
+	TablatureEditor	editor	= TuxGuitar.getInstance().getTablatureEditor();
 	Caret			caret	= editor.getTablature().getCaret();
 
 	f_Tempo			= caret.getMeasure().getTempo().getValue();
@@ -91,7 +91,7 @@ static	private	MiRecorder	s_Instance;
 */
 	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 		public void run() throws TGException {
-			TuxGuitar.instance().getActionManager().execute(TransportPlayAction.NAME);
+			TuxGuitar.getInstance().getActionManager().execute(TransportPlayAction.NAME);
 		}
 	});
 
@@ -103,17 +103,17 @@ static	private	MiRecorder	s_Instance;
 
 	public void		stop()
 	{
-	TGSongManager	tgSongMgr = TuxGuitar.instance().getSongManager();
+	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
 
 	f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
 	f_IsRecording = false;
 
 	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 		public void run() throws TGException {
-			TuxGuitar.instance().getActionManager().execute(TransportStopAction.NAME);
+			TuxGuitar.getInstance().getActionManager().execute(TransportStopAction.NAME);
 		}
 	});
-	TuxGuitar.instance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);
+	TuxGuitar.getInstance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);
 	
 	// qui deve cancellare la traccia di servizio...
 	tgSongMgr.removeTrack(f_TempTrack);
@@ -125,6 +125,6 @@ static	private	MiRecorder	s_Instance;
 		f_Buffer.toTrack(f_Tempo, f_StartPosition, "Nuovo input MIDI");
 		}
 
-	TuxGuitar.instance().fireUpdate();
+	TuxGuitar.getInstance().updateSong();
 	}
 }

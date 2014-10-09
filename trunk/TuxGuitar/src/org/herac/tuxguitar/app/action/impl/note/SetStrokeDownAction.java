@@ -42,14 +42,14 @@ public class SetStrokeDownAction extends TGActionBase{
 				if(getSongManager().getMeasureManager().setStroke( beat.getMeasure(), beat.getStart(), value, direction ) ){
 					//termia el undoable
 					addUndoableEdit(undoable.endUndo());
-					TuxGuitar.instance().getFileHistory().setUnsavedFile();
+					TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 				}
-				updateTablature();
+				updateSong();
 			}
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

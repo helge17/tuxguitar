@@ -26,12 +26,12 @@ public class ShowFretBoardAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
-		if(TuxGuitar.instance().getFretBoardEditor().isVisible()){
-			TuxGuitar.instance().getFretBoardEditor().hideFretBoard();
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
+		if(TuxGuitar.getInstance().getFretBoardEditor().isVisible()){
+			TuxGuitar.getInstance().getFretBoardEditor().hideFretBoard();
 		}else{
-			TuxGuitar.instance().getFretBoardEditor().showFretBoard();
+			TuxGuitar.getInstance().getFretBoardEditor().showFretBoard();
 		}
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 	}
 }

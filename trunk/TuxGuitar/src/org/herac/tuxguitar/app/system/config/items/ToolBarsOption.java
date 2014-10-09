@@ -32,7 +32,7 @@ public class ToolBarsOption extends Option{
 	
 	public void createOption() {
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.toolbars"));
-		getToolItem().setImage(TuxGuitar.instance().getIconManager().getOptionToolbars());
+		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionToolbars());
 		getToolItem().addSelectionListener(this);
 		
 		showLabel(getComposite(),SWT.FILL, SWT.TOP, true, false, SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.toolbars.tip"));
@@ -124,7 +124,7 @@ public class ToolBarsOption extends Option{
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				final ToolItems[] items = TuxGuitar.instance().getItemManager().getToolBars();
+				final ToolItems[] items = TuxGuitar.getInstance().getItemManager().getToolBars();
 				new SyncThread(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
@@ -146,24 +146,24 @@ public class ToolBarsOption extends Option{
 			for( int i = 0 ; i < this.table.getItemCount() ; i ++){
 				TableItem item = this.table.getItem( i );
 				ToolItems data = (ToolItems)item.getData();
-				TuxGuitar.instance().getItemManager().setToolBarStatus(data.getName(), item.getChecked() , i);
+				TuxGuitar.getInstance().getItemManager().setToolBarStatus(data.getName(), item.getChecked() , i);
 			}
-			TuxGuitar.instance().getItemManager().writeToolBars();
+			TuxGuitar.getInstance().getItemManager().writeToolBars();
 		}
 	}
 	
 	public void updateDefaults() {
 		if(this.initialized){
-			TuxGuitar.instance().getItemManager().setDefaultToolBars();
-			TuxGuitar.instance().getItemManager().writeToolBars();
+			TuxGuitar.getInstance().getItemManager().setDefaultToolBars();
+			TuxGuitar.getInstance().getItemManager().writeToolBars();
 		}
 	}
 	
 	public void applyConfig(boolean force){
-		if(force || (this.initialized && TuxGuitar.instance().getItemManager().shouldReloadToolBars())){
+		if(force || (this.initialized && TuxGuitar.getInstance().getItemManager().shouldReloadToolBars())){
 			addSyncThread(new Runnable() {
 				public void run() {
-					TuxGuitar.instance().loadToolBars();
+					TuxGuitar.getInstance().loadToolBars();
 				}
 			});
 		}

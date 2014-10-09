@@ -25,6 +25,6 @@ public class TransportStopAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar.instance().getTransport().stop();
+		TuxGuitar.getInstance().getTransport().stop();
 	}
 }

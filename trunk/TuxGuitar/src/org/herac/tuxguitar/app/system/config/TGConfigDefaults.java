@@ -124,7 +124,7 @@ public class TGConfigDefaults{
 	}
 	
 	private static String getDefaultFontName(){
-		Font font = TuxGuitar.instance().getDisplay().getSystemFont();
+		Font font = TuxGuitar.getInstance().getDisplay().getSystemFont();
 		if( font != null ){
 			FontData[] fd = font.getFontData();
 			if(fd != null && fd.length > 0){

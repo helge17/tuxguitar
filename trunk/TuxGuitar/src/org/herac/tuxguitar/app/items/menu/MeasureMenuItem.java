@@ -92,8 +92,8 @@ public class MeasureMenuItem extends MenuItems{
 	}
 	
 	public void update(){
-		TGMeasureImpl measure = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure();
-		boolean running = TuxGuitar.instance().getPlayer().isRunning();
+		TGMeasureImpl measure = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		boolean isFirst = (measure.getNumber() == 1);
 		boolean isLast = (measure.getNumber() == measure.getTrack().countMeasures());
 		this.first.setEnabled(!isFirst);
@@ -104,7 +104,7 @@ public class MeasureMenuItem extends MenuItems{
 		this.cleanMeasure.setEnabled(!running);
 		this.removeMeasure.setEnabled(!running);
 		this.copyMeasure.setEnabled(!running);
-		this.pasteMeasure.setEnabled(!running && !TuxGuitar.instance().getTablatureEditor().getClipBoard().isEmpty());
+		this.pasteMeasure.setEnabled(!running && !TuxGuitar.getInstance().getTablatureEditor().getClipBoard().isEmpty());
 	}
 	
 	public void loadProperties(){

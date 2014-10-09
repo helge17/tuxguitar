@@ -67,7 +67,7 @@ public class ChordXMLReader {
 					String strings = chordAttributes.getNamedItem(ChordXML.CHORD_STRINGS_ATTRIBUTE).getNodeValue();
 					String firstFret = chordAttributes.getNamedItem(ChordXML.CHORD_FIRST_FRET_ATTRIBUTE).getNodeValue();
 					
-					TGChord chord = TuxGuitar.instance().getSongManager().getFactory().newChord(Integer.parseInt(strings));
+					TGChord chord = TuxGuitar.getInstance().getSongManager().getFactory().newChord(Integer.parseInt(strings));
 					chord.setName(name);
 					chord.setFirstFret(Integer.parseInt(firstFret));
 					

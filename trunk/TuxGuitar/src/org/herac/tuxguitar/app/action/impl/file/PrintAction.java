@@ -48,13 +48,13 @@ public class PrintAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		try{
-			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.instance().getShell());
+			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell());
 			if(data != null){
-				PrintDialog dialog = new PrintDialog(TuxGuitar.instance().getShell(), SWT.NULL);
+				PrintDialog dialog = new PrintDialog(TuxGuitar.getInstance().getShell(), SWT.NULL);
 				PrinterData printerData = dialog.open();
 				
 				if (printerData != null) {
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 					
 					this.print(printerData, data);
 				}
@@ -187,7 +187,7 @@ public class PrintAction extends TGActionBase{
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 			}
 		}
 		

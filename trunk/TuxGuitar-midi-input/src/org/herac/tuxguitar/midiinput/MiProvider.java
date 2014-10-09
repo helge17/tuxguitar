@@ -174,7 +174,7 @@ static private	MiProvider	s_Instance;
 	// returns the 1-based string index corresponding to the 0-based specified MIDI channel
 	// or -1 if the current track does not have such string
 
-	TGTrackImpl	track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+	TGTrackImpl	track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 
 	if(track != null)
 		{
@@ -194,7 +194,7 @@ static private	MiProvider	s_Instance;
 	// returns the note corresponding to the free vibrating string
 	// or -1 if the current track does not have such string
 
-	TGTrackImpl	track = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack();
+	TGTrackImpl	track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 
 	if(	track != null &&
 		track.getStrings().size() >= inString)
@@ -231,7 +231,7 @@ static private	MiProvider	s_Instance;
 		{
 		task = new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TuxGuitar.instance().hideExternalBeat();
+				TuxGuitar.getInstance().hideExternalBeat();
 				}
 			};
 		}
@@ -239,7 +239,7 @@ static private	MiProvider	s_Instance;
 		{
 		task = new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TuxGuitar.instance().showExternalBeat(f_EchoBeat);
+				TuxGuitar.getInstance().showExternalBeat(f_EchoBeat);
 				}
 			};
 		}
@@ -262,7 +262,7 @@ static private	MiProvider	s_Instance;
 	f_EchoNotes[inString - 1] = (inIsOn ? inFret : -1);
 	f_EchoLastWasOn = inIsOn;
 
-	TGSongManager	songMgr	= TuxGuitar.instance().getSongManager();
+	TGSongManager	songMgr	= TuxGuitar.getInstance().getSongManager();
 	
 	f_EchoBeat = songMgr.getFactory().newBeat();
 
@@ -331,14 +331,14 @@ static private	MiProvider	s_Instance;
 
 				if(f_Buffer.finalize(f_MinVelocity, f_MinDuration * 1000) > 0)
 					{
-					if(!TuxGuitar.instance().getPlayer().isRunning() && !TuxGuitar.instance().isLocked() && !TGActionLock.isLocked())
+					if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked())
 						{
-						TablatureEditor	editor	= TuxGuitar.instance().getTablatureEditor();
+						TablatureEditor	editor	= TuxGuitar.getInstance().getTablatureEditor();
 						Caret			caret	= editor.getTablature().getCaret();
 						TGTrackImpl		track	= caret.getTrack();
 						TGMeasureImpl	measure	= caret.getMeasure();
 						TGBeat			beat	= caret.getSelectedBeat();
-						TGSongManager	songMgr	= TuxGuitar.instance().getSongManager();
+						TGSongManager	songMgr	= TuxGuitar.getInstance().getSongManager();
 
 						TGChord			chord	= f_Buffer.toChord(measure.getTrack().stringCount());
 						//TGBeat		_beat		= f_Buffer.toBeat();
@@ -376,13 +376,13 @@ static private	MiProvider	s_Instance;
 							}
 							
 						songMgr.getMeasureManager().addChord(beat, chord);
-						TuxGuitar.instance().getFileHistory().setUnsavedFile();
+						TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 						editor.getTablature().updateMeasure(measure.getNumber());
 
-						TuxGuitar.instance().getUndoableManager().addEdit(undoable.endUndo());
+						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
 
 						TGActionLock.unlock();
-						TuxGuitar.instance().updateCache(true);
+						TuxGuitar.getInstance().updateCache(true);
 						}
 					}
 				}
@@ -427,15 +427,15 @@ static private	MiProvider	s_Instance;
 					TreeSet		pitches		= f_Buffer.toPitchesSet();
 
 					MiScaleFinder.findMatchingScale(pitches);
-					TuxGuitar.instance().showExternalBeat(beat);
+					TuxGuitar.getInstance().showExternalBeat(beat);
 					}
 				else
 					{
-					TuxGuitar.instance().hideExternalBeat();
+					TuxGuitar.getInstance().hideExternalBeat();
 					MiScaleFinder.selectScale(ScaleManager.NONE_SELECTION, 0);
 					}
 
-				TuxGuitar.instance().updateCache(true);
+				TuxGuitar.getInstance().updateCache(true);
 				}
 			};
 

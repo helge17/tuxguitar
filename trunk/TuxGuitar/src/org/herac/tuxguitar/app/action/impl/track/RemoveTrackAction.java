@@ -32,12 +32,12 @@ public class RemoveTrackAction extends TGActionBase{
 		
 		if(getSongManager().getSong().countTracks() <= 1){
 			//TuxGuitar.instance().getAction(NewFileAction.NAME).process(e);
-			TuxGuitar.instance().newSong();
+			TuxGuitar.getInstance().newSong();
 			return;
 		}
 		//comienza el undoable
 		UndoableRemoveTrack undoable = UndoableRemoveTrack.startUndo();
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		TGTrackImpl track = caret.getTrack();
 		TGTrackImpl nextCaretTrack = (TGTrackImpl)getSongManager().getTrack(track.getNumber() + 1);
@@ -45,7 +45,7 @@ public class RemoveTrackAction extends TGActionBase{
 			nextCaretTrack =  (TGTrackImpl)getSongManager().getTrack(track.getNumber() - 1);
 		}
 		getSongManager().removeTrack(track);
-		updateTablature();
+		updateSong();
 		
 		//move the caret to the next or previous track
 		if(nextCaretTrack != null){

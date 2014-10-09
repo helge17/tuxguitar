@@ -178,20 +178,20 @@ public class TGFileUtils {
 	}
 	
 	public static Image loadImage(String name){
-		return loadImage(TuxGuitar.instance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
+		return loadImage(TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
 	}
 	
 	public static Image loadImage(String skin,String name){
 		try{
 			InputStream stream = getResourceAsStream("skins/" + skin + "/" + name);
 			if(stream != null){			
-				return new Image(TuxGuitar.instance().getDisplay(),new ImageData(stream));
+				return new Image(TuxGuitar.getInstance().getDisplay(),new ImageData(stream));
 			}
 			System.err.println(name + ": not found");
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
-		return new Image(TuxGuitar.instance().getDisplay(),16,16);
+		return new Image(TuxGuitar.getInstance().getDisplay(),16,16);
 	}
 	
 	public static boolean isLocalFile(URL url){

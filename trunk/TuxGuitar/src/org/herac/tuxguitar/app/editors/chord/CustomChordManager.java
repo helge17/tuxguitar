@@ -25,7 +25,7 @@ public class CustomChordManager {
 	
 	public TGChord getChord(int index) {
 		if (index >= 0 && index < countChords()) {
-			return ((TGChord) this.chords.get(index)).clone(TuxGuitar.instance().getSongManager().getFactory());
+			return ((TGChord) this.chords.get(index)).clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		}
 		return null;
 	}

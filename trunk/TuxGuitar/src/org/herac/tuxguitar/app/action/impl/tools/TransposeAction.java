@@ -128,10 +128,10 @@ public class TransposeAction extends TGActionBase{
 						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 							public void run() throws TGException {
 								TGActionLock.lock();
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 								transpose(transposition, tryKeepString, applyToChords , applyToAllMeasures, applyToAllTracks );
-								TuxGuitar.instance().updateCache( true );
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().updateCache( true );
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						});
@@ -181,7 +181,7 @@ public class TransposeAction extends TGActionBase{
 				transposeTrack( undoableJoined , caret.getTrack(), transposition , tryKeepString , applyToChords);
 			}
 			
-			updateTablature();
+			updateSong();
 		}else{
 			if( applyToAllTracks ){
 				TGSong song = getSongManager().getSong();
@@ -195,14 +195,14 @@ public class TransposeAction extends TGActionBase{
 			} else {
 				transposeMeasure( undoableJoined , caret.getMeasure(), transposition , tryKeepString , applyToChords);
 			}
-			fireUpdate( caret.getMeasure().getNumber() );
+			updateMeasure( caret.getMeasure().getNumber() );
 		}
 		
 		//termia el undoable
 		if( !undoableJoined.isEmpty() ){
 			addUndoableEdit(undoableJoined.endUndo());
 		}
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 	}
 	
 	public void transposeMeasure( UndoableJoined undoableJoined , TGMeasure measure, int transposition , boolean tryKeepString , boolean applyToChords ) {

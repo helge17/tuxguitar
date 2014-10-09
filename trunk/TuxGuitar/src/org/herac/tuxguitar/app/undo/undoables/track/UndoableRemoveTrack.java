@@ -22,8 +22,8 @@ public class UndoableRemoveTrack implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.instance().getSongManager().removeTrack(cloneTrack(this.undoableTrack));
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getSongManager().removeTrack(cloneTrack(this.undoableTrack));
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
@@ -33,8 +33,8 @@ public class UndoableRemoveTrack implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.instance().getSongManager().addTrack(cloneTrack(this.undoableTrack));
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getSongManager().addTrack(cloneTrack(this.undoableTrack));
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;
@@ -64,10 +64,10 @@ public class UndoableRemoveTrack implements UndoableEdit{
 	}
 	
 	private static Caret getCaret(){
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
 	private static TGTrack cloneTrack(TGTrack track){
-		return track.clone(TuxGuitar.instance().getSongManager().getFactory(), TuxGuitar.instance().getSongManager().getSong());
+		return track.clone(TuxGuitar.getInstance().getSongManager().getFactory(), TuxGuitar.getInstance().getSongManager().getSong());
 	}
 }

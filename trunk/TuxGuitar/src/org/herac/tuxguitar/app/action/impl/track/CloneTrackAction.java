@@ -29,12 +29,12 @@ public class CloneTrackAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		//comienza el undoable
 		UndoableCloneTrack undoable = UndoableCloneTrack.startUndo();
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		
 		getSongManager().cloneTrack(caret.getTrack());
-		updateTablature();
+		updateSong();
 		
 		//termia el undoable
 		addUndoableEdit(undoable.endUndo());

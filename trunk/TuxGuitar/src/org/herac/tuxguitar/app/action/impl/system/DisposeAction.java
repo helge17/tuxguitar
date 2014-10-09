@@ -39,9 +39,9 @@ public class DisposeAction extends TGActionBase {
 		TypedEvent e = (TypedEvent)context.getAttribute(TGActionProcessor.PROPERTY_TYPED_EVENT);
 		
 		if(e instanceof ShellEvent){
-			TuxGuitar.instance().getPlayer().reset();
+			TuxGuitar.getInstance().getPlayer().reset();
 			
-			if(TuxGuitar.instance().getFileHistory().isUnsavedFile()){
+			if(TuxGuitar.getInstance().getFileHistory().isUnsavedFile()){
 				ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("file.save-changes-question"));
 				confirm.setDefaultStatus( ConfirmDialog.STATUS_CANCEL );
 				int status = confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO | ConfirmDialog.BUTTON_CANCEL, ConfirmDialog.BUTTON_YES);
@@ -55,12 +55,12 @@ public class DisposeAction extends TGActionBase {
 						TGActionLock.unlock();
 						return;
 					}
-					TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 					new Thread(new Runnable() {
 						public void run() throws TGException {
 							if(!TuxGuitar.isDisposed()){
 								FileActionUtils.save(fileName);
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								
 								exit();
 							}
@@ -77,11 +77,11 @@ public class DisposeAction extends TGActionBase {
 		try {
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TuxGuitar.instance().lock();
+					TuxGuitar.getInstance().lock();
 					closeModules();
 					saveConfig();
 					dispose();
-					TuxGuitar.instance().unlock();
+					TuxGuitar.getInstance().unlock();
 				}
 			});
 		} catch (Throwable throwable) {
@@ -90,36 +90,36 @@ public class DisposeAction extends TGActionBase {
 	}
 	
 	protected void saveConfig(){
-		TGConfigManager config = TuxGuitar.instance().getConfig();
+		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		config.setValue(TGConfigKeys.LAYOUT_MODE,getEditor().getTablature().getViewLayout().getMode());
 		config.setValue(TGConfigKeys.LAYOUT_STYLE,getEditor().getTablature().getViewLayout().getStyle());
-		config.setValue(TGConfigKeys.SHOW_PIANO,!TuxGuitar.instance().getPianoEditor().isDisposed());
-		config.setValue(TGConfigKeys.SHOW_MATRIX,!TuxGuitar.instance().getMatrixEditor().isDisposed());
-		config.setValue(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.instance().getFretBoardEditor().isVisible());
-		config.setValue(TGConfigKeys.SHOW_INSTRUMENTS,!TuxGuitar.instance().getChannelManager().isDisposed());
-		config.setValue(TGConfigKeys.SHOW_TRANSPORT,!TuxGuitar.instance().getTransport().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_PIANO,!TuxGuitar.getInstance().getPianoEditor().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_MATRIX,!TuxGuitar.getInstance().getMatrixEditor().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.getInstance().getFretBoardEditor().isVisible());
+		config.setValue(TGConfigKeys.SHOW_INSTRUMENTS,!TuxGuitar.getInstance().getChannelManager().isDisposed());
+		config.setValue(TGConfigKeys.SHOW_TRANSPORT,!TuxGuitar.getInstance().getTransport().isDisposed());
 		config.setValue(TGConfigKeys.SHOW_MARKERS,!MarkerList.instance().isDisposed());
-		config.setValue(TGConfigKeys.MAXIMIZED,TuxGuitar.instance().getShell().getMaximized());
-		config.setValue(TGConfigKeys.WIDTH,TuxGuitar.instance().getShell().getClientArea().width);
-		config.setValue(TGConfigKeys.HEIGHT,TuxGuitar.instance().getShell().getClientArea().height);
+		config.setValue(TGConfigKeys.MAXIMIZED,TuxGuitar.getInstance().getShell().getMaximized());
+		config.setValue(TGConfigKeys.WIDTH,TuxGuitar.getInstance().getShell().getClientArea().width);
+		config.setValue(TGConfigKeys.HEIGHT,TuxGuitar.getInstance().getShell().getClientArea().height);
 		config.setValue(TGConfigKeys.EDITOR_MOUSE_MODE,getEditor().getTablature().getEditorKit().getMouseMode());
-		config.setValue(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.instance().getMatrixEditor().getGrids());
+		config.setValue(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.getInstance().getMatrixEditor().getGrids());
 		
-		TuxGuitar.instance().getConfig().save();
+		TuxGuitar.getInstance().getConfig().save();
 	}
 	
 	protected void closeModules(){
-		TuxGuitar.instance().getPlayer().close();
-		TuxGuitar.instance().getPluginManager().closePlugins();
+		TuxGuitar.getInstance().getPlayer().close();
+		TuxGuitar.getInstance().getPluginManager().closePlugins();
 	}
 	
 	protected void dispose(){
-		TuxGuitar.instance().getTable().dispose();
-		TuxGuitar.instance().getSongManager().clearSong();
-		TuxGuitar.instance().getFretBoardEditor().dispose();
-		TuxGuitar.instance().getTablatureEditor().getTablature().dispose();
-		TuxGuitar.instance().getIconManager().disposeIcons();
-		TuxGuitar.instance().getShell().dispose();
+		TuxGuitar.getInstance().getTable().dispose();
+		TuxGuitar.getInstance().getSongManager().clearSong();
+		TuxGuitar.getInstance().getFretBoardEditor().dispose();
+		TuxGuitar.getInstance().getTablatureEditor().getTablature().dispose();
+		TuxGuitar.getInstance().getIconManager().disposeIcons();
+		TuxGuitar.getInstance().getShell().dispose();
 	}
 }

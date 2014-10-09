@@ -28,6 +28,6 @@ public class SetLinearLayoutAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		Tablature tablature = getEditor().getTablature();
 		tablature.setViewLayout(new TGLayoutHorizontal(tablature,tablature.getViewLayout().getStyle()));
-		updateTablature();
+		updateSong();
 	}
 }

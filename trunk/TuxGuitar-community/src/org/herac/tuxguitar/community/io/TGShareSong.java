@@ -119,14 +119,14 @@ public class TGShareSong {
 	}
 	
 	public void setActiveMode(){
-		TuxGuitar.instance().lock();
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+		TuxGuitar.getInstance().lock();
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		TGActionLock.lock();
 	}
 	
 	public void setPassiveMode(){
 		TGActionLock.unlock();
-		TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
-		TuxGuitar.instance().unlock();
+		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
+		TuxGuitar.getInstance().unlock();
 	}
 }

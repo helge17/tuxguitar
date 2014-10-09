@@ -129,7 +129,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	
 	public void updateControls(){
 		if( this.dialog != null && !this.dialog.isDisposed() ){
-			boolean playerRunning = TuxGuitar.instance().getPlayer().isRunning();
+			boolean playerRunning = TuxGuitar.getInstance().getPlayer().isRunning();
 			
 			this.gmChannel1Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel1Combo.getItemCount() > 0);
 			this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
@@ -279,7 +279,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private TGChannelParameter findOrCreateChannelParameter( TGChannel tgChannel, String key ){
 		TGChannelParameter tgChannelParameter = findChannelParameter(tgChannel, key);
 		if( tgChannelParameter == null ){
-			tgChannelParameter = TuxGuitar.instance().getSongManager().getFactory().newChannelParameter();
+			tgChannelParameter = TuxGuitar.getInstance().getSongManager().getFactory().newChannelParameter();
 			tgChannelParameter.setKey(key);
 			tgChannel.addParameter(tgChannelParameter);
 		}
@@ -336,9 +336,9 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private Iterator findGmChannels(){
 		List tgChannels = new ArrayList();
 		
-		int count = TuxGuitar.instance().getSongManager().getSong().countChannels();
+		int count = TuxGuitar.getInstance().getSongManager().getSong().countChannels();
 		for(int i = 0 ; i < count ; i ++) {
-			TGChannel tgChannel = TuxGuitar.instance().getSongManager().getSong().getChannel( i );
+			TGChannel tgChannel = TuxGuitar.getInstance().getSongManager().getSong().getChannel( i );
 			if(!this.isExclusive( tgChannel ) ){
 				tgChannels.add( tgChannel );
 			}

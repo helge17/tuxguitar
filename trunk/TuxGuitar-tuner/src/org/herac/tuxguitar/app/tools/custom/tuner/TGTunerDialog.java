@@ -43,9 +43,9 @@ public class TGTunerDialog implements TGTunerListener {
 
 	public void show() {
 
-		this.dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
 		this.dialog.setLayout(new GridLayout());
-		this.dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		this.dialog.setText(TuxGuitar.getProperty("tuner.instrument-tuner"));
 		this.dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
 		this.dialog.setSize(700, 400);

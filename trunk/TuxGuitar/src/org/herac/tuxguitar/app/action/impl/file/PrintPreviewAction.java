@@ -49,9 +49,9 @@ public class PrintPreviewAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		try{
-			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.instance().getShell());
+			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell());
 			if(data != null){
-				TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				
 				this.printPreview(data);
 			}
@@ -80,7 +80,7 @@ public class PrintPreviewAction extends TGActionBase{
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
-					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.instance().getDisplay());
+					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
 					PrintController controller = new PrintController(manager, factory);
 					PrintLayout layout = new PrintLayout(controller,data);
 					
@@ -127,7 +127,7 @@ public class PrintPreviewAction extends TGActionBase{
 		}
 		
 		public void pageStart() {
-			Image page = new Image(TuxGuitar.instance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
+			Image page = new Image(TuxGuitar.getInstance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
 			this.painter.init( page );
 			this.pages.add( page );
 		}

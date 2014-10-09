@@ -84,11 +84,11 @@ public class MarkerToolItems  extends ToolItems{
 	}
 	
 	public void loadIcons(){
-		this.add.setImage(TuxGuitar.instance().getIconManager().getMarkerAdd());
-		this.list.setImage(TuxGuitar.instance().getIconManager().getMarkerList());
-		this.first.setImage(TuxGuitar.instance().getIconManager().getMarkerFirst());
-		this.previous.setImage(TuxGuitar.instance().getIconManager().getMarkerPrevious());
-		this.next.setImage(TuxGuitar.instance().getIconManager().getMarkerNext());
-		this.last.setImage(TuxGuitar.instance().getIconManager().getMarkerLast());
+		this.add.setImage(TuxGuitar.getInstance().getIconManager().getMarkerAdd());
+		this.list.setImage(TuxGuitar.getInstance().getIconManager().getMarkerList());
+		this.first.setImage(TuxGuitar.getInstance().getIconManager().getMarkerFirst());
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getMarkerPrevious());
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getMarkerNext());
+		this.last.setImage(TuxGuitar.getInstance().getIconManager().getMarkerLast());
 	}
 }

@@ -186,7 +186,7 @@ public class TGActionAdapterManager {
 	}
 	
 	private void initializeHandlers(){
-		TGActionManager tgActionManager = TuxGuitar.instance().getActionManager();
+		TGActionManager tgActionManager = TuxGuitar.getInstance().getActionManager();
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
 		tgActionManager.addInterceptor(this.actionAccessInterceptor);
 		tgActionManager.addPreExecutionListener(new TGActionAutoLockListener(this));
@@ -390,7 +390,7 @@ public class TGActionAdapterManager {
 	}
 	
 	private void mapAction(String actionId, TGAction action){
-		TuxGuitar.instance().getActionManager().mapAction(actionId,action);
+		TuxGuitar.getInstance().getActionManager().mapAction(actionId,action);
 	}
 	
 	private void mapActionIdToList(TGActionIdList actionIdList, String actionId, int flags, int matchFlag){

@@ -66,7 +66,7 @@ public class EditorCache {
 	
 	public TGBeatImpl getEditBeat() {
 		if(this.editUpdate){
-			this.editBeat =  TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getSelectedBeat();
+			this.editBeat =  TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedBeat();
 			this.editUpdate = false;
 		}
 		return this.editBeat;
@@ -76,12 +76,12 @@ public class EditorCache {
 		if(this.playUpdate){
 			this.playChanges = false;
 			
-			TGSongManager manager = TuxGuitar.instance().getSongManager();
+			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
 			if( this.isPlaying() ){
-				Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+				Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 				TGTrack track = caret.getTrack();
 				
-				long tick = TuxGuitar.instance().getPlayer().getTickPosition();
+				long tick = TuxGuitar.getInstance().getPlayer().getTickPosition();
 				long start = this.playStart + (tick - this.playTick);
 				if(this.playMeasure == null || start < this.playMeasure.getStart() || start > (this.playMeasure.getStart() + this.playMeasure.getLength())){
 					this.playMeasure = null;
@@ -135,11 +135,11 @@ public class EditorCache {
 	}
 	
 	public boolean isPlaying(){
-		return TuxGuitar.instance().getPlayer().isRunning();
+		return TuxGuitar.getInstance().getPlayer().isRunning();
 	}
 	
 	public boolean isPlayingCountDown(){
-		return TuxGuitar.instance().getPlayer().getCountDown().isRunning();
+		return TuxGuitar.getInstance().getPlayer().getCountDown().isRunning();
 	}
 	
 	public boolean isPlaying(TGMeasure measure){

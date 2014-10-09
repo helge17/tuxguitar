@@ -62,8 +62,8 @@ public class ChangeTiedNoteAction extends TGActionBase{
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());
 		}
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		updateTablature();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		updateSong();
 	}
 	
 	private void setTiedNoteValue(TGNote note,Caret caret){
@@ -93,7 +93,7 @@ public class ChangeTiedNoteAction extends TGActionBase{
 		}
 	}
 	
-	public void updateTablature() {
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+	public void updateSong() {
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 }

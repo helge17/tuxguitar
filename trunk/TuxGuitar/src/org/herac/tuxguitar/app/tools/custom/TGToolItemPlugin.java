@@ -43,9 +43,9 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TuxGuitar.instance().getActionManager().mapAction(this.tool.getAction(), this.toolAction);
+			TuxGuitar.getInstance().getActionManager().mapAction(this.tool.getAction(), this.toolAction);
 			TGCustomToolManager.instance().addCustomTool(this.tool);
-			TuxGuitar.instance().getItemManager().createMenu();
+			TuxGuitar.getInstance().getItemManager().createMenu();
 			this.loaded = true;
 		}
 	}
@@ -53,8 +53,8 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
 			TGCustomToolManager.instance().removeCustomTool(this.tool);
-			TuxGuitar.instance().getActionManager().unmapAction(this.tool.getAction());
-			TuxGuitar.instance().getItemManager().createMenu();
+			TuxGuitar.getInstance().getActionManager().unmapAction(this.tool.getAction());
+			TuxGuitar.getInstance().getItemManager().createMenu();
 			this.loaded = false;
 		}
 	}

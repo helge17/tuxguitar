@@ -55,7 +55,7 @@ public class TGTemplateManager {
 		try{
 			if( tgTemplate != null && tgTemplate.getResource() != null ){
 				InputStream stream = TGFileUtils.getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
-				return TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream);
+				return TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();

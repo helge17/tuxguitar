@@ -17,7 +17,7 @@ public class UndoableCaretHelper {
 		this.track = caret.getTrack().getNumber();
 		this.position = caret.getPosition();
 		this.velocity = caret.getVelocity();
-		this.duration = caret.getDuration().clone(TuxGuitar.instance().getSongManager().getFactory());
+		this.duration = caret.getDuration().clone(TuxGuitar.getInstance().getSongManager().getFactory());
 		this.string = 1;
 		TGString instrumentString = caret.getSelectedString();
 		if(instrumentString != null){
@@ -27,11 +27,11 @@ public class UndoableCaretHelper {
 	
 	public void update(){
 		getCaret().update(this.track,this.position,this.string,this.velocity);
-		getCaret().setSelectedDuration(this.duration.clone(TuxGuitar.instance().getSongManager().getFactory()));
+		getCaret().setSelectedDuration(this.duration.clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 	}
 	
 	private static Caret getCaret(){
-		return TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
+		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
 }

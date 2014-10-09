@@ -35,10 +35,10 @@ public class PrintStylesDialog {
 		
 		final Combo tracks = new Combo(track, SWT.DROP_DOWN | SWT.READ_ONLY);
 		tracks.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			tracks.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			tracks.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		tracks.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		tracks.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
 		
 		//------------------MEASURE RANGE------------------
 		Group range = new Group(dialog,SWT.SHADOW_ETCHED_IN);
@@ -47,7 +47,7 @@ public class PrintStylesDialog {
 		range.setText(TuxGuitar.getProperty("print.range"));
 		
 		final int minSelection = 1;
-		final int maxSelection = TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders();
+		final int maxSelection = TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders();
 		
 		Label fromLabel = new Label(range, SWT.NULL);
 		fromLabel.setText(TuxGuitar.getProperty("edit.from"));

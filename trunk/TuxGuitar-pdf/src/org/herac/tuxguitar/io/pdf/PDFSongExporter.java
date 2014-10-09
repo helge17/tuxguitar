@@ -53,7 +53,7 @@ public class PDFSongExporter implements TGLocalFileExporter{
 	}
 	
 	public boolean configure(boolean setDefaults) {
-		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.instance().getShell()) : null );
+		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.getInstance().getShell()) : null );
 		return ( this.styles != null || setDefaults );
 	}
 	
@@ -91,7 +91,7 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
-					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.instance().getDisplay());
+					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
 					
 					PrintController controller = new PrintController(manager, factory);
 					PrintLayout layout = new PrintLayout(controller,data);
@@ -142,7 +142,7 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		}
 		
 		public void pageStart() {
-			this.buffer = new Image(TuxGuitar.instance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
+			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
 			this.painter.init( this.buffer );
 		}
 		

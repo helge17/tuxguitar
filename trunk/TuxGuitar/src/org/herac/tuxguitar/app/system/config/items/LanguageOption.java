@@ -31,7 +31,7 @@ public class LanguageOption extends Option{
 	
 	public void createOption(){
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.language"));
-		getToolItem().setImage(TuxGuitar.instance().getIconManager().getOptionLanguage());
+		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionLanguage());
 		getToolItem().addSelectionListener(this);
 		
 		showLabel(getComposite(),SWT.FILL,SWT.TOP, true, false,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.language.choose"));
@@ -85,7 +85,7 @@ public class LanguageOption extends Option{
 		new Thread(new Runnable() {
 			public void run() {
 				final String language = getConfig().getStringValue(TGConfigKeys.LANGUAGE);
-				final List languages = getLanguageItems( TuxGuitar.instance().getLanguageManager().getLanguages() );
+				final List languages = getLanguageItems( TuxGuitar.getInstance().getLanguageManager().getLanguages() );
 				new SyncThread(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
@@ -131,7 +131,7 @@ public class LanguageOption extends Option{
 			boolean changed = force;
 			
 			if(!changed){
-				String languageLoaded = TuxGuitar.instance().getLanguageManager().getLanguage();
+				String languageLoaded = TuxGuitar.getInstance().getLanguageManager().getLanguage();
 				String languageConfigured = getConfig().getStringValue(TGConfigKeys.LANGUAGE);
 				if(languageLoaded == null && languageConfigured == null){
 					changed = false;
@@ -147,7 +147,7 @@ public class LanguageOption extends Option{
 			if(changed){
 				addSyncThread(new Runnable() {
 					public void run() {
-						TuxGuitar.instance().loadLanguage();
+						TuxGuitar.getInstance().loadLanguage();
 					}
 				});
 			}

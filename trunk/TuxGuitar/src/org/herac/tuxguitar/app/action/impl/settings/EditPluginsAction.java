@@ -59,7 +59,7 @@ public class EditPluginsAction extends TGActionBase{
 	}
 	
 	public void showDialog() {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
@@ -89,7 +89,7 @@ public class EditPluginsAction extends TGActionBase{
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setData(moduleId);
 			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin") );
-			item.setChecked(TuxGuitar.instance().getPluginManager().isEnabled(moduleId));
+			item.setChecked(TuxGuitar.getInstance().getPluginManager().isEnabled(moduleId));
 		}
 		
 		//------------------BUTTONS--------------------------
@@ -150,9 +150,9 @@ public class EditPluginsAction extends TGActionBase{
 				if(event.item instanceof TableItem && event.item.getData() instanceof String){
 					final TableItem item = (TableItem)event.item;
 					if(event.detail == SWT.CHECK){
-						TuxGuitar.instance().loadCursor(dialog,SWT.CURSOR_WAIT);
-						TuxGuitar.instance().getPluginManager().setEnabled((String)item.getData(), item.getChecked());
-						TuxGuitar.instance().loadCursor(dialog,SWT.CURSOR_ARROW);
+						TuxGuitar.getInstance().loadCursor(dialog,SWT.CURSOR_WAIT);
+						TuxGuitar.getInstance().getPluginManager().setEnabled((String)item.getData(), item.getChecked());
+						TuxGuitar.getInstance().loadCursor(dialog,SWT.CURSOR_ARROW);
 						table.setSelection(item);
 					}
 					buttonInfo.setEnabled(true);
@@ -233,7 +233,7 @@ public class EditPluginsAction extends TGActionBase{
 	
 	private List getModuleIds(){
 		List moduleIds = new ArrayList();
-		Iterator it = TuxGuitar.instance().getPluginManager().getPlugins().iterator();
+		Iterator it = TuxGuitar.getInstance().getPluginManager().getPlugins().iterator();
 		while(it.hasNext()){
 			TGPlugin plugin = (TGPlugin)it.next();
 			if(!moduleIds.contains( plugin.getModuleId() )){

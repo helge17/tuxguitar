@@ -71,7 +71,7 @@ public class StylesOption extends Option{
 	
 	public void createOption(){
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.styles"));
-		getToolItem().setImage(TuxGuitar.instance().getIconManager().getOptionStyle());
+		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionStyle());
 		getToolItem().addSelectionListener(this);
 		
 		//=================================================== EDITOR STYLES ===================================================//
@@ -296,7 +296,7 @@ public class StylesOption extends Option{
 		if(force || this.initialized){
 			addSyncThread(new Runnable() {
 				public void run() {
-					TuxGuitar.instance().loadStyles();
+					TuxGuitar.getInstance().loadStyles();
 				}
 			});
 		}

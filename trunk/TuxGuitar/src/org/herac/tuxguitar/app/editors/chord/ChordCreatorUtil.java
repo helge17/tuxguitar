@@ -276,7 +276,7 @@ public class ChordCreatorUtil {
 		Iterator it = top.iterator();
 		
 		while (it.hasNext()) {
-			TGChord chord = TuxGuitar.instance().getSongManager().getFactory()
+			TGChord chord = TuxGuitar.getInstance().getSongManager().getFactory()
 					.newChord(this.tuning.length);
 			Iterator it2 = ((ArrayList) it.next()).iterator();
 			

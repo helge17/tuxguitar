@@ -27,14 +27,14 @@ public class TGTableCanvasPainter implements PaintListener{
 	}
 	
 	protected void paintTrack(TGPainterImpl painter){
-		if(!TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
+		if(!TuxGuitar.getInstance().isLocked()){
+			TuxGuitar.getInstance().lock();
 			
 			int x = -this.viewer.getHScrollSelection();
 			int y = 0;
 			int size = this.viewer.getTable().getRowHeight();
 			int width = painter.getGC().getDevice().getBounds().width;
-			boolean playing = TuxGuitar.instance().getPlayer().isRunning();
+			boolean playing = TuxGuitar.getInstance().getPlayer().isRunning();
 			
 			painter.setBackground(new TGColorImpl(painter.getGC().getDevice().getSystemColor(SWT.COLOR_GRAY)));
 			painter.initPath(TGPainter.PATH_FILL);
@@ -60,7 +60,7 @@ public class TGTableCanvasPainter implements PaintListener{
 					painter.addRectangle(x,y,size - 1,size );
 					painter.closePath();
 				}
-				boolean hasCaret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().equals(measure);
+				boolean hasCaret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().equals(measure);
 				if((playing && measure.isPlaying(this.viewer.getEditor().getTablature().getViewLayout())) || (!playing && hasCaret)){
 					painter.setBackground(new TGColorImpl(painter.getGC().getDevice().getSystemColor(SWT.COLOR_BLACK)));
 					painter.initPath(TGPainter.PATH_FILL);
@@ -73,7 +73,7 @@ public class TGTableCanvasPainter implements PaintListener{
 			}
 			trackColor.dispose();
 			
-			TuxGuitar.instance().unlock();
+			TuxGuitar.getInstance().unlock();
 		}
 	}
 	

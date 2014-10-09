@@ -54,8 +54,8 @@ public class SetWholeDurationAction extends TGActionBase{
 	private void setDurations() {
 		Caret caret = getEditor().getTablature().getCaret();
 		caret.changeDuration(getSelectedDuration().clone(getSongManager().getFactory()));
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
-		fireUpdate(getEditor().getTablature().getCaret().getMeasure().getNumber());
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 	
 	public TGDuration getSelectedDuration(){

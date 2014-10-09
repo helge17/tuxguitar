@@ -18,9 +18,9 @@ public class FretBoardEditor implements TGEventListener{
 	private boolean visible;
 	
 	public FretBoardEditor(){
-		TuxGuitar.instance().getIconManager().addLoader(this);
-		TuxGuitar.instance().getLanguageManager().addLoader(this);
-		TuxGuitar.instance().getScaleManager().addListener(this); 
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+		TuxGuitar.getInstance().getScaleManager().addListener(this); 
 	}
 	
 	private FretBoard getFretBoard(){
@@ -30,17 +30,17 @@ public class FretBoardEditor implements TGEventListener{
 	public void hideFretBoard(){
 		this.visible = false;
 		getFretBoard().setVisible(this.visible);
-		TuxGuitar.instance().getEditorManager().removeRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().removeBeatViewerListener(this);
-		TuxGuitar.instance().updateShellFooter(0,0,0);
+		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().removeBeatViewerListener(this);
+		TuxGuitar.getInstance().updateShellFooter(0,0,0);
 	}
 	
 	public void showFretBoard(){
 		this.visible = true;
 		getFretBoard().setVisible(this.visible);
-		TuxGuitar.instance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.instance().getEditorManager().addBeatViewerListener(this);
-		TuxGuitar.instance().updateShellFooter(getFretBoard().getHeight(), 730,520);
+		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
+		TuxGuitar.getInstance().getEditorManager().addBeatViewerListener(this);
+		TuxGuitar.getInstance().updateShellFooter(getFretBoard().getHeight(), 730,520);
 	}
 	
 	public void showFretBoard(Composite parent) {
@@ -61,13 +61,13 @@ public class FretBoardEditor implements TGEventListener{
 	}
 	
 	public void redraw(){
-		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			getFretBoard().redraw();
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TuxGuitar.instance().isLocked()){
+		if(getFretBoard() != null && !getFretBoard().isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			getFretBoard().redrawPlayingMode();
 		}
 	}

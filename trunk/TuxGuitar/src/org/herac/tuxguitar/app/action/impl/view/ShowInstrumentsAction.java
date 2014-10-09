@@ -25,10 +25,10 @@ public class ShowInstrumentsAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		if(TuxGuitar.instance().getChannelManager().isDisposed()){
-			TuxGuitar.instance().getChannelManager().show();
+		if(TuxGuitar.getInstance().getChannelManager().isDisposed()){
+			TuxGuitar.getInstance().getChannelManager().show();
 		}else{
-			TuxGuitar.instance().getChannelManager().dispose();
+			TuxGuitar.getInstance().getChannelManager().dispose();
 		}
 	}
 }

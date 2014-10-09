@@ -32,7 +32,7 @@ public class TGCommunityAuthDialog {
 	}
 	
 	public void open() {
-		this.open( TuxGuitar.instance().getShell() );
+		this.open( TuxGuitar.getInstance().getShell() );
 	}
 	
 	public void open(final Shell shell) {
@@ -58,7 +58,7 @@ public class TGCommunityAuthDialog {
 		
 		dialog.setLayout(new GridLayout());
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		dialog.setImage(TuxGuitar.instance().getIconManager().getAppIcon());
+		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.title"));
 		
 		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);

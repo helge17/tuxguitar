@@ -39,7 +39,7 @@ public class TremoloPickingEditor extends SelectionAdapter{
 	public void show(final TGNote note){
 		this.cancelled = true;
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("effects.tremolo-picking-editor"));
@@ -63,17 +63,17 @@ public class TremoloPickingEditor extends SelectionAdapter{
 		durationGroup.setLayout(new GridLayout(3,false));
 		
 		this.thirtySecondButton = new Button(durationGroup,SWT.RADIO);
-		this.thirtySecondButton.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
+		this.thirtySecondButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
 		this.thirtySecondButton.setLayoutData(makeGridData(1));
 		this.thirtySecondButton.setSelection(duration == TGDuration.THIRTY_SECOND);
 		
 		this.sixTeenthButton = new Button(durationGroup,SWT.RADIO);
-		this.sixTeenthButton.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.SIXTEENTH));
+		this.sixTeenthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
 		this.sixTeenthButton.setLayoutData(makeGridData(1));
 		this.sixTeenthButton.setSelection(duration == TGDuration.SIXTEENTH);
 		
 		this.eighthButton = new Button(durationGroup,SWT.RADIO);
-		this.eighthButton.setImage(TuxGuitar.instance().getIconManager().getDuration(TGDuration.EIGHTH));
+		this.eighthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
 		this.eighthButton.setLayoutData(makeGridData(1));
 		this.eighthButton.setSelection(duration == TGDuration.EIGHTH);
 		//---------------------------------------------------
@@ -143,7 +143,7 @@ public class TremoloPickingEditor extends SelectionAdapter{
 	}
 	
 	public TGEffectTremoloPicking getTremoloPicking(){
-		TGEffectTremoloPicking effect = TuxGuitar.instance().getSongManager().getFactory().newEffectTremoloPicking();
+		TGEffectTremoloPicking effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloPicking();
 		if(this.thirtySecondButton.getSelection()){
 			effect.getDuration().setValue(TGDuration.THIRTY_SECOND);
 		}else if(this.sixTeenthButton.getSelection()){

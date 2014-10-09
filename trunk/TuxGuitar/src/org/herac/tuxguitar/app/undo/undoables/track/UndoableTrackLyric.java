@@ -19,19 +19,19 @@ public class UndoableTrackLyric implements UndoableEdit{
 	private int redoCaretPosition;
 	
 	private UndoableTrackLyric(){
-		this.undoLyric = TuxGuitar.instance().getSongManager().getFactory().newLyric();
-		this.redoLyric = TuxGuitar.instance().getSongManager().getFactory().newLyric();
+		this.undoLyric = TuxGuitar.getInstance().getSongManager().getFactory().newLyric();
+		this.redoLyric = TuxGuitar.getInstance().getSongManager().getFactory().newLyric();
 	}
 	
 	public void redo() throws CannotRedoException {
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TGTrack track = TuxGuitar.instance().getSongManager().getTrack(this.trackNumber);
+		TGTrack track = TuxGuitar.getInstance().getSongManager().getTrack(this.trackNumber);
 		this.redoLyric.copy(track.getLyrics());
-		TuxGuitar.instance().getLyricEditor().setCaretPosition(this.redoCaretPosition);
-		TuxGuitar.instance().getLyricEditor().update();
-		TuxGuitar.instance().updateCache(false);
+		TuxGuitar.getInstance().getLyricEditor().setCaretPosition(this.redoCaretPosition);
+		TuxGuitar.getInstance().getLyricEditor().update();
+		TuxGuitar.getInstance().updateCache(false);
 		this.redoCaret.update();
 		this.doAction = UNDO_ACTION;
 	}
@@ -40,11 +40,11 @@ public class UndoableTrackLyric implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TGTrack track = TuxGuitar.instance().getSongManager().getTrack(this.trackNumber);
+		TGTrack track = TuxGuitar.getInstance().getSongManager().getTrack(this.trackNumber);
 		this.undoLyric.copy(track.getLyrics());
-		TuxGuitar.instance().getLyricEditor().setCaretPosition(this.undoCaretPosition);
-		TuxGuitar.instance().getLyricEditor().update();
-		TuxGuitar.instance().updateCache(false);
+		TuxGuitar.getInstance().getLyricEditor().setCaretPosition(this.undoCaretPosition);
+		TuxGuitar.getInstance().getLyricEditor().update();
+		TuxGuitar.getInstance().updateCache(false);
 		this.undoCaret.update();
 		this.doAction = REDO_ACTION;
 	}

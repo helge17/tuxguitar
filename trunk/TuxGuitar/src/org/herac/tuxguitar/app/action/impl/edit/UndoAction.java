@@ -27,8 +27,8 @@ public class UndoAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		try {
-			if(TuxGuitar.instance().getUndoableManager().canUndo()){
-				TuxGuitar.instance().getUndoableManager().undo();
+			if(TuxGuitar.getInstance().getUndoableManager().canUndo()){
+				TuxGuitar.getInstance().getUndoableManager().undo();
 			}
 		} catch (CannotUndoException e1) {
 			e1.printStackTrace();

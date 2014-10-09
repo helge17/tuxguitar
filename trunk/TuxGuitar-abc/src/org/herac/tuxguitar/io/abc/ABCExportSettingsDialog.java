@@ -33,7 +33,7 @@ public class ABCExportSettingsDialog {
 		this.status = STATUS_NONE;
 		final ABCSettings settings = ABCSettings.getDefaults();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout(2, false));
 		dialog.setText(TuxGuitar.getProperty("abc.options"));
 		
@@ -88,10 +88,10 @@ public class ABCExportSettingsDialog {
 		
 		final Combo trackCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		trackCombo.setLayoutData(getComboData());
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			trackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			trackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		trackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		trackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
 		trackCombo.setEnabled( settings.getTrack() != ABCSettings.ALL_TRACKS );
 		
 		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
@@ -106,7 +106,7 @@ public class ABCExportSettingsDialog {
 		measureGroup.setText(TuxGuitar.getProperty("abc.options.measure-range.tip"));
 		
 		final int minSelection = 1;
-		final int maxSelection = TuxGuitar.instance().getSongManager().getSong().countMeasureHeaders();
+		final int maxSelection = TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders();
 		
 		Label measureFromLabel = new Label(measureGroup, SWT.NULL);
 		measureFromLabel.setText(TuxGuitar.getProperty("abc.options.measure-range.from"));
@@ -216,10 +216,10 @@ public class ABCExportSettingsDialog {
 		final Combo diagramTrackCombo = new Combo(layoutGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		diagramTrackCombo.setLayoutData(getComboData());
 		diagramTrackCombo.add("");
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			diagramTrackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			diagramTrackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		diagramTrackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
+		diagramTrackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
 		diagramTrackCombo.setEnabled( settings.isChordDiagramEnabled() );
 		
 		final Label chordTrackLabel = new Label(layoutGroup, SWT.NULL);
@@ -229,10 +229,10 @@ public class ABCExportSettingsDialog {
 		final Combo chordTrackCombo = new Combo(layoutGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		chordTrackCombo.setLayoutData(getComboData());
 		chordTrackCombo.add("");
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			chordTrackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			chordTrackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		chordTrackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
+		chordTrackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
 		chordTrackCombo.setEnabled( settings.isChordEnabled() );
 		
 		final Label baseTrackLabel = new Label(layoutGroup, SWT.NULL);
@@ -242,10 +242,10 @@ public class ABCExportSettingsDialog {
 		final Combo baseTrackCombo = new Combo(layoutGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		baseTrackCombo.setLayoutData(getComboData());
 		baseTrackCombo.add("");
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			baseTrackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			baseTrackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		baseTrackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
+		baseTrackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
 		baseTrackCombo.setEnabled( settings.isChordEnabled() );
 		
 		final Label droneTrackLabel = new Label(layoutGroup, SWT.NULL);
@@ -255,10 +255,10 @@ public class ABCExportSettingsDialog {
 		final Combo droneTrackCombo = new Combo(layoutGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		droneTrackCombo.setLayoutData(getComboData());
 		droneTrackCombo.add("");
-		for(int number = 1; number <= TuxGuitar.instance().getSongManager().getSong().countTracks(); number ++){
-			droneTrackCombo.add(TuxGuitar.instance().getSongManager().getTrack(number).getName());
+		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
+			droneTrackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
 		}
-		droneTrackCombo.select(TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
+		droneTrackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
 		droneTrackCombo.setEnabled( settings.isDroneEnabled() );
 		
 		Label measuresPerLineLabel = new Label(layoutGroup, SWT.NULL);

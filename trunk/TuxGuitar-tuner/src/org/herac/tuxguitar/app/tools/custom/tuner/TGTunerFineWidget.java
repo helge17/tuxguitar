@@ -61,7 +61,7 @@ public class TGTunerFineWidget extends Composite {
 		data.grabExcessVerticalSpace=true;
 		this.composite.setLayoutData(data);
 		this.letterFont = new Font(this.getDisplay(),
-							TuxGuitar.instance().getConfig().getFontDataConfigValue(TGConfigKeys.MATRIX_FONT).getName(),
+							TuxGuitar.getInstance().getConfig().getFontDataConfigValue(TGConfigKeys.MATRIX_FONT).getName(),
 							14,
 							SWT.BOLD
 							);

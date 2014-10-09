@@ -30,12 +30,12 @@ public class AddTrackAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		//comienza el undoable
 		UndoableAddTrack undoable = UndoableAddTrack.startUndo();
-		TuxGuitar.instance().getFileHistory().setUnsavedFile();
+		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		
 		TGTrack track = getSongManager().addTrack();
-		updateTablature();
+		updateSong();
 		caret.update(track.getNumber(),caret.getPosition(),1);
 		
 		//termia el undoable

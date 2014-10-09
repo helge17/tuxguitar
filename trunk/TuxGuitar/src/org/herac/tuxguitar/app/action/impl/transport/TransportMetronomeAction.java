@@ -13,6 +13,6 @@ public class TransportMetronomeAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar.instance().getPlayer().setMetronomeEnabled(!TuxGuitar.instance().getPlayer().isMetronomeEnabled());
+		TuxGuitar.getInstance().getPlayer().setMetronomeEnabled(!TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
 	}
 }

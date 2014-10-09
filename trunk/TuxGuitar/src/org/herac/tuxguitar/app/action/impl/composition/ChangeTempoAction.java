@@ -113,10 +113,10 @@ public class ChangeTempoAction extends TGActionBase{
 						TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 							public void run() throws TGException {
 								TGActionLock.lock();
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_WAIT);
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 								setTempo(tempoValue, applyToAllMeasuresValue, applyToEndValue);
-								TuxGuitar.instance().updateCache( true );
-								TuxGuitar.instance().loadCursor(SWT.CURSOR_ARROW);
+								TuxGuitar.getInstance().updateCache( true );
+								TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 								TGActionLock.unlock();
 							}
 						});
@@ -167,10 +167,10 @@ public class ChangeTempoAction extends TGActionBase{
 			
 			getSongManager().changeTempos(start,tempo,toEnd);
 			
-			TuxGuitar.instance().getFileHistory().setUnsavedFile();
+			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//actualizo la tablatura
-			updateTablature();
+			updateSong();
 			
 			//termia el undoable
 			addUndoableEdit(undoable.endUndo());

@@ -40,7 +40,7 @@ public class MidiToAudioSettingsDialog {
 		final List formats = getAvailableFormats();
 		final List soundbankFormats = getSupportedSoundbankFormats();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("gervill.options"));
 		
@@ -107,7 +107,7 @@ public class MidiToAudioSettingsDialog {
 		sbCustomPath.setEnabled( (settings.getSoundbankPath() != null) );
 		
 		final Button sbCustomChooser = new Button(chooser,SWT.PUSH);
-		sbCustomChooser.setImage(TuxGuitar.instance().getIconManager().getFileOpen());
+		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		sbCustomChooser.setEnabled( (settings.getSoundbankPath() != null) );
 		sbCustomChooser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {

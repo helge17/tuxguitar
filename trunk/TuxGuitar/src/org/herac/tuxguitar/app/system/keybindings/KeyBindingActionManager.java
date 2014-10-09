@@ -62,7 +62,7 @@ public class KeyBindingActionManager {
 	public boolean isKeyBindingAvailable(KeyBindingAction keyBindingAction){
 		String actionId = keyBindingAction.getAction();
 		if( actionId != null ){
-			return TuxGuitar.instance().getActionAdapterManager().getKeyBindingActionIds().hasActionId(actionId);
+			return TuxGuitar.getInstance().getActionAdapterManager().getKeyBindingActionIds().hasActionId(actionId);
 		}
 		return false;
 	}
@@ -89,7 +89,7 @@ public class KeyBindingActionManager {
 		if( actionId != null ){
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TuxGuitar.instance().getActionManager().execute(actionId);
+					TuxGuitar.getInstance().getActionManager().execute(actionId);
 				}
 			});
 		}

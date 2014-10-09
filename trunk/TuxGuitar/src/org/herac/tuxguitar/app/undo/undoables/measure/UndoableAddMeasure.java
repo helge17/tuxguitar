@@ -20,8 +20,8 @@ public class UndoableAddMeasure implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.instance().getSongManager().addNewMeasure(this.number);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getSongManager().addNewMeasure(this.number);
+		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
 		this.doAction = UNDO_ACTION;
@@ -31,8 +31,8 @@ public class UndoableAddMeasure implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.instance().getSongManager().removeMeasure(this.number);
-		TuxGuitar.instance().fireUpdate();
+		TuxGuitar.getInstance().getSongManager().removeMeasure(this.number);
+		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		
 		this.doAction = REDO_ACTION;

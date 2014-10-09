@@ -26,6 +26,6 @@ public class EditKeyBindingsAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		new KeyBindingEditor().show(TuxGuitar.instance().getShell());
+		new KeyBindingEditor().show(TuxGuitar.getInstance().getShell());
 	}
 }

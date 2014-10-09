@@ -98,8 +98,8 @@ public class ChordCustomList extends Composite {
 		int selectionIndex = this.chords.getSelectionIndex();
 		this.chords.removeAll();
 		
-		for(int i = 0;i < TuxGuitar.instance().getCustomChordManager().countChords();i ++){
-			TGChord chord = TuxGuitar.instance().getCustomChordManager().getChord(i);
+		for(int i = 0;i < TuxGuitar.getInstance().getCustomChordManager().countChords();i ++){
+			TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
 			if(chord != null){
 				this.chords.add(chord.getName());
 			}
@@ -113,7 +113,7 @@ public class ChordCustomList extends Composite {
 	}
 	
 	protected void showChord(int index) {
-		TGChord chord = TuxGuitar.instance().getCustomChordManager().getChord(index);
+		TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(index);
 		if (chord != null) {
 			this.dialog.getEditor().setChord(chord);
 		}
@@ -130,19 +130,19 @@ public class ChordCustomList extends Composite {
 					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-empty-error"));
 					return;
 				}
-				if(TuxGuitar.instance().getCustomChordManager().existOtherEqualCustomChord(name,-1)){
+				if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,-1)){
 					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-exist-error"));
 					return;
 				}
 				chord.setName(name);
-				TuxGuitar.instance().getCustomChordManager().addChord(chord);
+				TuxGuitar.getInstance().getCustomChordManager().addChord(chord);
 				loadChords();
 			}
 		}
 	}
 	
 	protected void renameCustomChord(int index){
-		TGChord chord =  TuxGuitar.instance().getCustomChordManager().getChord(index);
+		TGChord chord =  TuxGuitar.getInstance().getCustomChordManager().getChord(index);
 		if(chord != null){
 			String name = new NameDialog(chord.getName()).open();
 			if(name != null){
@@ -150,19 +150,19 @@ public class ChordCustomList extends Composite {
 					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-empty-error"));
 					return;
 				}
-				if(TuxGuitar.instance().getCustomChordManager().existOtherEqualCustomChord(name,index)){
+				if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,index)){
 					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-exist-error"));
 					return;
 				}
-				TuxGuitar.instance().getCustomChordManager().renameChord(index,name);
+				TuxGuitar.getInstance().getCustomChordManager().renameChord(index,name);
 				loadChords();
 			}
 		}
 	}
 	
 	protected void removeCustomChord(int index){
-		if (index >= 0 && index < TuxGuitar.instance().getCustomChordManager().countChords()) {
-			TuxGuitar.instance().getCustomChordManager().removeChord(index);
+		if (index >= 0 && index < TuxGuitar.getInstance().getCustomChordManager().countChords()) {
+			TuxGuitar.getInstance().getCustomChordManager().removeChord(index);
 			loadChords();
 		}
 	}
@@ -187,7 +187,7 @@ public class ChordCustomList extends Composite {
 		}
 		
 		public String open(){
-			final Shell dialog = DialogUtils.newDialog(TuxGuitar.instance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			dialog.setLayout(new GridLayout());
 			dialog.setText(TuxGuitar.getProperty("chord.custom"));
 			
