@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.tools.browser.plugin;
 
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -12,7 +13,7 @@ public abstract class TGBrowserPlugin implements TGPlugin{
 	
 	protected abstract TGBrowserFactory getFactory() throws TGPluginException;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		this.factory = getFactory();
 		this.loaded = false;
 	}

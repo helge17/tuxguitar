@@ -5,8 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.util.TGClassLoader;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGServiceReader;
 import org.herac.tuxguitar.util.error.TGErrorManager;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 
 public class TGPluginManager {
 	
@@ -15,33 +18,30 @@ public class TGPluginManager {
 	private static final String PLUGIN_ERROR_ON_SET_STATUS = "An error ocurred when trying to set plugin status";
 	private static final String PLUGIN_ERROR_ON_GET_STATUS = "An error ocurred when trying to get plugin status";
 	
-	private static TGPluginManager instance;
-	
 	private List plugins;
 	
-	private TGPluginManager(){
-		this.plugins = new ArrayList();
-		this.initialize();
-	}
-	
-	public static TGPluginManager getInstance(){
-		synchronized (TGPluginManager.class) {
-			if( instance == null ){
-				instance = new TGPluginManager();
+	public static TGPluginManager getInstance(TGContext context) {
+		return (TGPluginManager) TGSingletonUtil.getInstance(context, TGPluginManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGPluginManager(context);
 			}
-			return instance;
-		}
+		});
 	}
 	
-	public void initialize(){
-		this.initPlugins();
+	private TGPluginManager(TGContext context){
+		this.plugins = new ArrayList();
+		this.initialize(context);
+	}
+	
+	public void initialize(TGContext context){
+		this.initPlugins(context);
 	}
 	
 	public List getPlugins(){
 		return this.plugins;
 	}
 
-	public void initPlugins(){
+	public void initPlugins(TGContext context){
 		try{
 			//Search available providers
 			Iterator it = TGServiceReader.lookupProviders(TGPlugin.class,TGClassLoader.instance().getClassLoader());
@@ -49,7 +49,7 @@ public class TGPluginManager {
 				try{
 					TGPlugin tgPlugin = (TGPlugin)it.next();
 					if( tgPlugin.getModuleId() != null ){
-						tgPlugin.init();
+						tgPlugin.init(context);
 						this.plugins.add(tgPlugin);
 					}
 				}catch(TGPluginException exception){

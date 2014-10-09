@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Control;
-import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
@@ -90,7 +89,7 @@ public class KeyBindingActionManager {
 		if( actionId != null ){
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TGActionManager.getInstance().execute(actionId);
+					TuxGuitar.instance().getActionManager().execute(actionId);
 				}
 			});
 		}

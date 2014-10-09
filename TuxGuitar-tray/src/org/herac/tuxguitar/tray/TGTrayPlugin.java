@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.tray;
 
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 
 public class TGTrayPlugin implements TGPlugin {
@@ -13,7 +14,7 @@ public class TGTrayPlugin implements TGPlugin {
 		super();
 	}
 	
-	public void init() {
+	public void init(TGContext context) {
 		this.tray = new TGTray();
 	}
 	

@@ -2,6 +2,7 @@ package org.herac.tuxguitar.carbon.menu;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.carbon.TGCarbonIntegrationPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -9,7 +10,7 @@ public class MacMenuPlugin implements TGPlugin {
 	
 	private MacMenu macMenu;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		// Nothing todo
 	}
 	

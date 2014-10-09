@@ -8,31 +8,31 @@ import java.util.Map;
 
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGActionManager {
-	
-	private static TGActionManager instance;
 	
 	private TGLock lock;
 	private Map actions;
 	private List interceptors;
 	private TGActionContextFactory actionContextFactory;
 	
+	public static TGActionManager getInstance(TGContext context) {
+		return (TGActionManager) TGSingletonUtil.getInstance(context, TGActionManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGActionManager();
+			}
+		});
+	}
+	
 	private TGActionManager(){
 		this.lock = new TGLock();
 		this.actions = new HashMap();
 		this.interceptors = new ArrayList();
 		this.actionContextFactory = null;
-	}
-	
-	public static TGActionManager getInstance(){
-		synchronized (TGActionManager.class) {
-			if( instance == null ){
-				instance = new TGActionManager();
-			}
-			return instance;
-		}
 	}
 	
 	public void mapAction(String id, TGAction action){

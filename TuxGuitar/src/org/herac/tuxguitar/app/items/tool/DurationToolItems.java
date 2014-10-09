@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.action.impl.duration.ChangeDivisionTypeAction;
@@ -202,7 +201,7 @@ public class DurationToolItems  extends ToolItems{
 				final TGActionContext context = createDivisionTypeActionContext(this.divisionType);
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TGActionManager.getInstance().execute(ChangeDivisionTypeAction.NAME, context);
+						TuxGuitar.instance().getActionManager().execute(ChangeDivisionTypeAction.NAME, context);
 					}
 				});
 			}
@@ -232,7 +231,7 @@ public class DurationToolItems  extends ToolItems{
 		}
 		
 		private TGActionContext createDivisionTypeActionContext(TGDivisionType tgDivisionType){
-			TGActionContext tgActionContext = TGActionManager.getInstance().createActionContext();
+			TGActionContext tgActionContext = TuxGuitar.instance().getActionManager().createActionContext();
 			tgActionContext.setAttribute(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
 			return tgActionContext;
 		}

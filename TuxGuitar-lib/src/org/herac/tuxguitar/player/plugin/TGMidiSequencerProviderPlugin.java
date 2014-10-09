@@ -2,6 +2,7 @@ package org.herac.tuxguitar.player.plugin;
 
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -9,10 +10,12 @@ public abstract class TGMidiSequencerProviderPlugin implements TGPlugin{
 	
 	private boolean loaded;
 	private MidiSequencerProvider provider;
+	private TGContext context;
 	
 	protected abstract MidiSequencerProvider getProvider() throws TGPluginException;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
+		this.context = context;
 		this.provider = getProvider();
 		this.loaded = false;
 	}
@@ -31,6 +34,10 @@ public abstract class TGMidiSequencerProviderPlugin implements TGPlugin{
 		}else{
 			removePlugin();
 		}
+	}
+	
+	public TGContext getContext() {
+		return context;
 	}
 	
 	protected void addPlugin() throws TGPluginException {

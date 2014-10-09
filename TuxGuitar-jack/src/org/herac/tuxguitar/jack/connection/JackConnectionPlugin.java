@@ -2,6 +2,7 @@ package org.herac.tuxguitar.jack.connection;
 
 import org.herac.tuxguitar.jack.JackPlugin;
 import org.herac.tuxguitar.jack.singleton.JackClientInstanceProvider;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -9,8 +10,8 @@ public class JackConnectionPlugin implements TGPlugin{
 
 	private JackConnectionManager jackConnectionManager;
 	
-	public void init() throws TGPluginException {
-		this.jackConnectionManager = new JackConnectionManager(new JackClientInstanceProvider());
+	public void init(TGContext context) throws TGPluginException {
+		this.jackConnectionManager = new JackConnectionManager(new JackClientInstanceProvider(context));
 	}
 	
 	public void close() throws TGPluginException {

@@ -16,7 +16,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
@@ -594,7 +593,7 @@ public class Piano extends Composite{
 			}else{
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TGActionManager.getInstance().execute(GoRightAction.NAME);
+						TuxGuitar.instance().getActionManager().execute(GoRightAction.NAME);
 					}
 				});
 			}

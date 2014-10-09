@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.carbon.opendoc;
 
 import org.herac.tuxguitar.carbon.TGCarbonIntegrationPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -8,7 +9,7 @@ public class OpenDocPlugin implements TGPlugin {
 	
 	private OpenDocListener openDocListener;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		// Nothing todo
 	}
 	

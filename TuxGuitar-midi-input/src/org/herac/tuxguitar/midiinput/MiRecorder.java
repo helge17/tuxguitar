@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.midiinput;
 
-import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TransportStopAction;
@@ -92,7 +91,7 @@ static	private	MiRecorder	s_Instance;
 */
 	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 		public void run() throws TGException {
-			TGActionManager.getInstance().execute(TransportPlayAction.NAME);
+			TuxGuitar.instance().getActionManager().execute(TransportPlayAction.NAME);
 		}
 	});
 
@@ -111,7 +110,7 @@ static	private	MiRecorder	s_Instance;
 
 	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 		public void run() throws TGException {
-			TGActionManager.getInstance().execute(TransportStopAction.NAME);
+			TuxGuitar.instance().getActionManager().execute(TransportStopAction.NAME);
 		}
 	});
 	TuxGuitar.instance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);
