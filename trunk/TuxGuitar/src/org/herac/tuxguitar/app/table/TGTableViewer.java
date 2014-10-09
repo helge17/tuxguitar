@@ -116,7 +116,7 @@ public class TGTableViewer implements TGEventListener {
 			public void mouseDoubleClick(MouseEvent e) {
 				TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 					public void run() throws TGException {
-						TGActionManager.getInstance().execute(ChangeInfoAction.NAME);
+						TuxGuitar.instance().getActionManager().execute(ChangeInfoAction.NAME);
 					}
 				});
 			}
@@ -222,9 +222,10 @@ public class TGTableViewer implements TGEventListener {
 							if( track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber() ){
 								TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 									public void run() throws TGException {
-										TGActionContext tgActionContext = TGActionManager.getInstance().createActionContext();
+										TGActionManager tgActionManager = TuxGuitar.instance().getActionManager();
+										TGActionContext tgActionContext = tgActionManager.createActionContext();
 										tgActionContext.setAttribute(GoToTrackAction.PROPERTY_TRACK, track);
-										TGActionManager.getInstance().execute(GoToTrackAction.NAME, tgActionContext);
+										tgActionManager.execute(GoToTrackAction.NAME, tgActionContext);
 									}
 								});
 							}
@@ -236,7 +237,7 @@ public class TGTableViewer implements TGEventListener {
 									TGActionLock.waitFor();
 									TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 										public void run() throws TGException {
-											TGActionManager.getInstance().execute(TrackPropertiesAction.NAME);
+											TuxGuitar.instance().getActionManager().execute(TrackPropertiesAction.NAME);
 										}
 									});
 								}

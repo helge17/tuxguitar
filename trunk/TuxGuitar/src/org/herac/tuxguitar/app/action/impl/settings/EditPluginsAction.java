@@ -36,7 +36,6 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginInfo;
-import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 /**
  * @author julian
@@ -90,7 +89,7 @@ public class EditPluginsAction extends TGActionBase{
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setData(moduleId);
 			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin") );
-			item.setChecked(TGPluginManager.getInstance().isEnabled(moduleId));
+			item.setChecked(TuxGuitar.instance().getPluginManager().isEnabled(moduleId));
 		}
 		
 		//------------------BUTTONS--------------------------

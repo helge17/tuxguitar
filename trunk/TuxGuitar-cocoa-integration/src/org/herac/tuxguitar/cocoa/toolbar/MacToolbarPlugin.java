@@ -2,6 +2,7 @@ package org.herac.tuxguitar.cocoa.toolbar;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -9,7 +10,7 @@ public class MacToolbarPlugin implements TGPlugin {
 	
 	private MacToolbar macToolbar;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		// Nothing todo
 	}
 	

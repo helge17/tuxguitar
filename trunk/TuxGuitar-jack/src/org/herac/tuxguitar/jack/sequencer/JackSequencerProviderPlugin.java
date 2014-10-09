@@ -11,10 +11,13 @@ public class JackSequencerProviderPlugin extends TGMidiSequencerProviderPlugin {
 	private MidiSequencerProvider jackSequencerProvider;
 	
 	public JackSequencerProviderPlugin(){
-		this.jackSequencerProvider = new JackSequencerProvider( new JackClientInstanceProvider() );
+		super();
 	}
 	
 	protected MidiSequencerProvider getProvider() throws TGPluginException {
+		if( this.jackSequencerProvider == null ) {
+			this.jackSequencerProvider = new JackSequencerProvider( new JackClientInstanceProvider(getContext()) );
+		}
 		return this.jackSequencerProvider;
 	}
 	

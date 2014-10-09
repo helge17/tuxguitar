@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.community.startup;
 
 import org.herac.tuxguitar.community.TGCommunityPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 
 public class TGCommunityStartupPlugin implements TGPlugin {
@@ -11,7 +12,7 @@ public class TGCommunityStartupPlugin implements TGPlugin {
 		this.done = false;
 	}
 	
-	public void init() {
+	public void init(TGContext context) {
 		// Nothing to init.
 	}
 	

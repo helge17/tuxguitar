@@ -26,7 +26,7 @@ public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 	}
 	
 	private MidiOutputPortProviderPlugin findMidiOutputPortProviderPlugin(){
-		List pluginInstances = TGPluginManager.getInstance().getPluginInstances(MidiOutputPortProviderPlugin.class);
+		List pluginInstances = TGPluginManager.getInstance(getContext()).getPluginInstances(MidiOutputPortProviderPlugin.class);
 		if( pluginInstances != null && !pluginInstances.isEmpty() ){
 			return ((MidiOutputPortProviderPlugin)pluginInstances.get(0));
 		}

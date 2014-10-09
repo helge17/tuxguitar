@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -32,7 +32,7 @@ public class TGActionProcessor implements SelectionListener,MouseListener,MenuLi
 	}
 	
 	public void processEvent(TypedEvent e) {
-		TGActionContext tgActionContext = TGActionManager.getInstance().createActionContext();
+		TGActionContext tgActionContext = TuxGuitar.instance().getActionManager().createActionContext();
 		tgActionContext.setAttribute(PROPERTY_TYPED_EVENT, e);
 		
 		this.fillWidgetAttributes(tgActionContext, e);
@@ -43,7 +43,7 @@ public class TGActionProcessor implements SelectionListener,MouseListener,MenuLi
 		final String actionName = this.actionName;
 		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TGActionManager.getInstance().execute(actionName, context);
+				TuxGuitar.instance().getActionManager().execute(actionName, context);
 			}
 		});
 	}

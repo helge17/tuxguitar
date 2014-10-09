@@ -74,6 +74,7 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -99,6 +100,8 @@ public class TuxGuitar {
 	private Display display;
 	
 	private Shell shell;
+	
+	private TGContext context;
 	
 	private TGSongManager songManager;
 	
@@ -152,6 +155,7 @@ public class TuxGuitar {
 	
 	public TuxGuitar() {
 		this.lock = new TGLock();
+		this.context = new TGContext();
 		this.initialized = false;
 	}
 	
@@ -269,7 +273,7 @@ public class TuxGuitar {
 		}else{
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TGActionManager.getInstance().execute(NewFileAction.NAME);
+					getActionManager().execute(NewFileAction.NAME);
 				}
 			});
 		}
@@ -532,7 +536,7 @@ public class TuxGuitar {
 	}
 	
 	public TGPluginManager getPluginManager(){
-		return TGPluginManager.getInstance();
+		return TGPluginManager.getInstance(this.context);
 	}
 	
 	public TGIconManager getIconManager(){
@@ -567,6 +571,10 @@ public class TuxGuitar {
 			this.actionAdapterManager = new TGActionAdapterManager();
 		}
 		return this.actionAdapterManager;
+	}
+	
+	public TGActionManager getActionManager(){
+		return TGActionManager.getInstance(this.context);
 	}
 	
 	public TGLanguageManager getLanguageManager() {

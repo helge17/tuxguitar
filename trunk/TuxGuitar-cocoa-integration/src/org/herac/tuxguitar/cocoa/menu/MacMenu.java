@@ -4,7 +4,7 @@ import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
-import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.file.ExitAction;
 import org.herac.tuxguitar.app.action.impl.help.ShowAboutAction;
 import org.herac.tuxguitar.app.action.impl.settings.EditConfigAction;
@@ -101,7 +101,7 @@ public class MacMenu {
 	private void executeAction(final String actionId){
 		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 			public void run() throws TGException {
-				TGActionManager.getInstance().execute(actionId);
+				TuxGuitar.instance().getActionManager().execute(actionId);
 			}
 		});
 	}

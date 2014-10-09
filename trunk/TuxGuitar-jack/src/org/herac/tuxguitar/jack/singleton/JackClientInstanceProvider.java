@@ -4,10 +4,17 @@ import java.util.List;
 
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.provider.JackClientProvider;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class JackClientInstanceProvider implements JackClientProvider {
-
+	
+	private TGContext context;
+	
+	public JackClientInstanceProvider(TGContext context) {
+		this.context = context;
+	}
+	
 	public JackClient getJackClient() {
 		JackSingletonPlugin plugin = findSingletonPlugin();
 		if( plugin != null ){
@@ -17,7 +24,7 @@ public class JackClientInstanceProvider implements JackClientProvider {
 	}
 	
 	private JackSingletonPlugin findSingletonPlugin(){
-		List pluginInstances = TGPluginManager.getInstance().getPluginInstances(JackSingletonPlugin.class);
+		List pluginInstances = TGPluginManager.getInstance(this.context).getPluginInstances(JackSingletonPlugin.class);
 		if( pluginInstances != null && !pluginInstances.isEmpty() ){
 			return ((JackSingletonPlugin)pluginInstances.get(0));
 		}

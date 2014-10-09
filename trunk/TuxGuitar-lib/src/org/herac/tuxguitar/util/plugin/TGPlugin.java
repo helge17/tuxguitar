@@ -1,8 +1,10 @@
 package org.herac.tuxguitar.util.plugin;
 
+import org.herac.tuxguitar.util.TGContext;
+
 public interface TGPlugin {
 	
-	public void init() throws TGPluginException;
+	public void init(TGContext context) throws TGPluginException;
 	
 	public void close() throws TGPluginException;
 	

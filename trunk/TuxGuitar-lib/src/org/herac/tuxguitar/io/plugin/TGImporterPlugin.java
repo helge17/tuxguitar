@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.plugin;
 
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -12,7 +13,7 @@ public abstract class TGImporterPlugin implements TGPlugin{
 	
 	protected abstract TGRawImporter getImporter() throws TGPluginException;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		this.importer = getImporter();
 	}
 	

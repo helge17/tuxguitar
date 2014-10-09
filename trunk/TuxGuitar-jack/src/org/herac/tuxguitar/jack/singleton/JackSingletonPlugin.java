@@ -2,6 +2,7 @@ package org.herac.tuxguitar.jack.singleton;
 
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.JackPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -15,7 +16,7 @@ public class JackSingletonPlugin implements TGPlugin {
 		super();
 	}
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		this.jackClient = new JackClient();	
 	}
 	

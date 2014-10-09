@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessor;
 import org.herac.tuxguitar.app.action.impl.insert.InsertChordAction;
@@ -81,7 +80,7 @@ public class ChordMenuItem extends MenuItems{
 		}else{
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TGActionManager.getInstance().execute(InsertChordAction.NAME);
+					TuxGuitar.instance().getActionManager().execute(InsertChordAction.NAME);
 				}
 			});
 		}

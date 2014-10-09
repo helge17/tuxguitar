@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.editors.channel;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
@@ -11,7 +12,7 @@ public abstract class TGChannelSettingsPlugin implements TGPlugin{
 	
 	protected abstract TGChannelSettingsHandler getHandler() throws TGPluginException;
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		this.handler = getHandler();
 		this.loaded = false;
 	}

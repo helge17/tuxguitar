@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.gervill;
 
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.io.plugin.TGExporterPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiToAudioPlugin extends TGExporterPlugin{
@@ -14,9 +15,9 @@ public class MidiToAudioPlugin extends TGExporterPlugin{
 		this.available = MidiToAudioSynth.instance().isAvailable();
 	}
 	
-	public void init() throws TGPluginException {
+	public void init(TGContext context) throws TGPluginException {
 		if( this.available ){
-			super.init();
+			super.init(context);
 		}
 	}
 	

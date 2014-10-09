@@ -9,6 +9,7 @@ package org.herac.tuxguitar.app.action;
 import org.herac.tuxguitar.action.TGAction;
 import org.herac.tuxguitar.action.TGActionContextFactory;
 import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.caret.GoDownAction;
 import org.herac.tuxguitar.app.action.impl.caret.GoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.GoRightAction;
@@ -185,11 +186,12 @@ public class TGActionAdapterManager {
 	}
 	
 	private void initializeHandlers(){
-		TGActionManager.getInstance().setActionContextFactory(this.actionContextFactory);
-		TGActionManager.getInstance().addInterceptor(this.actionAccessInterceptor);
-		TGActionManager.getInstance().addPreExecutionListener(new TGActionAutoLockListener(this));
-		TGActionManager.getInstance().addPostExecutionListener(new TGActionAutoUpdateListener(this));
-		TGActionManager.getInstance().addPostExecutionListener(new TGActionAutoUnlockListener(this));
+		TGActionManager tgActionManager = TuxGuitar.instance().getActionManager();
+		tgActionManager.setActionContextFactory(this.actionContextFactory);
+		tgActionManager.addInterceptor(this.actionAccessInterceptor);
+		tgActionManager.addPreExecutionListener(new TGActionAutoLockListener(this));
+		tgActionManager.addPostExecutionListener(new TGActionAutoUpdateListener(this));
+		tgActionManager.addPostExecutionListener(new TGActionAutoUnlockListener(this));
 	}
 	
 	private void initializeDefaultActions(){
@@ -388,7 +390,7 @@ public class TGActionAdapterManager {
 	}
 	
 	private void mapAction(String actionId, TGAction action){
-		TGActionManager.getInstance().mapAction(actionId,action);
+		TuxGuitar.instance().getActionManager().mapAction(actionId,action);
 	}
 	
 	private void mapActionIdToList(TGActionIdList actionIdList, String actionId, int flags, int matchFlag){
