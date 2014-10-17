@@ -48,7 +48,7 @@ public class TGActionAccessInterceptor implements TGActionInterceptor {
 	
 	public boolean hasLockAccessToThread(Thread thread){
 		synchronized( this.lock ){
-			return (this.lockThreadAccess != null && this.lockThreadAccess != thread);
+			return (this.lockThreadAccess != null && this.lockThreadAccess == thread);
 		}
 	}
 }
