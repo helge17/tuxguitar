@@ -8,7 +8,6 @@ public class TGEditorContext {
 	private TGSongManager songManager;
 	
 	public TGEditorContext() {
-		this.songManager = new TGSongManager();
 		this.songManager = new TGSongManager(new TGFactoryImpl());
 		this.songManager.setSong(this.songManager.newSong());
 	}
