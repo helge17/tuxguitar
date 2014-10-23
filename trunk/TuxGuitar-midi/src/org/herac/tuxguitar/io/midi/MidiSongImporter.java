@@ -84,23 +84,24 @@ public class MidiSongImporter implements TGLocalFileImporter{
 					parseMessage(trackNumber,event.getTick(),event.getMessage());
 				}
 			}
-			checkAll();
+			TGSongManager tgSongManager = new TGSongManager(this.factory);
+			tgSongManager.setSong(this.factory.newSong());
 			
-			TGSong song = this.factory.newSong();
+			this.checkAll(tgSongManager);
 			
 			Iterator channels = this.channels.iterator();
 			while(channels.hasNext()){
-				song.addChannel((TGChannel)channels.next());
+				tgSongManager.getSong().addChannel((TGChannel)channels.next());
 			}
 			Iterator headers = this.headers.iterator();
 			while(headers.hasNext()){
-				song.addMeasureHeader((TGMeasureHeader)headers.next());
+				tgSongManager.getSong().addMeasureHeader((TGMeasureHeader)headers.next());
 			}
 			Iterator tracks = this.tracks.iterator();
 			while(tracks.hasNext()){
-				song.addTrack((TGTrack)tracks.next());
+				tgSongManager.getSong().addTrack((TGTrack)tracks.next());
 			}
-			return new SongAdjuster(this.factory,song).adjustSong();
+			return new SongAdjuster(this.factory, tgSongManager.getSong()).adjustSong();
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}
@@ -409,9 +410,9 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		return tempChannel;
 	}
 	
-	private void checkAll()throws Exception{
+	private void checkAll(TGSongManager songManager) throws Exception{
 		checkChannels();
-		checkTracks();
+		checkTracks(songManager);
 		
 		int headerCount = this.headers.size();
 		for(int i = 0;i < this.tracks.size();i ++){
@@ -479,7 +480,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		}
 	}
 	
-	private void checkTracks(){
+	private void checkTracks(TGSongManager songManager){
 		Iterator it = this.tracks.iterator();
 		while(it.hasNext()){
 			TGTrack track = (TGTrack)it.next();
@@ -503,7 +504,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 				track.setChannelId( trackChannel.getChannelId() );
 			}
 			if( trackChannel != null && trackChannel.isPercussionChannel() ){
-				track.setStrings(TGSongManager.createPercussionStrings(this.factory,6));
+				track.setStrings(songManager.createPercussionStrings(6));
 			}else{
 				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings());
 			}
