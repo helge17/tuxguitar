@@ -643,48 +643,9 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 	protected void setDefaultTuning( boolean percussionChannel ) {
 		this.tempStrings.clear();
 		if( percussionChannel ) {
-			for (int i = 1; i <= this.stringCount; i++) {
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),i, 0));
-			}
-		}
-		else {
-			switch (this.stringCount) {
-			case 7:
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),1, 64));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),2, 59));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),3, 55));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),4, 50));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),5, 45));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),6, 40));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),7, 35));
-				break;
-			case 6:
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),1, 64));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),2, 59));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),3, 55));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),4, 50));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),5, 45));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),6, 40));
-				break;
-			case 5:
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),1, 43));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),2, 38));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),3, 33));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),4, 28));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),5, 23));
-				break;
-			case 4:
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),1, 43));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),2, 38));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),3, 33));
-				this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),4, 28));
-				break;
-			default:
-				for( int i = 1 ; i <= this.stringCount ; i ++ ){
-					this.tempStrings.add(TGSongManager.newString(getSongManager().getFactory(),i,0));
-				}
-				break;
-			}
+			this.tempStrings.addAll(getSongManager().createPercussionStrings(this.stringCount));
+		} else {
+			this.tempStrings.addAll(getSongManager().createDefaultInstrumentStrings(this.stringCount));
 		}
 	}
 	
