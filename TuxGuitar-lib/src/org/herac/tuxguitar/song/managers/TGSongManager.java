@@ -31,7 +31,15 @@ import org.herac.tuxguitar.song.models.TGTrack;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TGSongManager {
+	
 	public static final short MAX_CHANNELS = 16;
+	
+	public static final int[][] DEFAULT_TUNING_VALUES = {
+		{43,38,33,28},
+		{43,38,33,28,23},
+		{64,59,55,50,45,40},
+		{64,59,55,50,45,40,35},
+	};
 	
 	private TGFactory factory;
 	private TGSong song;
@@ -921,20 +929,33 @@ public class TGSongManager {
 	}
 	
 	public List createDefaultInstrumentStrings(){
-		List strings = new ArrayList();
-		strings.add(newString(getFactory(),1, 64));
-		strings.add(newString(getFactory(),2, 59));
-		strings.add(newString(getFactory(),3, 55));
-		strings.add(newString(getFactory(),4, 50));
-		strings.add(newString(getFactory(),5, 45));
-		strings.add(newString(getFactory(),6, 40));
-		return strings;
+		return createDefaultInstrumentStrings(6);
 	}
 	
-	public static List createPercussionStrings(TGFactory factory,int stringCount){
+	public List createDefaultInstrumentStrings(int stringCount){
+		return createStrings(stringCount, DEFAULT_TUNING_VALUES);
+	}
+	
+	public List createPercussionStrings(int stringCount){
+		return createStrings(stringCount, null);
+	}
+	
+	public List createStrings(int stringCount, int[][] defaultTunings){
 		List strings = new ArrayList();
-		for(int i = 1;i <= stringCount; i++){
-			strings.add(newString(factory,i, 0));
+		if( defaultTunings != null ) {
+			for(int i = 0; i < defaultTunings.length ; i++) {
+				if( stringCount == defaultTunings[i].length ) {
+					for(int n = 0; n < defaultTunings[i].length ; n ++) {
+						strings.add(newString(getFactory(),(n + 1), defaultTunings[i][n]));
+					}
+					break;
+				}
+			}
+		}
+		if( strings.isEmpty() ) {
+			for(int i = 1;i <= stringCount; i++){
+				strings.add(newString(getFactory(),i, 0));
+			}
 		}
 		return strings;
 	}
