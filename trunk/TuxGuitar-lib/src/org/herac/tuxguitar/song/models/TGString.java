@@ -15,6 +15,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGString {
+	
 	private int number;
 	private int value;
 	
@@ -53,5 +54,4 @@ public abstract class TGString {
 		string.setNumber(getNumber());
 		string.setValue(getValue());
 	}
-	
 }

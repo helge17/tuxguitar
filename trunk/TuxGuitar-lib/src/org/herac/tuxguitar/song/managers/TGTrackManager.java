@@ -283,13 +283,13 @@ public class TGTrackManager {
 		}
 	}
 	
-	public void changeChannel(TGTrack track,int channelId){
+	public void changeChannel(TGTrack track, int channelId){
 		TGChannel channel = getSongManager().getChannel(channelId);
 		
 		track.setChannelId( channelId );
 		
 		if( channel != null && channel.isPercussionChannel() ){
-			track.setStrings(TGSongManager.createPercussionStrings(getSongManager().getFactory(),track.getStrings().size()));
+			track.setStrings(getSongManager().createPercussionStrings(track.getStrings().size()));
 		}
 	}
 	
