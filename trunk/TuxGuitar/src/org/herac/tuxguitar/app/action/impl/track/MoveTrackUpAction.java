@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableMoveTrackUp;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 /**
@@ -32,9 +33,10 @@ public class MoveTrackUpAction extends TGActionBase{
 		UndoableMoveTrackUp undoable = UndoableMoveTrackUp.startUndo();
 		
 		Caret caret = getEditor().getTablature().getCaret();
+		TGSong song = caret.getSong();
 		TGTrack track = caret.getTrack();
 		
-		if(getSongManager().moveTrackUp(track)){
+		if(getSongManager().moveTrackUp(song, track)){
 			updateSong();
 			
 			//termia el undoable

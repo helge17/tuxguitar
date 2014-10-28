@@ -30,6 +30,7 @@ import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -49,7 +50,7 @@ public class PrintPreviewAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		try{
-			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell());
+			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell(), getDocumentManager().getSong());
 			if(data != null){
 				TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 				
@@ -64,11 +65,10 @@ public class PrintPreviewAction extends TGActionBase{
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					final TGSongManager manager = new TGSongManager();
-					manager.setFactory(new TGFactoryImpl());
-					manager.setSong(getSongManager().getSong().clone(manager.getFactory()));
+					final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+					final TGSong song = getDocumentManager().getSong().clone(manager.getFactory());
 				
-					printPreview(manager,data);
+					printPreview(song, manager, data);
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
@@ -76,12 +76,12 @@ public class PrintPreviewAction extends TGActionBase{
 		}).start();
 	}
 	
-	public void printPreview(final TGSongManager manager, final PrintStyles data){
+	public void printPreview(final TGSong song, final TGSongManager manager, final PrintStyles data){
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
 					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
-					PrintController controller = new PrintController(manager, factory);
+					PrintController controller = new PrintController(song, manager, factory);
 					PrintLayout layout = new PrintLayout(controller,data);
 					
 					printPreview( layout );

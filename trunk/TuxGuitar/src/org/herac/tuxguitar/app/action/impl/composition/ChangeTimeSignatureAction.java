@@ -27,6 +27,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -160,9 +161,10 @@ public class ChangeTimeSignatureAction extends TGActionBase{
 		UndoableChangeTimeSignature undoable = UndoableChangeTimeSignature.startUndo();
 		
 		Caret caret = getEditor().getTablature().getCaret();
+		TGSong song = caret.getSong();
 		TGMeasureImpl measure = caret.getMeasure();
 		
-		getSongManager().changeTimeSignature(measure.getStart(),timeSignature,toEnd);
+		getSongManager().changeTimeSignature(song, measure.getStart(),timeSignature,toEnd);
 		
 		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		

@@ -6,14 +6,8 @@ import org.herac.tuxguitar.song.models.TGBeat;
 
 public class TGEditorManager {
 	
-	private TGEditorContext editorContext;
-	
 	public TGEditorManager(){
-		this.editorContext = new TGEditorContext();
-	}
-	
-	public TGEditorContext getActiveContext() {
-		return this.editorContext;
+		super();
 	}
 	
 	public void doRedraw( int type ){

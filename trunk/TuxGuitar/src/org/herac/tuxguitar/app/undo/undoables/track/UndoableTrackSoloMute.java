@@ -6,6 +6,7 @@ import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class UndoableTrackSoloMute implements UndoableEdit{
@@ -27,7 +28,7 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 			throw new CannotRedoException();
 		}
 		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
-		TGTrack track = manager.getTrack( this.track );
+		TGTrack track = manager.getTrack(getSong(), this.track );
 		if( track != null ){
 			manager.getTrackManager().changeSolo(track, this.redoSolo );
 			manager.getTrackManager().changeMute(track, this.redoMute );
@@ -47,7 +48,7 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 			throw new CannotUndoException();
 		}
 		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
-		TGTrack track = manager.getTrack( this.track );
+		TGTrack track = manager.getTrack(getSong(), this.track );
 		if( track != null ){
 			manager.getTrackManager().changeSolo(track, this.undoSolo );
 			manager.getTrackManager().changeMute(track, this.undoMute );
@@ -89,4 +90,7 @@ public class UndoableTrackSoloMute implements UndoableEdit{
 		return this;
 	}
 	
+	public TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
+	}
 }

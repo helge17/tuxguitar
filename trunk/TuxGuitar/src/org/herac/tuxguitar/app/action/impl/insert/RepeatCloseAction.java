@@ -23,6 +23,7 @@ import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeCloseRepeat;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -39,15 +40,16 @@ public class RepeatCloseAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
+		TGSong song = getEditor().getTablature().getSong();
 		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
-		showCloseRepeatDialog(getEditor().getTablature().getShell(), measure);
+		showCloseRepeatDialog(getEditor().getTablature().getShell(), song, measure);
 	}
 	
 	public void updateSong() {
 		updateMeasure(getEditor().getTablature().getCaret().getMeasure().getNumber());
 	}
 	
-	public void showCloseRepeatDialog(Shell shell, final TGMeasureImpl measure) {
+	public void showCloseRepeatDialog(Shell shell, final TGSong song, final TGMeasureImpl measure) {
 		if (measure != null) {
 			final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			
@@ -83,7 +85,7 @@ public class RepeatCloseAction extends TGActionBase{
 			buttonOK.setLayoutData(getButtonData());
 			buttonOK.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					closeRepeat(measure,repeatClose.getSelection());
+					closeRepeat(song, measure,repeatClose.getSelection());
 					dialog.dispose();
 				}
 			});
@@ -92,7 +94,7 @@ public class RepeatCloseAction extends TGActionBase{
 			buttonClean.setLayoutData(getButtonData());
 			buttonClean.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					closeRepeat(measure,0);
+					closeRepeat(song, measure,0);
 					dialog.dispose();
 				}
 			});
@@ -124,7 +126,7 @@ public class RepeatCloseAction extends TGActionBase{
 		return data;
 	}
 	
-	protected void closeRepeat(TGMeasureImpl measure, int repeatClose) {
+	protected void closeRepeat(TGSong song, TGMeasureImpl measure, int repeatClose) {
 		if(repeatClose >= 0){
 			
 			//comienza el undoable
@@ -132,7 +134,7 @@ public class RepeatCloseAction extends TGActionBase{
 			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//numberOfRepetitions = Math.abs(numberOfRepetitions);
-			getSongManager().changeCloseRepeat(measure.getStart(), repeatClose);
+			getSongManager().changeCloseRepeat(song, measure.getStart(), repeatClose);
 			updateSong();
 			
 			//termia el undoable

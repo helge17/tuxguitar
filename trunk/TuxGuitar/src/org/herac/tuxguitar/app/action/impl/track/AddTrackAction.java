@@ -34,7 +34,7 @@ public class AddTrackAction extends TGActionBase{
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		
-		TGTrack track = getSongManager().addTrack();
+		TGTrack track = getSongManager().addTrack(caret.getSong());
 		updateSong();
 		caret.update(track.getNumber(),caret.getPosition(),1);
 		

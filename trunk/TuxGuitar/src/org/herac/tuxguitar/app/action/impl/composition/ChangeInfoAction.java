@@ -50,7 +50,7 @@ public class ChangeInfoAction extends TGActionBase{
 	}
 	
 	public void showDialog(Shell shell) {
-		TGSong song = getSongManager().getSong();
+		TGSong song = getDocumentManager().getSong();
 		if (song != null) {
 			final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			
@@ -226,7 +226,7 @@ public class ChangeInfoAction extends TGActionBase{
 		//comienza el undoable
 		UndoableChangeInfo undoable = UndoableChangeInfo.startUndo();
 		
-		getSongManager().setProperties(name,artist,album,author,date,copyright,writer,transcriber,comments);
+		getSongManager().setProperties(getDocumentManager().getSong(), name,artist,album,author,date,copyright,writer,transcriber,comments);
 		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		TuxGuitar.getInstance().showTitle();
 		

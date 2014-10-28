@@ -29,7 +29,7 @@ public class TablatureEditor implements TGEventListener{
 	}
 	
 	public void showTablature(Composite parent) {
-		this.tablature = new Tablature(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED, TuxGuitar.getInstance().getSongManager());
+		this.tablature = new Tablature(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED, TuxGuitar.getInstance().getDocumentManager());
 		this.tablature.initGUI();
 		this.tablature.reloadViewLayout();
 		this.tablature.updateTablature();

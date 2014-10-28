@@ -33,7 +33,7 @@ public class CloneTrackAction extends TGActionBase{
 		
 		Caret caret = getEditor().getTablature().getCaret();
 		
-		getSongManager().cloneTrack(caret.getTrack());
+		getSongManager().cloneTrack(caret.getSong(), caret.getTrack());
 		updateSong();
 		
 		//termia el undoable

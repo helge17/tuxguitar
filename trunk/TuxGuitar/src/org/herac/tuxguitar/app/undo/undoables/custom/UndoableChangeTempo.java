@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTempo;
 
 public class UndoableChangeTempo implements UndoableEdit{
@@ -68,7 +69,7 @@ public class UndoableChangeTempo implements UndoableEdit{
 	}
 	
 	private void getTempos(List list){
-		Iterator it = TuxGuitar.getInstance().getSongManager().getSong().getMeasureHeaders();
+		Iterator it = getSong().getMeasureHeaders();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
 			list.add(header.getTempo().clone(TuxGuitar.getInstance().getSongManager().getFactory()));
@@ -77,13 +78,17 @@ public class UndoableChangeTempo implements UndoableEdit{
 	
 	private void setTempos(List tempos){
 		int length = tempos.size();
-		if(length != TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders()){
+		if(length != getSong().countMeasureHeaders()){
 			return;
 		}
 		for(int i =0; i < length; i ++){
 			TGTempo tempo = ((TGTempo)tempos.get(i)).clone(TuxGuitar.getInstance().getSongManager().getFactory());
-			TuxGuitar.getInstance().getSongManager().changeTempo(TuxGuitar.getInstance().getSongManager().getMeasureHeader(i + 1),tempo);
+			TuxGuitar.getInstance().getSongManager().changeTempo(TuxGuitar.getInstance().getSongManager().getMeasureHeader(getSong(),i + 1),tempo);
 		}
 		TuxGuitar.getInstance().updateSong();
+	}
+	
+	public static TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
 	}
 }

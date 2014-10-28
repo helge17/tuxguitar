@@ -19,8 +19,12 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	protected abstract String getItemName() throws TGPluginException ;
 	
 	public void init(TGContext context) throws TGPluginException {
-		String name = getItemName();
 		this.context = context;
+		this.initCustomTool();
+	}
+	
+	public void initCustomTool() {
+		String name = getItemName();
 		this.tool = new TGCustomTool(name,name);
 		this.toolAction = new TGCustomToolAction(this.tool.getName());
 	}

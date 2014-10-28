@@ -22,6 +22,7 @@ import org.herac.tuxguitar.app.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.editors.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
@@ -38,6 +39,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 /**
  * @author julian
  * 
@@ -49,7 +51,7 @@ public class Tablature extends Composite implements TGController {
 	private static final int SCROLL_INCREMENT = 50;
 	
 	private TGResourceFactory resourceFactory;
-	private TGSongManager songManager;
+	private TGDocumentManager documentManager;
 	private Caret caret;
 	private int width;
 	private int height;
@@ -66,9 +68,9 @@ public class Tablature extends Composite implements TGController {
 	
 	private boolean painting;
 	
-	public Tablature(Composite parent,int style, TGSongManager songManager ) {
+	public Tablature(Composite parent,int style, TGDocumentManager documentManager ) {
 		super(parent, style);
-		this.songManager = songManager;
+		this.documentManager = documentManager;
 		this.caret = new Caret(this);
 		this.editorKit = new EditorKit(this);
 	}
@@ -293,7 +295,11 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public TGSongManager getSongManager() {
-		return this.songManager;
+		return this.documentManager.getSongManager();
+	}
+	
+	public TGSong getSong() {
+		return this.documentManager.getSong();
 	}
 	
 	public TGLayout getViewLayout(){

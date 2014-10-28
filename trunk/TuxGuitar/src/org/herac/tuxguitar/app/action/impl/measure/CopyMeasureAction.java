@@ -24,6 +24,7 @@ import org.herac.tuxguitar.app.clipboard.MeasureTransferable;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -46,6 +47,7 @@ public class CopyMeasureAction extends TGActionBase{
 	}
 	
 	public void showDialog(Shell shell) {
+		TGSong song = getEditor().getTablature().getSong();
 		TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
 		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
 		if (measure != null) {
@@ -59,7 +61,7 @@ public class CopyMeasureAction extends TGActionBase{
 			range.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 			range.setText(TuxGuitar.getProperty("edit.copy"));
 			
-			int measureCount = getSongManager().getSong().countMeasureHeaders();
+			int measureCount = song.countMeasureHeaders();
 			
 			Label fromLabel = new Label(range, SWT.NULL);
 			fromLabel.setText(TuxGuitar.getProperty("edit.from"));
@@ -105,7 +107,7 @@ public class CopyMeasureAction extends TGActionBase{
 			});
 			//----------------------------------------------------------------------
 			this.copyAllTracks = true;
-			if(getSongManager().getSong().countTracks() > 1){
+			if( song.countTracks() > 1){
 				Group checkComposites = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 				checkComposites.setLayout(new GridLayout());
 				checkComposites.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));

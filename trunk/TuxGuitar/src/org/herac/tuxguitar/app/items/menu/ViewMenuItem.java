@@ -149,7 +149,7 @@ public class ViewMenuItem extends MenuItems{
 		this.scoreEnabled.setSelection( (style & TGLayout.DISPLAY_SCORE) != 0 );
 		this.tablatureEnabled.setSelection( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
 		this.compact.setSelection( (style & TGLayout.DISPLAY_COMPACT) != 0 );
-		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || layout.getSongManager().getSong().countTracks() == 1);
+		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || layout.getSong().countTracks() == 1);
 		this.chordName.setSelection( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
 		this.chordDiagram.setSelection( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
 	}

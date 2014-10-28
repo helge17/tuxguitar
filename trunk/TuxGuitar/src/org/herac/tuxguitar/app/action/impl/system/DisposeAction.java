@@ -116,7 +116,7 @@ public class DisposeAction extends TGActionBase {
 	
 	protected void dispose(){
 		TuxGuitar.getInstance().getTable().dispose();
-		TuxGuitar.getInstance().getSongManager().clearSong();
+		TuxGuitar.getInstance().getDocumentManager().clearSong();
 		TuxGuitar.getInstance().getFretBoardEditor().dispose();
 		TuxGuitar.getInstance().getTablatureEditor().getTablature().dispose();
 		TuxGuitar.getInstance().getIconManager().disposeIcons();

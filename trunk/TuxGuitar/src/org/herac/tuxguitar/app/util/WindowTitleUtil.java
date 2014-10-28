@@ -64,13 +64,13 @@ public class WindowTitleUtil {
 		}else if(varName.equals(VAR_FILE_PATH)){
 			varValue = TuxGuitar.getInstance().getFileHistory().getCurrentFilePath();
 		}else if(varName.equals(VAR_SONG_NAME)){
-			varValue = TuxGuitar.getInstance().getSongManager().getSong().getName();
+			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getName();
 		}else if(varName.equals(VAR_SONG_AUTHOR)){
-			varValue = TuxGuitar.getInstance().getSongManager().getSong().getAuthor();
+			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getAuthor();
 		}else if(varName.equals(VAR_SONG_ALBUM)){
-			varValue = TuxGuitar.getInstance().getSongManager().getSong().getAlbum();
+			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getAlbum();
 		}else if(varName.equals(VAR_SONG_ARTIST)){
-			varValue = TuxGuitar.getInstance().getSongManager().getSong().getArtist();
+			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getArtist();
 		}
 		return varValue;
 	}

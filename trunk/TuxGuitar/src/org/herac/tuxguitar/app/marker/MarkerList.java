@@ -30,6 +30,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGMarker;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class MarkerList implements TGEventListener {
 	
@@ -135,10 +136,12 @@ public class MarkerList implements TGEventListener {
 				if(!TGActionLock.isLocked() && !TuxGuitar.getInstance().isLocked()){
 					TGActionLock.lock();
 					TGMarker marker = getSelectedMarker();
+					TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+					
 					// comienza el undoable
 					UndoableChangeMarker undoable = UndoableChangeMarker.startUndo(marker);
 					
-					TuxGuitar.getInstance().getSongManager().removeMarker(marker);
+					TuxGuitar.getInstance().getSongManager().removeMarker(song, marker);
 					
 					// termia el undoable
 					TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(null));
@@ -234,8 +237,10 @@ public class MarkerList implements TGEventListener {
 	protected void loadTableItems(boolean keepSelection){
 		int itemSelected = (keepSelection ? this.table.getSelectionIndex() : -1 );
 		
+		TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+		
 		this.table.removeAll();
-		this.markers = TuxGuitar.getInstance().getSongManager().getMarkers();
+		this.markers = TuxGuitar.getInstance().getSongManager().getMarkers(song);
 		
 		Iterator it = this.markers.iterator();
 		while (it.hasNext()) {

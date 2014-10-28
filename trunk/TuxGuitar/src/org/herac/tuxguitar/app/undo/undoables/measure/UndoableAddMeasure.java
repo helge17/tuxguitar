@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.undo.CannotRedoException;
 import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableAddMeasure implements UndoableEdit{
 	private int doAction;
@@ -20,7 +21,7 @@ public class UndoableAddMeasure implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.getInstance().getSongManager().addNewMeasure(this.number);
+		TuxGuitar.getInstance().getSongManager().addNewMeasure(getSong(), this.number);
 		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
@@ -31,7 +32,7 @@ public class UndoableAddMeasure implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.getInstance().getSongManager().removeMeasure(this.number);
+		TuxGuitar.getInstance().getSongManager().removeMeasure(getSong(), this.number);
 		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
 		
@@ -59,4 +60,7 @@ public class UndoableAddMeasure implements UndoableEdit{
 		return this;
 	}
 	
+	public TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
+	}
 }

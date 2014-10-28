@@ -27,6 +27,7 @@ import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -156,6 +157,7 @@ public class ChangeTempoAction extends TGActionBase{
 	
 	protected void setTempo(int tempoValue,boolean applyToAllMeasures,boolean applyToEnd){
 		if(tempoValue >= MIN_TEMPO && MAX_TEMPO <= 320){
+			TGSong song = getEditor().getTablature().getSong();
 			TGTempo tempo = getSongManager().getFactory().newTempo();
 			tempo.setValue(tempoValue);
 			
@@ -165,7 +167,7 @@ public class ChangeTempoAction extends TGActionBase{
 			//comienza el undoable
 			UndoableChangeTempo undoable = UndoableChangeTempo.startUndo();
 			
-			getSongManager().changeTempos(start,tempo,toEnd);
+			getSongManager().changeTempos(song, start, tempo, toEnd);
 			
 			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			

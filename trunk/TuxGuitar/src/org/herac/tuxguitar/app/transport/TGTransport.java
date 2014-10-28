@@ -36,6 +36,7 @@ import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -52,6 +53,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
  * Preferences - Java - Code Style - Code Templates
  */
 public class TGTransport implements TGEventListener {
+	
 	private static final int PLAY_MODE_DELAY = 250;
 	
 	public static final int STATUS_STOPPED = 1;
@@ -179,7 +181,7 @@ public class TGTransport implements TGEventListener {
 				updateProgressBar(e.x);
 			}
 			public void mouseUp(MouseEvent e) {
-				gotoMeasure(getSongManager().getMeasureHeaderAt(TGTransport.this.tickProgress.getSelection()),true);
+				gotoMeasure(getSongManager().getMeasureHeaderAt(getDocumentManager().getSong(), TGTransport.this.tickProgress.getSelection()),true);
 				setEditingTickScale(false);
 			}
 		});
@@ -299,8 +301,8 @@ public class TGTransport implements TGEventListener {
 				}
 				this.loadPlayText();
 			}
-			TGMeasureHeader first = getSongManager().getFirstMeasureHeader();
-			TGMeasureHeader last = getSongManager().getLastMeasureHeader();
+			TGMeasureHeader first = getSongManager().getFirstMeasureHeader(getDocumentManager().getSong());
+			TGMeasureHeader last = getSongManager().getLastMeasureHeader(getDocumentManager().getSong());
 			this.tickProgress.setMinimum((int)first.getStart());
 			this.tickProgress.setMaximum((int)(last.getStart() + last.getLength()) -1);
 			this.metronome.setSelection(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
@@ -365,27 +367,31 @@ public class TGTransport implements TGEventListener {
 		return TuxGuitar.getInstance().getSongManager();
 	}
 	
+	protected TGDocumentManager getDocumentManager(){
+		return TuxGuitar.getInstance().getDocumentManager();
+	}
+	
 	public void gotoFirst(){
-		gotoMeasure(getSongManager().getFirstMeasureHeader(),true);
+		gotoMeasure(getSongManager().getFirstMeasureHeader(getDocumentManager().getSong()),true);
 	}
 	
 	public void gotoLast(){
-		gotoMeasure(getSongManager().getLastMeasureHeader(),true) ;
+		gotoMeasure(getSongManager().getLastMeasureHeader(getDocumentManager().getSong()),true) ;
 	}
 	
 	public void gotoNext(){
 		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getDocumentManager().getSong(), MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
-			gotoMeasure(getSongManager().getNextMeasureHeader(header),true);
+			gotoMeasure(getSongManager().getNextMeasureHeader(getDocumentManager().getSong(), header),true);
 		}
 	}
 	
 	public void gotoPrevious(){
 		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getDocumentManager().getSong(), MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
-			gotoMeasure(getSongManager().getPrevMeasureHeader(header),true);
+			gotoMeasure(getSongManager().getPrevMeasureHeader(getDocumentManager().getSong(), header),true);
 		}
 	}
 	
@@ -415,7 +421,7 @@ public class TGTransport implements TGEventListener {
 		TuxGuitar.getInstance().lock();
 		
 		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getDocumentManager().getSong(), MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
 		}

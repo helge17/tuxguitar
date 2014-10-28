@@ -109,7 +109,7 @@ public class EditorKit {
 		TGLayout layout = getTablature().getViewLayout();
 		int number = layout.getTrackNumberAt(y);
 		if(number >= 0){
-			return (TGTrackImpl)layout.getSongManager().getTrack(number);
+			return (TGTrackImpl)layout.getSongManager().getTrack(getTablature().getSong(), number);
 		}
 		return null;
 	}

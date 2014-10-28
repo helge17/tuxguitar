@@ -26,6 +26,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 /**
@@ -47,6 +48,7 @@ public class RemoveMeasureAction extends TGActionBase{
 	}
 	
 	public void showDialog(Shell shell) {
+		TGSong song = getEditor().getTablature().getSong();
 		TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
 		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
 		if (measure != null) {
@@ -60,7 +62,7 @@ public class RemoveMeasureAction extends TGActionBase{
 			range.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 			range.setText(TuxGuitar.getProperty("edit.delete"));
 			
-			int measureCount = getSongManager().getSong().countMeasureHeaders();
+			int measureCount = song.countMeasureHeaders();
 			
 			Label fromLabel = new Label(range, SWT.NULL);
 			fromLabel.setText(TuxGuitar.getProperty("edit.from"));
@@ -147,11 +149,12 @@ public class RemoveMeasureAction extends TGActionBase{
 		return data;
 	}
 	
-	protected void removeMeasures(int m1,int m2/*,TypedEvent event*/){
-		if(m1 > 0 && m1 <= m2 && m2 <= getSongManager().getSong().countMeasureHeaders()){
+	protected void removeMeasures(int m1, int m2){
+		TGSong song = getEditor().getTablature().getSong();
+		if(m1 > 0 && m1 <= m2 && m2 <= song.countMeasureHeaders()){
 			Caret caret = getEditor().getTablature().getCaret();
 			
-			if(m1 == 1 && m2 == getSongManager().getSong().countMeasureHeaders()){
+			if(m1 == 1 && m2 == song.countMeasureHeaders()){
 				//TuxGuitar.instance().getAction(NewFileAction.NAME).process(event);
 				TuxGuitar.getInstance().newSong();
 				return;
@@ -161,13 +164,13 @@ public class RemoveMeasureAction extends TGActionBase{
 			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 			
 			//borro los compases
-			getSongManager().removeMeasureHeaders(m1,m2);
+			getSongManager().removeMeasureHeaders(song, m1, m2);
 			
 			updateSong();
 			
-			int measureCount = getSongManager().getSong().countMeasureHeaders();
+			int measureCount = song.countMeasureHeaders();
 			if(caret.getMeasure().getNumber() > measureCount){
-				TGTrack track = getSongManager().getTrack(caret.getTrack().getNumber());
+				TGTrack track = getSongManager().getTrack(song, caret.getTrack().getNumber());
 				TGMeasure measure = getSongManager().getTrackManager().getMeasure(track,measureCount);
 				caret.update(track.getNumber(),measure.getStart(),1);
 			}

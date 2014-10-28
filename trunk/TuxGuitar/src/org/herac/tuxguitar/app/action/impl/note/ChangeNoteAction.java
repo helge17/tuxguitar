@@ -47,7 +47,7 @@ public class ChangeNoteAction extends TGActionBase {
 		int velocity = getPropertyVelocity(context);
 		TGDuration tgDuration = getPropertyDuration(context);
 		
-		TGTrack track = getSongManager().getTrack( getPropertyTrack(context) );
+		TGTrack track = getSongManager().getTrack(getDocumentManager().getSong(), getPropertyTrack(context) );
 		TGMeasure measure = (track != null ? getSongManager().getTrackManager().getMeasureAt(track, start) : null);
 		
 		if( track != null && measure != null && fret >= 0) {

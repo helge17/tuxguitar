@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableChannelGeneric implements UndoableEdit{
 	private int doAction;
@@ -65,7 +66,7 @@ public class UndoableChannelGeneric implements UndoableEdit{
 	
 	private List getChannels(){
 		List channels = new ArrayList();
-		Iterator it = TuxGuitar.getInstance().getSongManager().getChannels().iterator();
+		Iterator it = TuxGuitar.getInstance().getSongManager().getChannels(getSong()).iterator();
 		while( it.hasNext() ){
 			channels.add(cloneChannel((TGChannel)it.next()));
 		}
@@ -78,13 +79,17 @@ public class UndoableChannelGeneric implements UndoableEdit{
 	
 	private void updateSongChannels( List channels ){
 		TGSongManager tgSongManager = TuxGuitar.getInstance().getSongManager();
-		tgSongManager.removeAllChannels();
+		tgSongManager.removeAllChannels(getSong());
 		
 		Iterator it = channels.iterator();
 		while( it.hasNext() ){
-			tgSongManager.addChannel(cloneChannel((TGChannel)it.next()));
+			tgSongManager.addChannel(getSong(), cloneChannel((TGChannel)it.next()));
 		}
 		
 		TuxGuitar.getInstance().updateCache(true);
+	}
+	
+	private TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
 	}
 }

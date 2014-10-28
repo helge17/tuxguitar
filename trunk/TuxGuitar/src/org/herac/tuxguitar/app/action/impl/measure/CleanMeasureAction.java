@@ -27,6 +27,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -47,6 +48,7 @@ public class CleanMeasureAction extends TGActionBase{
 	}
 	
 	public void showDialog(Shell shell) {
+		TGSong song = getEditor().getTablature().getSong();
 		TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
 		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
 		if (measure != null) {
@@ -60,7 +62,7 @@ public class CleanMeasureAction extends TGActionBase{
 			range.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 			range.setText(TuxGuitar.getProperty("measure.clean"));
 			
-			int measureCount = getSongManager().getSong().countMeasureHeaders();
+			int measureCount = song.countMeasureHeaders();
 			
 			Label fromLabel = new Label(range, SWT.NULL);
 			fromLabel.setText(TuxGuitar.getProperty("edit.from"));

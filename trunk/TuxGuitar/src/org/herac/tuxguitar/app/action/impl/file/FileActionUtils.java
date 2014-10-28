@@ -16,6 +16,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.FileChooser;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
@@ -24,7 +25,6 @@ import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.io.base.TGRawImporter;
-import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class FileActionUtils {
@@ -101,8 +101,8 @@ public class FileActionUtils {
 	
 	public static void save(final String fileName){
 		try {
-			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
-			TGFileFormatManager.instance().getWriter().write(manager.getFactory(),manager.getSong(), fileName);
+			TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
+			TGFileFormatManager.instance().getWriter().write(manager.getSongManager().getFactory(), manager.getSong(), fileName);
 			TuxGuitar.getInstance().fireSaveSong(new File(fileName).toURI().toURL());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.save.error", new String[]{fileName}),throwable));
@@ -122,7 +122,7 @@ public class FileActionUtils {
 	
 	public static void exportSong(TGRawExporter exporter){
 		try {
-			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
+			TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
 			exporter.exportSong(manager.getSong());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.export.error"),throwable));
@@ -132,8 +132,8 @@ public class FileActionUtils {
 	public static void exportSong(TGLocalFileExporter exporter, String path){
 		try {
 			OutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
-			TGSongManager manager = TuxGuitar.getInstance().getSongManager();
-			exporter.init( manager.getFactory() , stream );
+			TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
+			exporter.init( manager.getSongManager().getFactory() , stream );
 			exporter.exportSong(manager.getSong());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.export.error", new String[]{path}),throwable));

@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
 import org.herac.tuxguitar.app.undo.undoables.track.UndoableRemoveTrack;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -30,7 +31,7 @@ public class RemoveTrackAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
 		
-		if(getSongManager().getSong().countTracks() <= 1){
+		if(getDocumentManager().getSong().countTracks() <= 1){
 			//TuxGuitar.instance().getAction(NewFileAction.NAME).process(e);
 			TuxGuitar.getInstance().newSong();
 			return;
@@ -39,12 +40,13 @@ public class RemoveTrackAction extends TGActionBase{
 		UndoableRemoveTrack undoable = UndoableRemoveTrack.startUndo();
 		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		
+		TGSong song = caret.getSong();
 		TGTrackImpl track = caret.getTrack();
-		TGTrackImpl nextCaretTrack = (TGTrackImpl)getSongManager().getTrack(track.getNumber() + 1);
+		TGTrackImpl nextCaretTrack = (TGTrackImpl)getSongManager().getTrack(song, track.getNumber() + 1);
 		if(nextCaretTrack == null){
-			nextCaretTrack =  (TGTrackImpl)getSongManager().getTrack(track.getNumber() - 1);
+			nextCaretTrack =  (TGTrackImpl)getSongManager().getTrack(song, track.getNumber() - 1);
 		}
-		getSongManager().removeTrack(track);
+		getSongManager().removeTrack(song, track);
 		updateSong();
 		
 		//move the caret to the next or previous track

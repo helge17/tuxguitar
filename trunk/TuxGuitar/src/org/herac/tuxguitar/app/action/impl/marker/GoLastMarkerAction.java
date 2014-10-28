@@ -9,6 +9,7 @@ package org.herac.tuxguitar.app.action.impl.marker;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.marker.MarkerNavigator;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -25,6 +26,7 @@ public class GoLastMarkerAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		new MarkerNavigator().goToSelectedMarker(getSongManager().getLastMarker());
+		TGSong song = getEditor().getTablature().getSong();
+		new MarkerNavigator().goToSelectedMarker(getSongManager().getLastMarker(song));
 	}
 }

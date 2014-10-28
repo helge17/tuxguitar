@@ -5,8 +5,10 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.undo.undoables.channel.UndoableChannelGeneric;
 import org.herac.tuxguitar.app.undo.undoables.channel.UndoableModifyChannel;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGChannelHandle {
 	
@@ -15,10 +17,12 @@ public class TGChannelHandle {
 	}
 	
 	public void addChannel(){
+		TGSong song = getDocumentManager().getSong();
+		
 		// Comienza el Undoable
 		UndoableChannelGeneric undoable = UndoableChannelGeneric.startUndo();
 		
-		getManager().addChannel();
+		getManager().addChannel(song);
 		
 		// Termina el Undoable
 		TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo() );
@@ -27,10 +31,12 @@ public class TGChannelHandle {
 	}
 	
 	public void removeChannel(TGChannel channel){
+		TGSong song = getDocumentManager().getSong();
+		
 		// Comienza el Undoable
 		UndoableChannelGeneric undoable = UndoableChannelGeneric.startUndo();
 		
-		getManager().removeChannel(channel);
+		getManager().removeChannel(song, channel);
 		
 		// Termina el Undoable
 		TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo() );
@@ -39,14 +45,15 @@ public class TGChannelHandle {
 	}
 	
 	public void updateChannel(int id,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
-		TGChannel channel = getManager().getChannel(id);
+		TGSong song = getDocumentManager().getSong();
+		TGChannel channel = getManager().getChannel(song, id);
 		if( channel != null ){
 			boolean programChange = (bnk != channel.getBank() || prg != channel.getProgram());
 			
 			// Comienza el Undoable
 			UndoableModifyChannel undoable = UndoableModifyChannel.startUndo(id);
 			
-			getManager().updateChannel(id, bnk, prg, vol, bal, cho, rev, pha, tre, name);
+			getManager().updateChannel(song, id, bnk, prg, vol, bal, cho, rev, pha, tre, name);
 			
 			// Termina el Undoable
 			TuxGuitar.getInstance().getUndoableManager().addEdit( undoable.endUndo() );
@@ -64,15 +71,15 @@ public class TGChannelHandle {
 	}
 	
 	public List getChannels(){
-		return getManager().getChannels();
+		return getManager().getChannels(getDocumentManager().getSong());
 	}
 	
 	public boolean isAnyTrackConnectedToChannel(TGChannel channel){
-		return getManager().isAnyTrackConnectedToChannel( channel.getChannelId() );
+		return getManager().isAnyTrackConnectedToChannel(getDocumentManager().getSong(), channel.getChannelId() );
 	}
 	
 	public boolean isAnyPercussionChannel(){
-		return getManager().isAnyPercussionChannel();
+		return getManager().isAnyPercussionChannel(getDocumentManager().getSong());
 	}
 	
 	public boolean isPlayerRunning(){
@@ -81,5 +88,9 @@ public class TGChannelHandle {
 	
 	private TGSongManager getManager(){
 		return TuxGuitar.getInstance().getSongManager();
+	}
+	
+	private TGDocumentManager getDocumentManager(){
+		return TuxGuitar.getInstance().getDocumentManager();
 	}
 }
