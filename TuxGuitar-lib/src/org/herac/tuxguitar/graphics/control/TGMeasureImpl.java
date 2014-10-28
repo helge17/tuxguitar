@@ -192,7 +192,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private void checkCompactMode(TGLayout layout){
 		boolean compactMode = ( (layout.getStyle() & TGLayout.DISPLAY_COMPACT) != 0 );
 		if(compactMode && (layout.getStyle() & TGLayout.DISPLAY_MULTITRACK) != 0){
-			compactMode = (layout.getSongManager().getSong().countTracks() == 1);
+			compactMode = (layout.getSong().countTracks() == 1);
 		}
 		this.compactMode = compactMode;
 	}

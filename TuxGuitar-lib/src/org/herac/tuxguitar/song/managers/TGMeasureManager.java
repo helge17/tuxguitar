@@ -563,7 +563,7 @@ public class TGMeasureManager {
 			if( createNewMeasure ){
 				
 				while( newMeasure == null && beat.getStart() >= TGDuration.QUARTER_TIME){
-					getSongManager().addNewMeasureBeforeEnd();
+					getSongManager().addNewMeasureBeforeEnd(track.getSong());
 					newMeasure = getSongManager().getTrackManager().getMeasureAt(track, beat.getStart() );
 				}
 			}
@@ -928,7 +928,7 @@ public class TGMeasureManager {
 				TGString currentString = measure.getTrack().getString(note.getString());
 				TGString nextString = measure.getTrack().getString(nextStringNumber);
 				int noteValue = (note.getValue() + currentString.getValue());
-				boolean percussionChannel = getSongManager().isPercussionChannel(measure.getTrack().getChannelId());
+				boolean percussionChannel = getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId());
 				if(noteValue >= nextString.getValue() && ((nextString.getValue() + 30 > noteValue) || percussionChannel) ){
 					note.setValue(noteValue - nextString.getValue());
 					note.setString(nextString.getNumber());
@@ -960,7 +960,7 @@ public class TGMeasureManager {
 		TGNote note = getNote(measure,start,string);
 		if(note != null){
 			int newValue = (note.getValue() + semitones);
-			if( newValue >= 0 && (newValue < 30 || getSongManager().isPercussionChannel(measure.getTrack().getChannelId())) ){
+			if( newValue >= 0 && (newValue < 30 || getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId())) ){
 				note.setValue(newValue);
 				return true;
 			}

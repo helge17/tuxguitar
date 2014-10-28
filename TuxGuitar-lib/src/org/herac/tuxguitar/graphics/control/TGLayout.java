@@ -18,6 +18,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGVoice;
 
 /**
@@ -135,24 +136,24 @@ public abstract class TGLayout {
 	}
 	
 	public void updateMeasures() {
-		int measureCount = getSongManager().getSong().countMeasureHeaders();
+		int measureCount = getSong().countMeasureHeaders();
 		for (int measureIdx = 0; measureIdx < measureCount; measureIdx++) {
 			this.updateMeasureIndex( measureIdx );
 		}
 	}
 	
 	private void updateMeasureIndex(int index) {
-		if( index >= 0 && index < getSongManager().getSong().countMeasureHeaders() ){
-			((TGMeasureHeaderImpl)getSongManager().getSong().getMeasureHeader( index )).update(this, index);
+		if( index >= 0 && index < getSong().countMeasureHeaders() ){
+			((TGMeasureHeaderImpl) getSong().getMeasureHeader( index )).update(this, index);
 			
-			int trackCount = getSongManager().getSong().countTracks();
+			int trackCount = getSong().countTracks();
 			for (int trackIdx = 0; trackIdx < trackCount; trackIdx++) {
-				TGTrackImpl track = (TGTrackImpl)getSongManager().getSong().getTrack(trackIdx);
+				TGTrackImpl track = (TGTrackImpl) getSong().getTrack(trackIdx);
 				TGMeasureImpl measure = (TGMeasureImpl) track.getMeasure( index );
 				measure.create(this);
 			}
 			for (int trackIdx = 0; trackIdx < trackCount; trackIdx++) {
-				TGTrackImpl track = (TGTrackImpl)getSongManager().getSong().getTrack(trackIdx);
+				TGTrackImpl track = (TGTrackImpl) getSong().getTrack(trackIdx);
 				TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure( index );
 				track.update(this);
 				measure.update(this);
@@ -161,9 +162,9 @@ public abstract class TGLayout {
 	}
 	
 	public void updateMeasureNumber(int number) {
-		TGMeasureHeader header = getSongManager().getMeasureHeader(number);
+		TGMeasureHeader header = getSongManager().getMeasureHeader(getSong(), number);
 		if( header != null ){
-			int index = getSongManager().getMeasureHeaderIndex( header );
+			int index = getSongManager().getMeasureHeaderIndex(getSong(), header);
 			if( index >= 0 ){
 				updateMeasureIndex(index);
 			}
@@ -536,6 +537,10 @@ public abstract class TGLayout {
 		return getComponent().getSongManager();
 	}
 	
+	public TGSong getSong() {
+		return getComponent().getSong();
+	}
+	
 	public void setComponent(TGController controller){
 		this.controller = controller;
 	}
@@ -760,7 +765,7 @@ public abstract class TGLayout {
 	}
 	
 	public boolean isLastMeasure(TGMeasureHeader mh){
-		return (mh.getNumber() == getSongManager().getSong().countMeasureHeaders());
+		return (mh.getNumber() == getSong().countMeasureHeaders());
 	}
 	
 	public boolean isLastMeasure(TGMeasure measure){

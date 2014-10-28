@@ -8,6 +8,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.managers.TGTrackManager;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGSongSegmentHelper {
@@ -18,14 +19,14 @@ public class TGSongSegmentHelper {
 		this.sm = sm;
 	}
 	
-	public TGSongSegment copyMeasures(int m1, int m2){
+	public TGSongSegment copyMeasures(TGSong song, int m1, int m2){
 		TGSongSegment segment = new TGSongSegment();
 		int number1 = Math.max(1,m1);
-		int number2 = Math.min(this.sm.getSong().countMeasureHeaders(),m2);
+		int number2 = Math.min(song.countMeasureHeaders(),m2);
 		for(int number = number1; number <= number2;number ++){
-			segment.getHeaders().add( this.sm.getMeasureHeader(number) );
+			segment.getHeaders().add( this.sm.getMeasureHeader(song, number) );
 		}
-		Iterator it = this.sm.getSong().getTracks();
+		Iterator it = song.getTracks();
 		while(it.hasNext()){
 			TGTrack track = (TGTrack)it.next();
 			List measures = new ArrayList();
@@ -37,22 +38,22 @@ public class TGSongSegmentHelper {
 		return segment.clone(this.sm.getFactory());
 	}
 	
-	public TGSongSegment copyMeasures(int m1, int m2,TGTrack track){
+	public TGSongSegment copyMeasures(TGSong song, int m1, int m2, TGTrack track){
 		TGSongSegment segment = new TGSongSegment();
 		List measures = new ArrayList();
 		int number1 = Math.max(1,m1);
-		int number2 = Math.min(this.sm.getSong().countMeasureHeaders(),m2);
+		int number2 = Math.min(song.countMeasureHeaders(),m2);
 		for(int number = number1; number <= number2;number ++){
-			segment.getHeaders().add( this.sm.getMeasureHeader(number) );
+			segment.getHeaders().add( this.sm.getMeasureHeader(song, number) );
 			measures.add(this.sm.getTrackManager().getMeasure(track, number));
 		}
 		segment.addTrack(track.getNumber(),measures);
 		return segment.clone(this.sm.getFactory());
 	}
 	
-	public void insertMeasures(TGSongSegment segment,int fromNumber,long move, int track){
+	public void insertMeasures(TGSong song, TGSongSegment segment,int fromNumber,long move, int track){
 		List headers = new ArrayList();
-		this.sm.moveMeasureHeaders(segment.getHeaders(),move,0,false);
+		this.sm.moveMeasureHeaders(song, segment.getHeaders(),move,0,false);
 		
 		int headerNumber = fromNumber;
 		Iterator it = segment.getHeaders().iterator();
@@ -64,16 +65,16 @@ public class TGSongSegmentHelper {
 		}
 		long start = ((TGMeasureHeader)headers.get(0)).getStart();
 		long end = ((TGMeasureHeader)headers.get(headers.size() - 1)).getStart() + ((TGMeasureHeader)headers.get(headers.size() - 1)).getLength();
-		List headersBeforeEnd = this.sm.getMeasureHeadersBeforeEnd(start);
-		this.sm.moveMeasureHeaders(headersBeforeEnd,end - start,headers.size(),true);
+		List headersBeforeEnd = this.sm.getMeasureHeadersBeforeEnd(song, start);
+		this.sm.moveMeasureHeaders(song, headersBeforeEnd,end - start,headers.size(),true);
 		
 		it = segment.getHeaders().iterator();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
-			this.sm.addMeasureHeader(header.getNumber() - 1,header);
+			this.sm.addMeasureHeader(song, header.getNumber() - 1,header);
 		}
 		
-		it = this.sm.getSong().getTracks();
+		it = song.getTracks();
 		while (it.hasNext()) {
 			TGTrack currTrack = (TGTrack) it.next();
 			List measures = null;
@@ -116,21 +117,21 @@ public class TGSongSegmentHelper {
 		}
 	}
 	
-	public void replaceMeasures(TGSongSegment segment,long move, int track) {
-		boolean replaceHeader = ( track == 0 || this.sm.getSong().countTracks() == 1 );
+	public void replaceMeasures(TGSong song, TGSongSegment segment,long move, int track) {
+		boolean replaceHeader = ( track == 0 || song.countTracks() == 1 );
 		
 		List measureHeaders = new ArrayList();
-		this.sm.moveMeasureHeaders(segment.getHeaders(),move,0,false);
+		this.sm.moveMeasureHeaders(song, segment.getHeaders(),move,0,false);
 		Iterator sHeaders = segment.getHeaders().iterator();
 		while(sHeaders.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)sHeaders.next();
-			TGMeasureHeader replace = (replaceHeader ? this.sm.replaceMeasureHeader(header) : this.sm.getMeasureHeaderAt(header.getStart()));
+			TGMeasureHeader replace = (replaceHeader ? this.sm.replaceMeasureHeader(song, header) : this.sm.getMeasureHeaderAt(song, header.getStart()));
 			
-			Iterator nextHeaders = this.sm.getMeasureHeadersAfter(replace.getNumber()).iterator();
+			Iterator nextHeaders = this.sm.getMeasureHeadersAfter(song, replace.getNumber()).iterator();
 			long nextStart =  (replace.getStart() + replace.getLength());
 			while(nextHeaders.hasNext()){
 				TGMeasureHeader next = (TGMeasureHeader)nextHeaders.next();
-				this.sm.moveMeasureComponents(next, (nextStart - next.getStart() ));
+				this.sm.moveMeasureComponents(song, next, (nextStart - next.getStart() ));
 				this.sm.moveMeasureHeader(next, (nextStart - next.getStart() ) , 0);
 				nextStart = (next.getStart() + next.getLength());
 			}
@@ -140,7 +141,7 @@ public class TGSongSegmentHelper {
 		Iterator sTracks = segment.getTracks().iterator();
 		while(sTracks.hasNext()){
 			TGTrackSegment tSegment = (TGTrackSegment)sTracks.next();
-			TGTrack currTrack = this.sm.getTrack( (track > 0 && segment.getTracks().size() == 1)?track:tSegment.getTrack());
+			TGTrack currTrack = this.sm.getTrack(song, (track > 0 && segment.getTracks().size() == 1)?track:tSegment.getTrack());
 			if(currTrack != null){
 				for(int i = 0;i < tSegment.getMeasures().size();i++){
 					TGMeasure measure = (TGMeasure)tSegment.getMeasures().get(i);

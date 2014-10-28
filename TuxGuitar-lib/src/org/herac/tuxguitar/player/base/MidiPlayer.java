@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -13,6 +14,7 @@ import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGLock;
@@ -25,7 +27,7 @@ public class MidiPlayer{
 	
 	private static MidiPlayer instance;
 	
-	private TGSongManager songManager;
+	private TGDocumentManager documentManager;
 	
 	private MidiSequencer sequencer;
 	
@@ -93,8 +95,8 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void init(TGSongManager songManager) {
-		this.songManager = songManager;
+	public void init(TGDocumentManager documentManager) {
+		this.documentManager = documentManager;
 		this.outputPortProviders = new ArrayList();
 		this.sequencerProviders = new ArrayList();
 		this.tryOpenFistDevice = false;
@@ -258,11 +260,11 @@ public class MidiPlayer{
 			this.loopEHeader = -1;
 			this.loopSPosition = TGDuration.QUARTER_TIME;
 			if( getMode().isLoop() ){
-				int hCount = this.songManager.getSong().countMeasureHeaders();
+				int hCount = this.getSong().countMeasureHeaders();
 				this.loopSHeader = ( getMode().getLoopSHeader() <= hCount ? getMode().getLoopSHeader() : -1 ) ;
 				this.loopEHeader = ( getMode().getLoopEHeader() <= hCount ? getMode().getLoopEHeader() : -1 ) ;
 				if( this.loopSHeader > 0 && this.loopSHeader <= hCount ){
-					TGMeasureHeader header = this.songManager.getMeasureHeader( this.loopSHeader );
+					TGMeasureHeader header = this.getSongManager().getMeasureHeader( getSong(), this.loopSHeader );
 					if( header != null ){
 						this.loopSPosition = header.getStart();
 					}
@@ -363,12 +365,12 @@ public class MidiPlayer{
 	
 	public void addSequence() {
 		try{
-			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.songManager,MidiSequenceParser.DEFAULT_PLAY_FLAGS);
+			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.documentManager.getSong(), this.documentManager.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
 			midiSequenceParser.setTempoPercent(getMode().getCurrentPercent());
 			midiSequenceParser.setSHeader( getLoopSHeader() );
 			midiSequenceParser.setEHeader( getLoopEHeader() );
 			midiSequenceParser.setMetronomeChannelId(getPercussionChannelId());
-			midiSequenceParser.parse(getSequencer().createSequence(this.songManager.getSong().countTracks() + 2));
+			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
 			this.infoTrack = midiSequenceParser.getInfoTrack();
 			this.metronomeTrack = midiSequenceParser.getMetronomeTrack();
 		} catch (MidiPlayerException e) {
@@ -403,7 +405,7 @@ public class MidiPlayer{
 		while( iterator.hasNext() ){
 			int channelId = ((Integer) iterator.next()).intValue();
 			
-			boolean removableChannel = ( this.songManager.getChannel(channelId) == null );
+			boolean removableChannel = ( this.getSongManager().getChannel(getSong(), channelId) == null );
 			if(!removableChannel ){
 				MidiChannel midiChannel = getChannelRouter().getMidiChannel(channelId);
 				if( midiChannel != null ){
@@ -419,7 +421,7 @@ public class MidiPlayer{
 		
 		// Add channels
 		List newChannelIds = getChannelRouter().getMidiChannelIds();
-		Iterator tgChannels = this.songManager.getSong().getChannels();
+		Iterator tgChannels = this.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			if(!newChannelIds.contains(new Integer(tgChannel.getChannelId())) ){
@@ -434,7 +436,7 @@ public class MidiPlayer{
 	}
 	
 	public void updateParameters(){
-		Iterator tgChannels = this.songManager.getSong().getChannels();
+		Iterator tgChannels = this.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			this.updateParameters(tgChannel);
@@ -459,7 +461,7 @@ public class MidiPlayer{
 	
 	private void updateDefaultControllers(){
 		try{
-			Iterator tgChannels = this.songManager.getSong().getChannels();
+			Iterator tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
 				TGChannel tgChannel = (TGChannel) tgChannels.next();
 				getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_MSB,0);
@@ -474,7 +476,7 @@ public class MidiPlayer{
 	}
 	
 	public void updatePrograms() {
-		Iterator it = this.songManager.getSong().getChannels();
+		Iterator it = this.getSong().getChannels();
 		while(it.hasNext()){
 			updateProgram((TGChannel)it.next());
 		}
@@ -498,7 +500,7 @@ public class MidiPlayer{
 	}
 	
 	public void updateControllers() {
-		Iterator channelsIt = this.songManager.getSong().getChannels();
+		Iterator channelsIt = this.getSong().getChannels();
 		while( channelsIt.hasNext() ){
 			this.updateController( (TGChannel)channelsIt.next() );
 		}
@@ -533,7 +535,7 @@ public class MidiPlayer{
 	public void updateTracks() {
 		this.anySolo = false;
 		
-		Iterator tracksIt = this.songManager.getSong().getTracks();
+		Iterator tracksIt = this.getSong().getTracks();
 		while( tracksIt.hasNext() ){
 			TGTrack track = (TGTrack)tracksIt.next();
 			this.updateTrack(track);
@@ -584,7 +586,7 @@ public class MidiPlayer{
 	}
 	
 	public void playBeat(TGTrack track,final List notes) {
-		TGChannel tgChannel = this.songManager.getChannel(track.getChannelId());
+		TGChannel tgChannel = this.getSongManager().getChannel(getSong(), track.getChannelId());
 		if( tgChannel != null ){
 			int channelId = tgChannel.getChannelId();
 			int bank = tgChannel.getBank();
@@ -639,7 +641,11 @@ public class MidiPlayer{
 	}
 	
 	public TGSongManager getSongManager(){
-		return this.songManager;
+		return this.documentManager.getSongManager();
+	}
+	
+	public TGSong getSong(){
+		return this.documentManager.getSong();
 	}
 	
 	public MidiPlayerMode getMode(){
@@ -690,7 +696,7 @@ public class MidiPlayer{
 	}
 	
 	public int getPercussionChannelId(){
-		Iterator tgChannels = this.songManager.getSong().getChannels();
+		Iterator tgChannels = this.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			if( tgChannel.isPercussionChannel() ){

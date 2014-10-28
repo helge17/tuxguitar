@@ -48,11 +48,11 @@ public class TGLayoutVertical extends TGLayout{
 		int height = getFirstTrackSpacing();
 		int lineHeight = 0;
 		
-		int measureCount = getSongManager().getSong().countMeasureHeaders();
+		int measureCount = getSong().countMeasureHeaders();
 		int nextMeasureIndex = 0;
 		while(measureCount > nextMeasureIndex){
 			TempLine line = null;
-			Iterator tracks = getSongManager().getSong().getTracks();
+			Iterator tracks = getSong().getTracks();
 			while(tracks.hasNext()){
 				TGTrackImpl track = (TGTrackImpl) tracks.next();
 				if(number < 0 || track.getNumber() == number){

@@ -70,7 +70,7 @@ public class MidiPlayerCountDown {
 		long start = startPoint;
 		long length = 0;
 		
-		TGSong song = this.player.getSongManager().getSong();
+		TGSong song = this.player.getSong();
 		MidiRepeatController controller = new MidiRepeatController(song, this.player.getLoopSHeader() , this.player.getLoopEHeader() );
 		while(!controller.finished()){
 			TGMeasureHeader header = song.getMeasureHeader(controller.getIndex());
