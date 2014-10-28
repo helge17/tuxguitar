@@ -37,7 +37,7 @@ public class TGLayoutHorizontal extends TGLayout{
 		int posY = fromY + getFirstTrackSpacing();
 		int height = getFirstTrackSpacing();
 		int trackHeight;
-		Iterator tracks = getSongManager().getSong().getTracks();
+		Iterator tracks = getSong().getTracks();
 		while(tracks.hasNext()){
 			TGTrackImpl track = (TGTrackImpl) tracks.next();
 			if(number < 0 || track.getNumber() == number){

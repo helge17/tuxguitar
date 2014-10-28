@@ -58,7 +58,7 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 	}
 	
 	public void calculateMeasureChanges(TGLayout layout) {
-		TGMeasureHeader previous = layout.getSongManager().getPrevMeasureHeader(this);
+		TGMeasureHeader previous = layout.getSongManager().getPrevMeasureHeader(layout.getSong(), this);
 		if(previous == null){
 			this.paintFlags |= PAINT_TEMPO; 
 			this.paintFlags |= ((this.getTripletFeel() != TGMeasureHeader.TRIPLET_FEEL_NONE)?PAINT_TRIPLET_FEEL:0);

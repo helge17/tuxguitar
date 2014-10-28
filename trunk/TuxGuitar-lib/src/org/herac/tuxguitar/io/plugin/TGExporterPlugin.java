@@ -9,12 +9,18 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public abstract class TGExporterPlugin implements TGPlugin{
 	
 	private boolean loaded;
+	private TGContext context;
 	private TGRawExporter exporter;
 	
 	protected abstract TGRawExporter getExporter() throws TGPluginException;
 	
 	public void init(TGContext context) throws TGPluginException {
+		this.context = context;
 		this.exporter = getExporter();
+	}
+	
+	public TGContext getContext() {
+		return this.context;
 	}
 	
 	public void close() throws TGPluginException {

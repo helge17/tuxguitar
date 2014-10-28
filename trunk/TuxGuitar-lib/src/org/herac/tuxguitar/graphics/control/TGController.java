@@ -5,12 +5,15 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public interface TGController {
 	
 	public TGResourceFactory getResourceFactory();
 	
 	public TGSongManager getSongManager();
+	
+	public TGSong getSong();
 	
 	public void configureStyles( TGLayoutStyles styles );
 	

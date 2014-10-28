@@ -9,14 +9,20 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public abstract class TGOutputStreamPlugin implements TGPlugin{
 	
 	private boolean loaded;
+	private TGContext context;
 	private TGOutputStreamBase stream;
 	
 	protected abstract TGOutputStreamBase getOutputStream() throws TGPluginException ;
 	
 	public void init(TGContext context) throws TGPluginException {
+		this.context = context;
 		this.stream = getOutputStream();
 	}
 	
+	public TGContext getContext() {
+		return this.context;
+	}
+
 	public void close() throws TGPluginException {
 		this.removePlugin();
 	}

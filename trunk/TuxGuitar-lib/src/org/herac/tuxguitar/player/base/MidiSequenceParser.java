@@ -73,7 +73,12 @@ public class MidiSequenceParser {
 	/**
 	 * Song Manager
 	 */
-	private TGSongManager manager;
+	private TGSong song;
+	/**
+	 * Song Manager
+	 */
+	private TGSongManager songManager;
+	
 	/**
 	 * flags
 	 */
@@ -99,8 +104,9 @@ public class MidiSequenceParser {
 	
 	private int eHeader;
 	
-	public MidiSequenceParser(TGSongManager manager,int flags) {
-		this.manager = manager;
+	public MidiSequenceParser(TGSong song, TGSongManager songManager, int flags) {
+		this.song = song;
+		this.songManager = songManager;
 		this.flags = flags;
 		this.tempoPercent = 100;
 		this.transpose = 0;
@@ -153,7 +159,7 @@ public class MidiSequenceParser {
 		this.metronomeTrack = (sequence.getTracks() - 1);
 		
 		MidiSequenceHelper helper = new MidiSequenceHelper(sequence);
-		MidiRepeatController controller = new MidiRepeatController(this.manager.getSong(),this.sHeader,this.eHeader);
+		MidiRepeatController controller = new MidiRepeatController(this.song,this.sHeader,this.eHeader);
 		while(!controller.finished()){
 			int index = controller.getIndex();
 			long move = controller.getRepeatMove();
@@ -163,10 +169,10 @@ public class MidiSequenceParser {
 			}
 		}
 		
-		this.addDefaultMessages(helper, this.manager.getSong());
+		this.addDefaultMessages(helper, this.song);
 		
-		for (int i = 0; i < this.manager.getSong().countTracks(); i++) {
-			TGTrack songTrack = this.manager.getSong().getTrack(i);
+		for (int i = 0; i < this.song.countTracks(); i++) {
+			TGTrack songTrack = this.song.getTrack(i);
 			createTrack(helper, songTrack);
 		}
 		sequence.notifyFinish();
@@ -176,7 +182,7 @@ public class MidiSequenceParser {
 	 * Crea las pistas de la cancion
 	 */
 	private void createTrack(MidiSequenceHelper sh, TGTrack track) {
-		TGChannel tgChannel = this.manager.getChannel( track.getChannelId() );
+		TGChannel tgChannel = this.songManager.getChannel(this.song, track.getChannelId() );
 		if( tgChannel != null ){
 			TGMeasure previous = null;
 			
@@ -757,7 +763,7 @@ public class MidiSequenceParser {
 	}
 	
 	private TGDuration newDuration(int value){
-		TGDuration duration = this.manager.getFactory().newDuration();
+		TGDuration duration = this.songManager.getFactory().newDuration();
 		duration.setValue(value);
 		return duration;
 	}

@@ -284,7 +284,7 @@ public class TGTrackManager {
 	}
 	
 	public void changeChannel(TGTrack track, int channelId){
-		TGChannel channel = getSongManager().getChannel(channelId);
+		TGChannel channel = getSongManager().getChannel(track.getSong(), channelId);
 		
 		track.setChannelId( channelId );
 		
@@ -336,6 +336,6 @@ public class TGTrackManager {
 	 * Retorna true si es el ultimo compas
 	 */
 	public boolean isLastMeasure(TGMeasure measure){
-		return (getSongManager().getSong().countMeasureHeaders() == measure.getNumber());
+		return (measure.getTrack().getSong().countMeasureHeaders() == measure.getNumber());
 	}
 }
