@@ -11,6 +11,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 
 /**
@@ -84,6 +85,10 @@ public abstract class TGActionBase implements TGAction {
 	
 	public int getFlags() {
 		return this.flags;
+	}
+	
+	public TGDocumentManager getDocumentManager() {
+		return TuxGuitar.getInstance().getDocumentManager();
 	}
 	
 	public TGSongManager getSongManager() {

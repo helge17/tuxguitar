@@ -77,7 +77,7 @@ public class PrintLayout extends TGLayout{
 		int height = getFirstTrackSpacing();
 		int lineHeight = 0;
 		
-		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(this.styles.getTrackNumber());
+		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(getSong(), this.styles.getTrackNumber());
 		((TGLyricImpl)track.getLyrics()).start(getSkippedBeats(track));
 		
 		TGTrackSpacing ts = new TGTrackSpacing(this) ;
@@ -123,9 +123,9 @@ public class PrintLayout extends TGLayout{
 		if(this.document.isPaintable(this.page) ){
 			int x = this.document.getBounds().getX();
 			int y = this.document.getBounds().getY();
-			String songName = getSongManager().getSong().getName();
-			String songAuthor = getSongManager().getSong().getAuthor();
-			String trackName = "(" + getSongManager().getTrack(this.styles.getTrackNumber()).getName() + ")";
+			String songName = getSong().getName();
+			String songAuthor = getSong().getAuthor();
+			String trackName = "(" + getSongManager().getTrack(getSong(), this.styles.getTrackNumber()).getName() + ")";
 			
 			if(songName == null || songName.length() == 0){
 				songName = TuxGuitar.getProperty("print-header.default-song-name");

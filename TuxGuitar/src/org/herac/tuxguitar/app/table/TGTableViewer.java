@@ -35,6 +35,7 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -164,7 +165,8 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	private String getInstrument(TGTrack track){
-		TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(track.getChannelId());
+		TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+		TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(song, track.getChannelId());
 		if( channel != null ){
 			return ( channel.getName() != null ? channel.getName() : new String() );
 		}
@@ -183,13 +185,14 @@ public class TGTableViewer implements TGEventListener {
 	
 	private void updateTable(){
 		if(this.update){
-			int count = TuxGuitar.getInstance().getSongManager().getSong().countTracks();
+			TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+			int count = song.countTracks();
 			this.table.removeRowsAfter(count);
 			for(int i = this.table.getRowCount(); i < count; i ++){
 				this.table.newRow();
 			}
 			for(int i = 0; i < count; i ++){
-				final TGTrack track = TuxGuitar.getInstance().getSongManager().getSong().getTrack(i);
+				final TGTrack track = song.getTrack(i);
 				final TGTableRow row = this.table.getRow(i);
 				if(row != null){
 					//Number
@@ -319,7 +322,7 @@ public class TGTableViewer implements TGEventListener {
 	public void redraw(){
 		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			this.updateTable();
-			this.table.getColumnCanvas().setTitle(TuxGuitar.getInstance().getSongManager().getSong().getName());
+			this.table.getColumnCanvas().setTitle(TuxGuitar.getInstance().getDocumentManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
 			this.redrawRows(selectedTrack);
 			this.selectedTrack = selectedTrack;

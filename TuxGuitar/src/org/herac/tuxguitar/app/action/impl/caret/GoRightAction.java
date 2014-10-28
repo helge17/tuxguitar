@@ -33,12 +33,12 @@ public class GoRightAction extends TGActionBase{
 		else{
 			Caret caret = getEditor().getTablature().getCaret();
 			if(!caret.moveRight()){
-				int number = (getSongManager().getSong().countMeasureHeaders() + 1);
+				int number = (caret.getSong().countMeasureHeaders() + 1);
 				
 				//comienza el undoable
 				UndoableAddMeasure undoable = UndoableAddMeasure.startUndo(number);
 				
-				getSongManager().addNewMeasure(number);
+				getSongManager().addNewMeasure(caret.getSong(), number);
 				updateMeasure(number);
 				caret.moveRight();
 				

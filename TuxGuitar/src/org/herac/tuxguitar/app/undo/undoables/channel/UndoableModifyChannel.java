@@ -7,6 +7,7 @@ import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableModifyChannel implements UndoableEdit{
 	
@@ -68,12 +69,17 @@ public class UndoableModifyChannel implements UndoableEdit{
 	}
 	
 	private TGChannel getChannel(){
-		return TuxGuitar.getInstance().getSongManager().getChannel(this.channelId);
+		return TuxGuitar.getInstance().getSongManager().getChannel(getSong(), this.channelId);
+	}
+	
+	private TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
 	}
 	
 	private void updateSongChannel(TGChannel channel){
 		TGSongManager tgSongManager = TuxGuitar.getInstance().getSongManager();
 		tgSongManager.updateChannel(
+			getSong(),
 			channel.getChannelId(),  
 			channel.getBank(), 
 			channel.getProgram(), 

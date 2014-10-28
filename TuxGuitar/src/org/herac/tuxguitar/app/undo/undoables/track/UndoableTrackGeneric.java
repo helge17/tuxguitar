@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.undo.CannotRedoException;
 import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class UndoableTrackGeneric implements UndoableEdit{
@@ -59,24 +60,28 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		return this;
 	}
 	
+	public TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
+	}
+	
 	private class UndoTrack{
 		private TGTrack track;
 		
 		public UndoTrack(TGTrack track){
 			if(track != null){
-				this.track = track.clone(TuxGuitar.getInstance().getSongManager().getFactory(),TuxGuitar.getInstance().getSongManager().getSong());
+				this.track = track.clone(TuxGuitar.getInstance().getSongManager().getFactory(), getSong());
 			}
 		}
 		
 		public void undo(){
 			if(this.track != null){
-				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
-					TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd();
+				while( getSong().countMeasureHeaders() < this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd(getSong());
 				}
-				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
-					TuxGuitar.getInstance().getSongManager().removeLastMeasureHeader();
+				while( getSong().countMeasureHeaders() > this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().removeLastMeasureHeader(getSong());
 				}
-				TuxGuitar.getInstance().getSongManager().replaceTrack(this.track);
+				TuxGuitar.getInstance().getSongManager().replaceTrack(getSong(), this.track);
 				TuxGuitar.getInstance().updateSong();
 			}
 		}
@@ -87,19 +92,19 @@ public class UndoableTrackGeneric implements UndoableEdit{
 		
 		public RedoTrack(TGTrack track){
 			if(track != null){
-				this.track = track.clone(TuxGuitar.getInstance().getSongManager().getFactory(),TuxGuitar.getInstance().getSongManager().getSong());
+				this.track = track.clone(TuxGuitar.getInstance().getSongManager().getFactory(), getSong());
 			}
 		}
 		
 		public void redo(){
 			if(this.track != null){
-				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() < this.track.countMeasures() ){
-					TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd();
+				while( getSong().countMeasureHeaders() < this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().addNewMeasureBeforeEnd(getSong());
 				}
-				while( TuxGuitar.getInstance().getSongManager().getSong().countMeasureHeaders() > this.track.countMeasures() ){
-					TuxGuitar.getInstance().getSongManager().removeLastMeasureHeader();
+				while( getSong().countMeasureHeaders() > this.track.countMeasures() ){
+					TuxGuitar.getInstance().getSongManager().removeLastMeasureHeader(getSong());
 				}
-				TuxGuitar.getInstance().getSongManager().replaceTrack(this.track);
+				TuxGuitar.getInstance().getSongManager().replaceTrack(getSong(), this.track);
 				TuxGuitar.getInstance().updateSong();
 			}
 		}

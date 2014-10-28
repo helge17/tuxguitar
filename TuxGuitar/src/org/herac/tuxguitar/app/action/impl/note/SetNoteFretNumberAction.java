@@ -33,7 +33,7 @@ public class SetNoteFretNumberAction extends ChangeNoteAction {
 			if( lastAddedStart == start && lastAddedString == string ){
 				if (lastAddedFret > 0 && lastAddedFret < 10 && time <  ( lastAddedTime + DELAY ) ){
 					int newFret = ( ( lastAddedFret * 10 ) + fret );
-					if( newFret < 30 || getSongManager().isPercussionChannel(caret.getTrack().getChannelId()) ){
+					if( newFret < 30 || getSongManager().isPercussionChannel(caret.getSong(), caret.getTrack().getChannelId()) ){
 						fret = newFret;
 					}
 				}

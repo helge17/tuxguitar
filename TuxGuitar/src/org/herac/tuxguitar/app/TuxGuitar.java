@@ -65,6 +65,7 @@ import org.herac.tuxguitar.app.util.ArgumentParser;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGSplash;
 import org.herac.tuxguitar.app.util.WindowTitleUtil;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -525,7 +526,11 @@ public class TuxGuitar {
 	}
 	
 	public TGSongManager getSongManager(){
-		return getEditorManager().getActiveContext().getSongManager();
+		return getDocumentManager().getSongManager();
+	}
+	
+	public TGDocumentManager getDocumentManager(){
+		return TGDocumentManager.getInstance(this.context);
 	}
 	
 	public TGPluginManager getPluginManager(){
@@ -612,7 +617,7 @@ public class TuxGuitar {
 	
 	public void initMidiPlayer(){
 		MidiPlayer midiPlayer = MidiPlayer.getInstance();
-		midiPlayer.init(getSongManager());
+		midiPlayer.init(getDocumentManager());
 		midiPlayer.addListener( new TGTransportListener() );
 		try {
 			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), false);
@@ -767,7 +772,7 @@ public class TuxGuitar {
 	public void fireNewSong(TGSong song,URL url){
 		this.lock();
 		
-		TuxGuitar.getInstance().getSongManager().setSong(song);
+		getDocumentManager().setSong(song);
 		getFileHistory().reset(url);
 		getPlayer().reset();
 		getPlayer().getMode().clear();

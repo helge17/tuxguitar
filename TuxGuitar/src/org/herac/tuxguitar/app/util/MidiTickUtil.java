@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.app.util;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiRepeatController;
-import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 
 public class MidiTickUtil {
@@ -12,7 +12,7 @@ public class MidiTickUtil {
 		long start = startPoint;
 		long length = 0;
 		
-		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
+		TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
 		MidiRepeatController controller = new MidiRepeatController(manager.getSong(), getSHeader() , getEHeader() );
 		while(!controller.finished()){
 			TGMeasureHeader header = manager.getSong().getMeasureHeader(controller.getIndex());
@@ -36,7 +36,7 @@ public class MidiTickUtil {
 		long tick = startPoint;
 		long length = 0;
 		
-		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
+		TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
 		MidiRepeatController controller = new MidiRepeatController(manager.getSong(), getSHeader() , getEHeader() );
 		while(!controller.finished()){
 			TGMeasureHeader header = manager.getSong().getMeasureHeader(controller.getIndex());

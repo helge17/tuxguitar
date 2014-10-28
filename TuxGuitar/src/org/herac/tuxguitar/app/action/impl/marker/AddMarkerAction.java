@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.marker.MarkerEditor;
 import org.herac.tuxguitar.app.marker.MarkerList;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGMarker;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -34,9 +35,10 @@ public class AddMarkerAction extends TGActionBase{
 	}
 	
 	private TGMarker getMarker(){
+		TGSong song = getEditor().getTablature().getSong();
 		TGMeasureImpl measure = getEditor().getTablature().getCaret().getMeasure();
 		if (measure != null) {
-			TGMarker marker = getSongManager().getMarker(measure.getNumber());
+			TGMarker marker = getSongManager().getMarker(song, measure.getNumber());
 			if(marker == null){
 				marker = getSongManager().getFactory().newMarker();
 				marker.setMeasure(measure.getNumber());

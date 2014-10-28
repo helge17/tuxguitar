@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableChangeTripletFeel implements UndoableEdit{
 	private int doAction;
@@ -30,7 +31,7 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.getInstance().getSongManager().changeTripletFeel(this.position,this.redoableTripletFeel,this.toEnd);
+		TuxGuitar.getInstance().getSongManager().changeTripletFeel(getSong(),this.position,this.redoableTripletFeel,this.toEnd);
 		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
@@ -41,12 +42,12 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.getInstance().getSongManager().changeTripletFeel(this.position,this.undoableTripletFeel,this.toEnd);
+		TuxGuitar.getInstance().getSongManager().changeTripletFeel(getSong(),this.position,this.undoableTripletFeel,this.toEnd);
 		if(this.toEnd){
 			Iterator it = this.nextTripletFeelPositions.iterator();
 			while(it.hasNext()){
 				TripletFeelPosition tfp = (TripletFeelPosition)it.next();
-				TuxGuitar.getInstance().getSongManager().changeTripletFeel(tfp.getPosition(),tfp.getTripletFeel(),true);
+				TuxGuitar.getInstance().getSongManager().changeTripletFeel(getSong(),tfp.getPosition(),tfp.getTripletFeel(),true);
 			}
 		}
 		TuxGuitar.getInstance().updateSong();
@@ -73,7 +74,7 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		undoable.nextTripletFeelPositions = new ArrayList();
 		
 		int prevTripletFeel = undoable.undoableTripletFeel;
-		Iterator it = TuxGuitar.getInstance().getSongManager().getFirstTrack().getMeasures();
+		Iterator it = TuxGuitar.getInstance().getSongManager().getFirstTrack(getSong()).getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl measure = (TGMeasureImpl)it.next();
 			if(measure.getStart() > undoable.position){
@@ -99,6 +100,9 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
+	public static TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
+	}
 	
 	private class TripletFeelPosition{
 		private long position;

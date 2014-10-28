@@ -326,7 +326,7 @@ public class MatrixEditor implements TGEventListener {
 				TGMeasure measure = getMeasure();
 				this.maxNote = 0;
 				this.minNote = 127;
-				if( TuxGuitar.getInstance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId()) ){
+				if( TuxGuitar.getInstance().getSongManager().isPercussionChannel(getCaret().getSong(), measure.getTrack().getChannelId()) ){
 					names = new String[PERCUSSIONS.length];
 					for(int i = 0; i < names.length;i ++){
 						this.minNote = Math.min(this.minNote,PERCUSSIONS[i].getValue());
@@ -641,7 +641,7 @@ public class MatrixEditor implements TGEventListener {
 		new Thread(new Runnable() {
 			public void run() {
 				TGTrack tgTrack = getMeasure().getTrack();
-				TGChannel tgChannel = TuxGuitar.getInstance().getSongManager().getChannel(tgTrack.getChannelId());
+				TGChannel tgChannel = TuxGuitar.getInstance().getSongManager().getChannel(tgTrack.getSong(), tgTrack.getChannelId());
 				if( tgChannel != null ){
 					int volume = TGChannel.DEFAULT_VOLUME;
 					int balance = TGChannel.DEFAULT_BALANCE;
@@ -833,7 +833,7 @@ public class MatrixEditor implements TGEventListener {
 			int track = measure.getTrack().getNumber();
 			int numerator = measure.getTimeSignature().getNumerator();
 			int denominator = measure.getTimeSignature().getDenominator().getValue();
-			boolean percussion = TuxGuitar.getInstance().getSongManager().isPercussionChannel(measure.getTrack().getChannelId());
+			boolean percussion = TuxGuitar.getInstance().getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId());
 			if(width != this.width || height != this.height || this.track != track || this.numerator != numerator || this.denominator != denominator || this.percussion != percussion){
 				disposeBuffer();
 			}

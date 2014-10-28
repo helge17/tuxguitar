@@ -25,6 +25,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -35,6 +36,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class Caret {
+	
 	private Tablature tablature;
 	private TGTrackImpl selectedTrack;
 	private TGMeasureImpl selectedMeasure;
@@ -98,9 +100,9 @@ public class Caret {
 	}
 	
 	private TGTrackImpl findTrack(int number){
-		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(number);
+		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(getSong(), number);
 		if(track == null){
-			track = (TGTrackImpl)getSongManager().getFirstTrack();
+			track = (TGTrackImpl)getSongManager().getFirstTrack(getSong());
 		}
 		return track;
 	}
@@ -355,6 +357,10 @@ public class Caret {
 	
 	public TGSongManager getSongManager(){
 		return this.tablature.getSongManager();
+	}
+	
+	public TGSong getSong(){
+		return this.tablature.getSong();
 	}
 	
 	public int getVoice() {

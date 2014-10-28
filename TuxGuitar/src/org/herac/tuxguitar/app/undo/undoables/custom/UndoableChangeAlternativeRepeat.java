@@ -8,6 +8,7 @@ import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableChangeAlternativeRepeat implements UndoableEdit{
 	private int doAction;
@@ -26,8 +27,8 @@ public class UndoableChangeAlternativeRepeat implements UndoableEdit{
 			throw new CannotRedoException();
 		}
 		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
-		manager.changeAlternativeRepeat(this.position,this.redoRepeatAlternative);
-		TGMeasure measure = manager.getTrackManager().getMeasureAt(manager.getFirstTrack(),this.position);
+		manager.changeAlternativeRepeat(getSong(), this.position,this.redoRepeatAlternative);
+		TGMeasure measure = manager.getTrackManager().getMeasureAt(manager.getFirstTrack(getSong()),this.position);
 		TuxGuitar.getInstance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
 		this.redoCaret.update();
 		
@@ -39,8 +40,8 @@ public class UndoableChangeAlternativeRepeat implements UndoableEdit{
 			throw new CannotUndoException();
 		}
 		TGSongManager manager = TuxGuitar.getInstance().getSongManager();
-		manager.changeAlternativeRepeat(this.position,this.undoRepeatAlternative);
-		TGMeasure measure = manager.getTrackManager().getMeasureAt(manager.getFirstTrack(),this.position);
+		manager.changeAlternativeRepeat(getSong(), this.position,this.undoRepeatAlternative);
+		TGMeasure measure = manager.getTrackManager().getMeasureAt(manager.getFirstTrack(getSong()),this.position);
 		TuxGuitar.getInstance().getTablatureEditor().getTablature().updateMeasure(measure.getNumber());
 		this.undoCaret.update();
 		
@@ -76,4 +77,7 @@ public class UndoableChangeAlternativeRepeat implements UndoableEdit{
 		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
+	public static TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
+	}
 }

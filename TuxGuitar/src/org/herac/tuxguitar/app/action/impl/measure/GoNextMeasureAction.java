@@ -32,12 +32,12 @@ public class GoNextMeasureAction extends TGActionBase{
 		Caret caret = getEditor().getTablature().getCaret();
 		//si es el ultimo compas, agrego uno nuevo
 		if(getSongManager().getTrackManager().isLastMeasure(caret.getMeasure())){
-			int number = (getSongManager().getSong().countMeasureHeaders() + 1);
+			int number = (caret.getSong().countMeasureHeaders() + 1);
 			
 			//comienza el undoable
 			UndoableAddMeasure undoable = UndoableAddMeasure.startUndo(number);
 			
-			this.getSongManager().addNewMeasure(number);
+			this.getSongManager().addNewMeasure(caret.getSong(), number);
 			this.updateMeasure(number);
 			this.moveToNext();
 			

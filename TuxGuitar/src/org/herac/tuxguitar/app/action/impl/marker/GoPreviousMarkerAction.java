@@ -28,6 +28,6 @@ public class GoPreviousMarkerAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
 		
-		new MarkerNavigator().goToSelectedMarker(getSongManager().getPreviousMarker(caret.getMeasure().getNumber()));
+		new MarkerNavigator().goToSelectedMarker(getSongManager().getPreviousMarker(caret.getSong(), caret.getMeasure().getNumber()));
 	}
 }

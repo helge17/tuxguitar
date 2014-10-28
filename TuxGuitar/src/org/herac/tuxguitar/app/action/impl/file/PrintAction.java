@@ -29,6 +29,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -48,7 +49,7 @@ public class PrintAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		try{
-			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell());
+			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell(), getDocumentManager().getSong());
 			if(data != null){
 				PrintDialog dialog = new PrintDialog(TuxGuitar.getInstance().getShell(), SWT.NULL);
 				PrinterData printerData = dialog.open();
@@ -69,15 +70,14 @@ public class PrintAction extends TGActionBase{
 			new Thread(new Runnable() {
 				public void run() {
 					try{
-						final TGSongManager manager = new TGSongManager();
-						manager.setFactory(new TGFactoryImpl());
-						manager.setSong(getSongManager().getSong().clone(manager.getFactory()));
+						final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+						final TGSong song = getDocumentManager().getSong().clone(manager.getFactory());
 						
 						new SyncThread(new Runnable() {
 							public void run() {
 								try{
 									Printer printer = new Printer(printerData);
-									PrintController controller = new PrintController(manager, new TGResourceFactoryImpl(printer));
+									PrintController controller = new PrintController(song, manager, new TGResourceFactoryImpl(printer));
 									PrintLayout layout = new PrintLayout(controller,data);
 									
 									print(printer, printerData, layout , getPrinterArea(printer,0.5), getPrinterScale(printer) );
@@ -205,7 +205,7 @@ public class PrintAction extends TGActionBase{
 		
 		public String getJobName(){
 			String prefix = TuxGuitar.APPLICATION_NAME;
-			String song = this.layout.getSongManager().getSong().getName();
+			String song = this.layout.getSong().getName();
 			return ( song != null && song.length() > 0 ? (prefix + "-" + song) : prefix );
 		}
 		

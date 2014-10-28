@@ -38,7 +38,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 		if(!canRedo()){
 			throw new CannotRedoException();
 		}
-		TuxGuitar.getInstance().getSongManager().setProperties(this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor,this.redoDate,this.redoCopyright,this.redoWriter,this.redoTranscriber,this.redoComments);
+		TuxGuitar.getInstance().getSongManager().setProperties(getSong(), this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor,this.redoDate,this.redoCopyright,this.redoWriter,this.redoTranscriber,this.redoComments);
 		TuxGuitar.getInstance().showTitle();
 		this.redoCaret.update();
 		
@@ -49,7 +49,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 		if(!canUndo()){
 			throw new CannotUndoException();
 		}
-		TuxGuitar.getInstance().getSongManager().setProperties(this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor,this.undoDate,this.undoCopyright,this.undoWriter,this.undoTranscriber,this.undoComments);
+		TuxGuitar.getInstance().getSongManager().setProperties(getSong(), this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor,this.undoDate,this.undoCopyright,this.undoWriter,this.undoTranscriber,this.undoComments);
 		TuxGuitar.getInstance().showTitle();
 		this.undoCaret.update();
 		
@@ -65,7 +65,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 	}
 	
 	public static UndoableChangeInfo startUndo(){
-		TGSong song = TuxGuitar.getInstance().getSongManager().getSong();
+		TGSong song = getSong();
 		UndoableChangeInfo undoable = new UndoableChangeInfo();
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoCaret = new UndoableCaretHelper();
@@ -82,7 +82,7 @@ public class UndoableChangeInfo implements UndoableEdit{
 	}
 	
 	public UndoableChangeInfo endUndo(){
-		TGSong song = TuxGuitar.getInstance().getSongManager().getSong();
+		TGSong song = getSong();
 		this.redoCaret = new UndoableCaretHelper();
 		this.redoName = song.getName();
 		this.redoArtist = song.getArtist();
@@ -94,5 +94,9 @@ public class UndoableChangeInfo implements UndoableEdit{
 		this.redoTranscriber = song.getTranscriber();
 		this.redoComments = song.getComments();
 		return this;
+	}
+	
+	public static TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
 	}
 }

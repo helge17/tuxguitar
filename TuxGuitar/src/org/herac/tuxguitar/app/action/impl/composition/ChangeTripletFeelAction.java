@@ -25,6 +25,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -152,9 +153,10 @@ public class ChangeTripletFeelAction extends TGActionBase{
 		UndoableChangeTripletFeel undoable = UndoableChangeTripletFeel.startUndo();
 		
 		Caret caret = getEditor().getTablature().getCaret();
+		TGSong song = caret.getSong();
 		TGMeasureImpl measure = caret.getMeasure();
 		
-		getSongManager().changeTripletFeel(measure.getStart(),tripletFeel,toEnd);
+		getSongManager().changeTripletFeel(song, measure.getStart(),tripletFeel,toEnd);
 		
 		TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
 		

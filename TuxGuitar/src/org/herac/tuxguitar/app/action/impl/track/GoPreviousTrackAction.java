@@ -9,6 +9,7 @@ package org.herac.tuxguitar.app.action.impl.track;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.editors.tab.Caret;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 /**
@@ -27,7 +28,8 @@ public class GoPreviousTrackAction extends TGActionBase{
 	
 	protected void processAction(TGActionContext context){
 		Caret caret = getEditor().getTablature().getCaret();
-		TGTrack track = getSongManager().getTrack(caret.getTrack().getNumber() - 1);
+		TGSong song = caret.getSong();
+		TGTrack track = getSongManager().getTrack(song, caret.getTrack().getNumber() - 1);
 		if(track != null){
 			caret.update(track.getNumber());
 		}

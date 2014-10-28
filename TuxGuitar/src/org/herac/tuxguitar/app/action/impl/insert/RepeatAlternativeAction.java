@@ -26,6 +26,7 @@ import org.herac.tuxguitar.app.undo.undoables.custom.UndoableChangeCloseRepeat;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -42,13 +43,14 @@ public class RepeatAlternativeAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
+		TGSong song = getEditor().getTablature().getSong();
 		TGMeasure measure = getEditor().getTablature().getCaret().getMeasure();
-		showCloseRepeatDialog(getEditor().getTablature().getShell(), measure);
+		showCloseRepeatDialog(getEditor().getTablature().getShell(), song, measure);
 	}
 	
-	public void showCloseRepeatDialog(Shell shell, final TGMeasure measure) {
+	public void showCloseRepeatDialog(Shell shell, final TGSong song, final TGMeasure measure) {
 		if (measure != null) {
-			int existentEndings = getExistentEndings(measure);
+			int existentEndings = getExistentEndings(song ,measure);
 			int selectedEndings = (measure.getHeader().getRepeatAlternative() > 0)?measure.getHeader().getRepeatAlternative():getDefaultEndings(existentEndings);
 			
 			final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -85,7 +87,7 @@ public class RepeatAlternativeAction extends TGActionBase{
 					for(int i = 0; i < selections.length; i ++){
 						values |=  (  (selections[i].getSelection()) ? (1 << i) : 0  );
 					}
-					update(measure,values);
+					update(song, measure,values);
 					dialog.dispose();
 				}
 			});
@@ -94,7 +96,7 @@ public class RepeatAlternativeAction extends TGActionBase{
 			buttonClean.setLayoutData(getButtonData());
 			buttonClean.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent arg0) {
-					update(measure,0);
+					update(song, measure,0);
 					dialog.dispose();
 				}
 			});
@@ -126,9 +128,9 @@ public class RepeatAlternativeAction extends TGActionBase{
 		return data;
 	}
 	
-	protected int getExistentEndings(TGMeasure measure){
+	protected int getExistentEndings(TGSong song, TGMeasure measure){
 		int existentEndings = 0;
-		Iterator it = getSongManager().getSong().getMeasureHeaders();
+		Iterator it = song.getMeasureHeaders();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
 			if(header.getNumber() == measure.getNumber()){
@@ -151,7 +153,7 @@ public class RepeatAlternativeAction extends TGActionBase{
 		return -1;
 	}
 	
-	protected void update(TGMeasure measure, int value) {
+	protected void update(TGSong song, TGMeasure measure, int value) {
 		//Solo si hubieron cambios
 		if(value != measure.getHeader().getRepeatAlternative()){
 			//Si no estoy editando, y la alternativa no contiene el primer final,
@@ -164,16 +166,16 @@ public class RepeatAlternativeAction extends TGActionBase{
 			
 			//Guardo la repeticion alternativa
 			UndoableChangeAlternativeRepeat u1 = UndoableChangeAlternativeRepeat.startUndo();
-			getSongManager().changeAlternativeRepeat(measure.getStart(), value);
+			getSongManager().changeAlternativeRepeat(song, measure.getStart(), value);
 			updateMeasure(measure.getNumber());
 			undoable.addUndoableEdit(u1.endUndo(value));
 			
 			if(previousRepeatClose){
 				//Agrego un cierre de repeticion al compaz anterior
-				TGMeasureHeader previous = getSongManager().getMeasureHeader( measure.getNumber() - 1);
+				TGMeasureHeader previous = getSongManager().getMeasureHeader(song, measure.getNumber() - 1);
 				if(previous != null && previous.getRepeatClose() == 0){
 					UndoableChangeCloseRepeat u2 = UndoableChangeCloseRepeat.startUndo(previous.getStart(),previous.getRepeatClose());
-					getSongManager().changeCloseRepeat(previous.getStart(), 1);
+					getSongManager().changeCloseRepeat(song, previous.getStart(), 1);
 					updateMeasure(previous.getNumber());
 					undoable.addUndoableEdit(u2.endUndo(1));
 				}

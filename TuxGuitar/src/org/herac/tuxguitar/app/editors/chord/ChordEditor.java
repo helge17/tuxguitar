@@ -29,6 +29,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 /**
@@ -53,7 +54,7 @@ public class ChordEditor extends Composite {
 	private short maxStrings;
 	private int width;
 	private int height;
-	private TGTrack currentTrack = null;
+	private TGTrack currentTrack;
 	
 	public ChordEditor(Composite parent, int style) {
 		super(parent, style);
@@ -486,7 +487,8 @@ public class ChordEditor extends Composite {
 					}
 				}
 				
-				TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(getCurrentTrack().getChannelId());
+				TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+				TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(song, getCurrentTrack().getChannelId());
 				if( channel != null ){
 					TuxGuitar.getInstance().getPlayer().playBeat(
 						channel.getChannelId(),

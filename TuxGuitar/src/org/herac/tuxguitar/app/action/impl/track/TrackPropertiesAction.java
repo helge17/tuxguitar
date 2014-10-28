@@ -45,6 +45,7 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGException;
@@ -96,7 +97,7 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 		if (track != null) {
 			this.stringCount = track.getStrings().size();
 			this.trackColor = track.getColor().clone(getSongManager().getFactory());
-			this.percussionChannel = getSongManager().isPercussionChannel(track.getChannelId());
+			this.percussionChannel = getSongManager().isPercussionChannel(track.getSong(), track.getChannelId());
 			this.initTempStrings(track.getStrings());
 			
 			this.dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -372,7 +373,7 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 	
 	protected void loadChannels(int selectedChannelId){
 		List tgChannelsData = new ArrayList();
-		List tgChannelsAvailable = getSongManager().getChannels();
+		List tgChannelsAvailable = getSongManager().getChannels(getDocumentManager().getSong());
 		
 		Combo tgChannelsCombo = this.instrumentCombo;
 		tgChannelsCombo.removeAll();
@@ -398,7 +399,7 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 	}
 	
 	protected void checkPercussionChannel(){
-		boolean percussionChannel = getSongManager().isPercussionChannel( getSelectedChannelId() );
+		boolean percussionChannel = getSongManager().isPercussionChannel(getDocumentManager().getSong(), getSelectedChannelId() );
 		if( this.percussionChannel != percussionChannel ){
 			this.setDefaultTuning(percussionChannel);
 			this.updateTuningGroup(!percussionChannel);
@@ -419,6 +420,7 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 	
 	protected void updateTrackProperties() {
 		final TGSongManager songManager = getSongManager();
+		final TGSong song = getEditor().getTablature().getSong();
 		final TGTrackImpl track = getEditor().getTablature().getCaret().getTrack();
 		
 		final String trackName = this.nameText.getText();
@@ -429,7 +431,7 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 		}
 		
 		final int channelId = getSelectedChannelId();
-		final int offset = ((songManager.isPercussionChannel(channelId))?0:TGTrack.MIN_OFFSET + this.offsetCombo.getSelectionIndex());
+		final int offset = ((songManager.isPercussionChannel(song, channelId))?0:TGTrack.MIN_OFFSET + this.offsetCombo.getSelectionIndex());
 		
 		
 		final TGColor trackColor = this.trackColor;
@@ -511,8 +513,8 @@ public class TrackPropertiesAction extends TGActionBase implements TGEventListen
 	
 	protected boolean shouldTransposeStrings(TGTrackImpl track, int selectedChannelId){
 		if(this.stringTransposition.getSelection()){
-			boolean percussionChannelNew = getSongManager().isPercussionChannel(selectedChannelId);
-			boolean percussionChannelOld = getSongManager().isPercussionChannel(track.getChannelId());
+			boolean percussionChannelNew = getSongManager().isPercussionChannel(track.getSong(), selectedChannelId);
+			boolean percussionChannelOld = getSongManager().isPercussionChannel(track.getSong(), track.getChannelId());
 			
 			return (!percussionChannelNew && !percussionChannelOld);
 		}

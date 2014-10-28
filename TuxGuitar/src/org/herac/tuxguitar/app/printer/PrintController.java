@@ -10,6 +10,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class PrintController implements TGController {
 	
@@ -25,14 +26,20 @@ public class PrintController implements TGController {
 	private static final int CHORD_STRING_SPACING = 4;
 	private static final int CHORD_FRET_SPACING = 5;
 	
+	private TGSong song;
 	private TGSongManager songManager;
 	private TGResourceFactory resourceFactory;
 	
-	public PrintController(TGSongManager songManager, TGResourceFactory resourceFactory){
+	public PrintController(TGSong song, TGSongManager songManager, TGResourceFactory resourceFactory){
+		this.song = song;
 		this.songManager = songManager;
 		this.resourceFactory = resourceFactory;
 	}
 	
+	public TGSong getSong() {
+		return song;
+	}
+
 	public TGSongManager getSongManager() {
 		return this.songManager;
 	}

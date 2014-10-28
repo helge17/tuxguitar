@@ -424,7 +424,7 @@ public class TransportModeAction extends TGActionBase {
 		}
 		
 		public void updateLoopSHeader( int sHeader ){
-			TGSong song = TuxGuitar.getInstance().getSongManager().getSong();
+			TGSong song = getDocumentManager().getSong();
 			this.loopSHeader.clear();
 			this.loopSHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.from-default"), -1 );
 			for(int i = 0; i < song.countMeasureHeaders() ; i ++){
@@ -435,7 +435,7 @@ public class TransportModeAction extends TGActionBase {
 		}
 		
 		public void updateLoopEHeader( int sHeader , int eHeader ){
-			TGSong song = TuxGuitar.getInstance().getSongManager().getSong();
+			TGSong song = getDocumentManager().getSong();
 			this.loopEHeader.clear();
 			this.loopEHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.to-default"), -1 );
 			for(int i = 0; i < song.countMeasureHeaders() ; i ++){

@@ -45,7 +45,7 @@ public class ExportSongAction extends TGActionBase {
 	}
 	
 	private void processLocalFileExporter( final TGLocalFileExporter exporter ){
-		if(!exporter.configure(false)){
+		if(!exporter.configure(TuxGuitar.getInstance().getDocumentManager().getSong(), false)){
 			TGActionLock.unlock();
 			return;
 		}

@@ -96,7 +96,7 @@ public class AddMeasureAction extends TGActionBase{
 					}else if(afterPosition.getSelection()){
 						number = (getEditor().getTablature().getCaret().getMeasure().getNumber() + 1);
 					}else if(atEnd.getSelection()){
-						number = (getSongManager().getSong().countMeasureHeaders() + 1);
+						number = (getEditor().getTablature().getSong().countMeasureHeaders() + 1);
 					}
 					addMeasure(number, count);
 					dialog.dispose();
@@ -132,7 +132,7 @@ public class AddMeasureAction extends TGActionBase{
 	}
 	
 	private void addMeasure( final int number , final int count ){
-		if(count > 0 && number > 0 && number <=  (getSongManager().getSong().countMeasureHeaders() + 1)){
+		if(count > 0 && number > 0 && number <=  (getEditor().getTablature().getSong().countMeasureHeaders() + 1)){
 			new Thread(new Runnable() {
 				public void run() {
 					new SyncThread(new Runnable() {
@@ -142,7 +142,7 @@ public class AddMeasureAction extends TGActionBase{
 								//comienza el undoable
 								UndoableAddMeasure mUndoable = UndoableAddMeasure.startUndo( ( number + i ) );
 								
-								getSongManager().addNewMeasure( ( number + i ) );
+								getSongManager().addNewMeasure(getEditor().getTablature().getSong(), ( number + i ) );
 								
 								//termia el undoable
 								undoable.addUndoableEdit(mUndoable.endUndo());
@@ -152,7 +152,7 @@ public class AddMeasureAction extends TGActionBase{
 							
 							int trackNumber = getEditor().getTablature().getCaret().getTrack().getNumber();
 							int stringNumber = getEditor().getTablature().getCaret().getStringNumber();
-							long start = getSongManager().getMeasureHeader(number).getStart();
+							long start = getSongManager().getMeasureHeader(getEditor().getTablature().getSong(), number).getStart();
 							getEditor().getTablature().getCaret().update(trackNumber,start,stringNumber);
 							
 							//termia el undoable

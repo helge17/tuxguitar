@@ -173,7 +173,7 @@ public class TransposeAction extends TGActionBase{
 		if( applyToAllMeasures ){
 			
 			if( applyToAllTracks ){
-				TGSong song = getSongManager().getSong();
+				TGSong song = getDocumentManager().getSong();
 				for( int i = 0 ; i < song.countTracks() ; i ++ ){
 					transposeTrack( undoableJoined , song.getTrack( i ) , transposition , tryKeepString , applyToChords);
 				}
@@ -184,7 +184,7 @@ public class TransposeAction extends TGActionBase{
 			updateSong();
 		}else{
 			if( applyToAllTracks ){
-				TGSong song = getSongManager().getSong();
+				TGSong song = getDocumentManager().getSong();
 				for( int i = 0 ; i < song.countTracks() ; i ++ ){
 					TGTrack track = song.getTrack( i );
 					TGMeasure measure = getSongManager().getTrackManager().getMeasure(track, caret.getMeasure().getNumber() );
@@ -206,7 +206,8 @@ public class TransposeAction extends TGActionBase{
 	}
 	
 	public void transposeMeasure( UndoableJoined undoableJoined , TGMeasure measure, int transposition , boolean tryKeepString , boolean applyToChords ) {
-		if( transposition != 0 && !getSongManager().isPercussionChannel(measure.getTrack().getChannelId()) ){
+		TGSong song = getDocumentManager().getSong();
+		if( transposition != 0 && !getSongManager().isPercussionChannel(song, measure.getTrack().getChannelId()) ){
 			//comienza el undoable
 			UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo( measure );
 			
@@ -218,7 +219,8 @@ public class TransposeAction extends TGActionBase{
 	}
 	
 	public void transposeTrack( UndoableJoined undoableJoined , TGTrack track, int transposition , boolean tryKeepString , boolean applyToChords ) {
-		if( transposition != 0 && !getSongManager().isPercussionChannel(track.getChannelId()) ){
+		TGSong song = getDocumentManager().getSong();
+		if( transposition != 0 && !getSongManager().isPercussionChannel(song, track.getChannelId()) ){
 			//comienza el undoable
 			UndoableTrackGeneric undoable = UndoableTrackGeneric.startUndo( track );
 			

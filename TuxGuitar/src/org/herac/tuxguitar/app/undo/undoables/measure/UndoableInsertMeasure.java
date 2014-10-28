@@ -8,6 +8,7 @@ import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.song.helpers.TGSongSegment;
 import org.herac.tuxguitar.song.helpers.TGSongSegmentHelper;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableInsertMeasure implements UndoableEdit{
 	private int doAction;
@@ -33,7 +34,7 @@ public class UndoableInsertMeasure implements UndoableEdit{
 			throw new CannotRedoException();
 		}
 		TGSongSegmentHelper helper = new TGSongSegmentHelper(TuxGuitar.getInstance().getSongManager());
-		helper.insertMeasures(this.tracksMeasures.clone(TuxGuitar.getInstance().getSongManager().getFactory()),this.fromNumber,this.theMove,this.toTrack);
+		helper.insertMeasures(getSong(), this.tracksMeasures.clone(TuxGuitar.getInstance().getSongManager().getFactory()),this.fromNumber,this.theMove,this.toTrack);
 		TuxGuitar.getInstance().updateSong();
 		this.redoCaret.update();
 		
@@ -45,7 +46,7 @@ public class UndoableInsertMeasure implements UndoableEdit{
 			throw new CannotUndoException();
 		}
 		for(int i = 0;i < this.copyCount;i ++){
-			TuxGuitar.getInstance().getSongManager().removeMeasure(this.insertPosition);
+			TuxGuitar.getInstance().getSongManager().removeMeasure(getSong(), this.insertPosition);
 		}
 		TuxGuitar.getInstance().updateSong();
 		this.undoCaret.update();
@@ -74,4 +75,7 @@ public class UndoableInsertMeasure implements UndoableEdit{
 		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
+	public TGSong getSong() {
+		return TuxGuitar.getInstance().getDocumentManager().getSong();
+	}
 }
