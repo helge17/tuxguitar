@@ -55,9 +55,8 @@ public class TGConverter {
 			}
 			
 			if (song != null){
-				manager.setSong(song);
-				manager.autoCompleteSilences();
-				manager.orderBeats();
+				manager.autoCompleteSilences(song);
+				manager.orderBeats(song);
 				
 				new File(new File(convertFileName).getParent()).mkdirs();
 				
@@ -68,9 +67,9 @@ public class TGConverter {
 				}
 				else if( this.format != null && this.format.getExporter() instanceof TGLocalFileExporter ){
 					TGLocalFileExporter exporter = (TGLocalFileExporter) this.format.getExporter();
-					exporter.configure(true);
+					exporter.configure(song, true);
 					exporter.init(manager.getFactory(), new BufferedOutputStream(new FileOutputStream(convertFileName)));
-					exporter.exportSong(manager.getSong());
+					exporter.exportSong(song);
 				}
 				this.getListener().notifyFileResult(convertFileName,FILE_OK);
 			}

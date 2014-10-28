@@ -43,32 +43,32 @@ public class PTSongParser {
 		PTSong song = new PTSong();
 		PTSongSynchronizerUtil.synchronizeTracks(src, song);
 		
-		this.manager.setSong(this.manager.getFactory().newSong());
+		TGSong tgSong = this.manager.getFactory().newSong();
 		
-		this.parseTrack(song.getTrack1());
-		this.parseTrack(song.getTrack2());
-		this.parseProperties(song.getInfo());
+		this.parseTrack(tgSong, song.getTrack1());
+		this.parseTrack(tgSong, song.getTrack2());
+		this.parseProperties(tgSong, song.getInfo());
 		
-		this.manager.orderBeats();
+		this.manager.orderBeats(tgSong);
 		
-		return this.manager.getSong();
+		return tgSong;
 	}
 	
-	private void parseProperties(PTSongInfo info){
+	private void parseProperties(TGSong tgSong, PTSongInfo info){
 		if( info.getName() != null ){
-			this.manager.getSong().setName( info.getName() );
+			tgSong.setName( info.getName() );
 		}
 		if( info.getAlbum() != null ){
-			this.manager.getSong().setAlbum( info.getAlbum() );
+			tgSong.setAlbum( info.getAlbum() );
 		}
 		if( info.getAuthor() != null ){
-			this.manager.getSong().setAuthor( info.getAuthor() );
+			tgSong.setAuthor( info.getAuthor() );
 		}
 		if( info.getCopyright() != null ){
-			this.manager.getSong().setCopyright( info.getCopyright() );
+			tgSong.setCopyright( info.getCopyright() );
 		}
 		if( info.getArrenger() != null ){
-			this.manager.getSong().setWriter( info.getArrenger() );
+			tgSong.setWriter( info.getArrenger() );
 		}
 		if( info.getGuitarTranscriber() != null || info.getBassTranscriber() != null ){
 			String transcriber = new String(); 
@@ -81,7 +81,7 @@ public class PTSongParser {
 				}
 				transcriber += info.getBassTranscriber();
 			}
-			this.manager.getSong().setTranscriber( transcriber );
+			tgSong.setTranscriber( transcriber );
 		}
 		if( info.getGuitarInstructions() != null || info.getBassInstructions() != null ){
 			String comments = new String(); 
@@ -91,11 +91,11 @@ public class PTSongParser {
 			if(info.getBassInstructions() != null ){
 				comments += info.getBassInstructions();
 			}
-			this.manager.getSong().setComments( comments );
+			tgSong.setComments( comments );
 		}
 	}
 	
-	private void parseTrack(PTTrack track){
+	private void parseTrack(TGSong tgSong, PTTrack track){
 		this.helper.reset( track.getDefaultInfo() );
 		
 		long start = TGDuration.QUARTER_TIME;
@@ -110,7 +110,7 @@ public class PTSongParser {
 			//parseo las posiciones
 			for( int pIndex = 0; pIndex < section.getPositions().size(); pIndex ++){
 				PTPosition position = (PTPosition)section.getPositions().get(pIndex);
-				parsePosition(track,position/*,number*/);
+				parsePosition(tgSong, track, position);
 			}
 			
 			//Calculo el start para la proxima seccion
@@ -118,20 +118,20 @@ public class PTSongParser {
 		}
 	}
 	
-	private void parsePosition(PTTrack track,PTPosition position/*,int fromTrack*/){
+	private void parsePosition(TGSong tgSong, PTTrack track,PTPosition position){
 		for(int i = 0; i < position.getComponents().size(); i ++){
 			PTComponent component = (PTComponent)position.getComponents().get(i);
 			if(component instanceof PTBar){
 				parseBar((PTBar)component);
 			}
 			else if(component instanceof PTGuitarIn){
-				parseGuitarIn(track,(PTGuitarIn)component);
+				parseGuitarIn(tgSong, track,(PTGuitarIn)component);
 			}
 			else if(component instanceof PTTempo){
-				parseTempo((PTTempo)component);
+				parseTempo(tgSong, (PTTempo)component);
 			}
 			else if(component instanceof PTBeat){
-				parseBeat((PTBeat)component);
+				parseBeat(tgSong, (PTBeat)component);
 			}
 		}
 	}
@@ -145,7 +145,7 @@ public class PTSongParser {
 		}
 	}
 	
-	private void parseGuitarIn(PTTrack track,PTGuitarIn guitarIn){
+	private void parseGuitarIn(TGSong tgSong, PTTrack track,PTGuitarIn guitarIn){
 		PTTrackInfo info = track.getInfo(guitarIn.getTrackInfo());
 		if(info != null){
 			
@@ -155,10 +155,10 @@ public class PTSongParser {
 			}
 			
 			// If track was already created, but it's not in use
-			Iterator it = this.manager.getSong().getTracks();
+			Iterator it = tgSong.getTracks();
 			while( it.hasNext() ){
 				TGTrack tgTrack = (TGTrack )it.next();
-				if( hasSameInfo( tgTrack , info)){
+				if( hasSameInfo(tgSong, tgTrack , info)){
 					boolean exists = false;
 					for( int i = 0 ; i < this.helper.getInfoHelper().countStaffTracks() ; i ++ ){
 						TGTrack existent = this.helper.getInfoHelper().getStaffTrack(i);
@@ -174,17 +174,17 @@ public class PTSongParser {
 			}
 			
 			// Create track if not exists.
-			this.createTrack(info);
+			this.createTrack(tgSong, info);
 		}
 	}
 	
-	private void parseTempo(PTTempo tempo){
-		TGMeasure measure = getMeasure(1,this.helper.getStartHelper().getMaxStart());
+	private void parseTempo(TGSong tgSong, PTTempo tempo){
+		TGMeasure measure = getMeasure(tgSong, 1,this.helper.getStartHelper().getMaxStart());
 		measure.getTempo().setValue( tempo.getTempo() );
 		measure.getHeader().setTripletFeel(tempo.getTripletFeel());
 	}
 	
-	private void parseBeat(PTBeat beat){
+	private void parseBeat(TGSong tgSong, PTBeat beat){
 		if(beat.isGrace()){
 			//TODO: agrear el efecto a las notas del siguiente beat
 			return;
@@ -202,7 +202,7 @@ public class PTSongParser {
 		
 		long start = this.helper.getStartHelper().getVoiceStart(beat.getStaff(),beat.getVoice());
 		
-		TGMeasure measure = getMeasure( getStaffTrack(beat.getStaff()) , start );
+		TGMeasure measure = getMeasure(tgSong, getStaffTrack(tgSong, beat.getStaff()) , start );
 		TGBeat tgBeat = getBeat(measure, start);
 		TGVoice tgVoice = tgBeat.getVoice(beat.getVoice());
 		tgVoice.setEmpty(false);
@@ -299,44 +299,44 @@ public class PTSongParser {
 		return null;
 	}
 	
-	private TGMeasure getMeasure(int trackNumber,long start){
-		return getMeasure( getTrack(trackNumber) , start);
+	private TGMeasure getMeasure(TGSong tgSong, int trackNumber,long start){
+		return getMeasure(tgSong, getTrack(tgSong, trackNumber) , start);
 	}
 	
-	private TGMeasure getMeasure(TGTrack track,long start){
+	private TGMeasure getMeasure(TGSong tgSong, TGTrack track,long start){
 		TGMeasure measure = null;
 		while( (measure = this.manager.getTrackManager().getMeasureAt(track, start)) == null){
-			this.manager.addNewMeasureBeforeEnd();
+			this.manager.addNewMeasureBeforeEnd(tgSong);
 		}
 		return measure;
 	}
 	
-	private TGTrack getTrack(int number){
+	private TGTrack getTrack(TGSong tgSong, int number){
 		TGTrack track = null;
-		while( (track = this.manager.getTrack(number)) == null){
-			track = createTrack();
+		while( (track = this.manager.getTrack(tgSong, number)) == null){
+			track = createTrack(tgSong);
 		}
 		return track;
 	}
 	
-	public TGTrack getStaffTrack(int staff){
+	public TGTrack getStaffTrack(TGSong tgSong, int staff){
 		TGTrack track = this.helper.getInfoHelper().getStaffTrack( staff );
-		return ( track != null ? track : createTrack() );
+		return ( track != null ? track : createTrack(tgSong) );
 	}
 	
-	private TGTrack createTrack(){
-		return createTrack(this.helper.getInfoHelper().getDefaultInfo());
+	private TGTrack createTrack(TGSong tgSong){
+		return createTrack(tgSong, this.helper.getInfoHelper().getDefaultInfo());
 	}
 	
-	private TGTrack createTrack(PTTrackInfo info){
-		TGTrack track = this.manager.addTrack();
+	private TGTrack createTrack(TGSong tgSong, PTTrackInfo info){
+		TGTrack track = this.manager.addTrack(tgSong);
 		this.helper.getInfoHelper().addStaffTrack( track );
-		this.setTrackInfo(track, info );
+		this.setTrackInfo(tgSong, track, info );
 		return track;
 	}
 	
-	private void setTrackInfo(TGTrack tgTrack , PTTrackInfo info){
-		TGChannel tgChannel = this.manager.addChannel();
+	private void setTrackInfo(TGSong tgSong, TGTrack tgTrack , PTTrackInfo info){
+		TGChannel tgChannel = this.manager.addChannel(tgSong);
 		tgChannel.setProgram((short) info.getInstrument() );
 		tgChannel.setVolume((short) info.getVolume() );
 		tgChannel.setBalance((short) info.getBalance() );
@@ -352,8 +352,8 @@ public class PTSongParser {
 		}
 	}
 	
-	private boolean hasSameInfo(TGTrack track , PTTrackInfo info){
-		TGChannel tgChannel = this.manager.getChannel(track.getChannelId());
+	private boolean hasSameInfo(TGSong tgSong, TGTrack track , PTTrackInfo info){
+		TGChannel tgChannel = this.manager.getChannel(tgSong, track.getChannelId());
 		if( tgChannel == null ){
 			return false;
 		}

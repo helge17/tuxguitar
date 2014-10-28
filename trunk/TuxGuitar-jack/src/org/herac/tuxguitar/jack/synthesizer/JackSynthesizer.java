@@ -152,7 +152,8 @@ public class JackSynthesizer implements MidiSynthesizer{
 		if(!jackChannelProxy.isExclusive() ){
 			return ("GM Port");
 		}
-		TGChannel tgChannel = MidiPlayer.getInstance().getSongManager().getChannel(jackChannelProxy.getJackChannelId());
+		MidiPlayer midiPlayer = MidiPlayer.getInstance();
+		TGChannel tgChannel = midiPlayer.getSongManager().getChannel(midiPlayer.getSong(), jackChannelProxy.getJackChannelId());
 		if( tgChannel != null ){
 			return tgChannel.getName();
 		}

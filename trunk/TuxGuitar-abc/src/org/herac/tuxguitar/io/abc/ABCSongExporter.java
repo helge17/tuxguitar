@@ -20,8 +20,8 @@ public class ABCSongExporter implements TGLocalFileExporter{
 		return new TGFileFormat("Abc","*.abc");
 	}
 	
-	public boolean configure(boolean setDefaults) {
-		this.settings = (setDefaults ? ABCSettings.getDefaults() : new ABCExportSettingsDialog().open());
+	public boolean configure(TGSong song, boolean setDefaults) {
+		this.settings = (setDefaults ? ABCSettings.getDefaults() : new ABCExportSettingsDialog(song).open());
 		return (this.settings != null);
 	}
 	

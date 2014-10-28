@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsHandler;
 import org.herac.tuxguitar.gm.port.GMOutputPort;
 import org.herac.tuxguitar.player.base.MidiDevice;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class GMChannelSettingsHandler implements TGChannelSettingsHandler{
 	
@@ -12,9 +13,9 @@ public class GMChannelSettingsHandler implements TGChannelSettingsHandler{
 		return (midiDevice instanceof GMOutputPort);
 	}
 	
-	public TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel) {
+	public TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel, TGSong song) {
 		if( isMidiDeviceSupported(midiDevice) ){
-			return new GMChannelSettingsDialog(channel);
+			return new GMChannelSettingsDialog(channel, song);
 		}
 		return null;
 	}

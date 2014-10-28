@@ -1,19 +1,20 @@
 package org.herac.tuxguitar.midiinput;
 
-import java.util.Iterator;
-import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.managers.TGTrackManager;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGTrack;
 
 
 class MiStaff
@@ -65,9 +66,10 @@ class MiStaff
 		}
 
 	TGSongManager	tgSongMgr		= TuxGuitar.getInstance().getSongManager();
+	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 	long			startTick		= inStartPosition,
 					stopTick		= inStartPosition + timestampToTicks(inTempo, inStopTime - inStartTime);
-	TGMeasureHeader	mh				= tgSongMgr.getMeasureHeaderAt(startTick);
+	TGMeasureHeader	mh				= tgSongMgr.getMeasureHeaderAt(tgDocMgr.getSong(), startTick);
 	long			firstBarTick	= mh.getStart();
 
 	// insert bars into staff
@@ -181,6 +183,7 @@ class MiStaff
 	void	createMeasures()
 	{
 	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
+	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 	Iterator		it			= f_Events.keySet().iterator();
 
 	while(it.hasNext())
@@ -189,9 +192,9 @@ class MiStaff
 		MiStaffEvent	se	= (MiStaffEvent)f_Events.get(key);
 
 		if(	se.isBar() &&
-			tgSongMgr.getMeasureHeaderAt(key.longValue()) == null)
+			tgSongMgr.getMeasureHeaderAt(tgDocMgr.getSong(), key.longValue()) == null)
 			{
-			tgSongMgr.addNewMeasure(tgSongMgr.getSong().countMeasureHeaders() + 1);
+			tgSongMgr.addNewMeasure(tgDocMgr.getSong(), tgDocMgr.getSong().countMeasureHeaders() + 1);
 			}
 		}
 	}
@@ -261,7 +264,8 @@ class MiStaff
 	private void	generateTrack(String inTrackName)
 	{
 	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
-	TGTrack			tgTrack		= tgSongMgr.addTrack();
+	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
+	TGTrack			tgTrack		= tgSongMgr.addTrack(tgDocMgr.getSong());
 	Iterator		eventsIt;
 
 	if(f_Dump_TrackGeneration)

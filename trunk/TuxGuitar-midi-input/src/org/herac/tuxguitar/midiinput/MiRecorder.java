@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TransportStopAction;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.editors.tab.Caret;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGTempo;
@@ -57,13 +58,14 @@ static	private	MiRecorder	s_Instance;
 	public void		start()
 	{
 	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
+	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 
 	if(s_TESTING)
 		{
 		TGTempo	tempo = tgSongMgr.getFactory().newTempo();
 
 		tempo.setValue(80);
-		tgSongMgr.changeTempos(TGDuration.QUARTER_TIME, tempo, true);
+		tgSongMgr.changeTempos(tgDocMgr.getSong(), TGDuration.QUARTER_TIME, tempo, true);
 		}
 
 	f_SavedMetronomeStatus = TuxGuitar.getInstance().getPlayer().isMetronomeEnabled();
@@ -75,7 +77,7 @@ static	private	MiRecorder	s_Instance;
 	f_Tempo			= caret.getMeasure().getTempo().getValue();
 	f_StartPosition = caret.getMeasure().getStart();
 
-	f_TempTrack = tgSongMgr.addTrack();
+	f_TempTrack = tgSongMgr.addTrack(tgDocMgr.getSong());
 
 	f_TempTrack.setName("Traccia temporanea input MIDI");
 /*
@@ -103,6 +105,7 @@ static	private	MiRecorder	s_Instance;
 
 	public void		stop()
 	{
+	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
 
 	f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
@@ -116,7 +119,7 @@ static	private	MiRecorder	s_Instance;
 	TuxGuitar.getInstance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);
 	
 	// qui deve cancellare la traccia di servizio...
-	tgSongMgr.removeTrack(f_TempTrack);
+	tgSongMgr.removeTrack(tgDocMgr.getSong(), f_TempTrack);
 
 	if(f_Buffer.finalize(
 		(byte)MiConfig.instance().getMinVelocity(),

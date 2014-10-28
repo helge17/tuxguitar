@@ -39,16 +39,14 @@ public class ASCIITabOutputStream {
 	
 	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
-		this.manager.setSong(song);
+		
 		this.out = new ASCIIOutputStream(this.stream);
-		this.drawSong();
+		this.drawSong(song);
 		this.out.flush();
 		this.out.close();
 	}
 	
-	private void drawSong(){
-		TGSong song = this.manager.getSong();
-		
+	private void drawSong(TGSong song){
 		//Propiedades de cancion
 		this.out.drawStringLine("Title: " + song.getName());
 		this.out.drawStringLine("Artist: " + song.getArtist());
@@ -137,36 +135,9 @@ public class ASCIITabOutputStream {
 			this.out.drawStringSegments(getDurationScaping(length) - outLength);
 			
 			beat = nextBeat;
-			
-			//Agrego espacios correspondientes hasta el proximo pulso.
-			//this.out.drawStringSegments(getDurationScaping(beat.getDuration()) - outLength);
-			
-			//beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
 		}
-		
 	}
-	/*
-	private int getDurationScaping(TGDuration duration){
-		int spacing = 1;
-		
-		if(duration.getValue() >= TGDuration.SIXTEENTH){
-			spacing = 2;
-		}
-		else if(duration.getValue() >= TGDuration.EIGHTH){
-			spacing = 3;
-		}
-		else if(duration.getValue() >= TGDuration.QUARTER){
-			spacing = 4;
-		}
-		else if(duration.getValue() >= TGDuration.HALF){
-			spacing = 5;
-		}
-		else if(duration.getValue() >= TGDuration.WHOLE){
-			spacing = 6;
-		}
-		return spacing;
-	}
-	*/
+	
 	private int getDurationScaping(long length){
 		int spacing = 6;
 		if(length <= (TGDuration.QUARTER_TIME / 8)){

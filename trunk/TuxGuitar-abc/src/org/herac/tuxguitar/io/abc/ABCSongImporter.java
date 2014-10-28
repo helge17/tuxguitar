@@ -3,21 +3,22 @@ package org.herac.tuxguitar.io.abc;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.abc.base.ABCChord;
-import org.herac.tuxguitar.io.abc.base.ABCLocation;
 import org.herac.tuxguitar.io.abc.base.ABCEvent;
+import org.herac.tuxguitar.io.abc.base.ABCLocation;
 import org.herac.tuxguitar.io.abc.base.ABCSong;
 import org.herac.tuxguitar.io.abc.base.ABCTimeSignature;
 import org.herac.tuxguitar.io.abc.base.ABCTrack;
+import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
+import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -31,7 +32,6 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
 public class ABCSongImporter implements TGLocalFileImporter{
@@ -87,64 +87,67 @@ public class ABCSongImporter implements TGLocalFileImporter{
 	
 	private TGSong parseSong(ABCSong song){
 		song.sortEvents();
-		this.newTGSong(song);
-		this.addMeasureValues(song);
-		this.addTrackValues(song.getTracks());
-		this.addComponents(song);
 		
-		return new TGSongAdjuster(this.manager).process();
+		TGSong tgSong = newTGSong(song);
+		this.addMeasureValues(tgSong, song);
+		this.addTrackValues(tgSong, song.getTracks());
+		this.addComponents(tgSong, song);
+		
+		return new TGSongAdjuster(this.manager).process(tgSong);
 	}
 	
-	private void newTGSong(ABCSong song) {
+	private TGSong newTGSong(ABCSong song) {
+		TGSong tgSong = this.manager.newSong();
+		
 		int tracks=song.getTracks().length;
 		int measures=song.getMeasures();
 		int tempo=song.getTempo(0);
-		this.manager.setSong(this.manager.newSong());
-		this.manager.getFirstMeasureHeader().getTempo().setValue(tempo);
-		TGSong tgsong = this.manager.getSong();
-		while(tgsong.countTracks() < tracks){
-			this.manager.addTrack();
+		
+		this.manager.getFirstMeasureHeader(tgSong).getTempo().setValue(tempo);
+		
+		while(tgSong.countTracks() < tracks){
+			this.manager.addTrack(tgSong);
 		}
-		while(tgsong.countMeasureHeaders() < measures){
-			this.manager.addNewMeasureBeforeEnd();
+		while(tgSong.countMeasureHeaders() < measures){
+			this.manager.addNewMeasureBeforeEnd(tgSong);
 		}
-		tgsong.setCopyright("GPL");
+		tgSong.setCopyright("GPL");
 		if(song.getInfo()!=null) {
 			String s=song.getInfo().getBook();
-			if(s!=null) tgsong.setAlbum(s);
+			if(s!=null) tgSong.setAlbum(s);
 			s=song.getInfo().getArtist();
-			if(s!=null) tgsong.setArtist(s);
+			if(s!=null) tgSong.setArtist(s);
 			s=song.getInfo().getComponist();
-			if(s!=null) tgsong.setAuthor(s);
+			if(s!=null) tgSong.setAuthor(s);
 			s=song.getInfo().getTitle();
-			if(s!=null) tgsong.setName(s);
+			if(s!=null) tgSong.setName(s);
 			else {
 				s=song.getInfo().getSource();
-				if(s!=null) tgsong.setName(s);
+				if(s!=null) tgSong.setName(s);
 				else {
 					s=song.getInfo().getOrigin();
-					if(s!=null) tgsong.setName(s);
+					if(s!=null) tgSong.setName(s);
 					else {
 						s=song.getInfo().getFilename();
-						if(s!=null) tgsong.setName(s);
+						if(s!=null) tgSong.setName(s);
 					}
 				}
 			}
 			s=song.getInfo().getTranscriptor();
-			if(s!=null) tgsong.setTranscriber(s);
+			if(s!=null) tgSong.setTranscriber(s);
 			else {
 				s=song.getInfo().getDiscography();
-				if(s!=null) tgsong.setTranscriber(s);
+				if(s!=null) tgSong.setTranscriber(s);
 			}
 			if(song.getInfo().getComments()!=null || song.getInfo().getNotes()!=null) {
 				s="";
 				if(song.getInfo().getComments()!=null) s+=song.getInfo().getComments();
 				if(song.getInfo().getNotes()!=null) s+=song.getInfo().getNotes();
-				tgsong.setComments(s);
+				tgSong.setComments(s);
 			}
 		}
 		for(int t=0;t<tracks;t++) {
-			TGTrack trk = this.manager.getTrack(t+1);
+			TGTrack trk = this.manager.getTrack(tgSong, t+1);
 			int clef=song.getTracks()[t].getClefType();
 			int key=song.getKeySignature();
 			for(int m=0;m<measures;m++) {
@@ -152,32 +155,33 @@ public class ABCSongImporter implements TGLocalFileImporter{
 				trk.getMeasure(m).setKeySignature(key);
 			}
 		}
+		return tgSong;
 	}
 	
-	private void addMeasureValues(ABCSong song){
-		for(int i = 0; i < this.manager.getSong().countMeasureHeaders(); i ++){
+	private void addMeasureValues(TGSong tgSong, ABCSong song){
+		for(int i = 0; i < tgSong.countMeasureHeaders(); i ++){
 			TGTimeSignature timeSignature = this.manager.getFactory().newTimeSignature();
 			TGTempo tempo=manager.getFactory().newTempo();
-			TGMeasureHeader header = this.manager.getSong().getMeasureHeader(i);
+			TGMeasureHeader header = tgSong.getMeasureHeader(i);
 			ABCTimeSignature ts = song.getTimeSignature(i);
 			int t = song.getTempo(i);
 			timeSignature.setNumerator( ts.getNumerator() );
 			timeSignature.getDenominator().setValue( ts.getDenominator() );
 			tempo.setValue(t);
-			this.manager.changeTimeSignature(header, timeSignature,ts.isToEnd());
-			this.manager.changeTempos(header, tempo, true);
+			this.manager.changeTimeSignature(tgSong, header, timeSignature,ts.isToEnd());
+			this.manager.changeTempos(tgSong, header, tempo, true);
 		}
 		if(song.isHornpipe()) {
-			TGMeasureHeader header = this.manager.getSong().getMeasureHeader(0);
-			this.manager.changeTripletFeel(header, TGMeasureHeader.TRIPLET_FEEL_EIGHTH, true);
+			TGMeasureHeader header = tgSong.getMeasureHeader(0);
+			this.manager.changeTripletFeel(tgSong, header, TGMeasureHeader.TRIPLET_FEEL_EIGHTH, true);
 		}
 	}
 	
-	private void addTrackValues(ABCTrack[] tracks){
+	private void addTrackValues(TGSong tgSong, ABCTrack[] tracks){
 		for(int i = 0; i < tracks.length; i ++){
-			TGTrack track = this.manager.getSong().getTrack(i);
+			TGTrack track = tgSong.getTrack(i);
 			
-			TGChannel tgChannel = this.manager.addChannel();
+			TGChannel tgChannel = this.manager.addChannel(tgSong);
 			tgChannel.setVolume((short) 127);
 			tgChannel.setBalance((short)(( tracks[i].getPan() * 127) / 15));
 			tgChannel.setProgram((short)tracks[i].getInstrument());
@@ -202,20 +206,20 @@ public class ABCSongImporter implements TGLocalFileImporter{
 		}
 	}
 	
-	private void addComponents(ABCSong song){
+	private void addComponents(TGSong tgSong, ABCSong song){
 		ABCTrack[] tracks = song.getTracks();
 		Iterator it = song.getEvents().iterator();
 		while(it.hasNext()){
 			ABCLocation component = (ABCLocation)it.next();
 			
-			if(component.getMeasure() >= 0 && component.getMeasure() < this.manager.getSong().countMeasureHeaders()){
+			if(component.getMeasure() >= 0 && component.getMeasure() < tgSong.countMeasureHeaders()){
 				for(int i = 0; i < tracks.length; i ++){
 					if( component.getTrack()==i ) {
 						int strings = tracks[i].getStrings().length;
 						int string = component.getEvent().getString();
-						TGTrack tgTrack = this.manager.getSong().getTrack(i);
+						TGTrack tgTrack = tgSong.getTrack(i);
 						TGMeasure tgMeasure = tgTrack.getMeasure(component.getMeasure());
-						TGMeasureHeader header = this.manager.getSong().getMeasureHeader(component.getMeasure());
+						TGMeasureHeader header = tgSong.getMeasureHeader(component.getMeasure());
 						switch(component.getEvent().getType()) {
 						case ABCEvent.NOTE:
 							if( string >= 0 && string <  strings && string < 7)
@@ -235,7 +239,7 @@ public class ABCSongImporter implements TGLocalFileImporter{
 							break;
 						case ABCEvent.REPEAT_END_AND_START:
 							header.setRepeatClose(1);
-							header = this.manager.getSong().getMeasureHeader(component.getMeasure()+1);
+							header = tgSong.getMeasureHeader(component.getMeasure()+1);
 							header.setRepeatOpen(true);
 							break;
 						case ABCEvent.VARIANT:
@@ -509,8 +513,8 @@ class TGSongAdjuster{
 		this.manager = manager;
 	}
 	
-	public TGSong process(){
-		Iterator tracks = this.manager.getSong().getTracks();
+	public TGSong process(TGSong song){
+		Iterator tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
 			Iterator measures = track.getMeasures();
@@ -519,7 +523,7 @@ class TGSongAdjuster{
 				this.process(measure);
 			}
 		}
-		return this.manager.getSong();
+		return song;
 	}
 	
 	public void process(TGMeasure measure){

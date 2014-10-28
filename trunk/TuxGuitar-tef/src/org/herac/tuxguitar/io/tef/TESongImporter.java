@@ -76,43 +76,44 @@ public class TESongImporter implements TGLocalFileImporter{
 	}
 	
 	private TGSong parseSong(TESong song){
+		TGSong tgSong = this.manager.newSong();
+		
 		this.sortComponents(song);
-		this.newTGSong(song.getTracks().length,song.getMeasures(),song.getTempo().getValue());
-		this.addMeasureValues(song);
-		this.addTrackValues(song.getTracks());
-		this.addComponents(song);
+		this.addTracksAndHeaders(tgSong, song.getTracks().length,song.getMeasures(),song.getTempo().getValue());
+		this.addMeasureValues(tgSong, song);
+		this.addTrackValues(tgSong, song.getTracks());
+		this.addComponents(tgSong, song);
 		
-		return new TGSongAdjuster(this.manager).process();
+		return new TGSongAdjuster(this.manager, tgSong).process();
 	}
 	
-	private void newTGSong(int tracks,int measures,int tempo){
-		this.manager.setSong(this.manager.newSong());
-		this.manager.getFirstMeasureHeader().getTempo().setValue(tempo);
+	private void addTracksAndHeaders(TGSong song, int tracks,int measures,int tempo){
+		this.manager.getFirstMeasureHeader(song).getTempo().setValue(tempo);
 		
-		while(this.manager.getSong().countTracks() < tracks){
-			this.manager.addTrack();
+		while(song.countTracks() < tracks){
+			this.manager.addTrack(song);
 		}
-		while(this.manager.getSong().countMeasureHeaders() < measures){
-			this.manager.addNewMeasureBeforeEnd();
+		while(song.countMeasureHeaders() < measures){
+			this.manager.addNewMeasureBeforeEnd(song);
 		}
 	}
 	
-	private void addMeasureValues(TESong song){
+	private void addMeasureValues(TGSong tgSong, TESong song){
 		TGTimeSignature timeSignature = this.manager.getFactory().newTimeSignature();
-		for(int i = 0; i < this.manager.getSong().countMeasureHeaders(); i ++){
-			TGMeasureHeader header = this.manager.getSong().getMeasureHeader(i);
+		for(int i = 0; i < tgSong.countMeasureHeaders(); i ++){
+			TGMeasureHeader header = tgSong.getMeasureHeader(i);
 			TETimeSignature ts = song.getTimeSignature(i);
 			timeSignature.setNumerator( ts.getNumerator() );
 			timeSignature.getDenominator().setValue( ts.getDenominator() );
-			this.manager.changeTimeSignature(header, timeSignature,false);
+			this.manager.changeTimeSignature(tgSong, header, timeSignature,false);
 		}
 	}
 	
-	private void addTrackValues(TETrack[] tracks){
+	private void addTrackValues(TGSong tgSong, TETrack[] tracks){
 		for(int i = 0; i < tracks.length; i ++){
-			TGTrack track = this.manager.getSong().getTrack(i);
+			TGTrack track = tgSong.getTrack(i);
 			
-			TGChannel tgChannel = this.manager.addChannel();
+			TGChannel tgChannel = this.manager.addChannel(tgSong);
 			tgChannel.setVolume((short)((  (15 - tracks[i].getVolume()) * 127) / 15));
 			tgChannel.setBalance((short)(( tracks[i].getPan() * 127) / 15));
 			tgChannel.setProgram((short)tracks[i].getInstrument());
@@ -135,19 +136,19 @@ public class TESongImporter implements TGLocalFileImporter{
 		}
 	}
 	
-	private void addComponents(TESong song){
+	private void addComponents(TGSong tgSong, TESong song){
 		Iterator it = song.getComponents().iterator();
 		while(it.hasNext()){
 			TEComponent component = (TEComponent)it.next();
 			
-			if(component.getMeasure() >= 0 && component.getMeasure() < this.manager.getSong().countMeasureHeaders()){
+			if(component.getMeasure() >= 0 && component.getMeasure() < tgSong.countMeasureHeaders()){
 				int offset = 0;
 				TETrack[] tracks = song.getTracks();
 				for(int i = 0; i < tracks.length; i ++){
 					int strings = tracks[i].getStrings().length;
 					int string = (component.getString() - offset);
 					if( string >= 0 && string <  strings && string < 7){
-						TGTrack tgTrack = this.manager.getSong().getTrack(i);
+						TGTrack tgTrack = tgSong.getTrack(i);
 						TGMeasure tgMeasure = tgTrack.getMeasure(component.getMeasure());
 						if(component instanceof TEComponentNote){
 							addNote(tracks[i], (TEComponentNote)component,string,strings,tgMeasure);
@@ -273,14 +274,16 @@ public class TESongImporter implements TGLocalFileImporter{
 
 class TGSongAdjuster{
 	
+	protected TGSong song;
 	protected TGSongManager manager;
 	
-	public TGSongAdjuster(TGSongManager manager){
+	public TGSongAdjuster(TGSongManager manager, TGSong song){
 		this.manager = manager;
+		this.song = song;
 	}
 	
 	public TGSong process(){
-		Iterator tracks = this.manager.getSong().getTracks();
+		Iterator tracks = this.song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
 			Iterator measures = track.getMeasures();
@@ -289,7 +292,7 @@ class TGSongAdjuster{
 				this.process(measure);
 			}
 		}
-		return this.manager.getSong();
+		return this.song;
 	}
 	
 	public void process(TGMeasure measure){

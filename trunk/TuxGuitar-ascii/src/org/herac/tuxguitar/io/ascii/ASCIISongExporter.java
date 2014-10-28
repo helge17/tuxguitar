@@ -19,7 +19,7 @@ public class ASCIISongExporter implements TGLocalFileExporter{
 		return new TGFileFormat("ASCII","*.tab");
 	}
 	
-	public boolean configure(boolean setDefaults) {
+	public boolean configure(TGSong song, boolean setDefaults) {
 		return true;
 	}
 	

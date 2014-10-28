@@ -84,24 +84,25 @@ public class MidiSongImporter implements TGLocalFileImporter{
 					parseMessage(trackNumber,event.getTick(),event.getMessage());
 				}
 			}
+			
 			TGSongManager tgSongManager = new TGSongManager(this.factory);
-			tgSongManager.setSong(this.factory.newSong());
+			TGSong tgSong = this.factory.newSong();
 			
 			this.checkAll(tgSongManager);
 			
 			Iterator channels = this.channels.iterator();
 			while(channels.hasNext()){
-				tgSongManager.getSong().addChannel((TGChannel)channels.next());
+				tgSong.addChannel((TGChannel)channels.next());
 			}
 			Iterator headers = this.headers.iterator();
 			while(headers.hasNext()){
-				tgSongManager.getSong().addMeasureHeader((TGMeasureHeader)headers.next());
+				tgSong.addMeasureHeader((TGMeasureHeader)headers.next());
 			}
 			Iterator tracks = this.tracks.iterator();
 			while(tracks.hasNext()){
-				tgSongManager.getSong().addTrack((TGTrack)tracks.next());
+				tgSong.addTrack((TGTrack)tracks.next());
 			}
-			return new SongAdjuster(this.factory, tgSongManager.getSong()).adjustSong();
+			return new SongAdjuster(this.factory, tgSong).adjustSong();
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}

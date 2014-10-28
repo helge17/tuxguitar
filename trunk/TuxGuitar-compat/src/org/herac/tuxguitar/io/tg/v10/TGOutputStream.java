@@ -68,7 +68,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		return new TGFileFormat("TuxGuitar","*.tg");
 	}
 	
-	public boolean configure(boolean setDefaults){
+	public boolean configure(TGSong song, boolean setDefaults){
 		return true;
 	}
 	
@@ -673,9 +673,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
 	private TGChannel getChannel( TGSong song, TGTrack track ){
 		TGSongManager tgSongManager = new TGSongManager(this.factory);
-		tgSongManager.setSong( song );
-		
-		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
+		TGChannel tgChannel = tgSongManager.getChannel(song, track.getChannelId() );
 		if( tgChannel == null ){
 			tgChannel = this.factory.newChannel();
 		}

@@ -20,7 +20,7 @@ public class MusicXMLSongExporter implements TGLocalFileExporter{
 		return new TGFileFormat("MusicXML","*.xml");
 	}
 	
-	public boolean configure(boolean setDefaults) {
+	public boolean configure(TGSong song, boolean setDefaults) {
 		return true;
 	}
 	

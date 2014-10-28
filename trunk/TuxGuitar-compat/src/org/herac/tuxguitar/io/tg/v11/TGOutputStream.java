@@ -23,6 +23,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGLyric;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -37,7 +38,6 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -69,7 +69,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		return new TGFileFormat("TuxGuitar","*.tg");
 	}
 	
-	public boolean configure(boolean setDefaults){
+	public boolean configure(TGSong song, boolean setDefaults){
 		return true;
 	}
 	
@@ -715,9 +715,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	
 	private TGChannel getChannel( TGSong song, TGTrack track ){
 		TGSongManager tgSongManager = new TGSongManager(this.factory);
-		tgSongManager.setSong( song );
-		
-		TGChannel tgChannel = tgSongManager.getChannel( track.getChannelId() );
+		TGChannel tgChannel = tgSongManager.getChannel(song, track.getChannelId() );
 		if( tgChannel == null ){
 			tgChannel = this.factory.newChannel();
 		}

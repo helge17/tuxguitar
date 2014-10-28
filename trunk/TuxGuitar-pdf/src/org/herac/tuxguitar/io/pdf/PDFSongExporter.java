@@ -52,8 +52,8 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		return styles;
 	}
 	
-	public boolean configure(boolean setDefaults) {
-		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.getInstance().getShell()) : null );
+	public boolean configure(TGSong song, boolean setDefaults) {
+		this.styles = (!setDefaults ? PrintStylesDialog.open(TuxGuitar.getInstance().getShell(), song) : null );
 		return ( this.styles != null || setDefaults );
 	}
 	
@@ -75,11 +75,10 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					TGSongManager manager = new TGSongManager();
-					manager.setFactory(new TGFactoryImpl());
-					manager.setSong(song.clone(manager.getFactory()));
+					TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+					TGSong clonedSong = song.clone(manager.getFactory());
 					
-					export(stream,manager,data);
+					export(stream, clonedSong, manager, data);
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
@@ -87,13 +86,13 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		}).start();
 	}
 	
-	public void export(final OutputStream stream,final TGSongManager manager, final PrintStyles data){
+	public void export(final OutputStream stream, final TGSong song, final TGSongManager manager, final PrintStyles data){
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
 					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
 					
-					PrintController controller = new PrintController(manager, factory);
+					PrintController controller = new PrintController(song, manager, factory);
 					PrintLayout layout = new PrintLayout(controller,data);
 					
 					export(stream, layout);
