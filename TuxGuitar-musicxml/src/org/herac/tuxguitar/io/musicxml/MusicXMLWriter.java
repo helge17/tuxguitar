@@ -72,12 +72,11 @@ public class MusicXMLWriter {
 	public void writeSong(TGSong song) throws TGFileFormatException{
 		try {
 			this.manager = new TGSongManager();
-			this.manager.setSong(song);
 			this.document = newDocument();
 			
 			Node node = this.addNode(this.document,"score-partwise");
-			this.writeHeaders(node);
-			this.writeSong(node);
+			this.writeHeaders(song, node);
+			this.writeSong(song, node);
 			this.saveDocument();
 			
 			this.stream.flush();
@@ -87,37 +86,37 @@ public class MusicXMLWriter {
 		}
 	}
 	
-	private void writeHeaders(Node parent){
-		this.writeWork(parent);
-		this.writeIdentification(parent);
+	private void writeHeaders(TGSong song, Node parent){
+		this.writeWork(song, parent);
+		this.writeIdentification(song, parent);
 	}
 	
-	private void writeWork(Node parent){
-		this.addNode(this.addNode(parent,"work"),"work-title",this.manager.getSong().getName());
+	private void writeWork(TGSong song, Node parent){
+		this.addNode(this.addNode(parent,"work"),"work-title", song.getName());
 	}
 	
-	private void writeIdentification(Node parent){
+	private void writeIdentification(TGSong song, Node parent){
 		Node identification = this.addNode(parent,"identification");
 		this.addNode(this.addNode(identification,"encoding"), "software", "TuxGuitar");
-		this.addAttribute(this.addNode(identification,"creator",this.manager.getSong().getAuthor()),"type","composer");
+		this.addAttribute(this.addNode(identification,"creator",song.getAuthor()),"type","composer");
 	}
 	
-	private void writeSong(Node parent){
-		this.writePartList(parent);
-		this.writeParts(parent);
+	private void writeSong(TGSong song, Node parent){
+		this.writePartList(song, parent);
+		this.writeParts(song, parent);
 	}
 	
-	private void writePartList(Node parent){
+	private void writePartList(TGSong song, Node parent){
 		Node partList = this.addNode(parent,"part-list");
 		
 		GMChannelRouter gmChannelRouter = new GMChannelRouter();
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
-		gmChannelRouterConfigurator.configureRouter(this.manager.getSong().getChannels());
+		gmChannelRouterConfigurator.configureRouter(song.getChannels());
 		
-		Iterator tracks = this.manager.getSong().getTracks();
+		Iterator tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
-			TGChannel channel = this.manager.getChannel(track.getChannelId());
+			TGChannel channel = this.manager.getChannel(song, track.getChannelId());
 			
 			Node scoreParts = this.addNode(partList,"score-part");
 			this.addAttribute(scoreParts, "id", "P" + track.getNumber());
@@ -137,8 +136,8 @@ public class MusicXMLWriter {
 		}
 	}
 	
-	private void writeParts(Node parent){
-		Iterator tracks = this.manager.getSong().getTracks();
+	private void writeParts(TGSong song, Node parent){
+		Iterator tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
 			Node part = this.addAttribute(this.addNode(parent,"part"), "id", "P" + track.getNumber());

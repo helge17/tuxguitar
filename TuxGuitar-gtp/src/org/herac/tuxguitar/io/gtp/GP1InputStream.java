@@ -132,9 +132,8 @@ public class GP1InputStream extends GTPInputStream {
 				previous = header;
 			}
 			
-			TGSongManager manager = new TGSongManager(getFactory());
-			manager.setSong(song);
-			manager.autoCompleteSilences();
+			TGSongManager tgSongManager = new TGSongManager(getFactory());
+			tgSongManager.autoCompleteSilences(song);
 			
 			this.close();
 			

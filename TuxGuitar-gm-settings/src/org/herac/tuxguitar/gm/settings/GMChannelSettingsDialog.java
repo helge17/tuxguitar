@@ -20,15 +20,18 @@ import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	
+	private TGSong song;
 	private TGChannel channel;
 	private GMChannelRouter router;
 	private Combo gmChannel1Combo;
 	private Combo gmChannel2Combo;
 	
-	public GMChannelSettingsDialog(TGChannel channel){
+	public GMChannelSettingsDialog(TGChannel channel, TGSong song){
+		this.song = song;
 		this.channel = channel;
 		this.router = new GMChannelRouter();
 	}
@@ -85,7 +88,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	
 	private void configureRouter(){
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.router);
-		gmChannelRouterConfigurator.configureRouter(TuxGuitar.getInstance().getSongManager().getSong().getChannels());
+		gmChannelRouterConfigurator.configureRouter(this.song.getChannels());
 	}
 	
 	private void updateChannelCombos(){

@@ -85,11 +85,10 @@ public class ImageExporter implements TGRawExporter{
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					TGSongManager manager = new TGSongManager();
-					manager.setFactory(new TGFactoryImpl());
-					manager.setSong(song.clone(manager.getFactory()));
+					TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+					TGSong clonedSong = song.clone(manager.getFactory());
 					
-					export(manager);
+					export(clonedSong, manager);
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}
@@ -97,13 +96,13 @@ public class ImageExporter implements TGRawExporter{
 		}).start();
 	}
 	
-	public void export(final TGSongManager manager){
+	public void export(final TGSong song, final TGSongManager manager){
 		new SyncThread(new Runnable() {
 			public void run() {
 				try{
 					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
 					
-					PrintController controller = new PrintController(manager, factory);
+					PrintController controller = new PrintController(song, manager, factory);
 					PrintLayout layout = new PrintLayout(controller, getStyles());
 					
 					export(layout);

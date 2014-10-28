@@ -66,7 +66,6 @@ public class ABCOutputStream {
 	
 	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
-		this.manager.setSong(song);
 		this.channelAux = null;
 		
 		this.addVersion();
@@ -113,7 +112,7 @@ public class ABCOutputStream {
 				if(this.settings.getTrack() == ABCSettings.ALL_TRACKS || this.settings.getTrack() == tnum) {
 					String id = track.getName();
 					
-					if((tnum==this.diagramt+1 || id.indexOf('\t')<0) && !isPercussionTrack(track)) {
+					if((tnum==this.diagramt+1 || id.indexOf('\t')<0) && !isPercussionTrack(song, track)) {
 						for(int j=0;j<song.countTracks();j++) {
 							TGTrack buddy=song.getTrack(j);
 							if(this.chordt==j+1 || buddy.getName().matches(id+"\tchords")) {
@@ -175,14 +174,14 @@ public class ABCOutputStream {
 		for(int i = 0; i < song.countTracks(); i ++) {
 			TGTrack track = song.getTrack(i);
 			String id = handleId(track.getName());
-			if(id.indexOf('\t')<0 && !isPercussionTrack(track) && i!=this.chordt-1 && i!=this.baset-1 && i!=this.dronet-1)
+			if(id.indexOf('\t')<0 && !isPercussionTrack(song, track) && i!=this.chordt-1 && i!=this.baset-1 && i!=this.dronet-1)
 				++trackCount;
 		}
 		if(trackCount > 1 && this.settings.getTrack() == ABCSettings.ALL_TRACKS) {
 			for(int i = 0; i < song.countTracks(); i ++) {
 				TGTrack track = song.getTrack(i);
 				String id = handleId(track.getName());
-				if(id.indexOf('\t')<0 && !isPercussionTrack(track) && i!=this.chordt-1 && i!=this.baset-1 && i!=this.dronet-1)
+				if(id.indexOf('\t')<0 && !isPercussionTrack(song, track) && i!=this.chordt-1 && i!=this.baset-1 && i!=this.dronet-1)
 					this.writer.println("V:"+id.replaceAll("\\s+","_")+" clef="+clefname(track.getMeasure(0).getClef()));
 			}
 			if(this.settings.isTrackGroupEnabled()) {
@@ -194,7 +193,7 @@ public class ABCOutputStream {
 					TGTrack track = song.getTrack(i);
 					String id = handleId(track.getName());
 					int clef=track.getMeasure(0).getClef();
-					if(id.indexOf('\t')<0 && !isPercussionTrack(track) && i!=this.chordt-1 && i!=this.baset-1 && i!=this.dronet-1) {
+					if(id.indexOf('\t')<0 && !isPercussionTrack(song, track) && i!=this.chordt-1 && i!=this.baset-1 && i!=this.dronet-1) {
 						++v;
 						if(v==1 && clef==TGMeasure.CLEF_TREBLE) staves+="1 ";
 						else if(clef==TGMeasure.CLEF_TREBLE) stave2+=v+" ";
@@ -228,11 +227,11 @@ public class ABCOutputStream {
 				}
 			}
 			if(this.settings.getTrack() == ABCSettings.ALL_TRACKS || this.settings.getTrack() == tnum){
-				TGChannel channel = getChannel(track);
+				TGChannel channel = getChannel(song, track);
 				int instrument=channel.getProgram()+this.instrumentoffset;
 				String instrName=MidiInstrument.INSTRUMENT_LIST[instrument-this.instrumentoffset].getName();
 				int pan=channel.getBalance();
-				if(isPercussionTrack(track)) {
+				if(isPercussionTrack(song, track)) {
 					TGBeat beat=getFirstBeat(track);
 					if(beat==null) {
 						this.writer.println("%%MIDI drumoff");
@@ -577,7 +576,7 @@ public class ABCOutputStream {
 				int tnum=track.getNumber();
 				if(this.settings.getTrack() == ABCSettings.ALL_TRACKS || this.settings.getTrack() == tnum) {
 					this.vId = track.getName().replaceAll("\\s+", "_");
-					if(!isPercussionTrack(track)) {
+					if(!isPercussionTrack(song, track)) {
 						this.line="[V:"+this.vId+"] ";
 						this.wline="w:";
 						for(int b=0;b<this.barsperstaff && m+b<this.to; b++) {
@@ -1171,8 +1170,8 @@ public class ABCOutputStream {
 		return (int)time;
 	}
 	
-	protected TGChannel getChannel( TGTrack track ){
-		TGChannel tgChannel = this.manager.getChannel( track.getChannelId() );
+	protected TGChannel getChannel(TGSong song, TGTrack track ){
+		TGChannel tgChannel = this.manager.getChannel(song, track.getChannelId() );
 		if( tgChannel != null ){
 			return tgChannel;
 		}
@@ -1182,8 +1181,8 @@ public class ABCOutputStream {
 		return this.channelAux;
 	}
 	
-	private boolean isPercussionTrack(TGTrack track){
-		return this.manager.isPercussionChannel(track.getChannelId());
+	private boolean isPercussionTrack(TGSong song, TGTrack track){
+		return this.manager.isPercussionChannel(song, track.getChannelId());
 	
 	}
 }

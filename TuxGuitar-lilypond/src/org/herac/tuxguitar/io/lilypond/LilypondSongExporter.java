@@ -20,8 +20,8 @@ public class LilypondSongExporter implements TGLocalFileExporter{
 		return new TGFileFormat("Lilypond","*.ly");
 	}
 	
-	public boolean configure(boolean setDefaults) {
-		this.settings = (setDefaults ? LilypondSettings.getDefaults() : new LilypondSettingsDialog().open());
+	public boolean configure(TGSong song, boolean setDefaults) {
+		this.settings = (setDefaults ? LilypondSettings.getDefaults() : new LilypondSettingsDialog(song).open());
 		return (this.settings != null);
 	}
 	

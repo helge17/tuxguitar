@@ -52,7 +52,6 @@ public class LilypondOutputStream {
 	
 	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
-		this.manager.setSong(song);
 		
 		this.addFunctions();
 		this.addVersion();
@@ -155,7 +154,7 @@ public class LilypondOutputStream {
 			TGTrack track = song.getTrack(i);
 			String id = this.trackID(i,"");
 			this.temp.reset();
-			this.addMusic(track,id);
+			this.addMusic(song,track,id);
 			this.addLyrics(track,id);
 			this.addScoreStaff(track,id);
 			this.addTabStaff(track,id);
@@ -195,7 +194,7 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void addMusic(TGTrack track,String id){
+	private void addMusic(TGSong song, TGTrack track,String id){
 		for( int voice = 0 ; voice < TGBeat.MAX_VOICES ; voice ++ ){
 			this.writer.println(trackVoiceID(voice,id,"Music") + " = #(define-music-function (parser location inTab) (boolean?)");
 			this.writer.println("#{");
@@ -208,7 +207,7 @@ public class LilypondOutputStream {
 					int measureFrom = this.settings.getMeasureFrom();
 					int measureTo = this.settings.getMeasureTo();
 					if((measureFrom <= measure.getNumber() || measureFrom == LilypondSettings.FIRST_MEASURE) && (measureTo >= measure.getNumber() || measureTo == LilypondSettings.LAST_MEASURE )){
-						this.addMeasure(measure,previous,voice,1,(i == (count - 1)));
+						this.addMeasure(song, measure, previous, voice, 1, (i == (count - 1)));
 						previous = measure;
 					}
 				}
@@ -302,7 +301,7 @@ public class LilypondOutputStream {
 		this.writer.println(">>");
 	}
 	
-	private void addMeasure(TGMeasure measure,TGMeasure previous,int voice,int indent,boolean isLast){
+	private void addMeasure(TGSong song, TGMeasure measure,TGMeasure previous,int voice,int indent,boolean isLast){
 		if(previous == null || measure.getTempo().getValue() != previous.getTempo().getValue()){
 			this.addTempo(measure.getTempo(),indent);
 		}
@@ -323,14 +322,14 @@ public class LilypondOutputStream {
 		
 		// Open repeat
 		if(measure.isRepeatOpen()){
-			this.addRepeatOpen(measure.getHeader(),indent);
+			this.addRepeatOpen(song, measure.getHeader(),indent);
 		}
 		// If is first measure, and it don't have a repeat-open,
 		// We check on next measures if should open it.
 		else if(measure.getNumber() == 1){
-			this.checkRepeatCount( measure.getHeader() );
+			this.checkRepeatCount(song, measure.getHeader() );
 			if(this.temp.getRepeatCount() > 0 ){
-				this.addRepeatOpen(measure.getHeader(),indent);
+				this.addRepeatOpen(song, measure.getHeader(),indent);
 			}
 		}
 		// Open a repeat alternative only if this measure isn't who openned the repeat.
@@ -356,12 +355,12 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void addRepeatOpen(TGMeasureHeader measure,int indent){
+	private void addRepeatOpen(TGSong song, TGMeasureHeader measure,int indent){
 		// Close any existent first
 		this.addRepeatClose(indent);
 		this.addRepeatAlternativeClose(indent);
 		
-		this.checkRepeatCount(measure);
+		this.checkRepeatCount(song, measure);
 		this.writer.println(indent(indent) + "\\repeat volta " + this.temp.getRepeatCount() + " {");
 		this.temp.setRepeatOpen(true);
 	}
@@ -729,7 +728,7 @@ public class LilypondOutputStream {
 		}
 	}
 	
-	private void checkRepeatCount(TGMeasureHeader header){
+	private void checkRepeatCount(TGSong song, TGMeasureHeader header){
 		boolean alternativePresent = false;
 		TGMeasureHeader next = header;
 		while( next != null ){
@@ -743,7 +742,7 @@ public class LilypondOutputStream {
 				this.temp.setRepeatCount( (next.getRepeatClose() + 1 ));
 				break;
 			}
-			next = this.manager.getNextMeasureHeader(next);
+			next = this.manager.getNextMeasureHeader(song, next);
 		}
 	}
 	

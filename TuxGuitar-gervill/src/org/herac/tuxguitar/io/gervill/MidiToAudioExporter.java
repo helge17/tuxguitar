@@ -30,7 +30,7 @@ public class MidiToAudioExporter implements TGLocalFileExporter{
 		return new TGFileFormat(this.settings.getType().toString(), ("*." + this.settings.getType().getExtension()) );
 	}
 	
-	public boolean configure(boolean setDefaults) {
+	public boolean configure(TGSong song, boolean setDefaults) {
 		if( !setDefaults ){
 			return new MidiToAudioSettingsDialog().open( this.settings );
 		}
@@ -47,13 +47,12 @@ public class MidiToAudioExporter implements TGLocalFileExporter{
 		try{
 			if( this.stream != null ){
 				TGSongManager tgSongManager = new TGSongManager();
-				tgSongManager.setSong(tgSong);
 				
 				GMChannelRouter gmChannelRouter = new GMChannelRouter();
 				GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
 				gmChannelRouterConfigurator.configureRouter(tgSong.getChannels());
 				
-				MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSongManager,MidiSequenceParser.DEFAULT_EXPORT_FLAGS);
+				MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSong, tgSongManager,MidiSequenceParser.DEFAULT_EXPORT_FLAGS);
 				MidiSequenceHandlerImpl midiSequenceHandler = new MidiSequenceHandlerImpl((tgSong.countTracks() + 1), gmChannelRouter);
 				midiSequenceParser.parse(midiSequenceHandler);
 				MidiToAudioWriter.write(this.stream, midiSequenceHandler.getEvents(), this.settings );

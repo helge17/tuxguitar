@@ -19,6 +19,7 @@ public class SVGController implements TGController {
 	
 	private SVGExporterStyles tgStyles;
 	
+	private TGSong tgSong;
 	private TGSongManager tgSongManager;
 	private TGResourceFactory tgResourceFactory;
 	private TGLayoutVertical tgLayout;
@@ -35,18 +36,22 @@ public class SVGController implements TGController {
 		return this.tgSongManager;
 	}
 	
+	public TGSong getSong() {
+		return this.tgSong;
+	}
+	
 	public TGResourceFactory getResourceFactory() {
 		return this.tgResourceFactory;
 	}
 	
 	public void load(TGSong song) throws TGFileFormatException {
-		this.tgSongManager.setSong(song);
+		this.tgSong = song;
 		this.tgLayout.loadStyles();
 		this.tgLayout.updateSong();
 	}
 	
 	public void write(StringBuffer svgBuffer) throws Throwable {		
-		if( this.tgSongManager.getSong() != null ){
+		if( this.tgSong != null ){
 			// Do a paint to calculate the document height.
 			TGRectangle svgBounds = new TGRectangle(0, 0, 960, 0 );
 			TGPainter svgPainter = new SVGPainter(new StringBuffer());

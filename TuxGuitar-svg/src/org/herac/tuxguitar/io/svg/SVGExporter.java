@@ -26,7 +26,7 @@ public class SVGExporter implements TGLocalFileExporter {
 		return new TGFileFormat("Scalable Vector Graphics","*.svg");
 	}
 	
-	public boolean configure(boolean setDefaults) {
+	public boolean configure(TGSong song, boolean setDefaults) {
 		if( setDefaults ){
 			this.styles.configureWithDefaults();
 		}else{

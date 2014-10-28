@@ -27,6 +27,7 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
@@ -36,6 +37,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	public static final short DEFAULT_INSTRUMENT_CHANNEL_2 = 1;
 	public static final short DEFAULT_PERCUSSION_CHANNEL = 9;
 	
+	private TGSong song;
 	private TGChannel channel;
 	private GMChannelRouter router;
 	private Shell dialog;
@@ -44,7 +46,8 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private Button exclusiveButton;
 	private JackMidiPlayerListener jackMidiPlayerListener;
 	
-	public JackChannelSettingsDialog(TGChannel channel){
+	public JackChannelSettingsDialog(TGChannel channel, TGSong song){
+		this.song = song;
 		this.channel = channel;
 		this.router = new GMChannelRouter();
 		this.jackMidiPlayerListener = new JackMidiPlayerListener(this);
@@ -336,9 +339,9 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private Iterator findGmChannels(){
 		List tgChannels = new ArrayList();
 		
-		int count = TuxGuitar.getInstance().getSongManager().getSong().countChannels();
+		int count = this.song.countChannels();
 		for(int i = 0 ; i < count ; i ++) {
-			TGChannel tgChannel = TuxGuitar.getInstance().getSongManager().getSong().getChannel( i );
+			TGChannel tgChannel = this.song.getChannel( i );
 			if(!this.isExclusive( tgChannel ) ){
 				tgChannels.add( tgChannel );
 			}

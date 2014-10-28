@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.song.models.TGSong;
 
 public class SVGExporterStylesDialog extends SVGExporterStyles {
 	
@@ -37,8 +38,10 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 		
 		final Combo trackCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		trackCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		for(int number = 1; number <= TuxGuitar.getInstance().getSongManager().getSong().countTracks(); number ++){
-			trackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(number).getName());
+		
+		TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+		for(int number = 1; number <= song.countTracks(); number ++){
+			trackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(song, number).getName());
 		}
 		trackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
 		
