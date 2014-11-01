@@ -10,7 +10,7 @@ public class TGLock {
 		this.lockThread = null;
 	}
 	
-	public void lock(){
+	public void lock() {
 		Thread thread = Thread.currentThread();
 		
 		boolean lockSuccess = false;
@@ -29,19 +29,30 @@ public class TGLock {
 		}
 	}
 	
-	public void unlock(){
+	public void unlock() {
 		synchronized( this.lock ){
 			this.lockThread = null;
 		}
 	}
 	
-	public boolean isLocked(Thread thread){
+	public boolean tryLock() {
+		synchronized( this.lock ){
+			if( this.isLocked() ) {
+				return false;
+			}
+			this.lock();
+			
+			return true;
+		}
+	}
+	
+	public boolean isLocked(Thread thread) {
 		synchronized( this.lock ){
 			return (this.lockThread != null && this.lockThread != thread);
 		}
 	}
 	
-	public boolean isLocked(){
+	public boolean isLocked() {
 		return isLocked( Thread.currentThread() );
 	}
 }
