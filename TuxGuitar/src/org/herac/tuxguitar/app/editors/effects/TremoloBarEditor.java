@@ -268,13 +268,20 @@ public class TremoloBarEditor{
 	}
 	
 	private boolean removePoint(Point point){
+		Point pointToRemove = null;
+		
 		Iterator it = this.points.iterator();
 		while(it.hasNext()){
 			Point currPoint = (Point)it.next();
-			if(currPoint.x == point.x && currPoint.y == point.y){
-				this.points.remove(point);
-				return true;
+			if( currPoint.x == point.x && currPoint.y == point.y ){
+				pointToRemove = currPoint;
+				break;
 			}
+		}
+		
+		if( pointToRemove != null ) {
+			this.points.remove(pointToRemove);
+			return true;
 		}
 		return false;
 	}
@@ -294,14 +301,16 @@ public class TremoloBarEditor{
 	}
 	
 	private void removePointsAtXLine(int x){
+		List pointsToRemove = new ArrayList();
 		Iterator it = this.points.iterator();
 		while(it.hasNext()){
 			Point point = (Point)it.next();
-			if(point.x == x){
-				this.points.remove(point);
+			if( point.x == x ){
+				pointsToRemove.add(point);
 				break;
 			}
 		}
+		this.points.removeAll(pointsToRemove);
 	}
 	
 	private void addPoint(Point point){
