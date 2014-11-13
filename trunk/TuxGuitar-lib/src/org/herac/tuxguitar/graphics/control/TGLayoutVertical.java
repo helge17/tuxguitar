@@ -115,7 +115,7 @@ public class TGLayoutVertical extends TGLayout{
 		boolean isAtY = (posY + ts.getSize() > clientArea.getY() && posY < clientArea.getY() + clientArea.getHeight() + 80);
 		
 		int measureSpacing = 0;
-		if(line.fullLine){
+		if( line.fullLine ){
 			int diff = ( this.maximumWidth - line.tempWith);
 			if(diff != 0 && line.measures.size() > 0){
 				measureSpacing = diff / line.measures.size();
@@ -168,19 +168,27 @@ public class TGLayoutVertical extends TGLayout{
 			TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(measureIdx);
 			
 			//verifico si tengo que bajar de linea
-			if((line.tempWith + measure.getWidth(this)) >= this.maximumWidth && !line.measures.isEmpty()){
+			if((line.tempWith + measure.getWidth(this)) >= this.maximumWidth ){
+				if( line.measures.isEmpty() ) {
+					this.addToTempLine(line, ts, measure, measureIdx);
+				}
 				line.fullLine = true;
 				return line;
 			}
-			line.tempWith +=  measure.getWidth(this);
-			line.maxY = (measure.getMaxY() > line.maxY)?measure.getMaxY():line.maxY;
-			line.minY = (measure.getMinY() < line.minY)?measure.getMinY():line.minY;
 			
-			line.addMeasure(measureIdx);
-			measure.registerSpacing(this,ts);
+			this.addToTempLine(line, ts, measure, measureIdx);
 		}
 		
 		return line;
+	}
+	
+	public void addToTempLine(TempLine line, TGTrackSpacing ts, TGMeasureImpl measure, int measureIdx) {
+		line.tempWith +=  measure.getWidth(this);
+		line.maxY = (measure.getMaxY() > line.maxY)?measure.getMaxY():line.maxY;
+		line.minY = (measure.getMinY() < line.minY)?measure.getMinY():line.minY;
+		
+		line.addMeasure(measureIdx);
+		measure.registerSpacing(this,ts);
 	}
 	
 	private class TempLine{
