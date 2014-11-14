@@ -5,6 +5,7 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiTransmitter;
+import org.herac.tuxguitar.util.TGContext;
 
 public class JackSequencer implements MidiSequencer{
 	
@@ -26,7 +27,7 @@ public class JackSequencer implements MidiSequencer{
 	private JackClient jackClient;
 	private JackMidiPlayerStarter jackMidiPlayerStarter;
 	
-	public JackSequencer(JackClient jackClient){
+	public JackSequencer(TGContext context, JackClient jackClient){
 		this.stopped = true;
 		this.running = false;
 		this.transportRunning = false;
@@ -40,7 +41,7 @@ public class JackSequencer implements MidiSequencer{
 		this.jackEventDispacher = new JackEventDispacher(this);
 		this.jackTrackController = new JackTrackController(this);
 		this.jackTimer = new JackTimer(this);
-		this.jackMidiPlayerStarter = new JackMidiPlayerStarter(this);
+		this.jackMidiPlayerStarter = new JackMidiPlayerStarter(context, this);
 	}
 	
 	public JackClient getJackClient(){

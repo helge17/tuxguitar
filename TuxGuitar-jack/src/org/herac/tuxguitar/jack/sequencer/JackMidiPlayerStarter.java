@@ -5,18 +5,21 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerEvent;
+import org.herac.tuxguitar.util.TGContext;
 
 public class JackMidiPlayerStarter implements TGEventListener {
 	
+	private TGContext context;
 	private JackSequencer jackSequencer;
 	private boolean countDownByPass;
 	
-	public JackMidiPlayerStarter(JackSequencer jackSequencer){
+	public JackMidiPlayerStarter(TGContext context, JackSequencer jackSequencer){
+		this.context = context;
 		this.jackSequencer = jackSequencer;
 	}
 	
 	private MidiPlayer getPlayer(){
-		return MidiPlayer.getInstance();
+		return MidiPlayer.getInstance(this.context);
 	}
 	
 	public void open(){

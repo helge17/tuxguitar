@@ -17,15 +17,16 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class MidiPlayer{
 	
 	public static final int MAX_VOLUME = 10;
 	
 	private static final int TIMER_DELAY = 10;
-	
-	private static MidiPlayer instance;
 	
 	private TGDocumentManager documentManager;
 	
@@ -84,15 +85,6 @@ public class MidiPlayer{
 	private MidiPlayer() {
 		this.lock = new TGLock();
 		this.volume = MAX_VOLUME;
-	}
-	
-	public static MidiPlayer getInstance(){
-		synchronized (MidiPlayer.class) {
-			if( instance == null ){
-				instance = new MidiPlayer();
-			}
-			return instance;
-		}
 	}
 	
 	public void init(TGDocumentManager documentManager) {
@@ -958,5 +950,13 @@ public class MidiPlayer{
 	
 	public void notifyLoop(){
 		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_LOOP));
+	}
+	
+	public static MidiPlayer getInstance(TGContext context) {
+		return (MidiPlayer) TGSingletonUtil.getInstance(context, MidiPlayer.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new MidiPlayer();
+			}
+		});
 	}
 }

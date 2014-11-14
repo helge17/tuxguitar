@@ -10,10 +10,13 @@ public class JackChannelSettingsPlugin extends TGChannelSettingsPlugin{
 	private TGChannelSettingsHandler tgChannelSettingsHandler;
 	
 	public JackChannelSettingsPlugin(){
-		this.tgChannelSettingsHandler = new JackChannelSettingsHandler();
+		super();
 	}
 	
 	protected TGChannelSettingsHandler getHandler() throws TGPluginException {
+		if( this.tgChannelSettingsHandler == null ) {
+			this.tgChannelSettingsHandler = new JackChannelSettingsHandler(getContext());
+		}
 		return this.tgChannelSettingsHandler;
 	}
 	

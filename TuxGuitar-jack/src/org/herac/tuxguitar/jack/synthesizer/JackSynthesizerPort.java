@@ -4,15 +4,16 @@ import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSynthesizer;
+import org.herac.tuxguitar.util.TGContext;
 
 public class JackSynthesizerPort implements MidiOutputPort{
 	
 	private JackClient jackClient;
 	private JackSynthesizer jackSynthesizer;
 	
-	public JackSynthesizerPort(JackClient jackClient){
+	public JackSynthesizerPort(TGContext context, JackClient jackClient){
 		this.jackClient = jackClient;
-		this.jackSynthesizer = new JackSynthesizer(this.jackClient);
+		this.jackSynthesizer = new JackSynthesizer(context, this.jackClient);
 	}
 	
 	public MidiSynthesizer getSynthesizer() throws MidiPlayerException{

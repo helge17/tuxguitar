@@ -612,11 +612,11 @@ public class TuxGuitar {
 	}
 	
 	public MidiPlayer getPlayer(){
-		return MidiPlayer.getInstance();
+		return MidiPlayer.getInstance(this.context);
 	}
 	
 	public void initMidiPlayer(){
-		MidiPlayer midiPlayer = MidiPlayer.getInstance();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
 		midiPlayer.init(getDocumentManager());
 		midiPlayer.addListener( new TGTransportListener() );
 		try {
