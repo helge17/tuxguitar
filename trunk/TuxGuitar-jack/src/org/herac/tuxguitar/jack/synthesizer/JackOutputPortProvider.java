@@ -6,13 +6,16 @@ import java.util.List;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.provider.JackClientProvider;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import org.herac.tuxguitar.util.TGContext;
 
 public class JackOutputPortProvider implements MidiOutputPortProvider{
 	
+	private TGContext context;
 	private List jackOutputPorts;
 	private JackClientProvider jackClientProvider;
 	
-	public JackOutputPortProvider(JackClientProvider jackClientProvider){
+	public JackOutputPortProvider(TGContext context, JackClientProvider jackClientProvider){
+		this.context = context;
 		this.jackClientProvider = jackClientProvider;
 	}
 	
@@ -22,7 +25,7 @@ public class JackOutputPortProvider implements MidiOutputPortProvider{
 			
 			JackClient jackClient = this.jackClientProvider.getJackClient();
 			if( jackClient != null ){
-				this.jackOutputPorts.add(new JackSynthesizerPort(jackClient));
+				this.jackOutputPorts.add(new JackSynthesizerPort(this.context, jackClient));
 			}
 		}
 		return this.jackOutputPorts;

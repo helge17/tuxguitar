@@ -16,7 +16,7 @@ public class JackSequencerProviderPlugin extends TGMidiSequencerProviderPlugin {
 	
 	protected MidiSequencerProvider getProvider() throws TGPluginException {
 		if( this.jackSequencerProvider == null ) {
-			this.jackSequencerProvider = new JackSequencerProvider( new JackClientInstanceProvider(getContext()) );
+			this.jackSequencerProvider = new JackSequencerProvider(getContext(), new JackClientInstanceProvider(getContext()) );
 		}
 		return this.jackSequencerProvider;
 	}

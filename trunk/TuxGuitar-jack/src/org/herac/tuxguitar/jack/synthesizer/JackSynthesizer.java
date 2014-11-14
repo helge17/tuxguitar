@@ -11,14 +11,17 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSynthesizer;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.util.TGContext;
 
 public class JackSynthesizer implements MidiSynthesizer{
 	
+	private TGContext context;
 	private JackClient jackClient;
 	private JackGmPort jackGmPort;
 	private List jackChannelProxies;
 	
-	public JackSynthesizer(JackClient jackClient){
+	public JackSynthesizer(TGContext context, JackClient jackClient){
+		this.context = context;
 		this.jackClient = jackClient;
 		this.jackChannelProxies = new ArrayList();
 	}
@@ -152,7 +155,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 		if(!jackChannelProxy.isExclusive() ){
 			return ("GM Port");
 		}
-		MidiPlayer midiPlayer = MidiPlayer.getInstance();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
 		TGChannel tgChannel = midiPlayer.getSongManager().getChannel(midiPlayer.getSong(), jackChannelProxy.getJackChannelId());
 		if( tgChannel != null ){
 			return tgChannel.getName();

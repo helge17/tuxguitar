@@ -43,7 +43,7 @@ public abstract class TGMidiSequencerProviderPlugin implements TGPlugin{
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
 			try {
-				MidiPlayer.getInstance().addSequencerProvider(this.provider);
+				MidiPlayer.getInstance(getContext()).addSequencerProvider(this.provider);
 				this.loaded = true;
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);
@@ -54,7 +54,7 @@ public abstract class TGMidiSequencerProviderPlugin implements TGPlugin{
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
 			try {
-				MidiPlayer.getInstance().removeSequencerProvider(this.provider);
+				MidiPlayer.getInstance(getContext()).removeSequencerProvider(this.provider);
 				this.loaded = false;
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);

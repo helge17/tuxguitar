@@ -28,6 +28,7 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
@@ -37,6 +38,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	public static final short DEFAULT_INSTRUMENT_CHANNEL_2 = 1;
 	public static final short DEFAULT_PERCUSSION_CHANNEL = 9;
 	
+	private TGContext context;
 	private TGSong song;
 	private TGChannel channel;
 	private GMChannelRouter router;
@@ -46,7 +48,8 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private Button exclusiveButton;
 	private JackMidiPlayerListener jackMidiPlayerListener;
 	
-	public JackChannelSettingsDialog(TGChannel channel, TGSong song){
+	public JackChannelSettingsDialog(TGContext context, TGChannel channel, TGSong song){
+		this.context = context;
 		this.song = song;
 		this.channel = channel;
 		this.router = new GMChannelRouter();
@@ -123,11 +126,11 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	}
 	
 	public void addMidiPlayerListener(){
-		MidiPlayer.getInstance().addListener(this.jackMidiPlayerListener);
+		MidiPlayer.getInstance(this.context).addListener(this.jackMidiPlayerListener);
 	}
 	
 	public void removeMidiPlayerListener(){
-		MidiPlayer.getInstance().removeListener(this.jackMidiPlayerListener);
+		MidiPlayer.getInstance(this.context).removeListener(this.jackMidiPlayerListener);
 	}
 	
 	public void updateControls(){
@@ -255,8 +258,8 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	
 	public void updatePlayerChannels() {
 		try {
-			if(!MidiPlayer.getInstance().isRunning()){
-				MidiPlayer.getInstance().updateChannels();
+			if(!MidiPlayer.getInstance(this.context).isRunning()){
+				MidiPlayer.getInstance(this.context).updateChannels();
 			}
 		} catch(MidiPlayerException e){
 			TGErrorManager.getInstance().handleError(e);

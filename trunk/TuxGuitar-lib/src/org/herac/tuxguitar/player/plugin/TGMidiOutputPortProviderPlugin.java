@@ -43,7 +43,7 @@ public abstract class TGMidiOutputPortProviderPlugin implements TGPlugin{
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
 			try {
-				MidiPlayer.getInstance().addOutputPortProvider(this.provider);
+				MidiPlayer.getInstance(getContext()).addOutputPortProvider(this.provider);
 				this.loaded = true;
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);
@@ -54,7 +54,7 @@ public abstract class TGMidiOutputPortProviderPlugin implements TGPlugin{
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
 			try {
-				MidiPlayer.getInstance().removeOutputPortProvider(this.provider);
+				MidiPlayer.getInstance(getContext()).removeOutputPortProvider(this.provider);
 				this.loaded = false;
 			} catch (Throwable throwable) {
 				throw new TGPluginException(throwable.getMessage(),throwable);

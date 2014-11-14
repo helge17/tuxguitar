@@ -6,11 +6,14 @@ import org.herac.tuxguitar.jack.synthesizer.JackSynthesizerPort;
 import org.herac.tuxguitar.player.base.MidiDevice;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class JackChannelSettingsHandler implements TGChannelSettingsHandler{
 	
-	public JackChannelSettingsHandler() {
-		super();
+	private TGContext context;
+	
+	public JackChannelSettingsHandler(TGContext context) {
+		this.context = context;
 	}
 	
 	public boolean isMidiDeviceSupported(MidiDevice midiDevice) {
@@ -19,7 +22,7 @@ public class JackChannelSettingsHandler implements TGChannelSettingsHandler{
 	
 	public TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel, TGSong song) {
 		if( isMidiDeviceSupported(midiDevice) ){
-			return new JackChannelSettingsDialog(channel, song);
+			return new JackChannelSettingsDialog(this.context, channel, song);
 		}
 		return null;
 	}

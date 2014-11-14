@@ -15,7 +15,7 @@ public class JackOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin
 	
 	protected MidiOutputPortProvider getProvider() {
 		if( this.jackOutputPortProvider == null ) {
-			this.jackOutputPortProvider = new JackOutputPortProvider(new JackClientInstanceProvider(getContext()) );
+			this.jackOutputPortProvider = new JackOutputPortProvider(getContext(), new JackClientInstanceProvider(getContext()) );
 		}
 		return this.jackOutputPortProvider;
 	}
