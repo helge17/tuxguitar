@@ -4,10 +4,12 @@ public class TGLock {
 	
 	private Object lock;
 	private Thread lockThread;
+	private int lockCount;
 	
 	public TGLock(){
 		this.lock = new Object();
 		this.lockThread = null;
+		this.lockCount = 0;
 	}
 	
 	public void lock() {
@@ -18,6 +20,7 @@ public class TGLock {
 		synchronized( this.lock ){
 			if( ( lockSuccess = !this.isLocked( thread ) ) ){
 				this.lockThread = thread;
+				this.lockCount ++;
 			}
 		}
 		
@@ -29,10 +32,18 @@ public class TGLock {
 		}
 	}
 	
-	public void unlock() {
+	public void unlock(boolean force) {
 		synchronized( this.lock ){
-			this.lockThread = null;
+			this.lockCount --;
+			if( this.lockCount == 0 || force ) {
+				this.lockCount = 0;
+				this.lockThread = null;
+			}
 		}
+	}
+	
+	public void unlock() {
+		this.unlock(true);
 	}
 	
 	public boolean tryLock() {
