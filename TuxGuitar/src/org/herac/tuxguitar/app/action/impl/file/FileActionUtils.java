@@ -60,14 +60,38 @@ public class FileActionUtils {
 		return fileName;
 	}
 	
-	public static boolean isSupportedFormat(String path) {
-		if(path != null){
-			int index = path.lastIndexOf(".");
-			if(index > 0){
+	public static String getFileExtension(String path){
+		int index = path.lastIndexOf(".");
+		if(index > 0){
+			return path.substring(index);
+		}
+		return null;
+	}
+	
+	public static TGFileFormat getFileFormat(String path){
+		if( path != null ){
+			String extension = getFileExtension(path);
+			if( extension != null ){
 				Iterator it = TGFileFormatManager.instance().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
-					if(writer.isSupportedExtension(path.substring(index))){
+					if( writer.isSupportedExtension(extension) ){
+						return writer.getFileFormat();
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static boolean isSupportedFormat(String path) {
+		if( path != null ){
+			String extension = getFileExtension(path);
+			if( extension != null ){
+				Iterator it = TGFileFormatManager.instance().getOutputStreams();
+				while(it.hasNext()){
+					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
+					if(writer.isSupportedExtension(extension)){
 						return true;
 					}
 				}
@@ -101,8 +125,10 @@ public class FileActionUtils {
 	
 	public static void save(final String fileName){
 		try {
+			OutputStream stream = new FileOutputStream(new File(fileName));
 			TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
-			TGFileFormatManager.instance().getWriter().write(manager.getSongManager().getFactory(), manager.getSong(), fileName);
+			TGFileFormat fileFormat = getFileFormat(fileName);
+			TGFileFormatManager.instance().getWriter().write(manager.getSongManager().getFactory(), manager.getSong(), fileFormat, stream);
 			TuxGuitar.getInstance().fireSaveSong(new File(fileName).toURI().toURL());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.save.error", new String[]{fileName}),throwable));

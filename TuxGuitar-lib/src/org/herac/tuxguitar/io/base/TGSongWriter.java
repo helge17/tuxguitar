@@ -7,8 +7,7 @@
 package org.herac.tuxguitar.io.base;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
@@ -26,13 +25,13 @@ public class TGSongWriter {
 		super();
 	}
 	
-	public void write(TGFactory factory,TGSong song,String path) throws TGFileFormatException{
+	public void write(TGFactory factory, TGSong song, TGFileFormat format, OutputStream os) throws TGFileFormatException{
 		try {
 			Iterator it = TGFileFormatManager.instance().getOutputStreams();
 			while(it.hasNext()){
 				TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
-				if(isSupportedExtension(writer,path)){
-					writer.init(factory,new BufferedOutputStream(new FileOutputStream(new File(path))));
+				if( writer.getFileFormat().getName().equals(format.getName()) ){
+					writer.init(factory, new BufferedOutputStream(os));
 					writer.writeSong(song);
 					return;
 				}
@@ -42,13 +41,4 @@ public class TGSongWriter {
 		}
 		throw new TGFileFormatException("Unsupported file format");
 	}
-	
-	private boolean isSupportedExtension(TGOutputStreamBase writer,String path){
-		int index = path.lastIndexOf(".");
-		if(index > 0){
-			return writer.isSupportedExtension(path.substring(index));
-		}
-		return false;
-	}
-	
 }
