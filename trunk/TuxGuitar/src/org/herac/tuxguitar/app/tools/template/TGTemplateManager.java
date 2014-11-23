@@ -8,6 +8,7 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGTemplateManager {
@@ -55,7 +56,14 @@ public class TGTemplateManager {
 		try{
 			if( tgTemplate != null && tgTemplate.getResource() != null ){
 				InputStream stream = TGFileUtils.getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
-				return TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
+				
+				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+				tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
+				tgSongLoaderHandle.setInputStream(stream);
+				
+				TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+				
+				return tgSongLoaderHandle.getSong();
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();

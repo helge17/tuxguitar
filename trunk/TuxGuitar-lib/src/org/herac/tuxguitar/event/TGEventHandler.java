@@ -8,28 +8,39 @@ import org.herac.tuxguitar.action.TGActionException;
 
 public class TGEventHandler {
 	
+	private Object lock;
 	private List listeners;
 	
 	public TGEventHandler() {
+		this.lock = new Object();
 		this.listeners = new ArrayList();
 	}
 	
 	public void processEvent(TGEvent event) throws TGActionException{
-		Iterator it = this.listeners.iterator();
+		List listeners = new ArrayList();
+		synchronized (this.lock) {
+			listeners.addAll(this.listeners);
+		}
+		
+		Iterator it = listeners.iterator();
 		while( it.hasNext() ){
 			((TGEventListener) it.next()).processEvent(event);
 		}
 	}
 	
 	public void addListener(TGEventListener listener){
-		if(!this.listeners.contains(listener)){
-			this.listeners.add(listener);
+		synchronized (this.lock) {
+			if(!this.listeners.contains(listener)){
+				this.listeners.add(listener);
+			}
 		}
 	}
 	
 	public void removeListener(TGEventListener listener){
-		if( this.listeners.contains(listener) ){
-			this.listeners.remove(listener);
+		synchronized (this.lock) {
+			if( this.listeners.contains(listener) ){
+				this.listeners.remove(listener);
+			}
 		}
 	}
 }

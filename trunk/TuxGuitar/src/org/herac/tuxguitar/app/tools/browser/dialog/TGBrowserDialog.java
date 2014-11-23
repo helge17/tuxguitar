@@ -37,7 +37,7 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
 
 public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnectionHandler,TGEventListener{
 	
@@ -344,8 +344,12 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 			public void run() {
 				if(!TuxGuitar.isDisposed()){
 					try {
-						TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
-						TuxGuitar.getInstance().fireNewSong(song,null);
+						TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+						tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
+						tgSongLoaderHandle.setInputStream(stream);
+						
+						TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+						TuxGuitar.getInstance().fireNewSong(tgSongLoaderHandle.getSong(), null);
 					}catch (Throwable throwable) {
 						TuxGuitar.getInstance().newSong();
 						MessageDialog.errorMessage(getShell(),new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}),throwable));

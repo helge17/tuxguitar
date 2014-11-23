@@ -15,6 +15,7 @@ import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -49,7 +50,12 @@ public class TGConverter {
 			TGSongManager manager = new TGSongManager();
 			TGSong song = null;
 			try {
-				song = TGFileFormatManager.instance().getLoader().load(manager.getFactory(),new FileInputStream(fileName));
+				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+				tgSongLoaderHandle.setFactory(manager.getFactory());
+				tgSongLoaderHandle.setInputStream(new FileInputStream(fileName));
+				TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+				
+				song = tgSongLoaderHandle.getSong();
 			} catch (TGFileFormatException e) {
 				song = importSong(manager.getFactory(), fileName);
 			}
