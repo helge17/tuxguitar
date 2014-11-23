@@ -22,4 +22,8 @@ public class TGContext {
 	public boolean hasAttribute(String key){
 		return this.attributes.containsKey(key);
 	}
+	
+	public void clear() {
+		this.attributes.clear();
+	}
 }

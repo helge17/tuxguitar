@@ -25,6 +25,8 @@ import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
+import org.herac.tuxguitar.io.base.TGSongWriterHandle;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class FileActionUtils {
@@ -115,8 +117,11 @@ public class FileActionUtils {
 	
 	public static void open(final String fileName){
 		try {
-			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),new FileInputStream(fileName));
-			TuxGuitar.getInstance().fireNewSong(song,new File(fileName).toURI().toURL());
+			TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+			tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
+			tgSongLoaderHandle.setInputStream(new FileInputStream(fileName));
+			TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+			TuxGuitar.getInstance().fireNewSong(tgSongLoaderHandle.getSong(), new File(fileName).toURI().toURL());
 		}catch (Throwable throwable) {
 			TuxGuitar.getInstance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{fileName}),throwable));
@@ -127,8 +132,13 @@ public class FileActionUtils {
 		try {
 			OutputStream stream = new FileOutputStream(new File(fileName));
 			TGDocumentManager manager = TuxGuitar.getInstance().getDocumentManager();
-			TGFileFormat fileFormat = getFileFormat(fileName);
-			TGFileFormatManager.instance().getWriter().write(manager.getSongManager().getFactory(), manager.getSong(), fileFormat, stream);
+			
+			TGSongWriterHandle tgSongWriterHandle = new TGSongWriterHandle();
+			tgSongWriterHandle.setFactory(manager.getSongManager().getFactory());
+			tgSongWriterHandle.setSong(manager.getSong());
+			tgSongWriterHandle.setFormat(getFileFormat(fileName));
+			tgSongWriterHandle.setOutputStream(stream);
+			TGFileFormatManager.instance().getWriter().write(tgSongWriterHandle);
 			TuxGuitar.getInstance().fireSaveSong(new File(fileName).toURI().toURL());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.save.error", new String[]{fileName}),throwable));
@@ -138,8 +148,11 @@ public class FileActionUtils {
 	public static void open(final URL url){
 		try {
 			InputStream stream = (isLocalFile(url) ? url.openStream() : getInputStream(url.openStream()));
-			TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.getInstance().getSongManager().getFactory(),stream);
-			TuxGuitar.getInstance().fireNewSong(song,url);
+			TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+			tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
+			tgSongLoaderHandle.setInputStream(stream);
+			TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+			TuxGuitar.getInstance().fireNewSong(tgSongLoaderHandle.getSong(), url);
 		}catch (Throwable throwable) {
 			TuxGuitar.getInstance().newSong();
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{url.toString()}),throwable));
