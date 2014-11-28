@@ -16,7 +16,7 @@ public class GPXInputStream implements TGInputStreamBase{
 	private TGFactory factory;
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Guitar Pro 6","*.gpx");
+		return new TGFileFormat("Guitar Pro 6", new String[]{"gpx"});
 	}
 	
 	public void init(TGFactory factory, InputStream stream) {

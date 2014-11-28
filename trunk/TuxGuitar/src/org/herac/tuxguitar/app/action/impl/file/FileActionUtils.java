@@ -77,13 +77,23 @@ public class FileActionUtils {
 				Iterator it = TGFileFormatManager.instance().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
-					if( writer.isSupportedExtension(extension) ){
+					if( isSupportedExtension(writer.getFileFormat(), extension) ){
 						return writer.getFileFormat();
 					}
 				}
 			}
 		}
 		return null;
+	}
+	
+	public static boolean isSupportedExtension(TGFileFormat format, String extension) {
+		String[] supportedFormats = format.getSupportedFormats();
+		for(int i = 0 ; i < supportedFormats.length ; i ++) {
+			if( extension.toLowerCase().equals("." + supportedFormats[i].toLowerCase()) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static boolean isSupportedFormat(String path) {
@@ -93,7 +103,7 @@ public class FileActionUtils {
 				Iterator it = TGFileFormatManager.instance().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
-					if(writer.isSupportedExtension(extension)){
+					if( isSupportedExtension(writer.getFileFormat(), extension)){
 						return true;
 					}
 				}

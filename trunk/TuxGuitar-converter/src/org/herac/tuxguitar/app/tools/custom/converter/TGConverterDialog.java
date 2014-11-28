@@ -196,18 +196,15 @@ public class TGConverterDialog implements TGEventListener{
 	
 	private void addFileFormats(Combo combo, TGFileFormat format, Object exporter ){
 		if(format.getSupportedFormats() != null){
-			String[] extensions = format.getSupportedFormats().split(TGFileFormat.EXTENSION_SEPARATOR);
-			if(extensions != null && extensions.length > 0){
+			String[] extensions = format.getSupportedFormats();
+			if( extensions != null && extensions.length > 0 ){
 				for(int i = 0; i < extensions.length; i ++){
-					int dotIndex = extensions[i].indexOf(".");
-					if(dotIndex >= 0){
-						String exportName = format.getName();
-						if( exporter instanceof TGLocalFileExporter ){
-							exportName = ( (TGLocalFileExporter) exporter ).getExportName();
-						}
-						combo.add( exportName + " (" + extensions[i] + ")");
-						this.outputFormats.add(new TGConverterFormat( (extensions[i].substring( dotIndex )).trim() , exporter ));
+					String exportName = format.getName();
+					if( exporter instanceof TGLocalFileExporter ){
+						exportName = ( (TGLocalFileExporter) exporter ).getExportName();
 					}
+					combo.add( exportName + " (*." + extensions[i] + ")");
+					this.outputFormats.add(new TGConverterFormat( (extensions[i]).trim() , exporter ));
 				}
 			}
 		}

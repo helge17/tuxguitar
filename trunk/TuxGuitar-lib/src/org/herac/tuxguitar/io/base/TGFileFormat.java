@@ -2,12 +2,12 @@ package org.herac.tuxguitar.io.base;
 
 public class TGFileFormat {
 	
-	public static final String EXTENSION_SEPARATOR = new String(";");
+	//public static final String EXTENSION_SEPARATOR = new String(";");
 	
 	private String name;
-	private String supportedFormats;
+	private String[] supportedFormats;
 	
-	public TGFileFormat(String name, String supportedFormats) {
+	public TGFileFormat(String name, String[] supportedFormats) {
 		this.name = name;
 		this.supportedFormats = supportedFormats;
 	}
@@ -16,7 +16,7 @@ public class TGFileFormat {
 		return this.name;
 	}
 	
-	public String getSupportedFormats() {
+	public String[] getSupportedFormats() {
 		return this.supportedFormats;
 	}
 }

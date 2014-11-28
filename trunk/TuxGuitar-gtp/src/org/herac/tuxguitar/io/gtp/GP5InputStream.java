@@ -48,7 +48,7 @@ public class GP5InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 5","*.gp5");
+		return new TGFileFormat("Guitar Pro 5", new String[]{"gp5"});
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {

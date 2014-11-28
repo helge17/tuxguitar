@@ -27,7 +27,7 @@ public class MidiToAudioExporter implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat(this.settings.getType().toString(), ("*." + this.settings.getType().getExtension()) );
+		return new TGFileFormat(this.settings.getType().toString(), new String[]{this.settings.getType().getExtension()});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults) {

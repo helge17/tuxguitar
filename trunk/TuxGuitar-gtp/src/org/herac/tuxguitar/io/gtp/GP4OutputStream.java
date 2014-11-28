@@ -39,14 +39,13 @@ import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
-
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class GP4OutputStream extends GTPOutputStream{
-	private static final String GP4_FORMAT_EXTENSION = ".gp4";
+	
 	private static final String GP4_VERSION = "FICHIER GUITAR PRO v4.00";
 	private static final int GP_BEND_SEMITONE = 25;
 	private static final int GP_BEND_POSITION = 60;
@@ -56,11 +55,7 @@ public class GP4OutputStream extends GTPOutputStream{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 4","*.gp4");
-	}
-	
-	public boolean isSupportedExtension(String extension) {
-		return (extension.toLowerCase().equals(GP4_FORMAT_EXTENSION)) ;
+		return new TGFileFormat("Guitar Pro 4", new String[]{"gp4"});
 	}
 	
 	public void writeSong(TGSong song) {

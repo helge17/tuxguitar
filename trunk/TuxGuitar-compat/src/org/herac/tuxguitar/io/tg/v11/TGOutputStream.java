@@ -66,7 +66,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("TuxGuitar","*.tg");
+		return new TGFileFormat("TuxGuitar 1.1", new String[]{"tg"});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults){

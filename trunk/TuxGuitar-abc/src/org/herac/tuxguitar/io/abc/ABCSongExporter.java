@@ -17,7 +17,7 @@ public class ABCSongExporter implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Abc","*.abc");
+		return new TGFileFormat("Abc", new String[]{"abc"});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults) {

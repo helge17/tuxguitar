@@ -43,7 +43,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class GP3OutputStream extends GTPOutputStream{
-	private static final String GP3_FORMAT_EXTENSION = ".gp3";
+	
 	private static final String GP3_VERSION = "FICHIER GUITAR PRO v3.00";
 	private static final int GP_BEND_SEMITONE = 25;
 	private static final int GP_BEND_POSITION = 60;
@@ -53,11 +53,7 @@ public class GP3OutputStream extends GTPOutputStream{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 3",("*" + GP3_FORMAT_EXTENSION));
-	}
-	
-	public boolean isSupportedExtension(String extension) {
-		return (extension.toLowerCase().equals(GP3_FORMAT_EXTENSION)) ;
+		return new TGFileFormat("Guitar Pro 3", new String[]{"gp3"});
 	}
 	
 	public void writeSong(TGSong song){

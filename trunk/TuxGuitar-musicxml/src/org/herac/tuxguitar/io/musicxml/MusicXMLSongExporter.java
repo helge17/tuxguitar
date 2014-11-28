@@ -17,7 +17,7 @@ public class MusicXMLSongExporter implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("MusicXML","*.xml");
+		return new TGFileFormat("MusicXML", new String[]{"xml"});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults) {

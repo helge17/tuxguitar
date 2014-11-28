@@ -21,7 +21,7 @@ public class MidiSongExporter implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Midi","*.mid;*.midi");
+		return new TGFileFormat("Midi", new String[]{"mid","midi"});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults) {

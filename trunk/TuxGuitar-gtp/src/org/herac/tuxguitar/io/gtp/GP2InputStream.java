@@ -55,7 +55,7 @@ public class GP2InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 2","*.gtp");
+		return new TGFileFormat("Guitar Pro 2", new String[]{"gtp"});
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {

@@ -20,6 +20,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGLyric;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -34,7 +35,6 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -52,16 +52,12 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 	
 	private DataOutputStream dataOutputStream;
 	
-	public boolean isSupportedExtension(String extension) {
-		return (extension.toLowerCase().equals(TG_FORMAT_EXTENSION));
-	}
-	
 	public void init(TGFactory factory,OutputStream stream) {
 		this.dataOutputStream = new DataOutputStream(stream);
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("TuxGuitar","*.tg");
+		return TG_FORMAT;
 	}
 	
 	public void writeSong(TGSong song) throws TGFileFormatException{

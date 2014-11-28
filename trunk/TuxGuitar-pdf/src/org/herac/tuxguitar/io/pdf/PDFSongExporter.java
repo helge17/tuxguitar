@@ -39,7 +39,7 @@ public class PDFSongExporter implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("PDF","*.pdf");
+		return new TGFileFormat("PDF", new String[]{"pdf"});
 	}
 	
 	public PrintStyles getDefaultStyles(TGSong song){

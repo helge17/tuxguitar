@@ -41,7 +41,7 @@ public class PTInputStream implements TGInputStreamBase{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("PowerTab","*.ptb");
+		return new TGFileFormat("PowerTab", new String[]{"ptb"});
 	}
 	
 	public boolean isSupportedVersion(String version){

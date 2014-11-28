@@ -51,7 +51,7 @@ public class GP3InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 3","*.gp3");
+		return new TGFileFormat("Guitar Pro 3", new String[]{"gp3"});
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {

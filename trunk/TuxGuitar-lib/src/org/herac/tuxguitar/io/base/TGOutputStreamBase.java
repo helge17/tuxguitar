@@ -9,8 +9,6 @@ public interface TGOutputStreamBase {
 	
 	public void init(TGFactory factory,OutputStream stream);
 	
-	public boolean isSupportedExtension(String extension);
-	
 	public TGFileFormat getFileFormat();
 	
 	public void writeSong(TGSong song) throws TGFileFormatException;
