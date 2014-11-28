@@ -23,7 +23,7 @@ public class SVGExporter implements TGLocalFileExporter {
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Scalable Vector Graphics","*.svg");
+		return new TGFileFormat("Scalable Vector Graphics", new String[]{"svg"});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults) {

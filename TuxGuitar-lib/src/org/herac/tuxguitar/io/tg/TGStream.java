@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.io.tg;
 
+import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -13,7 +14,9 @@ public class TGStream {
 	
 	public static final String TG_FORMAT_VERSION = (TG_FORMAT_NAME + " - " + TGVersion.CURRENT.getVersion() );
 	
-	public static final String TG_FORMAT_EXTENSION = (".tg");
+	public static final String TG_FORMAT_CODE = ("tg");
+	
+	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar", new String[]{ TG_FORMAT_CODE });
 	
 	protected static final int TRACK_SOLO = 0x01;
 	

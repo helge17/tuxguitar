@@ -48,7 +48,7 @@ public class TESongImporter implements TGLocalFileImporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Tef","*.tef");
+		return new TGFileFormat("Tef", new String[]{"tef"});
 	}
 	
 	public String getImportName() {

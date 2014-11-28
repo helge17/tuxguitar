@@ -49,7 +49,7 @@ public class GP4InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 4","*.gp4");
+		return new TGFileFormat("Guitar Pro 4", new String[]{"gp4"});
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {

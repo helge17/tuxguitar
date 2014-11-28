@@ -12,7 +12,7 @@ import org.herac.tuxguitar.io.tg.TGStream;
 
 public class TGFileFormatManager {
 	
-	public static final String DEFAULT_EXTENSION = TGStream.TG_FORMAT_EXTENSION;
+	public static final String DEFAULT_EXTENSION = ("." + TGStream.TG_FORMAT_CODE);
 	
 	private static TGFileFormatManager instance;
 	

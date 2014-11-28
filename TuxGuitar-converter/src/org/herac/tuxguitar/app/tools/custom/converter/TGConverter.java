@@ -139,10 +139,10 @@ public class TGConverter {
 	}
 	
 	private String getConvertFileName(String path) {
-		String convertPath = (this.destinationFolder + File.separator +path.substring(this.sourceFolder.length()));
+		String convertPath = (this.destinationFolder + File.separator + path.substring(this.sourceFolder.length()));
 		int lastDot = convertPath.lastIndexOf(".");
-		if (lastDot!=-1) {
-			convertPath = convertPath.substring(0, lastDot) + this.format.getExtension();
+		if( lastDot != -1 ) {
+			convertPath = convertPath.substring(0, lastDot) + "." + this.format.getExtension();
 		}
 		return checkIfExists( new File(convertPath).getAbsolutePath() , 0 );
 	}
@@ -170,12 +170,13 @@ public class TGConverter {
 	
 	private boolean isSupportedExtension(String filename, TGLocalFileImporter currentImporter) {
 		try {
-			String extension = filename.substring(filename.lastIndexOf("."),filename.length());
-			extension="*"+extension.toLowerCase();
-			String[] formats = currentImporter.getFileFormat().getSupportedFormats().split(";");
-			for (int i=0; i<formats.length; i++)
-				if (formats[i].toLowerCase().equals(extension))
+			String extension = filename.substring(filename.lastIndexOf("."), filename.length());
+			String[] formats = currentImporter.getFileFormat().getSupportedFormats();
+			for(int i = 0; i < formats.length; i++) {
+				if( extension.toLowerCase().equals("." + formats[i].toLowerCase()) ) {
 					return true;
+				}
+			}
 		} catch (Exception ex) {
 			return false;
 		}

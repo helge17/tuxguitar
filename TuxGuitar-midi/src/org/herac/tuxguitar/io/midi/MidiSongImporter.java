@@ -51,7 +51,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Midi","*.mid;*.midi");
+		return new TGFileFormat("Midi", new String[]{"mid","midi"});
 	}
 	
 	public String getImportName() {

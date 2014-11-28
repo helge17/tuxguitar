@@ -56,7 +56,7 @@ public class ABCSongImporter implements TGLocalFileImporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("ABC","*.abc");
+		return new TGFileFormat("ABC", new String[]{"abc"});
 	}
 	
 	public String getImportName() {

@@ -65,7 +65,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("TuxGuitar","*.tg");
+		return TG_FORMAT;
 	}
 	
 	public boolean isSupportedVersion(String version){

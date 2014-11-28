@@ -17,7 +17,7 @@ public class LilypondSongExporter implements TGLocalFileExporter{
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Lilypond","*.ly");
+		return new TGFileFormat("Lilypond", new String[]{"ly"});
 	}
 	
 	public boolean configure(TGSong song, boolean setDefaults) {
