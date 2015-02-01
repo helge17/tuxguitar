@@ -82,6 +82,14 @@ public class TGActionManager {
 					this.doPostExecution(id, context);
 				}
 			}
+		} catch (TGActionException tgActionException) {
+			this.fireErrorEvent(id, context, tgActionException);
+			
+			throw tgActionException;
+		} catch (Throwable throwable) {
+			this.fireErrorEvent(id, context, throwable);
+			
+			throw new TGActionException(throwable);
 		} finally {
 			this.checkForUnlock(id);
 		}
@@ -120,6 +128,10 @@ public class TGActionManager {
 		TGEventManager.getInstance().fireEvent(new TGActionPostExecutionEvent(id, context));
 	}
 	
+	public void fireErrorEvent(String id, TGActionContext context, Throwable throwable) throws TGActionException{
+		TGEventManager.getInstance().fireEvent(new TGActionErrorEvent(id, context, throwable));
+	}
+	
 	public void addPreExecutionListener(TGEventListener listener){
 		TGEventManager.getInstance().addListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
 	}
@@ -134,6 +146,14 @@ public class TGActionManager {
 	
 	public void removePostExecutionListener(TGEventListener listener){
 		TGEventManager.getInstance().removeListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
+	}
+	
+	public void addErrorListener(TGEventListener listener){
+		TGEventManager.getInstance().addListener(TGActionErrorEvent.EVENT_TYPE, listener);
+	}
+	
+	public void removeErrorListener(TGEventListener listener){
+		TGEventManager.getInstance().removeListener(TGActionErrorEvent.EVENT_TYPE, listener);
 	}
 	
 	public void addInterceptor(TGActionInterceptor interceptor){
