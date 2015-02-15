@@ -10,23 +10,12 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGEventManager {
 	
-	//private static TGEventManager instance;
-	
 	private Map eventHandlers;
 	
 	private TGEventManager() {
 		this.eventHandlers = new HashMap();
 	}
-	/*
-	public static TGEventManager getInstance(){
-		synchronized (TGEventManager.class) {
-			if( instance == null ){
-				instance = new TGEventManager();
-			}
-			return instance;
-		}
-	}
-	*/
+	
 	public void addListener(String eventType, TGEventListener listener){
 		if( eventType != null ) {
 			this.findEventHandler(eventType).addListener(listener);

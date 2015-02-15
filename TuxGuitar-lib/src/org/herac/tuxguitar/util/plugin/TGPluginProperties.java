@@ -1,19 +1,12 @@
-/*
- * Created on 09-ene-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.util.plugin;
 
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+
 public class TGPluginProperties {
 	
 	public static final String MODULE = "tuxguitar";
@@ -21,28 +14,21 @@ public class TGPluginProperties {
 	
 	private static final String ENABLED_PROPERTY_SUFFIX = ".enabled";
 	
-	private static TGPluginProperties instance;
-	
+	private TGContext context;
 	private TGProperties properties;
 	
-	public static TGPluginProperties instance(){
-		if( instance == null ){
-			instance = new TGPluginProperties();
-		}
-		return instance;
-	}
-	
-	private TGPluginProperties(){
-		this.properties = TGPropertiesManager.getInstance().createProperties();
+	private TGPluginProperties(TGContext context){
+		this.context = context;
+		this.properties = TGPropertiesManager.getInstance(this.context).createProperties();
 		this.load();
 	}
 	
 	public void load(){
-		TGPropertiesManager.getInstance().readProperties(properties, RESOURCE, MODULE);
+		TGPropertiesManager.getInstance(this.context).readProperties(this.properties, RESOURCE, MODULE);
 	}
 	
 	public void save(){
-		TGPropertiesManager.getInstance().writeProperties(properties, RESOURCE, MODULE);
+		TGPropertiesManager.getInstance(this.context).writeProperties(this.properties, RESOURCE, MODULE);
 	}
 	
 	public void setEnabled(String moduleId, boolean enabled){
@@ -64,5 +50,13 @@ public class TGPluginProperties {
 	
 	private void setBooleanValue(String key,boolean value){
 		TGPropertiesUtil.setValue(this.properties, key, value);
+	}
+	
+	public static TGPluginProperties getInstance(TGContext context) {
+		return (TGPluginProperties) TGSingletonUtil.getInstance(context, TGPluginProperties.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGPluginProperties(context);
+			}
+		});
 	}
 }
