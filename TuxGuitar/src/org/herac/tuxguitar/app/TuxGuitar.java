@@ -82,6 +82,7 @@ import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
+import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 
 /**
  * @author julian
@@ -105,8 +106,6 @@ public class TuxGuitar {
 	private Shell shell;
 	
 	private TGContext context;
-	
-	private TGConfigManager configManager;
 	
 	private TGLanguageManager languageManager;
 	
@@ -202,7 +201,7 @@ public class TuxGuitar {
 		TGFileUtils.loadLibraries(this.context);
 		TGFileUtils.loadClasspath();
 		TGErrorAdapter.initialize(this.context);
-		TGPropertiesAdapter.initialize();
+		TGPropertiesAdapter.initialize(this.context);
 		
 		// Priority 2 ----------------------------------------------//
 		Display.setAppName(APPLICATION_NAME);
@@ -541,6 +540,14 @@ public class TuxGuitar {
 		return TGEventManager.getInstance(this.context);
 	}
 	
+	public TGPropertiesManager getPropertiesManager(){
+		return TGPropertiesManager.getInstance(this.context);
+	}
+	
+	public TGConfigManager getConfig(){
+		return TGConfigManager.getInstance(this.context);
+	}
+	
 	public TGFileFormatManager getFileFormatManager(){
 		return TGFileFormatManager.getInstance(this.context);
 	}
@@ -590,14 +597,7 @@ public class TuxGuitar {
 		}
 		return this.languageManager;
 	}
-	
-	public TGConfigManager getConfig(){
-		if( this.configManager == null ){
-			this.configManager = new TGConfigManager();
-		}
-		return this.configManager;
-	}
-	
+
 	public KeyBindingActionManager getKeyBindingManager(){
 		if( this.keyBindingManager == null ){
 			this.keyBindingManager = new KeyBindingActionManager();
@@ -855,6 +855,10 @@ public class TuxGuitar {
 		this.initialized = initialized;
 	}
 	
+	public TGContext getContext() {
+		return context;
+	}
+
 	public void lock(){
 		this.lock.lock();
 	}

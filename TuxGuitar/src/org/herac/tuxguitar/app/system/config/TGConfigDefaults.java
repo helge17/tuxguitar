@@ -29,9 +29,10 @@ public class TGConfigDefaults{
 	private static final String DEFAULT_FONT_NAME = getDefaultFontName();
 	
 	public static TGProperties createDefaults(){
-		TGProperties properties = TGPropertiesManager.getInstance().createProperties();
+		TGPropertiesManager propertiesManager = TuxGuitar.getInstance().getPropertiesManager();
+		TGProperties properties = propertiesManager.createProperties();
 		TGConfigDefaults.loadProperties( properties );
-		TGPropertiesManager.getInstance().readProperties(properties, RESOURCE, MODULE);
+		propertiesManager.readProperties(properties, RESOURCE, MODULE);
 		
 		return properties;
 	}

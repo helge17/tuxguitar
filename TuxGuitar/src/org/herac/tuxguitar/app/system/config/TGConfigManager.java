@@ -5,13 +5,16 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.herac.tuxguitar.graphics.TGColorModel;
 import org.herac.tuxguitar.graphics.TGFontModel;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGConfigManager{
 	
 	public static final String CONFIGURATION_MODULE = "tuxguitar";
 	
-	public TGConfigManager(){
-		super(CONFIGURATION_MODULE);
+	public TGConfigManager(TGContext context){
+		super(context, CONFIGURATION_MODULE);
 	}
 	
 	public void setValue(String key,RGB rgb){
@@ -110,5 +113,13 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 			throwable.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static TGConfigManager getInstance(TGContext context) {
+		return (TGConfigManager) TGSingletonUtil.getInstance(context, TGConfigManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGConfigManager(context);
+			}
+		});
 	}
 }
