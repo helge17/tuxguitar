@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.util.TGClassLoader;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLibraryLoader;
 import org.herac.tuxguitar.util.TGVersion;
 
@@ -47,7 +48,7 @@ public class TGFileUtils {
 					}
 				}
 			}
-			return TGClassLoader.instance().getClassLoader().getResourceAsStream(resource);
+			return TGClassLoader.getInstance().getClassLoader().getResourceAsStream(resource);
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
@@ -64,7 +65,7 @@ public class TGFileUtils {
 					}
 				}
 			}
-			return TGClassLoader.instance().getClassLoader().getResource(resource);
+			return TGClassLoader.getInstance().getClassLoader().getResource(resource);
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
@@ -82,7 +83,7 @@ public class TGFileUtils {
 					}
 				}
 			}
-			Enumeration resources = TGClassLoader.instance().getClassLoader().getResources(resource);
+			Enumeration resources = TGClassLoader.getInstance().getClassLoader().getResources(resource);
 			while( resources.hasMoreElements() ){
 				URL url = (URL)resources.nextElement();
 				if( !vector.contains(url) ){
@@ -106,7 +107,7 @@ public class TGFileUtils {
 					}
 				}
 			}
-			URL url = TGClassLoader.instance().getClassLoader().getResource(resource);
+			URL url = TGClassLoader.getInstance().getClassLoader().getResource(resource);
 			if(url != null){
 				return getUrlPath(url);
 			}
@@ -121,14 +122,14 @@ public class TGFileUtils {
 			Enumeration plugins = getResourceUrls("plugins");
 			while( plugins.hasMoreElements() ){
 				URL url = (URL)plugins.nextElement();
-				TGClassLoader.instance().addPaths(new File(getUrlPath(url)));
+				TGClassLoader.getInstance().addPaths(new File(getUrlPath(url)));
 			}
 			
 			String custompath = System.getProperty(TG_CLASS_PATH);
 			if(custompath != null){
 				String[] paths = custompath.split(File.pathSeparator);
 				for(int i = 0; i < paths.length; i++){
-					TGClassLoader.instance().addPaths(new File(paths[i]));
+					TGClassLoader.getInstance().addPaths(new File(paths[i]));
 				}
 			}
 		}catch(Throwable throwable){
@@ -136,14 +137,14 @@ public class TGFileUtils {
 		}
 	}
 	
-	public static void loadLibraries(){
+	public static void loadLibraries(TGContext context){
 		String libraryPath = System.getProperty(TG_LIBRARY_PATH);
 		if(libraryPath != null){
 			String[] libraryPaths = libraryPath.split(File.pathSeparator);
 			String libraryPrefix = System.getProperty(TG_LIBRARY_PREFIX);
 			String libraryExtension = System.getProperty(TG_LIBRARY_EXTENSION);
 			for(int i = 0; i < libraryPaths.length; i++){
-				TGLibraryLoader.instance().loadLibraries(new File(libraryPaths[i]),libraryPrefix,libraryExtension);
+				TGLibraryLoader.getInstance(context).loadLibraries(new File(libraryPaths[i]),libraryPrefix,libraryExtension);
 			}
 		}
 	}

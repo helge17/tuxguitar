@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGScale;
+import org.herac.tuxguitar.util.TGContext;
 
 public class ScaleManager {
 	
@@ -19,6 +20,8 @@ public class ScaleManager {
 	
 	public static final int NONE_SELECTION = -1;
 	
+	private TGContext context;
+	
 	private List scales;
 	
 	private TGScale scale;
@@ -27,7 +30,8 @@ public class ScaleManager {
 	
 	private int selectionKey;
 	
-	public ScaleManager(){
+	public ScaleManager(TGContext context){
+		this.context = context;
 		this.scales = new ArrayList();
 		this.scale = TuxGuitar.getInstance().getSongManager().getFactory().newScale();
 		this.selectionKey = 0;
@@ -36,15 +40,15 @@ public class ScaleManager {
 	}
 	
 	public void addListener(TGEventListener listener){
-		TGEventManager.getInstance().addListener(ScaleEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(ScaleEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeListener(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(ScaleEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(ScaleEvent.EVENT_TYPE, listener);
 	}
 	
 	public void fireListeners(){
-		TGEventManager.getInstance().fireEvent(new ScaleEvent());
+		TGEventManager.getInstance(this.context).fireEvent(new ScaleEvent());
 	}
 		
 	public void selectScale(int index,int key){

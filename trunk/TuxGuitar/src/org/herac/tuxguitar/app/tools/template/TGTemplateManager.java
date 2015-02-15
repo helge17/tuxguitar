@@ -10,6 +10,9 @@ import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTemplateManager {
 	
@@ -18,9 +21,11 @@ public class TGTemplateManager {
 	private static final String TEMPLATES_PREFIX = "templates/";
 	private static final String TEMPLATES_CONFIG_PATH = (TEMPLATES_PREFIX + "templates.xml");
 	
+	private TGContext context;
 	private List templates;
 	
-	public TGTemplateManager(){
+	public TGTemplateManager(TGContext context){
+		this.context = context;
 		this.templates = new ArrayList();
 		this.loadTemplates();
 	}
@@ -61,7 +66,7 @@ public class TGTemplateManager {
 				tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
 				tgSongLoaderHandle.setInputStream(stream);
 				
-				TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+				TGFileFormatManager.getInstance(this.context).getLoader().load(tgSongLoaderHandle);
 				
 				return tgSongLoaderHandle.getSong();
 			}
@@ -71,4 +76,11 @@ public class TGTemplateManager {
 		return null;
 	}
 	
+	public static TGTemplateManager getInstance(TGContext context) {
+		return (TGTemplateManager) TGSingletonUtil.getInstance(context, TGTemplateManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGTemplateManager(context);
+			}
+		});
+	}
 }

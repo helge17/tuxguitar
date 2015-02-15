@@ -58,7 +58,6 @@ import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -93,7 +92,7 @@ public class ItemManager implements TGEventListener {
 		TuxGuitar.getInstance().getIconManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
-		TGFileFormatManager.instance().addFileFormatAvailabilityListener(this);
+		TuxGuitar.getInstance().getFileFormatManager().addFileFormatAvailabilityListener(this);
 	}
 	
 	public void loadItems(){

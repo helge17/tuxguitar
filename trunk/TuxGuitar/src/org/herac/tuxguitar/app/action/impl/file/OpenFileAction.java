@@ -17,7 +17,6 @@ import org.herac.tuxguitar.app.action.TGActionLock;
 import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.FileChooser;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -109,7 +108,7 @@ public class OpenFileAction extends TGActionBase {
 				TuxGuitar.getInstance().getFileHistory().setChooserPath( (URL)data );
 				return (URL)data;
 			}
-			String path = FileChooser.instance().open(TuxGuitar.getInstance().getShell(),TGFileFormatManager.instance().getInputFormats());
+			String path = FileChooser.instance().open(TuxGuitar.getInstance().getShell(), TuxGuitar.getInstance().getFileFormatManager().getInputFormats());
 			if(path != null){
 				File file = new File(path);
 				if( file.exists() && file.isFile() ){

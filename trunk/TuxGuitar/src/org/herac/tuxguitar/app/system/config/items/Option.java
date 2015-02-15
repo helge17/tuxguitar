@@ -65,6 +65,10 @@ public abstract class Option extends SelectionAdapter{
 		this.toolItem.setSelection(visible);
 		this.group.setVisible(visible);
 		this.group.setFocus();
+		
+		if( visible ) {
+			this.group.layout(true, true);
+		}
 		this.group.redraw();
 	}
 	

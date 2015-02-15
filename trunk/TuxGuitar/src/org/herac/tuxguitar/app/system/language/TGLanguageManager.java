@@ -14,6 +14,7 @@ import java.util.Locale;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author julian
@@ -25,23 +26,25 @@ public class TGLanguageManager {
 	public static final String PREFIX = "messages";
 	public static final String EXTENSION = ".properties";
 	
+	private TGContext context;
 	private TGResourceBundle resources;
 	private String[] languages;
 	
-	public TGLanguageManager() {
+	public TGLanguageManager(TGContext context) {
+		this.context = context;
 		this.loadLanguages();
 	}
 	
 	public void addLoader(TGEventListener listener){
-		TGEventManager.getInstance().addListener(TGLanguageEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGLanguageEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeLoader(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(TGLanguageEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGLanguageEvent.EVENT_TYPE, listener);
 	}
 	
 	private void fireChanges(){
-		TGEventManager.getInstance().fireEvent(new TGLanguageEvent());
+		TGEventManager.getInstance(this.context).fireEvent(new TGLanguageEvent());
 	}
 	
 	public void setLanguage(String lang) {
