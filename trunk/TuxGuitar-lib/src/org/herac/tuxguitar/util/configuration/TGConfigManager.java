@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.util.configuration;
 
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
@@ -8,26 +9,27 @@ public class TGConfigManager {
 	
 	public static final String RESOURCE = "config";
 	
+	private TGContext context;
+	private TGProperties properties;
 	private String module;
 	
-	private TGProperties properties;
-	
-	public TGConfigManager(String module){
+	public TGConfigManager(TGContext context, String module){
+		this.context = context;
 		this.module = module;
 		this.initialize();
 	}
 	
 	public void initialize(){
-		this.properties = TGPropertiesManager.getInstance().createProperties();
+		this.properties = TGPropertiesManager.getInstance(this.context).createProperties();
 		this.load();
 	}
 	
 	public void save(){
-		TGPropertiesManager.getInstance().writeProperties(this.properties, RESOURCE, this.module);
+		TGPropertiesManager.getInstance(this.context).writeProperties(this.properties, RESOURCE, this.module);
 	}
 	
 	public void load(){
-		TGPropertiesManager.getInstance().readProperties(this.properties, RESOURCE, this.module);
+		TGPropertiesManager.getInstance(this.context).readProperties(this.properties, RESOURCE, this.module);
 	}
 	
 	public TGProperties getProperties(){

@@ -94,7 +94,7 @@ public class TGPluginManager {
 	
 	public void setEnabled(String moduleId, boolean enabled){
 		try{
-			TGPluginProperties.instance().setEnabled(moduleId, enabled);
+			TGPluginProperties.getInstance(this.context).setEnabled(moduleId, enabled);
 			
 			Iterator it = this.plugins.iterator();
 			while(it.hasNext()){
@@ -116,7 +116,7 @@ public class TGPluginManager {
 	
 	public boolean isEnabled(String moduleId){
 		try{
-			return TGPluginProperties.instance().isEnabled(moduleId);
+			return TGPluginProperties.getInstance(this.context).isEnabled(moduleId);
 		}catch(Throwable throwable){
 			TGErrorManager.getInstance(this.context).handleError(new TGPluginException(PLUGIN_ERROR_ON_GET_STATUS,throwable));
 		}

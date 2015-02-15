@@ -3,9 +3,11 @@ package org.herac.tuxguitar.util.properties;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+
 public class TGPropertiesManager {
-	
-	private static TGPropertiesManager instance;
 	
 	private TGPropertiesFactory propertiesFactory;
 	private Map propertiesReaders;
@@ -15,15 +17,6 @@ public class TGPropertiesManager {
 		this.propertiesFactory = null;
 		this.propertiesReaders = new HashMap();
 		this.propertiesWriters = new HashMap();
-	}
-	
-	public static TGPropertiesManager getInstance(){
-		synchronized (TGPropertiesManager.class) {
-			if( instance == null ){
-				instance = new TGPropertiesManager();
-			}
-			return instance;
-		}
 	}
 	
 	public TGProperties createProperties() throws TGPropertiesException{
@@ -77,5 +70,13 @@ public class TGPropertiesManager {
 		if( this.propertiesWriters.containsKey(resource) ){
 			this.propertiesWriters.remove(resource);
 		}
+	}
+	
+	public static TGPropertiesManager getInstance(TGContext context) {
+		return (TGPropertiesManager) TGSingletonUtil.getInstance(context, TGPropertiesManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGPropertiesManager();
+			}
+		});
 	}
 }
