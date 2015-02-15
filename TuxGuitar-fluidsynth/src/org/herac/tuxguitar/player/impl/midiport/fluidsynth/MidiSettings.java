@@ -35,7 +35,7 @@ public class MidiSettings {
 	
 	public TGConfigManager getConfig(){
 		if( this.config == null ){
-			this.config = new TGConfigManager("tuxguitar-fluidsynth");
+			this.config = new TGConfigManager(this.provider.getContext(), "tuxguitar-fluidsynth");
 		}
 		return this.config;
 	}

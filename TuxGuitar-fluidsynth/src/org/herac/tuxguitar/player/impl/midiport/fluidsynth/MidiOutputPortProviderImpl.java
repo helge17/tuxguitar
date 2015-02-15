@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import org.herac.tuxguitar.player.base.MidiPlayerException;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
+	private TGContext context;
 	private MidiSynth synth;
 	private MidiOutputPortSettings settings;
 	
-	public MidiOutputPortProviderImpl(){
-		super();
+	public MidiOutputPortProviderImpl(TGContext context){
+		this.context = context;
 	}
 	
 	public List listPorts() throws MidiPlayerException {
@@ -55,8 +57,12 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
 	public MidiOutputPortSettings getSettings(){
 		if(this.settings == null){
-			this.settings = new MidiOutputPortSettings( this );
+			this.settings = new MidiOutputPortSettings(this);
 		}
 		return this.settings;
+	}
+
+	public TGContext getContext() {
+		return context;
 	}
 }
