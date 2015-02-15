@@ -14,11 +14,14 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiPortProviderImpl implements MidiOutputPortProvider{
 	
-	public MidiPortProviderImpl(){
-		super();
+	private TGContext context;
+	
+	public MidiPortProviderImpl(TGContext context){
+		this.context = context;
 	}
 	
 	public List listPorts() throws MidiPlayerException{
@@ -41,7 +44,7 @@ public class MidiPortProviderImpl implements MidiOutputPortProvider{
 							continue;
 						}
 						if(device instanceof Synthesizer){
-							ports.add(new MidiPortSynthesizer((Synthesizer)device));
+							ports.add(new MidiPortSynthesizer(this.context, (Synthesizer)device));
 						}
 						else{
 							ports.add(new MidiPortOut(device));

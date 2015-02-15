@@ -13,6 +13,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class SBInstaller {
@@ -22,6 +23,8 @@ public class SBInstaller {
 	
 	private boolean cancelled;
 	
+	private TGContext context;
+	
 	private URL url;
 	private File tmpPath;
 	private File dstPath;
@@ -29,7 +32,8 @@ public class SBInstaller {
 	private MidiPortSynthesizer synthesizer;
 	private SBInstallerlistener listener;
 	
-	public SBInstaller(URL url,File tmpPath,File dstPath,MidiPortSynthesizer synthesizer, SBInstallerlistener listener){
+	public SBInstaller(TGContext context, URL url,File tmpPath,File dstPath,MidiPortSynthesizer synthesizer, SBInstallerlistener listener){
+		this.context = context;
 		this.url = url;
 		this.tmpPath = tmpPath;
 		this.dstPath = dstPath;
@@ -121,7 +125,7 @@ public class SBInstaller {
 				return;
 			}
 			
-			TGConfigManager config = MidiConfigUtils.getConfig();
+			TGConfigManager config = MidiConfigUtils.getConfig(this.context);
 			config.setValue(MidiConfigUtils.SOUNDBANK_KEY,file.getAbsolutePath());
 			config.save();
 		} catch (Throwable throwable) {
