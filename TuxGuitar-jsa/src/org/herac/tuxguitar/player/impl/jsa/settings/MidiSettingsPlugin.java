@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 
 	protected TGPluginSettingsHandler getHandler() throws TGPluginException {
-		return new MidiSettingsHandler();
+		return new MidiSettingsHandler(getContext());
 	}
 	
 	public String getModuleId() {

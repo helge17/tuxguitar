@@ -14,26 +14,27 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.FileChooser;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiConfigUtils {
 	
 	public static final String SOUNDBANK_KEY = "soundbank.custom.path";
 	
-	public static TGConfigManager getConfig(){
-		return new TGConfigManager("tuxguitar-jsa");
+	public static TGConfigManager getConfig(TGContext context){
+		return new TGConfigManager(context, "tuxguitar-jsa");
 	}
 	
-	public static String getSoundbankPath(){
-		return getSoundbankPath(getConfig());
+	public static String getSoundbankPath(TGContext context){
+		return getSoundbankPath(getConfig(context));
 	}
 	
 	public static String getSoundbankPath(final TGConfigManager config){
 		return config.getStringValue(SOUNDBANK_KEY);
 	}
 	
-	public static void setupDialog(Shell parent) {
-		setupDialog(parent,getConfig());
+	public static void setupDialog(TGContext context, Shell parent) {
+		setupDialog(parent,getConfig(context));
 	}
 	
 	public static void setupDialog(Shell parent,final TGConfigManager config) {

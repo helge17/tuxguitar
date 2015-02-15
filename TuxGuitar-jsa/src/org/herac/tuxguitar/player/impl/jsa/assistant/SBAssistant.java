@@ -16,6 +16,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -27,9 +28,11 @@ public class SBAssistant {
 		new SBUrl(toURL("http://java.sun.com/products/java-media/sound/soundbank-deluxe.gm.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.deluxe")),
 	};
 
+	private TGContext context;
 	private MidiPortSynthesizer synthesizer;
 	
-	public SBAssistant(MidiPortSynthesizer synthesizer){
+	public SBAssistant(TGContext context, MidiPortSynthesizer synthesizer){
+		this.context = context;
 		this.synthesizer = synthesizer;
 	}
 	
@@ -129,7 +132,7 @@ public class SBAssistant {
 	}
 	
 	protected void install(URL url ){
-		new SBInstallerGui(url,this.synthesizer).open();
+		new SBInstallerGui(this.context , url, this.synthesizer).open();
 	}
 
 	private static URL toURL(String s){

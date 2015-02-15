@@ -22,6 +22,7 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -34,11 +35,11 @@ public class SBInstallerGui implements SBInstallerlistener{
 
 	private SBInstaller installer;	
 	
-	public SBInstallerGui(URL url,MidiPortSynthesizer synthesizer){
-		initInstaller(url,synthesizer);
+	public SBInstallerGui(TGContext context, URL url, MidiPortSynthesizer synthesizer){
+		initInstaller(context, url, synthesizer);
 	}
 	
-	public void initInstaller(URL url,MidiPortSynthesizer synthesizer){
+	public void initInstaller(TGContext context, URL url, MidiPortSynthesizer synthesizer){
 		File tmpPath = new File(SB_PATH);
 		File dstPath = new File(SB_PATH);
 		
@@ -48,7 +49,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 		if(!dstPath.exists()){
 			dstPath.mkdirs();
 		}
-		this.installer = new SBInstaller(url,tmpPath,dstPath,synthesizer,this);
+		this.installer = new SBInstaller(context, url, tmpPath, dstPath, synthesizer, this);
 	}
 	
 	public void open(){

@@ -7,7 +7,7 @@ import org.herac.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
 public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 	
 	protected MidiOutputPortProvider getProvider() {
-		return new MidiPortProviderImpl();
+		return new MidiPortProviderImpl(getContext());
 	}
 	
 	public String getModuleId() {
