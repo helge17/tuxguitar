@@ -19,27 +19,23 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class GTPSettingsUtil {
 	
 	private static final String KEY_CHARSET = "charset";
 	
-	private static GTPSettingsUtil instance;
-	
+	private TGContext context;
 	private TGConfigManager config;
 	
 	private GTPSettings settings;
 	
-	private GTPSettingsUtil(){
+	private GTPSettingsUtil(TGContext context){
+		this.context = context;
 		this.settings = new GTPSettings();
-	}
-	
-	public static GTPSettingsUtil instance(){
-		if( instance == null ){
-			instance = new GTPSettingsUtil();
-		}
-		return instance;
 	}
 	
 	public GTPSettings getSettings(){
@@ -48,7 +44,7 @@ public class GTPSettingsUtil {
 	
 	public TGConfigManager getConfig(){
 		if(this.config == null){ 
-			this.config = new TGConfigManager("tuxguitar-gtp");
+			this.config = new TGConfigManager(this.context, "tuxguitar-gtp");
 		}
 		return this.config;
 	}
@@ -134,5 +130,13 @@ public class GTPSettingsUtil {
 			charsets.add(entry.getKey());
 		}
 		return charsets;
+	}
+	
+	public static GTPSettingsUtil getInstance(TGContext context) {
+		return (GTPSettingsUtil) TGSingletonUtil.getInstance(context, GTPSettingsUtil.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new GTPSettingsUtil(context);
+			}
+		});
 	}
 }
