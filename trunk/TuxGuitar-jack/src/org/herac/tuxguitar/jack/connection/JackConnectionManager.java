@@ -8,6 +8,7 @@ import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.JackPortFlags;
 import org.herac.tuxguitar.jack.JackPortTypes;
 import org.herac.tuxguitar.jack.provider.JackClientProvider;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 
 public class JackConnectionManager {
@@ -20,10 +21,10 @@ public class JackConnectionManager {
 	private List jackConnections;
 	private boolean autoConnectPorts;
 	
-	public JackConnectionManager(JackClientProvider jackClientProvider){
+	public JackConnectionManager(TGContext context, JackClientProvider jackClientProvider){
 		this.jackClientProvider = jackClientProvider;
 		this.jackConnectionConfig = new JackConnectionConfig(this);
-		this.jackConnectionListener = new JackConnectionListener(this);
+		this.jackConnectionListener = new JackConnectionListener(context, this);
 		this.jackConnections = new ArrayList();
 	}
 	
