@@ -19,6 +19,7 @@ import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGConverter {
 	// This value will delay the process something like 1 minute for 3000 files.
@@ -32,13 +33,15 @@ public class TGConverter {
 	public static final int EXPORTER_NOT_FOUND = 590;
 	public static final int UNKNOWN_ERROR = 666;
 	
+	private TGContext context;
 	private String sourceFolder;
 	private String destinationFolder;
 	private TGConverterFormat format;
 	private TGConverterListener listener;
 	private boolean cancelled;
 	
-	public TGConverter(String sourceFolder,String destinationFolder){
+	public TGConverter(TGContext context, String sourceFolder, String destinationFolder){
+		this.context = context;
 		this.sourceFolder = sourceFolder;
 		this.destinationFolder = destinationFolder;
 	}
@@ -53,7 +56,7 @@ public class TGConverter {
 				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
 				tgSongLoaderHandle.setFactory(manager.getFactory());
 				tgSongLoaderHandle.setInputStream(new FileInputStream(fileName));
-				TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+				TGFileFormatManager.getInstance(this.context).getLoader().load(tgSongLoaderHandle);
 				
 				song = tgSongLoaderHandle.getSong();
 			} catch (TGFileFormatException e) {
@@ -148,7 +151,7 @@ public class TGConverter {
 	}
 	
 	private TGSong importSong(TGFactory factory, String filename) {
-		Iterator importers = TGFileFormatManager.instance().getImporters();
+		Iterator importers = TGFileFormatManager.getInstance(this.context).getImporters();
 		while (importers.hasNext() ) {
 			try {
 				TGRawImporter rawImporter = (TGRawImporter)importers.next();
