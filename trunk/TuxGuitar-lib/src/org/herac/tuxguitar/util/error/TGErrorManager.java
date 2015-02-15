@@ -4,23 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+
 public class TGErrorManager {
-	
-	private static TGErrorManager instance;
 	
 	private List errorHandlers;
 	
 	private TGErrorManager(){
 		this.errorHandlers = new ArrayList();
-	}
-	
-	public static TGErrorManager getInstance(){
-		synchronized (TGErrorManager.class) {
-			if( instance == null ){
-				instance = new TGErrorManager();
-			}
-			return instance;
-		}
 	}
 	
 	public void handleError(Throwable throwable){
@@ -49,5 +42,13 @@ public class TGErrorManager {
 	
 	public void clear() {
 		this.errorHandlers.clear();
+	}
+	
+	public static TGErrorManager getInstance(TGContext context) {
+		return (TGErrorManager) TGSingletonUtil.getInstance(context, TGErrorManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGErrorManager();
+			}
+		});
 	}
 }

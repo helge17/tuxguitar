@@ -37,14 +37,14 @@ public abstract class TGImporterPlugin implements TGPlugin{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TGFileFormatManager.instance().addImporter(this.importer);
+			TGFileFormatManager.getInstance(this.context).addImporter(this.importer);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TGFileFormatManager.instance().removeImporter(this.importer);
+			TGFileFormatManager.getInstance(this.context).removeImporter(this.importer);
 			this.loaded = false;
 		}
 	}

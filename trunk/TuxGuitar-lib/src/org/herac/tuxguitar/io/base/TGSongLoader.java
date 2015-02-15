@@ -3,10 +3,14 @@ package org.herac.tuxguitar.io.base;
 import java.io.BufferedInputStream;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.util.TGContext;
+
 public class TGSongLoader {
 	
-	public TGSongLoader(){
-		super();
+	private TGContext context;
+	
+	public TGSongLoader(TGContext context){
+		this.context = context;
 	}
 	
 	public void load(TGSongLoaderHandle handle) throws TGFileFormatException{
@@ -14,7 +18,7 @@ public class TGSongLoader {
 			BufferedInputStream stream = new BufferedInputStream(handle.getInputStream());
 			
 			stream.mark(1);
-			Iterator it = TGFileFormatManager.instance().getInputStreams();
+			Iterator it = TGFileFormatManager.getInstance(this.context).getInputStreams();
 			while(it.hasNext() && handle.getSong() == null){
 				TGInputStreamBase reader = (TGInputStreamBase)it.next();
 				reader.init(handle.getFactory(),stream);

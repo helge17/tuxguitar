@@ -12,20 +12,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.util.error.TGErrorManager;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGLibraryLoader {
 	
-	private static TGLibraryLoader instance;
+	private TGContext context;
 	
-	private TGLibraryLoader(){
-		super();
-	}
-	
-	public static TGLibraryLoader instance(){
-		if(instance == null){
-			instance = new TGLibraryLoader();
-		}
-		return instance;
+	private TGLibraryLoader(TGContext context){
+		this.context = context;
 	}
 	
 	public void loadLibrary(File file){
@@ -33,7 +28,7 @@ public class TGLibraryLoader {
 			System.out.println("Loading: " + file.getAbsolutePath());
 			System.load(file.getAbsolutePath());
 		}catch(Throwable throwable){
-			TGErrorManager.getInstance().handleError(throwable);
+			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	
@@ -112,9 +107,9 @@ public class TGLibraryLoader {
 			}
 			return libraries;
 		} catch (UnsupportedEncodingException e) {
-			TGErrorManager.getInstance().handleError(e);
+			TGErrorManager.getInstance(this.context).handleError(e);
 		} catch (IOException e) {
-			TGErrorManager.getInstance().handleError(e);
+			TGErrorManager.getInstance(this.context).handleError(e);
 		}
 		return null;
 	}
@@ -140,5 +135,13 @@ public class TGLibraryLoader {
 				return true;
 			}
 		};
+	}
+	
+	public static TGLibraryLoader getInstance(TGContext context) {
+		return (TGLibraryLoader) TGSingletonUtil.getInstance(context, TGLibraryLoader.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGLibraryLoader(context);
+			}
+		});
 	}
 }
