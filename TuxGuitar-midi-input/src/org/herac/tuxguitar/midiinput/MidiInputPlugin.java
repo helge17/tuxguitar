@@ -3,11 +3,18 @@ package org.herac.tuxguitar.midiinput;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiInputPlugin
 	extends TGToolItemPlugin
 {
+	public void init(TGContext context) {
+		MiConfig.init(context);
+		
+		super.init(context);
+	}
+	
 	public void setEnabled(boolean enabled)
 		throws TGPluginException
 	{
