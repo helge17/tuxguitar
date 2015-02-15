@@ -17,7 +17,7 @@ public class TGServiceReader {
 	private static final String SERVICE_PATH = new String("META-INF/services/");
 	
 	public static Iterator lookupProviders(Class spi){
-		return TGServiceReader.lookupProviders(spi,TGClassLoader.instance().getClassLoader());
+		return TGServiceReader.lookupProviders(spi,TGClassLoader.getInstance().getClassLoader());
 	}
 	
 	public static Iterator lookupProviders(Class spi,ClassLoader loader){

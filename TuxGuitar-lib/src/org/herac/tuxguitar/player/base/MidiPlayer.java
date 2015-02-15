@@ -28,6 +28,8 @@ public class MidiPlayer{
 	
 	private static final int TIMER_DELAY = 10;
 	
+	private TGContext context;
+	
 	private TGDocumentManager documentManager;
 	
 	private MidiSequencer sequencer;
@@ -82,7 +84,8 @@ public class MidiPlayer{
 	
 	protected TGLock lock = new TGLock();
 	
-	private MidiPlayer() {
+	private MidiPlayer(TGContext context) {
+		this.context = context;
 		this.lock = new TGLock();
 		this.volume = MAX_VOLUME;
 	}
@@ -925,37 +928,37 @@ public class MidiPlayer{
 	}
 	
 	public void addListener(TGEventListener listener){
-		TGEventManager.getInstance().addListener(MidiPlayerEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(MidiPlayerEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeListener(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(MidiPlayerEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(MidiPlayerEvent.EVENT_TYPE, listener);
 	}
 	
 	public void notifyStarted(){
-		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STARTED));
+		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STARTED));
 	}
 	
 	public void notifyStopped(){
-		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STOPPED));
+		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STOPPED));
 	}
 	
 	public void notifyCountDownStarted(){
-		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STARTED));
+		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STARTED));
 	}
 	
 	public void notifyCountDownStopped(){
-		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STOPPED));
+		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STOPPED));
 	}
 	
 	public void notifyLoop(){
-		TGEventManager.getInstance().fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_LOOP));
+		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_LOOP));
 	}
 	
 	public static MidiPlayer getInstance(TGContext context) {
 		return (MidiPlayer) TGSingletonUtil.getInstance(context, MidiPlayer.class.getName(), new TGSingletonFactory() {
 			public Object createInstance(TGContext context) {
-				return new MidiPlayer();
+				return new MidiPlayer(context);
 			}
 		});
 	}

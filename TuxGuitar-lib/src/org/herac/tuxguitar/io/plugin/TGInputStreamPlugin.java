@@ -37,14 +37,14 @@ public abstract class TGInputStreamPlugin implements TGPlugin{
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TGFileFormatManager.instance().addInputStream(this.stream);
+			TGFileFormatManager.getInstance(this.context).addInputStream(this.stream);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TGFileFormatManager.instance().removeInputStream(this.stream);
+			TGFileFormatManager.getInstance(this.context).removeInputStream(this.stream);
 			this.loaded = false;
 		}
 	}

@@ -15,8 +15,8 @@ public class TGClassLoader{
 		this.classLoader = new URLClassLoaderImpl();
 	}
 	
-	public static TGClassLoader instance(){
-		if(instance == null){
+	public static TGClassLoader getInstance(){
+		if( instance == null ){
 			instance = new TGClassLoader();
 		}
 		return instance;
@@ -70,7 +70,5 @@ public class TGClassLoader{
 		public void addURL(URL url){
 			super.addURL(url);
 		}
-		
 	}
-	
 }

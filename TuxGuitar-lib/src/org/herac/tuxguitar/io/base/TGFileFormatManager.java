@@ -9,13 +9,15 @@ import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.io.tg.TGInputStream;
 import org.herac.tuxguitar.io.tg.TGOutputStream;
 import org.herac.tuxguitar.io.tg.TGStream;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGFileFormatManager {
 	
 	public static final String DEFAULT_EXTENSION = ("." + TGStream.TG_FORMAT_CODE);
 	
-	private static TGFileFormatManager instance;
-	
+	private TGContext context;
 	private TGSongLoader loader;
 	private TGSongWriter writer;
 	private List inputStreams;
@@ -23,21 +25,15 @@ public class TGFileFormatManager {
 	private List exporters;
 	private List importers;
 	
-	private TGFileFormatManager(){
-		this.loader = new TGSongLoader();
-		this.writer = new TGSongWriter();
+	private TGFileFormatManager(TGContext context){
+		this.context = context;
+		this.loader = new TGSongLoader(this.context);
+		this.writer = new TGSongWriter(this.context);
 		this.inputStreams = new ArrayList();
 		this.outputStreams = new ArrayList();
 		this.exporters = new ArrayList();
 		this.importers = new ArrayList();
 		this.addDefaultStreams();
-	}
-	
-	public static TGFileFormatManager instance(){
-		if(instance == null){
-			instance = new TGFileFormatManager();
-		}
-		return instance;
 	}
 
 	public TGSongLoader getLoader(){
@@ -179,14 +175,22 @@ public class TGFileFormatManager {
 	}
 	
 	public void fireFileFormatAvailabilityEvent(){
-		TGEventManager.getInstance().fireEvent(new TGFileFormatAvailabilityEvent());
+		TGEventManager.getInstance(this.context).fireEvent(new TGFileFormatAvailabilityEvent());
 	}
 	
 	public void addFileFormatAvailabilityListener(TGEventListener listener){
-		TGEventManager.getInstance().addListener(TGFileFormatAvailabilityEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGFileFormatAvailabilityEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeFileFormatAvailabilityListener(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(TGFileFormatAvailabilityEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGFileFormatAvailabilityEvent.EVENT_TYPE, listener);
+	}
+	
+	public static TGFileFormatManager getInstance(TGContext context) {
+		return (TGFileFormatManager) TGSingletonUtil.getInstance(context, TGFileFormatManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGFileFormatManager(context);
+			}
+		});
 	}
 }

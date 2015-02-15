@@ -15,21 +15,15 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGActionManager {
 	
+	private TGContext context;
 	private String lockOwnerId;
 	private TGLock lock;
 	private Map actions;
 	private List interceptors;
 	private TGActionContextFactory actionContextFactory;
 	
-	public static TGActionManager getInstance(TGContext context) {
-		return (TGActionManager) TGSingletonUtil.getInstance(context, TGActionManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
-				return new TGActionManager();
-			}
-		});
-	}
-	
-	private TGActionManager(){
+	private TGActionManager(TGContext context){
+		this.context = context;
 		this.lock = new TGLock();
 		this.actions = new HashMap();
 		this.interceptors = new ArrayList();
@@ -121,39 +115,39 @@ public class TGActionManager {
 	}
 	
 	public void doPreExecution(String id, TGActionContext context) throws TGActionException{
-		TGEventManager.getInstance().fireEvent(new TGActionPreExecutionEvent(id, context));
+		TGEventManager.getInstance(this.context).fireEvent(new TGActionPreExecutionEvent(id, context));
 	}
 	
 	public void doPostExecution(String id, TGActionContext context) throws TGActionException{
-		TGEventManager.getInstance().fireEvent(new TGActionPostExecutionEvent(id, context));
+		TGEventManager.getInstance(this.context).fireEvent(new TGActionPostExecutionEvent(id, context));
 	}
 	
 	public void fireErrorEvent(String id, TGActionContext context, Throwable throwable) throws TGActionException{
-		TGEventManager.getInstance().fireEvent(new TGActionErrorEvent(id, context, throwable));
+		TGEventManager.getInstance(this.context).fireEvent(new TGActionErrorEvent(id, context, throwable));
 	}
 	
 	public void addPreExecutionListener(TGEventListener listener){
-		TGEventManager.getInstance().addListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removePreExecutionListener(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGActionPreExecutionEvent.EVENT_TYPE, listener);
 	}
 	
 	public void addPostExecutionListener(TGEventListener listener){
-		TGEventManager.getInstance().addListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removePostExecutionListener(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGActionPostExecutionEvent.EVENT_TYPE, listener);
 	}
 	
 	public void addErrorListener(TGEventListener listener){
-		TGEventManager.getInstance().addListener(TGActionErrorEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGActionErrorEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeErrorListener(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(TGActionErrorEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGActionErrorEvent.EVENT_TYPE, listener);
 	}
 	
 	public void addInterceptor(TGActionInterceptor interceptor){
@@ -170,5 +164,13 @@ public class TGActionManager {
 	
 	public void setActionContextFactory(TGActionContextFactory actionContextFactory) {
 		this.actionContextFactory = actionContextFactory;
+	}
+	
+	public static TGActionManager getInstance(TGContext context) {
+		return (TGActionManager) TGSingletonUtil.getInstance(context, TGActionManager.class.getName(), new TGSingletonFactory() {
+			public Object createInstance(TGContext context) {
+				return new TGActionManager(context);
+			}
+		});
 	}
 }
