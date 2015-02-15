@@ -46,4 +46,8 @@ public class TGErrorManager {
 	public List getErrorHandlers() {
 		return this.errorHandlers;
 	}
+	
+	public void clear() {
+		this.errorHandlers.clear();
+	}
 }

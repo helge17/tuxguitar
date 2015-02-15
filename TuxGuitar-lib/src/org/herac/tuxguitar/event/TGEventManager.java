@@ -54,4 +54,8 @@ public class TGEventManager {
 		
 		return this.findEventHandler(eventType);
 	}
+	
+	public void clear() {
+		this.eventHandlers.clear();
+	}
 }
