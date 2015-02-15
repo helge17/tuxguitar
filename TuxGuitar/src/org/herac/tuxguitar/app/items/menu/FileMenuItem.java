@@ -33,7 +33,6 @@ import org.herac.tuxguitar.app.action.impl.file.SaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.SaveFileAction;
 import org.herac.tuxguitar.app.items.MenuItems;
 import org.herac.tuxguitar.app.tools.template.TGTemplate;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
@@ -102,8 +101,8 @@ public class FileMenuItem extends MenuItems {
 		this.saveAs.addSelectionListener(new TGActionProcessor(SaveAsFileAction.NAME));
 		
 		//-- IMPORT | EXPORT --
-		int countImporters = TGFileFormatManager.instance().countImporters();
-		int countExporters = TGFileFormatManager.instance().countExporters();
+		int countImporters = TuxGuitar.getInstance().getFileFormatManager().countImporters();
+		int countExporters = TuxGuitar.getInstance().getFileFormatManager().countExporters();
 		if( ( countImporters + countExporters ) > 0 ){
 			//--SEPARATOR--
 			new MenuItem(this.menu, SWT.SEPARATOR);
@@ -186,7 +185,7 @@ public class FileMenuItem extends MenuItems {
 		List importersRaw = new ArrayList();
 		List importersFile = new ArrayList();
 		
-		Iterator importers = TGFileFormatManager.instance().getImporters();
+		Iterator importers = TuxGuitar.getInstance().getFileFormatManager().getImporters();
 		while(importers.hasNext()){
 			TGRawImporter importer = (TGRawImporter)importers.next();
 			if( importer instanceof TGLocalFileImporter ){
@@ -226,7 +225,7 @@ public class FileMenuItem extends MenuItems {
 		List exportersRaw = new ArrayList();
 		List exportersFile = new ArrayList();
 		
-		Iterator exporters = TGFileFormatManager.instance().getExporters();
+		Iterator exporters = TuxGuitar.getInstance().getFileFormatManager().getExporters();
 		while(exporters.hasNext()){
 			TGRawExporter exporter = (TGRawExporter)exporters.next();
 			if( exporter instanceof TGLocalFileExporter ){

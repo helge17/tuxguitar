@@ -68,6 +68,8 @@ import org.herac.tuxguitar.app.util.WindowTitleUtil;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
@@ -78,6 +80,7 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 /**
@@ -129,8 +132,6 @@ public class TuxGuitar {
 	
 	private LyricEditor lyricEditor;
 	
-	private TGEditorManager editorManager;
-	
 	private TGBrowserDialog browser;
 	
 	private UndoableManager undoableManager;
@@ -144,8 +145,6 @@ public class TuxGuitar {
 	private CustomChordManager customChordManager;
 	
 	private FileHistory fileHistory;
-	
-	private TGTemplateManager templateManager;
 	
 	protected Sash sash;
 	
@@ -200,9 +199,9 @@ public class TuxGuitar {
 		}
 		
 		// Priority 1 ----------------------------------------------//
-		TGFileUtils.loadLibraries();
+		TGFileUtils.loadLibraries(this.context);
 		TGFileUtils.loadClasspath();
-		TGErrorAdapter.initialize();
+		TGErrorAdapter.initialize(this.context);
 		TGPropertiesAdapter.initialize();
 		
 		// Priority 2 ----------------------------------------------//
@@ -435,35 +434,35 @@ public class TuxGuitar {
 	}
 	
 	public TGTableViewer getTable(){
-		if(this.table == null){
+		if( this.table == null ){
 			this.table = new TGTableViewer();
 		}
 		return this.table;
 	}
 	
 	public TablatureEditor getTablatureEditor(){
-		if(this.tablatureEditor == null){
+		if( this.tablatureEditor == null ){
 			this.tablatureEditor = new TablatureEditor();
 		}
 		return this.tablatureEditor;
 	}
 	
 	public FretBoardEditor getFretBoardEditor(){
-		if(this.fretBoardEditor == null){
+		if( this.fretBoardEditor == null ){
 			this.fretBoardEditor = new FretBoardEditor();
 		}
 		return this.fretBoardEditor;
 	}
 	
 	public PianoEditor getPianoEditor(){
-		if(this.pianoEditor == null){
+		if( this.pianoEditor == null ){
 			this.pianoEditor = new PianoEditor();
 		}
 		return this.pianoEditor;
 	}
 	
 	public MatrixEditor getMatrixEditor(){
-		if(this.matrixEditor == null){
+		if( this.matrixEditor == null ){
 			this.matrixEditor = new MatrixEditor();
 		}
 		return this.matrixEditor;
@@ -477,50 +476,47 @@ public class TuxGuitar {
 	}
 	
 	public TGTransport getTransport(){
-		if(this.songTransport == null){
+		if( this.songTransport == null ){
 			this.songTransport = new TGTransport();
 		}
 		return this.songTransport;
 	}
 	
 	public EditorCache getEditorCache(){
-		if(this.editorCache == null){
+		if( this.editorCache == null ){
 			this.editorCache = new EditorCache();
 		}
 		return this.editorCache;
 	}
 	
 	public TGEditorManager getEditorManager(){
-		if(this.editorManager == null){
-			this.editorManager = new TGEditorManager();
-		}
-		return this.editorManager;
+		return TGEditorManager.getInstance(this.context);
 	}
 	
 	public LyricEditor getLyricEditor(){
-		if(this.lyricEditor == null){
+		if( this.lyricEditor == null ){
 			this.lyricEditor = new LyricEditor();
 		}
 		return this.lyricEditor;
 	}
 	
 	public TGBrowserDialog getBrowser(){
-		if(this.browser == null){
+		if( this.browser == null ){
 			this.browser = new TGBrowserDialog();
 		}
 		return this.browser;
 	}
 	
 	public UndoableManager getUndoableManager(){
-		if(this.undoableManager == null){
+		if( this.undoableManager == null ){
 			this.undoableManager = new UndoableManager();
 		}
 		return this.undoableManager;
 	}
 	
 	public ScaleManager getScaleManager(){
-		if(this.scaleManager == null){
-			this.scaleManager = new ScaleManager();
+		if( this.scaleManager == null ){
+			this.scaleManager = new ScaleManager(this.context);
 		}
 		return this.scaleManager;
 	}
@@ -537,9 +533,21 @@ public class TuxGuitar {
 		return TGPluginManager.getInstance(this.context);
 	}
 	
+	public TGErrorManager getErrorManager(){
+		return TGErrorManager.getInstance(this.context);
+	}
+	
+	public TGEventManager getEventManager(){
+		return TGEventManager.getInstance(this.context);
+	}
+	
+	public TGFileFormatManager getFileFormatManager(){
+		return TGFileFormatManager.getInstance(this.context);
+	}
+	
 	public TGIconManager getIconManager(){
 		if( this.iconManager == null ){
-			this.iconManager = new TGIconManager();
+			this.iconManager = new TGIconManager(this.context);
 			this.iconManager.addLoader(new TGEventListener() {
 				public void processEvent(TGEvent event) {
 					getShell().setImage(getIconManager().getAppIcon());
@@ -551,14 +559,14 @@ public class TuxGuitar {
 	}
 	
 	public CustomChordManager getCustomChordManager(){
-		if(this.customChordManager == null){
+		if( this.customChordManager == null ){
 			this.customChordManager = new CustomChordManager();
 		}
 		return this.customChordManager;
 	}
 	
 	public ItemManager getItemManager() {
-		if(this.itemManager == null){
+		if( this.itemManager == null ){
 			this.itemManager = new ItemManager();
 		}
 		return this.itemManager;
@@ -576,39 +584,36 @@ public class TuxGuitar {
 	}
 	
 	public TGLanguageManager getLanguageManager() {
-		if(this.languageManager == null){
-			this.languageManager = new TGLanguageManager();
+		if( this.languageManager == null ){
+			this.languageManager = new TGLanguageManager(this.context);
 			this.loadLanguage();
 		}
 		return this.languageManager;
 	}
 	
 	public TGConfigManager getConfig(){
-		if(this.configManager == null){
+		if( this.configManager == null ){
 			this.configManager = new TGConfigManager();
 		}
 		return this.configManager;
 	}
 	
 	public KeyBindingActionManager getKeyBindingManager(){
-		if(this.keyBindingManager == null){
+		if( this.keyBindingManager == null ){
 			this.keyBindingManager = new KeyBindingActionManager();
 		}
 		return this.keyBindingManager;
 	}
 	
 	public FileHistory getFileHistory(){
-		if(this.fileHistory == null){
+		if( this.fileHistory == null ){
 			this.fileHistory = new FileHistory();
 		}
 		return this.fileHistory;
 	}
 	
 	public TGTemplateManager getTemplateManager(){
-		if( this.templateManager == null ){
-			this.templateManager = new TGTemplateManager();
-		}
-		return this.templateManager;
+		return TGTemplateManager.getInstance(this.context);
 	}
 	
 	public MidiPlayer getPlayer(){

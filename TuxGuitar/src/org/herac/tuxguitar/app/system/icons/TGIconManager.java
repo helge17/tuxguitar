@@ -12,8 +12,12 @@ import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGIconManager {
+	
+	private TGContext context;
+	
 	private String theme;
 	private List disposableIcons;
 	
@@ -143,21 +147,22 @@ public class TGIconManager {
 	private Image browserRefresh;
 	private Image settings;
 	
-	public TGIconManager(){
+	public TGIconManager(TGContext context){
+		this.context = context;
 		this.disposableIcons = new ArrayList();
 		this.loadIcons();
 	}
 	
 	public void addLoader(TGEventListener listener){
-		TGEventManager.getInstance().addListener(TGIconEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGIconEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeLoader(TGEventListener listener){
-		TGEventManager.getInstance().removeListener(TGIconEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGIconEvent.EVENT_TYPE, listener);
 	}
 	
 	private void fireChanges(){
-		TGEventManager.getInstance().fireEvent(new TGIconEvent());
+		TGEventManager.getInstance(this.context).fireEvent(new TGIconEvent());
 	}
 	
 	public void reloadIcons(){

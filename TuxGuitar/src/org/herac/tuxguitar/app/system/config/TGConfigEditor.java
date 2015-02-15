@@ -220,7 +220,6 @@ public class TGConfigEditor{
 	public void select(Option option){
 		hideAll();
 		option.setVisible(true);
-		//this.dialog.layout();
 		this.dialog.redraw();
 	}
 	

@@ -42,7 +42,7 @@ public class FileActionUtils {
 	}
 	
 	public static String chooseFileName(){
-		String fileName = FileChooser.instance().save(TuxGuitar.getInstance().getShell(),TGFileFormatManager.instance().getOutputFormats());
+		String fileName = FileChooser.instance().save(TuxGuitar.getInstance().getShell(), TuxGuitar.getInstance().getFileFormatManager().getOutputFormats());
 		if (fileName != null) {
 			if (!isSupportedFormat(fileName)) {
 				fileName += TGFileFormatManager.DEFAULT_EXTENSION;
@@ -74,7 +74,7 @@ public class FileActionUtils {
 		if( path != null ){
 			String extension = getFileExtension(path);
 			if( extension != null ){
-				Iterator it = TGFileFormatManager.instance().getOutputStreams();
+				Iterator it = TuxGuitar.getInstance().getFileFormatManager().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
 					if( isSupportedExtension(writer.getFileFormat(), extension) ){
@@ -100,7 +100,7 @@ public class FileActionUtils {
 		if( path != null ){
 			String extension = getFileExtension(path);
 			if( extension != null ){
-				Iterator it = TGFileFormatManager.instance().getOutputStreams();
+				Iterator it = TuxGuitar.getInstance().getFileFormatManager().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
 					if( isSupportedExtension(writer.getFileFormat(), extension)){
@@ -130,7 +130,7 @@ public class FileActionUtils {
 			TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
 			tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
 			tgSongLoaderHandle.setInputStream(new FileInputStream(fileName));
-			TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+			TuxGuitar.getInstance().getFileFormatManager().getLoader().load(tgSongLoaderHandle);
 			TuxGuitar.getInstance().fireNewSong(tgSongLoaderHandle.getSong(), new File(fileName).toURI().toURL());
 		}catch (Throwable throwable) {
 			TuxGuitar.getInstance().newSong();
@@ -148,7 +148,7 @@ public class FileActionUtils {
 			tgSongWriterHandle.setSong(manager.getSong());
 			tgSongWriterHandle.setFormat(getFileFormat(fileName));
 			tgSongWriterHandle.setOutputStream(stream);
-			TGFileFormatManager.instance().getWriter().write(tgSongWriterHandle);
+			TuxGuitar.getInstance().getFileFormatManager().getWriter().write(tgSongWriterHandle);
 			TuxGuitar.getInstance().fireSaveSong(new File(fileName).toURI().toURL());
 		} catch (Throwable throwable) {
 			MessageDialog.errorMessage(new TGFileFormatException(TuxGuitar.getProperty("file.save.error", new String[]{fileName}),throwable));
@@ -161,7 +161,7 @@ public class FileActionUtils {
 			TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
 			tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
 			tgSongLoaderHandle.setInputStream(stream);
-			TGFileFormatManager.instance().getLoader().load(tgSongLoaderHandle);
+			TuxGuitar.getInstance().getFileFormatManager().getLoader().load(tgSongLoaderHandle);
 			TuxGuitar.getInstance().fireNewSong(tgSongLoaderHandle.getSong(), url);
 		}catch (Throwable throwable) {
 			TuxGuitar.getInstance().newSong();
