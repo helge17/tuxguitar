@@ -23,7 +23,7 @@ public class JackConnectionManager {
 	
 	public JackConnectionManager(TGContext context, JackClientProvider jackClientProvider){
 		this.jackClientProvider = jackClientProvider;
-		this.jackConnectionConfig = new JackConnectionConfig(this);
+		this.jackConnectionConfig = new JackConnectionConfig(context, this);
 		this.jackConnectionListener = new JackConnectionListener(context, this);
 		this.jackConnections = new ArrayList();
 	}
