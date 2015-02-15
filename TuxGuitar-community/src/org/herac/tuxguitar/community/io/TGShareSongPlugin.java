@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public class TGShareSongPlugin extends TGExporterPlugin {
 	
 	protected TGRawExporter getExporter() throws TGPluginException {
-		return new TGShareSongExporter();
+		return new TGShareSongExporter(getContext());
 	}
 	
 	public String getModuleId(){

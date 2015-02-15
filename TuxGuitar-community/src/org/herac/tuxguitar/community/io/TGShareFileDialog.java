@@ -16,16 +16,19 @@ import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGShareFileDialog {
 	
-	private boolean accepted;
+	private TGContext context;
 	private TGShareFile file;
 	private String errors;
+	private boolean accepted;
 	
-	public TGShareFileDialog(TGShareFile file , String errors ){
+	public TGShareFileDialog(TGContext context, TGShareFile file , String errors ){
+		this.context = context;
 		this.file = file;
 		this.errors = errors;
 		this.accepted = false;
@@ -67,17 +70,17 @@ public class TGShareFileDialog {
 		
 		final Text usernameText = new Text(group, SWT.BORDER | SWT.READ_ONLY );
 		usernameText.setLayoutData(makeUsernameTextData());
-		usernameText.setText( TGCommunitySingleton.getInstance().getAuth().getUsername() );
+		usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
 		
 		final Button usernameChooser = new Button(group, SWT.PUSH );
 		usernameChooser.setText("...");
 		usernameChooser.addSelectionListener( new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog();
+				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(getContext());
 				authDialog.open( dialog );
 				if( authDialog.isAccepted() ){
-					TGCommunitySingleton.getInstance().getAuth().update();
-					usernameText.setText( TGCommunitySingleton.getInstance().getAuth().getUsername() );
+					TGCommunitySingleton.getInstance(getContext()).getAuth().update();
+					usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
 				}
 			}
 		} );
@@ -192,5 +195,9 @@ public class TGShareFileDialog {
 	
 	public boolean isAccepted(){
 		return this.accepted;
+	}
+	
+	public TGContext getContext() {
+		return context;
 	}
 }

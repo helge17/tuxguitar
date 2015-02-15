@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public class TGBrowserPluginImpl extends TGBrowserPlugin {
 	
 	protected TGBrowserFactory getFactory() throws TGPluginException {
-		return new TGBrowserFactoryImpl();
+		return new TGBrowserFactoryImpl(getContext());
 	}
 	
 	public String getModuleId(){

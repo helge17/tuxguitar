@@ -18,16 +18,19 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.utils.TGCommunityWeb;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGCommunityAuthDialog {
 	
-	private boolean accepted;
+	private TGContext context;
 	private TGCommunityAuth auth;
+	private boolean accepted;
 	
-	public TGCommunityAuthDialog(){
-		this.auth = TGCommunitySingleton.getInstance().getAuth();
+	public TGCommunityAuthDialog(TGContext context){
+		this.context = context;
+		this.auth = TGCommunitySingleton.getInstance(this.context).getAuth();
 		this.accepted = false;
 	}
 	
@@ -100,7 +103,7 @@ public class TGCommunityAuthDialog {
 				if( href != null ){
 					new Thread( new Runnable() {
 						public void run() throws TGException {
-							TGCommunityWeb.open( href );
+							TGCommunityWeb.open(getContext(), href);
 						}
 					} ).start();
 				}
@@ -173,5 +176,9 @@ public class TGCommunityAuthDialog {
 	
 	public boolean isAccepted(){
 		return this.accepted;
+	}
+
+	public TGContext getContext() {
+		return context;
 	}
 }
