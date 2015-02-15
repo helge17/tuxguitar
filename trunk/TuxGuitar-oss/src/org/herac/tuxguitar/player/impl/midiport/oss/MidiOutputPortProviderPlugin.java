@@ -9,7 +9,7 @@ public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin
 	
 	public MidiOutputPortProvider getProvider() {
 		if( this.portReader == null ){
-			this.portReader = new MidiOutputPortProviderImpl();
+			this.portReader = new MidiOutputPortProviderImpl(getContext());
 		}
 		return this.portReader;
 	}

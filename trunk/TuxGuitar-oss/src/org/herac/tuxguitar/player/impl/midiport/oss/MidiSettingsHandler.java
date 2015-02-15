@@ -12,6 +12,6 @@ public class MidiSettingsHandler implements TGPluginSettingsHandler {
 	}
 	
 	public void openSettingsDialog(Shell parent) {
-		MidiConfigUtils.setupDialog(parent, this.midiSettingsPlugin.findMidiOutputPortProvider());
+		MidiConfigUtils.setupDialog(this.midiSettingsPlugin.getContext(), parent, this.midiSettingsPlugin.findMidiOutputPortProvider());
 	}
 }

@@ -3,13 +3,15 @@ package org.herac.tuxguitar.player.impl.midiport.oss;
 import java.util.List;
 
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
+	private TGContext context;
 	private MidiSystem midiSystem;
 	
-	public MidiOutputPortProviderImpl(){
-		super();
+	public MidiOutputPortProviderImpl(TGContext context){
+		this.context = context;
 	}
 	
 	public List listPorts() {
@@ -17,7 +19,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 			this.midiSystem = new MidiSystem();
 		}
 		if(!this.midiSystem.isOpen()){
-			this.midiSystem.open(MidiConfigUtils.getDevice());
+			this.midiSystem.open(MidiConfigUtils.getDevice(this.context));
 		}
 		return this.midiSystem.findPorts();
 	}
