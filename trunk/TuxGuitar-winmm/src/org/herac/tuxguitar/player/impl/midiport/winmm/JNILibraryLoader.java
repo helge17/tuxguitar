@@ -23,7 +23,7 @@ public class JNILibraryLoader {
 		File file = new File(JNI_TMP_PATH + filename);
 		try{
 			if(!file.exists()){
-				InputStream inputStream = TGClassLoader.instance().getClassLoader().getResourceAsStream(filename);
+				InputStream inputStream = TGClassLoader.getInstance().getClassLoader().getResourceAsStream(filename);
 				if (inputStream != null) {
 					OutputStream outputStream = new FileOutputStream(file);
 					
