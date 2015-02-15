@@ -34,6 +34,7 @@ import org.herac.tuxguitar.app.action.TGActionBase;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsManager;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginInfo;
 
@@ -59,6 +60,8 @@ public class EditPluginsAction extends TGActionBase{
 	}
 	
 	public void showDialog() {
+		TGContext context = TuxGuitar.getInstance().getContext();
+		
 		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
@@ -79,7 +82,7 @@ public class EditPluginsAction extends TGActionBase{
 		Iterator it = getModuleIds().iterator();
 		while(it.hasNext()){
 			String moduleId = (String)it.next();
-			TGPluginInfo pluginInfo = new TGPluginInfo(moduleId);
+			TGPluginInfo pluginInfo = new TGPluginInfo(context, moduleId);
 			
 			String pluginName = pluginInfo.getName();
 			if( pluginName == null ){
@@ -167,7 +170,8 @@ public class EditPluginsAction extends TGActionBase{
 	}
 	
 	public void showInfo(Shell parent, String moduleId) {
-		TGPluginInfo pluginInfo = new TGPluginInfo(moduleId);
+		TGContext context = TuxGuitar.getInstance().getContext();
+		TGPluginInfo pluginInfo = new TGPluginInfo(context, moduleId);
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
