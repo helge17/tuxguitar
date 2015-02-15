@@ -971,7 +971,7 @@ public class TGMeasureManager {
 	/**
 	 * Set the beat stroke
 	 */
-	public boolean setStroke(TGMeasure measure,long start,int value, int direction){
+	public boolean setStroke(TGMeasure measure, long start, int value, int direction){
 		TGBeat beat = getBeat(measure, start);
 		if( beat != null ){
 			beat.getStroke().setValue(value);

@@ -18,4 +18,8 @@ public abstract class TGActionContext {
 	public Object getAttribute(String key){
 		return this.attributes.get(key);
 	}
+	
+	public Map getAttributes(){
+		return this.attributes;
+	}
 }
