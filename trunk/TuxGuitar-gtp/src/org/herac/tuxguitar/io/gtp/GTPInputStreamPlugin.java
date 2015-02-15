@@ -4,15 +4,20 @@ import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.io.plugin.TGInputStreamPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public class GTPInputStreamPlugin extends TGInputStreamPlugin{
+public abstract class GTPInputStreamPlugin extends TGInputStreamPlugin{
 	
 	private TGInputStreamBase inputStreamBase;
 	
-	public GTPInputStreamPlugin(TGInputStreamBase inputStreamBase){
-		this.inputStreamBase = inputStreamBase;
+	public GTPInputStreamPlugin(){
+		super();
 	}
 	
+	protected abstract TGInputStreamBase createInputStream() throws TGPluginException;
+	
 	protected TGInputStreamBase getInputStream() throws TGPluginException {
+		if( this.inputStreamBase == null ) {
+			this.inputStreamBase = this.createInputStream();
+		}
 		return this.inputStreamBase;
 	}
 	

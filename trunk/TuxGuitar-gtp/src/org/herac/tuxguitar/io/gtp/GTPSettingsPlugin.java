@@ -7,7 +7,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public class GTPSettingsPlugin extends TGPluginSettingsAdapter {
 
 	protected TGPluginSettingsHandler getHandler() throws TGPluginException {
-		return new GTPSettingsHandler();
+		return new GTPSettingsHandler(getContext());
 	}
 	
 	public String getModuleId() {
