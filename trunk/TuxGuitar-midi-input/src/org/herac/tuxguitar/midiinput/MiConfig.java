@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 class MiConfig
@@ -64,7 +65,7 @@ class MiConfig
 
 	private	MiConfig()
 	{
-	f_Config = new TGConfigManager("tuxguitar-midi-input");
+	super();
 	}
 
 
@@ -76,7 +77,13 @@ class MiConfig
 	return s_Instance;
 	}
 
-
+	static void	init(TGContext context)
+	{
+		if( instance().f_Config == null ) {
+			instance().f_Config = new TGConfigManager(context, "tuxguitar-midi-input");
+		}
+	}
+	
 	static TGConfigManager	getConfig()
 	{
 	return s_Instance.f_Config;
