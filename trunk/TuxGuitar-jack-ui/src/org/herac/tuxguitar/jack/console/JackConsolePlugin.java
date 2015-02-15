@@ -19,7 +19,7 @@ public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 		if( this.jackConsoleDialog == null ){
 			JackConnectionManager jackConnectionManager = findConnectionManager();
 			if( jackConnectionManager != null ){
-				 this.jackConsoleDialog = new JackConsoleDialog(jackConnectionManager);
+				 this.jackConsoleDialog = new JackConsoleDialog(getContext(), jackConnectionManager);
 			}
 		}
 		if( this.jackConsoleDialog != null && this.jackConsoleDialog.isDisposed() ){

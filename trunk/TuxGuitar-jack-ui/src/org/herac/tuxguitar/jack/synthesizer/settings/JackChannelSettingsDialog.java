@@ -262,7 +262,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 				MidiPlayer.getInstance(this.context).updateChannels();
 			}
 		} catch(MidiPlayerException e){
-			TGErrorManager.getInstance().handleError(e);
+			TGErrorManager.getInstance(this.context).handleError(e);
 		}
 	}
 	

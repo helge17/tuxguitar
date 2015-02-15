@@ -19,12 +19,14 @@ import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.jack.connection.JackConnectionManager;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class JackConsoleDialog implements TGEventListener {
 	
 	private static final int SHELL_WIDTH = 350;
 	
+	private TGContext context;
 	private JackConnectionManager jackConnectionManager;
 	
 	private Shell dialog;
@@ -34,12 +36,13 @@ public class JackConsoleDialog implements TGEventListener {
 	private Button buttonStoreConnections;
 	private Button buttonRestoreConnections;
 	
-	public JackConsoleDialog(JackConnectionManager jackConnectionManager) {
+	public JackConsoleDialog(TGContext context, JackConnectionManager jackConnectionManager) {
+		this.context = context;
 		this.jackConnectionManager = jackConnectionManager;
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM);
+		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
 		this.dialog.addDisposeListener(new DisposeListener() {
@@ -149,7 +152,7 @@ public class JackConsoleDialog implements TGEventListener {
 			this.jackConnectionManager.setAutoConnectPorts(autoConnectPorts);
 			this.jackConnectionManager.saveConfig();
 		} catch (Throwable throwable){
-			TGErrorManager.getInstance().handleError(throwable);
+			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	
@@ -159,7 +162,7 @@ public class JackConsoleDialog implements TGEventListener {
 			this.jackConnectionManager.saveConfig();
 			this.showInfoMessage("jack.console.info.message.title", "jack.console.store.connections.success");
 		} catch (Throwable throwable){
-			TGErrorManager.getInstance().handleError(throwable);
+			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	
@@ -168,7 +171,7 @@ public class JackConsoleDialog implements TGEventListener {
 			this.jackConnectionManager.connectAllPorts();
 			this.showInfoMessage("jack.console.info.message.title", "jack.console.restore.connections.success");
 		} catch (Throwable throwable){
-			TGErrorManager.getInstance().handleError(throwable);
+			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	
