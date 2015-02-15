@@ -21,10 +21,11 @@ import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class TGConverterProcess implements TGConverterListener,TGEventListener{
+public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
 	private static final int SHELL_WIDTH = 650;
 	private static final int SHELL_HEIGHT = 350;
@@ -34,6 +35,7 @@ public class TGConverterProcess implements TGConverterListener,TGEventListener{
 	protected static final Color COLOR_INFO  = TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_BLUE);
 	protected static final Color COLOR_ERROR = TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_RED );
 	
+	private TGContext context;
 	protected Shell dialog;
 	protected StyledText output;
 	protected Button buttonCancel;
@@ -41,8 +43,12 @@ public class TGConverterProcess implements TGConverterListener,TGEventListener{
 	protected TGConverter converter;
 	protected boolean finished;
 	
-	public void start(final String initFolder,String destFolder, TGConverterFormat format ){
-		this.converter = new TGConverter(initFolder,destFolder);
+	public TGConverterProcess(TGContext context) {
+		this.context = context;
+	}
+	
+	public void start(String initFolder, String destFolder, TGConverterFormat format ){
+		this.converter = new TGConverter(this.context, initFolder, destFolder);
 		this.converter.setFormat(format);
 		this.converter.setListener(this);
 		

@@ -6,7 +6,7 @@ public class TGConverterPlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 	public static final String MODULE_ID = "tuxguitar-converter";
 	
 	protected void doAction() {
-		new TGConverterDialog().show();
+		new TGConverterDialog(getContext()).show();
 	}
 	
 	protected String getItemName() {

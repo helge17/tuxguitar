@@ -31,10 +31,13 @@ import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGConverterDialog implements TGEventListener{
 	
 	private static final int SHELL_WIDTH = 500;
+	
+	private TGContext context;
 	
 	protected Shell dialog;
 	protected Group group;
@@ -48,8 +51,13 @@ public class TGConverterDialog implements TGEventListener{
 	
 	protected List outputFormats;
 	
-	public TGConverterDialog() {
+	public TGConverterDialog(TGContext context) {
+		this.context = context;
 		this.outputFormats = new ArrayList();
+	}
+	
+	public TGContext getContext() {
+		return context;
 	}
 	
 	public void show() {
@@ -136,7 +144,7 @@ public class TGConverterDialog implements TGEventListener{
 					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.format.invalid"));
 				}
 				else{
-					TGConverterProcess process = new TGConverterProcess();
+					TGConverterProcess process = new TGConverterProcess(getContext());
 					process.start(inputFolderValue.trim(), outputFolderValue.trim(), outputFormatValue );
 					TGConverterDialog.this.dialog.dispose();
 				}
@@ -176,13 +184,15 @@ public class TGConverterDialog implements TGEventListener{
 	private void addFileFormats(Combo combo){
 		this.outputFormats.clear();
 		
-		Iterator outputStreams = TGFileFormatManager.instance().getOutputStreams();
+		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.context);
+		
+		Iterator outputStreams = fileFormatManager.getOutputStreams();
 		while(outputStreams.hasNext()){
 			TGOutputStreamBase stream = (TGOutputStreamBase)outputStreams.next();
 			addFileFormats(combo, stream.getFileFormat() , stream );
 		}
 		
-		Iterator exporters = TGFileFormatManager.instance().getExporters();
+		Iterator exporters = fileFormatManager.getExporters();
 		while (exporters.hasNext()) {
 			TGRawExporter exporter = (TGRawExporter)exporters.next();
 			if( exporter instanceof TGLocalFileExporter ){
