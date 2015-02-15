@@ -11,7 +11,7 @@ public class JackConnectionPlugin implements TGPlugin{
 	private JackConnectionManager jackConnectionManager;
 	
 	public void init(TGContext context) throws TGPluginException {
-		this.jackConnectionManager = new JackConnectionManager(new JackClientInstanceProvider(context));
+		this.jackConnectionManager = new JackConnectionManager(context, new JackClientInstanceProvider(context));
 	}
 	
 	public void close() throws TGPluginException {
