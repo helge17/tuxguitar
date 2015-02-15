@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiConfigUtils {
@@ -21,20 +22,20 @@ public class MidiConfigUtils {
 	
 	public static final String DEVICE_DEFAULT = "/dev/sequencer";
 	
-	public static TGConfigManager getConfig(){
-		return new TGConfigManager("tuxguitar-oss");
+	public static TGConfigManager getConfig(TGContext context){
+		return new TGConfigManager(context, "tuxguitar-oss");
 	}
 	
-	public static String getDevice(){
-		return getDevice(getConfig());
+	public static String getDevice(TGContext context){
+		return getDevice(getConfig(context));
 	}
 	
 	public static String getDevice(final TGConfigManager config){
 		return config.getStringValue(DEVICE_KEY,DEVICE_DEFAULT);
 	}
 	
-	public static void setupDialog(Shell parent,final MidiOutputPortProviderImpl provider) {
-		setupDialog(parent,provider,getConfig());
+	public static void setupDialog(TGContext context,Shell parent,final MidiOutputPortProviderImpl provider) {
+		setupDialog(parent,provider,getConfig(context));
 	}
 	
 	public static void setupDialog(Shell parent,final MidiOutputPortProviderImpl provider,final TGConfigManager config) {
