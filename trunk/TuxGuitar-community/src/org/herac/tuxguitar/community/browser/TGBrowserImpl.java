@@ -6,15 +6,16 @@ import java.util.List;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserImpl extends TGBrowser {
 	
 	private TGBrowserConnection connection;
 	private TGBrowserElementImpl element;
 	
-	public TGBrowserImpl(TGBrowserDataImpl data){
+	public TGBrowserImpl(TGContext context, TGBrowserDataImpl data){
 		this.element = null;
-		this.connection = new TGBrowserConnection();
+		this.connection = new TGBrowserConnection(context);
 	}
 	
 	public void open() throws TGBrowserException {

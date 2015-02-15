@@ -20,6 +20,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.utils.TGCommunityWeb;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -28,8 +29,10 @@ public class TGCommunityStartupScreen {
 	private static final int MAIN_WIDTH  = 550;
 	private static final int MAIN_HEIGHT = SWT.DEFAULT;
 	
-	public TGCommunityStartupScreen(){
-		super();
+	private TGContext context;
+	
+	public TGCommunityStartupScreen(TGContext context){
+		this.context = context;
 	}
 	
 	public void open(){
@@ -154,7 +157,7 @@ public class TGCommunityStartupScreen {
 				if( href != null ){
 					new Thread( new Runnable() {
 						public void run() throws TGException {
-							TGCommunityWeb.open( href );
+							TGCommunityWeb.open(getContext(), href);
 						}
 					} ).start();
 				}
@@ -163,10 +166,14 @@ public class TGCommunityStartupScreen {
 	}
 	
 	public void setDisabled( boolean enabled ){
-		TGCommunitySingleton.getInstance().getConfig().setValue("community.welcome.disabled",enabled);
+		TGCommunitySingleton.getInstance(this.context).getConfig().setValue("community.welcome.disabled",enabled);
 	}
 	
 	public boolean isDisabled(){
-		return TGCommunitySingleton.getInstance().getConfig().getBooleanValue("community.welcome.disabled");
+		return TGCommunitySingleton.getInstance(this.context).getConfig().getBooleanValue("community.welcome.disabled");
+	}
+	
+	public TGContext getContext() {
+		return context;
 	}
 }

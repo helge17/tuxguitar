@@ -4,12 +4,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory {
 	
+	private TGContext context;
 	private TGBrowserDataImpl data;
 	
-	public TGBrowserFactoryImpl(){
+	public TGBrowserFactoryImpl(TGContext context){
+		this.context = context;
 		this.data = new TGBrowserDataImpl();
 	}
 	
@@ -22,7 +25,7 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory {
 	}
 	
 	public TGBrowser newTGBrowser(TGBrowserData data) {
-		return new TGBrowserImpl( (TGBrowserDataImpl)data );
+		return new TGBrowserImpl(this.context, (TGBrowserDataImpl)data);
 	}
 	
 	public TGBrowserData parseData(String string) {
@@ -30,7 +33,7 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory {
 	}
 	
 	public TGBrowserData dataDialog(Shell parent) {
-		TGBrowserAuthDialog authDialog = new TGBrowserAuthDialog();
+		TGBrowserAuthDialog authDialog = new TGBrowserAuthDialog(this.context);
 		authDialog.open( parent );
 		if( authDialog.isAccepted() ){
 			return this.data;

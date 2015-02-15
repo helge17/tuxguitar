@@ -14,13 +14,16 @@ import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.tg.TGOutputStream;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGShareSong {
 
-	public TGShareSong( ) {
-		super();
+	private TGContext context;
+	
+	public TGShareSong(TGContext context) {
+		this.context = context;
 	}
 	
 	public void process( TGSong song ) {
@@ -37,7 +40,7 @@ public class TGShareSong {
 		try {
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TGShareFileDialog fileDialog = new TGShareFileDialog( file , errors );
+					TGShareFileDialog fileDialog = new TGShareFileDialog(getContext(), file , errors);
 					fileDialog.open();
 					if( fileDialog.isAccepted() ){
 						processUpload( file );
@@ -53,7 +56,7 @@ public class TGShareSong {
 		try {
 			TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 				public void run() throws TGException {
-					TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog();
+					TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(getContext());
 					authDialog.open();
 					if( authDialog.isAccepted() ){
 						processUpload( file );
@@ -71,7 +74,7 @@ public class TGShareSong {
 		new Thread( new Runnable() {
 			public void run() throws TGException {
 				try {
-					TGShareSongConnection share = new TGShareSongConnection();
+					TGShareSongConnection share = new TGShareSongConnection(getContext());
 					share.uploadFile(file , TGShareSong.this );
 				} catch (Throwable throwable ){
 					MessageDialog.errorMessage(throwable);
@@ -128,5 +131,9 @@ public class TGShareSong {
 		TGActionLock.unlock();
 		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
 		TuxGuitar.getInstance().unlock();
+	}
+
+	public TGContext getContext() {
+		return context;
 	}
 }

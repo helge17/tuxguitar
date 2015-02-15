@@ -8,12 +8,16 @@ public class TGCommunityPlugin implements TGPlugin {
 
 	public static final String MODULE_ID = "tuxguitar-community";
 	
+	private TGContext context;
+	
 	public void init(TGContext context) throws TGPluginException{
-		TGCommunitySingleton.getInstance().loadSettings();
+		this.context = context;
+		
+		TGCommunitySingleton.getInstance(this.context).loadSettings();
 	}
 	
 	public void close() throws TGPluginException{
-		TGCommunitySingleton.getInstance().saveSettings();
+		TGCommunitySingleton.getInstance(this.context).saveSettings();
 	}
 	
 	public String getModuleId() {

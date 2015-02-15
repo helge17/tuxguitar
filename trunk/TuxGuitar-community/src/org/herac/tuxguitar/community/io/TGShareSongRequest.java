@@ -6,25 +6,26 @@ import java.net.URLConnection;
 
 import org.herac.tuxguitar.community.auth.TGCommunityAuth;
 import org.herac.tuxguitar.community.utils.TGCommunityWeb;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGShareSongRequest {
-	
-	private static final String REMOTE_URL = (TGCommunityWeb.HOME_URL + "/rd.php/sharing/tuxguitar/upload.do");
 	
 	private static final String EOL =  "\r\n";
 	private static final String BOUNDARY = "*****";
 	private static final String BOUNDARY_SEPARATOR = "--";
 	
+	private TGContext context;
 	private TGShareFile file;
 	private TGCommunityAuth auth;
 	
-	public TGShareSongRequest(TGCommunityAuth auth , TGShareFile file){
+	public TGShareSongRequest(TGContext context, TGCommunityAuth auth , TGShareFile file){
+		this.context = context;
 		this.auth = auth;
 		this.file = file;
 	}
 	
-	public TGShareSongResponse getResponse() throws Throwable { 
-		URL url = new URL(REMOTE_URL);
+	public TGShareSongResponse getResponse() throws Throwable {
+		URL url = new URL(TGCommunityWeb.getHomeUrl(this.context) + "/rd.php/sharing/tuxguitar/upload.do");
 		URLConnection conn = url.openConnection();
 		conn.setDoInput(true);
 		conn.setDoOutput(true);

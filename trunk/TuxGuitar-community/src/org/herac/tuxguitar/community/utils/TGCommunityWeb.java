@@ -5,25 +5,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.herac.tuxguitar.community.TGCommunitySingleton;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class TGCommunityWeb {
 	
-	public static String HOME_URL = TGCommunitySingleton.getInstance().getConfig().getStringValue("community.url");
+	public static String getHomeUrl(TGContext context){
+		return TGCommunitySingleton.getInstance(context).getConfig().getStringValue("community.url");
+	}
 	
-	public static void open( String suffix ){
+	public static void open(TGContext context, String suffix){
 		try {
-			open( new URL(HOME_URL + "/" + suffix) );
+			String homeUrl = getHomeUrl(context);
+			
+			open(context, new URL(homeUrl + "/" + suffix) );
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static boolean open( URL url ){
+	public static boolean open(TGContext context, URL url){
 		if( openDesktopBrowser( url ) ){
 			return true;
 		}
-		if( openCommandLineBrowser( url ) ){
+		if( openCommandLineBrowser(context, url) ){
 			return true;
 		}
 		return false;
@@ -49,8 +54,8 @@ public class TGCommunityWeb {
 		return false;
 	}
 	
-	private static boolean openCommandLineBrowser( URL url ){
-		TGConfigManager config = TGCommunitySingleton.getInstance().getConfig();
+	private static boolean openCommandLineBrowser(TGContext context, URL url){
+		TGConfigManager config = TGCommunitySingleton.getInstance(context).getConfig();
 		
 		String[] browserCmds = config.getStringValue("community.browser","").split(";");
 		for( int i = 0 ; i < browserCmds.length ; i ++ ){

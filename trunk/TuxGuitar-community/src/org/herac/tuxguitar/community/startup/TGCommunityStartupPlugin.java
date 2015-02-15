@@ -7,13 +7,14 @@ import org.herac.tuxguitar.util.plugin.TGPlugin;
 public class TGCommunityStartupPlugin implements TGPlugin {
 	
 	private boolean done;
+	private TGContext context;
 	
 	public TGCommunityStartupPlugin(){
 		this.done = false;
 	}
 	
 	public void init(TGContext context) {
-		// Nothing to init.
+		this.context = context;
 	}
 	
 	public void close() {
@@ -22,7 +23,7 @@ public class TGCommunityStartupPlugin implements TGPlugin {
 	
 	public void setEnabled(boolean enabled) {
 		if(!this.done && enabled){
-			TGCommunityStartupScreen startup = new TGCommunityStartupScreen();
+			TGCommunityStartupScreen startup = new TGCommunityStartupScreen(this.context);
 			if( !startup.isDisabled() ){
 				startup.open();
 			}
