@@ -12,17 +12,13 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public void closePath();
 	
-	public void drawString(String string, int x, int y);
+	public void drawString(String string, float x, float y);
 	
-	public void drawString(String string, int x, int y, boolean isTransparent);
+	public void drawString(String string, float x, float y, boolean isTransparent);
 	
-	public void drawImage(TGImage image, int srcX, int srcY, int srcWidth, int srcHeight, int destX, int destY, int destWidth, int destHeight);
+	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight);
 	
-	public void drawImage(TGImage image, int x, int y);
-	
-	public void drawPolygon(int[] arg0);
-	
-	public void fillPolygon(int[] arg0);
+	public void drawImage(TGImage image, float x, float y);
 	
 	public void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
 	
@@ -44,7 +40,7 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public void setBackground(TGColor color);
 	
-	public void setLineWidth(int lineWidth);
+	public void setLineWidth(float lineWidth);
 	
 	public void setLineStyleSolid();
 	
@@ -60,14 +56,14 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public void setAdvanced(boolean advanced);
 	
-	public int getFontSize();
+	public float getFontSize();
 	
-	public int getFMHeight();
+	public float getFMHeight();
 	
-	public int getFMAscent();
+	public float getFMAscent();
 	
-	public int getFMDescent();
+	public float getFMDescent();
 	
-	public int getFMWidth( String text );
+	public float getFMWidth( String text );
 	
 }

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.graphics;
 public class TGFontModel {
 	
 	private String name;
-	private int height;
+	private float height;
 	private boolean bold;
 	private boolean italic;
 	
@@ -11,7 +11,7 @@ public class TGFontModel {
 		this(null,0,false,false);
 	}
 	
-	public TGFontModel(String name, int height, boolean bold, boolean italic){
+	public TGFontModel(String name, float height, boolean bold, boolean italic){
 		this.name = name;
 		this.height = height;
 		this.bold = bold;
@@ -26,11 +26,11 @@ public class TGFontModel {
 		this.name = name;
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.height;
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 	

@@ -10,15 +10,15 @@ public class TGMeasureBuffer {
 	
 	private TGPainter painter;
 	
-	private int width;
+	private float width;
 	
-	private int height;
+	private float height;
 	
 	public TGMeasureBuffer(){
 		super();
 	}
 	
-	public void createBuffer(TGPainter painter, int width,int height,TGColor background){
+	public void createBuffer(TGPainter painter, float width, float height,TGColor background){
 		this.dispose();
 		this.width = width;
 		this.height = height;
@@ -39,13 +39,12 @@ public class TGMeasureBuffer {
 		getPainter().closePath();
 	}
 	
-	public void paintBuffer(TGPainter painter,int x,int y,int srcY){
+	public void paintBuffer(TGPainter painter,float x,float y,float srcY){
 		painter.drawImage(this.buffer,0,srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
 	}
 	
 	public void createPainter(){
 		this.disposePainter();
-		//this.painter = new TGPainterImpl(this.buffer);
 		this.painter = this.buffer.createPainter();
 	}
 	

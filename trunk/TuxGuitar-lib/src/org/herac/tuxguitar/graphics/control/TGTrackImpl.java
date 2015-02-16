@@ -18,8 +18,8 @@ import org.herac.tuxguitar.song.models.TGTrack;
  */
 public class TGTrackImpl extends TGTrack{
 	
-	private int tabHeight;
-	private int scoreHeight;
+	private float tabHeight;
+	private float scoreHeight;
 	
 	public TGTrackImpl(TGFactory factory) {
 		super(factory);
@@ -43,15 +43,15 @@ public class TGTrackImpl extends TGTrack{
 		this.scoreHeight = ((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ?(layout.getScoreLineSpacing() * 4):0);
 	}
 	
-	public int getTabHeight() {
+	public float getTabHeight() {
 		return this.tabHeight;
 	}
 	
-	public int getScoreHeight() {
+	public float getScoreHeight() {
 		return this.scoreHeight;
 	}
 	
-	public void setTabHeight(int tabHeight) {
+	public void setTabHeight(float tabHeight) {
 		this.tabHeight = tabHeight;
 	}
 	

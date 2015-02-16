@@ -2,31 +2,31 @@ package org.herac.tuxguitar.graphics;
 
 public class TGPoint {
 	
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 	
-	public TGPoint(int x,int y){
+	public TGPoint(float x, float y){
 		this.x = x;
 		this.y = y;
 	}
 	
 	public TGPoint(){
-		this(0,0);
+		this(0, 0);
 	}
 	
-	public int getX() {
+	public float getX() {
 		return this.x;
 	}
 	
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 	
-	public int getY() {
+	public float getY() {
 		return this.y;
 	}
 	
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 }

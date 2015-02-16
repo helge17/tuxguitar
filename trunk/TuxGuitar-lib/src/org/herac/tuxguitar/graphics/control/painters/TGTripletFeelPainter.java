@@ -4,7 +4,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class TGTripletFeelPainter {
 	
-	public static void paintTripletFeel8(TGPainter painter, int x, int y,float scale) {
+	public static void paintTripletFeel8(TGPainter painter, float x, float y,float scale) {
 		float topSpacing = (1.0f * scale);
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
@@ -41,7 +41,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 	}
 	
-	public static void paintTripletFeelNone8(TGPainter painter, int x, int y,float scale) {
+	public static void paintTripletFeelNone8(TGPainter painter, float x, float y,float scale) {
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
 		float ovalWidth = (1.33f * scale);
@@ -63,7 +63,7 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 	}
 	
-	public static int paintTripletFeel16(TGPainter painter, int x, int y,float scale) {
+	public static int paintTripletFeel16(TGPainter painter, float x, float y,float scale) {
 		float topSpacing = (1.0f * scale);
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
@@ -96,7 +96,7 @@ public class TGTripletFeelPainter {
 		return Math.round( (ovalWidth * 2f) + horizontalSpacing );
 	}
 	
-	public static int paintTripletFeelNone16(TGPainter painter, int x, int y,float scale) {
+	public static int paintTripletFeelNone16(TGPainter painter, float x, float y,float scale) {
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
 		float ovalWidth = (1.33f * scale);

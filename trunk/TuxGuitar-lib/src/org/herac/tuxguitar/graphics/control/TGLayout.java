@@ -1,9 +1,3 @@
-/*
- * Created on 04-ene-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.graphics.control;
 
 import java.util.ArrayList;
@@ -21,12 +15,6 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGVoice;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public abstract class TGLayout {
 	
 	public static final int MODE_VERTICAL = 1;
@@ -40,30 +28,30 @@ public abstract class TGLayout {
 	public static final int DISPLAY_CHORD_NAME = 0x10;
 	public static final int DISPLAY_CHORD_DIAGRAM = 0x20;
 	
+	private int style;
 	private float scale;
 	private float fontScale;
-	private int style;
-	private int width;
-	private int height;
+	private float width;
+	private float height;
 	
-	private int minBufferSeparator;
-	private int minTopSpacing;
-	private int minScoreTabSpacing;
-	private int stringSpacing;
-	private int scoreLineSpacing;
-	private int trackSpacing;
-	private int firstTrackSpacing;
-	private int firstMeasureSpacing;
-	private int chordFretIndexSpacing;
-	private int chordStringSpacing;
-	private int chordFretSpacing;
-	private int chordNoteSize;
-	private int repeatEndingSpacing;
-	private int effectSpacing;
-	private int divisionTypeSpacing;
-	private int textSpacing;
-	private int markerSpacing;
-	private int loopMarkerSpacing;
+	private float minBufferSeparator;
+	private float minTopSpacing;
+	private float minScoreTabSpacing;
+	private float stringSpacing;
+	private float scoreLineSpacing;
+	private float trackSpacing;
+	private float firstTrackSpacing;
+	private float firstMeasureSpacing;
+	private float chordFretIndexSpacing;
+	private float chordStringSpacing;
+	private float chordFretSpacing;
+	private float chordNoteSize;
+	private float repeatEndingSpacing;
+	private float effectSpacing;
+	private float divisionTypeSpacing;
+	private float textSpacing;
+	private float markerSpacing;
+	private float loopMarkerSpacing;
 	private boolean bufferEnabled;
 	private boolean playModeEnabled;
 	
@@ -117,16 +105,16 @@ public abstract class TGLayout {
 		this.getResources().load(this.styles);
 	}
 	
-	public abstract void paintSong(TGPainter painter,TGRectangle clientArea,int fromX,int fromY);
+	public abstract void paintSong(TGPainter painter,TGRectangle clientArea,float fromX,float fromY);
 	
 	public abstract int getMode();
 	
-	public void paint(TGPainter painter,TGRectangle clientArea,int fromX,int fromY){
+	public void paint(TGPainter painter,TGRectangle clientArea,float fromX,float fromY){
 		this.playModeEnabled = false;
 		paintSong(painter,clientArea,fromX,fromY);
 	}
 	
-	public void paintMeasure(TGMeasureImpl measure,TGPainter painter,int spacing) {
+	public void paintMeasure(TGMeasureImpl measure,TGPainter painter,float spacing) {
 		measure.setSpacing(spacing);
 		measure.paintMeasure(this,painter);
 	}
@@ -174,15 +162,15 @@ public abstract class TGLayout {
 	/**
 	 * Pinta las lineas
 	 */
-	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,TGPainter painter,int x,int y,int width) {
+	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,TGPainter painter,float x,float y,float width) {
 		if(width > 0){
 			setLineStyle(painter);
-			int tempX = ((x < 0)?0:x);
-			int tempY = y;
+			float tempX = ((x < 0)?0:x);
+			float tempY = y;
 			
 			//partitura
 			if( (this.style & DISPLAY_SCORE) != 0 ){
-				int posY = tempY + ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+				float posY = tempY + ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				
 				painter.initPath();
 				painter.setAntialias(false);
@@ -238,18 +226,18 @@ public abstract class TGLayout {
 	}
 	
 	protected void checkDefaultSpacing(TGTrackSpacing ts){
-		int checkPosition = -1;
-		int minBufferSeparator = getMinBufferSeparator();
+		float checkPosition = -1;
+		float minBufferSeparator = getMinBufferSeparator();
 		if( (this.style & DISPLAY_SCORE) != 0 ){
-			int bufferSeparator = (ts.getPosition(TGTrackSpacing.POSITION_SCORE_UP_LINES) - ts.getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
-			if(bufferSeparator < minBufferSeparator ) {
+			float bufferSeparator = (ts.getPosition(TGTrackSpacing.POSITION_SCORE_UP_LINES) - ts.getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+			if( bufferSeparator < minBufferSeparator ) {
 				ts.setSize(TGTrackSpacing.POSITION_BUFFER_SEPARATOR,minBufferSeparator - bufferSeparator);
 			}
 			checkPosition = ts.getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 		}
 		else if((this.style & DISPLAY_TABLATURE) != 0){
-			int bufferSeparator = (ts.getPosition(TGTrackSpacing.POSITION_TABLATURE) - ts.getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
-			if(bufferSeparator < minBufferSeparator ) {
+			float bufferSeparator = (ts.getPosition(TGTrackSpacing.POSITION_TABLATURE) - ts.getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+			if( bufferSeparator < minBufferSeparator ) {
 				ts.setSize(TGTrackSpacing.POSITION_BUFFER_SEPARATOR,minBufferSeparator - bufferSeparator);
 			}
 			checkPosition = ts.getPosition(TGTrackSpacing.POSITION_TABLATURE);
@@ -509,7 +497,7 @@ public abstract class TGLayout {
 		painter.setBackground(getResources().getLoopEMarkerColor());
 	}
 	
-	public TGRectangle getNoteOrientation(TGPainter painter,int x,int y,TGNote note){
+	public TGRectangle getNoteOrientation(TGPainter painter, float x, float y, TGNote note){
 		String noteAsString = null;
 		if (note.isTiedNote()){
 			noteAsString = "L";
@@ -521,16 +509,15 @@ public abstract class TGLayout {
 			noteAsString = Integer.toString(note.getValue());
 			noteAsString = (note.getEffect().isGhostNote())?"(" + noteAsString + ")":noteAsString;
 		}
-		return getOrientation(painter,x,y,noteAsString);
+		return getOrientation(painter, x, y, noteAsString);
 	}
 	
-	public TGRectangle getOrientation(TGPainter painter,int x,int y,String s){
-		int fmWidth = painter.getFMWidth(s);
-		int fmAscent = painter.getFMAscent();
-		int fSize = painter.getFontSize();
-		return new TGRectangle((x - (fmWidth / 2)),(y - (fmAscent - fSize) - (fSize / 2)),fmWidth, fSize );
-		//TGDimension size = painter.getStringExtent(s);
-		//return new TGRectangle((x - (size.getWidth() / 2)),(y - (size.getHeight() / 2)),size.getWidth(), size.getHeight() );
+	public TGRectangle getOrientation(TGPainter painter, float x, float y, String s){
+		float fmWidth = painter.getFMWidth(s);
+		float fmAscent = painter.getFMAscent();
+		float fSize = painter.getFontSize();
+
+		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent - fSize) - (fSize / 2f)), fmWidth, fSize );
 	}
 	
 	public TGSongManager getSongManager() {
@@ -553,19 +540,19 @@ public abstract class TGLayout {
 		return this.resources;
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.height;
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 	
-	public int getWidth() {
+	public float getWidth() {
 		return this.width;
 	}
 	
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
 	
@@ -601,152 +588,152 @@ public abstract class TGLayout {
 		this.bufferEnabled = bufferEnabled;
 	}
 	
-	public int getFirstMeasureSpacing() {
+	public float getFirstMeasureSpacing() {
 		return this.firstMeasureSpacing;
 	}
 	
-	public void setFirstMeasureSpacing(int firstMeasureSpacing) {
+	public void setFirstMeasureSpacing(float firstMeasureSpacing) {
 		this.firstMeasureSpacing = firstMeasureSpacing;
 	}
 	
-	public int getMinBufferSeparator() {
+	public float getMinBufferSeparator() {
 		return this.minBufferSeparator;
 	}
 	
-	public void setMinBufferSeparator(int minBufferSeparator) {
+	public void setMinBufferSeparator(float minBufferSeparator) {
 		this.minBufferSeparator = minBufferSeparator;
 	}
 	
-	public int getMinTopSpacing() {
+	public float getMinTopSpacing() {
 		return this.minTopSpacing;
 	}
 	
-	public void setMinTopSpacing(int minTopSpacing) {
+	public void setMinTopSpacing(float minTopSpacing) {
 		this.minTopSpacing = minTopSpacing;
 	}
 	
-	public int getMinScoreTabSpacing() {
+	public float getMinScoreTabSpacing() {
 		return this.minScoreTabSpacing;
 	}
 	
-	public void setMinScoreTabSpacing(int minScoreTabSpacing) {
+	public void setMinScoreTabSpacing(float minScoreTabSpacing) {
 		this.minScoreTabSpacing = minScoreTabSpacing;
 	}
 	
-	public int getScoreLineSpacing() {
+	public float getScoreLineSpacing() {
 		return this.scoreLineSpacing;
 	}
 	
-	public void setScoreLineSpacing(int scoreLineSpacing) {
+	public void setScoreLineSpacing(float scoreLineSpacing) {
 		this.scoreLineSpacing = scoreLineSpacing;
 	}
 	
-	public int getFirstTrackSpacing() {
+	public float getFirstTrackSpacing() {
 		return this.firstTrackSpacing;
 	}
 	
-	public void setFirstTrackSpacing(int firstTrackSpacing) {
+	public void setFirstTrackSpacing(float firstTrackSpacing) {
 		this.firstTrackSpacing = firstTrackSpacing;
 	}
 	
-	public int getTrackSpacing() {
+	public float getTrackSpacing() {
 		return this.trackSpacing;
 	}
 	
-	public void setTrackSpacing(int trackSpacing) {
+	public void setTrackSpacing(float trackSpacing) {
 		this.trackSpacing = trackSpacing;
 	}
 	
-	public int getStringSpacing() {
+	public float getStringSpacing() {
 		return this.stringSpacing;
 	}
 	
-	public void setStringSpacing(int stringSpacing) {
+	public void setStringSpacing(float stringSpacing) {
 		this.stringSpacing = stringSpacing;
 	}
 	
-	public int getChordFretIndexSpacing() {
+	public float getChordFretIndexSpacing() {
 		return this.chordFretIndexSpacing;
 	}
 	
-	public void setChordFretIndexSpacing(int chordFretIndexSpacing) {
+	public void setChordFretIndexSpacing(float chordFretIndexSpacing) {
 		this.chordFretIndexSpacing = chordFretIndexSpacing;
 	}
 	
-	public int getChordStringSpacing() {
+	public float getChordStringSpacing() {
 		return this.chordStringSpacing;
 	}
 	
-	public void setChordStringSpacing(int chordStringSpacing) {
+	public void setChordStringSpacing(float chordStringSpacing) {
 		this.chordStringSpacing = chordStringSpacing;
 	}
 	
-	public int getChordFretSpacing() {
+	public float getChordFretSpacing() {
 		return this.chordFretSpacing;
 	}
 	
-	public void setChordFretSpacing(int chordFretSpacing) {
+	public void setChordFretSpacing(float chordFretSpacing) {
 		this.chordFretSpacing = chordFretSpacing;
 	}
 	
-	public int getChordNoteSize() {
+	public float getChordNoteSize() {
 		return this.chordNoteSize;
 	}
 	
-	public void setChordNoteSize(int chordNoteSize) {
+	public void setChordNoteSize(float chordNoteSize) {
 		this.chordNoteSize = chordNoteSize;
 	}
 	
-	public int getRepeatEndingSpacing() {
+	public float getRepeatEndingSpacing() {
 		return this.repeatEndingSpacing;
 	}
 	
-	public void setRepeatEndingSpacing(int repeatEndingSpacing) {
+	public void setRepeatEndingSpacing(float repeatEndingSpacing) {
 		this.repeatEndingSpacing = repeatEndingSpacing;
 	}
 	
-	public int getDivisionTypeSpacing() {
+	public float getDivisionTypeSpacing() {
 		return this.divisionTypeSpacing;
 	}
 	
-	public void setDivisionTypeSpacing(int divisionTypeSpacing) {
+	public void setDivisionTypeSpacing(float divisionTypeSpacing) {
 		this.divisionTypeSpacing = divisionTypeSpacing;
 	}
 	
-	public int getTextSpacing() {
+	public float getTextSpacing() {
 		return this.textSpacing;
 	}
 	
-	public void setTextSpacing(int textSpacing) {
+	public void setTextSpacing(float textSpacing) {
 		this.textSpacing = textSpacing;
 	}
 	
-	public int getMarkerSpacing() {
+	public float getMarkerSpacing() {
 		return this.markerSpacing;
 	}
 	
-	public void setMarkerSpacing(int markerSpacing) {
+	public void setMarkerSpacing(float markerSpacing) {
 		this.markerSpacing = markerSpacing;
 	}
 	
-	public int getLoopMarkerSpacing() {
+	public float getLoopMarkerSpacing() {
 		return this.loopMarkerSpacing;
 	}
 	
-	public void setLoopMarkerSpacing(int loopMarkerSpacing) {
+	public void setLoopMarkerSpacing(float loopMarkerSpacing) {
 		this.loopMarkerSpacing = loopMarkerSpacing;
 	}
 	
-	public int getEffectSpacing() {
+	public float getEffectSpacing() {
 		return this.effectSpacing;
 	}
 	
-	public void setEffectSpacing(int effectSpacing) {
+	public void setEffectSpacing(float effectSpacing) {
 		this.effectSpacing = effectSpacing;
 	}
 	
-	public int getDefaultChordSpacing(){
-		int spacing = 0;
+	public float getDefaultChordSpacing(){
+		float spacing = 0;
 		if( (this.style & DISPLAY_CHORD_DIAGRAM) != 0 ){
 			spacing += ( (TGChordImpl.MAX_FRETS * getChordFretSpacing()) + getChordFretSpacing());
 		}
@@ -784,23 +771,23 @@ public abstract class TGLayout {
 		this.trackPositions.clear();
 	}
 	
-	protected void addTrackPosition(int track,int posY,int height){
+	protected void addTrackPosition(int track, float posY, float height){
 		this.trackPositions.add(new TrackPosition(track,posY,height));
 	}
 	
-	public int getTrackNumberAt(int y){
+	public int getTrackNumberAt(float y){
 		TrackPosition trackPos = getTrackPositionAt(y);
 		return ((trackPos != null)?trackPos.getTrack():-1);
 	}
 	
-	public TrackPosition getTrackPositionAt(int y){
+	public TrackPosition getTrackPositionAt(float y){
 		TrackPosition trackPos = null;
-		int minorDistance = 0;
+		float minorDistance = 0;
 		
 		Iterator it = this.trackPositions.iterator();
 		while(it.hasNext()){
 			TrackPosition pos = (TrackPosition)it.next();
-			int distanceY = Math.min(Math.abs(y - (pos.getPosY())), Math.abs(y - (pos.getPosY() + pos.getHeight() - 10)));
+			float distanceY = Math.min(Math.abs(y - (pos.getPosY())), Math.abs(y - (pos.getPosY() + pos.getHeight() - 10)));
 			if(trackPos == null || distanceY < minorDistance){
 				trackPos = pos;
 				minorDistance = distanceY;
@@ -815,20 +802,20 @@ public abstract class TGLayout {
 	
 	public class TrackPosition{
 		private int track;
-		private int posY;
-		private int height;
+		private float posY;
+		private float height;
 		
-		public TrackPosition(int track,int posY,int height){
+		public TrackPosition(int track, float posY, float height){
 			this.track = track;
 			this.posY = posY;
 			this.height = height;
 		}
 		
-		public int getPosY() {
+		public float getPosY() {
 			return this.posY;
 		}
 		
-		public int getHeight() {
+		public float getHeight() {
 			return this.height;
 		}
 		

@@ -22,9 +22,9 @@ import org.herac.tuxguitar.song.models.TGTrack;
  */
 public class TGLayoutVertical extends TGLayout{
 	
-	private int maximumWidth;
-	private int marginLeft;
-	private int marginRight;
+	private float maximumWidth;
+	private float marginLeft;
+	private float marginRight;
 	
 	public TGLayoutVertical(TGController controller,int style){
 		super(controller,style);
@@ -34,7 +34,7 @@ public class TGLayoutVertical extends TGLayout{
 		return MODE_VERTICAL;
 	}
 	
-	public void paintSong(TGPainter painter,TGRectangle clientArea,int fromX,int fromY) {
+	public void paintSong(TGPainter painter,TGRectangle clientArea, float fromX, float fromY) {
 		this.marginLeft = getFirstMeasureSpacing();
 		this.marginRight = 10;
 		this.maximumWidth = (clientArea.getWidth() - (this.marginLeft + this.marginRight));
@@ -44,9 +44,9 @@ public class TGLayoutVertical extends TGLayout{
 		
 		int style = getStyle();
 		int number = getComponent().getTrackSelection();
-		int posY = fromY + getFirstTrackSpacing();
-		int height = getFirstTrackSpacing();
-		int lineHeight = 0;
+		float posY = fromY + getFirstTrackSpacing();
+		float height = getFirstTrackSpacing();
+		float lineHeight = 0;
 		
 		int measureCount = getSong().countMeasureHeaders();
 		int nextMeasureIndex = 0;
@@ -83,8 +83,8 @@ public class TGLayoutVertical extends TGLayout{
 					lineHeight = ts.getSize();
 					addTrackPosition(track.getNumber(),posY,lineHeight);
 					
-					int emptyX = (this.marginLeft + fromX + line.tempWith + 2);
-					int emptyWith = ( this.maximumWidth - emptyX );
+					float emptyX = (this.marginLeft + fromX + line.tempWith + 2);
+					float emptyWith = ( this.maximumWidth - emptyX );
 					if((emptyWith - 20) > 0 && (line.lastIndex + 1) >= measureCount){
 						if(emptyX < (clientArea.getX() + clientArea.getWidth())){
 							emptyX = (emptyX < clientArea.getX() ? clientArea.getX() :emptyX);
@@ -106,17 +106,17 @@ public class TGLayoutVertical extends TGLayout{
 		this.setWidth( getWidth() + this.marginRight );
 	}
 	
-	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter,int fromX, int fromY,TGTrackSpacing ts,TGRectangle clientArea) {
-		int posX = (this.marginLeft + fromX);
-		int posY = fromY;
-		int width = this.marginLeft;
+	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter, float fromX, float fromY,TGTrackSpacing ts,TGRectangle clientArea) {
+		float posX = (this.marginLeft + fromX);
+		float posY = fromY;
+		float width = this.marginLeft;
 		
 		//verifico si esta en el area de cliente
 		boolean isAtY = (posY + ts.getSize() > clientArea.getY() && posY < clientArea.getY() + clientArea.getHeight() + 80);
 		
-		int measureSpacing = 0;
+		float measureSpacing = 0;
 		if( line.fullLine ){
-			int diff = ( this.maximumWidth - line.tempWith);
+			float diff = ( this.maximumWidth - line.tempWith);
 			if(diff != 0 && line.measures.size() > 0){
 				measureSpacing = diff / line.measures.size();
 			}
@@ -135,7 +135,7 @@ public class TGLayoutVertical extends TGLayout{
 			
 			currMeasure.setFirstOfLine(i == 0);
 			
-			int measureWidth = ( currMeasure.getWidth(this) + measureSpacing );
+			float measureWidth = ( currMeasure.getWidth(this) + measureSpacing );
 			boolean isAtX = ( posX + measureWidth > clientArea.getX() && posX < clientArea.getX() + clientArea.getWidth());
 			if(isAtX && isAtY){
 				paintMeasure(currMeasure,painter,measureSpacing);
@@ -192,11 +192,11 @@ public class TGLayoutVertical extends TGLayout{
 	}
 	
 	private class TempLine{
-		protected int tempWith;
+		protected float tempWith;
 		protected int lastIndex;
 		protected boolean fullLine;
-		protected int maxY = 0;
-		protected int minY = 0;
+		protected float maxY = 0;
+		protected float minY = 0;
 		protected List measures;
 		
 		public TempLine(){

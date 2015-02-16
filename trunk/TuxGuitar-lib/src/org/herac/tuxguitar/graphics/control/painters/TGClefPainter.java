@@ -4,7 +4,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class TGClefPainter {
 	
-	public static void paintTreble(TGPainter painter, int x, int y,float scale){
+	public static void paintTreble(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.9706216f * scale)),(y + (-0.9855771f * scale)));
 		painter.cubicTo((x + (0.99023926f * scale)),(y + (-0.99538594f * scale)),(x + (0.99350905f * scale)),(y + (-0.99538594f * scale)),(x + (1.0131269f * scale)),(y + (-0.99538594f * scale)));
 		painter.cubicTo((x + (1.0392835f * scale)),(y + (-0.99211615f * scale)),(x + (1.055632f * scale)),(y + (-0.9823073f * scale)),(x + (1.0915977f * scale)),(y + (-0.9430719f * scale)));
@@ -102,7 +102,7 @@ public class TGClefPainter {
 		painter.cubicTo((x + (1.5591533f * scale)),(y + (2.6829367f * scale)),(x + (1.4676039f * scale)),(y + (2.6371622f * scale)),(x + (1.3924028f * scale)),(y + (2.617545f * scale)));
 	}
 	
-	public static void paintBass(TGPainter painter, int x, int y,float scale){
+	public static void paintBass(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.71937084f * scale)),(y + (0.16147426f * scale)));
 		painter.cubicTo((x + (0.75454587f * scale)),(y + (0.15827677f * scale)),(x + (0.8920496f * scale)),(y + (0.16147426f * scale)),(x + (0.94321334f * scale)),(y + (0.16467176f * scale)));
 		painter.cubicTo((x + (1.3429334f * scale)),(y + (0.20944051f * scale)),(x + (1.6147422f * scale)),(y + (0.4077018f * scale)),(x + (1.7042797f * scale)),(y + (0.72108173f * scale)));
@@ -145,7 +145,7 @@ public class TGClefPainter {
 		painter.cubicTo((x + (1.8449808f * scale)),(y + (1.338248f * scale)),(x + (1.8929471f * scale)),(y + (1.2774905f * scale)),(x + (1.9632971f * scale)),(y + (1.2583042f * scale)));
 	}
 	
-	public static void paintAlto(TGPainter painter, int x, int y,float scale){
+	public static void paintAlto(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.026545623f * scale)),(y + (0.5470838f * scale)));
 		painter.cubicTo((x + (0.03553187f * scale)),(y + (0.5410925f * scale)),(x + (0.053504374f * scale)),(y + (0.5410925f * scale)),(x + (0.21525937f * scale)),(y + (0.5410925f * scale)));
 		painter.lineTo((x + (0.39498562f * scale)),(y + (0.5410925f * scale)));
@@ -244,7 +244,7 @@ public class TGClefPainter {
 		painter.cubicTo((x + (0.5896894f * scale)),(y + (0.55607f * scale)),(x + (0.59568065f * scale)),(y + (0.55007875f * scale)),(x + (0.6016719f * scale)),(y + (0.5470838f * scale)));
 	}
 	
-	public static void paintTenor(TGPainter painter, int x, int y,float scale){
+	public static void paintTenor(TGPainter painter, float x, float y,float scale){
 		painter.moveTo((x + (0.026545623f * scale)),(y + (-0.45291623f * scale)));
 		painter.cubicTo((x + (0.03553187f * scale)),(y + (-0.45890749f * scale)),(x + (0.053504374f * scale)),(y + (-0.45890749f * scale)),(x + (0.21525937f * scale)),(y + (-0.45890749f * scale)));
 		painter.lineTo((x + (0.39498562f * scale)),(y + (-0.45890749f * scale)));
