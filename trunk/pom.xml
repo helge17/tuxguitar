@@ -232,12 +232,24 @@
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-synth</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-synth-vst</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
 			
 			<!-- SWT Platforms -->
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
-				<version>4.3</version>
+				<version>4.4</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
