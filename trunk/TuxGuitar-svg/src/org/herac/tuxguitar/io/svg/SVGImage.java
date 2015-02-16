@@ -8,12 +8,12 @@ public class SVGImage implements TGImage{
 	
 	private StringBuffer buffer;
 	
-	private int width;
-	private int height;
+	private float width;
+	private float height;
 	
 	private boolean disposed;
 	
-	public SVGImage(int width, int height){
+	public SVGImage(float width, float height){
 		this.width = width;
 		this.height = height;
 		this.disposed = false;
@@ -28,11 +28,11 @@ public class SVGImage implements TGImage{
 		return this.disposed;
 	}
 	
-	public int getWidth() {
+	public float getWidth() {
 		return this.width;
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.height;
 	}
 	

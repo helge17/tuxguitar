@@ -7,7 +7,7 @@ public class SVGFont implements TGFont {
 	
 	private TGFontModel handle;
 	
-	public SVGFont(String name, int height, boolean bold, boolean italic){
+	public SVGFont(String name, float height, boolean bold, boolean italic){
 		this.handle = new TGFontModel(name, height, bold, italic);
 	}
 	
@@ -23,7 +23,7 @@ public class SVGFont implements TGFont {
 		return this.handle.getName();
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.handle.getHeight();
 	}
 	

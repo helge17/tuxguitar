@@ -7,8 +7,8 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class SVGPainter extends SVGResourceFactory implements TGPainter {
 	
-	private int svgStrokeWidth;
 	private int svgPathStyle;
+	private float svgStrokeWidth;
 	private SVGFont svgFont;
 	private SVGColor svgBackground;
 	private SVGColor svgForeground;
@@ -62,7 +62,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.setAntialias(false);
 	}
 	
-	public void drawString(String string, int x, int y) {
+	public void drawString(String string, float x, float y) {
 		this.setAdvanced(false);
 		this.svgBuffer.append("\r\n");
 		this.svgBuffer.append("<text ");
@@ -76,7 +76,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgBuffer.append("</text>");
 	}
 	
-	public void drawString(String string, int x, int y, boolean isTransparent) {
+	public void drawString(String string, float x, float y, boolean isTransparent) {
 		this.svgBuffer.append("\r\n");
 		this.svgBuffer.append("<text ");
 		this.svgBuffer.append("x='" + x + "' ");
@@ -89,7 +89,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgBuffer.append("</text>");
 	}
 	
-	public void drawImage(TGImage image, int srcX, int srcY, int srcWidth, int srcHeight, int destX, int destY, int destWidth, int destHeight) {
+	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		if( image instanceof SVGImage ){
 			this.svgBuffer.append("<g transform=\"translate(" + destX + "," + destY + ")\">");
 			this.svgBuffer.append( ((SVGImage)image).getBuffer() );
@@ -97,7 +97,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		}
 	}
 	
-	public void drawImage(TGImage image, int x, int y) {
+	public void drawImage(TGImage image, float x, float y) {
 		if( image instanceof SVGImage ){
 			this.svgBuffer.append("<g transform=\"translate(" + x + "," + y + ")\">");
 			this.svgBuffer.append( ((SVGImage)image).getBuffer() );
@@ -173,7 +173,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		}
 	}
 	
-	public void setLineWidth(int width) {
+	public void setLineWidth(float width) {
 		this.svgStrokeWidth = width;
 	}
 	
@@ -201,39 +201,27 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		// Not Implemented
 	}
 	
-	public int getFontSize(){
+	public float getFontSize(){
 		return this.svgFont.getHeight();
 	}
 	
-	public int getFMHeight(){
+	public float getFMHeight(){
 		return (getFMAscent() + getFMDescent());
 	}
 	
-	public int getFMAscent(){
+	public float getFMAscent(){
 		return getFontSize();
 	}
 	
-	public int getFMDescent(){
+	public float getFMDescent(){
 		return 0;
 	}
 	
-	public int getFMWidth( String text ){
+	public float getFMWidth( String text ){
 		return ( text != null ? Math.round( text.length() * (0.75f * getFontSize() ) ) : 0 );
 	}
 	
 	public void setAlpha(int alpha) {
-		// Not Implemented
-	}
-	
-	public void drawPolygon(int[] arg0) {
-		// Not implemented
-	}
-	
-	public void fillPolygon(int[] arg0) {
-		// Not implemented
-	}
-	
-	public void copyArea(TGImage image, int x, int y) {
 		// Not Implemented
 	}
 }
