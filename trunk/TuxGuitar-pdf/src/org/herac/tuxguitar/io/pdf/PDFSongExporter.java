@@ -141,7 +141,9 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		}
 		
 		public void pageStart() {
-			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
+			int width = Math.round(this.bounds.getWidth() - this.bounds.getX());
+			int height = Math.round(this.bounds.getHeight() - this.bounds.getY());
+			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(), width, height);
 			this.painter.init( this.buffer );
 		}
 		
@@ -157,7 +159,7 @@ public class PDFSongExporter implements TGLocalFileExporter{
 		
 		public void finish() {
 			try{
-				PDFWriter.write(this.stream,this.pages);
+				PDFWriter.write(this.stream, this.pages);
 			}catch(Throwable throwable){
 				MessageDialog.errorMessage(throwable);
 			}
