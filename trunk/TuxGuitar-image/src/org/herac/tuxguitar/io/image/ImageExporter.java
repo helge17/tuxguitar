@@ -153,7 +153,9 @@ public class ImageExporter implements TGRawExporter{
 		}
 		
 		public void pageStart() {
-			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(),this.bounds.getWidth() + (this.bounds.getX() * 2), this.bounds.getHeight() + (this.bounds.getY() * 2) );
+			int width = Math.round(this.bounds.getWidth() + (this.bounds.getX() * 2));
+			int height = Math.round(this.bounds.getHeight() + (this.bounds.getY() * 2));
+			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(), width, height);
 			this.painter.init( this.buffer );
 		}
 		
