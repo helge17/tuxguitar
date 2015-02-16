@@ -13,7 +13,6 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGVoice;
 
 public abstract class TGLayout {
 	
@@ -275,31 +274,8 @@ public abstract class TGLayout {
 		}
 	}
 	
-	/**
-	 * Calcula el Espacio que ocupara el pulso
-	 */
-	public float getBeatWidth(TGVoice voice){
-		float scale = getScale();
-		TGDuration duration = voice.getDuration();
-		if(duration != null){
-			switch(duration.getValue()){
-				case TGDuration.WHOLE:
-					return (30.0f * scale);
-				case TGDuration.HALF:
-					return (25.0f * scale);
-				case TGDuration.QUARTER:
-					return (21.0f * scale);
-				case TGDuration.EIGHTH:
-					return (20.0f * scale);
-				case TGDuration.SIXTEENTH:
-					return (19.0f * scale);
-				case TGDuration.THIRTY_SECOND:
-					return (18.0f * scale);
-				default:
-					return (17.0f * scale);
-			}
-		}
-		return (20.0f * scale);
+	public float getMinBeatWidth() {
+		return (17.0f * getScale());
 	}
 	
 	/**
@@ -323,7 +299,7 @@ public abstract class TGLayout {
 				case TGDuration.THIRTY_SECOND:
 					return (18.0f * scale);
 				default:
-					return (17.0f * scale);
+					return this.getMinBeatWidth();
 			}
 		}
 		return (20.0f * scale);

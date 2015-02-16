@@ -53,7 +53,7 @@ public class TGNoteImpl extends TGNote {
 	 * Pinta la nota
 	 */
 	public void paint(TGLayout layout,TGPainter painter, float fromX, float fromY) {
-		float spacing = getBeatImpl().getSpacing();
+		float spacing = getBeatImpl().getSpacing(layout);
 		paintScoreNote(layout, painter, fromX, fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES),spacing);
 		if(!layout.isPlayModeEnabled()){
 			paintOfflineEffects(layout, painter,fromX,fromY, spacing);
@@ -159,7 +159,7 @@ public class TGNoteImpl extends TGNote {
 				float tHeight = (stringSpacing * 3);
 				TGNoteImpl noteForTie = getNoteForTie();
 				if (noteForTie != null) {
-					tX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing());
+					tX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout));
 					tY = (fromY + noteForTie.getTabPosY() + stringSpacing);
 					tWidth = (x - tX);
 				}else{
@@ -240,7 +240,7 @@ public class TGNoteImpl extends TGNote {
 				float tWidth = (20.0f * layoutScale);
 				float tHeight = (30.0f * layoutScale);
 				if (noteForTie != null) {
-					float tNoteX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing());
+					float tNoteX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout));
 					float tNoteY = (fromY + getScorePosY());
 					tX = tNoteX + (6.0f * layoutScale);
 					tY = tNoteY - (3.0f * layoutScale);
@@ -457,7 +457,7 @@ public class TGNoteImpl extends TGNote {
 		float y = fromY;
 		layout.setTabEffectStyle(painter);
 		if(nextNote != null){
-			float nextX = nextNote.getPosX() + nextFromX + nextNote.getBeatImpl().getSpacing();
+			float nextX = nextNote.getPosX() + nextFromX + nextNote.getBeatImpl().getSpacing(layout);
 			float nextY = y;
 			
 			if(nextNote.getValue() < getValue()){
@@ -489,7 +489,7 @@ public class TGNoteImpl extends TGNote {
 		float x = (fromX + (7.0f * xScale));
 		float y = (fromY - (5.0f * yScale));
 		
-		float width = (nextNote != null)?( (nextNote.getPosX() + nextFromX + nextNote.getBeatImpl().getSpacing()) - (4.0f * xScale) - x ):(10.0f * xScale);
+		float width = (nextNote != null)?( (nextNote.getPosX() + nextFromX + nextNote.getBeatImpl().getSpacing(layout)) - (4.0f * xScale) - x ):(10.0f * xScale);
 		float height = (15.0f * yScale);
 		layout.setTabEffectStyle(painter);
 		painter.initPath();

@@ -505,7 +505,7 @@ public class TGMeasureImpl extends TGMeasure{
 		long newStart = (start - this.getStart());
 		float displayPosition = 0f;
 		if( newStart > 0 ){
-			float position = (newStart / TGDuration.QUARTER_TIME);
+			float position = ((float)newStart / (float)TGDuration.QUARTER_TIME);
 			displayPosition = (position * quarterWidth);
 		}
 		return displayPosition;
@@ -1088,8 +1088,19 @@ public class TGMeasureImpl extends TGMeasure{
 		return layout.getComponent().isRunning(this);
 	}
 	
-	public int getBeatSpacing(TGBeat beat){
-		return  (int)((beat.getStart() - getStart())  * getSpacing() / getLength());
+	public float getBeatSpacing(TGLayout layout, TGBeatImpl beat){
+		float firstNoteSpacing = getFirstNoteSpacing(layout);
+		
+		float mWidth = (this.getWidth(layout) - firstNoteSpacing);
+		float mWidthWithSpacing = (mWidth + getSpacing());
+		if( mWidthWithSpacing < layout.getMinBeatWidth() ) {
+			mWidthWithSpacing = layout.getMinBeatWidth();
+		}
+		
+		float beatX = (beat.getPosX() - firstNoteSpacing);
+		float moveX = (mWidthWithSpacing * beatX / mWidth);
+		
+		return (moveX - beatX);
 	}
 	
 	public boolean hasTrack(int number){

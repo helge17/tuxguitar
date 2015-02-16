@@ -55,7 +55,7 @@ public class TGLyricImpl extends TGLyric{
 					if((from + beatIndex) < beats.length){
 						String str = beats[from + beatIndex].trim();
 						if(str.length() > 0){
-							float x = (fromX + beat.getPosX() + beat.getSpacing() + 2);
+							float x = (fromX + beat.getPosX() + beat.getSpacing(layout) + 2);
 							layout.setLyricStyle(painter,(layout.isPlayModeEnabled() && beat.isPlaying(layout)));
 							painter.drawString(str,x + 13,(fromY + currentMeasure.getTs().getPosition(TGTrackSpacing.POSITION_LYRIC)));
 						}
