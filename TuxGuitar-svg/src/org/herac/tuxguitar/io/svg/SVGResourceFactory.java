@@ -9,7 +9,7 @@ import org.herac.tuxguitar.graphics.TGResourceFactory;
 
 public class SVGResourceFactory implements TGResourceFactory{
 	
-	public TGImage createImage(int width, int height) {
+	public TGImage createImage(float width, float height) {
 		return new SVGImage(width, height);
 	}
 	
@@ -25,7 +25,7 @@ public class SVGResourceFactory implements TGResourceFactory{
 		return createFont(fontModel.getName(), fontModel.getHeight(), fontModel.isBold(), fontModel.isItalic() );
 	}
 	
-	public TGFont createFont(String name, int height, boolean bold, boolean italic) {
+	public TGFont createFont(String name, float height, boolean bold, boolean italic) {
 		return new SVGFont(name, height, bold, italic);
 	}
 }
