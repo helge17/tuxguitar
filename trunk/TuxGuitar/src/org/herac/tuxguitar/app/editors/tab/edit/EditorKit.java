@@ -137,15 +137,16 @@ public class EditorKit {
 	}
 	
 	public TGBeatImpl findSelectedBeat(TGMeasureImpl measure, float x){
+		TGLayout layout = getTablature().getViewLayout();
 		int voice = getTablature().getCaret().getVoice();
-		float posX = measure.getHeaderImpl().getLeftSpacing(getTablature().getViewLayout()) + measure.getPosX();
+		float posX = measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX();
 		float bestDiff = -1;
 		TGBeatImpl bestBeat = null;
 		Iterator it = measure.getBeats().iterator();
 		while(it.hasNext()){
 			TGBeatImpl beat = (TGBeatImpl)it.next();
 			if(!beat.getVoice(voice).isEmpty()){
-				float diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing())));
+				float diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing(layout))));
 				if(bestDiff == -1 || diff < bestDiff){
 					bestBeat = beat;
 					bestDiff = diff;
@@ -153,7 +154,7 @@ public class EditorKit {
 			}
 		}
 		if( bestBeat == null ){
-			bestBeat = (TGBeatImpl)getTablature().getViewLayout().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+			bestBeat = (TGBeatImpl) layout.getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
 		}
 		return bestBeat;
 	}
@@ -208,8 +209,9 @@ public class EditorKit {
 	}
 	
 	public TGVoiceImpl findBestVoice(TGMeasureImpl measure, float x){
+		TGLayout layout = getTablature().getViewLayout();
 		int voiceIndex = this.getTablature().getCaret().getVoice();
-		float posX = measure.getHeaderImpl().getLeftSpacing( this.getTablature().getViewLayout() ) + measure.getPosX();
+		float posX = measure.getHeaderImpl().getLeftSpacing( layout ) + measure.getPosX();
 		float bestDiff = -1;
 		TGVoiceImpl bestVoice = null;
 		TGDuration duration = this.getTablature().getCaret().getDuration();
@@ -218,7 +220,7 @@ public class EditorKit {
 			TGBeatImpl beat = (TGBeatImpl)it.next();
 			TGVoiceImpl voice = beat.getVoiceImpl( voiceIndex );
 			if(!voice.isEmpty()){
-				float x1 = (beat.getPosX() + beat.getSpacing());
+				float x1 = (beat.getPosX() + beat.getSpacing(layout));
 				float x2 = (x1 + voice.getWidth());
 				float increment = voice.getWidth();
 				if(voice.isRestVoice()){
@@ -234,7 +236,7 @@ public class EditorKit {
 			}
 		}
 		if( bestVoice == null ){
-			TGBeat beat = this.getTablature().getViewLayout().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+			TGBeat beat = layout.getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
 			if( beat != null ){
 				bestVoice = (TGVoiceImpl)beat.getVoice(voiceIndex);
 			}
@@ -303,10 +305,11 @@ public class EditorKit {
 		if(voice.isEmpty()){
 			return voice.getBeat().getStart();
 		}
+		TGLayout layout = getTablature().getViewLayout();
 		TGMeasureImpl measure = voice.getBeatImpl().getMeasureImpl();
 		
 		long beatStart = voice.getBeat().getStart();
-		float beatX = (measure.getHeaderImpl().getLeftSpacing( this.getTablature().getViewLayout() ) + measure.getPosX() + voice.getBeatImpl().getPosX() + voice.getBeatImpl().getSpacing());
+		float beatX = (measure.getHeaderImpl().getLeftSpacing( layout ) + measure.getPosX() + voice.getBeatImpl().getPosX() + voice.getBeatImpl().getSpacing(layout));
 		if( x > beatX ){
 			long beatLength = voice.getDuration().getTime();
 			long beatEnd = ( beatStart + beatLength );
@@ -448,7 +451,7 @@ public class EditorKit {
 				for(int b = 0 ; b < measure.countBeats() ; b++ ){
 					TGBeatImpl beat = (TGBeatImpl)measure.getBeat(b);
 					if( isPaintableBeat(beat) ){
-						x1 = (measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX() + beat.getPosX() + beat.getSpacing());
+						x1 = (measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX() + beat.getPosX() + beat.getSpacing(layout));
 						x2 = x1 + width;
 						
 						painter.setForeground(layout.getResources().getLineColor());

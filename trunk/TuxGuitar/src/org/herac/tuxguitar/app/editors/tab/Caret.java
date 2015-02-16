@@ -151,7 +151,7 @@ public class Caret {
 					float height = ((stringSpacing - (3.0f * layout.getScale())) * 2);
 					float xMargin = ((width / 2.0f) - (2.0f * layout.getScale()));
 					float yMargin = (height / 2.0f);
-					float x = (this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - xMargin);
+					float x = (this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - xMargin);
 					float y = (this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - yMargin);
 					this.setPaintStyle(painter, expectedVoice);
 					
@@ -164,7 +164,7 @@ public class Caret {
 					float line = this.tablature.getViewLayout().getScoreLineSpacing();
 					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float xMargin = (2.0f * layout.getScale());
-					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - xMargin;
+					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - xMargin;
 					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
