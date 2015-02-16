@@ -147,8 +147,8 @@ public class TGBeatImpl extends TGBeat{
 		this.group = group;
 	}
 	
-	public int getSpacing(){
-		return getMeasureImpl().getBeatSpacing(this);
+	public float getSpacing(TGLayout layout){
+		return getMeasureImpl().getBeatSpacing(layout, this);
 	}
 	
 	public boolean isPlaying(TGLayout layout){
@@ -298,7 +298,7 @@ public class TGBeatImpl extends TGBeat{
 	private void paintExtraLines(TGPainter painter,TGLayout layout,TGNoteImpl note,float fromX,float fromY){
 		float scale = layout.getScale();
 		float y = fromY + note.getScorePosY();
-		float x = fromX + getPosX() + getSpacing();
+		float x = fromX + getPosX() + getSpacing(layout);
 		float x1 = x - (4 * scale);
 		float x2 = x + (12 * scale);
 		
@@ -324,10 +324,10 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paintStroke(TGLayout layout,TGPainter painter, float fromX, float fromY){
+	public void paintStroke(TGLayout layout, TGPainter painter, float fromX, float fromY){
 		int style = layout.getStyle();
 		float scale = layout.getScale();
-		float x = (fromX + getPosX() + getSpacing() + ( 12f * scale ));
+		float x = (fromX + getPosX() + getSpacing(layout) + ( 12f * scale ));
 		float y1 = 0;
 		float y2 = 0;
 		if((style & TGLayout.DISPLAY_SCORE) != 0){

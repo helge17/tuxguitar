@@ -146,8 +146,8 @@ public class TGBeatGroup {
 			}
 			
 			float y = 0;
-			float x1 = this.firstMinNote.getPosX() + this.firstMinNote.getBeatImpl().getSpacing();
-			float x2 = this.lastMinNote.getPosX() + this.lastMinNote.getBeatImpl().getSpacing();
+			float x1 = this.firstMinNote.getPosX() + this.firstMinNote.getBeatImpl().getSpacing(layout);
+			float x2 = this.lastMinNote.getPosX() + this.lastMinNote.getBeatImpl().getSpacing(layout);
 			float y1 =  (getY1(layout, this.firstMinNote,key,clef) +  downOffset);
 			float y2 =  (getY1(layout, this.lastMinNote,key,clef) +  downOffset);
 			
@@ -167,8 +167,8 @@ public class TGBeatGroup {
 			return (getY1(layout, this.maxNote, key, clef) - upOffset);
 		}else{
 			float y = 0;
-			float x1 = this.firstMaxNote.getPosX() + this.firstMaxNote.getBeatImpl().getSpacing();
-			float x2 = this.lastMaxNote.getPosX() + this.lastMaxNote.getBeatImpl().getSpacing();
+			float x1 = this.firstMaxNote.getPosX() + this.firstMaxNote.getBeatImpl().getSpacing(layout);
+			float x2 = this.lastMaxNote.getPosX() + this.lastMaxNote.getBeatImpl().getSpacing(layout);
 			float y1 = (getY1(layout,this.firstMaxNote,key,clef) - upOffset);
 			float y2 = (getY1(layout,this.lastMaxNote,key,clef) - upOffset);
 			

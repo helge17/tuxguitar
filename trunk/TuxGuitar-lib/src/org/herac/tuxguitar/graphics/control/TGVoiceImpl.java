@@ -368,12 +368,12 @@ public class TGVoiceImpl extends TGVoice{
 		float scale = 0;
 		
 		if((style & TGLayout.DISPLAY_SCORE) != 0 ){
-			x = fromX + getPosX() + getBeatImpl().getSpacing();
+			x = fromX + getPosX() + getBeatImpl().getSpacing(layout);
 			y = fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + this.silenceY;
 			lineSpacing = layout.getScoreLineSpacing();
 			scale = (lineSpacing / 9.0f);
 		}else{
-			x = fromX + getPosX() + getBeatImpl().getSpacing() - 1;
+			x = fromX + getPosX() + getBeatImpl().getSpacing(layout) - 1;
 			y = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + this.silenceY;
 			lineSpacing = layout.getStringSpacing();
 			scale = (lineSpacing / 10.0f);
@@ -439,7 +439,7 @@ public class TGVoiceImpl extends TGVoice{
 	public void paintBeat(TGLayout layout,TGPainter painter, float fromX, float fromY){
 		if(!isRestVoice() ){
 			int style = layout.getStyle();
-			float spacing = getBeatImpl().getSpacing();
+			float spacing = getBeatImpl().getSpacing(layout);
 			
 			if((style & TGLayout.DISPLAY_SCORE) != 0){
 				paintScoreBeat(layout, painter, fromX, fromY+getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES), spacing);
@@ -486,8 +486,8 @@ public class TGVoiceImpl extends TGVoice{
 						x1 = getPosX() + xMove + spacing - (5 * scale);
 						x2 = getPosX() + xMove + spacing;
 					}else{
-						x1 = getJoin1().getPosX() + xMove + getJoin1().getBeatImpl().getSpacing();
-						x2 = getJoin2().getPosX() + xMove + getJoin2().getBeatImpl().getSpacing();
+						x1 = getJoin1().getPosX() + xMove + getJoin1().getBeatImpl().getSpacing(layout);
+						x2 = getJoin2().getPosX() + xMove + getJoin2().getBeatImpl().getSpacing(layout);
 					}
 					int index = ( getDuration().getIndex() - 2);
 					if(index > 0){
@@ -579,13 +579,13 @@ public class TGVoiceImpl extends TGVoice{
 						float hX2 = 0;
 						if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
 							hX1 = getPosX() + spacing;
-							hX2 = getPosX() + spacing + 6;
+							hX2 = getPosX() + spacing + (6f * scale);
 						}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
-							hX1 = getPosX() + spacing - 5;
+							hX1 = getPosX() + spacing - (5f * scale);
 							hX2 = getPosX() + spacing;
 						}else{
-							hX1 = getJoin1().getPosX() + getJoin1().getBeatImpl().getSpacing();
-							hX2 = getJoin2().getPosX() + getJoin2().getBeatImpl().getSpacing();
+							hX1 = getJoin1().getPosX() + getJoin1().getBeatImpl().getSpacing(layout);
+							hX2 = getJoin2().getPosX() + getJoin2().getBeatImpl().getSpacing(layout);
 						}
 						float hY1 = fromY + this.group.getY2(layout,hX1,key,clef);
 						float hY2 = fromY + this.group.getY2(layout,hX2,key,clef);

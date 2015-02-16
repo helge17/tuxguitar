@@ -216,7 +216,7 @@ public class TGChordImpl extends TGChord {
 		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
 		this.update(painter, layout.isBufferEnabled());
-		this.paint(painter,getBeatImpl().getSpacing() + fromX + Math.round(4f * layout.getScale()), fromY);
+		this.paint(painter,getBeatImpl().getSpacing(layout) + fromX + Math.round(4f * layout.getScale()), fromY);
 	}
 	
 	public void paint(TGPainter painter, float fromX, float fromY){
