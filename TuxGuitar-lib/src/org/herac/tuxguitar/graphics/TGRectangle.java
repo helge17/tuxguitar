@@ -5,44 +5,44 @@ public class TGRectangle {
 	private TGPoint location;
 	private TGDimension size;
 	
-	public TGRectangle(int x, int y, int width, int height){
-		this.location = new TGPoint(x,y);
+	public TGRectangle(float x, float y, float width, float height){
+		this.location = new TGPoint(x, y);
 		this.size = new TGDimension(width,height);
 	}
 	
 	public TGRectangle(){
-		this(0,0,0,0);
+		this(0, 0, 0, 0);
 	}
 	
-	public int getX() {
+	public float getX() {
 		return this.location.getX();
 	}
 	
-	public void setX(int x) {
+	public void setX(float x) {
 		this.location.setX(x);
 	}
 	
-	public int getY() {
+	public float getY() {
 		return this.location.getY();
 	}
 	
-	public void setY(int y) {
+	public void setY(float y) {
 		this.location.setY(y);
 	}
 	
-	public int getWidth() {
+	public float getWidth() {
 		return this.size.getWidth();
 	}
 	
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.size.setWidth(width);
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.size.getHeight();
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.size.setHeight(height);
 	}
 }

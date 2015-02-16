@@ -25,8 +25,8 @@ public class TGBeatImpl extends TGBeat{
 	 */
 	public static final int JOINED_TYPE_RIGHT = 4;
 	
-	private int posX;
-	private int width;
+	private float posX;
+	private float width;
 	private TGNoteImpl maxNote;
 	private TGNoteImpl minNote;
 	private boolean[] usedStrings;
@@ -56,19 +56,19 @@ public class TGBeatImpl extends TGBeat{
 		super(factory);
 	}
 	
-	public int getPosX() {
+	public float getPosX() {
 		return this.posX;
 	}
 	
-	public void setPosX(int posX) {
+	public void setPosX(float posX) {
 		this.posX = posX;
 	}
 	
-	public int getMinimumWidth() {
+	public float getMinimumWidth() {
 		return this.width;
 	}
 	
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
 	
@@ -232,7 +232,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public int getEffectsSpacing(TGLayout layout){
+	public float getEffectsSpacing(TGLayout layout){
 		if(this.accentuated){
 			this.bs.setSize(TGBeatSpacing.POSITION_ACCENTUATED_EFFECT,layout.getEffectSpacing());
 		}
@@ -269,7 +269,7 @@ public class TGBeatImpl extends TGBeat{
 		return this.bs.getSize();
 	}
 	
-	public void paint(TGLayout layout,TGPainter painter, int fromX, int fromY/*,boolean playMode*/) {
+	public void paint(TGLayout layout,TGPainter painter, float fromX, float fromY) {
 		if(!layout.isPlayModeEnabled() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			paintExtraLines(painter, layout,fromX, fromY);
 		}
@@ -279,7 +279,7 @@ public class TGBeatImpl extends TGBeat{
 		if(!layout.isPlayModeEnabled()){
 			if(isChordBeat()){
 				TGChordImpl chord = (TGChordImpl)getChord();
-				chord.paint(layout,painter,fromX,fromY);
+				chord.paint(layout, painter, fromX, fromY);
 			}
 			if(getStroke().getDirection() != TGStroke.STROKE_NONE){
 				paintStroke(layout, painter, fromX, fromY);
@@ -287,44 +287,44 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paintExtraLines(TGPainter painter,TGLayout layout,int fromX, int fromY){
+	public void paintExtraLines(TGPainter painter,TGLayout layout,float fromX, float fromY){
 		if(!isRestBeat()){
-			int scoreY = (fromY + getMeasureImpl().getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+			float scoreY = (fromY + getMeasureImpl().getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			paintExtraLines(painter,layout,getMinNote(), fromX, scoreY);
 			paintExtraLines(painter,layout,getMaxNote(), fromX, scoreY);
 		}
 	}
 	
-	private void paintExtraLines(TGPainter painter,TGLayout layout,TGNoteImpl note,int fromX,int fromY){
+	private void paintExtraLines(TGPainter painter,TGLayout layout,TGNoteImpl note,float fromX,float fromY){
 		float scale = layout.getScale();
-		int y = fromY + note.getScorePosY();
-		int x = fromX + getPosX() + getSpacing();
+		float y = fromY + note.getScorePosY();
+		float x = fromX + getPosX() + getSpacing();
 		float x1 = x - (4 * scale);
 		float x2 = x + (12 * scale);
 		
-		int scoreLineSpacing = layout.getScoreLineSpacing();
+		float scoreLineSpacing = layout.getScoreLineSpacing();
 		
 		layout.setLineStyle(painter);
 		if(y < fromY){
-			for(int i = fromY;i > y;i -= scoreLineSpacing){
+			for(float lineY = fromY; lineY > y; lineY -= scoreLineSpacing){
 				painter.initPath();
 				painter.setAntialias(false);
-				painter.moveTo(x1,i);
-				painter.lineTo(x2,i);
+				painter.moveTo(x1, lineY);
+				painter.lineTo(x2, lineY);
 				painter.closePath();
 			}
 		}else if(y > (fromY + (scoreLineSpacing * 4))){
-			for(int i = (fromY +(scoreLineSpacing * 5));i < (y + scoreLineSpacing);i += scoreLineSpacing){
+			for(float lineY = (fromY +(scoreLineSpacing * 5)); lineY < (y + scoreLineSpacing); lineY += scoreLineSpacing){
 				painter.initPath();
 				painter.setAntialias(false);
-				painter.moveTo(x1,i);
-				painter.lineTo(x2,i);
+				painter.moveTo(x1, lineY);
+				painter.lineTo(x2, lineY);
 				painter.closePath();
 			}
 		}
 	}
 	
-	public void paintStroke(TGLayout layout,TGPainter painter, int fromX, int fromY){
+	public void paintStroke(TGLayout layout,TGPainter painter, float fromX, float fromY){
 		int style = layout.getStyle();
 		float scale = layout.getScale();
 		float x = (fromX + getPosX() + getSpacing() + ( 12f * scale ));
@@ -368,7 +368,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public int getPaintPosition(int index){
+	public float getPaintPosition(int index){
 		return getMeasureImpl().getTs().getPosition(index);
 	}
 	

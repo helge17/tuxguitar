@@ -4,7 +4,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class TGTempoPainter {
 	
-	public static void paintTempo(TGPainter painter, int x, int y,float scale) {
+	public static void paintTempo(TGPainter painter, float x, float y, float scale) {
 		int width = Math.round(scale * 1.33f);
 		int height = Math.round(scale * (1.0f + 2.5f));
 		

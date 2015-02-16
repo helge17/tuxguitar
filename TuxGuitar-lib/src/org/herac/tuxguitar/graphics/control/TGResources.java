@@ -277,12 +277,12 @@ public class TGResources {
 	}
 	
 	private TGImage getHarmonicImage(TGColor color,boolean full) {
-		int size = getLayout().getScoreLineSpacing();
+		float size = getLayout().getScoreLineSpacing();
 		
-		int x = 0;
-		int y = 1;
-		int width = getScoreNoteWidth() - 1;
-		int height = size - 2;
+		float x = 0;
+		float y = 1;
+		float width = getScoreNoteWidth() - 1;
+		float height = size - 2;
 		
 		TGImage image = getImage(x + width + 2,y + height + 2);
 		TGPainter painter = image.createPainter();
@@ -401,7 +401,7 @@ public class TGResources {
 		return ((TGImage)addResource(image));
 	}
 	
-	private TGImage getImage(int width, int height){
+	private TGImage getImage(float width, float height){
 		TGResourceFactory factory = getLayout().getComponent().getResourceFactory();
 		TGImage image = factory.createImage(width, height);
 		TGPainter painter = image.createPainter();

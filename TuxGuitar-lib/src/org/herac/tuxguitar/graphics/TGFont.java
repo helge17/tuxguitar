@@ -4,7 +4,7 @@ public interface TGFont extends TGResource {
 	
 	public String getName();
 	
-	public int getHeight();
+	public float getHeight();
 	
 	public boolean isBold();
 	

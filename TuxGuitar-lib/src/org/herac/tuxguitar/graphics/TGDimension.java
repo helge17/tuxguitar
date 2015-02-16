@@ -2,31 +2,31 @@ package org.herac.tuxguitar.graphics;
 
 public class TGDimension {
 	
-	private int width;
-	private int height;
+	private float width;
+	private float height;
 	
-	public TGDimension(int width,int height){
+	public TGDimension(float width, float height){
 		this.width = width;
 		this.height = height;
 	}
 	
 	public TGDimension(){
-		this(0,0);
+		this(0, 0);
 	}
 	
-	public int getWidth() {
+	public float getWidth() {
 		return this.width;
 	}
 	
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.height;
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 }

@@ -25,13 +25,13 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 	
 	private int paintFlags;
 	
-	private int maxQuarterSpacing;
+	private float maxQuarterSpacing;
 	
-	private int maxClefSpacing;
+	private float maxClefSpacing;
 	
-	private int maxKeySignatureSpacing;
+	private float maxKeySignatureSpacing;
 	
-	private int maxWidth;
+	private float maxWidth;
 	
 	public TGMeasureHeaderImpl(TGFactory factory){
 		super(factory);
@@ -95,62 +95,62 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 		return ( (this.paintFlags & PAINT_TIME_SIGNATURE) != 0 );
 	}
 	
-	public int getMaxQuarterSpacing() {
+	public float getMaxQuarterSpacing() {
 		return this.maxQuarterSpacing;
 	}
 	
-	public void notifyQuarterSpacing(int spacing) {
+	public void notifyQuarterSpacing(float spacing) {
 		this.maxQuarterSpacing = ((spacing > this.maxQuarterSpacing) ? spacing : this.maxQuarterSpacing );
 	}
 	
-	public int getClefSpacing(TGLayout layout, TGMeasureImpl measure){
+	public float getClefSpacing(TGLayout layout, TGMeasureImpl measure){
 		return (!measure.isPaintClef() && (layout.getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0 ? 0 : this.maxClefSpacing );
 	}
 	
-	public int getKeySignatureSpacing(TGLayout layout, TGMeasureImpl measure){
+	public float getKeySignatureSpacing(TGLayout layout, TGMeasureImpl measure){
 		return (!measure.isPaintKeySignature() && (layout.getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0 ? 0 : this.maxKeySignatureSpacing );
 	}
 	
-	public int getTempoSpacing(TGLayout layout){
+	public float getTempoSpacing(TGLayout layout){
 		return (shouldPaintTempo()? Math.round( 45 * layout.getScale() ):0);
 	}
 	
-	public int getTripletFeelSpacing(TGLayout layout){
+	public float getTripletFeelSpacing(TGLayout layout){
 		return (shouldPaintTripletFeel()? Math.round( 55 * layout.getScale() ):0);
 	}
 	
-	public int getTimeSignatureSpacing(TGLayout layout){
+	public float getTimeSignatureSpacing(TGLayout layout){
 		return (shouldPaintTimeSignature()? Math.round( DEFAULT_TIME_SIGNATURE_SPACING * layout.getScale() ):0);
 	}
 	
-	public int getLeftSpacing(TGLayout layout){
+	public float getLeftSpacing(TGLayout layout){
 		return Math.round( DEFAULT_LEFT_SPACING * layout.getScale() );
 	}
 	
-	public int getRightSpacing(TGLayout layout){
+	public float getRightSpacing(TGLayout layout){
 		return Math.round( DEFAULT_RIGHT_SPACING * layout.getScale() );
 	}
 	
-	public int getFirstNoteSpacing(TGLayout layout, TGMeasureImpl measure){
-		int topSpacing = getTempoSpacing(layout) + getTripletFeelSpacing(layout);
-		int middleSpacing = getClefSpacing(layout,measure) + getKeySignatureSpacing(layout,measure) + getTimeSignatureSpacing(layout);
+	public float getFirstNoteSpacing(TGLayout layout, TGMeasureImpl measure){
+		float topSpacing = getTempoSpacing(layout) + getTripletFeelSpacing(layout);
+		float middleSpacing = getClefSpacing(layout,measure) + getKeySignatureSpacing(layout,measure) + getTimeSignatureSpacing(layout);
 		
 		return Math.round(Math.max( topSpacing , middleSpacing) + (10f * layout.getScale()));
 	}
 	
-	public void notifyClefSpacing(int spacing){
-		this.maxClefSpacing = ((spacing > this.maxClefSpacing)?spacing:this.maxClefSpacing);
+	public void notifyClefSpacing(float spacing){
+		this.maxClefSpacing = ((spacing > this.maxClefSpacing) ? spacing : this.maxClefSpacing);
 	}
 	
-	public void notifyKeySignatureSpacing(int spacing){
+	public void notifyKeySignatureSpacing(float spacing){
 		this.maxKeySignatureSpacing = ((spacing > this.maxKeySignatureSpacing) ? spacing : this.maxKeySignatureSpacing);
 	}
 	
-	public void notifyWidth(int width){
+	public void notifyWidth(float width){
 		this.maxWidth = ((width > this.maxWidth)?width:this.maxWidth);
 	}
 	
-	public int getMaxWidth(){
+	public float getMaxWidth(){
 		return this.maxWidth;
 	}
 }

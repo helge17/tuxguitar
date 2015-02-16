@@ -23,15 +23,15 @@ public class TGChordImpl extends TGChord {
 	public static final int MAX_FRETS = 6;
 	
 	private int style;
-	private int posX;
-	private int posY;
-	private int width;
-	private int height;
+	private float posX;
+	private float posY;
+	private float width;
+	private float height;
 	private int tonic;
-	private int diagramWidth;
-	private int diagramHeight;
-	private int nameWidth;
-	private int nameHeight;
+	private float diagramWidth;
+	private float diagramHeight;
+	private float nameWidth;
+	private float nameHeight;
 	private TGImage diagram;
 	private TGColor foregroundColor;
 	private TGColor backgroundColor;
@@ -40,10 +40,10 @@ public class TGChordImpl extends TGChord {
 	private TGColor color;
 	private TGFont font;
 	private TGFont firstFretFont;
-	private int firstFretSpacing;
-	private int stringSpacing;
-	private int fretSpacing;
-	private int noteSize;
+	private float firstFretSpacing;
+	private float stringSpacing;
+	private float fretSpacing;
+	private float noteSize;
 	
 	private boolean editing;
 	
@@ -59,23 +59,23 @@ public class TGChordImpl extends TGChord {
 		this.editing = editing;
 	}
 	
-	public void setPosX(int posX){
+	public void setPosX(float posX){
 		this.posX = posX;
 	}
 	
-	public void setPosY(int posY){
+	public void setPosY(float posY){
 		this.posY = posY;
 	}
 	
-	public int getPosY() {
+	public float getPosY() {
 		return this.posY;
 	}
 	
-	public int getWidth(){
+	public float getWidth(){
 		return this.width;
 	}
 	
-	public int getHeight(){
+	public float getHeight(){
 		return this.height;
 	}
 	
@@ -145,44 +145,44 @@ public class TGChordImpl extends TGChord {
 		this.tonicColor = tonicColor;
 	}
 	
-	public int getFirstFretSpacing() {
+	public float getFirstFretSpacing() {
 		return this.firstFretSpacing;
 	}
 	
-	public void setFirstFretSpacing(int firstFretSpacing) {
+	public void setFirstFretSpacing(float firstFretSpacing) {
 		if(!isDisposed() && this.firstFretSpacing != firstFretSpacing){
 			this.dispose();
 		}
 		this.firstFretSpacing = firstFretSpacing;
 	}
 	
-	public int getFretSpacing() {
+	public float getFretSpacing() {
 		return this.fretSpacing;
 	}
 	
-	public void setFretSpacing(int fretSpacing) {
+	public void setFretSpacing(float fretSpacing) {
 		if(!isDisposed() && this.fretSpacing != fretSpacing){
 			this.dispose();
 		}
 		this.fretSpacing = fretSpacing;
 	}
 	
-	public int getStringSpacing() {
+	public float getStringSpacing() {
 		return this.stringSpacing;
 	}
 	
-	public void setStringSpacing(int stringSpacing) {
+	public void setStringSpacing(float stringSpacing) {
 		if(!isDisposed() && this.stringSpacing != stringSpacing){
 			this.dispose();
 		}
 		this.stringSpacing = stringSpacing;
 	}
 	
-	public int getNoteSize() {
+	public float getNoteSize() {
 		return this.noteSize;
 	}
 	
-	public void setNoteSize(int noteSize) {
+	public void setNoteSize(float noteSize) {
 		if(!isDisposed() && this.noteSize != noteSize){
 			this.dispose();
 		}
@@ -211,7 +211,7 @@ public class TGChordImpl extends TGChord {
 		this.firstFretFont = firstFretFont;
 	}
 	
-	public void paint(TGLayout layout, TGPainter painter, int fromX, int fromY) {
+	public void paint(TGLayout layout, TGPainter painter, float fromX, float fromY) {
 		layout.setChordStyle(this);
 		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
@@ -219,9 +219,9 @@ public class TGChordImpl extends TGChord {
 		this.paint(painter,getBeatImpl().getSpacing() + fromX + Math.round(4f * layout.getScale()), fromY);
 	}
 	
-	public void paint(TGPainter painter, int fromX, int fromY){
-		int x = (fromX + getPosX());
-		int y = (fromY + getPosY());
+	public void paint(TGPainter painter, float fromX, float fromY){
+		float x = (fromX + getPosX());
+		float y = (fromY + getPosY());
 		if( (this.style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 ){
 			if(this.diagram != null){
 				painter.drawImage(this.diagram,x - ( (this.diagramWidth - getFirstFretSpacing()) / 2) - getFirstFretSpacing() ,y);
@@ -271,14 +271,14 @@ public class TGChordImpl extends TGChord {
 		this.diagramWidth = getStringSpacing() + (getStringSpacing() * countStrings()) + ((font != null)?getFirstFretSpacing():0);
 		this.diagramHeight = getFretSpacing() + (getFretSpacing() * MAX_FRETS);
 		if(bufferFactory != null && (this.diagram == null || this.diagram.isDisposed())){
-			this.diagram = bufferFactory.createImage(this.diagramWidth,this.diagramHeight);
+			this.diagram = bufferFactory.createImage(this.diagramWidth, this.diagramHeight);
 			TGPainter painterBuffer = this.diagram.createPainter();
 			paintDiagram(painterBuffer, 0, 0);
 			painterBuffer.dispose();
 		}
 	}
 	
-	protected void paintDiagram(TGPainter painter, int fromX, int fromY){
+	protected void paintDiagram(TGPainter painter, float fromX, float fromY){
 		TGFont font = getFirstFretFont();
 		painter.setBackground(getBackgroundColor());
 		painter.initPath(TGPainter.PATH_FILL);
@@ -287,8 +287,8 @@ public class TGChordImpl extends TGChord {
 		painter.setForeground(getColor());
 		
 		//dibujo las cuerdas
-		int x = fromX + getStringSpacing();
-		int y = fromY + getFretSpacing();
+		float x = fromX + getStringSpacing();
+		float y = fromY + getFretSpacing();
 		
 		if(font != null){
 			String firstFretString = Integer.toString(getFirstFret());
@@ -300,10 +300,10 @@ public class TGChordImpl extends TGChord {
 		painter.initPath();
 		painter.setAntialias(false);
 		for(int i = 0;i < getStrings().length;i++){
-			int x1 = x + (i * getStringSpacing());
-			int x2 = x + (i * getStringSpacing());
-			int y1 = y;
-			int y2 = y + ((getFretSpacing() * (MAX_FRETS - 1)));
+			float x1 = x + (i * getStringSpacing());
+			float x2 = x + (i * getStringSpacing());
+			float y1 = y;
+			float y2 = y + ((getFretSpacing() * (MAX_FRETS - 1)));
 			painter.moveTo(x1,y1);
 			painter.lineTo(x2,y2);
 		}
@@ -313,10 +313,10 @@ public class TGChordImpl extends TGChord {
 		painter.initPath();
 		painter.setAntialias(false);
 		for(int i = 0;i < MAX_FRETS;i++){
-			int x1 = x;
-			int x2 = x + ((getStringSpacing() * (countStrings() - 1)));
-			int y1 = y + (i * getFretSpacing());
-			int y2 = y + (i * getFretSpacing());
+			float x1 = x;
+			float x2 = x + ((getStringSpacing() * (countStrings() - 1)));
+			float y1 = y + (i * getFretSpacing());
+			float y2 = y + (i * getFretSpacing());
 			painter.moveTo(x1,y1);
 			painter.lineTo(x2,y2);
 		}
@@ -326,7 +326,7 @@ public class TGChordImpl extends TGChord {
 		//dibujo las notas
 		for(int i = 0;i < getStrings().length;i++){
 			int fret = getFretValue(i);
-			int noteX = x + ((getStringSpacing() * (countStrings() - 1)) - (getStringSpacing() * i));
+			float noteX = x + ((getStringSpacing() * (countStrings() - 1)) - (getStringSpacing() * i));
 			if(fret < 0){
 				painter.initPath();
 				painter.moveTo((noteX - (getNoteSize() / 2)), fromY);
@@ -344,7 +344,7 @@ public class TGChordImpl extends TGChord {
 				painter.setBackground( (this.tonic >= 0 && ( (getStringValue(i + 1) + fret) % 12) == this.tonic)?getTonicColor():getNoteColor());
 				painter.initPath(TGPainter.PATH_FILL);
 				fret -= (getFirstFret() - 1);
-				int noteY = y + ((getFretSpacing() * fret) - (getFretSpacing() / 2 ));
+				float noteY = y + ((getFretSpacing() * fret) - (getFretSpacing() / 2 ));
 				painter.addOval(noteX - (getNoteSize() / 2),noteY - (getNoteSize() / 2),(getNoteSize() + 1),(getNoteSize() + 1));
 				painter.closePath();
 			}
@@ -382,11 +382,11 @@ public class TGChordImpl extends TGChord {
 		}
 	}
 	
-	public int getPosX() {
-		return (isEditing())?this.posX:getBeatImpl().getPosX();
+	public float getPosX() {
+		return (isEditing()) ? this.posX : getBeatImpl().getPosX();
 	}
 	
-	public int getPaintPosition(int index){
+	public float getPaintPosition(int index){
 		return getBeatImpl().getMeasureImpl().getTs().getPosition(index);
 	}
 	

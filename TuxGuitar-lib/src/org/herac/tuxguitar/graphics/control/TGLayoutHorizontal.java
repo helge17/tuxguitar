@@ -27,16 +27,16 @@ public class TGLayoutHorizontal extends TGLayout{
 		return MODE_HORIZONTAL;
 	}
 	
-	public void paintSong(TGPainter painter,TGRectangle clientArea,int fromX,int fromY) {
+	public void paintSong(TGPainter painter,TGRectangle clientArea, float fromX, float fromY) {
 		this.setWidth(0);
 		this.setHeight(0);
 		this.clearTrackPositions();
 		
 		int style = getStyle();
 		int number = getComponent().getTrackSelection();
-		int posY = fromY + getFirstTrackSpacing();
-		int height = getFirstTrackSpacing();
-		int trackHeight;
+		float posY = fromY + getFirstTrackSpacing();
+		float height = getFirstTrackSpacing();
+		float trackHeight;
 		Iterator tracks = getSong().getTracks();
 		while(tracks.hasNext()){
 			TGTrackImpl track = (TGTrackImpl) tracks.next();
@@ -47,8 +47,8 @@ public class TGLayoutHorizontal extends TGLayout{
 				((TGLyricImpl)track.getLyrics()).start();
 				
 				//------AUTO_SPACING---------------------------------------
-				int maxY = 0;
-				int minY = 0;
+				float maxY = 0;
+				float minY = 0;
 				// Need to score extra-lines in edition mode
 				if( (style & DISPLAY_TABLATURE) == 0 && (style & DISPLAY_SCORE) != 0 ){
 					maxY = ((getScoreLineSpacing() * 4) + (getScoreLineSpacing() * 4));
@@ -91,10 +91,10 @@ public class TGLayoutHorizontal extends TGLayout{
 		this.setHeight(height);
 	}
 	
-	public void paintMeasures(TGTrackImpl track,TGPainter painter,int fromX, int fromY,TGTrackSpacing ts,TGRectangle clientArea) {
-		int posX = (fromX + getFirstMeasureSpacing());
-		int posY = fromY;
-		int width = getFirstMeasureSpacing();
+	public void paintMeasures(TGTrackImpl track,TGPainter painter, float fromX, float fromY,TGTrackSpacing ts,TGRectangle clientArea) {
+		float posX = (fromX + getFirstMeasureSpacing());
+		float posY = fromY;
+		float width = getFirstMeasureSpacing();
 		
 		Iterator measures = track.getMeasures();
 		while(measures.hasNext()){
@@ -117,7 +117,7 @@ public class TGLayoutHorizontal extends TGLayout{
 				measure.setOutOfBounds(true);
 			}
 			
-			int measureWidth = measure.getWidth(this);
+			float measureWidth = measure.getWidth(this);
 			posX += measureWidth;
 			width += measureWidth;
 		}

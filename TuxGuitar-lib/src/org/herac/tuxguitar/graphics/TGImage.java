@@ -2,9 +2,9 @@ package org.herac.tuxguitar.graphics;
 
 public interface TGImage extends TGResource,TGPainterFactory {
 	
-	public int getWidth();
+	public float getWidth();
 	
-	public int getHeight();
+	public float getHeight();
 	
 	public void applyTransparency( TGColor background );
 }

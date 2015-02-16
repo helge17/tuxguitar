@@ -7,7 +7,7 @@ public abstract class TGSpacing {
 	public static final int TABLATURE = 0x02;
 	
 	private int flags;
-	private int[] spacing;
+	private float[] spacing;
 	private int[][] positions;
 	
 	public TGSpacing(TGLayout layout, int[][] positions, int len){
@@ -15,7 +15,7 @@ public abstract class TGSpacing {
 		this.flags |= ((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? SCORE : 0 );
 		this.flags |= ((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 ? TABLATURE : 0 );
 		this.positions = positions;
-		this.spacing = new int[len];
+		this.spacing = new float[len];
 	}
 	
 	public void clear(){
@@ -24,26 +24,26 @@ public abstract class TGSpacing {
 		}
 	}
 	
-	public void setSize(int index,int size){
+	public void setSize(int index, float size){
 		if( size > this.spacing[ this.positions [this.flags -1] [index] ] ){
 			this.spacing[ this.positions [this.flags -1] [index] ] = size;
 		}
 	}
 	
-	public int getSize(int index){
+	public float getSize(int index){
 		return this.spacing[ this.positions [this.flags -1] [index] ];
 	}
 	
-	public int getSize(){
-		int spacing = 0;
+	public float getSize(){
+		float spacing = 0;
 		for(int i = 0;i < this.spacing.length; i ++){
 			spacing += this.spacing[i];
 		}
 		return spacing;
 	}
 	
-	public int getPosition(int index){
-		int spacing = 0;
+	public float getPosition(int index){
+		float spacing = 0;
 		for(int i = 0;i < this.positions[this.flags -1][index]; i ++){
 			spacing += this.spacing[i];
 		}
