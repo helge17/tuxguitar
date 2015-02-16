@@ -28,7 +28,7 @@ public class TGResourceFactoryImpl implements TGResourceFactory {
 		return this.device;
 	}
 	
-	public TGImage createImage( int width, int height ){
+	public TGImage createImage( float width, float height ){
 		return new TGImageImpl( this.getDevice() , width, height );
 	}
 	
@@ -40,7 +40,7 @@ public class TGResourceFactoryImpl implements TGResourceFactory {
 		return this.createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
 	}
 	
-	public TGFont createFont( String name, int height, boolean bold, boolean italic ){
+	public TGFont createFont( String name, float height, boolean bold, boolean italic ){
 		return new TGFontImpl( this.getDevice() , name , height , bold , italic );
 	}
 	

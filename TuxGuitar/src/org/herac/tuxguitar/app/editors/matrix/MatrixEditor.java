@@ -90,7 +90,7 @@ public class MatrixEditor implements TGEventListener {
 	private float bufferHeight;
 	private float timeWidth;
 	private float lineHeight;
-	private int leftSpacing;
+	private float leftSpacing;
 	private int minNote;
 	private int maxNote;
 	private int duration;
@@ -345,16 +345,16 @@ public class MatrixEditor implements TGEventListener {
 					}
 				}
 				
-				int minimumNameWidth = 110;
-				int minimumNameHeight = 0;
+				float minimumNameWidth = 110;
+				float minimumNameHeight = 0;
 				TGPainter painter = new TGPainterImpl(new GC(this.dialog.getDisplay()));
 				painter.setFont(new TGFontImpl(this.config.getFont()));
 				for(int i = 0; i < names.length;i ++){
-					int fmWidth = painter.getFMWidth(names[i]);
+					float fmWidth = painter.getFMWidth(names[i]);
 					if( fmWidth > minimumNameWidth ){
 						minimumNameWidth = fmWidth;
 					}
-					int fmHeight = painter.getFMHeight();
+					float fmHeight = painter.getFMHeight();
 					if( fmHeight > minimumNameHeight ){
 						minimumNameHeight = fmHeight;
 					}

@@ -127,7 +127,9 @@ public class PrintPreviewAction extends TGActionBase{
 		}
 		
 		public void pageStart() {
-			Image page = new Image(TuxGuitar.getInstance().getDisplay(),this.bounds.getWidth() - this.bounds.getX(), this.bounds.getHeight() - this.bounds.getY());
+			int width = Math.round(this.bounds.getWidth() - this.bounds.getX());
+			int height = Math.round(this.bounds.getHeight() - this.bounds.getY());
+			Image page = new Image(TuxGuitar.getInstance().getDisplay(), width, height);
 			this.painter.init( page );
 			this.pages.add( page );
 		}

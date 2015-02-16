@@ -17,8 +17,8 @@ public class TGImageImpl implements TGImage {
 		this.handle = handle;
 	}
 	
-	public TGImageImpl( Device device , int width , int height ){
-		this( new Image(device,width,height) );
+	public TGImageImpl( Device device, float width, float height ){
+		this( new Image(device, Math.round(width), Math.round(height)) );
 	}
 	
 	public TGImageImpl(Device device, ImageData source, ImageData mask){
@@ -29,11 +29,11 @@ public class TGImageImpl implements TGImage {
 		return new TGPainterImpl(this.handle);
 	}
 	
-	public int getWidth() {
+	public float getWidth() {
 		return this.handle.getBounds().width;
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return this.handle.getBounds().height;
 	}
 	

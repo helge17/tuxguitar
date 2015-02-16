@@ -142,8 +142,8 @@ public class Tablature extends Composite implements TGController {
 				this.getCaret().paintCaret(this.getViewLayout(), painter);
 				this.getEditorKit().paintSelection(this.getViewLayout(), painter);
 				
-				this.width = this.viewLayout.getWidth();
-				this.height = this.viewLayout.getHeight();
+				this.width = Math.round(this.viewLayout.getWidth());
+				this.height = Math.round(this.viewLayout.getHeight());
 				
 				this.updateScroll();
 				
@@ -197,12 +197,12 @@ public class Tablature extends Composite implements TGController {
 	public boolean moveScrollTo(TGMeasureImpl measure,ScrollBar xScroll,ScrollBar yScroll,TGRectangle area){
 		boolean success = false;
 		if(measure != null && measure.getTs() != null){
-			int mX = measure.getPosX();
-			int mY = measure.getPosY();
-			int mWidth = measure.getWidth(getViewLayout());
-			int mHeight = measure.getTs().getSize();
-			int marginWidth = getViewLayout().getFirstMeasureSpacing();
-			int marginHeight = getViewLayout().getFirstTrackSpacing();
+			int mX = Math.round(measure.getPosX());
+			int mY = Math.round(measure.getPosY());
+			int mWidth = Math.round(measure.getWidth(getViewLayout()));
+			int mHeight = Math.round(measure.getTs().getSize());
+			int marginWidth = Math.round(getViewLayout().getFirstMeasureSpacing());
+			int marginHeight = Math.round(getViewLayout().getFirstTrackSpacing());
 			boolean forceRedraw = false;
 			
 			//Solo se ajusta si es necesario
@@ -325,7 +325,7 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void reloadStyles(){
-		if(this.getViewLayout() != null){
+		if( this.getViewLayout() != null ){
 			this.getViewLayout().loadStyles(1.0f);
 			this.setBackground( ((TGColorImpl)getViewLayout().getResources().getBackgroundColor()).getHandle() );
 		}

@@ -68,14 +68,14 @@ public class PrintLayout extends TGLayout{
 		this.document.finish();
 	}
 	
-	public void paintSong(TGPainter painter,TGRectangle clientArea,int fromX,int fromY) {
+	public void paintSong(TGPainter painter,TGRectangle clientArea, float fromX, float fromY) {
 		this.setWidth(0);
 		this.setHeight(0);
 		
 		int style = getStyle();
-		int posY = fromY + getFirstTrackSpacing();
-		int height = getFirstTrackSpacing();
-		int lineHeight = 0;
+		float posY = fromY + getFirstTrackSpacing();
+		float height = getFirstTrackSpacing();
+		float lineHeight = 0;
 		
 		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(getSong(), this.styles.getTrackNumber());
 		((TGLyricImpl)track.getLyrics()).start(getSkippedBeats(track));
@@ -121,8 +121,8 @@ public class PrintLayout extends TGLayout{
 	
 	public void paintHeader(TGPainter painter){
 		if(this.document.isPaintable(this.page) ){
-			int x = this.document.getBounds().getX();
-			int y = this.document.getBounds().getY();
+			float x = this.document.getBounds().getX();
+			float y = this.document.getBounds().getY();
 			String songName = getSong().getName();
 			String songAuthor = getSong().getAuthor();
 			String trackName = "(" + getSongManager().getTrack(getSong(), this.styles.getTrackNumber()).getName() + ")";
@@ -144,8 +144,8 @@ public class PrintLayout extends TGLayout{
 	
 	private void paintFooter(TGPainter painter){
 		if(this.document.isPaintable(this.page) ){
-			int x = this.document.getBounds().getX();
-			int y = this.document.getBounds().getY();
+			float x = this.document.getBounds().getX();
+			float y = this.document.getBounds().getY();
 			String pageNumber = Integer.toString(this.page);
 			
 			painter.setBackground(getResources().getColorWhite());
@@ -154,16 +154,16 @@ public class PrintLayout extends TGLayout{
 		}
 	}
 	
-	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter,int fromX, int fromY,TGTrackSpacing ts) {
+	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter, float fromX, float fromY, TGTrackSpacing ts) {
 		if(this.document.isPaintable(this.page) ){
-			int posX = fromX;
-			int posY = fromY;
-			int width = 0;
+			float posX = fromX;
+			float posY = fromY;
+			float width = 0;
 			
-			int measureSpacing = 0;
+			float measureSpacing = 0;
 			if(line.fullLine){
-				int diff = ( getMaxWidth() - line.tempWith);
-				if(diff != 0 && line.measures.size() > 0){
+				float diff = ( getMaxWidth() - line.tempWith);
+				if( diff != 0 && line.measures.size() > 0 ){
 					measureSpacing = diff / line.measures.size();
 				}
 			}
@@ -184,7 +184,7 @@ public class PrintLayout extends TGLayout{
 				paintMeasure(currMeasure,painter,measureSpacing);
 				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter,this,currMeasure,posX, posY);
 				
-				int measureWidth = ( currMeasure.getWidth(this) + currMeasure.getSpacing() );
+				float measureWidth = ( currMeasure.getWidth(this) + currMeasure.getSpacing() );
 				posX += measureWidth;
 				width += measureWidth;
 			}
@@ -205,15 +205,15 @@ public class PrintLayout extends TGLayout{
 		}
 	}
 	
-	private int getCenter(TGPainter painter,String text){
+	private float getCenter(TGPainter painter,String text){
 		return ((getMaxWidth() - painter.getFMWidth(text)) / 2);
 	}
 	
-	private int getRight(TGPainter painter,String text){
+	private float getRight(TGPainter painter,String text){
 		return ((getMaxWidth() - painter.getFMWidth(text)));
 	}
 	
-	private int getBottom(TGPainter painter,String text){
+	private float getBottom(TGPainter painter,String text){
 		return ((getMaxHeight() - painter.getFMHeight()));
 	}
 	
@@ -390,11 +390,11 @@ public class PrintLayout extends TGLayout{
 		return ( this.styles.isBlackAndWhite() ? getResources().getColorBlack() : color );
 	}
 	
-	public int getMaxWidth(){
+	public float getMaxWidth(){
 		return (this.document.getBounds().getWidth() - this.document.getBounds().getX() - 10);
 	}
 	
-	public int getMaxHeight(){
+	public float getMaxHeight(){
 		return (this.document.getBounds().getHeight() - this.document.getBounds().getY() - 10);
 	}
 	
@@ -451,11 +451,11 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	private class TempLine{
-		protected int tempWith;
+		protected float tempWith;
 		protected int lastIndex;
 		protected boolean fullLine;
-		protected int maxY = 0;
-		protected int minY = 50;
+		protected float maxY = 0;
+		protected float minY = 50;
 		protected List measures;
 		
 		public TempLine(){

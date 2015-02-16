@@ -145,8 +145,8 @@ public class Caret {
 				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){
 					boolean expectedVoice = (getSelectedNote() == null || getSelectedNote().getVoice().getIndex() == getVoice());
-					int stringSpacing = this.tablature.getViewLayout().getStringSpacing();
-					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
+					float stringSpacing = this.tablature.getViewLayout().getStringSpacing();
+					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float width = ((stringSpacing - (3.0f * layout.getScale())) * 2);
 					float height = ((stringSpacing - (3.0f * layout.getScale())) * 2);
 					float xMargin = ((width / 2.0f) - (2.0f * layout.getScale()));
@@ -161,8 +161,8 @@ public class Caret {
 					painter.closePath();
 				}
 				else if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
-					int line = this.tablature.getViewLayout().getScoreLineSpacing();
-					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
+					float line = this.tablature.getViewLayout().getScoreLineSpacing();
+					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float xMargin = (2.0f * layout.getScale());
 					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - xMargin;
 					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);

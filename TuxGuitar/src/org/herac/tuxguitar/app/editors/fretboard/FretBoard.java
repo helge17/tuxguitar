@@ -456,8 +456,8 @@ public class FretBoard extends Composite {
 		painter.setForeground(new TGColorImpl(foreground));
 		painter.setFont(new TGFontImpl(this.config.getFont()));
 		
-		int fmWidth = painter.getFMWidth(text);
-		int fmHeight = painter.getFMHeight();
+		float fmWidth = painter.getFMWidth(text);
+		float fmHeight = painter.getFMHeight();
 		
 		painter.initPath(TGPainter.PATH_FILL);
 		painter.addRectangle(x - (fmWidth / 2),y - (fmHeight / 2),fmWidth, fmHeight);

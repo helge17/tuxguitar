@@ -147,8 +147,8 @@ public class PrintPreview{
 		pageData.verticalAlignment = SWT.CENTER;
 		pageData.grabExcessHorizontalSpace = true;
 		pageData.grabExcessVerticalSpace = true;
-		pageData.widthHint = (this.bounds.getWidth() - this.bounds.getX()) + (MARGIN_LEFT + MARGIN_RIGHT);
-		pageData.heightHint = (this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM);
+		pageData.widthHint = Math.round((this.bounds.getWidth() - this.bounds.getX()) + (MARGIN_LEFT + MARGIN_RIGHT));
+		pageData.heightHint = Math.round((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
 		this.pageComposite.setLayoutData(pageData);
 		this.previewComposite.getVerticalBar().setIncrement(SCROLL_INCREMENT);
 		this.previewComposite.getVerticalBar().addListener(SWT.Selection, new Listener() {
@@ -161,8 +161,8 @@ public class PrintPreview{
 	protected void updateScroll(){
 		ScrollBar vBar = this.previewComposite.getVerticalBar();
 		Rectangle client = this.pageComposite.getClientArea();
-		vBar.setMaximum((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
-		vBar.setThumb(Math.min((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM), client.height));
+		vBar.setMaximum(Math.round(this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
+		vBar.setThumb(Math.min(Math.round(this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM), client.height));
 	}
 	
 	protected void changePage(int index){

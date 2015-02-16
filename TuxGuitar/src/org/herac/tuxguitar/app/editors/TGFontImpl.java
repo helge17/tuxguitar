@@ -14,8 +14,8 @@ public class TGFontImpl implements TGFont {
 		this.handle = handle;
 	}
 	
-	public TGFontImpl( Device device , String name, int height, boolean bold, boolean italic){
-		this( new Font( device, name, height, (SWT.NORMAL | (bold ? SWT.BOLD : 0) | (italic ? SWT.ITALIC : 0)) ) );
+	public TGFontImpl( Device device , String name, float height, boolean bold, boolean italic){
+		this( new Font( device, name, Math.round(height), (SWT.NORMAL | (bold ? SWT.BOLD : 0) | (italic ? SWT.ITALIC : 0)) ) );
 	}
 	
 	public void dispose(){
@@ -35,7 +35,7 @@ public class TGFontImpl implements TGFont {
 		return ( fd != null && fd.length > 0 ? fd[0].getName() : new String() );
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		FontData[] fd = this.handle.getFontData();
 		return ( fd != null && fd.length > 0 ? fd[0].getHeight() : 0 );
 	}
