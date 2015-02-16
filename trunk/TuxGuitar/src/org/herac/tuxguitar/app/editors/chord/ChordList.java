@@ -64,7 +64,7 @@ public class ChordList extends Composite {
 	private ChordDialog dialog;
 	private TGBeat beat;
 	private List graphicChords;
-	private int height;
+	private float height;
 	private TGChordImpl selectedChord;
 	private Composite composite;
 	private Font font;
@@ -127,10 +127,10 @@ public class ChordList extends Composite {
 	}
 	
 	protected void paintChords(TGPainterImpl painter) {
-		int maxHeight = 0;
-		int fromX = 15;
-		int fromY = 10;
-		int vScroll = this.composite.getVerticalBar().getSelection();
+		float maxHeight = 0;
+		float fromX = 15;
+		float fromY = 10;
+		float vScroll = this.composite.getVerticalBar().getSelection();
 		Iterator it = this.graphicChords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
@@ -174,7 +174,7 @@ public class ChordList extends Composite {
 		Rectangle rect = this.composite.getBounds();
 		Rectangle client = this.composite.getClientArea();
 		ScrollBar vBar = this.composite.getVerticalBar();
-		vBar.setMaximum(this.height);
+		vBar.setMaximum(Math.round(this.height));
 		vBar.setThumb(Math.min(rect.height, client.height));
 	}
 	
@@ -201,12 +201,12 @@ public class ChordList extends Composite {
 		Iterator it = this.graphicChords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
-			int x1 = chord.getPosX();
-			int x2 = x1 + chord.getWidth();
-			int y1 = chord.getPosY();
-			int y2 = y1 + chord.getHeight();
+			float x1 = chord.getPosX();
+			float x2 = x1 + chord.getWidth();
+			float y1 = chord.getPosY();
+			float y2 = y1 + chord.getHeight();
 			if (x > x1 && x < x2 && y > y1 && y < y2) {
-				if(setAsSelected){
+				if( setAsSelected ){
 					if(this.selectedChord != null){
 						this.selectedChord.dispose();
 					}

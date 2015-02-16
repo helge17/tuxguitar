@@ -114,9 +114,9 @@ public class EditorKit {
 		return null;
 	}
 	
-	public TGMeasureImpl findSelectedMeasure(TGTrackImpl track,int x,int y){
+	public TGMeasureImpl findSelectedMeasure(TGTrackImpl track, float x, float y){
 		TGMeasureImpl measure = null;
-		int minorDistance = 0;
+		float minorDistance = 0;
 		
 		Iterator it = track.getMeasures();
 		while(it.hasNext()){
@@ -124,8 +124,8 @@ public class EditorKit {
 			if(!m.isOutOfBounds() && m.getTs() != null){
 				boolean isAtX = (x >= m.getPosX() && x <= m.getPosX() + m.getWidth(getTablature().getViewLayout()) + m.getSpacing());
 				if(isAtX){
-					int measureHeight = m.getTs().getSize();
-					int distanceY = Math.min(Math.abs(y - (m.getPosY())),Math.abs(y - ( m.getPosY() + measureHeight - 10)));
+					float measureHeight = m.getTs().getSize();
+					float distanceY = Math.min(Math.abs(y - (m.getPosY())),Math.abs(y - ( m.getPosY() + measureHeight - 10)));
 					if(measure == null || distanceY < minorDistance){
 						measure = m;
 						minorDistance = distanceY;
@@ -136,16 +136,16 @@ public class EditorKit {
 		return measure;
 	}
 	
-	public TGBeatImpl findSelectedBeat(TGMeasureImpl measure, int x){
+	public TGBeatImpl findSelectedBeat(TGMeasureImpl measure, float x){
 		int voice = getTablature().getCaret().getVoice();
-		int posX = measure.getHeaderImpl().getLeftSpacing(getTablature().getViewLayout()) + measure.getPosX();
-		int bestDiff = -1;
+		float posX = measure.getHeaderImpl().getLeftSpacing(getTablature().getViewLayout()) + measure.getPosX();
+		float bestDiff = -1;
 		TGBeatImpl bestBeat = null;
 		Iterator it = measure.getBeats().iterator();
 		while(it.hasNext()){
 			TGBeatImpl beat = (TGBeatImpl)it.next();
 			if(!beat.getVoice(voice).isEmpty()){
-				int diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing())));
+				float diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing())));
 				if(bestDiff == -1 || diff < bestDiff){
 					bestBeat = beat;
 					bestDiff = diff;
@@ -158,16 +158,16 @@ public class EditorKit {
 		return bestBeat;
 	}
 	
-	public TGString findSelectedString(TGMeasureImpl measure,int y) {
+	public TGString findSelectedString(TGMeasureImpl measure, float y) {
 		TGString string = null;
-		int stringSpacing = getTablature().getViewLayout().getStringSpacing();
-		int minorDistance = 0;
-		int firstStringY = measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
+		float stringSpacing = getTablature().getViewLayout().getStringSpacing();
+		float minorDistance = 0;
+		float firstStringY = measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 		
 		Iterator it = measure.getTrack().getStrings().iterator();
 		while(it.hasNext()){
 			TGString currString = (TGString)it.next();
-			int distanceX = Math.abs(y - (firstStringY + ((currString.getNumber() * stringSpacing) - stringSpacing)));
+			float distanceX = Math.abs(y - (firstStringY + ((currString.getNumber() * stringSpacing) - stringSpacing)));
 			if(string == null || distanceX < minorDistance){
 				string = currString;
 				minorDistance = distanceX;
@@ -177,7 +177,7 @@ public class EditorKit {
 		return string;
 	}
 	
-	private int findBestString(TGTrack track,TGVoice voice,int value){
+	private int findBestString(TGTrack track,TGVoice voice, int value){
 		List strings = new ArrayList();
 		for(int number = 1;number <= track.stringCount();number++){
 			boolean used = false;
@@ -207,10 +207,10 @@ public class EditorKit {
 		return stringForValue;
 	}
 	
-	public TGVoiceImpl findBestVoice(TGMeasureImpl measure, int x){
+	public TGVoiceImpl findBestVoice(TGMeasureImpl measure, float x){
 		int voiceIndex = this.getTablature().getCaret().getVoice();
-		int posX = measure.getHeaderImpl().getLeftSpacing( this.getTablature().getViewLayout() ) + measure.getPosX();
-		int bestDiff = -1;
+		float posX = measure.getHeaderImpl().getLeftSpacing( this.getTablature().getViewLayout() ) + measure.getPosX();
+		float bestDiff = -1;
 		TGVoiceImpl bestVoice = null;
 		TGDuration duration = this.getTablature().getCaret().getDuration();
 		Iterator it = measure.getBeats().iterator();
@@ -218,14 +218,14 @@ public class EditorKit {
 			TGBeatImpl beat = (TGBeatImpl)it.next();
 			TGVoiceImpl voice = beat.getVoiceImpl( voiceIndex );
 			if(!voice.isEmpty()){
-				int x1 = (beat.getPosX() + beat.getSpacing());
-				int x2 = (x1 + voice.getWidth());
-				long increment = voice.getWidth();
+				float x1 = (beat.getPosX() + beat.getSpacing());
+				float x2 = (x1 + voice.getWidth());
+				float increment = voice.getWidth();
 				if(voice.isRestVoice()){
 					increment = (duration.getTime() * voice.getWidth() / voice.getDuration().getTime());
 				}
-				for( int beatX = x1 ; beatX < x2 ; beatX += increment ){
-					int diff = Math.abs(x - (posX + beatX));
+				for( float beatX = x1 ; beatX < x2 ; beatX += increment ){
+					float diff = Math.abs(x - (posX + beatX));
 					if(bestDiff == -1 || diff < bestDiff){
 						bestVoice = voice;
 						bestDiff = diff;
@@ -242,7 +242,7 @@ public class EditorKit {
 		return bestVoice;
 	}
 	
-	public void addOrRemoveNote(int x, int y) {
+	public void addOrRemoveNote(float x, float y) {
 		if(!TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked() && !this.getTablature().isPainting()){
 			TGActionLock.lock();
 			
@@ -254,13 +254,13 @@ public class EditorKit {
 					int minValue = track.getString(track.stringCount()).getValue();
 					int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
 					
-					int lineSpacing = this.getTablature().getViewLayout().getScoreLineSpacing();
+					float lineSpacing = this.getTablature().getViewLayout().getScoreLineSpacing();
 					
-					int topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-					int bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
+					float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+					float bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
 					
-					int y1 = (pos.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
-					int y2 = (y1 + (lineSpacing * 5));
+					float y1 = (pos.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+					float y2 = (y1 + (lineSpacing * 5));
 					
 					if(y >= (y1 - topHeight) && y  < (y2 + bottomHeight)){
 						
@@ -299,17 +299,19 @@ public class EditorKit {
 		}
 	}
 	
-	private long getRealStart(TGVoiceImpl voice,int x){
+	private long getRealStart(TGVoiceImpl voice, float x){
 		if(voice.isEmpty()){
 			return voice.getBeat().getStart();
 		}
 		TGMeasureImpl measure = voice.getBeatImpl().getMeasureImpl();
-		long beatX = (measure.getHeaderImpl().getLeftSpacing( this.getTablature().getViewLayout() ) + measure.getPosX() + voice.getBeatImpl().getPosX() + voice.getBeatImpl().getSpacing());
+		
 		long beatStart = voice.getBeat().getStart();
-		long beatLength = voice.getDuration().getTime();
-		long beatEnd = ( beatStart + beatLength );
-		if(x > beatX){
-			return Math.min( ( beatStart + ( (x - beatX) * beatLength / voice.getWidth() ) ), (beatEnd - 1 ) );
+		float beatX = (measure.getHeaderImpl().getLeftSpacing( this.getTablature().getViewLayout() ) + measure.getPosX() + voice.getBeatImpl().getPosX() + voice.getBeatImpl().getSpacing());
+		if( x > beatX ){
+			long beatLength = voice.getDuration().getTime();
+			long beatEnd = ( beatStart + beatLength );
+			
+			return Math.min( ( beatStart + ( Math.round(x - beatX) * beatLength / Math.round(voice.getWidth()) ) ), (beatEnd - 1 ) );
 		}
 		return beatStart;
 	}
@@ -432,16 +434,16 @@ public class EditorKit {
 				float scale = layout.getScale();
 				int minValue = measure.getTrack().getString(measure.getTrack().stringCount()).getValue();
 				int maxValue = measure.getTrack().getString(1).getValue() + 29;
-				int lineSpacing = layout.getScoreLineSpacing();
-				int width = (int)(10.0f * scale);
-				int topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				int bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
+				float lineSpacing = layout.getScoreLineSpacing();
+				float width = (int)(10.0f * scale);
+				float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+				float bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
 				int tempValue = 0;
 				
-				int x1 = 0;
-				int x2 = 0;
-				int y1 = (measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
-				int y2 = (y1 + (lineSpacing * 5));
+				float x1 = 0;
+				float x2 = 0;
+				float y1 = (measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+				float y2 = (y1 + (lineSpacing * 5));
 				
 				for(int b = 0 ; b < measure.countBeats() ; b++ ){
 					TGBeatImpl beat = (TGBeatImpl)measure.getBeat(b);
@@ -452,7 +454,7 @@ public class EditorKit {
 						painter.setForeground(layout.getResources().getLineColor());
 						
 						tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
-						for(int y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
+						for(float y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
 							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
 							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
 							if( tempValue > maxValue ){
@@ -466,7 +468,7 @@ public class EditorKit {
 						}
 						
 						tempValue = FIRST_LINE_VALUES[measure.getClef() - 1] - 14;
-						for(int y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
+						for(float y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
 							if(tempValue > 0){
 								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
 								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;

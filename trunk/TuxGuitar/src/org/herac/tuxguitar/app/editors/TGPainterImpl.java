@@ -88,24 +88,24 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		return this.gc.isDisposed();
 	}
 	
-	public void drawString(String string, int x, int y) {
+	public void drawString(String string, float x, float y) {
 		this.setAdvanced(false);
-		this.gc.drawString(string, x, y);
+		this.gc.drawString(string, toInt(x), toInt(y));
 	}
 	
-	public void drawString(String string, int x, int y, boolean isTransparent) {
+	public void drawString(String string, float x, float y, boolean isTransparent) {
 		this.setAdvanced(false);
-		this.gc.drawString(string, x, y, isTransparent);
+		this.gc.drawString(string, toInt(x), toInt(y), isTransparent);
 	}
 	
-	public void drawImage(TGImage image, int srcX, int srcY, int srcWidth, int srcHeight, int destX, int destY, int destWidth, int destHeight) {
+	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.setAdvanced(false);
-		this.gc.drawImage(getImage(image), srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
+		this.gc.drawImage(getImage(image), toInt(srcX), toInt(srcY), toInt(srcWidth), toInt(srcHeight), toInt(destX), toInt(destY), toInt(destWidth), toInt(destHeight));
 	}
 	
-	public void drawImage(TGImage image, int x, int y) {
+	public void drawImage(TGImage image, float x, float y) {
 		this.setAdvanced(false);
-		this.gc.drawImage(getImage(image), x, y);
+		this.gc.drawImage(getImage(image), toInt(x), toInt(y));
 	}
 	
 	public void drawPolygon(int[] arg0) {
@@ -168,8 +168,8 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.gc.setBackground(getColor(color));
 	}
 	
-	public void setLineWidth(int width) {
-		this.gc.setLineWidth(width);
+	public void setLineWidth(float width) {
+		this.gc.setLineWidth(toInt(width));
 	}
 	
 	public void setLineStyleSolid(){
@@ -204,7 +204,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		}
 	}
 	
-	public int getFontSize(){
+	public float getFontSize(){
 		FontData[] fd = this.gc.getFont().getFontData();
 		if( fd != null && fd.length > 0 ){
 			return fd[0].getHeight();
@@ -212,22 +212,22 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		return 0;
 	}
 	
-	public int getFMHeight(){
+	public float getFMHeight(){
 		this.setAdvanced(false);
 		return this.gc.getFontMetrics().getHeight();
 	}
 	
-	public int getFMAscent(){
+	public float getFMAscent(){
 		this.setAdvanced(false);
 		return this.gc.getFontMetrics().getAscent();
 	}
 	
-	public int getFMDescent(){
+	public float getFMDescent(){
 		this.setAdvanced(false);
 		return this.gc.getFontMetrics().getDescent();
 	}
 	
-	public int getFMWidth( String text ){
+	public float getFMWidth( String text ){
 		this.setAdvanced(false);
 		return this.gc.stringExtent( text ).x;
 	}
@@ -259,5 +259,9 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 			return ((TGFontImpl)font).getHandle();
 		}
 		return null;
+	}
+	
+	public int toInt(float value) {
+		return Math.round(value);
 	}
 }
