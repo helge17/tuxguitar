@@ -529,8 +529,8 @@ public class TGNoteImpl extends TGNote {
 		float y = fromY + (2.0f * scale);
 		float width = ( getVoiceImpl().getWidth() - (2.0f * scale) );
 		
-		int loops = (int)(width / (6.0f * scale) );
-		if(loops > 0 ){
+		int loops = Math.round(width / (6.0f * scale) );
+		if( loops > 0 ){
 			layout.setTabEffectStyle(painter);
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.moveTo(( x + ((2.0f) * scale) ),( y + (1.0f * scale) ));
@@ -566,7 +566,7 @@ public class TGNoteImpl extends TGNote {
 		float y = fromY + ( (fmHeight - (5.0f * scale)) / 2.0f );
 		float width = ( getVoiceImpl().getWidth() - fmWidth - (2.0f * scale) );
 		
-		int loops = (int)(width / (6.0f * scale) );
+		int loops = Math.round(width / (6.0f * scale) );
 		if(loops > 0 ){
 			painter.drawString(string, fromX, fromY);
 			
