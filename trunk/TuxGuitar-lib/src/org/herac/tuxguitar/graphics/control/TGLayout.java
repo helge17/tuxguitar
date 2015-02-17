@@ -82,8 +82,8 @@ public abstract class TGLayout {
 		this.getComponent().configureStyles(this.styles);
 		
 		this.setBufferEnabled( this.styles.isBufferEnabled() );
-		this.setStringSpacing( (int)(this.styles.getStringSpacing() * getScale() ) );
-		this.setScoreLineSpacing( (int)(this.styles.getScoreLineSpacing() * getScale() ) );
+		this.setStringSpacing( (this.styles.getStringSpacing() * getScale() ) );
+		this.setScoreLineSpacing( (this.styles.getScoreLineSpacing() * getScale() ) );
 		this.setFirstMeasureSpacing( Math.round( this.styles.getFirstMeasureSpacing() * getScale() ) );
 		this.setMinBufferSeparator( Math.round( this.styles.getMinBufferSeparator() * getScale() ) );
 		this.setMinTopSpacing( Math.round( this.styles.getMinTopSpacing() * getScale() ) );
@@ -203,7 +203,7 @@ public abstract class TGLayout {
 		this.playModeEnabled = true;
 		
 		//pinto el compas
-		if(paintMeasure){
+		if( paintMeasure ){
 			measure.paintMeasure(this,painter);
 		}
 		//pinto el pulso
@@ -250,9 +250,8 @@ public abstract class TGLayout {
 	/**
 	 * Calcula el espacio minimo entre negras, dependiendo de la duracion de la nota 
 	 */
-	public int getSpacingForQuarter(TGDuration duration){
-		double spacing = (((double)TGDuration.QUARTER_TIME / (double)duration.getTime()) * getMinSpacing(duration));
-		return  (int)spacing;
+	public float getSpacingForQuarter(TGDuration duration){
+		return (((float)TGDuration.QUARTER_TIME / (float)duration.getTime()) * getMinSpacing(duration));
 	}
 	
 	/**

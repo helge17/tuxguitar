@@ -107,8 +107,8 @@ public class TGLayoutVertical extends TGLayout{
 	}
 	
 	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter, float fromX, float fromY,TGTrackSpacing ts,TGRectangle clientArea) {
-		float posX = (this.marginLeft + fromX);
-		float posY = fromY;
+		float posX = Math.round(this.marginLeft + fromX);
+		float posY = Math.round(fromY);
 		float width = this.marginLeft;
 		
 		//verifico si esta en el area de cliente
@@ -117,8 +117,8 @@ public class TGLayoutVertical extends TGLayout{
 		float measureSpacing = 0;
 		if( line.fullLine ){
 			float diff = ( this.maximumWidth - line.tempWith);
-			if(diff != 0 && line.measures.size() > 0){
-				measureSpacing = diff / line.measures.size();
+			if( diff != 0 && line.measures.size() > 0 ){
+				measureSpacing = (diff / line.measures.size());
 			}
 		}
 		
@@ -135,17 +135,18 @@ public class TGLayoutVertical extends TGLayout{
 			
 			currMeasure.setFirstOfLine(i == 0);
 			
-			float measureWidth = ( currMeasure.getWidth(this) + measureSpacing );
-			boolean isAtX = ( posX + measureWidth > clientArea.getX() && posX < clientArea.getX() + clientArea.getWidth());
+			float measureWidth = currMeasure.getWidth(this);
+			float measureWidthWithSpacing = Math.round(measureWidth + measureSpacing);
+			boolean isAtX = ( posX + measureWidthWithSpacing > clientArea.getX() && posX < clientArea.getX() + clientArea.getWidth());
 			if(isAtX && isAtY){
-				paintMeasure(currMeasure,painter,measureSpacing);
-				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter,this,currMeasure,posX, posY);
+				paintMeasure(currMeasure, painter, (measureWidthWithSpacing - measureWidth));
+				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter, this, currMeasure, posX, posY);
 			}else{
 				currMeasure.setOutOfBounds(true);
 			}
 			
-			posX += measureWidth;
-			width += measureWidth;
+			posX += measureWidthWithSpacing;
+			width += measureWidthWithSpacing;
 		}
 		this.setWidth(Math.max(getWidth(),width));
 	}

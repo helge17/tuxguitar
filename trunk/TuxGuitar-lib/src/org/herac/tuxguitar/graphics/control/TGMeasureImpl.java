@@ -206,16 +206,16 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	public void calculateWidth(TGLayout layout) {
-		if(this.compactMode){
+		if( this.compactMode ){
 			this.width = this.widthBeats;
 		}
 		else{
-			double quartersInSignature = ((1.00 / this.getTimeSignature().getDenominator().getValue()) * 4.00) * this.getTimeSignature().getNumerator();
-			this.width = (int)(getQuarterSpacing() * quartersInSignature);
+			float quartersInSignature = ((1f / ((float)this.getTimeSignature().getDenominator().getValue())) * 4f) * ((float)this.getTimeSignature().getNumerator());
+			this.width = (getQuarterSpacing() * quartersInSignature);
 		}
 		
 		this.width += getFirstNoteSpacing(layout);
-		this.width += (this.getRepeatClose() > 0)?20:0;
+		this.width += (this.getRepeatClose() > 0) ? (20f * layout.getScale()) : 0;
 		this.width += getHeaderImpl().getLeftSpacing(layout);
 		this.width += getHeaderImpl().getRightSpacing(layout);
 		
@@ -230,7 +230,7 @@ public class TGMeasureImpl extends TGMeasure{
 		TGBeatGroup[] groups = new TGBeatGroup[TGBeat.MAX_VOICES];
 		
 		int style = layout.getStyle();
-		int minimumChordLength = 0;
+		long minimumChordLength = 0;
 		
 		boolean[] notEmptyVoicesChecked = new boolean[TGBeat.MAX_VOICES];
 		boolean chordEnabled = ((style & (TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.DISPLAY_CHORD_NAME)) != 0);
@@ -247,8 +247,8 @@ public class TGMeasureImpl extends TGMeasure{
 			
 			if(chordEnabled && beat.getChord() != null){
 				if(previousChord != null){
-					int length = (int) (beat.getStart() - previousChord.getBeat().getStart());
-					minimumChordLength = (minimumChordLength > 0)?Math.min(minimumChordLength, Math.abs(length)):length;
+					long length = (beat.getStart() - previousChord.getBeat().getStart());
+					minimumChordLength = (minimumChordLength > 0) ? Math.min(minimumChordLength, Math.abs(length)) : length;
 				}
 				previousChord = beat.getChord();
 			}
@@ -317,8 +317,8 @@ public class TGMeasureImpl extends TGMeasure{
 		if(!this.compactMode){
 			this.quarterSpacing = (minDuration != null)?layout.getSpacingForQuarter(minDuration): Math.round(DEFAULT_QUARTER_SPACING * layout.getScale());
 			if(chordEnabled && minimumChordLength > 0){
-				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (getTrack().stringCount() * layout.getChordStringSpacing()));
-				float minimumSpacing = (int)((TGDuration.QUARTER_TIME * chordWidth) / minimumChordLength);
+				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (((float)getTrack().stringCount()) * layout.getChordStringSpacing()));
+				float minimumSpacing = ((((float)TGDuration.QUARTER_TIME) * chordWidth) / ((float)minimumChordLength));
 				this.quarterSpacing = Math.max(minimumSpacing,this.quarterSpacing);
 			}
 			this.getHeaderImpl().notifyQuarterSpacing(this.quarterSpacing);
@@ -346,7 +346,7 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	private void makeVoice(TGLayout layout,TGVoiceImpl voice,TGVoiceImpl previousVoice,TGBeatGroup group){
-		voice.setWidth((int)layout.getVoiceWidth(voice));
+		voice.setWidth(layout.getVoiceWidth(voice));
 		voice.setBeatGroup( group );
 		
 		if(previousVoice != null){
@@ -534,7 +534,7 @@ public class TGMeasureImpl extends TGMeasure{
 		return 0;
 	}
 	
-	private void checkValue(TGLayout layout,TGNoteImpl note,int direction){
+	private void checkValue(TGLayout layout, TGNoteImpl note, int direction){
 		float y = note.getScorePosY();
 		float upOffset = TGBeatGroup.getUpOffset(layout);
 		float downOffset = TGBeatGroup.getDownOffset(layout);
@@ -542,11 +542,11 @@ public class TGMeasureImpl extends TGMeasure{
 		if(direction == TGBeatGroup.DIRECTION_UP && y > this.maxY ){
 			this.maxY = y;
 		}else if(direction == TGBeatGroup.DIRECTION_DOWN && (y + downOffset) > this.maxY ){
-			this.maxY = (int)(y + downOffset + 2);
+			this.maxY = (y + downOffset + 2f);
 		}
 		
 		if(direction == TGBeatGroup.DIRECTION_UP && (y - upOffset) < this.minY ){
-			this.minY = (int)(y - upOffset - 2);
+			this.minY = (y - upOffset - 2f);
 		}else if(direction == TGBeatGroup.DIRECTION_DOWN && y < this.minY ){
 			this.minY = y;
 		}
@@ -612,7 +612,7 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		if(bufferEnabled){
 			painter.setBackground(layout.getResources().getBackgroundColor());
-			getBuffer().paintBuffer(painter,getPosX(),getPosY(),getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+			getBuffer().paintBuffer(painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 		}
 		
 		this.paintMarker(layout, painter);
@@ -1089,15 +1089,15 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	public float getBeatSpacing(TGLayout layout, TGBeatImpl beat){
-		float firstNoteSpacing = getFirstNoteSpacing(layout);
-		
-		float mWidth = (this.getWidth(layout) - firstNoteSpacing);
+		float bMargin = getFirstNoteSpacing(layout);
+		float mPadding = (bMargin + getHeaderImpl().getLeftSpacing(layout) + getHeaderImpl().getRightSpacing(layout));
+		float mWidth = (this.getWidth(layout) - mPadding);
 		float mWidthWithSpacing = (mWidth + getSpacing());
 		if( mWidthWithSpacing < layout.getMinBeatWidth() ) {
 			mWidthWithSpacing = layout.getMinBeatWidth();
 		}
 		
-		float beatX = (beat.getPosX() - firstNoteSpacing);
+		float beatX = (beat.getPosX() - bMargin);
 		float moveX = (mWidthWithSpacing * beatX / mWidth);
 		
 		return (moveX - beatX);

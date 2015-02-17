@@ -120,18 +120,18 @@ public class TGBeatGroup {
 		return this.voices;
 	}
 	
-	public int getY1(TGLayout layout,TGNoteImpl note,int key,int clef){
-		double scale = (layout.getScoreLineSpacing() / 2.00);
+	public float getY1(TGLayout layout,TGNoteImpl note, int key, int clef){
 		int noteValue = note.getRealValue();
 		
-		int scoreLineY = 0;
-		if(key <= 7){
-			scoreLineY = (int)((SCORE_SHARP_POSITIONS[noteValue % 12]) * scale - (7 * (noteValue / 12)) * scale);
+		float scale = (layout.getScoreLineSpacing() / 2f);
+		float scoreLineY = 0;
+		if( key <= 7){
+			scoreLineY = (((float)(SCORE_SHARP_POSITIONS[noteValue % 12] * scale)) - ((float)((int)(7 * (noteValue / 12))) * scale));
 		}else{
-			scoreLineY = (int)((SCORE_FLAT_POSITIONS[noteValue % 12]) * scale - (7 * (noteValue / 12)) * scale);
+			scoreLineY = (((float)(SCORE_FLAT_POSITIONS[noteValue % 12] * scale)) - ((float)((int)(7 * (noteValue / 12))) * scale));
 		}
 		
-		scoreLineY += TGMeasureImpl.SCORE_KEY_OFFSETS[clef - 1] * scale;
+		scoreLineY += ((float)(TGMeasureImpl.SCORE_KEY_OFFSETS[clef - 1] * scale));
 		
 		return scoreLineY;
 	}
@@ -159,7 +159,6 @@ public class TGBeatGroup {
 			}
 			
 			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
-				//y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
 				y = (((y1 -y2) / (x1 - x2)) * (x1 - x));
 			}
 			return y1 - y;
@@ -180,7 +179,6 @@ public class TGBeatGroup {
 			}
 			
 			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
-//				y = (int)((((double)y1 -(double)y2) / ((double)x1 - (double)x2)) * ((double)x1 - (double)x));
 				y = (((y1 - y2) / (x1 - x2)) * (x1 - x));
 			}
 			return y1 - y;
