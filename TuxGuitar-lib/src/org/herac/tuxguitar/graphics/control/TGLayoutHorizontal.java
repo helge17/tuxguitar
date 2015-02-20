@@ -34,7 +34,7 @@ public class TGLayoutHorizontal extends TGLayout{
 		
 		int style = getStyle();
 		int number = getComponent().getTrackSelection();
-		float posY = fromY + getFirstTrackSpacing();
+		float posY = Math.round(fromY + getFirstTrackSpacing());
 		float height = getFirstTrackSpacing();
 		float trackHeight;
 		Iterator tracks = getSong().getTracks();
@@ -75,13 +75,15 @@ public class TGLayoutHorizontal extends TGLayout{
 				
 				//----------------------------------------------------
 				paintMeasures(track,painter,fromX,posY,ts,clientArea);
-				paintLines(track,ts,painter,fromX + (getWidth() + 2),posY,(clientArea.getWidth() - (fromX + getWidth()) ));
+				paintLines(track,ts,painter,fromX + (getWidth() + (2f * getScale())),posY, (clientArea.getWidth() - (fromX + getWidth()) ));
 				
 				trackHeight = ts.getSize();
 				addTrackPosition(track.getNumber(),posY,trackHeight);
 				
-				posY += trackHeight + getTrackSpacing();
-				height += trackHeight + getTrackSpacing();
+				float trackHeightWithSpacing = Math.round(trackHeight + getTrackSpacing() + 0.5f);
+				
+				posY += trackHeightWithSpacing;
+				height += trackHeightWithSpacing;
 			}
 		}
 		if(getWidth() > clientArea.getWidth()){
@@ -92,7 +94,7 @@ public class TGLayoutHorizontal extends TGLayout{
 	}
 	
 	public void paintMeasures(TGTrackImpl track,TGPainter painter, float fromX, float fromY,TGTrackSpacing ts,TGRectangle clientArea) {
-		float posX = (fromX + getFirstMeasureSpacing());
+		float posX = Math.round(fromX + getFirstMeasureSpacing());
 		float posY = fromY;
 		float width = getFirstMeasureSpacing();
 		
@@ -107,19 +109,22 @@ public class TGLayoutHorizontal extends TGLayout{
 			
 			((TGLyricImpl)track.getLyrics()).setCurrentMeasure(measure);
 			
+			float measureWidth = measure.getWidth(this);
+			float measureWidthRounded = (this.isBufferEnabled() ? Math.round(measureWidth) : measureWidth);
+			float measureSpacing = (measureWidthRounded - measureWidth);
+			
 			//Solo pinto lo que entre en pantalla
 			boolean isAtX = ((posX + measure.getWidth(this)) > clientArea.getX() - 100 && posX < clientArea.getX() + clientArea.getWidth() + measure.getWidth(this) + 100);
 			boolean isAtY = (posY + ts.getSize() > clientArea.getY() && posY < clientArea.getY() + clientArea.getHeight() + 80);
 			if(isAtX && isAtY){
-				paintMeasure(measure,painter,0);
+				paintMeasure(measure, painter, measureSpacing);
 				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter,this,measure,posX, posY);
 			}else{
 				measure.setOutOfBounds(true);
 			}
 			
-			float measureWidth = measure.getWidth(this);
-			posX += measureWidth;
-			width += measureWidth;
+			posX += measureWidthRounded;
+			width += measureWidthRounded;
 		}
 		this.setWidth(Math.max(getWidth(),width));
 	}

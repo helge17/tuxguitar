@@ -297,30 +297,41 @@ public class TGBeatImpl extends TGBeat{
 	
 	private void paintExtraLines(TGPainter painter,TGLayout layout,TGNoteImpl note,float fromX,float fromY){
 		float scale = layout.getScale();
-		float y = fromY + note.getScorePosY();
+		float scoreLineSpacing = layout.getScoreLineSpacing();
+		float spacing = (layout.getScoreLineSpacing() / 2f);
+		float noteY = (fromY + note.getScorePosY() + spacing);
+		float lineY = (fromY > noteY ? fromY : (fromY + (scoreLineSpacing * 4)));
 		float x = fromX + getPosX() + getSpacing(layout);
 		float x1 = x - (4 * scale);
 		float x2 = x + (12 * scale);
 		
-		float scoreLineSpacing = layout.getScoreLineSpacing();
-		
-		layout.setLineStyle(painter);
-		if(y < fromY){
-			for(float lineY = fromY; lineY > y; lineY -= scoreLineSpacing){
+		int direction = (fromY > noteY ? -1 : 1);
+		int requiredExtraLines = this.findRequiredExtraLines(layout, lineY, noteY, direction);
+		if( requiredExtraLines > 0 ) {
+			layout.setLineStyle(painter);
+			
+			for(int i = 0; i < requiredExtraLines ; i ++) {
 				painter.initPath();
 				painter.setAntialias(false);
-				painter.moveTo(x1, lineY);
-				painter.lineTo(x2, lineY);
+				painter.moveTo(x1, lineY + ((scoreLineSpacing * (i + 1)) * direction));
+				painter.lineTo(x2, lineY + ((scoreLineSpacing * (i + 1)) * direction));
 				painter.closePath();
+			}	
+		}
+	}
+	
+	private int findRequiredExtraLines(TGLayout layout, float lineY, float noteY, int direction) {
+		int counter = 0;
+		float spacing = (layout.getScoreLineSpacing() / 2f);
+		float previousPosition = lineY;
+		for(float position = (lineY + (spacing * direction));; position += (spacing * direction), counter ++) {
+			float distance1 = Math.abs(previousPosition - noteY);
+			float distance2 = Math.abs(position - noteY);
+			
+			if( Math.min(distance1, distance2) == distance1) {
+				return (counter > 0 ? counter / 2 : 0);
 			}
-		}else if(y > (fromY + (scoreLineSpacing * 4))){
-			for(float lineY = (fromY +(scoreLineSpacing * 5)); lineY < (y + scoreLineSpacing); lineY += scoreLineSpacing){
-				painter.initPath();
-				painter.setAntialias(false);
-				painter.moveTo(x1, lineY);
-				painter.lineTo(x2, lineY);
-				painter.closePath();
-			}
+			previousPosition = position;
 		}
 	}
 	

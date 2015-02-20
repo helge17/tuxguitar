@@ -538,7 +538,7 @@ public class TGVoiceImpl extends TGVoice{
 			painter.drawString(Integer.toString(getDuration().getDivision().getEnters()),vX ,((fromY - getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES)) + getPaintPosition(TGTrackSpacing.POSITION_DIVISION_TYPE)));
 		}
 		//dibujo el pie
-		if(getDuration().getValue() >= TGDuration.HALF){
+		if( getDuration().getValue() >= TGDuration.HALF ){
 			layout.setScoreNoteFooterStyle(painter);
 			
 			float scale = layout.getScale();
@@ -547,7 +547,8 @@ public class TGVoiceImpl extends TGVoice{
 			int key = getBeat().getMeasure().getKeySignature();
 			int clef = getBeat().getMeasure().getClef();
 			
-			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? layout.getResources().getScoreNoteWidth() : 0);
+			float scoreNoteWidth = layout.getScoreNoteWidth(getDuration().getValue() > TGDuration.HALF);
+			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0);
 			float yMove = (direction == TGBeatGroup.DIRECTION_UP ? ((layout.getScoreLineSpacing() / 3) + 1) : ((layout.getScoreLineSpacing() / 3) * 2));
 			
 			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.maxNote.getScorePosY() : this.minNote.getScorePosY() );

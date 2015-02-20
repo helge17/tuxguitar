@@ -227,6 +227,8 @@ public class TGNoteImpl extends TGNote {
 			float x = ( fromX + getPosX() + spacing );
 			float y1 = ( fromY + getScorePosY() ) ;
 			
+			
+			
 			//-------------foreground--------------------------------------
 			boolean playing = (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout));
 			
@@ -269,26 +271,27 @@ public class TGNoteImpl extends TGNote {
 			}
 			//----------fin sostenido--------------------------------------
 			if(getEffect().isHarmonic()){
-				if( layout.isBufferEnabled() ){
-					painter.drawImage(layout.getResources().getHarmonicNote(getVoice().getDuration().getValue(),playing),x,y1);
-				}else{
+//				if( layout.isBufferEnabled() ){
+//					painter.drawImage(layout.getResources().getHarmonicNote(getVoice().getDuration().getValue(),playing),x,y1);
+//				}else{
 					boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
 					painter.initPath((full ? TGPainter.PATH_DRAW | TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
-					TGNotePainter.paintHarmonic(painter,x,y1+1,(layout.getScoreLineSpacing() - 2) );
+					TGNotePainter.paintHarmonic(painter, x, y1 + (1f * layoutScale),(layout.getScoreLineSpacing() - (2f * layoutScale)) );
 					painter.closePath();
-				}
+//				}
 			}else{
-				if( layout.isBufferEnabled() ){
-					painter.drawImage(layout.getResources().getScoreNote(getVoice().getDuration().getValue(),playing),x,y1);
-				}else{
+//				if( layout.isBufferEnabled() ){
+//					painter.drawImage(layout.getResources().getScoreNote(getVoice().getDuration().getValue(),playing),x,y1);
+//				}else{
 					boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
 					painter.initPath((full ? TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
-					TGNotePainter.paintNote(painter,x,y1+1, ((full ? layout.getScoreLineSpacing() + 1 : layout.getScoreLineSpacing() ) - 2) );
+					TGNotePainter.paintNote(painter,x,y1 + (1f * layoutScale), ((full ? layout.getScoreLineSpacing() + (1f * layoutScale) : layout.getScoreLineSpacing() ) - (2f * layoutScale)) );
 					painter.closePath();
-				}
+//				}
 			}
 			
-			if(! layout.isPlayModeEnabled() ){
+			if(!layout.isPlayModeEnabled() ){
+				float scoreNoteWidth = layout.getScoreNoteWidth(getVoice().getDuration().getValue() > TGDuration.HALF);
 				
 				if(getEffect().isGrace()){
 					paintGrace(layout, painter,x ,y1);
@@ -300,9 +303,9 @@ public class TGNoteImpl extends TGNote {
 				}
 				
 				//dibujo el pie
-				if(getVoice().getDuration().getValue() >= TGDuration.HALF){
+				if( getVoice().getDuration().getValue() >= TGDuration.HALF ){
 					layout.setScoreNoteFooterStyle(painter);
-					float xMove = ((direction == TGBeatGroup.DIRECTION_UP ? layout.getResources().getScoreNoteWidth() : 0));
+					float xMove = ((direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0));
 					float y2 = (fromY + getVoiceImpl().getBeatGroup().getY2(layout,getPosX() + spacing, key, clef));
 					
 					//staccato
@@ -336,10 +339,11 @@ public class TGNoteImpl extends TGNote {
 						painter.setLineWidth(1);
 					}
 				}else{
+					
 					//staccato
 					if (getEffect().isStaccato()) {
 						float size = (3f * layoutScale);
-						float sX = (x + (layout.getResources().getScoreNoteWidth() / 2));
+						float sX = (x + (scoreNoteWidth / 2));
 						float sY = (fromY + getVoiceImpl().getBeatGroup().getMinNote().getScorePosY() + layout.getScoreLineSpacing()) + (2f * layoutScale);
 						layout.setScoreEffectStyle(painter);
 						painter.initPath(TGPainter.PATH_FILL);
@@ -351,7 +355,7 @@ public class TGNoteImpl extends TGNote {
 					if(getEffect().isTremoloPicking()){
 						layout.setScoreEffectStyle(painter);
 						painter.initPath();
-						float tpX = ((x + (layout.getResources().getScoreNoteWidth() / 2)));
+						float tpX = ((x + (scoreNoteWidth / 2)));
 						float tpY = (fromY + (getVoiceImpl().getBeatGroup().getMaxNote().getScorePosY() - layout.getScoreLineSpacing() - (4f  * layoutScale)));
 						for(int i = TGDuration.EIGHTH;i <= getEffect().getTremoloPicking().getDuration().getValue(); i += i){
 							painter.moveTo(tpX - (3f * layoutScale), tpY + (1f * layoutScale));
