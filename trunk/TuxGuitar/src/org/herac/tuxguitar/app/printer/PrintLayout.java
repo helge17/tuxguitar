@@ -73,7 +73,7 @@ public class PrintLayout extends TGLayout{
 		this.setHeight(0);
 		
 		int style = getStyle();
-		float posY = fromY + getFirstTrackSpacing();
+		float posY = Math.round(fromY + getFirstTrackSpacing());
 		float height = getFirstTrackSpacing();
 		float lineHeight = 0;
 		
@@ -104,14 +104,16 @@ public class PrintLayout extends TGLayout{
 				this.paintFooter(painter);
 				this.closePage();
 				this.openPage();
-				posY = this.document.getBounds().getY() + getFirstTrackSpacing();
+				posY = Math.round(this.document.getBounds().getY() + getFirstTrackSpacing());
 			}
 			
 			//pinto la linea
-			paintLine(track,line,painter,fromX,posY,ts);
+			this.paintLine(track, line, painter, fromX, posY, ts);
 			
-			posY += lineHeight + getTrackSpacing();
-			height += lineHeight + getTrackSpacing();
+			float lineHeightWithSpacing = Math.round(lineHeight + getTrackSpacing() + 0.5f);
+			
+			posY += lineHeightWithSpacing;
+			height += lineHeightWithSpacing;
 			
 			ts = new TGTrackSpacing(this) ;
 			line = getTempLines(track,( line.lastIndex + 1 ),ts);
@@ -154,19 +156,21 @@ public class PrintLayout extends TGLayout{
 		}
 	}
 	
-	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter, float fromX, float fromY, TGTrackSpacing ts) {
+	public void paintLine(TGTrackImpl track, TempLine line, TGPainter painter, float fromX, float fromY, TGTrackSpacing ts) {
 		if(this.document.isPaintable(this.page) ){
 			float posX = fromX;
 			float posY = fromY;
 			float width = 0;
 			
-			float measureSpacing = 0;
-			if(line.fullLine){
+			float defaultMeasureSpacing = 0;
+			if( line.fullLine ){
 				float diff = ( getMaxWidth() - line.tempWith);
 				if( diff != 0 && line.measures.size() > 0 ){
-					measureSpacing = diff / line.measures.size();
+					defaultMeasureSpacing = diff / line.measures.size();
 				}
 			}
+			
+			float measureSpacing = defaultMeasureSpacing;
 			
 			for(int i = 0;i < line.measures.size();i ++){
 				int index = ((Integer)line.measures.get(i)).intValue();
@@ -181,12 +185,16 @@ public class PrintLayout extends TGLayout{
 				
 				currMeasure.setFirstOfLine(i == 0);
 				
-				paintMeasure(currMeasure,painter,measureSpacing);
-				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter,this,currMeasure,posX, posY);
+				float measureWidth = currMeasure.getWidth(this);
+				float measureWidthWithSpacing = (this.isBufferEnabled() ? Math.round(measureWidth + measureSpacing) : (measureWidth + measureSpacing));
+				float measureSpacingAfterRound = (measureWidthWithSpacing - measureWidth);
 				
-				float measureWidth = ( currMeasure.getWidth(this) + currMeasure.getSpacing() );
-				posX += measureWidth;
-				width += measureWidth;
+				this.paintMeasure(currMeasure, painter, measureSpacingAfterRound);
+				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter, this, currMeasure, posX, posY);
+				
+				posX += measureWidthWithSpacing;
+				width += measureWidthWithSpacing;
+				measureSpacing = (defaultMeasureSpacing + (measureSpacing - measureSpacingAfterRound));
 			}
 			this.setWidth(Math.max(getWidth(),width));
 		}
