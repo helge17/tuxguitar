@@ -44,7 +44,7 @@ public class TGLayoutVertical extends TGLayout{
 		
 		int style = getStyle();
 		int number = getComponent().getTrackSelection();
-		float posY = fromY + getFirstTrackSpacing();
+		float posY = Math.round(fromY + getFirstTrackSpacing());
 		float height = getFirstTrackSpacing();
 		float lineHeight = 0;
 		
@@ -78,7 +78,7 @@ public class TGLayoutVertical extends TGLayout{
 					ts.setSize(TGTrackSpacing.POSITION_LYRIC,10);
 					checkDefaultSpacing(ts);
 					
-					paintLine(track,line,painter,fromX,posY,ts,clientArea);
+					paintLine(track, line, painter, fromX, posY, ts, clientArea);
 					
 					lineHeight = ts.getSize();
 					addTrackPosition(track.getNumber(),posY,lineHeight);
@@ -93,8 +93,10 @@ public class TGLayoutVertical extends TGLayout{
 						}
 					}
 					
-					posY += lineHeight + getTrackSpacing();
-					height += lineHeight + getTrackSpacing();
+					float lineHeightWithSpacing = Math.round(lineHeight + getTrackSpacing() + 0.5f);
+					
+					posY += lineHeightWithSpacing;
+					height += lineHeightWithSpacing;
 				}
 			}
 			if(line != null){
@@ -112,15 +114,17 @@ public class TGLayoutVertical extends TGLayout{
 		float width = this.marginLeft;
 		
 		//verifico si esta en el area de cliente
-		boolean isAtY = (posY + ts.getSize() > clientArea.getY() && posY < clientArea.getY() + clientArea.getHeight() + 80);
+		boolean isAtY = (posY + ts.getSize() > clientArea.getY() && posY < clientArea.getY() + clientArea.getHeight() + (getScale() * 80f));
 		
-		float measureSpacing = 0;
+		float defaultMeasureSpacing = 0;
 		if( line.fullLine ){
 			float diff = ( this.maximumWidth - line.tempWith);
 			if( diff != 0 && line.measures.size() > 0 ){
-				measureSpacing = (diff / line.measures.size());
+				defaultMeasureSpacing = (diff / line.measures.size());
 			}
 		}
+		
+		float measureSpacing = defaultMeasureSpacing;
 		
 		for(int i = 0;i < line.measures.size();i ++){
 			int index = ((Integer)line.measures.get(i)).intValue();
@@ -136,10 +140,12 @@ public class TGLayoutVertical extends TGLayout{
 			currMeasure.setFirstOfLine(i == 0);
 			
 			float measureWidth = currMeasure.getWidth(this);
-			float measureWidthWithSpacing = Math.round(measureWidth + measureSpacing);
+			float measureWidthWithSpacing = (this.isBufferEnabled() ? Math.round(measureWidth + measureSpacing) : (measureWidth + measureSpacing));
+			float measureSpacingAfterRound = (measureWidthWithSpacing - measureWidth);
+			
 			boolean isAtX = ( posX + measureWidthWithSpacing > clientArea.getX() && posX < clientArea.getX() + clientArea.getWidth());
 			if(isAtX && isAtY){
-				paintMeasure(currMeasure, painter, (measureWidthWithSpacing - measureWidth));
+				paintMeasure(currMeasure, painter, measureSpacingAfterRound);
 				((TGLyricImpl)track.getLyrics()).paintCurrentNoteBeats(painter, this, currMeasure, posX, posY);
 			}else{
 				currMeasure.setOutOfBounds(true);
@@ -147,8 +153,9 @@ public class TGLayoutVertical extends TGLayout{
 			
 			posX += measureWidthWithSpacing;
 			width += measureWidthWithSpacing;
+			measureSpacing = (defaultMeasureSpacing + (measureSpacing - measureSpacingAfterRound));
 		}
-		this.setWidth(Math.max(getWidth(),width));
+		this.setWidth(Math.max(getWidth(), width));
 	}
 	
 	public TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {

@@ -921,11 +921,11 @@ public class TGMeasureImpl extends TGMeasure{
 			layout.setTempoStyle(painter, false);
 			float imgX = x;
 			float imgY = (y - (Math.round(scale * 3.5f ) + 2));
-			if( layout.isBufferEnabled() ){
-				painter.drawImage(layout.getResources().getTempoImage(),imgX , imgY );
-			} else {
+//			if( layout.isBufferEnabled() ){
+//				painter.drawImage(layout.getResources().getTempoImage(),imgX , imgY );
+//			} else {
 				TGTempoPainter.paintTempo(painter, imgX, imgY, scale);
-			}
+//			}
 			
 			layout.setTempoStyle(painter, true);
 			String value = (" = " + getTempo().getValue());
@@ -963,45 +963,45 @@ public class TGMeasureImpl extends TGMeasure{
 			if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.prevMeasure != null){
 				int previous = this.prevMeasure.getTripletFeel();
 				if(previous == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-					if( layout.isBufferEnabled() ){
-						painter.drawImage(layout.getResources().getTripletFeel8(), x1, y2 );
-						painter.drawImage(layout.getResources().getTripletFeelNone8(),x2 , y1 );
-					}
-					else{
+//					if( layout.isBufferEnabled() ){
+//						painter.drawImage(layout.getResources().getTripletFeel8(), x1, y2 );
+//						painter.drawImage(layout.getResources().getTripletFeelNone8(),x2 , y1 );
+//					}
+//					else{
 						TGTripletFeelPainter.paintTripletFeel8(painter, x1, y2, scale );
 						TGTripletFeelPainter.paintTripletFeelNone8(painter, x2 , y1, scale );
-					}
+//					}
 				}
 				else if(previous == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-					if( layout.isBufferEnabled() ){
-						painter.drawImage(layout.getResources().getTripletFeel16(), x1, y2 );
-						painter.drawImage(layout.getResources().getTripletFeelNone16(),x2 , y1 );
-					}
-					else{
+//					if( layout.isBufferEnabled() ){
+//						painter.drawImage(layout.getResources().getTripletFeel16(), x1, y2 );
+//						painter.drawImage(layout.getResources().getTripletFeelNone16(),x2 , y1 );
+//					}
+//					else{
 						TGTripletFeelPainter.paintTripletFeel16(painter, x1, y2, scale );
 						TGTripletFeelPainter.paintTripletFeelNone16(painter, x2 , y1, scale );
-					}
+//					}
 				}
 			}
 			else if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-				if( layout.isBufferEnabled() ){
-					painter.drawImage(layout.getResources().getTripletFeelNone8(), x1, y1 );
-					painter.drawImage(layout.getResources().getTripletFeel8(),x2 , y2 );
-				}
-				else{
+//				if( layout.isBufferEnabled() ){
+//					painter.drawImage(layout.getResources().getTripletFeelNone8(), x1, y1 );
+//					painter.drawImage(layout.getResources().getTripletFeel8(),x2 , y2 );
+//				}
+//				else{
 					TGTripletFeelPainter.paintTripletFeelNone8(painter, x1, y1, scale );
 					TGTripletFeelPainter.paintTripletFeel8(painter, x2 , y2, scale );
-				}
+//				}
 			}
 			else if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-				if( layout.isBufferEnabled() ){
-					painter.drawImage(layout.getResources().getTripletFeelNone16(), x1, y1 );
-					painter.drawImage(layout.getResources().getTripletFeel16(),x2 , y2 );
-				}
-				else{
+//				if( layout.isBufferEnabled() ){
+//					painter.drawImage(layout.getResources().getTripletFeelNone16(), x1, y1 );
+//					painter.drawImage(layout.getResources().getTripletFeel16(),x2 , y2 );
+//				}
+//				else{
 					TGTripletFeelPainter.paintTripletFeelNone16(painter, x1, y1, scale );
 					TGTripletFeelPainter.paintTripletFeel16(painter, x2 , y2, scale );
-				}
+//				}
 			}
 		}
 	}
