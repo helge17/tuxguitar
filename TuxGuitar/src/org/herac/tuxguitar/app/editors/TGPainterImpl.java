@@ -108,14 +108,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.gc.drawImage(getImage(image), toInt(x), toInt(y));
 	}
 	
-	public void drawPolygon(int[] arg0) {
-		this.gc.drawPolygon(arg0);
-	}
-	
-	public void fillPolygon(int[] arg0) {
-		this.gc.fillPolygon(arg0);
-	}
-	
 	public void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
 		this.path.cubicTo(arg0, arg1, arg2, arg3, arg4, arg5);
 		this.pathEmpty = false;
