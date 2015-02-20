@@ -20,14 +20,14 @@ public class TGMeasureBuffer {
 	
 	public void createBuffer(TGPainter painter, float width, float height,TGColor background){
 		this.dispose();
-		this.width = width;
-		this.height = height;
-		this.buffer = painter.createImage(this.width, this.height);
+		this.buffer = painter.createImage(width, height);
+		this.width = this.buffer.getWidth();
+		this.height = this.buffer.getHeight();
 		this.fillBuffer(background);
 	}
 	
 	public void disposeBuffer(){
-		if(this.buffer != null && !this.buffer.isDisposed()){
+		if( this.buffer != null && !this.buffer.isDisposed() ){
 			this.buffer.dispose();
 		}
 	}
@@ -35,7 +35,7 @@ public class TGMeasureBuffer {
 	private void fillBuffer(TGColor background){
 		getPainter().setBackground(background);
 		getPainter().initPath(TGPainter.PATH_FILL);
-		getPainter().addRectangle(0,0,this.width,this.height);
+		getPainter().addRectangle(0, 0, this.width,this.height);
 		getPainter().closePath();
 	}
 	
