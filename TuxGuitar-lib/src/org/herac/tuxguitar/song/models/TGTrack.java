@@ -164,6 +164,12 @@ public abstract class TGTrack {
 	}
 	
 	public void clear(){
+		int measureCount = this.countMeasures();
+		for(int i = 0 ; i < measureCount ; i ++) {
+			TGMeasure tgMeasure = this.getMeasure(i);
+			tgMeasure.clear();
+		}
+		
 		this.strings.clear();
 		this.measures.clear();
 	}
@@ -193,5 +199,4 @@ public abstract class TGTrack {
 			track.addMeasure(measure.clone(factory,song.getMeasureHeader(i)));
 		}
 	}
-	
 }

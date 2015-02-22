@@ -142,6 +142,10 @@ public abstract class TGMeasure {
 		return this.header.hasMarker();
 	}
 	
+	public void clear(){
+		this.beats.clear();
+	}
+	
 	public void makeEqual(TGMeasure measure){
 		this.clef = measure.getClef();
 		this.keySignature = measure.getKeySignature();
