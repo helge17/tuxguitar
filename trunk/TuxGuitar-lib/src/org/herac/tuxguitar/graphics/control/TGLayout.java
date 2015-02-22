@@ -777,6 +777,14 @@ public abstract class TGLayout {
 		return trackPos;
 	}
 	
+	public void disposeTracks(){
+		int count = getSong().countTracks();
+		for(int i = 0 ; i < count ; i++){
+			TGTrackImpl tgTrack = (TGTrackImpl) getSong().getTrack(i);
+			tgTrack.dispose();
+		}
+	}
+	
 	public void disposeLayout(){
 		this.getResources().dispose();
 	}

@@ -1295,7 +1295,7 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	public void disposeBuffer(){
-		if(this.buffer != null && !this.buffer.isDisposed() ){
+		if( this.buffer != null && !this.buffer.isDisposed() ){
 			this.buffer.dispose();
 			this.buffer = null;
 		}
@@ -1303,7 +1303,7 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	public TGColor getMarkerColor( TGPainter painter ){
 		TGMarker m = getMarker();
-		if(this.markerColor != null && !this.markerColor.isDisposed()){
+		if( this.markerColor != null && !this.markerColor.isDisposed() ){
 			if( this.markerColor.getRed() != m.getColor().getR() || this.markerColor.getGreen() != m.getColor().getG() || this.markerColor.getBlue() != m.getColor().getB() ){
 				this.disposeMarkerColor();
 			}
@@ -1333,5 +1333,11 @@ public class TGMeasureImpl extends TGMeasure{
 		this.disposeBuffer();
 		this.disposeMarkerColor();
 		this.disposeBeats();
+	}
+	
+	public void clear() {
+		this.dispose();
+		
+		super.clear();
 	}
 }
