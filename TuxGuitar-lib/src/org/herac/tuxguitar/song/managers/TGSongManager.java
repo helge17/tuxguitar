@@ -491,6 +491,18 @@ public class TGSongManager {
 		}
 	}
 	
+	public void changeTempos(TGSong song, List tempos){
+		int length = tempos.size();
+		if(length != song.countMeasureHeaders()){
+			return;
+		}
+		for(int i = 0; i < length; i ++){
+			TGTempo tempo = (TGTempo)tempos.get(i);
+			TGMeasureHeader header = getMeasureHeader(song, i + 1);
+			this.changeTempo(header, tempo);
+		}
+	}
+	
 	public void changeTempo(TGMeasureHeader header,TGTempo tempo){
 		tempo.copy(header.getTempo());
 	}
