@@ -16,7 +16,6 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGActionManager {
 	
 	private TGContext context;
-	private String lockOwnerId;
 	private TGLock lock;
 	private Map actions;
 	private List interceptors;
@@ -64,7 +63,7 @@ public class TGActionManager {
 	
 	public void execute(String id, TGActionContext context) throws TGActionException{
 		try {
-			this.checkForLock(id);
+			this.lock.lock();
 			
 			TGAction action = getAction(id);
 			if( action != null ){
@@ -85,21 +84,7 @@ public class TGActionManager {
 			
 			throw new TGActionException(throwable);
 		} finally {
-			this.checkForUnlock(id);
-		}
-	}
-	
-	public void checkForLock(String id) {
-		this.lock.lock();
-		if( this.lockOwnerId == null ) {
-			this.lockOwnerId = id;
-		}
-	}
-	
-	public void checkForUnlock(String id) {
-		if( this.lockOwnerId != null && this.lockOwnerId.equals(id) ) {
-			this.lockOwnerId = null;
-			this.lock.unlock();
+			this.lock.unlock(false);
 		}
 	}
 	
