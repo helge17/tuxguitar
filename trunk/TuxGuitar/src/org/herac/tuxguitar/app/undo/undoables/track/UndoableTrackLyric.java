@@ -29,7 +29,7 @@ public class UndoableTrackLyric implements UndoableEdit{
 			throw new CannotRedoException();
 		}
 		TGTrack track = TuxGuitar.getInstance().getSongManager().getTrack(getSong(), this.trackNumber);
-		this.redoLyric.copy(track.getLyrics());
+		track.getLyrics().copyFrom(this.redoLyric);
 		TuxGuitar.getInstance().getLyricEditor().setCaretPosition(this.redoCaretPosition);
 		TuxGuitar.getInstance().getLyricEditor().update();
 		TuxGuitar.getInstance().updateCache(false);
@@ -42,7 +42,7 @@ public class UndoableTrackLyric implements UndoableEdit{
 			throw new CannotUndoException();
 		}
 		TGTrack track = TuxGuitar.getInstance().getSongManager().getTrack(getSong(), this.trackNumber);
-		this.undoLyric.copy(track.getLyrics());
+		track.getLyrics().copyFrom(this.undoLyric);
 		TuxGuitar.getInstance().getLyricEditor().setCaretPosition(this.undoCaretPosition);
 		TuxGuitar.getInstance().getLyricEditor().update();
 		TuxGuitar.getInstance().updateCache(false);
@@ -64,14 +64,14 @@ public class UndoableTrackLyric implements UndoableEdit{
 		undoable.trackNumber = track.getNumber();
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.undoCaretPosition = undoCaretPosition;
-		track.getLyrics().copy( undoable.undoLyric );
+		undoable.undoLyric.copyFrom( track.getLyrics() );
 		return undoable;
 	}
 	
 	public UndoableTrackLyric endUndo(TGTrack track,int redoCaretPosition){
 		this.redoCaret = new UndoableCaretHelper();
 		this.redoCaretPosition = redoCaretPosition;
-		track.getLyrics().copy( this.redoLyric );
+		this.redoLyric.copyFrom( track.getLyrics() );
 		return this;
 	}
 	
