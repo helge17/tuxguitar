@@ -424,7 +424,7 @@ public class MusicXMLWriter {
 					}
 					
 					if(previousBestDuration != null){
-						previousBestDuration.copy( previous.getVoice(0).getDuration() );
+						previous.getVoice(0).getDuration().copyFrom( previousBestDuration );
 					}else{
 						if(voice.isRestVoice()){
 							this.measure.removeBeat(beat);
@@ -432,7 +432,7 @@ public class MusicXMLWriter {
 							break;
 						}
 						TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-						duration.copy( previous.getVoice(0).getDuration() );
+						previous.getVoice(0).getDuration().copyFrom( duration );
 					}
 				}
 				
@@ -456,7 +456,7 @@ public class MusicXMLWriter {
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-					duration.copy( voice.getDuration() );
+					voice.getDuration().copyFrom( duration );
 				}
 				previous = beat;
 			}

@@ -98,7 +98,7 @@ public class GP1InputStream extends GTPInputStream {
 				TGTrack track = getFactory().newTrack();
 				track.setNumber( (i + 1) );
 				track.setChannelId(TRACK_CHANNELS[ i ][0]);
-				TGColor.RED.copy(track.getColor());
+				track.getColor().copyFrom(TGColor.RED);
 				
 				int strings = ((getVersionIndex() > 1)?readInt():6);
 				for (int j = 0; j < strings; j++) {
@@ -283,7 +283,7 @@ public class GP1InputStream extends GTPInputStream {
 		
 		beat.setStart(start);
 		voice.setEmpty(false);
-		duration.copy(voice.getDuration());
+		voice.getDuration().copyFrom(duration);
 		measure.addBeat(beat);
 		
 		return duration.getTime();

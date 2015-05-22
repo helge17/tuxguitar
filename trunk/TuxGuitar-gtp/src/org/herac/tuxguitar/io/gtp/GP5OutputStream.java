@@ -288,7 +288,7 @@ public class GP5OutputStream extends GTPOutputStream {
 				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
 				skipBytes(1);
 			}
-			header.getTempo().copy( tempo );
+			tempo.copyFrom( header.getTempo() );
 		}
 	}
 	

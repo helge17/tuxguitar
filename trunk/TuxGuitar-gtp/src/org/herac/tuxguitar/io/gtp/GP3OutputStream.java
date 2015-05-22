@@ -130,7 +130,7 @@ public class GP3OutputStream extends GTPOutputStream{
 				TGMeasure measure = track.getMeasure(i);
 				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
 			}
-			header.getTempo().copy( tempo );
+			tempo.copyFrom( header.getTempo() );
 		}
 	}
 	

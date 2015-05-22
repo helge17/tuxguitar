@@ -181,14 +181,14 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		if(((header & MEASURE_HEADER_TIMESIGNATURE) != 0)){
 			readTimeSignature(measureHeader.getTimeSignature());
 		}else if(lastMeasureHeader != null){
-			lastMeasureHeader.getTimeSignature().copy(measureHeader.getTimeSignature());
+			measureHeader.getTimeSignature().copyFrom(lastMeasureHeader.getTimeSignature());
 		}
 		
 		//leo el tempo
 		if(((header & MEASURE_HEADER_TEMPO) != 0)){
 			readTempo(measureHeader.getTempo());
 		}else if(lastMeasureHeader != null){
-			lastMeasureHeader.getTempo().copy(measureHeader.getTempo());
+			measureHeader.getTempo().copyFrom(lastMeasureHeader.getTempo());
 		}
 		
 		//leo el comienzo de la repeticion
@@ -329,7 +329,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		if(((header & COMPONENT_NEXT_DURATION) != 0)){
 			readDuration(voice.getDuration());
 		}else if(previous != null && !previous.equals(beat)){
-			previous.getVoice(0).getDuration().copy( voice.getDuration() );
+			voice.getDuration().copyFrom( previous.getVoice(0).getDuration() );
 		}
 		
 		if(((header & COMPONENT_NOTE) != 0)){

@@ -65,7 +65,7 @@ public class GTPVoiceJoiner {
 				}
 				
 				if(previousBestDuration != null){
-					previousBestDuration.copy( previous.getVoice(0).getDuration() );
+					previous.getVoice(0).getDuration().copyFrom( previousBestDuration );
 				}else{
 					if(voice.isRestVoice()){
 						this.measure.removeBeat(beat);
@@ -73,7 +73,7 @@ public class GTPVoiceJoiner {
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-					duration.copy( previous.getVoice(0).getDuration() );
+					previous.getVoice(0).getDuration().copyFrom( duration );
 				}
 			}
 			
@@ -97,7 +97,7 @@ public class GTPVoiceJoiner {
 					break;
 				}
 				TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-				duration.copy( voice.getDuration() );
+				voice.getDuration().copyFrom( duration );
 			}
 			previous = beat;
 		}
