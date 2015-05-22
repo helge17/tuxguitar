@@ -31,14 +31,13 @@ public class TGText{
 		return (this.value == null || this.value.length() == 0);
 	}
 	
-	public void copy(TGText text) {
-		text.setValue(getValue());
+	public void copyFrom(TGText text) {
+		this.setValue(text.getValue());
 	}
 	
 	public TGText clone(TGFactory factory) {
-		TGText text = factory.newText();
-		copy(text);
-		return text;
+		TGText tgText = factory.newText();
+		tgText.copyFrom(this);
+		return tgText;
 	}
-	
 }

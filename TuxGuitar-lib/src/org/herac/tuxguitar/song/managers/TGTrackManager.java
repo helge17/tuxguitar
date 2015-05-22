@@ -171,10 +171,15 @@ public class TGTrackManager {
 		measure.getTrack().removeMeasure(measure.getNumber() - 1);
 	}
 	
-	public TGMeasure replaceMeasure(TGTrack track,TGMeasure newMeasure){
-		TGMeasure measure = getMeasureAt(track,newMeasure.getStart());
-		measure.makeEqual(newMeasure);
-		return measure;
+	public void copyMeasureFrom(TGMeasure measure, TGMeasure from){
+		measure.copyFrom(getSongManager().getFactory(), from);
+	}
+	
+	public TGMeasure replaceMeasure(TGTrack track, TGMeasure newMeasure){
+		TGMeasure tgMeasure = getMeasureAt(track,newMeasure.getStart());
+		this.copyMeasureFrom(tgMeasure, newMeasure);
+		
+		return tgMeasure;
 	}
 	
 	/**
@@ -263,9 +268,7 @@ public class TGTrackManager {
 	public void changeInfo(TGTrack track,String name,TGColor color,int offset){
 		track.setName(name);
 		track.setOffset(offset);
-		track.getColor().setR(color.getR());
-		track.getColor().setG(color.getG());
-		track.getColor().setB(color.getB());
+		track.getColor().copyFrom(color);
 	}
 	
 	public void changeInstrumentStrings(TGTrack track,List strings){
@@ -284,9 +287,11 @@ public class TGTrackManager {
 	}
 	
 	public void changeChannel(TGTrack track, int channelId){
-		TGChannel channel = getSongManager().getChannel(track.getSong(), channelId);
-		
-		track.setChannelId( channelId );
+		this.changeChannel(track, getSongManager().getChannel(track.getSong(), channelId));
+	}
+	
+	public void changeChannel(TGTrack track, TGChannel channel){
+		track.setChannelId( (channel != null ? channel.getChannelId() : -1) );
 		
 		if( channel != null && channel.isPercussionChannel() ){
 			track.setStrings(getSongManager().createPercussionStrings(track.getStrings().size()));

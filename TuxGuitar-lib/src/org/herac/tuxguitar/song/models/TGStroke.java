@@ -51,13 +51,13 @@ public abstract class TGStroke {
 	}
 	
 	public TGStroke clone(TGFactory factory){
-		TGStroke stroke = factory.newStroke();
-		copy(stroke);
-		return stroke;
+		TGStroke tgStroke = factory.newStroke();
+		tgStroke.copyFrom(this);
+		return tgStroke;
 	}
 	
-	public void copy(TGStroke stroke){
-		stroke.setValue(getValue());
-		stroke.setDirection(getDirection());
+	public void copyFrom(TGStroke stroke){
+		this.setValue(stroke.getValue());
+		this.setDirection(stroke.getDirection());
 	}
 }

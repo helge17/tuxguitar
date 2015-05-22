@@ -175,28 +175,28 @@ public abstract class TGTrack {
 	}
 	
 	public TGTrack clone(TGFactory factory,TGSong song){
-		TGTrack track = factory.newTrack();
-		copy(factory, song, track);
-		return track;
+		TGTrack tgTrack = factory.newTrack();
+		tgTrack.copyFrom(factory, song, this);
+		return tgTrack;
 	}
 	
-	public void copy(TGFactory factory,TGSong song,TGTrack track){
-		track.clear();
-		track.setNumber(getNumber());
-		track.setName(getName());
-		track.setOffset(getOffset());
-		track.setSolo(isSolo());
-		track.setMute(isMute());
-		track.setChannelId(getChannelId());
-		getColor().copy(track.getColor());
-		getLyrics().copy(track.getLyrics());
-		for (int i = 0; i < getStrings().size(); i++) {
-			TGString string = (TGString) getStrings().get(i);
-			track.getStrings().add(string.clone(factory));
+	public void copyFrom(TGFactory factory, TGSong song ,TGTrack track){
+		this.clear();
+		this.setNumber(track.getNumber());
+		this.setName(track.getName());
+		this.setOffset(track.getOffset());
+		this.setSolo(track.isSolo());
+		this.setMute(track.isMute());
+		this.setChannelId(track.getChannelId());
+		this.getColor().copyFrom(track.getColor());
+		this.getLyrics().copyFrom(track.getLyrics());
+		for (int i = 0; i < track.getStrings().size(); i++) {
+			TGString string = (TGString) track.getStrings().get(i);
+			this.getStrings().add(string.clone(factory));
 		}
-		for (int i = 0; i < countMeasures(); i++) {
-			TGMeasure measure = getMeasure(i);
-			track.addMeasure(measure.clone(factory,song.getMeasureHeader(i)));
+		for (int i = 0; i < track.countMeasures(); i++) {
+			TGMeasure measure = track.getMeasure(i);
+			this.addMeasure(measure.clone(factory, song.getMeasureHeader(i)));
 		}
 	}
 }

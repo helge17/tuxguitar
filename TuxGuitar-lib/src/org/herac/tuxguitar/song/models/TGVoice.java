@@ -115,7 +115,7 @@ public abstract class TGVoice {
 		TGVoice voice = factory.newVoice(getIndex());
 		voice.setEmpty(isEmpty());
 		voice.setDirection( getDirection() );
-		getDuration().copy(voice.getDuration());
+		voice.getDuration().copyFrom(getDuration());
 		for(int i = 0;i < countNotes();i++){
 			TGNote note = (TGNote)this.notes.get(i);
 			voice.addNote(note.clone(factory));

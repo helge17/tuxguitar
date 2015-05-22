@@ -142,28 +142,22 @@ public abstract class TGMeasureHeader {
 		this.song = song;
 	}
 	
-	public void makeEqual(TGMeasureHeader measure){
-		this.start = measure.getStart();
-		this.timeSignature = measure.getTimeSignature();
-		this.tempo = measure.getTempo();
-		this.marker = measure.getMarker();
-		this.repeatOpen = measure.isRepeatOpen();
-		this.repeatClose = measure.getRepeatClose();
-		this.repeatAlternative = measure.getRepeatAlternative();
+	public void copyFrom(TGFactory factory, TGMeasureHeader header){
+		this.setNumber(header.getNumber());
+		this.setStart(header.getStart());
+		this.setRepeatOpen(header.isRepeatOpen());
+		this.setRepeatAlternative(header.getRepeatAlternative());
+		this.setRepeatClose(header.getRepeatClose());
+		this.setTripletFeel(header.getTripletFeel());
+		this.getTimeSignature().copyFrom(header.getTimeSignature());
+		this.getTempo().copyFrom(header.getTempo());
+		this.setMarker(header.hasMarker() ? header.getMarker().clone(factory) : null);
 		this.checkMarker();
 	}
 	
 	public TGMeasureHeader clone(TGFactory factory){
-		TGMeasureHeader header = factory.newHeader();
-		header.setNumber(getNumber());
-		header.setStart(getStart());
-		header.setRepeatOpen(isRepeatOpen());
-		header.setRepeatAlternative(getRepeatAlternative());
-		header.setRepeatClose(getRepeatClose());
-		header.setTripletFeel(getTripletFeel());
-		getTimeSignature().copy(header.getTimeSignature());
-		getTempo().copy(header.getTempo());
-		header.setMarker(hasMarker()?(TGMarker)getMarker().clone(factory):null);
-		return header;
+		TGMeasureHeader tgMeasureHeader = factory.newHeader();
+		tgMeasureHeader.copyFrom(factory, this);
+		return tgMeasureHeader;
 	}
 }

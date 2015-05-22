@@ -49,13 +49,12 @@ public abstract class TGTempo {
 	}
 	
 	public TGTempo clone(TGFactory factory){
-		TGTempo tempo = factory.newTempo();
-		copy(tempo);
-		return tempo;
+		TGTempo tgTempo = factory.newTempo();
+		tgTempo.copyFrom(this);
+		return tgTempo;
 	}
 	
-	public void copy(TGTempo tempo){
-		tempo.setValue(getValue());
+	public void copyFrom(TGTempo tempo){
+		this.setValue(tempo.getValue());
 	}
-	
 }

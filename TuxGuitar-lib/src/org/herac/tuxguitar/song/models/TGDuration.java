@@ -137,8 +137,7 @@ public abstract class TGDuration {
 		while(!finish){
 			long tmpTime = tmpDuration.getTime();
 			if(tmpTime - diff <= time){
-				//if(tmpTime > duration.getTime()){
-				if(Math.abs( tmpTime - time ) < Math.abs( duration.getTime() - time ) ){
+				if( Math.abs( tmpTime - time ) < Math.abs( duration.getTime() - time ) ){
 					duration = tmpDuration.clone(factory);
 				}
 			}
@@ -159,11 +158,7 @@ public abstract class TGDuration {
 		}
 		return duration;
 	}
-	/*
-	public int log2(){
-		return (int)((Math.log(getValue() ) / Math.log(2.0)) + 0.5f );
-	}
-	*/
+	
 	public int getIndex(){
 		int index = 0;
 		int value = this.value;
@@ -178,16 +173,15 @@ public abstract class TGDuration {
 	}
 	
 	public TGDuration clone(TGFactory factory){
-		TGDuration duration = factory.newDuration();
-		copy(duration);
-		return duration;
+		TGDuration tgDuration = factory.newDuration();
+		tgDuration.copyFrom(this);
+		return tgDuration;
 	}
 	
-	public void copy(TGDuration duration){
-		duration.setValue(getValue());
-		duration.setDotted(isDotted());
-		duration.setDoubleDotted(isDoubleDotted());
-		getDivision().copy(duration.getDivision());
+	public void copyFrom(TGDuration duration){
+		this.setValue(duration.getValue());
+		this.setDotted(duration.isDotted());
+		this.setDoubleDotted(duration.isDoubleDotted());
+		this.getDivision().copyFrom(duration.getDivision());
 	}
-	
 }
