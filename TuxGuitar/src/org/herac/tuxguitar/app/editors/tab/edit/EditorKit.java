@@ -381,7 +381,7 @@ public class EditorKit {
 			note.setString(string);
 			
 			TGDuration duration = manager.getFactory().newDuration();
-			caret.getDuration().copy(duration);
+			duration.copyFrom(caret.getDuration());
 			
 			manager.getMeasureManager().addNote(voice.getBeat(),note,duration, start, voice.getIndex());
 			

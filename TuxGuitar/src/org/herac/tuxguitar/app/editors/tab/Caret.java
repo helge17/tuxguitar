@@ -242,7 +242,7 @@ public class Caret {
 	 */
 	private void updateDuration() {
 		if (this.selectedBeat != null && !this.selectedBeat.getVoice(getVoice()).isRestVoice()) {
-			this.selectedBeat.getVoice(getVoice()).getDuration().copy(this.selectedDuration);
+			this.selectedDuration.copyFrom(this.selectedBeat.getVoice(getVoice()).getDuration());
 		}
 	}
 	

@@ -608,7 +608,7 @@ public class MatrixEditor implements TGEventListener {
 						note.setString(string.getNumber());
 						
 						TGDuration duration = manager.getFactory().newDuration();
-						caret.getDuration().copy(duration);
+						duration.copyFrom(caret.getDuration());
 						
 						manager.getMeasureManager().addNote(beat,note,duration,start,caret.getVoice());
 						

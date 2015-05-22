@@ -92,7 +92,7 @@ public class InsertChordAction extends TGActionBase {
 						note.setString(string.getNumber());
 						
 						TGDuration duration = getSongManager().getFactory().newDuration();
-						voice.getDuration().copy(duration);
+						duration.copyFrom(voice.getDuration());
 						
 						getSongManager().getMeasureManager().addNote(beat,note,duration,voice.getIndex());
 					}

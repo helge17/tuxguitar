@@ -193,9 +193,9 @@ public class DurationToolItems  extends ToolItems{
 			}else{
 				TGDuration duration = getEditor().getTablature().getCaret().getDuration();
 				if(duration.getDivision().isEqual(TGDivisionType.NORMAL)){
-					TGDivisionType.TRIPLET.copy(this.divisionType);
+					this.divisionType.copyFrom(TGDivisionType.TRIPLET);
 				}else{
-					TGDivisionType.NORMAL.copy(this.divisionType);
+					this.divisionType.copyFrom(TGDivisionType.NORMAL);
 				}
 				
 				final TGActionContext context = createDivisionTypeActionContext(this.divisionType);
@@ -220,7 +220,7 @@ public class DurationToolItems  extends ToolItems{
 		
 		private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc){
 			TGDivisionType tgDivisionTypeDst = TuxGuitar.getInstance().getSongManager().getFactory().newDivisionType();
-			tgDivisionTypeSrc.copy(tgDivisionTypeDst);
+			tgDivisionTypeDst.copyFrom(tgDivisionTypeSrc);
 			return tgDivisionTypeDst;
 		}
 		

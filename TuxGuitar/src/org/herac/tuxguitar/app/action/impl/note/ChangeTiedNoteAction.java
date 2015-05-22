@@ -50,7 +50,7 @@ public class ChangeTiedNoteAction extends TGActionBase{
 			note.setTiedNote(true);
 			
 			TGDuration duration = getSongManager().getFactory().newDuration();
-			caret.getDuration().copy(duration);
+			duration.copyFrom(caret.getDuration());
 			
 			setTiedNoteValue(note,caret);
 			

@@ -63,13 +63,13 @@ public class ChangeDivisionTypeAction extends TGActionBase{
 	
 	private TGDivisionType noTuplet(){
 		TGDivisionType divisionType = getSongManager().getFactory().newDivisionType();
-		TGDivisionType.NORMAL.copy(divisionType);
+		divisionType.copyFrom(TGDivisionType.NORMAL);
 		return divisionType;
 	}
 	
 	private TGDivisionType defaultDivisionType(){
 		TGDivisionType divisionType = getSongManager().getFactory().newDivisionType();
-		TGDivisionType.TRIPLET.copy(divisionType);
+		divisionType.copyFrom(TGDivisionType.TRIPLET);
 		return divisionType;
 	}
 	

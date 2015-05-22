@@ -587,7 +587,7 @@ public class FretBoard extends Composite {
 		note.setString(string);
 		
 		TGDuration duration = manager.getFactory().newDuration();
-		caret.getDuration().copy(duration);
+		duration.copyFrom(caret.getDuration());
 		
 		manager.getMeasureManager().addNote(caret.getMeasure(),caret.getPosition(),note,duration, caret.getVoice());
 		
