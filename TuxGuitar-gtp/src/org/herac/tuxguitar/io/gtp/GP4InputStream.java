@@ -135,7 +135,7 @@ public class GP4InputStream extends GTPInputStream {
 				track.addMeasure(measure);
 				readMeasure(measure, track, tempo);
 			}
-			tempo.copy(header.getTempo());
+			header.getTempo().copyFrom(tempo);
 			start += header.getLength();
 		}
 	}
@@ -204,7 +204,7 @@ public class GP4InputStream extends GTPInputStream {
 		}
 		beat.setStart(start);
 		voice.setEmpty(false);
-		duration.copy(voice.getDuration());
+		voice.getDuration().copyFrom(duration);
 		measure.addBeat(beat);
 		
 		return duration.getTime();
@@ -309,7 +309,7 @@ public class GP4InputStream extends GTPInputStream {
 		if ((flags & 0x02) != 0) {
 			timeSignature.getDenominator().setValue(readByte());
 		}
-		timeSignature.copy(header.getTimeSignature());
+		header.getTimeSignature().copyFrom(timeSignature);
 		if ((flags & 0x08) != 0) {
 			header.setRepeatClose(readByte());
 		}
@@ -405,7 +405,7 @@ public class GP4InputStream extends GTPInputStream {
 			gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
 			gmChannel2Param.setValue(Integer.toString(gmChannel1 != 9 ? gmChannel2 : gmChannel1));
 			
-			((TGChannel) channels.get(gmChannel1)).copy(channel);
+			channel.copyFrom(((TGChannel) channels.get(gmChannel1)));
 			
 			//------------------------------------------//
 			for( int i = 0 ; i < song.countChannels() ; i ++ ){

@@ -368,7 +368,7 @@ static private	MiProvider	s_Instance;
 									note.setString(string.getNumber());
 
 									TGDuration duration = songMgr.getFactory().newDuration();
-									voice.getDuration().copy(duration);
+									duration.copyFrom(voice.getDuration());
 
 									songMgr.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
 									}

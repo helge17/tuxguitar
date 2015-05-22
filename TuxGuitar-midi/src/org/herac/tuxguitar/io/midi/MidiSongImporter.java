@@ -245,7 +245,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		TGTrack track = this.factory.newTrack();
 		track.setNumber(number);
 		track.setChannelId(-1);
-		TGColor.RED.copy(track.getColor());
+		track.getColor().copyFrom(TGColor.RED);
 		
 		this.tracks.add(track);
 		return track;
@@ -267,7 +267,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 		header.setStart((last != null)?(last.getStart() + last.getLength()):TGDuration.QUARTER_TIME);
 		header.getTempo().setValue(  (last != null)?last.getTempo().getValue():120 );
 		if(last != null){
-			last.getTimeSignature().copy(header.getTimeSignature());
+			header.getTimeSignature().copyFrom(last.getTimeSignature());
 		}else{
 			header.getTimeSignature().setNumerator(4);
 			header.getTimeSignature().getDenominator().setValue(TGDuration.QUARTER);
@@ -386,7 +386,7 @@ public class MidiSongImporter implements TGLocalFileImporter{
 			
 			TGMeasure measure = getMeasure(getTrack(track),tempNote.getTick());
 			TGBeat beat = getBeat(measure, nStart);
-			nDuration.copy(beat.getVoice(0).getDuration());
+			beat.getVoice(0).getDuration().copyFrom(nDuration);
 			
 			TGNote note = this.factory.newNote();
 			note.setValue(nValue);
@@ -757,7 +757,7 @@ class SongAdjuster{
 					
 					// set the best duration
 					if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
-						beat.getVoice(0).getDuration().copy(previous.getVoice(0).getDuration());
+						previous.getVoice(0).getDuration().copyFrom(beat.getVoice(0).getDuration());
 					}
 					
 					measure.removeBeat(beat);
@@ -772,7 +772,7 @@ class SongAdjuster{
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-					duration.copy( previous.getVoice(0).getDuration() );
+					previous.getVoice(0).getDuration().copyFrom( duration );
 				}
 			}
 			if( (beatStart + beatLength) > measureEnd ){
@@ -782,7 +782,7 @@ class SongAdjuster{
 					break;
 				}
 				TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-				duration.copy( beat.getVoice(0).getDuration() );
+				beat.getVoice(0).getDuration().copyFrom( duration );
 			}
 			
 			previous = beat;

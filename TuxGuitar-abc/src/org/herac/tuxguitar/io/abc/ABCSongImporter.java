@@ -480,7 +480,7 @@ public class ABCSongImporter implements TGLocalFileImporter{
 				text.setValue(lyrics[0]);
 				tgBeat.setText(text);
 			}
-			tgDuration.copy(tgBeat.getVoice(0).getDuration());
+			tgBeat.getVoice(0).getDuration().copyFrom(tgDuration);
 			tgBeat.getVoice(0).addNote(tgNote);
 		}
 	}
@@ -574,7 +574,7 @@ class TGSongAdjuster{
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (beatStart - previousStart) );
-					duration.copy( previous.getVoice(0).getDuration() );
+					previous.getVoice(0).getDuration().copyFrom( duration );
 				}
 			}
 			if( (beatStart + beatLength) > measureEnd ){
@@ -584,7 +584,7 @@ class TGSongAdjuster{
 					break;
 				}
 				TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (measureEnd - beatStart) );
-				duration.copy( beat.getVoice(0).getDuration() );
+				beat.getVoice(0).getDuration().copyFrom( duration );
 			}
 			previous = beat;
 		}

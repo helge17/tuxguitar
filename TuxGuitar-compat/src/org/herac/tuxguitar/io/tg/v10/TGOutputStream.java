@@ -756,8 +756,8 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 						}
 					}
 					
-					if(previousBestDuration != null){
-						previousBestDuration.copy( previous.getVoice(0).getDuration() );
+					if( previousBestDuration != null ){
+						previous.getVoice(0).getDuration().copyFrom( previousBestDuration );
 					}else{
 						if(voice.isRestVoice()){
 							this.measure.removeBeat(beat);
@@ -765,12 +765,12 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 							break;
 						}
 						TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-						duration.copy( previous.getVoice(0).getDuration() );
+						previous.getVoice(0).getDuration().copyFrom( duration );
 					}
 				}
 				
 				TGDuration beatBestDuration = null;
-				for(int v = /*1*/0; v < beat.countVoices(); v++ ){
+				for(int v = 0; v < beat.countVoices(); v++ ){
 					TGVoice currentVoice = beat.getVoice(v);
 					if(!currentVoice.isEmpty()){
 						long length = currentVoice.getDuration().getTime();
@@ -789,7 +789,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 						break;
 					}
 					TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-					duration.copy( voice.getDuration() );
+					voice.getDuration().copyFrom( duration );
 				}
 				previous = beat;
 			}
