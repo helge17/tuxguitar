@@ -3,6 +3,7 @@ package org.herac.tuxguitar.song.models;
 import org.herac.tuxguitar.song.factory.TGFactory;
 
 public abstract class TGColor {
+	
 	public static final TGColor RED = newColor(255,0,0);
 	public static final TGColor GREEN = newColor(0,255,0);
 	public static final TGColor BLUE = newColor(0,0,255);
@@ -48,15 +49,15 @@ public abstract class TGColor {
 	}
 	
 	public TGColor clone(TGFactory factory){
-		TGColor color = factory.newColor();
-		copy(color);
-		return color;
+		TGColor tgColor = factory.newColor();
+		tgColor.copyFrom(this);
+		return tgColor;
 	}
 	
-	public void copy(TGColor color){
-		color.setR(getR());
-		color.setG(getG());
-		color.setB(getB());
+	public void copyFrom(TGColor color){
+		this.setR(color.getR());
+		this.setG(color.getG());
+		this.setB(color.getB());
 	}
 	
 	public static TGColor newColor(int r,int g,int b){

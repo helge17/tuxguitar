@@ -27,14 +27,14 @@ public abstract class TGChannelParameter {
 		this.value = value;
 	}
 	
-	public void copy(TGChannelParameter channelParameter){
-		channelParameter.setKey(getKey());
-		channelParameter.setValue(getValue());
+	public void copyFrom(TGChannelParameter channelParameter){
+		this.setKey(channelParameter.getKey());
+		this.setValue(channelParameter.getValue());
 	}
 	
 	public TGChannelParameter clone(TGFactory factory){
 		TGChannelParameter tgChannelParameter = factory.newChannelParameter();
-		copy(tgChannelParameter);
+		tgChannelParameter.copyFrom(this);
 		return tgChannelParameter;
 	}
 }

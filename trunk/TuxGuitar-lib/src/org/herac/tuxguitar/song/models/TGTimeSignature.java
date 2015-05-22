@@ -40,14 +40,14 @@ public abstract class TGTimeSignature {
 	}
 	
 	public TGTimeSignature clone(TGFactory factory){
-		TGTimeSignature timeSignature = factory.newTimeSignature();
-		copy(timeSignature);
-		return timeSignature;
+		TGTimeSignature tgTimeSignature = factory.newTimeSignature();
+		tgTimeSignature.copyFrom(this);
+		return tgTimeSignature;
 	}
 	
-	public void copy(TGTimeSignature timeSignature){
-		timeSignature.setNumerator(getNumerator());
-		getDenominator().copy(timeSignature.getDenominator());
+	public void copyFrom(TGTimeSignature timeSignature){
+		this.setNumerator(timeSignature.getNumerator());
+		this.getDenominator().copyFrom(timeSignature.getDenominator());
 	}
 	
 	public boolean isEqual(TGTimeSignature ts){

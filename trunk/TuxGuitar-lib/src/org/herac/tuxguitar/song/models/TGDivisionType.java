@@ -71,14 +71,14 @@ public abstract class TGDivisionType {
 	}
 	
 	public TGDivisionType clone(TGFactory factory){
-		TGDivisionType divisionType = factory.newDivisionType();
-		copy(divisionType);
-		return divisionType;
+		TGDivisionType tgDivisionType = factory.newDivisionType();
+		tgDivisionType.copyFrom(this);
+		return tgDivisionType;
 	}
 	
-	public void copy(TGDivisionType divisionType){
-		divisionType.setEnters(this.enters);
-		divisionType.setTimes(this.times);
+	public void copyFrom(TGDivisionType divisionType){
+		this.setEnters(divisionType.getEnters());
+		this.setTimes(divisionType.getTimes());
 	}
 	
 	private static TGDivisionType newDivisionType(int enters,int times){

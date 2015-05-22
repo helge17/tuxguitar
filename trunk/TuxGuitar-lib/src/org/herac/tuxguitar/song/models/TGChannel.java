@@ -159,21 +159,21 @@ public abstract class TGChannel {
 	}
 	
 	public TGChannel clone(TGFactory factory){
-		TGChannel channel = factory.newChannel();
-		copy(channel);
-		return channel; 
+		TGChannel tgChannel = factory.newChannel();
+		tgChannel.copyFrom(this);
+		return tgChannel; 
 	}
 	
-	public void copy(TGChannel channel){
-		channel.setChannelId(getChannelId());
-		channel.setBank(getBank());
-		channel.setProgram(getProgram());
-		channel.setVolume(getVolume());
-		channel.setBalance(getBalance());
-		channel.setChorus(getChorus());
-		channel.setReverb(getReverb());
-		channel.setPhaser(getPhaser());
-		channel.setTremolo(getTremolo());
-		channel.setName(getName());
+	public void copyFrom(TGChannel channel){
+		this.setChannelId(channel.getChannelId());
+		this.setBank(channel.getBank());
+		this.setProgram(channel.getProgram());
+		this.setVolume(channel.getVolume());
+		this.setBalance(channel.getBalance());
+		this.setChorus(channel.getChorus());
+		this.setReverb(channel.getReverb());
+		this.setPhaser(channel.getPhaser());
+		this.setTremolo(channel.getTremolo());
+		this.setName(channel.getName());
 	}
 }

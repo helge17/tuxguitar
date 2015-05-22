@@ -146,24 +146,18 @@ public abstract class TGMeasure {
 		this.beats.clear();
 	}
 	
-	public void makeEqual(TGMeasure measure){
+	public void copyFrom(TGFactory factory, TGMeasure measure){
 		this.clef = measure.getClef();
 		this.keySignature = measure.getKeySignature();
 		this.beats.clear();
 		for(int i = 0; i < measure.countBeats(); i ++){
-			TGBeat beat = measure.getBeat(i);
-			this.addBeat(beat);
+			this.addBeat(measure.getBeat(i).clone(factory));
 		}
 	}
 	
 	public TGMeasure clone(TGFactory factory,TGMeasureHeader header){
-		TGMeasure measure = factory.newMeasure(header);
-		measure.setClef(getClef());
-		measure.setKeySignature(getKeySignature());
-		for(int i = 0; i < countBeats(); i ++){
-			TGBeat beat = (TGBeat)this.beats.get(i);
-			measure.addBeat(beat.clone(factory));
-		}
-		return measure;
+		TGMeasure tgMeasure = factory.newMeasure(header);
+		tgMeasure.copyFrom(factory, this);
+		return tgMeasure;
 	}
 }

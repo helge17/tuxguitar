@@ -225,36 +225,36 @@ public abstract class TGSong {
 	}
 	
 	public TGSong clone(TGFactory factory){
-		TGSong song = factory.newSong();
-		copy(factory,song);
-		return song;
+		TGSong tgSong = factory.newSong();
+		tgSong.copyFrom(factory, this);
+		return tgSong;
 	}
 	
-	public void copy(TGFactory factory,TGSong song){
-		song.clear();
-		song.setName(getName());
-		song.setArtist(getArtist());
-		song.setAlbum(getAlbum());
-		song.setAuthor(getAuthor());
-		song.setDate(getDate());
-		song.setCopyright(getCopyright());
-		song.setWriter(getWriter());
-		song.setTranscriber(getTranscriber());
-		song.setComments(getComments());
-		Iterator headers = getMeasureHeaders();
+	public void copyFrom(TGFactory factory,TGSong song){
+		this.clear();
+		this.setName(song.getName());
+		this.setArtist(song.getArtist());
+		this.setAlbum(song.getAlbum());
+		this.setAuthor(song.getAuthor());
+		this.setDate(song.getDate());
+		this.setCopyright(song.getCopyright());
+		this.setWriter(song.getWriter());
+		this.setTranscriber(song.getTranscriber());
+		this.setComments(song.getComments());
+		Iterator headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
-			TGMeasureHeader header = (TGMeasureHeader)headers.next();
-			song.addMeasureHeader(header.clone(factory));
+			TGMeasureHeader header = (TGMeasureHeader) headers.next();
+			this.addMeasureHeader(header.clone(factory));
 		}
-		Iterator channels = getChannels();
+		Iterator channels = song.getChannels();
 		while(channels.hasNext()){
 			TGChannel channel = (TGChannel)channels.next();
-			song.addChannel(channel.clone(factory));
+			this.addChannel(channel.clone(factory));
 		}
-		Iterator tracks = getTracks();
+		Iterator tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
-			song.addTrack(track.clone(factory, song));
+			this.addTrack(track.clone(factory, this));
 		}
 	}
 }

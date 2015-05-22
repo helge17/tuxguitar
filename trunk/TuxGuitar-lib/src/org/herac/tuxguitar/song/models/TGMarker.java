@@ -41,11 +41,14 @@ public abstract class TGMarker {
 	}
 	
 	public TGMarker clone(TGFactory factory){
-		TGMarker marker = factory.newMarker();
-		marker.setMeasure(getMeasure());
-		marker.setTitle(getTitle());
-		getColor().copy(marker.getColor());
-		return marker;
+		TGMarker tgMarker = factory.newMarker();
+		tgMarker.copyFrom(this);
+		return tgMarker;
 	}
 	
+	public void copyFrom(TGMarker marker){
+		this.setMeasure(marker.getMeasure());
+		this.setTitle(marker.getTitle());
+		this.getColor().copyFrom(marker.getColor());
+	}
 }
