@@ -50,9 +50,9 @@ public class MidiPlayer{
 	
 	private String outputPortKey;
 	
-	private List outputPortProviders;
+	private List<MidiOutputPortProvider> outputPortProviders;
 	
-	private List sequencerProviders;
+	private List<MidiSequencerProvider> sequencerProviders;
 	
 	private int volume;
 	
@@ -92,8 +92,8 @@ public class MidiPlayer{
 	
 	public void init(TGDocumentManager documentManager) {
 		this.documentManager = documentManager;
-		this.outputPortProviders = new ArrayList();
-		this.sequencerProviders = new ArrayList();
+		this.outputPortProviders = new ArrayList<MidiOutputPortProvider>();
+		this.sequencerProviders = new ArrayList<MidiSequencerProvider>();
 		this.tryOpenFistDevice = false;
 		this.getSequencer();
 		this.getMode();
@@ -384,7 +384,7 @@ public class MidiPlayer{
 	
 	public void closeChannels() throws MidiPlayerException{
 		// Remove all channels.
-		Iterator iterator = getChannelRouter().getMidiChannelIds().iterator();
+		Iterator<Integer> iterator = getChannelRouter().getMidiChannelIds().iterator();
 		while( iterator.hasNext() ){
 			int channelId = ((Integer) iterator.next()).intValue();
 			
@@ -395,8 +395,8 @@ public class MidiPlayer{
 	
 	public void updateChannels() throws MidiPlayerException{
 		// Remove unused channels.
-		List oldChannelIds = getChannelRouter().getMidiChannelIds();
-		Iterator iterator = oldChannelIds.iterator();
+		List<Integer> oldChannelIds = getChannelRouter().getMidiChannelIds();
+		Iterator<Integer> iterator = oldChannelIds.iterator();
 		while( iterator.hasNext() ){
 			int channelId = ((Integer) iterator.next()).intValue();
 			
@@ -415,8 +415,8 @@ public class MidiPlayer{
 		}
 		
 		// Add channels
-		List newChannelIds = getChannelRouter().getMidiChannelIds();
-		Iterator tgChannels = this.getSong().getChannels();
+		List<Integer> newChannelIds = getChannelRouter().getMidiChannelIds();
+		Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			if(!newChannelIds.contains(new Integer(tgChannel.getChannelId())) ){
@@ -431,7 +431,7 @@ public class MidiPlayer{
 	}
 	
 	public void updateParameters(){
-		Iterator tgChannels = this.getSong().getChannels();
+		Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			this.updateParameters(tgChannel);
@@ -439,7 +439,7 @@ public class MidiPlayer{
 	}
 	
 	public void updateParameters(TGChannel tgChannel){
-		Iterator parameters = tgChannel.getParameters();
+		Iterator<TGChannelParameter> parameters = tgChannel.getParameters();
 		while( parameters.hasNext() ){
 			TGChannelParameter tgChannelParameter = (TGChannelParameter) parameters.next();
 			this.updateParameters(tgChannel, tgChannelParameter);
@@ -456,7 +456,7 @@ public class MidiPlayer{
 	
 	private void updateDefaultControllers(){
 		try{
-			Iterator tgChannels = this.getSong().getChannels();
+			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
 				TGChannel tgChannel = (TGChannel) tgChannels.next();
 				getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_MSB,0);
@@ -471,7 +471,7 @@ public class MidiPlayer{
 	}
 	
 	public void updatePrograms() {
-		Iterator it = this.getSong().getChannels();
+		Iterator<TGChannel> it = this.getSong().getChannels();
 		while(it.hasNext()){
 			updateProgram((TGChannel)it.next());
 		}
@@ -495,7 +495,7 @@ public class MidiPlayer{
 	}
 	
 	public void updateControllers() {
-		Iterator channelsIt = this.getSong().getChannels();
+		Iterator<TGChannel> channelsIt = this.getSong().getChannels();
 		while( channelsIt.hasNext() ){
 			this.updateController( (TGChannel)channelsIt.next() );
 		}
@@ -530,7 +530,7 @@ public class MidiPlayer{
 	public void updateTracks() {
 		this.anySolo = false;
 		
-		Iterator tracksIt = this.getSong().getTracks();
+		Iterator<TGTrack> tracksIt = this.getSong().getTracks();
 		while( tracksIt.hasNext() ){
 			TGTrack track = (TGTrack)tracksIt.next();
 			this.updateTrack(track);
@@ -573,14 +573,14 @@ public class MidiPlayer{
 	}
 	
 	public void playBeat(TGBeat beat) {
-		List notes = new ArrayList();
+		List<TGNote> notes = new ArrayList<TGNote>();
 		for( int v = 0; v < beat.countVoices(); v ++){
 			notes.addAll( beat.getVoice(v).getNotes() );
 		}
 		playBeat(beat.getMeasure().getTrack(), notes);
 	}
 	
-	public void playBeat(TGTrack track,final List notes) {
+	public void playBeat(TGTrack track,final List<TGNote> notes) {
 		TGChannel tgChannel = this.getSongManager().getChannel(getSong(), track.getChannelId());
 		if( tgChannel != null ){
 			int channelId = tgChannel.getChannelId();
@@ -691,7 +691,7 @@ public class MidiPlayer{
 	}
 	
 	public int getPercussionChannelId(){
-		Iterator tgChannels = this.getSong().getChannels();
+		Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 		while( tgChannels.hasNext() ){
 			TGChannel tgChannel = (TGChannel) tgChannels.next();
 			if( tgChannel.isPercussionChannel() ){
@@ -736,7 +736,7 @@ public class MidiPlayer{
 		this.openOutputPort(listOutputPorts(),tryFirst);
 	}
 	
-	public void openOutputPort(List ports, boolean tryFirst) {
+	public void openOutputPort(List<MidiOutputPort> ports, boolean tryFirst) {
 		try{
 			if(this.outputPortKey != null && !this.isOutputPortOpen(this.outputPortKey)){
 				this.closeOutputPort();
@@ -770,7 +770,7 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void openSequencer(List sequencers ,boolean tryFirst) throws MidiPlayerException {
+	public void openSequencer(List<MidiSequencer> sequencers ,boolean tryFirst) throws MidiPlayerException {
 		try{
 			if(this.sequencerKey != null && !this.isSequencerOpen(this.sequencerKey)){
 				this.closeSequencer();
@@ -793,9 +793,9 @@ public class MidiPlayer{
 		}
 	}
 	
-	public List listOutputPorts() {
-		List ports = new ArrayList();
-		Iterator it = this.outputPortProviders.iterator();
+	public List<MidiOutputPort> listOutputPorts() {
+		List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
+		Iterator<MidiOutputPortProvider> it = this.outputPortProviders.iterator();
 		while(it.hasNext()){
 			try{
 				MidiOutputPortProvider provider = (MidiOutputPortProvider)it.next();
@@ -807,9 +807,9 @@ public class MidiPlayer{
 		return ports;
 	}
 	
-	public List listSequencers(){
-		List sequencers = new ArrayList();
-		Iterator it = this.sequencerProviders.iterator();
+	public List<MidiSequencer> listSequencers(){
+		List<MidiSequencer> sequencers = new ArrayList<MidiSequencer>();
+		Iterator<MidiSequencerProvider> it = this.sequencerProviders.iterator();
 		while(it.hasNext()){
 			try{
 				MidiSequencerProvider provider = (MidiSequencerProvider)it.next();
@@ -900,7 +900,7 @@ public class MidiPlayer{
 		
 		MidiOutputPort current = getOutputPort();
 		if( current != null ){
-			Iterator it = provider.listPorts().iterator();
+			Iterator<MidiOutputPort> it = provider.listPorts().iterator();
 			while(it.hasNext()){
 				MidiOutputPort port = (MidiOutputPort)it.next();
 				if(port.getKey().equals(current.getKey())){
@@ -916,7 +916,7 @@ public class MidiPlayer{
 		
 		MidiSequencer current = getSequencer();
 		if(!(current instanceof MidiSequencerEmpty) && current != null){
-			Iterator it = provider.listSequencers().iterator();
+			Iterator<MidiSequencer> it = provider.listSequencers().iterator();
 			while(it.hasNext()){
 				MidiSequencer sequencer = (MidiSequencer)it.next();
 				if(current.getKey().equals(sequencer.getKey())){

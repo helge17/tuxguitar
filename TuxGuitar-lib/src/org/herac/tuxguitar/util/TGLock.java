@@ -86,12 +86,12 @@ public class TGLock {
 		private static final long TIME_OUT = 20000;
 		
 		private TGLock lock;
-		private Map timeStamps;
+		private Map<Thread, Long> timeStamps;
 		private StackTraceElement[] stackTraceElements;
 		
 		public TGLockTimeOutController(TGLock lock) {
 			this.lock = lock;
-			this.timeStamps = new HashMap();
+			this.timeStamps = new HashMap<Thread, Long>();
 		}
 		
 		public void onWaitingForLock() {

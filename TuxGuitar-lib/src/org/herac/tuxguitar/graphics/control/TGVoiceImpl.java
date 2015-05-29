@@ -8,6 +8,7 @@ import org.herac.tuxguitar.graphics.control.painters.TGSilencePainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGDivisionType;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGVoiceImpl extends TGVoice{
@@ -347,7 +348,7 @@ public class TGVoiceImpl extends TGVoice{
 				paintSilence(layout, painter, fromX, fromY);
 			}
 			else{
-				Iterator notes = getNotes().iterator();
+				Iterator<TGNote> notes = getNotes().iterator();
 				while (notes.hasNext()) {
 					TGNoteImpl note = (TGNoteImpl)notes.next();
 					note.paint(layout,painter,fromX ,fromY);

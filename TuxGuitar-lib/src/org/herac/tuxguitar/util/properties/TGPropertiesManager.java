@@ -10,13 +10,13 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGPropertiesManager {
 	
 	private TGPropertiesFactory propertiesFactory;
-	private Map propertiesReaders;
-	private Map propertiesWriters;
+	private Map<String, TGPropertiesReader> propertiesReaders;
+	private Map<String, TGPropertiesWriter> propertiesWriters;
 	
 	private TGPropertiesManager(){
 		this.propertiesFactory = null;
-		this.propertiesReaders = new HashMap();
-		this.propertiesWriters = new HashMap();
+		this.propertiesReaders = new HashMap<String, TGPropertiesReader>();
+		this.propertiesWriters = new HashMap<String, TGPropertiesWriter>();
 	}
 	
 	public TGProperties createProperties() throws TGPropertiesException{

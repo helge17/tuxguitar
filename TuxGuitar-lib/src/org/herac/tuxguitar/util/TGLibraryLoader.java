@@ -34,7 +34,7 @@ public class TGLibraryLoader {
 	
 	public void loadLibraries(File folder, String prefix, String extension){
 		if(folder != null && folder.exists()){
-			List libraries = findLibrariesToLoad(folder, prefix, extension);
+			List<String> libraries = findLibrariesToLoad(folder, prefix, extension);
 			for(int i = 0; i < libraries.size(); i ++){
 				String library = (String)libraries.get(i);
 				File file = new File(getLibraryFileName(folder, library));
@@ -53,8 +53,8 @@ public class TGLibraryLoader {
 		return (getLibraryFileName(folder, library) + ".deps");
 	}
 	
-	private List findLibrariesToLoad(File folder, String prefix, String extension){
-		List libraries = new ArrayList();
+	private List<String> findLibrariesToLoad(File folder, String prefix, String extension){
+		List<String> libraries = new ArrayList<String>();
 		String[] files = folder.list(createFilenameFilter(prefix, extension));
 		String library = null;
 		while((library = findNextLibraryToLoad(libraries, folder, files)) != null){
@@ -63,7 +63,7 @@ public class TGLibraryLoader {
 		return libraries;
 	}
 	
-	private String findNextLibraryToLoad(List libraries, File folder, String[] files){
+	private String findNextLibraryToLoad(List<String> libraries, File folder, String[] files){
 		for(int i = 0; i < files.length; i ++){
 			if(!libraries.contains(files[i])){
 				return findNextLibraryToLoad(libraries, folder, files, files[i]);
@@ -72,10 +72,10 @@ public class TGLibraryLoader {
 		return null;
 	}
 	
-	private String findNextLibraryToLoad(List libraries, File folder, String[] files, String expectedLib){		
-		List dependencies = findDependencyLibraries(folder, expectedLib);
+	private String findNextLibraryToLoad(List<String> libraries, File folder, String[] files, String expectedLib){		
+		List<String> dependencies = findDependencyLibraries(folder, expectedLib);
 		if( dependencies != null ){
-			Iterator it = dependencies.iterator();
+			Iterator<String> it = dependencies.iterator();
 			while(it.hasNext()){
 				String dependency = (String) it.next();
 				if(!libraries.contains(dependency)){
@@ -90,13 +90,13 @@ public class TGLibraryLoader {
 		return expectedLib;
 	}
 	
-	private List findDependencyLibraries(File folder, String library){
+	private List<String> findDependencyLibraries(File folder, String library){
 		return findDependencyLibraries(new File(getLibraryDependenciesFileName(folder, library)));
 	}
 	
-	private List findDependencyLibraries(File file){
+	private List<String> findDependencyLibraries(File file){
 		try {
-			List libraries = new ArrayList();
+			List<String> libraries = new ArrayList<String>();
 			if( file.exists() ){
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				String library = null;

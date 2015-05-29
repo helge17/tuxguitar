@@ -10,26 +10,25 @@ import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 
 public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 	
-	private List sequencers;
+	private List<MidiSequencer> sequencers;
 	
 	public MidiSequencerProviderImpl(){
 		super();
 	}
 	
-	public List listSequencers() throws MidiPlayerException {
+	public List<MidiSequencer> listSequencers() throws MidiPlayerException {
 		if(this.sequencers == null){
-			this.sequencers = new ArrayList();
+			this.sequencers = new ArrayList<MidiSequencer>();
 			this.sequencers.add(new MidiSequencerImpl());
 		}
 		return this.sequencers;
 	}
 	
 	public void closeAll() throws MidiPlayerException {
-		Iterator it = listSequencers().iterator();
+		Iterator<MidiSequencer> it = listSequencers().iterator();
 		while(it.hasNext()){
 			MidiSequencer sequencer = (MidiSequencer)it.next();
 			sequencer.close();
 		}
 	}
-	
 }

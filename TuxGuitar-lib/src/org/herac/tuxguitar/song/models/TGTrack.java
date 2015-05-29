@@ -27,8 +27,8 @@ public abstract class TGTrack {
 	private boolean solo;
 	private boolean mute;
 	private String name;
-	private List measures;
-	private List strings;
+	private List<TGMeasure> measures;
+	private List<TGString> strings;
 	private TGColor color;
 	private TGLyric lyrics;
 	private TGSong song;
@@ -40,8 +40,8 @@ public abstract class TGTrack {
 		this.solo = false;
 		this.mute = false;
 		this.name = new String();
-		this.measures = new ArrayList();
-		this.strings = new ArrayList();
+		this.measures = new ArrayList<TGMeasure>();
+		this.strings = new ArrayList<TGString>();
 		this.color = factory.newColor();
 		this.lyrics = factory.newLyric();
 	}
@@ -54,7 +54,7 @@ public abstract class TGTrack {
 		this.number = number;
 	}
 	
-	public Iterator getMeasures() {
+	public Iterator<TGMeasure> getMeasures() {
 		return this.measures.iterator();
 	}
 	
@@ -70,7 +70,7 @@ public abstract class TGTrack {
 	
 	public TGMeasure getMeasure(int index){
 		if(index >= 0 && index < countMeasures()){
-			return (TGMeasure)this.measures.get(index);
+			return this.measures.get(index);
 		}
 		return null;
 	}
@@ -83,11 +83,11 @@ public abstract class TGTrack {
 		return this.measures.size();
 	}
 	
-	public List getStrings() {
+	public List<TGString> getStrings() {
 		return this.strings;
 	}
 	
-	public void setStrings(List strings) {
+	public void setStrings(List<TGString> strings) {
 		this.strings = strings;
 	}
 	
@@ -148,7 +148,7 @@ public abstract class TGTrack {
 	}
 	
 	public TGString getString(int number){
-		return (TGString)this.strings.get(number - 1);
+		return this.strings.get(number - 1);
 	}
 	
 	public int stringCount(){
@@ -191,7 +191,7 @@ public abstract class TGTrack {
 		this.getColor().copyFrom(track.getColor());
 		this.getLyrics().copyFrom(track.getLyrics());
 		for (int i = 0; i < track.getStrings().size(); i++) {
-			TGString string = (TGString) track.getStrings().get(i);
+			TGString string = track.getStrings().get(i);
 			this.getStrings().add(string.clone(factory));
 		}
 		for (int i = 0; i < track.countMeasures(); i++) {

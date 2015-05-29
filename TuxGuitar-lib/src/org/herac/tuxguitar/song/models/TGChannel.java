@@ -31,7 +31,7 @@ public abstract class TGChannel {
 	private short phaser;
 	private short tremolo;
 	private String name;
-	private List parameters;
+	private List<TGChannelParameter> parameters;
 	
 	public TGChannel() {
 		this.channelId = 0;
@@ -44,7 +44,7 @@ public abstract class TGChannel {
 		this.phaser = DEFAULT_PHASER;
 		this.tremolo = DEFAULT_TREMOLO;
 		this.name = new String();
-		this.parameters = new ArrayList();
+		this.parameters = new ArrayList<TGChannelParameter>();
 	}
 	
 	public int getChannelId() {
@@ -127,7 +127,7 @@ public abstract class TGChannel {
 		this.name = name;
 	}
 	
-	public Iterator getParameters() {
+	public Iterator<TGChannelParameter> getParameters() {
 		return this.parameters.iterator();
 	}
 	
@@ -136,12 +136,12 @@ public abstract class TGChannel {
 	}
 	
 	public void addParameter(int index,TGChannelParameter parameter){
-		this.parameters.add(index,parameter);
+		this.parameters.add(index, parameter);
 	}
 	
 	public TGChannelParameter getParameter(int index){
 		if(index >= 0 && index < countParameters()){
-			return (TGChannelParameter)this.parameters.get(index);
+			return this.parameters.get(index);
 		}
 		return null;
 	}
@@ -160,11 +160,11 @@ public abstract class TGChannel {
 	
 	public TGChannel clone(TGFactory factory){
 		TGChannel tgChannel = factory.newChannel();
-		tgChannel.copyFrom(this);
+		tgChannel.copyFrom(factory, this);
 		return tgChannel; 
 	}
 	
-	public void copyFrom(TGChannel channel){
+	public void copyFrom(TGFactory factory, TGChannel channel){
 		this.setChannelId(channel.getChannelId());
 		this.setBank(channel.getBank());
 		this.setProgram(channel.getProgram());
@@ -175,5 +175,10 @@ public abstract class TGChannel {
 		this.setPhaser(channel.getPhaser());
 		this.setTremolo(channel.getTremolo());
 		this.setName(channel.getName());
+		
+		this.parameters.clear();
+		for(int i = 0; i < channel.countParameters(); i ++){
+			this.addParameter(channel.getParameter(i).clone(factory));
+		}
 	}
 }

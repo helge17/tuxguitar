@@ -52,7 +52,7 @@ public class TGLayoutVertical extends TGLayout{
 		int nextMeasureIndex = 0;
 		while(measureCount > nextMeasureIndex){
 			TempLine line = null;
-			Iterator tracks = getSong().getTracks();
+			Iterator<TGTrack> tracks = getSong().getTracks();
 			while(tracks.hasNext()){
 				TGTrackImpl track = (TGTrackImpl) tracks.next();
 				if(number < 0 || track.getNumber() == number){
@@ -200,15 +200,16 @@ public class TGLayoutVertical extends TGLayout{
 	}
 	
 	private class TempLine{
+		
 		protected float tempWith;
 		protected int lastIndex;
 		protected boolean fullLine;
 		protected float maxY = 0;
 		protected float minY = 0;
-		protected List measures;
+		protected List<Integer> measures;
 		
 		public TempLine(){
-			this.measures = new ArrayList();
+			this.measures = new ArrayList<Integer>();
 		}
 		
 		protected void addMeasure(int index){

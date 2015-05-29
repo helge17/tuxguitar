@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.util.error;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.util.TGContext;
@@ -10,16 +9,14 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGErrorManager {
 	
-	private List errorHandlers;
+	private List<TGErrorHandler> errorHandlers;
 	
 	private TGErrorManager(){
-		this.errorHandlers = new ArrayList();
+		this.errorHandlers = new ArrayList<TGErrorHandler>();
 	}
 	
 	public void handleError(Throwable throwable){
-		Iterator it = this.errorHandlers.iterator();
-		while(it.hasNext()){
-			TGErrorHandler tgErrorHandler = (TGErrorHandler)it.next();
+		for(TGErrorHandler tgErrorHandler : this.errorHandlers) {
 			tgErrorHandler.handleError(throwable);
 		}
 	}
@@ -36,7 +33,7 @@ public class TGErrorManager {
 		}
 	}
 	
-	public List getErrorHandlers() {
+	public List<TGErrorHandler> getErrorHandlers() {
 		return this.errorHandlers;
 	}
 	

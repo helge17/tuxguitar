@@ -2,7 +2,6 @@ package org.herac.tuxguitar.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,15 +16,15 @@ public class TGActionManager {
 	
 	private TGContext context;
 	private TGLock lock;
-	private Map actions;
-	private List interceptors;
+	private Map<String, TGAction> actions;
+	private List<TGActionInterceptor> interceptors;
 	private TGActionContextFactory actionContextFactory;
 	
 	private TGActionManager(TGContext context){
 		this.context = context;
 		this.lock = new TGLock();
-		this.actions = new HashMap();
-		this.interceptors = new ArrayList();
+		this.actions = new HashMap<String, TGAction>();
+		this.interceptors = new ArrayList<TGActionInterceptor>();
 		this.actionContextFactory = null;
 	}
 	
@@ -46,7 +45,7 @@ public class TGActionManager {
 		return null;
 	}
 	
-	public Map getActions(){
+	public Map<String, TGAction> getActions(){
 		return this.actions;
 	}
 	
@@ -89,9 +88,7 @@ public class TGActionManager {
 	}
 	
 	public boolean intercept(String id, TGActionContext context) throws TGActionException{
-		Iterator it = this.interceptors.iterator();
-		while( it.hasNext() ){
-			TGActionInterceptor interceptor = (TGActionInterceptor) it.next();
+		for(TGActionInterceptor interceptor : this.interceptors){
 			if( interceptor.intercept(id, context) ) {
 				return true;
 			}

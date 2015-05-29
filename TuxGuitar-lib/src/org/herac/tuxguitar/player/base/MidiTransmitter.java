@@ -5,10 +5,10 @@ import java.util.List;
 
 public class MidiTransmitter {
 	
-	private List receivers;
+	private List<MidiReceiverItem> receivers;
 	
 	public MidiTransmitter(){
-		this.receivers = new ArrayList();
+		this.receivers = new ArrayList<MidiReceiverItem>();
 	}
 	
 	public void sendNoteOn(int channel, int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
