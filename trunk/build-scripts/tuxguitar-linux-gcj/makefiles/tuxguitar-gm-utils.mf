@@ -25,7 +25,7 @@ SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 OBJECTS?=$(PACKAGE).o
 
 GCJ?=gcj
-GCJFLAGS?=-I$(TG_LIB_SOURCE_PATH) -fsource=1.4
+GCJFLAGS?=-I$(TG_LIB_SOURCE_PATH) -fsource=1.5
 LDFLAGS?=
 
 default: all

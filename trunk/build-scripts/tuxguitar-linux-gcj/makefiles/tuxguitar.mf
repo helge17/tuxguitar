@@ -1,8 +1,4 @@
 #! /usr/bin/make -f
-# -*- makefile -*-
-#ident "$Id: GNUmakefile,v 1.7 2008/02/29 12:55:24 akdmia Exp $"
-#@author: created by www.philippe.coval.online.fr -- revision: $Author: akdmia $
-#licence: LGPL
 #------------------------------------------------------------------------------
 TG_ROOT_PATH?=../../..
 TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar
@@ -65,7 +61,7 @@ PROPERTIES?=\
  -Dtuxguitar.library.extension=$(OS_LIBRARY_EXTENSION) \
 
 GCJ?=gcj
-GCJFLAGS+=-fbootstrap-classes -fjni -I$(TG_LIB_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.4
+GCJFLAGS+=-fbootstrap-classes -fjni -I$(TG_LIB_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.5
 LDFLAGS?=
 BINFLAGS?=-l$(PACKAGE) -ltuxguitar-lib -L$(TG_LIBRARY_PATH) -L$(TG_LIB_LIBRARY_PATH)  -L./
 
