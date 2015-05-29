@@ -54,7 +54,7 @@ public class ToolMenuItem extends MenuItems {
 		this.browser = new MenuItem(this.menu, SWT.PUSH);
 		this.browser.addSelectionListener(new TGActionProcessor(TGBrowserAction.NAME));
 		
-		Iterator it = TGCustomToolManager.instance().getCustomTools();
+		Iterator<TGCustomTool> it = TGCustomToolManager.instance().getCustomTools();
 		while(it.hasNext()){
 			TGCustomTool tool = (TGCustomTool)it.next();
 			MenuItem menuItem = new MenuItem(this.menu, SWT.PUSH);

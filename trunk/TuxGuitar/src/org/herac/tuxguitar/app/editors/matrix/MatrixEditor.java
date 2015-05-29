@@ -408,7 +408,7 @@ public class MatrixEditor implements TGEventListener {
 		if( this.clientArea != null ){
 			TGMeasure measure = getMeasure();
 			if(measure != null){
-				Iterator it = measure.getBeats().iterator();
+				Iterator<TGBeat> it = measure.getBeats().iterator();
 				while(it.hasNext()){
 					TGBeat beat = (TGBeat)it.next();
 					paintBeat(painter, measure, beat, fromX, fromY);
@@ -549,7 +549,7 @@ public class MatrixEditor implements TGEventListener {
 		
 		for(int v = 0; v < beat.countVoices(); v ++){
 			TGVoice voice = beat.getVoice( v );
-			Iterator it = voice.getNotes().iterator();
+			Iterator<TGNote> it = voice.getNotes().iterator();
 			while (it.hasNext()) {
 				TGNoteImpl note = (TGNoteImpl) it.next();
 				if (note.getRealValue() == value) {
@@ -579,7 +579,7 @@ public class MatrixEditor implements TGEventListener {
 			TGMeasure measure = getMeasure();
 			Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 			
-			List strings = measure.getTrack().getStrings();
+			List<TGString> strings = measure.getTrack().getStrings();
 			for(int i = 0;i < strings.size();i ++){
 				TGString string = (TGString)strings.get(i);
 				if(value >= string.getValue()){
@@ -587,7 +587,7 @@ public class MatrixEditor implements TGEventListener {
 					
 					for(int v = 0; v < beat.countVoices(); v ++){
 						TGVoice voice = beat.getVoice( v );
-						Iterator it = voice.getNotes().iterator();
+						Iterator<TGNote> it = voice.getNotes().iterator();
 						while (it.hasNext()) {
 							TGNoteImpl note = (TGNoteImpl) it.next();
 							if (note.getString() == string.getNumber()) {

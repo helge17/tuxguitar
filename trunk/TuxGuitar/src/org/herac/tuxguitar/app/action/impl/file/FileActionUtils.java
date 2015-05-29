@@ -74,7 +74,7 @@ public class FileActionUtils {
 		if( path != null ){
 			String extension = getFileExtension(path);
 			if( extension != null ){
-				Iterator it = TuxGuitar.getInstance().getFileFormatManager().getOutputStreams();
+				Iterator<TGOutputStreamBase> it = TuxGuitar.getInstance().getFileFormatManager().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
 					if( isSupportedExtension(writer.getFileFormat(), extension) ){
@@ -100,7 +100,7 @@ public class FileActionUtils {
 		if( path != null ){
 			String extension = getFileExtension(path);
 			if( extension != null ){
-				Iterator it = TuxGuitar.getInstance().getFileFormatManager().getOutputStreams();
+				Iterator<TGOutputStreamBase> it = TuxGuitar.getInstance().getFileFormatManager().getOutputStreams();
 				while(it.hasNext()){
 					TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
 					if( isSupportedExtension(writer.getFileFormat(), extension)){

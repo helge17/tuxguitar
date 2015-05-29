@@ -11,12 +11,12 @@ public class UndoableJoined implements UndoableEdit{
 	private int doAction;
 	private UndoableCaretHelper undoCaret;
 	private UndoableCaretHelper redoCaret;
-	private List undoables;
+	private List<UndoableEdit> undoables;
 	
 	public UndoableJoined(){
 		this.doAction = UNDO_ACTION;
 		this.undoCaret = new UndoableCaretHelper();
-		this.undoables = new ArrayList();
+		this.undoables = new ArrayList<UndoableEdit>();
 	}
 	
 	public void addUndoableEdit(UndoableEdit undoable){

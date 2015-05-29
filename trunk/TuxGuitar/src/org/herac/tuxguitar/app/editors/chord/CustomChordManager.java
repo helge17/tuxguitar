@@ -12,7 +12,7 @@ import org.herac.tuxguitar.song.models.TGChord;
 public class CustomChordManager {
 	
 	private long lastEdit;
-	private List chords;
+	private List<TGChord> chords;
 	
 	public CustomChordManager() {
 		this.chords = ChordXMLReader.getChords(getUserFileName());

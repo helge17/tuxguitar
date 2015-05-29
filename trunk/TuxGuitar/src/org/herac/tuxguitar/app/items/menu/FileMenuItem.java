@@ -65,14 +65,14 @@ public class FileMenuItem extends MenuItems {
 	private MenuItem[] historyFiles;
 	private MenuItem exit;
 	
-	private List importItems;
-	private List exportItems;
+	private List<MenuItem> importItems;
+	private List<MenuItem> exportItems;
 	
 	public FileMenuItem(Shell shell,Menu parent, int style) {
 		this.fileMenuItem = new MenuItem(parent, style);
 		this.menu = new Menu(shell, SWT.DROP_DOWN);
-		this.importItems = new ArrayList();
-		this.exportItems = new ArrayList();
+		this.importItems = new ArrayList<MenuItem>();
+		this.exportItems = new ArrayList<MenuItem>();
 	}
 	
 	public void showItems(){
@@ -166,11 +166,11 @@ public class FileMenuItem extends MenuItems {
 			//--SEPARATOR--
 			new MenuItem(this.newSongMenu, SWT.SEPARATOR);
 			
-			Iterator it = TuxGuitar.getInstance().getTemplateManager().getTemplates();
+			Iterator<TGTemplate> it = TuxGuitar.getInstance().getTemplateManager().getTemplates();
 			while( it.hasNext() ){
 				TGTemplate tgTemplate = (TGTemplate)it.next();
 				
-				Map actionData = new HashMap();
+				Map<String, TGTemplate> actionData = new HashMap<String, TGTemplate>();
 				actionData.put(NewFileAction.PROPERTY_TEMPLATE, tgTemplate);
 				
 				MenuItem menuItem = new MenuItem(this.newSongMenu, SWT.PUSH);
@@ -182,21 +182,21 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	private void addImporters(){
-		List importersRaw = new ArrayList();
-		List importersFile = new ArrayList();
+		List<TGRawImporter> importersRaw = new ArrayList<TGRawImporter>();
+		List<TGLocalFileImporter> importersFile = new ArrayList<TGLocalFileImporter>();
 		
-		Iterator importers = TuxGuitar.getInstance().getFileFormatManager().getImporters();
+		Iterator<TGRawImporter> importers = TuxGuitar.getInstance().getFileFormatManager().getImporters();
 		while(importers.hasNext()){
 			TGRawImporter importer = (TGRawImporter)importers.next();
 			if( importer instanceof TGLocalFileImporter ){
-				importersFile.add( importer );
+				importersFile.add( (TGLocalFileImporter) importer );
 			}else{
 				importersRaw.add( importer );
 			}
 		}
 		
 		for( int i = 0 ; i < importersFile.size() ; i ++ ){
-			Map actionData = new HashMap();
+			Map<String, TGLocalFileImporter> actionData = new HashMap<String, TGLocalFileImporter>();
 			actionData.put(ImportSongAction.PROPERTY_IMPORTER, importersFile.get( i ));
 			
 			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
@@ -211,7 +211,7 @@ public class FileMenuItem extends MenuItems {
 		}
 		
 		for( int i = 0 ; i < importersRaw.size() ; i ++ ){
-			Map actionData = new HashMap();
+			Map<String, TGRawImporter> actionData = new HashMap<String, TGRawImporter>();
 			actionData.put(ImportSongAction.PROPERTY_IMPORTER, importersRaw.get( i ));
 			
 			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
@@ -222,21 +222,21 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	private void addExporters(){
-		List exportersRaw = new ArrayList();
-		List exportersFile = new ArrayList();
+		List<TGRawExporter> exportersRaw = new ArrayList<TGRawExporter>();
+		List<TGLocalFileExporter> exportersFile = new ArrayList<TGLocalFileExporter>();
 		
-		Iterator exporters = TuxGuitar.getInstance().getFileFormatManager().getExporters();
+		Iterator<TGRawExporter> exporters = TuxGuitar.getInstance().getFileFormatManager().getExporters();
 		while(exporters.hasNext()){
 			TGRawExporter exporter = (TGRawExporter)exporters.next();
 			if( exporter instanceof TGLocalFileExporter ){
-				exportersFile.add( exporter );
+				exportersFile.add( (TGLocalFileExporter) exporter );
 			}else{
 				exportersRaw.add( exporter );
 			}
 		}
 		
 		for( int i = 0 ; i < exportersFile.size() ; i ++ ){
-			Map actionData = new HashMap();
+			Map<String, TGLocalFileExporter> actionData = new HashMap<String, TGLocalFileExporter>();
 			actionData.put(ExportSongAction.PROPERTY_EXPORTER, exportersFile.get( i ));
 			
 			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
@@ -251,7 +251,7 @@ public class FileMenuItem extends MenuItems {
 		}
 		
 		for( int i = 0 ; i < exportersRaw.size() ; i ++ ){
-			Map actionData = new HashMap();
+			Map<String, TGRawExporter> actionData = new HashMap<String, TGRawExporter>();
 			actionData.put(ExportSongAction.PROPERTY_EXPORTER, exportersRaw.get( i ));
 			
 			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
@@ -268,11 +268,11 @@ public class FileMenuItem extends MenuItems {
 	}
 	
 	private void updateHistoryFiles(){
-		List urls = TuxGuitar.getInstance().getFileHistory().getURLs();
+		List<URL> urls = TuxGuitar.getInstance().getFileHistory().getURLs();
 		this.historyFiles = new MenuItem[urls.size()];
 		for(int i = 0;i < this.historyFiles.length; i++){
 			URL url = (URL)urls.get(i);
-			Map actionData = new HashMap();
+			Map<String, URL> actionData = new HashMap<String, URL>();
 			actionData.put(OpenFileAction.PROPERTY_URL, url);
 			this.historyFiles[i] = new MenuItem(this.historyMenu, SWT.PUSH);
 			this.historyFiles[i].setText(decode(url.toString()));
@@ -315,11 +315,11 @@ public class FileMenuItem extends MenuItems {
 		if( this.importItem != null ){
 			setMenuItemTextAndAccelerator(this.importItem, "file.import", ImportSongAction.NAME);
 			
-			Iterator importItems = this.importItems.iterator();
+			Iterator<MenuItem> importItems = this.importItems.iterator();
 			while(importItems.hasNext()){
 				MenuItem item = (MenuItem)importItems.next();
 				
-				Object itemImporter = ((Map)item.getData()).get(ImportSongAction.PROPERTY_IMPORTER);
+				Object itemImporter = ((Map<?, ?>)item.getData()).get(ImportSongAction.PROPERTY_IMPORTER);
 				if( itemImporter instanceof TGLocalFileImporter ){
 					item.setText(TuxGuitar.getProperty("file.import") + " " + ((TGRawImporter)itemImporter).getImportName());
 				}else if( itemImporter instanceof TGRawImporter ){
@@ -330,11 +330,11 @@ public class FileMenuItem extends MenuItems {
 		if( this.exportItem != null ){
 			setMenuItemTextAndAccelerator(this.exportItem, "file.export", ExportSongAction.NAME);
 			
-			Iterator exportItems = this.exportItems.iterator();
+			Iterator<MenuItem> exportItems = this.exportItems.iterator();
 			while(exportItems.hasNext()){
 				MenuItem item = (MenuItem)exportItems.next();
 				
-				Object itemExporter = ((Map)item.getData()).get(ExportSongAction.PROPERTY_EXPORTER);
+				Object itemExporter = ((Map<?, ?>)item.getData()).get(ExportSongAction.PROPERTY_EXPORTER);
 				if( itemExporter instanceof TGLocalFileExporter ){
 					item.setText(TuxGuitar.getProperty("file.export") + " " + ((TGRawExporter)itemExporter).getExportName());
 				}else if( itemExporter instanceof TGRawExporter ){

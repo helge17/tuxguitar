@@ -11,10 +11,10 @@ import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGChannelSettingsHandlerManager {
 	
-	private List channelSettingsHandler;
+	private List<TGChannelSettingsHandler> channelSettingsHandler;
 	
 	public TGChannelSettingsHandlerManager(){
-		this.channelSettingsHandler = new ArrayList();
+		this.channelSettingsHandler = new ArrayList<TGChannelSettingsHandler>();
 	}
 	
 	public void addChannelSettingsHandler(TGChannelSettingsHandler handler){
@@ -32,7 +32,7 @@ public class TGChannelSettingsHandlerManager {
 	public TGChannelSettingsHandler findSupportedChannelSettingsHandler(){
 		MidiDevice midiDevice = getMidiDevice();
 		
-		Iterator it = this.channelSettingsHandler.iterator();
+		Iterator<TGChannelSettingsHandler> it = this.channelSettingsHandler.iterator();
 		while( it.hasNext() ){
 			TGChannelSettingsHandler channelSettingsHandler = (TGChannelSettingsHandler)it.next();
 			if( channelSettingsHandler.isMidiDeviceSupported(midiDevice) ){

@@ -33,10 +33,10 @@ public class KeyBindingEditor {
 	
 	protected Shell dialog;
 	protected Table table;
-	protected List items;
+	protected List<TableItem> items;
 	
 	public KeyBindingEditor(){
-		this.items = new ArrayList();
+		this.items = new ArrayList<TableItem>();
 	}
 	
 	public void show(Shell parent){
@@ -137,9 +137,9 @@ public class KeyBindingEditor {
 	}
 	
 	protected void loadAvailableActionKeyBindings(){
-		List list = TuxGuitar.getInstance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
+		List<String> list = TuxGuitar.getInstance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
 		Collections.sort(list);
-		Iterator it = list.iterator();
+		Iterator<String> it = list.iterator();
 		while (it.hasNext()) {
 			String action = (String) it.next();
 			TableItem item = new TableItem(this.table, SWT.NONE);
@@ -148,14 +148,14 @@ public class KeyBindingEditor {
 		}
 	}
 	
-	protected void loadEnableActionKeyBindings(List list){
-		Iterator items = this.items.iterator();
+	protected void loadEnableActionKeyBindings(List<KeyBindingAction> list){
+		Iterator<TableItem> items = this.items.iterator();
 		while (items.hasNext()) {
 			TableItem item = (TableItem) items.next();
 			if(item.getData() instanceof KeyBindingAction){
 				KeyBindingAction itemData = (KeyBindingAction)item.getData();
 				KeyBinding keyBinding = null;
-				Iterator it = list.iterator();
+				Iterator<KeyBindingAction> it = list.iterator();
 				while (it.hasNext()) {
 					KeyBindingAction keyBindingAction = (KeyBindingAction) it.next();
 					if(keyBindingAction.getAction().equals(itemData.getAction())){
@@ -171,7 +171,7 @@ public class KeyBindingEditor {
 	
 	protected void removeKeyBindingAction(KeyBinding kb){
 		if(kb != null){
-			Iterator it = this.items.iterator();
+			Iterator<TableItem> it = this.items.iterator();
 			while(it.hasNext()){
 				TableItem item = (TableItem) it.next();
 				if(item.getData() instanceof KeyBindingAction){
@@ -195,7 +195,7 @@ public class KeyBindingEditor {
 	}
 	
 	public boolean exists(KeyBinding kb){
-		Iterator it = this.items.iterator();
+		Iterator<TableItem> it = this.items.iterator();
 		while(it.hasNext()){
 			TableItem item = (TableItem) it.next();
 			if(item.getData() instanceof KeyBindingAction){
@@ -209,8 +209,8 @@ public class KeyBindingEditor {
 	}
 	
 	protected void save(){
-		List list = new ArrayList();
-		Iterator it = this.items.iterator();
+		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
+		Iterator<TableItem> it = this.items.iterator();
 		while (it.hasNext()) {
 			TableItem item = (TableItem) it.next();
 			if(item.getData() instanceof KeyBindingAction){

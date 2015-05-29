@@ -8,10 +8,10 @@ public class TGCustomToolManager {
 	
 	private static TGCustomToolManager instance;
 	
-	private List tools;
+	private List<TGCustomTool> tools;
 	
 	public TGCustomToolManager(){
-		this.tools = new ArrayList();
+		this.tools = new ArrayList<TGCustomTool>();
 	}
 	
 	public static TGCustomToolManager instance(){
@@ -29,7 +29,7 @@ public class TGCustomToolManager {
 		this.tools.remove(tool);
 	}
 	
-	public Iterator getCustomTools(){
+	public Iterator<TGCustomTool> getCustomTools(){
 		return this.tools.iterator();
 	}
 	

@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class TGActionIdList {
 	
-	private List actionIds;
+	private List<String> actionIds;
 	
 	public TGActionIdList() {
-		this.actionIds = new ArrayList();
+		this.actionIds = new ArrayList<String>();
 	}
 	
 	public boolean hasActionId(String actionId){
@@ -45,7 +45,7 @@ public class TGActionIdList {
 		}
 	}
 	
-	public List getActionIds(){
-		return new ArrayList(this.actionIds);
+	public List<String> getActionIds(){
+		return new ArrayList<String>(this.actionIds);
 	}
 }

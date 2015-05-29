@@ -19,8 +19,8 @@ import org.xml.sax.SAXException;
 
 public class ChordXMLReader {
 	
-	public static List getChords(String fileName) {
-		List chords = new ArrayList();
+	public static List<TGChord> getChords(String fileName) {
+		List<TGChord> chords = new ArrayList<TGChord>();
 		try{
 			File file = new File(fileName);
 			if (file.exists()){
@@ -55,7 +55,7 @@ public class ChordXMLReader {
 	 * @param shortcutsNode
 	 * @return
 	 */
-	private static void loadChords(Node chordsNode,List chords){
+	private static void loadChords(Node chordsNode,List<TGChord> chords){
 		try{
 			NodeList chordList = chordsNode.getChildNodes();
 			for (int i = 0; i < chordList.getLength(); i++) {

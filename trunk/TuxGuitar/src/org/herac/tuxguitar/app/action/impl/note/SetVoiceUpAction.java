@@ -42,7 +42,7 @@ public class SetVoiceUpAction extends TGActionBase{
 				//comienza el undoable
 				UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
 				
-				Iterator it = group.getVoices().iterator();
+				Iterator<TGVoice> it = group.getVoices().iterator();
 				while( it.hasNext() ){
 					TGVoice current = (TGVoice)it.next();
 					getSongManager().getMeasureManager().changeVoiceDirection(current, TGVoice.DIRECTION_UP);

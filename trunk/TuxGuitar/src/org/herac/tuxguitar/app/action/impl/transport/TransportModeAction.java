@@ -250,10 +250,10 @@ public class TransportModeAction extends TGActionBase {
 	
 	private class RadioSelectionAdapter extends SelectionAdapter{
 		private Button control;
-		private List controls;
+		private List<Control> controls;
 		
 		public RadioSelectionAdapter(Button control) {
-			this.controls = new ArrayList();
+			this.controls = new ArrayList<Control>();
 			this.control = control;
 			this.control.addSelectionListener(this);
 		}
@@ -264,7 +264,7 @@ public class TransportModeAction extends TGActionBase {
 		
 		public void update(){
 			boolean enabled = this.control.getSelection();
-			Iterator it = this.controls.iterator();
+			Iterator<Control> it = this.controls.iterator();
 			while(it.hasNext()){
 				Control control = (Control)it.next();
 				control.setEnabled(enabled);
@@ -310,7 +310,7 @@ public class TransportModeAction extends TGActionBase {
 	
 	private class MHeaderRangeStatus extends SelectionAdapter{
 		
-		private List controls;
+		private List<Control> controls;
 		private boolean enabled;
 		
 		private Button simpleMode;
@@ -318,7 +318,7 @@ public class TransportModeAction extends TGActionBase {
 		private Button customLoop;
 		
 		public MHeaderRangeStatus(Button simpleMode, Button simpleLoop, Button customLoop) {
-			this.controls = new ArrayList();
+			this.controls = new ArrayList<Control>();
 			this.enabled = false;
 			this.simpleMode = simpleMode;
 			this.simpleLoop = simpleLoop;
@@ -342,7 +342,7 @@ public class TransportModeAction extends TGActionBase {
 			}
 			
 			// Update controls
-			Iterator it = this.controls.iterator();
+			Iterator<Control> it = this.controls.iterator();
 			while(it.hasNext()){
 				Control control = (Control)it.next();
 				control.setEnabled( this.enabled );
@@ -355,11 +355,11 @@ public class TransportModeAction extends TGActionBase {
 	}
 	
 	private class MHeaderCombo {
-		private List values;
+		private List<Integer> values;
 		private Combo combo;
 		
 		public MHeaderCombo( Composite parent ){
-			this.values = new ArrayList();
+			this.values = new ArrayList<Integer>();
 			this.combo = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY );
 			this.combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		}
@@ -415,6 +415,7 @@ public class TransportModeAction extends TGActionBase {
 	}
 	
 	private class MHeaderComboController {
+		
 		protected MHeaderCombo loopSHeader;
 		protected MHeaderCombo loopEHeader;
 		

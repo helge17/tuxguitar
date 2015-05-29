@@ -15,16 +15,16 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class KeyBindingActionManager {
 	
-	private List keyBindingsActions;
+	private List<KeyBindingAction> keyBindingsActions;
 	private KeyBindingListener listener;
 	
 	public KeyBindingActionManager(){
-		this.keyBindingsActions = new ArrayList();
+		this.keyBindingsActions = new ArrayList<KeyBindingAction>();
 		this.init();
 	}
 	
 	public void init(){
-		List enabled = KeyBindingReader.getKeyBindings(getUserFileName());
+		List<KeyBindingAction> enabled = KeyBindingReader.getKeyBindings(getUserFileName());
 		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings()) );
 		this.listener = new KeyBindingListener(this);
 	}
@@ -34,7 +34,7 @@ public class KeyBindingActionManager {
 	}
 	
 	public String getActionForKeyBinding(KeyBinding kb){
-		Iterator it = this.keyBindingsActions.iterator();
+		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
 			if( keyBindingAction.getKeyBinding() != null && kb.isSameAs( keyBindingAction.getKeyBinding() )){
@@ -47,7 +47,7 @@ public class KeyBindingActionManager {
 	}
 	
 	public KeyBinding getKeyBindingForAction(String action){
-		Iterator it = this.keyBindingsActions.iterator();
+		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
 			if(action.equals( keyBindingAction.getAction() )){
@@ -67,12 +67,12 @@ public class KeyBindingActionManager {
 		return false;
 	}
 	
-	public void reset(List keyBindings){
+	public void reset(List<KeyBindingAction> keyBindings){
 		this.keyBindingsActions.clear();
 		this.keyBindingsActions.addAll(keyBindings);
 	}
 	
-	public List getKeyBindingActions(){
+	public List<KeyBindingAction> getKeyBindingActions(){
 		return this.keyBindingsActions;
 	}
 	

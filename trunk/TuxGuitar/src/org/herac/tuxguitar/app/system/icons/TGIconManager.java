@@ -19,7 +19,7 @@ public class TGIconManager {
 	private TGContext context;
 	
 	private String theme;
-	private List disposableIcons;
+	private List<Resource> disposableIcons;
 	
 	private Image[] durations;
 	private Image editUndo;
@@ -149,7 +149,7 @@ public class TGIconManager {
 	
 	public TGIconManager(TGContext context){
 		this.context = context;
-		this.disposableIcons = new ArrayList();
+		this.disposableIcons = new ArrayList<Resource>();
 		this.loadIcons();
 	}
 	
@@ -166,7 +166,7 @@ public class TGIconManager {
 	}
 	
 	public void reloadIcons(){
-		List disposableIcons = purgeDisposableIcons();
+		List<Resource> disposableIcons = purgeDisposableIcons();
 		this.loadIcons();
 		this.fireChanges();
 		this.disposeIcons(disposableIcons);
@@ -315,9 +315,9 @@ public class TGIconManager {
 		return image;
 	}
 	
-	private List purgeDisposableIcons(){
-		List disposableIcons = new ArrayList();
-		Iterator it = this.disposableIcons.iterator();
+	private List<Resource> purgeDisposableIcons(){
+		List<Resource> disposableIcons = new ArrayList<Resource>();
+		Iterator<Resource> it = this.disposableIcons.iterator();
 		while( it.hasNext() ){
 			Resource resource = (Resource)it.next();
 			disposableIcons.add( resource );
@@ -326,8 +326,8 @@ public class TGIconManager {
 		return disposableIcons;
 	}
 	
-	public void disposeIcons(List resources){
-		Iterator it = resources.iterator();
+	public void disposeIcons(List<Resource> resources){
+		Iterator<Resource> it = resources.iterator();
 		while( it.hasNext() ){
 			Image image = (Image)it.next();
 			image.dispose();

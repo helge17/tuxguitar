@@ -226,10 +226,11 @@ public class TGChannelItem {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void updateProgramCombo(boolean playerRunning){
 		if(!isDisposed() && getChannel() != null){
-			List programNames = getProgramNames();
-			if(!(this.programCombo.getData() instanceof List) || isDifferentList(programNames, (List)this.programCombo.getData())){
+			List<String> programNames = getProgramNames();
+			if(!(this.programCombo.getData() instanceof List) || isDifferentList(programNames, (List<String>)this.programCombo.getData())){
 				this.programCombo.removeAll();
 				this.programCombo.setData(programNames);
 				for( int i = 0 ; i < programNames.size() ; i ++ ){
@@ -242,8 +243,8 @@ public class TGChannelItem {
 		}
 	}
 	
-	private List getProgramNames(){
-		List programNames = new ArrayList();
+	private List<String> getProgramNames(){
+		List<String> programNames = new ArrayList<String>();
 		if(!getChannel().isPercussionChannel() ){
 			MidiInstrument[] instruments = TuxGuitar.getInstance().getPlayer().getInstruments();
 			if (instruments != null) {
@@ -265,7 +266,7 @@ public class TGChannelItem {
 		return programNames;
 	}
 	
-	private boolean isDifferentList(List list1, List list2){
+	private boolean isDifferentList(List<? extends Object> list1, List<? extends Object> list2){
 		if( list1.size() != list2.size() ){
 			return true;
 		}

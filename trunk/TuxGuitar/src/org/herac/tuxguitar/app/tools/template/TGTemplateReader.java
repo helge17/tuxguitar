@@ -17,13 +17,13 @@ public class TGTemplateReader {
 	private static final String ATTRIBUTE_NAME = "name";
 	private static final String ATTRIBUTE_RESOURCE = "resource";
 	
-	public void loadTemplates(List templates,InputStream stream) throws Throwable{
+	public void loadTemplates(List<TGTemplate> templates,InputStream stream) throws Throwable{
 		if( stream != null ){
 			loadTemplates(templates,createDocument(stream).getFirstChild());
 		}
 	}
 	
-	private void loadTemplates(List templates,Node node) throws Throwable {
+	private void loadTemplates(List<TGTemplate> templates,Node node) throws Throwable {
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node child = nodeList.item(i);

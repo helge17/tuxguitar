@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class UndoableChangeKeySignature implements UndoableEdit{
@@ -20,7 +21,7 @@ public class UndoableChangeKeySignature implements UndoableEdit{
 	private long position;
 	private int redoableKeySignature;
 	private int undoableKeySignature;
-	private List nextKeySignaturePositions;
+	private List<KeySignaturePosition> nextKeySignaturePositions;
 	private boolean toEnd;
 	private TGTrack track;
 	
@@ -45,7 +46,7 @@ public class UndoableChangeKeySignature implements UndoableEdit{
 		}
 		TuxGuitar.getInstance().getSongManager().getTrackManager().changeKeySignature(this.track,this.position,this.undoableKeySignature,this.toEnd);
 		if(this.toEnd){
-			Iterator it = this.nextKeySignaturePositions.iterator();
+			Iterator<KeySignaturePosition> it = this.nextKeySignaturePositions.iterator();
 			while(it.hasNext()){
 				KeySignaturePosition ksp = (KeySignaturePosition)it.next();
 				TuxGuitar.getInstance().getSongManager().getTrackManager().changeKeySignature(this.track,ksp.getPosition(),ksp.getKeySignature(),true);
@@ -73,10 +74,10 @@ public class UndoableChangeKeySignature implements UndoableEdit{
 		undoable.position = caret.getPosition();
 		undoable.undoableKeySignature = caret.getMeasure().getKeySignature();
 		undoable.track = caret.getTrack();
-		undoable.nextKeySignaturePositions = new ArrayList();
+		undoable.nextKeySignaturePositions = new ArrayList<KeySignaturePosition>();
 		
 		int prevKeySignature = undoable.undoableKeySignature;
-		Iterator it = caret.getTrack().getMeasures();
+		Iterator<TGMeasure> it = caret.getTrack().getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl measure = (TGMeasureImpl)it.next();
 			if(measure.getStart() > undoable.position){

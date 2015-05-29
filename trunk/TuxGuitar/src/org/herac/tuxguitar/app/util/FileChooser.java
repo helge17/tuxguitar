@@ -40,8 +40,8 @@ public class FileChooser {
 		return instance;
 	}
 	
-	private List list(Object o){
-		List list = new ArrayList();
+	private List<TGFileFormat> list(TGFileFormat o){
+		List<TGFileFormat> list = new ArrayList<TGFileFormat>();
 		list.add(o);
 		return list;
 	}
@@ -50,7 +50,7 @@ public class FileChooser {
 		return open(parent, list(format));
 	}
 	
-	public String open(Shell parent,List formats) {
+	public String open(Shell parent, List<TGFileFormat> formats) {
 		String currentPath = TuxGuitar.getInstance().getFileHistory().getCurrentFilePath();
 		String chooserPath = TuxGuitar.getInstance().getFileHistory().getOpenPath();
 		boolean localFile = TuxGuitar.getInstance().getFileHistory().isLocalFile();
@@ -69,7 +69,7 @@ public class FileChooser {
 		return save(parent, list(format));
 	}
 	
-	public String save(Shell parent,List formats) {
+	public String save(Shell parent,List<TGFileFormat> formats) {
 		String chooserPath = TuxGuitar.getInstance().getFileHistory().getSavePath();
 		
 		FilterList filter = new FilterList(formats);
@@ -93,7 +93,7 @@ public class FileChooser {
 		return path;
 	}
 	
-	private String getFileName(List formats, String defaultName, boolean replaceExtension){
+	private String getFileName(List<TGFileFormat> formats, String defaultName, boolean replaceExtension){
 		if(formats == null || formats.isEmpty()){
 			return defaultName;
 		}
@@ -103,7 +103,7 @@ public class FileChooser {
 			if(index > 0){
 				String fileName = file.substring(0,index);
 				String fileExtension = file.substring(index).toLowerCase();
-				Iterator it = formats.iterator();
+				Iterator<TGFileFormat> it = formats.iterator();
 				while(it.hasNext()){
 					TGFileFormat format = (TGFileFormat)it.next();
 					if(format.getSupportedFormats() != null){
@@ -135,7 +135,7 @@ public class FileChooser {
 		private String[] filterExtensions;
 		private String[] filterNames;
 		
-		public  FilterList(List formats) {
+		public  FilterList(List<TGFileFormat> formats) {
 			int size = (formats.size() + 2);
 			this.filterNames = new String[size];
 			this.filterExtensions = new String[size];

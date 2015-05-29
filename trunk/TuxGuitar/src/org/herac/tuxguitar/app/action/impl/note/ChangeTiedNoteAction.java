@@ -76,7 +76,7 @@ public class ChangeTiedNoteAction extends TGActionBase{
 					return;
 				}
 				// Check if is there any note at same string.
-				Iterator it = voice.getNotes().iterator();
+				Iterator<TGNote> it = voice.getNotes().iterator();
 				while( it.hasNext() ){
 					TGNote current = (TGNote) it.next();
 					if(current.getString() == note.getString()){

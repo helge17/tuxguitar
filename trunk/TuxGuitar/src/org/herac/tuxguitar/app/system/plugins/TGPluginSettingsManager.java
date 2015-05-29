@@ -9,10 +9,10 @@ public class TGPluginSettingsManager {
 	
 	private static TGPluginSettingsManager instance;
 	
-	private Map handlers;
+	private Map<String, TGPluginSettingsHandler> handlers;
 	
 	public TGPluginSettingsManager(){
-		this.handlers = new HashMap();
+		this.handlers = new HashMap<String, TGPluginSettingsHandler>();
 	}
 	
 	public static TGPluginSettingsManager getInstance(){

@@ -38,7 +38,7 @@ public class MarkerList implements TGEventListener {
 	
 	protected Shell dialog;
 	private Table table;
-	private List markers;
+	private List<TGMarker> markers;
 	
 	private Composite compositeTable;
 	private TableColumn measureColumn;
@@ -242,7 +242,7 @@ public class MarkerList implements TGEventListener {
 		this.table.removeAll();
 		this.markers = TuxGuitar.getInstance().getSongManager().getMarkers(song);
 		
-		Iterator it = this.markers.iterator();
+		Iterator<TGMarker> it = this.markers.iterator();
 		while (it.hasNext()) {
 			TGMarker marker = (TGMarker) it.next();
 			

@@ -110,12 +110,12 @@ public class PrintPreviewAction extends TGActionBase{
 		
 		private TGPainterImpl painter;
 		private TGRectangle bounds;
-		private List pages;
+		private List<Image> pages;
 		
 		public PrintDocumentImpl(TGRectangle bounds){
 			this.bounds = bounds;
 			this.painter = new TGPainterImpl();
-			this.pages = new ArrayList();
+			this.pages = new ArrayList<Image>();
 		}
 		
 		public TGPainter getPainter() {
@@ -144,13 +144,13 @@ public class PrintPreviewAction extends TGActionBase{
 		
 		public void finish() {
 			final TGRectangle bounds = this.bounds;
-			final List pages = this.pages;
+			final List<Image> pages = this.pages;
 			try {
 				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable(){
 					public void run() throws TGException {
 						PrintPreview preview = new PrintPreview(pages,bounds);
 						preview.showPreview(getEditor().getTablature().getShell());
-						Iterator it = pages.iterator();
+						Iterator<Image> it = pages.iterator();
 						while(it.hasNext()){
 							Image image = (Image)it.next();
 							image.dispose();

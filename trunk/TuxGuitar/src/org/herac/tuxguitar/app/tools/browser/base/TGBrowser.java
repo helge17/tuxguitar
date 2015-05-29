@@ -20,6 +20,6 @@ public abstract class TGBrowser {
 	
 	public abstract void cdElement(TGBrowserElement element)throws TGBrowserException;
 	
-	public abstract List listElements()throws TGBrowserException;
+	public abstract List<TGBrowserElement> listElements()throws TGBrowserException;
 	
 }

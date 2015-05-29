@@ -125,7 +125,7 @@ public class MeasureTransferable implements Transferable {
 	}
 	
 	private void skipMarkers(TGSongSegment segment){
-		Iterator it = segment.getHeaders().iterator();
+		Iterator<TGMeasureHeader> it = segment.getHeaders().iterator();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
 			header.setMarker(null);

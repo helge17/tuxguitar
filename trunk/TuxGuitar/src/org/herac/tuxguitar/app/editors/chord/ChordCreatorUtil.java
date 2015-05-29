@@ -218,7 +218,7 @@ public class ChordCreatorUtil {
 		
 		//return getChords();
 		if(isValidProcess()){
-			List chords = getChords();
+			List<TGChord> chords = getChords();
 			if(chords != null && isValidProcess()){
 				this.listener.notifyChords(this, chords);
 			}
@@ -245,17 +245,17 @@ public class ChordCreatorUtil {
 	 * @return the list of TGChord structures that are most suitable
 	 * 
 	 */
-	private java.util.List getChords() {
+	private List<TGChord> getChords() {
 		if(!isValidProcess()){
 			return null;
 		}
-		ArrayList potentialNotes = makePotentialNotes();
+		List<List<StringValue>> potentialNotes = makePotentialNotes();
 		
-		ArrayList combinations = makeCombinations( potentialNotes);
+		List<List<StringValue>> combinations = makeCombinations( potentialNotes);
 		
-		ArrayList priorities = determinePriority( combinations);
+		List<PriorityItem> priorities = determinePriority( combinations);
 		
-		ArrayList theBestOnes = takeBest( priorities);
+		List<List<StringValue>> theBestOnes = takeBest( priorities);
 		
 		return createChords( theBestOnes);
 	}
@@ -266,22 +266,22 @@ public class ChordCreatorUtil {
 	 * @param Highest rated StringValues
 	 * @return TGChord collection
 	 */
-	private ArrayList createChords(ArrayList top) {
+	private List<TGChord> createChords(List<List<StringValue>> top) {
 		if(!isValidProcess()){
 			return null;
 		}
 		
-		ArrayList chords = new ArrayList(top.size());
+		List<TGChord> chords = new ArrayList<TGChord>(top.size());
 		
-		Iterator it = top.iterator();
+		Iterator<List<StringValue>> it = top.iterator();
 		
 		while (it.hasNext()) {
 			TGChord chord = TuxGuitar.getInstance().getSongManager().getFactory()
 					.newChord(this.tuning.length);
-			Iterator it2 = ((ArrayList) it.next()).iterator();
+			Iterator<StringValue> it2 = it.next().iterator();
 			
 			while (it2.hasNext()) {
-				StringValue stringValue = (StringValue) it2.next();
+				StringValue stringValue = it2.next();
 				int string = ((chord.getStrings().length - 1) - (stringValue.getString()));
 				int fret = stringValue.getFret();
 				chord.addFretValue(string, fret);
@@ -301,7 +301,7 @@ public class ChordCreatorUtil {
 	 * @return true if the note is needed for chord formation
 	 * 
 	 */
-	private void find(int stringTone, int stringIndex, int fret,List stringList){
+	private void find(int stringTone, int stringIndex, int fret,List<StringValue> stringList){
 		if(!isValidProcess()){
 			return;
 		}
@@ -375,15 +375,15 @@ public class ChordCreatorUtil {
 		return wantedNote;
 	}
 	
-	private ArrayList makePotentialNotes(){
+	private List<List<StringValue>> makePotentialNotes(){
 		if(!isValidProcess()){
 			return null;
 		}
-		ArrayList potentialNotes = new ArrayList(this.tuning.length);
+		List<List<StringValue>> potentialNotes = new ArrayList<List<StringValue>>(this.tuning.length);
 		
 		for (int string = 0; string < this.tuning.length; string++) {
 			
-			ArrayList currentStringList = new ArrayList(10);
+			List<StringValue> currentStringList = new ArrayList<StringValue>(10);
 			
 			// search all the frets
 			
@@ -413,14 +413,14 @@ public class ChordCreatorUtil {
 	 * @return list of list of StringValues, with tones that can form a chord
 	 * 
 	 */
-	private ArrayList makeCombinations(ArrayList potentialNotes) {
+	private List<List<StringValue>> makeCombinations(List<List<StringValue>> potentialNotes) {
 		if(!isValidProcess()){
 			return null;
 		}
 		
 		// COMBINATIONS of strings used in a chord
-		ArrayList stringCombination = new ArrayList(60);
-		ArrayList lastLevelCombination = null;
+		List<List<Integer>> stringCombination = new ArrayList<List<Integer>>(60);
+		List<List<Integer>> lastLevelCombination = null;
 		
 		for (int i = 0; i < this.tuning.length - 1; i++)
 		{
@@ -434,17 +434,17 @@ public class ChordCreatorUtil {
 			stringCombination.addAll(lastLevelCombination);
 		}
 		
-		ArrayList combinations = new ArrayList(800);
+		List<List<StringValue>> combinations = new ArrayList<List<StringValue>>(800);
 		
 		// --- combine the StringValues according to strings combination
 		// ----------------------=======
 		
-		Iterator iterator = stringCombination.iterator();
+		Iterator<List<Integer>> iterator = stringCombination.iterator();
 		
 		while (iterator.hasNext()) { // go through all string combinations list
 			// take a string combinations
-			ArrayList currentStringCombination = (ArrayList) iterator.next();
-			lastLevelCombination = null;
+			List<Integer> currentStringCombination = iterator.next();
+			List<List<StringValue>> lastStringValueCombination = null;
 			
 			// go through all the strings in one combination
 			for (int level = 0; level < currentStringCombination.size(); level++) { 
@@ -455,15 +455,15 @@ public class ChordCreatorUtil {
 				// take all the potential notes from currentString and combine
 				// them with potential notes from other strings
 				
-				lastLevelCombination = makeStringValueCombination(lastLevelCombination,(ArrayList)potentialNotes.get(currentString));
+				lastStringValueCombination = makeStringValueCombination(lastStringValueCombination, potentialNotes.get(currentString));
 				
 				// the structure of combinations is AL { AL(StringValue,SV,SV),
 				// AL(SV), AL(SV,SV),AL(SV,SV,SV,SV,SV,SV) }
 				
 			}
 			
-			if(lastLevelCombination != null){
-				combinations.addAll(lastLevelCombination);
+			if( lastStringValueCombination != null ){
+				combinations.addAll(lastStringValueCombination);
 			}
 		}
 		
@@ -479,38 +479,39 @@ public class ChordCreatorUtil {
 	 * @return structure of stringCombination is AL { AL(0), AL(0,1),
 	 *         AL(0,2),AL(0,1,3,4),AL(0,1,2,3,4,5) }
 	 */
-	private ArrayList makeStringCombination(ArrayList lastLevelCombinationRef){
+	private List<List<Integer>> makeStringCombination(List<List<Integer>> lastLevelCombinationRef){
 		if(!isValidProcess()){
 			return null;
 		}
 		
-		List lastLevelCombination = lastLevelCombinationRef;
+		List<List<Integer>> lastLevelCombination = lastLevelCombinationRef;
 		
 		if (lastLevelCombination == null) {
 			// first combination is AL { AL(0), AL(1), AL(2), AL(3), AL(4),
 			// ...AL(tuning.length) }
-			lastLevelCombination = new ArrayList();
+			lastLevelCombination = new ArrayList<List<Integer>>();
 			
 			for (int i = 0; i < this.tuning.length; i++) {
-				lastLevelCombination.add(new ArrayList());
-				((ArrayList) lastLevelCombination.get(i)).add(new Integer(i));
+				lastLevelCombination.add(new ArrayList<Integer>());
+				lastLevelCombination.get(i).add(new Integer(i));
 			}
 		}
 		
-		ArrayList thisLevelCombination = new ArrayList();
+		ArrayList<List<Integer>> thisLevelCombination = new ArrayList<List<Integer>>();
 		for (int current = 1; current < this.tuning.length; current++)
 		{
-			Iterator it = lastLevelCombination.iterator();
+			Iterator<List<Integer>> it = lastLevelCombination.iterator();
 			
 			while (it.hasNext()) {
-				ArrayList combination = (ArrayList) it.next();
+				List<Integer> combination = it.next();
 				Integer currentInteger = new Integer(current);
 				if (((Integer) combination.get(combination.size() - 1))
 						.intValue() < current
 						&& !combination.contains(currentInteger)) {
 					
 					// check if the string is already in combination
-					ArrayList newCombination = (ArrayList) combination.clone();
+					@SuppressWarnings("unchecked")
+					List<Integer> newCombination = (List<Integer>) ((ArrayList<Integer>) combination).clone();
 					newCombination.add(currentInteger);
 					thisLevelCombination.add(newCombination);
 				}
@@ -539,22 +540,21 @@ public class ChordCreatorUtil {
 	 *         AL(StringValue,SV,SV), AL(SV), AL(SV,SV),AL(SV,SV,SV,SV,SV,SV) }
 	 * 
 	 */
-	private ArrayList makeStringValueCombination(ArrayList lastLevelCombination, ArrayList notes) {
+	private List<List<StringValue>> makeStringValueCombination(List<List<StringValue>> lastLevelCombination, List<StringValue> notes) {
 		if(!isValidProcess()){
 			return null;
 		}
-		ArrayList thisLevelCombination = null;
+		List<List<StringValue>> thisLevelCombination = null;
 		
 		if (lastLevelCombination == null) { // initial combination
 			
-			thisLevelCombination = new ArrayList(notes.size());
+			thisLevelCombination = new ArrayList<List<StringValue>>(notes.size());
 			
 			for (int i = 0; i < notes.size(); i++) {
 				
-				thisLevelCombination.add(new ArrayList(6));
+				thisLevelCombination.add(new ArrayList<StringValue>(6));
 				
-				((ArrayList) thisLevelCombination.get(i)).add(notes.get(i));
-				
+				thisLevelCombination.get(i).add(notes.get(i));
 			}
 			
 			// first combination is AL { AL(firstOne), AL(anotherFret) }
@@ -563,11 +563,12 @@ public class ChordCreatorUtil {
 		
 		else {
 			
-			thisLevelCombination = new ArrayList();
+			thisLevelCombination = new ArrayList<List<StringValue>>();
 			
 			for (int i = 0; i < notes.size(); i++)
 				for (int j = 0; j < lastLevelCombination.size(); j++) { // cartesian multiplication
-					ArrayList currentCombination = (ArrayList) ((ArrayList) lastLevelCombination.get(j)).clone();
+					@SuppressWarnings("unchecked")
+					List<StringValue> currentCombination = (List<StringValue>) ((ArrayList<StringValue>) lastLevelCombination.get(j)).clone();
 					currentCombination.add(notes.get(i));
 					
 					// if the distance maximum between the existing frets
@@ -600,9 +601,9 @@ public class ChordCreatorUtil {
 	 * @return true if it can be reached
 	 * 
 	 */
-	private boolean checkCombination(ArrayList combination) {
+	private boolean checkCombination(List<StringValue> combination) {
 		
-		Iterator it = combination.iterator();
+		Iterator<StringValue> it = combination.iterator();
 		int maxLeft, maxRight;
 		
 		maxLeft = maxRight = ((StringValue) combination.get(0)).getFret();
@@ -654,19 +655,19 @@ public class ChordCreatorUtil {
 	 * <i>float priority</i>.
 	 * 
 	 */
-	private ArrayList determinePriority(ArrayList allCombinations) {
+	private List<PriorityItem> determinePriority(List<List<StringValue>> allCombinations) {
 		if(!isValidProcess()){
 			return null;
 		}
-		ArrayList ordered = new ArrayList();
+		List<PriorityItem> ordered = new ArrayList<PriorityItem>();
 		
-		Iterator it = allCombinations.iterator();
+		Iterator<List<StringValue>> it = allCombinations.iterator();
 		
 		while (it.hasNext() && isValidProcess()) {
 			
 			float priority = 0;
 			
-			ArrayList stringValueCombination = (ArrayList) it.next();
+			List<StringValue> stringValueCombination = it.next();
 			
 			// tone combination has all notes required for the chord basis
 			
@@ -717,14 +718,14 @@ public class ChordCreatorUtil {
 	 * Takes the StringValue ArrayLists that has the best priority rating
 	 * 
 	 */
-	private ArrayList takeBest(ArrayList priorityItems) {
+	private List<List<StringValue>> takeBest(List<PriorityItem> priorityItems) {
 		if(!isValidProcess()){
 			return null;
 		}
 		
 		int maximum = ChordSettings.instance().getChordsToDisplay();
 		
-		ArrayList bestOnes = new ArrayList(maximum);
+		List<List<StringValue>> bestOnes = new ArrayList<List<StringValue>>(maximum);
 		
 		Collections.sort(priorityItems, new PriorityComparator());
 		for(int i = 0; i < priorityItems.size() && isValidProcess(); i ++){
@@ -743,11 +744,11 @@ public class ChordCreatorUtil {
 	}
 	
 	/** adds points if the combination has all the notes in the basis of chord */
-	private float combinationHasAllRequiredNotes(ArrayList stringValueCombination) {
+	private float combinationHasAllRequiredNotes(List<StringValue> stringValueCombination) {
 		if(!isValidProcess()){
 			return 0;
 		}
-		Iterator it = stringValueCombination.iterator();
+		Iterator<StringValue> it = stringValueCombination.iterator();
 		int[] values = new int[this.requiredNotes.length];
 		int currentIndex = 0;
 		
@@ -780,7 +781,7 @@ public class ChordCreatorUtil {
 			
 			boolean existsSubdominant = false;
 			
-			Iterator it2 = stringValueCombination.iterator();
+			Iterator<StringValue> it2 = stringValueCombination.iterator();
 			while (it2.hasNext()) {
 				StringValue current = (StringValue)it2.next();
 				if ((this.tuning[current.getString()] + current.getFret()) % 12 == (this.chordTonic + 7) %12)
@@ -810,7 +811,7 @@ public class ChordCreatorUtil {
 	}
 	
 	/** adds points if the combination has strings in a row */
-	private float combinationHasSubsequentStrings(ArrayList stringValueCombination) {
+	private float combinationHasSubsequentStrings(List<StringValue> stringValueCombination) {
 		if(!isValidProcess()){
 			return 0;
 		}
@@ -818,7 +819,7 @@ public class ChordCreatorUtil {
 		
 		for (int i = 0; i < this.tuning.length; i++) {
 			boolean found = false;
-			Iterator it = stringValueCombination.iterator();
+			Iterator<StringValue> it = stringValueCombination.iterator();
 			while (it.hasNext())
 				if (((StringValue) it.next()).getString() == i)
 					found = true;
@@ -842,13 +843,13 @@ public class ChordCreatorUtil {
 	}
 	
 	/** checks if the bass tone is the lowest tone in chord */
-	private float combinationBassInBass(ArrayList stringValueCombination) {
+	private float combinationBassInBass(List<StringValue> stringValueCombination) {
 		if(!isValidProcess()){
 			return 0;
 		}
 		for (int i = 0; i < this.tuning.length; i++) {
 			
-			Iterator it = stringValueCombination.iterator();
+			Iterator<StringValue> it = stringValueCombination.iterator();
 			
 			while (it.hasNext()) {
 				StringValue sv = (StringValue) it.next();
@@ -876,7 +877,8 @@ public class ChordCreatorUtil {
 	 *  - can be placed capo <br>
 	 * 
 	 */
-	private float combinationHasGoodFingering(ArrayList stringValueCombination) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private float combinationHasGoodFingering(List<StringValue> stringValueCombination) {
 		if(!isValidProcess()){
 			return 0;
 		}
@@ -886,7 +888,7 @@ public class ChordCreatorUtil {
 		for (int i = 0; i < this.tuning.length; i++)
 			positions[i] = -1;
 		{
-			Iterator it = stringValueCombination.iterator();
+			Iterator<StringValue> it = stringValueCombination.iterator();
 			
 			while (it.hasNext()) {
 				StringValue sv = (StringValue) it.next();
@@ -964,7 +966,8 @@ public class ChordCreatorUtil {
 		// TODO: what to do with e.g. chord -35556 (C7)
 		// ... it can be held with capo on 5th fret, but very hard :)
 		// ... This is the same as with "capo after", I didn't consider that (e.g. chord -35555)
-		ArrayList[] fingers={new ArrayList(2),new ArrayList(2),new ArrayList(2),new ArrayList(2)};
+		List[] fingers = {new ArrayList<Integer>(2),new ArrayList<Integer>(2),new ArrayList<Integer>(2),new ArrayList<Integer>(2)};
+		
 		// TODO: still no thumb, sorry :)
 		
 		// STRUCTURE: ArrayList consists of Integers - first is fret
@@ -1037,7 +1040,7 @@ public class ChordCreatorUtil {
 	 *  - if expanding note isn't higher than tonic octave, then priority should be less<br>
 	 *  - If there are not some with NON_ESSENTIAL_INDEX are not here, penalty should be less<br>
 	 */
-	private float combinationChordSemantics(ArrayList stringValueCombination) {
+	private float combinationChordSemantics(List<StringValue> stringValueCombination) {
 		if(!isValidProcess()){
 			return 0;
 		}
@@ -1050,7 +1053,7 @@ public class ChordCreatorUtil {
 		
 		for (int string = 0; string < this.tuning.length; string++) {
 			// we have to go string-by-string because of the octave
-			Iterator it = stringValueCombination.iterator();
+			Iterator<StringValue> it = stringValueCombination.iterator();
 			StringValue current = null;
 			boolean found=false;
 			
@@ -1132,13 +1135,13 @@ public class ChordCreatorUtil {
 	 *  @param betterOnes ArrayList of already stored StringList chords
 	 *  @return true if it is duplicate, false if it is unique
 	 */
-	private boolean checkIfSubset(List stringValues, List betterOnes) {
+	private boolean checkIfSubset(List<StringValue> stringValues, List<List<StringValue>> betterOnes) {
 		if(!isValidProcess()){
 			return false;
 		}
-		Iterator it = betterOnes.iterator();
+		Iterator<List<StringValue>> it = betterOnes.iterator();
 		while (it.hasNext()) {
-			List currentStringValue = (List)it.next();
+			List<StringValue> currentStringValue = it.next();
 			boolean foundDifferentFret = false;
 			// repeat until gone through all strings, or found something different
 			for (int i=0; i<currentStringValue.size(); i++) {
@@ -1196,16 +1199,16 @@ public class ChordCreatorUtil {
 	/** used just to sort StringValue ArrayLists by priorities */
 	protected class PriorityItem {
 		
-		ArrayList stringValues;
+		List<StringValue> stringValues;
 		float priority;
 		
 	}
 	
 	/** used to sort the array */
-	protected class PriorityComparator implements Comparator {
+	protected class PriorityComparator implements Comparator<PriorityItem> {
 		
-		public int compare(Object o1, Object o2) {
-			return Math.round(((PriorityItem) o2).priority - ((PriorityItem) o1).priority);
+		public int compare(PriorityItem o1, PriorityItem o2) {
+			return Math.round(o2.priority - o1.priority);
 		}
 		
 	}

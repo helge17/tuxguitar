@@ -464,10 +464,10 @@ public class PrintLayout extends TGLayout{
 		protected boolean fullLine;
 		protected float maxY = 0;
 		protected float minY = 50;
-		protected List measures;
+		protected List<Integer> measures;
 		
 		public TempLine(){
-			this.measures = new ArrayList();
+			this.measures = new ArrayList<Integer>();
 		}
 		
 		protected void addMeasure(int index){

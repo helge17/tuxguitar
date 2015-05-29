@@ -416,7 +416,7 @@ public class FretBoard extends Composite {
 			
 			for(int v = 0; v < this.beat.countVoices(); v ++){
 				TGVoice voice = this.beat.getVoice( v );
-				Iterator it = voice.getNotes().iterator();
+				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
 					TGNote note = (TGNote) it.next();
 					int fretIndex = note.getValue();
@@ -526,7 +526,7 @@ public class FretBoard extends Composite {
 		if(this.beat != null){
 			for(int v = 0; v < this.beat.countVoices(); v ++){
 				TGVoice voice = this.beat.getVoice( v );
-				Iterator it = voice.getNotes().iterator();
+				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
 					TGNote note = (TGNote) it.next();
 					if (note.getValue() == fret && note.getString() == string) {

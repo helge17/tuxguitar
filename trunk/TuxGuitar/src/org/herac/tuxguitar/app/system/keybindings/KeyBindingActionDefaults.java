@@ -11,12 +11,12 @@ public class KeyBindingActionDefaults {
 
 	private static final String DEFAULT_SHORTCUT_FILE = "tuxguitar-shortcuts.xml";
 
-	public static List getDefaultKeyBindings() {
-		List list = new ArrayList();
+	public static List<KeyBindingAction> getDefaultKeyBindings() {
+		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
 		try {
 			InputStream stream = TGFileUtils.getResourceAsStream(DEFAULT_SHORTCUT_FILE);
 			if (stream != null) {
-				List defaults = KeyBindingReader.getKeyBindings(stream);
+				List<KeyBindingAction> defaults = KeyBindingReader.getKeyBindings(stream);
 				if (defaults != null) {
 					list.addAll(defaults);
 				}

@@ -288,8 +288,8 @@ public class Caret {
 	}
 	
 	public TGString getSelectedString() {
-		List strings = this.selectedTrack.getStrings();
-		Iterator it = strings.iterator();
+		List<TGString> strings = this.selectedTrack.getStrings();
+		Iterator<TGString> it = strings.iterator();
 		while (it.hasNext()) {
 			TGString instrumentString = (TGString) it.next();
 			if (instrumentString.getNumber() == this.string) {

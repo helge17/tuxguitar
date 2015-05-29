@@ -20,12 +20,12 @@ public class SoundOption extends Option{
 	
 	//**MidiSequencer module**//
 	protected String msCurrentKey;
-	protected List msList;
+	protected List<MidiSequencer> msList;
 	protected Combo msCombo;
 	
 	//**MidiPort module**//
 	protected String mpCurrentKey;
-	protected List mpList;
+	protected List<MidiOutputPort> mpList;
 	protected Combo mpCombo;
 	
 	public SoundOption(TGConfigEditor configEditor,ToolBar toolBar,final Composite parent){

@@ -107,7 +107,7 @@ public class BeatToolItems  extends ToolItems{
 			this.subMenuItems = new MenuItem[TuxGuitar.getInstance().getCustomChordManager().countChords()];
 			for(int i = 0;i < this.subMenuItems.length; i++){
 				TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
-				Map actionData = new HashMap();
+				Map<String, TGChord> actionData = new HashMap<String, TGChord>();
 				actionData.put(InsertChordAction.PROPERTY_CHORD, chord);
 				
 				this.subMenuItems[i] = new MenuItem(this.subMenu, SWT.PUSH);

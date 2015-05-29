@@ -46,7 +46,7 @@ public class ChordEditor extends Composite {
 	private ChordDialog dialog;
 	private Composite composite;
 	private Text chordName;
-	private List points;
+	private List<Point> points;
 	private boolean[] firstFrets;
 	private int[] strings;
 	private int[] frets;
@@ -76,7 +76,7 @@ public class ChordEditor extends Composite {
 		this.frets = new int[TGChordImpl.MAX_FRETS];
 		this.width = ((STRING_SPACING * this.maxStrings) - STRING_SPACING);
 		this.height = ((FRET_SPACING * TGChordImpl.MAX_FRETS) - FRET_SPACING);
-		this.points = new ArrayList();
+		this.points = new ArrayList<Point>();
 		
 		for (int i = 0; i < this.firstFrets.length; i++) {
 			this.firstFrets[i] = false;
@@ -181,7 +181,7 @@ public class ChordEditor extends Composite {
 		
 		// dibujo las notas
 		painter.setBackground(new TGColorImpl(this.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
-		Iterator it = this.points.iterator();
+		Iterator<Point> it = this.points.iterator();
 		while (it.hasNext()) {
 			Point point = (Point) it.next();
 			painter.initPath(TGPainter.PATH_FILL);
@@ -235,7 +235,7 @@ public class ChordEditor extends Composite {
 	}
 	
 	private boolean removePoint(Point point) {
-		Iterator it = this.points.iterator();
+		Iterator<Point> it = this.points.iterator();
 		while (it.hasNext()) {
 			Point currPoint = (Point) it.next();
 			if (currPoint.x == point.x && currPoint.y == point.y) {
@@ -261,7 +261,7 @@ public class ChordEditor extends Composite {
 	}
 	
 	private void removePointsAtStringLine(int x) {
-		Iterator it = this.points.iterator();
+		Iterator<Point> it = this.points.iterator();
 		while (it.hasNext()) {
 			Point point = (Point) it.next();
 			if (point.x == x) {
@@ -309,7 +309,7 @@ public class ChordEditor extends Composite {
 	}
 	
 	private boolean hasPoints(int stringIndex) {
-		Iterator it = this.points.iterator();
+		Iterator<Point> it = this.points.iterator();
 		while (it.hasNext()) {
 			Point point = (Point) it.next();
 			if (point.x == this.strings[stringIndex]) {
@@ -330,7 +330,7 @@ public class ChordEditor extends Composite {
 		}
 		
 		if (value < 0) {
-			Iterator it = this.points.iterator();
+			Iterator<Point> it = this.points.iterator();
 			while (it.hasNext()) {
 				Point point = (Point) it.next();
 				if (string == (this.maxStrings - getStringIndex(point.x))) {

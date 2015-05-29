@@ -80,7 +80,7 @@ public class InsertChordAction extends TGActionBase {
 			TGVoice voice = beat.getVoice(voiceIndex);
 			if( restBeat ){
 				
-				Iterator it = track.getStrings().iterator();
+				Iterator<TGString> it = track.getStrings().iterator();
 				while (it.hasNext()) {
 					TGString string = (TGString) it.next();
 					

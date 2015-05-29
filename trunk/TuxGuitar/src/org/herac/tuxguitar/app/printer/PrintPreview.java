@@ -44,10 +44,10 @@ public class PrintPreview{
 	protected Button previous;
 	protected Button next;
 	protected TGRectangle bounds;
-	protected List pages;
+	protected List<Image> pages;
 	protected int currentPage;
 	
-	public PrintPreview(List pages,TGRectangle bounds){
+	public PrintPreview(List<Image> pages,TGRectangle bounds){
 		this.pages = pages;
 		this.bounds = bounds;
 	}
