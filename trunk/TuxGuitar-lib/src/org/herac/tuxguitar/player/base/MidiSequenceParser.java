@@ -25,8 +25,10 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 
 /**
  * @author julian
@@ -522,7 +524,7 @@ public class MidiSequenceParser {
 	
 	public void addDefaultMessages(MidiSequenceHelper sh, TGSong tgSong) {
 		if( (this.flags & ADD_DEFAULT_CONTROLS) != 0) {
-			Iterator it = tgSong.getChannels();
+			Iterator<TGChannel> it = tgSong.getChannels();
 			while ( it.hasNext() ){
 				int channelId = ((TGChannel) it.next()).getChannelId();
 				sh.getSequence().addControlChange(getTick(TGDuration.QUARTER_TIME),getInfoTrack(),channelId,MidiControllers.RPN_MSB,0);
@@ -551,7 +553,7 @@ public class MidiSequenceParser {
 	}
 	
 	public void makeBend(MidiSequenceHelper sh,int track,long start, long duration, TGEffectBend bend, int channel, int midiVoice, boolean bendMode){
-		List points = bend.getPoints();
+		List<BendPoint> points = bend.getPoints();
 		for(int i=0;i<points.size();i++){
 			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint)points.get(i);
 			long bendStart = start + point.getTime(duration);
@@ -588,7 +590,7 @@ public class MidiSequenceParser {
 	}
 	
 	public void makeTremoloBar(MidiSequenceHelper sh,int track,long start, long duration, TGEffectTremoloBar effect, int channel, int midiVoice, boolean bendMode){
-		List points = effect.getPoints();
+		List<TremoloBarPoint> points = effect.getPoints();
 		for(int i=0;i<points.size();i++){
 			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint)points.get(i);
 			long pointStart = start + point.getTime(duration);
@@ -911,12 +913,12 @@ public class MidiSequenceParser {
 	
 	private class MidiSequenceHelper {
 		
-		private List measureHeaderHelpers;
+		private List<MidiMeasureHelper> measureHeaderHelpers;
 		private MidiSequenceHandler sequence;
 		
 		public MidiSequenceHelper(MidiSequenceHandler sequence){
 			this.sequence = sequence;
-			this.measureHeaderHelpers = new ArrayList();
+			this.measureHeaderHelpers = new ArrayList<MidiMeasureHelper>();
 		}
 		
 		public MidiSequenceHandler getSequence(){
@@ -927,7 +929,7 @@ public class MidiSequenceParser {
 			this.measureHeaderHelpers.add( helper );
 		}
 		
-		public List getMeasureHelpers(){
+		public List<MidiMeasureHelper> getMeasureHelpers(){
 			return this.measureHeaderHelpers;
 		}
 		

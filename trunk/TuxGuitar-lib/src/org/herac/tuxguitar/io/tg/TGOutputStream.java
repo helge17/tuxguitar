@@ -37,9 +37,11 @@ import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 /**
@@ -116,7 +118,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		
 		//escribo las pistas
 		TGMeasureHeader lastHeader = null;
-		Iterator headers = song.getMeasureHeaders();
+		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)headers.next();
 			writeMeasureHeader(header,lastHeader);
@@ -154,7 +156,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		
 		//escribo los compases
 		TGMeasure lastMeasure = null;
-		Iterator measures  = track.getMeasures();
+		Iterator<TGMeasure> measures  = track.getMeasures();
 		while(measures.hasNext()){
 			TGMeasure measure = (TGMeasure)measures.next();
 			writeMeasure(measure,lastMeasure);
@@ -165,7 +167,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		writeByte(track.getStrings().size());
 		
 		//escribo las cuerdas
-		Iterator stringIt  = track.getStrings().iterator();
+		Iterator<TGString> stringIt  = track.getStrings().iterator();
 		while(stringIt.hasNext()){
 			TGString string = (TGString)stringIt.next();
 			writeInstrumentString(string);
@@ -319,7 +321,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo la cantidad de parametros
 		writeShort((short)channel.countParameters());
 		
-		Iterator iterator = channel.getParameters();
+		Iterator<TGChannelParameter> iterator = channel.getParameters();
 		while( iterator.hasNext() ){
 			writeChannelParameter( (TGChannelParameter)iterator.next() );
 		}
@@ -595,7 +597,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo la cantidad de puntos
 		writeByte(effect.getPoints().size());
 		
-		Iterator it = effect.getPoints().iterator();
+		Iterator<BendPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
 			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint)it.next();
 			
@@ -611,7 +613,7 @@ public class TGOutputStream extends TGStream implements TGOutputStreamBase{
 		//escribo la cantidad de puntos
 		writeByte(effect.getPoints().size());
 		
-		Iterator it = effect.getPoints().iterator();
+		Iterator<TremoloBarPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
 			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint)it.next();
 			

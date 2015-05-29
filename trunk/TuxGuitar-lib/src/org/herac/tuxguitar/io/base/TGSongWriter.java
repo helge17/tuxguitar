@@ -15,7 +15,7 @@ public class TGSongWriter {
 	
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException{
 		try {
-			Iterator it = TGFileFormatManager.getInstance(this.context).getOutputStreams();
+			Iterator<TGOutputStreamBase> it = TGFileFormatManager.getInstance(this.context).getOutputStreams();
 			while(it.hasNext()){
 				TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
 				if( writer.getFileFormat().getName().equals(handle.getFormat().getName()) ){

@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -16,28 +15,29 @@ public class TGServiceReader {
 	
 	private static final String SERVICE_PATH = new String("META-INF/services/");
 	
-	public static Iterator lookupProviders(Class spi){
-		return TGServiceReader.lookupProviders(spi,TGClassLoader.getInstance().getClassLoader());
+	public static <T> Iterator<T> lookupProviders(Class<T> spi){
+		return TGServiceReader.lookupProviders(spi, TGClassLoader.getInstance().getClassLoader());
 	}
 	
-	public static Iterator lookupProviders(Class spi,ClassLoader loader){
+	public static <T> Iterator<T> lookupProviders(Class<T> spi, ClassLoader loader){
 		try{
 			if (spi == null || loader == null){
 				throw new IllegalArgumentException();
 			}
-			return new IteratorImpl(spi,loader,loader.getResources(SERVICE_PATH + spi.getName()));
+			return new IteratorImpl<T>(spi, loader, loader.getResources(SERVICE_PATH + spi.getName()));
 		}catch (IOException ioex){
-			return Collections.EMPTY_LIST.iterator();
+			return new ArrayList<T>().iterator();
 		}
 	}
 	
-	private static final class IteratorImpl implements Iterator{
-		private Class spi;
-		private ClassLoader loader;
-		private Enumeration urls;
-		private Iterator iterator;
+	private static final class IteratorImpl<T> implements Iterator<T> {
 		
-		public IteratorImpl(Class spi,ClassLoader loader,Enumeration urls){
+		private Class<T> spi;
+		private ClassLoader loader;
+		private Enumeration<URL> urls;
+		private Iterator<String> iterator;
+		
+		public IteratorImpl(Class<T> spi, ClassLoader loader, Enumeration<URL> urls){
 			this.spi = spi;
 			this.loader = loader;
 			this.urls = urls;
@@ -45,15 +45,15 @@ public class TGServiceReader {
 		}
 		
 		private void initialize(){
-			List providers = new ArrayList();
+			List<String> providers = new ArrayList<String>();
 			while (this.urls.hasMoreElements()) {
-				URL url = (URL) this.urls.nextElement();
+				URL url = this.urls.nextElement();
 				try {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
 					String line = null;
 					while((line = reader.readLine()) != null){
 						String provider = uncommentLine(line).trim();
-						if(provider != null && provider.length() > 0){
+						if( provider != null && provider.length() > 0 ){
 							providers.add(provider);
 						}
 					}
@@ -78,14 +78,15 @@ public class TGServiceReader {
 			return (this.iterator != null && this.iterator.hasNext());
 		}
 		
-		public Object next() {
+		@SuppressWarnings("unchecked")
+		public T next() {
 			if (!hasNext()){
 				throw new NoSuchElementException();
 			}
 			try {
-				Object provider = this.loader.loadClass( (String)this.iterator.next() ).newInstance();
-				if(this.spi.isInstance(provider)){
-					return provider;
+				Object provider = this.loader.loadClass( this.iterator.next() ).newInstance();
+				if( this.spi.isInstance(provider) ){
+					return (T) provider;
 				}
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();

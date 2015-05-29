@@ -6,22 +6,23 @@ import java.util.Map;
 public class TGEvent {
 
 	private String eventType;
-	private Map properties;
+	private Map<String, Object> properties;
 	
 	public TGEvent(String eventType) {
 		this.eventType = eventType;
-		this.properties = new HashMap();
+		this.properties = new HashMap<String, Object>();
 	}
 	
 	public String getEventType() {
 		return eventType;
 	}
 	
-	public void setProperty(String key, Object value){
+	public <T extends Object> void setProperty(String key, T value){
 		this.properties.put(key, value);
 	}
 	
-	public Object getProperty(String key){
-		return this.properties.get(key);
+	@SuppressWarnings("unchecked")
+	public <T extends Object> T getProperty(String key){
+		return (T) this.properties.get(key);
 	}
 }

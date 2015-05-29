@@ -19,7 +19,7 @@ public class TGPluginManager {
 	private static final String PLUGIN_ERROR_ON_GET_STATUS = "An error ocurred when trying to get plugin status";
 	
 	private TGContext context;
-	private List plugins;
+	private List<TGPlugin> plugins;
 	
 	public static TGPluginManager getInstance(TGContext context) {
 		return (TGPluginManager) TGSingletonUtil.getInstance(context, TGPluginManager.class.getName(), new TGSingletonFactory() {
@@ -31,7 +31,7 @@ public class TGPluginManager {
 	
 	private TGPluginManager(TGContext context){
 		this.context = context;
-		this.plugins = new ArrayList();
+		this.plugins = new ArrayList<TGPlugin>();
 		this.initialize();
 	}
 	
@@ -39,14 +39,14 @@ public class TGPluginManager {
 		this.initPlugins();
 	}
 	
-	public List getPlugins(){
+	public List<TGPlugin> getPlugins(){
 		return this.plugins;
 	}
 
 	public void initPlugins(){
 		try{
 			//Search available providers
-			Iterator it = TGServiceReader.lookupProviders(TGPlugin.class,TGClassLoader.getInstance().getClassLoader());
+			Iterator<TGPlugin> it = TGServiceReader.lookupProviders(TGPlugin.class,TGClassLoader.getInstance().getClassLoader());
 			while(it.hasNext()){
 				try{
 					TGPlugin tgPlugin = (TGPlugin)it.next();
@@ -66,7 +66,7 @@ public class TGPluginManager {
 	}
 	
 	public void closePlugins(){
-		Iterator it = this.plugins.iterator();
+		Iterator<TGPlugin> it = this.plugins.iterator();
 		while(it.hasNext()){
 			try{
 				((TGPlugin)it.next()).close();
@@ -79,7 +79,7 @@ public class TGPluginManager {
 	}
 	
 	public void openPlugins(){
-		Iterator it = this.plugins.iterator();
+		Iterator<TGPlugin> it = this.plugins.iterator();
 		while(it.hasNext()){
 			try{
 				TGPlugin tgPlugin = (TGPlugin)it.next();
@@ -96,7 +96,7 @@ public class TGPluginManager {
 		try{
 			TGPluginProperties.getInstance(this.context).setEnabled(moduleId, enabled);
 			
-			Iterator it = this.plugins.iterator();
+			Iterator<TGPlugin> it = this.plugins.iterator();
 			while(it.hasNext()){
 				try{
 					TGPlugin tgPlugin = (TGPlugin)it.next();
@@ -123,14 +123,15 @@ public class TGPluginManager {
 		return false;
 	}
 	
-	public List getPluginInstances(Class pluginClass){
-		List pluginInstances = new ArrayList();
+	@SuppressWarnings("unchecked")
+	public <T extends TGPlugin> List<T> getPluginInstances(Class<T> pluginClass){
+		List<T> pluginInstances = new ArrayList<T>();
 				
-		Iterator it = this.plugins.iterator();
+		Iterator<TGPlugin> it = this.plugins.iterator();
 		while(it.hasNext()){
 			TGPlugin pluginInstance = (TGPlugin)it.next();
 			if( pluginClass.isInstance(pluginInstance) ){
-				pluginInstances.add( pluginInstance );
+				pluginInstances.add( (T)pluginInstance );
 			}
 		}
 		

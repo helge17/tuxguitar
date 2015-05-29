@@ -10,6 +10,8 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGTrack;
 
 /**
  * @author julian
@@ -37,7 +39,7 @@ public class TGLayoutHorizontal extends TGLayout{
 		float posY = Math.round(fromY + getFirstTrackSpacing());
 		float height = getFirstTrackSpacing();
 		float trackHeight;
-		Iterator tracks = getSong().getTracks();
+		Iterator<TGTrack> tracks = getSong().getTracks();
 		while(tracks.hasNext()){
 			TGTrackImpl track = (TGTrackImpl) tracks.next();
 			if(number < 0 || track.getNumber() == number){
@@ -55,7 +57,7 @@ public class TGLayoutHorizontal extends TGLayout{
 					minY = -(getScoreLineSpacing() * 3);
 				}
 				
-				Iterator measures = track.getMeasures();
+				Iterator<TGMeasure> measures = track.getMeasures();
 				while(measures.hasNext()){
 					TGMeasureImpl measure = (TGMeasureImpl)measures.next();
 					maxY = (measure.getMaxY() > maxY)?measure.getMaxY():maxY;
@@ -98,7 +100,7 @@ public class TGLayoutHorizontal extends TGLayout{
 		float posY = fromY;
 		float width = getFirstMeasureSpacing();
 		
-		Iterator measures = track.getMeasures();
+		Iterator<TGMeasure> measures = track.getMeasures();
 		while(measures.hasNext()){
 			TGMeasureImpl measure = (TGMeasureImpl)measures.next();
 			

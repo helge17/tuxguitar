@@ -32,13 +32,13 @@ public abstract class TGMeasure {
 	private int clef;
 	private int keySignature;
 	
-	private List beats;
+	private List<TGBeat> beats;
 	
 	public TGMeasure(TGMeasureHeader header){
 		this.header = header;
 		this.clef = DEFAULT_CLEF;
 		this.keySignature = DEFAULT_KEY_SIGNATURE;
-		this.beats = new ArrayList();
+		this.beats = new ArrayList<TGBeat>();
 	}
 	
 	public TGTrack getTrack() {
@@ -65,7 +65,7 @@ public abstract class TGMeasure {
 		this.keySignature = keySignature;
 	}
 	
-	public List getBeats() {
+	public List<TGBeat> getBeats() {
 		return this.beats;
 	}
 	
@@ -85,7 +85,7 @@ public abstract class TGMeasure {
 	
 	public TGBeat getBeat(int index){
 		if(index >= 0 && index < countBeats()){
-			return (TGBeat)this.beats.get(index);
+			return this.beats.get(index);
 		}
 		return null;
 	}

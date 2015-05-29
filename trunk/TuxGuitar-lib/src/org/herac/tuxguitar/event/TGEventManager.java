@@ -10,10 +10,10 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGEventManager {
 	
-	private Map eventHandlers;
+	private Map<String, TGEventHandler> eventHandlers;
 	
 	private TGEventManager() {
-		this.eventHandlers = new HashMap();
+		this.eventHandlers = new HashMap<String, TGEventHandler>();
 	}
 	
 	public void addListener(String eventType, TGEventListener listener){

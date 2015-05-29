@@ -29,9 +29,9 @@ public abstract class TGSong {
 	private String writer;
 	private String transcriber;
 	private String comments;
-	private List tracks;
-	private List measureHeaders;
-	private List channels;
+	private List<TGTrack> tracks;
+	private List<TGMeasureHeader> measureHeaders;
+	private List<TGChannel> channels;
 	
 	public TGSong() {
 		this.name = new String();
@@ -43,9 +43,9 @@ public abstract class TGSong {
 		this.writer = new String();
 		this.transcriber = new String();
 		this.comments = new String();
-		this.tracks = new ArrayList();
-		this.channels = new ArrayList();
-		this.measureHeaders = new ArrayList();
+		this.tracks = new ArrayList<TGTrack>();
+		this.channels = new ArrayList<TGChannel>();
+		this.measureHeaders = new ArrayList<TGMeasureHeader>();
 	}
 	
 	public String getName() {
@@ -142,10 +142,10 @@ public abstract class TGSong {
 	}
 	
 	public TGMeasureHeader getMeasureHeader(int index){
-		return (TGMeasureHeader)this.measureHeaders.get(index);
+		return this.measureHeaders.get(index);
 	}
 	
-	public Iterator getMeasureHeaders() {
+	public Iterator<TGMeasureHeader> getMeasureHeaders() {
 		return this.measureHeaders.iterator();
 	}
 	
@@ -173,10 +173,10 @@ public abstract class TGSong {
 	}
 	
 	public TGTrack getTrack(int index){
-		return (TGTrack)this.tracks.get(index);
+		return this.tracks.get(index);
 	}
 	
-	public Iterator getTracks() {
+	public Iterator<TGTrack> getTracks() {
 		return this.tracks.iterator();
 	}
 	
@@ -202,10 +202,10 @@ public abstract class TGSong {
 	}
 	
 	public TGChannel getChannel(int index){
-		return (TGChannel)this.channels.get(index);
+		return this.channels.get(index);
 	}
 	
-	public Iterator getChannels() {
+	public Iterator<TGChannel> getChannels() {
 		return this.channels.iterator();
 	}
 	
@@ -214,9 +214,9 @@ public abstract class TGSong {
 	}
 	
 	public void clear(){
-		Iterator tracks = getTracks();
+		Iterator<TGTrack> tracks = getTracks();
 		while(tracks.hasNext()){
-			TGTrack track = (TGTrack)tracks.next();
+			TGTrack track = tracks.next();
 			track.clear();
 		}
 		this.tracks.clear();
@@ -241,19 +241,19 @@ public abstract class TGSong {
 		this.setWriter(song.getWriter());
 		this.setTranscriber(song.getTranscriber());
 		this.setComments(song.getComments());
-		Iterator headers = song.getMeasureHeaders();
+		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
-			TGMeasureHeader header = (TGMeasureHeader) headers.next();
+			TGMeasureHeader header = headers.next();
 			this.addMeasureHeader(header.clone(factory));
 		}
-		Iterator channels = song.getChannels();
+		Iterator<TGChannel> channels = song.getChannels();
 		while(channels.hasNext()){
-			TGChannel channel = (TGChannel)channels.next();
+			TGChannel channel = channels.next();
 			this.addChannel(channel.clone(factory));
 		}
-		Iterator tracks = song.getTracks();
+		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
-			TGTrack track = (TGTrack)tracks.next();
+			TGTrack track = tracks.next();
 			this.addTrack(track.clone(factory, this));
 		}
 	}

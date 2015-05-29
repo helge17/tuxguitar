@@ -7,14 +7,13 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class MidiTrackController {
 	
-	
-	private List tracks;
+	private List<MidiTrack> tracks;
 	private MidiSequencerImpl sequencer;
 	private boolean anySolo;
 	
 	public MidiTrackController(MidiSequencerImpl sequencer){
 		this.sequencer = sequencer;
-		this.tracks = new ArrayList();
+		this.tracks = new ArrayList<MidiTrack>();
 		this.anySolo = false;
 	}
 	

@@ -54,7 +54,7 @@ public abstract class TGLayout {
 	private boolean bufferEnabled;
 	private boolean playModeEnabled;
 	
-	private List trackPositions;
+	private List<TrackPosition> trackPositions;
 	
 	private TGController controller;
 	private TGResources resources;
@@ -62,7 +62,7 @@ public abstract class TGLayout {
 	
 	public TGLayout(TGController controller,int style){
 		this.controller = controller;
-		this.trackPositions = new ArrayList();
+		this.trackPositions = new ArrayList<TrackPosition>();
 		this.playModeEnabled = false;
 		this.resources = new TGResources(this);
 		this.styles = new TGLayoutStyles();
@@ -765,7 +765,7 @@ public abstract class TGLayout {
 		TrackPosition trackPos = null;
 		float minorDistance = 0;
 		
-		Iterator it = this.trackPositions.iterator();
+		Iterator<TrackPosition> it = this.trackPositions.iterator();
 		while(it.hasNext()){
 			TrackPosition pos = (TrackPosition)it.next();
 			float distanceY = Math.min(Math.abs(y - (pos.getPosY())), Math.abs(y - (pos.getPosY() + pos.getHeight() - 10)));

@@ -5,21 +5,22 @@ import java.util.Map;
 
 public abstract class TGActionContext {
 	
-	private Map attributes;
+	private Map<String, Object> attributes;
 	
 	public TGActionContext(){
-		this.attributes = new HashMap();
+		this.attributes = new HashMap<String, Object>();
 	}
 	
-	public void setAttribute(String key, Object value){
+	public <T extends Object> void setAttribute(String key, T value){
 		this.attributes.put(key, value);
 	}
 	
-	public Object getAttribute(String key){
-		return this.attributes.get(key);
+	@SuppressWarnings("unchecked")
+	public <T extends Object> T getAttribute(String key){
+		return (T) this.attributes.get(key);
 	}
 	
-	public Map getAttributes(){
+	public Map<String, Object> getAttributes(){
 		return this.attributes;
 	}
 }

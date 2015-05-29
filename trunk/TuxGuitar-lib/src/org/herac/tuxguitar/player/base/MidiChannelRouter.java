@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class MidiChannelRouter implements MidiReceiver{
 	
-	private Map midiChannels;
+	private Map<Integer, MidiChannel> midiChannels;
 	
 	public MidiChannelRouter(){
-		this.midiChannels = new HashMap();
+		this.midiChannels = new HashMap<Integer, MidiChannel>();
 	}
 	
 	public String getId(){
@@ -61,14 +61,14 @@ public class MidiChannelRouter implements MidiReceiver{
 	}
 	
 	public void sendAllNotesOff() throws MidiPlayerException {
-		List midiChannelIds = getMidiChannelIds();
+		List<Integer> midiChannelIds = getMidiChannelIds();
 		for(int i = 0; i < midiChannelIds.size(); i ++){
 			this.sendControlChange(((Integer)midiChannelIds.get(i)).intValue(),MidiControllers.ALL_NOTES_OFF,0);
 		}
 	}
 	
 	public void sendPitchBendReset() throws MidiPlayerException {
-		List midiChannelIds = getMidiChannelIds();
+		List<Integer> midiChannelIds = getMidiChannelIds();
 		for(int i = 0; i < midiChannelIds.size(); i ++){
 			this.sendPitchBend(((Integer)midiChannelIds.get(i)).intValue(), 64, -1, false);
 		}
@@ -97,10 +97,10 @@ public class MidiChannelRouter implements MidiReceiver{
 		this.midiChannels.put(key, midiChannel);
 	}
 	
-	public List getMidiChannelIds(){
-		List midiChannelIds = new ArrayList();
+	public List<Integer> getMidiChannelIds(){
+		List<Integer> midiChannelIds = new ArrayList<Integer>();
 		
-		Iterator iterator = this.midiChannels.keySet().iterator();
+		Iterator<Integer> iterator = this.midiChannels.keySet().iterator();
 		while (iterator.hasNext()) {
 			midiChannelIds.add(iterator.next());
 		}
