@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 
 public class ChordXMLWriter {
 	
-	public static void setChords(List chords,String fileName) {
+	public static void setChords(List<TGChord> chords,String fileName) {
 		File file = new File(fileName);
 		
 		Document doc = createDocument();
@@ -72,11 +72,11 @@ public class ChordXMLWriter {
 	/**
 	 * Write chords to xml file
 	 */
-	private static void setChords(List chords,Document document){
+	private static void setChords(List<TGChord> chords,Document document){
 		//chords tag
 		Node chordsNode = document.createElement(ChordXML.CHORD_LIST_TAG);
 		
-		Iterator it = chords.iterator();
+		Iterator<TGChord> it = chords.iterator();
 		while(it.hasNext()){
 			TGChord chord = (TGChord)it.next();
 			

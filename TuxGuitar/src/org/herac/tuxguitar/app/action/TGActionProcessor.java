@@ -48,12 +48,13 @@ public class TGActionProcessor implements SelectionListener,MouseListener,MenuLi
 		});
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fillWidgetAttributes(TGActionContext context, TypedEvent e){
 		Object widgetData = (e.widget != null ? e.widget.getData() : null);
 		if( widgetData instanceof Map ){
-			Iterator it = ((Map)widgetData).entrySet().iterator();
+			Iterator<Map.Entry<Object, Object>> it = ((Map<Object, Object>)widgetData).entrySet().iterator();
 			while( it.hasNext() ){
-				Map.Entry entry = (Map.Entry)it.next();
+				Map.Entry<Object, Object> entry = it.next();
 				context.setAttribute(entry.getKey().toString(), entry.getValue());
 			}
 		}

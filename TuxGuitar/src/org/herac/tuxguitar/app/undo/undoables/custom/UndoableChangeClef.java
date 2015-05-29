@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class UndoableChangeClef implements UndoableEdit{
@@ -20,7 +21,7 @@ public class UndoableChangeClef implements UndoableEdit{
 	private long position;
 	private int redoableClef;
 	private int undoableClef;
-	private List nextClefPositions;
+	private List<ClefPosition> nextClefPositions;
 	private boolean toEnd;
 	private TGTrack track;
 	
@@ -45,7 +46,7 @@ public class UndoableChangeClef implements UndoableEdit{
 		}
 		TuxGuitar.getInstance().getSongManager().getTrackManager().changeClef(this.track,this.position,this.undoableClef,this.toEnd);
 		if(this.toEnd){
-			Iterator it = this.nextClefPositions.iterator();
+			Iterator<ClefPosition> it = this.nextClefPositions.iterator();
 			while(it.hasNext()){
 				ClefPosition ksp = (ClefPosition)it.next();
 				TuxGuitar.getInstance().getSongManager().getTrackManager().changeClef(this.track,ksp.getPosition(),ksp.getClef(),true);
@@ -73,10 +74,10 @@ public class UndoableChangeClef implements UndoableEdit{
 		undoable.position = caret.getPosition();
 		undoable.undoableClef = caret.getMeasure().getClef();
 		undoable.track = caret.getTrack();
-		undoable.nextClefPositions = new ArrayList();
+		undoable.nextClefPositions = new ArrayList<ClefPosition>();
 		
 		int prevClef = undoable.undoableClef;
-		Iterator it = caret.getTrack().getMeasures();
+		Iterator<TGMeasure> it = caret.getTrack().getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl measure = (TGMeasureImpl)it.next();
 			if(measure.getStart() > undoable.position){

@@ -21,12 +21,12 @@ public class TGTable {
 	private TGTableColumn columnName;
 	private TGTableColumn columnInstrument;
 	private TGTableColumn columnCanvas;
-	private List rows;
+	private List<TGTableRow> rows;
 	private int rowHeight;
 	private int scrollIncrement;
 	
 	public TGTable(Composite parent){
-		this.rows = new ArrayList();
+		this.rows = new ArrayList<TGTableRow>();
 		this.newTable(parent);
 	}
 	

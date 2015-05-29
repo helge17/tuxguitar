@@ -22,6 +22,7 @@ import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -118,7 +119,7 @@ public class EditorKit {
 		TGMeasureImpl measure = null;
 		float minorDistance = 0;
 		
-		Iterator it = track.getMeasures();
+		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl m = (TGMeasureImpl)it.next();
 			if(!m.isOutOfBounds() && m.getTs() != null){
@@ -142,7 +143,7 @@ public class EditorKit {
 		float posX = measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX();
 		float bestDiff = -1;
 		TGBeatImpl bestBeat = null;
-		Iterator it = measure.getBeats().iterator();
+		Iterator<TGBeat> it = measure.getBeats().iterator();
 		while(it.hasNext()){
 			TGBeatImpl beat = (TGBeatImpl)it.next();
 			if(!beat.getVoice(voice).isEmpty()){
@@ -165,7 +166,7 @@ public class EditorKit {
 		float minorDistance = 0;
 		float firstStringY = measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 		
-		Iterator it = measure.getTrack().getStrings().iterator();
+		Iterator<TGString> it = measure.getTrack().getStrings().iterator();
 		while(it.hasNext()){
 			TGString currString = (TGString)it.next();
 			float distanceX = Math.abs(y - (firstStringY + ((currString.getNumber() * stringSpacing) - stringSpacing)));
@@ -179,11 +180,11 @@ public class EditorKit {
 	}
 	
 	private int findBestString(TGTrack track,TGVoice voice, int value){
-		List strings = new ArrayList();
+		List<TGString> strings = new ArrayList<TGString>();
 		for(int number = 1;number <= track.stringCount();number++){
 			boolean used = false;
 			TGString string = track.getString(number);
-			Iterator it = voice.getNotes().iterator();
+			Iterator<TGNote> it = voice.getNotes().iterator();
 			while (it.hasNext()) {
 				TGNote note = (TGNote) it.next();
 				if(note.getString() == string.getNumber()){
@@ -215,7 +216,7 @@ public class EditorKit {
 		float bestDiff = -1;
 		TGVoiceImpl bestVoice = null;
 		TGDuration duration = this.getTablature().getCaret().getDuration();
-		Iterator it = measure.getBeats().iterator();
+		Iterator<TGBeat> it = measure.getBeats().iterator();
 		while(it.hasNext()){
 			TGBeatImpl beat = (TGBeatImpl)it.next();
 			TGVoiceImpl voice = beat.getVoiceImpl( voiceIndex );
@@ -345,7 +346,7 @@ public class EditorKit {
 	}
 	
 	private boolean removeNote(int value,TGVoice voice) {
-		Iterator it = voice.getNotes().iterator();
+		Iterator<TGNote> it = voice.getNotes().iterator();
 		while (it.hasNext()) {
 			TGNoteImpl note = (TGNoteImpl) it.next();
 			

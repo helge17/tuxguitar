@@ -16,7 +16,7 @@ import java.util.List;
 public class UndoableManager {
 	private static final int LIMIT = 100;
 	private int indexOfNextAdd;
-	private List edits;
+	private List<UndoableEdit> edits;
 	
 	public UndoableManager() {
 		this.init();
@@ -114,7 +114,7 @@ public class UndoableManager {
 	
 	private void init() {
 		this.indexOfNextAdd = 0;
-		this.edits = new ArrayList();
+		this.edits = new ArrayList<UndoableEdit>();
 	}
 	
 	private void reset() {

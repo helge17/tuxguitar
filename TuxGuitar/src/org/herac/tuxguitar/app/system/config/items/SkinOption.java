@@ -26,7 +26,7 @@ import org.herac.tuxguitar.app.util.TGFileUtils;
 public class SkinOption extends Option{
 	
 	protected boolean initialized;
-	protected List skins;
+	protected List<SkinInfo> skins;
 	protected Combo combo;
 	protected Label nameLabel;
 	protected Label authorLabel;
@@ -86,7 +86,7 @@ public class SkinOption extends Option{
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				SkinOption.this.skins = new ArrayList();
+				SkinOption.this.skins = new ArrayList<SkinInfo>();
 				String[] skinNames = TGFileUtils.getFileNames("skins");
 				if( skinNames != null ){
 					for(int i = 0;i < skinNames.length;i++){

@@ -211,7 +211,7 @@ public class DurationToolItems  extends ToolItems{
 			TGDuration duration = getEditor().getTablature().getCaret().getDuration();
 			
 			for(int i = 0;i < this.subMenuItems.length;i++){
-				Map actionData = (Map)this.subMenuItems[i].getData();
+				Map<?, ?> actionData = (Map<?, ?>)this.subMenuItems[i].getData();
 				TGDivisionType divisionType = (TGDivisionType)actionData.get(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE);
 				
 				this.subMenuItems[i].setSelection((divisionType.isEqual(duration.getDivision())));
@@ -224,8 +224,8 @@ public class DurationToolItems  extends ToolItems{
 			return tgDivisionTypeDst;
 		}
 		
-		private Map createDivisionTypeActionData(TGDivisionType tgDivisionType){
-			Map actionData = new HashMap();
+		private Map<String, TGDivisionType> createDivisionTypeActionData(TGDivisionType tgDivisionType){
+			Map<String, TGDivisionType> actionData = new HashMap<String, TGDivisionType>();
 			actionData.put(ChangeDivisionTypeAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
 			return actionData;
 		}

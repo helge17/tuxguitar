@@ -28,6 +28,7 @@ import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
 /**
  * @author julian
  *
@@ -44,7 +45,7 @@ public class BendEditor{
 	private int[] y;
 	private int width;
 	private int height;
-	private List points;
+	private List<Point> points;
 	protected Composite editor;
 	protected DefaultBend[] defaultBends;
 	protected TGEffectBend result;
@@ -59,7 +60,7 @@ public class BendEditor{
 		this.y = new int[Y_LENGTH];
 		this.width = ((X_SPACING * X_LENGTH) - X_SPACING);
 		this.height = ((Y_SPACING * Y_LENGTH) - Y_SPACING);
-		this.points = new ArrayList();
+		this.points = new ArrayList<Point>();
 		
 		for(int i = 0;i < this.x.length;i++){
 			this.x[i] = ((i + 1) * X_SPACING);
@@ -201,7 +202,7 @@ public class BendEditor{
 			painter.closePath();
 		}
 		
-		Iterator it = null;
+		Iterator<Point> it = null;
 		Point prevPoint = null;
 		painter.setLineStyleSolid();
 		painter.setLineWidth(2);
@@ -273,7 +274,7 @@ public class BendEditor{
 	protected boolean removePoint(Point point){
 		Point pointToRemove = null;
 		
-		Iterator it = this.points.iterator();
+		Iterator<Point> it = this.points.iterator();
 		while(it.hasNext()){
 			Point currPoint = (Point)it.next();
 			if( currPoint.x == point.x && currPoint.y == point.y ){
@@ -304,8 +305,8 @@ public class BendEditor{
 	}
 	
 	protected void removePointsAtXLine(int x){
-		List pointsToRemove = new ArrayList();
-		Iterator it = this.points.iterator();
+		List<Point> pointsToRemove = new ArrayList<Point>();
+		Iterator<Point> it = this.points.iterator();
 		while(it.hasNext()){
 			Point point = (Point)it.next();
 			if( point.x == x ){
@@ -359,7 +360,7 @@ public class BendEditor{
 	public TGEffectBend getBend(){
 		if(this.points != null && !this.points.isEmpty()){
 			TGEffectBend bend = TuxGuitar.getInstance().getSongManager().getFactory().newEffectBend();//new BendEffect();
-			Iterator it = this.points.iterator();
+			Iterator<Point> it = this.points.iterator();
 			while(it.hasNext()){
 				Point point = (Point)it.next();
 				addBendPoint(bend,point);
@@ -387,7 +388,7 @@ public class BendEditor{
 	
 	public void setBend(TGEffectBend effect){
 		this.points.clear();
-		Iterator it = effect.getPoints().iterator();
+		Iterator<BendPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
 			TGEffectBend.BendPoint bendPoint = (TGEffectBend.BendPoint)it.next();
 			this.makePoint(bendPoint);

@@ -205,7 +205,7 @@ public class ChordDialog {
 	
 	private int[] findCurrentTuning(TGTrack track){
 		int[] tuning = new int[track.stringCount()];
-		Iterator it = track.getStrings().iterator();
+		Iterator<TGString> it = track.getStrings().iterator();
 		while(it.hasNext()){
 			TGString string = (TGString)it.next();
 			tuning[(tuning.length - string.getNumber())] = string.getValue();
@@ -219,13 +219,13 @@ public class ChordDialog {
 		if(chord == null){
 			chord = manager.getFactory().newChord(measure.getTrack().stringCount());
 			chord.setFirstFret(1);
-			List notes = manager.getMeasureManager().getNotes(measure, start);
+			List<TGNote> notes = manager.getMeasureManager().getNotes(measure, start);
 			if(!notes.isEmpty()){
 				int maxValue = -1;
 				int minValue = -1;
 				
 				//verifico el first fret
-				Iterator it = notes.iterator();
+				Iterator<TGNote> it = notes.iterator();
 				while(it.hasNext()){
 					TGNote note = (TGNote)it.next(); 
 					if(maxValue < 0 || maxValue < note.getValue()){

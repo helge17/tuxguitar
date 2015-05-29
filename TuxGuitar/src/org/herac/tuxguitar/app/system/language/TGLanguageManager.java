@@ -133,7 +133,7 @@ public class TGLanguageManager {
 	 *
 	 */
 	private void loadLanguages(){
-		List availableList = new ArrayList();
+		List<String> availableList = new ArrayList<String>();
 		String[] fileNames = TGFileUtils.getFileNames("lang");
 		if( fileNames != null ){
 			// now iterate over them

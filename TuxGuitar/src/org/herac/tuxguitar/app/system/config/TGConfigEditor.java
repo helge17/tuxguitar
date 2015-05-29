@@ -47,11 +47,11 @@ public class TGConfigEditor{
 	
 	protected Shell dialog;
 	protected TGConfigManager config;
-	protected List options;
+	protected List<Option> options;
 	protected TGProperties defaults;
 	protected boolean accepted;
 	
-	protected List runnables;
+	protected List<Runnable> runnables;
 	
 	public TGConfigEditor() {
 		this.config = TuxGuitar.getInstance().getConfig();
@@ -153,7 +153,7 @@ public class TGConfigEditor{
 	}
 	
 	private void initOptions(ToolBar toolBar,Composite parent){
-		this.options = new ArrayList();
+		this.options = new ArrayList<Option>();
 		this.options.add(new MainOption(this,toolBar,parent));
 		this.options.add(new StylesOption(this,toolBar,parent));
 		this.options.add(new LanguageOption(this,toolBar,parent));
@@ -161,7 +161,7 @@ public class TGConfigEditor{
 		this.options.add(new SkinOption(this,toolBar,parent));
 		this.options.add(new SoundOption(this,toolBar,parent));
 		
-		Iterator it = this.options.iterator();
+		Iterator<Option> it = this.options.iterator();
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			option.createOption();
@@ -172,7 +172,7 @@ public class TGConfigEditor{
 		int width = minimumWidth;
 		int height = minimumHeight;
 		
-		Iterator it = this.options.iterator();
+		Iterator<Option> it = this.options.iterator();
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			Point size = option.computeSize();
@@ -224,7 +224,7 @@ public class TGConfigEditor{
 	}
 	
 	private void hideAll(){
-		Iterator it = this.options.iterator();
+		Iterator<Option> it = this.options.iterator();
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			option.setVisible(false);
@@ -232,7 +232,7 @@ public class TGConfigEditor{
 	}
 	
 	protected void updateOptions(){
-		Iterator it = this.options.iterator();
+		Iterator<Option> it = this.options.iterator();
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			option.updateConfig();
@@ -241,7 +241,7 @@ public class TGConfigEditor{
 	}
 	
 	protected void setDefaults(){
-		Iterator it = this.options.iterator();
+		Iterator<Option> it = this.options.iterator();
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			option.updateDefaults();
@@ -253,9 +253,9 @@ public class TGConfigEditor{
 		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
 		new Thread(new Runnable() {
 			public void run() throws TGException {
-				TGConfigEditor.this.runnables = new ArrayList();
+				TGConfigEditor.this.runnables = new ArrayList<Runnable>();
 				
-				Iterator it = TGConfigEditor.this.options.iterator();
+				Iterator<Option> it = TGConfigEditor.this.options.iterator();
 				while(it.hasNext()){
 					Option option = (Option)it.next();
 					option.applyConfig(force);
@@ -263,7 +263,7 @@ public class TGConfigEditor{
 				try {
 					TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
 						public void run() throws TGException {
-							Iterator it = TGConfigEditor.this.runnables.iterator();
+							Iterator<Runnable> it = TGConfigEditor.this.runnables.iterator();
 							while(it.hasNext()){
 								Runnable current = (Runnable)it.next();
 								current.run();
@@ -290,7 +290,7 @@ public class TGConfigEditor{
 	}
 	
 	protected void dispose(){
-		Iterator it = this.options.iterator();
+		Iterator<Option> it = this.options.iterator();
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			option.dispose();

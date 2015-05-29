@@ -22,7 +22,7 @@ public class ScaleManager {
 	
 	private TGContext context;
 	
-	private List scales;
+	private List<ScaleInfo> scales;
 	
 	private TGScale scale;
 	
@@ -32,7 +32,7 @@ public class ScaleManager {
 	
 	public ScaleManager(TGContext context){
 		this.context = context;
-		this.scales = new ArrayList();
+		this.scales = new ArrayList<ScaleInfo>();
 		this.scale = TuxGuitar.getInstance().getSongManager().getFactory().newScale();
 		this.selectionKey = 0;
 		this.selectionIndex = NONE_SELECTION;

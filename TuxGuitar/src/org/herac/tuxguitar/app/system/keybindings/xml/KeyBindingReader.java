@@ -24,7 +24,7 @@ public class KeyBindingReader {
 	private static final String SHORTCUT_ATTRIBUTE_KEY = "key";
 	private static final String SHORTCUT_ATTRIBUTE_MASK = "mask";
 	
-	public static List getKeyBindings(String fileName) {
+	public static List<KeyBindingAction>getKeyBindings(String fileName) {
 		try{
 			File file = new File(fileName);
 			if (file.exists()){
@@ -36,7 +36,7 @@ public class KeyBindingReader {
 		return null;
 	}
 	
-	public static List getKeyBindings(InputStream is) {
+	public static List<KeyBindingAction> getKeyBindings(InputStream is) {
 		try{
 			if (is!=null){
 				return getBindings(getDocument(is).getFirstChild());
@@ -86,8 +86,8 @@ public class KeyBindingReader {
 	 * @param shortcutsNode
 	 * @return
 	 */
-	private static List getBindings(Node shortcutsNode){
-		List list = new ArrayList();
+	private static List<KeyBindingAction> getBindings(Node shortcutsNode){
+		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
 		
 		NodeList nodeList = shortcutsNode.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {

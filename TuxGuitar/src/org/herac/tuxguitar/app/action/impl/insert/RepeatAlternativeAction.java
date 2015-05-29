@@ -130,7 +130,7 @@ public class RepeatAlternativeAction extends TGActionBase{
 	
 	protected int getExistentEndings(TGSong song, TGMeasure measure){
 		int existentEndings = 0;
-		Iterator it = song.getMeasureHeaders();
+		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
 			if(header.getNumber() == measure.getNumber()){

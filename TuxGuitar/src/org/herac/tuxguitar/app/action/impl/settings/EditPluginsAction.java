@@ -79,7 +79,7 @@ public class EditPluginsAction extends TGActionBase{
 		columnEnabled.setWidth( (TABLE_WIDTH / 4) );
 		columnPlugin.setWidth( (TABLE_WIDTH - (TABLE_WIDTH / 4)) );
 		
-		Iterator it = getModuleIds().iterator();
+		Iterator<String> it = getModuleIds().iterator();
 		while(it.hasNext()){
 			String moduleId = (String)it.next();
 			TGPluginInfo pluginInfo = new TGPluginInfo(context, moduleId);
@@ -235,9 +235,9 @@ public class EditPluginsAction extends TGActionBase{
 		return data;
 	}
 	
-	private List getModuleIds(){
-		List moduleIds = new ArrayList();
-		Iterator it = TuxGuitar.getInstance().getPluginManager().getPlugins().iterator();
+	private List<String> getModuleIds(){
+		List<String> moduleIds = new ArrayList<String>();
+		Iterator<TGPlugin> it = TuxGuitar.getInstance().getPluginManager().getPlugins().iterator();
 		while(it.hasNext()){
 			TGPlugin plugin = (TGPlugin)it.next();
 			if(!moduleIds.contains( plugin.getModuleId() )){

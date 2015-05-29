@@ -74,11 +74,11 @@ public class UndoableRemoveMeasure implements UndoableEdit{
 	}
 	
 	private class UndoMarkers{
-		private List markers;
+		private List<TGMarker> markers;
 		
 		public UndoMarkers(){
-			this.markers = new ArrayList();
-			Iterator it = TuxGuitar.getInstance().getSongManager().getMarkers(getSong()).iterator();
+			this.markers = new ArrayList<TGMarker>();
+			Iterator<TGMarker> it = TuxGuitar.getInstance().getSongManager().getMarkers(getSong()).iterator();
 			while(it.hasNext()){
 				this.markers.add(((TGMarker)it.next()).clone(TuxGuitar.getInstance().getSongManager().getFactory()));
 			}
@@ -86,7 +86,7 @@ public class UndoableRemoveMeasure implements UndoableEdit{
 		
 		public void undo(){
 			TuxGuitar.getInstance().getSongManager().removeAllMarkers(getSong());
-			Iterator it = this.markers.iterator();
+			Iterator<TGMarker> it = this.markers.iterator();
 			while(it.hasNext()){
 				TGMarker marker = (TGMarker)it.next();
 				TuxGuitar.getInstance().getSongManager().updateMarker(getSong(), marker.clone(TuxGuitar.getInstance().getSongManager().getFactory()));

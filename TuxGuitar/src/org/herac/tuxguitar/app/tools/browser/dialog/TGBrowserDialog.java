@@ -38,7 +38,7 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
 
-public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnectionHandler,TGEventListener{
+public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnectionHandler,TGEventListener{
 	
 	private static final int SHELL_WIDTH = 500;
 	private static final int SHELL_HEIGHT = 350;
@@ -55,7 +55,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 	private Shell dialog;
 	protected Table table;
 	protected TableColumn column;
-	protected List elements;
+	protected List<TGBrowserElement> elements;
 	protected TGBrowserMenuBar menu;
 	protected TGBrowserToolBar toolBar;
 	
@@ -146,7 +146,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 					if(!isDisposed()){
 						TGBrowserDialog.this.table.removeAll();
 						if(TGBrowserDialog.this.elements != null){
-							Iterator it = TGBrowserDialog.this.elements.iterator();
+							Iterator<TGBrowserElement> it = TGBrowserDialog.this.elements.iterator();
 							while(it.hasNext()){
 								TGBrowserElement element = (TGBrowserElement)it.next();
 								TableItem item = new TableItem(TGBrowserDialog.this.table, SWT.NONE);
@@ -200,7 +200,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 		this.elements = null;
 	}
 	
-	protected void addElements(List elements){
+	protected void addElements(List<TGBrowserElement> elements){
 		this.elements = elements;
 	}
 	
@@ -283,7 +283,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler,TGBrowserConnect
 		}
 	}
 	
-	public void notifyElements(int callId,List elements) {
+	public void notifyElements(int callId, List<TGBrowserElement> elements) {
 		if(!isDisposed()){
 			this.addElements(elements);
 			this.updateTable();

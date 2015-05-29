@@ -40,8 +40,8 @@ public class TGBrowserImpl extends TGBrowser{
 		}
 	}
 	
-	public List listElements() {
-		List elements = new ArrayList();
+	public List<TGBrowserElement> listElements() {
+		List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
 		File file = ((this.element != null)?this.element.getFile():this.root);
 		if(file.exists() && file.isDirectory()){
 			File[] files = file.listFiles();
@@ -50,7 +50,7 @@ public class TGBrowserImpl extends TGBrowser{
 			}
 		}
 		if( !elements.isEmpty() ){
-			Collections.sort(elements,new TGBrowserElementComparator());
+			Collections.sort(elements, new TGBrowserElementComparator());
 		}
 		return elements;
 	}

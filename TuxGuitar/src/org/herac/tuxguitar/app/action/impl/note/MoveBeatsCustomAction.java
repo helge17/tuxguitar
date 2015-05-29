@@ -91,7 +91,7 @@ public class MoveBeatsCustomAction extends TGActionBase{
 		directionCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		//-------move 1------------------------------------------
-		final List move1Controls = new ArrayList();
+		final List<Control> move1Controls = new ArrayList<Control>();
 		
 		Group move1 = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		move1.setLayout(new GridLayout(2,false));
@@ -129,7 +129,7 @@ public class MoveBeatsCustomAction extends TGActionBase{
 		
 		updateControls( 0, move1Controls );
 		//-------move 2------------------------------------------
-		final List move2Controls = new ArrayList();
+		final List<Control> move2Controls = new ArrayList<Control>();
 		
 		Group move2 = new Group(dialog,SWT.SHADOW_ETCHED_IN);
 		move2.setLayout(new GridLayout(2,false));
@@ -278,8 +278,8 @@ public class MoveBeatsCustomAction extends TGActionBase{
 		return 0;
 	}
 	
-	protected void updateControls(int count, List controls){
-		Iterator it = controls.iterator();
+	protected void updateControls(int count, List<Control> controls){
+		Iterator<Control> it = controls.iterator();
 		while( it.hasNext() ){
 			Control control = (Control) it.next();
 			control.setEnabled( count > 0 );

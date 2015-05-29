@@ -48,7 +48,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		
 		//---New Book----------------------------------------------------------
 		this.newBrowserMenu = new Menu(this.composite);
-		Iterator bookTypes = TGBrowserManager.instance().getFactories();
+		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.instance().getFactories();
 		while(bookTypes.hasNext()) {
 			final TGBrowserFactory bookType = (TGBrowserFactory)bookTypes.next();
 			MenuItem item = new MenuItem(this.newBrowserMenu, SWT.PUSH);
@@ -127,7 +127,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		int index = 0;
 		this.collections.removeAll();
 		
-		Iterator it = TGBrowserManager.instance().getCollections();
+		Iterator<TGBrowserCollection> it = TGBrowserManager.instance().getCollections();
 		while(it.hasNext()){
 			TGBrowserCollection collection = (TGBrowserCollection)it.next();
 			if(collection.getData() != null){

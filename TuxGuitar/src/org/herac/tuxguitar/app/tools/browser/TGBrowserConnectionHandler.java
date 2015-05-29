@@ -15,9 +15,9 @@ public interface TGBrowserConnectionHandler {
 	
 	public void notifyCd(int callId);
 	
-	public void notifyElements(int callId,List elements);
+	public void notifyElements(int callId, List<TGBrowserElement> elements);
 	
-	public void notifyStream(int callId,InputStream stream,TGBrowserElement element);
+	public void notifyStream(int callId, InputStream stream, TGBrowserElement element);
 	
-	public void notifyError(int callId,Throwable throwable);
+	public void notifyError(int callId, Throwable throwable);
 }

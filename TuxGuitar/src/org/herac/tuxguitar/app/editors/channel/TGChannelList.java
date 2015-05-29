@@ -12,7 +12,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 
 public class TGChannelList {
 	
-	private List channelItems;
+	private List<TGChannelItem> channelItems;
 	private TGChannelManagerDialog dialog;
 	
 	protected ScrolledComposite channelItemAreaSC;
@@ -20,7 +20,7 @@ public class TGChannelList {
 	
 	public TGChannelList(TGChannelManagerDialog dialog){
 		this.dialog = dialog;
-		this.channelItems = new ArrayList();
+		this.channelItems = new ArrayList<TGChannelItem>();
 	}
 	
 	public void show(final Composite parent){
@@ -59,7 +59,7 @@ public class TGChannelList {
 	}
 	
 	public void loadProperties(){
-		Iterator it = this.channelItems.iterator();
+		Iterator<TGChannelItem> it = this.channelItems.iterator();
 		while( it.hasNext() ){
 			TGChannelItem tgChannelItem = (TGChannelItem)it.next();
 			tgChannelItem.loadProperties();
@@ -67,7 +67,7 @@ public class TGChannelList {
 	}
 	
 	public void loadIcons(){
-		Iterator it = this.channelItems.iterator();
+		Iterator<TGChannelItem> it = this.channelItems.iterator();
 		while( it.hasNext() ){
 			TGChannelItem tgChannelItem = (TGChannelItem)it.next();
 			tgChannelItem.loadIcons();
@@ -75,7 +75,7 @@ public class TGChannelList {
 	}
 	
 	public void updateItems(){
-		List channels = this.dialog.getHandle().getChannels();
+		List<TGChannel> channels = this.dialog.getHandle().getChannels();
 		
 		this.removeChannelsAfter(channels.size());
 		

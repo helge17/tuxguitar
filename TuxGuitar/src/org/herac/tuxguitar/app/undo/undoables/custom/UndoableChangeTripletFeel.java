@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.undo.CannotUndoException;
 import org.herac.tuxguitar.app.undo.UndoableEdit;
 import org.herac.tuxguitar.app.undo.undoables.UndoableCaretHelper;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class UndoableChangeTripletFeel implements UndoableEdit{
@@ -20,7 +21,7 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 	private long position;
 	private int redoableTripletFeel;
 	private int undoableTripletFeel;
-	private List nextTripletFeelPositions;
+	private List<TripletFeelPosition> nextTripletFeelPositions;
 	private boolean toEnd;
 	
 	private UndoableChangeTripletFeel(){
@@ -44,7 +45,7 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		}
 		TuxGuitar.getInstance().getSongManager().changeTripletFeel(getSong(),this.position,this.undoableTripletFeel,this.toEnd);
 		if(this.toEnd){
-			Iterator it = this.nextTripletFeelPositions.iterator();
+			Iterator<TripletFeelPosition> it = this.nextTripletFeelPositions.iterator();
 			while(it.hasNext()){
 				TripletFeelPosition tfp = (TripletFeelPosition)it.next();
 				TuxGuitar.getInstance().getSongManager().changeTripletFeel(getSong(),tfp.getPosition(),tfp.getTripletFeel(),true);
@@ -71,10 +72,10 @@ public class UndoableChangeTripletFeel implements UndoableEdit{
 		undoable.undoCaret = new UndoableCaretHelper();
 		undoable.position = caret.getPosition();
 		undoable.undoableTripletFeel = caret.getMeasure().getTripletFeel();
-		undoable.nextTripletFeelPositions = new ArrayList();
+		undoable.nextTripletFeelPositions = new ArrayList<TripletFeelPosition>();
 		
 		int prevTripletFeel = undoable.undoableTripletFeel;
-		Iterator it = TuxGuitar.getInstance().getSongManager().getFirstTrack(getSong()).getMeasures();
+		Iterator<TGMeasure> it = TuxGuitar.getInstance().getSongManager().getFirstTrack(getSong()).getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl measure = (TGMeasureImpl)it.next();
 			if(measure.getStart() > undoable.position){

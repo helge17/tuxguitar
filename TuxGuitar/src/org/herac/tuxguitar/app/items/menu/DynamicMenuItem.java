@@ -121,8 +121,8 @@ public class DynamicMenuItem extends MenuItems{
 		//Nothing to do
 	}
 	
-	private Map createChangeVelocityActionData(int velocity){
-		Map actionData = new HashMap();
+	private Map<String, Integer> createChangeVelocityActionData(int velocity){
+		Map<String, Integer> actionData = new HashMap<String, Integer>();
 		actionData.put(ChangeVelocityAction.PROPERTY_VELOCITY, new Integer(velocity));
 		return actionData;
 	}

@@ -70,7 +70,7 @@ public class TGChannelHandle {
 		}
 	}
 	
-	public List getChannels(){
+	public List<TGChannel> getChannels(){
 		return getManager().getChannels(getDocumentManager().getSong());
 	}
 	

@@ -16,17 +16,17 @@ public class TGBrowserManager {
 	
 	private static TGBrowserManager instance;
 	
-	private List factories;
-	private List collections;
-	private List collectionInfos;
+	private List<TGBrowserFactory> factories;
+	private List<TGBrowserCollection> collections;
+	private List<TGBrowserCollectionInfo> collectionInfos;
 	private boolean changes;
 	
 	private TGBrowserFactoryHandler handler;
 	
 	private TGBrowserManager(){
-		this.factories = new ArrayList();
-		this.collections = new ArrayList();
-		this.collectionInfos = new ArrayList();
+		this.factories = new ArrayList<TGBrowserFactory>();
+		this.collections = new ArrayList<TGBrowserCollection>();
+		this.collectionInfos = new ArrayList<TGBrowserCollectionInfo>();
 		this.readCollections();
 		this.addDefaultFactory();
 	}
@@ -42,12 +42,12 @@ public class TGBrowserManager {
 		this.handler = handler;
 	}
 	
-	public Iterator getFactories(){
+	public Iterator<TGBrowserFactory> getFactories(){
 		return this.factories.iterator();
 	}
 	
 	public TGBrowserFactory getFactory(String type){
-		Iterator factories = getFactories();
+		Iterator<TGBrowserFactory> factories = getFactories();
 		while(factories.hasNext()){
 			TGBrowserFactory factory = (TGBrowserFactory)factories.next();
 			if(factory.getType().equals(type)){
@@ -60,7 +60,7 @@ public class TGBrowserManager {
 	public void addFactory(TGBrowserFactory factory){
 		this.factories.add(factory);
 		
-		Iterator it = this.collectionInfos.iterator();
+		Iterator<TGBrowserCollectionInfo> it = this.collectionInfos.iterator();
 		while(it.hasNext()){
 			TGBrowserCollectionInfo info = (TGBrowserCollectionInfo)it.next();
 			if(info.getType().equals(factory.getType())){
@@ -97,7 +97,7 @@ public class TGBrowserManager {
 		this.collectionInfos.add(info);
 	}
 	
-	public Iterator getCollections(){
+	public Iterator<TGBrowserCollection> getCollections(){
 		return this.collections.iterator();
 	}
 	
@@ -123,7 +123,7 @@ public class TGBrowserManager {
 	}
 	
 	public TGBrowserCollection getCollection(String type, TGBrowserData data ){
-		Iterator it = this.getCollections();
+		Iterator<TGBrowserCollection> it = this.getCollections();
 		while( it.hasNext() ){
 			TGBrowserCollection collection = ( TGBrowserCollection ) it.next();
 			if( collection.getType().equals(type) && collection.getData().equals(data) ){

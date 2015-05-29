@@ -20,7 +20,7 @@ public class ScaleReader {
 	private static final String NAME_ATTRIBUTE = "name";
 	private static final String KEYS_ATTRIBUTE = "keys";
 	
-	public void loadScales(List scales,InputStream stream){
+	public void loadScales(List<ScaleInfo> scales,InputStream stream){
 		try{
 			if ( stream != null ){
 				Document doc = getDocument(stream);
@@ -41,7 +41,7 @@ public class ScaleReader {
 		return document;
 	}
 	
-	private static void loadScales(List scales,Node node){
+	private static void loadScales(List<ScaleInfo> scales,Node node){
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node child = nodeList.item(i);

@@ -72,9 +72,9 @@ public class ItemManager implements TGEventListener {
 	private Menu menu;
 	private Menu popupMenu;
 	private CoolBar coolBar;
-	private List loadedToolItems;
-	private List loadedMenuItems;
-	private List loadedPopupMenuItems;
+	private List<ToolItems> loadedToolItems;
+	private List<MenuItems> loadedMenuItems;
+	private List<MenuItems> loadedPopupMenuItems;
 	private ToolItems[] toolItems;
 	
 	private boolean layout_locked;
@@ -83,9 +83,9 @@ public class ItemManager implements TGEventListener {
 	private boolean updateCoolBarWrapIndicesEnabled;
 	
 	public ItemManager(){
-		this.loadedToolItems = new ArrayList();
-		this.loadedMenuItems = new ArrayList();
-		this.loadedPopupMenuItems = new ArrayList();
+		this.loadedToolItems = new ArrayList<ToolItems>();
+		this.loadedMenuItems = new ArrayList<MenuItems>();
+		this.loadedPopupMenuItems = new ArrayList<MenuItems>();
 		this.layout_locked = false;
 		this.setDefaultToolBars();
 		this.loadItems();
@@ -180,7 +180,7 @@ public class ItemManager implements TGEventListener {
 		int coolBarWidth = this.coolBar.getClientArea().width;
 		int coolItemsWidth = 0;
 		
-		List coolItemIndices = new ArrayList();
+		List<Integer> coolItemIndices = new ArrayList<Integer>();
 		
 		CoolItem[] items = this.coolBar.getItems();
 		for(int i = 0;i < items.length; i ++){
@@ -306,8 +306,8 @@ public class ItemManager implements TGEventListener {
 		this.showMenuItems(this.loadedPopupMenuItems);
 	}
 	
-	private void showMenuItems(List items){
-		Iterator it = items.iterator();
+	private void showMenuItems(List<MenuItems> items){
+		Iterator<MenuItems> it = items.iterator();
 		while(it.hasNext()){
 			MenuItems item = (MenuItems)it.next();
 			item.showItems();
@@ -322,8 +322,8 @@ public class ItemManager implements TGEventListener {
 		}
 	}
 	
-	public void updateItems(List items){
-		Iterator it = items.iterator();
+	public void updateItems(List<? extends ItemBase> items){
+		Iterator<? extends ItemBase> it = items.iterator();
 		while(it.hasNext()){
 			ItemBase item = (ItemBase)it.next();
 			item.update();
@@ -338,8 +338,8 @@ public class ItemManager implements TGEventListener {
 		}
 	}
 	
-	public void loadProperties(List items){
-		Iterator it = items.iterator();
+	public void loadProperties(List<? extends ItemBase> items){
+		Iterator<? extends ItemBase> it = items.iterator();
 		while(it.hasNext()){
 			ItemBase item = (ItemBase)it.next();
 			item.loadProperties();
