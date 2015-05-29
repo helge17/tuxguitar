@@ -1,8 +1,4 @@
 #! /usr/bin/make -f
-# -*- makefile -*-
-#ident "$Id: GNUmakefile,v 1.4 2008/02/26 15:25:26 akdmia Exp $"
-#@author: created by www.philippe.coval.online.fr -- revision: $Author: akdmia $
-#licence: LGPL
 #------------------------------------------------------------------------------
 TG_ROOT_PATH?=../../..
 TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar-lib
@@ -22,7 +18,7 @@ SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 OBJECTS?=$(PACKAGE).o
 
 GCJ?=gcj
-GCJFLAGS?=-fbootstrap-classes -fsource=1.4
+GCJFLAGS?=-fbootstrap-classes -fsource=1.5
 
 default: all
 
@@ -46,5 +42,3 @@ $(PACKAGE).o: $(SOURCES)
 
 $(LIBRARY): $(OBJECTS)
 	$(GCJ) -shared -o $@ $(^F)
-
-#eof "$Id: GNUmakefile,v 1.4 2008/02/26 15:25:26 akdmia Exp $"
