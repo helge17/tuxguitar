@@ -2,6 +2,7 @@ package org.herac.tuxguitar.midiinput;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -13,8 +14,8 @@ import org.herac.tuxguitar.song.models.TGNote;
 
 class MiBuffer
 {
-	private ArrayList	f_Notes			= new ArrayList();	// time-ordered list of notes
-	private ArrayList	f_NoteOffMap	= new ArrayList();	// time-ordered map of NOTE_OFF events
+	private List<MiNote>	f_Notes			= new ArrayList<MiNote>();	// time-ordered list of notes
+	private List<MiNote>	f_NoteOffMap	= new ArrayList<MiNote>();	// time-ordered map of NOTE_OFF events
 	private	long		f_StartTime		= -1;				// first MIDI time stamp [microseconds]
 	private	long		f_StopTime		= -1;				// last MIDI time stamp [microseconds]
 
@@ -46,9 +47,9 @@ class MiBuffer
 	}
 
 
-	static void	dump(ArrayList inList, String inTitle)
+	static void	dump(List<MiNote> inList, String inTitle)
 	{
-	Iterator	it = inList.iterator();
+	Iterator<MiNote>	it = inList.iterator();
 
 	System.out.println();
 	System.out.println("dumping " + inTitle + "...");
@@ -192,7 +193,7 @@ class MiBuffer
 
 		}
 
-	Iterator	onIt;
+	Iterator<MiNote>	onIt;
 
 	// determine notes duration
 	onIt = f_Notes.iterator();
@@ -200,7 +201,7 @@ class MiBuffer
 		{
 		MiNote	on = (MiNote)onIt.next();
 
-		Iterator	offIt = f_NoteOffMap.iterator();
+		Iterator<MiNote>	offIt = f_NoteOffMap.iterator();
 		boolean		found = false;
 
 		while(offIt.hasNext() && !found)
@@ -258,7 +259,7 @@ class MiBuffer
 	{
 	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	TGChord			tgChord		= tgSongMgr.getFactory().newChord(inStringsCount);
-	Iterator		it			= f_Notes.iterator();
+	Iterator<MiNote> it			= f_Notes.iterator();
 
 	while(it.hasNext())
 		{
@@ -275,7 +276,7 @@ class MiBuffer
 	{
 	TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 	TGBeat			tgBeat		= tgSongMgr.getFactory().newBeat();
-	Iterator		it			= f_Notes.iterator();
+	Iterator<MiNote> it			= f_Notes.iterator();
 
 	while(it.hasNext())
 		{
@@ -291,10 +292,10 @@ class MiBuffer
 	}
 
 
-	public TreeSet	toPitchesSet()
+	public TreeSet<Byte>	toPitchesSet()
 	{
-	TreeSet		pitches	= new TreeSet();
-	Iterator	it		= f_Notes.iterator();
+	TreeSet<Byte>		pitches	= new TreeSet<Byte>();
+	Iterator<MiNote>	it		= f_Notes.iterator();
 
 	while(it.hasNext())
 		{

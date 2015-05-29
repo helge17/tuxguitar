@@ -36,9 +36,9 @@ public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 	}
 	
 	private JackConnectionPlugin findConnectionPlugin(){
-		List pluginInstances = TGPluginManager.getInstance(getContext()).getPluginInstances(JackConnectionPlugin.class);
+		List<JackConnectionPlugin> pluginInstances = TGPluginManager.getInstance(getContext()).getPluginInstances(JackConnectionPlugin.class);
 		if( pluginInstances != null && !pluginInstances.isEmpty() ){
-			return ((JackConnectionPlugin)pluginInstances.get(0));
+			return pluginInstances.get(0);
 		}
 		return null;
 	}

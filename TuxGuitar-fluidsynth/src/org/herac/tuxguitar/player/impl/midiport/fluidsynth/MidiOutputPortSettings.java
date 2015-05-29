@@ -100,7 +100,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		tAudio.setControl( cAudio );
 		
 		// Audio Driver  --------------------------------------------------------
-		final List audioDriverOptions = this.getAudioDriverOptions();
+		final List<String> audioDriverOptions = this.getAudioDriverOptions();
 		
 		Label lAudioDriver = new Label(cAudio, SWT.NONE);
 		lAudioDriver.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
@@ -112,7 +112,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		fillAudioDriverCombo( audioDriverOptions , cAudioDriver );
 		
 		// Audio Sample Format  -----------------------------------------------------
-		final List audioSampleFormatOptions = this.getAudioSampleFormatOptions();
+		final List<String> audioSampleFormatOptions = this.getAudioSampleFormatOptions();
 		
 		Label lAudioSampleFormat = new Label(cAudio, SWT.NONE);
 		lAudioSampleFormat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
@@ -124,7 +124,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		fillAudioSampleFormatCombo( audioSampleFormatOptions , cAudioSampleFormat );
 		
 		// Audio Period Size -------------------------------------------------------
-		final List audioPeriodSizeOptions = this.getAudioPeriodSizeOptions();
+		final List<Integer> audioPeriodSizeOptions = this.getAudioPeriodSizeOptions();
 		
 		Label lAudioPeriodSize = new Label( cAudio , SWT.NONE);
 		lAudioPeriodSize.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
@@ -136,7 +136,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		fillAudioPeriodSizeCombo( audioPeriodSizeOptions , cAudioPeriodSize );
 		
 		// Audio Period Count -------------------------------------------------------
-		final List audioPeriodCountOptions = this.getAudioPeriodCountOptions();
+		final List<Integer> audioPeriodCountOptions = this.getAudioPeriodCountOptions();
 		
 		Label lAudioPeriodCount = new Label( cAudio , SWT.NONE);
 		lAudioPeriodCount.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
@@ -166,7 +166,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		fillSynthGainScale( sSynthGain );
 		
 		// Synth Sample Rate -------------------------------------------------------
-		final List synthSampleRateOptions = this.getSynthSampleRateOptions();
+		final List<Double> synthSampleRateOptions = this.getSynthSampleRateOptions();
 		
 		Label lSynthSampleRate = new Label( cSynth , SWT.NONE);
 		lSynthSampleRate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
@@ -264,7 +264,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 	}
 	
 	protected void addMidiPorts(Table table){
-		Iterator it = getSoundfonts().iterator();
+		Iterator<String> it = getSoundfonts().iterator();
 		while(it.hasNext()){
 			String path = (String)it.next();
 			this.addMidiPort(table, path );
@@ -292,16 +292,16 @@ public class MidiOutputPortSettings extends MidiSettings {
 		}
 	}
 	
-	protected List getAudioDriverOptions(){
+	protected List<String> getAudioDriverOptions(){
 		return this.getSynth().getPropertyOptions(MidiSettings.AUDIO_DRIVER);
 	}
 	
-	protected List getAudioSampleFormatOptions(){
+	protected List<String> getAudioSampleFormatOptions(){
 		return this.getSynth().getPropertyOptions(MidiSettings.AUDIO_SAMPLE_FORMAT);
 	}
 	
-	protected List getAudioPeriodSizeOptions(){
-		List options = new ArrayList();
+	protected List<Integer> getAudioPeriodSizeOptions(){
+		List<Integer> options = new ArrayList<Integer>();
 		int[] range = getSynth().getIntegerPropertyRange( MidiSettings.AUDIO_PERIOD_SIZE );
 		if( range.length == 2 && range[0] < range[1] ){
 			int value = range[0];
@@ -313,8 +313,8 @@ public class MidiOutputPortSettings extends MidiSettings {
 		return options;
 	}
 	
-	protected List getAudioPeriodCountOptions(){
-		List options = new ArrayList();
+	protected List<Integer> getAudioPeriodCountOptions(){
+		List<Integer> options = new ArrayList<Integer>();
 		int[] range = getSynth().getIntegerPropertyRange( MidiSettings.AUDIO_PERIOD_COUNT );
 		if( range.length == 2 && range[0] < range[1] ){
 			int value = range[0];
@@ -326,8 +326,8 @@ public class MidiOutputPortSettings extends MidiSettings {
 		return options;
 	}
 	
-	protected List getSynthSampleRateOptions(){
-		List options = new ArrayList();
+	protected List<Double> getSynthSampleRateOptions(){
+		List<Double> options = new ArrayList<Double>();
 		double[] range = getSynth().getDoublePropertyRange( MidiSettings.SYNTH_SAMPLE_RATE );
 		double[] values = new double[]{ 22050f , 44100f , 48000f , 88200f , 96000f };
 		if( range.length == 2 && range[0] < range[1] ){
@@ -340,7 +340,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		return options;
 	}
 	
-	protected void fillAudioDriverCombo( List options, Combo combo ){
+	protected void fillAudioDriverCombo( List<String> options, Combo combo ){
 		int selectedIndex = 0;
 		String selectedValue = getStringValue( AUDIO_DRIVER );
 		for(int i = 0 ; i < options.size(); i ++){
@@ -353,7 +353,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		combo.select( selectedIndex );
 	}
 	
-	protected void fillAudioSampleFormatCombo( List options, Combo combo ){
+	protected void fillAudioSampleFormatCombo( List<String> options, Combo combo ){
 		int selectedIndex = 0;
 		String selectedValue = getStringValue( AUDIO_SAMPLE_FORMAT );
 		for(int i = 0 ; i < options.size(); i ++){
@@ -366,7 +366,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		combo.select( selectedIndex );
 	}
 	
-	protected void fillAudioPeriodSizeCombo( List options, Combo combo ){
+	protected void fillAudioPeriodSizeCombo( List<Integer> options, Combo combo ){
 		int selectedIndex = 0;
 		int selectedValue = getIntegerValue( AUDIO_PERIOD_SIZE );
 		for(int i = 0 ; i < options.size(); i ++){
@@ -379,7 +379,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		combo.select( selectedIndex );
 	}
 	
-	protected void fillAudioPeriodCountCombo( List options, Combo combo ){
+	protected void fillAudioPeriodCountCombo( List<Integer> options, Combo combo ){
 		int selectedIndex = 0;
 		int selectedValue = getIntegerValue( AUDIO_PERIOD_COUNT );
 		for(int i = 0 ; i < options.size(); i ++){
@@ -410,7 +410,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		}
 	}
 	
-	protected void fillSynthSampleRateCombo( List options, Combo combo ){
+	protected void fillSynthSampleRateCombo( List<Double> options, Combo combo ){
 		int selectedIndex = 0;
 		double selectedValue = getDoubleValue( MidiSettings.SYNTH_SAMPLE_RATE );
 		for(int i = 0 ; i < options.size(); i ++){
@@ -445,25 +445,25 @@ public class MidiOutputPortSettings extends MidiSettings {
 		button.setSelection( getBooleanValue( SYNTH_CHORUS_ACTIVE ) );
 	}
 	
-	protected void updateAudioDriverSelection( List options , int index ){
+	protected void updateAudioDriverSelection( List<String> options , int index ){
 		if( index >=0 && index < options.size() ){
 			setStringValue(MidiSettings.AUDIO_DRIVER, (( String )options.get( index )) ); 
 		}
 	}
 	
-	protected void updateAudioSampleFormatSelection( List options , int index ){
+	protected void updateAudioSampleFormatSelection( List<String> options , int index ){
 		if( index >=0 && index < options.size() ){
 			setStringValue(MidiSettings.AUDIO_SAMPLE_FORMAT, (( String )options.get( index )) ); 
 		}
 	}
 	
-	protected void updateAudioPeriodSizeSelection( List options , int index ){
+	protected void updateAudioPeriodSizeSelection( List<Integer> options , int index ){
 		if( index >=0 && index < options.size() ){
 			setIntegerValue(MidiSettings.AUDIO_PERIOD_SIZE, (( Integer )options.get( index )).intValue() ); 
 		}
 	}
 	
-	protected void updateAudioPeriodCountSelection( List options , int index ){
+	protected void updateAudioPeriodCountSelection( List<Integer> options , int index ){
 		if( index >=0 && index < options.size() ){
 			setIntegerValue(MidiSettings.AUDIO_PERIOD_COUNT, (( Integer )options.get( index )).intValue() );
 		}
@@ -481,7 +481,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		}
 	}
 	
-	protected void updateSynthSampleRateSelection( List options , int index ){
+	protected void updateSynthSampleRateSelection( List<Double> options , int index ){
 		if( index >=0 && index < options.size() ){
 			setDoubleValue(MidiSettings.SYNTH_SAMPLE_RATE, (( Double )options.get( index )).doubleValue() );
 		}
@@ -505,12 +505,12 @@ public class MidiOutputPortSettings extends MidiSettings {
 	}
 	
 	protected void updateSoundfontsSelection(Table table){
-		List soundfonts = new ArrayList();
+		List<String> soundfonts = new ArrayList<String>();
 		int count = table.getItemCount();
 		for( int i = 0 ; i < count; i ++ ){
 			TableItem item = table.getItem( i );
 			if( item.getData() instanceof String ){
-				soundfonts.add( item.getData() );
+				soundfonts.add( (String)item.getData() );
 			}
 		}
 		setSoundfonts( soundfonts );

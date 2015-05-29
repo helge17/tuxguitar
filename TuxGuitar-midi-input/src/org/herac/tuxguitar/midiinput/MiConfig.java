@@ -103,7 +103,7 @@ class MiConfig
 	void	showDialog(Shell parent)
 	{
 	try {
-		final List		portsNames			= MiPortProvider.listPortsNames();
+		final List<String> portsNames			= MiPortProvider.listPortsNames();
 		final String	currPortName		= getMidiInputPortName();
 		final int		currBaseChannel		= getMidiBaseChannel();
 		final int		currMinVelocity		= getMinVelocity();

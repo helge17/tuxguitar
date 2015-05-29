@@ -24,9 +24,9 @@ public class JackClientInstanceProvider implements JackClientProvider {
 	}
 	
 	private JackSingletonPlugin findSingletonPlugin(){
-		List pluginInstances = TGPluginManager.getInstance(this.context).getPluginInstances(JackSingletonPlugin.class);
+		List<JackSingletonPlugin> pluginInstances = TGPluginManager.getInstance(this.context).getPluginInstances(JackSingletonPlugin.class);
 		if( pluginInstances != null && !pluginInstances.isEmpty() ){
-			return ((JackSingletonPlugin)pluginInstances.get(0));
+			return pluginInstances.get(0);
 		}
 		return null;
 	}

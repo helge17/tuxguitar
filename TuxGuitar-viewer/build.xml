@@ -6,8 +6,8 @@
 	</description>
 	
 	<property file="build.properties" />
-	<property name="ant.build.javac.source" value="1.4" />
-	<property name="ant.build.javac.target" value="1.4" />
+	<property name="ant.build.javac.source" value="1.5" />
+	<property name="ant.build.javac.target" value="1.5" />
 	
 	<property name="build.src.path" value="src${file.separator}" />
 	<property name="build.resource.path" value="resources${file.separator}" />

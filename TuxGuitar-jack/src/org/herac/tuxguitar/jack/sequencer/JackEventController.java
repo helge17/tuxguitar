@@ -8,7 +8,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 
 public class JackEventController{
 	private JackSequencer sequencer;
-	private List events;
+	private List<JackEvent> events;
 	
 	private double tick;
 	private double lastTick;
@@ -16,7 +16,7 @@ public class JackEventController{
 	
 	public JackEventController(JackSequencer sequencer){
 		this.sequencer = sequencer;
-		this.events = new ArrayList();
+		this.events = new ArrayList<JackEvent>();
 		this.reset();
 	}
 	
@@ -58,7 +58,7 @@ public class JackEventController{
 		return (event.getTick() > lastTick);
 	}
 	
-	public List getEvents(){
+	public List<JackEvent> getEvents(){
 		return this.events;
 	}
 	
@@ -75,10 +75,10 @@ public class JackEventController{
 		this.reset = true;
 	}
 	
-	public List getTempoChanges(){
-		List tempoChanges = new ArrayList();
+	public List<long[]> getTempoChanges(){
+		List<long[]> tempoChanges = new ArrayList<long[]>();
 		for(int i = 0; i < this.events.size(); i ++){
-			JackEvent event = (JackEvent) events.get(i);				
+			JackEvent event = (JackEvent) this.events.get(i);				
 			if(event.getType() == JackEvent.MIDI_SYSTEM_EVENT){
 				if(event.getData()[0] == 0x51){
 					int usq = ((event.getData()[1] & 0xff) | ((event.getData()[2] & 0xff) << 8) | ((event.getData()[3] & 0xff) << 16));

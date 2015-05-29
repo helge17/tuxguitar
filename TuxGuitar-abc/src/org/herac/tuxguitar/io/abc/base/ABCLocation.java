@@ -7,7 +7,7 @@ package org.herac.tuxguitar.io.abc.base;
  * @author peter
  *
  */
-public class ABCLocation implements Comparable {
+public class ABCLocation implements Comparable<ABCLocation> {
 
 	private String part;
 	private int ticks;
@@ -74,28 +74,28 @@ public class ABCLocation implements Comparable {
 		return event;
 	}
 
-	public int compareTo(Object o) {
-		if(o==null) return 1;
-		if (o instanceof ABCLocation) {
-			ABCLocation e = (ABCLocation) o;
-			if(part==null || e.part==null) {
-				if(part!=null) return 1;
-				if(e.part!=null) return -1;
-			}
-			else {
-				int i=part.compareTo(e.part);
-				if(i!=0) return i;
-			}
-			int i=track - e.track;
-			if(i!=0) return i;
-			i=measure - e.measure;
-			if(i!=0) return i;
-			i=ticks - e.ticks;
-			if(i!=0) return i;
-			i = event.compareTo(e.event);
+	public int compareTo(ABCLocation e) {
+		if( e == null ) {
+			return 1;
+		}
+		
+		if(part==null || e.part==null) {
+			if(part!=null) return 1;
+			if(e.part!=null) return -1;
+		}
+		else {
+			int i=part.compareTo(e.part);
 			if(i!=0) return i;
 		}
-		else return -1;
+		int i=track - e.track;
+		if(i!=0) return i;
+		i=measure - e.measure;
+		if(i!=0) return i;
+		i=ticks - e.ticks;
+		if(i!=0) return i;
+		i = event.compareTo(e.event);
+		if(i!=0) return i;
+		
 		return 0;
 	}
 

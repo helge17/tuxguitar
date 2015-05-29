@@ -18,14 +18,14 @@ public class JackConnectionManager {
 	private JackConnectionListener jackConnectionListener;
 	private JackConnectionConfig jackConnectionConfig;
 	
-	private List jackConnections;
+	private List<JackConnection> jackConnections;
 	private boolean autoConnectPorts;
 	
 	public JackConnectionManager(TGContext context, JackClientProvider jackClientProvider){
 		this.jackClientProvider = jackClientProvider;
 		this.jackConnectionConfig = new JackConnectionConfig(context, this);
 		this.jackConnectionListener = new JackConnectionListener(context, this);
-		this.jackConnections = new ArrayList();
+		this.jackConnections = new ArrayList<JackConnection>();
 	}
 	
 	public void initialize(){
@@ -71,7 +71,7 @@ public class JackConnectionManager {
 	public void connectAllPorts(){
 		this.openJackClient(false);
 		
-		Iterator it = this.jackConnections.iterator();
+		Iterator<JackConnection> it = this.jackConnections.iterator();
 		while( it.hasNext() ){
 			JackConnection jackConnection = (JackConnection) it.next();
 			
@@ -82,7 +82,7 @@ public class JackConnectionManager {
 	public void connectPorts(JackConnection jackConnection){
 		this.openJackClient(false);
 		
-		List portNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0);
+		List<String> portNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0);
 		String srcPortName = findPortNameById(jackConnection.getSrcPortId(), portNames);
 		String dstPortName = findPortNameById(jackConnection.getDstPortId(), portNames);
 		if( srcPortName != null && dstPortName != null ){
@@ -93,8 +93,8 @@ public class JackConnectionManager {
 	public void loadExistingConnections(){
 		this.openJackClient(false);
 		
-		List existingConnections = new ArrayList();
-		List existingPortNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0);
+		List<JackConnection> existingConnections = new ArrayList<JackConnection>();
+		List<String> existingPortNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0);
 		
 		this.loadExistingConnections(existingConnections);
 		this.loadPreviousConnectionsToExistingList(existingConnections, existingPortNames);
@@ -102,31 +102,31 @@ public class JackConnectionManager {
 		this.jackConnections.addAll(existingConnections);
 	}
 	
-	public void loadExistingConnections(List existingConnections){
+	public void loadExistingConnections(List<JackConnection> existingConnections){
 		this.openJackClient(false);
 		
-		List srcPortNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, JackPortFlags.JACK_PORT_IS_OUTPUT);
+		List<String> srcPortNames = this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, JackPortFlags.JACK_PORT_IS_OUTPUT);
 		if( srcPortNames != null ){
-			Iterator it = srcPortNames.iterator();
+			Iterator<String> it = srcPortNames.iterator();
 			while( it.hasNext() ){
 				this.loadExistingConnections(existingConnections, (String) it.next());
 			}
 		}
 	}
 	
-	public void loadExistingConnections(List existingConnections, String srcPortName){
+	public void loadExistingConnections(List<JackConnection> existingConnections, String srcPortName){
 		this.openJackClient(false);
 		
-		List dstPortNames = this.jackClient.getPortConnections(srcPortName);
+		List<String> dstPortNames = this.jackClient.getPortConnections(srcPortName);
 		if( dstPortNames != null ){
-			Iterator it = dstPortNames.iterator();
+			Iterator<String> it = dstPortNames.iterator();
 			while( it.hasNext() ){
 				this.loadExistingConnection(existingConnections, srcPortName, (String) it.next());
 			}
 		}
 	}
 	
-	public void loadExistingConnection(List existingConnections, String srcPortName, String dstPortName){
+	public void loadExistingConnection(List<JackConnection> existingConnections, String srcPortName, String dstPortName){
 		this.openJackClient(false);
 		
 		JackConnection jackConnection = new JackConnection(createPortId(srcPortName), createPortId(dstPortName));
@@ -135,10 +135,10 @@ public class JackConnectionManager {
 		}
 	}
 	
-	public void loadPreviousConnectionsToExistingList(List existingConnections, List existingPortNames){
+	public void loadPreviousConnectionsToExistingList(List<JackConnection> existingConnections, List<String> existingPortNames){
 		this.openJackClient(false);
 		
-		Iterator it = this.jackConnections.iterator();
+		Iterator<JackConnection> it = this.jackConnections.iterator();
 		while( it.hasNext() ){
 			JackConnection jackConnection = (JackConnection) it.next();
 			
@@ -157,11 +157,11 @@ public class JackConnectionManager {
 		return findPortNameById(portId, this.jackClient.getPortNames(JackPortTypes.JACK_ALL_TYPES, 0));
 	}
 	
-	public String findPortNameById(long portId, List portNames){
+	public String findPortNameById(long portId, List<String> portNames){
 		this.openJackClient(false);
 		
 		if( portNames != null ){
-			Iterator it = portNames.iterator();
+			Iterator<String> it = portNames.iterator();
 			while( it.hasNext() ){
 				String portName = (String) it.next();
 				if( portId == createPortId(portName) ){
@@ -191,7 +191,7 @@ public class JackConnectionManager {
 		}
 	}
 	
-	public List getJackConnections() {
+	public List<JackConnection> getJackConnections() {
 		return this.jackConnections;
 	}
 	

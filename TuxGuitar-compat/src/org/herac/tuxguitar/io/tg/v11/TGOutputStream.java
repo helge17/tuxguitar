@@ -112,7 +112,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		
 		//escribo las pistas
 		TGMeasureHeader lastHeader = null;
-		Iterator headers = song.getMeasureHeaders();
+		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)headers.next();
 			writeMeasureHeader(header,lastHeader);
@@ -151,7 +151,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		
 		//escribo los compases
 		TGMeasure lastMeasure = null;
-		Iterator measures  = track.getMeasures();
+		Iterator<TGMeasure> measures  = track.getMeasures();
 		while(measures.hasNext()){
 			TGMeasure measure = (TGMeasure)measures.next();
 			writeMeasure(measure,lastMeasure);
@@ -162,7 +162,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		writeByte(track.getStrings().size());
 		
 		//escribo las cuerdas
-		Iterator stringIt  = track.getStrings().iterator();
+		Iterator<TGString> stringIt  = track.getStrings().iterator();
 		while(stringIt.hasNext()){
 			TGString string = (TGString)stringIt.next();
 			writeInstrumentString(string);
@@ -569,7 +569,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		//escribo la cantidad de puntos
 		writeByte(effect.getPoints().size());
 		
-		Iterator it = effect.getPoints().iterator();
+		Iterator<TGEffectBend.BendPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
 			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint)it.next();
 			
@@ -585,7 +585,7 @@ public class TGOutputStream extends TGStream implements TGLocalFileExporter{
 		//escribo la cantidad de puntos
 		writeByte(effect.getPoints().size());
 		
-		Iterator it = effect.getPoints().iterator();
+		Iterator<TGEffectTremoloBar.TremoloBarPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
 			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint)it.next();
 			

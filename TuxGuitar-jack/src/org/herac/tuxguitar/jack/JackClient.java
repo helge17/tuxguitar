@@ -14,13 +14,13 @@ public class JackClient{
 	
 	private long instance;
 	private boolean openTransport;
-	private List jackPorts;
-	private List jackPortRegisterListeners;
+	private List<JackPort> jackPorts;
+	private List<JackPortRegisterListener> jackPortRegisterListeners;
 	
 	public JackClient() {
 		this.instance = malloc();
-		this.jackPorts = new ArrayList();
-		this.jackPortRegisterListeners = new ArrayList();
+		this.jackPorts = new ArrayList<JackPort>();
+		this.jackPortRegisterListeners = new ArrayList<JackPortRegisterListener>();
 	}
 	
 	public void finalize(){
@@ -93,8 +93,8 @@ public class JackClient{
 	
 	public void closePorts(){
 		if( this.isOpen() ) {
-			List jackPorts = new ArrayList(this.jackPorts);
-			Iterator it = jackPorts.iterator();
+			List<JackPort> jackPorts = new ArrayList<JackPort>(this.jackPorts);
+			Iterator<JackPort> it = jackPorts.iterator();
 			while( it.hasNext() ){
 				this.closePort((JackPort) it.next());
 			}
@@ -103,7 +103,7 @@ public class JackClient{
 	
 	public JackPort findPort(String jackPortName){
 		if( this.isOpen() ){
-			Iterator it = this.jackPorts.iterator();
+			Iterator<JackPort> it = this.jackPorts.iterator();
 			while( it.hasNext() ){
 				JackPort jackPort = (JackPort) it.next();
 				if( jackPort.getJackPortName().equals(jackPortName) ){
@@ -194,14 +194,14 @@ public class JackClient{
 		return false;
 	}
 	
-	public List getPortNames(String type, long flags) {
+	public List<String> getPortNames(String type, long flags) {
 		if( this.isOpen() ){
 			return this.getPortNames(this.instance, type, flags);
 		}
 		return null;
 	}
 	
-	public List getPortConnections(String portName){
+	public List<String> getPortConnections(String portName){
 		if( this.isOpen() ){
 			return this.getPortConnections(this.instance, portName);
 		}
@@ -215,7 +215,7 @@ public class JackClient{
 	}
 	
 	public void onPortRegistered(){
-		Iterator it = this.jackPortRegisterListeners.iterator();
+		Iterator<JackPortRegisterListener> it = this.jackPortRegisterListeners.iterator();
 		while( it.hasNext() ){
 			JackPortRegisterListener jackPortRegisterListener = (JackPortRegisterListener) it.next();
 			jackPortRegisterListener.onPortRegistered();
@@ -268,8 +268,8 @@ public class JackClient{
 	
 	private native void connectPorts(long instance, String srcPortName, String dstPortName);
 	
-	private native List getPortNames(long instance, String type, long flags);
+	private native List<String> getPortNames(long instance, String type, long flags);
 	
-	private native List getPortConnections(long instance, String portName);
+	private native List<String> getPortConnections(long instance, String portName);
 	
 }

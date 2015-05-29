@@ -79,7 +79,7 @@ public class GP5InputStream extends GTPInputStream {
 			
 			readByte(); //octave
 			
-			List channels = readChannels();
+			List<TGChannel> channels = readChannels();
 			
 			skip(42);
 			
@@ -134,7 +134,7 @@ public class GP5InputStream extends GTPInputStream {
 		}
 	}
 	
-	private void readTracks(TGSong song, int count, List channels,TGLyric lyric, int lyricTrack) throws IOException{
+	private void readTracks(TGSong song, int count, List<TGChannel> channels,TGLyric lyric, int lyricTrack) throws IOException{
 		for (int number = 1; number <= count; number++) {
 			song.addTrack(readTrack(song,number, channels,(number == lyricTrack)?lyric:getFactory().newLyric()));
 		}
@@ -215,8 +215,8 @@ public class GP5InputStream extends GTPInputStream {
 		return (!voice.isEmpty() ? duration.getTime() : 0 );
 	}
 	
-	private List readChannels() throws IOException{
-		List channels = new ArrayList();
+	private List<TGChannel> readChannels() throws IOException{
+		List<TGChannel> channels = new ArrayList<TGChannel>();
 		for (int i = 0; i < 64; i++) {
 			TGChannel channel = getFactory().newChannel();
 			channel.setProgram((short)readInt());
@@ -382,7 +382,7 @@ public class GP5InputStream extends GTPInputStream {
 			}
 		}
 		
-		List emptyBeats = new ArrayList();
+		List<TGBeat> emptyBeats = new ArrayList<TGBeat>();
 		for( int i = 0 ; i < measure.countBeats() ; i ++ ){
 			TGBeat beat = measure.getBeat( i );
 			boolean empty = true;
@@ -395,7 +395,7 @@ public class GP5InputStream extends GTPInputStream {
 				emptyBeats.add( beat );
 			}
 		}
-		Iterator it = emptyBeats.iterator();
+		Iterator<TGBeat> it = emptyBeats.iterator();
 		while( it.hasNext() ){
 			TGBeat beat = (TGBeat)it.next();
 			measure.removeBeat( beat );
@@ -438,7 +438,7 @@ public class GP5InputStream extends GTPInputStream {
 		return note;
 	}
 	
-	private TGTrack readTrack(TGSong song, int number, List channels,TGLyric lyrics) throws IOException {
+	private TGTrack readTrack(TGSong song, int number, List<TGChannel> channels,TGLyric lyrics) throws IOException {
 		readUnsignedByte();
 		if(number ==  1 || getVersionIndex() == 0){
 			skip(1);
@@ -470,7 +470,7 @@ public class GP5InputStream extends GTPInputStream {
 		return track;
 	}
 	
-	private void readChannel(TGSong song, TGTrack track,List channels) throws IOException {
+	private void readChannel(TGSong song, TGTrack track,List<TGChannel> channels) throws IOException {
 		int gmChannel1 = (readInt() - 1);
 		int gmChannel2 = (readInt() - 1);
 		if( gmChannel1 >= 0 && gmChannel1 < channels.size()){
@@ -483,7 +483,7 @@ public class GP5InputStream extends GTPInputStream {
 			gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
 			gmChannel2Param.setValue(Integer.toString(gmChannel1 != 9 ? gmChannel2 : gmChannel1));
 			
-			channel.copyFrom(((TGChannel) channels.get(gmChannel1)));
+			channel.copyFrom(getFactory(), ((TGChannel) channels.get(gmChannel1)));
 			
 			//------------------------------------------//
 			for( int i = 0 ; i < song.countChannels() ; i ++ ){
@@ -785,7 +785,7 @@ public class GP5InputStream extends GTPInputStream {
 	
 	private int getClef( TGTrack track ){
 		if(!isPercussionChannel(track.getSong(),track.getChannelId())){
-			Iterator it = track.getStrings().iterator();
+			Iterator<TGString> it = track.getStrings().iterator();
 			while( it.hasNext() ){
 				TGString string = (TGString) it.next();
 				if( string.getValue() <= 34 ){
@@ -811,7 +811,7 @@ public class GP5InputStream extends GTPInputStream {
 	}
 	
 	private boolean isPercussionChannel( TGSong song, int channelId ){
-		Iterator it = song.getChannels();
+		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
 			TGChannel channel = (TGChannel)it.next();
 			if( channel.getChannelId() == channelId ){

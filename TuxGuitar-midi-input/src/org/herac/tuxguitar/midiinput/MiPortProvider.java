@@ -13,16 +13,16 @@ import org.herac.tuxguitar.app.TuxGuitar;
 
 public class MiPortProvider
 {	
-	public static List listPortsNames() throws MiException
+	public static List<String> listPortsNames() throws MiException
 	{
 	try {
-		ArrayList			portsNames	= new ArrayList();
+		List<String>		portsNames	= new ArrayList<String>();
 		MidiDevice.Info[]	infos		= MidiSystem.getMidiDeviceInfo();
 		
 		for(int i = 0; i < infos.length; i++)
 			{
 			try {
-				Iterator	it		= portsNames.iterator();
+				Iterator<String>	it		= portsNames.iterator();
 				boolean		exists	= false;
 				
 				while(it.hasNext())

@@ -8,11 +8,11 @@ public class PTSection {
 	
 	private int number;
 	private int staffs;
-	private List positions;
+	private List<PTPosition> positions;
 	
 	public PTSection(int number){
 		this.number = number;
-		this.positions = new ArrayList();
+		this.positions = new ArrayList<PTPosition>();
 	}
 	
 	public int getNumber(){
@@ -27,12 +27,12 @@ public class PTSection {
 		this.staffs = staffs;
 	}
 	
-	public List getPositions(){
+	public List<PTPosition> getPositions(){
 		return this.positions;
 	}
 	
 	public PTPosition getPosition(int position){
-		Iterator it = getPositions().iterator();
+		Iterator<PTPosition> it = getPositions().iterator();
 		while(it.hasNext()){
 			PTPosition p = (PTPosition)it.next();
 			if(p.getPosition() == position){
@@ -46,7 +46,7 @@ public class PTSection {
 	
 	public int getNextPositionNumber(){
 		int next = 0;
-		Iterator it = getPositions().iterator();
+		Iterator<PTPosition> it = getPositions().iterator();
 		while(it.hasNext()){
 			PTPosition p = (PTPosition)it.next();
 			next = Math.max(next, (p.getPosition() + 1) );

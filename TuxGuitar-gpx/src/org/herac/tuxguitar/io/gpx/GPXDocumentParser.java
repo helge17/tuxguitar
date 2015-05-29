@@ -73,7 +73,7 @@ public class GPXDocumentParser {
 	}
 	
 	private void parseTracks(TGSong tgSong){
-		List tracks = this.document.getTracks();
+		List<GPXTrack> tracks = this.document.getTracks();
 		for( int i = 0 ; i < tracks.size(); i ++ ){
 			GPXTrack gpTrack = (GPXTrack) this.document.getTracks().get(i);
 			
@@ -144,7 +144,7 @@ public class GPXDocumentParser {
 	private void parseMasterBars(TGSong tgSong){
 		long tgStart = TGDuration.QUARTER_TIME;
 		
-		List masterBars = this.document.getMasterBars();
+		List<GPXMasterBar> masterBars = this.document.getMasterBars();
 		for( int i = 0 ; i < masterBars.size() ; i ++ ){
 			GPXMasterBar mbar = (GPXMasterBar) masterBars.get(i);
 			GPXAutomation gpTempoAutomation = this.document.getAutomation("Tempo", i);
@@ -567,7 +567,7 @@ public class GPXDocumentParser {
 	}
 	
 	private TGString getStringFor(TGBeat tgBeat, int value ){
-		List strings = tgBeat.getMeasure().getTrack().getStrings();
+		List<TGString> strings = tgBeat.getMeasure().getTrack().getStrings();
 		for(int i = 0;i < strings.size();i ++){
 			TGString string = (TGString)strings.get(i);
 			if(value >= string.getValue()){
@@ -575,7 +575,7 @@ public class GPXDocumentParser {
 				
 				for(int v = 0; v < tgBeat.countVoices(); v ++){
 					TGVoice voice = tgBeat.getVoice( v );
-					Iterator it = voice.getNotes().iterator();
+					Iterator<TGNote> it = voice.getNotes().iterator();
 					while (it.hasNext()) {
 						TGNoteImpl note = (TGNoteImpl) it.next();
 						if (note.getString() == string.getNumber()) {

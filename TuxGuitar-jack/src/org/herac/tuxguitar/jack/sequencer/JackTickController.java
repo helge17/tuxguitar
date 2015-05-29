@@ -91,7 +91,7 @@ public class JackTickController {
 		double tempo = 120;
 		double tick = TGDuration.QUARTER_TIME;
 		
-		List tempoChanges = this.sequencer.getJackEventController().getTempoChanges();
+		List<long[]> tempoChanges = this.sequencer.getJackEventController().getTempoChanges();
 		for(int i = 0; i < tempoChanges.size(); i ++){
 			long[] tc = (long[])tempoChanges.get(i);
 			double tcTick = tc[0];
@@ -121,7 +121,7 @@ public class JackTickController {
 		double tempo = 120;
 		double frame = 0;
 		
-		List tempoChanges = this.sequencer.getJackEventController().getTempoChanges();
+		List<long[]> tempoChanges = this.sequencer.getJackEventController().getTempoChanges();
 		for(int i = 0; i < tempoChanges.size(); i ++){
 			long[] tc = (long[])tempoChanges.get(i);
 			double tcTick = tc[0];

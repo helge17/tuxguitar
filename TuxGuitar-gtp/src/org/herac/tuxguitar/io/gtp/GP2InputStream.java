@@ -246,7 +246,7 @@ public class GP2InputStream extends GTPInputStream {
 				TGBeat previousBeat = getBeat(track, measure, lastReadedStart);
 				if(previousBeat != null){
 					TGVoice previousVoice = previousBeat.getVoice(0);
-					Iterator it = previousVoice.getNotes().iterator();
+					Iterator<TGNote> it = previousVoice.getNotes().iterator();
 					while(it.hasNext()){
 						TGNote previous = (TGNote)it.next();
 						TGNote note = getFactory().newNote();
@@ -418,7 +418,7 @@ public class GP2InputStream extends GTPInputStream {
 	private int parseRepeatAlternative(TGSong song,int measure,int value){
 		int repeatAlternative = 0;
 		int existentAlternatives = 0;
-		Iterator it = song.getMeasureHeaders();
+		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
 		while(it.hasNext()){
 			TGMeasureHeader header = (TGMeasureHeader)it.next();
 			if(header.getNumber() == measure){
@@ -440,7 +440,7 @@ public class GP2InputStream extends GTPInputStream {
 	
 	private int getClef( TGTrack track ){
 		if(!isPercussionChannel(track.getSong(),track.getChannelId())){
-			Iterator it = track.getStrings().iterator();
+			Iterator<TGString> it = track.getStrings().iterator();
 			while( it.hasNext() ){
 				TGString string = (TGString) it.next();
 				if( string.getValue() <= 34 ){
@@ -466,7 +466,7 @@ public class GP2InputStream extends GTPInputStream {
 	
 	private TGBeat getBeat(TGMeasure measure,long start){
 		if(start >= measure.getStart() && start < (measure.getStart() + measure.getLength())){
-			Iterator beats = measure.getBeats().iterator();
+			Iterator<TGBeat> beats = measure.getBeats().iterator();
 			while(beats.hasNext()){
 				TGBeat beat = (TGBeat)beats.next();
 				if(beat.getStart() == start){
@@ -478,7 +478,7 @@ public class GP2InputStream extends GTPInputStream {
 	}
 	
 	private boolean isPercussionChannel( TGSong song, int channelId ){
-		Iterator it = song.getChannels();
+		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
 			TGChannel channel = (TGChannel)it.next();
 			if( channel.getChannelId() == channelId ){

@@ -13,7 +13,7 @@ public class GMChannelRouterConfigurator {
 		this.router = router;
 	}
 	
-	public void configureRouter(Iterator tgChannels){
+	public void configureRouter(Iterator<TGChannel> tgChannels){
 		this.router.resetRoutes();
 		
 		while( tgChannels.hasNext() ){
@@ -36,7 +36,7 @@ public class GMChannelRouterConfigurator {
 	}
 	
 	private TGChannelParameter findChannelParameter( TGChannel tgChannel, String key ){
-		Iterator it = tgChannel.getParameters();
+		Iterator<TGChannelParameter> it = tgChannel.getParameters();
 		while( it.hasNext() ){
 			TGChannelParameter parameter = (TGChannelParameter)it.next();
 			if( parameter.getKey().equals( key ) ){

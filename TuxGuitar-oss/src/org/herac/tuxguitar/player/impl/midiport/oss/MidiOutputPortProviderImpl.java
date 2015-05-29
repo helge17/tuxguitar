@@ -2,6 +2,7 @@ package org.herac.tuxguitar.player.impl.midiport.oss;
 
 import java.util.List;
 
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -14,7 +15,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 		this.context = context;
 	}
 	
-	public List listPorts() {
+	public List<MidiOutputPort> listPorts() {
 		if(this.midiSystem == null){
 			this.midiSystem = new MidiSystem();
 		}

@@ -353,7 +353,7 @@ static private	MiProvider	s_Instance;
 							songMgr.getMeasureManager().cleanBeat(beat);
 
 							TGVoice		voice	= beat.getVoice(caret.getVoice());
-							Iterator	it		= track.getStrings().iterator();
+							Iterator<TGString> it = track.getStrings().iterator();
 
 							while(it.hasNext())
 								{
@@ -424,7 +424,7 @@ static private	MiProvider	s_Instance;
 				if(f_Buffer.finalize(f_MinVelocity, f_MinDuration * 1000) > 0)
 					{
 					TGBeat		beat		= f_Buffer.toBeat();
-					TreeSet		pitches		= f_Buffer.toPitchesSet();
+					TreeSet<Byte> pitches		= f_Buffer.toPitchesSet();
 
 					MiScaleFinder.findMatchingScale(pitches);
 					TuxGuitar.getInstance().showExternalBeat(beat);

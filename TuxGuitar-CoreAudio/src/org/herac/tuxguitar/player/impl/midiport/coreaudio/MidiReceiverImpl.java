@@ -1,19 +1,19 @@
 package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.gm.port.GMReceiver;
 import org.herac.tuxguitar.player.base.MidiControllers;
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 
 public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
 	private boolean open; // unncessary
     private boolean connected;	
-	private List ports;
+	private List<MidiOutputPort> ports;
 	
 	public MidiReceiverImpl(){
-		this.ports = new ArrayList();	
+		this.ports = new ArrayList<MidiOutputPort>();	
         this.connected = false;
 	}
 
@@ -54,13 +54,13 @@ public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
 		}
 	}		
 		
-	public List listPorts(){
+	public List<MidiOutputPort> listPorts(){
 		if(isOpen()){
 			this.ports.clear();
 			this.ports.add(new MidiPortImpl(this, "Core Audio midi playback" , "coreaudio" ));
 			return this.ports;
 		}
-		return Collections.EMPTY_LIST;
+		return new ArrayList<MidiOutputPort>();
 	}		
 
 	public void sendSystemReset() {

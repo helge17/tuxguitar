@@ -13,12 +13,12 @@ public class MidiSequence {
 	
 	protected float divisionType;
 	protected int resolution;
-	private List tracks;
+	private List<MidiTrack> tracks;
 	
 	public MidiSequence(float divisionType, int resolution){
 		this.divisionType = divisionType;
 		this.resolution = resolution;
-		this.tracks = new ArrayList();
+		this.tracks = new ArrayList<MidiTrack>();
 	}
 	
 	public void addTrack(MidiTrack track){

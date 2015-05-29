@@ -208,9 +208,9 @@ public class ABCSongImporter implements TGLocalFileImporter{
 	
 	private void addComponents(TGSong tgSong, ABCSong song){
 		ABCTrack[] tracks = song.getTracks();
-		Iterator it = song.getEvents().iterator();
+		Iterator<ABCLocation> it = song.getEvents().iterator();
 		while(it.hasNext()){
-			ABCLocation component = (ABCLocation)it.next();
+			ABCLocation component = it.next();
 			
 			if(component.getMeasure() >= 0 && component.getMeasure() < tgSong.countMeasureHeaders()){
 				for(int i = 0; i < tracks.length; i ++){
@@ -514,10 +514,10 @@ class TGSongAdjuster{
 	}
 	
 	public TGSong process(TGSong song){
-		Iterator tracks = song.getTracks();
+		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
-			Iterator measures = track.getMeasures();
+			Iterator<TGMeasure> measures = track.getMeasures();
 			while(measures.hasNext()){
 				TGMeasure measure = (TGMeasure)measures.next();
 				this.process(measure);

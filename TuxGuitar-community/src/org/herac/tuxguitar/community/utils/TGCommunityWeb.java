@@ -36,7 +36,7 @@ public class TGCommunityWeb {
 	
 	private static boolean openDesktopBrowser( URL url ){
 		try {
-			Class desktopClass = Class.forName("java.awt.Desktop");
+			Class<?> desktopClass = Class.forName("java.awt.Desktop");
 			if( desktopClass != null ){
 				Method desktop_getDesktop = desktopClass.getDeclaredMethod("getDesktop", new Class[]{} );
 				Method desktop_browse = desktopClass.getDeclaredMethod("browse", new Class[]{ java.net.URI.class });

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
@@ -19,10 +20,10 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 		this.context = context;
 	}
 	
-	public List listPorts() throws MidiPlayerException {
+	public List<MidiOutputPort> listPorts() throws MidiPlayerException {
 		try{
-			List ports = new ArrayList();
-			Iterator it = getSettings().getSoundfonts().iterator();
+			List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
+			Iterator<String> it = getSettings().getSoundfonts().iterator();
 			while(it.hasNext()){
 				String path = (String)it.next();
 				File soundfont = new File( path );

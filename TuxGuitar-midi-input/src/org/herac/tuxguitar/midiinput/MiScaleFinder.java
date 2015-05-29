@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.TreeSet;
 //import java.util.Arrays;	// just for debugging
 
+
+
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.util.TGException;
@@ -92,10 +95,10 @@ class MiScaleFinder
 	}
 
 
-	static private int		countMatches(TreeSet inScale, int[] inRefSequence)
+	static private int		countMatches(TreeSet<Byte> inScale, int[] inRefSequence)
 	{
 	int			count	= 0;
-	Iterator	it		= inScale.iterator();
+	Iterator<Byte> it		= inScale.iterator();
 
 	while(it.hasNext())
 		{
@@ -116,7 +119,7 @@ class MiScaleFinder
 	}
 
 
-	static public int		findMatchingScale(TreeSet inScale)
+	static public int		findMatchingScale(TreeSet<Byte> inScale)
 	{
 	ScaleManager	scaleMgr		= TuxGuitar.getInstance().getScaleManager();
 	int				scalesCount		= scaleMgr.countScales(),

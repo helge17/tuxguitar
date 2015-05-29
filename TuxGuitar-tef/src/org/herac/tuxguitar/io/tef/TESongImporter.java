@@ -20,6 +20,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -28,7 +29,6 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 
 public class TESongImporter implements TGLocalFileImporter{
 	
@@ -137,7 +137,7 @@ public class TESongImporter implements TGLocalFileImporter{
 	}
 	
 	private void addComponents(TGSong tgSong, TESong song){
-		Iterator it = song.getComponents().iterator();
+		Iterator<TEComponent> it = song.getComponents().iterator();
 		while(it.hasNext()){
 			TEComponent component = (TEComponent)it.next();
 			
@@ -241,12 +241,9 @@ public class TESongImporter implements TGLocalFileImporter{
 	}
 	
 	public void sortComponents(TESong song){
-		Collections.sort(song.getComponents(),new Comparator() {
-			public int compare(Object o1, Object o2) {
-				if(o1 instanceof TEComponent && o2 instanceof TEComponent){
-					TEComponent c1 = (TEComponent)o1;
-					TEComponent c2 = (TEComponent)o2;
-					
+		Collections.sort(song.getComponents(),new Comparator<TEComponent>() {
+			public int compare(TEComponent c1, TEComponent c2) {
+				if( c1 != null && c2 != null ){
 					if ( c1.getMeasure() < c2.getMeasure() ){
 						return -1;
 					}
@@ -283,10 +280,10 @@ class TGSongAdjuster{
 	}
 	
 	public TGSong process(){
-		Iterator tracks = this.song.getTracks();
+		Iterator<TGTrack> tracks = this.song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
-			Iterator measures = track.getMeasures();
+			Iterator<TGMeasure> measures = track.getMeasures();
 			while(measures.hasNext()){
 				TGMeasure measure = (TGMeasure)measures.next();
 				this.process(measure);

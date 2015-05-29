@@ -33,25 +33,25 @@ public class ABCSong {
 	private ABCText[] texts;
 	private ABCChord[] chords;
 	private ABCTrack[] tracks;
-	private List tsChanges;
+	private List<ABCTimeSignatureChange> tsChanges;
 	private ABCTimeSignature defaultNoteLength;
 	private String key;
 	private String parts;
 	private String rhythm;
-	private List words;
-	private List redefinable;
-	private List macro;
+	private List<String> words;
+	private List<ABCSymbol> redefinable;
+	private List<ABCMacro> macro;
 	private int x;
 	private String part;
-	private List symbols;
-	private List lyrics;
-	private List voice;
+	private List<String> symbols;
+	private List<String> lyrics;
+	private List<ABCTrack> voice;
 	private int track;
-	private List remarks;
+	private List<String> remarks;
 	private int ticks;
 	private int measure;
 	private int ticksperbar;
-	private ArrayList events;
+	private List<ABCLocation> events;
 	private int lineloc;
 	private String scale;
 	private String gchord;
@@ -64,8 +64,8 @@ public class ABCSong {
 	private boolean gchordon;
 	private boolean drumon;
 	private boolean droneon;
-	private ArrayList chordsList;
-	private ArrayList voiceloc;
+	private List<ABCChord> chordsList;
+	private List<ABCLocation> voiceloc;
 	private int keySignature;
 	private ABCChord chord;
 	private int tickspergchord;
@@ -78,7 +78,7 @@ public class ABCSong {
 	private int dronevoice;
 	private boolean tied;
 	private ABCEvent[] drumnotes;
-	private List tmpsChanges;
+	private List<ABCTempoChange> tmpsChanges;
 	private ABCEvent[] dronenotes;
 	private String beatstring;
 	private int[] beat;
@@ -89,8 +89,8 @@ public class ABCSong {
 	private int legato;
 	
 	public ABCSong(){
-		this.tsChanges = new ArrayList();
-		this.tmpsChanges = new ArrayList();
+		this.tsChanges = new ArrayList<ABCTimeSignatureChange>();
+		this.tmpsChanges = new ArrayList<ABCTempoChange>();
 		this.part=null;
 		this.track=0;
 		this.measure=0;
@@ -264,7 +264,7 @@ public class ABCSong {
 	}
 	
 	public ABCTimeSignature getTimeSignature(int measure) {
-		Iterator it = this.tsChanges.iterator();
+		Iterator<ABCTimeSignatureChange> it = this.tsChanges.iterator();
 		ABCTimeSignatureChange last = null;
 		while(it.hasNext()){
 			ABCTimeSignatureChange change = (ABCTimeSignatureChange)it.next();
@@ -282,7 +282,7 @@ public class ABCSong {
 	}
 	
 	public int getTempo(int measure) {
-		Iterator it = this.tmpsChanges.iterator();
+		Iterator<ABCTempoChange> it = this.tmpsChanges.iterator();
 		ABCTempoChange last = null;
 		while(it.hasNext()){
 			ABCTempoChange change = (ABCTempoChange)it.next();
@@ -565,7 +565,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 	}
 
 	public void addWords(String string) {
-		if(this.words==null) this.words=new ArrayList();
+		if(this.words==null) this.words=new ArrayList<String>();
 		this.words.add(string.substring(2).trim());
 		addNote(string);
 	}
@@ -579,7 +579,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 	public void addRedefinable(String string) {
 		ABCSymbol symbol=new ABCSymbol(string);
 		if(!symbol.isValid()) return;
-		if(this.redefinable==null) this.redefinable=new ArrayList();
+		if(this.redefinable==null) this.redefinable=new ArrayList<ABCSymbol>();
 		// delete eventual "old" symbol redefinition
 		char c=symbol.getName();
 		for(int i=0;i<this.redefinable.size();i++) {
@@ -597,7 +597,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 	public void addMacro(String string) {
 		ABCMacro m=new ABCMacro(string);
 		if(!m.isValid()) return;
-		if(this.macro==null) this.macro=new ArrayList();
+		if(this.macro==null) this.macro=new ArrayList<ABCMacro>();
 		this.macro.add(m);
 	}
 
@@ -627,7 +627,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
  * @see #addLyrics(String)
  */
 	public void addSymbols(String string) {
-		if(this.symbols==null) this.symbols=new ArrayList();
+		if(this.symbols==null) this.symbols=new ArrayList<String>();
 		this.symbols.add(string);
 		if(events==null) return;
 		String[] w=string.trim().split("\\s+");
@@ -753,7 +753,7 @@ private void insertDecoration(int i, String s) {
  *@see #addSymbols(String)
  */
 	 public void addLyrics(String string) {
-		if(this.lyrics==null) this.lyrics=new ArrayList();
+		if(this.lyrics==null) this.lyrics=new ArrayList<String>();
 		this.lyrics.add(string);
 		if(events==null) return;
 		String[] w=string.trim().split("\\s+");
@@ -820,8 +820,8 @@ private void insertDecoration(int i, String s) {
 
 	public void addVoice(String string) {
 		if(this.voice==null) {
-			this.voice=new ArrayList();
-			this.voiceloc=new ArrayList();
+			this.voice=new ArrayList<ABCTrack>();
+			this.voiceloc=new ArrayList<ABCLocation>();
 		}
 		this.track=this.voice.size();
 		this.voice.add(new ABCTrack(string.trim()));
@@ -835,9 +835,9 @@ private void insertDecoration(int i, String s) {
 
 	public void setVoice(String string) {
 		if(this.voice==null) {
-			this.voice=new ArrayList();
+			this.voice=new ArrayList<ABCTrack>();
 			this.voice.add(new ABCTrack(string.trim()));
-			this.voiceloc=new ArrayList();
+			this.voiceloc=new ArrayList<ABCLocation>();
 			ABCLocation loc=new ABCLocation(this.part,this.track,this.measure,this.ticks,null,null);
 			loc.setTied(this.tied);
 			loc.setLegato(this.legato);
@@ -887,14 +887,14 @@ private void insertDecoration(int i, String s) {
 	}
 
 	public void addRemarks(String string) {
-		if(this.remarks==null) this.remarks=new ArrayList();
+		if(this.remarks==null) this.remarks=new ArrayList<String>();
 		this.remarks.add(string);
 	}
 
 	public void addMusic(String line) {
 		if(this.macro!=null) line=substituteMacros(line);
 		if(this.redefinable!=null) line=substituteSymbols(line);
-		if(this.events==null) this.events = new ArrayList();
+		if(this.events==null) this.events = new ArrayList<ABCLocation>();
 		this.lineloc = this.events.size();
 		char[] a=(line+"  ").toCharArray();
 		int i=0;
@@ -1617,8 +1617,8 @@ private void insertDecoration(int i, String s) {
 
 	public int getVoice(String string) {
 		if(this.voice==null) {
-			this.voice=new ArrayList();
-			this.voiceloc=new ArrayList();
+			this.voice=new ArrayList<ABCTrack>();
+			this.voiceloc=new ArrayList<ABCLocation>();
 		}
 		for(int i=0;i<voice.size();i++) {
 			ABCTrack trk=(ABCTrack)voice.get(i);
@@ -1643,12 +1643,12 @@ private void insertDecoration(int i, String s) {
 	/**
 	 * @return the events
 	 */
-	public ArrayList getEvents() {
+	public List<ABCLocation> getEvents() {
 		return events;
 	}
 
 	public int addChord(String name) {
-		if(this.chordsList==null) this.chordsList=new ArrayList();
+		if(this.chordsList==null) this.chordsList=new ArrayList<ABCChord>();
 		for(int i=0;i<chordsList.size();i++) {
 			ABCChord chord=(ABCChord) chordsList.get(i);
 			if(chord.getName().equals(name))
@@ -1762,7 +1762,7 @@ private void insertDecoration(int i, String s) {
 			if(drone!=null) setDrone(drone);
 		}
 		ABCEvent e=new ABCEvent(droneon?ABCEvent.DRONEON:ABCEvent.DRONEOFF,"[I:MIDI=droneo"+(gchordon?"n]":"ff]"),0);
-		if(this.events==null) this.events = new ArrayList();
+		if(this.events==null) this.events = new ArrayList<ABCLocation>();
 		events.add(new ABCLocation(this.part,dronevoice,this.measure,this.ticks,this.chord,e));
 	}
 
@@ -1809,7 +1809,7 @@ private void insertDecoration(int i, String s) {
 			setDrumon(true);
 		}
 		ABCEvent e=new ABCEvent(ABCEvent.DRUM,drum,0);
-		if(events==null) events=new ArrayList();
+		if(events==null) events=new ArrayList<ABCLocation>();
 		events.add(new ABCLocation(this.part,drumvoice,this.measure,this.ticks,this.chord,e));
 	}
 
@@ -2042,15 +2042,13 @@ private void insertDecoration(int i, String s) {
 	public void sortEvents() {
 		if(getEvents()==null) return;
 		if(this.sorted) return;
-		Collections.sort(getEvents(),new Comparator() {
-			public int compare(Object o1, Object o2) {
-				if(o1 instanceof ABCLocation){
-					ABCLocation c1 = (ABCLocation)o1;
-					return c1.compareTo(o2);
+		Collections.sort(getEvents(),new Comparator<ABCLocation>() {
+			public int compare(ABCLocation c1, ABCLocation c2) {
+				if( c1 != null ){
+					return c1.compareTo(c2);
 				}
-				if(o2 instanceof ABCLocation){
-					ABCLocation c2 = (ABCLocation)o2;
-					return 0 - c2.compareTo(o1);
+				if( c2 != null ){
+					return 0 - c2.compareTo(c1);
 				}
 				return 0;
 			}

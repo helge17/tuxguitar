@@ -2,6 +2,7 @@ package org.herac.tuxguitar.midiinput;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -16,7 +17,7 @@ class MiStaffEvent
 	static final byte	TIE_BEAT	= 8;
 
 	private byte		f_Type		= NONE;				// event type
-	private ArrayList	f_Notes		= new ArrayList();	// note on list
+	private List<MiStaffNote>	f_Notes		= new ArrayList<MiStaffNote>();	// note on list
 	private TGBeat		f_Beat;							// TuxGuitar beat (optional)
 	private long		f_BeginTime;					// begin time [ticks]
 
@@ -31,7 +32,7 @@ class MiStaffEvent
 	boolean		isOnBeat()		{ return((f_Type & ON_BEAT) == ON_BEAT); }
 	boolean		isOffBeat()		{ return((f_Type & OFF_BEAT) == OFF_BEAT); }
 	boolean		isTieBeat()		{ return((f_Type & TIE_BEAT) == TIE_BEAT); }
-	ArrayList	getNotes()		{ return(f_Notes); }
+	List<MiStaffNote>	    getNotes()		{ return(f_Notes); }
 	long		getBeginTime()	{ return(f_BeginTime); }
 
 	void		setBeat(TGBeat inBeat)	{ f_Beat = inBeat; }
@@ -49,7 +50,7 @@ class MiStaffEvent
 
 	if(!f_Notes.isEmpty())
 		{
-		for(Iterator it = f_Notes.iterator(); it.hasNext();)
+		for(Iterator<MiStaffNote> it = f_Notes.iterator(); it.hasNext();)
 			{
 			MiStaffNote	sn	= (MiStaffNote)it.next();
 
@@ -131,7 +132,7 @@ class MiStaffEvent
 
 	void	normalizeDurations()
 	{
-	for(Iterator it = f_Notes.iterator(); it.hasNext();)
+	for(Iterator<MiStaffNote> it = f_Notes.iterator(); it.hasNext();)
 		{
 		MiStaffNote	sn	= (MiStaffNote)it.next();
 		sn.normalizeDuration();
