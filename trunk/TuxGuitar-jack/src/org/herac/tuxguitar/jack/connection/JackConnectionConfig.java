@@ -24,7 +24,7 @@ public class JackConnectionConfig {
 	public void save(){
 		StringBuffer connectionsBuffer = new StringBuffer();
 		
-		Iterator it = this.jackConnectionManager.getJackConnections().iterator();
+		Iterator<JackConnection> it = this.jackConnectionManager.getJackConnections().iterator();
 		while( it.hasNext() ){
 			JackConnection jackConnection = (JackConnection) it.next();
 			if( connectionsBuffer.length() > 0 ){

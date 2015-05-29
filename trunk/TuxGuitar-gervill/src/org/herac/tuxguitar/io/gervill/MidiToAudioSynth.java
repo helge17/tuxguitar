@@ -72,13 +72,13 @@ public class MidiToAudioSynth {
 		this.synthesizer = null;
 	}
 	
-	private Map getDefaultInfo(){
-		Map map = new HashMap();
+	private Map<String, Object> getDefaultInfo(){
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(SYNTHESIZER_LOAD_DEFAULT_SOUNDBANK_PARAM, new Boolean(false));
 		return map;
 	}
 	
-	public void loadSoundbank(List patchList, String soundbankPath) throws Throwable {
+	public void loadSoundbank(List<Patch> patchList, String soundbankPath) throws Throwable {
 		Soundbank soundbank = null;
 		if( soundbankPath == null || soundbankPath.length() == 0 ){
 			soundbank = this.synthesizer.getDefaultSoundbank();
@@ -86,7 +86,7 @@ public class MidiToAudioSynth {
 			soundbank = MidiSystem.getSoundbank(new File(soundbankPath));
 		}
 		
-		Iterator it = patchList.iterator();
+		Iterator<Patch> it = patchList.iterator();
 		while( it.hasNext() ){
 			Patch patch = (Patch)it.next();
 			
@@ -110,11 +110,11 @@ public class MidiToAudioSynth {
 		}
 	}
 	
-	private AudioInputStream invokeOpenStream(Synthesizer synthesizer, AudioFormat audioFormat, Map map) throws Throwable {
-		Class[] methodSignature = new Class[]{AudioFormat.class,Map.class};
+	private AudioInputStream invokeOpenStream(Synthesizer synthesizer, AudioFormat audioFormat, Map<String, Object> map) throws Throwable {
+		Class<?>[] methodSignature = new Class[]{AudioFormat.class,Map.class};
 		Object[] methodArguments = new Object[]{audioFormat, map};
 		
-		Class classInstance = synthesizer.getClass();
+		Class<?> classInstance = synthesizer.getClass();
 		Method method = classInstance.getMethod(SYNTHESIZER_OPEN_STREAM_METHOD, methodSignature);
 		Object returnValue = method.invoke(synthesizer, methodArguments);
 		
@@ -123,18 +123,18 @@ public class MidiToAudioSynth {
 	
 	private Synthesizer createSynthesizer() throws Throwable {
 		ClassLoader classLoader = getClass().getClassLoader();
-		Class classInstance = classLoader.loadClass(SYNTHESIZER_CLASSNAME);
+		Class<?> classInstance = classLoader.loadClass(SYNTHESIZER_CLASSNAME);
 		Object objectInstance = classInstance.getConstructor(new Class[0]).newInstance(new Object[0]);
 		
 		return (Synthesizer) objectInstance;
 	}
 	
 	private Patch createModelPatch(int bank, int program, boolean percussion) throws Throwable {
-		Class[] constructorSignature = new Class[]{int.class, int.class, boolean.class};
+		Class<?>[] constructorSignature = new Class[]{int.class, int.class, boolean.class};
 		Object[] constructorArguments = new Object[]{new Integer(bank), new Integer(program), new Boolean(percussion)};
 		
 		ClassLoader classLoader = getClass().getClassLoader();
-		Class classInstance = classLoader.loadClass(MODEL_PATCH_CLASSNAME);
+		Class<?> classInstance = classLoader.loadClass(MODEL_PATCH_CLASSNAME);
 		Object objectInstance = classInstance.getConstructor(constructorSignature).newInstance(constructorArguments);
 		
 		return (Patch) objectInstance;

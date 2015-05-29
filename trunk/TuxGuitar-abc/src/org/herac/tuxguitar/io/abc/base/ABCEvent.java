@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author peter
  *
  */
-public class ABCEvent implements Comparable {
+public class ABCEvent implements Comparable<ABCEvent> {
 	// types
 	public static final int BAR = 0;
 	public static final int BAR_BAR = 1;
@@ -120,7 +120,7 @@ public class ABCEvent implements Comparable {
 	private int tripletP;
 	private int tripletQ;
 	private int tripletR;
-	private ArrayList lyrics;
+	private ArrayList<String> lyrics;
 	
 	public ABCEvent(int type, String parm, int value) {
 		this.type=type;
@@ -425,28 +425,28 @@ public class ABCEvent implements Comparable {
 		return name;
 	}
 	
-	public int compareTo(Object o) {
-		if(o==null) return 1;
-		if (o instanceof ABCEvent) {
-			ABCEvent e = (ABCEvent) o;
-			int i=type - e.type;
-			if(i!=0) return i;
-			if(grace && !e.grace) return 1;
-			if(e.grace && !grace) return -1;
-			if(grace) {
-				i=sequence - e.sequence;
-				if(i!=0) return i;
-			}
-			i=pitch - e.pitch;
-			if(i!=0) return i;
-			i=ticks - e.ticks;
-			if(i!=0) return i;
-			i = string - e.string;
-			if(i!=0) return i;
-			i = fret - e.fret;
+	public int compareTo(ABCEvent e) {
+		if( e == null ) {
+			return 1;
+		}
+		
+		int i=type - e.type;
+		if(i!=0) return i;
+		if(grace && !e.grace) return 1;
+		if(e.grace && !grace) return -1;
+		if(grace) {
+			i=sequence - e.sequence;
 			if(i!=0) return i;
 		}
-		else return -1;
+		i=pitch - e.pitch;
+		if(i!=0) return i;
+		i=ticks - e.ticks;
+		if(i!=0) return i;
+		i = string - e.string;
+		if(i!=0) return i;
+		i = fret - e.fret;
+		if(i!=0) return i;
+		
 		return 0;
 	}
 
@@ -655,7 +655,7 @@ public class ABCEvent implements Comparable {
 	}
 
 	public void setLyrics(String lyrics) {
-		if(this.lyrics==null) this.lyrics=new ArrayList();
+		if(this.lyrics==null) this.lyrics=new ArrayList<String>();
 		this.lyrics.add(lyrics);
 	}
 

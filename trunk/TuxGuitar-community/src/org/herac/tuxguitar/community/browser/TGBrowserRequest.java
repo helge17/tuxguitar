@@ -32,9 +32,9 @@ public class TGBrowserRequest {
 		this.request += URLEncoder.encode( auth.getAuthCode() , "UTF-8" );
 		
 		if( element != null ){
-			Iterator it = element.getProperties();
+			Iterator<Map.Entry<String, String>> it = element.getProperties();
 			while( it.hasNext() ){
-				Map.Entry property = (Map.Entry) it.next();
+				Map.Entry<String, String> property = it.next();
 				this.request += ("&");
 				this.request += URLEncoder.encode( (String)property.getKey() , "UTF-8" );
 				this.request += ("=");

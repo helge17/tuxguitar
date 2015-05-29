@@ -17,12 +17,12 @@ public class TESong {
 	private TEPercussion[] percussions;
 	private TERhythm[] rhythms;
 	private TETrack[] tracks;
-	private List components;
-	private List tsChanges;
+	private List<TEComponent> components;
+	private List<TETimeSignatureChange> tsChanges;
 	
 	public TESong(){
-		this.components = new ArrayList();
-		this.tsChanges = new ArrayList();
+		this.components = new ArrayList<TEComponent>();
+		this.tsChanges = new ArrayList<TETimeSignatureChange>();
 	}
 	
 	public TERhythm[] getRhythms() {
@@ -137,7 +137,7 @@ public class TESong {
 		this.measures = measures;
 	}
 	
-	public List getComponents() {
+	public List<TEComponent> getComponents() {
 		return this.components;
 	}
 	
@@ -146,7 +146,7 @@ public class TESong {
 	}
 	
 	public TETimeSignature getTimeSignature(int measure){
-		Iterator it = this.tsChanges.iterator();
+		Iterator<TETimeSignatureChange> it = this.tsChanges.iterator();
 		while(it.hasNext()){
 			TETimeSignatureChange change = (TETimeSignatureChange)it.next();
 			if(change.getMeasure() == measure){

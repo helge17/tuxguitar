@@ -88,8 +88,8 @@ public class TGBrowserImpl extends TGBrowser{
 		}
 	}
 	
-	public List listElements() throws TGBrowserException {
-		List elements = new ArrayList();
+	public List<TGBrowserElement> listElements() throws TGBrowserException {
+		List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
 		try {
 			this.client.binary();
 			String[] names = this.client.listNames();
@@ -117,7 +117,7 @@ public class TGBrowserImpl extends TGBrowser{
 				}
 			}
 			if( !elements.isEmpty() ){
-				Collections.sort(elements,new TGBrowserElementComparator());
+				Collections.sort(elements, new TGBrowserElementComparator());
 			}
 		} catch (Throwable throwable) {
 			throw new TGBrowserException(throwable);

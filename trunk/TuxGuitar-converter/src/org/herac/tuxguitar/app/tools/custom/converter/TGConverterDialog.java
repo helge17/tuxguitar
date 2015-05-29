@@ -49,11 +49,11 @@ public class TGConverterDialog implements TGEventListener{
 	protected Button buttonOK;
 	protected Button buttonCancel;
 	
-	protected List outputFormats;
+	protected List<TGConverterFormat> outputFormats;
 	
 	public TGConverterDialog(TGContext context) {
 		this.context = context;
-		this.outputFormats = new ArrayList();
+		this.outputFormats = new ArrayList<TGConverterFormat>();
 	}
 	
 	public TGContext getContext() {
@@ -186,13 +186,13 @@ public class TGConverterDialog implements TGEventListener{
 		
 		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.context);
 		
-		Iterator outputStreams = fileFormatManager.getOutputStreams();
+		Iterator<TGOutputStreamBase> outputStreams = fileFormatManager.getOutputStreams();
 		while(outputStreams.hasNext()){
 			TGOutputStreamBase stream = (TGOutputStreamBase)outputStreams.next();
 			addFileFormats(combo, stream.getFileFormat() , stream );
 		}
 		
-		Iterator exporters = fileFormatManager.getExporters();
+		Iterator<TGRawExporter> exporters = fileFormatManager.getExporters();
 		while (exporters.hasNext()) {
 			TGRawExporter exporter = (TGRawExporter)exporters.next();
 			if( exporter instanceof TGLocalFileExporter ){

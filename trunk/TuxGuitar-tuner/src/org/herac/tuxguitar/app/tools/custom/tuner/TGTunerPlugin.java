@@ -15,8 +15,8 @@ public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolIt
 	public static final String MODULE_ID = "tuxguitar-tuner";
 	
 	protected void doAction() {
-		List strings = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getStrings();
-		Iterator it = strings.iterator();
+		List<TGString> strings = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getStrings();
+		Iterator<TGString> it = strings.iterator();
 		int[] tuning = new int[strings.size()];
 		int i=0;
 		while (it.hasNext()) {

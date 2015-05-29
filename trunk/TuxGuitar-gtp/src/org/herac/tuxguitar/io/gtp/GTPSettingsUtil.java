@@ -58,7 +58,7 @@ public class GTPSettingsUtil {
 	}
 	
 	public void configure(Shell parent) {
-		final List charsets = getAvailableCharsets();
+		final List<String> charsets = getAvailableCharsets();
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
@@ -122,11 +122,11 @@ public class GTPSettingsUtil {
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 	}
 	
-	private List getAvailableCharsets(){
-		List charsets = new ArrayList();
-		Iterator it = Charset.availableCharsets().entrySet().iterator();
+	private List<String> getAvailableCharsets(){
+		List<String> charsets = new ArrayList<String>();
+		Iterator<Map.Entry<String, Charset>> it = Charset.availableCharsets().entrySet().iterator();
 		while( it.hasNext() ){
-			Map.Entry entry = (Map.Entry) it.next();
+			Map.Entry<String, Charset> entry = it.next();
 			charsets.add(entry.getKey());
 		}
 		return charsets;

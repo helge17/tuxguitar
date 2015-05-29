@@ -97,14 +97,14 @@ public class TGCocoa {
 		return (MacToolbarDelegate)Class.forName( MacToolbarDelegate.class.getName() ).newInstance();
 	}
 	
-	private static Object invokeMethod(Class clazz, String methodName, Object[] args) throws Throwable {
+	private static Object invokeMethod(Class<?> clazz, String methodName, Object[] args) throws Throwable {
 		return invokeMethod(clazz, null, methodName, args);
 	}
 	
-	private static Object invokeMethod(Class clazz, Object target, String methodName, Object[] args) throws Throwable {
-		Class[] signature = new Class[args.length];
+	private static Object invokeMethod(Class<?> clazz, Object target, String methodName, Object[] args) throws Throwable {
+		Class<?>[] signature = new Class[args.length];
 		for (int i = 0; i < args.length; i++) {
-			Class thisClass = args[i].getClass();
+			Class<?> thisClass = args[i].getClass();
 			if (thisClass == Integer.class){
 				signature[i] = int.class;
 			}else if (thisClass == Long.class){

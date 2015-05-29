@@ -44,8 +44,8 @@ public class TGBrowserImpl extends TGBrowser {
 		}
 	}
 	
-	public List listElements() throws TGBrowserException {
-		List elements = new ArrayList();
+	public List<TGBrowserElement> listElements() throws TGBrowserException {
+		List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
 		this.connection.getElements(elements , this.element );
 		return elements;
 	}

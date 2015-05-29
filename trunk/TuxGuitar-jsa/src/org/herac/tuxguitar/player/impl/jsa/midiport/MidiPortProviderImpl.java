@@ -24,13 +24,13 @@ public class MidiPortProviderImpl implements MidiOutputPortProvider{
 		this.context = context;
 	}
 	
-	public List listPorts() throws MidiPlayerException{
+	public List<MidiOutputPort> listPorts() throws MidiPlayerException{
 		try {
-			List ports = new ArrayList();
+			List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
 			MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 			for(int i = 0; i < infos.length; i++){
 				try {
-					Iterator it = ports.iterator();
+					Iterator<MidiOutputPort> it = ports.iterator();
 					boolean exists = false;
 					while(it.hasNext()){
 						if( ((MidiOutputPort)it.next()).getKey().equals(infos[i].getName()) ){

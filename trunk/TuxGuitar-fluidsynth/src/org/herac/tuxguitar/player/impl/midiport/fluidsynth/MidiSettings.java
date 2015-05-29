@@ -77,21 +77,21 @@ public class MidiSettings {
 		this.setStringValue(property, ( value ? "yes" : "no" ) );
 	}
 	
-	public List getSoundfonts(){
-		List ports = new ArrayList();
+	public List<String> getSoundfonts(){
+		List<String> paths = new ArrayList<String>();
 		TGConfigManager config = getConfig();
 		
 		int count = config.getIntegerValue("soundfont.count");
 		for(int i = 0; i < count;i ++){
 			String path = config.getStringValue("soundfont.path" + i);
-			if(path != null && path.length() > 0 ){
-				ports.add( path );
+			if( path != null && path.length() > 0 ){
+				paths.add( path );
 			}
 		}
-		return ports;
+		return paths;
 	}
 	
-	public void setSoundfonts(List soundfonts){
+	public void setSoundfonts(List<String> soundfonts){
 		TGConfigManager config = getConfig();
 		config.setValue("soundfont.count", soundfonts.size() );
 		for( int i = 0 ; i < soundfonts.size() ; i ++ ){

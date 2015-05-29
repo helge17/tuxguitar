@@ -94,7 +94,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	private void updateChannelCombos(){
 		GMChannelRoute route = this.router.getRoute(this.channel.getChannelId());
 		
-		List channels = this.router.getFreeChannels(route);
+		List<Integer> channels = this.router.getFreeChannels(route);
 		
 		this.reloadChannelCombo(this.gmChannel1Combo, channels, route.getChannel1(), "gm.settings.channel.value-1");
 		this.reloadChannelCombo(this.gmChannel2Combo, channels, route.getChannel2(), "gm.settings.channel.value-2");
@@ -105,8 +105,9 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.gmChannel2Combo.setEnabled(!playerRunning && !this.channel.isPercussionChannel() && this.gmChannel2Combo.getItemCount() > 0);
 	}
 	
-	private void reloadChannelCombo(Combo combo, List channels, int selected, String valueKey){
-		if(!(combo.getData() instanceof List) || isDifferentList(channels, (List)combo.getData())){
+	@SuppressWarnings("unchecked")
+	private void reloadChannelCombo(Combo combo, List<Integer> channels, int selected, String valueKey){
+		if(!(combo.getData() instanceof List) || isDifferentList(channels, (List<Integer>)combo.getData())){
 			combo.removeAll();
 			combo.setData(channels);
 			for( int i = 0 ; i < channels.size() ; i ++ ){
@@ -121,20 +122,21 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void updateChannel(){
 		int channel1 = -1;
 		int channel2 = -1;
 		int channel1Selection = this.gmChannel1Combo.getSelectionIndex();
 		
 		Object channel1Data = this.gmChannel1Combo.getData();
-		if( channel1Selection >= 0 && channel1Data instanceof List && ((List)channel1Data).size() > channel1Selection ){
-			channel1 = ((Integer)((List)channel1Data).get(channel1Selection)).intValue();
+		if( channel1Selection >= 0 && channel1Data instanceof List && ((List<Integer>)channel1Data).size() > channel1Selection ){
+			channel1 = (((List<Integer>)channel1Data).get(channel1Selection)).intValue();
 		}
 		
 		int channel2Selection = this.gmChannel2Combo.getSelectionIndex();
 		Object channel2Data = this.gmChannel2Combo.getData();
-		if( channel2Selection >= 0 && channel2Data instanceof List && ((List)channel2Data).size() > channel2Selection ){
-			channel2 = ((Integer)((List)channel2Data).get(channel2Selection)).intValue();
+		if( channel2Selection >= 0 && channel2Data instanceof List && ((List<Integer>)channel2Data).size() > channel2Selection ){
+			channel2 = (((List<Integer>)channel2Data).get(channel2Selection)).intValue();
 		}
 		
 		setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_1, Integer.toString(channel1));
@@ -149,7 +151,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	}
 	
 	private TGChannelParameter findChannelParameter( TGChannel tgChannel, String key ){
-		Iterator it = tgChannel.getParameters();
+		Iterator<TGChannelParameter> it = tgChannel.getParameters();
 		while( it.hasNext() ){
 			TGChannelParameter parameter = (TGChannelParameter)it.next();
 			if( parameter.getKey().equals( key ) ){
@@ -169,7 +171,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		return tgChannelParameter;
 	}
 	
-	private boolean isDifferentList(List list1, List list2){
+	private boolean isDifferentList(List<?> list1, List<?> list2){
 		if( list1.size() != list2.size() ){
 			return true;
 		}

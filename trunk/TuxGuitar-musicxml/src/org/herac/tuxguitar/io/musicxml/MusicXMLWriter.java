@@ -113,7 +113,7 @@ public class MusicXMLWriter {
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
 		gmChannelRouterConfigurator.configureRouter(song.getChannels());
 		
-		Iterator tracks = song.getTracks();
+		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
 			TGChannel channel = this.manager.getChannel(song, track.getChannelId());
@@ -137,14 +137,14 @@ public class MusicXMLWriter {
 	}
 	
 	private void writeParts(TGSong song, Node parent){
-		Iterator tracks = song.getTracks();
+		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
 			Node part = this.addAttribute(this.addNode(parent,"part"), "id", "P" + track.getNumber());
 			
 			TGMeasure previous = null;
 			
-			Iterator measures = track.getMeasures();
+			Iterator<TGMeasure> measures = track.getMeasures();
 			while(measures.hasNext()){
 				// TODO: Add multivoice support.
 				TGMeasure srcMeasure = (TGMeasure)measures.next();

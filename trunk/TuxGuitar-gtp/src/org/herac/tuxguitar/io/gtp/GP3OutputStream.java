@@ -81,7 +81,7 @@ public class GP3OutputStream extends GTPOutputStream{
 	}
 	
 	private void writeInfo(TGSong song) throws IOException{
-		List comments = toCommentLines(song.getComments());
+		List<String> comments = toCommentLines(song.getComments());
 		writeStringByteSizeOfInteger(song.getName());
 		writeStringByteSizeOfInteger("");
 		writeStringByteSizeOfInteger(song.getArtist());
@@ -487,7 +487,7 @@ public class GP3OutputStream extends GTPOutputStream{
 			channels[i].setTremolo((short)0);
 		}
 		
-		Iterator it = song.getChannels();
+		Iterator<TGChannel> it = song.getChannels();
 		while (it.hasNext()) {
 			TGChannel tgChannel = (TGChannel) it.next();
 			GMChannelRoute gmChannelRoute = getChannelRoute(tgChannel.getChannelId());
@@ -525,8 +525,8 @@ public class GP3OutputStream extends GTPOutputStream{
 		return  (byte) ((s + 1) / 8);
 	}
 	
-	private List toCommentLines( String comments ){
-		List lines = new ArrayList();
+	private List<String> toCommentLines( String comments ){
+		List<String> lines = new ArrayList<String>();
 		
 		String line = comments;
 		while( line.length() > Byte.MAX_VALUE ) {

@@ -166,9 +166,9 @@ public class MidiSynth {
 		return value.getValue();
 	}
 	
-	public List getPropertyOptions( String key ){
-		List options = new ArrayList();
-		if(isInitialized()){
+	public <T> List<T> getPropertyOptions( String key ){
+		List<T> options = new ArrayList<T>();
+		if( isInitialized() ){
 			this.getPropertyOptions(this.instance, key, options);
 		}
 		return options;
@@ -246,7 +246,7 @@ public class MidiSynth {
 	
 	private native void getIntegerPropertyRange(long instance, String key , IntegerRef minimum , IntegerRef maximum );
 	
-	private native void getPropertyOptions(long instance, String key , List options );
+	private native <T> void getPropertyOptions(long instance, String key , List<T> options );
 	
 	private native void isRealtimeProperty(long instance, String key , BooleanRef ref );
 }

@@ -115,7 +115,7 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 	}
 	
 	protected boolean isPercussionChannel( TGSong song, int channelId ){
-		Iterator it = song.getChannels();
+		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
 			TGChannel channel = (TGChannel)it.next();
 			if( channel.getChannelId() == channelId ){

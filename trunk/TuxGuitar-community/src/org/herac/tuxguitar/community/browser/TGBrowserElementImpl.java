@@ -12,13 +12,13 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 public class TGBrowserElementImpl extends TGBrowserElement {
 	
 	private TGBrowserElementImpl parent;
-	private Map properties;
+	private Map<String, String> properties;
 	private String url;
 	
 	public TGBrowserElementImpl(String name) {
 		super(name);
 		this.url = null;
-		this.properties = new HashMap();
+		this.properties = new HashMap<String, String>();
 	}
 	
 	public TGBrowserElementImpl getParent() {
@@ -45,7 +45,7 @@ public class TGBrowserElementImpl extends TGBrowserElement {
 		return (String)this.properties.get( key );
 	}
 	
-	public Iterator getProperties(){
+	public Iterator<Map.Entry<String, String>> getProperties(){
 		return this.properties.entrySet().iterator();
 	}
 	

@@ -151,7 +151,7 @@ public class TGConverter {
 	}
 	
 	private TGSong importSong(TGFactory factory, String filename) {
-		Iterator importers = TGFileFormatManager.getInstance(this.context).getImporters();
+		Iterator<TGRawImporter> importers = TGFileFormatManager.getInstance(this.context).getImporters();
 		while (importers.hasNext() ) {
 			try {
 				TGRawImporter rawImporter = (TGRawImporter)importers.next();

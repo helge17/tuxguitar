@@ -691,7 +691,7 @@ public class LilypondOutputStream {
 	}
 	
 	private void addEffectsBeforeBeat(TGVoice voice){
-		List graceNotes = new ArrayList();
+		List<TGNote> graceNotes = new ArrayList<TGNote>();
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
 			TGNote note = voice.getNote(i);
 			if( note.getEffect().isGrace() ){
@@ -797,7 +797,7 @@ public class LilypondOutputStream {
 					return false;
 				}
 				// Check if is there any note at same string.
-				Iterator it = voice.getNotes().iterator();
+				Iterator<TGNote> it = voice.getNotes().iterator();
 				while( it.hasNext() ){
 					TGNote current = (TGNote) it.next();
 					if(current.getString() == note.getString()){
@@ -889,7 +889,7 @@ public class LilypondOutputStream {
 	
 	private String getLilypondTuning(TGTrack track){
 		String tuning = ("\\with { stringTunings = #`( ");
-		Iterator strings = track.getStrings().iterator();
+		Iterator<TGString> strings = track.getStrings().iterator();
 		while(strings.hasNext()){
 			TGString string = (TGString)strings.next();
 			if ( this.settings.getLilypondVersion().compareTo("2.13.46") < 0) {
@@ -940,10 +940,10 @@ public class LilypondOutputStream {
 		private boolean repeatAlternativeOpen;
 		private boolean divisionTypeOpen;
 		private boolean multipleVoices;
-		private List skippedLyricBeats;
+		private List<String> skippedLyricBeats;
 		
 		protected LilypondTempData(){
-			this.skippedLyricBeats = new ArrayList();
+			this.skippedLyricBeats = new ArrayList<String>();
 			this.reset();
 		}
 		
@@ -1007,7 +1007,7 @@ public class LilypondOutputStream {
 			this.skippedLyricBeats.add( duration );
 		}
 		
-		public List getSkippedLyricBeats(){
+		public List<String> getSkippedLyricBeats(){
 			return this.skippedLyricBeats;
 		}
 	}

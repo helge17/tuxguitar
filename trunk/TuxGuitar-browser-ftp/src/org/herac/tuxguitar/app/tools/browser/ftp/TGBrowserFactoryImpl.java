@@ -174,11 +174,11 @@ class TGBrowserDataDialog{
 				String proxyUser = proxyUserText.getText();
 				String proxyPwd = proxyPwdText.getText();
 				
-				List errors = validate(name, host, proxyHost, proxyPortStr, hasProxy.getSelection());
+				List<String> errors = validate(name, host, proxyHost, proxyPortStr, hasProxy.getSelection());
 				if( !errors.isEmpty() ){
 					StringWriter buffer = new StringWriter();
 					PrintWriter writer = new PrintWriter( buffer );
-					Iterator it = errors.iterator();
+					Iterator<String> it = errors.iterator();
 					while( it.hasNext() ){
 						writer.println( "*" + (String)it.next() );
 					}
@@ -208,13 +208,13 @@ class TGBrowserDataDialog{
 		return this.data;
 	}
 	
-	protected List validate(String name, String host, String pHost, String pPort, boolean pEnabled){
-		List errors = new ArrayList();
+	protected List<String> validate(String name, String host, String pHost, String pPort, boolean pEnabled){
+		List<String> errors = new ArrayList<String>();
 		// Check the Name
 		if (name == null || name.trim().length() == 0) {
 			errors.add("Please enter the Name");
 		}else{
-			Iterator it = TGBrowserManager.instance().getCollections();
+			Iterator<TGBrowserCollection> it = TGBrowserManager.instance().getCollections();
 			while(it.hasNext()){
 				TGBrowserCollection collection = (TGBrowserCollection)it.next();
 				if(name.equals(collection.getData().getTitle())){

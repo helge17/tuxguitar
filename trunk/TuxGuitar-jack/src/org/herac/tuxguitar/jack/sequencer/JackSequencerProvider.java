@@ -14,16 +14,16 @@ import org.herac.tuxguitar.util.TGContext;
 public class JackSequencerProvider implements MidiSequencerProvider{
 	
 	private TGContext context;
-	private List jackSequencers;
+	private List<MidiSequencer> jackSequencers;
 	private JackClientProvider jackClientProvider;
 	
 	public JackSequencerProvider(TGContext context, JackClientProvider jackClientProvider){
 		this.context = context;
 		this.jackClientProvider = jackClientProvider;
-		this.jackSequencers = new ArrayList();
+		this.jackSequencers = new ArrayList<MidiSequencer>();
 	}
 	
-	public List listSequencers() throws MidiPlayerException {
+	public List<MidiSequencer> listSequencers() throws MidiPlayerException {
 		if( this.jackSequencers.isEmpty() ){
 			JackClient jackClient = this.jackClientProvider.getJackClient();
 			if( jackClient != null ){
@@ -38,7 +38,7 @@ public class JackSequencerProvider implements MidiSequencerProvider{
 	}
 	
 	public void closeAll() throws MidiPlayerException {
-		Iterator it = listSequencers().iterator();
+		Iterator<MidiSequencer> it = listSequencers().iterator();
 		while(it.hasNext()){
 			MidiSequencer sequencer = (MidiSequencer)it.next();
 			sequencer.close();

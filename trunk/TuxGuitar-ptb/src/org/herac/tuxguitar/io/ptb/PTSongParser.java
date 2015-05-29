@@ -155,7 +155,7 @@ public class PTSongParser {
 			}
 			
 			// If track was already created, but it's not in use
-			Iterator it = tgSong.getTracks();
+			Iterator<TGTrack> it = tgSong.getTracks();
 			while( it.hasNext() ){
 				TGTrack tgTrack = (TGTrack )it.next();
 				if( hasSameInfo(tgSong, tgTrack , info)){
@@ -212,7 +212,7 @@ public class PTSongParser {
 		tgVoice.getDuration().getDivision().setTimes(beat.getTimes());
 		tgVoice.getDuration().getDivision().setEnters(beat.getEnters());
 		
-		Iterator it = beat.getNotes().iterator();
+		Iterator<PTNote> it = beat.getNotes().iterator();
 		while(it.hasNext()){
 			PTNote ptNote = (PTNote)it.next();
 			if( ptNote.getString() <= measure.getTrack().stringCount() && ptNote.getValue() >= 0 ){

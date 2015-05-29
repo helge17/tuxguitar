@@ -33,7 +33,7 @@ public class PTSongSynchronizerUtil {
 	}
 	
 	private static void applyInfos(PTTrack src, PTTrack dst){
-		Iterator it = src.getInfos().iterator();
+		Iterator<PTTrackInfo> it = src.getInfos().iterator();
 		while( it.hasNext() ){
 			PTTrackInfo srcInfo = (PTTrackInfo)it.next();
 			dst.getInfos().add( srcInfo.getClone() );
@@ -41,10 +41,10 @@ public class PTSongSynchronizerUtil {
 	}
 	
 	private static void applyRepeats(PTTrack src, PTTrack dst){
-		applyRepeats(src, dst, new PTIndex(0,0,0), new PTSongSynchronizerData(), new ArrayList() );
+		applyRepeats(src, dst, new PTIndex(0,0,0), new PTSongSynchronizerData(), new ArrayList<PTDirection>() );
 	}
 	
-	private static void applyRepeats(PTTrack src, PTTrack dst, PTIndex index, PTSongSynchronizerData rd, List useds){
+	private static void applyRepeats(PTTrack src, PTTrack dst, PTIndex index, PTSongSynchronizerData rd, List<PTDirection> useds){
 		
 		for( int s = index.s; s < src.getSections().size(); s ++){
 			PTSection srcSection = (PTSection) src.getSections().get(s);
@@ -287,7 +287,7 @@ public class PTSongSynchronizerUtil {
 		}
 	}
 	
-	private static boolean canUseDirection(PTDirection direction, List useds){
+	private static boolean canUseDirection(PTDirection direction, List<PTDirection> useds){
 		boolean inUse = false;
 		for( int i = 0 ; i < useds.size() && !inUse; i ++ ){
 			PTDirection used = (PTDirection)useds.get( i );
@@ -299,11 +299,11 @@ public class PTSongSynchronizerUtil {
 		return true;
 	}
 	
-	private static PTIndex findUnusedDirection(PTTrack src, List useds, int value, int sEndIndex, int pEndIndex){
+	private static PTIndex findUnusedDirection(PTTrack src, List<PTDirection> useds, int value, int sEndIndex, int pEndIndex){
 		return findUnusedDirection(src, useds, value, sEndIndex, pEndIndex, 0 );
 	}
 	
-	private static PTIndex findUnusedDirection(PTTrack src, List useds, int value, int sEndIndex, int pEndIndex, int activeSymbol){
+	private static PTIndex findUnusedDirection(PTTrack src, List<PTDirection> useds, int value, int sEndIndex, int pEndIndex, int activeSymbol){
 		for( int s = 0; s < ( sEndIndex >= 0 ? sEndIndex+1 : src.getSections().size() ); s ++){
 			PTSection section = (PTSection) src.getSections().get( s );
 			

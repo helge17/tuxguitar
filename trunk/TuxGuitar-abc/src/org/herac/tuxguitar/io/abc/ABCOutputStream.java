@@ -1051,7 +1051,7 @@ public class ABCOutputStream {
 	}
 	
 	private void addEffectsBeforeBeat(TGVoice voice){
-		List graceNotes = new ArrayList();
+		List<TGNote> graceNotes = new ArrayList<TGNote>();
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
 			TGNote note = voice.getNote(i);
 			if( note.getEffect().isGrace() ){
@@ -1093,7 +1093,7 @@ public class ABCOutputStream {
 					return false;
 				}
 				// Check if is there any note at same string.
-				Iterator it = voice.getNotes().iterator();
+				Iterator<TGNote> it = voice.getNotes().iterator();
 				while( it.hasNext() ){
 					TGNote current = (TGNote) it.next();
 					if(current.getString() == note.getString()){

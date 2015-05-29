@@ -2,8 +2,8 @@ package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 
 import java.util.List;
 
+import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.player.impl.midiport.coreaudio.MidiReceiverImpl;
 
 public class MidiPortReaderCoreAudio implements MidiOutputPortProvider{
 
@@ -13,7 +13,7 @@ public class MidiPortReaderCoreAudio implements MidiOutputPortProvider{
 		super();
 	}
 	
-	public List listPorts() {
+	public List<MidiOutputPort> listPorts() {
 		if(!midiOut.isOpen()){
 			midiOut.open();
 		}

@@ -5,19 +5,19 @@ import java.util.List;
 
 public class PTTrack {
 	
-	private List sections;
-	private List infos;
+	private List<PTSection> sections;
+	private List<PTTrackInfo> infos;
 	
 	public PTTrack(){
-		this.sections = new ArrayList();
-		this.infos = new ArrayList();
+		this.sections = new ArrayList<PTSection>();
+		this.infos = new ArrayList<PTTrackInfo>();
 	}
 	
-	public List getInfos(){
+	public List<PTTrackInfo> getInfos(){
 		return this.infos;
 	}
 	
-	public List getSections(){
+	public List<PTSection> getSections(){
 		return this.sections;
 	}
 	

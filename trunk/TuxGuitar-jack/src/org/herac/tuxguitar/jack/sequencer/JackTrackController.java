@@ -8,13 +8,13 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 public class JackTrackController {
 	
 	
-	private List tracks;
+	private List<JackTrack> tracks;
 	private JackSequencer sequencer;
 	private boolean anySolo;
 	
 	public JackTrackController(JackSequencer sequencer){
 		this.sequencer = sequencer;
-		this.tracks = new ArrayList();
+		this.tracks = new ArrayList<JackTrack>();
 		this.anySolo = false;
 	}
 	
