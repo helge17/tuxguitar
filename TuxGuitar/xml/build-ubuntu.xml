@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Tux Guitar" basedir="." >
+	<description>
+		Tux-Guitar
+	</description>
+	
+	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
+	
+	<target name="clean" >
+		<delete quiet="true" file="build.sh" />
+		<delete quiet="true" file="tuxguitar-${dist.version}.deb" />
+		<delete quiet="true" dir="tuxguitar-${dist.version}" />
+	</target>
+	
+	<target name="install" depends="package" />
+	
+	<target name="build" >
+		<echo file="${file.properties}" append="false">font.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,10,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=tuxguitar.sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.port=Gervill${line.separator}</echo>
+		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
+	</target>
+	
+	<target name="package" >
+		<mkdir dir="tuxguitar-${dist.version}/DEBIAN" />
+		<mkdir dir="tuxguitar-${dist.version}${dist.jar.path}" />
+		<mkdir dir="tuxguitar-${dist.version}${dist.bin.path}" />
+		<mkdir dir="tuxguitar-${dist.version}${dist.lib.path}" />
+		<mkdir dir="tuxguitar-${dist.version}${dist.share.path}" />
+		<mkdir dir="tuxguitar-${dist.version}${dist.doc.path}" />
+		<mkdir dir="tuxguitar-${dist.version}/usr/share/applications" />
+		<mkdir dir="tuxguitar-${dist.version}/usr/share/mime/packages" />
+		
+		<copy todir="tuxguitar-${dist.version}${dist.jar.path}">
+			<fileset file="${build.jar}"/>
+		</copy>
+		<copy todir="tuxguitar-${dist.version}${dist.lib.path}">
+			<fileset dir="${build.lib.path}"/>
+		</copy>
+		<copy todir="tuxguitar-${dist.version}${dist.share.path}">
+			<fileset dir="${build.share.path}"/>
+		</copy>
+		<copy todir="tuxguitar-${dist.version}${dist.doc.path}">
+			<fileset dir="${build.doc.path}"/>
+		</copy>
+		
+		<property name="file.control" value="tuxguitar-${dist.version}/DEBIAN/control" />
+		<echo file="${file.control}" append="false">Package: tuxguitar${line.separator}</echo>
+		<echo file="${file.control}" append="true">Version: ${dist.version}${line.separator}</echo>
+		<echo file="${file.control}" append="true">Architecture: i386${line.separator}</echo>
+		<echo file="${file.control}" append="true">Depends: openjdk-6-jre | sun-java6-jre | sun-java5-jre | java-gcj-compat-headless | java-virtual-machine, libitext-java, libswt-gtk-3.4-java | libswt3.2-gtk-java, libswt-cairo-gtk-3.4-jni | libswt3.2-gtk-java, libswt-mozilla-gtk-3.4-jni | libswt3.2-gtk-java ${line.separator}</echo>
+		<echo file="${file.control}" append="true">Priority: optional${line.separator}</echo>
+		<echo file="${file.control}" append="true">Section: Multimedia${line.separator}</echo>
+		<echo file="${file.control}" append="true">Maintainer: Julian Casadesus julian@casadesus.com.ar${line.separator}</echo>
+		<echo file="${file.control}" append="true">Description: TuxGuitar is a multitrack guitar tablature editor and player${line.separator}</echo>
+		
+		<property name="file.post-install" value="tuxguitar-${dist.version}/DEBIAN/postinst" />
+		<echo file="${file.post-install}" append="false">#!/bin/sh${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">set -e${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">if [ "$1" = "configure" ]; then${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">	if [ -x "`which update-mime-database 2&#60;/dev/null`" ]; then${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">		update-mime-database /usr/share/mime${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">	fi${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">	if [ -x "`which update-desktop-database 2&#60;/dev/null`" ]; then${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">		update-desktop-database -q${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">	fi${line.separator}</echo>
+		<echo file="${file.post-install}" append="true">fi${line.separator}</echo>
+		<chmod file="${file.post-install}" perm="755"/>
+		
+		<property name="file.post-uninstall" value="tuxguitar-${dist.version}/DEBIAN/postrm" />
+		<echo file="${file.post-uninstall}" append="false">#!/bin/sh${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">set -e${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">if [ "$1" = "remove" ]; then${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">	if [ -x "`which update-mime-database 2&#60;/dev/null`" ]; then${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">		update-mime-database /usr/share/mime${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">	fi${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">	if [ -x "`which update-desktop-database 2&#60;/dev/null`" ]; then${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">		update-desktop-database -q${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">	fi${line.separator}</echo>
+		<echo file="${file.post-uninstall}" append="true">fi${line.separator}</echo>
+		<chmod file="${file.post-uninstall}" perm="755"/>
+		
+		<property name="file.desktop" value="tuxguitar-${dist.version}/usr/share/applications/tuxguitar.desktop" />
+		<echo file="${file.desktop}" append="false">[Desktop Entry]${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Name=TuxGuitar${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">GenericName=TuxGuitar${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Comment=TuxGuitar${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Type=Application${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Categories=Application;AudioVideo;${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Exec=tuxguitar %F${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Icon=${dist.share.path}skins${file.separator}Lavender${file.separator}icon-96x96.png${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Terminal=false${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">StartupNotify=false${line.separator}</echo>
+		
+		<property name="file.mime" value="tuxguitar-${dist.version}/usr/share/mime/packages/tuxguitar.xml" />
+		<echo file="${file.mime}" append="false">&#60;?xml version="1.0" encoding="UTF-8"?&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">&#60;mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;mime-type type="audio/x-tuxguitar"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;comment&#62;TuxGuitar file&#60;/comment&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.tg"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;/mime-type&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;mime-type type="audio/x-gtp"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;comment&#62;GuitarPro file&#60;/comment&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gtp"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gp3"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gp4"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gp5"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;/mime-type&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;mime-type type="audio/x-ptb"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;comment&#62;PowerTab file&#60;/comment&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.ptb"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;/mime-type&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">&#60;/mime-info&#62;${line.separator}</echo>
+		
+		<property name="file.script" value="tuxguitar-${dist.version}${dist.bin.path}tuxguitar" />
+		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>
+		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`dirname "$0"`${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`cd "$DIR_NAME"; pwd`${line.separator}</echo>
+		<echo file="${file.script}" append="true">cd "${DIR_NAME}"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JAVA${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ -z $JAVA ]; then${line.separator}</echo>
+		<echo file="${file.script}" append="true">	JAVA=${JAVA_HOME}/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=/usr/lib/jvm/java-6-sun/jre/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=/usr/lib/jvm/java-1.5.0-sun/jre/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=/usr/lib/jvm/java-7-icedtea/jre/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=/usr/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=java${line.separator}</echo>
+		<echo file="${file.script}" append="true">fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MOZILLA_FIVE_HOME${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ -z $MOZILLA_FIVE_HOME ]; then${line.separator}</echo>
+		<echo file="${file.script}" append="true">	MOZILLA_FIVE_HOME=/usr/lib/firefox${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib/mozilla${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib/iceweasel${line.separator}</echo>
+		<echo file="${file.script}" append="true">fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${dist.lib.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${lib.swt.jni}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${dist.share.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
+		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.app.TGMain${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
+		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##EXPORT VARS${line.separator}</echo>
+		<echo file="${file.script}" append="true">export CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">export LD_LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">export MOZILLA_FIVE_HOME${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
+		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.share.path="${dist.share.path}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
+		<chmod file="${file.script}" perm="755"/>
+		
+		<exec executable="dpkg">
+			<arg value="--build"/>
+			<arg value="tuxguitar-${dist.version}"/>
+		</exec>
+		
+	</target>
+	
+</project>

@@ -1,0 +1,144 @@
+package org.herac.tuxguitar.app.view.dialog.keybindings;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
+import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
+import org.herac.tuxguitar.app.util.ConfirmDialog;
+import org.herac.tuxguitar.app.util.DialogUtils;
+
+public class TGKeyBindingSelector {
+	
+	protected Shell dialog;
+	protected TGKeyBindingEditor editor;
+	protected KeyBinding keyBinding;
+	protected String action;
+	
+	public TGKeyBindingSelector(TGKeyBindingEditor editor,KeyBindingAction keyBindingAction){
+		this.editor = editor;
+		this.keyBinding = keyBindingAction.getKeyBinding();
+		this.action = keyBindingAction.getAction();
+	}
+	
+	public KeyBinding select(Shell parent){
+		this.dialog = DialogUtils.newDialog(parent,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+		this.dialog.setLayout(new GridLayout());
+		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
+		
+		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
+		group.setLayout(new GridLayout());
+		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		group.setText(TuxGuitar.getProperty(this.action));
+		
+		final Composite composite = new Composite(group,SWT.NONE);
+		composite.setLayout(new GridLayout(2,false));
+		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		composite.setFocus();
+		composite.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				KeyBinding kb = new KeyBinding(e.keyCode,e.stateMask);
+				if(kb.isSameAs(TGKeyBindingSelector.this.keyBinding) || isValid(kb)){
+					if(TGKeyBindingSelector.this.keyBinding == null){
+						TGKeyBindingSelector.this.keyBinding = new KeyBinding();
+					}
+					TGKeyBindingSelector.this.keyBinding.setKey(kb.getKey());
+					TGKeyBindingSelector.this.keyBinding.setMask(kb.getMask());
+				}
+				TGKeyBindingSelector.this.dialog.dispose();
+			}
+		});
+		
+		Label iconLabel = new Label(composite, SWT.CENTER );
+		iconLabel.setImage(iconLabel.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
+		iconLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		
+		Label textLabel = new Label(composite,SWT.CENTER);
+		textLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		textLabel.setText(TuxGuitar.getProperty("key-bindings-editor-push-a-key"));
+		
+		FontData[] fd = textLabel.getFont().getFontData();
+		if(fd != null && fd.length > 0){
+			final Font font = new Font(textLabel.getDisplay(),new FontData( fd[0].getName(), 14 , SWT.BOLD) );
+			textLabel.setFont(font);
+			textLabel.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent arg0) {
+					font.dispose();
+				}
+			});
+		}
+		
+		//------------------BUTTONS--------------------------
+		Composite buttons = new Composite(this.dialog, SWT.NONE);
+		buttons.setLayout(new GridLayout(2,false));
+		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		
+		final Button buttonClean = new Button(buttons, SWT.PUSH);
+		buttonClean.setText(TuxGuitar.getProperty("clean"));
+		buttonClean.setLayoutData(getButtonData());
+		buttonClean.addMouseListener(new MouseAdapter() {
+			public void mouseUp(MouseEvent e) {
+				composite.setFocus();
+			}
+		});
+		buttonClean.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				TGKeyBindingSelector.this.keyBinding = null;
+				TGKeyBindingSelector.this.dialog.dispose();
+			}
+		});
+		
+		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+		buttonCancel.setLayoutData(getButtonData());
+		buttonCancel.addMouseListener(new MouseAdapter() {
+			public void mouseUp(MouseEvent e) {
+				composite.setFocus();
+			}
+		});
+		buttonCancel.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				TGKeyBindingSelector.this.dialog.dispose();
+			}
+		});
+		
+		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		
+		return this.keyBinding;
+	}
+	
+	private GridData getButtonData(){
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.minimumWidth = 80;
+		data.minimumHeight = 25;
+		return data;
+	}
+	
+	protected boolean isValid(KeyBinding kb){
+		if(this.editor.exists(kb)){
+			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("key-bindings-editor-override"));
+			confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
+			if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_NO) == ConfirmDialog.STATUS_NO){
+				return false;
+			}
+		}
+		return true;
+	}
+}

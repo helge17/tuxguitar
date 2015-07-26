@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Tux Guitar" basedir="." >
+	<description>
+		Tux-Guitar
+	</description>
+	
+	<property name="file.script" value="tuxguitar" />
+	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
+	<property name="file.description" value="${build.path}${file.separator}about_description.dist" />
+	
+	<target name="clean" >
+		<delete quiet="true" file="tuxguitar" />
+	</target>
+	
+	<target name="install" >
+		<mkdir dir="${dist.dst.path}${dist.bin.path}" />
+		<copy todir="${dist.dst.path}${dist.bin.path}">
+			<fileset file="${file.script}"/>
+		</copy>
+		<chmod file="${dist.dst.path}${dist.bin.path}/${file.script}" perm="755"/>
+	</target>
+	
+	<target name="build"  >
+		<property name="et" value="&gt;" />
+		<echo file="${file.properties}" append="false">font.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,10,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=tuxguitar.sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.port=Gervill${line.separator}</echo>
+		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
+		
+		<echo file="${file.description}" append="true">${line.separator}</echo>
+		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
+		
+		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>
+		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`dirname "$0"`${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`cd "$DIR_NAME"; pwd`${line.separator}</echo>
+		<echo file="${file.script}" append="true">cd "${DIR_NAME}"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JAVA${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ -z $JAVA ]; then${line.separator}</echo>
+		<echo file="${file.script}" append="true">	JAVA=${JAVA_HOME}/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=/usr/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=java${line.separator}</echo>
+		<echo file="${file.script}" append="true">fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MOZILLA_FIVE_HOME${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ -z $MOZILLA_FIVE_HOME ]; then${line.separator}</echo>
+		<echo file="${file.script}" append="true">	MOZILLA_FIVE_HOME=/usr/lib/firefox${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib/mozilla${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib/iceweasel${line.separator}</echo>
+		<echo file="${file.script}" append="true">fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${lib.swt.jni}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${dist.share.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
+		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.app.TGMain${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
+		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##EXPORT VARS${line.separator}</echo>
+		<echo file="${file.script}" append="true">export CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">export LD_LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">export MOZILLA_FIVE_HOME${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
+		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.share.path="${dist.share.path}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
+		<chmod file="${file.script}" perm="755"/>
+	</target>
+	
+	<target name="package" />
+	
+</project>

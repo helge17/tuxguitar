@@ -1,0 +1,32 @@
+TuxGuitar Dev changes:
+
+* Add show/hide toolbars feature.
+* Add let ring support
+* Add song templates support
+* Add count down support
+* Add bank selection support
+* Soundfont selection support in gervill plugin
+* Better support in jack plugin
+* New oxygen skin
+* New gpx importer plugin
+* New svg exporter plugin
+* New image exporter plugin 
+--* New abc exporter and importer plugin.
+
+TuxGuitar 1.2 changes:
+
+* Fix some bugs
+* Support measure range to loop
+* Transpose notes feature
+* Optionally transpose afected notes when change tuning
+* Move beats left|right support
+* More song properties options.
+* Add multiple measure support
+* Clean multiple measure support
+* Number of pastes support
+* Better lilypond plugin
+* Better fluidsynth plugin
+* New jack plugin
+* New community integration plugin
+* New cocoa integration plugin
+* New audio unit plugin

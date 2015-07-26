@@ -1,0 +1,21 @@
+
+* Soporte para multi idioma en notas y acordes (Do, Re, Mi, etc)
+
+* new file format plugins. (lilypond, rosegarden, noteedit, kguitar, xml.. etc)
+
+* Let ring effect
+
+* Soporte para cambio de instrumento en la pista.
+
+* Partitura de percusion
+
+* Preview effects 
+
+* Beat effects
+
+* clear measures [range]
+
+* multiple staff scores
+
+* MusicXML importer
+
