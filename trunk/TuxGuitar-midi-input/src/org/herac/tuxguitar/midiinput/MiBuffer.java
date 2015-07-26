@@ -19,7 +19,7 @@ class MiBuffer
 	private	long		f_StartTime		= -1;				// first MIDI time stamp [microseconds]
 	private	long		f_StopTime		= -1;				// last MIDI time stamp [microseconds]
 
-	private	boolean		s_TESTING = true;
+	private	boolean		s_TESTING = false;
 
 
 	public void startRecording(long inTimeStamp)

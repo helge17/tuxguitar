@@ -4,13 +4,10 @@ import java.util.Iterator;
 import java.util.TreeSet;
 //import java.util.Arrays;	// just for debugging
 
-
-
-
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.impl.tools.TGSelectScaleAction;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 class MiScaleFinder
 {
@@ -178,15 +175,19 @@ class MiScaleFinder
 
 	static public void		selectScale(final int inIndex, final int inKey)
 	{
-	try	{
-		TGSynchronizer.instance().execute( new TGSynchronizer.TGRunnable() {
-			public void run() throws TGException {
-				TuxGuitar.getInstance().getScaleManager().selectScale(inIndex, inKey);
-			}
-		});
-		}
-	catch(Throwable e) {
-		e.printStackTrace();
-		}
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGSelectScaleAction.NAME);
+		tgActionProcessor.setAttribute(TGSelectScaleAction.ATTRIBUTE_INDEX, inIndex);
+		tgActionProcessor.setAttribute(TGSelectScaleAction.ATTRIBUTE_KEY, inKey);
+		tgActionProcessor.process();
+//	try	{
+//		TGSynchronizer.instance().execute( new Runnable() {
+//			public void run() throws TGException {
+//				TuxGuitar.getInstance().getScaleManager().selectScale(inIndex, inKey);
+//			}
+//		});
+//		}
+//	catch(Throwable e) {
+//		e.printStackTrace();
+//		}
 	}
 }

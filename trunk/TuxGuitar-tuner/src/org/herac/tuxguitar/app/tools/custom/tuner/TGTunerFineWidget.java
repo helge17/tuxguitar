@@ -12,9 +12,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGColorImpl;
-import org.herac.tuxguitar.app.editors.TGFontImpl;
-import org.herac.tuxguitar.app.editors.TGPainterImpl;
+import org.herac.tuxguitar.app.graphics.TGColorImpl;
+import org.herac.tuxguitar.app.graphics.TGFontImpl;
+import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 
 /**

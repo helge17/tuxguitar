@@ -73,7 +73,7 @@ class MidiReceiverImpl implements GMReceiver{
 	protected synchronized void open() throws Throwable{
 		if(!this.device.isOpen()){
 			final MidiDevice device = this.device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+			TGSynchronizer.instance().execute(new Runnable() {
 				public void run() throws TGException {
 					try{
 						device.open();
@@ -85,7 +85,7 @@ class MidiReceiverImpl implements GMReceiver{
 		}
 		if(this.receiver == null){
 			final MidiDevice device = this.device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+			TGSynchronizer.instance().execute(new Runnable() {
 				public void run() throws TGException {
 					try{
 						setReceiver(device.getReceiver());
@@ -100,7 +100,7 @@ class MidiReceiverImpl implements GMReceiver{
 	protected synchronized void close() throws Throwable{
 		if(this.receiver != null){
 			final Receiver receiver = this.receiver;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+			TGSynchronizer.instance().execute(new Runnable() {
 				public void run() throws TGException {
 					receiver.close();
 					setReceiver(null);
@@ -109,7 +109,7 @@ class MidiReceiverImpl implements GMReceiver{
 		}
 		if(this.device.isOpen()){
 			final MidiDevice device = this.device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
+			TGSynchronizer.instance().execute(new Runnable() {
 				public void run() throws TGException {
 					device.close();
 				}

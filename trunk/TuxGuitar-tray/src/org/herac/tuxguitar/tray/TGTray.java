@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGTray implements TGEventListener {
 	
@@ -21,11 +22,11 @@ public class TGTray implements TGEventListener {
 	private TGTrayIcon icon;
 	private TGTrayMenu menu;
 	
-	public TGTray(){
+	public TGTray(TGContext context){
 		this.display = TuxGuitar.getInstance().getDisplay();
 		this.tray = this.display.getSystemTray();
 		this.icon = new TGTrayIcon();
-		this.menu = new TGTrayMenu();
+		this.menu = new TGTrayMenu(context);
 		TuxGuitar.getInstance().getIconManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 	}

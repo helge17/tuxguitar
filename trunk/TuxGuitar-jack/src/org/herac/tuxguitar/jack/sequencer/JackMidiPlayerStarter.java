@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -31,7 +31,7 @@ public class JackMidiPlayerStarter implements TGEventListener {
 	}
 	
 	public void start(){
-		TuxGuitar.getInstance().getTransport().play();
+		TGTransport.getInstance(this.context).play();
 	}
 	
 	public void processCountDownStarted() {
@@ -50,7 +50,7 @@ public class JackMidiPlayerStarter implements TGEventListener {
 	
 	public void processEvent(TGEvent event) {
 		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			int type = ((Integer)event.getProperty(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
+			int type = ((Integer)event.getAttribute(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
 			if( type == MidiPlayerEvent.NOTIFY_COUNT_DOWN_STARTED ){
 				this.processCountDownStarted();
 			} else if( type == MidiPlayerEvent.NOTIFY_COUNT_DOWN_STOPPED ){

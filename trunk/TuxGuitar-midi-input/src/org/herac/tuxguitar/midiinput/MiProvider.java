@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.midiinput;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -9,24 +9,24 @@ import javax.sound.midi.ShortMessage;
 import javax.swing.Timer;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionLock;
-import org.herac.tuxguitar.app.editors.TablatureEditor;
-import org.herac.tuxguitar.app.editors.fretboard.FretBoard;
-import org.herac.tuxguitar.app.editors.tab.Caret;
+import org.herac.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
+import org.herac.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
-import org.herac.tuxguitar.app.undo.undoables.measure.UndoableMeasureGeneric;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoard;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGeneric;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MiProvider
 {
@@ -215,7 +215,7 @@ static private	MiProvider	s_Instance;
 		{
 		int		fret = inPitch - stringFirstPitch;
 
-		if(fret >= 0 && fret < FretBoard.MAX_FRETS)
+		if(fret >= 0 && fret < TGFretBoard.MAX_FRETS)
 			return(fret);
 		}
 
@@ -225,32 +225,34 @@ static private	MiProvider	s_Instance;
 
 	private void	echo_UpdateExternalBeat(boolean inIsEmpty)
 	{
-	TGSynchronizer.TGRunnable	task;
+//	Runnable	task;
 
 	if(inIsEmpty)
 		{
-		task = new TGSynchronizer.TGRunnable() {
-			public void run() throws TGException {
-				TuxGuitar.getInstance().hideExternalBeat();
-				}
-			};
+		hideExternalBeat();
+//		task = new Runnable() {
+//			public void run() {
+//				TuxGuitar.getInstance().hideExternalBeat();
+//				}
+//			};
 		}
 	else
 		{
-		task = new TGSynchronizer.TGRunnable() {
-			public void run() throws TGException {
-				TuxGuitar.getInstance().showExternalBeat(f_EchoBeat);
-				}
-			};
+		showExternalBeat(f_EchoBeat);
+//		task = new Runnable() {
+//			public void run() {
+//				TuxGuitar.getInstance().showExternalBeat(f_EchoBeat);
+//				}
+//			};
 		}
 
-	try {
-		TGSynchronizer.instance().executeLater(task);
-		}
-	catch(Throwable t)
-		{
-		MessageDialog.errorMessage(t);
-		}
+//	try {
+//		TGSynchronizer.instance().executeLater(task);
+//		}
+//	catch(Throwable t)
+//		{
+//		MessageDialog.errorMessage(t);
+//		}
 	}
 
 
@@ -331,7 +333,7 @@ static private	MiProvider	s_Instance;
 
 				if(f_Buffer.finalize(f_MinVelocity, f_MinDuration * 1000) > 0)
 					{
-					if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TuxGuitar.getInstance().isLocked() && !TGActionLock.isLocked())
+					if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TuxGuitar.getInstance().isLocked() )
 						{
 						TablatureEditor	editor	= TuxGuitar.getInstance().getTablatureEditor();
 						Caret			caret	= editor.getTablature().getCaret();
@@ -344,9 +346,9 @@ static private	MiProvider	s_Instance;
 						//TGBeat		_beat		= f_Buffer.toBeat();
 
 						// emulates InsertChordAction
-						TGActionLock.lock();
+//						TGActionLock.lock();
 
-						UndoableMeasureGeneric undoable = UndoableMeasureGeneric.startUndo();
+						TGUndoableMeasureGeneric undoable = TGUndoableMeasureGeneric.startUndo(TuxGuitar.getInstance().getContext(), measure);
 
 						if(f_ChordMode == MiConfig.CHORD_MODE_ALL)
 							{
@@ -376,12 +378,10 @@ static private	MiProvider	s_Instance;
 							}
 							
 						songMgr.getMeasureManager().addChord(beat, chord);
+						
 						TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
-						editor.getTablature().updateMeasure(measure.getNumber());
-
-						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo());
-
-						TGActionLock.unlock();
+						TuxGuitar.getInstance().getEditorManager().updateMeasure(measure.getNumber());
+						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(measure));
 						TuxGuitar.getInstance().updateCache(true);
 						}
 					}
@@ -427,11 +427,11 @@ static private	MiProvider	s_Instance;
 					TreeSet<Byte> pitches		= f_Buffer.toPitchesSet();
 
 					MiScaleFinder.findMatchingScale(pitches);
-					TuxGuitar.getInstance().showExternalBeat(beat);
+					showExternalBeat(beat);
 					}
 				else
 					{
-					TuxGuitar.getInstance().hideExternalBeat();
+					hideExternalBeat();
 					MiScaleFinder.selectScale(ScaleManager.NONE_SELECTION, 0);
 					}
 
@@ -457,5 +457,17 @@ static private	MiProvider	s_Instance;
 		if(inVelocity > 0)
 			f_InputTimer.restart();
 		}
+	}
+	
+	public void showExternalBeat(TGBeat beat) {
+		System.out.println("showExternalBeat requested");
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGShowExternalBeatAction.NAME);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
+		tgActionProcessor.process();
+	}
+	
+	public void hideExternalBeat() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGHideExternalBeatAction.NAME);
+		tgActionProcessor.process();
 	}
 }

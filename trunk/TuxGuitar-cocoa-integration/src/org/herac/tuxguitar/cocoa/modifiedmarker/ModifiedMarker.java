@@ -3,7 +3,7 @@ package org.herac.tuxguitar.cocoa.modifiedmarker;
 import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGUpdateEvent;
+import org.herac.tuxguitar.app.editor.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.gm.settings;
 
-import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsHandler;
-import org.herac.tuxguitar.app.editors.channel.TGChannelSettingsPlugin;
+import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
+import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class GMChannelSettingsPlugin extends TGChannelSettingsPlugin{

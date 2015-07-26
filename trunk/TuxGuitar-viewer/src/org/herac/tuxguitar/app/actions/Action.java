@@ -60,7 +60,7 @@ public abstract class Action extends ActionAdapter {
 				ActionLock.lock();
 			}
 			
-			new SyncThread(new TGSynchronizer.TGRunnable() {
+			new SyncThread(new Runnable() {
 				public void run() {
 					int result = execute(e);
 					

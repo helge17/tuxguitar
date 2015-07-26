@@ -298,13 +298,15 @@ class MiStaff
 		if(se.isOnBeat() || se.isTieBeat())
 			{
 			TGBeat		tgBeat	= getEventBeat(se.getBeginTime());
-			Iterator<MiStaffNote>	it		= se.getNotes().iterator();
-
-			while(it.hasNext())
-				{
-				MiStaffNote	sn = (MiStaffNote)it.next();
-
-				insertNoteIntoTrack(tgBeat, sn);
+			if( tgBeat != null ) {
+				Iterator<MiStaffNote>	it		= se.getNotes().iterator();
+	
+				while(it.hasNext())
+					{
+					MiStaffNote	sn = (MiStaffNote)it.next();
+	
+					insertNoteIntoTrack(tgBeat, sn);
+					}
 				}
 			}
 		}

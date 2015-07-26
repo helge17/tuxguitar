@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.midiinput;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportStopAction;
-import org.herac.tuxguitar.app.editors.TablatureEditor;
-import org.herac.tuxguitar.app.editors.tab.Caret;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -91,9 +91,9 @@ static	private	MiRecorder	s_Instance;
 	TuxGuitar.instance().fireUpdate();
 	TuxGuitar.instance().getMixer().update();
 */
-	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+	TGSynchronizer.instance().executeLater(new Runnable() {
 		public void run() throws TGException {
-			TuxGuitar.getInstance().getActionManager().execute(TransportPlayAction.NAME);
+			TuxGuitar.getInstance().getActionManager().execute(TGTransportPlayAction.NAME);
 		}
 	});
 
@@ -111,9 +111,9 @@ static	private	MiRecorder	s_Instance;
 	f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
 	f_IsRecording = false;
 
-	TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+	TGSynchronizer.instance().executeLater(new Runnable() {
 		public void run() throws TGException {
-			TuxGuitar.getInstance().getActionManager().execute(TransportStopAction.NAME);
+			TuxGuitar.getInstance().getActionManager().execute(TGTransportStopAction.NAME);
 		}
 	});
 	TuxGuitar.getInstance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);

@@ -1,15 +1,13 @@
 package org.herac.tuxguitar.midiinput;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Transmitter;
-import javax.sound.midi.Receiver;
 import javax.sound.midi.MidiMessage;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Transmitter;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MiPort
 	implements Receiver
@@ -47,29 +45,39 @@ public class MiPort
 	{
 	try {
 		if(!f_Device.isOpen()) {
-			final MidiDevice device = f_Device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					try {
-						device.open();
-					} catch(MidiUnavailableException e){
-						throw new TGException(e);
-					}
-				}
-			});
+			try {
+				f_Device.open();
+			} catch(MidiUnavailableException e){
+				throw new MiException(e.getMessage(), e);
+			}
+//			final MidiDevice device = f_Device;
+//			TGSynchronizer.instance().execute(new Runnable() {
+//				public void run() throws TGException {
+//					try {
+//						device.open();
+//					} catch(MidiUnavailableException e){
+//						throw new TGException(e);
+//					}
+//				}
+//			});
 		}
 
 		if(f_Transmitter == null) {
-			final MidiDevice device = f_Device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					try {
-						connectTransmitter(device.getTransmitter());
-					} catch(MidiUnavailableException e){
-						throw new TGException(e);
-					}
-				}
-			});
+			try {
+				connectTransmitter(f_Device.getTransmitter());
+			} catch(MidiUnavailableException e){
+				throw new MiException(e.getMessage(), e);
+			}
+//			final MidiDevice device = f_Device;
+//			TGSynchronizer.instance().execute(new Runnable() {
+//				public void run() throws TGException {
+//					try {
+//						connectTransmitter(device.getTransmitter());
+//					} catch(MidiUnavailableException e){
+//						throw new TGException(e);
+//					}
+//				}
+//			});
 		}
 	}
 	catch(Throwable t) {
@@ -83,24 +91,28 @@ public class MiPort
 	{
 	try {
 		if(f_Transmitter != null) {
-			final Transmitter transmitter = f_Transmitter;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					transmitter.close();
-					connectTransmitter(null);
-					}
-				});
-			}
+			f_Transmitter.close();
+			connectTransmitter(null);
+		}
+//			final Transmitter transmitter = f_Transmitter;
+//			TGSynchronizer.instance().execute(new Runnable() {
+//				public void run() throws TGException {
+//					transmitter.close();
+//					connectTransmitter(null);
+//					}
+//				});
+//			}
 
 		if(f_Device.isOpen()) {
-			final MidiDevice device = f_Device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					device.close();
-					}
-				});
-			}
+			f_Device.close();
+//			final MidiDevice device = f_Device;
+//			TGSynchronizer.instance().execute(new Runnable() {
+//				public void run() throws TGException {
+//					device.close();
+//					}
+//				});
 		}
+	}
 	catch(Throwable t) {
 		throw new MiException(TuxGuitar.getProperty("midiinput.error.midi.port.close"), t);
 		}

@@ -14,12 +14,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
-import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -130,20 +129,17 @@ public class TGTunerDialog implements TGTunerListener {
 	
 	public void fireFrequency(final double freq) {
 		if (!this.dialog.isDisposed()) {
-			 try {
-				 TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {				
-					 public void run() throws TGException {
-						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()) {
-							TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
-							TGTunerDialog.this.roughTuner.setCurrentFrequency(freq);
-						}
-						if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.fineTuner.isDisposed())
-								TGTunerDialog.this.fineTuner.setCurrentFrequency(freq);
-					 }
-				 });
-			 } catch (Throwable e) {
-				 e.printStackTrace();
-			 }
+			 TGSynchronizer.instance().executeLater(new Runnable() {				
+				 public void run() {
+					if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()) {
+						TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
+						TGTunerDialog.this.roughTuner.setCurrentFrequency(freq);
+					}
+					if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.fineTuner.isDisposed()) {
+						TGTunerDialog.this.fineTuner.setCurrentFrequency(freq);
+					}
+				 }
+			 });
 		}
 	}
 
@@ -158,16 +154,13 @@ public class TGTunerDialog implements TGTunerListener {
 
 
 	public void fireException(final Exception ex) {
-		try {
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					if (!TGTunerDialog.this.dialog.isDisposed())
-						MessageDialog.errorMessage(ex);
+		TGSynchronizer.instance().executeLater(new Runnable() {
+			public void run() {
+				if (!TGTunerDialog.this.dialog.isDisposed()) {
+					MessageDialog.errorMessage(ex);
 				}
-			});
-		} catch (Throwable e) {
-			 e.printStackTrace();
-		}
+			}
+		});
 	}
 
 	

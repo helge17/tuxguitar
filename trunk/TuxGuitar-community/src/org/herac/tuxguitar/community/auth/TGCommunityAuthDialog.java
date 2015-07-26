@@ -20,7 +20,6 @@ import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.utils.TGCommunityWeb;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGCommunityAuthDialog {
 	
@@ -39,22 +38,6 @@ public class TGCommunityAuthDialog {
 	}
 	
 	public void open(final Shell shell) {
-		try {
-			if( shell != null && !shell.isDisposed() ){
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if( !shell.isDisposed() ){
-							doOpen( shell );
-						}
-					}
-				});
-			}
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-	}
-	
-	protected void doOpen(Shell shell) {
 		this.accepted = false;
 		
 		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);

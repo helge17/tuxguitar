@@ -38,7 +38,7 @@ public class TGCommunityStartupScreen {
 	public void open(){
 		try {
 			final Shell parent = TuxGuitar.getInstance().getShell();
-			TGSynchronizer.instance().executeLater( new TGSynchronizer.TGRunnable() {
+			TGSynchronizer.instance().executeLater( new Runnable() {
 				public void run() throws TGException {
 					open( parent );
 				}

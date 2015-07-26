@@ -6,7 +6,7 @@ import org.herac.tuxguitar.io.plugin.TGImporterPlugin;
 public class MidiPluginImporter extends TGImporterPlugin{
 	
 	protected TGRawImporter getImporter() {
-		return new MidiSongImporter();
+		return new MidiSongImporterProvider();
 	}
 	
 	public String getModuleId(){

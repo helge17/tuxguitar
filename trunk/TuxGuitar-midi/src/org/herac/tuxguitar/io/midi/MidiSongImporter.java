@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGLocalFileImporter;
+import org.herac.tuxguitar.io.base.TGSongStream;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.io.midi.base.MidiEvent;
 import org.herac.tuxguitar.io.midi.base.MidiMessage;
 import org.herac.tuxguitar.io.midi.base.MidiSequence;
@@ -30,9 +31,11 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-public class MidiSongImporter implements TGLocalFileImporter{
+public class MidiSongImporter implements TGSongStream {
 	
 	private static final int MIN_DURATION_VALUE = TGDuration.SIXTY_FOURTH;
+	
+	private TGSongStreamContext context;
 	
 	private int resolution;
 	private List<TGChannel> channels;
@@ -43,37 +46,24 @@ public class MidiSongImporter implements TGLocalFileImporter{
 	private List<TrackTuningHelper> trackTuningHelpers;
 	private GMChannelRouter channelRouter;
 	private MidiSettings settings;
-	protected TGFactory factory;
-	protected InputStream stream;
+	private TGFactory factory;
 	
-	public MidiSongImporter(){
-		super();
+	public MidiSongImporter(TGSongStreamContext context) {
+		this.context = context;
 	}
 	
-	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Midi", new String[]{"mid","midi"});
-	}
-	
-	public String getImportName() {
-		return "Midi";
-	}
-	
-	public boolean configure(boolean setDefaults){
-		this.settings = (setDefaults ? MidiSettings.getDefaults() : new MidiSettingsDialog().open());
-		return (this.settings != null);
-	}
-	
-	public void init(TGFactory factory,InputStream stream) {
-		this.factory = factory;
-		this.stream = stream;
-	}
-	
-	public TGSong importSong() throws TGFileFormatException {
-		try {
-			if(this.settings == null || this.factory == null || this.stream == null ){
-				return null;
+	public void process() throws TGFileFormatException {
+		try {			
+			InputStream stream = this.context.getAttribute(InputStream.class.getName());
+			TGSongManager tgSongManager = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+			
+			this.factory = tgSongManager.getFactory();
+			this.settings = this.context.getAttribute(MidiSettings.class.getName());
+			if( this.settings == null ) {
+				this.settings = MidiSettings.getDefaults();
 			}
-			MidiSequence sequence = new MidiFileReader().getSequence(this.stream);
+			
+			MidiSequence sequence = new MidiFileReader().getSequence(stream);
 			initFields(sequence);
 			for(int i = 0; i < sequence.countTracks(); i++){
 				MidiTrack track = sequence.getTrack(i);
@@ -85,7 +75,6 @@ public class MidiSongImporter implements TGLocalFileImporter{
 				}
 			}
 			
-			TGSongManager tgSongManager = new TGSongManager(this.factory);
 			TGSong tgSong = this.factory.newSong();
 			
 			this.checkAll(tgSongManager);
@@ -102,7 +91,8 @@ public class MidiSongImporter implements TGLocalFileImporter{
 			while(tracks.hasNext()){
 				tgSong.addTrack((TGTrack)tracks.next());
 			}
-			return new SongAdjuster(this.factory, tgSong).adjustSong();
+			
+			this.context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, new SongAdjuster(this.factory, tgSong).adjustSong());
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}

@@ -164,73 +164,57 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
 	public void notifyFileProcess(final String filename) {
 		if(!isDisposed() ){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed() ){
-							TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
-							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() throws TGException {
+					if(!isDisposed() ){
+						TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
+						TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}
 	
 	public void notifyFileResult(final String filename, final int result) {
 		if(!isDisposed() ){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed() ){
-							TGConverterProcess.this.appendLogMessage(result, filename);
-							TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() throws TGException {
+					if(!isDisposed() ){
+						TGConverterProcess.this.appendLogMessage(result, filename);
+						TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}
 	
 	public void notifyStart() {
 		if(!isDisposed() ){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed() ){
-							TGConverterProcess.this.finished = false;
-							TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
-							TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
-							TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() throws TGException {
+					if(!isDisposed() ){
+						TGConverterProcess.this.finished = false;
+						TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
+						TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
+						TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}
 	
 	public void notifyFinish() {
 		if(!isDisposed() ){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed() ){
-							TGConverterProcess.this.finished = true;
-							TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
-							TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
-							TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() throws TGException {
+					if(!isDisposed() ){
+						TGConverterProcess.this.finished = true;
+						TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
+						TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
+						TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}
 	
