@@ -1,0 +1,59 @@
+# 1.3
+
+action.caret.go-up=Move cursor up
+action.caret.go-down=Move cursor down
+action.caret.go-left=Move cursor left
+action.caret.go-right=Move cursor right
+
+beat.insert-rest=Insert Rest Beat
+beat.delete-note-or-rest=Delete Note or Rest
+
+action.beat.general.insert-rest=Insert rest beat
+action.beat.general.delete-note-or-rest=Delete note or rest
+
+action.note.general.set-fret-number-0=Set fret number 0
+action.note.general.set-fret-number-1=Set fret number 1
+action.note.general.set-fret-number-2=Set fret number 2
+action.note.general.set-fret-number-3=Set fret number 3
+action.note.general.set-fret-number-4=Set fret number 4
+action.note.general.set-fret-number-5=Set fret number 5
+action.note.general.set-fret-number-6=Set fret number 6
+action.note.general.set-fret-number-7=Set fret number 7
+action.note.general.set-fret-number-8=Set fret number 8
+action.note.general.set-fret-number-9=Set fret number 9
+
+
+transport.count-down=Count Down
+action.transport.count-down=Count Down
+
+
+track.short-solo-mute=S-M
+track.short-solo-mute.s=(S)
+track.short-solo-mute.m=(M)
+track.short-solo-mute.none=-
+
+action.track.change-solo=Set track solo
+action.track.change-mute=Set track mute
+
+instruments.dialog-title=Instruments
+instrument.percussion-channel=Percussion Channel
+instrument.program=Program
+instrument.bank=Bank
+
+
+
+track.instrument.default-select-option=--- Select ---
+
+export.all-tracks=Export all tracks
+
+view.show-toolbars=Show Toolbars
+view.show-instruments=Show Instruments
+
+
+
+effects.let-ring=Let Ring
+
+action.view.show-toolbars=Show Toolbars
+action.view.show-instruments=Show Instruments
+action.note.effect.change-let-ring=Add/Remove let ring
+

@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="css/styles.css" ></link>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="PageMenu" >
+						<ul>
+							<li >
+								<span>Introduction</span>
+								<ul>
+									<li ><a class="PageLink" href="about.html" >About</a></li>
+									<li ><a class="PageLink" href="license.html" >License</a></li>
+									<li ><a class="PageLink" href="whatsnew.html" >What's new</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Getting started</span>
+								<ul>
+									<li ><a class="PageLink" href="start_first_steps.html" >The First Steps</a></li>
+									<li ><a class="PageLink" href="start_toolbars.html" >Toolbars</a></li>
+									<li ><a class="PageLink" href="start_playing.html" >Playing a song</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Making and editing a song</span>
+								<ul>
+									<li><a class="PageLink" href="editing_track.html" >Editing a track</a></li>
+									<li><a class="PageLink" href="editing_song.html" >Editing a whole song</a></li>
+									<li><a class="PageLink" href="edit_effects.html" >Note effects</a></li>
+									<li><a class="PageLink" href="edit_chord.html" >Chord edit dialog</a></li>
+									<li><a class="PageLink" href="edit_matrix.html" >Matrix editor</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li >
+								<span>Tools and settings</span>
+								<ul>
+									<li><a class="PageLink" href="tools_shortcuts.html" >Default shortcuts</a></li>
+									<li><a class="PageLink" href="tools_keybinding.html" >Shortcut editor</a></li>
+									<li><a class="PageLink" href="tools_skin.html" >Changing the skin</a></li>
+									<li><a class="PageLink" href="tools_plugins.html" >Plugins dialog</a></li>
+									<li><a class="PageLink" href="tools_sound.html" >Sound in TuxGuitar</a></li>
+									<li><a class="PageLink" href="tools_converter.html" >File format batch converter</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul>
+							<li><a class="PageLink" href="file_formats.html" >Supported file formats</a></li>
+						</ul>
+					</div>
+				</td>
+				<td valign="top">
+					<div id="PageContent" >
+						<!-- START OF PAGE CONTENT -->
+						
+						<h1>Editing a track</h1>
+						
+						<p>
+						Each song consists of one or more tracks. 
+						</p>
+						
+						<p>
+						Each track is assigned to one instrument. Each instrument sounds the different way.
+						</p>
+						
+						<h2><a name="before_you_start_with_notes" id="before_you_start_with_notes">Before you start with notes:</a></h2>
+						
+						<p>
+						 Before you start inserting notes into a new song, you have to adjust some settings. These are accessed through <em>Composition</em> menu.
+						</p>
+						
+						<p>
+						<strong>Time signature</strong> has to be defined for each song. Usually it is 4/4, but sometimes it has some different value (3/4 for waltz, 7/8, etc.) Time signature applies for all the tracks. It can be changed in the middle of the song - when you change the value time signature will be changed <em class="u">from the current place in the song until the end</em>.
+						</p>
+						
+						<p>
+						<strong>Tempo</strong> is another value each song possess. It indicates how many beats (1/4 notes) song has in a minute - it is marked in BPM&rsquo;s - Beats Per Minute. Tempo also applies for all the tracks in the song, and also can be changed. When you change the value tempo will be changed <em class="u">from the current place in the song until the end</em>.
+						</p>
+						
+						<p>
+						<strong>Clef</strong> affects the song display in scores. Clefs are used to mark the specific pitch of the note, so all other notes&rsquo; pitch can be determined. Clef is placed on the beginning of the scores. There are three types of clef supported in TuxGuitar: treble (default), bass, alto and tenor, which are the most usual clefs. Custom clefs are not supported. Clef can be changed in the middle of the song - when it&rsquo;s changed the scores display changes from that position and further. 
+						</p>
+						
+						<p>
+						<strong>Key signature</strong> affects the way the notes are written in scores. They represent the current scale the song is written in, so there&rsquo;s no need to constantly write <em>sharp</em> and <em>flat</em> marks. When you choose to change the key signature, dialog appears with existing key signatures. <strong>Natural</strong>, for example, represents the C-major, <strong>one flat</strong> represents F-major, etc.
+						</p>
+						
+						<p>
+						<strong>Triplet feel</strong> (also: <em><strong>shuffle</strong> notes</em> or <em><strong>swung</strong> notes</em>) is the rhythmic device in which the duration of the initial note in a pair is augmented and that of the second is diminished. This effect is often used in jazz and blues music. TuxGuitar triplet feel divides the note par in 2:1 ratio. <em class="u"><strong>Triplet 8th</strong></em> divides a pair of 1/8 notes and <em class="u"><strong>Triplet 16th</strong></em> divides a pair of 1/16 notes into 2:1 ratio.</p>
+						
+						<h4><a name="track_properties" id="track_properties">Track properties</a></h4>
+						
+						<p>
+						<strong>Track properties</strong> are the most important and should be adjusted for each track: track name, display color, instrument (from the list of instruments), number of strings and tuning. You can access this dialog by choosing Track/Properties in the main menu.
+						</p>
+						
+						<h2><a name="putting_the_notes_in" id="putting_the_notes_in">Putting the notes in:</a></h2>
+						
+						
+						<h3><a name="note_and_measure_duration" id="note_and_measure_duration">Note and measure duration</a></h3>
+						
+						<p>
+						 The most important property of a note is its duration. The sum of duration of all the notes in a measure is determined by the measure&rsquo;s time signature. TuxGuitar has a system that protects the user of making an irregular measure (longer or shorter).
+						</p>
+						
+						<p>
+						Therefore, every new 4/4 measure can contains only one whole note. When you select a duration of a note you want to enter, TuxGuitar adjusts all the pauses between the current position and the end of a measure (or the next note entered) so you can insert as many notes as possible.
+						</p>
+						
+						<p>
+						You can change time signature in Composition&rarr;Time signature (or on 4/4 icon), and note duration in menu Note&rarr;Duration&rarr;(wanted duration). Note duration icons are also located on the main application toolbar.
+						</p>
+						
+						<h3><a name="navigating" id="navigating">Navigating</a></h3>
+						
+						<p>
+						 You can change the current position of a note you want to enter by clicking on the desired location, or by navigating with arrows of a keyboard. Simply pressing the arrows left and right puts you on the next note in the current track, but Ctrl+(left or right) takes you to the previous or next measure.
+						</p>
+						
+						<p>
+						Arrows up and down navigate you through the strings in tablature editor.
+						</p>
+						
+						<h3><a name="writing_numbers" id="writing_numbers">Writing numbers</a></h3>
+						
+						<p>
+						 <img src="images/edit/typing.png"/>
+						</p>
+						
+						<p>
+						<strong>Tablature editor</strong> is represented by the number of the strings instrument possess. Each line is a string - when you type a number on a string <strong>[0 .. 29]</strong> editor puts on that string a note which is heard if you press a string on typed fret. The note has selected duration and dynamics you can modify afterwards. 
+						</p>
+						
+						<p>
+						If you navigate to an existing note (written as a number) and press Shift+(left or right) you will increase/decrease the pitch (fret) on the current string. If you press Shift+(up or down) you will move the fret value to the string up or down.
+						</p>
+						
+						<h3><a name="clicking_on_the_scores" id="clicking_on_the_scores">Clicking on the scores</a></h3>
+						
+						<p>
+						 To be able to insert notes by clicking on the scores, you should be in the <strong>Score Edition Mode</strong> (you can change mode in Edit menu). When Score Edition Mode is enabled, you can check and uncheck the <strong>Sharp/Flat mode</strong> (in Edit menu, also) by which you can insert sharp notes.
+						</p>
+						
+						<p>
+						Notes are inserted by left-clicking on the score&rsquo;s line or between two lines. If you decide to write notes above or below five existing lines, aditional lines will appear. By clicking a note will appear on the selected place, and also in the tablature editor by appropriate number on appropriate string.
+						</p>
+						
+						<h3><a name="note_dynamics" id="note_dynamics">Note dynamics</a></h3>
+						
+						<p>
+						 Very important property of a note is it&rsquo;s dynamics: the &ldquo;loudness&rdquo; of a note. For each note you can put wanted dynamics.
+						</p>
+						
+						<p>
+						<img src="images/start/tb_dynamics.png"/>
+						</p>
+						
+						<p>
+						When you create a note, it will have dynamics previously selected. If you click on other dynamics&rsquo; icon when positioned on existing note, the note will change its dynamics. In TuxGuitar dynamics is marked in standard manner (<strong><em>mp</em></strong> for <em>mezzo-piano</em>, <strong><em>fff</em></strong> for <em>forte fortissimo</em> etc.)
+						</p>
+						
+						<h3><a name="dotted_and_double-dotted_note" id="dotted_and_double-dotted_note">Dotted and double-dotted note</a></h3>
+						
+						<p>
+						 Dotted note has extended duration by 50%. It means that if you mark a 1/2 note as dotted, its duration will be 1/2 + 1/4 = 3/4. 
+						</p>
+						
+						<p>
+						Double dotted note has duration extended by 75%. That means that 1/4 double dotted note will have duration of 1/4 + 1/8 + 1/16 = 7/16.
+						</p>
+						
+						<h3><a name="tied_note" id="tied_note">Tied note</a></h3>
+						
+						<p>
+						 When a note is played on the end of one measure but lasts in the next measure also, you have to use a <strong>tied note</strong>. You achieve the effect by putting the note on the end of a first measure and then put the same note on the beginning of next measure. <u>Then you mark</u> the second note as a tied note.
+						</p>
+						
+						<p>
+						You can also use a tied note in the situation you need a note which has duration of a 5/16 note - a duration you cannot achieve by dotted or double dotted note. Then you tie a 1/4 and 1/16 note.
+						</p>
+						
+						<h3><a name="insert_chord" id="insert_chord">Insert chord</a></h3>
+						
+						<p>
+						 You can also put some notes into the song by inserting a chord. Chord&rsquo;s duration and dynamics will be those currently selected.
+						</p>
+						
+						<p>
+						<img src="images/edit/insert_named_chord.png"/>
+						</p>
+						
+						<p>
+						You can insert a chord defined earlier (as on picture) or you can use chord wizard to generate a new chord (and even define a name for it for later use). Read more about <a class="PageLink" href="edit_chord.html">Chord Editor dialog</a> in other entry.
+						</p>
+						
+						<h2><a name="after_putting_the_notes" id="after_putting_the_notes">After putting the notes:</a></h2>
+						
+						<p>
+						 After writing the things you wanted, you will probably want to hear what&rsquo;s done. After checking you will probably want to change something - listening and correction makes it perfect.
+						</p>
+						
+						<h3><a name="effects" id="effects">Effects</a></h3>
+						
+						<p>
+						 Playing guitar isn&rsquo;t just playing a note in a right time. There are some little tricks we all use, like bend, palm mute etc. TuxGuitar supports most of them. Many effects are applied on the current note. Read more about <a class="PageLink" href="edit_effects.html">Note effects</a> in this help.
+						</p>
+						
+						<h3><a name="repeat" id="repeat">Repeat</a></h3>
+						
+						<p>
+						 Sometimes in a song all the instrument are played the same way several times (e.g. in chorus). It is more elegant to mark that segment of a song for repetition than to copy/paste that passage again.
+						</p>
+						
+						<p>
+						Repeat is set over one or more measures. It has a beginning, an end and information how many times <em class="u">to repeat</em>. So if you want a passage to be played twice, you start repeat and end it on appropriate place. When asked how many times to repeat you should set 1 if you want it to be played twice.
+						</p>
+						
+						<p>
+						Repeats are even more convenient to use with <strong>alternative endings</strong> - you define different ending measures for each repeat. So after you close a repeat and mark it as an alternative ending the editor will appear to select at which repeats this ending will play. It is a little hard to explain, but if you try the option you will find it self-explanatory.
+						</p>
+						
+						<p>
+						<img src="images/edit/repeats.png"/>
+						</p>
+						
+						<h3><a name="lyrics" id="lyrics">Lyrics</a></h3>
+						
+						<p>
+						 TuxGuitar supports writing lyrics in a track, so you can make a track which contains lyrics and the melody of singing. Lyrics editor is accessed by selecting <em>Track/Lyrics</em> from the main menu.
+						</p>
+						
+						<p>
+						The way the lyrics will be displayed <strong>depends on the content of the measure</strong>. Every word seperated by <em>space</em> or <em>enter</em> belongs to one note in a measure.
+						</p>
+						
+						<p>
+						<img src="images/edit/ed_lyrics.png"/>
+						</p>
+						
+						<p>
+						You have to select the number of a measure where lyrics start. When you type text, it starts below the first note in a measure you have set, and after each <em>space</em> or <em>enter</em> key the next word is displayed below the next <strong>note</strong>. Pauses are ignored. When you type text below every note in a measure, the text automatically move to the next measure.
+						</p>
+						
+						<p>
+						If you want to have some notes without a text below, you should put more <em>space</em> characters.
+						</p>
+						
+						<h3><a name="text" id="text">Text</a></h3>
+						
+						<p>
+						 Similar as lyrics, but the text is not tied to notes. It is most often used as a note to the player or a comment to tab. It is displayed above the note it is assigned to.
+						</p>
+						
+						<h3><a name="just_one_instrument" id="just_one_instrument">Just one instrument?</a></h3>
+						
+						<p>
+						 Well, probably not. But you have to write something to be able to write some more. You will probably want to add more instruments (tracks) and enter the wonderfull world of multi-track editing. :)
+						</p>
+						
+						<p>
+						But even if you have only one track in a song, it is still a song. Song have some of its own properties and editing, so you should check <a class="PageLink" href="editing_song.html">section about editing a song</a>.
+						</p>
+						
+						<h3><a name="the_percussion_track" id="the_percussion_track">The Percussion track</a></h3>
+						
+						<p>
+						 The track for drums and percussions is treated a little bit differently in TuxGuitar than the other, &ldquo;ordinary&rdquo; tracks. It always has to be on MIDI channel 9 - that is achieved by checking the <strong>Percussion Track</strong> option in the Track&rarr;Properties. There is a special tool for editing the percussion track - besides the usual editing (by entering numbers on the tab), you can also use the Matrix Editor from <strong>Layout&rarr;Show_Matrix menu</strong>. Read more about <a class="PageLink" href="edit_matrix.html"> Matrix Editor</a>. 
+						</p>
+						
+						<!-- END OF PAGE CONTENT -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

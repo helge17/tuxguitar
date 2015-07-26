@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Tux Guitar" basedir="." >
+	<description>
+		Tux-Guitar
+	</description>
+	
+	<property name="build.lib.dir" value="lib" />
+	<property name="contents" value="tuxguitar-${dist.version}-mac.app${file.separator}Contents" />
+	<property name="contents.info" value="${contents}${file.separator}Info.plist" />
+	<property name="contents.macos" value="${contents}${file.separator}MacOS" />
+	<property name="contents.resources" value="${contents}${file.separator}Resources" />
+	<property name="file.script" value="${contents.macos}${file.separator}tuxguitar" />
+	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
+	<property name="file.description" value="${build.path}${file.separator}about_description.dist" />
+	
+	<target name="clean" >
+		<delete quiet="true" dir="tuxguitar-${dist.version}-mac.app" />
+	</target>
+	
+	<target name="install" >
+		<mkdir dir="${dist.dst.path}${dist.bin.path}" />
+		<copy todir="${dist.dst.path}${dist.bin.path}">
+			<fileset file="tuxguitar"/>
+		</copy>
+		<chmod file="${dist.dst.path}${dist.bin.path}/tuxguitar" perm="755"/>
+	</target>
+	
+	<target name="build" >
+		<echo file="${file.properties}" append="false">painter.force-os-defaults=true${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.default=Sans,6,2${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Sans,7,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,3${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,2${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,12,3${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=tuxguitar.sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.port=audiounit${line.separator}</echo>
+		<echo file="${file.properties}" append="true">skin=Lavender${line.separator}</echo>
+		
+		<echo file="${file.description}" append="true">${line.separator}</echo>
+		<echo file="${file.description}" append="true">This product include third party libraries:${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; SWT (Standard Widget Toolkit): http://www.eclipse.org/swt/${line.separator}</echo>
+		<echo file="${file.description}" append="true">-&#62; iText (Free Java-PDF library): http://www.lowagie.com/iText/${line.separator}</echo>
+		
+		<replace file="${build.path}/shortcuts-default.xml" token="262144" value="4194304"/>
+	</target>
+	
+	<target name="package" >
+		<mkdir dir="${contents.macos}${file.separator}${dist.jar.path}" />
+		<mkdir dir="${contents.macos}${file.separator}${dist.bin.path}" />
+		<mkdir dir="${contents.macos}${file.separator}${dist.share.path}" />
+		<mkdir dir="${contents.macos}${file.separator}${dist.doc.path}" />
+		<mkdir dir="${contents.macos}${file.separator}${build.lib.dir}" />
+		<mkdir dir="${contents.resources}" />
+		
+		<copy todir="${contents.macos}${file.separator}${dist.jar.path}">
+			<fileset file="${build.jar}"/>
+		</copy>
+		<copy todir="${contents.macos}${file.separator}${build.lib.dir}">
+			<fileset file="${lib.itext.jar}"/>
+			<fileset file="${lib.swt.jar}"/>
+			<fileset dir="${build.lib.path}" includes="*.jnilib" />
+		</copy>
+		<copy todir="${contents.macos}${file.separator}${dist.share.path}">
+			<fileset dir="${build.share.path}"/>
+		</copy>
+		<copy todir="${contents.macos}${file.separator}${dist.doc.path}">
+			<fileset dir="${build.doc.path}"/>
+		</copy>
+		<copy todir="${contents.resources}">
+			<fileset file="${build.share.path}${file.separator}skins${file.separator}Lavender${file.separator}icon.icns"/>
+			<fileset file="${build.share.path}${file.separator}skins${file.separator}Lavender${file.separator}tgdoc.icns"/>
+		</copy>
+		
+		<!-- INFO FILE -->
+		<property name="st" value="&lt;" />
+		<property name="et" value="&gt;" />
+		<echo file="${contents.info}" append="false">${st}?xml version="1.0" encoding="UTF-8"?${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}plist version="1.0"${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleExecutable${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}tuxguitar${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleGetInfoString${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}TuxGuitar ${dist.version} for Mac OS X${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleIconFile${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}icon.icns${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleIdentifier${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}org.herac.tuxguitar${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleInfoDictionaryVersion${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}6.0${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleName${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}TuxGuitar${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundlePackageType${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}APPL${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleShortVersionString${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}${dist.version}${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleSignature${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}?????${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleVersion${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}${dist.version}${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}NSPrincipalClass${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}NSApplication${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleDocumentTypes${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeExtensions${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}tg${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeIconFile${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}tgdoc.icns${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeName${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}TuxGuitar Document${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeRole${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}Editor${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}LSIsAppleDefaultForType${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}true/${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}LSTypeIsPackage${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}false/${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeExtensions${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}gp${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}gtp${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}gp2${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}gp3${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}gp4${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}gp5${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeIconFile${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}tgdoc.icns${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeName${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}Guitar Pro Document${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeRole${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}Editor${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}LSIsAppleDefaultForType${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}true/${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}LSTypeIsPackage${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}false/${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeExtensions${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}ptb${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeIconFile${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}tgdoc.icns${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeName${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}PowerTab Document${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}CFBundleTypeRole${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}string${et}Editor${st}/string${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}LSIsAppleDefaultForType${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}true/${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}key${et}LSTypeIsPackage${st}/key${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}false/${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/array${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/dict${et}${line.separator}</echo>
+		<echo file="${contents.info}" append="true">${st}/plist${et}${line.separator}</echo>
+		
+		<!-- LAUNCHER SCRIPT -->
+		<echo file="${file.script}" append="false">#!/bin/bash${line.separator}</echo>
+		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`dirname "$0"`${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`cd "$DIR_NAME"; pwd`${line.separator}</echo>
+		<echo file="${file.script}" append="true">cd "${DIR_NAME}"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${lib.itext.jar}:${dist.share.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${lib.swt.jni}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
+		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.app.TGMain${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
+		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##SWT ARGUMENTS${line.separator}</echo>
+		<echo file="${file.script}" append="true">SWT_ARGS="-XstartOnFirstThread"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
+		<echo file="${file.script}" append="true">exec java ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"${line.separator}</echo>
+		<chmod file="${file.script}" perm="755"/>
+	</target>
+	
+</project>

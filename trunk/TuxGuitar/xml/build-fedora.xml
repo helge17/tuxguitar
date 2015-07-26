@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Tux Guitar" basedir="." >
+	<description>
+		Tux-Guitar
+	</description>
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+	<property name="file.properties" value="${build.path}${file.separator}config.dist" />
+	<property name="file.desktop" value="tuxguitar.desktop" />
+	<property name="file.mime" value="tuxguitar.xml" />
+	<property name="file.script" value="tuxguitar" />
+	<property name="file.plugin.properties" value="${build.path}${file.separator}plugin.properties" />
+	<property name="file.fluidsynth.config" value="${build.path}${file.separator}tuxguitar-fluidsynth.cfg" />
+	<property name="file.song" value="../misc/tuxguitar.tg" />
+	<target name="clean" >
+		<delete quiet="true" dir="tuxguitar-${dist.version}" />
+	</target>
+
+	<target name="package" />
+	
+	<target name="install" >
+		<mkdir dir="${dist.dst.path}${os.data.dir}/applications" />
+		<copy todir="${dist.dst.path}${os.data.dir}/applications/">
+			<fileset file="${file.desktop}"/>
+		</copy>
+		<mkdir dir="${dist.dst.path}${os.data.dir}/mime/packages" />
+		<copy todir="${dist.dst.path}${os.data.dir}/mime/packages">
+			<fileset file="${file.mime}"/>
+		</copy>
+		<mkdir dir="${dist.dst.path}${os.bin.dir}" />
+		<exec executable="cp" >
+			<arg value="-a"/>
+			<arg value="${file.script}"/>
+			<arg value="${dist.dst.path}${os.bin.dir}/"/>
+		</exec>
+		<copy tofile="${dist.dst.path}${dist.default.song}/" >
+			<fileset file="${file.song}"/>
+		</copy>
+		
+		<for list="16,24,32,48,64,96" param="dim" >
+			<sequential>
+				<mkdir dir="${dist.dst.path}${os.data.dir}/icons/hicolor/@{dim}x@{dim}/apps/" />
+				<mkdir dir="${dist.dst.path}${os.data.dir}/icons/hicolor/@{dim}x@{dim}/mimetypes/" />
+				<symlink link="${dist.dst.path}${os.data.dir}/icons/hicolor/@{dim}x@{dim}/apps/tuxguitar.png" resource="../../../../tuxguitar/skins/${dist.default.style}/icon-@{dim}x@{dim}.png" />
+				<symlink link="${dist.dst.path}${os.data.dir}/icons/hicolor/@{dim}x@{dim}/mimetypes/audio-x-tuxguitar.png" resource="../../../../tuxguitar/skins/${dist.default.style}/icon-@{dim}x@{dim}.png" />
+				<symlink link="${dist.dst.path}${os.data.dir}/icons/hicolor/@{dim}x@{dim}/mimetypes/audio-x-gtp.png" resource="../../../../tuxguitar/skins/${dist.default.style}/icon-@{dim}x@{dim}.png" />
+				<symlink link="${dist.dst.path}${os.data.dir}/icons/hicolor/@{dim}x@{dim}/mimetypes/audio-x-ptb.png" resource="../../../../tuxguitar/skins/${dist.default.style}/icon-@{dim}x@{dim}.png" />
+			</sequential>
+		</for>
+	</target>
+
+	<target name="build" >
+		<echo file="${file.properties}" append="false">font.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.note=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.time-signature=Sans,13,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.default=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.note=Sans,6,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.text=Sans,8,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.lyric=Sans,7,0${line.separator}</echo>
+		<echo file="${file.properties}" append="true">font.printer.time-signature=Sans,10,1${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.sequencer=tuxguitar.sequencer${line.separator}</echo>
+		<echo file="${file.properties}" append="true">midi.port=tuxguitar-fluidsynth_${os.data.dir}/soundfonts/default.sf2${line.separator}</echo>
+		<echo file="${file.properties}" append="true">skin=${dist.default.style}${line.separator}</echo>
+
+		<echo file="${file.desktop}" append="false">[Desktop Entry]${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Version=1.0${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Name=TuxGuitar${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">GenericName=Tablature Editor/Playback${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Comment=Edit, playback guitar tablatures${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Comment[fr]=Edite, joue des tablatures de guitare${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Comment[es]=Edita, reproduce tablaturas de guitarra${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Type=Application${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb;audio/midi;${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Categories=AudioVideo;Audio;X-Notation;${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Exec=tuxguitar %f${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Icon=tuxguitar${line.separator}</echo>
+		<echo file="${file.desktop}" append="true">Terminal=false${line.separator}</echo>
+
+		<echo file="${file.mime}" append="false">&#60;?xml version="1.0" encoding="UTF-8"?&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">&#60;mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;mime-type type="audio/x-tuxguitar"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;comment&#62;TuxGuitar file&#60;/comment&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.tg"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;/mime-type&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;mime-type type="audio/x-gtp"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;comment&#62;GuitarPro file&#60;/comment&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gtp"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gp3"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gp4"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.gp5"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;/mime-type&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;mime-type type="audio/x-ptb"&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;comment&#62;PowerTab file&#60;/comment&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">		&#60;glob pattern="*.ptb"/&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">	&#60;/mime-type&#62;${line.separator}</echo>
+		<echo file="${file.mime}" append="true">&#60;/mime-info&#62;${line.separator}</echo>
+
+		<echo file="${file.script}" append="false">#!/bin/sh${line.separator}</echo>
+		<echo file="${file.script}" append="true">##SCRIPT DIR${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`dirname "$0"`${line.separator}</echo>
+		<echo file="${file.script}" append="true">DIR_NAME=`cd "$DIR_NAME"; pwd`${line.separator}</echo>
+		<echo file="${file.script}" append="true">cd "${DIR_NAME}"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JAVA${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ -z $JAVA ]; then${line.separator}</echo>
+		<echo file="${file.script}" append="true">	JAVA=${JAVA_HOME}/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=/usr/bin/java${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -f ${JAVA} ] &amp;&amp; JAVA=java${line.separator}</echo>
+		<echo file="${file.script}" append="true">fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MOZILLA_FIVE_HOME${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ -z $MOZILLA_FIVE_HOME ]; then${line.separator}</echo>
+		<echo file="${file.script}" append="true">	MOZILLA_FIVE_HOME=/usr/lib${os.lib.suffix}/firefox${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib${os.lib.suffix}/mozilla${line.separator}</echo>
+		<echo file="${file.script}" append="true">	[ ! -d ${MOZILLA_FIVE_HOME} ] &amp;&amp; MOZILLA_FIVE_HOME=/usr/lib${os.lib.suffix}/iceweasel${line.separator}</echo>
+		<echo file="${file.script}" append="true">fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${dist.lib.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib${os.lib.suffix}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib${os.lib.suffix}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib${os.lib.suffix}/jni${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib${os.lib.suffix}${line.separator}</echo>
+		<echo file="${file.script}" append="true">LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">CLASSPATH=$CLASSPATH:${dist.jar.path}${build.jar}:${lib.swt.jar}:${path.itext}:${dist.share.path}${line.separator}</echo>
+		<echo file="${file.script}" append="true">##MAINCLASS${line.separator}</echo>
+		<echo file="${file.script}" append="true">MAINCLASS=org.herac.tuxguitar.app.TGMain${line.separator}</echo>
+		<echo file="${file.script}" append="true">##JVM ARGUMENTS${line.separator}</echo>
+		<echo file="${file.script}" append="true">VM_ARGS="-Xmx512m"${line.separator}</echo>
+		<echo file="${file.script}" append="true">##EXPORT VARS${line.separator}</echo>
+		<echo file="${file.script}" append="true">export CLASSPATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">export LD_LIBRARY_PATH${line.separator}</echo>
+		<echo file="${file.script}" append="true">export MOZILLA_FIVE_HOME${line.separator}</echo>
+		<echo file="${file.script}" append="true">arg=""${line.separator}</echo>
+		<echo file="${file.script}" append="true">if [ ! "$1" ] ; then arg="${dist.default.song}"; fi${line.separator}</echo>
+		<echo file="${file.script}" append="true">##LAUNCH${line.separator}</echo>
+		<echo file="${file.script}" append="true">${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.share.path="${dist.share.path}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2" "$arg"${line.separator}</echo>
+		<chmod file="${file.script}" perm="755"/>
+
+		<echo file="${file.plugin.properties}" append="false">org.herac.tuxguitar.player.impl.midiport.oss.MidiOutputPortProviderPlugin.enabled=false${line.separator}</echo>
+		<echo file="${file.plugin.properties}" append="true">org.herac.tuxguitar.tray.TGTrayPlugin.enabled=false${line.separator}</echo>
+
+		<echo file="${file.fluidsynth.config}" append="false">soundfont.count=1${line.separator}</echo>
+		<echo file="${file.fluidsynth.config}" append="true">soundfont.path0=${os.data.dir}/soundfonts/default.sf2${line.separator}</echo>
+		<echo file="${file.fluidsynth.config}" append="true">audio.driver=alsa${line.separator}</echo>
+		<echo file="${file.fluidsynth.config}" append="true">audio.period-size=1024${line.separator}</echo>
+	</target>
+	
+</project>
