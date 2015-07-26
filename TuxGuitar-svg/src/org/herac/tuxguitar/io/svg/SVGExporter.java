@@ -1,21 +1,20 @@
 package org.herac.tuxguitar.io.svg;
 
-import java.io.OutputStream;
-import java.io.PrintWriter;
-
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.io.base.TGSongStream;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
 
 public class SVGExporter implements TGLocalFileExporter {
 	
-	private OutputStream stream;
-	private SVGExporterStyles styles;
+	public static final String PROVIDER_ID = SVGExporter.class.getName();
 	
-	public SVGExporter(SVGExporterStyles styles){
-		this.styles = styles;
+	public SVGExporter(){
+		super();
+	}
+	
+	public String getProviderId() {
+		return PROVIDER_ID;
 	}
 	
 	public String getExportName() {
@@ -25,36 +24,8 @@ public class SVGExporter implements TGLocalFileExporter {
 	public TGFileFormat getFileFormat() {
 		return new TGFileFormat("Scalable Vector Graphics", new String[]{"svg"});
 	}
-	
-	public boolean configure(TGSong song, boolean setDefaults) {
-		if( setDefaults ){
-			this.styles.configureWithDefaults();
-		}else{
-			this.styles.configure();
-		}
-		return this.styles.isConfigured();
-	}
-	
-	public void init(TGFactory factory, OutputStream stream) {
-		this.stream = stream;
-	}
-	
-	public void exportSong(TGSong song) throws TGFileFormatException {
-		try {
-			if( this.styles.isConfigured() ){
-				StringBuffer svgBuffer = new StringBuffer();
-				
-				SVGController svgController = new SVGController(this.styles);
-				svgController.load(song.clone(svgController.getSongManager().getFactory()));
-				svgController.write(svgBuffer);
-				
-				PrintWriter svgWriter = new PrintWriter(this.stream);
-				svgWriter.write( svgBuffer.toString() );
-				svgWriter.flush();
-				svgWriter.close();
-			}
-		} catch( Throwable throwable ){
-			throw new TGFileFormatException(throwable);
-		}
+
+	public TGSongStream openStream(TGSongStreamContext context) {
+		return new SVGExporterStream(context);
 	}
 }

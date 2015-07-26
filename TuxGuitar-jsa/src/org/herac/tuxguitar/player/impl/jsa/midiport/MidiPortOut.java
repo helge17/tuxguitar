@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.player.impl.jsa.midiport;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 
 import org.herac.tuxguitar.gm.port.GMOutputPort;
@@ -10,7 +9,6 @@ import org.herac.tuxguitar.player.base.MidiControllers;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
 import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MidiPortOut extends GMOutputPort {
 	
@@ -70,50 +68,59 @@ class MidiReceiverImpl implements GMReceiver{
 		this.device = device;
 	}
 	
-	protected synchronized void open() throws Throwable{
-		if(!this.device.isOpen()){
-			final MidiDevice device = this.device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					try{
-						device.open();
-					} catch(MidiUnavailableException e){
-						throw new TGException(e);
-					}
-				}
-			});
-		}
-		if(this.receiver == null){
-			final MidiDevice device = this.device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					try{
-						setReceiver(device.getReceiver());
-					} catch(MidiUnavailableException e){
-						throw new TGException(e);
-					}
-				}
-			});
+	protected synchronized void open() throws TGException{
+		try{
+			if(!this.device.isOpen()){
+				this.device.open();
+	//			final MidiDevice device = this.device;
+	//			TGSynchronizer.instance().execute(new Runnable() {
+	//				public void run() throws TGException {
+	//					try{
+	//						device.open();
+	//					} catch(MidiUnavailableException e){
+	//						throw new TGException(e);
+	//					}
+	//				}
+	//			});
+			}
+			if( this.receiver == null ){
+				this.setReceiver(this.device.getReceiver());
+	//			final MidiDevice device = this.device;
+	//			TGSynchronizer.instance().execute(new Runnable() {
+	//				public void run() throws TGException {
+	//					try{
+	//						setReceiver(device.getReceiver());
+	//					} catch(MidiUnavailableException e){
+	//						throw new TGException(e);
+	//					}
+	//				}
+	//			});
+			}
+		} catch(Throwable e){
+			throw new TGException(e);
 		}
 	}
 	
 	protected synchronized void close() throws Throwable{
-		if(this.receiver != null){
-			final Receiver receiver = this.receiver;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					receiver.close();
-					setReceiver(null);
-				}
-			});
+		if( this.receiver != null ){
+			this.receiver.close();
+			this.setReceiver(null);
+//			final Receiver receiver = this.receiver;
+//			TGSynchronizer.instance().execute(new Runnable() {
+//				public void run() throws TGException {
+//					receiver.close();
+//					setReceiver(null);
+//				}
+//			});
 		}
-		if(this.device.isOpen()){
-			final MidiDevice device = this.device;
-			TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-				public void run() throws TGException {
-					device.close();
-				}
-			});
+		if( this.device.isOpen() ){
+			this.device.close();
+//			final MidiDevice device = this.device;
+//			TGSynchronizer.instance().execute(new Runnable() {
+//				public void run() throws TGException {
+//					device.close();
+//				}
+//			});
 		}
 	}
 	

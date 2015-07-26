@@ -12,8 +12,14 @@ import java.util.Properties;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdElementHandler;
+import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdRootHandler;
+import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdUpHandler;
+import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCloseHandler;
+import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
+import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserOpenHandler;
 
-public class TGBrowserImpl extends TGBrowser{
+public class TGBrowserImpl implements TGBrowser {
 	
 	private TGBrowserDataImpl data;
 	private String root; 
@@ -25,11 +31,11 @@ public class TGBrowserImpl extends TGBrowser{
 	}
 	
 	private String getRoot(){
-		if(this.root == null){
+		if( this.root == null ){
 			this.root = "/";
-			if(this.data.getPath() != null && this.data.getPath().length() > 0){
+			if( this.data.getPath() != null && this.data.getPath().length() > 0 ){
 				this.root = this.data.getPath();
-				if(this.root.indexOf("/") != 0){
+				if( this.root.indexOf("/") != 0 ){
 					this.root = ("/" + this.root);
 				}
 			}
@@ -37,60 +43,73 @@ public class TGBrowserImpl extends TGBrowser{
 		return this.root;
 	}
 	
-	public void open() throws TGBrowserException{
+	public void open(TGBrowserOpenHandler handler) {
 		try {
 			checkForProxy();
 			this.client = new TGBrowserFTPClient();
 			this.client.open(this.data.getHost(), TGBrowserFTPClient.DEFAULT_PORT);
 			this.client.login(this.data.getUsername(),this.data.getPassword());
-			this.cdRoot();
-		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			this.client.cd(getRoot());
+			this.path = this.client.pwd();
+			
+			handler.onSuccess();
+		} catch(Throwable throwable) {
+			handler.handleError(throwable);
 		}
 	}
 
 	
-	public void close() throws TGBrowserException{
+	public void close(TGBrowserCloseHandler handler) {
 		try {
-			closeProxy();
+			this.closeProxy();
 			this.client.close();
-		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			
+			handler.onSuccess();
+		} catch(Throwable throwable) {
+			handler.handleError(throwable);
 		}
 	}
 	
-	public void cdElement(TGBrowserElement element) throws TGBrowserException {
+	public void cdElement(TGBrowserElement element, TGBrowserCdElementHandler handler) {
 		try {
 			boolean isCDSuccess = this.client.cd(element.getName());
-			if(!isCDSuccess)
+			if(!isCDSuccess) {
 				throw new TGBrowserException("could not cd to "+element.getName());
+			}
 			this.path = this.client.pwd();
+			
+			handler.onSuccess();
 		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			handler.handleError(throwable);
 		}
 	}
 	
-	public void cdRoot() throws TGBrowserException {
+	public void cdRoot(TGBrowserCdRootHandler handler) {
 		try {
 			this.client.cd(getRoot());
 			this.path = this.client.pwd();
-		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			
+			handler.onSuccess();
+		} catch(Throwable throwable) {
+			handler.handleError(throwable);
 		}
 	}
 	
-	public void cdUp() throws TGBrowserException {
+	public void cdUp(TGBrowserCdUpHandler handler) {
 		try {
 			this.client.cdUp();
 			this.path = this.client.pwd();
+			
+			handler.onSuccess();
 		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			handler.handleError(throwable);
 		}
 	}
 	
-	public List<TGBrowserElement> listElements() throws TGBrowserException {
-		List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
+	public void listElements(TGBrowserListElementsHandler handler) {
 		try {
+			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
+			
 			this.client.binary();
 			String[] names = this.client.listNames();
 			String[] infos = this.client.listDetails();
@@ -119,10 +138,11 @@ public class TGBrowserImpl extends TGBrowser{
 			if( !elements.isEmpty() ){
 				Collections.sort(elements, new TGBrowserElementComparator());
 			}
+			
+			handler.onSuccess(elements);
 		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			handler.handleError(throwable);
 		}
-		return elements;
 	}
 	
 	public InputStream getInputStream(String path,TGBrowserElement element)throws TGBrowserException {

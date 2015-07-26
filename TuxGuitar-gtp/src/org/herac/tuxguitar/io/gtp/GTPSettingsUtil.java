@@ -133,8 +133,8 @@ public class GTPSettingsUtil {
 	}
 	
 	public static GTPSettingsUtil getInstance(TGContext context) {
-		return (GTPSettingsUtil) TGSingletonUtil.getInstance(context, GTPSettingsUtil.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, GTPSettingsUtil.class.getName(), new TGSingletonFactory<GTPSettingsUtil>() {
+			public GTPSettingsUtil createInstance(TGContext context) {
 				return new GTPSettingsUtil(context);
 			}
 		});

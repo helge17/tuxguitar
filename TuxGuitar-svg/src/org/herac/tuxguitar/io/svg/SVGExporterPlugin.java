@@ -9,7 +9,7 @@ public class SVGExporterPlugin extends TGExporterPlugin {
 	public static final String MODULE_ID = "tuxguitar-svg";
 	
 	protected TGRawExporter getExporter() throws TGPluginException {
-		return new SVGExporter(new SVGExporterStylesDialog());
+		return new SVGExporter();
 	}
 	
 	public String getModuleId(){

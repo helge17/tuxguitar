@@ -19,7 +19,7 @@ public class JackMidiPlayerListener implements TGEventListener {
 	}
 	
 	public void updateControlsSynchronized(){
-		TGSynchronizer.instance().executeLater(new TGSynchronizer.TGRunnable() {
+		TGSynchronizer.instance().executeLater(new Runnable() {
 			public void run() throws TGException {
 				updateControls();
 			}
@@ -36,7 +36,7 @@ public class JackMidiPlayerListener implements TGEventListener {
 	
 	public void processEvent(TGEvent event) {
 		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			int type = ((Integer)event.getProperty(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
+			int type = ((Integer)event.getAttribute(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
 			if( type == MidiPlayerEvent.NOTIFY_STARTED ){
 				this.processStarted();
 			} else if( type == MidiPlayerEvent.NOTIFY_STOPPED ){

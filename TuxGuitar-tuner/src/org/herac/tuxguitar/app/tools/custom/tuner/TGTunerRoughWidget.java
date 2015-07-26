@@ -7,8 +7,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
-import org.herac.tuxguitar.app.editors.TGColorImpl;
-import org.herac.tuxguitar.app.editors.TGPainterImpl;
+import org.herac.tuxguitar.app.graphics.TGColorImpl;
+import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>

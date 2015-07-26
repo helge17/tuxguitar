@@ -129,50 +129,38 @@ public class SBInstallerGui implements SBInstallerlistener{
 	
 	public void notifyProcess(final String process){
 		if(!isDisposed()){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed()){
-							getProgressLabel().setText(process);
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() {
+					if(!isDisposed()){
+						getProgressLabel().setText(process);
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}
 
 	public void notifyFinish(){
 		if(!isDisposed()){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed()){
-							getDialog().dispose();
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() {
+					if(!isDisposed()){
+						getDialog().dispose();
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}
 	
 	public void notifyFailed(final Throwable throwable){
 		if(!isDisposed()){
-			try {
-				TGSynchronizer.instance().execute(new TGSynchronizer.TGRunnable() {
-					public void run() throws TGException {
-						if(!isDisposed()){
-							getDialog().dispose();
-							MessageDialog.errorMessage( throwable );
-						}
+			TGSynchronizer.instance().executeLater(new Runnable() {
+				public void run() {
+					if(!isDisposed()){
+						getDialog().dispose();
+						MessageDialog.errorMessage( throwable );
 					}
-				});
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				}
+			});
 		}
 	}	
 

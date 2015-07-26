@@ -1,16 +1,17 @@
 package org.herac.tuxguitar.io.abc;
 
-import java.io.OutputStream;
-
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.io.base.TGSongStream;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
 
 public class ABCSongExporter implements TGLocalFileExporter{
 	
-	private OutputStream stream;
-	private ABCSettings settings;
+	public static final String PROVIDER_ID = ABCSongExporter.class.getName();
+	
+	public String getProviderId() {
+		return PROVIDER_ID;
+	}
 	
 	public String getExportName() {
 		return "Abc";
@@ -19,19 +20,8 @@ public class ABCSongExporter implements TGLocalFileExporter{
 	public TGFileFormat getFileFormat() {
 		return new TGFileFormat("Abc", new String[]{"abc"});
 	}
-	
-	public boolean configure(TGSong song, boolean setDefaults) {
-		this.settings = (setDefaults ? ABCSettings.getDefaults() : new ABCExportSettingsDialog(song).open());
-		return (this.settings != null);
-	}
-	
-	public void init(TGFactory factory,OutputStream stream){
-		this.stream = stream;
-	}
-	
-	public void exportSong(TGSong song) {
-		if(this.stream != null && this.settings != null){
-			new ABCOutputStream(this.stream,this.settings).writeSong(song);
-		}
+
+	public TGSongStream openStream(TGSongStreamContext context) {
+		return new ABCSongExporterStream(context);
 	}
 }

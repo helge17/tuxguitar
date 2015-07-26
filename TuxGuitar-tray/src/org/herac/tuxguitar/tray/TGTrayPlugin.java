@@ -15,7 +15,7 @@ public class TGTrayPlugin implements TGPlugin {
 	}
 	
 	public void init(TGContext context) {
-		this.tray = new TGTray();
+		this.tray = new TGTray(context);
 	}
 	
 	public void close() {

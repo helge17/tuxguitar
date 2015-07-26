@@ -40,8 +40,8 @@ public class TGCommunitySingleton {
 	}
 	
 	public static TGCommunitySingleton getInstance(TGContext context) {
-		return (TGCommunitySingleton) TGSingletonUtil.getInstance(context, TGCommunitySingleton.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGCommunitySingleton.class.getName(), new TGSingletonFactory<TGCommunitySingleton>() {
+			public TGCommunitySingleton createInstance(TGContext context) {
 				return new TGCommunitySingleton(context);
 			}
 		});

@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.io.ascii;
 
-import java.io.OutputStream;
-
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.io.base.TGSongStream;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
 
 public class ASCIISongExporter implements TGLocalFileExporter{
 	
-	private OutputStream stream;
+	public String getProviderId() {
+		return this.getClass().getName();
+	}
 	
 	public String getExportName() {
 		return "ASCII";
@@ -18,19 +18,8 @@ public class ASCIISongExporter implements TGLocalFileExporter{
 	public TGFileFormat getFileFormat() {
 		return new TGFileFormat("ASCII", new String[]{"tab"});
 	}
-	
-	public boolean configure(TGSong song, boolean setDefaults) {
-		return true;
+
+	public TGSongStream openStream(TGSongStreamContext context) {
+		return new ASCIISongStream(context);
 	}
-	
-	public void init(TGFactory factory,OutputStream stream){
-		this.stream = stream;
-	}
-	
-	public void exportSong(TGSong song) {
-		if( this.stream != null ){
-			new ASCIITabOutputStream(this.stream).writeSong(song);
-		}
-	}
-	
 }

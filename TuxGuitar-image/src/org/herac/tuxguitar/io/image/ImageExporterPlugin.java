@@ -8,7 +8,7 @@ public class ImageExporterPlugin extends TGExporterPlugin{
 	public static final String MODULE_ID = "tuxguitar-image";
 	
 	protected TGRawExporter getExporter() {
-		return new ImageExporterDialog();
+		return new ImageExporter();
 	}
 	
 	public String getModuleId(){

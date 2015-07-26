@@ -7,8 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
@@ -16,6 +18,8 @@ import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.base.TGRawImporter;
 import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
+import org.herac.tuxguitar.io.base.TGSongStream;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -76,9 +80,14 @@ public class TGConverter {
 				}
 				else if( this.format != null && this.format.getExporter() instanceof TGLocalFileExporter ){
 					TGLocalFileExporter exporter = (TGLocalFileExporter) this.format.getExporter();
-					exporter.configure(song, true);
-					exporter.init(manager.getFactory(), new BufferedOutputStream(new FileOutputStream(convertFileName)));
-					exporter.exportSong(song);
+					
+					TGSongStreamContext streamContext = new TGSongStreamContext();
+					streamContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
+					streamContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, manager);
+					streamContext.setAttribute(OutputStream.class.getName(), new BufferedOutputStream(new FileOutputStream(convertFileName)));
+					
+					TGSongStream songStream = exporter.openStream(streamContext);
+					songStream.process();
 				}
 				this.getListener().notifyFileResult(convertFileName,FILE_OK);
 			}
@@ -157,11 +166,16 @@ public class TGConverter {
 				TGRawImporter rawImporter = (TGRawImporter)importers.next();
 				if( rawImporter instanceof TGLocalFileImporter ){
 					TGLocalFileImporter currentImporter = (TGLocalFileImporter)rawImporter;
-					currentImporter.configure(true);
 					if (isSupportedExtension(filename,currentImporter)) {
-						InputStream input = new BufferedInputStream(new FileInputStream(filename));
-						currentImporter.init(factory, input);
-						return currentImporter.importSong();
+						
+						TGSongStreamContext streamContext = new TGSongStreamContext();
+						streamContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, new TGSongManager());
+						streamContext.setAttribute(InputStream.class.getName(), new BufferedInputStream(new FileInputStream(filename)));
+						
+						TGSongStream songStream = currentImporter.openStream(streamContext);
+						songStream.process();
+						
+						return (TGSong) streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 					}
 				}
 			} catch (Throwable throwable) {

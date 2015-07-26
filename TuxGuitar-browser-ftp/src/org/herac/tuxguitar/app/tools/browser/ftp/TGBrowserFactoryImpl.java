@@ -40,7 +40,7 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	}
 	
 	public TGBrowser newTGBrowser(TGBrowserData data) {
-		if(data instanceof TGBrowserDataImpl){
+		if( data instanceof TGBrowserDataImpl ){
 			return new TGBrowserImpl((TGBrowserDataImpl)data);
 		}
 		return null;

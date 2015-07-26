@@ -14,46 +14,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.helper.SyncThread;
 import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public class ImageExporterDialog extends ImageExporter {
+public class ImageExporterSettingsDialog {
 	
-	public void exportSong(final TGSong song) {
-		new SyncThread(new Runnable() {
-			public void run() {
-				try{
-					exportSongDialog(song, TuxGuitar.getInstance().getShell());
-				}catch(Throwable throwable){
-					return;
-				}
-			}
-		}).start();
-	}
-	
-	public void exportSong(TGSong song, PrintStyles styles, ImageFormat format){
-		try{
-			DirectoryDialog dialog = new DirectoryDialog( TuxGuitar.getInstance().getShell() );
-			dialog.setText(TuxGuitar.getProperty("tuxguitar-image.directory-dialog.title"));
-			String path = dialog.open();
-			if( path != null ){
-				setPath( path );
-				setStyles( styles );
-				setFormat( format );
-				super.exportSong(song);
-			}
-		}catch(Throwable throwable){
-			return;
-		}
-	}
-	
-	public void exportSongDialog(final TGSong song, final Shell shell) {
-		final PrintStyles styles = getDefaultStyles(song) ;
+	public void openSettingsDialog(final TGSongStreamContext context, final Runnable callback) {
+		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		final PrintStyles styles = createDefaultStyles(song) ;
 		
-		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("options"));
 		
@@ -206,7 +180,11 @@ public class ImageExporterDialog extends ImageExporter {
 				
 				dialog.dispose();
 				
-				exportSong(song, styles, ImageFormat.IMAGE_FORMATS[ format ] );
+				ImageExporterSettings settings = new ImageExporterSettings();
+				settings.setStyles(styles);
+				settings.setFormat(ImageFormat.IMAGE_FORMATS[ format ]);
+				
+				openDirectoryDialog(settings, context, callback);
 			}
 		});
 		
@@ -221,8 +199,27 @@ public class ImageExporterDialog extends ImageExporter {
 		
 		dialog.setDefaultButton( buttonOK );
 		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		
+		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+	}
+	
+	public void openDirectoryDialog(final ImageExporterSettings settings, final TGSongStreamContext context, final Runnable callback){
+		DirectoryDialog dialog = new DirectoryDialog( TuxGuitar.getInstance().getShell() );
+		dialog.setText(TuxGuitar.getProperty("tuxguitar-image.directory-dialog.title"));
+		settings.setPath(dialog.open());
+		if( settings.getPath() != null ){
+			context.setAttribute(ImageExporterSettings.class.getName(), settings);
+			callback.run();
+		}
+	}
+	
+	public PrintStyles createDefaultStyles(TGSong song){
+		PrintStyles styles = new PrintStyles();
+		styles.setStyle(TGLayout.DISPLAY_TABLATURE);
+		styles.setFromMeasure(1);
+		styles.setToMeasure(song.countMeasureHeaders());
+		styles.setTrackNumber(1);
+		styles.setBlackAndWhite(false);
+		return styles;
 	}
 	
 	private static GridData getButtonData(){
