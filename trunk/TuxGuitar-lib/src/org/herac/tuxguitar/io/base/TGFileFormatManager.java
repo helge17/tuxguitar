@@ -18,8 +18,8 @@ public class TGFileFormatManager {
 	public static final String DEFAULT_EXTENSION = ("." + TGStream.TG_FORMAT_CODE);
 	
 	private TGContext context;
-	private TGSongLoader loader;
-	private TGSongWriter writer;
+	private TGSongLoaderHelper loader;
+	private TGSongWriterHelper writer;
 	private List<TGInputStreamBase> inputStreams;
 	private List<TGOutputStreamBase> outputStreams;
 	private List<TGRawExporter> exporters;
@@ -27,8 +27,8 @@ public class TGFileFormatManager {
 	
 	private TGFileFormatManager(TGContext context){
 		this.context = context;
-		this.loader = new TGSongLoader(this.context);
-		this.writer = new TGSongWriter(this.context);
+		this.loader = new TGSongLoaderHelper(this.context);
+		this.writer = new TGSongWriterHelper(this.context);
 		this.inputStreams = new ArrayList<TGInputStreamBase>();
 		this.outputStreams = new ArrayList<TGOutputStreamBase>();
 		this.exporters = new ArrayList<TGRawExporter>();
@@ -36,11 +36,11 @@ public class TGFileFormatManager {
 		this.addDefaultStreams();
 	}
 
-	public TGSongLoader getLoader(){
+	public TGSongLoaderHelper getLoader(){
 		return this.loader;
 	}
 	
-	public TGSongWriter getWriter(){
+	public TGSongWriterHelper getWriter(){
 		return this.writer;
 	}
 	
@@ -187,8 +187,8 @@ public class TGFileFormatManager {
 	}
 	
 	public static TGFileFormatManager getInstance(TGContext context) {
-		return (TGFileFormatManager) TGSingletonUtil.getInstance(context, TGFileFormatManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGFileFormatManager.class.getName(), new TGSingletonFactory<TGFileFormatManager>() {
+			public TGFileFormatManager createInstance(TGContext context) {
 				return new TGFileFormatManager(context);
 			}
 		});

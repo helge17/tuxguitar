@@ -3,8 +3,6 @@ package org.herac.tuxguitar.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionException;
-
 public class TGEventHandler {
 	
 	private Object lock;
@@ -15,14 +13,18 @@ public class TGEventHandler {
 		this.listeners = new ArrayList<TGEventListener>();
 	}
 	
-	public void processEvent(TGEvent event) throws TGActionException{
+	public void processEvent(TGEvent event) throws TGEventException {
 		List<TGEventListener> listeners = new ArrayList<TGEventListener>();
 		synchronized (this.lock) {
 			listeners.addAll(this.listeners);
 		}
 		
-		for(TGEventListener tgEventListener : listeners){
-			tgEventListener.processEvent(event);
+		try {
+			for(TGEventListener tgEventListener : listeners){
+				tgEventListener.processEvent(event);
+			}
+		} catch (Throwable e) {
+			throw new TGEventException(e);
 		}
 	}
 	

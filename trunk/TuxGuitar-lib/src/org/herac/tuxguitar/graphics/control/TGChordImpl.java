@@ -13,6 +13,7 @@ import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTrack;
 /**
  * @author julian
  * 
@@ -341,7 +342,7 @@ public class TGChordImpl extends TGChord {
 				painter.closePath();
 			}
 			else{
-				painter.setBackground( (this.tonic >= 0 && ( (getStringValue(i + 1) + fret) % 12) == this.tonic)?getTonicColor():getNoteColor());
+				painter.setBackground(isTonicFret(i, fret) ? getTonicColor() : getNoteColor());
 				painter.initPath(TGPainter.PATH_FILL);
 				fret -= (getFirstFret() - 1);
 				float noteY = y + ((getFretSpacing() * fret) - (getFretSpacing() / 2 ));
@@ -367,9 +368,17 @@ public class TGChordImpl extends TGChord {
 		setFirstFret( Math.max(firstFret,1) );
 	}
 	
-	private int getStringValue(int number){
-		TGString string = getBeat().getMeasure().getTrack().getString(number);
-		return string.getValue();
+	private boolean isTonicFret(int stringIndex, int fret){
+		if( this.tonic >= 0 ) {
+			TGTrack track = getBeat().getMeasure().getTrack();
+			if( track != null && track.stringCount() > stringIndex ) {
+				TGString string = track.getString(stringIndex + 1);
+				if( string != null ) {
+					return (((string.getValue() + fret) % 12) == this.tonic);
+				}
+			}
+		}
+		return false;
 	}
 	
 	public boolean isDisposed(){

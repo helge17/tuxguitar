@@ -17,6 +17,6 @@ public class MidiPlayerEvent extends TGEvent {
 	public MidiPlayerEvent(int notificationType) {
 		super(EVENT_TYPE);
 		
-		this.setProperty(PROPERTY_NOTIFICATION_TYPE, Integer.valueOf(notificationType));
+		this.setAttribute(PROPERTY_NOTIFICATION_TYPE, Integer.valueOf(notificationType));
 	}
 }

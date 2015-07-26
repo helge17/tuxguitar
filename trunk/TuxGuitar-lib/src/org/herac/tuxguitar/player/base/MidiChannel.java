@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.player.base;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public interface MidiChannel {
 	

@@ -1,28 +1,23 @@
 package org.herac.tuxguitar.event;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.herac.tuxguitar.util.TGAbstractContext;
 
-public class TGEvent {
-
+public class TGEvent extends TGAbstractContext {
+	
+	public static final String ATTRIBUTE_SOURCE_CONTEXT = "sourceContext";
+	
 	private String eventType;
-	private Map<String, Object> properties;
+	
+	public TGEvent(String eventType, TGAbstractContext sourceContext) {
+		this.eventType = eventType;
+		this.setAttribute(ATTRIBUTE_SOURCE_CONTEXT, sourceContext);
+	}
 	
 	public TGEvent(String eventType) {
-		this.eventType = eventType;
-		this.properties = new HashMap<String, Object>();
+		this(eventType,  null);
 	}
 	
 	public String getEventType() {
 		return eventType;
-	}
-	
-	public <T extends Object> void setProperty(String key, T value){
-		this.properties.put(key, value);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T extends Object> T getProperty(String key){
-		return (T) this.properties.get(key);
 	}
 }

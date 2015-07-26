@@ -3,7 +3,10 @@ package org.herac.tuxguitar.document;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGLyric;
+import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -29,8 +32,12 @@ public final class TGDocumentContextAttributes {
 	public static final String ATTRIBUTE_CHANNEL = TGChannel.class.getName();
 	public static final String ATTRIBUTE_TEMPO = TGTempo.class.getName();
 	public static final String ATTRIBUTE_TIME_SIGNATURE = TGTimeSignature.class.getName();
+	public static final String ATTRIBUTE_LYRIC = TGLyric.class.getName();
+	public static final String ATTRIBUTE_CHORD = TGChord.class.getName();
+	public static final String ATTRIBUTE_MARKER = TGMarker.class.getName();
 	
 	public static final String ATTRIBUTE_VELOCITY = "velocity";
 	public static final String ATTRIBUTE_POSITION = "position";
 	public static final String ATTRIBUTE_FRET = "fret";
+	public static final String ATTRIBUTE_VALUE = "value";
 }

@@ -132,10 +132,15 @@ public class TGMeasureManager {
 	}
 	
 	public void addNote(TGMeasure measure,long start, TGNote note, TGDuration duration, int voice){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			addNote(beat, note, duration, voice);
+		TGBeat beat = getBeatIn(measure, start);
+		if( beat != null ){
+			addNote(beat, note, duration, start, voice);
 		}
+		
+//		TGBeat beat = getBeat(measure, start);
+//		if( beat != null ){
+//			addNote(beat, note, duration, voice);
+//		}
 	}
 	
 	public void addNote(TGBeat beat, TGNote note, TGDuration duration, int voice){
@@ -414,7 +419,7 @@ public class TGMeasureManager {
 			TGBeat beat = it.next();
 			TGDuration duration = getMinimumDuration(beat);
 			if (beat.getStart() <= start && (beat.getStart() + duration.getTime() > start)) {
-				if(beatIn == null || beat.getStart() > beatIn.getStart()){
+				if( beatIn == null || beat.getStart() > beatIn.getStart() ){
 					beatIn = beat;
 				}
 			}

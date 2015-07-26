@@ -73,8 +73,8 @@ public class TGPropertiesManager {
 	}
 	
 	public static TGPropertiesManager getInstance(TGContext context) {
-		return (TGPropertiesManager) TGSingletonUtil.getInstance(context, TGPropertiesManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGPropertiesManager.class.getName(), new TGSingletonFactory<TGPropertiesManager>() {
+			public TGPropertiesManager createInstance(TGContext context) {
 				return new TGPropertiesManager();
 			}
 		});

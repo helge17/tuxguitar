@@ -956,8 +956,8 @@ public class MidiPlayer{
 	}
 	
 	public static MidiPlayer getInstance(TGContext context) {
-		return (MidiPlayer) TGSingletonUtil.getInstance(context, MidiPlayer.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, MidiPlayer.class.getName(), new TGSingletonFactory<MidiPlayer>() {
+			public MidiPlayer createInstance(TGContext context) {
 				return new MidiPlayer(context);
 			}
 		});
