@@ -22,6 +22,7 @@
 	<modules>
 		<module>../../TuxGuitar</module>
 		<module>../../TuxGuitar-lib</module>
+		<module>../../TuxGuitar-editor-utils</module>
 		<module>../../TuxGuitar-gm-utils</module>
 		<module>../../TuxGuitar-ascii</module>
 		<module>../../TuxGuitar-browser-ftp</module>
