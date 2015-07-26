@@ -76,6 +76,12 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-editor-utils</artifactId>
+									<destFileName>tuxguitar-editor-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
 									<destFileName>tuxguitar-gm-utils.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
