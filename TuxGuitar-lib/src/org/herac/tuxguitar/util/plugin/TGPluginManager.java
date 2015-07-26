@@ -22,8 +22,8 @@ public class TGPluginManager {
 	private List<TGPlugin> plugins;
 	
 	public static TGPluginManager getInstance(TGContext context) {
-		return (TGPluginManager) TGSingletonUtil.getInstance(context, TGPluginManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGPluginManager.class.getName(), new TGSingletonFactory<TGPluginManager>() {
+			public TGPluginManager createInstance(TGContext context) {
 				return new TGPluginManager(context);
 			}
 		});

@@ -53,8 +53,8 @@ public class TGPluginProperties {
 	}
 	
 	public static TGPluginProperties getInstance(TGContext context) {
-		return (TGPluginProperties) TGSingletonUtil.getInstance(context, TGPluginProperties.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGPluginProperties.class.getName(), new TGSingletonFactory<TGPluginProperties>() {
+			public TGPluginProperties createInstance(TGContext context) {
 				return new TGPluginProperties(context);
 			}
 		});

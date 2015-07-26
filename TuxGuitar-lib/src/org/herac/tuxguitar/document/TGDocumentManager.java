@@ -27,7 +27,6 @@ public class TGDocumentManager {
 	
 	public void setSong(TGSong song) {
 		if( song != null ){
-			this.clearSong();
 			this.song = song;
 		}
 	}
@@ -39,8 +38,8 @@ public class TGDocumentManager {
 	}
 	
 	public static TGDocumentManager getInstance(TGContext context) {
-		return (TGDocumentManager) TGSingletonUtil.getInstance(context, TGDocumentManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGDocumentManager.class.getName(), new TGSingletonFactory<TGDocumentManager>() {
+			public TGDocumentManager createInstance(TGContext context) {
 				return new TGDocumentManager();
 			}
 		});

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.util.singleton;
 
 import org.herac.tuxguitar.util.TGContext;
 
-public interface TGSingletonFactory {
+public interface TGSingletonFactory<T> {
 	
-	Object createInstance(TGContext context);
+	T createInstance(TGContext context);
 }

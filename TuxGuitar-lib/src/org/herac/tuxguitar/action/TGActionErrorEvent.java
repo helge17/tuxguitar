@@ -9,6 +9,6 @@ public class TGActionErrorEvent extends TGActionEvent {
 	public TGActionErrorEvent(String actionId, TGActionContext actionContext, Throwable actionError) {
 		super(EVENT_TYPE, actionId, actionContext);
 
-		this.setProperty(PROPERTY_ACTION_ERROR, actionError);
+		this.setAttribute(PROPERTY_ACTION_ERROR, actionError);
 	}
 }

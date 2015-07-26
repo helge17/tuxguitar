@@ -138,8 +138,8 @@ public class TGLibraryLoader {
 	}
 	
 	public static TGLibraryLoader getInstance(TGContext context) {
-		return (TGLibraryLoader) TGSingletonUtil.getInstance(context, TGLibraryLoader.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGLibraryLoader.class.getName(), new TGSingletonFactory<TGLibraryLoader>() {
+			public TGLibraryLoader createInstance(TGContext context) {
 				return new TGLibraryLoader(context);
 			}
 		});

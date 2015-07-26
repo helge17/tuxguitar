@@ -4,7 +4,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGSingletonUtil {
 	
-	public static Object getInstance(TGContext context, String key, TGSingletonFactory factory) {
+	public static <T> T getInstance(TGContext context, String key, TGSingletonFactory<T> factory) {
 		synchronized (TGSingletonUtil.class) {
 			if( context.hasAttribute(key) ) {
 				return context.getAttribute(key);

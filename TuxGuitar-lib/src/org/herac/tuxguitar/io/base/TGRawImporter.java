@@ -1,11 +1,8 @@
 package org.herac.tuxguitar.io.base;
 
-import org.herac.tuxguitar.song.models.TGSong;
 
-public interface TGRawImporter {
+public interface TGRawImporter extends TGSongStreamProvider {
 	
 	public String getImportName();
-	
-	public TGSong importSong() throws TGFileFormatException;
 	
 }

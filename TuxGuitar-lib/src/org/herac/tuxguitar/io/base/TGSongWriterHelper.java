@@ -5,11 +5,11 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGSongWriter {
+public class TGSongWriterHelper {
 	
 	private TGContext context;
 	
-	public TGSongWriter(TGContext context){
+	public TGSongWriterHelper(TGContext context){
 		this.context = context;
 	}
 	

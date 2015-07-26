@@ -42,8 +42,8 @@ public class TGErrorManager {
 	}
 	
 	public static TGErrorManager getInstance(TGContext context) {
-		return (TGErrorManager) TGSingletonUtil.getInstance(context, TGErrorManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGErrorManager.class.getName(), new TGSingletonFactory<TGErrorManager>() {
+			public TGErrorManager createInstance(TGContext context) {
 				return new TGErrorManager();
 			}
 		});

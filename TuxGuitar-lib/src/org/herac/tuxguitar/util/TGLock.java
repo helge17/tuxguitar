@@ -19,7 +19,7 @@ public class TGLock {
 		this.timeOutController = new TGLockTimeOutController(this);
 	}
 	
-	public void lock() {		
+	public void lock() {
 		Thread thread = Thread.currentThread();
 		
 		boolean lockSuccess = false;
@@ -83,7 +83,7 @@ public class TGLock {
 	
 	private class TGLockTimeOutController {
 		
-		private static final long TIME_OUT = 20000;
+		private static final long TIME_OUT = 60000 * 120;
 		
 		private TGLock lock;
 		private Map<Thread, Long> timeStamps;
@@ -104,7 +104,10 @@ public class TGLock {
 				Long timeStamp = (Long)this.timeStamps.get(thread);
 				if( timeStamp != null ) {
 					if( currentTimeStamp - (timeStamp.longValue()) > TIME_OUT ) {
-						throw new RuntimeException(getErrorMessage());
+						System.out.println("deadlock");
+						System.out.println(getErrorMessage());
+						
+						throw new RuntimeException("Dead lock");
 					}
 				}
 			}
@@ -116,10 +119,10 @@ public class TGLock {
 				this.timeStamps.remove(thread);
 			}
 			this.stackTraceElements = thread.getStackTrace();
-			
-			if( this.lock.lockCount > 1 && "main".equals(thread.getName())) {
-				throw new RuntimeException("To many locks on main thread");
-			}
+//			
+//			if( this.lock.lockCount > 10 && "main".equals(thread.getName())) {
+//				throw new RuntimeException("To many locks on main thread");
+//			}
 		}
 		
 		public String getErrorMessage() {

@@ -8,21 +8,20 @@ import java.util.Map;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGActionManager {
 	
 	private TGContext context;
-	private TGLock lock;
+//	private TGLock lock;
 	private Map<String, TGAction> actions;
 	private List<TGActionInterceptor> interceptors;
 	private TGActionContextFactory actionContextFactory;
 	
 	private TGActionManager(TGContext context){
 		this.context = context;
-		this.lock = new TGLock();
+//		this.lock = new TGLock();
 		this.actions = new HashMap<String, TGAction>();
 		this.interceptors = new ArrayList<TGActionInterceptor>();
 		this.actionContextFactory = null;
@@ -62,7 +61,7 @@ public class TGActionManager {
 	
 	public void execute(String id, TGActionContext context) throws TGActionException{
 		try {
-			this.lock.lock();
+//			this.lock.lock();
 			
 			TGAction action = getAction(id);
 			if( action != null ){
@@ -82,10 +81,22 @@ public class TGActionManager {
 			this.fireErrorEvent(id, context, throwable);
 			
 			throw new TGActionException(throwable);
-		} finally {
-			this.lock.unlock(false);
+//		} finally {
+//			this.lock.unlock(false);
 		}
 	}
+	
+//	public boolean tryExecute(String id, TGActionContext context) throws TGActionException {
+//		boolean tryLock = this.lock.tryLock();
+//		if( tryLock ) {
+//			try {
+//				this.execute(id, context);
+//			} finally {
+//				this.lock.unlock(false);
+//			}
+//		}
+//		return tryLock;
+//	}
 	
 	public boolean intercept(String id, TGActionContext context) throws TGActionException{
 		for(TGActionInterceptor interceptor : this.interceptors){
@@ -149,8 +160,8 @@ public class TGActionManager {
 	}
 	
 	public static TGActionManager getInstance(TGContext context) {
-		return (TGActionManager) TGSingletonUtil.getInstance(context, TGActionManager.class.getName(), new TGSingletonFactory() {
-			public Object createInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGActionManager.class.getName(), new TGSingletonFactory<TGActionManager>() {
+			public TGActionManager createInstance(TGContext context) {
 				return new TGActionManager(context);
 			}
 		});

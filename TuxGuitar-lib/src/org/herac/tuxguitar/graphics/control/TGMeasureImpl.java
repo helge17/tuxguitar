@@ -25,6 +25,7 @@ import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -157,9 +158,12 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private boolean[][] registeredAccidentals;
 	
+	private boolean readyToPaint;
+	
 	@SuppressWarnings("unchecked")
 	public TGMeasureImpl(TGMeasureHeader header) {
 		super(header);
+		this.readyToPaint = false;
 		this.registeredAccidentals = new boolean[11][7];
 		this.voiceGroups = (List<TGBeatGroup>[]) new List<?>[TGBeat.MAX_VOICES];
 		for(int v = 0 ; v < TGBeat.MAX_VOICES; v ++){
@@ -171,6 +175,7 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Crea los valores necesarios
 	 */
 	public void create(TGLayout layout) {
+		this.readyToPaint = false;
 		this.divisionLength = TGSongManager.getDivisionLength(getHeader());
 		this.resetSpacing();
 		this.autoCompleteSilences(layout.getSongManager());
@@ -186,9 +191,10 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Actualiza los valores para dibujar
 	 */
 	public void update(TGLayout layout) {
-		updateComponents(layout);
-		setOutOfBounds(true);
-		setBufferCreated(false);
+		this.updateComponents(layout);
+		this.setOutOfBounds(true);
+		this.setBufferCreated(false);
+		this.readyToPaint = true;
 	}
 	
 	private void checkCompactMode(TGLayout layout){
@@ -590,41 +596,43 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	public void paintMeasure(TGLayout layout,TGPainter painter) {
-		this.setOutOfBounds(false);
-		
-		boolean bufferEnabled = layout.isBufferEnabled();
-		
-		if(shouldRepaintBuffer() || !bufferEnabled ){
-			TGPainter bufferPainter = painter;
-			float x = (bufferEnabled ? 0 : getPosX());
-			float y = (bufferEnabled ? 0 : getPosY());
-			if(bufferEnabled){
-				getBuffer().createBuffer(painter,getWidth(layout) + getSpacing(), getTs().getSize(),layout.getResources().getBackgroundColor());
-				bufferPainter = getBuffer().getPainter();
+		if( this.readyToPaint ) {
+			this.setOutOfBounds(false);
+			
+			boolean bufferEnabled = layout.isBufferEnabled();
+			
+			if(shouldRepaintBuffer() || !bufferEnabled ){
+				TGPainter bufferPainter = painter;
+				float x = (bufferEnabled ? 0 : getPosX());
+				float y = (bufferEnabled ? 0 : getPosY());
+				if(bufferEnabled){
+					getBuffer().createBuffer(painter,getWidth(layout) + getSpacing(), getTs().getSize(),layout.getResources().getBackgroundColor());
+					bufferPainter = getBuffer().getPainter();
+				}
+				layout.paintLines(getTrackImpl(),getTs(),bufferPainter,x,y, getWidth(layout) + getSpacing());
+				paintTimeSignature(layout,bufferPainter,x,y);
+				paintClef(layout,bufferPainter,x,y);
+				paintKeySignature(layout,bufferPainter,x,y);
+				paintComponents(layout,bufferPainter,x,y);
+				if(bufferEnabled){
+					getBuffer().disposePainter();
+				}
+				setBufferCreated(true);
 			}
-			layout.paintLines(getTrackImpl(),getTs(),bufferPainter,x,y, getWidth(layout) + getSpacing());
-			paintTimeSignature(layout,bufferPainter,x,y);
-			paintClef(layout,bufferPainter,x,y);
-			paintKeySignature(layout,bufferPainter,x,y);
-			paintComponents(layout,bufferPainter,x,y);
 			if(bufferEnabled){
-				getBuffer().disposePainter();
+				painter.setBackground(layout.getResources().getBackgroundColor());
+				getBuffer().paintBuffer(painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 			}
-			setBufferCreated(true);
+			
+			this.paintMarker(layout, painter);
+			this.paintTexts(layout,painter);
+			this.paintTempo(layout,painter);
+			this.paintTripletFeel(layout,painter);
+			this.paintDivisions(layout,painter);
+			this.paintRepeatEnding(layout,painter);
+			this.paintPlayMode(layout,painter);
+			this.paintLoopMarker(layout, painter);
 		}
-		if(bufferEnabled){
-			painter.setBackground(layout.getResources().getBackgroundColor());
-			getBuffer().paintBuffer(painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
-		}
-		
-		this.paintMarker(layout, painter);
-		this.paintTexts(layout,painter);
-		this.paintTempo(layout,painter);
-		this.paintTripletFeel(layout,painter);
-		this.paintDivisions(layout,painter);
-		this.paintRepeatEnding(layout,painter);
-		this.paintPlayMode(layout,painter);
-		this.paintLoopMarker(layout, painter);
 	}
 	
 	private boolean shouldRepaintBuffer(){
@@ -1337,9 +1345,17 @@ public class TGMeasureImpl extends TGMeasure{
 		this.disposeBeats();
 	}
 	
-	public void clear() {
+	public void clearSynchronized() {
 		this.dispose();
 		
 		super.clear();
+	}
+	
+	public void clear() {
+		TGSynchronizer.instance().executeLater(new Runnable() {
+			public void run() {
+				clearSynchronized();
+			}
+		});
 	}
 }
