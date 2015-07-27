@@ -109,7 +109,7 @@ public class SkinOption extends Option{
 						SkinOption.this.skins.add(info);
 					}
 				}
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							for(int i = 0;i < SkinOption.this.skins.size();i++){
@@ -143,7 +143,7 @@ public class SkinOption extends Option{
 	
 	protected void showSkinInfo(final SkinInfo info){
 		loadCursor(SWT.CURSOR_WAIT);
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 			public void run() {
 				if(!isDisposed()){
 					disposePreview();

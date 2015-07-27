@@ -8,7 +8,7 @@ public class PDFPluginExporter extends TGExporterPlugin{
 	public static final String MODULE_ID = "tuxguitar-pdf";
 	
 	protected TGRawExporter getExporter() {
-		return new PDFSongExporter();
+		return new PDFSongExporter(this.getContext());
 	}
 	
 	public String getModuleId(){

@@ -146,7 +146,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	private void updateTable(){
 		if(!isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
 						TGBrowserDialog.this.table.removeAll();
@@ -181,7 +181,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	public void updateCollections(final TGBrowserCollection selection){
 		if(!isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
 						TGBrowserDialog.this.menu.updateCollections(selection);
@@ -241,7 +241,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	}
 	
 	public void notifyLockStatusChanged(){
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				if(!isDisposed()){
 					updateBars();

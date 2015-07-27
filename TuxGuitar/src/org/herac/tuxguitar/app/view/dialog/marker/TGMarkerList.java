@@ -166,7 +166,7 @@ public class TGMarkerList implements TGEventListener {
 	
 	public void update(){
 		if(!isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
 						loadTableItems();

@@ -31,7 +31,7 @@ public class TGSyncProcessLocked {
 	}
 	
 	private void processLaterLocked() throws TGException {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				TGLock lock = findLockControl();
 				if( lock.tryLock() ) {

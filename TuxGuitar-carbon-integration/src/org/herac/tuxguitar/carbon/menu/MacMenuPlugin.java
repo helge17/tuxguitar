@@ -8,10 +8,11 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MacMenuPlugin implements TGPlugin {
 	
+	private TGContext context;
 	private MacMenu macMenu;
 	
 	public void init(TGContext context) throws TGPluginException {
-		// Nothing todo
+		this.context = context;
 	}
 	
 	public void close() throws TGPluginException {
@@ -22,7 +23,7 @@ public class MacMenuPlugin implements TGPlugin {
 		if( this.macMenu != null ){
 			this.macMenu.setEnabled(enabled);
 		}else if(enabled){
-			this.macMenu = new MacMenu();
+			this.macMenu = new MacMenu(this.context);
 			this.macMenu.setEnabled(true);
 			this.macMenu.hookApplicationMenu(TuxGuitar.getInstance().getDisplay(), TuxGuitar.getInstance().getShell());
 		}

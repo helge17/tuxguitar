@@ -70,7 +70,7 @@ public class TGBufferedPainterLocked {
 	
 	public void redrawLater() {
 		final Composite paintableControl = this.handle.getPaintableControl();
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				if(!paintableControl.isDisposed()) {
 					paintableControl.redraw();

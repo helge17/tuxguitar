@@ -38,7 +38,7 @@ public class TGBrowserConnection {
 				response.loadElements(elements);
 				handler.onSuccess(elements);
 			}else if( status != null && status.equals(HTTP_STATUS_UNAUTHORIZED) ){
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 					public void run() throws TGException {
 						if(!TuxGuitar.getInstance().getBrowser().isDisposed()){
 							TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(TGBrowserConnection.this.context);

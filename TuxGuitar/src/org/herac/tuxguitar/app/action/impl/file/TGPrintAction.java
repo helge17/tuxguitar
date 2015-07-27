@@ -59,10 +59,10 @@ public class TGPrintAction extends TGActionBase{
 			new Thread(new Runnable() {
 				public void run() {
 					try{
-						final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+						final TGSongManager manager = new TGSongManager(new TGFactoryImpl(getContext()));
 						final TGSong song = srcSong.clone(manager.getFactory());
 						
-						TGSynchronizer.instance().executeLater(new Runnable() {
+						TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
 							public void run() {
 								try{
 									Printer printer = new Printer(printerData);
@@ -167,7 +167,7 @@ public class TGPrintAction extends TGActionBase{
 			if(this.started){
 				this.printer.endJob();
 				this.started = false;
-				TGSynchronizer.instance().executeLater(new Runnable(){
+				TGSynchronizer.getInstance(getContext()).executeLater(new Runnable(){
 					public void run() {
 						dispose();
 					}

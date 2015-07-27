@@ -38,7 +38,7 @@ public class SBAssistant {
 	public void process(){
 		new Thread(new Runnable() {
 			public void run() {
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(SBAssistant.this.context).executeLater(new Runnable() {
 					public void run() {
 						ConfirmDialog dialog = new ConfirmDialog(TuxGuitar.getProperty("jsa.soundbank-assistant.confirm-message"));
 						dialog.setDefaultStatus( ConfirmDialog.STATUS_NO );

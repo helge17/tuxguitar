@@ -96,8 +96,8 @@ public class TGChordSelector extends Composite{
 		
 		customizeButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				if(new TGChordSettingsDialog().open(TGChordSelector.this.getShell())){
-					TGSynchronizer.instance().executeLater(new Runnable() {
+				if( new TGChordSettingsDialog().open(TGChordSelector.this.getShell()) ){
+					TGSynchronizer.getInstance(getDialog().getContext().getContext()).executeLater(new Runnable() {
 						public void run() throws TGException {
 							TGChordSelector.this.showChord();
 							getChordList().redraw();
@@ -368,7 +368,7 @@ public class TGChordSelector extends Composite{
 		TuxGuitar.getInstance().loadCursor(getShell(),SWT.CURSOR_WAIT);
 		TGChordCreatorListener listener = new TGChordCreatorListener() {
 			public void notifyChords(final TGChordCreatorUtil instance,final java.util.List<TGChord> chords) {
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(getDialog().getContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if( instance.isValidProcess() && !getDialog().isDisposed() ){
 							getDialog().getList().setChords(chords);

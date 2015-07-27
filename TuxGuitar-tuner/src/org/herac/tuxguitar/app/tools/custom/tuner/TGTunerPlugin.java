@@ -24,7 +24,7 @@ public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolIt
 			tuning[i] = current.getValue();
 			i++;
 		}
-		TGTunerDialog dialog = new TGTunerDialog(tuning);
+		TGTunerDialog dialog = new TGTunerDialog(this.getContext(), tuning);
 		dialog.show();
 		
 	}

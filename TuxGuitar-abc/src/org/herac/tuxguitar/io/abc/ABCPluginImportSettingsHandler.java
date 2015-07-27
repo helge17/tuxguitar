@@ -11,6 +11,6 @@ public class ABCPluginImportSettingsHandler extends TGSongStreamSettingsHandlerP
 	}
 	
 	public TGSongStreamSettingsHandler getSettingsHandler() throws TGPluginException {
-		return new ABCImportSettingsHandler();
+		return new ABCImportSettingsHandler(this.getContext());
 	}	
 }

@@ -53,7 +53,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.song = song;
 		this.channel = channel;
 		this.router = new GMChannelRouter();
-		this.jackMidiPlayerListener = new JackMidiPlayerListener(this);
+		this.jackMidiPlayerListener = new JackMidiPlayerListener(this.context, this);
 	}
 	
 	public void show(final Shell parent) {

@@ -3,6 +3,8 @@ package org.herac.tuxguitar.app.util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class DialogUtils {
@@ -48,7 +50,8 @@ public class DialogUtils {
 		}
 		dialog.open();
 		
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGContext context = TuxGuitar.getInstance().getContext();
+		TGSynchronizer.getInstance(context).executeLater(new Runnable() {
 			public void run() {
 				parent.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
 			}

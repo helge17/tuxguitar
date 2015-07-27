@@ -4,10 +4,17 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
+import org.herac.tuxguitar.util.TGContext;
 
 public class ImageExporter implements TGRawExporter{
 	
 	public static final String PROVIDER_ID = ImageExporter.class.getName();
+	
+	private TGContext context;
+	
+	public ImageExporter(TGContext context) {
+		this.context = context;
+	}
 	
 	public String getProviderId() {
 		return PROVIDER_ID;
@@ -18,6 +25,6 @@ public class ImageExporter implements TGRawExporter{
 	}
 
 	public TGSongStream openStream(TGSongStreamContext context) {
-		return new ImageExporterStream(context);
+		return new ImageExporterStream(this.context, context);
 	}
 }

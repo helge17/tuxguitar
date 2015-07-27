@@ -76,7 +76,7 @@ public class SoundOption extends Option{
 				final String msLoaded = (sequencer != null ? sequencer.getKey() : null ) ;
 				final String mpLoaded = (outputPort != null ? outputPort.getKey() : null );
 				
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							//---Midi Sequencer---//

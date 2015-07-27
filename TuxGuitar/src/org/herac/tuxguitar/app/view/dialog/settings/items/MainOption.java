@@ -95,7 +95,7 @@ public class MainOption  extends Option{
 				final String windowTitle = getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE);
 				final boolean showSplash = getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH);
 				final boolean autoSizeTable = getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							MainOption.this.windowTitle.setText(windowTitle);

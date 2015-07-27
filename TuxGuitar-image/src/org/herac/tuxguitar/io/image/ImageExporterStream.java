@@ -22,23 +22,26 @@ import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class ImageExporterStream implements TGSongStream{
 	
 	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
 	
-	private TGSongStreamContext context;
+	private TGContext context;
+	private TGSongStreamContext streamContext;
 	
-	public ImageExporterStream(TGSongStreamContext context) {
+	public ImageExporterStream(TGContext context, TGSongStreamContext streamContext) {
 		this.context = context;
+		this.streamContext = streamContext;
 	}
 	
 	public void process() throws TGFileFormatException {
-		ImageExporterSettings settings = this.context.getAttribute(ImageExporterSettings.class.getName());
+		ImageExporterSettings settings = this.streamContext.getAttribute(ImageExporterSettings.class.getName());
 		if( settings != null ){
-			TGSong song = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+			TGSong song = this.streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+			TGSongManager manager = new TGSongManager(new TGFactoryImpl(this.context));
 			TGSong clonedSong = song.clone(manager.getFactory());
 			
 			TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());

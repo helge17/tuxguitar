@@ -1,13 +1,16 @@
 package org.herac.tuxguitar.app.view.util;
 
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGSyncProcess {
 	
-	private boolean pending;
+	private TGContext context;
 	private Runnable runnable;
+	private boolean pending;
 	
-	public TGSyncProcess(Runnable runnable) {
+	public TGSyncProcess(TGContext context, Runnable runnable) {
+		this.context = context;
 		this.runnable = runnable;
 		this.pending = false;
 	}
@@ -25,7 +28,7 @@ public class TGSyncProcess {
 	}
 	
 	private void processLater() {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				processRunnable();
 			}

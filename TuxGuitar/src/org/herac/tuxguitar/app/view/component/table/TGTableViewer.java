@@ -388,7 +388,7 @@ public class TGTableViewer implements TGEventListener {
 			public void processEvent(TGEvent event) {
 				int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 				if(!trackMenu.isDisposed() && type == TGUpdateEvent.SELECTION ){
-					TGSynchronizer.instance().executeLater(new Runnable() {
+					TGSynchronizer.getInstance(TGTableViewer.this.context).executeLater(new Runnable() {
 						public void run() {
 							trackMenu.update();
 						}
@@ -399,7 +399,7 @@ public class TGTableViewer implements TGEventListener {
 		final TGEventListener trackMenuLanguageLoader = new TGEventListener() {
 			public void processEvent(TGEvent event) {
 				if(!trackMenu.isDisposed()){
-					TGSynchronizer.instance().executeLater(new Runnable() {
+					TGSynchronizer.getInstance(TGTableViewer.this.context).executeLater(new Runnable() {
 						public void run() {
 							trackMenu.loadProperties();
 						}
@@ -410,7 +410,7 @@ public class TGTableViewer implements TGEventListener {
 		final TGEventListener trackMenuIconLoader = new TGEventListener() {
 			public void processEvent(TGEvent event) {
 				if(!trackMenu.isDisposed()){
-					TGSynchronizer.instance().executeLater(new Runnable() {
+					TGSynchronizer.getInstance(TGTableViewer.this.context).executeLater(new Runnable() {
 						public void run() {
 							trackMenu.loadIcons();
 						}

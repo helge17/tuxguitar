@@ -84,7 +84,7 @@ public class LanguageOption extends Option{
 			public void run() {
 				final String language = getConfig().getStringValue(TGConfigKeys.LANGUAGE);
 				final List<LanguageItem> languages = getLanguageItems( TuxGuitar.getInstance().getLanguageManager().getLanguages() );
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							// Load default item

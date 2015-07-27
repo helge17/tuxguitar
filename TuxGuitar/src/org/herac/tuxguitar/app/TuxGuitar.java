@@ -131,7 +131,7 @@ public class TuxGuitar {
 	}
 	
 	private void initSynchronizer(){
-		TGSynchronizer.instance().setController(new TGSynchronizerController() {
+		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerController() {
 			public void executeLater(final Runnable runnable) {
 				new Thread(new Runnable() {
 					public void run() {
@@ -470,7 +470,7 @@ public class TuxGuitar {
 	
 	public ItemManager getItemManager() {
 		if( this.itemManager == null ){
-			this.itemManager = new ItemManager();
+			this.itemManager = new ItemManager(this.context);
 		}
 		return this.itemManager;
 	}
@@ -536,7 +536,7 @@ public class TuxGuitar {
 	}
 	
 	public void showTitle(){
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
 				if(!isDisposed()){
 					getShell().setText(WindowTitleUtil.parseTitle());
@@ -608,7 +608,7 @@ public class TuxGuitar {
 	
 	public void loadCursor(final Control control,final int style){
 		try {
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() throws TGException {
 					if(!control.isDisposed()){
 						control.setCursor(getDisplay().getSystemCursor(style));

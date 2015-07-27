@@ -25,6 +25,7 @@ import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -78,6 +79,8 @@ public class TGMeasureImpl extends TGMeasure{
 		new int[] { 4, 1, 5, 2, 6, 3, 7 } ,
 		new int[] { 6, 3, 7, 4, 8, 5, 9 } ,
 	};
+	
+	private TGContext context;
 	
 	/**
 	 * Espacio por defecto de la clave
@@ -161,8 +164,9 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean readyToPaint;
 	
 	@SuppressWarnings("unchecked")
-	public TGMeasureImpl(TGMeasureHeader header) {
+	public TGMeasureImpl(TGMeasureHeader header, TGContext context) {
 		super(header);
+		this.context = context;
 		this.readyToPaint = false;
 		this.registeredAccidentals = new boolean[11][7];
 		this.voiceGroups = (List<TGBeatGroup>[]) new List<?>[TGBeat.MAX_VOICES];
@@ -1352,7 +1356,7 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	public void clear() {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				clearSynchronized();
 			}

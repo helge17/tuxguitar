@@ -1,22 +1,14 @@
 package org.herac.tuxguitar.util;
 
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+
 public class TGSynchronizer {
-	
-	private static TGSynchronizer instance;
 	
 	private TGSynchronizerController controller;
 	
 	private TGSynchronizer(){
 		super();
-	}
-	
-	public static TGSynchronizer instance(){
-		synchronized (TGSynchronizer.class) {
-			if( instance == null ) {
-				instance = new TGSynchronizer();
-			}
-		}
-		return instance;
 	}
 	
 	public void executeLater(Runnable runnable) throws TGException {
@@ -27,8 +19,16 @@ public class TGSynchronizer {
 		this.controller = controller;
 	}
 	
+	public static TGSynchronizer getInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGSynchronizer.class.getName(), new TGSingletonFactory<TGSynchronizer>() {
+			public TGSynchronizer createInstance(TGContext context) {
+				return new TGSynchronizer();
+			}
+		});
+	}
+	
 	public static interface TGSynchronizerController {
 		
-		public void executeLater(Runnable runnable);
+		void executeLater(Runnable runnable);
 	}
 }

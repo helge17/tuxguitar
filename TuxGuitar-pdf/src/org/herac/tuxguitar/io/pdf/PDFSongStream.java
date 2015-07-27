@@ -25,16 +25,19 @@ import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class PDFSongStream implements TGSongStream {
 	
 	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
 	
-	private TGSongStreamContext context;
+	private TGContext context;
+	private TGSongStreamContext streamContext;
 	
-	public PDFSongStream(TGSongStreamContext context) {
+	public PDFSongStream(TGContext context, TGSongStreamContext streamContext) {
 		this.context = context;
+		this.streamContext = streamContext;
 	}
 	
 	public PrintStyles getDefaultStyles(TGSong song){
@@ -49,14 +52,14 @@ public class PDFSongStream implements TGSongStream {
 	
 	public void process() throws TGFileFormatException {
 		try{
-			OutputStream stream = this.context.getAttribute(OutputStream.class.getName());
-			TGSong song = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			PrintStyles styles = this.context.getAttribute(PrintStyles.class.getName());
+			OutputStream stream = this.streamContext.getAttribute(OutputStream.class.getName());
+			TGSong song = this.streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+			PrintStyles styles = this.streamContext.getAttribute(PrintStyles.class.getName());
 			if( styles == null ) {
 				styles = getDefaultStyles(song);
 			}
 			
-			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+			TGSongManager manager = new TGSongManager(new TGFactoryImpl(this.context));
 			TGSong clonedSong = song.clone(manager.getFactory());
 			
 			TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());

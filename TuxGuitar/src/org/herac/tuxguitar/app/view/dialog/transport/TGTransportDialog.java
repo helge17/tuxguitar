@@ -346,7 +346,7 @@ public class TGTransportDialog implements TGEventListener {
 	public void redraw(){
 		if(!TuxGuitar.getInstance().isLocked()){
 			if(!isDisposed()){
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 							if(isEditingTickScale()){
@@ -398,7 +398,7 @@ public class TGTransportDialog implements TGEventListener {
 	}
 	
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 					loadIcons();

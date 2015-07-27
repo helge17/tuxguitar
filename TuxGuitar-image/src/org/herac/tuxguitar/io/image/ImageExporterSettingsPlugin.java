@@ -6,7 +6,7 @@ import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandlerPlugin;
 public class ImageExporterSettingsPlugin extends TGSongStreamSettingsHandlerPlugin {
 	
 	public TGSongStreamSettingsHandler getSettingsHandler() {
-		return new ImageExporterSettingsHandler();
+		return new ImageExporterSettingsHandler(this.getContext());
 	}
 	
 	public String getModuleId(){

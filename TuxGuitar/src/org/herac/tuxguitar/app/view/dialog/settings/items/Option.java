@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
@@ -137,6 +138,10 @@ public abstract class Option extends SelectionAdapter{
 	
 	public TGConfigManager getConfig(){
 		return this.configEditor.getConfig();
+	}
+	
+	public TGViewContext getViewContext(){
+		return this.configEditor.getViewContext();
 	}
 	
 	public TGProperties getDefaults(){
