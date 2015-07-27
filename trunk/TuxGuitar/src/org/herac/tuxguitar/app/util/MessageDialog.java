@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
@@ -42,7 +43,8 @@ public class MessageDialog {
 	}
 	
 	public static void infoMessage(final Shell shell,final String title,final String message){
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGContext context = TuxGuitar.getInstance().getContext();
+		TGSynchronizer.getInstance(context).executeLater(new Runnable() {
 			public void run() {
 				if(!shell.isDisposed()){
 					new MessageDialog(title,message,SWT.ICON_INFORMATION).show(shell);
@@ -66,7 +68,8 @@ public class MessageDialog {
 	
 	public static void errorMessage(final Shell shell,final String message){
 		if(!shell.isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGContext context = TuxGuitar.getInstance().getContext();
+			TGSynchronizer.getInstance(context).executeLater(new Runnable() {
 				public void run() {
 					if(!shell.isDisposed()){
 //						TGActionLock.unlock();

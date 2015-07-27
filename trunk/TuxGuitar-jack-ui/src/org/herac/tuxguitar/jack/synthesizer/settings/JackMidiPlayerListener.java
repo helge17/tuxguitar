@@ -3,14 +3,17 @@ package org.herac.tuxguitar.jack.synthesizer.settings;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayerEvent;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class JackMidiPlayerListener implements TGEventListener {
 	
+	private TGContext context;
 	private JackChannelSettingsDialog jackChannelSettingsDialog;
 	
-	public JackMidiPlayerListener(JackChannelSettingsDialog jackChannelSettingsDialog){
+	public JackMidiPlayerListener(TGContext context, JackChannelSettingsDialog jackChannelSettingsDialog){
+		this.context = context;
 		this.jackChannelSettingsDialog = jackChannelSettingsDialog;
 	}
 
@@ -19,7 +22,7 @@ public class JackMidiPlayerListener implements TGEventListener {
 	}
 	
 	public void updateControlsSynchronized(){
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
 				updateControls();
 			}

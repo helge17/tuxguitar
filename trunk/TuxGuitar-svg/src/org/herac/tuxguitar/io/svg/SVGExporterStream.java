@@ -8,20 +8,23 @@ import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class SVGExporterStream implements TGSongStream {
 	
-	private TGSongStreamContext context;
+	private TGContext context;
+	private TGSongStreamContext streamContext;
 	
-	public SVGExporterStream(TGSongStreamContext context) {
+	public SVGExporterStream(TGContext context, TGSongStreamContext streamContext) {
 		this.context = context;
+		this.streamContext = streamContext;
 	}
 	
 	public void process() throws TGFileFormatException {
 		try {
-			OutputStream stream = this.context.getAttribute(OutputStream.class.getName());
-			TGSong song = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			SVGExporterStyles styles = this.context.getAttribute(SVGExporterStyles.class.getName());
+			OutputStream stream = this.streamContext.getAttribute(OutputStream.class.getName());
+			TGSong song = this.streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+			SVGExporterStyles styles = this.streamContext.getAttribute(SVGExporterStyles.class.getName());
 			if( styles == null ) {
 				styles = new SVGExporterStyles();
 				styles.configureWithDefaults();
@@ -29,7 +32,7 @@ public class SVGExporterStream implements TGSongStream {
 			
 			StringBuffer svgBuffer = new StringBuffer();
 			
-			SVGController svgController = new SVGController(styles);
+			SVGController svgController = new SVGController(this.context, styles);
 			svgController.load(song.clone(svgController.getSongManager().getFactory()));
 			svgController.write(svgBuffer);
 			

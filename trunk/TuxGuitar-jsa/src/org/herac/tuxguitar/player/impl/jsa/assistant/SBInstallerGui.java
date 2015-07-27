@@ -30,16 +30,18 @@ public class SBInstallerGui implements SBInstallerlistener{
 
 	private static final String SB_PATH = ( TGFileUtils.PATH_USER_PLUGINS_CONFIG + File.separator + "tuxguitar-jsa" );
 	
+	private TGContext context;
 	private Shell dialog;
 	private Label progressLabel;
 
 	private SBInstaller installer;	
 	
 	public SBInstallerGui(TGContext context, URL url, MidiPortSynthesizer synthesizer){
-		initInstaller(context, url, synthesizer);
+		this.context = context;
+		this.initInstaller(url, synthesizer);
 	}
 	
-	public void initInstaller(TGContext context, URL url, MidiPortSynthesizer synthesizer){
+	public void initInstaller(URL url, MidiPortSynthesizer synthesizer){
 		File tmpPath = new File(SB_PATH);
 		File dstPath = new File(SB_PATH);
 		
@@ -49,7 +51,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 		if(!dstPath.exists()){
 			dstPath.mkdirs();
 		}
-		this.installer = new SBInstaller(context, url, tmpPath, dstPath, synthesizer, this);
+		this.installer = new SBInstaller(this.context, url, tmpPath, dstPath, synthesizer, this);
 	}
 	
 	public void open(){
@@ -129,7 +131,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 	
 	public void notifyProcess(final String process){
 		if(!isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
 						getProgressLabel().setText(process);
@@ -141,7 +143,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 
 	public void notifyFinish(){
 		if(!isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
 						getDialog().dispose();
@@ -153,7 +155,7 @@ public class SBInstallerGui implements SBInstallerlistener{
 	
 	public void notifyFailed(final Throwable throwable){
 		if(!isDisposed()){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
 						getDialog().dispose();

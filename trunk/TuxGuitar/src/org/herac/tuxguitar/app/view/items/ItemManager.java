@@ -27,9 +27,11 @@ import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
+import org.herac.tuxguitar.util.TGContext;
 
 public class ItemManager implements TGEventListener {
 	
+	private TGContext context;
 	private Menu menu;
 	private Menu popupMenu;
 	private List<MenuItems> loadedMenuItems;
@@ -40,7 +42,8 @@ public class ItemManager implements TGEventListener {
 	private TGSyncProcess updateItemsProcess;
 	private TGSyncProcess createMenuProcess;
 	
-	public ItemManager(){
+	public ItemManager(TGContext context){
+		this.context = context;
 		this.loadedMenuItems = new ArrayList<MenuItems>();
 		this.loadedPopupMenuItems = new ArrayList<MenuItems>();
 		this.createSyncProcesses();
@@ -160,25 +163,25 @@ public class ItemManager implements TGEventListener {
 	}
 	
 	public void createSyncProcesses() {		
-		this.updateItemsProcess = new TGSyncProcess(new Runnable() {
+		this.updateItemsProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				updateItems();
 			}
 		});
 		
-		this.loadIconsProcess = new TGSyncProcess(new Runnable() {
+		this.loadIconsProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				loadIcons();
 			}
 		});
 		
-		this.loadPropertiesProcess = new TGSyncProcess(new Runnable() {
+		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				loadProperties();
 			}
 		});
-		
-		this.createMenuProcess = new TGSyncProcess(new Runnable() {
+
+		this.createMenuProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				createMenu();
 			}

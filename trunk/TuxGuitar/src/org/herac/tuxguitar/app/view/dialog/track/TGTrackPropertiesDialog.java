@@ -601,7 +601,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context.getContext()).executeLater(new Runnable() {
 				public void run() {
 					processUpdateEvent(event);
 				}

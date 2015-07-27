@@ -14,6 +14,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class SVGController implements TGController {
 	
@@ -24,10 +25,10 @@ public class SVGController implements TGController {
 	private TGResourceFactory tgResourceFactory;
 	private TGLayoutVertical tgLayout;
 	
-	public SVGController(SVGExporterStyles tgStyles){
+	public SVGController(TGContext context, SVGExporterStyles tgStyles){
 		this.tgStyles = tgStyles;
 		this.tgSongManager = new TGSongManager();
-		this.tgSongManager.setFactory( new TGFactoryImpl() );
+		this.tgSongManager.setFactory( new TGFactoryImpl(context) );
 		this.tgResourceFactory = new SVGResourceFactory();
 		this.tgLayout = new TGLayoutVertical(this, this.tgStyles.getFlags() );
 	}

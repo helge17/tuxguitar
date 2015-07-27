@@ -8,8 +8,8 @@ public class SVGExporterPlugin extends TGExporterPlugin {
 	
 	public static final String MODULE_ID = "tuxguitar-svg";
 	
-	protected TGRawExporter getExporter() throws TGPluginException {
-		return new SVGExporter();
+	public TGRawExporter getExporter() throws TGPluginException {
+		return new SVGExporter(this.getContext());
 	}
 	
 	public String getModuleId(){

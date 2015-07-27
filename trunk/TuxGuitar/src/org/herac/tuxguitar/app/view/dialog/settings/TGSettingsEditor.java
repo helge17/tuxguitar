@@ -258,6 +258,10 @@ public class TGSettingsEditor{
 		return this.dialog;
 	}
 	
+	public TGViewContext getViewContext() {
+		return this.context;
+	}
+	
 	public void addSyncThread(Runnable runnable){
 		this.runnables.add( runnable );
 	}

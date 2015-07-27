@@ -64,7 +64,7 @@ public class TGScaleSelectionListener extends SelectionAdapter implements Runnab
 	}
 	
 	public void doActionSynchronized() throws Throwable {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.handle.getContext()).executeLater(new Runnable() {
 			public void run() throws TGException {
 				doAction();		
 			}

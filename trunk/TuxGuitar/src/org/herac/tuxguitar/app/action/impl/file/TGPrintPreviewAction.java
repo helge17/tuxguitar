@@ -55,7 +55,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+					final TGSongManager manager = new TGSongManager(new TGFactoryImpl(getContext()));
 					final TGSong song = srcSong.clone(manager.getFactory());
 				
 					printPreview(song, manager, data);
@@ -67,7 +67,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 	}
 	
 	public void printPreview(final TGSong song, final TGSongManager manager, final PrintStyles data){
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
 			public void run() {
 				try{
 					TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
@@ -136,7 +136,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 			final TGRectangle bounds = this.bounds;
 			final List<Image> pages = this.pages;
 			
-			TGSynchronizer.instance().executeLater(new Runnable(){
+			TGSynchronizer.getInstance(getContext()).executeLater(new Runnable(){
 				public void run() throws TGException {
 					PrintPreview preview = new PrintPreview(pages,bounds);
 					preview.showPreview(TablatureEditor.getInstance(getContext()).getTablature().getShell());

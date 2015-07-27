@@ -9,6 +9,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
 import org.herac.tuxguitar.cocoa.TGCocoa;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -22,8 +23,10 @@ public class MacMenu {
 	
 	private boolean enabled;
 	
-	public MacMenu(){
-		super();
+	private TGContext context;
+	
+	public MacMenu(TGContext context) {
+		this.context = context;
 	}
 	
 	public void init() throws Throwable{
@@ -99,7 +102,7 @@ public class MacMenu {
 	}
 	
 	private void executeAction(final String actionId){
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
 				TuxGuitar.getInstance().getActionManager().execute(actionId);
 			}

@@ -10,6 +10,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -57,6 +58,7 @@ static	private	MiRecorder	s_Instance;
 
 	public void		start()
 	{
+	TGContext	tgContext = TuxGuitar.getInstance().getContext();	
 	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
 	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 
@@ -91,7 +93,7 @@ static	private	MiRecorder	s_Instance;
 	TuxGuitar.instance().fireUpdate();
 	TuxGuitar.instance().getMixer().update();
 */
-	TGSynchronizer.instance().executeLater(new Runnable() {
+	TGSynchronizer.getInstance(tgContext).executeLater(new Runnable() {
 		public void run() throws TGException {
 			TuxGuitar.getInstance().getActionManager().execute(TGTransportPlayAction.NAME);
 		}
@@ -105,13 +107,14 @@ static	private	MiRecorder	s_Instance;
 
 	public void		stop()
 	{
+	TGContext	tgContext = TuxGuitar.getInstance().getContext();
 	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
 
 	f_Buffer.stopRecording(MiPort.getNotesPortTimeStamp());
 	f_IsRecording = false;
 
-	TGSynchronizer.instance().executeLater(new Runnable() {
+	TGSynchronizer.getInstance(tgContext).executeLater(new Runnable() {
 		public void run() throws TGException {
 			TuxGuitar.getInstance().getActionManager().execute(TGTransportStopAction.NAME);
 		}

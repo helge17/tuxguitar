@@ -164,7 +164,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
 	public void notifyFileProcess(final String filename) {
 		if(!isDisposed() ){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() throws TGException {
 					if(!isDisposed() ){
 						TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
@@ -177,7 +177,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
 	public void notifyFileResult(final String filename, final int result) {
 		if(!isDisposed() ){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() throws TGException {
 					if(!isDisposed() ){
 						TGConverterProcess.this.appendLogMessage(result, filename);
@@ -190,7 +190,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
 	public void notifyStart() {
 		if(!isDisposed() ){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() throws TGException {
 					if(!isDisposed() ){
 						TGConverterProcess.this.finished = false;
@@ -205,7 +205,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
 	public void notifyFinish() {
 		if(!isDisposed() ){
-			TGSynchronizer.instance().executeLater(new Runnable() {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() throws TGException {
 					if(!isDisposed() ){
 						TGConverterProcess.this.finished = true;

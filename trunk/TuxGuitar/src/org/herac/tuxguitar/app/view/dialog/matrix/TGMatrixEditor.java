@@ -904,7 +904,7 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 					loadIcons();

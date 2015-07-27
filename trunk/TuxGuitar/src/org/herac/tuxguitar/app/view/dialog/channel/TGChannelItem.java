@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGChannelItem {
 	
@@ -289,6 +290,10 @@ public class TGChannelItem {
 		if( this.channel == null || (newChannel != null && !newChannel.equals(this.channel))){
 			this.resetItems();
 		}
+	}
+	
+	public TGContext getContext() {
+		return this.dialog.getContext();
 	}
 	
 	public TGChannelHandle getHandle() {

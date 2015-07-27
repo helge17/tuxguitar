@@ -29,29 +29,29 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.util.TGContext;
 
 public class TGChordDialog {
 	
 	private static final int DEFAULT_STYLE = SWT.BORDER;
 	
 	private Shell dialog;
+	private TGViewContext context;
 	private TGChordEditor editor;
 	private TGChordSelector selector;
 	private TGChordList list;
 	private TGChordRecognizer recognizer;
 	
-	public TGChordDialog() {
-		super();
+	public TGChordDialog(TGViewContext context) {
+		this.context = context;
 	}
 	
-	public void show(final TGViewContext context) {
-		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGVoice voice= context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
+	public void show() {
+		final TGTrack track = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		final TGMeasure measure = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+		final TGBeat beat = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+		final TGVoice voice= this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		
 		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.dialog.setLayout(new GridLayout());
@@ -104,7 +104,7 @@ public class TGChordDialog {
 		buttonOK.setLayoutData(getButtonData());
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				insertChord(context.getContext(), track, measure, beat, voice, getEditor().getChord());
+				insertChord(track, measure, beat, voice, getEditor().getChord());
 				getDialog().dispose();
 			}
 		});
@@ -114,7 +114,7 @@ public class TGChordDialog {
 		buttonClean.setLayoutData(getButtonData());
 		buttonClean.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				removeChord(context.getContext(), measure, beat);
+				removeChord(measure, beat);
 				getDialog().dispose();
 			}
 		});
@@ -223,8 +223,8 @@ public class TGChordDialog {
 		return chord;
 	}
 	
-	public void insertChord(TGContext context, TGTrack track, TGMeasure measure, TGBeat beat, TGVoice voice, TGChord chord) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGInsertChordAction.NAME);
+	public void insertChord(TGTrack track, TGMeasure measure, TGBeat beat, TGVoice voice, TGChord chord) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
@@ -233,10 +233,14 @@ public class TGChordDialog {
 		tgActionProcessor.processOnNewThread();
 	}
 	
-	public void removeChord(TGContext context, TGMeasure measure, TGBeat beat) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGRemoveChordAction.NAME);
+	public void removeChord(TGMeasure measure, TGBeat beat) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGRemoveChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
 		tgActionProcessor.processOnNewThread();
+	}
+	
+	public TGViewContext getContext() {
+		return this.context;
 	}
 }

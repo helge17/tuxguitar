@@ -10,11 +10,14 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGText;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGFactoryImpl extends TGFactory{
 	
-	public TGFactoryImpl(){
-		super();
+	private TGContext context;
+	
+	public TGFactoryImpl(TGContext context){
+		this.context = context;
 	}
 	
 	public TGMeasureHeader newHeader(){
@@ -26,7 +29,7 @@ public class TGFactoryImpl extends TGFactory{
 	}
 	
 	public TGMeasure newMeasure(TGMeasureHeader header){
-		return new TGMeasureImpl(header);
+		return new TGMeasureImpl(header, this.context);
 	}
 	
 	public TGNote newNote(){

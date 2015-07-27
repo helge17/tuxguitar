@@ -32,6 +32,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	
 	protected Shell dialog;
 	
+	private TGContext context;
 	private TGChannelHandle channelHandle;
 	private TGChannelList channelList;
 	private TGChannelSettingsHandlerManager channelSettingsHandlerManager;
@@ -45,6 +46,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	private int volumeValue;
 	
 	public TGChannelManagerDialog(TGContext context){
+		this.context = context;
 		this.channelHandle = new TGChannelHandle(context);
 		this.channelSettingsHandlerManager = new TGChannelSettingsHandlerManager();
 	}
@@ -65,6 +67,10 @@ public class TGChannelManagerDialog implements TGEventListener {
 		});
 		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+	}
+	
+	public TGContext getContext(){
+		return this.context;
 	}
 	
 	public Shell getShell(){
@@ -254,7 +260,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	}
 	
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 					loadIcons();

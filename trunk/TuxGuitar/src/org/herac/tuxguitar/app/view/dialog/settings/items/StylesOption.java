@@ -221,7 +221,7 @@ public class StylesOption extends Option{
 				final RGB tabNoteRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_TAB_NOTE);
 				final RGB playNoteRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_PLAY_NOTE);
 				final RGB linesRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_LINE);
-				TGSynchronizer.instance().executeLater(new Runnable() {
+				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							loadFontData(defaultFontData,StylesOption.this.defaultFontData,StylesOption.this.defaultFontButton);

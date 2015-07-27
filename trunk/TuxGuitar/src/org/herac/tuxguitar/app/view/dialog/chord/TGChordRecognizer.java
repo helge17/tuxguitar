@@ -316,7 +316,7 @@ public class TGChordRecognizer extends Composite {
 		final int params[] = (!proposalParameters.isEmpty() ? (int[])proposalParameters.get(0) : null);
 		final String chordName = (params != null ? getChordName(params, sharp) : "");
 		
-		TGSynchronizer.instance().executeLater(new Runnable() {
+		TGSynchronizer.getInstance(this.dialog.getContext().getContext()).executeLater(new Runnable() {
 			public void run() {
 				if(!getDialog().isDisposed() && isValidProcess(processId)){
 					for(int[] currentProposalParameters : proposalParameters) {
