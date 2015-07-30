@@ -197,6 +197,7 @@ public class TGNoteImpl extends TGNote {
 						float y2 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
 						
 						layout.setTabEffectStyle(painter);
+						painter.setLineWidth(2f * scale);
 						painter.initPath();
 						float posy = (y1 + ((y2 - y1) / 2));
 						for(int i = TGDuration.EIGHTH;i <= getEffect().getTremoloPicking().getDuration().getValue(); i += i){
@@ -204,7 +205,6 @@ public class TGNoteImpl extends TGNote {
 							painter.lineTo(x + (4f * scale), posy + (1f * scale));
 							posy += (4f * scale);
 						}
-						painter.setLineWidth(2f * scale);
 						painter.closePath();
 						painter.setLineWidth(1f * scale);
 					}
@@ -322,6 +322,7 @@ public class TGNoteImpl extends TGNote {
 					//tremolo picking
 					if(getEffect().isTremoloPicking()){
 						layout.setScoreEffectStyle(painter);
+						painter.setLineWidth(2f * layoutScale);
 						painter.initPath();
 						float tpY = fromY;
 						if((direction == TGBeatGroup.DIRECTION_UP)){
@@ -334,7 +335,6 @@ public class TGNoteImpl extends TGNote {
 							painter.lineTo(x + xMove + (4f * layoutScale), tpY - (1f * layoutScale));
 							tpY += (4f * layoutScale);
 						}
-						painter.setLineWidth(2f * layoutScale);
 						painter.closePath();
 						painter.setLineWidth(1f * layoutScale);
 					}
