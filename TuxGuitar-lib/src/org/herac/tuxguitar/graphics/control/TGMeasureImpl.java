@@ -716,16 +716,17 @@ public class TGMeasureImpl extends TGMeasure{
 		float lineWidthBig = Math.max(lineWidthSmall,Math.round(3f * scale));
 		
 		//numero de compas
-		if(addInfo){
+		if( addInfo ){ 
 			String number = Integer.toString(this.getNumber());
 			layout.setMeasureNumberStyle(painter);
-			painter.drawString(number,getPosX() + Math.round(scale),(y1 - painter.getFMHeight()) - Math.round(scale));
+			float fmAscent = painter.getFMAscent();
+			painter.drawString(number, getPosX() + scale, (y1 - (Math.abs(fmAscent)) - (fmAscent / 2f)) - scale);
 		}
 		
 		layout.setDivisionsStyle(painter,true);
 		
 		//principio
-		if(this.isRepeatOpen() || layout.isFirstMeasure(this)){
+		if( this.isRepeatOpen() || layout.isFirstMeasure(this) ){
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
@@ -739,7 +740,7 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.lineTo(x1 + lineWidthBig + scale + lineWidthSmall, (y2 + offsetY));
 			painter.closePath();
 			
-			if(this.isRepeatOpen()){
+			if( this.isRepeatOpen() ){
 				int size = Math.max(1,Math.round(4f * scale));
 				float xMove = ((lineWidthBig + scale + lineWidthSmall) + (2f * scale));
 				float yMove = ((lineWidthBig + scale + lineWidthSmall) + (2f * scale));
@@ -762,7 +763,7 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		
 		//fin
-		if(this.getRepeatClose() > 0 || layout.isLastMeasure(this)){
+		if( this.getRepeatClose() > 0 || layout.isLastMeasure(this) ){
 			painter.initPath();
 			painter.setAntialias(false);
 			painter.setLineWidth(lineWidthSmall);
@@ -776,7 +777,7 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.addRectangle( (x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, y2 - y1);
 			painter.closePath();
 			
-			if(this.getRepeatClose() > 0){
+			if( this.getRepeatClose() > 0 ){
 				int size = Math.max(1,Math.round(4f * scale));
 				float xMove = (((lineWidthBig + scale + lineWidthSmall) + (2f * scale)) + size);
 				float yMove = ( (lineWidthBig + scale + lineWidthSmall) + (2f * scale) );
@@ -788,10 +789,11 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)));
 				painter.addOval((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size, size);
 				painter.closePath();
-				if(addInfo){
+				if( addInfo ){
 					layout.setDivisionsStyle(painter,false);
+					float fmAscent = painter.getFMAscent();
 					String repetitions = ("x" + this.getRepeatClose());
-					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, (y1 - painter.getFMHeight()) - Math.round(scale));
+					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, (y1 - Math.abs(fmAscent) - (fmAscent / 2f)) - scale);
 				}
 			}
 		}else{
@@ -896,21 +898,22 @@ public class TGMeasureImpl extends TGMeasure{
 			int style = layout.getStyle();
 			float scale = layout.getScale();
 			float leftSpacing = Math.round( 5.0f * scale );
-			float fSize = painter.getFontSize();
 			float fmAscent = painter.getFMAscent();
 			float x = (getClefSpacing(layout) + getKeySignatureSpacing(layout) + getHeaderImpl().getLeftSpacing(layout) + leftSpacing);
 			String numerator = Integer.toString(getTimeSignature().getNumerator());
 			String denominator = Integer.toString(getTimeSignature().getDenominator().getValue());
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
 				float y = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				float y1 = (y - (fmAscent - fSize) + (1f * scale));
-				float y2 = (y + getTrackImpl().getScoreHeight() - fmAscent - (1f * scale));
+				float y1 = (y + ((Math.abs(fmAscent) / 2f) - (fmAscent / 2f)));
+				float y2 = ((y + getTrackImpl().getScoreHeight()) - ((Math.abs(fmAscent) / 2f) + (fmAscent / 2f)));
+				
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
 				float y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
-				float y1 = (y - (fmAscent - fSize) + (1f * scale));
-				float y2 = (y + getTrackImpl().getTabHeight() - fmAscent - (1f * scale));
+				float y1 = (y + ((Math.abs(fmAscent) / 2f) - (fmAscent / 2f)));
+				float y2 = ((y + getTrackImpl().getTabHeight()) - ((Math.abs(fmAscent) / 2f) + (fmAscent / 2f)));
+				
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}
@@ -941,8 +944,9 @@ public class TGMeasureImpl extends TGMeasure{
 			
 			layout.setTempoStyle(painter, true);
 			String value = (" = " + getTempo().getValue());
+			float fmAscent = painter.getFMAscent();
 			float fontX = x + (Math.round( (1.33f * scale) ) + 1 );
-			float fontY = Math.round(y - painter.getFMHeight() - (1.0f * layout.getScale()));
+			float fontY = (y - (1.5f * scale) - (fmAscent / 2f));
 			painter.drawString(value , fontX, fontY, true);
 		}
 	}
@@ -962,15 +966,16 @@ public class TGMeasureImpl extends TGMeasure{
 			
 			layout.setTripletFeelStyle(painter, true);
 			String equal = (" = ");
-			float fontX = x + (Math.round( (1.33f * scale) + (1.5f * scale) ));
-			float fontY = Math.round(y - painter.getFMHeight() - (1.0f * layout.getScale()));
+			float fmAscent = painter.getFMAscent();
+			float fontX = (x + (3.2f * scale));
+			float fontY = (y - (1.5f * scale) - (fmAscent / 2f));
 			painter.drawString(equal, fontX , fontY, true);
 			
 			layout.setTripletFeelStyle(painter, false);
 			float x1 = x;
-			float x2 = x + (Math.round( (1.33f * scale) + (1.5f * scale) ) + painter.getFMWidth(equal));
-			float y1 = y - (Math.round( (1.0f * scale) + (2.5f * scale) ) + 2);
-			float y2 = y - (Math.round( (1.0f * scale) + (2.5f * scale) + (1.0f * scale)) + 2);
+			float x2 = x + ( (3.2f * scale) + painter.getFMWidth(equal));
+			float y1 = y - (( (1.0f * scale) + (2.5f * scale) ) + 2);
+			float y2 = y - (( (1.0f * scale) + (2.5f * scale) + (1.0f * scale)) + 2);
 			
 			if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.prevMeasure != null){
 				int previous = this.prevMeasure.getTripletFeel();

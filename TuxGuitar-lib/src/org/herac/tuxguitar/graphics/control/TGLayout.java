@@ -381,7 +381,7 @@ public abstract class TGLayout {
 	}
 	
 	public void setLineStyle(TGPainter painter){
-		painter.setLineWidth(1f * getScale());
+		painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
 		painter.setForeground(getResources().getLineColor());
 	}
 	
@@ -501,12 +501,9 @@ public abstract class TGLayout {
 	
 	public TGRectangle getOrientation(TGPainter painter, float x, float y, String s){
 		float fmWidth = painter.getFMWidth(s);
-		float fmLeading = painter.getFMLeading();
 		float fmAscent = painter.getFMAscent();
-		float fmHeight = painter.getFMHeight();
-
-//		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent - fSize) - (fSize / 2f)), fmWidth, fSize );
-		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmLeading + (fmAscent / 2f))), fmWidth, fmHeight );
+		
+		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent / 2f)), fmWidth, Math.abs(fmAscent));
 	}
 	
 	public TGSongManager getSongManager() {

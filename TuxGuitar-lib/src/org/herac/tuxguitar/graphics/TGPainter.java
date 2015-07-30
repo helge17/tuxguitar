@@ -6,6 +6,8 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public static final int PATH_FILL = 0x02;
 	
+	public static final float THINNEST_LINE_WIDTH = 0;
+	
 	public void initPath(int style);
 	
 	public void initPath();
@@ -59,8 +61,6 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	public float getFontSize();
 	
 	public float getFMHeight();
-	
-	public float getFMLeading();
 	
 	public float getFMAscent();
 	
