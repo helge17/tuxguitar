@@ -76,6 +76,7 @@ public class SVGExporterStyles {
 		this.getStyles().setChordStringSpacing(5);
 		this.getStyles().setChordFretSpacing(6);
 		this.getStyles().setChordNoteSize(4);
+		this.getStyles().setChordLineWidth(1);
 		this.getStyles().setRepeatEndingSpacing(20);
 		this.getStyles().setTextSpacing(15);
 		this.getStyles().setMarkerSpacing(15);

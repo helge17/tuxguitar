@@ -100,6 +100,7 @@ public class SVGController implements TGController {
 		styles.setChordStringSpacing( this.tgStyles.getStyles().getChordStringSpacing() );
 		styles.setChordFretSpacing( this.tgStyles.getStyles().getChordFretSpacing() );
 		styles.setChordNoteSize( this.tgStyles.getStyles().getChordNoteSize() );
+		styles.setChordLineWidth( this.tgStyles.getStyles().getChordLineWidth() );
 		styles.setRepeatEndingSpacing( this.tgStyles.getStyles().getRepeatEndingSpacing() );
 		styles.setTextSpacing( this.tgStyles.getStyles().getTextSpacing() );
 		styles.setMarkerSpacing( this.tgStyles.getStyles().getMarkerSpacing() );

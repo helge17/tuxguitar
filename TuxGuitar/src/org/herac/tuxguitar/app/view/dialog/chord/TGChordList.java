@@ -57,10 +57,11 @@ public class TGChordList extends Composite {
 	
 	private static final int MIN_HEIGHT = 160;
 	private static final int SCROLL_INCREMENT = 25;
-	private static final int CHORD_FIRST_FRET_SPACING = 12;
-	private static final int CHORD_STRING_SPACING = 8;
-	private static final int CHORD_FRET_SPACING = 10;
-	private static final int CHORD_NOTE_SIZE = 6;
+	private static final float CHORD_FIRST_FRET_SPACING = 12;
+	private static final float CHORD_STRING_SPACING = 8;
+	private static final float CHORD_FRET_SPACING = 10;
+	private static final float CHORD_NOTE_SIZE = 6;
+	private static final float CHORD_LINE_WIDTH = 1f;
 	
 	private TGChordDialog dialog;
 	private TGBeat beat;
@@ -145,6 +146,7 @@ public class TGChordList extends Composite {
 			chord.setStringSpacing(CHORD_STRING_SPACING);
 			chord.setFretSpacing(CHORD_FRET_SPACING);
 			chord.setNoteSize(CHORD_NOTE_SIZE);
+			chord.setLineWidth(CHORD_LINE_WIDTH);
 			chord.setFirstFretFont(new TGFontImpl(getFont(painter.getGC())));
 			chord.setStyle(TGLayout.DISPLAY_CHORD_DIAGRAM);
 			chord.update(painter, true);

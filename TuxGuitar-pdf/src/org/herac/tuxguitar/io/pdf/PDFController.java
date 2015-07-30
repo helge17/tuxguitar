@@ -1,8 +1,9 @@
-package org.herac.tuxguitar.app.printer;
+package org.herac.tuxguitar.io.pdf;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
@@ -12,7 +13,9 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public class PrintController implements TGController {
+import com.itextpdf.text.FontFactory;
+
+public class PDFController implements TGController {
 	
 	private static final int DEFAULT_SCORE_LINE_SPACING = 7;
 	private static final int DEFAULT_STRING_SPACING = 8;
@@ -30,7 +33,7 @@ public class PrintController implements TGController {
 	private TGSongManager songManager;
 	private TGResourceFactory resourceFactory;
 	
-	public PrintController(TGSong song, TGSongManager songManager, TGResourceFactory resourceFactory){
+	public PDFController(TGSong song, TGSongManager songManager, TGResourceFactory resourceFactory){
 		this.song = song;
 		this.songManager = songManager;
 		this.resourceFactory = resourceFactory;
@@ -68,7 +71,7 @@ public class PrintController implements TGController {
 		return false;
 	}
 	
-	public void configureStyles(TGLayoutStyles styles){
+	public void configureStyles(TGLayoutStyles styles) {
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		styles.setBufferEnabled(false);
@@ -90,16 +93,15 @@ public class PrintController implements TGController {
 		styles.setMarkerSpacing(15);
 		styles.setDivisionTypeSpacing(10);
 		styles.setEffectSpacing(8);
-		
-		styles.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
-		styles.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
-		styles.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
-		styles.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));
-		styles.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT));
-		styles.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_GRACE));
-		styles.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_CHORD));
-		styles.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
-		styles.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
+		styles.setDefaultFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
+		styles.setNoteFont(new TGFontModel(FontFactory.TIMES_BOLD, 9, true, false));
+		styles.setTimeSignatureFont(new TGFontModel(FontFactory.TIMES_BOLD, 15, true, false));
+		styles.setLyricFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
+		styles.setTextFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
+		styles.setGraceFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
+		styles.setChordFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
+		styles.setChordFretFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
+		styles.setMarkerFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
 		styles.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
 		styles.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));

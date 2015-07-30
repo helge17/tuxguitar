@@ -459,7 +459,7 @@ public class TGVoiceImpl extends TGVoice{
 			float y1 = 0;
 			float y2 = 0;
 			float verticalLineWidth = scale;
-			float horizontalLineWidth = (2 * scale);
+			float horizontalLineWidth = (2f * scale);
 			float stringSpacing = layout.getStringSpacing();
 			if( getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ){
 				y1 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
@@ -501,7 +501,7 @@ public class TGVoiceImpl extends TGVoice{
 							painter.lineTo(fromX + x2, y2 + ((height - (i * height)) * direction));
 						}
 						painter.closePath();
-						painter.setLineWidth(1);
+						painter.setLineWidth(1f * scale);
 					}
 				}
 			} else if (getDuration().getValue() == TGDuration.HALF) {
@@ -591,14 +591,14 @@ public class TGVoiceImpl extends TGVoice{
 						}
 						float hY1 = fromY + this.group.getY2(layout,hX1,key,clef);
 						float hY2 = fromY + this.group.getY2(layout,hX2,key,clef);
-						painter.setLineWidth(Math.max(1,Math.round(3f * scale)));
+						painter.setLineWidth(3f * scale);
 						painter.initPath();
 						for(int i = 0; i <= index; i ++){
 							painter.moveTo(fromX + xMove + hX1, hY1 - ( (i * (5f * scale)) * dir));
 							painter.lineTo(fromX + xMove + hX2, hY2 - ( (i * (5f * scale)) * dir));
 						}
 						painter.closePath();
-						painter.setLineWidth(1);
+						painter.setLineWidth(1f * scale);
 					}
 				}
 			}

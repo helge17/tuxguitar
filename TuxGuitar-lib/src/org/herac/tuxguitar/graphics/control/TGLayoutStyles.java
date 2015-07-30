@@ -6,24 +6,25 @@ import org.herac.tuxguitar.graphics.TGFontModel;
 public class TGLayoutStyles {
 	
 	private boolean bufferEnabled;
-	private int minBufferSeparator;
-	private int minTopSpacing;
-	private int minScoreTabSpacing;
-	private int stringSpacing;
-	private int scoreLineSpacing;
-	private int trackSpacing;
-	private int firstTrackSpacing;
-	private int firstMeasureSpacing;
-	private int chordFretIndexSpacing;
-	private int chordStringSpacing;
-	private int chordFretSpacing;
-	private int chordNoteSize;
-	private int repeatEndingSpacing;
-	private int effectSpacing;
-	private int divisionTypeSpacing;
-	private int textSpacing;
-	private int markerSpacing;
-	private int loopMarkerSpacing;
+	private float minBufferSeparator;
+	private float minTopSpacing;
+	private float minScoreTabSpacing;
+	private float stringSpacing;
+	private float scoreLineSpacing;
+	private float trackSpacing;
+	private float firstTrackSpacing;
+	private float firstMeasureSpacing;
+	private float chordFretIndexSpacing;
+	private float chordStringSpacing;
+	private float chordFretSpacing;
+	private float chordNoteSize;
+	private float chordLineWidth;
+	private float repeatEndingSpacing;
+	private float effectSpacing;
+	private float divisionTypeSpacing;
+	private float textSpacing;
+	private float markerSpacing;
+	private float loopMarkerSpacing;
 	private TGFontModel defaultFont;
 	private TGFontModel noteFont;
 	private TGFontModel timeSignatureFont;
@@ -41,282 +42,294 @@ public class TGLayoutStyles {
 	private TGColorModel loopSMarkerColor;
 	private TGColorModel loopEMarkerColor;
 	
-	public boolean isBufferEnabled() {
-		return this.bufferEnabled;
+	public TGLayoutStyles() {
+		super();
 	}
-	
+
+	public boolean isBufferEnabled() {
+		return bufferEnabled;
+	}
+
 	public void setBufferEnabled(boolean bufferEnabled) {
 		this.bufferEnabled = bufferEnabled;
 	}
-	
-	public int getMinBufferSeparator() {
-		return this.minBufferSeparator;
+
+	public float getMinBufferSeparator() {
+		return minBufferSeparator;
 	}
-	
-	public void setMinBufferSeparator(int minBufferSeparator) {
+
+	public void setMinBufferSeparator(float minBufferSeparator) {
 		this.minBufferSeparator = minBufferSeparator;
 	}
-	
-	public int getMinTopSpacing() {
-		return this.minTopSpacing;
+
+	public float getMinTopSpacing() {
+		return minTopSpacing;
 	}
-	
-	public void setMinTopSpacing(int minTopSpacing) {
+
+	public void setMinTopSpacing(float minTopSpacing) {
 		this.minTopSpacing = minTopSpacing;
 	}
-	
-	public int getMinScoreTabSpacing() {
-		return this.minScoreTabSpacing;
+
+	public float getMinScoreTabSpacing() {
+		return minScoreTabSpacing;
 	}
-	
-	public void setMinScoreTabSpacing(int minScoreTabSpacing) {
+
+	public void setMinScoreTabSpacing(float minScoreTabSpacing) {
 		this.minScoreTabSpacing = minScoreTabSpacing;
 	}
-	
-	public int getStringSpacing() {
-		return this.stringSpacing;
+
+	public float getStringSpacing() {
+		return stringSpacing;
 	}
-	
-	public void setStringSpacing(int stringSpacing) {
+
+	public void setStringSpacing(float stringSpacing) {
 		this.stringSpacing = stringSpacing;
 	}
-	
-	public int getScoreLineSpacing() {
-		return this.scoreLineSpacing;
+
+	public float getScoreLineSpacing() {
+		return scoreLineSpacing;
 	}
-	
-	public void setScoreLineSpacing(int scoreLineSpacing) {
+
+	public void setScoreLineSpacing(float scoreLineSpacing) {
 		this.scoreLineSpacing = scoreLineSpacing;
 	}
-	
-	public int getTrackSpacing() {
-		return this.trackSpacing;
+
+	public float getTrackSpacing() {
+		return trackSpacing;
 	}
-	
-	public void setTrackSpacing(int trackSpacing) {
+
+	public void setTrackSpacing(float trackSpacing) {
 		this.trackSpacing = trackSpacing;
 	}
-	
-	public int getFirstTrackSpacing() {
-		return this.firstTrackSpacing;
+
+	public float getFirstTrackSpacing() {
+		return firstTrackSpacing;
 	}
-	
-	public void setFirstTrackSpacing(int firstTrackSpacing) {
+
+	public void setFirstTrackSpacing(float firstTrackSpacing) {
 		this.firstTrackSpacing = firstTrackSpacing;
 	}
-	
-	public int getFirstMeasureSpacing() {
-		return this.firstMeasureSpacing;
+
+	public float getFirstMeasureSpacing() {
+		return firstMeasureSpacing;
 	}
-	
-	public void setFirstMeasureSpacing(int firstMeasureSpacing) {
+
+	public void setFirstMeasureSpacing(float firstMeasureSpacing) {
 		this.firstMeasureSpacing = firstMeasureSpacing;
 	}
-	
-	public int getChordFretIndexSpacing() {
-		return this.chordFretIndexSpacing;
+
+	public float getChordFretIndexSpacing() {
+		return chordFretIndexSpacing;
 	}
-	
-	public void setChordFretIndexSpacing(int chordFretIndexSpacing) {
+
+	public void setChordFretIndexSpacing(float chordFretIndexSpacing) {
 		this.chordFretIndexSpacing = chordFretIndexSpacing;
 	}
-	
-	public int getChordStringSpacing() {
-		return this.chordStringSpacing;
+
+	public float getChordStringSpacing() {
+		return chordStringSpacing;
 	}
-	
-	public void setChordStringSpacing(int chordStringSpacing) {
+
+	public void setChordStringSpacing(float chordStringSpacing) {
 		this.chordStringSpacing = chordStringSpacing;
 	}
-	
-	public int getChordFretSpacing() {
-		return this.chordFretSpacing;
+
+	public float getChordFretSpacing() {
+		return chordFretSpacing;
 	}
-	
-	public void setChordFretSpacing(int chordFretSpacing) {
+
+	public void setChordFretSpacing(float chordFretSpacing) {
 		this.chordFretSpacing = chordFretSpacing;
 	}
-	
-	public int getChordNoteSize() {
-		return this.chordNoteSize;
+
+	public float getChordNoteSize() {
+		return chordNoteSize;
 	}
-	
-	public void setChordNoteSize(int chordNoteSize) {
+
+	public void setChordNoteSize(float chordNoteSize) {
 		this.chordNoteSize = chordNoteSize;
 	}
-	
-	public int getRepeatEndingSpacing() {
-		return this.repeatEndingSpacing;
+
+	public float getChordLineWidth() {
+		return chordLineWidth;
 	}
-	
-	public void setRepeatEndingSpacing(int repeatEndingSpacing) {
+
+	public void setChordLineWidth(float chordLineWidth) {
+		this.chordLineWidth = chordLineWidth;
+	}
+
+	public float getRepeatEndingSpacing() {
+		return repeatEndingSpacing;
+	}
+
+	public void setRepeatEndingSpacing(float repeatEndingSpacing) {
 		this.repeatEndingSpacing = repeatEndingSpacing;
 	}
-	
-	public int getEffectSpacing() {
-		return this.effectSpacing;
+
+	public float getEffectSpacing() {
+		return effectSpacing;
 	}
-	
-	public void setEffectSpacing(int effectSpacing) {
+
+	public void setEffectSpacing(float effectSpacing) {
 		this.effectSpacing = effectSpacing;
 	}
-	
-	public int getDivisionTypeSpacing() {
-		return this.divisionTypeSpacing;
+
+	public float getDivisionTypeSpacing() {
+		return divisionTypeSpacing;
 	}
-	
-	public void setDivisionTypeSpacing(int divisionTypeSpacing) {
+
+	public void setDivisionTypeSpacing(float divisionTypeSpacing) {
 		this.divisionTypeSpacing = divisionTypeSpacing;
 	}
-	
-	public int getTextSpacing() {
-		return this.textSpacing;
+
+	public float getTextSpacing() {
+		return textSpacing;
 	}
-	
-	public void setTextSpacing(int textSpacing) {
+
+	public void setTextSpacing(float textSpacing) {
 		this.textSpacing = textSpacing;
 	}
-	
-	public int getMarkerSpacing() {
-		return this.markerSpacing;
+
+	public float getMarkerSpacing() {
+		return markerSpacing;
 	}
-	
-	public void setMarkerSpacing(int markerSpacing) {
+
+	public void setMarkerSpacing(float markerSpacing) {
 		this.markerSpacing = markerSpacing;
 	}
-	
-	public int getLoopMarkerSpacing() {
-		return this.loopMarkerSpacing;
+
+	public float getLoopMarkerSpacing() {
+		return loopMarkerSpacing;
 	}
-	
-	public void setLoopMarkerSpacing(int loopMarkerSpacing) {
+
+	public void setLoopMarkerSpacing(float loopMarkerSpacing) {
 		this.loopMarkerSpacing = loopMarkerSpacing;
 	}
-	
+
 	public TGFontModel getDefaultFont() {
-		return this.defaultFont;
+		return defaultFont;
 	}
-	
+
 	public void setDefaultFont(TGFontModel defaultFont) {
 		this.defaultFont = defaultFont;
 	}
-	
+
 	public TGFontModel getNoteFont() {
-		return this.noteFont;
+		return noteFont;
 	}
-	
+
 	public void setNoteFont(TGFontModel noteFont) {
 		this.noteFont = noteFont;
 	}
-	
+
 	public TGFontModel getTimeSignatureFont() {
-		return this.timeSignatureFont;
+		return timeSignatureFont;
 	}
-	
+
 	public void setTimeSignatureFont(TGFontModel timeSignatureFont) {
 		this.timeSignatureFont = timeSignatureFont;
 	}
-	
+
 	public TGFontModel getLyricFont() {
-		return this.lyricFont;
+		return lyricFont;
 	}
-	
+
 	public void setLyricFont(TGFontModel lyricFont) {
 		this.lyricFont = lyricFont;
 	}
-	
+
 	public TGFontModel getTextFont() {
-		return this.textFont;
+		return textFont;
 	}
-	
+
 	public void setTextFont(TGFontModel textFont) {
 		this.textFont = textFont;
 	}
-	
+
 	public TGFontModel getMarkerFont() {
-		return this.markerFont;
+		return markerFont;
 	}
-	
+
 	public void setMarkerFont(TGFontModel markerFont) {
 		this.markerFont = markerFont;
 	}
-	
+
 	public TGFontModel getGraceFont() {
-		return this.graceFont;
+		return graceFont;
 	}
-	
+
 	public void setGraceFont(TGFontModel graceFont) {
 		this.graceFont = graceFont;
 	}
-	
+
 	public TGFontModel getChordFont() {
-		return this.chordFont;
+		return chordFont;
 	}
-	
+
 	public void setChordFont(TGFontModel chordFont) {
 		this.chordFont = chordFont;
 	}
-	
+
 	public TGFontModel getChordFretFont() {
-		return this.chordFretFont;
+		return chordFretFont;
 	}
-	
+
 	public void setChordFretFont(TGFontModel chordFretFont) {
 		this.chordFretFont = chordFretFont;
 	}
-	
+
 	public TGColorModel getBackgroundColor() {
-		return this.backgroundColor;
+		return backgroundColor;
 	}
-	
+
 	public void setBackgroundColor(TGColorModel backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
-	
+
 	public TGColorModel getLineColor() {
-		return this.lineColor;
+		return lineColor;
 	}
-	
+
 	public void setLineColor(TGColorModel lineColor) {
 		this.lineColor = lineColor;
 	}
-	
+
 	public TGColorModel getScoreNoteColor() {
-		return this.scoreNoteColor;
+		return scoreNoteColor;
 	}
-	
+
 	public void setScoreNoteColor(TGColorModel scoreNoteColor) {
 		this.scoreNoteColor = scoreNoteColor;
 	}
-	
+
 	public TGColorModel getTabNoteColor() {
-		return this.tabNoteColor;
+		return tabNoteColor;
 	}
-	
+
 	public void setTabNoteColor(TGColorModel tabNoteColor) {
 		this.tabNoteColor = tabNoteColor;
 	}
-	
+
 	public TGColorModel getPlayNoteColor() {
-		return this.playNoteColor;
+		return playNoteColor;
 	}
-	
+
 	public void setPlayNoteColor(TGColorModel playNoteColor) {
 		this.playNoteColor = playNoteColor;
 	}
-	
+
 	public TGColorModel getLoopSMarkerColor() {
-		return this.loopSMarkerColor;
+		return loopSMarkerColor;
 	}
-	
+
 	public void setLoopSMarkerColor(TGColorModel loopSMarkerColor) {
 		this.loopSMarkerColor = loopSMarkerColor;
 	}
-	
+
 	public TGColorModel getLoopEMarkerColor() {
-		return this.loopEMarkerColor;
+		return loopEMarkerColor;
 	}
-	
+
 	public void setLoopEMarkerColor(TGColorModel loopEMarkerColor) {
 		this.loopEMarkerColor = loopEMarkerColor;
 	}
