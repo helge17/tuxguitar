@@ -712,7 +712,7 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private void paintDivisions(TGLayout layout,TGPainter painter,float x1, float y1, float x2, float y2, float offsetY, boolean addInfo) {
 		float scale = layout.getScale();
-		float lineWidthSmall = 1;
+		float lineWidthSmall = (1f * scale);
 		float lineWidthBig = Math.max(lineWidthSmall,Math.round(3f * scale));
 		
 		//numero de compas
@@ -791,9 +791,7 @@ public class TGMeasureImpl extends TGMeasure{
 				if(addInfo){
 					layout.setDivisionsStyle(painter,false);
 					String repetitions = ("x" + this.getRepeatClose());
-					painter.drawString(repetitions,x2 - painter.getFMWidth(repetitions) + getSpacing() - size,(y1 - painter.getFMHeight()) - Math.round(scale));
-					//TGDimension numberSize = painter.getStringExtent(repetitions);
-					//painter.drawString(repetitions,x2 - numberSize.getWidth() + getSpacing() - size,(y1 - numberSize.getHeight()) - Math.round(scale));
+					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, (y1 - painter.getFMHeight()) - Math.round(scale));
 				}
 			}
 		}else{
@@ -1086,7 +1084,7 @@ public class TGMeasureImpl extends TGMeasure{
 			// Don't uncomment "lineStyle" until be sure SWT bug has fixed.
 			// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=225725
 			//painter.setLineStyle(SWT.LINE_DASH);
-			painter.setLineWidth(1);
+			painter.setLineWidth(1f * scale);
 			painter.initPath();
 			painter.setAntialias(false);
 			painter.addRectangle(getPosX() + (5f * scale),y1,width - (10f * scale),(y2 - y1));

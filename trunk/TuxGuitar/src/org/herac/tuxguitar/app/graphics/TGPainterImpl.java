@@ -6,6 +6,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -161,7 +162,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 	}
 	
 	public void setLineWidth(float width) {
-		this.gc.setLineWidth(toInt(width));
+		this.gc.setLineAttributes(new LineAttributes(width));
 	}
 	
 	public void setLineStyleSolid(){
@@ -207,6 +208,11 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 	public float getFMHeight(){
 		this.setAdvanced(false);
 		return this.gc.getFontMetrics().getHeight();
+	}
+	
+	public float getFMLeading(){
+		this.setAdvanced(false);
+		return this.gc.getFontMetrics().getLeading();
 	}
 	
 	public float getFMAscent(){

@@ -60,6 +60,8 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public float getFMHeight();
 	
+	public float getFMLeading();
+	
 	public float getFMAscent();
 	
 	public float getFMDescent();

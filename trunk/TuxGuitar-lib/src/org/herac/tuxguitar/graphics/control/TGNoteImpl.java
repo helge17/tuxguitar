@@ -204,9 +204,9 @@ public class TGNoteImpl extends TGNote {
 							painter.lineTo(x + (4f * scale), posy + (1f * scale));
 							posy += (4f * scale);
 						}
-						painter.setLineWidth(2);
+						painter.setLineWidth(2f * scale);
 						painter.closePath();
-						painter.setLineWidth(1);
+						painter.setLineWidth(1f * scale);
 					}
 				}
 			}
@@ -334,9 +334,9 @@ public class TGNoteImpl extends TGNote {
 							painter.lineTo(x + xMove + (4f * layoutScale), tpY - (1f * layoutScale));
 							tpY += (4f * layoutScale);
 						}
-						painter.setLineWidth(2);
+						painter.setLineWidth(2f * layoutScale);
 						painter.closePath();
-						painter.setLineWidth(1);
+						painter.setLineWidth(1f * layoutScale);
 					}
 				}else{
 					
@@ -362,9 +362,9 @@ public class TGNoteImpl extends TGNote {
 							painter.lineTo(tpX + (4f * layoutScale),tpY - (1f * layoutScale));
 							tpY += (4f * layoutScale);
 						}
-						painter.setLineWidth(2);
+						painter.setLineWidth(2f * layoutScale);
 						painter.closePath();
-						painter.setLineWidth(1);
+						painter.setLineWidth(1f * layoutScale);
 					}
 				}
 			}

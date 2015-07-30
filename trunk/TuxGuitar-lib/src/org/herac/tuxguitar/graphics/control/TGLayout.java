@@ -45,6 +45,7 @@ public abstract class TGLayout {
 	private float chordStringSpacing;
 	private float chordFretSpacing;
 	private float chordNoteSize;
+	private float chordLineWidth;
 	private float repeatEndingSpacing;
 	private float effectSpacing;
 	private float divisionTypeSpacing;
@@ -81,26 +82,47 @@ public abstract class TGLayout {
 		this.setFontScale(scale);
 		this.getComponent().configureStyles(this.styles);
 		
+//		this.setBufferEnabled( this.styles.isBufferEnabled() );
+//		this.setStringSpacing( (this.styles.getStringSpacing() * getScale() ) );
+//		this.setScoreLineSpacing( (this.styles.getScoreLineSpacing() * getScale() ) );
+//		this.setFirstMeasureSpacing( Math.round( this.styles.getFirstMeasureSpacing() * getScale() ) );
+//		this.setMinBufferSeparator( Math.round( this.styles.getMinBufferSeparator() * getScale() ) );
+//		this.setMinTopSpacing( Math.round( this.styles.getMinTopSpacing() * getScale() ) );
+//		this.setMinScoreTabSpacing( Math.round( this.styles.getMinScoreTabSpacing() * getScale() ) );
+//		this.setFirstTrackSpacing( Math.round(this.styles.getFirstTrackSpacing() * getScale() ) );
+//		this.setTrackSpacing( Math.round(this.styles.getTrackSpacing() * getScale() ) );
+//		this.setChordFretIndexSpacing( Math.round( this.styles.getChordFretIndexSpacing() * getScale() ) );
+//		this.setChordStringSpacing( Math.round( this.styles.getChordStringSpacing() * getScale() ) );
+//		this.setChordFretSpacing( Math.round( this.styles.getChordFretSpacing() * getScale() ) );
+//		this.setChordNoteSize( Math.round( this.styles.getChordNoteSize() * getScale() ) );
+//		this.setChordLineWidth( Math.round( this.styles.getChordLineWidth() * getScale() ) );
+//		this.setRepeatEndingSpacing( Math.round( this.styles.getRepeatEndingSpacing() * getScale() ) );
+//		this.setTextSpacing( Math.round( this.styles.getTextSpacing() * getScale() ) );
+//		this.setMarkerSpacing( Math.round( this.styles.getMarkerSpacing() * getScale() ) );
+//		this.setLoopMarkerSpacing( Math.round( this.styles.getLoopMarkerSpacing() * getScale() ) );
+//		this.setDivisionTypeSpacing( Math.round( this.styles.getDivisionTypeSpacing() * getScale() ) );
+//		this.setEffectSpacing( Math.round( this.styles.getEffectSpacing() * getScale() ) );
+		
 		this.setBufferEnabled( this.styles.isBufferEnabled() );
 		this.setStringSpacing( (this.styles.getStringSpacing() * getScale() ) );
 		this.setScoreLineSpacing( (this.styles.getScoreLineSpacing() * getScale() ) );
-		this.setFirstMeasureSpacing( Math.round( this.styles.getFirstMeasureSpacing() * getScale() ) );
-		this.setMinBufferSeparator( Math.round( this.styles.getMinBufferSeparator() * getScale() ) );
-		this.setMinTopSpacing( Math.round( this.styles.getMinTopSpacing() * getScale() ) );
-		this.setMinScoreTabSpacing( Math.round( this.styles.getMinScoreTabSpacing() * getScale() ) );
-		this.setFirstTrackSpacing( Math.round(this.styles.getFirstTrackSpacing() * getScale() ) );
-		this.setTrackSpacing( Math.round(this.styles.getTrackSpacing() * getScale() ) );
-		this.setChordFretIndexSpacing( Math.round( this.styles.getChordFretIndexSpacing() * getScale() ) );
-		this.setChordStringSpacing( Math.round( this.styles.getChordStringSpacing() * getScale() ) );
-		this.setChordFretSpacing( Math.round( this.styles.getChordFretSpacing() * getScale() ) );
-		this.setChordNoteSize( Math.round( this.styles.getChordNoteSize() * getScale() ) );
-		this.setRepeatEndingSpacing( Math.round( this.styles.getRepeatEndingSpacing() * getScale() ) );
-		this.setTextSpacing( Math.round( this.styles.getTextSpacing() * getScale() ) );
-		this.setMarkerSpacing( Math.round( this.styles.getMarkerSpacing() * getScale() ) );
-		this.setLoopMarkerSpacing( Math.round( this.styles.getLoopMarkerSpacing() * getScale() ) );
-		this.setDivisionTypeSpacing( Math.round( this.styles.getDivisionTypeSpacing() * getScale() ) );
-		this.setEffectSpacing( Math.round( this.styles.getEffectSpacing() * getScale() ) );
-		
+		this.setFirstMeasureSpacing( (this.styles.getFirstMeasureSpacing() * getScale() ) );
+		this.setMinBufferSeparator( (this.styles.getMinBufferSeparator() * getScale() ) );
+		this.setMinTopSpacing( (this.styles.getMinTopSpacing() * getScale() ) );
+		this.setMinScoreTabSpacing( (this.styles.getMinScoreTabSpacing() * getScale() ) );
+		this.setFirstTrackSpacing( (this.styles.getFirstTrackSpacing() * getScale() ) );
+		this.setTrackSpacing( (this.styles.getTrackSpacing() * getScale() ) );
+		this.setChordFretIndexSpacing( (this.styles.getChordFretIndexSpacing() * getScale() ) );
+		this.setChordStringSpacing( (this.styles.getChordStringSpacing() * getScale() ) );
+		this.setChordFretSpacing( (this.styles.getChordFretSpacing() * getScale() ) );
+		this.setChordNoteSize( (this.styles.getChordNoteSize() * getScale() ) );
+		this.setChordLineWidth( (this.styles.getChordLineWidth() * getScale() ) );
+		this.setRepeatEndingSpacing( (this.styles.getRepeatEndingSpacing() * getScale() ) );
+		this.setTextSpacing( (this.styles.getTextSpacing() * getScale() ) );
+		this.setMarkerSpacing( (this.styles.getMarkerSpacing() * getScale() ) );
+		this.setLoopMarkerSpacing( (this.styles.getLoopMarkerSpacing() * getScale() ) );
+		this.setDivisionTypeSpacing( (this.styles.getDivisionTypeSpacing() * getScale() ) );
+		this.setEffectSpacing( (this.styles.getEffectSpacing() * getScale() ) );
 		this.getResources().load(this.styles);
 	}
 	
@@ -376,7 +398,7 @@ public abstract class TGLayout {
 	}
 	
 	public void setLineStyle(TGPainter painter){
-		painter.setLineWidth(1);
+		painter.setLineWidth(1f * getScale());
 		painter.setForeground(getResources().getLineColor());
 	}
 	
@@ -466,6 +488,7 @@ public abstract class TGLayout {
 		chord.setFretSpacing(getChordFretSpacing());
 		chord.setStringSpacing(getChordStringSpacing());
 		chord.setNoteSize(getChordNoteSize());
+		chord.setLineWidth(getChordLineWidth());
 		chord.setFirstFretSpacing(getChordFretIndexSpacing());
 		chord.setFirstFretFont(getResources().getChordFretFont());
 	}
@@ -495,10 +518,12 @@ public abstract class TGLayout {
 	
 	public TGRectangle getOrientation(TGPainter painter, float x, float y, String s){
 		float fmWidth = painter.getFMWidth(s);
+		float fmLeading = painter.getFMLeading();
 		float fmAscent = painter.getFMAscent();
-		float fSize = painter.getFontSize();
+		float fmHeight = painter.getFMHeight();
 
-		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent - fSize) - (fSize / 2f)), fmWidth, fSize );
+//		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent - fSize) - (fSize / 2f)), fmWidth, fSize );
+		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmLeading + (fmAscent / 2f))), fmWidth, fmHeight );
 	}
 	
 	public TGSongManager getSongManager() {
@@ -665,6 +690,14 @@ public abstract class TGLayout {
 		this.chordNoteSize = chordNoteSize;
 	}
 	
+	public float getChordLineWidth() {
+		return chordLineWidth;
+	}
+
+	public void setChordLineWidth(float chordLineWidth) {
+		this.chordLineWidth = chordLineWidth;
+	}
+
 	public float getRepeatEndingSpacing() {
 		return this.repeatEndingSpacing;
 	}

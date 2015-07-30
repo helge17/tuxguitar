@@ -418,6 +418,7 @@ public class Tablature extends Composite implements TGController {
 		styles.setChordStringSpacing(5);
 		styles.setChordFretSpacing(6);
 		styles.setChordNoteSize(4);
+		styles.setChordLineWidth(1);
 		styles.setRepeatEndingSpacing(20);
 		styles.setTextSpacing(15);
 		styles.setMarkerSpacing(15);

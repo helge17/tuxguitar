@@ -390,6 +390,7 @@ public class PrintLayout extends TGLayout{
 		chord.setFretSpacing(getChordFretSpacing());
 		chord.setStringSpacing(getChordStringSpacing());
 		chord.setNoteSize(getChordNoteSize());
+		chord.setLineWidth(getChordLineWidth());
 		chord.setFirstFretSpacing(getChordFretIndexSpacing());
 		chord.setFirstFretFont(getResources().getChordFretFont());
 	}
