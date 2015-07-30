@@ -17,10 +17,6 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	
-	public static final int PATH_DRAW = 0x01;
-	
-	public static final int PATH_FILL = 0x02;
-	
 	private boolean pathEmpty;
 	
 	private int style;
@@ -212,13 +208,9 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	public float getFMHeight() {
 		return this.gc.getFontMetrics().getHeight();
 	}
-
-	public float getFMLeading() {
-		return this.gc.getFontMetrics().getLeading() + 1f;
-	}
-
+	
 	public float getFMAscent() {
-		return this.gc.getFontMetrics().getAscent();
+		return (this.gc.getFontMetrics().getAscent() + 2f);
 	}
 	
 	public float getFMDescent() {
