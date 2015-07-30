@@ -60,7 +60,7 @@ public class PDFSongStream implements TGSongStream {
 			
 			PrintLayout layout = new PrintLayout(controller, styles);
 			
-			layout.loadStyles(0.65f);
+			layout.loadStyles(1f);
 			layout.updateSong();
 			layout.makeDocument(new PDFDocument(this.context, new TGRectangle(PAGE_X, PAGE_Y, PAGE_WIDTH, PAGE_HEIGHT), stream));
 		}catch(Throwable throwable){
