@@ -210,7 +210,7 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	private float getBottom(TGPainter painter,String text){
-		return ((getMaxHeight() - painter.getFMHeight()));
+		return ((getMaxHeight() - painter.getFMAscent()));
 	}
 	
 	private TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {
@@ -260,8 +260,8 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	public void setLineStyle(TGPainter painter){
-		painter.setLineWidth(1);
-		painter.setForeground( getDarkColor( getResources().getLineColor() ) );
+		painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+		painter.setForeground(getDarkColor( getResources().getLineColor()));
 	}
 	
 	public void setMeasureNumberStyle(TGPainter painter){
