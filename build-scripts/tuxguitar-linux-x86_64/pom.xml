@@ -37,6 +37,7 @@
 		<module>../../TuxGuitar-lilypond</module>
 		<module>../../TuxGuitar-midi</module>
 		<module>../../TuxGuitar-musicxml</module>
+		<module>../../TuxGuitar-awt-graphics</module>
 		<module>../../TuxGuitar-pdf</module>
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-tef</module>
@@ -85,6 +86,12 @@
 									<artifactId>tuxguitar-gm-utils</artifactId>
                   					<destFileName>tuxguitar-gm-utils.jar</destFileName>
                   					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-awt-graphics</artifactId>
+									<destFileName>tuxguitar-awt-graphics.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /LIBRARIES -->
 								

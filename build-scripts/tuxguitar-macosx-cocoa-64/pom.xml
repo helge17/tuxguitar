@@ -37,6 +37,7 @@
 		<module>../../TuxGuitar-lilypond</module>
 		<module>../../TuxGuitar-midi</module>
 		<module>../../TuxGuitar-musicxml</module>
+		<module>../../TuxGuitar-awt-graphics</module>
 		<module>../../TuxGuitar-pdf</module>
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-tef</module>
@@ -80,12 +81,18 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-editor-utils</artifactId>
 									<destFileName>tuxguitar-editor-utils.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
 									<destFileName>tuxguitar-gm-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-awt-graphics</artifactId>
+									<destFileName>tuxguitar-awt-graphics.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
 								<!-- /LIBRARIES -->

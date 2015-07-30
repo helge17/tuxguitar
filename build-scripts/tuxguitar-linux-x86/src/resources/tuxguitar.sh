@@ -27,6 +27,7 @@ CLASSPATH=${CLASSPATH}:./lib/tuxguitar.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-lib.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-editor-utils.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-gm-utils.jar
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar-awt-graphics.jar
 CLASSPATH=${CLASSPATH}:./lib/swt.jar
 CLASSPATH=${CLASSPATH}:./lib/itext-pdf.jar
 CLASSPATH=${CLASSPATH}:./lib/itext-xmlworker.jar
