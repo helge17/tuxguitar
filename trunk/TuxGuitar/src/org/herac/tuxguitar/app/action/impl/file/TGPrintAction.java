@@ -89,7 +89,7 @@ public class TGPrintAction extends TGActionBase{
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					layout.loadStyles(scale);
+					layout.loadStyles(scale, 1f);
 					layout.updateSong();
 					layout.makeDocument(new PrintDocumentImpl(layout,printer, printerData, bounds));
 				}catch(Throwable throwable ){

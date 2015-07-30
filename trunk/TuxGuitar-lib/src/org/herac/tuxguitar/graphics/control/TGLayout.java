@@ -78,30 +78,13 @@ public abstract class TGLayout {
 	}
 	
 	public void loadStyles(float scale){
+		this.loadStyles(scale, scale);
+	}
+	
+	public void loadStyles(float scale, float fontScale){
 		this.setScale(scale);
-		this.setFontScale(scale);
+		this.setFontScale(fontScale);
 		this.getComponent().configureStyles(this.styles);
-		
-//		this.setBufferEnabled( this.styles.isBufferEnabled() );
-//		this.setStringSpacing( (this.styles.getStringSpacing() * getScale() ) );
-//		this.setScoreLineSpacing( (this.styles.getScoreLineSpacing() * getScale() ) );
-//		this.setFirstMeasureSpacing( Math.round( this.styles.getFirstMeasureSpacing() * getScale() ) );
-//		this.setMinBufferSeparator( Math.round( this.styles.getMinBufferSeparator() * getScale() ) );
-//		this.setMinTopSpacing( Math.round( this.styles.getMinTopSpacing() * getScale() ) );
-//		this.setMinScoreTabSpacing( Math.round( this.styles.getMinScoreTabSpacing() * getScale() ) );
-//		this.setFirstTrackSpacing( Math.round(this.styles.getFirstTrackSpacing() * getScale() ) );
-//		this.setTrackSpacing( Math.round(this.styles.getTrackSpacing() * getScale() ) );
-//		this.setChordFretIndexSpacing( Math.round( this.styles.getChordFretIndexSpacing() * getScale() ) );
-//		this.setChordStringSpacing( Math.round( this.styles.getChordStringSpacing() * getScale() ) );
-//		this.setChordFretSpacing( Math.round( this.styles.getChordFretSpacing() * getScale() ) );
-//		this.setChordNoteSize( Math.round( this.styles.getChordNoteSize() * getScale() ) );
-//		this.setChordLineWidth( Math.round( this.styles.getChordLineWidth() * getScale() ) );
-//		this.setRepeatEndingSpacing( Math.round( this.styles.getRepeatEndingSpacing() * getScale() ) );
-//		this.setTextSpacing( Math.round( this.styles.getTextSpacing() * getScale() ) );
-//		this.setMarkerSpacing( Math.round( this.styles.getMarkerSpacing() * getScale() ) );
-//		this.setLoopMarkerSpacing( Math.round( this.styles.getLoopMarkerSpacing() * getScale() ) );
-//		this.setDivisionTypeSpacing( Math.round( this.styles.getDivisionTypeSpacing() * getScale() ) );
-//		this.setEffectSpacing( Math.round( this.styles.getEffectSpacing() * getScale() ) );
 		
 		this.setBufferEnabled( this.styles.isBufferEnabled() );
 		this.setStringSpacing( (this.styles.getStringSpacing() * getScale() ) );

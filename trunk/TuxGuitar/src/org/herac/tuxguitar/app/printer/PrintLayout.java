@@ -1,9 +1,3 @@
-/*
- * Created on 04-ene-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.printer;
 
 import java.util.ArrayList;
@@ -25,12 +19,6 @@ import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class PrintLayout extends TGLayout{
 	
 	private PrintStyles styles;
@@ -61,7 +49,7 @@ public class PrintLayout extends TGLayout{
 		
 		this.openPage();
 		paintHeader(this.document.getPainter());
-		paintSong(this.document.getPainter(),null,this.document.getBounds().getX(), ( this.document.getBounds().getY() + Math.round(80.0f * getFontScale() ) ) );
+		paintSong(this.document.getPainter(), null, this.document.getBounds().getX(), ( this.document.getBounds().getY() + (80.0f * getScale() ) ) );
 		paintFooter(this.document.getPainter());
 		this.closePage();
 		
@@ -129,18 +117,18 @@ public class PrintLayout extends TGLayout{
 			String songAuthor = getSong().getAuthor();
 			String trackName = "(" + getSongManager().getTrack(getSong(), this.styles.getTrackNumber()).getName() + ")";
 			
-			if(songName == null || songName.length() == 0){
+			if( songName == null || songName.length() == 0 ){
 				songName = TuxGuitar.getProperty("print-header.default-song-name");
 			}
-			if(songAuthor == null || songAuthor.length() == 0){
+			if( songAuthor == null || songAuthor.length() == 0 ){
 				songAuthor = TuxGuitar.getProperty("print-header.default-song-author");
 			}
 			painter.setFont(getSongNameFont(painter));
 			painter.drawString(songName,(x + getCenter(painter,songName)),y);
 			painter.setFont(getTrackNameFont(painter));
-			painter.drawString(trackName,(x + getCenter(painter,trackName)),(y + Math.round(30.0f * getFontScale())));
+			painter.drawString(trackName,(x + getCenter(painter,trackName)),(y + Math.round(30.0f * getScale())));
 			painter.setFont(getSongAuthorFont(painter));
-			painter.drawString(songAuthor,(x + getRight(painter,songAuthor)),(y + Math.round(50.0f * getFontScale())));
+			painter.drawString(songAuthor,(x + getRight(painter,songAuthor)),(y + Math.round(50.0f * getScale())));
 		}
 	}
 	
@@ -152,7 +140,7 @@ public class PrintLayout extends TGLayout{
 			
 			painter.setBackground(getResources().getColorWhite());
 			painter.setForeground(getResources().getColorBlack());
-			painter.drawString(pageNumber,(x + getRight(painter,pageNumber)),(y + getBottom(painter,pageNumber)));
+			painter.drawString(pageNumber, (x + getRight(painter, pageNumber)),(y + getBottom(painter, pageNumber)));
 		}
 	}
 	
@@ -415,33 +403,23 @@ public class PrintLayout extends TGLayout{
 		return (mh.getNumber() == this.styles.getToMeasure());
 	}
 	
-	/*
-	private int getScaledValue(float scale, int value){
-		return getScaledValue(scale, value,1);
-	}
-	
-	private int getScaledValue(float scale, int value, int minimum){
-		float scaledValue = ( value * scale );
-		return Math.max( Math.round( scaledValue ) , minimum );
-	}
-	*/
 	public TGFont getSongNameFont( TGResourceFactory factory ){
 		if( factory != null && ( this.songNameFont == null || this.songNameFont.isDisposed() ) ){
-			this.songNameFont = factory.createFont(this.getResources().getDefaultFont().getName(),Math.round(16.0f * getFontScale()), true, false);
+			this.songNameFont = factory.createFont(this.getResources().getDefaultFont().getName(), (16.0f * getFontScale()), true, false);
 		}
 		return this.songNameFont;
 	}
 	
 	public TGFont getSongAuthorFont( TGResourceFactory factory ){
 		if( factory != null && ( this.songAuthorFont == null || this.songAuthorFont.isDisposed() ) ){
-			this.songAuthorFont = factory.createFont(this.getResources().getDefaultFont().getName(),Math.round(8.0f * getFontScale()), true, false);
+			this.songAuthorFont = factory.createFont(this.getResources().getDefaultFont().getName(), (8.0f * getFontScale()), true, false);
 		}
 		return this.songAuthorFont;
 	}
 	
 	public TGFont getTrackNameFont( TGResourceFactory factory ){
 		if( factory != null && ( this.trackNameFont == null || this.trackNameFont.isDisposed() ) ){
-			this.trackNameFont = factory.createFont(this.getResources().getDefaultFont().getName(),Math.round(8.0f * getFontScale()), true, false);
+			this.trackNameFont = factory.createFont(this.getResources().getDefaultFont().getName(), (8.0f * getFontScale()), true, false);
 		}
 		return this.trackNameFont;
 	}
