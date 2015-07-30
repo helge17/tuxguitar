@@ -205,10 +205,6 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		return this.svgFont.getHeight();
 	}
 	
-	public float getFMLeading() {
-		return 0;
-	}
-	
 	public float getFMAscent(){
 		return getFontSize();
 	}
