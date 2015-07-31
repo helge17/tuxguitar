@@ -246,7 +246,7 @@ public class TGChordImpl extends TGChord {
 			painter.setFont(getFont());
 			painter.setForeground(getForegroundColor());
 			painter.setBackground(getBackgroundColor());
-			painter.drawString(getName(),x - (this.nameWidth / 2) , y + (this.height - (this.nameHeight / 2f) - (painter.getFMAscent() / 2f)));
+			painter.drawString(getName(),x - (this.nameWidth / 2) , y + this.diagramHeight + painter.getFMTopLine());
 		}
 	}
 	
@@ -307,7 +307,7 @@ public class TGChordImpl extends TGChord {
 		if( font != null ){
 			String firstFretString = Integer.toString(getFirstFret());
 			painter.setFont(font);
-			painter.drawString(firstFretString, fromX + (getFirstFretSpacing() - painter.getFMWidth(firstFretString)), (y + ((getFretSpacing() / 2f) - (painter.getFMAscent() / 2f))));
+			painter.drawString(firstFretString, fromX + (getFirstFretSpacing() - painter.getFMWidth(firstFretString)), (y + ((getFretSpacing() / 2f) + painter.getFMMiddleLine())));
 			x += getFirstFretSpacing();
 		}
 		

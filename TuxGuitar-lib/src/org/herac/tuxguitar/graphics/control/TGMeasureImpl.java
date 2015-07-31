@@ -719,8 +719,7 @@ public class TGMeasureImpl extends TGMeasure{
 		if( addInfo ){ 
 			String number = Integer.toString(this.getNumber());
 			layout.setMeasureNumberStyle(painter);
-			float fmAscent = painter.getFMAscent();
-			painter.drawString(number, getPosX() + scale, (y1 - (Math.abs(fmAscent)) - (fmAscent / 2f)) - scale);
+			painter.drawString(number, getPosX() + scale, y1 + painter.getFMBaseLine() - scale);
 		}
 		
 		layout.setDivisionsStyle(painter,true);
@@ -791,9 +790,9 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.closePath();
 				if( addInfo ){
 					layout.setDivisionsStyle(painter,false);
-					float fmAscent = painter.getFMAscent();
+					
 					String repetitions = ("x" + this.getRepeatClose());
-					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, (y1 - Math.abs(fmAscent) - (fmAscent / 2f)) - scale);
+					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, y1 + painter.getFMBaseLine() - scale);
 				}
 			}
 		}else{
@@ -898,21 +897,23 @@ public class TGMeasureImpl extends TGMeasure{
 			int style = layout.getStyle();
 			float scale = layout.getScale();
 			float leftSpacing = Math.round( 5.0f * scale );
-			float fmAscent = painter.getFMAscent();
+			float fmTopLine = painter.getFMTopLine();
+			float fmBaseLine = painter.getFMBaseLine();
+			
 			float x = (getClefSpacing(layout) + getKeySignatureSpacing(layout) + getHeaderImpl().getLeftSpacing(layout) + leftSpacing);
 			String numerator = Integer.toString(getTimeSignature().getNumerator());
 			String denominator = Integer.toString(getTimeSignature().getDenominator().getValue());
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
 				float y = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				float y1 = (y + ((Math.abs(fmAscent) / 2f) - (fmAscent / 2f)));
-				float y2 = ((y + getTrackImpl().getScoreHeight()) - ((Math.abs(fmAscent) / 2f) + (fmAscent / 2f)));
+				float y1 = (y + fmTopLine + (1f * scale));
+				float y2 = ((y + getTrackImpl().getScoreHeight()) + fmBaseLine - (1f * scale));
 				
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
 			}else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
 				float y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
-				float y1 = (y + ((Math.abs(fmAscent) / 2f) - (fmAscent / 2f)));
-				float y2 = ((y + getTrackImpl().getTabHeight()) - ((Math.abs(fmAscent) / 2f) + (fmAscent / 2f)));
+				float y1 = (y + fmTopLine + (1f * scale));
+				float y2 = ((y + getTrackImpl().getTabHeight()) + fmBaseLine - (1f * scale));
 				
 				painter.drawString(numerator,fromX + x,fromY + y1,true);
 				painter.drawString(denominator,fromX + x,fromY + y2,true);
@@ -936,17 +937,13 @@ public class TGMeasureImpl extends TGMeasure{
 			layout.setTempoStyle(painter, false);
 			float imgX = x;
 			float imgY = (y - (Math.round(scale * 3.5f ) + 2));
-//			if( layout.isBufferEnabled() ){
-//				painter.drawImage(layout.getResources().getTempoImage(),imgX , imgY );
-//			} else {
-				TGTempoPainter.paintTempo(painter, imgX, imgY, scale);
-//			}
+			
+			TGTempoPainter.paintTempo(painter, imgX, imgY, scale);
 			
 			layout.setTempoStyle(painter, true);
 			String value = (" = " + getTempo().getValue());
-			float fmAscent = painter.getFMAscent();
 			float fontX = x + (Math.round( (1.33f * scale) ) + 1 );
-			float fontY = (y - (1.5f * scale) - (fmAscent / 2f));
+			float fontY = (y - (0.75f * scale) + painter.getFMBaseLine());
 			painter.drawString(value , fontX, fontY, true);
 		}
 	}
@@ -966,9 +963,8 @@ public class TGMeasureImpl extends TGMeasure{
 			
 			layout.setTripletFeelStyle(painter, true);
 			String equal = (" = ");
-			float fmAscent = painter.getFMAscent();
 			float fontX = (x + (3.2f * scale));
-			float fontY = (y - (1.5f * scale) - (fmAscent / 2f));
+			float fontY = (y - (0.75f * scale) + painter.getFMBaseLine());
 			painter.drawString(equal, fontX , fontY, true);
 			
 			layout.setTripletFeelStyle(painter, false);
@@ -980,45 +976,21 @@ public class TGMeasureImpl extends TGMeasure{
 			if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.prevMeasure != null){
 				int previous = this.prevMeasure.getTripletFeel();
 				if(previous == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-//					if( layout.isBufferEnabled() ){
-//						painter.drawImage(layout.getResources().getTripletFeel8(), x1, y2 );
-//						painter.drawImage(layout.getResources().getTripletFeelNone8(),x2 , y1 );
-//					}
-//					else{
-						TGTripletFeelPainter.paintTripletFeel8(painter, x1, y2, scale );
-						TGTripletFeelPainter.paintTripletFeelNone8(painter, x2 , y1, scale );
-//					}
+					TGTripletFeelPainter.paintTripletFeel8(painter, x1, y2, scale );
+					TGTripletFeelPainter.paintTripletFeelNone8(painter, x2 , y1, scale );
 				}
 				else if(previous == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-//					if( layout.isBufferEnabled() ){
-//						painter.drawImage(layout.getResources().getTripletFeel16(), x1, y2 );
-//						painter.drawImage(layout.getResources().getTripletFeelNone16(),x2 , y1 );
-//					}
-//					else{
-						TGTripletFeelPainter.paintTripletFeel16(painter, x1, y2, scale );
-						TGTripletFeelPainter.paintTripletFeelNone16(painter, x2 , y1, scale );
-//					}
+					TGTripletFeelPainter.paintTripletFeel16(painter, x1, y2, scale );
+					TGTripletFeelPainter.paintTripletFeelNone16(painter, x2 , y1, scale );
 				}
 			}
 			else if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-//				if( layout.isBufferEnabled() ){
-//					painter.drawImage(layout.getResources().getTripletFeelNone8(), x1, y1 );
-//					painter.drawImage(layout.getResources().getTripletFeel8(),x2 , y2 );
-//				}
-//				else{
-					TGTripletFeelPainter.paintTripletFeelNone8(painter, x1, y1, scale );
-					TGTripletFeelPainter.paintTripletFeel8(painter, x2 , y2, scale );
-//				}
+				TGTripletFeelPainter.paintTripletFeelNone8(painter, x1, y1, scale );
+				TGTripletFeelPainter.paintTripletFeel8(painter, x2 , y2, scale );
 			}
 			else if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-//				if( layout.isBufferEnabled() ){
-//					painter.drawImage(layout.getResources().getTripletFeelNone16(), x1, y1 );
-//					painter.drawImage(layout.getResources().getTripletFeel16(),x2 , y2 );
-//				}
-//				else{
-					TGTripletFeelPainter.paintTripletFeelNone16(painter, x1, y1, scale );
-					TGTripletFeelPainter.paintTripletFeel16(painter, x2 , y2, scale );
-//				}
+				TGTripletFeelPainter.paintTripletFeelNone16(painter, x1, y1, scale );
+				TGTripletFeelPainter.paintTripletFeel16(painter, x2 , y2, scale );
 			}
 		}
 	}
