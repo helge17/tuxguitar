@@ -139,7 +139,6 @@ public class TGVoiceImpl extends TGVoice{
 	}
 	
 	public boolean isPlaying(TGLayout layout){
-		//return (getMeasureImpl().isPlaying(layout) && TuxGuitar.instance().getEditorCache().isPlaying(getBeat().getMeasure(),getBeat()));
 		return layout.getComponent().isRunning(this.getBeat());
 	}
 	
@@ -344,7 +343,7 @@ public class TGVoiceImpl extends TGVoice{
 	
 	public void paint(TGLayout layout,TGPainter painter, float fromX, float fromY) {
 		if(!isEmpty()){
-			if(isRestVoice() && !isHiddenSilence()){
+			if( isRestVoice() && !isHiddenSilence() ){
 				paintSilence(layout, painter, fromX, fromY);
 			}
 			else{
@@ -548,32 +547,39 @@ public class TGVoiceImpl extends TGVoice{
 			int key = getBeat().getMeasure().getKeySignature();
 			int clef = getBeat().getMeasure().getClef();
 			
-			float scoreNoteWidth = layout.getScoreNoteWidth(getDuration().getValue() > TGDuration.HALF);
-			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0);
-			float yMove = (direction == TGBeatGroup.DIRECTION_UP ? ((layout.getScoreLineSpacing() / 3) + 1) : ((layout.getScoreLineSpacing() / 3) * 2));
+			boolean full = (getDuration().getValue() > TGDuration.HALF);
+			float scoreNoteWidth = layout.getScoreNoteWidth(full);
+			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth - ((full ? 3.15f : 2f) * scale) : ((full ? 0.5f : 0.75f) * scale));
+			float yMove = (direction == TGBeatGroup.DIRECTION_UP ? ((layout.getScoreLineSpacing() / 3f) + scale) : ((layout.getScoreLineSpacing() / 3f) * 2));
 			
 			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.maxNote.getScorePosY() : this.minNote.getScorePosY() );
-			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing,key,clef);
+			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing, key, clef);
 			
-			painter.initPath();
-			painter.setAntialias(false);
-			painter.moveTo(vX + xMove, vY1 + yMove);
-			painter.lineTo(vX + xMove, vY2);
+			painter.initPath(TGPainter.PATH_FILL);
+//			painter.setAntialias(false);
+//			painter.moveTo(vX + xMove, vY1 + yMove);
+//			painter.lineTo(vX + xMove, vY2);
+			
+			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
+			painter.lineTo(vX + xMove + (0.5f * scale), vY1 + yMove);
+			painter.lineTo(vX + xMove + (0.5f * scale), vY2);
+			painter.lineTo(vX + xMove - (0.5f * scale), vY2);
+			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
 			painter.closePath();
 			
-			if (getDuration().getValue() >= TGDuration.EIGHTH) {
+			if( getDuration().getValue() >= TGDuration.EIGHTH ) {
 				int index =  ( getDuration().getIndex() - 3);
-				if(index >= 0){
-					int dir = (direction == TGBeatGroup.DIRECTION_DOWN)?1:-1;
+				if( index >= 0 ) {
+					int dir = (direction == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
 					int joinedType = getJoinedType();
 					boolean joinedGreaterThanQuarter = isJoinedGreaterThanQuarter();
 					
 					if((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT || joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT) && !joinedGreaterThanQuarter){
-						float hX = (fromX + xMove + getPosX() + spacing);
-						float hY = ( (fromY + this.group.getY2(layout,getPosX() + spacing,key,clef)) - ( (lineSpacing * 2)* dir )) ;
+						float hX = (fromX + xMove + getPosX() + spacing - (0.5f * scale));
+						float hY = ((fromY + this.group.getY2(layout,getPosX() + spacing,key,clef)) - ( (lineSpacing * 2)* dir )) ;
 						for(int i = 0; i <= index; i ++){
 							painter.initPath(TGPainter.PATH_FILL);
-							TGNotePainter.paintFooter(painter,hX,(hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
+							TGNotePainter.paintFooter(painter, hX, (hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
 							painter.closePath();
 						}
 					}else{
@@ -591,11 +597,19 @@ public class TGVoiceImpl extends TGVoice{
 						}
 						float hY1 = fromY + this.group.getY2(layout,hX1,key,clef);
 						float hY2 = fromY + this.group.getY2(layout,hX2,key,clef);
-						painter.setLineWidth(3f * scale);
-						painter.initPath();
+//						painter.setLineWidth(3f * scale);
+//						painter.initPath();
+						painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+						painter.initPath(TGPainter.PATH_FILL);
 						for(int i = 0; i <= index; i ++){
-							painter.moveTo(fromX + xMove + hX1, hY1 - ( (i * (5f * scale)) * dir));
-							painter.lineTo(fromX + xMove + hX2, hY2 - ( (i * (5f * scale)) * dir));
+//							painter.moveTo(fromX + xMove + hX1, hY1 - ( (i * (5f * scale)) * dir));
+//							painter.lineTo(fromX + xMove + hX2, hY2 - ( (i * (5f * scale)) * dir));
+							
+							painter.moveTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) - (1.5f * scale));
+							painter.lineTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) + (1.5f * scale));
+							painter.lineTo(fromX + xMove + hX2 + (0.5f * scale), hY2 - ((i * (5f * scale)) * dir) + (1.5f * scale));
+							painter.lineTo(fromX + xMove + hX2 + (0.5f * scale), hY2 - ((i * (5f * scale)) * dir) - (1.5f * scale));
+							painter.lineTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) - (1.5f * scale));
 						}
 						painter.closePath();
 						painter.setLineWidth(1f * scale);

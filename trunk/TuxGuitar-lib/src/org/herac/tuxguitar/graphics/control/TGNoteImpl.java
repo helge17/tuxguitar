@@ -1,9 +1,3 @@
-/*
- * Created on 29-nov-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.graphics.control;
 
 import java.util.Iterator;
@@ -20,11 +14,6 @@ import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
 public class TGNoteImpl extends TGNote {
 	
 	private TGRectangle noteOrientation;
@@ -271,23 +260,15 @@ public class TGNoteImpl extends TGNote {
 			}
 			//----------fin sostenido--------------------------------------
 			if(getEffect().isHarmonic()){
-//				if( layout.isBufferEnabled() ){
-//					painter.drawImage(layout.getResources().getHarmonicNote(getVoice().getDuration().getValue(),playing),x,y1);
-//				}else{
-					boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
-					painter.initPath((full ? TGPainter.PATH_DRAW | TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
-					TGNotePainter.paintHarmonic(painter, x, y1 + (1f * layoutScale),(layout.getScoreLineSpacing() - (2f * layoutScale)) );
-					painter.closePath();
-//				}
+				boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
+				painter.initPath((full ? TGPainter.PATH_DRAW | TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
+				TGNotePainter.paintHarmonic(painter, x, y1 + (1f * layoutScale),(layout.getScoreLineSpacing() - (2f * layoutScale)) );
+				painter.closePath();
 			}else{
-//				if( layout.isBufferEnabled() ){
-//					painter.drawImage(layout.getResources().getScoreNote(getVoice().getDuration().getValue(),playing),x,y1);
-//				}else{
-					boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
-					painter.initPath((full ? TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
-					TGNotePainter.paintNote(painter,x,y1 + (1f * layoutScale), ((full ? layout.getScoreLineSpacing() + (1f * layoutScale) : layout.getScoreLineSpacing() ) - (2f * layoutScale)) );
-					painter.closePath();
-//				}
+				boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
+				painter.initPath((full ? TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
+				TGNotePainter.paintNote(painter,x,y1 + (1f * layoutScale), ((full ? layout.getScoreLineSpacing() + (1f * layoutScale) : layout.getScoreLineSpacing() ) - (2f * layoutScale)) );
+				painter.closePath();
 			}
 			
 			if(!layout.isPlayModeEnabled() ){
