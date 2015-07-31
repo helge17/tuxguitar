@@ -319,6 +319,16 @@ public class PrintLayout extends TGLayout{
 		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
 	}
 	
+	public void setScoreSilenceStyle(TGPainter painter,boolean playMode){
+		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
+	}
+	
+	public void setTabSilenceStyle(TGPainter painter,boolean playMode){
+		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
+		painter.setBackground( getDarkColor(getResources().getTabNoteColor()) );
+	}
+	
 	public void setTimeSignatureStyle(TGPainter painter){
 		painter.setFont(getResources().getTimeSignatureFont());
 		painter.setBackground( getResources().getColorWhite() );
