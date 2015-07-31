@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -205,19 +206,33 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		return 0;
 	}
 	
-	public float getFMHeight(){
-		this.setAdvanced(false);
-		return this.gc.getFontMetrics().getHeight();
+	public float getFMTopLine() {
+		return -((this.getFMAscent() / 10f) * 2f);
+	}
+	
+	public float getFMMiddleLine(){
+		return -((this.getFMAscent() / 10f) * 6f);
+	}
+	
+	public float getFMBaseLine() {
+		return -this.getFMAscent();
 	}
 	
 	public float getFMAscent(){
 		this.setAdvanced(false);
-		return this.gc.getFontMetrics().getAscent();
+		
+		FontMetrics fm = this.gc.getFontMetrics();
+		return (fm.getAscent() + fm.getLeading());
 	}
 	
 	public float getFMDescent(){
 		this.setAdvanced(false);
 		return this.gc.getFontMetrics().getDescent();
+	}
+	
+	public float getFMHeight(){
+		this.setAdvanced(false);
+		return this.gc.getFontMetrics().getHeight();
 	}
 	
 	public float getFMWidth( String text ){

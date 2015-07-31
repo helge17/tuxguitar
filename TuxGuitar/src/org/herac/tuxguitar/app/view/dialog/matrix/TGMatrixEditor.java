@@ -385,14 +385,13 @@ public class TGMatrixEditor implements TGEventListener {
 				painter.setFont(new TGFontImpl(this.config.getFont()));
 				painter.setForeground(new TGColorImpl(this.config.getColorForeground()));
 				
-				float fmAscent = painter.getFMAscent();
 				for(int i = 0; i <= rows; i++){
 					painter.setBackground(new TGColorImpl(this.config.getColorLine( i % 2 ) ));
 					painter.initPath(TGPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(0 ,(i * this.lineHeight),this.bufferWidth ,this.lineHeight);
 					painter.closePath();
-					painter.drawString(names[i],5, ((i * this.lineHeight) + (this.lineHeight / 2f) - (fmAscent / 2f)));
+					painter.drawString(names[i],5, ((i * this.lineHeight) + (this.lineHeight / 2f) + painter.getFMMiddleLine()));
 				}
 				for(int i = 0; i < cols; i ++){
 					float colX = this.leftSpacing + (i * this.timeWidth);
