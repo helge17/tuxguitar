@@ -204,13 +204,25 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	public float getFontSize() {
 		return this.gc.getFont().getSize();
 	}
-
+	
+	public float getFMTopLine() {
+		return -(((this.getFMAscent() + 1f) / 10f) * 3f);
+	}
+	
+	public float getFMMiddleLine(){
+		return -(((this.getFMAscent() + 1f) / 10f) * 6.5f);
+	}
+	
+	public float getFMBaseLine() {
+		return -(this.getFMAscent() + 1f);
+	}
+	
 	public float getFMHeight() {
 		return this.gc.getFontMetrics().getHeight();
 	}
 	
 	public float getFMAscent() {
-		return (this.gc.getFontMetrics().getAscent() + 2f);
+		return this.gc.getFontMetrics().getAscent();
 	}
 	
 	public float getFMDescent() {
