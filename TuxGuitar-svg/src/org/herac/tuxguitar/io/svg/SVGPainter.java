@@ -7,6 +7,8 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class SVGPainter extends SVGResourceFactory implements TGPainter {
 	
+	public static final float SVG_THINNEST_LINE_WIDTH = 0.75f;
+	
 	private int svgPathStyle;
 	private float svgStrokeWidth;
 	private SVGFont svgFont;
@@ -67,7 +69,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgBuffer.append("\r\n");
 		this.svgBuffer.append("<text ");
 		this.svgBuffer.append("x='" + x + "' ");
-		this.svgBuffer.append("y='" + (y + Math.round(0.75f * getFontSize())) + "' ");
+		this.svgBuffer.append("y='" + y + "' ");
 		this.svgBuffer.append("font-family=\""+ this.svgFont.getName() + "\" ");
 		this.svgBuffer.append("font-size=\"" + this.svgFont.getHeight() + "\" ");
 		this.svgBuffer.append("fill=\"" + this.svgForeground.toHexString() +"\" ");
@@ -80,7 +82,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgBuffer.append("\r\n");
 		this.svgBuffer.append("<text ");
 		this.svgBuffer.append("x='" + x + "' ");
-		this.svgBuffer.append("y='" + (y + Math.round(0.75f * getFontSize())) + "' ");
+		this.svgBuffer.append("y='" + y + "' ");
 		this.svgBuffer.append("font-family=\""+ this.svgFont.getName() + "\" ");
 		this.svgBuffer.append("font-size=\"" + this.svgFont.getHeight() + "\" ");
 		this.svgBuffer.append("fill=\"" + this.svgForeground.toHexString() +"\" ");
@@ -174,7 +176,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 	}
 	
 	public void setLineWidth(float width) {
-		this.svgStrokeWidth = width;
+		this.svgStrokeWidth = (width == TGPainter.THINNEST_LINE_WIDTH ? SVG_THINNEST_LINE_WIDTH : width);
 	}
 	
 	public void setLineStyleSolid(){
@@ -201,19 +203,31 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		// Not Implemented
 	}
 	
-	public float getFontSize(){
+	public float getFontSize() {
 		return this.svgFont.getHeight();
 	}
 	
-	public float getFMAscent(){
-		return getFontSize();
+	public float getFMBaseLine() {
+		return 0f;
+	}
+
+	public float getFMTopLine() {
+		return (getFMAscent());
+	}
+
+	public float getFMMiddleLine() {
+		return (getFMAscent() / 2f);
 	}
 	
-	public float getFMDescent(){
-		return 0;
+	public float getFMAscent() {
+		return ((getFontSize() / 10f) * 7.5f);
 	}
 	
-	public float getFMHeight(){
+	public float getFMDescent() {
+		return 0f;
+	}
+	
+	public float getFMHeight() {
 		return (getFMAscent() + getFMDescent());
 	}
 	
