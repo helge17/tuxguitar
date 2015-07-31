@@ -564,15 +564,14 @@ public class TGNoteImpl extends TGNote {
 	private void paintTrill(TGLayout layout, TGPainter painter,float fromX,float fromY){
 		String string = "Tr";
 		float fmWidth = painter.getFMWidth( string );
-		float fmAscent = painter.getFMAscent();
 		float scale = layout.getScale();
 		float x = fromX + fmWidth;
-		float y = fromY + (Math.abs(fmAscent) / 2.0f);
+		float y = fromY + (2.0f * scale);
 		float width = ( getVoiceImpl().getWidth() - fmWidth - (2.0f * scale) );
 		
 		int loops = Math.round(width / (6.0f * scale) );
 		if( loops > 0 ){
-			painter.drawString(string, fromX, y - (fmAscent / 2f));
+			painter.drawString(string, fromX, y + painter.getFMMiddleLine());
 			
 			layout.setTabEffectStyle(painter);
 			painter.initPath(TGPainter.PATH_FILL);

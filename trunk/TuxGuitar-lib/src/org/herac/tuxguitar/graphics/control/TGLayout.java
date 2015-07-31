@@ -500,10 +500,19 @@ public abstract class TGLayout {
 	}
 	
 	public TGRectangle getOrientation(TGPainter painter, float x, float y, String s){
-		float fmWidth = painter.getFMWidth(s);
-		float fmAscent = painter.getFMAscent();
+//		float fmWidth = painter.getFMWidth(s);
+//		float fmAscent = painter.getFMAscent();
+//		float fmVCenter = painter.getFMVerticalCenter();
 		
-		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent / 2f)), fmWidth, Math.abs(fmAscent));
+//		return new TGRectangle((x - (fmWidth / 2f)), (y - (fmAscent / 2f)), fmWidth, Math.abs(fmAscent));
+		
+		
+		float fmWidth = painter.getFMWidth(s);
+		float fmTopLine = painter.getFMTopLine();
+		float fmMiddleLine = painter.getFMMiddleLine();
+		float fmBaseLine = painter.getFMBaseLine();
+		
+		return new TGRectangle((x - (fmWidth / 2f)), (y + fmMiddleLine), fmWidth, (fmBaseLine - fmTopLine));
 	}
 	
 	public TGSongManager getSongManager() {
