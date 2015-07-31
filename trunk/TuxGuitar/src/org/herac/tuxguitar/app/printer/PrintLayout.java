@@ -210,7 +210,7 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	private float getBottom(TGPainter painter,String text){
-		return ((getMaxHeight() - painter.getFMAscent()));
+		return ((getMaxHeight() - painter.getFMHeight()));
 	}
 	
 	private TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {

@@ -447,12 +447,11 @@ public class TGFretBoard extends Composite {
 		
 		float fmWidth = painter.getFMWidth(text);
 		float fmHeight = painter.getFMHeight();
-		float fmAscent = painter.getFMAscent();
 		
 		painter.initPath(TGPainter.PATH_FILL);
 		painter.addRectangle(x - (fmWidth / 2f), y - (fmHeight / 2f), fmWidth, fmHeight);
 		painter.closePath();
-		painter.drawString(text, x - (fmWidth / 2f),y - (fmAscent / 2f), true);
+		painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine(), true);
 	}
 	
 	protected void paintEditor(TGPainter painter) {
