@@ -310,7 +310,7 @@ public abstract class TGLayout {
 	}
 	
 	public float getScoreNoteWidth(boolean full) {
-		float scale = ((full ? this.getScoreLineSpacing() + (1f* getScale()) : this.getScoreLineSpacing()) - (2f * getScale()));
+		float scale = ((full ? this.getScoreLineSpacing() + (1f * getScale()) : this.getScoreLineSpacing()));// - (1.25f * getScale()));
 		
 		return Math.round(scale * 1.33f);
 	}
