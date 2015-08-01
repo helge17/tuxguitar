@@ -337,7 +337,7 @@ public class Tablature extends Composite implements TGController {
 	
 	public void reloadStyles(){
 		if( this.getViewLayout() != null ){
-			this.getViewLayout().loadStyles(1f);
+			this.getViewLayout().loadStyles(3f);
 		}
 	}
 	
