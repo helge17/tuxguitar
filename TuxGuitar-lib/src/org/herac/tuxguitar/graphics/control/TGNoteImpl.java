@@ -260,16 +260,20 @@ public class TGNoteImpl extends TGNote {
 			}
 			//----------fin sostenido--------------------------------------
 			if(getEffect().isHarmonic()){
-				boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
+				boolean fill = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
 				painter.setLineWidth(1f * layoutScale);
-				painter.initPath((full ? (TGPainter.PATH_FILL | TGPainter.PATH_DRAW) : TGPainter.PATH_DRAW));
-				TGNotePainter.paintHarmonic(painter, x, y1 + (1.37f * (scale / 10f)), (layout.getScoreLineSpacing() - ((scale / 10f) * 2.64f)));
+				painter.initPath((fill ? (TGPainter.PATH_FILL | TGPainter.PATH_DRAW) : TGPainter.PATH_DRAW));
+				TGNotePainter.paintHarmonic(painter, x, y1 + (1f * (scale / 10f)), (layout.getScoreLineSpacing() - ((scale / 10f) * 2f)));
 				painter.closePath();
 			}else{
-				boolean full = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
+				boolean fill = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
+				float noteX = (fill ? (x - (0.60f * (scale / 10f))) : x);
+				float noteY = (fill ? (y1 + (0.60f * (scale / 10f))) : (y1 + (1f * (scale / 10f))));
+				float noteScale = (fill ? ((layout.getScoreLineSpacing() - ((scale / 10f) * 1f) )) : ((layout.getScoreLineSpacing() - ((scale / 10f) * 2f) )));
+				
 				painter.setLineWidth(1f * layoutScale);
-				painter.initPath((full ? (TGPainter.PATH_FILL | TGPainter.PATH_DRAW) : TGPainter.PATH_DRAW));
-				TGNotePainter.paintNote(painter, x, y1 + (1.37f * (scale / 10f)), (layout.getScoreLineSpacing() - ((scale / 10f) * 2.64f) ));
+				painter.initPath((fill ? TGPainter.PATH_FILL : TGPainter.PATH_DRAW));
+				TGNotePainter.paintNote(painter, noteX, noteY, noteScale);
 				painter.closePath();
 			}
 			

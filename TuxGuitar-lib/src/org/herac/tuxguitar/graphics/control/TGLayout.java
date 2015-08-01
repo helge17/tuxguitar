@@ -310,7 +310,7 @@ public abstract class TGLayout {
 	}
 	
 	public float getScoreNoteWidth() {
-		return (this.getScoreLineSpacing() * 1f);
+		return (this.getScoreLineSpacing() * 1.085f);
 	}
 	
 	public boolean isPlayModeEnabled(){
