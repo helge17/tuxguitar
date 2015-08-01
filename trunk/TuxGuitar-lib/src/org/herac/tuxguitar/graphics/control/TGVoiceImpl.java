@@ -544,22 +544,18 @@ public class TGVoiceImpl extends TGVoice{
 			float scale = layout.getScale();
 			float lineSpacing = layout.getScoreLineSpacing();
 			int direction = this.group.getDirection();
+			int dir = (direction == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
 			int key = getBeat().getMeasure().getKeySignature();
 			int clef = getBeat().getMeasure().getClef();
 			
-			boolean full = (getDuration().getValue() > TGDuration.HALF);
-			float scoreNoteWidth = layout.getScoreNoteWidth(full);
-			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth - ((full ? 3.15f : 2f) * scale) : ((full ? 0.5f : 0.75f) * scale));
-			float yMove = (direction == TGBeatGroup.DIRECTION_UP ? ((layout.getScoreLineSpacing() / 3f) + scale) : ((layout.getScoreLineSpacing() / 3f) * 2));
+			float scoreNoteWidth = layout.getScoreNoteWidth();
+			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0f);
+			float yMove = ((lineSpacing / 2f) + (((lineSpacing / 10f) * 1.20f)) * dir);
 			
 			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.maxNote.getScorePosY() : this.minNote.getScorePosY() );
 			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing, key, clef);
 			
 			painter.initPath(TGPainter.PATH_FILL);
-//			painter.setAntialias(false);
-//			painter.moveTo(vX + xMove, vY1 + yMove);
-//			painter.lineTo(vX + xMove, vY2);
-			
 			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
 			painter.lineTo(vX + xMove + (0.5f * scale), vY1 + yMove);
 			painter.lineTo(vX + xMove + (0.5f * scale), vY2);
@@ -570,7 +566,6 @@ public class TGVoiceImpl extends TGVoice{
 			if( getDuration().getValue() >= TGDuration.EIGHTH ) {
 				int index =  ( getDuration().getIndex() - 3);
 				if( index >= 0 ) {
-					int dir = (direction == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
 					int joinedType = getJoinedType();
 					boolean joinedGreaterThanQuarter = isJoinedGreaterThanQuarter();
 					
@@ -597,14 +592,10 @@ public class TGVoiceImpl extends TGVoice{
 						}
 						float hY1 = fromY + this.group.getY2(layout,hX1,key,clef);
 						float hY2 = fromY + this.group.getY2(layout,hX2,key,clef);
-//						painter.setLineWidth(3f * scale);
-//						painter.initPath();
+						
 						painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
 						painter.initPath(TGPainter.PATH_FILL);
 						for(int i = 0; i <= index; i ++){
-//							painter.moveTo(fromX + xMove + hX1, hY1 - ( (i * (5f * scale)) * dir));
-//							painter.lineTo(fromX + xMove + hX2, hY2 - ( (i * (5f * scale)) * dir));
-							
 							painter.moveTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) - (1.5f * scale));
 							painter.lineTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) + (1.5f * scale));
 							painter.lineTo(fromX + xMove + hX2 + (0.5f * scale), hY2 - ((i * (5f * scale)) * dir) + (1.5f * scale));

@@ -166,7 +166,7 @@ public class Caret {
 					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float xMargin = (2.0f * layout.getScale());
 					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - xMargin;
-					float x2 = (x1 + layout.getScoreNoteWidth(true) + xMargin);
+					float x2 = (x1 + layout.getScoreNoteWidth() + xMargin);
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
 					this.setPaintStyle(painter, true);
