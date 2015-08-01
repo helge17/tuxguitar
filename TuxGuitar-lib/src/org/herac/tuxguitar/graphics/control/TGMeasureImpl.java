@@ -726,10 +726,8 @@ public class TGMeasureImpl extends TGMeasure{
 		
 		//principio
 		if( this.isRepeatOpen() || layout.isFirstMeasure(this) ){
-			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.setLineWidth(lineWidthSmall);
-			painter.addRectangle( x1, y1, lineWidthBig, (y2 + offsetY) - y1);
+			painter.initPath(TGPainter.PATH_FILL);
+			painter.addRectangle(x1, y1, lineWidthBig, (y2 + offsetY) - y1);
 			painter.closePath();
 			
 			painter.initPath();
@@ -770,9 +768,7 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.lineTo( (x2 + getSpacing()) - (lineWidthBig + scale + lineWidthSmall) , y2);
 			painter.closePath();
 			
-			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.setLineWidth(lineWidthSmall);
+			painter.initPath(TGPainter.PATH_FILL);
 			painter.addRectangle( (x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, y2 - y1);
 			painter.closePath();
 			
