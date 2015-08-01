@@ -12,18 +12,15 @@ public class PrintStyles {
 	
 	private int style;
 	
-	private boolean blackAndWhite;
-	
 	public PrintStyles() {
-		this(-1,-1,-1,TGLayout.DISPLAY_TABLATURE, true);
+		this(-1,-1,-1,TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_MODE_BLACK_WHITE);
 	}
 	
-	public PrintStyles(int trackNumber,int fromMeasure, int toMeasure, int style , boolean blackAndWhite) {
+	public PrintStyles(int trackNumber,int fromMeasure, int toMeasure, int style) {
 		this.trackNumber = trackNumber;
 		this.fromMeasure = fromMeasure;
 		this.toMeasure = toMeasure;
 		this.style = style;
-		this.blackAndWhite = blackAndWhite;
 	}
 	
 	public int getFromMeasure() {
@@ -56,13 +53,5 @@ public class PrintStyles {
 	
 	public void setTrackNumber(int trackNumber) {
 		this.trackNumber = trackNumber;
-	}
-	
-	public boolean isBlackAndWhite() {
-		return this.blackAndWhite;
-	}
-	
-	public void setBlackAndWhite(boolean blackAndWhite) {
-		this.blackAndWhite = blackAndWhite;
 	}
 }

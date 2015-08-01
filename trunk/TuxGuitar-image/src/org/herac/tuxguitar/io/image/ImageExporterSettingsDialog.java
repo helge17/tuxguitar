@@ -172,10 +172,10 @@ public class ImageExporterSettingsDialog {
 				style |= (tablatureEnabled.getSelection() ? TGLayout.DISPLAY_TABLATURE : 0);
 				style |= (chordNameEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_NAME : 0);
 				style |= (chordDiagramEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
+				style |= (blackAndWhite.getSelection() ? TGLayout.DISPLAY_MODE_BLACK_WHITE : 0);
 				styles.setTrackNumber(tracks.getSelectionIndex() + 1);
 				styles.setFromMeasure(fromSpinner.getSelection());
 				styles.setToMeasure(toSpinner.getSelection());
-				styles.setBlackAndWhite(blackAndWhite.getSelection());
 				styles.setStyle(style);
 				
 				dialog.dispose();
@@ -218,7 +218,6 @@ public class ImageExporterSettingsDialog {
 		styles.setFromMeasure(1);
 		styles.setToMeasure(song.countMeasureHeaders());
 		styles.setTrackNumber(1);
-		styles.setBlackAndWhite(false);
 		return styles;
 	}
 	

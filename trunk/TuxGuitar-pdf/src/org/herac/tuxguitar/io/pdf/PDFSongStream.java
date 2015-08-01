@@ -35,11 +35,10 @@ public class PDFSongStream implements TGSongStream {
 	
 	public PrintStyles getDefaultStyles(TGSong song){
 		PrintStyles styles = new PrintStyles();
-		styles.setStyle(TGLayout.DISPLAY_TABLATURE);
+		styles.setStyle(TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_MODE_BLACK_WHITE);
 		styles.setFromMeasure(1);
 		styles.setToMeasure(song.countMeasureHeaders());
 		styles.setTrackNumber(1);
-		styles.setBlackAndWhite(false);
 		return styles;
 	}
 	
