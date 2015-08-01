@@ -719,7 +719,7 @@ public class TGMeasureImpl extends TGMeasure{
 		if( addInfo ){ 
 			String number = Integer.toString(this.getNumber());
 			layout.setMeasureNumberStyle(painter);
-			painter.drawString(number, getPosX() + scale, y1 + painter.getFMBaseLine() - scale);
+			painter.drawString(number, getPosX() + scale, y1 + painter.getFMBaseLine() - (2f * scale));
 		}
 		
 		layout.setDivisionsStyle(painter,true);
@@ -792,7 +792,7 @@ public class TGMeasureImpl extends TGMeasure{
 					layout.setDivisionsStyle(painter,false);
 					
 					String repetitions = ("x" + this.getRepeatClose());
-					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, y1 + painter.getFMBaseLine() - scale);
+					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, y1 + painter.getFMBaseLine() - (2f * scale));
 				}
 			}
 		}else{

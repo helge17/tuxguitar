@@ -350,10 +350,10 @@ public class Tablature extends Composite implements TGController {
 	private void loadViewLayout( int style, int mode ){
 		switch(mode){
 			case TGLayout.MODE_VERTICAL:
-				setViewLayout(new TGLayoutVertical(this,style));
+				setViewLayout(new TGLayoutVertical(this, style));
 			break;
 			case TGLayout.MODE_HORIZONTAL:
-				setViewLayout(new TGLayoutHorizontal(this,style));
+				setViewLayout(new TGLayoutHorizontal(this, style));
 			break;
 			default:
 				if( mode != TGLayout.DEFAULT_MODE ){

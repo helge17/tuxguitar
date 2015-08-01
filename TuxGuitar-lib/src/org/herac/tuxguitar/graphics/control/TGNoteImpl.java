@@ -553,12 +553,13 @@ public class TGNoteImpl extends TGNote {
 		float fmWidth = painter.getFMWidth( string );
 		float scale = layout.getScale();
 		float x = fromX + fmWidth;
-		float y = fromY + (2.0f * scale);
+		float y = fromY + (4.0f * scale);
+		float textY = (fromY + (2.0f * scale) + painter.getFMTopLine());
 		float width = ( getVoiceImpl().getWidth() - fmWidth - (2.0f * scale) );
 		
 		int loops = Math.round(width / (6.0f * scale) );
 		if( loops > 0 ){
-			painter.drawString(string, fromX, y + painter.getFMMiddleLine());
+			painter.drawString(string, fromX, textY);
 			
 			layout.setTabEffectStyle(painter);
 			painter.initPath(TGPainter.PATH_FILL);

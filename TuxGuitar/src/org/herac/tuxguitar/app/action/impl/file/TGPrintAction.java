@@ -69,7 +69,7 @@ public class TGPrintAction extends TGActionBase{
 									PrintController controller = new PrintController(song, manager, new TGResourceFactoryImpl(printer));
 									PrintLayout layout = new PrintLayout(controller,data);
 									
-									print(printer, printerData, layout , getPrinterArea(printer,0.5), getPrinterScale(printer) );
+									print(printer, printerData, layout , getPrinterArea(printer,0.5f), getPrinterScale(printer) );
 								}catch(Throwable throwable ){
 									MessageDialog.errorMessage(throwable);
 								}
@@ -99,17 +99,17 @@ public class TGPrintAction extends TGActionBase{
 		}).start();
 	}
 	
-	protected TGRectangle getPrinterArea(Printer printer,double margin) {
+	protected TGRectangle getPrinterArea(Printer printer, float margin) {
 		Rectangle clientArea = printer.getClientArea();
 		Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 		Point dpi = printer.getDPI();
 		
-		int x = (int) (margin * dpi.x) - trim.x;
-		int y = (int) (margin * dpi.y) - trim.y;
-		int width = clientArea.width + trim.width - (int) (margin * dpi.x) - trim.x;
-		int height = clientArea.height + trim.height - (int) (margin * dpi.y) - trim.y;
+		float x = (trim.x + (dpi.x * margin));
+		float y = (trim.y + (dpi.y * margin));
+		float width = ((clientArea.width + trim.width) - (dpi.x * margin));
+		float height = ((clientArea.height + trim.height) - (dpi.y * margin));
 		
-		return new TGRectangle(x,y,width,height);
+		return new TGRectangle(x, y, width, height);
 	}
 	
 	protected float getPrinterScale(Printer printer) {

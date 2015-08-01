@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.graphics.TGColor;
 import org.herac.tuxguitar.graphics.TGFont;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
-import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLyricImpl;
@@ -48,9 +46,9 @@ public class PrintLayout extends TGLayout{
 		this.document.start();
 		
 		this.openPage();
-		paintHeader(this.document.getPainter());
-		paintSong(this.document.getPainter(), null, this.document.getBounds().getX(), ( this.document.getBounds().getY() + (80.0f * getScale() ) ) );
-		paintFooter(this.document.getPainter());
+		this.paintHeader(this.document.getPainter());
+		this.paintSong(this.document.getPainter(), null, this.document.getBounds().getX(), ( this.document.getBounds().getY() + (80.0f * getScale() ) ) );
+		this.paintFooter(this.document.getPainter());
 		this.closePage();
 		
 		this.document.finish();
@@ -72,7 +70,7 @@ public class PrintLayout extends TGLayout{
 		TempLine line = getTempLines(track,( this.styles.getFromMeasure() - 1 ),ts);
 		while(!line.measures.isEmpty()){
 			
-			ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0?( (getScoreLineSpacing() * 5) ):0));
+			ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0 ? ((getScoreLineSpacing() * 5) ) : 0));
 			if((style & DISPLAY_SCORE) != 0){
 				ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
 				if(line.maxY > track.getScoreHeight()){
@@ -190,13 +188,13 @@ public class PrintLayout extends TGLayout{
 	
 	private void openPage(){
 		this.page ++;
-		if(this.document.isPaintable(this.page)){
+		if( this.document.isPaintable(this.page) ){
 			this.document.pageStart();
 		}
 	}
 	
 	private void closePage(){
-		if(this.document.isPaintable(this.page)){
+		if( this.document.isPaintable(this.page) ){
 			this.document.pageFinish();
 		}
 	}
@@ -259,143 +257,139 @@ public class PrintLayout extends TGLayout{
 		return false;
 	}
 	
-	public void setLineStyle(TGPainter painter){
-		painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
-		painter.setForeground(getDarkColor( getResources().getLineColor()));
-	}
+//	public void setLineStyle(TGPainter painter){
+//		painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+//		painter.setForeground(getDarkColor( getResources().getLineColor()));
+//	}
 	
-	public void setMeasureNumberStyle(TGPainter painter){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setBackground(getResources().getColorWhite());
-		painter.setForeground(getDarkColor(getResources().getColorRed()));
-	}
+//	public void setMeasureNumberStyle(TGPainter painter){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setBackground(getResources().getColorWhite());
+//		painter.setForeground(getDarkColor(getResources().getColorRed()));
+//	}
 	
-	public void setDivisionsStyle(TGPainter painter, boolean fill){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setBackground( (fill ? getResources().getColorBlack() :getResources().getColorWhite() ));
-		painter.setForeground(getResources().getColorBlack());
-	}
+//	public void setDivisionsStyle(TGPainter painter, boolean fill){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setBackground( (fill ? getResources().getColorBlack() :getResources().getColorWhite() ));
+//		painter.setForeground(getResources().getColorBlack());
+//	}
 	
-	public void setTempoStyle(TGPainter painter, boolean fontStyle){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setForeground(getResources().getColorBlack());
-		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
-	}
+//	public void setTempoStyle(TGPainter painter, boolean fontStyle){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setForeground(getResources().getColorBlack());
+//		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
+//	}
 	
-	public void setTripletFeelStyle(TGPainter painter, boolean fontStyle){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setForeground(getResources().getColorBlack());
-		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
-	}
+//	public void setTripletFeelStyle(TGPainter painter, boolean fontStyle){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setForeground(getResources().getColorBlack());
+//		painter.setBackground( ( fontStyle ? getResources().getColorWhite() : getResources().getColorBlack() ));
+//	}
 	
-	public void setTabNoteStyle(TGPainter painter,boolean playMode){
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
-		painter.setFont(getResources().getNoteFont());
-	}
+//	public void setTabNoteStyle(TGPainter painter,boolean playMode){
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
+//		painter.setFont(getResources().getNoteFont());
+//	}
 	
-	public void setTabNoteFooterStyle(TGPainter painter){
-		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
-		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
-	}
+//	public void setTabNoteFooterStyle(TGPainter painter){
+//		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
+//		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
+//	}
 	
-	public void setTabEffectStyle(TGPainter painter){
-		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
-		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
-	}
+//	public void setTabEffectStyle(TGPainter painter){
+//		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
+//		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
+//	}
+//	
+//	public void setScoreNoteStyle(TGPainter painter,boolean playing){
+//		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
+//		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+//	}
+//	
+//	public void setScoreNoteFooterStyle(TGPainter painter){
+//		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+//		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
+//	}
 	
-	public void setScoreNoteStyle(TGPainter painter,boolean playing){
-		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
-		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
-	}
+//	public void setScoreEffectStyle(TGPainter painter){
+//		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+//		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
+//	}
 	
-	public void setScoreNoteFooterStyle(TGPainter painter){
-		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
-		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
-	}
+//	public void setScoreSilenceStyle(TGPainter painter,boolean playMode){
+//		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
+//		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
+//	}
 	
-	public void setScoreEffectStyle(TGPainter painter){
-		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
-		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
-	}
+//	public void setTabSilenceStyle(TGPainter painter,boolean playMode){
+//		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
+//		painter.setBackground( getDarkColor(getResources().getTabNoteColor()) );
+//	}
 	
-	public void setScoreSilenceStyle(TGPainter painter,boolean playMode){
-		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
-		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
-	}
+//	public void setTimeSignatureStyle(TGPainter painter){
+//		painter.setFont(getResources().getTimeSignatureFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getResources().getColorBlack() );
+//	}
 	
-	public void setTabSilenceStyle(TGPainter painter,boolean playMode){
-		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
-		painter.setBackground( getDarkColor(getResources().getTabNoteColor()) );
-	}
+//	public void setTabGraceStyle(TGPainter painter){
+//		painter.setFont(getResources().getGraceFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
+//	}
 	
-	public void setTimeSignatureStyle(TGPainter painter){
-		painter.setFont(getResources().getTimeSignatureFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getResources().getColorBlack() );
-	}
+//	public void setLyricStyle(TGPainter painter,boolean playMode){
+//		painter.setFont(getResources().getLyricFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground(getResources().getColorBlack());
+//	}
 	
-	public void setTabGraceStyle(TGPainter painter){
-		painter.setFont(getResources().getGraceFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getDarkColor(getResources().getTabNoteColor()) );
-	}
+//	public void setMarkerStyle(TGPainter painter, TGColor color){
+//		painter.setFont(getResources().getMarkerFont());
+//		painter.setBackground(getResources().getColorWhite());
+//		painter.setForeground(getDarkColor(color));
+//	}
 	
-	public void setLyricStyle(TGPainter painter,boolean playMode){
-		painter.setFont(getResources().getLyricFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground(getResources().getColorBlack());
-	}
+//	public void setTextStyle(TGPainter painter){
+//		painter.setFont(getResources().getTextFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getResources().getColorBlack() );
+//	}
 	
-	public void setMarkerStyle(TGPainter painter, TGColor color){
-		painter.setFont(getResources().getMarkerFont());
-		painter.setBackground(getResources().getColorWhite());
-		painter.setForeground(getDarkColor(color));
-	}
+//	public void setOfflineEffectStyle(TGPainter painter){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getResources().getColorBlack() );
+//	}
 	
-	public void setTextStyle(TGPainter painter){
-		painter.setFont(getResources().getTextFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getResources().getColorBlack() );
-	}
+//	public void setDivisionTypeStyle(TGPainter painter){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getResources().getColorBlack() );
+//	}
 	
-	public void setOfflineEffectStyle(TGPainter painter){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getResources().getColorBlack() );
-	}
+//	public void setRepeatEndingStyle(TGPainter painter){
+//		painter.setFont(getResources().getDefaultFont());
+//		painter.setBackground( getResources().getColorWhite() );
+//		painter.setForeground( getResources().getColorBlack() );
+//	}
 	
-	public void setDivisionTypeStyle(TGPainter painter){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getResources().getColorBlack() );
-	}
-	
-	public void setRepeatEndingStyle(TGPainter painter){
-		painter.setFont(getResources().getDefaultFont());
-		painter.setBackground( getResources().getColorWhite() );
-		painter.setForeground( getResources().getColorBlack() );
-	}
-	
-	public void setChordStyle(TGChordImpl chord){
-		chord.setStyle(getStyle());
-		chord.setFont(getResources().getChordFont());
-		chord.setForegroundColor(getResources().getColorBlack());
-		chord.setBackgroundColor(getResources().getColorWhite());
-		chord.setColor(getDarkColor(getResources().getLineColor()));
-		chord.setNoteColor(getDarkColor(getResources().getTabNoteColor()));
-		chord.setTonicColor(getDarkColor(getResources().getTabNoteColor()));
-		chord.setFretSpacing(getChordFretSpacing());
-		chord.setStringSpacing(getChordStringSpacing());
-		chord.setNoteSize(getChordNoteSize());
-		chord.setLineWidth(getChordLineWidth());
-		chord.setFirstFretSpacing(getChordFretIndexSpacing());
-		chord.setFirstFretFont(getResources().getChordFretFont());
-	}
-	
-	public TGColor getDarkColor( TGColor color ) {
-		return ( this.styles.isBlackAndWhite() ? getResources().getColorBlack() : color );
-	}
+//	public void setChordStyle(TGChordImpl chord){
+//		chord.setStyle(getStyle());
+//		chord.setFont(getResources().getChordFont());
+//		chord.setForegroundColor(getResources().getColorBlack());
+//		chord.setBackgroundColor(getResources().getColorWhite());
+//		chord.setColor(getDarkColor(getResources().getLineColor()));
+//		chord.setNoteColor(getDarkColor(getResources().getTabNoteColor()));
+//		chord.setTonicColor(getDarkColor(getResources().getTabNoteColor()));
+//		chord.setFretSpacing(getChordFretSpacing());
+//		chord.setStringSpacing(getChordStringSpacing());
+//		chord.setNoteSize(getChordNoteSize());
+//		chord.setLineWidth(getChordLineWidth());
+//		chord.setFirstFretSpacing(getChordFretIndexSpacing());
+//		chord.setFirstFretFont(getResources().getChordFretFont());
+//	}
 	
 	public float getMaxWidth(){
 		return (this.document.getBounds().getWidth() - this.document.getBounds().getX() - 10);
