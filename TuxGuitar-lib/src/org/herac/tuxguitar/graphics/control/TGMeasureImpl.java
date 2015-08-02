@@ -726,15 +726,16 @@ public class TGMeasureImpl extends TGMeasure{
 		
 		//principio
 		if( this.isRepeatOpen() || layout.isFirstMeasure(this) ){
-			painter.initPath(TGPainter.PATH_FILL);
+			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
+			painter.setAntialias(false);
 			painter.addRectangle(x1, y1, lineWidthBig, (y2 + offsetY) - y1);
 			painter.closePath();
 			
-			painter.initPath();
+			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
-			painter.setLineWidth(lineWidthSmall);
-			painter.moveTo(x1 + lineWidthBig + scale + lineWidthSmall, y1);
-			painter.lineTo(x1 + lineWidthBig + scale + lineWidthSmall, (y2 + offsetY));
+			painter.addRectangle(x1 + lineWidthBig + (2f * scale), y1, lineWidthSmall, (y2 + offsetY) - y1);
 			painter.closePath();
 			
 			if( this.isRepeatOpen() ){
@@ -750,10 +751,10 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.addOval(x1 + xMove, y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size, size);
 				painter.closePath();
 			}
-		}else{
-			painter.initPath();
+		} else {
+			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
-			painter.setLineWidth(lineWidthSmall);
 			painter.moveTo(x1, y1);
 			painter.lineTo(x1, (y2 + offsetY));
 			painter.closePath();
@@ -761,15 +762,16 @@ public class TGMeasureImpl extends TGMeasure{
 		
 		//fin
 		if( this.getRepeatClose() > 0 || layout.isLastMeasure(this) ){
-			painter.initPath();
+			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
-			painter.setLineWidth(lineWidthSmall);
-			painter.moveTo( (x2 + getSpacing()) - (lineWidthBig + scale + lineWidthSmall) , y1);
-			painter.lineTo( (x2 + getSpacing()) - (lineWidthBig + scale + lineWidthSmall) , y2);
+			painter.addRectangle((x2 + getSpacing()) - (lineWidthBig + lineWidthSmall + (2f * scale)), y1, lineWidthSmall, (y2 - y1));
 			painter.closePath();
 			
-			painter.initPath(TGPainter.PATH_FILL);
-			painter.addRectangle( (x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, y2 - y1);
+			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
+			painter.setAntialias(false);
+			painter.addRectangle((x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, (y2 - y1));
 			painter.closePath();
 			
 			if( this.getRepeatClose() > 0 ){
@@ -791,14 +793,15 @@ public class TGMeasureImpl extends TGMeasure{
 					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, y1 + painter.getFMBaseLine() - (2f * scale));
 				}
 			}
-		}else{
-			painter.initPath();
+		} else {
+			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
-			painter.setLineWidth(lineWidthSmall);
-			painter.moveTo(x2 + getSpacing(), y1);
-			painter.lineTo(x2 + getSpacing(), y2);
+			painter.moveTo((x2 + getSpacing()), y1);
+			painter.lineTo((x2 + getSpacing()), y2);
 			painter.closePath();
 		}
+		
 		painter.setLineWidth(lineWidthSmall);
 	}
 	
