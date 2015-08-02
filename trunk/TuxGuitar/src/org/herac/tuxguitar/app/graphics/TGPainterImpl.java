@@ -163,7 +163,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 	}
 	
 	public void setLineWidth(float width) {
-		this.gc.setLineAttributes(new LineAttributes(width));
+		this.gc.setLineAttributes(new LineAttributes((width == THINNEST_LINE_WIDTH ? 1f : width)));
 	}
 	
 	public void setLineStyleSolid(){
