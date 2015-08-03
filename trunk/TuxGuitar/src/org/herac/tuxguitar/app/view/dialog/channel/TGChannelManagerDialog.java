@@ -20,6 +20,7 @@ import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -30,12 +31,13 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGChannelManagerDialog implements TGEventListener {
 	
-	protected Shell dialog;
+	private Shell dialog;
 	
 	private TGContext context;
 	private TGChannelHandle channelHandle;
 	private TGChannelList channelList;
 	private TGChannelSettingsHandlerManager channelSettingsHandlerManager;
+	private TGCursorController cursorController;
 	
 	private Button addChannelButton;
 	
@@ -204,7 +206,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	
 	private void updateItems(){
 		if(!isDisposed()){
-			TuxGuitar.getInstance().loadCursor(this.dialog,SWT.CURSOR_WAIT);
+			this.loadCursor(SWT.CURSOR_WAIT);
 			
 			this.channelList.updateItems();
 			
@@ -215,7 +217,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 				this.volumeValue = volume;
 			}
 			
-			TuxGuitar.getInstance().loadCursor(this.dialog,SWT.CURSOR_ARROW);
+			this.loadCursor(SWT.CURSOR_ARROW);
 		}
 	}
 
@@ -235,6 +237,15 @@ public class TGChannelManagerDialog implements TGEventListener {
 	public void loadIcons() {
 		if(!isDisposed()){
 			this.channelList.loadIcons();
+		}
+	}
+	
+	public void loadCursor(int cursorStyle) {
+		if(!this.isDisposed()) {
+			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
+				this.cursorController = new TGCursorController(this.context, this.dialog);
+			}
+			this.cursorController.loadCursor(cursorStyle);
 		}
 	}
 	
