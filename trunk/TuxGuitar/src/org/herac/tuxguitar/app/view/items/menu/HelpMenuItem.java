@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 
 /**
  * @author julian
@@ -20,7 +20,7 @@ import org.herac.tuxguitar.app.view.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class HelpMenuItem extends MenuItems{
+public class HelpMenuItem extends TGMenuItem{
 	private MenuItem helpMenuItem;
 	private Menu menu; 
 	private MenuItem doc;

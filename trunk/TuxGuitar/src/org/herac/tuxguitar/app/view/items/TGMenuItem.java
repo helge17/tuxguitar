@@ -1,13 +1,16 @@
 package org.herac.tuxguitar.app.view.items;
 
-
 import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.util.TGContext;
 
-public abstract class MenuItems implements ItemBase {
+public abstract class TGMenuItem {
+	
+	public abstract void update();
+	
+	public abstract void loadProperties();
 	
 	public abstract void showItems();
 	

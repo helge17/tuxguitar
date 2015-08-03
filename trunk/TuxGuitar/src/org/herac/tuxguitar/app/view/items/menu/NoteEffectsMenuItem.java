@@ -17,7 +17,7 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
@@ -40,7 +40,7 @@ import org.herac.tuxguitar.song.models.TGNote;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class NoteEffectsMenuItem extends MenuItems{
+public class NoteEffectsMenuItem extends TGMenuItem{
 	
 	private MenuItem noteEffectsMenuItem;
 	private Menu menu; 

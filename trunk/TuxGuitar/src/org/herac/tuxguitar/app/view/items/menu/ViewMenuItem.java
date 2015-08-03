@@ -26,7 +26,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleToolbarsAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
@@ -38,7 +38,7 @@ import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ViewMenuItem extends MenuItems{
+public class ViewMenuItem extends TGMenuItem{
 	
 	private Menu menu;
 	private Menu chordMenu;

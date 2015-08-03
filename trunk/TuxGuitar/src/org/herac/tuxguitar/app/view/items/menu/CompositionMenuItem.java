@@ -19,7 +19,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialog
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 
 /**
@@ -28,7 +28,7 @@ import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class CompositionMenuItem extends MenuItems{
+public class CompositionMenuItem extends TGMenuItem{
 	private MenuItem compositionMenuItem;
 	private Menu menu;
 	private MenuItem timeSignature;

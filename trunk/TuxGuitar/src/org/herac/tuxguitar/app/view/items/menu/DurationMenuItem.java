@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -29,7 +29,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class DurationMenuItem  extends MenuItems{
+public class DurationMenuItem  extends TGMenuItem{
 	private MenuItem durationMenuItem;
 	private Menu menu;
 	private MenuItem whole;

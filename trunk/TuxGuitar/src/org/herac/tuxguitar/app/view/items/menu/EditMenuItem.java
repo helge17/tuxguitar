@@ -17,7 +17,7 @@ import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
 import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
 
@@ -27,7 +27,7 @@ import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class EditMenuItem extends MenuItems{
+public class EditMenuItem extends TGMenuItem{
 	
 	private MenuItem editMenuItem;
 	private Menu menu; 

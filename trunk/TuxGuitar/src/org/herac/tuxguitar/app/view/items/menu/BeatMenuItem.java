@@ -16,7 +16,7 @@ import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
@@ -41,7 +41,7 @@ import org.herac.tuxguitar.song.models.TGStroke;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class BeatMenuItem extends MenuItems{
+public class BeatMenuItem extends TGMenuItem{
 	
 	private MenuItem noteMenuItem;
 	private Menu menu;
