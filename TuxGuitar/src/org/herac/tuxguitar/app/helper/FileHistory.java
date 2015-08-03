@@ -1,9 +1,3 @@
-/*
- * Created on 08-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.helper;
 
 import java.io.File;
@@ -23,12 +17,6 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class FileHistory {
 	
 	private static final int URL_LIMIT = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
@@ -192,11 +180,11 @@ public class FileHistory {
 				Properties properties = new Properties();
 				properties.load(inputStream);
 				
-				this.chooserPath = (String)properties.get("history.path");
+				this.chooserPath = (String)properties.getProperty("history.path");
 				
-				int count = Integer.parseInt((String)properties.get("history.count"));
+				int count = Integer.valueOf((String)properties.getProperty("history.count", "0"));
 				for(int i = 0; i < count;i ++){
-					String url = (String)properties.get("history." + i);
+					String url = (String)properties.getProperty("history." + i);
 					if(URL_LIMIT > i && url != null && url.length() > 0){
 						this.urls.add(new URL(url));
 					}
