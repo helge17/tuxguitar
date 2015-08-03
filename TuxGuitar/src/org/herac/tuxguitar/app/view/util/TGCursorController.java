@@ -5,11 +5,15 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGCursorController {
 	
+	private TGContext context;
 	private TGSyncProcess process;
+	private Control control;
 	private int cursorStyle;
 	
 	public TGCursorController(TGContext context, Control control) {
-		this.createSyncProcess(context, control);
+		this.context = context;
+		this.control = control;
+		this.createSyncProcess();
 	}
 	
 	public void loadCursor(int cursorStyle) {
@@ -17,11 +21,26 @@ public class TGCursorController {
 		this.process.process();
 	}
 	
-	public void createSyncProcess(final TGContext context, final Control control) {
-		this.process = new TGSyncProcess(context, new Runnable() {
+	public void createSyncProcess() {
+		this.process = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
-				control.setCursor(control.getDisplay().getSystemCursor(TGCursorController.this.cursorStyle));
+				TGCursorController.this.updateCursor();
 			}
 		});
+	}
+	
+	private void updateCursor() {
+		this.control.setCursor(this.control.getDisplay().getSystemCursor(this.cursorStyle));
+	}
+
+	public Control getControl() {
+		return control;
+	}
+	
+	public boolean isControlling(Control control) {
+		if( control == null || control.isDisposed() ) {
+			return false;
+		}
+		return (!this.control.isDisposed() && this.control.equals(control));
 	}
 }

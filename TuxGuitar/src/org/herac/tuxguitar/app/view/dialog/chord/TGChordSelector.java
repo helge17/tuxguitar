@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -37,6 +38,7 @@ public class TGChordSelector extends Composite{
 	};
 	
 	private TGChordDialog dialog;
+	private TGCursorController cursorController;
 	private int[] tuning;
 	private List tonicList;
 	private List chordList;
@@ -365,14 +367,14 @@ public class TGChordSelector extends Composite{
 	}
 	
 	protected void showChord(){
-		TuxGuitar.getInstance().loadCursor(getShell(),SWT.CURSOR_WAIT);
+		loadCursor(SWT.CURSOR_WAIT);
 		TGChordCreatorListener listener = new TGChordCreatorListener() {
 			public void notifyChords(final TGChordCreatorUtil instance,final java.util.List<TGChord> chords) {
 				TGSynchronizer.getInstance(getDialog().getContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if( instance.isValidProcess() && !getDialog().isDisposed() ){
 							getDialog().getList().setChords(chords);
-							TuxGuitar.getInstance().loadCursor(getShell(),SWT.CURSOR_ARROW);
+							loadCursor(SWT.CURSOR_ARROW);
 						}
 					}
 				});
@@ -462,6 +464,15 @@ public class TGChordSelector extends Composite{
 			updateWidget(this.addCheck,(currentIndex > 0));
 			updateWidget(this._9List, (currentIndex >= 2 && !this.addCheck.getSelection() ) );
 			updateWidget(this._11List, (currentIndex >= 3 && !this.addCheck.getSelection() ) );
+		}
+	}
+	
+	public void loadCursor(int cursorStyle) {
+		if(!this.isDisposed()) {
+			if( this.cursorController == null || !this.cursorController.isControlling(this.getShell()) ) {
+				this.cursorController = new TGCursorController(this.dialog.getContext().getContext(), this.getShell());
+			}
+			this.cursorController.loadCursor(cursorStyle);
 		}
 	}
 	

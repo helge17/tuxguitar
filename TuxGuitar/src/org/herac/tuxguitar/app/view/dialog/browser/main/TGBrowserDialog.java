@@ -29,6 +29,7 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.event.TGEvent;
@@ -57,11 +58,12 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	private TGBrowserCollection collection;
 	private TGBrowserConnection connection;
 	private Shell dialog;
-	protected Table table;
-	protected TableColumn column;
-	protected List<TGBrowserElement> elements;
-	protected TGBrowserMenuBar menu;
-	protected TGBrowserToolBar toolBar;
+	private Table table;
+	private TableColumn column;
+	private List<TGBrowserElement> elements;
+	private TGBrowserMenuBar menu;
+	private TGBrowserToolBar toolBar;
+	private TGCursorController cursorController;
 	
 	public TGBrowserDialog(TGContext context){
 		this.context = context;
@@ -245,7 +247,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 			public void run() {
 				if(!isDisposed()){
 					updateBars();
-					TuxGuitar.getInstance().loadCursor(getShell(),( getConnection().isLocked() ? SWT.CURSOR_WAIT : SWT.CURSOR_ARROW ) );
+					loadCursor(getConnection().isLocked() ? SWT.CURSOR_WAIT : SWT.CURSOR_ARROW);
 				}
 			}
 		});
@@ -326,6 +328,15 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 			this.dialog.setText(TuxGuitar.getProperty("browser.dialog"));
 			this.menu.loadProperties();
 			this.toolBar.loadProperties();
+		}
+	}
+	
+	public void loadCursor(int cursorStyle) {
+		if(!this.isDisposed()) {
+			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
+				this.cursorController = new TGCursorController(this.context, this.dialog);
+			}
+			this.cursorController.loadCursor(cursorStyle);
 		}
 	}
 	
