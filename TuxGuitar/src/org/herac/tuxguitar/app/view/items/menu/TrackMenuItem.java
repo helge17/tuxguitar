@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 
 /**
  * @author julian
@@ -18,7 +18,7 @@ import org.herac.tuxguitar.app.view.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrackMenuItem extends MenuItems{
+public class TrackMenuItem extends TGMenuItem{
 	private MenuItem trackMenuItem;
 	private TrackMenu menu;
 	

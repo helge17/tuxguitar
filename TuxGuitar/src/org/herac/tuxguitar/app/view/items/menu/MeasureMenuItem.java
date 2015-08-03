@@ -20,7 +20,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 
 /**
@@ -29,7 +29,7 @@ import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class MeasureMenuItem extends MenuItems{
+public class MeasureMenuItem extends TGMenuItem{
 	
 	private MenuItem measureMenuItem;
 	private Menu menu; 

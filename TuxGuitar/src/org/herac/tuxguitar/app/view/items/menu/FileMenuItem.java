@@ -34,7 +34,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.tools.template.TGTemplate;
 import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
@@ -45,7 +45,7 @@ import org.herac.tuxguitar.io.base.TGRawImporter;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class FileMenuItem extends MenuItems {
+public class FileMenuItem extends TGMenuItem {
 	
 	private MenuItem fileMenuItem;
 	private Menu menu;

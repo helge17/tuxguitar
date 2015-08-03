@@ -18,7 +18,7 @@ import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGMeasure;
 
@@ -28,7 +28,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TransportMenuItem extends MenuItems{
+public class TransportMenuItem extends TGMenuItem{
 	private static final int STATUS_STOPPED = 1;
 	private static final int STATUS_PAUSED = 2;
 	private static final int STATUS_RUNNING = 3;

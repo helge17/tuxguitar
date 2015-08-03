@@ -21,14 +21,14 @@ import org.herac.tuxguitar.app.action.impl.tools.TGToggleBrowserAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenTransposeDialogAction;
 import org.herac.tuxguitar.app.tools.custom.TGCustomTool;
 import org.herac.tuxguitar.app.tools.custom.TGCustomToolManager;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 
 /**
  * @author julian
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ToolMenuItem extends MenuItems {
+public class ToolMenuItem extends TGMenuItem {
 	private MenuItem settingsMenuItem;
 	private Menu menu;
 	private MenuItem scale;

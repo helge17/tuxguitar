@@ -17,7 +17,7 @@ import org.herac.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoPreviousMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 
 /**
  * @author julian
@@ -25,7 +25,7 @@ import org.herac.tuxguitar.app.view.items.MenuItems;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class MarkerMenuItem extends MenuItems{
+public class MarkerMenuItem extends TGMenuItem{
 	private MenuItem markerMenuItem;
 	private Menu menu;
 	private MenuItem add;

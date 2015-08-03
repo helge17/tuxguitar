@@ -11,13 +11,13 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGInsertChordAction;
 import org.herac.tuxguitar.song.models.TGChord;
 
-public class ChordMenuItem extends MenuItems{
+public class ChordMenuItem extends TGMenuItem{
 	private MenuItem chordMenuItem;
 	private Menu menu;
 	private MenuItem insertChord;

@@ -29,23 +29,23 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
 import org.herac.tuxguitar.util.TGContext;
 
-public class ItemManager implements TGEventListener {
+public class TGMenuManager implements TGEventListener {
 	
 	private TGContext context;
 	private Menu menu;
 	private Menu popupMenu;
-	private List<MenuItems> loadedMenuItems;
-	private List<MenuItems> loadedPopupMenuItems;
+	private List<TGMenuItem> loadedMenuItems;
+	private List<TGMenuItem> loadedPopupMenuItems;
 	
 	private TGSyncProcess loadIconsProcess;
 	private TGSyncProcess loadPropertiesProcess;
 	private TGSyncProcess updateItemsProcess;
 	private TGSyncProcess createMenuProcess;
 	
-	public ItemManager(TGContext context){
+	public TGMenuManager(TGContext context){
 		this.context = context;
-		this.loadedMenuItems = new ArrayList<MenuItems>();
-		this.loadedPopupMenuItems = new ArrayList<MenuItems>();
+		this.loadedMenuItems = new ArrayList<TGMenuItem>();
+		this.loadedPopupMenuItems = new ArrayList<TGMenuItem>();
 		this.createSyncProcesses();
 		this.loadItems();
 		this.appendListeners();
@@ -104,10 +104,10 @@ public class ItemManager implements TGEventListener {
 		this.showMenuItems(this.loadedPopupMenuItems);
 	}
 	
-	private void showMenuItems(List<MenuItems> items){
-		Iterator<MenuItems> it = items.iterator();
+	private void showMenuItems(List<TGMenuItem> items){
+		Iterator<TGMenuItem> it = items.iterator();
 		while(it.hasNext()){
-			MenuItems item = (MenuItems)it.next();
+			TGMenuItem item = (TGMenuItem)it.next();
 			item.showItems();
 		}
 	}
@@ -119,11 +119,9 @@ public class ItemManager implements TGEventListener {
 		}
 	}
 	
-	public void updateItems(List<? extends ItemBase> items){
-		Iterator<? extends ItemBase> it = items.iterator();
-		while(it.hasNext()){
-			ItemBase item = (ItemBase)it.next();
-			item.update();
+	public void updateItems(List<TGMenuItem> menuItems){
+		for(TGMenuItem menuItem : menuItems) {
+			menuItem.update();
 		}
 	}
 	
@@ -134,11 +132,9 @@ public class ItemManager implements TGEventListener {
 		}
 	}
 	
-	public void loadProperties(List<? extends ItemBase> items){
-		Iterator<? extends ItemBase> it = items.iterator();
-		while(it.hasNext()){
-			ItemBase item = (ItemBase)it.next();
-			item.loadProperties();
+	public void loadProperties(List<TGMenuItem> menuItems){
+		for(TGMenuItem menuItem : menuItems) {
+			menuItem.loadProperties();
 		}
 	}
 	

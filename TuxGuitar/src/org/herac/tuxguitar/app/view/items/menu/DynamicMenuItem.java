@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -24,7 +24,7 @@ import org.herac.tuxguitar.song.models.TGVelocities;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class DynamicMenuItem extends MenuItems{
+public class DynamicMenuItem extends TGMenuItem{
 	private MenuItem dynamicMenuItem;
 	private Menu menu;
 	private MenuItem pianoPianissimo;

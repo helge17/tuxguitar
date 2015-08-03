@@ -17,7 +17,7 @@ import org.herac.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
-import org.herac.tuxguitar.app.view.items.MenuItems;
+import org.herac.tuxguitar.app.view.items.TGMenuItem;
 import org.herac.tuxguitar.editor.action.track.TGAddTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
@@ -33,7 +33,7 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrackMenu extends MenuItems{
+public class TrackMenu extends TGMenuItem{
 	
 	private Menu menu;
 	private MenuItem first;
