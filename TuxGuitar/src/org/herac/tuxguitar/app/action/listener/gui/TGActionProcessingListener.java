@@ -6,16 +6,20 @@ import org.herac.tuxguitar.action.TGActionErrorEvent;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGActionProcessingListener implements TGEventListener {
 	
 	public static final String ATTRIBUTE_BY_PASS = "byPassProcessingListener";
 	
+	private TGCursorController cursorController;
 	private Integer level;
 	
-	public TGActionProcessingListener(){
+	public TGActionProcessingListener(TGContext context){
+		this.cursorController = new TGCursorController(context, TuxGuitar.getInstance().getShell());
 		this.resetLevel();
 	}
 	
@@ -32,11 +36,11 @@ public class TGActionProcessingListener implements TGEventListener {
 	}
 	
 	public void showProcessing() {
-		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
+		this.cursorController.loadCursor(SWT.CURSOR_WAIT);
 	}
 	
 	public void hideProcessing() {
-		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
+		this.cursorController.loadCursor(SWT.CURSOR_ARROW);
 	}
 	
 	public void updateProcessingVisibility(boolean processing) {
