@@ -57,7 +57,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		tgActionManager.addInterceptor(this.unsavedDocumentInterceptor);
 		
-		TGActionProcessingListener processingListener = new TGActionProcessingListener();
+		TGActionProcessingListener processingListener = new TGActionProcessingListener(this.context);
 		tgActionManager.addPreExecutionListener(processingListener);
 		tgActionManager.addPreExecutionListener(this.lockableActionListener);
 		tgActionManager.addPreExecutionListener(this.undoableActionListener);
