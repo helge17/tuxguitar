@@ -30,7 +30,9 @@ public class TGCursorController {
 	}
 	
 	private void updateCursor() {
-		this.control.setCursor(this.control.getDisplay().getSystemCursor(this.cursorStyle));
+		if( this.isControlling(this.control)) {
+			this.control.setCursor(this.control.getDisplay().getSystemCursor(this.cursorStyle));
+		}
 	}
 
 	public Control getControl() {
