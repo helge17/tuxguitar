@@ -13,6 +13,8 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGIconManager {
 	
@@ -147,7 +149,7 @@ public class TGIconManager {
 	private Image browserRefresh;
 	private Image settings;
 	
-	public TGIconManager(TGContext context){
+	private TGIconManager(TGContext context){
 		this.context = context;
 		this.disposableIcons = new ArrayList<Resource>();
 		this.loadIcons();
@@ -858,4 +860,11 @@ public class TGIconManager {
 		return this.settings;
 	}
 	
+	public static TGIconManager getInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGIconManager.class.getName(), new TGSingletonFactory<TGIconManager>() {
+			public TGIconManager createInstance(TGContext context) {
+				return new TGIconManager(context);
+			}
+		});
+	}
 }
