@@ -25,6 +25,7 @@ import org.herac.tuxguitar.app.editor.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.menu.impl.TrackMenu;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -281,7 +282,7 @@ public class TGTableViewer implements TGEventListener {
 			this.selectedMeasure = 0;
 			
 			if(this.autoSizeEnabled && this.trackCount != count){
-				TuxGuitar.getInstance().setTableHeight( getHeight() );
+				TGWindow.getInstance(this.context).setTableHeight( getHeight() );
 				this.trackCount = count;
 			}
 			

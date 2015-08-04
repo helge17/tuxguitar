@@ -4,11 +4,13 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.editor.TGEditorManager;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerEvent;
 import org.herac.tuxguitar.app.editor.TGRedrawEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.scale.ScaleEvent;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -41,17 +43,25 @@ public class TGFretBoardEditor implements TGEventListener{
 	public void hideFretBoard(){
 		this.visible = false;
 		getFretBoard().setVisible(this.visible);
-		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
-		TuxGuitar.getInstance().getEditorManager().removeBeatViewerListener(this);
-		TuxGuitar.getInstance().updateShellFooter(0,0,0);
+		
+		TGEditorManager tgEditorManager = TGEditorManager.getInstance(this.context);
+		tgEditorManager.removeRedrawListener(this);
+		tgEditorManager.removeBeatViewerListener(this);
+		
+		TGWindow tgWindow = TGWindow.getInstance(this.context);
+		tgWindow.updateShellFooter(0,0,0);
 	}
 	
 	public void showFretBoard(){
 		this.visible = true;
 		getFretBoard().setVisible(this.visible);
-		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.getInstance().getEditorManager().addBeatViewerListener(this);
-		TuxGuitar.getInstance().updateShellFooter(getFretBoard().getHeight(), 730,520);
+		
+		TGEditorManager tgEditorManager = TGEditorManager.getInstance(this.context);
+		tgEditorManager.addRedrawListener(this);
+		tgEditorManager.addBeatViewerListener(this);
+		
+		TGWindow tgWindow = TGWindow.getInstance(this.context);
+		tgWindow.updateShellFooter(getFretBoard().getHeight(), 730,520);
 	}
 	
 	public void showFretBoard(Composite parent) {
