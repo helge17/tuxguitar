@@ -2,29 +2,14 @@ package org.herac.tuxguitar.app;
 
 import java.net.URL;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.action.TGActionAdapterManager;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
-import org.herac.tuxguitar.app.action.impl.system.TGDisposeAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
@@ -32,6 +17,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.editor.EditorCache;
 import org.herac.tuxguitar.app.editor.TGEditorManager;
 import org.herac.tuxguitar.app.helper.FileHistory;
+import org.herac.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.error.TGErrorAdapter;
@@ -55,13 +41,11 @@ import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.dialog.lyric.TGLyricEditor;
 import org.herac.tuxguitar.app.view.dialog.matrix.TGMatrixEditor;
 import org.herac.tuxguitar.app.view.dialog.piano.TGPianoEditor;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.menu.TGMenuManager;
-import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -74,7 +58,6 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.TGSynchronizer.TGSynchronizerController;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
@@ -82,8 +65,6 @@ import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 public class TuxGuitar {
 	
 	public static final String APPLICATION_NAME = "TuxGuitar";
-	
-	public static final int MARGIN_WIDTH = 5;
 	
 	private static TuxGuitar instance;
 	
@@ -93,15 +74,11 @@ public class TuxGuitar {
 	
 	private Display display;
 	
-	private Shell shell;
-	
 	private TGContext context;
 	
 	private TGLanguageManager languageManager;
 	
 	private KeyBindingActionManager keyBindingManager;
-	
-	private TGIconManager iconManager;
 	
 	private EditorCache editorCache;
 	
@@ -110,10 +87,6 @@ public class TuxGuitar {
 	private TGCustomChordManager customChordManager;
 	
 	private FileHistory fileHistory;
-	
-	protected Sash sash;
-	
-	protected Composite sashComposite;
 	
 	public TuxGuitar() {
 		this.lock = new TGLock();
@@ -128,31 +101,6 @@ public class TuxGuitar {
 			}
 		}
 		return instance;
-	}
-	
-	private void initSynchronizer(){
-		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerController() {
-			public void executeLater(final Runnable runnable) {
-				new Thread(new Runnable() {
-					public void run() {
-						final Display display = getDisplay();
-						if( display != null && !display.isDisposed()){
-							display.asyncExec(new Runnable() {
-								public void run() throws TGException {
-									try {
-										if(!isDisposed()) {
-											runnable.run();
-										}
-									} catch (Throwable throwable) {
-										throwable.printStackTrace();
-									}
-								}
-							});
-						}
-					}
-				}).start();
-			}
-		});
 	}
 	
 	public void displayGUI(String[] args) {
@@ -172,15 +120,12 @@ public class TuxGuitar {
 		Display.setAppName(APPLICATION_NAME);
 		
 		this.display = new Display();
-		this.initSynchronizer();
+		
+		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context, this.display));
 		
 		TGSplash.instance().init();
 		
-		this.shell = new Shell(getDisplay());
-		this.shell.setLayout(getShellLayout());
-		this.shell.setImage(getIconManager().getAppIcon());
-		
-		this.createComposites(getShell());
+		TGWindow.getInstance(this.context).createShell(this.getDisplay());
 		
 		// Priority 3 ----------------------------------------------//
 		this.initMidiPlayer();
@@ -189,14 +134,12 @@ public class TuxGuitar {
 		this.getPluginManager().openPlugins();
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
-//		this.updateCache(true);
-//		this.showTitle();
 		
 		TGSplash.instance().finish();
 		
 		// Priority 4 ----------------------------------------------//
-		this.shell.addShellListener(new TGActionProcessorListener(this.context, TGDisposeAction.NAME));
-		this.shell.open();
+		TGWindow.getInstance(this.context).open();
+		
 		this.startSong(argumentParser);
 		this.setInitialized( true );
 		
@@ -208,13 +151,6 @@ public class TuxGuitar {
 		getDisplay().dispose();
 	}
 	
-	private FormLayout getShellLayout(){
-		FormLayout layout = new FormLayout();
-		layout.marginWidth = MARGIN_WIDTH;
-		layout.marginHeight = MARGIN_WIDTH;
-		return layout;
-	}
-	
 	private void startSong(final ArgumentParser parser){
 		final URL url = parser.getURL();
 		if( url != null ){
@@ -224,84 +160,6 @@ public class TuxGuitar {
 		}else{
 			new TGActionProcessor(this.context, TGLoadTemplateAction.NAME).process();			
 		}
-	}
-	
-	public void createComposites(Composite composite) {
-		TGToolBar.getInstance(this.getContext()).createToolBar(getShell());
-		
-		FormData data = new FormData();
-		data.left = new FormAttachment(0,0);
-		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(TGToolBar.getInstance(this.getContext()).getControl(), MARGIN_WIDTH);
-		data.bottom = new FormAttachment(100,0);
-		this.sashComposite = new Composite(composite,SWT.NONE);
-		this.sashComposite.setLayout(new FormLayout());
-		this.sashComposite.setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0,0);
-		data.right = new FormAttachment(100,0);
-		data.bottom = new FormAttachment(100,-150);
-		data.height = MARGIN_WIDTH;
-		this.sash = new Sash(this.sashComposite, SWT.HORIZONTAL);
-		this.sash.setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0,0);
-		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(0,0);
-		data.bottom = new FormAttachment(this.sash, 0);
-		getTablatureEditor().showTablature(this.sashComposite);
-		getTablatureEditor().getTablature().setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0,0);
-		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(this.sash,0);
-		data.bottom = new FormAttachment(100,0);
-		getTable().init(this.sashComposite);
-		getTable().getComposite().setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0,0);
-		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(this.sashComposite,0);
-		data.bottom = new FormAttachment(100,0);
-		
-		Composite footer = new Composite(composite,SWT.NONE);
-		footer.setLayout(new FormLayout());
-		footer.setLayoutData(data);
-		getFretBoardEditor().showFretBoard(footer);
-		
-		this.sash.addMouseListener(new MouseAdapter() {
-			public void mouseUp(MouseEvent e) {
-				TuxGuitar.this.sashComposite.layout(true,true);
-			}
-		});
-		this.sash.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				int maximumHeight = (TuxGuitar.this.sashComposite.getBounds().height - TuxGuitar.this.sash.getBounds().height);
-				int height = (maximumHeight - event.y);
-				height = Math.max(height,0);
-				height = Math.min(height,maximumHeight);
-				((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
-			}
-		});
-		this.sash.addMouseTrackListener(new MouseTrackAdapter() {
-			public void mouseEnter(MouseEvent e) {
-				TuxGuitar.this.sash.setCursor( getDisplay().getSystemCursor( SWT.CURSOR_SIZENS ) );
-			}
-		});
-		this.sashComposite.addListener(SWT.Resize, new Listener() {
-			public void handleEvent(Event arg0) {
-				FormData data = ((FormData) TuxGuitar.this.sash.getLayoutData());
-				int height = -data.bottom.offset;
-				int maximumHeight = (TuxGuitar.this.sashComposite.getBounds().height - TuxGuitar.this.sash.getBounds().height);
-				if(height > maximumHeight){
-					data.bottom = new FormAttachment(100, -maximumHeight);
-				}
-			}
-		});
 	}
 	
 	public void restoreControlsConfig(){
@@ -344,25 +202,6 @@ public class TuxGuitar {
 		if(config.getBooleanValue(TGConfigKeys.SHOW_MARKERS)){
 			new TGActionProcessor(this.context, TGToggleMarkerListAction.NAME).process();
 		}
-	}
-	
-	public void setTableHeight(int value){
-		int offset = ((FormData) getTable().getComposite().getLayoutData()).top.offset;
-		int sashHeight = this.sash.getBounds().height;
-		int maximumHeight = (this.sashComposite.getBounds().height - sashHeight);
-		int height = (value + offset);
-		height = Math.max( height,0);
-		height = Math.min( height,maximumHeight);
-		((FormData) TuxGuitar.this.sash.getLayoutData()).bottom = new FormAttachment(100, -height);
-		this.sashComposite.layout(true,true);
-	}
-	
-	public void updateShellFooter(int offset,int minimumWith,int minimumHeight){
-		FormData data = ((FormData)this.sashComposite.getLayoutData());
-		data.bottom.offset = -offset;
-		getShell().setMinimumSize(Math.max(640,minimumWith),Math.max(480,minimumHeight));
-		getShell().layout(true,true);
-		getShell().redraw();
 	}
 	
 	public TGTableViewer getTable(){
@@ -449,16 +288,7 @@ public class TuxGuitar {
 	}
 	
 	public TGIconManager getIconManager(){
-		if( this.iconManager == null ){
-			this.iconManager = new TGIconManager(this.context);
-			this.iconManager.addLoader(new TGEventListener() {
-				public void processEvent(TGEvent event) {
-					getShell().setImage(getIconManager().getAppIcon());
-					getShell().layout(true);
-				}
-			});
-		}
-		return this.iconManager;
+		return TGIconManager.getInstance(this.context);
 	}
 	
 	public TGCustomChordManager getCustomChordManager(){
@@ -580,7 +410,7 @@ public class TuxGuitar {
 	}
 	
 	public Shell getShell(){
-		return this.shell;
+		return TGWindow.getInstance(this.context).getShell();//this.shell;
 	}
 	
 	public static String getProperty(String key) {
