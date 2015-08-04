@@ -55,7 +55,7 @@ import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.dialog.lyric.TGLyricEditor;
 import org.herac.tuxguitar.app.view.dialog.matrix.TGMatrixEditor;
 import org.herac.tuxguitar.app.view.dialog.piano.TGPianoEditor;
-import org.herac.tuxguitar.app.view.items.TGMenuManager;
+import org.herac.tuxguitar.app.view.menu.TGMenuManager;
 import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
