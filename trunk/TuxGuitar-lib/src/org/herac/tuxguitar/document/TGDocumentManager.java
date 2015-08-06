@@ -12,8 +12,8 @@ public class TGDocumentManager {
 	private TGSongManager songManager;
 	private TGSong song;
 	
-	private TGDocumentManager(TGContext context) {
-		this.songManager = new TGSongManager(new TGFactoryImpl(context));
+	private TGDocumentManager() {
+		this.songManager = new TGSongManager(new TGFactoryImpl());
 		this.song = this.songManager.newSong();
 	}
 	
@@ -40,7 +40,7 @@ public class TGDocumentManager {
 	public static TGDocumentManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDocumentManager.class.getName(), new TGSingletonFactory<TGDocumentManager>() {
 			public TGDocumentManager createInstance(TGContext context) {
-				return new TGDocumentManager(context);
+				return new TGDocumentManager();
 			}
 		});
 	}

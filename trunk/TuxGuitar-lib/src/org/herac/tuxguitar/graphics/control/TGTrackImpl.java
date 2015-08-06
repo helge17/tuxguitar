@@ -52,22 +52,4 @@ public class TGTrackImpl extends TGTrack{
 	public void setTabHeight(float tabHeight) {
 		this.tabHeight = tabHeight;
 	}
-
-	public void removeMeasure(int index){
-		TGMeasureImpl measure = (TGMeasureImpl)getMeasure(index);
-		if(!measure.isDisposed()){
-			measure.dispose();
-		}
-		super.removeMeasure(index);
-	}
-	
-	public void dispose() {
-		int measureCount = this.countMeasures();
-		for(int i = 0 ; i < measureCount ; i ++) {
-			TGMeasureImpl tgMeasure = (TGMeasureImpl) this.getMeasure(i);
-			if(!tgMeasure.isDisposed()){
-				tgMeasure.dispose();
-			}
-		}
-	}
 }

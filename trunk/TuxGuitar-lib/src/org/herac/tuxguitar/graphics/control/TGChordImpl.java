@@ -228,7 +228,7 @@ public class TGChordImpl extends TGChord {
 		layout.setChordStyle(this);
 		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
-		this.update(painter, layout.isBufferEnabled());
+		this.update(painter, (layout.isBufferEnabled() ? layout.getResourceBuffer() : null));
 		this.paint(painter,getBeatImpl().getSpacing(layout) + fromX + Math.round(4f * layout.getScale()), fromY);
 	}
 	
@@ -250,10 +250,10 @@ public class TGChordImpl extends TGChord {
 		}
 	}
 	
-	public void update(TGPainter painter, boolean makeBuffer) {
+	public void update(TGPainter painter, TGResourceBuffer buffer) {
 		this.width = 0;
 		this.height = 0;
-		if(getFirstFret() <= 0 ){
+		if( getFirstFret() <= 0 ){
 			this.calculateFirstFret();
 		}
 		if( (this.style & TGLayout.DISPLAY_CHORD_NAME) != 0 ){
@@ -262,7 +262,7 @@ public class TGChordImpl extends TGChord {
 			this.height += this.nameHeight;
 		}
 		if( (this.style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 ){
-			this.updateDiagram( (makeBuffer ? painter : null ) );
+			this.updateDiagram((buffer != null ? painter : null ), buffer);
 			this.width = Math.max(this.width,this.diagramWidth);
 			this.height += this.diagramHeight;
 		}
@@ -279,15 +279,16 @@ public class TGChordImpl extends TGChord {
 		this.nameHeight = painter.getFMHeight();
 	}
 	
-	protected void updateDiagram(TGResourceFactory bufferFactory){
+	protected void updateDiagram(TGResourceFactory bufferFactory, TGResourceBuffer resourceBuffer){
 		TGFont font = getFirstFretFont();
 		this.diagramWidth = getStringSpacing() + (getStringSpacing() * countStrings()) + ((font != null)?getFirstFretSpacing():0);
 		this.diagramHeight = getFretSpacing() + (getFretSpacing() * MAX_FRETS);
-		if(bufferFactory != null && (this.diagram == null || this.diagram.isDisposed())){
+		if( bufferFactory != null && (this.diagram == null || this.diagram.isDisposed())){
 			this.diagram = bufferFactory.createImage(this.diagramWidth, this.diagramHeight);
 			TGPainter painterBuffer = this.diagram.createPainter();
 			paintDiagram(painterBuffer, 0, 0);
 			painterBuffer.dispose();
+			resourceBuffer.setResource(this, this.diagram);
 		}
 	}
 	

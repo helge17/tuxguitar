@@ -6,10 +6,6 @@ import org.herac.tuxguitar.graphics.TGPainter;
 
 public class TGMeasureBuffer {
 	
-	private TGImage buffer;
-	
-	private TGPainter painter;
-	
 	private float width;
 	
 	private float height;
@@ -18,60 +14,28 @@ public class TGMeasureBuffer {
 		super();
 	}
 	
-	public void createBuffer(TGPainter painter, float width, float height,TGColor background){
-		this.dispose();
-		this.buffer = painter.createImage(width, height);
-		this.width = this.buffer.getWidth();
-		this.height = this.buffer.getHeight();
-		this.fillBuffer(background);
+	public TGPainter createBuffer(TGResourceBuffer resourceBuffer, TGPainter painter, float width, float height, TGColor background){
+		TGImage buffer = painter.createImage(width, height);
+		this.width = buffer.getWidth();
+		this.height = buffer.getHeight();
+		
+		TGPainter bufferedPainter = buffer.createPainter();
+		bufferedPainter.setBackground(background);
+		bufferedPainter.initPath(TGPainter.PATH_FILL);
+		bufferedPainter.addRectangle(0, 0, this.width, this.height);
+		bufferedPainter.closePath();
+		
+		resourceBuffer.setResource(this, buffer);
+		
+		return bufferedPainter;
 	}
 	
-	public void disposeBuffer(){
-		if( this.buffer != null && !this.buffer.isDisposed() ){
-			this.buffer.dispose();
-		}
+	public void paintBuffer(TGResourceBuffer resourceBuffer, TGPainter painter,float x,float y,float srcY){
+		TGImage buffer = resourceBuffer.getResource(this);
+		painter.drawImage(buffer, 0, srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
 	}
 	
-	private void fillBuffer(TGColor background){
-		getPainter().setBackground(background);
-		getPainter().initPath(TGPainter.PATH_FILL);
-		getPainter().addRectangle(0, 0, this.width,this.height);
-		getPainter().closePath();
-	}
-	
-	public void paintBuffer(TGPainter painter,float x,float y,float srcY){
-		painter.drawImage(this.buffer,0,srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
-	}
-	
-	public void createPainter(){
-		this.disposePainter();
-		this.painter = this.buffer.createPainter();
-	}
-	
-	public void disposePainter(){
-		if(this.painter != null && !this.painter.isDisposed()){
-			this.painter.dispose();
-			this.painter = null;
-		}
-	}
-	
-	public TGPainter getPainter(){
-		if(this.painter == null || this.painter.isDisposed()){
-			this.createPainter();
-		}
-		return this.painter;
-	}
-	
-	public TGImage getImage(){
-		return this.buffer;
-	}
-	
-	public void dispose(){
-		this.disposePainter();
-		this.disposeBuffer();
-	}
-	
-	public boolean isDisposed(){
-		return (this.buffer == null || this.buffer.isDisposed());
+	public boolean isDisposed(TGResourceBuffer resourceBuffer){
+		return resourceBuffer.isResourceDisposed(this);
 	}
 }

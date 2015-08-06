@@ -25,8 +25,6 @@ import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -79,8 +77,6 @@ public class TGMeasureImpl extends TGMeasure{
 		new int[] { 4, 1, 5, 2, 6, 3, 7 } ,
 		new int[] { 6, 3, 7, 4, 8, 5, 9 } ,
 	};
-	
-	private TGContext context;
 	
 	/**
 	 * Espacio por defecto de la clave
@@ -149,8 +145,6 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private boolean bufferCreated;
 	
-	private TGColor markerColor;
-	
 	private int lyricBeatIndex;
 	private float width;
 	
@@ -164,9 +158,8 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean readyToPaint;
 	
 	@SuppressWarnings("unchecked")
-	public TGMeasureImpl(TGMeasureHeader header, TGContext context) {
+	public TGMeasureImpl(TGMeasureHeader header) {
 		super(header);
-		this.context = context;
 		this.readyToPaint = false;
 		this.registeredAccidentals = new boolean[11][7];
 		this.voiceGroups = (List<TGBeatGroup>[]) new List<?>[TGBeat.MAX_VOICES];
@@ -604,28 +597,28 @@ public class TGMeasureImpl extends TGMeasure{
 			this.setOutOfBounds(false);
 			
 			boolean bufferEnabled = layout.isBufferEnabled();
+			TGResourceBuffer resourceBuffer = layout.getResourceBuffer();
 			
-			if(shouldRepaintBuffer() || !bufferEnabled ){
+			if(!bufferEnabled || shouldRepaintBuffer(resourceBuffer)){
 				TGPainter bufferPainter = painter;
 				float x = (bufferEnabled ? 0 : getPosX());
 				float y = (bufferEnabled ? 0 : getPosY());
-				if(bufferEnabled){
-					getBuffer().createBuffer(painter,getWidth(layout) + getSpacing(), getTs().getSize(),layout.getResources().getBackgroundColor());
-					bufferPainter = getBuffer().getPainter();
+				if( bufferEnabled ){
+					bufferPainter = getBuffer().createBuffer(resourceBuffer, painter, getWidth(layout) + getSpacing(), getTs().getSize(), layout.getResources().getBackgroundColor());
 				}
-				layout.paintLines(getTrackImpl(),getTs(),bufferPainter,x,y, getWidth(layout) + getSpacing());
-				paintTimeSignature(layout,bufferPainter,x,y);
-				paintClef(layout,bufferPainter,x,y);
-				paintKeySignature(layout,bufferPainter,x,y);
-				paintComponents(layout,bufferPainter,x,y);
-				if(bufferEnabled){
-					getBuffer().disposePainter();
+				layout.paintLines(getTrackImpl(), getTs(), bufferPainter, x, y, getWidth(layout) + getSpacing());
+				paintTimeSignature(layout, bufferPainter, x, y);
+				paintClef(layout, bufferPainter, x, y);
+				paintKeySignature(layout, bufferPainter, x, y);
+				paintComponents(layout, bufferPainter, x, y);
+				if( bufferEnabled ){
+					bufferPainter.dispose(); 
 				}
 				setBufferCreated(true);
 			}
-			if(bufferEnabled){
+			if( bufferEnabled ){
 				painter.setBackground(layout.getResources().getBackgroundColor());
-				getBuffer().paintBuffer(painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 			}
 			
 			this.paintMarker(layout, painter);
@@ -639,8 +632,8 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
-	private boolean shouldRepaintBuffer(){
-		return (isDisposed() || !isBufferCreated());
+	private boolean shouldRepaintBuffer(TGResourceBuffer resourceBuffer){
+		return (!isBufferCreated() || getBuffer().isDisposed(resourceBuffer));
 	}
 	
 	public void paintRepeatEnding(TGLayout layout,TGPainter painter){
@@ -1023,7 +1016,7 @@ public class TGMeasureImpl extends TGMeasure{
 			float x = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
 			float y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_MARKER));
 			
-			layout.setMarkerStyle(painter,getMarkerColor(painter));
+			layout.setMarkerStyle(painter, getMarkerColor(layout.getResourceBuffer(), painter));
 			painter.drawString(getMarker().getTitle(), x, y);
 		}
 	}
@@ -1271,69 +1264,27 @@ public class TGMeasureImpl extends TGMeasure{
 		return this.paintKeySignature;
 	}
 	
-	public boolean isDisposed(){
-		return getBuffer().isDisposed();
-	}
-	
 	public TGMeasureBuffer getBuffer(){
-		if(this.buffer == null){
+		if( this.buffer == null ){
 			this.buffer = new TGMeasureBuffer();
 		}
 		return this.buffer;
 	}
 	
-	public void disposeBuffer(){
-		if( this.buffer != null && !this.buffer.isDisposed() ){
-			this.buffer.dispose();
-			this.buffer = null;
-		}
-	}
-	
-	public TGColor getMarkerColor( TGPainter painter ){
+	public TGColor getMarkerColor(TGResourceBuffer buffer, TGPainter painter){
+		String resourceKey = (TGMarker.class.getName() + "-" + this.getHeader().getNumber());
 		TGMarker m = getMarker();
-		if( this.markerColor != null && !this.markerColor.isDisposed() ){
-			if( this.markerColor.getRed() != m.getColor().getR() || this.markerColor.getGreen() != m.getColor().getG() || this.markerColor.getBlue() != m.getColor().getB() ){
-				this.disposeMarkerColor();
+		TGColor markerColor = buffer.getResource(resourceKey);
+		if( markerColor != null && !markerColor.isDisposed() ){
+			if( markerColor.getRed() != m.getColor().getR() || markerColor.getGreen() != m.getColor().getG() || markerColor.getBlue() != m.getColor().getB() ){
+				buffer.disposeResource(resourceKey);
 			}
 		}
-		if(this.markerColor == null || this.markerColor.isDisposed()){
-			this.markerColor = painter.createColor(m.getColor().getR(),m.getColor().getG(),m.getColor().getB());
+		if( markerColor == null || markerColor.isDisposed() ){
+			markerColor = painter.createColor(m.getColor().getR(), m.getColor().getG(), m.getColor().getB());
+			
+			buffer.setResource(resourceKey, markerColor);
 		}
-		return this.markerColor;
-	}
-	
-	public void disposeMarkerColor(){
-		if(this.markerColor != null && !this.markerColor.isDisposed()){
-			this.markerColor.dispose();
-			this.markerColor = null;
-		}
-	}
-	
-	public void disposeBeats(){
-		Iterator<TGBeat> it = getBeats().iterator();
-		while(it.hasNext()){
-			TGBeatImpl beat = (TGBeatImpl)it.next();
-			beat.dispose();
-		}
-	}
-	
-	public void dispose(){
-		this.disposeBuffer();
-		this.disposeMarkerColor();
-		this.disposeBeats();
-	}
-	
-	public void clearSynchronized() {
-		this.dispose();
-		
-		super.clear();
-	}
-	
-	public void clear() {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				clearSynchronized();
-			}
-		});
+		return markerColor;
 	}
 }
