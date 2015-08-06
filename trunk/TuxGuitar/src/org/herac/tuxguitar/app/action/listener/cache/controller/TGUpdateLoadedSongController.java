@@ -4,6 +4,7 @@ import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
@@ -33,7 +34,7 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 		TGUndoableManager.getInstance(context).discardAllEdits();
 		
 		TuxGuitar.getInstance().getEditorCache().reset();
-		TuxGuitar.getInstance().showTitle();
+		TGWindow.getInstance(context).loadTitle();
 		// ------------------------------------------------------ //
 		
 		this.findUpdateBuffer(context, actionContext).requestUpdateLoadedSong();
