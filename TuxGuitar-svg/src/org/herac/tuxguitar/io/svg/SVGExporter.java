@@ -4,16 +4,13 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.util.TGContext;
 
 public class SVGExporter implements TGLocalFileExporter {
 	
 	public static final String PROVIDER_ID = SVGExporter.class.getName();
 	
-	private TGContext context;
-	
-	public SVGExporter(TGContext context){
-		this.context = context;
+	public SVGExporter(){
+		super();
 	}
 	
 	public String getProviderId() {
@@ -29,6 +26,6 @@ public class SVGExporter implements TGLocalFileExporter {
 	}
 
 	public TGSongStream openStream(TGSongStreamContext streamContext) {
-		return new SVGExporterStream(this.context, streamContext);
+		return new SVGExporterStream(streamContext);
 	}
 }

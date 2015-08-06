@@ -33,6 +33,7 @@ import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -41,6 +42,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGSynchronizer;
 /**
  * @author julian
  * 
@@ -54,6 +56,7 @@ public class Tablature extends Composite implements TGController {
 	private TGContext context; 
 	private TGResourceFactory resourceFactory;
 	private TGDocumentManager documentManager;
+	private TGResourceBuffer resourceBuffer;
 	private Caret caret;
 	private int width;
 	private int height;
@@ -113,15 +116,30 @@ public class Tablature extends Composite implements TGController {
 	public void updateTablature(){
 		this.playedBeat = null;
 		this.playedMeasure = null;
-		getViewLayout().updateSong();
-		getCaret().update();
+		this.updateResourceBuffer();
+		this.getViewLayout().updateSong();
+		this.getCaret().update();
 	}
 	
 	public void updateMeasure(int number){
 		this.playedBeat = null;
 		this.playedMeasure = null;
-		getViewLayout().updateMeasureNumber(number);
-		getCaret().update();
+		this.getViewLayout().updateMeasureNumber(number);
+		this.getCaret().update();
+	}
+	
+	
+	public void updateResourceBuffer() {
+		this.disposeResourceBufferLaber(this.getResourceBuffer());
+		this.resourceBuffer = null;
+	}
+	
+	public void disposeResourceBufferLaber(final TGResourceBuffer buffer) {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() {
+				buffer.disposeAllResources();
+			}
+		});
 	}
 	
 	public void resetCaret(){
@@ -367,6 +385,7 @@ public class Tablature extends Composite implements TGController {
 		super.dispose();
 		this.getCaret().dispose();
 		this.getViewLayout().disposeLayout();
+		this.getResourceBuffer().disposeAllResources();
 	}
 	
 	public TGResourceFactory getResourceFactory(){
@@ -374,6 +393,13 @@ public class Tablature extends Composite implements TGController {
 			this.resourceFactory = new TGResourceFactoryImpl(this.getDisplay());
 		}
 		return this.resourceFactory;
+	}
+	
+	public TGResourceBuffer getResourceBuffer(){
+		if( this.resourceBuffer == null ){
+			this.resourceBuffer = new TGResourceBuffer();
+		}
+		return this.resourceBuffer;
 	}
 	
 	public int getTrackSelection(){

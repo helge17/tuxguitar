@@ -59,7 +59,7 @@ public class TGPrintAction extends TGActionBase{
 			new Thread(new Runnable() {
 				public void run() {
 					try{
-						final TGSongManager manager = new TGSongManager(new TGFactoryImpl(getContext()));
+						final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 						final TGSong song = srcSong.clone(manager.getFactory());
 						
 						TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
@@ -85,13 +85,14 @@ public class TGPrintAction extends TGActionBase{
 		}
 	}
 	
-	protected void print(final Printer printer,final PrinterData printerData ,final PrintLayout layout, final TGRectangle bounds, final float scale){
+	protected void print(final Printer printer, final PrinterData printerData ,final PrintLayout layout, final TGRectangle bounds, final float scale){
 		new Thread(new Runnable() {
 			public void run() {
 				try{
 					layout.loadStyles(scale, 1f);
 					layout.updateSong();
 					layout.makeDocument(new PrintDocumentImpl(layout,printer, printerData, bounds));
+					layout.getResourceBuffer().disposeAllResources();
 				}catch(Throwable throwable ){
 					MessageDialog.errorMessage(throwable);
 				}

@@ -45,6 +45,7 @@ import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.graphics.TGColor;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGString;
@@ -65,6 +66,7 @@ public class TGChordList extends Composite {
 	
 	private TGChordDialog dialog;
 	private TGBeat beat;
+	private TGResourceBuffer resourceBuffer;
 	private List<TGChord> graphicChords;
 	private float height;
 	private TGChordImpl selectedChord;
@@ -76,6 +78,7 @@ public class TGChordList extends Composite {
 		this.setLayout(dialog.gridLayout(1,false,0,0));
 		this.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.graphicChords = new ArrayList<TGChord>();
+		this.resourceBuffer = new TGResourceBuffer();
 		this.dialog = dialog;
 		this.beat = beat;
 		this.init();
@@ -149,7 +152,7 @@ public class TGChordList extends Composite {
 			chord.setLineWidth(CHORD_LINE_WIDTH);
 			chord.setFirstFretFont(new TGFontImpl(getFont(painter.getGC())));
 			chord.setStyle(TGLayout.DISPLAY_CHORD_DIAGRAM);
-			chord.update(painter, true);
+			chord.update(painter, this.resourceBuffer);
 			if(fromX + chord.getWidth() >= ((getBounds().x + getBounds().width) - 20)){
 				fromX = 15;
 				fromY += chord.getHeight() + 10;
@@ -243,11 +246,8 @@ public class TGChordList extends Composite {
 	}
 	
 	public void disposeChords(){
-		Iterator<TGChord> it = this.graphicChords.iterator();
-		while (it.hasNext()) {
-			((TGChordImpl) it.next()).dispose();
-		}
 		this.graphicChords.clear();
+		this.resourceBuffer.disposeAllResources();
 	}
 	
 	protected Composite getComposite(){
