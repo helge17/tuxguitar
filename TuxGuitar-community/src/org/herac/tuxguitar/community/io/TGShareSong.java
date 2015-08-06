@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.io.tg.TGOutputStream;
@@ -113,13 +112,11 @@ public class TGShareSong {
 	}
 	
 	public void setActiveMode(){
-		TuxGuitar.getInstance().lock();
-		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
+		TGWindow.getInstance(this.context).loadBusyCursor();
 	}
 	
 	public void setPassiveMode(){
-		TuxGuitar.getInstance().loadCursor(SWT.CURSOR_ARROW);
-		TuxGuitar.getInstance().unlock();
+		TGWindow.getInstance(this.context).loadDefaultCursor();
 	}
 
 	public TGContext getContext() {
