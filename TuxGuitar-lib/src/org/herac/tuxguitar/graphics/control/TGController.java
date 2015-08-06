@@ -11,6 +11,8 @@ public interface TGController {
 	
 	public TGResourceFactory getResourceFactory();
 	
+	public TGResourceBuffer getResourceBuffer();
+	
 	public TGSongManager getSongManager();
 	
 	public TGSong getSong();

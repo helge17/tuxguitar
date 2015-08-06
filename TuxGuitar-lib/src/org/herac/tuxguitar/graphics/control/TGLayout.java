@@ -125,7 +125,7 @@ public abstract class TGLayout {
 	}
 	
 	public void updateSong(){
-		updateMeasures();
+		this.updateMeasures();
 	}
 	
 	public void updateMeasures() {
@@ -523,8 +523,8 @@ public abstract class TGLayout {
 		return getComponent().getSong();
 	}
 	
-	public void setComponent(TGController controller){
-		this.controller = controller;
+	public TGResourceBuffer getResourceBuffer() {
+		return getComponent().getResourceBuffer();
 	}
 	
 	public TGController getComponent(){
@@ -797,14 +797,6 @@ public abstract class TGLayout {
 			}
 		}
 		return trackPos;
-	}
-	
-	public void disposeTracks(){
-		int count = getSong().countTracks();
-		for(int i = 0 ; i < count ; i++){
-			TGTrackImpl tgTrack = (TGTrackImpl) getSong().getTrack(i);
-			tgTrack.dispose();
-		}
 	}
 	
 	public void disposeLayout(){

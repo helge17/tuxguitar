@@ -386,19 +386,4 @@ public class TGBeatImpl extends TGBeat{
 	public TGBeatSpacing getBs(){
 		return this.bs;
 	}
-	
-	public void removeChord(){
-		if(isChordBeat()){
-			TGChordImpl chord = (TGChordImpl)getChord();
-			chord.dispose();
-		}
-		super.removeChord();
-	}
-	
-	public void dispose(){
-		if(isChordBeat()){
-			TGChordImpl chord = (TGChordImpl)getChord();
-			chord.dispose();
-		}
-	}
 }
