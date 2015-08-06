@@ -55,7 +55,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		new Thread(new Runnable() {
 			public void run() {
 				try{
-					final TGSongManager manager = new TGSongManager(new TGFactoryImpl(getContext()));
+					final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 					final TGSong song = srcSong.clone(manager.getFactory());
 				
 					printPreview(song, manager, data);
@@ -89,6 +89,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 					layout.loadStyles(1f);
 					layout.updateSong();
 					layout.makeDocument(new PrintDocumentImpl(new TGRectangle(0,0,850,1050)));
+					layout.getResourceBuffer().disposeAllResources();
 				}catch(Throwable throwable){
 					MessageDialog.errorMessage(throwable);
 				}

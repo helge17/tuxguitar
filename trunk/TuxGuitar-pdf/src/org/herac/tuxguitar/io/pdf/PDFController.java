@@ -7,6 +7,7 @@ import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -32,11 +33,13 @@ public class PDFController implements TGController {
 	private TGSong song;
 	private TGSongManager songManager;
 	private TGResourceFactory resourceFactory;
+	private TGResourceBuffer resourceBuffer;
 	
 	public PDFController(TGSong song, TGSongManager songManager, TGResourceFactory resourceFactory){
 		this.song = song;
 		this.songManager = songManager;
 		this.resourceFactory = resourceFactory;
+		this.resourceBuffer = new TGResourceBuffer();
 	}
 	
 	public TGSong getSong() {
@@ -49,6 +52,10 @@ public class PDFController implements TGController {
 	
 	public TGResourceFactory getResourceFactory(){
 		return this.resourceFactory;
+	}
+	
+	public TGResourceBuffer getResourceBuffer() {
+		return this.resourceBuffer;
 	}
 	
 	public int getTrackSelection() {

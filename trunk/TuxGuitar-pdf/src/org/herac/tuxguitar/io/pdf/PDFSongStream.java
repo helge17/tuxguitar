@@ -51,7 +51,7 @@ public class PDFSongStream implements TGSongStream {
 				styles = getDefaultStyles(song);
 			}
 			
-			TGSongManager manager = new TGSongManager(new TGFactoryImpl(this.context));
+			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = song.clone(manager.getFactory());
 			
 			TGResourceFactory factory = new TGResourceFactoryImpl();
@@ -62,6 +62,8 @@ public class PDFSongStream implements TGSongStream {
 			layout.loadStyles(1f);
 			layout.updateSong();
 			layout.makeDocument(new PDFDocument(this.context, new TGRectangle(PAGE_X, PAGE_Y, PAGE_WIDTH, PAGE_HEIGHT), stream));
+			
+			controller.getResourceBuffer().disposeAllResources();
 		}catch(Throwable throwable){
 			throw new TGFileFormatException(throwable);
 		}
