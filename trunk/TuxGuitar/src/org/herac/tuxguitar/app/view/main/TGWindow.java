@@ -23,6 +23,7 @@ import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
@@ -35,6 +36,7 @@ public class TGWindow implements TGEventListener {
 	public static final int MARGIN_WIDTH = 5;
 	
 	private TGContext context;
+	private TGCursorController cursorController;
 	
 	private Shell shell;
 	private Sash sash;
@@ -177,6 +179,23 @@ public class TGWindow implements TGEventListener {
 		getShell().setMinimumSize(Math.max(640,minimumWith),Math.max(480,minimumHeight));
 		getShell().layout(true,true);
 		getShell().redraw();
+	}
+	
+	public void loadDefaultCursor() {
+		this.loadCursor(SWT.CURSOR_ARROW);
+	}
+	
+	public void loadBusyCursor() {
+		this.loadCursor(SWT.CURSOR_WAIT);
+	}
+	
+	public void loadCursor(int cursorStyle) {
+		if(!this.isDisposed()) {
+			if( this.cursorController == null || !this.cursorController.isControlling(this.shell) ) {
+				this.cursorController = new TGCursorController(this.context, this.shell);
+			}
+			this.cursorController.loadCursor(cursorStyle);
+		}
 	}
 	
 	public boolean isDisposed() {
