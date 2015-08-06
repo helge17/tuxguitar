@@ -31,7 +31,6 @@ import org.herac.tuxguitar.app.transport.TGTransportListener;
 import org.herac.tuxguitar.app.util.ArgumentParser;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGSplash;
-import org.herac.tuxguitar.app.util.WindowTitleUtil;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
@@ -363,16 +362,6 @@ public class TuxGuitar {
 		
 		//check midi port
 		getPlayer().openOutputPort(getConfig().getStringValue(TGConfigKeys.MIDI_PORT), true);
-	}
-	
-	public void showTitle(){
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() throws TGException {
-				if(!isDisposed()){
-					getShell().setText(WindowTitleUtil.parseTitle());
-				}
-			}
-		});
 	}
 	
 	public void updateCache(final boolean updateItems){

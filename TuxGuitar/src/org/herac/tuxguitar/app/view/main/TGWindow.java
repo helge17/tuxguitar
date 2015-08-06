@@ -19,11 +19,13 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.system.TGDisposeAction;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.util.WindowTitleUtil;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
@@ -36,6 +38,7 @@ public class TGWindow implements TGEventListener {
 	public static final int MARGIN_WIDTH = 5;
 	
 	private TGContext context;
+	private TGSyncProcess loadTitleProcess;
 	private TGCursorController cursorController;
 	
 	private Shell shell;
@@ -44,6 +47,7 @@ public class TGWindow implements TGEventListener {
 	
 	public TGWindow(TGContext context) {
 		this.context = context;
+		this.createSyncProcesses();
 	}
 	
 	public void open() {
@@ -210,11 +214,29 @@ public class TGWindow implements TGEventListener {
 		return sashComposite;
 	}
 
+	public void loadTitle() {
+		this.loadTitleProcess.process();
+	}
+	
+	public void loadTitleInCurrentThread() {
+		if(!this.isDisposed()) {
+			this.getShell().setText(WindowTitleUtil.parseTitle());
+		}
+	}
+	
 	public void loadIcons() {
 		if(!this.isDisposed()) {
 			this.getShell().setImage(TGIconManager.getInstance(this.context).getAppIcon());
 			this.getShell().layout(true);
 		}
+	}
+	
+	public void createSyncProcesses() {
+		this.loadTitleProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				TGWindow.this.loadTitleInCurrentThread();
+			}
+		});
 	}
 	
 	public void processEvent(final TGEvent event) {
