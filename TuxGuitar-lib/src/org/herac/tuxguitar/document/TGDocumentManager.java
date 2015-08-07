@@ -31,12 +31,6 @@ public class TGDocumentManager {
 		}
 	}
 
-	public void clearSong() {
-		if( this.getSong() != null ){
-			this.getSongManager().clearSong(this.getSong());
-		}
-	}
-	
 	public static TGDocumentManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDocumentManager.class.getName(), new TGSingletonFactory<TGDocumentManager>() {
 			public TGDocumentManager createInstance(TGContext context) {

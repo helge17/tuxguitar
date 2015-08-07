@@ -1,9 +1,3 @@
-/*
- * Created on 23-nov-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.song.managers;
 
 import java.util.ArrayList;
@@ -23,13 +17,6 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class TGSongManager {
 	
 	public static final short MAX_CHANNELS = 16;
@@ -79,12 +66,6 @@ public class TGSongManager {
 		song.setName(name);
 	}
 	
-	public void clearSong(TGSong song){
-		if( song != null){
-			song.clear();
-		}
-	}
-	
 	public void setProperties(TGSong song, String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments){
 		song.setName(name);
 		song.setArtist(artist);
@@ -97,6 +78,10 @@ public class TGSongManager {
 		song.setComments(comments);
 	}
 
+	public void clearSong(TGSong song){
+		song.clear();
+	}
+	
 	public void fillSong(TGSong song){
 		TGChannel channel = getFactory().newChannel();
 		channel.setChannelId(1);

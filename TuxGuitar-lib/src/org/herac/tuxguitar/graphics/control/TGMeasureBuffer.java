@@ -14,6 +14,14 @@ public class TGMeasureBuffer {
 		super();
 	}
 	
+	public Object getRegistryKey() {
+		return this;
+	}
+	
+	public void register(TGResourceBuffer resourceBuffer) {
+		resourceBuffer.register(this.getRegistryKey());
+	}
+	
 	public TGPainter createBuffer(TGResourceBuffer resourceBuffer, TGPainter painter, float width, float height, TGColor background){
 		TGImage buffer = painter.createImage(width, height);
 		this.width = buffer.getWidth();
@@ -25,17 +33,17 @@ public class TGMeasureBuffer {
 		bufferedPainter.addRectangle(0, 0, this.width, this.height);
 		bufferedPainter.closePath();
 		
-		resourceBuffer.setResource(this, buffer);
+		resourceBuffer.setResource(this.getRegistryKey(), buffer);
 		
 		return bufferedPainter;
 	}
 	
 	public void paintBuffer(TGResourceBuffer resourceBuffer, TGPainter painter,float x,float y,float srcY){
-		TGImage buffer = resourceBuffer.getResource(this);
+		TGImage buffer = resourceBuffer.getResource(this.getRegistryKey());
 		painter.drawImage(buffer, 0, srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
 	}
 	
 	public boolean isDisposed(TGResourceBuffer resourceBuffer){
-		return resourceBuffer.isResourceDisposed(this);
+		return resourceBuffer.isResourceDisposed(this.getRegistryKey());
 	}
 }

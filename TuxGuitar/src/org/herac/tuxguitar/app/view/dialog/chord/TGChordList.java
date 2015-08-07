@@ -141,6 +141,7 @@ public class TGChordList extends Composite {
 			TGChordImpl chord = (TGChordImpl) it.next();
 			
 			TGColor color = new TGColorImpl(getChordColor(chord));
+			chord.registerBuffer(this.resourceBuffer);
 			chord.setBackgroundColor(new TGColorImpl(this.composite.getBackground()));
 			chord.setColor(color);
 			chord.setNoteColor(color);

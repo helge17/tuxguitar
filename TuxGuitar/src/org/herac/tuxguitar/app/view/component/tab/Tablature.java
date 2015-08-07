@@ -22,6 +22,7 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
@@ -42,7 +43,6 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 /**
  * @author julian
  * 
@@ -57,6 +57,8 @@ public class Tablature extends Composite implements TGController {
 	private TGResourceFactory resourceFactory;
 	private TGDocumentManager documentManager;
 	private TGResourceBuffer resourceBuffer;
+	private TGSyncProcess disposeUnregisteredResources;
+	
 	private Caret caret;
 	private int width;
 	private int height;
@@ -79,6 +81,7 @@ public class Tablature extends Composite implements TGController {
 		this.documentManager = documentManager;
 		this.caret = new Caret(this);
 		this.editorKit = new EditorKit(this);
+		this.createSyncProcesses();
 	}
 	
 	public void initGUI(){
@@ -113,12 +116,20 @@ public class Tablature extends Composite implements TGController {
 		});
 	}
 	
+	public void createSyncProcesses() {
+		this.disposeUnregisteredResources = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				getResourceBuffer().disposeUnregisteredResources();
+			}
+		});
+	}
+	
 	public void updateTablature(){
 		this.playedBeat = null;
 		this.playedMeasure = null;
-		this.updateResourceBuffer();
 		this.getViewLayout().updateSong();
 		this.getCaret().update();
+		this.disposeUnregisteredResources.process();
 	}
 	
 	public void updateMeasure(int number){
@@ -126,20 +137,7 @@ public class Tablature extends Composite implements TGController {
 		this.playedMeasure = null;
 		this.getViewLayout().updateMeasureNumber(number);
 		this.getCaret().update();
-	}
-	
-	
-	public void updateResourceBuffer() {
-		this.disposeResourceBufferLaber(this.getResourceBuffer());
-		this.resourceBuffer = null;
-	}
-	
-	public void disposeResourceBufferLaber(final TGResourceBuffer buffer) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				buffer.disposeAllResources();
-			}
-		});
+		this.disposeUnregisteredResources.process();
 	}
 	
 	public void resetCaret(){

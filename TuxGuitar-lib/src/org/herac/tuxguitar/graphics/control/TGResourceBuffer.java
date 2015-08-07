@@ -9,10 +9,12 @@ import org.herac.tuxguitar.graphics.TGResource;
 
 public class TGResourceBuffer {
 	
+	private List<Object> registry;
 	private Map<Object, TGResource> buffer;
 	
 	public TGResourceBuffer() {
 		this.buffer = new HashMap<Object, TGResource>();
+		this.registry = new ArrayList<Object>();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -44,6 +46,35 @@ public class TGResourceBuffer {
 		for(Object key : keys) {
 			this.disposeResource(key);
 		}
+	}
+	
+	public void disposeUnregisteredResources() {
+		List<Object> keys = new ArrayList<Object>(this.buffer.keySet());
+		for(Object key : keys) {
+			if(!this.isRegistered(key)) {
+				this.disposeResource(key);
+			}
+		}
+	}
+	
+	public void clearRegistry() {
+		this.registry.clear();
+	}
+	
+	public void register(Object key) {
+		if(!this.isRegistered(key)) {
+			this.registry.add(key);
+		}
+	}
+	
+	public void unregister(Object key) {
+		if( this.isRegistered(key)) {
+			this.registry.remove(key);
+		}
+	}
+	
+	public boolean isRegistered(Object key) {
+		return this.registry.contains(key);
 	}
 	
 	public boolean isResourceDisposed(Object key) {
