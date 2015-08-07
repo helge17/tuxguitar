@@ -121,10 +121,11 @@ public abstract class TGLayout {
 	
 	public void paintMeasure(TGMeasureImpl measure,TGPainter painter,float spacing) {
 		measure.setSpacing(spacing);
-		measure.paintMeasure(this,painter);
+		measure.paintMeasure(this, painter);
 	}
 	
 	public void updateSong(){
+		this.getResourceBuffer().clearRegistry();
 		this.updateMeasures();
 	}
 	

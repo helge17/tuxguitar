@@ -48,11 +48,12 @@ public class TGChordImpl extends TGChord {
 	private float lineWidth;
 	
 	private boolean editing;
+	private Object registryKey;
 	
 	public TGChordImpl(int length) {
 		super(length);
 	}
-	
+
 	public boolean isEditing() {
 		return this.editing;
 	}
@@ -288,7 +289,11 @@ public class TGChordImpl extends TGChord {
 			TGPainter painterBuffer = this.diagram.createPainter();
 			paintDiagram(painterBuffer, 0, 0);
 			painterBuffer.dispose();
-			resourceBuffer.setResource(this, this.diagram);
+			
+			if( this.registryKey == null ) {
+				this.registerBuffer(resourceBuffer);
+			}
+			resourceBuffer.setResource(this.registryKey, this.diagram);
 		}
 	}
 	
@@ -392,6 +397,16 @@ public class TGChordImpl extends TGChord {
 			}
 		}
 		return false;
+	}
+
+	public void registerBuffer(TGResourceBuffer resourceBuffer) {
+		this.registerBuffer(resourceBuffer, this);
+	}
+	
+	public void registerBuffer(TGResourceBuffer resourceBuffer, Object registryKey) {
+		this.registryKey = registryKey;
+		
+		resourceBuffer.register(this.registryKey);
 	}
 	
 	public boolean isDisposed(){

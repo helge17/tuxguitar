@@ -3,6 +3,7 @@ package org.herac.tuxguitar.graphics.control;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -267,6 +268,18 @@ public class TGBeatImpl extends TGBeat{
 			this.bs.setSize(TGBeatSpacing.POSITION_TRILL_EFFEC,layout.getEffectSpacing());
 		}
 		return this.bs.getSize();
+	}
+	
+	public void registerBuffer(TGLayout layout) {
+		Object chordRegistryKey = (TGChord.class.getName() + "-" + this.hashCode());
+		
+		TGResourceBuffer buffer = layout.getResourceBuffer();
+		if( this.isChordBeat() ) {
+			TGChordImpl tgChord = ((TGChordImpl) getChord());
+			tgChord.registerBuffer(buffer, chordRegistryKey);
+		} else if (buffer.isRegistered(chordRegistryKey) ) {
+			buffer.unregister(chordRegistryKey);
+		}
 	}
 	
 	public void paint(TGLayout layout,TGPainter painter, float fromX, float fromY) {

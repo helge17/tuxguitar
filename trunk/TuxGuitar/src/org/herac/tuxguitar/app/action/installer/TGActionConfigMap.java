@@ -302,31 +302,31 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
-		this.map(TGNewSongAction.NAME, DISABLE_ON_PLAY | SAVE_BEFORE | SHORTCUT);
-		this.map(TGLoadTemplateAction.NAME, DISABLE_ON_PLAY | SAVE_BEFORE | SHORTCUT);
-		this.map(TGReadSongAction.NAME, DISABLE_ON_PLAY | SAVE_BEFORE);
-		this.map(TGWriteSongAction.NAME, UPDATE_SONG_SAVED_CTL);
-		this.map(TGWriteFileAction.NAME, new TGUpdateWrittenFileController());
-		this.map(TGSaveAsFileAction.NAME, SYNC_THREAD | SHORTCUT);
-		this.map(TGSaveFileAction.NAME, SYNC_THREAD | SHORTCUT);
-		this.map(TGReadURLAction.NAME, new TGUpdateReadedURLController());
-		this.map(TGOpenFileAction.NAME, SYNC_THREAD | SAVE_BEFORE | SHORTCUT);
-		this.map(TGImportSongAction.NAME, SAVE_BEFORE | SHORTCUT);
-		this.map(TGImportFileAction.NAME, SYNC_THREAD | SAVE_BEFORE | SHORTCUT);
-		this.map(TGExportSongAction.NAME, SHORTCUT);
-		this.map(TGExportFileAction.NAME, SYNC_THREAD | SHORTCUT);
+		this.map(TGNewSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE | SHORTCUT);
+		this.map(TGLoadTemplateAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE | SHORTCUT);
+		this.map(TGReadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE);
+		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
+		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
+		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGReadURLAction.NAME, LOCKABLE, new TGUpdateReadedURLController());
+		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SAVE_BEFORE | SHORTCUT);
+		this.map(TGImportSongAction.NAME, LOCKABLE | SAVE_BEFORE | SHORTCUT);
+		this.map(TGImportFileAction.NAME, LOCKABLE | SYNC_THREAD | SAVE_BEFORE | SHORTCUT);
+		this.map(TGExportSongAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGExitAction.NAME, SYNC_THREAD);
-		this.map(TGPrintAction.NAME, SYNC_THREAD | SHORTCUT);
-		this.map(TGPrintPreviewAction.NAME, SYNC_THREAD | SHORTCUT);
+		this.map(TGPrintAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		
 		//edit actions
-		this.map(TGUndoAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGRedoAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGSetMouseModeSelectionAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGSetMouseModeEditionAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGSetNaturalKeyAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGSetVoice1Action.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGSetVoice2Action.NAME, DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGUndoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGRedoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGSetMouseModeSelectionAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGSetMouseModeEditionAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGSetNaturalKeyAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGSetVoice1Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGSetVoice2Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		
 		//tablature actions
 		this.map(TGMouseClickAction.NAME, LOCKABLE);
@@ -571,10 +571,6 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	
 	private void map(String actionId, int flags, TGUpdateController updateController) {
 		this.map(actionId, flags, updateController, null);
-	}
-	
-	private void map(String actionId, TGUpdateController updateController) {
-		this.map(actionId, 0, updateController, null);
 	}
 	
 	private void map(String actionId, int flags, TGUpdateController updateController, TGUndoableActionController undoableController) {

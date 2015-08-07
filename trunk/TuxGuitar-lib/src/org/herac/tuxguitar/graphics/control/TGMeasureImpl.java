@@ -188,6 +188,7 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Actualiza los valores para dibujar
 	 */
 	public void update(TGLayout layout) {
+		this.registerBuffer(layout);
 		this.updateComponents(layout);
 		this.setOutOfBounds(true);
 		this.setBufferCreated(false);
@@ -419,6 +420,21 @@ public class TGMeasureImpl extends TGMeasure{
 		manager.getMeasureManager().autoCompleteSilences(this);
 	}
 	
+	public void registerBuffer(TGLayout layout) {
+		TGResourceBuffer buffer = layout.getResourceBuffer();
+		
+		// Measure Buffer
+		this.getBuffer().register(buffer);
+		
+		// Marker Color
+		String markerKey = this.getMarkerRegistryKey();
+		if( this.hasMarker() ) {
+			buffer.register(markerKey);
+		} else if (buffer.isRegistered(markerKey)) {
+			buffer.unregister(markerKey);
+		}
+	}
+	
 	/**
 	 * Llama a update de todas las notas del compas
 	 */
@@ -430,6 +446,7 @@ public class TGMeasureImpl extends TGMeasure{
 		float tmpX = spacing;
 		for (int i = 0; i < countBeats(); i++) {
 			TGBeatImpl beat = (TGBeatImpl) getBeat(i);
+			beat.registerBuffer(layout);
 			beat.resetEffectsSpacing(layout);
 			
 			if(this.compactMode){
@@ -1271,8 +1288,12 @@ public class TGMeasureImpl extends TGMeasure{
 		return this.buffer;
 	}
 	
+	public String getMarkerRegistryKey() {
+		return (TGMarker.class.getName() + "-" + this.getHeader().getNumber());
+	}
+	
 	public TGColor getMarkerColor(TGResourceBuffer buffer, TGPainter painter){
-		String resourceKey = (TGMarker.class.getName() + "-" + this.getHeader().getNumber());
+		String resourceKey = this.getMarkerRegistryKey();
 		TGMarker m = getMarker();
 		TGColor markerColor = buffer.getResource(resourceKey);
 		if( markerColor != null && !markerColor.isDisposed() ){
