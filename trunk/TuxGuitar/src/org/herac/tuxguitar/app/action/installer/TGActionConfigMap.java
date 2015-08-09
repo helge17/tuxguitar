@@ -27,6 +27,9 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
@@ -302,19 +305,22 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
-		this.map(TGNewSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE | SHORTCUT);
-		this.map(TGLoadTemplateAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE | SHORTCUT);
-		this.map(TGReadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE);
+		this.map(TGNewSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGLoadTemplateAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGReadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
 		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGReadURLAction.NAME, LOCKABLE, new TGUpdateReadedURLController());
-		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SAVE_BEFORE | SHORTCUT);
-		this.map(TGImportSongAction.NAME, LOCKABLE | SAVE_BEFORE | SHORTCUT);
-		this.map(TGImportFileAction.NAME, LOCKABLE | SYNC_THREAD | SAVE_BEFORE | SHORTCUT);
+		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGImportSongAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGImportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGExportSongAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE, UPDATE_ITEMS_CTL);
+		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGExitAction.NAME, SYNC_THREAD);
 		this.map(TGPrintAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
@@ -544,7 +550,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenMeasurePasteDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenTrackPropertiesDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenScaleDialogAction.NAME, SHORTCUT);
-		this.map(TGOpenURLAction.NAME, SAVE_BEFORE | SHORTCUT);
+		this.map(TGOpenURLAction.NAME, SHORTCUT);
 		this.map(TGOpenTransportModeDialogAction.NAME, SHORTCUT);
 		this.map(TGOpenMarkerEditorAction.NAME, SHORTCUT);
 		this.map(TGOpenTransposeDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);

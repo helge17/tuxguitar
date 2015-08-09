@@ -1,8 +1,5 @@
 package org.herac.tuxguitar.editor.undo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -10,20 +7,25 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGUndoableManager {
 	
 	private static final int LIMIT = 100;
-	private int indexOfNextAdd;
-	private List<Object> edits;
+	
+	private TGUndoableBuffer buffer;
 	
 	public TGUndoableManager() {
-		this.init();
+		super();
 	}
 	
 	public void discardAllEdits() {
 		this.reset();
 	}
 	
+	private void reset() {
+		this.getBuffer().setIndexOfNextAdd(0);
+		this.getBuffer().getEdits().clear();
+	}
+	
 	public synchronized void undo() throws TGCannotUndoException {
 		TGUndoableEdit edit = editToBeUndone();
-		if (edit == null) {
+		if( edit == null ) {
 			throw new TGCannotUndoException();
 		}
 		try{
@@ -31,12 +33,12 @@ public class TGUndoableManager {
 		}catch(Throwable throwable){
 			throw new TGCannotUndoException(throwable);
 		}
-		this.indexOfNextAdd--;
+		this.decrementIndexOfNextAdd();
 	}
 	
 	public synchronized void redo() throws TGCannotRedoException {
 		TGUndoableEdit edit = editToBeRedone();
-		if (edit == null) {
+		if( edit == null ) {
 			throw new TGCannotRedoException();
 		}
 		try{
@@ -44,13 +46,13 @@ public class TGUndoableManager {
 		}catch(Throwable throwable){
 			throw new TGCannotRedoException();
 		}
-		this.indexOfNextAdd++;
+		this.incrementIndexOfNextAdd();
 	}
 	
 	public synchronized boolean canUndo() {
 		boolean canUndo = false;
 		TGUndoableEdit edit = editToBeUndone();
-		if (edit != null) {
+		if( edit != null ) {
 			canUndo = edit.canUndo();
 		}
 		return canUndo;
@@ -66,55 +68,66 @@ public class TGUndoableManager {
 	}
 	
 	public synchronized void addEdit(TGUndoableEdit anEdit) {
-		checkForUnused();
-		checkForLimit();
-		this.edits.add(this.indexOfNextAdd, anEdit);
-		this.indexOfNextAdd++;
+		this.checkForUnused();
+		this.checkForLimit();
+		this.getBuffer().getEdits().add(this.getBuffer().getIndexOfNextAdd(), anEdit);
+		this.incrementIndexOfNextAdd();
 	}
 	
 	private void checkForUnused() {
-		while (this.edits.size() > this.indexOfNextAdd) {
-			TGUndoableEdit edit = (TGUndoableEdit) this.edits.get(this.indexOfNextAdd);
-			remove(edit);
+		TGUndoableBuffer buffer = this.getBuffer();
+		while (buffer.getEdits().size() > buffer.getIndexOfNextAdd()) {
+			this.remove(buffer.getEdits().get(buffer.getIndexOfNextAdd()));
 		}
 	}
 	
 	private void checkForLimit() {
-		while (this.edits.size() >= LIMIT) {
-			TGUndoableEdit edit = (TGUndoableEdit) this.edits.get(0);
-			remove(edit);
-			this.indexOfNextAdd--;
+		TGUndoableBuffer buffer = this.getBuffer();
+		while (buffer.getEdits().size() >= LIMIT) {
+			this.remove(buffer.getEdits().get(0));
+			this.decrementIndexOfNextAdd();
 		}
 	}
 	
 	private void remove(TGUndoableEdit edit) {
-		this.edits.remove(edit);
+		this.getBuffer().getEdits().remove(edit);
 	}
 	
 	private TGUndoableEdit editToBeUndone() {
-		int index = this.indexOfNextAdd - 1;
-		if (index >= 0 && index < this.edits.size()) {
-			return (TGUndoableEdit) this.edits.get(index);
+		TGUndoableBuffer buffer = this.getBuffer();
+		int index = (buffer.getIndexOfNextAdd() - 1);
+		if (index >= 0 && index < buffer.getEdits().size()) {
+			return (TGUndoableEdit) buffer.getEdits().get(index);
 		}
 		return null;
 	}
 	
 	private TGUndoableEdit editToBeRedone() {
-		int index = this.indexOfNextAdd;
-		if (index >= 0 && index < this.edits.size()) {
-			return (TGUndoableEdit) this.edits.get(index);
+		TGUndoableBuffer buffer = this.getBuffer();
+		int index = (buffer.getIndexOfNextAdd());
+		if (index >= 0 && index < buffer.getEdits().size()) {
+			return (TGUndoableEdit) buffer.getEdits().get(index);
 		}
 		return null;
 	}
 	
-	private void init() {
-		this.indexOfNextAdd = 0;
-		this.edits = new ArrayList<Object>();
+	private void incrementIndexOfNextAdd() {
+		this.getBuffer().setIndexOfNextAdd(this.getBuffer().getIndexOfNextAdd() + 1);
 	}
 	
-	private void reset() {
-		this.indexOfNextAdd = 0;
-		this.edits.clear();
+	private void decrementIndexOfNextAdd() {
+		this.getBuffer().setIndexOfNextAdd(this.getBuffer().getIndexOfNextAdd() - 1);
+	}
+	
+	private TGUndoableBuffer getBuffer() {
+		if( this.buffer == null ) {
+			this.setBuffer(new TGUndoableBuffer());
+		}
+		return this.buffer;
+	}
+	
+	public void setBuffer(TGUndoableBuffer buffer) {
+		this.buffer = buffer;
 	}
 	
 	public static TGUndoableManager getInstance(TGContext context) {

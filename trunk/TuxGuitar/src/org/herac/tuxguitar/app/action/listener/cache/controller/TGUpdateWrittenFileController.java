@@ -7,6 +7,7 @@ import java.net.URL;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 
@@ -22,6 +23,8 @@ public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 			String fileName = actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME);
 			if( fileName != null ) {
 				URL url = new File(fileName).toURI().toURL();
+				
+				TGDocumentListManager.getInstance(context).findCurrentDocument().setUrl(url);
 				
 				TuxGuitar.getInstance().getFileHistory().reset(url);
 				TuxGuitar.getInstance().getFileHistory().setChooserPath( url );

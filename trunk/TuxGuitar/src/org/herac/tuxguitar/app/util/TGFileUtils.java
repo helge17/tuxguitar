@@ -197,13 +197,22 @@ public class TGFileUtils {
 	
 	public static boolean isLocalFile(URL url){
 		try {
-			if(url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
+			if( url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
 				return true;
 			}
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static String getDecodedFileName(URL url) {
+		try {
+			return URLDecoder.decode(new File(url.getFile()).getName(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private static String getDefaultUserAppDir(){

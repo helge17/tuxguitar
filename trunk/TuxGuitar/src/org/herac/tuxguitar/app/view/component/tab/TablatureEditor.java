@@ -68,6 +68,10 @@ public class TablatureEditor implements TGEventListener{
 		return this.clipBoard;
 	}
 	
+	public boolean isDisposed() {
+		return (this.tablature == null || this.tablature.isDisposed());
+	}
+	
 	public void createSyncProcesses() {
 		this.redrawProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
@@ -90,8 +94,6 @@ public class TablatureEditor implements TGEventListener{
 			getTablature().updateTablature();
 		} else if( type == TGUpdateEvent.SONG_LOADED ){
 			getTablature().updateTablature();
-//			getTablature().resetScroll();
-//			getTablature().resetCaret();
 		}
 	}
 	

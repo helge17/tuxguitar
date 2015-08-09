@@ -19,9 +19,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.action.impl.file.TGOpenURLAction;
-import org.herac.tuxguitar.app.action.impl.file.TGPrintAction;
-import org.herac.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
@@ -29,6 +28,9 @@ import org.herac.tuxguitar.app.action.impl.file.TGImportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGImportSongAction;
 import org.herac.tuxguitar.app.action.impl.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.app.action.impl.file.TGOpenFileAction;
+import org.herac.tuxguitar.app.action.impl.file.TGOpenURLAction;
+import org.herac.tuxguitar.app.action.impl.file.TGPrintAction;
+import org.herac.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
 import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
@@ -59,6 +61,8 @@ public class FileMenuItem extends TGMenuItem {
 	private MenuItem openURL;
 	private MenuItem save;
 	private MenuItem saveAs;
+	private MenuItem close;
+	private MenuItem closeAll;
 	private MenuItem importItem;
 	private MenuItem exportItem;
 	private MenuItem printPreview;
@@ -93,6 +97,14 @@ public class FileMenuItem extends TGMenuItem {
 		//--OPEN--
 		this.openURL = new MenuItem(this.menu, SWT.PUSH);
 		this.openURL.addSelectionListener(this.createActionProcessor(TGOpenURLAction.NAME));
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		//--CLOSE--
+		this.close = new MenuItem(this.menu, SWT.PUSH);
+		this.close.addSelectionListener(this.createActionProcessor(TGCloseCurrentDocumentAction.NAME));
+		//--CLOSE ALL--
+		this.closeAll = new MenuItem(this.menu, SWT.PUSH);
+		this.closeAll.addSelectionListener(this.createActionProcessor(TGCloseAllDocumentsAction.NAME));
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
 		//--SAVE--
@@ -315,7 +327,7 @@ public class FileMenuItem extends TGMenuItem {
 	}
 	
 	public void update(){
-		if(TuxGuitar.getInstance().getFileHistory().isChanged()){
+		if( TuxGuitar.getInstance().getFileHistory().isChanged()){
 			disposeHistoryFiles();
 			updateHistoryFiles();
 			TuxGuitar.getInstance().getFileHistory().setChanged(false);
@@ -328,6 +340,8 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.newSongDefault, "file.new-song.default-template", TGLoadTemplateAction.NAME);
 		setMenuItemTextAndAccelerator(this.open, "file.open", TGOpenFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.openURL, "file.open-url", TGOpenURLAction.NAME);
+		setMenuItemTextAndAccelerator(this.close, "file.close", TGCloseCurrentDocumentAction.NAME);
+		setMenuItemTextAndAccelerator(this.closeAll, "file.close-all", TGCloseAllDocumentsAction.NAME);
 		setMenuItemTextAndAccelerator(this.save, "file.save", TGSaveFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.saveAs, "file.save-as", TGSaveAsFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.printPreview, "file.print-preview", TGPrintPreviewAction.NAME);
