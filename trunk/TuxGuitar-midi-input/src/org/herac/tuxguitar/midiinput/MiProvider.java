@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
 import org.herac.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
@@ -379,7 +380,7 @@ static private	MiProvider	s_Instance;
 							
 						songMgr.getMeasureManager().addChord(beat, chord);
 						
-						TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+						TGDocumentListManager.getInstance(TuxGuitar.getInstance().getContext()).findCurrentDocument().setUnsaved(true);
 						TuxGuitar.getInstance().getEditorManager().updateMeasure(measure.getNumber());
 						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(measure));
 						TuxGuitar.getInstance().updateCache(true);

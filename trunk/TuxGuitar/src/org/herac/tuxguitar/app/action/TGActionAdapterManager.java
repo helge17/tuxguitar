@@ -42,7 +42,7 @@ public class TGActionAdapterManager {
 		this.lockableActionListener = new TGLockableActionListener(context);
 		this.undoableActionListener = new TGUndoableActionListener(context);
 		this.updatableActionListener = new TGUpdateListener(this);
-		this.documentModifierListener = new TGDocumentModifierListener();
+		this.documentModifierListener = new TGDocumentModifierListener(context);
 	}
 	
 	public void initialize(){
