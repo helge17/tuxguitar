@@ -173,14 +173,16 @@ public class TGToolBar implements TGEventListener {
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadIcons();
-				}
-				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadProperties();
-				}
-				else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					processUpdateEvent(event);
+				if(!isDisposed()) {
+					if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+						loadIcons();
+					}
+					else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+						loadProperties();
+					}
+					else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+						processUpdateEvent(event);
+					}
 				}
 			}
 		});

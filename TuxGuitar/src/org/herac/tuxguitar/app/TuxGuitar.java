@@ -14,6 +14,8 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.editor.EditorCache;
 import org.herac.tuxguitar.app.editor.TGEditorManager;
 import org.herac.tuxguitar.app.helper.FileHistory;
@@ -28,7 +30,6 @@ import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.transport.TGTransportListener;
-import org.herac.tuxguitar.app.util.ArgumentParser;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGSplash;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
@@ -57,6 +58,7 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.error.TGErrorHandler;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
@@ -102,13 +104,7 @@ public class TuxGuitar {
 		return instance;
 	}
 	
-	public void displayGUI(String[] args) {
-		//checkeo los argumentos
-		ArgumentParser argumentParser = new ArgumentParser(args);
-		if(argumentParser.processAndExit()){
-			return;
-		}
-		
+	public void displayGUI(URL url) {		
 		// Priority 1 ----------------------------------------------//
 		TGFileUtils.loadLibraries(this.context);
 		TGFileUtils.loadClasspath();
@@ -139,7 +135,7 @@ public class TuxGuitar {
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(this.context).open();
 		
-		this.startSong(argumentParser);
+		this.startSong(url);
 		this.setInitialized( true );
 		
 		while (!getDisplay().isDisposed() && !getShell().isDisposed()) {
@@ -150,15 +146,28 @@ public class TuxGuitar {
 		getDisplay().dispose();
 	}
 	
-	private void startSong(final ArgumentParser parser){
-		final URL url = parser.getURL();
+	private void startSong(URL url){
+		TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnwanted(true);
 		if( url != null ){
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
 			tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
+			tgActionProcessor.setErrorHandler(new TGErrorHandler() {
+				public void handleError(Throwable throwable) {
+					startDefaultSong();
+					
+					TGErrorManager.getInstance(getContext()).handleError(throwable);
+				}
+			});
 			tgActionProcessor.process();
-		}else{
-			new TGActionProcessor(this.context, TGLoadTemplateAction.NAME).process();			
+		} else {
+			this.startDefaultSong();
 		}
+	}
+	
+	private void startDefaultSong() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGLoadTemplateAction.NAME);
+		tgActionProcessor.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, true);
+		tgActionProcessor.process();
 	}
 	
 	public void restoreControlsConfig(){
@@ -329,7 +338,7 @@ public class TuxGuitar {
 	
 	public FileHistory getFileHistory(){
 		if( this.fileHistory == null ){
-			this.fileHistory = new FileHistory();
+			this.fileHistory = new FileHistory(this.context);
 		}
 		return this.fileHistory;
 	}

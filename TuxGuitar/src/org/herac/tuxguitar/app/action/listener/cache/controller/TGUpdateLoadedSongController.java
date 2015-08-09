@@ -4,8 +4,9 @@ import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -26,12 +27,15 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 		midiPlayer.resetChannels();
 		
 		URL url = actionContext.getAttribute(ATTRIBUTE_URL);
+		
+		Boolean unwanted = Boolean.TRUE.equals(actionContext.getAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED));
+		TGDocumentListManager.getInstance(context).findCurrentDocument().setUnwanted(unwanted);
+		TGDocumentListManager.getInstance(context).updateLoadedDocument();
+		
 		TuxGuitar.getInstance().getFileHistory().reset(url);
 		if( url != null ) {
 			TuxGuitar.getInstance().getFileHistory().setChooserPath( url );
 		}
-		
-		TGUndoableManager.getInstance(context).discardAllEdits();
 		
 		TuxGuitar.getInstance().getEditorCache().reset();
 		TGWindow.getInstance(context).loadTitle();

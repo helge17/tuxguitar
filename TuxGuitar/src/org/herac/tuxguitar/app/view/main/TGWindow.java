@@ -20,7 +20,7 @@ import org.herac.tuxguitar.app.action.impl.system.TGDisposeAction;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.util.WindowTitleUtil;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
@@ -93,9 +93,9 @@ public class TGWindow implements TGEventListener {
 		data.top = new FormAttachment(0,0);
 		data.bottom = new FormAttachment(this.sash, 0);
 		
-		TablatureEditor tablatureEditor = TablatureEditor.getInstance(this.context);
-		tablatureEditor.showTablature(this.sashComposite);
-		tablatureEditor.getTablature().setLayoutData(data);
+		TGTabFolder tgTabFolder = TGTabFolder.getInstance(this.context);
+		tgTabFolder.init(this.sashComposite);
+		tgTabFolder.getControl().setLayoutData(data);
 		
 		data = new FormData();
 		data.left = new FormAttachment(0,0);
@@ -199,6 +199,13 @@ public class TGWindow implements TGEventListener {
 				this.cursorController = new TGCursorController(this.context, this.shell);
 			}
 			this.cursorController.loadCursor(cursorStyle);
+		}
+	}
+	
+	public void moveToTop() {
+		if(!this.isDisposed()) {
+			this.shell.setMinimized(false);
+			this.shell.forceActive();
 		}
 	}
 	

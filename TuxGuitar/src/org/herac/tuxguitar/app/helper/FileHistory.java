@@ -14,47 +14,62 @@ import java.util.List;
 import java.util.Properties;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGContext;
 
 public class FileHistory {
 	
 	private static final int URL_LIMIT = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
 	
+	private TGContext context;
+	
 	private boolean changed;
-	private boolean newFile;
-	private boolean localFile;
-	private boolean unsavedFile;
 	private List<URL> urls;
 	private String chooserPath;
 	
-	public FileHistory(){
+	public FileHistory(TGContext context){
+		this.context = context;
 		this.urls = new ArrayList<URL>();
 		this.loadHistory();
 		this.reset(null);
 	}
 	
 	public void reset(URL url) {
-		this.unsavedFile = false;
-		this.newFile = (url == null);
-		this.localFile = (url != null && isLocalFile(url));
 		this.addURL(url);
 	}
 	
 	public boolean isNewFile(){
-		return this.newFile;
+		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
+		if( document != null ) {
+			return (document.getUrl() == null);
+		}
+		return false;
 	}
 	
 	public boolean isLocalFile(){
-		return this.localFile;
+		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
+		if( document != null && document.getUrl() != null ) {
+			return isLocalFile(document.getUrl());
+		}
+		return false;
 	}
 	
 	public boolean isUnsavedFile() {
-		return this.unsavedFile;
+		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
+		if( document != null ) {
+			return document.isUnsaved();
+		}
+		return false;
 	}
 	
 	public void setUnsavedFile() {
-		this.unsavedFile = true;
+		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
+		if( document != null ) {
+			document.setUnsaved(true);
+		}
 	}
 	
 	public void setChooserPath(String chooserPath){
@@ -71,7 +86,7 @@ public class FileHistory {
 	public String getCurrentFileName(String defaultName) {
 		if(!this.isNewFile()){
 			URL url = getCurrentURL();
-			if(url != null){
+			if( url != null ){
 				return decode(new File(url.getFile()).getName());
 			}
 		}
@@ -83,7 +98,7 @@ public class FileHistory {
 			URL url = getCurrentURL();
 			if(url != null){
 				String file = getFilePath(url);
-				if(file != null){
+				if( file != null ) {
 					return decode(file);
 				}
 			}
@@ -101,7 +116,7 @@ public class FileHistory {
 	}
 	
 	protected String getFilePath(URL url){
-		if(isLocalFile(url)){
+		if( isLocalFile(url) ){
 			return new File(url.getFile()).getParent();
 		}
 		return null;
@@ -118,7 +133,7 @@ public class FileHistory {
 	
 	protected boolean isLocalFile(URL url){
 		try {
-			if(url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
+			if( url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
 				return true;
 			}
 		}catch(Throwable throwable){
@@ -128,20 +143,21 @@ public class FileHistory {
 	}
 	
 	protected URL getCurrentURL(){
-		if(!this.urls.isEmpty()){
-			return (URL)this.urls.get(0);
+		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
+		if( document != null ) {
+			return document.getUrl();
 		}
 		return null;
 	}
 	
 	public void addURL(URL url){
-		if(url != null){
-			removeURL(url);
-			this.urls.add(0,url);
-			checkLimit();
-			setChanged(true);
+		if( url != null ){
+			this.removeURL(url);
+			this.urls.add(0, url);
+			this.checkLimit();
+			this.setChanged(true);
+			this.saveHistory();
 		}
-		saveHistory();
 	}
 	
 	public List<URL> getURLs(){
@@ -175,7 +191,7 @@ public class FileHistory {
 	public void loadHistory() {
 		try {
 			this.urls.clear();
-			if(new File(getHistoryFileName()).exists()){
+			if( new File(getHistoryFileName()).exists() ){
 				InputStream inputStream = new FileInputStream(getHistoryFileName());
 				Properties properties = new Properties();
 				properties.load(inputStream);
@@ -185,13 +201,11 @@ public class FileHistory {
 				int count = Integer.valueOf((String)properties.getProperty("history.count", "0"));
 				for(int i = 0; i < count;i ++){
 					String url = (String)properties.getProperty("history." + i);
-					if(URL_LIMIT > i && url != null && url.length() > 0){
+					if( URL_LIMIT > i && url != null && url.length() > 0 ){
 						this.urls.add(new URL(url));
 					}
 				}
-				setChanged(true);
-			}else{
-				this.saveHistory();
+				this.setChanged(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,9 +1,16 @@
 package org.herac.tuxguitar.app;
 
+import org.herac.tuxguitar.app.util.ArgumentParser;
+
 public class TGMain {
 	
 	public static void main(String[] args){
-		TuxGuitar.getInstance().displayGUI(args);
+		ArgumentParser argumentParser = new ArgumentParser(args);
+		if(argumentParser.processAndExit()){
+			return;
+		}
+		
+		TuxGuitar.getInstance().displayGUI(argumentParser.getURL());
 		System.exit(0);
 	}
 	
