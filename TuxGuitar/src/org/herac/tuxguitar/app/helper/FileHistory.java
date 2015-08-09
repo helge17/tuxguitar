@@ -65,13 +65,6 @@ public class FileHistory {
 		return false;
 	}
 	
-	public void setUnsavedFile() {
-		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
-		if( document != null ) {
-			document.setUnsaved(true);
-		}
-	}
-	
 	public void setChooserPath(String chooserPath){
 		this.chooserPath = chooserPath;
 	}

@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionEvent;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGDocumentModifierListener implements TGEventListener {
 	
+	private TGContext context;
 	private List<String> actionIds;
 	
-	public TGDocumentModifierListener() {
+	public TGDocumentModifierListener(TGContext context) {
+		this.context = context;
 		this.actionIds = new ArrayList<String>();
 	}
 	
@@ -35,7 +38,7 @@ public class TGDocumentModifierListener implements TGEventListener {
 	
 	public void checkForDocumentModifierAction(String actionId) {
 		if( this.isDocumentModifierAction(actionId) ) {
-			TuxGuitar.getInstance().getFileHistory().setUnsavedFile();
+			TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnsaved(true);
 		}
 	}
 	
