@@ -13,6 +13,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
@@ -26,7 +27,6 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEventListener {
 	
-	private static final String ATTRIBUTE_DOCUMENTS = "documents";
 	private static final String UNSAVED_INTERCEPTOR_DOCUMENTS = "unsavedInterceptor_documents";
 	private static final String UNSAVED_INTERCEPTOR_ACTION_ID = "unsavedInterceptor_actionId";
 	private static final String UNSAVED_INTERCEPTOR_BY_PASS = "unsavedInterceptor_byPass";
@@ -135,7 +135,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 	}
 	
 	private List<TGDocument> findDocuments(TGActionContext context) {
-		List<TGDocument> documents = context.getAttribute(ATTRIBUTE_DOCUMENTS);
+		List<TGDocument> documents = context.getAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENTS);
 		if( documents == null ) {
 			documents = TGDocumentListManager.getInstance(this.context).getDocuments();
 		}
