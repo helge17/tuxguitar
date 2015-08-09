@@ -34,7 +34,7 @@ CLASSPATH=${CLASSPATH}:./lib/itext-xmlworker.jar
 CLASSPATH=${CLASSPATH}:./share/
 CLASSPATH=${CLASSPATH}:./dist/
 ##MAINCLASS
-MAINCLASS=org.herac.tuxguitar.app.TGMain
+MAINCLASS=org.herac.tuxguitar.app.TGMainSingleton
 ##JVM ARGUMENTS
 VM_ARGS="-Xmx512m"
 ##EXPORT VARS

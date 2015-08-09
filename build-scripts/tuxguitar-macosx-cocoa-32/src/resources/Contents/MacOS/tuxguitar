@@ -22,7 +22,7 @@ LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 ##MAINCLASS
-MAINCLASS=org.herac.tuxguitar.app.TGMain
+MAINCLASS=org.herac.tuxguitar.app.TGMainSingleton
 ##JVM ARGUMENTS
 VM_ARGS="-Xmx512m"
 ##SWT ARGUMENTS
