@@ -16,8 +16,6 @@ public class TGCloseDocumentsAction extends TGActionBase {
 	
 	public static final String NAME = "action.file.close-documents";
 	
-	public static final String ATTRIBUTE_DOCUMENTS = "documents";
-	
 	public TGCloseDocumentsAction(TGContext context) {
 		super(context, NAME);
 	}
@@ -28,7 +26,7 @@ public class TGCloseDocumentsAction extends TGActionBase {
 		TGDocumentListManager documentManager = TGDocumentListManager.getInstance(this.getContext());
 		int currentIndex = documentManager.findCurrentDocumentIndex();
 		
-		List<TGDocument> documentsToClose = context.getAttribute(ATTRIBUTE_DOCUMENTS);
+		List<TGDocument> documentsToClose = context.getAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENTS);
 		documentManager.removeDocuments(documentsToClose);
 		
 		TGDocument next = this.findNextDocument(documentManager, currentIndex);

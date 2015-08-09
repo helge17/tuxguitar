@@ -37,6 +37,7 @@ public class TGTabFolder implements TGEventListener {
 	private TabFolder tabFolder;
 	private List<TabItem> tabItems;
 	private boolean ignoreEvents;
+	private boolean currentUnsaved;
 	
 	public TGTabFolder(TGContext context) {
 		this.context = context;
@@ -95,6 +96,29 @@ public class TGTabFolder implements TGEventListener {
 	
 	public void updateDocument() {
 		this.updateTabItems();
+		this.updateFocus();
+		this.updateCaret();
+	}
+	
+	public void updateSelection() {
+		if(!this.isDisposed()) {
+			TGDocumentListManager documentManager = TGDocumentListManager.getInstance(this.context);
+			TGDocument currentDocument = documentManager.findCurrentDocument();
+			if( currentDocument.isUnsaved() != this.currentUnsaved ) {
+				this.updateTabItems();
+			}
+			else {
+				this.ignoreEvents = true;
+				
+				int index = documentManager.findCurrentDocumentIndex();
+				if( index >= 0 && index < this.tabItems.size() ) {
+					this.tabFolder.setSelection(index);
+				}
+				
+				this.updateFocus();
+				this.ignoreEvents = false;
+			}
+		}
 	}
 	
 	public void updateTabItems() {
@@ -109,27 +133,13 @@ public class TGTabFolder implements TGEventListener {
 				TGDocument document = documents.get(i);
 				
 				TabItem tabItem = this.findTabItem(i);
-				tabItem.setText(documentManager.getDocumentName(document));
+				tabItem.setText(this.createTabItemLabel(document));
 				if( currentDocument != null && currentDocument.equals(document) ) {
 					this.tabFolder.setSelection(i);
 				}
 			}
 			
-			this.updateFocus();
-			this.updateCaret();
-			this.ignoreEvents = false;
-		}
-	}
-	
-	public void updateSelection() {
-		if(!this.isDisposed()) {
-			this.ignoreEvents = true;
-			int index = TGDocumentListManager.getInstance(this.context).findCurrentDocumentIndex();
-			if( index >= 0 && index < this.tabItems.size() ) {
-				this.tabFolder.setSelection(index);
-			}
-			
-			this.updateFocus();
+			this.currentUnsaved = currentDocument.isUnsaved();
 			this.ignoreEvents = false;
 		}
 	}
@@ -156,6 +166,16 @@ public class TGTabFolder implements TGEventListener {
 			}
 		}
 		return null;
+	}
+	
+	public String createTabItemLabel(TGDocument document) {
+		StringBuffer sb = new StringBuffer();
+		if( document.isUnsaved() ) {
+			sb.append("*");
+		}
+		sb.append(TGDocumentListManager.getInstance(this.context).getDocumentName(document));
+		
+		return sb.toString();
 	}
 	
 	public void createSyncProcesses() {
