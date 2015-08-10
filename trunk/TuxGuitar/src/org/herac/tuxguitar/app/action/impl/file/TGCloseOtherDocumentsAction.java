@@ -11,17 +11,18 @@ import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGCloseCurrentDocumentAction extends TGActionBase {
+public class TGCloseOtherDocumentsAction extends TGActionBase {
 	
-	public static final String NAME = "action.file.close-current";
+	public static final String NAME = "action.file.close-others";
 	
-	public TGCloseCurrentDocumentAction(TGContext context) {
+	public TGCloseOtherDocumentsAction(TGContext context) {
 		super(context, NAME);
 	}
 	
-	protected void processAction(final TGActionContext context){
-		List<TGDocument> documents = new ArrayList<TGDocument>();
-		documents.add(TGDocumentListManager.getInstance(this.getContext()).findCurrentDocument());
+	protected void processAction(final TGActionContext context) {
+		TGDocument current = TGDocumentListManager.getInstance(this.getContext()).findCurrentDocument();
+		List<TGDocument> documents = new ArrayList<TGDocument>(TGDocumentListManager.getInstance(getContext()).getDocuments());
+		documents.remove(current);
 		context.setAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENTS, documents);
 		
 		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());

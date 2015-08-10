@@ -31,6 +31,7 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
@@ -263,6 +264,7 @@ public class TGActionInstaller {
 		installAction(new TGExportFileAction(context));
 		installAction(new TGCloseDocumentsAction(context));
 		installAction(new TGCloseCurrentDocumentAction(context));
+		installAction(new TGCloseOtherDocumentsAction(context));
 		installAction(new TGCloseAllDocumentsAction(context));
 		installAction(new TGExitAction(context));
 		installAction(new TGPrintAction(context));
