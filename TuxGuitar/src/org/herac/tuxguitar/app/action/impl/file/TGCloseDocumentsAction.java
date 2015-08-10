@@ -24,21 +24,24 @@ public class TGCloseDocumentsAction extends TGActionBase {
 		TGActionManager actionManager = TGActionManager.getInstance(getContext());
 		
 		TGDocumentListManager documentManager = TGDocumentListManager.getInstance(this.getContext());
+		TGDocument currentDocument = documentManager.findCurrentDocument();
 		int currentIndex = documentManager.findCurrentDocumentIndex();
 		
 		List<TGDocument> documentsToClose = context.getAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENTS);
 		documentManager.removeDocuments(documentsToClose);
 		
-		TGDocument next = this.findNextDocument(documentManager, currentIndex);
-		if( next != null ) {
-			context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, next.getSong());
-			context.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, next.isUnwanted());
-			
-			actionManager.execute(TGLoadSongAction.NAME, context);
-		} else {
-			context.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, true);
-			
-			actionManager.execute(TGLoadTemplateAction.NAME, context);
+		if(!documentManager.containsDocument(currentDocument)) {
+			TGDocument next = this.findNextDocument(documentManager, currentIndex);
+			if( next != null ) {
+				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, next.getSong());
+				context.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, next.isUnwanted());
+				
+				actionManager.execute(TGLoadSongAction.NAME, context);
+			} else {
+				context.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, true);
+				
+				actionManager.execute(TGLoadTemplateAction.NAME, context);
+			}
 		}
 	}
 	

@@ -21,6 +21,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
@@ -62,6 +63,7 @@ public class FileMenuItem extends TGMenuItem {
 	private MenuItem save;
 	private MenuItem saveAs;
 	private MenuItem close;
+	private MenuItem closeOthers;
 	private MenuItem closeAll;
 	private MenuItem importItem;
 	private MenuItem exportItem;
@@ -102,6 +104,9 @@ public class FileMenuItem extends TGMenuItem {
 		//--CLOSE--
 		this.close = new MenuItem(this.menu, SWT.PUSH);
 		this.close.addSelectionListener(this.createActionProcessor(TGCloseCurrentDocumentAction.NAME));
+		//--CLOSE OTHERS--
+		this.closeOthers = new MenuItem(this.menu, SWT.PUSH);
+		this.closeOthers.addSelectionListener(this.createActionProcessor(TGCloseOtherDocumentsAction.NAME));
 		//--CLOSE ALL--
 		this.closeAll = new MenuItem(this.menu, SWT.PUSH);
 		this.closeAll.addSelectionListener(this.createActionProcessor(TGCloseAllDocumentsAction.NAME));
@@ -341,6 +346,7 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.open, "file.open", TGOpenFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.openURL, "file.open-url", TGOpenURLAction.NAME);
 		setMenuItemTextAndAccelerator(this.close, "file.close", TGCloseCurrentDocumentAction.NAME);
+		setMenuItemTextAndAccelerator(this.closeOthers, "file.close-others", TGCloseOtherDocumentsAction.NAME);
 		setMenuItemTextAndAccelerator(this.closeAll, "file.close-all", TGCloseAllDocumentsAction.NAME);
 		setMenuItemTextAndAccelerator(this.save, "file.save", TGSaveFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.saveAs, "file.save-as", TGSaveAsFileAction.NAME);

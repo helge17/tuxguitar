@@ -104,7 +104,7 @@ public class TGTabFolder implements TGEventListener {
 		if(!this.isDisposed()) {
 			TGDocumentListManager documentManager = TGDocumentListManager.getInstance(this.context);
 			TGDocument currentDocument = documentManager.findCurrentDocument();
-			if( currentDocument.isUnsaved() != this.currentUnsaved ) {
+			if( currentDocument.isUnsaved() != this.currentUnsaved || documentManager.countDocuments() != this.tabItems.size() ) {
 				this.updateTabItems();
 			}
 			else {

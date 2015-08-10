@@ -30,6 +30,7 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
@@ -320,6 +321,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE, UPDATE_ITEMS_CTL);
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGExitAction.NAME, SYNC_THREAD);
 		this.map(TGPrintAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);

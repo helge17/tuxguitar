@@ -104,6 +104,14 @@ public class TGDocumentListManager {
 		this.documents.removeAll(documents);
 	}
 	
+	public int countDocuments() {
+		return this.documents.size();
+	}
+	
+	public boolean containsDocument(TGDocument document) {
+		return this.documents.contains(document);
+	}
+	
 	public static TGDocumentListManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDocumentListManager.class.getName(), new TGSingletonFactory<TGDocumentListManager>() {
 			public TGDocumentListManager createInstance(TGContext context) {
