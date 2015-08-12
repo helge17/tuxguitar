@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>tuxguitar-gm-utils</artifactId>
+			<artifactId>tuxguitar-editor-utils</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
