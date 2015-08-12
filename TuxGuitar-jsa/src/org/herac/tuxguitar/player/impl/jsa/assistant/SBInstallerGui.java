@@ -19,12 +19,12 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class SBInstallerGui implements SBInstallerlistener{
 
@@ -159,7 +159,8 @@ public class SBInstallerGui implements SBInstallerlistener{
 				public void run() {
 					if(!isDisposed()){
 						getDialog().dispose();
-						MessageDialog.errorMessage( throwable );
+						
+						TGErrorManager.getInstance(SBInstallerGui.this.context).handleError(throwable);
 					}
 				}
 			});

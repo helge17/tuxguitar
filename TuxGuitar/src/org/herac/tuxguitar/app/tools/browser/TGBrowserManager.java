@@ -11,11 +11,13 @@ import org.herac.tuxguitar.app.tools.browser.filesystem.TGBrowserFactoryImpl;
 import org.herac.tuxguitar.app.tools.browser.xml.TGBrowserReader;
 import org.herac.tuxguitar.app.tools.browser.xml.TGBrowserWriter;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserManager {
 	
-	private static TGBrowserManager instance;
-	
+	private TGContext context;
 	private List<TGBrowserFactory> factories;
 	private List<TGBrowserCollection> collections;
 	private List<TGBrowserCollectionInfo> collectionInfos;
@@ -23,19 +25,13 @@ public class TGBrowserManager {
 	
 	private TGBrowserFactoryHandler handler;
 	
-	private TGBrowserManager(){
+	private TGBrowserManager(TGContext context){
+		this.context = context;
 		this.factories = new ArrayList<TGBrowserFactory>();
 		this.collections = new ArrayList<TGBrowserCollection>();
 		this.collectionInfos = new ArrayList<TGBrowserCollectionInfo>();
 		this.readCollections();
 		this.addDefaultFactory();
-	}
-	
-	public static TGBrowserManager instance(){
-		if(instance == null){
-			instance = new TGBrowserManager();
-		}
-		return instance;
 	}
 	
 	public void setFactoryHandler(TGBrowserFactoryHandler handler){
@@ -157,6 +153,18 @@ public class TGBrowserManager {
 	}
 	
 	private void addDefaultFactory(){
-		this.addFactory(new TGBrowserFactoryImpl());
+		this.addFactory(new TGBrowserFactoryImpl(this.context));
+	}
+	
+	public TGContext getContext() {
+		return context;
+	}
+
+	public static TGBrowserManager getInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGBrowserManager.class.getName(), new TGSingletonFactory<TGBrowserManager>() {
+			public TGBrowserManager createInstance(TGContext context) {
+				return new TGBrowserManager(context);
+			}
+		});
 	}
 }

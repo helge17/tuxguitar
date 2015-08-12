@@ -2,8 +2,8 @@ package org.herac.tuxguitar.midiinput;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin;
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiInputPlugin
@@ -31,7 +31,7 @@ public class MidiInputPlugin
 				}
 			catch(MiException mie)
 				{
-				MessageDialog.errorMessage(mie);
+				TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(mie);
 				}
 			}
 
@@ -52,7 +52,7 @@ public class MidiInputPlugin
 			}
 		catch(MiException mie)
 			{
-			MessageDialog.errorMessage(mie);
+			TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(mie);
 			}
 		}
 

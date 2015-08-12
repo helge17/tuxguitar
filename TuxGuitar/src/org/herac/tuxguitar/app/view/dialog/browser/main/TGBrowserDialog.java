@@ -28,13 +28,12 @@ import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
@@ -72,6 +71,10 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		this.toolBar = new TGBrowserToolBar(this);
 	}
 	
+	public TGContext getContext() {
+		return context;
+	}
+
 	public TGBrowserConnection getConnection(){
 		return this.connection;
 	}
@@ -91,7 +94,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	public void exit(){
 		this.getConnection().release();
 		this.getConnection().close(CALL_CLOSE);
-		TGBrowserManager.instance().writeCollections();
+		TGBrowserManager.getInstance(this.context).writeCollections();
 		TuxGuitar.getInstance().getIconManager().removeLoader(this);
 	}
 	
@@ -115,7 +118,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		this.loadProperties();
 		this.updateBars();
 		
-		TGBrowserManager.instance().setFactoryHandler(this);
+		TGBrowserManager.getInstance(this.context).setFactoryHandler(this);
 		TuxGuitar.getInstance().getIconManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER);
@@ -213,7 +216,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	protected void openCollection(){
 		if(!isDisposed() && getCollection() != null){
-			TGBrowserFactory factory = TGBrowserManager.instance().getFactory(getCollection().getType());
+			TGBrowserFactory factory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
 			getConnection().open(CALL_OPEN,factory.newTGBrowser(getCollection().getData()));
 		}
 	}
@@ -226,7 +229,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	protected void removeCollection(TGBrowserCollection collection){
 		if(collection != null){
-			TGBrowserManager.instance().removeCollection(collection);
+			TGBrowserManager.getInstance(this.context).removeCollection(collection);
 			if( getCollection() != null && getCollection().equals( collection ) ){
 				this.getConnection().close(CALL_CLOSE);
 			}else{
@@ -310,7 +313,8 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
 			public void handleError(Throwable throwable) {
 				getConnection().release();
-				MessageDialog.errorMessage(getShell(), new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}),throwable));
+				
+				TGMessageDialogUtil.errorMessage(getContext(), getShell(), TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}));
 			}
 		});
 		tgActionProcessor.process();

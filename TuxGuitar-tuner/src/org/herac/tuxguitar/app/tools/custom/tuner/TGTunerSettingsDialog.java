@@ -16,7 +16,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.util.TGContext;
 
 
 /**
@@ -39,7 +40,7 @@ public class TGTunerSettingsDialog {
 	
 	public TGTunerSettingsDialog(TGTunerDialog dialog) {
 		this.tunerDialog = dialog;
-		this.updated=false;
+		this.updated = false;
 	}
 
 	public void show() {
@@ -216,7 +217,7 @@ public class TGTunerSettingsDialog {
 			}
 */		} catch (Exception ex) {
 			if (!loadedDefaults) {
-				MessageDialog.errorMessage(dialog,"Failed to load TuxGuitar settings.\nLoading defaults.");
+				TGMessageDialogUtil.errorMessage(getContext(), dialog, "Failed to load TuxGuitar settings.\nLoading defaults.");
 				loadSettings(TGTunerSettings.getDefaults(),dialog);
 			}
 		}
@@ -273,7 +274,7 @@ public class TGTunerSettingsDialog {
 			dialog.dispose();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			MessageDialog.errorMessage(dialog,ex.getMessage());
+			TGMessageDialogUtil.errorMessage(getContext(), dialog, ex.getMessage());
 		}
 	}
 	
@@ -330,5 +331,7 @@ public class TGTunerSettingsDialog {
 			throw new Exception("Invalid sampling buffer size");
 	}
 
-
+	protected TGContext getContext() {
+		return this.tunerDialog.getContext();
+	}
 }

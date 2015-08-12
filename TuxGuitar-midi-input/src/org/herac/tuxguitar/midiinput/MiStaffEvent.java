@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 
 class MiStaffEvent
@@ -106,7 +107,7 @@ class MiStaffEvent
 		}
 	catch(Throwable throwable)
 		{
-		MessageDialog.errorMessage(throwable);
+		TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(throwable);
 		}
 	}
 
