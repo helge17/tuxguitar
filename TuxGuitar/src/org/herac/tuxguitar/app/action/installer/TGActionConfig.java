@@ -10,6 +10,7 @@ public class TGActionConfig {
 	private boolean lockableAction;
 	private boolean shortcutAvailable;
 	private boolean disableOnPlaying;
+	private boolean stopTransport;
 	private boolean documentModifier;
 	private boolean syncThread;
 	private boolean unsavedInterceptor;
@@ -56,6 +57,14 @@ public class TGActionConfig {
 
 	public void setDisableOnPlaying(boolean disableOnPlaying) {
 		this.disableOnPlaying = disableOnPlaying;
+	}
+
+	public boolean isStopTransport() {
+		return stopTransport;
+	}
+
+	public void setStopTransport(boolean stopTransport) {
+		this.stopTransport = stopTransport;
 	}
 
 	public boolean isDocumentModifier() {

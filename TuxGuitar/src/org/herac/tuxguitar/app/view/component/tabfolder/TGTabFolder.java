@@ -24,6 +24,7 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -193,7 +194,11 @@ public class TGTabFolder implements TGEventListener {
 	
 	public void onTabItemSelected() {
 		if(!this.ignoreEvents) {
-			this.loadSelectedDocument();
+			if( MidiPlayer.getInstance(this.context).isRunning() ) {
+				this.updateSelection();
+			} else {
+				this.loadSelectedDocument();
+			}
 		}
 	}
 	

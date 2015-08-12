@@ -10,7 +10,8 @@ import org.herac.tuxguitar.app.action.listener.lock.TGLockableActionListener;
 import org.herac.tuxguitar.app.action.listener.save.TGDocumentModifierListener;
 import org.herac.tuxguitar.app.action.listener.save.TGUnsavedDocumentInterceptor;
 import org.herac.tuxguitar.app.action.listener.thread.TGSyncThreadInterceptor;
-import org.herac.tuxguitar.app.action.listener.transport.TGActionAccessInterceptor;
+import org.herac.tuxguitar.app.action.listener.transport.TGDisableOnPlayInterceptor;
+import org.herac.tuxguitar.app.action.listener.transport.TGStopTransportInterceptor;
 import org.herac.tuxguitar.app.action.listener.undoable.TGUndoableActionListener;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -20,7 +21,8 @@ public class TGActionAdapterManager {
 	
 	private TGContext context;
 	private TGActionContextFactory actionContextFactory;
-	private TGActionAccessInterceptor actionAccessInterceptor;
+	private TGDisableOnPlayInterceptor disableOnPlayInterceptor;
+	private TGStopTransportInterceptor stopTransportInterceptor;
 	private TGActionIdList keyBindingActionIds;
 	
 	private TGSyncThreadInterceptor syncThreadInterceptor;
@@ -35,7 +37,8 @@ public class TGActionAdapterManager {
 		this.context = context;
 		this.actionContextFactory = new TGActionContextFactoryImpl();
 		this.keyBindingActionIds = new TGActionIdList();
-		this.actionAccessInterceptor = new TGActionAccessInterceptor();
+		this.disableOnPlayInterceptor = new TGDisableOnPlayInterceptor(context);
+		this.stopTransportInterceptor = new TGStopTransportInterceptor(context);
 		this.syncThreadInterceptor = new TGSyncThreadInterceptor(context);
 		this.unsavedDocumentInterceptor = new TGUnsavedDocumentInterceptor(context);
 		this.lockableActionListener = new TGLockableActionListener(context);
@@ -53,7 +56,8 @@ public class TGActionAdapterManager {
 	private void initializeHandlers(){
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
-		tgActionManager.addInterceptor(this.actionAccessInterceptor);
+		tgActionManager.addInterceptor(this.stopTransportInterceptor);
+		tgActionManager.addInterceptor(this.disableOnPlayInterceptor);
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		tgActionManager.addInterceptor(this.unsavedDocumentInterceptor);
 		
@@ -86,10 +90,14 @@ public class TGActionAdapterManager {
 		return this.keyBindingActionIds;
 	}
 	
-	public TGActionAccessInterceptor getActionAccessInterceptor() {
-		return this.actionAccessInterceptor;
+	public TGDisableOnPlayInterceptor getDisableOnPlayInterceptor() {
+		return this.disableOnPlayInterceptor;
 	}
 	
+	public TGStopTransportInterceptor getStopTransportInterceptor() {
+		return stopTransportInterceptor;
+	}
+
 	public TGSyncThreadInterceptor getSyncThreadInterceptor() {
 		return syncThreadInterceptor;
 	}
