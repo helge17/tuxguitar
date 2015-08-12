@@ -283,7 +283,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	public static final int SYNC_THREAD = 0x02;
 	public static final int SHORTCUT = 0x04;
 	public static final int DISABLE_ON_PLAY = 0x08;
-	public static final int SAVE_BEFORE = 0x10;
+	public static final int STOP_TRANSPORT = 0x10;
+	public static final int SAVE_BEFORE = 0x20;
 	
 	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
@@ -305,24 +306,24 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGDisposeAction.NAME, SYNC_THREAD | SAVE_BEFORE);
 		
 		//file actions
-		this.map(TGLoadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
-		this.map(TGNewSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGLoadTemplateAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGReadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
+		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
+		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
+		this.map(TGReadSongAction.NAME, LOCKABLE);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
 		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGReadURLAction.NAME, LOCKABLE, new TGUpdateReadedURLController());
+		this.map(TGReadURLAction.NAME, LOCKABLE | STOP_TRANSPORT, new TGUpdateReadedURLController());
 		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGImportSongAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGImportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGExportSongAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SAVE_BEFORE, UPDATE_ITEMS_CTL);
-		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
-		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
-		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
+		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
+		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE);
+		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGExitAction.NAME, SYNC_THREAD);
 		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
@@ -588,6 +589,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		tgActionConfig.setLockableAction((flags & LOCKABLE) != 0);
 		tgActionConfig.setShortcutAvailable((flags & SHORTCUT) != 0);
 		tgActionConfig.setDisableOnPlaying((flags & DISABLE_ON_PLAY) != 0);
+		tgActionConfig.setStopTransport((flags & STOP_TRANSPORT) != 0);
 		tgActionConfig.setSyncThread((flags & SYNC_THREAD) != 0);
 		tgActionConfig.setUnsavedInterceptor((flags & SAVE_BEFORE) != 0);
 		tgActionConfig.setDocumentModifier(undoableController != null);

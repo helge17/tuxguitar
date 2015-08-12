@@ -22,26 +22,26 @@ public class TGLockableActionListener implements TGEventListener {
 		this.actionIds = new ArrayList<String>();
 	}
 	
-	public boolean isLockableAction(String id) {
+	public boolean containsActionId(String id) {
 		return this.actionIds.contains(id);
 	}
 	
-	public void addLockableAction(String id) {
+	public void addActionId(String id) {
 		this.actionIds.add(id);
 	}
 	
-	public void removeLockableAction(String id) {
+	public void removeActionId(String id) {
 		this.actionIds.remove(id);
 	}
 	
 	public void checkForLock(String actionId) {
-		if( this.isLockableAction(actionId) ) {
+		if( this.containsActionId(actionId) ) {
 			TGEditorManager.getInstance(this.context).lock();
 		}
 	}
 	
 	public void checkForUnlock(String actionId) {
-		if( this.isLockableAction(actionId) ) {
+		if( this.containsActionId(actionId) ) {
 			TGEditorManager.getInstance(this.context).unlock(false);
 		}
 	}
