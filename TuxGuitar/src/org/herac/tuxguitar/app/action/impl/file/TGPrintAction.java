@@ -1,22 +1,26 @@
 package org.herac.tuxguitar.app.action.impl.file;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.printer.PrintDocument;
 import org.herac.tuxguitar.app.printer.PrintLayout;
 import org.herac.tuxguitar.app.printer.PrintStyles;
-import org.herac.tuxguitar.app.util.MessageDialog;
-import org.herac.tuxguitar.app.view.dialog.printer.PrintStylesDialog;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialog;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialogController;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesHandler;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterDataDialog;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterDataDialogController;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterDataHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.graphics.TGPainter;
@@ -31,71 +35,65 @@ public class TGPrintAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.print";
 	
+	public static final String ATTRIBUTE_STYLES = PrintStyles.class.getName();
+	public static final String ATTRIBUTE_DATA = PrinterData.class.getName();
+	
 	public TGPrintAction(TGContext context) {
 		super(context, NAME);
 	}
 	
 	protected void processAction(TGActionContext context){
-		try{
-			final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			final PrintStyles data = PrintStylesDialog.open(TuxGuitar.getInstance().getShell(), song);
-			if(data != null){
-				PrintDialog dialog = new PrintDialog(TuxGuitar.getInstance().getShell(), SWT.NULL);
-				PrinterData printerData = dialog.open();
-				
-				if (printerData != null) {
-//					TuxGuitar.getInstance().loadCursor(SWT.CURSOR_WAIT);
-					
-					this.print(song, printerData, data);
-				}
+		PrintStyles styles = context.getAttribute(ATTRIBUTE_STYLES);
+		if( styles == null ) {
+			this.configureStyles(context);
+			return;
+		}
+		
+		PrinterData printerData = context.getAttribute(ATTRIBUTE_DATA);
+		if( printerData == null ) {
+			this.configurePrinterData(context);
+			return;
+		}
+		
+		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		TGSong targetSong = sourceSong.clone(manager.getFactory());
+		
+		Printer printer = new Printer(printerData);
+		PrintController controller = new PrintController(targetSong, manager, new TGResourceFactoryImpl(printer));
+		PrintLayout printLayout = new PrintLayout(controller, styles);
+		printLayout.loadStyles(getPrinterScale(printer), 1f);
+		printLayout.updateSong();
+		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, printerData, getPrinterArea(printer, 0.5f)));
+		printLayout.getResourceBuffer().disposeAllResources();
+	}
+	
+	public void configureStyles(final TGActionContext context) {
+		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintStylesDialogController());
+		context.setAttribute(TGPrintStylesDialog.ATTRIBUTE_HANDLER, new TGPrintStylesHandler() {
+			public void updatePrintStyles(PrintStyles styles) {
+				context.setAttribute(ATTRIBUTE_STYLES, styles);
+				executeActionInNewThread(TGPrintAction.NAME, context);
 			}
-		}catch(Throwable throwable ){
-			MessageDialog.errorMessage(throwable);
-		}
+		});
+		executeActionInNewThread(TGOpenViewAction.NAME, context);
 	}
 	
-	public void print(final TGSong srcSong, final PrinterData printerData ,final PrintStyles data){
-		try{
-			new Thread(new Runnable() {
-				public void run() {
-					try{
-						final TGSongManager manager = new TGSongManager(new TGFactoryImpl());
-						final TGSong song = srcSong.clone(manager.getFactory());
-						
-						TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
-							public void run() {
-								try{
-									Printer printer = new Printer(printerData);
-									PrintController controller = new PrintController(song, manager, new TGResourceFactoryImpl(printer));
-									PrintLayout layout = new PrintLayout(controller,data);
-									
-									print(printer, printerData, layout , getPrinterArea(printer,0.5f), getPrinterScale(printer) );
-								}catch(Throwable throwable ){
-									MessageDialog.errorMessage(throwable);
-								}
-							}
-						});
-					}catch(Throwable throwable ){
-						MessageDialog.errorMessage(throwable);
-					}
-				}
-			}).start();
-		}catch(Throwable throwable ){
-			MessageDialog.errorMessage(throwable);
-		}
+	public void configurePrinterData(final TGActionContext context) {
+		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrinterDataDialogController());
+		context.setAttribute(TGPrinterDataDialog.ATTRIBUTE_HANDLER, new TGPrinterDataHandler() {
+			public void updatePrinterData(PrinterData printerData) {
+				context.setAttribute(ATTRIBUTE_DATA, printerData);
+				executeActionInNewThread(TGPrintAction.NAME, context);
+			}
+		});
+		executeActionInNewThread(TGOpenViewAction.NAME, context);
 	}
 	
-	protected void print(final Printer printer, final PrinterData printerData ,final PrintLayout layout, final TGRectangle bounds, final float scale){
+	public void executeActionInNewThread(final String id, final TGActionContext context) {
 		new Thread(new Runnable() {
 			public void run() {
-				try{
-					layout.loadStyles(scale, 1f);
-					layout.updateSong();
-					layout.makeDocument(new PrintDocumentImpl(layout,printer, printerData, bounds));
-					layout.getResourceBuffer().disposeAllResources();
-				}catch(Throwable throwable ){
-					MessageDialog.errorMessage(throwable);
-				}
+				TGActionManager.getInstance(getContext()).execute(id, context);
 			}
 		}).start();
 	}

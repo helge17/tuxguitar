@@ -15,14 +15,22 @@ import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public class PrintStylesDialog {
+public class TGPrintStylesDialog {
 
-	public static PrintStyles open(Shell shell, TGSong song) {
-		final PrintStyles styles = new PrintStyles();
-		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+	public static final String ATTRIBUTE_HANDLER = TGPrintStylesHandler.class.getName();
+	
+	public void show(final TGViewContext context) {
+		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		final TGPrintStylesHandler handler = context.getAttribute(ATTRIBUTE_HANDLER);
+		
+		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("options"));
 		
@@ -147,11 +155,16 @@ public class PrintStylesDialog {
 				style |= (chordNameEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_NAME : 0);
 				style |= (chordDiagramEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
 				style |= (blackAndWhite.getSelection() ? TGLayout.DISPLAY_MODE_BLACK_WHITE : 0);
-				styles.setTrackNumber(tracks.getSelectionIndex() + 1);
-				styles.setFromMeasure(fromSpinner.getSelection());
-				styles.setToMeasure(toSpinner.getSelection());
-				styles.setStyle(style);
+				
+				PrintStyles printStyles = new PrintStyles();
+				printStyles.setTrackNumber(tracks.getSelectionIndex() + 1);
+				printStyles.setFromMeasure(fromSpinner.getSelection());
+				printStyles.setToMeasure(toSpinner.getSelection());
+				printStyles.setStyle(style);
+				
 				dialog.dispose();
+				
+				handler.updatePrintStyles(printStyles);
 			}
 		});
 		
@@ -166,9 +179,7 @@ public class PrintStylesDialog {
 		
 		dialog.setDefaultButton( buttonOK );
 		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		
-		return ((styles.getTrackNumber() > 0)?styles:null);
+		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	private static GridData getButtonData(){

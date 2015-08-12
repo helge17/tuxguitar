@@ -324,8 +324,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGExitAction.NAME, SYNC_THREAD);
-		this.map(TGPrintAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
 		
 		//edit actions
 		this.map(TGUndoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
