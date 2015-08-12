@@ -1,11 +1,7 @@
 package org.herac.tuxguitar.app.util;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class DialogUtils {
 	
@@ -24,12 +20,12 @@ public class DialogUtils {
 	}
 	
 	public static final Shell newDialog(Shell parent,int style){
-		parent.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+//		parent.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
 		return new Shell(parent, style);
 	}
 	
 	public static final void openDialog(Shell dialog,int style){
-		DialogUtils.openDialog(dialog,dialog.getParent().getShell(),style);
+		DialogUtils.openDialog(dialog, dialog.getParent().getShell(), style);
 	}
 	
 	public static final void openDialog(final Shell dialog, final Shell parent, int style){
@@ -50,12 +46,12 @@ public class DialogUtils {
 		}
 		dialog.open();
 		
-		TGContext context = TuxGuitar.getInstance().getContext();
-		TGSynchronizer.getInstance(context).executeLater(new Runnable() {
-			public void run() {
-				parent.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
-			}
-		});
+//		TGContext context = TuxGuitar.getInstance().getContext();
+//		TGSynchronizer.getInstance(context).executeLater(new Runnable() {
+//			public void run() {
+//				parent.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+//			}
+//		});
 		
 		if((style & OPEN_STYLE_WAIT) != 0) {
 			while (!display.isDisposed() && !dialog.isDisposed()) {

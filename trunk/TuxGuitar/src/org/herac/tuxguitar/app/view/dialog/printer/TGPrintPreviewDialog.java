@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.view.dialog.printer;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.PaintEvent;
@@ -26,34 +27,43 @@ import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 
-public class PrintPreview{
+public class TGPrintPreviewDialog{
+	
 	private static final int SCROLL_INCREMENT = 50;
 	private static final int MARGIN_TOP = 20;
 	private static final int MARGIN_BOTTOM = 40;
 	private static final int MARGIN_LEFT = 50;
 	private static final int MARGIN_RIGHT = 20;
 	
-	protected Shell dialog;
-	protected Composite previewComposite;
-	protected Composite pageComposite;
-	protected Text currentText;
-	protected Button previous;
-	protected Button next;
-	protected TGRectangle bounds;
-	protected List<Image> pages;
-	protected int currentPage;
+	public static final String ATTRIBUTE_PAGES = (TGPrintPreviewDialog.class.getName() + "-pages");
+	public static final String ATTRIBUTE_BOUNDS = (TGPrintPreviewDialog.class.getName() + "-bounds");
 	
-	public PrintPreview(List<Image> pages,TGRectangle bounds){
-		this.pages = pages;
-		this.bounds = bounds;
+	private TGViewContext context;
+	private Shell dialog;
+	private Composite previewComposite;
+	private Composite pageComposite;
+	private Text currentText;
+	private Button previous;
+	private Button next;
+	private TGRectangle bounds;
+	private List<Image> pages;
+	private int currentPage;
+	
+	public TGPrintPreviewDialog(TGViewContext context) {
+		this.context = context;
+		this.pages = context.getAttribute(ATTRIBUTE_PAGES);
+		this.bounds = context.getAttribute(ATTRIBUTE_BOUNDS);
 	}
 	
-	public void showPreview(Shell parent){
-		this.dialog = DialogUtils.newDialog(parent,SWT.SHELL_TRIM | SWT.APPLICATION_MODAL );
+	public void show() {
+		Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		
+		this.dialog = DialogUtils.newDialog(parent, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setText(TuxGuitar.getProperty("print.preview"));
 		
@@ -61,7 +71,12 @@ public class PrintPreview{
 		this.initPreviewComposite();
 		this.changePage(0);
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_MAXIMIZED | DialogUtils.OPEN_STYLE_WAIT);
+		DisposeListener disposeListener = this.context.getAttribute(TGViewContext.ATTRIBUTE_DISPOSE_LISTENER);
+		if( disposeListener != null ) {
+			this.dialog.addDisposeListener(disposeListener);
+		}
+		
+		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_MAXIMIZED);
 	}
 	
 	private void initToolBar(){
@@ -82,31 +97,31 @@ public class PrintPreview{
 			public void keyReleased(KeyEvent e) {
 				if(e.keyCode == KeyBindingUtil.ENTER){
 					try{
-						Integer number = new Integer(PrintPreview.this.currentText.getText());
+						Integer number = new Integer(TGPrintPreviewDialog.this.currentText.getText());
 						changePage(number.intValue() - 1);
 					}catch(NumberFormatException exception){
-						changePage(PrintPreview.this.currentPage);
+						changePage(TGPrintPreviewDialog.this.currentPage);
 					}
 				}
 			}
 		});
 		this.previous.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if(PrintPreview.this.currentPage >= 0){
-					changePage(PrintPreview.this.currentPage - 1);
+				if(TGPrintPreviewDialog.this.currentPage >= 0){
+					changePage(TGPrintPreviewDialog.this.currentPage - 1);
 				}
 			}
 		});
 		this.next.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if(PrintPreview.this.currentPage >= 0){
-					changePage(PrintPreview.this.currentPage + 1);
+				if(TGPrintPreviewDialog.this.currentPage >= 0){
+					changePage(TGPrintPreviewDialog.this.currentPage + 1);
 				}
 			}
 		});
 		close.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				PrintPreview.this.dialog.dispose();
+				TGPrintPreviewDialog.this.dialog.dispose();
 			}
 		});
 		maxPages.setText(TuxGuitar.getProperty("print.preview.page-of") + " " + this.pages.size());
@@ -131,12 +146,12 @@ public class PrintPreview{
 		this.pageComposite.setBackground(this.previewComposite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		this.pageComposite.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				if(PrintPreview.this.currentPage >= 0){
+				if(TGPrintPreviewDialog.this.currentPage >= 0){
 					updateScroll();
 					
-					int vScroll = PrintPreview.this.previewComposite.getVerticalBar().getSelection();
+					int vScroll = TGPrintPreviewDialog.this.previewComposite.getVerticalBar().getSelection();
 					
-					TGImage page = new TGImageImpl((Image)PrintPreview.this.pages.get(PrintPreview.this.currentPage));
+					TGImage page = new TGImageImpl((Image)TGPrintPreviewDialog.this.pages.get(TGPrintPreviewDialog.this.currentPage));
 					TGPainter painter = new TGPainterImpl(e.gc);
 					painter.drawImage(page, MARGIN_LEFT, MARGIN_TOP - vScroll);
 				}
@@ -153,7 +168,7 @@ public class PrintPreview{
 		this.previewComposite.getVerticalBar().setIncrement(SCROLL_INCREMENT);
 		this.previewComposite.getVerticalBar().addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				PrintPreview.this.pageComposite.redraw();
+				TGPrintPreviewDialog.this.pageComposite.redraw();
 			}
 		});
 	}
@@ -186,5 +201,8 @@ public class PrintPreview{
 		}
 		
 	}
-	
+
+	public TGViewContext getContext() {
+		return context;
+	}
 }
