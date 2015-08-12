@@ -30,7 +30,7 @@ public class TGReadURLAction extends TGActionBase {
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGReadSongAction.NAME, context);
 		} catch (Throwable e) {
-			throw new TGActionException(e);
+			throw new TGActionException(e.getMessage(), e);
 		}
 	}
 }

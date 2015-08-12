@@ -151,7 +151,7 @@ public class TuxGuitar {
 		if( url != null ){
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
 			tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
-			tgActionProcessor.setErrorHandler(new TGErrorHandler() {
+			tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
 				public void handleError(Throwable throwable) {
 					startDefaultSong();
 					

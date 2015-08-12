@@ -1,19 +1,17 @@
 package org.herac.tuxguitar.app.action;
 
 import org.herac.tuxguitar.action.TGActionContextFactory;
-import org.herac.tuxguitar.action.TGActionErrorEvent;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.action.installer.TGActionInstaller;
 import org.herac.tuxguitar.app.action.listener.access.TGActionAccessInterceptor;
 import org.herac.tuxguitar.app.action.listener.cache.TGUpdateListener;
+import org.herac.tuxguitar.app.action.listener.error.TGActionErrorHandler;
 import org.herac.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.app.action.listener.lock.TGLockableActionListener;
 import org.herac.tuxguitar.app.action.listener.save.TGDocumentModifierListener;
 import org.herac.tuxguitar.app.action.listener.save.TGUnsavedDocumentInterceptor;
 import org.herac.tuxguitar.app.action.listener.thread.TGSyncThreadInterceptor;
 import org.herac.tuxguitar.app.action.listener.undoable.TGUndoableActionListener;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -31,6 +29,7 @@ public class TGActionAdapterManager {
 	private TGUndoableActionListener undoableActionListener;
 	private TGUpdateListener updatableActionListener;
 	private TGDocumentModifierListener documentModifierListener;
+	private TGActionErrorHandler errorHandler;
 	
 	private TGActionAdapterManager(TGContext context){
 		this.context = context;
@@ -43,6 +42,7 @@ public class TGActionAdapterManager {
 		this.undoableActionListener = new TGUndoableActionListener(context);
 		this.updatableActionListener = new TGUpdateListener(this);
 		this.documentModifierListener = new TGDocumentModifierListener(context);
+		this.errorHandler = new TGActionErrorHandler(context);
 	}
 	
 	public void initialize(){
@@ -59,6 +59,7 @@ public class TGActionAdapterManager {
 		
 		TGActionProcessingListener processingListener = new TGActionProcessingListener(this.context);
 		tgActionManager.addPreExecutionListener(processingListener);
+		tgActionManager.addPreExecutionListener(this.errorHandler);
 		tgActionManager.addPreExecutionListener(this.lockableActionListener);
 		tgActionManager.addPreExecutionListener(this.undoableActionListener);
 		tgActionManager.addPreExecutionListener(this.updatableActionListener);
@@ -68,16 +69,12 @@ public class TGActionAdapterManager {
 		tgActionManager.addPostExecutionListener(this.unsavedDocumentInterceptor);
 		tgActionManager.addPostExecutionListener(this.documentModifierListener);
 		tgActionManager.addPostExecutionListener(this.lockableActionListener);
+		tgActionManager.addPostExecutionListener(this.errorHandler);
 		tgActionManager.addPostExecutionListener(processingListener);
 		
 		tgActionManager.addErrorListener(processingListener);
 		tgActionManager.addErrorListener(this.lockableActionListener);
-		tgActionManager.addErrorListener(new TGEventListener() {
-			public void processEvent(TGEvent event) {
-				Throwable t = event.getAttribute(TGActionErrorEvent.PROPERTY_ACTION_ERROR);
-				t.printStackTrace();
-			}
-		});
+		tgActionManager.addErrorListener(this.errorHandler);
 	}
 	
 	private void initializeDefaultActions() {		

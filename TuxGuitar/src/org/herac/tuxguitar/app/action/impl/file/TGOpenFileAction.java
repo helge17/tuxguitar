@@ -36,8 +36,8 @@ public class TGOpenFileAction extends TGActionBase {
 					}).start();
 				}
 			}
-		} catch (Throwable throwable) {
-			throw new TGActionException(throwable);
+		} catch (Throwable e) {
+			throw new TGActionException(e.getMessage(), e);
 		}
 	}
 }
