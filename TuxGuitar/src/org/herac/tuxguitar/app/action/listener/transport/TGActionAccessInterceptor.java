@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.listener.access;
+package org.herac.tuxguitar.app.action.listener.transport;
 
 import java.util.ArrayList;
 import java.util.List;
