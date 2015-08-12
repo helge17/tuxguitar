@@ -29,23 +29,23 @@ public abstract class TGBrowserPlugin implements TGPlugin{
 	}
 	
 	public void setEnabled(boolean enabled) throws TGPluginException {
-		if(enabled){
-			addPlugin();
+		if( enabled ){
+			this.addPlugin();
 		}else{
-			removePlugin();
+			this.removePlugin();
 		}
 	}
 	
 	protected void addPlugin() throws TGPluginException {
 		if(!this.loaded){
-			TGBrowserManager.instance().addFactory(this.factory);
+			TGBrowserManager.getInstance(this.context).addFactory(this.factory);
 			this.loaded = true;
 		}
 	}
 	
 	protected void removePlugin() throws TGPluginException {
 		if(this.loaded){
-			TGBrowserManager.instance().removeFactory(this.factory);
+			TGBrowserManager.getInstance(this.context).removeFactory(this.factory);
 			this.loaded = false;
 		}
 	}

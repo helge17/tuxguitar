@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
@@ -158,15 +158,8 @@ public class TGTunerDialog implements TGTunerListener {
 
 
 	public void fireException(final Exception ex) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if (!TGTunerDialog.this.dialog.isDisposed()) {
-					MessageDialog.errorMessage(ex);
-				}
-			}
-		});
+		TGErrorManager.getInstance(this.context).handleError(ex);
 	}
-
 	
 	public void fireCurrentString(final int string) {
 		this.tuner.pause();
@@ -200,5 +193,8 @@ public class TGTunerDialog implements TGTunerListener {
 		tempString.addListener();
 		
 	}
-	
+
+	public TGContext getContext() {
+		return context;
+	}
 }

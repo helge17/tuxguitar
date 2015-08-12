@@ -6,7 +6,7 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
 public class TGErrorAdapter {
 	
 	public static void initialize(TGContext context) {
-		TGErrorManager.getInstance(context).addErrorHandler(new TGGuiOutErrorHandler());
+		TGErrorManager.getInstance(context).addErrorHandler(new TGGuiOutErrorHandler(context));
 		TGErrorManager.getInstance(context).addErrorHandler(new TGStdOutErrorHandler());
 	}
 }

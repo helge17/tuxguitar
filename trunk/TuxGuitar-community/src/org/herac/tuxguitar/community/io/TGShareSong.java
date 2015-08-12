@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
@@ -15,6 +15,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGShareSong {
 
@@ -30,7 +31,7 @@ public class TGShareSong {
 			file.setFile( getSongBytes( song ) );
 			this.processDialog(file , null );
 		} catch (Throwable throwable ){
-			MessageDialog.errorMessage(throwable);
+			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class TGShareSong {
 					TGShareSongConnection share = new TGShareSongConnection(getContext());
 					share.uploadFile(file , TGShareSong.this );
 				} catch (Throwable throwable ){
-					MessageDialog.errorMessage(throwable);
+					TGErrorManager.getInstance(getContext()).handleError(throwable);
 				}
 			}
 		} ).start();
@@ -79,7 +80,7 @@ public class TGShareSong {
 		try {
 			String status = response.getStatus();
 			if( status != null && status.equals(TGShareSongConnection.HTTP_STATUS_OK) ){
-				MessageDialog.infoMessage("File Uploaded", "File upload completed!!");
+				TGMessageDialogUtil.infoMessage(this.context, "File Uploaded", "File upload completed!!");
 			}
 			else if( status != null && status.equals(TGShareSongConnection.HTTP_STATUS_UNAUTHORIZED) ){
 				processAuthDialog( file );
@@ -98,7 +99,7 @@ public class TGShareSong {
 				processDialog( file , "Error: " + status );
 			}
 		} catch (Throwable throwable ){
-			MessageDialog.errorMessage(throwable);
+			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	

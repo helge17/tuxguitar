@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -11,6 +10,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -99,8 +99,8 @@ public class TGTransport {
 			try{
 				player.getMode().reset();
 				player.play();
-			}catch(MidiPlayerException exception){
-				MessageDialog.errorMessage(exception);
+			}catch(MidiPlayerException e){
+				TGErrorManager.getInstance(this.context).handleError(e);
 			}
 		}else{
 			player.pause();

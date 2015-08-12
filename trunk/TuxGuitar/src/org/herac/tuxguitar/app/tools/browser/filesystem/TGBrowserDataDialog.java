@@ -17,11 +17,17 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserDataDialog {
 	
+	private TGContext context;
 	private TGBrowserData data;
+	
+	public TGBrowserDataDialog(TGContext context) {
+		this.context = context;
+	}
 	
 	public TGBrowserData getData() {
 		return this.data;
@@ -84,7 +90,7 @@ public class TGBrowserDataDialog {
 				String selectedTitle = titleValue.getText();
 				String selectedPath = pathValue.getText();
 				if(!isValidPath(selectedPath)){
-					MessageDialog.errorMessage(dialog,TuxGuitar.getProperty("browser.collection.fs.invalid-path"));
+					TGMessageDialogUtil.errorMessage(TGBrowserDataDialog.this.context, dialog, TuxGuitar.getProperty("browser.collection.fs.invalid-path"));
 					return;
 				}
 				if(isBlank(selectedTitle)){

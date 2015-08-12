@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.song.models.TGChord;
 
 /**
@@ -127,11 +127,11 @@ public class TGChordCustomList extends Composite {
 			String name = nDialog.open();
 			if(name != null){
 				if(name.length() == 0){
-					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-empty-error"));
+					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-empty-error"));
 					return;
 				}
 				if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,-1)){
-					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-exist-error"));
+					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-exist-error"));
 					return;
 				}
 				chord.setName(name);
@@ -147,11 +147,11 @@ public class TGChordCustomList extends Composite {
 			String name = new NameDialog(chord.getName()).open();
 			if(name != null){
 				if(name.length() == 0){
-					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-empty-error"));
+					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-empty-error"));
 					return;
 				}
 				if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,index)){
-					MessageDialog.errorMessage(getShell(),TuxGuitar.getProperty("chord.custom.name-exist-error"));
+					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-exist-error"));
 					return;
 				}
 				TuxGuitar.getInstance().getCustomChordManager().renameChord(index,name);

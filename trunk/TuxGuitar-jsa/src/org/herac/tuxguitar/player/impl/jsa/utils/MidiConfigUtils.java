@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.FileChooser;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
@@ -34,10 +34,10 @@ public class MidiConfigUtils {
 	}
 	
 	public static void setupDialog(TGContext context, Shell parent) {
-		setupDialog(parent,getConfig(context));
+		setupDialog(context, parent, getConfig(context));
 	}
 	
-	public static void setupDialog(Shell parent,final TGConfigManager config) {
+	public static void setupDialog(final TGContext context, final Shell parent, final TGConfigManager config) {
 		final String soundbank = getSoundbankPath(config);
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -105,7 +105,7 @@ public class MidiConfigUtils {
 					}
 					config.save();
 					
-					MessageDialog.infoMessage(TuxGuitar.getProperty("warning"), TuxGuitar.getProperty("jsa.settings.soundbank-restart-message"));
+					TGMessageDialogUtil.infoMessage(context, TuxGuitar.getProperty("warning"), TuxGuitar.getProperty("jsa.settings.soundbank-restart-message"));
 				}
 				dialog.dispose();
 			}

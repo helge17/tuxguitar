@@ -11,7 +11,6 @@ import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.printer.PrintDocument;
 import org.herac.tuxguitar.app.printer.PrintLayout;
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
@@ -22,15 +21,19 @@ import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class ImageExporterStream implements TGSongStream{
 	
 	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
 	
+	private TGContext context;
 	private TGSongStreamContext streamContext;
 	
-	public ImageExporterStream(TGSongStreamContext streamContext) {
+	public ImageExporterStream(TGContext context, TGSongStreamContext streamContext) {
+		this.context = context;
 		this.streamContext = streamContext;
 	}
 	
@@ -98,7 +101,7 @@ public class ImageExporterStream implements TGSongStream{
 			try {
 				ImageWriter.write(this.format, this.path, this.pages);
 			} catch (Throwable throwable) {
-				MessageDialog.errorMessage(throwable);
+				TGErrorManager.getInstance(ImageExporterStream.this.context).handleError(throwable);
 			}
 		}
 		

@@ -5,7 +5,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
@@ -53,7 +54,7 @@ public class TGTunerSettings {
 				targetDataLine = (TargetDataLine)AudioSystem.getLine(info);
 				
 			} catch (Exception ex) {
-				MessageDialog.errorMessage(ex);
+				TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(ex);
 			}
 		}
 		else 

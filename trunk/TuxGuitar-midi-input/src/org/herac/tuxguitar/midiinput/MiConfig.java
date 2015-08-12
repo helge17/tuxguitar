@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 class MiConfig
 {
@@ -277,7 +277,7 @@ class MiConfig
 						}
 					catch(MiException mie)
 						{
-						MessageDialog.errorMessage(mie);
+						TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(mie);
 						}
 					}
 
@@ -362,7 +362,7 @@ class MiConfig
 		}
 	catch(Exception e)
 		{
-		MessageDialog.errorMessage(e);
+		TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(e);
 		}
 	}
 }

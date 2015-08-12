@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
 import org.herac.tuxguitar.util.TGContext;
@@ -128,7 +128,7 @@ public class TGShareFileDialog {
 		dialog.setDefaultButton( buttonOK );
 		
 		if( this.errors != null ){
-			MessageDialog.errorMessage(dialog, this.errors);
+			TGMessageDialogUtil.errorMessage(this.context, dialog, this.errors);
 		}
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 	}

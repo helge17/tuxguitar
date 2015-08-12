@@ -23,7 +23,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormat;
@@ -135,13 +135,13 @@ public class TGConverterDialog implements TGEventListener{
 				TGConverterFormat outputFormatValue = getFileFormat( outputFormat.getSelectionIndex() );
 				
 				if(inputFolderValue == null || inputFolderValue.trim().length() == 0){
-					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.input.folder.invalid"));
+					TGMessageDialogUtil.errorMessage(TGConverterDialog.this.context, TGConverterDialog.this.dialog, TuxGuitar.getProperty("batch.converter.input.folder.invalid"));
 				}
 				else if(outputFolderValue == null || outputFolderValue.trim().length() == 0){
-					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.folder.invalid"));
+					TGMessageDialogUtil.errorMessage(TGConverterDialog.this.context, TGConverterDialog.this.dialog, TuxGuitar.getProperty("batch.converter.output.folder.invalid"));
 				}
 				else if(outputFormatValue == null){
-					MessageDialog.errorMessage(TGConverterDialog.this.dialog,TuxGuitar.getProperty("batch.converter.output.format.invalid"));
+					TGMessageDialogUtil.errorMessage(TGConverterDialog.this.context, TGConverterDialog.this.dialog, TuxGuitar.getProperty("batch.converter.output.format.invalid"));
 				}
 				else{
 					TGConverterProcess process = new TGConverterProcess(getContext());

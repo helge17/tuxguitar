@@ -160,7 +160,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		for(int i = 0;i < removeItems.length; i ++){
 			removeItems[i].dispose();
 		}
-		Iterator<TGBrowserCollection> it = TGBrowserManager.instance().getCollections();
+		Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getBrowser().getContext()).getCollections();
 		while(it.hasNext()){
 			final TGBrowserCollection collection = (TGBrowserCollection)it.next();
 			if(collection.getData() != null){
@@ -194,7 +194,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		for(int i = 0;i < items.length; i ++){
 			items[i].dispose();
 		}
-		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.instance().getFactories();
+		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
 		while(bookTypes.hasNext()){
 			final TGBrowserFactory bookType = (TGBrowserFactory)bookTypes.next();
 			MenuItem item = new MenuItem(this.newCollection,SWT.PUSH);

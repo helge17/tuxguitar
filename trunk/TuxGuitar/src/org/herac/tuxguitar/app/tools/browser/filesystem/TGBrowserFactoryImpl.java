@@ -5,11 +5,14 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	
-	public TGBrowserFactoryImpl() {
-		super();
+	private TGContext context;
+	
+	public TGBrowserFactoryImpl(TGContext context) {
+		this.context = context;
 	}
 	
 	public String getType(){
@@ -32,7 +35,7 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	}
 	
 	public TGBrowserData dataDialog(Shell parent) {
-		TGBrowserDataDialog dialog = new TGBrowserDataDialog();
+		TGBrowserDataDialog dialog = new TGBrowserDataDialog(context);
 		return dialog.open(parent);
 	}
 }

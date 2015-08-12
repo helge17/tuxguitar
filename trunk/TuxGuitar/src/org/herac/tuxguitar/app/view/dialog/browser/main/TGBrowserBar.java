@@ -30,7 +30,7 @@ public abstract class TGBrowserBar implements TGEventListener{
 	}
 	
 	protected void newCollection(String type){
-		TGBrowserFactory factory = TGBrowserManager.instance().getFactory(type);
+		TGBrowserFactory factory = TGBrowserManager.getInstance(getBrowser().getContext()).getFactory(type);
 		if(factory != null){
 			TGBrowserData data = factory.dataDialog(getBrowser().getShell());
 			if(data != null){
@@ -47,7 +47,7 @@ public abstract class TGBrowserBar implements TGEventListener{
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(factory.getType());
 		collection.setData(data);
-		collection = TGBrowserManager.instance().addCollection(collection);
+		collection = TGBrowserManager.getInstance(getBrowser().getContext()).addCollection(collection);
 		if(reload){
 			getBrowser().updateCollections(collection);
 		}

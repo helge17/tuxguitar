@@ -23,12 +23,15 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	
-	public TGBrowserFactoryImpl() {
-		super();
+	private TGContext context;
+	
+	public TGBrowserFactoryImpl(TGContext context) {
+		this.context = context;
 	}
 	
 	public String getType(){
@@ -51,13 +54,18 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	}
 	
 	public TGBrowserData dataDialog(Shell parent) {
-		return new TGBrowserDataDialog().show(parent);
+		return new TGBrowserDataDialog(this.context).show(parent);
 	}
 	
 }
 class TGBrowserDataDialog{
 	
-	protected TGBrowserDataImpl data;
+	private TGContext context;
+	private TGBrowserDataImpl data;
+	
+	public TGBrowserDataDialog(TGContext context) {
+		this.context = context;
+	}
 	
 	public TGBrowserDataImpl show(final Shell parent){
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -182,7 +190,7 @@ class TGBrowserDataDialog{
 					while( it.hasNext() ){
 						writer.println( "*" + (String)it.next() );
 					}
-					MessageDialog.errorMessage(parent, buffer.getBuffer().toString() );
+					TGMessageDialogUtil.errorMessage(getContext(), parent, buffer.getBuffer().toString() );
 				}else{
 					int proxyPort = Integer.parseInt( proxyPortStr );
 					TGBrowserDataDialog.this.data = new TGBrowserDataImpl(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort);
@@ -214,7 +222,7 @@ class TGBrowserDataDialog{
 		if (name == null || name.trim().length() == 0) {
 			errors.add("Please enter the Name");
 		}else{
-			Iterator<TGBrowserCollection> it = TGBrowserManager.instance().getCollections();
+			Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getContext()).getCollections();
 			while(it.hasNext()){
 				TGBrowserCollection collection = (TGBrowserCollection)it.next();
 				if(name.equals(collection.getData().getTitle())){
@@ -247,5 +255,9 @@ class TGBrowserDataDialog{
 			return false;
 		}
 		return true;
+	}
+
+	public TGContext getContext() {
+		return context;
 	}
 }

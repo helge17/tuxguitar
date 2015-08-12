@@ -15,7 +15,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.MessageDialog;
+import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.jack.connection.JackConnectionManager;
@@ -176,7 +176,7 @@ public class JackConsoleDialog implements TGEventListener {
 	}
 	
 	public void showInfoMessage(String title, String message){
-		MessageDialog.infoMessage(this.dialog, TuxGuitar.getProperty(title), TuxGuitar.getProperty(message));
+		TGMessageDialogUtil.infoMessage(this.context, this.dialog, TuxGuitar.getProperty(title), TuxGuitar.getProperty(message));
 	}
 
 	public void processEvent(TGEvent event) {
