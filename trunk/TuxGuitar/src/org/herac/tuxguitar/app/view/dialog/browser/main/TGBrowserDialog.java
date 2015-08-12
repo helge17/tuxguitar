@@ -307,7 +307,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 				getConnection().release();
 			}
 		});
-		tgActionProcessor.setErrorHandler(new TGErrorHandler() {
+		tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
 			public void handleError(Throwable throwable) {
 				getConnection().release();
 				MessageDialog.errorMessage(getShell(), new TGFileFormatException(TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}),throwable));

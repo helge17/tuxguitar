@@ -7,16 +7,12 @@ import java.util.Map;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.error.TGErrorHandler;
-import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGActionProcessor {
 	
 	private TGContext context;
 	private String actionName;
 	private Map<String, Object> attributes;
-	private TGErrorHandler errorHandler;
 	private Runnable onFinish;
 	
 	public TGActionProcessor(TGContext context, String actionName){
@@ -41,10 +37,6 @@ public class TGActionProcessor {
 		this.attributes.clear();
 	}
 
-	public void setErrorHandler(TGErrorHandler errorHandler) {
-		this.errorHandler = errorHandler;
-	}
-
 	public void setOnFinish(Runnable onFinish) {
 		this.onFinish = onFinish;
 	}
@@ -67,14 +59,10 @@ public class TGActionProcessor {
 	}
 	
 	public void processOnCurrentThread(final Map<String, Object> customAttributes){
-		try {
-			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-			tgActionManager.execute(getActionName(), createActionContext(customAttributes));
-			
-			this.onFinish();
-		} catch (Throwable throwable ) {
-			this.onError(throwable);
-		}
+		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
+		tgActionManager.execute(getActionName(), createActionContext(customAttributes));
+		
+		this.onFinish();
 	}
 	
 	public void processOnCurrentThread(){
@@ -104,14 +92,6 @@ public class TGActionProcessor {
 	public void onFinish() {
 		if( this.onFinish != null ) {
 			this.onFinish.run();
-		}
-	}
-	
-	public void onError(Throwable throwable) {
-		if( this.errorHandler != null ) {
-			this.errorHandler.handleError(throwable);
-		} else {
-			TGErrorManager.getInstance(getContext()).handleError(new TGException(this.actionName, throwable));
 		}
 	}
 }
