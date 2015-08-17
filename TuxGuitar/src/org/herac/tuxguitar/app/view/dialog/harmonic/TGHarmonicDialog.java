@@ -41,93 +41,94 @@ public class TGHarmonicDialog extends SelectionAdapter{
 		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		
-		dialog.setLayout(new GridLayout());
-		dialog.setText(TuxGuitar.getProperty("effects.harmonic-editor"));
-		
-		//---------------------------------------------------------------------
-		//------------HARMONIC-------------------------------------------------
-		//---------------------------------------------------------------------
-		Group group = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout());
-		group.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true),WIDTH));
-		group.setText(TuxGuitar.getProperty("effects.harmonic.type-of-harmonic"));
-		
-		this.typeButtons = new Button[5];
-		SelectionListener listener = new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				update(note,getSelectedType());
-			}
-		};
-		
-		// Natural
-		String label = "[" + TGEffectHarmonic.KEY_NATURAL + "] " + TuxGuitar.getProperty("effects.harmonic.natural");
-		initButton(group,listener,0,TGEffectHarmonic.TYPE_NATURAL,label);
-		
-		// Artificial
-		label = ("[" + TGEffectHarmonic.KEY_ARTIFICIAL + "] " + TuxGuitar.getProperty("effects.harmonic.artificial"));
-		initButton(group,listener,1,TGEffectHarmonic.TYPE_ARTIFICIAL,label);
-		
-		// Tapped
-		label = ("[" + TGEffectHarmonic.KEY_TAPPED + "] " + TuxGuitar.getProperty("effects.harmonic.tapped"));
-		initButton(group,listener,2,TGEffectHarmonic.TYPE_TAPPED,label);
-		
-		// Pinch
-		label = ("[" + TGEffectHarmonic.KEY_PINCH + "] " + TuxGuitar.getProperty("effects.harmonic.pinch"));
-		initButton(group,listener,3,TGEffectHarmonic.TYPE_PINCH,label);
-		
-		// Semi
-		label = ("[" + TGEffectHarmonic.KEY_SEMI + "] " + TuxGuitar.getProperty("effects.harmonic.semi"));
-		initButton(group,listener,4,TGEffectHarmonic.TYPE_SEMI,label);
-		
-		this.harmonicDataCombo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.harmonicDataCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		//---------------------------------------------------
-		//------------------BUTTONS--------------------------
-		//---------------------------------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(3,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.BOTTOM,true,true));
-		
-		Button buttonOK = new Button(buttons, SWT.PUSH);
-		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeHarmonic(context.getContext(), measure, beat, string, getHarmonic());
-				dialog.dispose();
-			}
-		});
-		
-		Button buttonClean = new Button(buttons, SWT.PUSH);
-		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.setLayoutData(getButtonData());
-		buttonClean.setEnabled( note.getEffect().isHarmonic());
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeHarmonic(context.getContext(), measure, beat, string, null);
-				dialog.dispose();
-			}
-		});
-		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
-		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dialog.dispose();
-			}
-		});
-		
-		this.initDefaults(note);
-		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		if( measure != null && beat != null && note != null && string != null ) {
+			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			
+			dialog.setLayout(new GridLayout());
+			dialog.setText(TuxGuitar.getProperty("effects.harmonic-editor"));
+			
+			//---------------------------------------------------------------------
+			//------------HARMONIC-------------------------------------------------
+			//---------------------------------------------------------------------
+			Group group = new Group(dialog, SWT.SHADOW_ETCHED_IN);
+			group.setLayout(new GridLayout());
+			group.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true),WIDTH));
+			group.setText(TuxGuitar.getProperty("effects.harmonic.type-of-harmonic"));
+			
+			this.typeButtons = new Button[5];
+			SelectionListener listener = new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					update(note,getSelectedType());
+				}
+			};
+			
+			// Natural
+			String label = "[" + TGEffectHarmonic.KEY_NATURAL + "] " + TuxGuitar.getProperty("effects.harmonic.natural");
+			initButton(group,listener,0,TGEffectHarmonic.TYPE_NATURAL,label);
+			
+			// Artificial
+			label = ("[" + TGEffectHarmonic.KEY_ARTIFICIAL + "] " + TuxGuitar.getProperty("effects.harmonic.artificial"));
+			initButton(group,listener,1,TGEffectHarmonic.TYPE_ARTIFICIAL,label);
+			
+			// Tapped
+			label = ("[" + TGEffectHarmonic.KEY_TAPPED + "] " + TuxGuitar.getProperty("effects.harmonic.tapped"));
+			initButton(group,listener,2,TGEffectHarmonic.TYPE_TAPPED,label);
+			
+			// Pinch
+			label = ("[" + TGEffectHarmonic.KEY_PINCH + "] " + TuxGuitar.getProperty("effects.harmonic.pinch"));
+			initButton(group,listener,3,TGEffectHarmonic.TYPE_PINCH,label);
+			
+			// Semi
+			label = ("[" + TGEffectHarmonic.KEY_SEMI + "] " + TuxGuitar.getProperty("effects.harmonic.semi"));
+			initButton(group,listener,4,TGEffectHarmonic.TYPE_SEMI,label);
+			
+			this.harmonicDataCombo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
+			this.harmonicDataCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			//---------------------------------------------------
+			//------------------BUTTONS--------------------------
+			//---------------------------------------------------
+			Composite buttons = new Composite(dialog, SWT.NONE);
+			buttons.setLayout(new GridLayout(3,false));
+			buttons.setLayoutData(new GridData(SWT.END,SWT.BOTTOM,true,true));
+			
+			Button buttonOK = new Button(buttons, SWT.PUSH);
+			buttonOK.setText(TuxGuitar.getProperty("ok"));
+			buttonOK.setLayoutData(getButtonData());
+			buttonOK.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					changeHarmonic(context.getContext(), measure, beat, string, getHarmonic());
+					dialog.dispose();
+				}
+			});
+			
+			Button buttonClean = new Button(buttons, SWT.PUSH);
+			buttonClean.setText(TuxGuitar.getProperty("clean"));
+			buttonClean.setLayoutData(getButtonData());
+			buttonClean.setEnabled( note.getEffect().isHarmonic());
+			buttonClean.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					changeHarmonic(context.getContext(), measure, beat, string, null);
+					dialog.dispose();
+				}
+			});
+			
+			Button buttonCancel = new Button(buttons, SWT.PUSH);
+			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+			buttonCancel.setLayoutData(getButtonData());
+			buttonCancel.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					dialog.dispose();
+				}
+			});
+			
+			this.initDefaults(note);
+			
+			dialog.setDefaultButton( buttonOK );
+			
+			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		}
 	}
 	
 	private GridData resizeData(GridData data,int minWidth){

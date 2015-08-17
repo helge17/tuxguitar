@@ -71,99 +71,100 @@ public class TGBendDialog {
 		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		
-		dialog.setLayout(new GridLayout());
-		dialog.setText(TuxGuitar.getProperty("bend.editor"));
-		
-		//----------------------------------------------------------------------
-		Composite composite = new Composite(dialog,SWT.NONE);
-		composite.setLayout(new GridLayout(3,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		Composite leftComposite = new Composite(composite,SWT.NONE);
-		leftComposite.setLayout(new GridLayout());
-		leftComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		Composite rightComposite = new Composite(composite,SWT.NONE);
-		rightComposite.setLayout(new GridLayout());
-		rightComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		//-------------EDITOR---------------------------------------------------
-		this.editor = new Composite(leftComposite, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-		this.editor.setBackground(this.editor.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.editor.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true) , getWidth() + (X_SPACING * 2),getHeight() + (Y_SPACING * 2))  );
-		this.editor.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				TGPainterImpl painter = new TGPainterImpl(e.gc);
-				paintEditor(painter);
-			}
-		});
-		this.editor.addMouseListener(new MouseAdapter() {
-			public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
-				checkPoint(e.x,e.y);
-				TGBendDialog.this.editor.redraw();
-			}
-		});
-		
-		//-------------DEFAULT BEND LIST---------------------------------------------------
-		this.resetDefaultBends();
-		
-		final org.eclipse.swt.widgets.List defaultBendList = new org.eclipse.swt.widgets.List(rightComposite,SWT.BORDER | SWT.SINGLE);
-		for(int i = 0;i < TGBendDialog.this.defaultBends.length;i++){
-			defaultBendList.add(this.defaultBends[i].getName());
-		}
-		defaultBendList.select(0);
-		defaultBendList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		defaultBendList.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int index = defaultBendList.getSelectionIndex();
-				if(index >= 0 && index < TGBendDialog.this.defaultBends.length){
-					setBend(TGBendDialog.this.defaultBends[defaultBendList.getSelectionIndex()].getBend());
+		if( measure != null && beat != null && note != null && string != null ) {
+			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			
+			dialog.setLayout(new GridLayout());
+			dialog.setText(TuxGuitar.getProperty("bend.editor"));
+			
+			//----------------------------------------------------------------------
+			Composite composite = new Composite(dialog,SWT.NONE);
+			composite.setLayout(new GridLayout(3,false));
+			composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			Composite leftComposite = new Composite(composite,SWT.NONE);
+			leftComposite.setLayout(new GridLayout());
+			leftComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			Composite rightComposite = new Composite(composite,SWT.NONE);
+			rightComposite.setLayout(new GridLayout());
+			rightComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			//-------------EDITOR---------------------------------------------------
+			this.editor = new Composite(leftComposite, SWT.BORDER | SWT.DOUBLE_BUFFERED);
+			this.editor.setBackground(this.editor.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+			this.editor.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true) , getWidth() + (X_SPACING * 2),getHeight() + (Y_SPACING * 2))  );
+			this.editor.addPaintListener(new PaintListener() {
+				public void paintControl(PaintEvent e) {
+					TGPainterImpl painter = new TGPainterImpl(e.gc);
+					paintEditor(painter);
+				}
+			});
+			this.editor.addMouseListener(new MouseAdapter() {
+				public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+					checkPoint(e.x,e.y);
 					TGBendDialog.this.editor.redraw();
 				}
+			});
+			
+			//-------------DEFAULT BEND LIST---------------------------------------------------
+			this.resetDefaultBends();
+			
+			final org.eclipse.swt.widgets.List defaultBendList = new org.eclipse.swt.widgets.List(rightComposite,SWT.BORDER | SWT.SINGLE);
+			for(int i = 0;i < TGBendDialog.this.defaultBends.length;i++){
+				defaultBendList.add(this.defaultBends[i].getName());
 			}
-		});
-		
-		//------------------BUTTONS--------------------------
-		Button buttonClean = new Button(rightComposite, SWT.PUSH);
-		buttonClean.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,true), 80,25));
-		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeBend(context.getContext(), measure, beat, string, null);
-				dialog.dispose();
+			defaultBendList.select(0);
+			defaultBendList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			defaultBendList.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					int index = defaultBendList.getSelectionIndex();
+					if(index >= 0 && index < TGBendDialog.this.defaultBends.length){
+						setBend(TGBendDialog.this.defaultBends[defaultBendList.getSelectionIndex()].getBend());
+						TGBendDialog.this.editor.redraw();
+					}
+				}
+			});
+			
+			//------------------BUTTONS--------------------------
+			Button buttonClean = new Button(rightComposite, SWT.PUSH);
+			buttonClean.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,true), 80,25));
+			buttonClean.setText(TuxGuitar.getProperty("clean"));
+			buttonClean.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					changeBend(context.getContext(), measure, beat, string, null);
+					dialog.dispose();
+				}
+			});
+			Button buttonOK = new Button(rightComposite, SWT.PUSH);
+			buttonOK.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
+			buttonOK.setText(TuxGuitar.getProperty("ok"));
+			buttonOK.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					changeBend(context.getContext(), measure, beat, string, getBend());
+					dialog.dispose();
+				}
+			});
+			Button buttonCancel = new Button(rightComposite, SWT.PUSH);
+			buttonCancel.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
+			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+			buttonCancel.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					dialog.dispose();
+				}
+			});
+			
+			if( note.getEffect().isBend() ){
+				setBend(note.getEffect().getBend());
+			}else{
+				setBend(this.defaultBends[0].getBend());
 			}
-		});
-		Button buttonOK = new Button(rightComposite, SWT.PUSH);
-		buttonOK.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
-		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeBend(context.getContext(), measure, beat, string, getBend());
-				dialog.dispose();
-			}
-		});
-		Button buttonCancel = new Button(rightComposite, SWT.PUSH);
-		buttonCancel.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
-		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dialog.dispose();
-			}
-		});
-		
-		if( note.getEffect().isBend() ){
-			setBend(note.getEffect().getBend());
-		}else{
-			setBend(this.defaultBends[0].getBend());
+			
+			dialog.setDefaultButton( buttonOK );
+			
+			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 		}
-		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	private GridData resizeData(GridData data,int minimumWidth,int minimumHeight){
