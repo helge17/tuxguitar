@@ -308,7 +308,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
 		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
-		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
+		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGReadSongAction.NAME, LOCKABLE);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
@@ -316,10 +316,10 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGReadURLAction.NAME, LOCKABLE | STOP_TRANSPORT, new TGUpdateReadedURLController());
 		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGImportSongAction.NAME, LOCKABLE | SHORTCUT);
-		this.map(TGImportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGExportSongAction.NAME, LOCKABLE | SHORTCUT);
-		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGImportSongAction.NAME, LOCKABLE);
+		this.map(TGImportFileAction.NAME, LOCKABLE | SYNC_THREAD);
+		this.map(TGExportSongAction.NAME, LOCKABLE);
+		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE);
@@ -513,13 +513,13 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGHideExternalBeatAction.NAME);
 		
 		//settings
-		this.map(TGReloadSettingsAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGReloadTitleAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGReloadIconsAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGReloadLanguageAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGReloadMidiDevicesAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGReloadStylesAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGReloadTableSettingsAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGReloadSettingsAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGReloadTitleAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGReloadIconsAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGReloadLanguageAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGReloadMidiDevicesAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGReloadStylesAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGReloadTableSettingsAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		this.map(TGOpenSettingsEditorAction.NAME, SHORTCUT);
 		this.map(TGOpenKeyBindingEditorAction.NAME, SHORTCUT);
 		this.map(TGOpenPluginListDialogAction.NAME, SHORTCUT);

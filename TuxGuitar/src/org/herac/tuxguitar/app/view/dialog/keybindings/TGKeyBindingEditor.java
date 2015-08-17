@@ -167,7 +167,7 @@ public class TGKeyBindingEditor {
 				while (it.hasNext()) {
 					KeyBindingAction keyBindingAction = (KeyBindingAction) it.next();
 					if(keyBindingAction.getAction().equals(itemData.getAction())){
-						keyBinding =  (KeyBinding) keyBindingAction.getKeyBinding().clone();
+						keyBinding = (KeyBinding) keyBindingAction.getKeyBinding().clone();
 						break;
 					}
 				}
