@@ -71,98 +71,99 @@ public class TGTremoloBarDialog{
 		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		
-		dialog.setLayout(new GridLayout());
-		dialog.setText(TuxGuitar.getProperty("effects.tremolo-bar-editor"));
-		
-		//----------------------------------------------------------------------
-		Composite composite = new Composite(dialog,SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		Composite leftComposite = new Composite(composite,SWT.NONE);
-		leftComposite.setLayout(new GridLayout());
-		leftComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		Composite rightComposite = new Composite(composite,SWT.NONE);
-		rightComposite.setLayout(new GridLayout());
-		rightComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		//-------------EDITOR---------------------------------------------------
-		this.editor = new Composite(leftComposite, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-		this.editor.setBackground(this.editor.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.editor.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true) , getWidth() + (X_SPACING * 2),getHeight() + (Y_SPACING * 2))  );
-		this.editor.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				TGPainterImpl painter = new TGPainterImpl(e.gc);
-				paintEditor(painter);
-			}
-		});
-		this.editor.addMouseListener(new MouseAdapter() {
-			public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
-				checkPoint(e.x,e.y);
-				TGTremoloBarDialog.this.editor.redraw();
-			}
-		});
-		
-		//-------------DEFAULT BEND LIST---------------------------------------------------
-		this.resetDefaultTremoloBars();
-		final org.eclipse.swt.widgets.List defaultTremoloBarList = new org.eclipse.swt.widgets.List(rightComposite,SWT.BORDER);
-		for(int i = 0;i < this.defaultTremoloBars.length;i++){
-			defaultTremoloBarList.add(this.defaultTremoloBars[i].getName());
-		}
-		defaultTremoloBarList.select(0);
-		defaultTremoloBarList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		defaultTremoloBarList.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int index = defaultTremoloBarList.getSelectionIndex();
-				if(index >= 0 && index < TGTremoloBarDialog.this.defaultTremoloBars.length){
-					setTremoloBar(TGTremoloBarDialog.this.defaultTremoloBars[index].getTremoloBar());
+		if( measure != null && beat != null && note != null && string != null ) {
+			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			
+			dialog.setLayout(new GridLayout());
+			dialog.setText(TuxGuitar.getProperty("effects.tremolo-bar-editor"));
+			
+			//----------------------------------------------------------------------
+			Composite composite = new Composite(dialog,SWT.NONE);
+			composite.setLayout(new GridLayout(2,false));
+			composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			Composite leftComposite = new Composite(composite,SWT.NONE);
+			leftComposite.setLayout(new GridLayout());
+			leftComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			Composite rightComposite = new Composite(composite,SWT.NONE);
+			rightComposite.setLayout(new GridLayout());
+			rightComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			
+			//-------------EDITOR---------------------------------------------------
+			this.editor = new Composite(leftComposite, SWT.BORDER | SWT.DOUBLE_BUFFERED);
+			this.editor.setBackground(this.editor.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+			this.editor.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true) , getWidth() + (X_SPACING * 2),getHeight() + (Y_SPACING * 2))  );
+			this.editor.addPaintListener(new PaintListener() {
+				public void paintControl(PaintEvent e) {
+					TGPainterImpl painter = new TGPainterImpl(e.gc);
+					paintEditor(painter);
+				}
+			});
+			this.editor.addMouseListener(new MouseAdapter() {
+				public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+					checkPoint(e.x,e.y);
 					TGTremoloBarDialog.this.editor.redraw();
 				}
+			});
+			
+			//-------------DEFAULT BEND LIST---------------------------------------------------
+			this.resetDefaultTremoloBars();
+			final org.eclipse.swt.widgets.List defaultTremoloBarList = new org.eclipse.swt.widgets.List(rightComposite,SWT.BORDER);
+			for(int i = 0;i < this.defaultTremoloBars.length;i++){
+				defaultTremoloBarList.add(this.defaultTremoloBars[i].getName());
 			}
-		});
-		
-		//------------------BUTTONS--------------------------
-		Button buttonClean = new Button(rightComposite, SWT.PUSH);
-		buttonClean.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,true), 80,25));
-		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeTremoloBar(context.getContext(), measure, beat, string, null);
-				dialog.dispose();
+			defaultTremoloBarList.select(0);
+			defaultTremoloBarList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			defaultTremoloBarList.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					int index = defaultTremoloBarList.getSelectionIndex();
+					if(index >= 0 && index < TGTremoloBarDialog.this.defaultTremoloBars.length){
+						setTremoloBar(TGTremoloBarDialog.this.defaultTremoloBars[index].getTremoloBar());
+						TGTremoloBarDialog.this.editor.redraw();
+					}
+				}
+			});
+			
+			//------------------BUTTONS--------------------------
+			Button buttonClean = new Button(rightComposite, SWT.PUSH);
+			buttonClean.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,true), 80,25));
+			buttonClean.setText(TuxGuitar.getProperty("clean"));
+			buttonClean.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					changeTremoloBar(context.getContext(), measure, beat, string, null);
+					dialog.dispose();
+				}
+			});
+			Button buttonOK = new Button(rightComposite, SWT.PUSH);
+			buttonOK.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
+			buttonOK.setText(TuxGuitar.getProperty("ok"));
+			buttonOK.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					changeTremoloBar(context.getContext(), measure, beat, string, getTremoloBar());
+					dialog.dispose();
+				}
+			});
+			Button buttonCancel = new Button(rightComposite, SWT.PUSH);
+			buttonCancel.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
+			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+			buttonCancel.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent arg0) {
+					dialog.dispose();
+				}
+			});
+			
+			if(note.getEffect().isTremoloBar()){
+				setTremoloBar(note.getEffect().getTremoloBar());
+			}else{
+				setTremoloBar(this.defaultTremoloBars[0].getTremoloBar());
 			}
-		});
-		Button buttonOK = new Button(rightComposite, SWT.PUSH);
-		buttonOK.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
-		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeTremoloBar(context.getContext(), measure, beat, string, getTremoloBar());
-				dialog.dispose();
-			}
-		});
-		Button buttonCancel = new Button(rightComposite, SWT.PUSH);
-		buttonCancel.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
-		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dialog.dispose();
-			}
-		});
-		
-		if(note.getEffect().isTremoloBar()){
-			setTremoloBar(note.getEffect().getTremoloBar());
-		}else{
-			setTremoloBar(this.defaultTremoloBars[0].getTremoloBar());
+			
+			dialog.setDefaultButton( buttonOK );
+			
+			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 		}
-		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	private GridData resizeData(GridData data,int minimumWidth,int minimumHeight){

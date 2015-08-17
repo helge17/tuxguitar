@@ -325,7 +325,7 @@ public class TGChordRecognizer extends Composite {
 					for(String currentProposalName : proposalNames) {
 						addProposalName(currentProposalName);
 					}
-					if( redecorate ) {
+					if( redecorate && params != null ) {
 						redecorate(params);
 					}
 					if( setChordName ) {
