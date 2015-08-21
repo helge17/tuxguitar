@@ -61,14 +61,17 @@ public class TGKeyBindingEditor {
 		this.table.setHeaderVisible(true);
 		this.table.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(MouseEvent e) {
-				TableItem item = getSelectedItem();
-				if(item != null){
-					KeyBindingAction itemData = (KeyBindingAction)item.getData();
-					TGKeyBindingSelector selector = new TGKeyBindingSelector(TGKeyBindingEditor.this,itemData);
-					KeyBinding kb = selector.select(TGKeyBindingEditor.this.dialog.getShell());
-					removeKeyBindingAction(kb);
-					itemData.setKeyBinding(kb);
-					loadTableItemLabel(item);
+				final TableItem item = getSelectedItem();
+				if( item != null ){
+					final KeyBindingAction itemData = (KeyBindingAction)item.getData();
+					TGKeyBindingSelector keyBindingSelector = new TGKeyBindingSelector(TGKeyBindingEditor.this, itemData, new TGKeyBindingSelectorHandler() {
+						public void handleSelection(KeyBinding kb) {
+							removeKeyBindingAction(kb);
+							itemData.setKeyBinding(kb);
+							loadTableItemLabel(item);
+						}
+					});
+					keyBindingSelector.select(TGKeyBindingEditor.this.dialog.getShell());
 				}
 			}
 		});
@@ -234,6 +237,10 @@ public class TGKeyBindingEditor {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGReloadLanguageAction.NAME);
 		tgActionProcessor.setAttribute(TGReloadSettingsAction.ATTRIBUTE_FORCE, true);
 		tgActionProcessor.process();
+	}
+	
+	public TGViewContext getContext() {
+		return this.context;
 	}
 	
 	public Shell getDialog(){
