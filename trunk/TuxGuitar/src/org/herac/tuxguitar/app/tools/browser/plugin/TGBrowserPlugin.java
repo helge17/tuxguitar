@@ -8,45 +8,31 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGBrowserPlugin implements TGPlugin{
 	
-	private boolean loaded;
-	private TGContext context;
 	private TGBrowserFactory factory;
 	
-	protected abstract TGBrowserFactory getFactory() throws TGPluginException;
+	protected abstract TGBrowserFactory getFactory(TGContext context) throws TGPluginException;
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.context = context;
-		this.factory = getFactory();
-		this.loaded = false;
-	}
-	
-	public TGContext getContext() {
-		return this.context;
-	}
-	
-	public void close() throws TGPluginException {
-		this.loaded = false;
-	}
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		if( enabled ){
-			this.addPlugin();
-		}else{
-			this.removePlugin();
+	public void connect(TGContext context) throws TGPluginException {
+		try {
+			if( this.factory == null ) {
+				this.factory = getFactory(context);
+				
+				TGBrowserManager.getInstance(context).addFactory(this.factory);
+			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 	
-	protected void addPlugin() throws TGPluginException {
-		if(!this.loaded){
-			TGBrowserManager.getInstance(this.context).addFactory(this.factory);
-			this.loaded = true;
-		}
-	}
-	
-	protected void removePlugin() throws TGPluginException {
-		if(this.loaded){
-			TGBrowserManager.getInstance(this.context).removeFactory(this.factory);
-			this.loaded = false;
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.factory != null ) {
+				TGBrowserManager.getInstance(context).removeFactory(this.factory);
+				
+				this.factory = null;
+			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 }

@@ -9,14 +9,6 @@ public class ModifiedMarkerPlugin implements TGPlugin {
 	
 	private ModifiedMarker modifiedMarker;
 	
-	public void init(TGContext context) throws TGPluginException {
-		// Nothing todo
-	}
-	
-	public void close() throws TGPluginException {
-		// Nothing todo
-	}
-	
 	public void setEnabled(boolean enabled) throws TGPluginException {
 		try {
 			if( this.modifiedMarker != null ){
@@ -33,5 +25,13 @@ public class ModifiedMarkerPlugin implements TGPlugin {
 	
 	public String getModuleId() {
 		return TGCocoaIntegrationPlugin.MODULE_ID;
+	}
+	
+	public void connect(TGContext context) throws TGPluginException {
+		this.setEnabled(true);
+	}
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		this.setEnabled(false);
 	}
 }

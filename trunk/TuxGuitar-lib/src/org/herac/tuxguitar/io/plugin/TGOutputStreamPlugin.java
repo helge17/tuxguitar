@@ -8,44 +8,31 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGOutputStreamPlugin implements TGPlugin{
 	
-	private boolean loaded;
-	private TGContext context;
 	private TGOutputStreamBase stream;
 	
-	protected abstract TGOutputStreamBase getOutputStream() throws TGPluginException ;
+	protected abstract TGOutputStreamBase createOutputStream(TGContext context) throws TGPluginException ;
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.context = context;
-		this.stream = getOutputStream();
-	}
-	
-	public TGContext getContext() {
-		return this.context;
-	}
-
-	public void close() throws TGPluginException {
-		this.removePlugin();
-	}
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		if(enabled){
-			addPlugin();
-		}else{
-			removePlugin();
+	public void connect(TGContext context) throws TGPluginException {
+		try {
+			if( this.stream == null ) {
+				this.stream = createOutputStream(context);
+				
+				TGFileFormatManager.getInstance(context).addOutputStream(this.stream);
+			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 	
-	protected void addPlugin() throws TGPluginException {
-		if(!this.loaded){
-			TGFileFormatManager.getInstance(this.context).addOutputStream(this.stream);
-			this.loaded = true;
-		}
-	}
-	
-	protected void removePlugin() throws TGPluginException {
-		if(this.loaded){
-			TGFileFormatManager.getInstance(this.context).removeOutputStream(this.stream);
-			this.loaded = false;
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.stream != null ) {
+				TGFileFormatManager.getInstance(context).removeOutputStream(this.stream);
+				
+				this.stream = null;
+			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 }

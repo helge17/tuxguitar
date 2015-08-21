@@ -2,6 +2,7 @@ package org.herac.tuxguitar.player.impl.midiport.winmm;
 
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 	
@@ -9,7 +10,7 @@ public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin
 	
 	private MidiOutputPortProviderImpl portReader;
 	
-	protected MidiOutputPortProvider getProvider() {
+	protected MidiOutputPortProvider createProvider(TGContext context) {
 		if(this.portReader == null){
 			this.portReader = new MidiOutputPortProviderImpl();
 		}

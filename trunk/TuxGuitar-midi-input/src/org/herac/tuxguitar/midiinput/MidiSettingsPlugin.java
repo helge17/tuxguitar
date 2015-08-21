@@ -7,13 +7,13 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 
-	public void init(TGContext context) {
+	public void connect(TGContext context) {
 		MiConfig.init(context);
 		
-		super.init(context);
+		super.connect(context);
 	}
 	
-	protected TGPluginSettingsHandler getHandler() throws TGPluginException {
+	protected TGPluginSettingsHandler createHandler(TGContext context) throws TGPluginException {
 		return new MiSettingsHandler();
 	}
 	

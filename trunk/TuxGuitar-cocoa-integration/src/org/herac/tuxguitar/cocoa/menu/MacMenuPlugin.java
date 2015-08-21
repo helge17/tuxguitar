@@ -7,23 +7,14 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MacMenuPlugin implements TGPlugin {
 	
-	private TGContext context;
 	private MacMenu macMenu;
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.context = context;
-	}
-	
-	public void close() throws TGPluginException {
-		// Nothing todo
-	}
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
+	public void setEnabled(TGContext context, boolean enabled) throws TGPluginException {
 		try {
 			if( this.macMenu != null ){
 				this.macMenu.setEnabled(enabled);
 			}else if(enabled){
-				this.macMenu = new MacMenu(this.context);
+				this.macMenu = new MacMenu(context);
 				this.macMenu.setEnabled(true);
 				this.macMenu.init();
 			}
@@ -34,5 +25,13 @@ public class MacMenuPlugin implements TGPlugin {
 	
 	public String getModuleId() {
 		return TGCocoaIntegrationPlugin.MODULE_ID;
+	}
+	
+	public void connect(TGContext context) throws TGPluginException {
+		this.setEnabled(context, true);
+	}
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		this.setEnabled(context, false);
 	}
 }

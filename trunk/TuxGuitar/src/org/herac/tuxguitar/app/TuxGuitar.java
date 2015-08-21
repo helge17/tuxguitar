@@ -2,7 +2,6 @@ package org.herac.tuxguitar.app;
 
 import java.net.URL;
 
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.action.TGActionManager;
@@ -398,7 +397,7 @@ public class TuxGuitar {
 	}
 	
 	public Shell getShell(){
-		return TGWindow.getInstance(this.context).getShell();//this.shell;
+		return TGWindow.getInstance(this.context).getShell();
 	}
 	
 	public static String getProperty(String key) {
@@ -418,24 +417,6 @@ public class TuxGuitar {
 		this.getEditorCache().reset();
 		this.getEditorManager().updateSong();
 		this.unlock();
-	}
-	
-	public void loadCursor(int style){
-		this.loadCursor(getShell(),style);
-	}
-	
-	public void loadCursor(final Control control,final int style){
-		try {
-			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-				public void run() throws TGException {
-					if(!control.isDisposed()){
-						control.setCursor(getDisplay().getSystemCursor(style));
-					}
-				}
-			});
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void playBeat( final TGBeat beat ){

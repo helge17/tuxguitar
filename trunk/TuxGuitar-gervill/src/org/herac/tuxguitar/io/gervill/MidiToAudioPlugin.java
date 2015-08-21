@@ -15,25 +15,36 @@ public class MidiToAudioPlugin extends TGExporterPlugin{
 		this.available = MidiToAudioSynth.instance().isAvailable();
 	}
 	
-	public void init(TGContext context) throws TGPluginException {
+	public void connect(TGContext context) throws TGPluginException {
 		if( this.available ){
-			super.init(context);
+			super.connect(context);
 		}
 	}
 	
-	public void close() throws TGPluginException {
+	public void disconnect(TGContext context) throws TGPluginException {
 		if( this.available ){
-			super.close();
+			super.disconnect(context);
 		}
 	}
+//	public void init(TGContext context) throws TGPluginException {
+//		if( this.available ){
+//			super.init(context);
+//		}
+//	}
+//	
+//	public void close() throws TGPluginException {
+//		if( this.available ){
+//			super.close();
+//		}
+//	}
+//	
+//	public void setEnabled( boolean enabled ) throws TGPluginException {
+//		if( this.available ){
+//			super.setEnabled( enabled );
+//		}
+//	}
 	
-	public void setEnabled( boolean enabled ) throws TGPluginException {
-		if( this.available ){
-			super.setEnabled( enabled );
-		}
-	}
-	
-	protected TGRawExporter getExporter() throws TGPluginException {
+	protected TGRawExporter createExporter(TGContext context) throws TGPluginException {
 		if( this.available ){
 			return new MidiToAudioExporter();
 		}

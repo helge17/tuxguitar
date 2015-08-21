@@ -31,18 +31,20 @@ import org.herac.tuxguitar.app.view.dialog.settings.items.Option;
 import org.herac.tuxguitar.app.view.dialog.settings.items.SkinOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.SoundOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.StylesOption;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGSettingsEditor{
 	
 	private TGViewContext context;
-	protected Shell dialog;
-	protected TGConfigManager config;
-	protected List<Option> options;
-	protected TGProperties defaults;
+	private TGCursorController cursorController;
+	private Shell dialog;
+	private TGConfigManager config;
+	private List<Option> options;
+	private TGProperties defaults;
 	
-	protected List<Runnable> runnables;
+	private List<Runnable> runnables;
 	
 	public TGSettingsEditor(TGViewContext context) {
 		this.context = context;
@@ -153,11 +155,20 @@ public class TGSettingsEditor{
 		return new Point(width, height);
 	}
 	
+	public void loadCursor(int cursorStyle) {
+		if(!this.isDisposed()) {
+			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
+				this.cursorController = new TGCursorController(this.context.getContext(), this.dialog);
+			}
+			this.cursorController.loadCursor(cursorStyle);
+		}
+	}
+	
 	public void pack(){
 		this.dialog.pack();
 	}
 	
-	protected GridData getButtonData(){
+	public GridData getButtonData(){
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.minimumWidth = 80;
 		data.minimumHeight = 25;
@@ -270,5 +281,9 @@ public class TGSettingsEditor{
 	
 	public void addSyncThread(Runnable runnable){
 		this.runnables.add( runnable );
+	}
+	
+	public boolean isDisposed() {
+		return (this.dialog == null || this.dialog.isDisposed());
 	}
 }

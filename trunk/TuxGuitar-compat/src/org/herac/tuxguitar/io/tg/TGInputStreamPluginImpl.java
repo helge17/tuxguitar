@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.tg;
 
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.io.plugin.TGInputStreamPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGInputStreamPluginImpl extends TGInputStreamPlugin{
@@ -12,7 +13,7 @@ public class TGInputStreamPluginImpl extends TGInputStreamPlugin{
 		this.inputStreamBase = inputStreamBase;
 	}
 	
-	protected TGInputStreamBase getInputStream() throws TGPluginException {
+	protected TGInputStreamBase createInputStream(TGContext context) throws TGPluginException {
 		return this.inputStreamBase;
 	}
 	

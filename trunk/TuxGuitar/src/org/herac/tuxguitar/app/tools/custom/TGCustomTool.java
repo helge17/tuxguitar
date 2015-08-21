@@ -6,7 +6,6 @@ public class TGCustomTool {
 	private String action;
 	
 	public TGCustomTool(String name, String action) {
-		super();
 		this.name = name;
 		this.action = action;
 	}
@@ -18,5 +17,4 @@ public class TGCustomTool {
 	public String getAction() {
 		return this.action;
 	}
-	
 }
