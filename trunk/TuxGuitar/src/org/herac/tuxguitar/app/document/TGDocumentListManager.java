@@ -3,7 +3,7 @@ package org.herac.tuxguitar.app.document;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.FileChooser;
+import org.herac.tuxguitar.app.util.TGFileChooser;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.undo.TGUndoableBuffer;
@@ -93,7 +93,7 @@ public class TGDocumentListManager {
 		if( document.getUrl() != null ){
 			return TGFileUtils.getDecodedFileName(document.getUrl());
 		}
-		return FileChooser.DEFAULT_SAVE_FILENAME;
+		return TGFileChooser.DEFAULT_SAVE_FILENAME;
 	}
 	
 	public void removeDocument(TGDocument document) {

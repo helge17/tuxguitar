@@ -35,6 +35,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
 import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
+import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.tools.template.TGTemplate;
 import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
@@ -275,7 +276,7 @@ public class FileMenuItem extends TGMenuItem {
 	}
 	
 	private void updateHistoryFiles(){
-		List<URL> urls = TuxGuitar.getInstance().getFileHistory().getURLs();
+		List<URL> urls = TGFileHistory.getInstance(this.findContext()).getURLs();
 		this.historyFiles = new MenuItem[urls.size()];
 		for(int i = 0;i < this.historyFiles.length; i++){
 			URL url = (URL)urls.get(i);
@@ -332,10 +333,11 @@ public class FileMenuItem extends TGMenuItem {
 	}
 	
 	public void update(){
-		if( TuxGuitar.getInstance().getFileHistory().isChanged()){
+		TGFileHistory fileHistory = TGFileHistory.getInstance(this.findContext());
+		if( fileHistory.isChanged()){
 			disposeHistoryFiles();
 			updateHistoryFiles();
-			TuxGuitar.getInstance().getFileHistory().setChanged(false);
+			fileHistory.setChanged(false);
 		}
 	}
 	

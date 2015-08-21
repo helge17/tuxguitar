@@ -6,32 +6,27 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
-public class FileHistory {
+public class TGFileHistory {
 	
 	private static final int URL_LIMIT = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
-	
-	private TGContext context;
 	
 	private boolean changed;
 	private List<URL> urls;
 	private String chooserPath;
 	
-	public FileHistory(TGContext context){
-		this.context = context;
+	private TGFileHistory() {
 		this.urls = new ArrayList<URL>();
 		this.loadHistory();
 		this.reset(null);
@@ -41,104 +36,9 @@ public class FileHistory {
 		this.addURL(url);
 	}
 	
-	public boolean isNewFile(){
-		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
-		if( document != null ) {
-			return (document.getUrl() == null);
-		}
-		return false;
-	}
-	
-	public boolean isLocalFile(){
-		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
-		if( document != null && document.getUrl() != null ) {
-			return isLocalFile(document.getUrl());
-		}
-		return false;
-	}
-	
-	public boolean isUnsavedFile() {
-		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
-		if( document != null ) {
-			return document.isUnsaved();
-		}
-		return false;
-	}
-	
-	public void setChooserPath(String chooserPath){
-		this.chooserPath = chooserPath;
-	}
-	
-	public void setChooserPath(URL url){
-		String path = getFilePath(url);
-		if( path != null ){
-			this.setChooserPath( path );
-		}
-	}
-	
-	public String getCurrentFileName(String defaultName) {
-		if(!this.isNewFile()){
-			URL url = getCurrentURL();
-			if( url != null ){
-				return decode(new File(url.getFile()).getName());
-			}
-		}
-		return defaultName;
-	}
-	
-	public String getCurrentFilePath() {
-		if(!this.isNewFile()){
-			URL url = getCurrentURL();
-			if(url != null){
-				String file = getFilePath(url);
-				if( file != null ) {
-					return decode(file);
-				}
-			}
-		}
-		return this.chooserPath;
-	}
-	
-	public String getSavePath() {
-		String current = getCurrentFilePath();
-		return (current != null ? current : this.chooserPath);
-	}
-	
-	public String getOpenPath() {
-		return this.chooserPath;
-	}
-	
-	protected String getFilePath(URL url){
-		if( isLocalFile(url) ){
+	public String getFilePath(URL url){
+		if( TGFileUtils.isLocalFile(url) ){
 			return new File(url.getFile()).getParent();
-		}
-		return null;
-	}
-	
-	protected String decode(String url){
-		try {
-			return URLDecoder.decode(url, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return url;
-	}
-	
-	protected boolean isLocalFile(URL url){
-		try {
-			if( url.getProtocol().equals( new File(url.getFile()).toURI().toURL().getProtocol() ) ){
-				return true;
-			}
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return false;
-	}
-	
-	protected URL getCurrentURL(){
-		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
-		if( document != null ) {
-			return document.getUrl();
 		}
 		return null;
 	}
@@ -171,14 +71,6 @@ public class FileHistory {
 				break;
 			}
 		}
-	}
-	
-	public boolean isChanged() {
-		return this.changed;
-	}
-	
-	public void setChanged(boolean changed) {
-		this.changed = changed;
 	}
 	
 	public void loadHistory() {
@@ -227,5 +119,36 @@ public class FileHistory {
 	
 	private String getHistoryFileName(){
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "history.properties";
+	}
+	
+	public void setChooserPath(URL url){
+		String path = getFilePath(url);
+		if( path != null ){
+			this.setChooserPath( path );
+		}
+	}
+	
+	public String getChooserPath() {
+		return this.chooserPath;
+	}
+	
+	public void setChooserPath(String chooserPath){
+		this.chooserPath = chooserPath;
+	}
+	
+	public boolean isChanged() {
+		return this.changed;
+	}
+	
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+	
+	public static TGFileHistory getInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGFileHistory.class.getName(), new TGSingletonFactory<TGFileHistory>() {
+			public TGFileHistory createInstance(TGContext context) {
+				return new TGFileHistory();
+			}
+		});
 	}
 }

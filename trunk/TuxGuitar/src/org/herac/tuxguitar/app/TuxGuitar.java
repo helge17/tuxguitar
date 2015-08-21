@@ -18,7 +18,6 @@ import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.editor.EditorCache;
 import org.herac.tuxguitar.app.editor.TGEditorManager;
-import org.herac.tuxguitar.app.helper.FileHistory;
 import org.herac.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
@@ -86,8 +85,6 @@ public class TuxGuitar {
 	private TGMenuManager itemManager;
 	
 	private TGCustomChordManager customChordManager;
-	
-	private FileHistory fileHistory;
 	
 	public TuxGuitar() {
 		this.lock = new TGLock();
@@ -334,13 +331,6 @@ public class TuxGuitar {
 			this.keyBindingManager = new KeyBindingActionManager();
 		}
 		return this.keyBindingManager;
-	}
-	
-	public FileHistory getFileHistory(){
-		if( this.fileHistory == null ){
-			this.fileHistory = new FileHistory(this.context);
-		}
-		return this.fileHistory;
 	}
 	
 	public TGTemplateManager getTemplateManager(){

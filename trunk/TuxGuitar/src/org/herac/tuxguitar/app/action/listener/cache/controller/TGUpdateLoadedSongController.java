@@ -6,6 +6,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
+import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
@@ -32,9 +33,10 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 		TGDocumentListManager.getInstance(context).findCurrentDocument().setUnwanted(unwanted);
 		TGDocumentListManager.getInstance(context).updateLoadedDocument();
 		
-		TuxGuitar.getInstance().getFileHistory().reset(url);
+		TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
+		tgFileHistory.reset(url);
 		if( url != null ) {
-			TuxGuitar.getInstance().getFileHistory().setChooserPath( url );
+			tgFileHistory.setChooserPath( url );
 		}
 		
 		TuxGuitar.getInstance().getEditorCache().reset();

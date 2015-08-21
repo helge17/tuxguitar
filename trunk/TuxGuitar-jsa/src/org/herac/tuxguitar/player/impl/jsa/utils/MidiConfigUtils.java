@@ -12,8 +12,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.FileChooser;
+import org.herac.tuxguitar.app.util.TGFileChooser;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
+import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
@@ -70,10 +72,11 @@ public class MidiConfigUtils {
 		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		sbCustomChooser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				String fileName = FileChooser.instance().open(dialog,FileChooser.ALL_FORMATS);
-				if(fileName != null){
-					sbCustomPath.setText(fileName);
-				}
+				TGFileChooser.getInstance(context).openChooser(new TGFileChooserHandler() {
+					public void updateFileName(String fileName) {
+						sbCustomPath.setText(fileName);
+					}
+				}, TGFileChooser.ALL_FORMATS, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
 		

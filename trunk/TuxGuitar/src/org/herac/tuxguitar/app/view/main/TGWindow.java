@@ -227,7 +227,7 @@ public class TGWindow implements TGEventListener {
 	
 	public void loadTitleInCurrentThread() {
 		if(!this.isDisposed()) {
-			this.getShell().setText(WindowTitleUtil.parseTitle());
+			this.getShell().setText(WindowTitleUtil.parseTitle(this.context));
 		}
 	}
 	
