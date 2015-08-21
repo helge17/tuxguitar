@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
@@ -14,7 +15,7 @@ public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolIt
 	
 	public static final String MODULE_ID = "tuxguitar-tuner";
 	
-	protected void doAction() {
+	protected void doAction(TGContext context) {
 		List<TGString> strings = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getStrings();
 		Iterator<TGString> it = strings.iterator();
 		int[] tuning = new int[strings.size()];
@@ -24,7 +25,7 @@ public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolIt
 			tuning[i] = current.getValue();
 			i++;
 		}
-		TGTunerDialog dialog = new TGTunerDialog(this.getContext(), tuning);
+		TGTunerDialog dialog = new TGTunerDialog(context, tuning);
 		dialog.show();
 		
 	}

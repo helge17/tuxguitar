@@ -4,6 +4,7 @@ import org.herac.tuxguitar.jack.JackPlugin;
 import org.herac.tuxguitar.jack.singleton.JackClientInstanceProvider;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 import org.herac.tuxguitar.player.plugin.TGMidiSequencerProviderPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class JackSequencerProviderPlugin extends TGMidiSequencerProviderPlugin {
@@ -14,9 +15,9 @@ public class JackSequencerProviderPlugin extends TGMidiSequencerProviderPlugin {
 		super();
 	}
 	
-	protected MidiSequencerProvider getProvider() throws TGPluginException {
+	protected MidiSequencerProvider createProvider(TGContext context) throws TGPluginException {
 		if( this.jackSequencerProvider == null ) {
-			this.jackSequencerProvider = new JackSequencerProvider(getContext(), new JackClientInstanceProvider(getContext()) );
+			this.jackSequencerProvider = new JackSequencerProvider(context, new JackClientInstanceProvider(context) );
 		}
 		return this.jackSequencerProvider;
 	}

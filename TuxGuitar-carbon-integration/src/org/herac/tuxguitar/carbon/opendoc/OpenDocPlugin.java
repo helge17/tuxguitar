@@ -9,14 +9,6 @@ public class OpenDocPlugin implements TGPlugin {
 	
 	private OpenDocListener openDocListener;
 	
-	public void init(TGContext context) throws TGPluginException {
-		// Nothing todo
-	}
-	
-	public void close() throws TGPluginException {
-		// Nothing todo
-	}
-	
 	public void setEnabled(boolean enabled) throws TGPluginException {
 		if( this.openDocListener != null ){
 			this.openDocListener.setEnabled(enabled);
@@ -29,5 +21,13 @@ public class OpenDocPlugin implements TGPlugin {
 	
 	public String getModuleId() {
 		return TGCarbonIntegrationPlugin.MODULE_ID;
+	}
+	
+	public void connect(TGContext context) throws TGPluginException {
+		this.setEnabled(true);
+	}
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		this.setEnabled(false);
 	}
 }

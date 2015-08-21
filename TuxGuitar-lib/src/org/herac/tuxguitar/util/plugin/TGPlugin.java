@@ -4,12 +4,9 @@ import org.herac.tuxguitar.util.TGContext;
 
 public interface TGPlugin {
 	
-	public void init(TGContext context) throws TGPluginException;
+	String getModuleId();
 	
-	public void close() throws TGPluginException;
+	void connect(TGContext context) throws TGPluginException;
 	
-	public void setEnabled(boolean enabled) throws TGPluginException;
-	
-	public String getModuleId();
-	
+	void disconnect(TGContext context) throws TGPluginException;
 }

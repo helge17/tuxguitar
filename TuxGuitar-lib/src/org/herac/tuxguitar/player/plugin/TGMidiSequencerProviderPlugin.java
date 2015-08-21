@@ -8,57 +8,32 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGMidiSequencerProviderPlugin implements TGPlugin{
 	
-	private boolean loaded;
 	private MidiSequencerProvider provider;
-	private TGContext context;
 	
-	protected abstract MidiSequencerProvider getProvider() throws TGPluginException;
+	protected abstract MidiSequencerProvider createProvider(TGContext context) throws TGPluginException;
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.context = context;
-		this.provider = getProvider();
-		this.loaded = false;
-	}
-	
-	public void close() throws TGPluginException {
+	public void connect(TGContext context) throws TGPluginException {
 		try {
-			this.provider.closeAll();
+			if( this.provider == null ) {
+				this.provider = createProvider(context);
+				
+				MidiPlayer.getInstance(context).addSequencerProvider(this.provider);
+			}
 		} catch (Throwable throwable) {
 			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		if(enabled){
-			addPlugin();
-		}else{
-			removePlugin();
-		}
-	}
-	
-	public TGContext getContext() {
-		return context;
-	}
-	
-	protected void addPlugin() throws TGPluginException {
-		if(!this.loaded){
-			try {
-				MidiPlayer.getInstance(getContext()).addSequencerProvider(this.provider);
-				this.loaded = true;
-			} catch (Throwable throwable) {
-				throw new TGPluginException(throwable.getMessage(),throwable);
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.provider != null ) {
+				MidiPlayer.getInstance(context).removeSequencerProvider(this.provider);
+				
+				this.provider.closeAll();
+				this.provider = null;
 			}
-		}
-	}
-	
-	protected void removePlugin() throws TGPluginException {
-		if(this.loaded){
-			try {
-				MidiPlayer.getInstance(getContext()).removeSequencerProvider(this.provider);
-				this.loaded = false;
-			} catch (Throwable throwable) {
-				throw new TGPluginException(throwable.getMessage(),throwable);
-			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 }

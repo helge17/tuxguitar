@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.lilypond;
 
 import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandler;
 import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandlerPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class LilypondPluginSettingsHandler extends TGSongStreamSettingsHandlerPlugin {
@@ -10,7 +11,7 @@ public class LilypondPluginSettingsHandler extends TGSongStreamSettingsHandlerPl
 		return LilypondPluginExporter.MODULE_ID;
 	}
 	
-	public TGSongStreamSettingsHandler getSettingsHandler() throws TGPluginException {
+	public TGSongStreamSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException {
 		return new LilypondSettingsHandler();
 	}	
 }

@@ -8,44 +8,31 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGExporterPlugin implements TGPlugin{
 	
-	private boolean loaded;
-	private TGContext context;
 	private TGRawExporter exporter;
 	
-	protected abstract TGRawExporter getExporter() throws TGPluginException;
+	protected abstract TGRawExporter createExporter(TGContext context) throws TGPluginException;
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.context = context;
-		this.exporter = getExporter();
-	}
-	
-	public TGContext getContext() {
-		return this.context;
-	}
-	
-	public void close() throws TGPluginException {
-		this.removePlugin();
-	}
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		if(enabled){
-			addPlugin();
-		}else{
-			removePlugin();
+	public void connect(TGContext context) throws TGPluginException {
+		try {
+			if( this.exporter == null ) {
+				this.exporter = createExporter(context);
+				
+				TGFileFormatManager.getInstance(context).addExporter(this.exporter);
+			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 	
-	protected void addPlugin() throws TGPluginException {
-		if(!this.loaded && this.exporter != null){
-			TGFileFormatManager.getInstance(this.context).addExporter(this.exporter);
-			this.loaded = true;
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.exporter != null ) {
+				TGFileFormatManager.getInstance(context).removeExporter(this.exporter);
+				
+				this.exporter = null;
+			}
+		} catch (Throwable throwable) {
+			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
-	
-	protected void removePlugin() throws TGPluginException {
-		if(this.loaded && this.exporter != null){
-			TGFileFormatManager.getInstance(this.context).removeExporter(this.exporter);
-			this.loaded = false;
-		}
-	}	
 }

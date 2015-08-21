@@ -16,45 +16,35 @@ public class JackSingletonPlugin implements TGPlugin {
 		super();
 	}
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.jackClient = new JackClient();	
-	}
-	
-	public void close(){
-		if( this.jackClient != null ){
-			if( this.jackClient.isOpen() ){
-				this.jackClient.close();
-			}
-			this.jackClient.finalize();
-		}
-		this.jackClient = null;
-	}
-	
 	public JackClient getJackClient() {
 		return this.jackClient;
-	}
-
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		// Not implemented
 	}
 	
 	public String getModuleId() {
 		return JackPlugin.MODULE_ID;
 	}
 	
-	public String getAuthor() {
-		return "Julian Casadesus <julian@casadesus.com.ar>";
+	public void connect(TGContext context) throws TGPluginException {
+		try {
+			if( this.jackClient == null ){
+				this.jackClient = new JackClient();
+			}
+		} catch (Throwable throwable){
+			throw new TGPluginException(throwable);
+		}
 	}
-	
-	public String getDescription() {
-		return "Jack Audio Connection Kit plugin support";
-	}
-	
-	public String getName() {
-		return "Jack Audio Connection Kit plugin support";
-	}
-	
-	public String getVersion() {
-		return "1.0";
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.jackClient != null ){
+				if( this.jackClient.isOpen() ){
+					this.jackClient.close();
+				}
+				this.jackClient.finalize();
+				this.jackClient = null;
+			}
+		} catch (Throwable throwable){
+			throw new TGPluginException(throwable);
+		}
 	}
 }

@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.tg;
 
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.io.plugin.TGExporterPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGExporterPluginImpl extends TGExporterPlugin{
@@ -12,7 +13,7 @@ public class TGExporterPluginImpl extends TGExporterPlugin{
 		this.rawExporter = rawExporter;
 	}
 	
-	protected TGRawExporter getExporter() throws TGPluginException {
+	protected TGRawExporter createExporter(TGContext context) throws TGPluginException {
 		return this.rawExporter;
 	}
 	

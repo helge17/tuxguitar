@@ -2,12 +2,13 @@ package org.herac.tuxguitar.io.gtp;
 
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsAdapter;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class GTPSettingsPlugin extends TGPluginSettingsAdapter {
 
-	protected TGPluginSettingsHandler getHandler() throws TGPluginException {
-		return new GTPSettingsHandler(getContext());
+	protected TGPluginSettingsHandler createHandler(TGContext context) throws TGPluginException {
+		return new GTPSettingsHandler(context);
 	}
 	
 	public String getModuleId() {

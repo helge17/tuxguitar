@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.abc;
 
 import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandler;
 import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandlerPlugin;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class ABCPluginExportSettingsHandler extends TGSongStreamSettingsHandlerPlugin {
@@ -10,7 +11,7 @@ public class ABCPluginExportSettingsHandler extends TGSongStreamSettingsHandlerP
 		return ABCPlugin.MODULE_ID;
 	}
 	
-	public TGSongStreamSettingsHandler getSettingsHandler() throws TGPluginException {
-		return new ABCExportSettingsHandler(this.getContext());
+	public TGSongStreamSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException {
+		return new ABCExportSettingsHandler(context);
 	}	
 }

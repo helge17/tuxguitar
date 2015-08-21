@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -31,7 +30,7 @@ public abstract class Option extends SelectionAdapter{
 	
 	protected static final int DEFAULT_INDENT = 20;
 	
-	private TGSettingsEditor configEditor ;
+	private TGSettingsEditor configEditor;
 	private ToolBar toolBar;
 	private Group group;
 	private Composite composite;
@@ -224,7 +223,7 @@ public abstract class Option extends SelectionAdapter{
 	}
 	
 	public void loadCursor(int style){
-		TuxGuitar.getInstance().loadCursor(this.configEditor.getDialog(),style);
+		this.configEditor.loadCursor(style);
 	}
 	
 	protected void addSyncThread(Runnable runnable){

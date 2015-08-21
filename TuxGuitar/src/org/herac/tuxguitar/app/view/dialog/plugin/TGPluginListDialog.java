@@ -26,6 +26,7 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginInfo;
+import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGPluginListDialog {
 	
@@ -116,11 +117,13 @@ public class TGPluginListDialog {
 				buttonSetup.setEnabled(false);
 				if(event.item instanceof TableItem && event.item.getData() instanceof String){
 					final TableItem item = (TableItem)event.item;
-					if(event.detail == SWT.CHECK){
-						TuxGuitar.getInstance().loadCursor(dialog,SWT.CURSOR_WAIT);
-						TuxGuitar.getInstance().getPluginManager().setEnabled((String)item.getData(), item.getChecked());
-						TuxGuitar.getInstance().loadCursor(dialog,SWT.CURSOR_ARROW);
+					if( event.detail == SWT.CHECK ){
+						dialog.setCursor(dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+						
+						TGPluginManager.getInstance(context.getContext()).setEnabled((String)item.getData(), item.getChecked());
 						table.setSelection(item);
+						
+						dialog.setCursor(dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
 					}
 					buttonInfo.setEnabled(true);
 					buttonSetup.setEnabled(isConfigurable((String)item.getData()));

@@ -10,31 +10,33 @@ public class JackConnectionPlugin implements TGPlugin{
 
 	private JackConnectionManager jackConnectionManager;
 	
-	public void init(TGContext context) throws TGPluginException {
-		this.jackConnectionManager = new JackConnectionManager(context, new JackClientInstanceProvider(context));
-	}
-	
-	public void close() throws TGPluginException {
-		this.jackConnectionManager = null;
-	}
-
 	public JackConnectionManager getJackConnectionManager() {
 		return this.jackConnectionManager;
 	}
 
-	public String getModuleId() {
-		return JackPlugin.MODULE_ID;
-	}
-
-	public void setEnabled(boolean enabled) throws TGPluginException {
+	public void connect(TGContext context) throws TGPluginException {
 		try {
-			if( enabled ){
+			if( this.jackConnectionManager == null ) {
+				this.jackConnectionManager = new JackConnectionManager(context, new JackClientInstanceProvider(context));
 				this.jackConnectionManager.initialize();
-			} else {
-				this.jackConnectionManager.destroy();
 			}
 		} catch (Throwable throwable){
 			throw new TGPluginException(throwable);
 		}
+	}
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.jackConnectionManager != null ) {
+				this.jackConnectionManager.destroy();
+				this.jackConnectionManager = null;
+			}
+		} catch (Throwable throwable){
+			throw new TGPluginException(throwable);
+		}
+	}
+
+	public String getModuleId() {
+		return JackPlugin.MODULE_ID;
 	}
 }

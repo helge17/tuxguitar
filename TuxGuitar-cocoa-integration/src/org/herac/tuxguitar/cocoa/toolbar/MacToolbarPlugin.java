@@ -10,25 +10,15 @@ public class MacToolbarPlugin implements TGPlugin {
 	
 	private MacToolbar macToolbar;
 	
-	public void init(TGContext context) throws TGPluginException {
-		// Nothing todo
+	public String getModuleId() {
+		return TGCocoaIntegrationPlugin.MODULE_ID;
 	}
 	
-	public void close() throws TGPluginException {
+	public void connect(TGContext context) throws TGPluginException {
 		try {
 			if( this.macToolbar != null ){
-				this.macToolbar.finalize();
-			}
-		} catch( Throwable throwable ){
-			throw new TGPluginException( throwable );
-		}
-	}
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		try {
-			if( this.macToolbar != null ){
-				this.macToolbar.setEnabled(enabled);
-			}else if(enabled){
+				this.macToolbar.setEnabled(true);
+			 }else {
 				this.macToolbar = new MacToolbar();
 				this.macToolbar.setEnabled(true);
 				this.macToolbar.init( TuxGuitar.getInstance().getShell() );
@@ -37,8 +27,15 @@ public class MacToolbarPlugin implements TGPlugin {
 			throw new TGPluginException( throwable );
 		}
 	}
-	
-	public String getModuleId() {
-		return TGCocoaIntegrationPlugin.MODULE_ID;
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		try {
+			if( this.macToolbar != null ){
+				this.macToolbar.setEnabled(false);
+				this.macToolbar.finalize();
+			 }
+		} catch( Throwable throwable ){
+			throw new TGPluginException( throwable );
+		}
 	}
 }

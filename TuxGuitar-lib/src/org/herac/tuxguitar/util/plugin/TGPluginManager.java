@@ -49,13 +49,10 @@ public class TGPluginManager {
 			Iterator<TGPlugin> it = TGServiceReader.lookupProviders(TGPlugin.class,TGClassLoader.getInstance().getClassLoader());
 			while(it.hasNext()){
 				try{
-					TGPlugin tgPlugin = (TGPlugin)it.next();
+					TGPlugin tgPlugin = it.next();
 					if( tgPlugin.getModuleId() != null ){
-						tgPlugin.init(this.context);
 						this.plugins.add(tgPlugin);
 					}
-				}catch(TGPluginException exception){
-					TGErrorManager.getInstance(this.context).handleError(exception);
 				}catch(Throwable throwable){
 					TGErrorManager.getInstance(this.context).handleError(new TGPluginException(PLUGIN_ERROR_ON_INIT,throwable));
 				}
@@ -69,7 +66,7 @@ public class TGPluginManager {
 		Iterator<TGPlugin> it = this.plugins.iterator();
 		while(it.hasNext()){
 			try{
-				((TGPlugin)it.next()).close();
+				((TGPlugin)it.next()).disconnect(this.context);
 			}catch(TGPluginException exception){
 				TGErrorManager.getInstance(this.context).handleError(exception);
 			}catch(Throwable throwable){
@@ -83,7 +80,9 @@ public class TGPluginManager {
 		while(it.hasNext()){
 			try{
 				TGPlugin tgPlugin = (TGPlugin)it.next();
-				tgPlugin.setEnabled( isEnabled(tgPlugin.getModuleId()) );
+				if( isEnabled(tgPlugin.getModuleId()) ) {
+					tgPlugin.connect(this.context);
+				}
 			}catch(TGPluginException exception){
 				TGErrorManager.getInstance(this.context).handleError(exception);
 			}catch(Throwable throwable){
@@ -101,7 +100,11 @@ public class TGPluginManager {
 				try{
 					TGPlugin tgPlugin = (TGPlugin)it.next();
 					if( tgPlugin.getModuleId().equals(moduleId) ){
-						tgPlugin.setEnabled(enabled);
+						if( enabled ) {
+							tgPlugin.connect(this.context);
+						} else {
+							tgPlugin.disconnect(this.context);
+						}
 					}
 				}catch(TGPluginException exception){
 					TGErrorManager.getInstance(this.context).handleError(exception);
