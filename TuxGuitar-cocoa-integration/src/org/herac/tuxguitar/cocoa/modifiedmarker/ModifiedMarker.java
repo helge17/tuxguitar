@@ -3,9 +3,12 @@ package org.herac.tuxguitar.cocoa.modifiedmarker;
 import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.editor.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
 
 public class ModifiedMarker implements TGEventListener {
 	
@@ -35,10 +38,19 @@ public class ModifiedMarker implements TGEventListener {
         nsWindow.setDocumentEdited(modified);
 	}
 	
+	private boolean isUnsavedFile() {
+		TGContext context = TuxGuitar.getInstance().getContext();
+		TGDocument document = TGDocumentListManager.getInstance(context).findCurrentDocument();
+		if( document != null ) {
+			return document.isUnsaved();
+		}
+		return false;
+	}
+	
 	/** From 'TGEventListener' */
 	public void processEvent(TGEvent event) {
 		if( this.isEnabled() && TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-		    this.setFrameState(TuxGuitar.getInstance().getFileHistory().isUnsavedFile());
+		    this.setFrameState(this.isUnsavedFile());
 		}
 	}
 }

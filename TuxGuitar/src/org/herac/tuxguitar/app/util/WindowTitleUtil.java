@@ -1,7 +1,11 @@
 package org.herac.tuxguitar.app.util;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocumentFileManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class WindowTitleUtil {
@@ -17,12 +21,12 @@ public class WindowTitleUtil {
 	public static final String VAR_SONG_ALBUM = "songalbum";
 	public static final String VAR_SONG_ARTIST = "songartist";
 	
-	public static String parseTitle(){
-		String title = parseString(TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE));
-		return ((title == null)?TuxGuitar.APPLICATION_NAME:title);
+	public static String parseTitle(TGContext context){
+		String title = parseString(context, TGConfigManager.getInstance(context).getStringValue(TGConfigKeys.WINDOW_TITLE));
+		return ((title == null) ? TuxGuitar.APPLICATION_NAME : title);
 	}
 	
-	private static String parseString(String src){
+	private static String parseString(TGContext context, String src){
 		try{
 			if(src != null){
 				String result = new String();
@@ -37,7 +41,7 @@ public class WindowTitleUtil {
 							result += src.substring(pos,startIndex );
 						}
 						String var = src.substring(startIndex,(endIndex + 1));
-						result += parseVar(var);
+						result += parseVar(context, var);
 						pos = endIndex;
 					}else{
 						result += src.substring(pos,src.length() );
@@ -52,7 +56,7 @@ public class WindowTitleUtil {
 		return null;
 	}
 	
-	private static String parseVar(String var){
+	private static String parseVar(TGContext context, String var){
 		String varName = var.substring((VAR_START.length()),(var.length() - 1));
 		String varValue = var;
 		if(varName.equals(VAR_APP_NAME)){
@@ -60,17 +64,17 @@ public class WindowTitleUtil {
 		}else if(varName.equals(VAR_APP_VERSION)){
 			varValue = TGVersion.CURRENT.getVersion();
 		}else if(varName.equals(VAR_FILE_NAME)){
-			varValue = TuxGuitar.getInstance().getFileHistory().getCurrentFileName(FileChooser.DEFAULT_SAVE_FILENAME);
+			varValue = TGDocumentFileManager.getInstance(context).getCurrentFileName(TGFileChooser.DEFAULT_SAVE_FILENAME);
 		}else if(varName.equals(VAR_FILE_PATH)){
-			varValue = TuxGuitar.getInstance().getFileHistory().getCurrentFilePath();
+			varValue = TGDocumentFileManager.getInstance(context).getCurrentFilePath();
 		}else if(varName.equals(VAR_SONG_NAME)){
-			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getName();
+			varValue = TGDocumentManager.getInstance(context).getSong().getName();
 		}else if(varName.equals(VAR_SONG_AUTHOR)){
-			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getAuthor();
+			varValue = TGDocumentManager.getInstance(context).getSong().getAuthor();
 		}else if(varName.equals(VAR_SONG_ALBUM)){
-			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getAlbum();
+			varValue = TGDocumentManager.getInstance(context).getSong().getAlbum();
 		}else if(varName.equals(VAR_SONG_ARTIST)){
-			varValue = TuxGuitar.getInstance().getDocumentManager().getSong().getArtist();
+			varValue = TGDocumentManager.getInstance(context).getSong().getArtist();
 		}
 		return varValue;
 	}

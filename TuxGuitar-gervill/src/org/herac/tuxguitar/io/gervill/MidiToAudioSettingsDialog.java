@@ -23,15 +23,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
-import org.herac.tuxguitar.app.util.FileChooser;
+import org.herac.tuxguitar.app.util.TGFileChooser;
+import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
+import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiToAudioSettingsDialog {
 	
+	private TGContext context;
 	protected boolean success;
 	
-	public MidiToAudioSettingsDialog(){
-		super();
+	public MidiToAudioSettingsDialog(TGContext context){
+		this.context = context;
 	}
 	
 	public boolean open(final MidiToAudioSettings settings) {
@@ -111,10 +115,11 @@ public class MidiToAudioSettingsDialog {
 		sbCustomChooser.setEnabled( (settings.getSoundbankPath() != null) );
 		sbCustomChooser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				String fileName = FileChooser.instance().open(dialog, soundbankFormats);
-				if(fileName != null){
-					sbCustomPath.setText(fileName);
-				}
+				TGFileChooser.getInstance(MidiToAudioSettingsDialog.this.context).openChooser(new TGFileChooserHandler() {
+					public void updateFileName(String fileName) {
+						sbCustomPath.setText(fileName);
+					}
+				}, soundbankFormats, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
 		

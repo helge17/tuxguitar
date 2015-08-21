@@ -6,7 +6,7 @@ import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandlerPlugin;
 public class MidiToAudioSettingsPlugin extends TGSongStreamSettingsHandlerPlugin {
 	
 	public TGSongStreamSettingsHandler getSettingsHandler() {
-		return new MidiToAudioSettingsHandler();
+		return new MidiToAudioSettingsHandler(getContext());
 	}
 	
 	public String getModuleId(){

@@ -2,13 +2,16 @@ package org.herac.tuxguitar.app.action.impl.file;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.FileChooser;
+import org.herac.tuxguitar.app.document.TGDocumentFileManager;
+import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenFileAction extends TGActionBase {
@@ -20,12 +23,12 @@ public class TGOpenFileAction extends TGActionBase {
 	}
 	
 	protected void processAction(final TGActionContext context){
-		try {
-			String path = FileChooser.instance().open(TuxGuitar.getInstance().getShell(), TuxGuitar.getInstance().getFileFormatManager().getInputFormats());
-			if( path != null ){
-				File file = new File(path);
-				if( file.exists() && file.isFile() ){
-					final URL url = file.toURI().toURL();
+		List<TGFileFormat> fileFormats = TGFileFormatManager.getInstance(getContext()).getInputFormats();
+		TGDocumentFileManager tgDocumentFileManager = TGDocumentFileManager.getInstance(getContext());
+		tgDocumentFileManager.chooseFileNameForOpen(fileFormats, new TGFileChooserHandler() {
+			public void updateFileName(final String fileName) {
+				final URL url = createUrl(fileName);
+				if( url != null ) {
 					new Thread(new Runnable() {
 						public void run() {
 							context.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
@@ -36,6 +39,16 @@ public class TGOpenFileAction extends TGActionBase {
 					}).start();
 				}
 			}
+		});
+	}
+	
+	public URL createUrl(String fileName) {
+		try {
+			File file = new File(fileName);
+			if( file.exists() && file.isFile() ){
+				return file.toURI().toURL();
+			}
+			return null;
 		} catch (Throwable e) {
 			throw new TGActionException(e.getMessage(), e);
 		}

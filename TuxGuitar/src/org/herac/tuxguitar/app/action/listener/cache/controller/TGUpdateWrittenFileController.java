@@ -5,9 +5,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
+import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 
@@ -26,8 +26,9 @@ public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 				
 				TGDocumentListManager.getInstance(context).findCurrentDocument().setUrl(url);
 				
-				TuxGuitar.getInstance().getFileHistory().reset(url);
-				TuxGuitar.getInstance().getFileHistory().setChooserPath( url );
+				TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
+				tgFileHistory.reset(url);
+				tgFileHistory.setChooserPath( url );
 			}
 			
 			super.update(context, actionContext);
