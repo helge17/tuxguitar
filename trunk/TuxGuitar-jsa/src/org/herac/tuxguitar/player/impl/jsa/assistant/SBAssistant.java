@@ -13,8 +13,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.ConfirmDialog;
+import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -22,11 +25,11 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class SBAssistant {
 
 	public static final SBUrl[] URLS = new SBUrl[]{
-		new SBUrl(toURL("http://java.sun.com/products/java-media/sound/soundbank-min.gm.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.minimal")),
-		new SBUrl(toURL("http://java.sun.com/products/java-media/sound/soundbank-mid.gm.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.medium")),
-		new SBUrl(toURL("http://java.sun.com/products/java-media/sound/soundbank-deluxe.gm.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.deluxe")),
+		new SBUrl(toURL("http://www.oracle.com/technetwork/java/soundbank-min-150078.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.minimal")),
+		new SBUrl(toURL("http://www.oracle.com/technetwork/java/soundbank-mid-149984.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.medium")),
+		new SBUrl(toURL("http://www.oracle.com/technetwork/java/soundbank-deluxe-150042.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.deluxe")),
 	};
-
+	
 	private TGContext context;
 	private MidiPortSynthesizer synthesizer;
 	
@@ -36,19 +39,21 @@ public class SBAssistant {
 	}
 	
 	public void process(){
-		new Thread(new Runnable() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("jsa.soundbank-assistant.confirm-message"));
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_NO);
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_NO);
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, new Runnable() {
 			public void run() {
 				TGSynchronizer.getInstance(SBAssistant.this.context).executeLater(new Runnable() {
 					public void run() {
-						ConfirmDialog dialog = new ConfirmDialog(TuxGuitar.getProperty("jsa.soundbank-assistant.confirm-message"));
-						dialog.setDefaultStatus( ConfirmDialog.STATUS_NO );
-						if (dialog.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO , ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_YES){
-							open();
-						}		
+						open();
 					}
 				});
 			}
-		}).start();
+		});
+		tgActionProcessor.process();
 	}
 	
 	protected void open(){		

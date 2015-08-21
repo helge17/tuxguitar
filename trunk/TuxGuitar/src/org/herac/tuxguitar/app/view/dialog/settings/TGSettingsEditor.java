@@ -17,12 +17,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
+import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.app.view.dialog.settings.items.LanguageOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.MainOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.Option;
@@ -72,12 +74,7 @@ public class TGSettingsEditor{
 			public void widgetSelected(SelectionEvent e) {
 				dispose();
 				setDefaults();
-				ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("settings.config.apply-changes-question"));
-				confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
-				if( confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO ){
-					return;
-				}
-				applyConfig(true);
+				applyConfigWithConfirmation(true);
 			}
 		});
 		
@@ -88,12 +85,7 @@ public class TGSettingsEditor{
 			public void widgetSelected(SelectionEvent e) {
 				updateOptions();
 				dispose();
-				ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("settings.config.apply-changes-question"));
-				confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
-				if( confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_YES) == ConfirmDialog.STATUS_NO ){
-					return;
-				}
-				applyConfig(false);
+				applyConfigWithConfirmation(false);
 			}
 		});
 		
@@ -222,6 +214,20 @@ public class TGSettingsEditor{
 			option.updateDefaults();
 		}
 		this.config.save();
+	}
+	
+	protected void applyConfigWithConfirmation(final boolean force) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGOpenViewAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("settings.config.apply-changes-question"));
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_NO);
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_NO);
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, new Runnable() {
+			public void run() {
+				applyConfig(force);
+			}
+		});
+		tgActionProcessor.process();
 	}
 	
 	protected void applyConfig(final boolean force) {

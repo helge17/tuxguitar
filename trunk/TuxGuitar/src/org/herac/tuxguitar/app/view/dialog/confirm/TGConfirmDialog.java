@@ -26,10 +26,6 @@ public class TGConfirmDialog {
 	public static int BUTTON_YES = 0x02;
 	public static int BUTTON_NO = 0x04;
 	
-	public static int STATUS_YES = 1;
-	public static int STATUS_NO = 2;
-	public static int STATUS_CANCEL = 3;
-	
 	public void show(final TGViewContext context) {
 		final String message = context.getAttribute(ATTRIBUTE_MESSAGE);
 		final Integer style = context.getAttribute(ATTRIBUTE_STYLE);
@@ -88,7 +84,7 @@ public class TGConfirmDialog {
 				}
 			}
 		});
-		if(defaultButton){
+		if( defaultButton ){
 			dialog.setDefaultButton(button);
 		}
 	}

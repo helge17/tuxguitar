@@ -19,26 +19,32 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.app.util.ConfirmDialog;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 public class TGKeyBindingSelector {
 	
-	protected Shell dialog;
-	protected TGKeyBindingEditor editor;
-	protected KeyBinding keyBinding;
-	protected String action;
+	public static final String ATTRIBUTE_EDITOR = TGKeyBindingEditor.class.getName();
+	public static final String ATTRIBUTE_KB_ACTION = KeyBindingAction.class.getName();
 	
-	public TGKeyBindingSelector(TGKeyBindingEditor editor,KeyBindingAction keyBindingAction){
+	private Shell dialog;
+	private TGKeyBindingEditor editor;
+	private KeyBindingAction keyBindingAction;
+	private TGKeyBindingSelectorHandler handler;
+	
+	public TGKeyBindingSelector(TGKeyBindingEditor editor, KeyBindingAction keyBindingAction, TGKeyBindingSelectorHandler handler){
 		this.editor = editor;
-		this.keyBinding = keyBindingAction.getKeyBinding();
-		this.action = keyBindingAction.getAction();
+		this.keyBindingAction = keyBindingAction;
+		this.handler = handler;
 	}
 	
-	public KeyBinding select(Shell parent){
-		this.dialog = DialogUtils.newDialog(parent,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+	public void select(Shell parent){
+		this.dialog = DialogUtils.newDialog(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		this.dialog.setLayout(new GridLayout());
 		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
@@ -46,7 +52,7 @@ public class TGKeyBindingSelector {
 		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		group.setText(TuxGuitar.getProperty(this.action));
+		group.setText(TuxGuitar.getProperty(this.keyBindingAction.getAction()));
 		
 		final Composite composite = new Composite(group,SWT.NONE);
 		composite.setLayout(new GridLayout(2,false));
@@ -54,14 +60,7 @@ public class TGKeyBindingSelector {
 		composite.setFocus();
 		composite.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
-				KeyBinding kb = new KeyBinding(e.keyCode,e.stateMask);
-				if(kb.isSameAs(TGKeyBindingSelector.this.keyBinding) || isValid(kb)){
-					if(TGKeyBindingSelector.this.keyBinding == null){
-						TGKeyBindingSelector.this.keyBinding = new KeyBinding();
-					}
-					TGKeyBindingSelector.this.keyBinding.setKey(kb.getKey());
-					TGKeyBindingSelector.this.keyBinding.setMask(kb.getMask());
-				}
+				handleSelection( new KeyBinding(e.keyCode,e.stateMask));
 				TGKeyBindingSelector.this.dialog.dispose();
 			}
 		});
@@ -100,7 +99,6 @@ public class TGKeyBindingSelector {
 		});
 		buttonClean.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				TGKeyBindingSelector.this.keyBinding = null;
 				TGKeyBindingSelector.this.dialog.dispose();
 			}
 		});
@@ -120,8 +118,6 @@ public class TGKeyBindingSelector {
 		});
 		
 		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-		
-		return this.keyBinding;
 	}
 	
 	private GridData getButtonData(){
@@ -131,14 +127,23 @@ public class TGKeyBindingSelector {
 		return data;
 	}
 	
-	protected boolean isValid(KeyBinding kb){
-		if(this.editor.exists(kb)){
-			ConfirmDialog confirm = new ConfirmDialog(TuxGuitar.getProperty("key-bindings-editor-override"));
-			confirm.setDefaultStatus( ConfirmDialog.STATUS_NO );
-			if(confirm.confirm(ConfirmDialog.BUTTON_YES | ConfirmDialog.BUTTON_NO, ConfirmDialog.BUTTON_NO) == ConfirmDialog.STATUS_NO){
-				return false;
-			}
+	public void handleSelection(final KeyBinding kb) {
+		if( kb.isSameAs(this.keyBindingAction.getKeyBinding()) || !this.editor.exists(kb) ){
+			this.handler.handleSelection(kb);
 		}
-		return true;
+		
+		else {
+			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.editor.getContext().getContext(), TGOpenViewAction.NAME);
+			tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
+			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("key-bindings-editor-override"));
+			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_NO);
+			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_NO);
+			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, new Runnable() {
+				public void run() {
+					TGKeyBindingSelector.this.handler.handleSelection(kb);
+				}
+			});
+			tgActionProcessor.process();
+		}
 	}
 }
