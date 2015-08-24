@@ -120,7 +120,7 @@ public class TGPluginListDialog {
 					if( event.detail == SWT.CHECK ){
 						dialog.setCursor(dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
 						
-						TGPluginManager.getInstance(context.getContext()).setEnabled((String)item.getData(), item.getChecked());
+						TGPluginManager.getInstance(context.getContext()).updatePluginStatus((String)item.getData(), item.getChecked());
 						table.setSelection(item);
 						
 						dialog.setCursor(dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));

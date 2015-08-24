@@ -46,7 +46,7 @@ public class TGDisposeAction extends TGActionBase {
 	
 	protected void closeModules(){
 		TuxGuitar.getInstance().getPlayer().close();
-		TuxGuitar.getInstance().getPluginManager().closePlugins();
+		TuxGuitar.getInstance().getPluginManager().disconnectAll();
 	}
 	
 	protected void dispose(){
