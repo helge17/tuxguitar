@@ -122,7 +122,7 @@ public class TuxGuitar {
 		this.initMidiPlayer();
 		this.getEditorManager().setLockControl(this.lock);
 		this.getActionAdapterManager().initialize();
-		this.getPluginManager().openPlugins();
+		this.getPluginManager().connectEnabled();
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
 		
