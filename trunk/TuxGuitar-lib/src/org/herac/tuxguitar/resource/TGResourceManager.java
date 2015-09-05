@@ -17,19 +17,31 @@ public class TGResourceManager implements TGResourceLoader {
 	}
 	
 	public <T> Class<T> loadClass(String name) throws TGResourceException {
-		return this.resourceLoader.loadClass(name);
+		if( this.resourceLoader != null ) {
+			return this.resourceLoader.loadClass(name);
+		}
+		return null;
 	}
 
 	public InputStream getResourceAsStream(String name) throws TGResourceException {
-		return this.resourceLoader.getResourceAsStream(name);
+		if( this.resourceLoader != null ) {
+			return this.resourceLoader.getResourceAsStream(name);
+		}
+		return null;
 	}
 
 	public URL getResource(String name) throws TGResourceException {
-		return this.resourceLoader.getResource(name);
+		if( this.resourceLoader != null ) {
+			return this.resourceLoader.getResource(name);
+		}
+		return null;
 	}
 
 	public Enumeration<URL> getResources(String name) throws TGResourceException {
-		return this.resourceLoader.getResources(name);
+		if( this.resourceLoader != null ) {
+			return this.resourceLoader.getResources(name);
+		}
+		return null;
 	}
 	
 	public TGResourceLoader getResourceLoader() {
