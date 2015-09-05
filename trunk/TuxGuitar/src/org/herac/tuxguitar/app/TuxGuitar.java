@@ -28,6 +28,7 @@ import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.transport.TGTransportListener;
+import org.herac.tuxguitar.app.util.TGClassLoader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGSplash;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
@@ -49,6 +50,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.util.TGAbstractContext;
@@ -77,8 +79,6 @@ public class TuxGuitar {
 	
 	private TGLanguageManager languageManager;
 	
-	private KeyBindingActionManager keyBindingManager;
-	
 	private EditorCache editorCache;
 	
 	private TGMenuManager itemManager;
@@ -102,8 +102,9 @@ public class TuxGuitar {
 	
 	public void displayGUI(URL url) {		
 		// Priority 1 ----------------------------------------------//
+		TGResourceManager.getInstance(this.context).setResourceLoader(TGClassLoader.getInstance(context));
 		TGFileUtils.loadLibraries(this.context);
-		TGFileUtils.loadClasspath();
+		TGFileUtils.loadClasspath(this.context);
 		TGErrorAdapter.initialize(this.context);
 		TGPropertiesAdapter.initialize(this.context);
 		
@@ -326,10 +327,7 @@ public class TuxGuitar {
 	}
 
 	public KeyBindingActionManager getKeyBindingManager(){
-		if( this.keyBindingManager == null ){
-			this.keyBindingManager = new KeyBindingActionManager();
-		}
-		return this.keyBindingManager;
+		return KeyBindingActionManager.getInstance(this.context);
 	}
 	
 	public TGTemplateManager getTemplateManager(){

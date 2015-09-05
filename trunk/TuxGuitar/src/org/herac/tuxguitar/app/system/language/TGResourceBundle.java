@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGResourceBundle {
 	
@@ -30,42 +31,42 @@ public class TGResourceBundle {
 		return this.properties.getProperty(key);
 	}
 	
-	public static TGResourceBundle getBundle(String baseName, Locale locale){
+	public static TGResourceBundle getBundle(TGContext context, String baseName, Locale locale){
 		Properties properties = new Properties();
 		
 		String bundleName = baseName.replace('.','/');
 		String bundleExtension = ".properties";
 		
 		// load default
-		TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
+		TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
 		
 		// load language
 		bundleName += "_";
 		if(locale.getLanguage() != null && locale.getLanguage().length() > 0){
 			bundleName += locale.getLanguage();
-			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
+			TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
 		}
 		
 		// load country
 		bundleName += "_";
 		if(locale.getCountry() != null && locale.getCountry().length() > 0){
 			bundleName += locale.getCountry();
-			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
+			TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
 		}
 		
 		// load variant
 		bundleName += "_";
 		if(locale.getVariant() != null && locale.getVariant().length() > 0){
 			bundleName += locale.getVariant();
-			TGResourceBundle.loadResources( (bundleName + bundleExtension ), properties);
+			TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
 		}
 		
 		return new TGResourceBundle(locale, properties);
 	}
 	
-	private static void loadResources(String name, Properties p){
+	private static void loadResources(TGContext context, String name, Properties p){
 		try {
-			Enumeration<URL> enumeration = TGFileUtils.getResourceUrls(name);
+			Enumeration<URL> enumeration = TGFileUtils.getResourceUrls(context, name);
 			while (enumeration.hasMoreElements()) {
 				URL url = (URL) enumeration.nextElement();
 				Properties properties = new Properties();

@@ -95,7 +95,7 @@ public class TGKeyBindingEditor {
 		defaults.setLayoutData(getButtonData());
 		defaults.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				loadEnableActionKeyBindings(KeyBindingActionDefaults.getDefaultKeyBindings());
+				loadEnableActionKeyBindings(KeyBindingActionDefaults.getDefaultKeyBindings(getContext().getContext()));
 			}
 		});
 		

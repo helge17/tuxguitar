@@ -87,12 +87,12 @@ public class SkinOption extends Option{
 		new Thread(new Runnable() {
 			public void run() {
 				SkinOption.this.skins = new ArrayList<SkinInfo>();
-				String[] skinNames = TGFileUtils.getFileNames("skins");
+				String[] skinNames = TGFileUtils.getFileNames(getViewContext().getContext(), "skins");
 				if( skinNames != null ){
 					for(int i = 0;i < skinNames.length;i++){
 						Properties properties = new Properties();
 						try {
-							InputStream skinInfo = TGFileUtils.getResourceAsStream("skins/" + skinNames[i] + "/skin.properties");
+							InputStream skinInfo = TGFileUtils.getResourceAsStream(getViewContext().getContext(), "skins/" + skinNames[i] + "/skin.properties");
 							if( skinInfo != null ){
 								properties.load( skinInfo );
 							}
@@ -152,7 +152,7 @@ public class SkinOption extends Option{
 					SkinOption.this.descriptionLabel.setText(info.getDescription());
 					SkinOption.this.versionLabel.setText((info.getDate() == null)?info.getVersion():info.getVersion() + " (" + info.getDate() + ")");
 					if(info.getPreview() != null){
-						SkinOption.this.preview = TGFileUtils.loadImage(info.getSkin(),info.getPreview());
+						SkinOption.this.preview = TGFileUtils.loadImage(getViewContext().getContext(), info.getSkin(), info.getPreview());
 					}
 					SkinOption.this.previewArea.redraw();
 					loadCursor(SWT.CURSOR_ARROW);

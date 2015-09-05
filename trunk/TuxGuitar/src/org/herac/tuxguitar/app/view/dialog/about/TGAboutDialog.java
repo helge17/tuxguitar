@@ -91,7 +91,7 @@ public class TGAboutDialog {
 		tabFolder.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		tabFolder.setLayout(new FormLayout());
 		
-		TGAboutContentReader docReader = new TGAboutContentReader();
+		TGAboutContentReader docReader = new TGAboutContentReader(context.getContext());
 		
 		makeTabItem(tabFolder,TGAboutContentReader.DESCRIPTION,docReader.read(TGAboutContentReader.DESCRIPTION).toString());
 		makeTabItem(tabFolder,TGAboutContentReader.AUTHORS,docReader.read(TGAboutContentReader.AUTHORS).toString());

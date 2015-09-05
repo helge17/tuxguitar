@@ -6,15 +6,16 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGContext;
 
 public class KeyBindingActionDefaults {
 
 	private static final String DEFAULT_SHORTCUT_FILE = "tuxguitar-shortcuts.xml";
 
-	public static List<KeyBindingAction> getDefaultKeyBindings() {
+	public static List<KeyBindingAction> getDefaultKeyBindings(TGContext context) {
 		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
 		try {
-			InputStream stream = TGFileUtils.getResourceAsStream(DEFAULT_SHORTCUT_FILE);
+			InputStream stream = TGFileUtils.getResourceAsStream(context, DEFAULT_SHORTCUT_FILE);
 			if (stream != null) {
 				List<KeyBindingAction> defaults = KeyBindingReader.getKeyBindings(stream);
 				if (defaults != null) {

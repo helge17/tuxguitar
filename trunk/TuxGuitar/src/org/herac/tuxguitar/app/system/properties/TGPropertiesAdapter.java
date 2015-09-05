@@ -16,11 +16,11 @@ public class TGPropertiesAdapter {
 	public static void initialize(TGContext context) {
 		TGPropertiesManager tgPropertiesManager = TGPropertiesManager.getInstance(context);
 		tgPropertiesManager.setPropertiesFactory(new TGPropertiesFactoryImpl());
-		tgPropertiesManager.addPropertiesReader(TGConfigManager.RESOURCE, new TGConfigPropertiesHandler());
-		tgPropertiesManager.addPropertiesWriter(TGConfigManager.RESOURCE, new TGConfigPropertiesHandler());
-		tgPropertiesManager.addPropertiesReader(TGConfigDefaults.RESOURCE, new TGConfigDefaultsPropertiesHandler());
-		tgPropertiesManager.addPropertiesReader(TGPluginInfo.RESOURCE, new TGPluginInfoHandler());
-		tgPropertiesManager.addPropertiesReader(TGPluginProperties.RESOURCE, new TGPluginPropertiesHandler());
-		tgPropertiesManager.addPropertiesWriter(TGPluginProperties.RESOURCE, new TGPluginPropertiesHandler());
+		tgPropertiesManager.addPropertiesReader(TGConfigManager.RESOURCE, new TGConfigPropertiesHandler(context));
+		tgPropertiesManager.addPropertiesWriter(TGConfigManager.RESOURCE, new TGConfigPropertiesHandler(context));
+		tgPropertiesManager.addPropertiesReader(TGConfigDefaults.RESOURCE, new TGConfigDefaultsPropertiesHandler(context));
+		tgPropertiesManager.addPropertiesReader(TGPluginInfo.RESOURCE, new TGPluginInfoHandler(context));
+		tgPropertiesManager.addPropertiesReader(TGPluginProperties.RESOURCE, new TGPluginPropertiesHandler(context));
+		tgPropertiesManager.addPropertiesWriter(TGPluginProperties.RESOURCE, new TGPluginPropertiesHandler(context));
 	}
 }

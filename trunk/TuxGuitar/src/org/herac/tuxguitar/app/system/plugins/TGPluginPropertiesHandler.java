@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.herac.tuxguitar.app.system.properties.TGDefaultAndStoredPropertiesHandler;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginProperties;
 
 public class TGPluginPropertiesHandler extends TGDefaultAndStoredPropertiesHandler {
@@ -16,7 +17,7 @@ public class TGPluginPropertiesHandler extends TGDefaultAndStoredPropertiesHandl
 	private static final String STORED_PREFIX = TGFileUtils.PATH_USER_CONFIG + File.separator + RESOURCE_PREFIX;
 	private static final String STORED_SUFFIX = RESOURCE_SUFFIX;
 	
-	public TGPluginPropertiesHandler() {
-		super(DEFAULTS_PREFIX, DEFAULTS_SUFFIX, STORED_PREFIX, STORED_SUFFIX);
+	public TGPluginPropertiesHandler(TGContext context) {
+		super(context, DEFAULTS_PREFIX, DEFAULTS_SUFFIX, STORED_PREFIX, STORED_SUFFIX);
 	}
 }
