@@ -11,20 +11,23 @@ import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
+import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class KeyBindingActionManager {
 	
 	private List<KeyBindingAction> keyBindingsActions;
 	private KeyBindingListener listener;
 	
-	public KeyBindingActionManager(){
+	private KeyBindingActionManager(TGContext context){
 		this.keyBindingsActions = new ArrayList<KeyBindingAction>();
-		this.init();
+		this.init(context);
 	}
 	
-	public void init(){
+	public void init(TGContext context){
 		List<KeyBindingAction> enabled = KeyBindingReader.getKeyBindings(getUserFileName());
-		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings()) );
+		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings(context)) );
 		this.listener = new KeyBindingListener(this);
 	}
 	
@@ -88,5 +91,13 @@ public class KeyBindingActionManager {
 		if( actionId != null ){
 			new TGActionProcessor(TuxGuitar.getInstance().getContext(), actionId).process();
 		}
+	}
+	
+	public static KeyBindingActionManager getInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, KeyBindingActionManager.class.getName(), new TGSingletonFactory<KeyBindingActionManager>() {
+			public KeyBindingActionManager createInstance(TGContext context) {
+				return new KeyBindingActionManager(context);
+			}
+		});
 	}
 }

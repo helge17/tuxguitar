@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.util.TGClassLoader;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLibraryLoader;
 import org.herac.tuxguitar.util.TGVersion;
@@ -38,7 +38,7 @@ public class TGFileUtils {
 	//writable
 	public static final String[] TG_STATIC_SHARED_PATHS = getStaticSharedPaths();
 	
-	public static InputStream getResourceAsStream(String resource) {
+	public static InputStream getResourceAsStream(TGContext context, String resource) {
 		try {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
@@ -48,14 +48,14 @@ public class TGFileUtils {
 					}
 				}
 			}
-			return TGClassLoader.getInstance().getClassLoader().getResourceAsStream(resource);
+			return TGResourceManager.getInstance(context).getResourceAsStream(resource);
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
 		return null;
 	}
 	
-	public static URL getResourceUrl(String resource) {
+	public static URL getResourceUrl(TGContext context, String resource) {
 		try {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
@@ -65,14 +65,14 @@ public class TGFileUtils {
 					}
 				}
 			}
-			return TGClassLoader.getInstance().getClassLoader().getResource(resource);
+			return TGResourceManager.getInstance(context).getResource(resource);
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
 		return null;
 	}
 	
-	public static Enumeration<URL> getResourceUrls(String resource) {
+	public static Enumeration<URL> getResourceUrls(TGContext context, String resource) {
 		try {
 			Vector<URL> vector = new Vector<URL>();
 			if(TG_STATIC_SHARED_PATHS != null){
@@ -83,7 +83,7 @@ public class TGFileUtils {
 					}
 				}
 			}
-			Enumeration<URL> resources = TGClassLoader.getInstance().getClassLoader().getResources(resource);
+			Enumeration<URL> resources = TGResourceManager.getInstance(context).getResources(resource);
 			while( resources.hasMoreElements() ){
 				URL url = (URL)resources.nextElement();
 				if( !vector.contains(url) ){
@@ -97,7 +97,7 @@ public class TGFileUtils {
 		return null;
 	}
 	
-	private static String getResourcePath(String resource) {
+	private static String getResourcePath(TGContext context, String resource) {
 		try {
 			if(TG_STATIC_SHARED_PATHS != null){
 				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
@@ -107,7 +107,7 @@ public class TGFileUtils {
 					}
 				}
 			}
-			URL url = TGClassLoader.getInstance().getClassLoader().getResource(resource);
+			URL url = TGResourceManager.getInstance(context).getResource(resource);
 			if(url != null){
 				return getUrlPath(url);
 			}
@@ -117,19 +117,19 @@ public class TGFileUtils {
 		return null;
 	}
 	
-	public static void loadClasspath(){
+	public static void loadClasspath(TGContext context){
 		try {
-			Enumeration<URL> plugins = getResourceUrls("plugins");
+			Enumeration<URL> plugins = getResourceUrls(context, "plugins");
 			while( plugins.hasMoreElements() ){
 				URL url = (URL)plugins.nextElement();
-				TGClassLoader.getInstance().addPaths(new File(getUrlPath(url)));
+				TGClassLoader.getInstance(context).addPaths(new File(getUrlPath(url)));
 			}
 			
 			String custompath = System.getProperty(TG_CLASS_PATH);
 			if(custompath != null){
 				String[] paths = custompath.split(File.pathSeparator);
 				for(int i = 0; i < paths.length; i++){
-					TGClassLoader.getInstance().addPaths(new File(paths[i]));
+					TGClassLoader.getInstance(context).addPaths(new File(paths[i]));
 				}
 			}
 		}catch(Throwable throwable){
@@ -149,16 +149,16 @@ public class TGFileUtils {
 		}
 	}
 	
-	public static String[] getFileNames( String resource ){
+	public static String[] getFileNames(TGContext context, String resource ){
 		try {
-			String path = getResourcePath(resource);
+			String path = getResourcePath(context, resource);
 			if( path != null ){
 				File file = new File( path );
 				if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
 					return file.list();
 				}
 			}
-			InputStream stream = getResourceAsStream(resource + "/list.properties" );
+			InputStream stream = getResourceAsStream(context, resource + "/list.properties" );
 			if( stream != null ){
 				BufferedReader reader = new BufferedReader( new InputStreamReader(stream) );
 				List<String> fileNameList = new ArrayList<String>();
@@ -178,13 +178,13 @@ public class TGFileUtils {
 		return null;
 	}
 	
-	public static Image loadImage(String name){
-		return loadImage(TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
+	public static Image loadImage(TGContext context, String name){
+		return loadImage(context, TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
 	}
 	
-	public static Image loadImage(String skin,String name){
+	public static Image loadImage(TGContext context, String skin,String name){
 		try{
-			InputStream stream = getResourceAsStream("skins/" + skin + "/" + name);
+			InputStream stream = getResourceAsStream(context, "skins/" + skin + "/" + name);
 			if(stream != null){			
 				return new Image(TuxGuitar.getInstance().getDisplay(),new ImageData(stream));
 			}

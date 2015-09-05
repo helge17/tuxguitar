@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGClassLoader;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGServiceReader;
 import org.herac.tuxguitar.util.error.TGErrorManager;
@@ -37,7 +37,7 @@ public class TGPluginManager {
 			this.plugins.clear();
 			
 			// Search available providers
-			Iterator<TGPlugin> it = TGServiceReader.lookupProviders(TGPlugin.class, TGClassLoader.getInstance().getClassLoader());
+			Iterator<TGPlugin> it = TGServiceReader.lookupProviders(TGPlugin.class, TGResourceManager.getInstance(this.context));
 			while( it.hasNext() ){
 				try {
 					TGPlugin tgPlugin = it.next();

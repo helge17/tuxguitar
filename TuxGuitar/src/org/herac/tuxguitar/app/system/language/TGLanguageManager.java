@@ -51,7 +51,7 @@ public class TGLanguageManager {
 		try {
 			String baseName = (PACKAGE + "." + PREFIX);
 			Locale locale = getLocale(lang);
-			this.resources = TGResourceBundle.getBundle(baseName, locale);
+			this.resources = TGResourceBundle.getBundle(this.context, baseName, locale);
 			this.fireChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,7 +134,7 @@ public class TGLanguageManager {
 	 */
 	private void loadLanguages(){
 		List<String> availableList = new ArrayList<String>();
-		String[] fileNames = TGFileUtils.getFileNames("lang");
+		String[] fileNames = TGFileUtils.getFileNames(this.context, "lang");
 		if( fileNames != null ){
 			// now iterate over them
 			for(int i = 0;i < fileNames.length;i++){

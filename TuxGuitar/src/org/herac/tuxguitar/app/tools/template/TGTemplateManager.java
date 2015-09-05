@@ -40,7 +40,7 @@ public class TGTemplateManager {
 	
 	public void loadTemplates(){
 		try{
-			InputStream templateInputStream = TGFileUtils.getResourceAsStream(TEMPLATES_CONFIG_PATH);
+			InputStream templateInputStream = TGFileUtils.getResourceAsStream(this.context, TEMPLATES_CONFIG_PATH);
 			if( templateInputStream != null ){
 				TGTemplateReader tgTemplateReader = new TGTemplateReader();
 				tgTemplateReader.loadTemplates(this.templates, templateInputStream);
@@ -60,7 +60,7 @@ public class TGTemplateManager {
 	public TGSong getTemplateAsSong(TGTemplate tgTemplate){
 		try{
 			if( tgTemplate != null && tgTemplate.getResource() != null ){
-				InputStream stream = TGFileUtils.getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
+				InputStream stream = TGFileUtils.getResourceAsStream(this.context, TEMPLATES_PREFIX + tgTemplate.getResource());
 				
 				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
 				tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());

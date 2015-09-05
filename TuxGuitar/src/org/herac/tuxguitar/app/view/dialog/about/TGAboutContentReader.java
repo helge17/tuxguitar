@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.util.TGClassLoader;
+import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGAboutContentReader {
 	
@@ -15,15 +16,17 @@ public class TGAboutContentReader {
 	public static final String AUTHORS = "authors";
 	public static final String LICENSE = "license";
 	
-	public TGAboutContentReader(){
-		super();
+	private TGContext context;
+	
+	public TGAboutContentReader(TGContext context){
+		this.context = context;
 	}
 	
 	public StringBuffer read(String doc){
 		String lang = TuxGuitar.getInstance().getLanguageManager().getLanguage();
-		InputStream is = TGClassLoader.getInstance().getClassLoader().getResourceAsStream(PREFIX + doc + "_" + lang + EXTENSION);
+		InputStream is = TGResourceManager.getInstance(this.context).getResourceAsStream(PREFIX + doc + "_" + lang + EXTENSION);
 		if(is == null){
-			is = TGClassLoader.getInstance().getClassLoader().getResourceAsStream(PREFIX + doc + EXTENSION);
+			is = TGResourceManager.getInstance(this.context).getResourceAsStream(PREFIX + doc + EXTENSION);
 		}
 		if(is != null){
 			return read(is);

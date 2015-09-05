@@ -127,7 +127,7 @@ public class ScaleManager {
 	
 	private void loadScales(){
 		try{
-			new ScaleReader().loadScales(this.scales, TGFileUtils.getResourceAsStream("scales/scales.xml") );
+			new ScaleReader().loadScales(this.scales, TGFileUtils.getResourceAsStream(this.context, "scales/scales.xml") );
 		} catch (Throwable e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		} 

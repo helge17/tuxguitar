@@ -5,6 +5,7 @@ import java.io.File;
 import org.herac.tuxguitar.app.system.properties.TGFilePropertiesHandler;
 import org.herac.tuxguitar.app.system.properties.TGResourcePropertiesReader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesException;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
@@ -22,6 +23,12 @@ public class TGConfigPropertiesHandler implements TGPropertiesReader, TGProperti
 	
 	private static final String PLUGINS_FILE_PREFIX = TGFileUtils.PATH_USER_PLUGINS_CONFIG + File.separator;
 	
+	private TGContext context;
+	
+	public TGConfigPropertiesHandler(TGContext context) {
+		this.context = context;
+	}
+	
 	public void writeProperties(TGProperties properties, String module) throws TGPropertiesException {
 		this.storeProperties(properties, module);
 	}
@@ -35,7 +42,7 @@ public class TGConfigPropertiesHandler implements TGPropertiesReader, TGProperti
 		if( DEFAULT_MODULE.equals(module) ){
 			TGConfigDefaults.loadProperties(properties);
 		}
-		TGPropertiesReader tgPropertiesReader = new TGResourcePropertiesReader(DEFAULT_RESOURCE_PREFIX, DEFAULT_RESOURCE_SUFFIX);
+		TGPropertiesReader tgPropertiesReader = new TGResourcePropertiesReader(this.context, DEFAULT_RESOURCE_PREFIX, DEFAULT_RESOURCE_SUFFIX);
 		tgPropertiesReader.readProperties(properties, module);
 	}
 	

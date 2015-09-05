@@ -11,21 +11,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.herac.tuxguitar.resource.TGResourceException;
+import org.herac.tuxguitar.resource.TGResourceLoader;
+import org.herac.tuxguitar.resource.TGResourceManager;
+
 public class TGServiceReader {
 	
 	private static final String SERVICE_PATH = new String("META-INF/services/");
 	
-	public static <T> Iterator<T> lookupProviders(Class<T> spi){
-		return TGServiceReader.lookupProviders(spi, TGClassLoader.getInstance().getClassLoader());
+	public static <T> Iterator<T> lookupProviders(Class<T> spi, TGContext context){
+		return TGServiceReader.lookupProviders(spi, TGResourceManager.getInstance(context));
 	}
 	
-	public static <T> Iterator<T> lookupProviders(Class<T> spi, ClassLoader loader){
+	public static <T> Iterator<T> lookupProviders(Class<T> spi, TGResourceLoader loader){
 		try{
 			if (spi == null || loader == null){
 				throw new IllegalArgumentException();
 			}
 			return new IteratorImpl<T>(spi, loader, loader.getResources(SERVICE_PATH + spi.getName()));
-		}catch (IOException ioex){
+		}catch (TGResourceException e){
 			return new ArrayList<T>().iterator();
 		}
 	}
@@ -33,11 +37,11 @@ public class TGServiceReader {
 	private static final class IteratorImpl<T> implements Iterator<T> {
 		
 		private Class<T> spi;
-		private ClassLoader loader;
+		private TGResourceLoader loader;
 		private Enumeration<URL> urls;
 		private Iterator<String> iterator;
 		
-		public IteratorImpl(Class<T> spi, ClassLoader loader, Enumeration<URL> urls){
+		public IteratorImpl(Class<T> spi, TGResourceLoader loader, Enumeration<URL> urls){
 			this.spi = spi;
 			this.loader = loader;
 			this.urls = urls;
