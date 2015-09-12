@@ -11,6 +11,6 @@ public class GP4OutputStreamPlugin extends GTPOutputStreamPlugin{
 	}
 	
 	protected TGOutputStreamBase createOutputStream(TGContext context) throws TGPluginException {
-		return new GP4OutputStream(GTPSettingsUtil.getInstance(context).getSettings());
+		return new GP4OutputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
 }

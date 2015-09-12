@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gtp;
+package org.herac.tuxguitar.io.gtp.ui;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -19,46 +19,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.io.gtp.GTPSettingsManager;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
-public class GTPSettingsUtil {
-	
-	private static final String KEY_CHARSET = "charset";
+public class GTPSettingsDialog {
 	
 	private TGContext context;
-	private TGConfigManager config;
 	
-	private GTPSettings settings;
-	
-	private GTPSettingsUtil(TGContext context){
+	public GTPSettingsDialog(TGContext context){
 		this.context = context;
-		this.settings = new GTPSettings();
-	}
-	
-	public GTPSettings getSettings(){
-		return this.settings;
-	}
-	
-	public TGConfigManager getConfig(){
-		if(this.config == null){ 
-			this.config = new TGConfigManager(this.context, "tuxguitar-gtp");
-		}
-		return this.config;
-	}
-	
-	public void load(){
-		String charsetDefault = System.getProperty("file.encoding");
-		if( charsetDefault == null ){
-			charsetDefault = GTPSettings.DEFAULT_CHARSET;
-		}
-		this.settings.setCharset( getConfig().getStringValue(KEY_CHARSET, charsetDefault) );
 	}
 	
 	public void configure(Shell parent) {
 		final List<String> charsets = getAvailableCharsets();
+		final GTPSettingsManager settingsUtil = GTPSettingsManager.getInstance(this.context);
 		
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
@@ -78,7 +52,7 @@ public class GTPSettingsUtil {
 		for(int i = 0 ; i < charsets.size(); i ++){
 			String charset = (String)charsets.get(i);
 			value.add( charset );
-			if(charset.equals(this.settings.getCharset())){
+			if( charset.equals(settingsUtil.getSettings().getCharset()) ){
 				value.select( i );
 			}
 		}
@@ -98,11 +72,9 @@ public class GTPSettingsUtil {
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
 				int selection = value.getSelectionIndex();
-				if(selection >= 0 && selection < charsets.size() ){
-					TGConfigManager config = getConfig();
-					config.setValue(KEY_CHARSET, (String)charsets.get(selection));
-					config.save();
-					load();
+				if( selection >= 0 && selection < charsets.size() ){
+					settingsUtil.getSettings().setCharset(charsets.get(selection));
+					settingsUtil.saveSettings();
 				}
 				dialog.dispose();
 			}
@@ -119,7 +91,7 @@ public class GTPSettingsUtil {
 		
 		dialog.setDefaultButton( buttonOK );
 		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
 	}
 	
 	private List<String> getAvailableCharsets(){
@@ -130,13 +102,5 @@ public class GTPSettingsUtil {
 			charsets.add(entry.getKey());
 		}
 		return charsets;
-	}
-	
-	public static GTPSettingsUtil getInstance(TGContext context) {
-		return TGSingletonUtil.getInstance(context, GTPSettingsUtil.class.getName(), new TGSingletonFactory<GTPSettingsUtil>() {
-			public GTPSettingsUtil createInstance(TGContext context) {
-				return new GTPSettingsUtil(context);
-			}
-		});
 	}
 }

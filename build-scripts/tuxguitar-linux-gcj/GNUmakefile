@@ -30,6 +30,7 @@ MAKEFILE_SCRIPTS?=\
 	$(MAKEFILE_PATH)/tuxguitar-gm-utils.mf\
 	$(MAKEFILE_PATH)/tuxguitar-compat.mf\
 	$(MAKEFILE_PATH)/tuxguitar-gtp.mf\
+	$(MAKEFILE_PATH)/tuxguitar-gtp-ui.mf\
 	$(MAKEFILE_PATH)/tuxguitar-gpx.mf\
 	$(MAKEFILE_PATH)/tuxguitar-ptb.mf\
 	$(MAKEFILE_PATH)/tuxguitar-tef.mf\

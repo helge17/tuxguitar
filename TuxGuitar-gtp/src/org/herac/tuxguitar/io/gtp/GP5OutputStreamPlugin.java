@@ -11,6 +11,6 @@ public class GP5OutputStreamPlugin extends GTPOutputStreamPlugin{
 	}
 	
 	protected TGOutputStreamBase createOutputStream(TGContext context) throws TGPluginException {
-		return new GP5OutputStream(GTPSettingsUtil.getInstance(context).getSettings());
+		return new GP5OutputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
 }

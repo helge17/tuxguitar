@@ -1,7 +1,8 @@
-package org.herac.tuxguitar.io.gtp;
+package org.herac.tuxguitar.io.gtp.ui;
 
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsAdapter;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import org.herac.tuxguitar.io.gtp.GTPPlugin;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 

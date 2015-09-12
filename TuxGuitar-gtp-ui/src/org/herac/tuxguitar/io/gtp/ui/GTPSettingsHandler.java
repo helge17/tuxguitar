@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gtp;
+package org.herac.tuxguitar.io.gtp.ui;
 
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
@@ -13,6 +13,6 @@ public class GTPSettingsHandler implements TGPluginSettingsHandler {
 	}
 	
 	public void openSettingsDialog(Shell parent) {
-		GTPSettingsUtil.getInstance(this.context).configure(parent);
+		new GTPSettingsDialog(this.context).configure(parent);
 	}
 }

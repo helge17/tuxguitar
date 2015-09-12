@@ -11,6 +11,6 @@ public class GP5InputStreamPlugin extends GTPInputStreamPlugin{
 	}
 
 	protected TGInputStreamBase createInputStream(TGContext context) throws TGPluginException {
-		return new GP5InputStream(GTPSettingsUtil.getInstance(context).getSettings());
+		return new GP5InputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
 }
