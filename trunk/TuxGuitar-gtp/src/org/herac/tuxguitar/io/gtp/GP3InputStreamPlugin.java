@@ -11,6 +11,6 @@ public class GP3InputStreamPlugin extends GTPInputStreamPlugin{
 	}
 	
 	protected TGInputStreamBase createInputStream(TGContext context) throws TGPluginException {
-		return new GP3InputStream(GTPSettingsUtil.getInstance(context).getSettings());
+		return new GP3InputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
 }

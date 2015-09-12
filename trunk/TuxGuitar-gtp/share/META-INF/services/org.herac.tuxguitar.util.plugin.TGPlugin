@@ -6,4 +6,3 @@ org.herac.tuxguitar.io.gtp.GP4InputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP4OutputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP5InputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP5OutputStreamPlugin
-org.herac.tuxguitar.io.gtp.GTPSettingsPlugin

@@ -11,6 +11,6 @@ public class GP2InputStreamPlugin extends GTPInputStreamPlugin{
 	}
 	
 	protected TGInputStreamBase createInputStream(TGContext context) throws TGPluginException {
-		return new GP2InputStream(GTPSettingsUtil.getInstance(context).getSettings());
+		return new GP2InputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
 }

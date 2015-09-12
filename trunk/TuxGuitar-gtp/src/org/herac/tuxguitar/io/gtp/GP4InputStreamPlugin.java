@@ -11,6 +11,6 @@ public class GP4InputStreamPlugin extends GTPInputStreamPlugin{
 	}
 	
 	protected TGInputStreamBase createInputStream(TGContext context) throws TGPluginException {
-		return new GP4InputStream(GTPSettingsUtil.getInstance(context).getSettings());
+		return new GP4InputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
 }
