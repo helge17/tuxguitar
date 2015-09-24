@@ -4,21 +4,12 @@
     android:id="@+id/menu_beat" >
 
     <item
-        android:id="@+id/menu_duration"
-        android:title="@string/menu_duration"/>
-    <item
-        android:id="@+id/menu_effect"
-        android:title="@string/menu_effect"/>
-    <item
         android:id="@+id/menu_beat_edit_text"
         android:title="@string/menu_beat_edit_text"/>
     <item
         android:id="@+id/menu_beat_change_tied_note"
         android:checkable="true"
         android:title="@string/menu_beat_change_tied_note"/>
-    <item
-        android:id="@+id/menu_velocity"
-        android:title="@string/menu_velocity"/>
     <item
         android:id="@+id/menu_beat_clean_beat"
         android:title="@string/menu_beat_clean_beat"/>

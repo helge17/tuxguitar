@@ -4,17 +4,11 @@
     tools:context="org.herac.tuxguitar.android.TGActivity" >
 
     <item
-        android:id="@+id/menu_file"
-        android:title="@string/menu_file"/>
-    <item
         android:id="@+id/menu_edit"
         android:title="@string/menu_edit"/>
     <item
         android:id="@+id/menu_view"
         android:title="@string/menu_view"/>
-    <item
-        android:id="@+id/menu_transport"
-        android:title="@string/menu_transport"/>
     <item
         android:id="@+id/menu_composition"
         android:title="@string/menu_composition"/>
@@ -27,5 +21,13 @@
     <item
         android:id="@+id/menu_beat"
         android:title="@string/menu_beat"/>
-
+    <item
+        android:id="@+id/menu_duration"
+        android:title="@string/menu_duration"/>
+    <item
+        android:id="@+id/menu_effect"
+        android:title="@string/menu_effect"/>
+    <item
+        android:id="@+id/menu_velocity"
+        android:title="@string/menu_velocity"/>
 </menu>

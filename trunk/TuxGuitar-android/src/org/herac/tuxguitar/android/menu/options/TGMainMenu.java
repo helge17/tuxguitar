@@ -9,11 +9,12 @@ import org.herac.tuxguitar.android.fragment.TGFragment;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGBeatMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGCompositionMenu;
+import org.herac.tuxguitar.android.menu.context.impl.TGDurationMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGEditMenu;
-import org.herac.tuxguitar.android.menu.context.impl.TGFileMenu;
+import org.herac.tuxguitar.android.menu.context.impl.TGEffectMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGMeasureMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGTrackMenu;
-import org.herac.tuxguitar.android.menu.context.impl.TGTransportMenu;
+import org.herac.tuxguitar.android.menu.context.impl.TGVelocityMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGViewMenu;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -50,14 +51,15 @@ public class TGMainMenu {
 	}
 
 	public void initializeItems() {
-		this.getMenu().findItem(R.id.menu_file).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGFileMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_edit).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEditMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_view).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGViewMenu(getActivity())));
-		this.getMenu().findItem(R.id.menu_transport).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGTransportMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_composition).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGCompositionMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_track).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGTrackMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_measure).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGMeasureMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_beat).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGBeatMenu(getActivity())));
+		this.getMenu().findItem(R.id.menu_duration).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGDurationMenu(getActivity())));
+		this.getMenu().findItem(R.id.menu_effect).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
+		this.getMenu().findItem(R.id.menu_velocity).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGVelocityMenu(getActivity())));
 	}
 	
 	public TGActionProcessorListener createFragmentActionProcessor(TGFragment fragment) {

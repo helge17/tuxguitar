@@ -4,18 +4,6 @@
     android:id="@+id/menu_track" >
 
     <item
-        android:id="@+id/menu_track_go_first_track"
-        android:title="@string/menu_track_go_first_track"/>
-    <item
-        android:id="@+id/menu_track_go_last_track"
-        android:title="@string/menu_track_go_last_track"/>
-    <item
-        android:id="@+id/menu_track_go_previous_track"
-        android:title="@string/menu_track_go_previous_track"/>
-    <item
-        android:id="@+id/menu_track_go_next_track"
-        android:title="@string/menu_track_go_next_track"/>
-    <item
         android:id="@+id/menu_track_add"
         android:title="@string/menu_track_add"/>
     <item

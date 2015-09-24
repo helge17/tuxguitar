@@ -12,16 +12,4 @@
     <item
         android:id="@+id/menu_measure_remove"
         android:title="@string/menu_measure_remove"/>
-    <item
-        android:id="@+id/menu_measure_go_first_measure"
-        android:title="@string/menu_measure_go_first_measure"/>
-    <item
-        android:id="@+id/menu_measure_go_last_measure"
-        android:title="@string/menu_measure_go_last_measure"/>
-    <item
-        android:id="@+id/menu_measure_go_previous_measure"
-        android:title="@string/menu_measure_go_previous_measure"/>
-    <item
-        android:id="@+id/menu_measure_go_next_measure"
-        android:title="@string/menu_measure_go_next_measure"/>
 </menu>
