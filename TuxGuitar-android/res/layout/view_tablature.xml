@@ -1,0 +1,4 @@
+<org.herac.tuxguitar.android.view.tablature.TGSongView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tgSongView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

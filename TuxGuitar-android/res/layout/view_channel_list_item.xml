@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    style="@style/ChannelListItem">
+
+    <TextView
+        style="@style/ChannelListItemTextView"
+        android:id="@+id/channel_item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:singleLine="true" />
+
+    <SeekBar
+        android:id="@+id/channel_item_volume_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/channel_item_name"
+        android:max="127" />
+
+    <View
+        style="@style/ChannelListItemDivider"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/channel_item_volume_value" />
+
+</RelativeLayout>

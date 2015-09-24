@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.herac.tuxguitar.android.view.layout.TGActivityLayout
+	xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" 
+	android:id="@+id/tg_main_view"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	app:columnCount="1" >
+
+	<FrameLayout 
+		android:id="@+id/tg_activity_layout_main"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" >
+		<include layout="@layout/view_tablature"/>
+	</FrameLayout>
+	<FrameLayout 
+		android:id="@+id/tg_activity_layout_bottom"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" >
+		<include layout="@layout/view_tab_keyboard"/>
+	</FrameLayout>
+	
+</org.herac.tuxguitar.android.view.layout.TGActivityLayout>

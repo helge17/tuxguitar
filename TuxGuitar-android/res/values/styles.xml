@@ -1,0 +1,288 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+    </style>
+	
+	<style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
+	    <item name="android:minWidth">0dip</item>
+	    <item name="android:paddingLeft">0dip</item>
+	    <item name="android:paddingRight">0dip</item>
+	</style>
+	
+    <style name="Dialog" >
+        <item name="android:padding">10dp</item>
+	</style>
+    
+    <style name="DialogSectionSpacer" >
+        <item name="android:layout_height">20dp</item>
+	</style>
+	
+	<style name="DialogImageButton" >
+	    <item name="android:layout_width">42dp</item>
+	    <item name="android:layout_height">42dp</item>
+	    <item name="android:scaleType">fitCenter</item>
+	</style>
+	
+    <style name="TextViewLabel" >
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">18sp</item>
+	</style>
+	
+	<!-- ========================================================= -->
+	<!-- ==== TAB KEYBOARD ======================================= -->
+	<!-- ========================================================= -->
+	
+	<style name="TabKeyBoard" >
+		<item name="android:background">#3a3a3a</item>
+	</style>
+	
+	<style name="TabKeyBoardButton" >
+		<item name="android:typeface">normal</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:textSize">18sp</item>
+		<item name="android:textColor">@color/color_text_light</item>
+		
+		<item name="android:layout_width">36dp</item>
+		<item name="android:layout_height">36dp</item>
+		<item name="android:padding">0sp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButton" >
+		<item name="android:layout_width">36dp</item>
+		<item name="android:layout_height">36dp</item>
+		<item name="android:padding">0sp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonInsert" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonDelete" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_left_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonDuration" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_music_note_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonDurationIncrement" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_up_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonDurationDecrement" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonRight" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonLeft" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_left_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonUp" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_up_white_24dp</item>
+	</style>
+	
+	<style name="TabKeyBoardImageButtonDown" parent="TabKeyBoardImageButton" >
+		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
+	</style>
+	
+	<!-- ========================================================= -->
+	<!-- ==== DRAWER ============================================= -->
+	<!-- ========================================================= -->
+	
+	<style name="MainDrawerListItem" >
+	    <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:padding">8sp</item>
+		<item name="android:textColor">@color/color_text_light</item>
+	</style>
+	
+	<style name="MainDrawerImageButton" >
+	    <item name="android:layout_width">36dp</item>
+	    <item name="android:layout_height">36dp</item>
+	    <item name="android:padding">6dip</item>
+	    <item name="android:background">?android:selectableItemBackground</item>
+	</style>
+	
+	<style name="MainDrawerImageButtonMixer" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_volume_up_white_24dp</item>
+	</style>
+	
+	<style name="MainDrawerImageButtonPlay" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_play_circle_outline_white_24dp</item>
+	</style>
+	
+	<style name="MainDrawerImageButtonStop" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_pause_circle_outline_white_24dp</item>
+	</style>
+	
+	<style name="MainDrawerToolbar" >
+	    <item name="android:background">#6a6a6a</item>
+	    <item name="android:textColor">@color/color_text_light</item>
+	    <item name="android:padding">0dp</item>
+	</style>
+	
+	<style name="MainDrawerTransportPanel" >
+	    <item name="android:background">#6a6a6a</item>
+	</style>
+	
+	<!-- ========================================================= -->
+	<!-- ==== TOOL VIEW ========================================== -->
+	<!-- ========================================================= -->
+	
+	<style name="ToolView" >
+	    <item name="android:padding">0sp</item>
+	    <item name="android:background">#3a3a3a</item>
+	</style>
+	
+	<style name="ToolViewText" >
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:textColor">@color/color_text_light</item>
+		<item name="android:padding">8sp</item>
+	</style>
+	
+	<style name="ToolViewCheck" >
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:textColor">@color/color_text_light</item>
+		<item name="android:padding">8sp</item>
+	</style>
+	
+	<style name="ToolViewDivider">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">1dp</item>
+		<item name="android:background">#6a6a6a</item>
+	</style>
+	
+	<!-- ========================================================= -->
+	<!-- ==== BROWSER ============================================ -->
+	<!-- ========================================================= -->
+	
+	<style name="BrowserPanel" >
+	    <item name="android:background">#6a6a6a</item>
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">48dp</item>
+	</style>
+	
+	<style name="BrowserImageButton" >
+	    <item name="android:layout_width">36dp</item>
+	    <item name="android:layout_height">36dp</item>
+	    <item name="android:padding">6dip</item>
+	    <item name="android:background">?android:selectableItemBackground</item>
+	</style>
+	
+	<style name="BrowserInputControl" >
+	    <item name="android:textColor">@color/color_text_light</item>
+	    <item name="android:textSize">18sp</item>
+	</style>
+	
+	<style name="BrowserSpinnerItem" parent="BrowserInputControl" >
+    	<item name="android:singleLine">true</item>
+    	<item name="android:layout_width">match_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:ellipsize">marquee</item>
+	</style>
+	
+	
+	<style name="BrowserCollectionsPanel" parent="BrowserPanel" />
+	
+	<style name="BrowserCollectionsSpinner" parent="BrowserInputControl" >
+	    <item name="android:padding">12dip</item>
+	</style>
+	
+	<style name="BrowserSavePanel" parent="BrowserPanel" >
+	    <item name="android:background">#6a6a6a</item>
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">48dp</item>
+	</style>
+	
+	<style name="BrowserSaveEditText" parent="BrowserInputControl" />
+	
+	<style name="BrowserSaveSpinner" parent="BrowserInputControl" />
+	
+	<style name="BrowserSaveImageButton" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_save_white_24dp</item>
+	</style>
+	
+	<style name="BrowserElementIcon" >
+	    <item name="android:layout_width">24dp</item>
+	    <item name="android:layout_height">24dp</item>
+	    <item name="android:scaleType">fitCenter</item>
+	</style>
+	
+	<style name="BrowserElementIconFile" >
+	    <item name="android:src">@drawable/browser_file</item>
+	</style>
+	
+	<style name="BrowserElementIconFolder" >
+	    <item name="android:src">@drawable/browser_folder</item>
+	</style>
+	
+	<style name="BrowserElementName" >
+	    <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:padding">8sp</item>
+	</style>
+	
+	<style name="BrowserCollectionsDlgImageButtonSubmit" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_send_gray_24dp</item>
+	</style>
+	
+	<style name="BrowserCollectionsDlgImageButtonDelete" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_delete_gray_24dp</item>
+	</style>
+	<!-- ========================================================= -->
+	<!-- ==== CHANNEL LIST ======================================= -->
+	<!-- ========================================================= -->
+	
+	<style name="ChannelList" >
+	    <item name="android:background">#000000</item>
+	</style>
+	
+	<style name="ChannelListItem" >
+	    <item name="android:background">#000000</item>
+	</style>
+	
+	<style name="ChannelListItemTextView" >
+		<item name="android:typeface">normal</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:textSize">18sp</item>
+		<item name="android:textColor">@color/color_text_light</item>
+	</style>
+	
+	<style name="ChannelListItemImageButton" >
+	    <item name="android:layout_width">42dp</item>
+	    <item name="android:layout_height">42dp</item>
+	    <item name="android:scaleType">fitCenter</item>
+	</style>
+	
+	<style name="ChannelListItemDivider">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">1dp</item>
+		<item name="android:background">#aaaaaa</item>
+	</style>
+</resources>

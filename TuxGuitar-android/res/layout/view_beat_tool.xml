@@ -1,0 +1,118 @@
+<org.herac.tuxguitar.android.view.tool.TGBeatToolView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ToolView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/menu_duration"
+            android:text="@string/menu_duration"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_effect"
+            android:text="@string/menu_effect"
+            style="@style/ToolViewText"/>
+
+        <CheckBox
+            android:id="@+id/menu_beat_change_tied_note"
+            android:text="@string/menu_beat_change_tied_note"
+            style="@style/ToolViewCheck"/>
+
+        <TextView
+            android:id="@+id/menu_velocity"
+            android:text="@string/menu_velocity"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_clean_beat"
+            android:text="@string/menu_beat_clean_beat"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_decrement_note_semitone"
+            android:text="@string/menu_beat_decrement_note_semitone"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_increment_note_semitone"
+            android:text="@string/menu_beat_increment_note_semitone"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_delete_note_or_rest"
+            android:text="@string/menu_beat_delete_note_or_rest"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_insert_rest_beat"
+            android:text="@string/menu_beat_insert_rest_beat"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_remove_unused_voice"
+            android:text="@string/menu_beat_remove_unused_voice"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_beat_move_beats_left"
+            android:text="@string/menu_beat_move_beats_left"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_move_beats_right"
+            android:text="@string/menu_beat_move_beats_right"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_beat_edit_text"
+            android:text="@string/menu_beat_edit_text"
+            style="@style/ToolViewText"/>
+        
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_beat_set_voice_auto"
+            android:text="@string/menu_beat_set_voice_auto"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_set_voice_down"
+            android:text="@string/menu_beat_set_voice_down"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_set_voice_up"
+            android:text="@string/menu_beat_set_voice_up"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_beat_shift_note_down"
+            android:text="@string/menu_beat_shift_note_down"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_beat_shift_note_up"
+            android:text="@string/menu_beat_shift_note_up"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_beat_stroke"
+            android:text="@string/menu_beat_stroke"
+            style="@style/ToolViewText"/>
+    </LinearLayout>
+
+</org.herac.tuxguitar.android.view.tool.TGBeatToolView>

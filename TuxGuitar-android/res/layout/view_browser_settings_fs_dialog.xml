@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Dialog"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    app:columnCount="2" >
+
+    <TextView
+        android:id="@+id/browser_settings_fs_name_label"
+        style="@style/TextViewLabel"
+        app:layout_gravity="fill_horizontal|center_vertical"
+        android:text="@string/browser_settings_fs_name_label" />
+
+    <EditText
+        android:id="@+id/browser_settings_fs_name_value"
+        app:layout_gravity="fill_horizontal|center_vertical"
+        android:inputType="text" />
+
+    <android.support.v7.widget.Space
+        style="@style/DialogSectionSpacer"
+        app:layout_columnSpan="2"
+        app:layout_gravity="fill" />
+
+    <TextView
+        android:id="@+id/browser_settings_fs_path_label"
+        style="@style/TextViewLabel"
+        app:layout_gravity="fill_horizontal|center_vertical"
+        android:text="@string/browser_settings_fs_path_label" />
+
+    <TextView
+        android:id="@+id/browser_settings_fs_path_preview"
+        style="@style/TextViewLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_gravity="fill_horizontal|center_vertical" />
+
+    <android.support.v7.widget.Space
+        style="@style/DialogSectionSpacer"
+        app:layout_columnSpan="2"
+        app:layout_gravity="fill" />
+
+    <ListView
+        android:id="@+id/browser_settings_fs_path_value_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_columnSpan="2"
+        app:layout_gravity="fill_horizontal|center_vertical" />
+
+</android.support.v7.widget.GridLayout>

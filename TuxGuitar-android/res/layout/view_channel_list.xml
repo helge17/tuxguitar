@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.herac.tuxguitar.android.view.channel.TGChannelListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- Main -->
+    <RelativeLayout
+        style="@style/ChannelList"
+        android:id="@+id/channel_list_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="fill" >
+
+        <ListView
+            android:id="@+id/channel_list_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</org.herac.tuxguitar.android.view.channel.TGChannelListView>

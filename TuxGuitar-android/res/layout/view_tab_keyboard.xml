@@ -1,0 +1,138 @@
+<org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/tgTabKeyboard"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+	style="@style/TabKeyBoard">
+    
+	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="4dp"
+	    android:stretchColumns="1" 
+	    >
+	    
+		<TableRow android:gravity="center_vertical" >
+		    <RelativeLayout android:gravity="left">
+		        
+		        <Button
+		            android:id="@+id/tab_kb_button_number_7"
+		            android:text="7"
+		            style="@style/TabKeyBoardButton"/>
+		
+		        <Button
+		            android:id="@+id/tab_kb_button_number_8"
+					android:layout_toRightOf="@+id/tab_kb_button_number_7"
+		            android:text="8"
+		            style="@style/TabKeyBoardButton" />
+		
+		        <Button
+		            android:id="@+id/tab_kb_button_number_9"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_8"
+		            android:text="9"
+		            style="@style/TabKeyBoardButton"/>
+		        
+		        <Button
+		            android:id="@+id/tab_kb_button_number_4"
+		            android:layout_below="@+id/tab_kb_button_number_7"
+		            android:text="4"
+		            style="@style/TabKeyBoardButton"/>
+		
+		        <Button
+		            android:id="@+id/tab_kb_button_number_5"
+		            android:layout_below="@+id/tab_kb_button_number_8"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_4"
+		            android:text="5"
+		            style="@style/TabKeyBoardButton"/>
+		        
+		        <Button
+		            android:id="@+id/tab_kb_button_number_6"
+		            android:layout_below="@+id/tab_kb_button_number_9"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_5"
+		            android:text="6"
+		            style="@style/TabKeyBoardButton"/>
+		        
+		        <Button
+		            android:id="@+id/tab_kb_button_number_1"
+		            android:layout_below="@+id/tab_kb_button_number_4"
+		            android:text="1"
+		            style="@style/TabKeyBoardButton"/>
+		
+		        <Button
+		            android:id="@+id/tab_kb_button_number_2"
+		            android:layout_below="@+id/tab_kb_button_number_5"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_1"
+		            android:text="2"
+		            style="@style/TabKeyBoardButton"/>
+		        
+		        <Button
+		            android:id="@+id/tab_kb_button_number_3"
+		            android:layout_below="@+id/tab_kb_button_number_6"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_2"
+		            android:text="3"
+		            style="@style/TabKeyBoardButton"/>
+		        
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_insert"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_9"
+		            style="@style/TabKeyBoardImageButtonInsert"/>
+		            
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_delete"
+		            android:layout_below="@+id/tab_kb_button_insert"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_6"
+		            style="@style/TabKeyBoardImageButtonDelete"/>
+		            
+		        <Button
+		            android:id="@+id/tab_kb_button_number_0"
+		            android:layout_below="@+id/tab_kb_button_delete"
+		            android:layout_toRightOf="@+id/tab_kb_button_number_3"
+		            android:text="0"
+		            style="@style/TabKeyBoardButton"/>
+		    </RelativeLayout>
+	
+			<LinearLayout
+				android:gravity="center"
+				android:orientation="vertical" >
+				
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_increment_duration"
+		            style="@style/TabKeyBoardImageButtonDurationIncrement"/>
+		            
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_set_duration"
+		            style="@style/TabKeyBoardImageButtonDuration" />
+		            
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_decrement_duration"
+		            style="@style/TabKeyBoardImageButtonDurationDecrement"/>
+			</LinearLayout>
+	
+		    <android.support.v7.widget.GridLayout
+				android:gravity="right"
+				app:columnCount="3" >
+				
+				<android.support.v7.widget.Space app:layout_gravity="fill" />
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_up"
+		            style="@style/TabKeyBoardImageButtonUp"/>
+				<android.support.v7.widget.Space app:layout_gravity="fill" />
+				
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_left"
+		            style="@style/TabKeyBoardImageButtonLeft"/>
+				<android.support.v7.widget.Space app:layout_gravity="fill" />
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_right"
+		            style="@style/TabKeyBoardImageButtonRight"/>
+				
+				<android.support.v7.widget.Space app:layout_gravity="fill" />
+		        <ImageButton
+		            android:id="@+id/tab_kb_button_down"
+		            style="@style/TabKeyBoardImageButtonDown"/>
+				<android.support.v7.widget.Space app:layout_gravity="fill" />
+			</android.support.v7.widget.GridLayout>
+			
+		</TableRow>
+		
+	</TableLayout>
+</org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard>

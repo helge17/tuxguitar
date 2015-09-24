@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <Spinner
+        android:id="@+id/browser_collections_dlg_add_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/browser_collections_dlg_add_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/browser_collections_dlg_add_button"
+        android:layout_toLeftOf="@+id/browser_collections_dlg_add_button" />
+
+    <ImageButton
+        android:id="@+id/browser_collections_dlg_add_button"
+        style="@style/BrowserCollectionsDlgImageButtonSubmit"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/browser_add_collection" />
+
+    <ListView
+        android:id="@+id/browser_collections_dlg_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/browser_collections_dlg_add_type"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>

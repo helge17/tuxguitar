@@ -1,0 +1,91 @@
+<org.herac.tuxguitar.android.view.tool.TGTrackToolView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ToolView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/menu_track_go_first_track"
+            android:text="@string/menu_track_go_first_track"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_go_last_track"
+            android:text="@string/menu_track_go_last_track"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_go_previous_track"
+            android:text="@string/menu_track_go_previous_track"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_go_next_track"
+            android:text="@string/menu_track_go_next_track"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_track_add"
+            android:text="@string/menu_track_add"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_remove"
+            android:text="@string/menu_track_remove"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_clone"
+            android:text="@string/menu_track_clone"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_track_move_up"
+            android:text="@string/menu_track_move_up"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_move_down"
+            android:text="@string/menu_track_move_down"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_track_change_mute"
+            android:text="@string/menu_track_change_mute"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_change_solo"
+            android:text="@string/menu_track_change_solo"
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider"/>
+        
+        <TextView
+            android:id="@+id/menu_track_set_name"
+            android:text="@string/menu_track_set_name"
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_set_channel"
+            android:text="@string/menu_track_set_channel"
+			style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_track_change_tuning"
+            android:text="@string/menu_track_change_tuning"
+            style="@style/ToolViewText"/>
+    </LinearLayout>
+
+</org.herac.tuxguitar.android.view.tool.TGTrackToolView>

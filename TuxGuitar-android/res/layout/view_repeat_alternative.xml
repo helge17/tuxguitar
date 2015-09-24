@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<android.support.v7.widget.GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:columnCount="4" 
+		style="@style/Dialog">
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_1"
+			android:text="1" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_2"
+			android:text="2" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_3"
+			android:text="3" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_4"
+			android:text="4" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_5"
+			android:text="5" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_6"
+			android:text="6" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_7"
+			android:text="7" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<CheckBox 
+			android:id="@+id/repeat_alternative_dlg_alt_8"
+			android:text="8" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+	</android.support.v7.widget.GridLayout>
+
+</ScrollView>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<android.support.v7.widget.GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:columnCount="1" style="@style/Dialog">
+		
+		<RadioGroup 
+			android:id="@+id/tremolo_picking_dlg_duration_group"
+			app:layout_gravity="fill_horizontal|center_vertical" >
+			
+			<RadioButton 
+				android:id="@+id/tremolo_picking_dlg_duration_8"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/tremolo_picking_dlg_duration_8" 
+				android:drawableRight="@drawable/duration_8" />
+			
+			<RadioButton 
+				android:id="@+id/tremolo_picking_dlg_duration_16"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/tremolo_picking_dlg_duration_16"
+				android:drawableRight="@drawable/duration_16" />
+			
+			<RadioButton 
+				android:id="@+id/tremolo_picking_dlg_duration_32"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/tremolo_picking_dlg_duration_32"
+				android:drawableRight="@drawable/duration_32" />
+		</RadioGroup>
+	
+	</android.support.v7.widget.GridLayout>
+
+</ScrollView>

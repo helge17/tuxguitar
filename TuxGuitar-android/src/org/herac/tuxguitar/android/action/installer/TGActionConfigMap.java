@@ -1,0 +1,392 @@
+package org.herac.tuxguitar.android.action.installer;
+
+import org.herac.tuxguitar.android.action.TGActionMap;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAction;
+import org.herac.tuxguitar.android.action.impl.edit.TGRedoAction;
+import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
+import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
+import org.herac.tuxguitar.android.action.impl.edit.TGUndoAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
+import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
+import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
+import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScalePreviewAction;
+import org.herac.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
+import org.herac.tuxguitar.android.action.impl.measure.TGGoFirstMeasureAction;
+import org.herac.tuxguitar.android.action.impl.measure.TGGoLastMeasureAction;
+import org.herac.tuxguitar.android.action.impl.measure.TGGoNextMeasureAction;
+import org.herac.tuxguitar.android.action.impl.measure.TGGoPreviousMeasureAction;
+import org.herac.tuxguitar.android.action.impl.track.TGGoFirstTrackAction;
+import org.herac.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
+import org.herac.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
+import org.herac.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
+import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
+import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.android.action.listener.cache.TGUpdateController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedMeasureController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedTrackController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateItemsController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateLoadedSongController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateMeasureController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateModifiedChannelController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateModifiedDurationController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateModifiedNoteController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateModifiedVelocityController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdatePlayerTracksController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateRemovedMeasureController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateRemovedTrackController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateSavedSongController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateShiftedNoteController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateSongController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateTransportPositionController;
+import org.herac.tuxguitar.editor.action.channel.TGAddChannelAction;
+import org.herac.tuxguitar.editor.action.channel.TGAddNewChannelAction;
+import org.herac.tuxguitar.editor.action.channel.TGRemoveChannelAction;
+import org.herac.tuxguitar.editor.action.channel.TGSetChannelsAction;
+import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeClefAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeInfoAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeKeySignatureAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeTempoAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
+import org.herac.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
+import org.herac.tuxguitar.editor.action.composition.TGRepeatAlternativeAction;
+import org.herac.tuxguitar.editor.action.composition.TGRepeatCloseAction;
+import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
+import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetEighthDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetHalfDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetQuarterDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeBendNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeHarmonicNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeLetRingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangePoppingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeSlappingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloBarAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeTrillNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
+import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
+import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
+import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
+import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
+import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
+import org.herac.tuxguitar.editor.action.measure.TGAddMeasureListAction;
+import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureAction;
+import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import org.herac.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
+import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
+import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
+import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
+import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
+import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
+import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
+import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
+import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
+import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import org.herac.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
+import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
+import org.herac.tuxguitar.editor.action.note.TGInsertTextAction;
+import org.herac.tuxguitar.editor.action.note.TGMoveBeatsAction;
+import org.herac.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
+import org.herac.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
+import org.herac.tuxguitar.editor.action.note.TGRemoveTextAction;
+import org.herac.tuxguitar.editor.action.note.TGRemoveUnusedVoiceAction;
+import org.herac.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
+import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
+import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
+import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
+import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.editor.action.song.TGClearSongAction;
+import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
+import org.herac.tuxguitar.editor.action.track.TGAddTrackAction;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
+import org.herac.tuxguitar.editor.action.track.TGCloneTrackAction;
+import org.herac.tuxguitar.editor.action.track.TGCopyTrackFromAction;
+import org.herac.tuxguitar.editor.action.track.TGMoveTrackDownAction;
+import org.herac.tuxguitar.editor.action.track.TGMoveTrackUpAction;
+import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackChannelAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackInfoAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackMuteAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackNameAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackSoloAction;
+import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
+import org.herac.tuxguitar.editor.undo.impl.channel.TGUndoableChannelGenericController;
+import org.herac.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableAltRepeatController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableClefController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableCloseRepeatController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableKeySignatureController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableOpenRepeatController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableSongInfoController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableTempoController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableTimeSignatureController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableTripletFeelController;
+import org.herac.tuxguitar.editor.undo.impl.measure.TGUndoableAddMeasureController;
+import org.herac.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGenericController;
+import org.herac.tuxguitar.editor.undo.impl.measure.TGUndoableRemoveMeasureController;
+import org.herac.tuxguitar.editor.undo.impl.song.TGUndoableSongGenericController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableAddTrackController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableCloneTrackController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableMoveTrackDownController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableMoveTrackUpController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableRemoveTrackController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackGenericController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackInfoController;
+import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackSoloMuteController;
+
+public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
+	
+	private static final int LOCKABLE = 0x01;
+	private static final int DISABLE_ON_PLAY = 0x02;
+	
+	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
+	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
+	private static final TGUpdateController UPDATE_SONG_CTL = new TGUpdateSongController();
+	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
+	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
+	
+	private static final TGUndoableActionController UNDOABLE_SONG_GENERIC = new TGUndoableSongGenericController();
+	private static final TGUndoableActionController UNDOABLE_MEASURE_GENERIC = new TGUndoableMeasureGenericController();
+	private static final TGUndoableActionController UNDOABLE_TRACK_GENERIC = new TGUndoableTrackGenericController();
+	private static final TGUndoableActionController UNDOABLE_CHANNEL_GENERIC = new TGUndoableChannelGenericController();
+	
+	public TGActionConfigMap() {
+		this.createConfigMap();
+	}
+	
+	public void createConfigMap() {
+		//file actions
+		this.map(TGLoadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
+		this.map(TGNewSongAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGReadSongAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGWriteSongAction.NAME, UPDATE_SONG_SAVED_CTL);
+		
+		//edit actions
+		this.map(TGUndoAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGRedoAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetVoice1Action.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGSetVoice2Action.NAME, UPDATE_ITEMS_CTL);
+		
+		//caret actions
+		this.map(TGMoveToAction.NAME, new TGUpdateTransportPositionController());
+		this.map(TGGoRightAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoLeftAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoUpAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoDownAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		
+		//song actions
+		this.map(TGCopySongFromAction.NAME, LOCKABLE, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
+		this.map(TGClearSongAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		
+		//track actions
+		this.map(TGAddTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
+		this.map(TGSetTrackMuteAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
+		this.map(TGSetTrackSoloAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
+		this.map(TGChangeTrackMuteAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGChangeTrackSoloAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGCloneTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableCloneTrackController());
+		this.map(TGGoFirstTrackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoLastTrackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoNextTrackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoPreviousTrackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoToTrackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGMoveTrackDownAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableMoveTrackDownController());
+		this.map(TGMoveTrackUpAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableMoveTrackUpController());
+		this.map(TGRemoveTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateRemovedTrackController(), new TGUndoableRemoveTrackController());
+		this.map(TGSetTrackInfoAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL, new TGUndoableTrackInfoController());
+		this.map(TGSetTrackNameAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGSetTrackChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
+		this.map(TGChangeTrackTuningAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
+		this.map(TGCopyTrackFromAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
+		
+		//measure actions
+		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
+		this.map(TGAddMeasureListAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGCleanMeasureListAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoFirstMeasureAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoLastMeasureAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoNextMeasureAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoPreviousMeasureAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGRemoveMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateRemovedMeasureController(), new TGUndoableRemoveMeasureController());
+		this.map(TGRemoveMeasureRangeAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGCopyMeasureFromAction.NAME, LOCKABLE, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGInsertMeasuresAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
+		
+		//beat actions
+		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeVelocityAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedVelocityController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGCleanBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGDecrementNoteSemitoneAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGDeleteNoteOrRestAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGIncrementNoteSemitoneAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGInsertRestBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGMoveBeatsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
+		this.map(TGMoveBeatsLeftAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGMoveBeatsRightAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGRemoveUnusedVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGSetVoiceAutoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGSetVoiceDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGSetVoiceUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGShiftNoteDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateShiftedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGShiftNoteUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateShiftedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeStrokeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGInsertTextAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGRemoveTextAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		
+		//effect actions
+		this.map(TGChangeAccentuatedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeBendNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeDeadNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeFadeInAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeGhostNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeGraceNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeHammerNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeHarmonicNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeHeavyAccentuatedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeLetRingAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangePalmMuteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangePoppingAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeSlappingAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeSlideNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeStaccatoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeTappingAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeTremoloBarAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeTremoloPickingAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeTrillNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeVibratoNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		
+		//duration actions
+		this.map(TGSetDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedDurationController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGSetWholeDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetHalfDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetQuarterDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetEighthDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetSixteenthDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetThirtySecondDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetSixtyFourthDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetDivisionTypeDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGChangeDottedDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGChangeDoubleDottedDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGIncrementDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGDecrementDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		
+		//composition actions
+		this.map(TGChangeTempoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableTempoController());
+		this.map(TGChangeTempoRangeAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGChangeClefAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableClefController());
+		this.map(TGChangeTimeSignatureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableTimeSignatureController());
+		this.map(TGChangeKeySignatureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableKeySignatureController());
+		this.map(TGChangeTripletFeelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableTripletFeelController());
+		this.map(TGChangeInfoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, new TGUndoableSongInfoController());
+		this.map(TGRepeatOpenAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableOpenRepeatController());
+		this.map(TGRepeatCloseAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableCloseRepeatController());
+		this.map(TGRepeatAlternativeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableAltRepeatController());
+		
+		//channel actions
+		this.map(TGSetChannelsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGAddChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGAddNewChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGRemoveChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGUpdateChannelAction.NAME, LOCKABLE, new TGUpdateModifiedChannelController(), new TGUndoableModifyChannelController());
+		
+		//transport actions
+		this.map(TGTransportPlayAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGTransportStopAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
+		
+		//layout actions
+		this.map(TGSetLayoutScalePreviewAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGSetScoreEnabledAction.NAME, UPDATE_SONG_CTL);
+		this.map(TGSetChordNameEnabledAction.NAME, UPDATE_SONG_CTL);
+		this.map(TGSetChordDiagramEnabledAction.NAME, UPDATE_SONG_CTL);
+		
+		//browser actions
+		this.map(TGBrowserCdRootAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserCdUpAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserCdElementAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserRefreshAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserOpenElementAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserSaveElementAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserSaveCurrentElementAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserPrepareForReadAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserPrepareForWriteAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserOpenSessionAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserAddCollectionAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserRemoveCollectionAction.NAME, UPDATE_ITEMS_CTL);
+		
+		//gui actions
+		this.map(TGBackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGFinishAction.NAME, null);
+		this.map(TGOpenDialogAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGOpenMenuAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGOpenFragmentAction.NAME, UPDATE_ITEMS_CTL);
+	}
+	
+	private void map(String actionId, int flags, TGUpdateController updateController) {
+		this.map(actionId, flags, updateController, null);
+	}
+	
+	private void map(String actionId, TGUpdateController updateController) {
+		this.map(actionId, 0, updateController, null);
+	}
+	
+	private void map(String actionId, int flags, TGUpdateController updateController, TGUndoableActionController undoableController) {
+		TGActionConfig tgActionConfig = new TGActionConfig();
+		tgActionConfig.setUpdateController(updateController);
+		tgActionConfig.setUndoableController(undoableController);
+		tgActionConfig.setLockableAction((flags & LOCKABLE) != 0);
+		tgActionConfig.setDisableOnPlaying((flags & DISABLE_ON_PLAY) != 0);
+		tgActionConfig.setDocumentModifier(undoableController != null);
+		
+		this.set(actionId, tgActionConfig);
+	}
+}

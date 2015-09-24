@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.herac.tuxguitar.android.drawer.main.TGMainDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- Footer -->
+    <RelativeLayout
+        android:id="@+id/main_drawer_bottom"
+        style="@style/MainDrawerTransportPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/main_drawer_transport_mixer"
+            style="@style/MainDrawerImageButtonMixer"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/menu_view_channel_list"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/main_drawer_transport_play"
+            style="@style/MainDrawerImageButtonPlay"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/menu_transport_play"
+            android:gravity="center"/>
+    </RelativeLayout>
+
+    <!-- Body -->
+    <RelativeLayout
+        android:id="@+id/main_drawer_center"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/main_drawer_bottom"
+        android:layout_alignParentTop="true"
+        android:gravity="fill" >
+
+        <TabHost
+            android:id="@+id/main_drawer_tabHost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="fill_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <LinearLayout
+                android:id="@+id/main_drawer_tabHost_contents"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    style="@style/MainDrawerToolbar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+                </TabWidget>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <ListView
+                        android:id="@+id/main_drawer_file_items"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" />
+
+                    <ListView
+                        android:id="@+id/main_drawer_track_items"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" />
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+    </RelativeLayout>
+
+</org.herac.tuxguitar.android.drawer.main.TGMainDrawer>

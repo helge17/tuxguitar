@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MainDrawerListItem"
+    android:id="@+id/main_drawer_check_item"
+    android:gravity="center_vertical"
+    android:singleLine="true" 
+    android:checkMark="?android:attr/listChoiceIndicatorSingle"
+/>

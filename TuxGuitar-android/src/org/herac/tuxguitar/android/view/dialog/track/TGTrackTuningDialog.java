@@ -1,0 +1,291 @@
+package org.herac.tuxguitar.android.view.dialog.track;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.herac.tuxguitar.android.action.TGActionProcessor;
+import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
+import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
+import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTrack;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Spinner;
+
+public class TGTrackTuningDialog extends TGDialog {
+	
+	private static final int MAX_STRINGS = 7;
+	private static final int MIN_STRINGS = 4;
+	private static final int MAX_OCTAVES = 10;
+	private static final int MAX_NOTES = 12;
+	
+	private static final String[] KEY_NAMES = new String[]{
+		"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"
+	};
+	
+	private static final int[] TUNING_SPINNER_IDS = new int[]{
+		R.id.track_tuning_dlg_string_values_1,
+		R.id.track_tuning_dlg_string_values_2,
+		R.id.track_tuning_dlg_string_values_3,
+		R.id.track_tuning_dlg_string_values_4,
+		R.id.track_tuning_dlg_string_values_5,
+		R.id.track_tuning_dlg_string_values_6,
+		R.id.track_tuning_dlg_string_values_7
+	};
+	
+	public TGTrackTuningDialog(TGDialogContext dialogContext) {
+		super(dialogContext);
+	}
+	
+	@SuppressLint("InflateParams")
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		final List<TGString> strings = createStrings(songManager, track);
+		final boolean percussionChannel = songManager.isPercussionChannel(song, track.getChannelId());
+		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_track_tuning_dialog, null);
+		
+		this.fillStrings(view, songManager, song, track, strings);
+		this.fillOffset(view, track);
+		this.fillTunings(view);
+		this.fillOptions(view, songManager, song, track);
+		
+		this.updateItems(view, strings, percussionChannel);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle(R.string.track_tuning_dlg_title);
+		builder.setView(view);
+		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				updateTrackTuning(view, songManager, track);
+				dialog.dismiss();
+			}
+		});
+		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		
+		return builder.create();
+	}
+
+	public List<TGString> createStrings(TGSongManager songManager, TGTrack track) {
+		List<TGString> strings = new ArrayList<TGString>();
+		for(int i = 0; i < track.getStrings().size(); i++) {
+			TGString realString = (TGString)track.getStrings().get(i);
+			strings.add(realString.clone(songManager.getFactory()));
+		}
+		return strings;
+	}
+	
+	public void updateStrings(List<TGString> strings, TGSongManager songManager, int stringCount, boolean percussionChannel) {
+		strings.clear();
+		if( percussionChannel ) {
+			strings.addAll((List<TGString>)songManager.createPercussionStrings(stringCount));
+		} else {
+			strings.addAll((List<TGString>)songManager.createDefaultInstrumentStrings(stringCount));
+		}
+	}
+	
+	public SelectableItem[] createSelectableTunings() {
+		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+		
+		int count = (MAX_NOTES * MAX_OCTAVES);
+		for (int i = 0; i < count; i++) {
+			String noteName = (KEY_NAMES[ (i -  ((i / MAX_NOTES) * MAX_NOTES) ) ] + (i / MAX_NOTES));
+			selectableItems.add(new SelectableItem(Integer.valueOf(i), noteName));
+		}
+		
+		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		selectableItems.toArray(builtItems);
+		
+		return builtItems;
+	}
+	
+	public SelectableItem[] createSelectableIntegers(int minimum, int maximum) {
+		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+		
+		for(int value = minimum ; value <= maximum ; value ++) {
+			selectableItems.add(new SelectableItem(Integer.valueOf(value), Integer.toString(value)));
+		}
+		
+		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		selectableItems.toArray(builtItems);
+		
+		return builtItems;
+	}
+	
+	public SelectableItem[] createSelectableStrings() {
+		return this.createSelectableIntegers(MIN_STRINGS, MAX_STRINGS);
+	}
+	
+	public SelectableItem[] createSelectableOffsets() {
+		return this.createSelectableIntegers(TGTrack.MIN_OFFSET, TGTrack.MAX_OFFSET);
+	}
+	
+	public int findSelectedStrings(View view) {
+		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_strings_value);
+		
+		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+	}
+	
+	public int findSelectedOffset(View view) {
+		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_offset_value);
+		
+		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+	}
+	
+	public List<TGString> findSelectedTunings(View view, TGSongManager songManager) {
+		List<TGString> strings = new ArrayList<TGString>();
+		
+		int stringCount = findSelectedStrings(view);
+		for(int i = 0 ; i < TUNING_SPINNER_IDS.length ; i ++ ) {
+			if( i < stringCount ) {
+				Spinner spinner = (Spinner) view.findViewById(TUNING_SPINNER_IDS[i]);
+				TGString tgString = songManager.getFactory().newString();
+				tgString.setNumber((i + 1));
+				tgString.setValue(((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue());
+				strings.add(tgString);
+			}
+		}
+		return strings;
+	}
+	
+	public Boolean findOptionValue(View view, int optionId) {
+		return Boolean.valueOf(((CheckBox) view.findViewById(optionId)).isChecked());
+	}
+	
+	public void fillStrings(final View view, final TGSongManager songManager, final TGSong song, final TGTrack track, final List<TGString> strings) {
+		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableStrings());
+		
+		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_strings_value);
+		spinner.setAdapter(adapter);
+		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(track.stringCount()), null)), false);
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				onStringCountChange(view, songManager, song, track, strings);
+			}
+			
+			public void onNothingSelected(AdapterView<?> parentView) {
+				onStringCountChange(view, songManager, song, track, strings);
+			}
+		});
+	}
+	
+	public void fillOffset(View view, TGTrack track) {
+		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
+		
+		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_offset_value);
+		spinner.setAdapter(adapter);
+		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(track.getOffset()), null)), false);
+	}
+	
+	public void fillTunings(View view) {
+		for(int i = 0 ; i < TUNING_SPINNER_IDS.length ; i ++ ) {
+			Spinner spinner = (Spinner) view.findViewById(TUNING_SPINNER_IDS[i]);
+			spinner.setAdapter(new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings()));
+		}
+	}
+	
+	public void fillOptions(final View view, final TGSongManager songManager, final TGSong song, final TGTrack track) {
+		CheckBox stringTransposition = (CheckBox) view.findViewById(R.id.track_tuning_dlg_options_transpose);
+		stringTransposition.setChecked(true);
+		stringTransposition.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				onTransposeOptionChanged(view, songManager, song, track);
+			}
+		});
+		((CheckBox) view.findViewById(R.id.track_tuning_dlg_options_transpose_apply_to_chords)).setChecked(true);
+		((CheckBox) view.findViewById(R.id.track_tuning_dlg_options_transpose_try_keep_strings)).setChecked(true);
+	}
+	
+	public void updateItems(View view, List<TGString> strings, boolean percussionChannel) {
+		this.updateTuningValues(view, strings, !percussionChannel);
+		this.updateOffset(view, !percussionChannel);
+		this.updateOptions(view, !percussionChannel);
+	}
+	
+	public void updateOffset(View view, boolean enabled) {
+		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_offset_value);
+		spinner.setEnabled(enabled);
+	}
+	
+	public void updateOptions(View view, boolean enabled) {
+		CheckBox stringTransposition = (CheckBox) view.findViewById(R.id.track_tuning_dlg_options_transpose);
+		CheckBox stringTranspositionApplyToChords = (CheckBox) view.findViewById(R.id.track_tuning_dlg_options_transpose_apply_to_chords);
+		CheckBox stringTranspositionTryKeepString = (CheckBox) view.findViewById(R.id.track_tuning_dlg_options_transpose_try_keep_strings);
+		
+		boolean stringTranspositionChecked = stringTransposition.isChecked();
+		
+		stringTransposition.setEnabled(enabled);
+		stringTranspositionApplyToChords.setEnabled(enabled && stringTranspositionChecked);
+		stringTranspositionTryKeepString.setEnabled(enabled && stringTranspositionChecked);
+		if(!stringTranspositionChecked ) {
+			stringTranspositionApplyToChords.setChecked(false);
+			stringTranspositionTryKeepString.setChecked(false);
+		}
+	}
+	
+	public void updateTuningValues(View view, List<TGString> strings, boolean enabled) {
+		for (int i = 0; i < strings.size(); i++) {
+			TGString string = (TGString) strings.get(i);
+			this.updateTuningValues(view, TUNING_SPINNER_IDS[i], string.getValue(), enabled, View.VISIBLE);
+		}
+		
+		for (int i = strings.size(); i < MAX_STRINGS; i++) {
+			this.updateTuningValues(view, TUNING_SPINNER_IDS[i], 0, false, View.GONE);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void updateTuningValues(View view, int spinnerId, int value, boolean enabled, int visibility) {
+		SelectableItem selection = new SelectableItem(Integer.valueOf(value), null);
+		Spinner spinner = (Spinner) view.findViewById(spinnerId);
+		spinner.setSelection(((ArrayAdapter<SelectableItem>)spinner.getAdapter()).getPosition(selection), false);
+		spinner.setVisibility(visibility);
+		spinner.setEnabled(enabled);
+	}
+	
+	public void onStringCountChange(View view, TGSongManager songManager, TGSong song, TGTrack track, List<TGString> strings) {
+		int stringCount = findSelectedStrings(view);
+		boolean percussionChannel = songManager.isPercussionChannel(song, track.getChannelId());
+		
+		this.updateStrings(strings, songManager, stringCount, percussionChannel);
+		this.updateTuningValues(view, strings, !percussionChannel);
+	}
+	
+	public void onTransposeOptionChanged(View view, TGSongManager songManager, TGSong song, TGTrack track) {
+		boolean percussionChannel = songManager.isPercussionChannel(song, track.getChannelId());
+		
+		this.updateOptions(view, !percussionChannel);
+	}
+	
+	public void updateTrackTuning(View view, TGSongManager songManager, TGTrack track) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTrackTuningAction.NAME);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, findSelectedTunings(view, songManager));
+		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_STRINGS, findOptionValue(view, R.id.track_tuning_dlg_options_transpose));
+		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_APPLY_TO_CHORDS, findOptionValue(view, R.id.track_tuning_dlg_options_transpose_apply_to_chords));
+		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_TRY_KEEP_STRINGS, findOptionValue(view, R.id.track_tuning_dlg_options_transpose_try_keep_strings));
+		tgActionProcessor.processOnNewThread();
+	}
+}

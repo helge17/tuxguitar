@@ -1,0 +1,49 @@
+<org.herac.tuxguitar.android.view.tool.TGMeasureToolView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ToolView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/menu_measure_go_first_measure"
+            android:text="@string/menu_measure_go_first_measure" 
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_measure_go_last_measure"
+            android:text="@string/menu_measure_go_last_measure" 
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_measure_go_previous_measure"
+            android:text="@string/menu_measure_go_previous_measure" 
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_measure_go_next_measure"
+            android:text="@string/menu_measure_go_next_measure" 
+            style="@style/ToolViewText"/>
+
+        <View style="@style/ToolViewDivider" />
+
+        <TextView
+            android:id="@+id/menu_measure_add"
+            android:text="@string/menu_measure_add" 
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_measure_clean"
+            android:text="@string/menu_measure_clean" 
+            style="@style/ToolViewText"/>
+
+        <TextView
+            android:id="@+id/menu_measure_remove"
+            android:text="@string/menu_measure_remove" 
+            style="@style/ToolViewText"/>
+    </LinearLayout>
+</org.herac.tuxguitar.android.view.tool.TGMeasureToolView>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<android.support.v7.widget.GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:columnCount="1" 
+		style="@style/Dialog">
+		
+		<RadioGroup 
+			android:id="@+id/triplet_feel_dlg_value"
+			app:layout_gravity="fill_horizontal|center_vertical" >
+	
+			<RadioButton 
+				android:id="@+id/triplet_feel_dlg_none"
+				android:text="@string/triplet_feel_dlg_none"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" />
+	
+			<RadioButton 
+				android:id="@+id/triplet_feel_dlg_eighth"
+				android:text="@string/triplet_feel_dlg_eighth"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" />
+				
+			<RadioButton 
+				android:id="@+id/triplet_feel_dlg_sixteenth"
+				android:text="@string/triplet_feel_dlg_sixteenth"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" />
+		</RadioGroup>
+		
+		<android.support.v7.widget.Space
+			app:layout_gravity="fill"
+			style="@style/DialogSectionSpacer" />
+	
+		<CheckBox 
+			android:id="@+id/triplet_feel_dlg_options_apply_to_end"
+			android:text="@string/triplet_feel_dlg_options_apply_to_end" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+	</android.support.v7.widget.GridLayout>
+
+</ScrollView>
