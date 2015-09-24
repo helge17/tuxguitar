@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/track_channel_dlg_settings_button"
             android:layout_alignTop="@+id/track_channel_dlg_settings_button"
-            android:layout_toEndOf="@+id/track_channel_dlg_channel_label"
-            android:layout_toStartOf="@+id/track_channel_dlg_settings_button" />
+            android:layout_toRightOf="@+id/track_channel_dlg_channel_label"
+            android:layout_toLeftOf="@+id/track_channel_dlg_settings_button" />
 
         <ImageButton
             android:id="@+id/track_channel_dlg_settings_button"

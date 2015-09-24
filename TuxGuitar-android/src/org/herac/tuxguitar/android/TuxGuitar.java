@@ -4,7 +4,6 @@ import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.editor.TGEditorManager;
 import org.herac.tuxguitar.android.error.TGErrorHandlerImpl;
-import org.herac.tuxguitar.android.midi.port.MidiOutputPortProviderImpl;
 import org.herac.tuxguitar.android.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;
 import org.herac.tuxguitar.android.synchronizer.TGSynchronizerControllerImpl;
@@ -84,9 +83,9 @@ public class TuxGuitar {
 		midiPlayer.init(TGDocumentManager.getInstance(this.context));
 		midiPlayer.addListener(new TGTransportListener(getContext()));
 		midiPlayer.setVolume(8);
+		midiPlayer.setTryOpenFistDevice(true);
 		try {
-			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), true);
-			getPlayer().addOutputPortProvider(new MidiOutputPortProviderImpl(), true);
+			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(), true);
 		} catch (MidiPlayerException e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}

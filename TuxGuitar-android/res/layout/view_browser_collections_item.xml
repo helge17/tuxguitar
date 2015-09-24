@@ -12,7 +12,7 @@
         android:layout_alignBottom="@+id/browser_collections_item_icon"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/browser_collections_item_icon"
-        android:layout_toStartOf="@+id/browser_collections_item_icon"
+        android:layout_toLeftOf="@+id/browser_collections_item_icon"
         android:gravity="fill_horizontal|center_vertical"
         android:singleLine="true" />
 

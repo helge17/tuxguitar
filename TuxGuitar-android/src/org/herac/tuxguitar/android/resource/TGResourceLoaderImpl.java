@@ -78,7 +78,7 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 
 				List<String> fileNames = this.unpackPlugins(optimizedDirectory);
 				if(!fileNames.isEmpty()) {
-					this.classLoader = new DexClassLoader(this.createPath(fileNames), optimizedDirectory, null, context.getClassLoader());
+					this.classLoader = new DexClassLoader(this.createPath(fileNames), optimizedDirectory, this.createLibraryPath(), context.getClassLoader());
 				}
 			}
 		}
@@ -124,5 +124,9 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 			path.append(fileName);
 		}
 		return path.toString();
+	}
+	
+	public String createLibraryPath() {
+		return this.activity.getApplicationInfo().nativeLibraryDir;
 	}
 }
