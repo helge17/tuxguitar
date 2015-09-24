@@ -1,0 +1,100 @@
+package org.herac.tuxguitar.android.view.dialog.keySignature;
+
+import org.herac.tuxguitar.android.action.TGActionProcessor;
+import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
+import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.composition.TGChangeKeySignatureAction;
+import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGTrack;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+
+public class TGKeySignatureDialog extends TGDialog {
+
+	public TGKeySignatureDialog(TGDialogContext dialogContext) {
+		super(dialogContext);
+	}
+	
+	@SuppressLint("InflateParams")
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		View view = getActivity().getLayoutInflater().inflate(R.layout.view_key_signature_dialog, null);
+		
+		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createKeyValues());
+		
+		final Spinner spinner = (Spinner) view.findViewById(R.id.key_signature_dlg_ks_value);
+		spinner.setAdapter(adapter);
+		spinner.setSelection(adapter.getPosition(new SelectableItem(measure.getKeySignature(), null)));
+		
+		final CheckBox applyToEnd = (CheckBox) view.findViewById(R.id.key_signature_dlg_options_apply_to_end);
+		applyToEnd.setChecked(true);
+		
+		
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle(R.string.key_signature_dlg_title);
+		builder.setView(view);
+		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				changeKeySignature(parseSpinnerValue(spinner), parseApplyToEnd(applyToEnd), track, measure);
+				dialog.dismiss();
+			}
+		});
+		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		
+		return builder.create();
+	}
+	
+	public SelectableItem[] createKeyValues() {
+		return new SelectableItem[]  {
+			new SelectableItem(Integer.valueOf(0), getString(R.string.key_signature_dlg_ks_value_natural)),
+			new SelectableItem(Integer.valueOf(1), getString(R.string.key_signature_dlg_ks_value_sharp_1)),
+			new SelectableItem(Integer.valueOf(2), getString(R.string.key_signature_dlg_ks_value_sharp_2)),
+			new SelectableItem(Integer.valueOf(3), getString(R.string.key_signature_dlg_ks_value_sharp_3)),
+			new SelectableItem(Integer.valueOf(4), getString(R.string.key_signature_dlg_ks_value_sharp_4)),
+			new SelectableItem(Integer.valueOf(5), getString(R.string.key_signature_dlg_ks_value_sharp_5)),
+			new SelectableItem(Integer.valueOf(6), getString(R.string.key_signature_dlg_ks_value_sharp_6)),
+			new SelectableItem(Integer.valueOf(7), getString(R.string.key_signature_dlg_ks_value_sharp_7)),
+			new SelectableItem(Integer.valueOf(8), getString(R.string.key_signature_dlg_ks_value_flat_1)),
+			new SelectableItem(Integer.valueOf(9), getString(R.string.key_signature_dlg_ks_value_flat_2)),
+			new SelectableItem(Integer.valueOf(10), getString(R.string.key_signature_dlg_ks_value_flat_3)),
+			new SelectableItem(Integer.valueOf(11), getString(R.string.key_signature_dlg_ks_value_flat_4)),
+			new SelectableItem(Integer.valueOf(12), getString(R.string.key_signature_dlg_ks_value_flat_5)),
+			new SelectableItem(Integer.valueOf(13), getString(R.string.key_signature_dlg_ks_value_flat_6)),
+			new SelectableItem(Integer.valueOf(14), getString(R.string.key_signature_dlg_ks_value_flat_7)),
+		};
+	}
+	
+	public Integer parseSpinnerValue(Spinner keySignature) {
+		return (Integer) ((SelectableItem)keySignature.getSelectedItem()).getItem();
+	}
+	
+	public Boolean parseApplyToEnd(CheckBox applyToEnd) {
+		return Boolean.valueOf(applyToEnd.isChecked());
+	}
+	
+	public void changeKeySignature(Integer value, Boolean applyToEnd, TGTrack track, TGMeasure measure) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeKeySignatureAction.NAME);
+		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_KEY_SIGNATURE, value);
+		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
+		tgActionProcessor.processOnNewThread();
+	}
+}

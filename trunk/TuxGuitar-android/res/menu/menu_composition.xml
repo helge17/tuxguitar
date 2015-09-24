@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_composition" >
+
+    <item
+        android:id="@+id/menu_composition_change_tempo"
+        android:title="@string/menu_composition_change_tempo"/>
+    <item
+        android:id="@+id/menu_composition_change_clef"
+        android:title="@string/menu_composition_change_clef"/>
+    <item
+        android:id="@+id/menu_composition_change_key_signature"
+        android:title="@string/menu_composition_change_key_signature"/>
+    <item
+        android:id="@+id/menu_composition_change_time_signature"
+        android:title="@string/menu_composition_change_time_signature"/>
+    <item
+        android:id="@+id/menu_composition_change_triplet_feel"
+        android:title="@string/menu_composition_change_triplet_feel"/>
+    <item
+        android:id="@+id/menu_composition_repeat_open"
+        android:title="@string/menu_composition_repeat_open"/>
+    <item
+        android:id="@+id/menu_composition_repeat_close"
+        android:title="@string/menu_composition_repeat_close"/>
+    <item
+        android:id="@+id/menu_composition_repeat_alternative"
+        android:title="@string/menu_composition_repeat_alternative"/>
+    <item
+        android:id="@+id/menu_composition_change_info"
+        android:title="@string/menu_composition_change_info"/>
+
+</menu>

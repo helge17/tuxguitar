@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:stretchColumns="1" >
+
+    <TableRow android:gravity="center_vertical" tools:ignore="UselessParent" >
+        <ImageView
+            android:id="@+id/tg_browser_element_icon"
+            style="@style/BrowserElementIcon"
+            android:contentDescription="@string/browser_element_icon_description"
+            android:gravity="left" />
+
+        <TextView
+            android:id="@+id/tg_browser_element_name"
+            style="@style/BrowserElementName"
+            android:gravity="fill"
+            android:singleLine="true" />
+    </TableRow>
+</TableLayout>

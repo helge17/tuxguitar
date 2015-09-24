@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	
+	<android.support.v7.widget.GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:columnCount="2" 
+		style="@style/Dialog">
+		
+		<TextView 
+			android:id="@+id/song_info_dlg_name_label"
+			android:text="@string/song_info_dlg_name_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_name_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_artist_label"
+			android:text="@string/song_info_dlg_artist_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_artist_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_album_label"
+			android:text="@string/song_info_dlg_album_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_album_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_author_label"
+			android:text="@string/song_info_dlg_author_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_author_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_date_label"
+			android:text="@string/song_info_dlg_date_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_date_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_copyright_label"
+			android:text="@string/song_info_dlg_copyright_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_copyright_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_writer_label"
+			android:text="@string/song_info_dlg_writer_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_writer_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_transcriber_label"
+			android:text="@string/song_info_dlg_transcriber_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_transcriber_value"
+			android:inputType="text" 
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/song_info_dlg_comments_label"
+			android:text="@string/song_info_dlg_comments_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<EditText
+			android:id="@+id/song_info_dlg_comments_value"
+			android:inputType="textMultiLine"
+			android:minLines="6"
+			android:maxLines="10"
+			app:layout_gravity="fill_horizontal|fill_vertical" />
+		
+	</android.support.v7.widget.GridLayout>
+
+</ScrollView>

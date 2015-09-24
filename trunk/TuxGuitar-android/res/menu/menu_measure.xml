@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_measure" >
+
+    <item
+        android:id="@+id/menu_measure_add"
+        android:title="@string/menu_measure_add"/>
+    <item
+        android:id="@+id/menu_measure_clean"
+        android:title="@string/menu_measure_clean"/>
+    <item
+        android:id="@+id/menu_measure_remove"
+        android:title="@string/menu_measure_remove"/>
+    <item
+        android:id="@+id/menu_measure_go_first_measure"
+        android:title="@string/menu_measure_go_first_measure"/>
+    <item
+        android:id="@+id/menu_measure_go_last_measure"
+        android:title="@string/menu_measure_go_last_measure"/>
+    <item
+        android:id="@+id/menu_measure_go_previous_measure"
+        android:title="@string/menu_measure_go_previous_measure"/>
+    <item
+        android:id="@+id/menu_measure_go_next_measure"
+        android:title="@string/menu_measure_go_next_measure"/>
+</menu>

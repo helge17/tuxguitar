@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">TuxGuitar</string>
+    <string name="action_settings">Settings</string>
+	
+	<!-- =================================================================== -->
+	<!-- ========================= GLOBAL ================================== -->
+	<!-- =================================================================== -->
+	
+	<string name="global_button_ok">OK</string>
+	<string name="global_button_cancel">Cancel</string>
+	<string name="global_button_clean">Clean</string>
+	
+	<string name="global_spinner_select_option">-- Select --</string>
+	
+	<!-- =================================================================== -->
+	<!-- ========================== MENU =================================== -->
+	<!-- =================================================================== -->
+    <string name="menu_file">File</string>
+    <string name="menu_file_new">New</string>
+    <string name="menu_file_open">Open</string>
+    <string name="menu_file_save">Save</string>
+    <string name="menu_file_save_as">Save As</string>
+    
+    <string name="menu_edit">Edit</string>
+    <string name="menu_edit_undo">Undo</string>
+    <string name="menu_edit_redo">Redo</string>
+    <string name="menu_edit_set_voice_1">Select Voice 1</string>
+    <string name="menu_edit_set_voice_2">Select Voice 2</string>
+    
+    <string name="menu_view">View</string>
+    <string name="menu_view_channel_list">Instruments</string>
+	<string name="menu_view_layout_show_score">Display score</string>
+    <string name="menu_view_layout_show_chord_name">Display chord names</string>
+    <string name="menu_view_layout_show_chord_diagram">Display chord diagrams</string>
+    
+    <string name="menu_transport">Player</string>
+    <string name="menu_transport_play">Play</string>
+    <string name="menu_transport_pause">Pause</string>
+    <string name="menu_transport_stop">Stop</string>
+    
+    <string name="menu_caret">Caret</string>
+    <string name="menu_caret_go_left">Go Left</string>
+    <string name="menu_caret_go_right">Go Right</string>
+    <string name="menu_caret_go_up">Go Up</string>
+    <string name="menu_caret_go_down">Go Down</string>
+    
+    <string name="menu_composition">Composition</string>
+    <string name="menu_composition_change_tempo">Change Tempo</string>
+    <string name="menu_composition_change_clef">Change Clef</string>
+    <string name="menu_composition_change_key_signature">Change Key Signature</string>
+    <string name="menu_composition_change_time_signature">Change Time Signature</string>
+    <string name="menu_composition_change_triplet_feel">Change Triplet Feel</string>
+    <string name="menu_composition_repeat_open">Open Repeat</string>
+    <string name="menu_composition_repeat_close">Close Repeat</string>
+    <string name="menu_composition_repeat_alternative">Alternative Repeats</string>
+    <string name="menu_composition_change_info">Properties</string>
+    
+    <string name="menu_track">Track</string>
+    <string name="menu_track_go_first_track">Go First Track</string>
+    <string name="menu_track_go_last_track">Go Last Track</string>
+    <string name="menu_track_go_previous_track">Go Previous Track</string>
+    <string name="menu_track_go_next_track">Go Next Track</string>
+    <string name="menu_track_add">Add Track</string>
+    <string name="menu_track_remove">Remove Track</string>
+    <string name="menu_track_clone">Clone Track</string>
+    <string name="menu_track_move_up">Move Track Up</string>
+    <string name="menu_track_move_down">Move Track Down</string>
+    <string name="menu_track_change_mute">Set Mute</string>
+    <string name="menu_track_change_solo">Set Solo</string>
+    <string name="menu_track_set_name">Track Name</string>
+    <string name="menu_track_set_channel">Change Instrument</string>
+    <string name="menu_track_change_tuning">Change Tuning</string>
+
+    <string name="menu_measure">Measure</string>
+    <string name="menu_measure_add">Add Measure</string>
+    <string name="menu_measure_clean">Clean Measure</string>
+    <string name="menu_measure_remove">Remove Measure</string>
+    <string name="menu_measure_go_first_measure">Go First Measure</string>
+    <string name="menu_measure_go_last_measure">Go Last Measure</string>
+    <string name="menu_measure_go_previous_measure">Go Previous Measure</string>
+    <string name="menu_measure_go_next_measure">Go Next Measure</string>
+    
+    <string name="menu_beat">Beat</string>
+    <string name="menu_beat_change_tied_note">Set Tied Note</string>
+	<string name="menu_beat_clean_beat">Clean Beat</string>
+	<string name="menu_beat_decrement_note_semitone">Decrement Semitone</string>
+	<string name="menu_beat_increment_note_semitone">Increment Semitone</string>
+	<string name="menu_beat_delete_note_or_rest">Delete Note or Rest</string>
+	<string name="menu_beat_insert_rest_beat">Insert Rest Beat</string>
+	<string name="menu_beat_move_beats_left">Move Beats Left</string>
+	<string name="menu_beat_move_beats_right">Move Beats Right</string>
+	<string name="menu_beat_remove_unused_voice">Remove Unused Voice</string>
+	<string name="menu_beat_set_voice_auto">Set Voice Auto</string>
+	<string name="menu_beat_set_voice_down">Set Voice Down</string>
+	<string name="menu_beat_set_voice_up">Set Voice Up</string>
+	<string name="menu_beat_shift_note_down">Shift Note Down</string>
+	<string name="menu_beat_shift_note_up">Shift Note Up</string>
+	<string name="menu_beat_stroke">Up/Down Stroke</string>
+	<string name="menu_beat_edit_text">Insert Text</string>
+	
+	<string name="menu_duration">Duration</string>
+	<string name="menu_duration_whole">Whole</string>
+	<string name="menu_duration_half">Half</string>
+	<string name="menu_duration_quarter">Quarter</string>
+	<string name="menu_duration_eighth">Eighth</string>
+	<string name="menu_duration_sixteenth">Sixteenth</string>
+	<string name="menu_duration_thirtysecond">Thirty Second</string>
+	<string name="menu_duration_sixtyfourth">Sixty Fourth</string>
+	<string name="menu_duration_dotted">Dotted</string>
+	<string name="menu_duration_doubledotted">Double Dotted</string>
+	<string name="menu_duration_division_type">Division Type</string>
+	
+	<string name="menu_duration_division_type_1">Normal</string>
+	<string name="menu_duration_division_type_3">3</string>
+	<string name="menu_duration_division_type_5">5</string>
+	<string name="menu_duration_division_type_6">6</string>
+	<string name="menu_duration_division_type_7">7</string>
+	<string name="menu_duration_division_type_9">9</string>
+	<string name="menu_duration_division_type_10">10</string>
+	<string name="menu_duration_division_type_11">11</string>
+	<string name="menu_duration_division_type_12">12</string>
+	<string name="menu_duration_division_type_13">13</string>
+	
+	<string name="menu_velocity">Dynamic</string>
+	<string name="menu_velocity_ppp">Piano Pianissimo</string>
+	<string name="menu_velocity_pp">Pianissimo</string>
+	<string name="menu_velocity_p">Piano</string>
+	<string name="menu_velocity_mp">Mezzo Piano</string>
+	<string name="menu_velocity_mf">Mezzo Forte</string>
+	<string name="menu_velocity_f">Forte</string>
+	<string name="menu_velocity_ff">Fortissimo</string>
+	<string name="menu_velocity_fff">Forte Fortissimo</string>
+	
+	<string name="menu_effect">Effect</string>
+	<string name="menu_effect_vibrato">Vibrato</string>
+	<string name="menu_effect_bend">Bend</string>
+	<string name="menu_effect_dead_note">Dead Note</string>
+	<string name="menu_effect_slide">Slide</string>
+	<string name="menu_effect_hammer">Hammer-on/Pull-off</string>
+	<string name="menu_effect_tremolo_bar">Tremolo Bar</string>
+	<string name="menu_effect_ghost_note">Ghost Note</string>
+	<string name="menu_effect_accentuated_note">Accentuated Note</string>
+	<string name="menu_effect_heavy_accentuated_note">Heavy Accentuated Note</string>
+	<string name="menu_effect_harmonic">Harmonic</string>
+	<string name="menu_effect_grace">Grace Note</string>
+	<string name="menu_effect_trill">Trill</string>
+	<string name="menu_effect_tremolo_picking">Tremolo Picking</string>
+	<string name="menu_effect_palm_mute">Palm Mute</string>
+	<string name="menu_effect_let_ring">Let Ring</string>
+	<string name="menu_effect_staccato">Staccato</string>
+	<string name="menu_effect_tapping">Tapping</string>
+	<string name="menu_effect_slapping">Slapping</string>
+	<string name="menu_effect_popping">Popping</string>
+	<string name="menu_effect_fade_in">Fade In</string>
+
+    <string name="menu_channel_list">Instruments</string>
+    <string name="menu_channel_list_add">Add Instrument</string>
+    <string name="menu_channel_list_item_edit">Edit Instrument</string>
+    <string name="menu_channel_list_item_remove">Remove Instrument</string>
+    <string name="menu_channel_list_item_remove_confirm_question">Are you sure you want to remove this instrument?</string>
+    
+    
+	<!-- =================================================================== -->
+	<!-- ======================= MAIN DRAWER =============================== -->
+	<!-- =================================================================== -->
+	<string name="main_drawer_file">File</string>
+	<string name="main_drawer_tracks">Tracks</string>
+	
+	<!-- =================================================================== -->
+	<!-- ========================= BROWSER ================================= -->
+	<!-- =================================================================== -->
+	
+	<string name="browser_refresh">Refresh</string>
+	<string name="browser_back">Back</string>
+	<string name="browser_root">Root</string>
+	<string name="browser_settings">Settings</string>
+	<string name="browser_save_label">Save</string>
+	<string name="browser_add_collection">Add Collection</string>
+	<string name="browser_remove_collection">Remove Collection</string>
+	<string name="browser_file_default_name">Untitled</string>
+	<string name="browser_file_overwrite_question">This file already exists. Do you want to overwrite it?</string>
+	<string name="browser_element_icon_description">Browser Element</string>
+	
+	<!-- collections -->
+	<string name="browser_collections_dlg_title">Collections</string>
+	<string name="browser_collections_dlg_add_label">Add Collection</string>
+	<string name="browser_collections_dlg_remove_label">Remove Collection</string>
+	<string name="browser_collections_dlg_remove_confirm_question">Are you sure you want to remove this collection?</string>
+	
+	<!-- filesystem -->
+	<string name="browser_settings_fs_dlg_title">File System Collection</string>
+	<string name="browser_settings_fs_name_label">Name:</string>
+	<string name="browser_settings_fs_path_label">Folder:</string>
+	
+	<string name="browser_settings_fs_error_title">Error</string>
+	<string name="browser_settings_fs_error_empty_name">Name must not be empty</string>
+	<string name="browser_settings_fs_error_empty_path">Path must not be empty</string>
+	<string name="browser_settings_fs_error_nonexistent_path">Nonexistent Path</string>
+	<string name="browser_settings_fs_error_nonfolder_path">Path must be a folder</string>
+	
+	<!-- =================================================================== -->
+	<!-- ========================= DIALOGS ================================= -->
+	<!-- =================================================================== -->
+	
+	<!-- Confirm dialog -->
+	<string name="confirm_dlg_title">Confirm</string>
+	
+	<!-- Tempo dialog -->
+	<string name="tempo_dlg_title">Change Tempo</string>
+	<string name="tempo_dlg_tempo_label">Tempo:</string>
+	<string name="tempo_dlg_options_apply_to_song">Apply this tempo in the whole song</string>
+	<string name="tempo_dlg_options_apply_to_end">Apply this tempo to the end</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Apply this tempo to the next tempo marker</string>
+	
+	<!-- Clef dialog -->
+	<string name="clef_dlg_title">Change Clef</string>
+	<string name="clef_dlg_clef_label">Clef:</string>
+	<string name="clef_dlg_clef_value_treble">Treble</string>
+	<string name="clef_dlg_clef_value_bass">Bass</string>
+	<string name="clef_dlg_clef_value_tenor">Tenor</string>
+	<string name="clef_dlg_clef_value_alto">Alto</string>
+	<string name="clef_dlg_options_apply_to_end">Apply this clef to the end</string>
+	
+	<!-- Key Signature dialog -->
+	<string name="key_signature_dlg_title">Change Key Signature</string>
+	<string name="key_signature_dlg_ks_label">Key Signature:</string>
+	<string name="key_signature_dlg_ks_value_natural">Natural</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">1 Sharp</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">2 Sharps</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">3 Sharps</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">4 Sharps</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">5 Sharps</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">6 Sharps</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">7 Sharps</string>
+	<string name="key_signature_dlg_ks_value_flat_1">1 Flat</string>
+	<string name="key_signature_dlg_ks_value_flat_2">2 Flats</string>
+	<string name="key_signature_dlg_ks_value_flat_3">3 Flats</string>
+	<string name="key_signature_dlg_ks_value_flat_4">4 Flats</string>
+	<string name="key_signature_dlg_ks_value_flat_5">5 Flats</string>
+	<string name="key_signature_dlg_ks_value_flat_6">6 Flats</string>
+	<string name="key_signature_dlg_ks_value_flat_7">7 Flats</string>
+	<string name="key_signature_dlg_options_apply_to_end">Apply this key signature to the end</string>
+	
+	<!-- Time Signature dialog -->
+	<string name="time_signature_dlg_title">Change Time Signature</string>
+	<string name="time_signature_dlg_ts_numerator_label">Numerator:</string>
+	<string name="time_signature_dlg_ts_denominator_label">Denominator:</string>
+	<string name="time_signature_dlg_options_apply_to_end">Apply to the end</string>
+	
+	<!-- Triplet Feel dialog -->
+	<string name="triplet_feel_dlg_title">Change Triplet Feel</string>	
+	<string name="triplet_feel_dlg_none">No Triplet Feel</string>
+	<string name="triplet_feel_dlg_eighth">Triplet 8th</string>
+	<string name="triplet_feel_dlg_sixteenth">Triplet 16th</string>
+	<string name="triplet_feel_dlg_options_apply_to_end">Apply this triplet feel to the end</string>
+	
+	
+	<!-- Repeat Close dialog -->
+	<string name="repeat_close_dlg_title">Close Repeat</string>	
+	<string name="repeat_close_dlg_count_label">Repetitions</string>
+	
+	<!-- Repeat Alternative dialog -->
+	<string name="repeat_alternative_dlg_title">Alternative Repeats</string>
+	
+	<!-- Repeat Alternative dialog -->
+	<string name="song_info_dlg_title">Properties</string>
+	<string name="song_info_dlg_name_label">Name</string>
+	<string name="song_info_dlg_artist_label">Artist</string>
+	<string name="song_info_dlg_album_label">Album</string>
+	<string name="song_info_dlg_author_label">Author</string>
+	<string name="song_info_dlg_date_label">Date</string>
+	<string name="song_info_dlg_copyright_label">Copyright</string>
+	<string name="song_info_dlg_writer_label">Tab Creator</string>
+	<string name="song_info_dlg_transcriber_label">Transcribed By</string>
+	<string name="song_info_dlg_comments_label">Comments</string>
+	
+	<!-- Track name dialog -->
+	<string name="track_name_dlg_title">Track Name</string>
+	<string name="track_name_dlg_name_label">Name:</string>
+	
+	<!-- Track channel dialog -->
+	<string name="track_channel_dlg_title">Change Instrument</string>
+	<string name="track_channel_dlg_channel_label">Instrument:</string>
+	<string name="track_channel_dlg_settings_label">Edit Instruments</string>
+	
+	<!-- Track tuning dialog -->
+	<string name="track_tuning_dlg_title">Change Tuning</string>
+	<string name="track_tuning_dlg_strings_label">Strings:</string>
+	<string name="track_tuning_dlg_offset_label">Offset:</string>
+	<string name="track_tuning_dlg_options_transpose">Transpose afected notes</string>
+	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transpose choors</string>
+	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Try keep notes at same string</string>
+	
+	<!-- Measure add dialog -->
+	<string name="measure_add_dlg_title">Add Measure</string>
+	<string name="measure_add_dlg_count_label">Add Count:</string>
+	<string name="measure_add_dlg_options_before_position">Add before the current position</string>
+	<string name="measure_add_dlg_options_after_position">Add after the current position</string>
+	<string name="measure_add_dlg_options_at_end">Add at the end</string>
+	
+	<!-- Measure remove dialog -->
+	<string name="measure_remove_dlg_title">Remove Measure</string>
+	<string name="measure_remove_dlg_from_label">From:</string>
+	<string name="measure_remove_dlg_to_label">To:</string>
+	
+	<!-- Measure clean dialog -->
+	<string name="measure_clean_dlg_title">Clean Measure</string>
+	<string name="measure_clean_dlg_from_label">From:</string>
+	<string name="measure_clean_dlg_to_label">To:</string>
+	
+	<!-- Text dialog -->
+	<string name="text_dlg_title">Insert Text</string>
+	
+	<!-- Bend dialog -->
+	<string name="bend_dlg_title">Pich Bend</string>
+	<string name="bend_dlg_preset_label">Preset</string>
+	<string name="bend_dlg_preset_bend">Bend</string>
+	<string name="bend_dlg_preset_bend_release">Bend/Release</string>
+	<string name="bend_dlg_preset_bend_release_bend">Bend/Release/Bend</string>
+	<string name="bend_dlg_preset_prebend">Pre-Bend</string>
+	<string name="bend_dlg_preset_prebend_release">Pre-Bend/Release</string>
+	
+	<!-- Tremolo Bar dialog -->
+	<string name="tremolo_bar_dlg_title">Tremolo Bar</string>
+	<string name="tremolo_bar_dlg_preset_label">Preset</string>
+	<string name="tremolo_bar_dlg_preset_dip">Dip</string>
+	<string name="tremolo_bar_dlg_preset_dive">Dive</string>
+	<string name="tremolo_bar_dlg_preset_release_up">Release Up</string>
+	<string name="tremolo_bar_dlg_preset_release_down">Release Down</string>
+	<string name="tremolo_bar_dlg_preset_inverted_dip">Inverted Dip</string>
+	<string name="tremolo_bar_dlg_preset_return">Return</string>
+	
+	<!-- Tremolo picking dialog -->
+	<string name="tremolo_picking_dlg_title">Tremolo Picking</string>
+	<string name="tremolo_picking_dlg_duration_8">Eighth</string>
+	<string name="tremolo_picking_dlg_duration_16">Sixteenth</string>
+	<string name="tremolo_picking_dlg_duration_32">Thirty Second</string>
+	
+	<!-- Trill dialog -->
+	<string name="trill_dlg_title">Tremolo Picking</string>
+	<string name="trill_dlg_fret_label">Fret:</string>
+	<string name="trill_dlg_duration_16">Sixteenth</string>
+	<string name="trill_dlg_duration_32">Thirty Second</string>
+	<string name="trill_dlg_duration_64">Sixty Fourth</string>
+	
+	<!-- Grace dialog -->
+	<string name="grace_dlg_title">Grace Note</string>
+	<string name="grace_dlg_fret_label">Fret:</string>
+	<string name="grace_dlg_dead_note_label">Dead Note</string>
+	<string name="grace_dlg_position_label">Position</string>
+	<string name="grace_dlg_position_before_beat">Before Beat</string>
+	<string name="grace_dlg_position_on_beat">On Beat</string>
+	<string name="grace_dlg_duration_label">Duration</string>
+	<string name="grace_dlg_duration_16">Sixteenth</string>
+	<string name="grace_dlg_duration_32">Thirty Second</string>
+	<string name="grace_dlg_duration_64">Sixty Fourth</string>
+	<string name="grace_dlg_dynamic_label">Dynamic</string>
+	<string name="grace_dlg_dynamic_ppp">Piano Pianissimo</string>
+	<string name="grace_dlg_dynamic_pp">Pianissimo</string>
+	<string name="grace_dlg_dynamic_p">Piano</string>
+	<string name="grace_dlg_dynamic_mp">Mezzo Piano</string>
+	<string name="grace_dlg_dynamic_mf">Mezzo Forte</string>
+	<string name="grace_dlg_dynamic_f">Forte</string>
+	<string name="grace_dlg_dynamic_ff">Fortissimo</string>
+	<string name="grace_dlg_dynamic_fff">Forte Fortissimo</string>
+	<string name="grace_dlg_transition_label">Transition</string>
+	<string name="grace_dlg_transition_none">None</string>
+	<string name="grace_dlg_transition_bend">Bend</string>
+	<string name="grace_dlg_transition_slide">Slide</string>
+	<string name="grace_dlg_transition_hammer">Hammer</string>
+	
+	<!-- Harmonic dialog -->
+	<string name="harmonic_dlg_title">Grace Note</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Natural Harmonic</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Artificial Harmonic</string>
+	<string name="harmonic_dlg_type_th">[T.H] Tapped Harmonic</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Pinch Harmonic</string>
+	<string name="harmonic_dlg_type_sh">[S.H] Semi Harmonic</string>
+	
+	<!-- Stroke dialog -->
+	<string name="stroke_dlg_title">Stroke Direction</string>
+	<string name="stroke_dlg_direction_label">Direction</string>
+	<string name="stroke_dlg_direction_none">None</string>
+	<string name="stroke_dlg_direction_up">Up</string>
+	<string name="stroke_dlg_direction_down">Down</string>
+	<string name="stroke_dlg_duration_4">Quarter</string>
+	<string name="stroke_dlg_duration_8">Eighth</string>
+	<string name="stroke_dlg_duration_16">Sixteenth</string>
+	<string name="stroke_dlg_duration_32">Thirty Second</string>
+	<string name="stroke_dlg_duration_64">Sixty Fourth</string>
+	
+	
+	<!-- Channel edit dialog -->
+	<string name="channel_edit_dlg_title">Edit Instrument</string>
+	<string name="channel_edit_dlg_name_label">Name</string>
+	<string name="channel_edit_dlg_bank_label">Bank</string>
+	<string name="channel_edit_dlg_bank_value">Bank #%1$d</string>
+	<string name="channel_edit_dlg_program_label">Program</string>
+	<string name="channel_edit_dlg_program_value">Instrument #%1$d</string>
+	<string name="channel_edit_dlg_percussion_label">Percussion Channel</string>
+	<string name="channel_edit_dlg_volume_label">Volume</string>
+	<string name="channel_edit_dlg_balance_label">Balance</string>
+	<string name="channel_edit_dlg_chorus_label">Chorus</string>
+	<string name="channel_edit_dlg_reverb_label">Reverb</string>
+	<string name="channel_edit_dlg_phaser_label">Phaser</string>
+	<string name="channel_edit_dlg_tremolo_label">Tremolo</string>
+</resources>

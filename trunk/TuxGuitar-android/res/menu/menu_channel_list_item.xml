@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.herac.tuxguitar.android.TGActivity" >
+
+    <item
+        android:id="@+id/menu_channel_list_item_edit"
+        android:title="@string/menu_channel_list_item_edit"/>
+    
+    <item
+        android:id="@+id/menu_channel_list_item_remove"
+        android:title="@string/menu_channel_list_item_remove"/>
+</menu>

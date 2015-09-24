@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<android.support.v7.widget.GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:columnCount="2" style="@style/Dialog">
+	
+		<TextView 
+			android:id="@+id/measure_add_dlg_count_label"
+			android:text="@string/measure_add_dlg_count_label" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<Spinner 
+			android:id="@+id/measure_add_dlg_count_value"
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<android.support.v7.widget.Space
+			app:layout_gravity="fill"
+			app:layout_columnSpan="2"
+			style="@style/DialogSectionSpacer" />
+			
+		<RadioGroup 
+			android:id="@+id/measure_add_dlg_options_group"
+			app:layout_gravity="fill_horizontal|center_vertical"
+			app:layout_columnSpan="2" >
+	
+			<RadioButton 
+				android:id="@+id/measure_add_dlg_options_before_position"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/measure_add_dlg_options_before_position" />
+	
+			<RadioButton 
+				android:id="@+id/measure_add_dlg_options_after_position"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/measure_add_dlg_options_after_position" />
+	
+			<RadioButton 
+				android:id="@+id/measure_add_dlg_options_at_end"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/measure_add_dlg_options_at_end" />
+		</RadioGroup>
+	
+	</android.support.v7.widget.GridLayout>
+
+</ScrollView>

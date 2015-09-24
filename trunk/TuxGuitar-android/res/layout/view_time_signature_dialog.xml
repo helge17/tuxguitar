@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<android.support.v7.widget.GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:columnCount="2" 
+		style="@style/Dialog">
+	
+		<TextView 
+			android:id="@+id/time_signature_dlg_ts_numerator_label"
+			android:text="@string/time_signature_dlg_ts_numerator_label"
+			app:layout_gravity="fill_horizontal|center_vertical"
+			style="@style/TextViewLabel" />
+	
+		<Spinner 
+			android:id="@+id/time_signature_dlg_ts_numerator_value"
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<TextView 
+			android:id="@+id/time_signature_dlg_ts_denominator_label"
+			android:text="@string/time_signature_dlg_ts_denominator_label"
+			app:layout_gravity="fill_horizontal|center_vertical" 
+			style="@style/TextViewLabel" />
+	
+		<Spinner 
+			android:id="@+id/time_signature_dlg_ts_denominator_value"
+			app:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<android.support.v7.widget.Space
+			app:layout_gravity="fill"
+			app:layout_columnSpan="2"
+			style="@style/DialogSectionSpacer" />
+	
+		<CheckBox 
+			android:id="@+id/time_signature_dlg_options_apply_to_end" 
+			android:text="@string/time_signature_dlg_options_apply_to_end" 
+			app:layout_gravity="fill_horizontal|center_vertical"
+			app:layout_columnSpan="2" />
+			
+	</android.support.v7.widget.GridLayout>
+
+</ScrollView>
