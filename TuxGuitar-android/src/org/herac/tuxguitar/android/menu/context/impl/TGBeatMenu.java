@@ -63,8 +63,5 @@ public class TGBeatMenu extends TGContextMenuBase {
 		this.initializeItem(menu, R.id.menu_beat_shift_note_up, this.createActionProcessor(TGShiftNoteUpAction.NAME), (!running && note != null));
 		this.initializeItem(menu, R.id.menu_beat_stroke, new TGStrokeDialogController(), !running);
 		this.initializeItem(menu, R.id.menu_beat_edit_text, new TGTextDialogController(), !running);
-		this.initializeItem(menu, R.id.menu_duration, new TGDurationMenu(getActivity()), !running);
-		this.initializeItem(menu, R.id.menu_velocity, new TGVelocityMenu(getActivity()), !running);
-		this.initializeItem(menu, R.id.menu_effect, new TGEffectMenu(getActivity()), !running);
 	}
 }

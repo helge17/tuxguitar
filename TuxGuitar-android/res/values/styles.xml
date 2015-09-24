@@ -147,42 +147,11 @@
 	</style>
 	
 	<!-- ========================================================= -->
-	<!-- ==== TOOL VIEW ========================================== -->
-	<!-- ========================================================= -->
-	
-	<style name="ToolView" >
-	    <item name="android:padding">0sp</item>
-	    <item name="android:background">#3a3a3a</item>
-	</style>
-	
-	<style name="ToolViewText" >
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-		<item name="android:textSize">16sp</item>
-		<item name="android:textColor">@color/color_text_light</item>
-		<item name="android:padding">8sp</item>
-	</style>
-	
-	<style name="ToolViewCheck" >
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-		<item name="android:textSize">16sp</item>
-		<item name="android:textColor">@color/color_text_light</item>
-		<item name="android:padding">8sp</item>
-	</style>
-	
-	<style name="ToolViewDivider">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">1dp</item>
-		<item name="android:background">#6a6a6a</item>
-	</style>
-	
-	<!-- ========================================================= -->
 	<!-- ==== BROWSER ============================================ -->
 	<!-- ========================================================= -->
 	
 	<style name="BrowserPanel" >
-	    <item name="android:background">#6a6a6a</item>
+	    <item name="android:background">#3a3a3a</item>
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">48dp</item>
 	</style>
@@ -213,11 +182,7 @@
 	    <item name="android:padding">12dip</item>
 	</style>
 	
-	<style name="BrowserSavePanel" parent="BrowserPanel" >
-	    <item name="android:background">#6a6a6a</item>
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">48dp</item>
-	</style>
+	<style name="BrowserSavePanel" parent="BrowserPanel" />
 	
 	<style name="BrowserSaveEditText" parent="BrowserInputControl" />
 	

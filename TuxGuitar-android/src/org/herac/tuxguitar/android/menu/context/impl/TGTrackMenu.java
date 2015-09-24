@@ -1,10 +1,6 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.TuxGuitar;
-import org.herac.tuxguitar.android.action.impl.track.TGGoFirstTrackAction;
-import org.herac.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
-import org.herac.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
-import org.herac.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
@@ -44,10 +40,6 @@ public class TGTrackMenu extends TGContextMenuBase {
 		TGTrack track = caret.getTrack();
 		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
 		
-		this.initializeItem(menu, R.id.menu_track_go_first_track, this.createActionProcessor(TGGoFirstTrackAction.NAME), !running);
-		this.initializeItem(menu, R.id.menu_track_go_last_track, this.createActionProcessor(TGGoLastTrackAction.NAME), !running);
-		this.initializeItem(menu, R.id.menu_track_go_previous_track, this.createActionProcessor(TGGoPreviousTrackAction.NAME), !running);
-		this.initializeItem(menu, R.id.menu_track_go_next_track, this.createActionProcessor(TGGoNextTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.menu_track_add, this.createActionProcessor(TGAddTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.menu_track_remove, this.createActionProcessor(TGRemoveTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.menu_track_clone, this.createActionProcessor(TGCloneTrackAction.NAME), !running);

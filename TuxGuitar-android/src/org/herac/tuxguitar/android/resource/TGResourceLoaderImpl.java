@@ -25,8 +25,9 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 	private static final String ASSET_PLUGINS = "plugins";
 	private static final Integer ASSET_BUFFER_SIZE = (8 * 1024);
 	
+	private static ClassLoader classLoader;
+	
 	private TGActivity activity;
-	private ClassLoader classLoader;
 	
 	public TGResourceLoaderImpl(TGActivity activity) {
 		this.activity = activity;
@@ -69,20 +70,16 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 		}
 	}
 	
-	public ClassLoader getClassLoader() throws TGResourceException {
-		synchronized (TGResourceLoaderImpl.class) {
-			if( this.classLoader == null ) {
-				Context context = this.activity.getApplicationContext();
-				
-				String optimizedDirectory = context.getDir("dex", Context.MODE_PRIVATE).getAbsolutePath();
-
-				List<String> fileNames = this.unpackPlugins(optimizedDirectory);
-				if(!fileNames.isEmpty()) {
-					this.classLoader = new DexClassLoader(this.createPath(fileNames), optimizedDirectory, this.createLibraryPath(), context.getClassLoader());
-				}
-			}
+	public ClassLoader createClassLoader() throws TGResourceException {
+		Context context = this.activity.getApplicationContext();
+		
+		String optimizedDirectory = context.getDir("dex", Context.MODE_PRIVATE).getAbsolutePath();
+		
+		List<String> fileNames = this.unpackPlugins(optimizedDirectory);
+		if(!fileNames.isEmpty()) {
+			return new DexClassLoader(this.createPath(fileNames), optimizedDirectory, this.createLibraryPath(), context.getClassLoader());
 		}
-		return this.classLoader;
+		return null;
 	}
 	
 	public List<String> unpackPlugins(String path) {
@@ -128,5 +125,14 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 	
 	public String createLibraryPath() {
 		return this.activity.getApplicationInfo().nativeLibraryDir;
+	}
+	
+	public ClassLoader getClassLoader() throws TGResourceException {
+		synchronized (TGResourceLoaderImpl.class) {
+			if( classLoader == null ) {
+				classLoader = this.createClassLoader();
+			}
+		}
+		return classLoader;
 	}
 }
