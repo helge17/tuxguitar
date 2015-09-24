@@ -204,59 +204,59 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	public void createConfigMap() {
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
-		this.map(TGNewSongAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGReadSongAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGWriteSongAction.NAME, UPDATE_SONG_SAVED_CTL);
+		this.map(TGNewSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGReadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		
 		//edit actions
-		this.map(TGUndoAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGRedoAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetVoice1Action.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGSetVoice2Action.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGUndoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGRedoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetVoice1Action.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGSetVoice2Action.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		
 		//caret actions
-		this.map(TGMoveToAction.NAME, new TGUpdateTransportPositionController());
-		this.map(TGGoRightAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGGoLeftAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGGoUpAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGGoDownAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGMoveToAction.NAME, LOCKABLE, new TGUpdateTransportPositionController());
+		this.map(TGGoRightAction.NAME, LOCKABLE |  DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		
 		//song actions
 		this.map(TGCopySongFromAction.NAME, LOCKABLE, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
-		this.map(TGClearSongAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGClearSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		
 		//track actions
 		this.map(TGAddTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
 		this.map(TGSetTrackMuteAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
 		this.map(TGSetTrackSoloAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
-		this.map(TGChangeTrackMuteAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGChangeTrackSoloAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGChangeTrackMuteAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGChangeTrackSoloAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGCloneTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableCloneTrackController());
-		this.map(TGGoFirstTrackAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoLastTrackAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoNextTrackAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoPreviousTrackAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoToTrackAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGGoFirstTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoLastTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoNextTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoPreviousTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoToTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGMoveTrackDownAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableMoveTrackDownController());
 		this.map(TGMoveTrackUpAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableMoveTrackUpController());
 		this.map(TGRemoveTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateRemovedTrackController(), new TGUndoableRemoveTrackController());
 		this.map(TGSetTrackInfoAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL, new TGUndoableTrackInfoController());
-		this.map(TGSetTrackNameAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGSetTrackNameAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGSetTrackChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGChangeTrackTuningAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGCopyTrackFromAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		
 		//measure actions
 		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
-		this.map(TGAddMeasureListAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
-		this.map(TGCleanMeasureListAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGGoFirstMeasureAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoLastMeasureAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoNextMeasureAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGGoPreviousMeasureAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGCleanMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGGoFirstMeasureAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoLastMeasureAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoNextMeasureAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGGoPreviousMeasureAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGRemoveMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateRemovedMeasureController(), new TGUndoableRemoveMeasureController());
-		this.map(TGRemoveMeasureRangeAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGRemoveMeasureRangeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGCopyMeasureFromAction.NAME, LOCKABLE, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGInsertMeasuresAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		
@@ -270,8 +270,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGIncrementNoteSemitoneAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGInsertRestBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGMoveBeatsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
-		this.map(TGMoveBeatsLeftAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGMoveBeatsRightAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGMoveBeatsLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGMoveBeatsRightAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGRemoveUnusedVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGSetVoiceAutoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGSetVoiceDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
@@ -306,22 +306,22 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//duration actions
 		this.map(TGSetDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedDurationController(), UNDOABLE_MEASURE_GENERIC);
-		this.map(TGSetWholeDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetHalfDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetQuarterDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetEighthDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetSixteenthDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetThirtySecondDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetSixtyFourthDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGSetDivisionTypeDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGChangeDottedDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGChangeDoubleDottedDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGIncrementDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGDecrementDurationAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetWholeDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetHalfDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetQuarterDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetEighthDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetSixteenthDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetThirtySecondDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetSixtyFourthDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetDivisionTypeDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGChangeDottedDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGChangeDoubleDottedDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGIncrementDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGDecrementDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		
 		//composition actions
 		this.map(TGChangeTempoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableTempoController());
-		this.map(TGChangeTempoRangeAction.NAME, DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGChangeTempoRangeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGChangeClefAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableClefController());
 		this.map(TGChangeTimeSignatureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableTimeSignatureController());
 		this.map(TGChangeKeySignatureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableKeySignatureController());
@@ -339,44 +339,40 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGUpdateChannelAction.NAME, LOCKABLE, new TGUpdateModifiedChannelController(), new TGUndoableModifyChannelController());
 		
 		//transport actions
-		this.map(TGTransportPlayAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGTransportStopAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
+		this.map(TGTransportPlayAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGTransportStopAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		
 		//layout actions
-		this.map(TGSetLayoutScalePreviewAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGSetScoreEnabledAction.NAME, UPDATE_SONG_CTL);
-		this.map(TGSetChordNameEnabledAction.NAME, UPDATE_SONG_CTL);
-		this.map(TGSetChordDiagramEnabledAction.NAME, UPDATE_SONG_CTL);
+		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL);
+		this.map(TGSetLayoutScalePreviewAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGSetScoreEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
+		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
+		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		
 		//browser actions
-		this.map(TGBrowserCdRootAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserCdUpAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserCdElementAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserRefreshAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserOpenElementAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserSaveElementAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserSaveCurrentElementAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserPrepareForReadAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserPrepareForWriteAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserOpenSessionAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserAddCollectionAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserRemoveCollectionAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserCdRootAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserCdUpAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserCdElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserRefreshAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserOpenElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserSaveElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserSaveCurrentElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserPrepareForReadAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserPrepareForWriteAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserOpenSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserAddCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		
 		//gui actions
-		this.map(TGBackAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGFinishAction.NAME, null);
-		this.map(TGOpenDialogAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGOpenMenuAction.NAME, UPDATE_ITEMS_CTL);
-		this.map(TGOpenFragmentAction.NAME, UPDATE_ITEMS_CTL);
+		this.map(TGOpenDialogAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGOpenMenuAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGOpenFragmentAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGFinishAction.NAME, LOCKABLE, null);
 	}
 	
 	private void map(String actionId, int flags, TGUpdateController updateController) {
 		this.map(actionId, flags, updateController, null);
-	}
-	
-	private void map(String actionId, TGUpdateController updateController) {
-		this.map(actionId, 0, updateController, null);
 	}
 	
 	private void map(String actionId, int flags, TGUpdateController updateController, TGUndoableActionController undoableController) {
