@@ -14,36 +14,32 @@ import android.view.ViewGroup;
 
 public class TGMainFragment extends TGCachedFragment {
 	
-	public TGMainFragment() {
-		super(R.layout.view_main);
+	public TGMainFragment(TGContext context) {
+		super(context, R.layout.view_main);
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+	public void onPostCreate(Bundle savedInstanceState) {
 		this.setHasOptionsMenu(true);
 	}
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_main, menu);
 		
 		TGActivity activity = (TGActivity) getActivity();
-		TGMainMenu.getInstance(activity.findContext()).initialize(activity, menu);
+		TGMainMenu.getInstance(this.getContext()).initialize(activity, menu);
 	}
 	
 	@Override
-	public void onCreateDrawer(ViewGroup drawerView) {
-		super.onCreateDrawer(drawerView);
-		
+	public void onPostCreateDrawer(ViewGroup drawerView) {
 		this.getActivity().getLayoutInflater().inflate(R.layout.view_main_drawer, drawerView);
 	}
 	
 	public static TGMainFragment getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGMainFragment.class.getName(), new TGSingletonFactory<TGMainFragment>() {
 			public TGMainFragment createInstance(TGContext context) {
-				return new TGMainFragment();
+				return new TGMainFragment(context);
 			}
 		});
 	}

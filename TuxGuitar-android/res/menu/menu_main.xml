@@ -4,6 +4,16 @@
     tools:context="org.herac.tuxguitar.android.TGActivity" >
 
     <item
+        android:id="@+id/menu_tab_keyboard_toggle"
+        android:icon="@drawable/ic_mode_edit_white_24dp"
+        android:title="@string/menu_tab_keyboard_toggle"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_transport_play"
+        android:icon="@drawable/ic_play_circle_outline_white_24dp"
+        android:title="@string/menu_transport_play"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/menu_edit"
         android:title="@string/menu_edit"/>
     <item

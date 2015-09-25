@@ -9,22 +9,23 @@
         style="@style/MainDrawerTransportPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" >
 
         <ImageButton
             android:id="@+id/main_drawer_transport_mixer"
             style="@style/MainDrawerImageButtonMixer"
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/menu_view_channel_list"
-            android:gravity="center"/>
+            android:gravity="left"/>
 
         <ImageButton
-            android:id="@+id/main_drawer_transport_play"
-            style="@style/MainDrawerImageButtonPlay"
+            android:id="@+id/main_drawer_song_info"
+            style="@style/MainDrawerImageButtonInfo"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/menu_transport_play"
-            android:gravity="center"/>
+            android:contentDescription="@string/menu_composition_change_info"
+            android:gravity="right"/>
     </RelativeLayout>
 
     <!-- Body -->

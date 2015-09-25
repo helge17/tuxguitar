@@ -24,6 +24,12 @@
 	    <item name="android:paddingRight">0dip</item>
 	</style>
 	
+    <style name="TextViewLabel" >
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">18sp</item>
+	</style>
+	
     <style name="Dialog" >
         <item name="android:padding">10dp</item>
 	</style>
@@ -33,15 +39,33 @@
 	</style>
 	
 	<style name="DialogImageButton" >
-	    <item name="android:layout_width">42dp</item>
-	    <item name="android:layout_height">42dp</item>
-	    <item name="android:scaleType">fitCenter</item>
+	    <item name="android:layout_width">36dp</item>
+	    <item name="android:layout_height">36dp</item>
+	    <item name="android:padding">6dip</item>
+	    <item name="android:background">?android:selectableItemBackground</item>
 	</style>
 	
-    <style name="TextViewLabel" >
-        <item name="android:typeface">normal</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">18sp</item>
+	<style name="DialogImageButtonSettings" parent="DialogImageButton">
+	    <item name="android:src">@drawable/ic_settings_gray_24dp</item>
+	</style>
+	
+	<!-- ========================================================= -->
+	<!-- ==== MAIN =============================================== -->
+	<!-- ========================================================= -->
+	
+	<style name="MainImageButton" >
+	    <item name="android:layout_width">36dp</item>
+	    <item name="android:layout_height">36dp</item>
+	    <item name="android:padding">6dip</item>
+	    <item name="android:background">?android:selectableItemBackground</item>
+	</style>
+	
+	<style name="MainImageButtonPlay" parent="MainImageButton">
+	    <item name="android:src">@drawable/ic_play_circle_outline_white_24dp</item>
+	</style>
+	
+	<style name="MainImageButtonStop" parent="MainImageButton">
+	    <item name="android:src">@drawable/ic_pause_circle_outline_white_24dp</item>
 	</style>
 	
 	<!-- ========================================================= -->
@@ -128,12 +152,8 @@
 	    <item name="android:src">@drawable/ic_volume_up_white_24dp</item>
 	</style>
 	
-	<style name="MainDrawerImageButtonPlay" parent="BrowserImageButton">
-	    <item name="android:src">@drawable/ic_play_circle_outline_white_24dp</item>
-	</style>
-	
-	<style name="MainDrawerImageButtonStop" parent="BrowserImageButton">
-	    <item name="android:src">@drawable/ic_pause_circle_outline_white_24dp</item>
+	<style name="MainDrawerImageButtonInfo" parent="BrowserImageButton">
+	    <item name="android:src">@drawable/ic_info_outline_white_24dp</item>
 	</style>
 	
 	<style name="MainDrawerToolbar" >

@@ -11,53 +11,15 @@
         android:layout_alignParentTop="true"
         android:gravity="fill_horizontal|center_vertical" >
 
-<!--         <ImageView -->
-<!--             android:id="@+id/browser_settings" -->
-<!--             style="@style/BrowserImageButtonSettings" -->
-<!--             android:layout_alignParentLeft="true" -->
-<!--             android:contentDescription="@string/browser_settings" -->
-<!--             android:gravity="center"/> -->
-
-<!--         <ImageView -->
-<!--             android:id="@+id/browser_root" -->
-<!--             style="@style/BrowserImageButtonRoot" -->
-<!--             android:layout_toEndOf="@+id/browser_settings" -->
-<!--             android:contentDescription="@string/browser_root" -->
-<!--             android:gravity="center" /> -->
-
-<!--         <ImageView -->
-<!--             android:id="@+id/browser_back" -->
-<!--             style="@style/BrowserImageButtonBack" -->
-<!--             android:layout_toEndOf="@+id/browser_root" -->
-<!--             android:contentDescription="@string/browser_back" -->
-<!--             android:gravity="center" /> -->
-
-<!--         <ImageView -->
-<!--             android:id="@+id/browser_refresh" -->
-<!--             style="@style/BrowserImageButtonRefresh" -->
-<!--             android:layout_toEndOf="@+id/browser_back" -->
-<!--             android:contentDescription="@string/browser_refresh" -->
-<!--             android:gravity="center" /> -->
-
-<!--         <Spinner -->
-<!--             android:id="@+id/browser_collections" -->
-<!--             style="@style/BrowserCollectionsSpinner" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_alignBottom="@+id/browser_refresh" -->
-<!--             android:layout_alignParentRight="true" -->
-<!--             android:layout_alignTop="@+id/browser_refresh" -->
-<!--             android:layout_toRightOf="@+id/browser_refresh" -->
-<!--             android:gravity="fill_horizontal|center_vertical" /> -->
         <Spinner
             android:id="@+id/browser_collections"
             style="@style/BrowserCollectionsSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:gravity="fill_horizontal|center_vertical" />
     </RelativeLayout>
 
@@ -75,8 +37,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/browser_save_format"
             android:gravity="fill_horizontal|center_vertical"
             android:inputType="text" />
@@ -86,8 +48,8 @@
             style="@style/BrowserSaveSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/browser_save_button"
             android:gravity="center" />
 

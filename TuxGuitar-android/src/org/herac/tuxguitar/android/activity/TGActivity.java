@@ -51,6 +51,7 @@ public class TGActivity extends ActionBarActivity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
+		this.connectPlugins();
 		this.drawerManager.syncState();
 	}
 	
@@ -93,6 +94,10 @@ public class TGActivity extends ActionBarActivity {
 	
 	public void destroyTuxGuitar() {
 		TuxGuitar.getInstance(findContext()).destroy();
+	}
+	
+	public void connectPlugins() {
+		TuxGuitar.getInstance(findContext()).connectPlugins();
 	}
 	
 	public TGDrawerManager getDrawerManager() {
