@@ -13,29 +13,27 @@ import android.view.MenuInflater;
 
 public class TGChannelListFragment extends TGCachedFragment {
 	
-	public TGChannelListFragment() {
-		super(R.layout.view_channel_list);
+	public TGChannelListFragment(TGContext context) {
+		super(context, R.layout.view_channel_list);
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+	public void onPostCreate(Bundle savedInstanceState) {
 		this.setHasOptionsMenu(true);
 	}
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_channel_list, menu);
 		
 		TGActivity activity = (TGActivity) getActivity();
-		TGChannelListMenu.getInstance(activity.findContext()).initialize(activity, menu);
+		TGChannelListMenu.getInstance(this.getContext()).initialize(activity, menu);
 	}
 	
 	public static TGChannelListFragment getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGChannelListFragment.class.getName(), new TGSingletonFactory<TGChannelListFragment>() {
 			public TGChannelListFragment createInstance(TGContext context) {
-				return new TGChannelListFragment();
+				return new TGChannelListFragment(context);
 			}
 		});
 	}

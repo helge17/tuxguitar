@@ -1,22 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.herac.tuxguitar.android.view.layout.TGActivityLayout
-	xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" 
-	android:id="@+id/tg_main_view"
-	android:layout_width="fill_parent" 
-	android:layout_height="fill_parent"
-	app:columnCount="1" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-	<FrameLayout 
-		android:id="@+id/tg_activity_layout_main"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" >
-		<include layout="@layout/view_tablature"/>
-	</FrameLayout>
-	<FrameLayout 
-		android:id="@+id/tg_activity_layout_bottom"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" >
-		<include layout="@layout/view_tab_keyboard"/>
-	</FrameLayout>
-	
-</org.herac.tuxguitar.android.view.layout.TGActivityLayout>
+    <FrameLayout
+        android:id="@+id/main_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/main_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <include layout="@layout/view_tab_keyboard" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/main_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/main_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/main_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_bottom"
+        android:layout_below="@+id/main_top"
+        android:layout_toLeftOf="@+id/main_right"
+        android:layout_toRightOf="@+id/main_left" >
+
+        <include layout="@layout/view_tablature" />
+    </FrameLayout>
+
+</RelativeLayout>

@@ -43,6 +43,7 @@ import org.herac.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedMeasureController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedTrackController;
@@ -348,6 +349,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetScoreEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
+		
+		//view actions
+		this.map(TGToggleTabKeyboardAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		
 		//browser actions
 		this.map(TGBrowserCdRootAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);

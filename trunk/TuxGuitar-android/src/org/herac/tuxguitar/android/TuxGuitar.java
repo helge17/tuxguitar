@@ -47,15 +47,22 @@ public class TuxGuitar {
 		TGPropertiesAdapter.initialize(this.context, activity);
 		
 		this.initMidiPlayer();
-		
-		TGPluginManager.getInstance(this.context).connectEnabled();
 	}
 	
 	public void destroy() {
 		MidiPlayer.getInstance(this.context).close();
 		TGSongView.getInstance(this.context).dispose();
 		
+		this.disconnectPlugins();
 		this.context.clear();
+	}
+	
+	public void connectPlugins() {
+		TGPluginManager.getInstance(this.context).connectEnabled();
+	}
+	
+	public void disconnectPlugins() {
+		TGPluginManager.getInstance(this.context).disconnectAll();
 	}
 	
 	public TGUndoableManager getUndoableManager(){

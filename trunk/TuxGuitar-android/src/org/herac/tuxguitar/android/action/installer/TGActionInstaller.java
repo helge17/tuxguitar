@@ -44,6 +44,7 @@ import org.herac.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.channel.TGAddChannelAction;
 import org.herac.tuxguitar.editor.action.channel.TGAddNewChannelAction;
@@ -306,6 +307,9 @@ public class TGActionInstaller {
 		installAction(new TGSetScoreEnabledAction(context));
 		installAction(new TGSetChordNameEnabledAction(context));
 		installAction(new TGSetChordDiagramEnabledAction(context));
+		
+		//view actions
+		installAction(new TGToggleTabKeyboardAction(context));
 		
 		//browser actions
 		installAction(new TGBrowserCdRootAction(context));

@@ -13,29 +13,27 @@ import android.view.MenuInflater;
 
 public class TGBrowserFragment extends TGCachedFragment {
 
-	public TGBrowserFragment() {
-		super(R.layout.view_browser);
+	public TGBrowserFragment(TGContext context) {
+		super(context, R.layout.view_browser);
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+	public void onPostCreate(Bundle savedInstanceState) {
 		this.setHasOptionsMenu(true);
 	}
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_browser, menu);
 		
 		TGActivity activity = (TGActivity) getActivity();
-		TGBrowserMenu.getInstance(activity.findContext()).initialize(activity, menu);
+		TGBrowserMenu.getInstance(this.getContext()).initialize(activity, menu);
 	}
 	
 	public static TGBrowserFragment getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGBrowserFragment.class.getName(), new TGSingletonFactory<TGBrowserFragment>() {
 			public TGBrowserFragment createInstance(TGContext context) {
-				return new TGBrowserFragment();
+				return new TGBrowserFragment(context);
 			}
 		});
 	}

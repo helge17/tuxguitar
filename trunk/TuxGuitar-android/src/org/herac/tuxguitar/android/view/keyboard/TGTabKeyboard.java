@@ -26,6 +26,8 @@ public class TGTabKeyboard extends FrameLayout {
 
 	public TGTabKeyboard(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
+		this.registerInstance();
 	}
 
 	public void onFinishInflate() {
@@ -65,11 +67,23 @@ public class TGTabKeyboard extends FrameLayout {
 		return tgActionProcessor;
 	}
 	
+	public void registerInstance() {
+		this.findContext().setAttribute(TGTabKeyboard.class.getName(), this);
+	}
+	
+	public void toggleVisibility() {
+		this.setVisibility(this.getVisibility() == VISIBLE ? GONE : VISIBLE);
+	}
+	
 	private TGActivity findActivity() {
 		return (TGActivity) getContext();
 	}
 	
 	private TGContext findContext() {
 		return ((TGApplication)getContext().getApplicationContext()).getContext();
+	}
+	
+	public static TGTabKeyboard getInstance(TGContext context) {
+		return (TGTabKeyboard) context.getAttribute(TGTabKeyboard.class.getName());
 	}
 }

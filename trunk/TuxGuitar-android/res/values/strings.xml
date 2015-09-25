@@ -17,6 +17,8 @@
 	<!-- =================================================================== -->
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
+	<string name="menu_tab_keyboard_toggle">Toggle Keyboard</string>
+	
     <string name="menu_file">File</string>
     <string name="menu_file_new">New</string>
     <string name="menu_file_open">Open</string>

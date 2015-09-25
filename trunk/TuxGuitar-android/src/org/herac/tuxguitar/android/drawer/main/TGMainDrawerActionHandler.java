@@ -4,13 +4,15 @@ import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
-import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.android.fragment.TGChannelListFragment;
 import org.herac.tuxguitar.android.fragment.TGFragment;
+import org.herac.tuxguitar.android.view.dialog.TGDialogController;
+import org.herac.tuxguitar.android.view.dialog.info.TGSongInfoDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -62,12 +64,19 @@ public class TGMainDrawerActionHandler {
 		return tgActionProcessor;
 	}
 	
+	public TGActionProcessorListener createDialogAction(TGDialogController controller) {
+		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenDialogAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, controller);
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.mainDrawer.findActivity());
+		return tgActionProcessor;
+	}
+	
 	public TGActionProcessorListener createOpenInstrumentsAction() {
 		return this.createFragmentAction(TGChannelListFragment.getInstance(this.mainDrawer.findContext()));
 	}
 	
-	public TGActionProcessorListener createTransportPlayAction() {
-		return this.createBrowserAction(TGTransportPlayAction.NAME);
+	public TGActionProcessorListener createOpenInfoAction() {
+		return this.createDialogAction(new TGSongInfoDialogController());
 	}
 	
 	public TGBrowserSession findBrowserSession() {

@@ -29,12 +29,11 @@
             android:layout_toRightOf="@+id/track_channel_dlg_channel_label"
             android:layout_toLeftOf="@+id/track_channel_dlg_settings_button" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/track_channel_dlg_settings_button"
-            style="@style/DialogImageButton"
+            style="@style/DialogImageButtonSettings"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/track_channel_dlg_settings_label"
-            android:src="@drawable/track_channel_instruments" />
+            android:contentDescription="@string/track_channel_dlg_settings_label" />
     </RelativeLayout>
 
 </ScrollView>

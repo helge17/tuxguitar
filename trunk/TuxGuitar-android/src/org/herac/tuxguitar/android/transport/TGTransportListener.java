@@ -12,15 +12,11 @@ public class TGTransportListener implements TGEventListener{
 	private TGContext context;
 	
 	protected Object sync;
-//	protected TGSynchronizer.TGRunnable startedRunnable;
-//	protected TGSynchronizer.TGRunnable stoppedRunnable;
 	
 	public TGTransportListener(TGContext context){
 		this.context = context;
 		
 		this.sync = new Object();
-//		this.startedRunnable = getStartedRunnable();
-//		this.stoppedRunnable = getStoppedRunnable();
 	}
 	
 	public void notifyStarted() {
@@ -40,7 +36,6 @@ public class TGTransportListener implements TGEventListener{
 							tuxguitar.getEditorManager().redrawPlayingThread();
 						}
 						synchronized( TGTransportListener.this.sync ){
-//							TGSynchronizer.getInstance().executeLater( TGTransportListener.this.startedRunnable );
 							TGTransportListener.this.sync.wait(25);
 						}
 					}
@@ -64,40 +59,8 @@ public class TGTransportListener implements TGEventListener{
 				}
 			}
 		}).start();
-//		try {
-//			TGSynchronizer.getInstance().executeLater( TGTransportListener.this.stoppedRunnable );
-//		} catch (Throwable throwable) {
-//			TGErrorManager.getInstance(this.context).handleError(throwable);
-//		}
 	}
-//	
-//	private TGSynchronizer.TGRunnable getStartedRunnable(){
-//		return new Runnable() {
-//			public void run() throws TGException {
-//				TuxGuitar tuxguitar = TuxGuitar.getInstance(TGTransportListener.this.context);
-//				if( tuxguitar.getPlayer().isRunning()){
-//					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
-//					tgTransport.getCache().updatePlayMode();
-//					if( tgTransport.getCache().shouldRedraw() ) {
-//						tuxguitar.getEditorManager().redrawPlayingNewBeat();
-//					} else {
-//						tuxguitar.getEditorManager().redrawPlayingThread();
-//					}
-//				}
-//			}
-//		};
-//	}
 	
-//	private TGSynchronizer.TGRunnable getStoppedRunnable(){
-//		return new Runnable() {
-//			public void run() throws TGException {
-//				TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
-//				tgTransport.gotoPlayerPosition();
-//				tgTransport.getCache().reset();
-//			}
-//		};
-//	}
-
 	public void processEvent(TGEvent event) {
 		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			int type = ((Integer)event.getAttribute(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
