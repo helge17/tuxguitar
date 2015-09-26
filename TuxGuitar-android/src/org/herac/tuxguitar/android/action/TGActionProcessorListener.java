@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.action;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.view.MenuItem;

@@ -8,6 +8,8 @@
 	<!-- ========================= GLOBAL ================================== -->
 	<!-- =================================================================== -->
 	
+	<string name="global_error_message">An unexpected error has occurred</string>
+	
 	<string name="global_button_ok">OK</string>
 	<string name="global_button_cancel">Cancel</string>
 	<string name="global_button_clean">Clean</string>

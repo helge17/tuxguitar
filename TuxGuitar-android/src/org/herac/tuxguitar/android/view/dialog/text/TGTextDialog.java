@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.android.view.dialog.text;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGInsertTextAction;
 import org.herac.tuxguitar.editor.action.note.TGRemoveTextAction;
 import org.herac.tuxguitar.song.models.TGBeat;

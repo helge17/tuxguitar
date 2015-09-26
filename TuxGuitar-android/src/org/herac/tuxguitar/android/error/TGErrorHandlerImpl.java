@@ -8,10 +8,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
 
+import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
+
 
 import android.os.Environment;
 
@@ -46,7 +48,11 @@ public class TGErrorHandlerImpl implements TGErrorHandler{
 	}
 	
 	public String createHumanErrorMessage(Throwable throwable) {
-		return this.createFullErrorMessage(throwable);
+		String message = throwable.getMessage();
+		if( message == null || message.trim().length() == 0 ) {
+			message = this.activity.getString(R.string.global_error_message);
+		}
+		return message;
 	}
 	
 	public String createFullErrorMessage(Throwable throwable) {

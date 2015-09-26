@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
 
 import java.io.File;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.browser.filesystem.TGBrowserSettingsImpl;
@@ -10,6 +9,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

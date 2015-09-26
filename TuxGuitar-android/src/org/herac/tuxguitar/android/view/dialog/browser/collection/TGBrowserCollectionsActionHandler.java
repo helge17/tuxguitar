@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.android.view.dialog.browser.collection;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
@@ -12,6 +11,7 @@ import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 public class TGBrowserCollectionsActionHandler {
 

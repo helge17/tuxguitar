@@ -5,6 +5,7 @@ import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.installer.TGActionInstaller;
 import org.herac.tuxguitar.android.action.listener.browser.TGActionUpdateBrowserListener;
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateListener;
+import org.herac.tuxguitar.android.action.listener.error.TGActionErrorHandler;
 import org.herac.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.android.action.listener.lock.TGLockableActionListener;
 import org.herac.tuxguitar.android.action.listener.navigation.TGActionUpdateFragmentListener;
@@ -27,6 +28,7 @@ public class TGActionAdapterManager {
 	private TGLockableActionListener lockableActionListener;
 	private TGUndoableActionListener undoableActionListener;
 	private TGUpdateListener updatableActionListener;
+	private TGActionErrorHandler errorHandler;
 	
 	private TGActionAdapterManager(TGContext context){
 		this.context = context;
@@ -37,6 +39,7 @@ public class TGActionAdapterManager {
 		this.lockableActionListener = new TGLockableActionListener(context);
 		this.undoableActionListener = new TGUndoableActionListener(context);
 		this.updatableActionListener = new TGUpdateListener(this);
+		this.errorHandler = new TGActionErrorHandler(context);
 	}
 	
 	public void initialize(TGActivity activity){
@@ -55,6 +58,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		
 		tgActionManager.addPreExecutionListener(processingListener);
+		tgActionManager.addPreExecutionListener(this.errorHandler);
 		tgActionManager.addPreExecutionListener(this.lockableActionListener);
 		tgActionManager.addPreExecutionListener(this.undoableActionListener);
 		tgActionManager.addPreExecutionListener(this.updatableActionListener);
@@ -62,6 +66,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addPostExecutionListener(this.updatableActionListener);
 		tgActionManager.addPostExecutionListener(this.undoableActionListener);
 		tgActionManager.addPostExecutionListener(this.lockableActionListener);
+		tgActionManager.addPostExecutionListener(this.errorHandler);
 		tgActionManager.addPostExecutionListener(processingListener);
 		tgActionManager.addPostExecutionListener(new TGActionUpdateBrowserListener(activity));
 		tgActionManager.addPostExecutionListener(new TGActionUpdateFragmentListener(activity));
@@ -70,6 +75,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addErrorListener(this.lockableActionListener);
 		tgActionManager.addErrorListener(this.updatableActionListener);
 		tgActionManager.addErrorListener(this.undoableActionListener);
+		tgActionManager.addErrorListener(this.errorHandler);
 	}
 	
 	private void initializeDefaultActions(){

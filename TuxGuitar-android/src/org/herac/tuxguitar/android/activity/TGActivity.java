@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.android.activity;
 
 import org.herac.tuxguitar.android.TuxGuitar;
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
 import org.herac.tuxguitar.android.application.TGApplication;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
 import org.herac.tuxguitar.android.fragment.TGMainFragment;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.navigation.TGNavigationManager;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.content.res.Configuration;

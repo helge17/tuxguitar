@@ -58,7 +58,11 @@ public class TGStopTransportInterceptor implements TGActionInterceptor {
 	}
 	
 	public void executeInterceptedAction(String actionId, TGActionContext context) {
-		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
-		tgActionManager.execute(actionId, context);
+		try {
+			TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
+			tgActionManager.execute(actionId, context);
+		} catch (TGActionException e) {
+			e.printStackTrace();
+		}
 	}
 }

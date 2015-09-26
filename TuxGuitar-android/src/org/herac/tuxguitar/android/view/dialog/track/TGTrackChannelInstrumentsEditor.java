@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.android.view.dialog.track;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.fragment.TGChannelListFragment;
 import org.herac.tuxguitar.android.navigation.TGNavigationEvent;
 import org.herac.tuxguitar.android.navigation.TGNavigationFragment;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGException;
