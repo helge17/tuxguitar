@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.error.TGErrorHandler;
 
 public class TGActionProcessor {
 	
@@ -14,6 +16,7 @@ public class TGActionProcessor {
 	private String actionName;
 	private Map<String, Object> attributes;
 	private Runnable onFinish;
+	private TGErrorHandler errorHandler;
 	
 	public TGActionProcessor(TGContext context, String actionName){
 		this.context = context;
@@ -41,6 +44,10 @@ public class TGActionProcessor {
 		this.onFinish = onFinish;
 	}
 
+	public void setErrorHandler(TGErrorHandler errorHandler) {
+		this.errorHandler = errorHandler;
+	}
+
 	public TGActionContext createActionContext(Map<String, Object> customAttributes) {
 		TGActionContext tgActionContext = TGActionManager.getInstance(getContext()).createActionContext();
 		this.appendAttributes(tgActionContext, this.attributes);
@@ -59,10 +66,14 @@ public class TGActionProcessor {
 	}
 	
 	public void processOnCurrentThread(final Map<String, Object> customAttributes){
-		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-		tgActionManager.execute(getActionName(), createActionContext(customAttributes));
+		try {
+			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
+			tgActionManager.execute(getActionName(), createActionContext(customAttributes));
 		
-		this.onFinish();
+			this.onFinish();
+		} catch (TGActionException e) {
+			this.onError(e);
+		}
 	}
 	
 	public void processOnCurrentThread(){
@@ -92,6 +103,12 @@ public class TGActionProcessor {
 	public void onFinish() {
 		if( this.onFinish != null ) {
 			this.onFinish.run();
+		}
+	}
+	
+	public void onError(TGActionException e) {
+		if( this.errorHandler != null ) {
+			this.errorHandler.handleError(e);
 		}
 	}
 }

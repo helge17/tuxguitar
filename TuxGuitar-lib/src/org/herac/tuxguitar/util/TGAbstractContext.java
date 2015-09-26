@@ -32,6 +32,10 @@ public abstract class TGAbstractContext {
 		return this.attributes.containsKey(key);
 	}
 	
+	public void removeAttribute(String key){
+		this.attributes.remove(key);
+	}
+	
 	public void clear() {
 		this.attributes.clear();
 	}
