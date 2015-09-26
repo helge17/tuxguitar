@@ -5,8 +5,6 @@ import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGFragment;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGOpenFragmentAction extends TGActionBase{
 	
@@ -21,14 +19,10 @@ public class TGOpenFragmentAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
-			public void run() throws TGException {
-				String tagId = (String) context.getAttribute(ATTRIBUTE_TAG_ID);
-				TGFragment tgFragment = (TGFragment) context.getAttribute(ATTRIBUTE_FRAGMENT);
-				
-				TGActivity tgActivity = (TGActivity) context.getAttribute(ATTRIBUTE_ACTIVITY);
-				tgActivity.getNavigationManager().processLoadFragment(tgFragment, tagId);
-			}
-		});
+		String tagId = (String) context.getAttribute(ATTRIBUTE_TAG_ID);
+		TGFragment tgFragment = (TGFragment) context.getAttribute(ATTRIBUTE_FRAGMENT);
+		
+		TGActivity tgActivity = (TGActivity) context.getAttribute(ATTRIBUTE_ACTIVITY);
+		tgActivity.getNavigationManager().processLoadFragment(tgFragment, tagId);
 	}
 }

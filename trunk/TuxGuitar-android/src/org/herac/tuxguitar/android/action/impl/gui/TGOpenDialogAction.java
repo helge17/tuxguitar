@@ -9,8 +9,6 @@ import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 import android.app.Activity;
 
@@ -26,13 +24,9 @@ public class TGOpenDialogAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
-			public void run() throws TGException {
-				Activity activity = (Activity)context.getAttribute(ATTRIBUTE_DIALOG_ACTIVITY);
-				TGDialogController tgDialogController = (TGDialogController)context.getAttribute(ATTRIBUTE_DIALOG_CONTROLLER);
-				tgDialogController.showDialog(activity, createDialogContext(context));
-			}
-		});
+		Activity activity = (Activity)context.getAttribute(ATTRIBUTE_DIALOG_ACTIVITY);
+		TGDialogController tgDialogController = (TGDialogController)context.getAttribute(ATTRIBUTE_DIALOG_CONTROLLER);
+		tgDialogController.showDialog(activity, createDialogContext(context));
 	}
 	
 	protected TGDialogContext createDialogContext(TGActionContext context) {

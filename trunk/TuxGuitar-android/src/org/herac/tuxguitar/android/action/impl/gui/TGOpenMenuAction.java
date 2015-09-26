@@ -5,8 +5,6 @@ import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGOpenMenuAction extends TGActionBase{
 	
@@ -19,13 +17,9 @@ public class TGOpenMenuAction extends TGActionBase{
 		super(context, NAME);
 	}
 	
-	protected void processAction(final TGActionContext context){		
-		TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
-			public void run() throws TGException {
-				TGContextMenuController tgContextMenuController = (TGContextMenuController)context.getAttribute(ATTRIBUTE_MENU_CONTROLLER);
-				TGActivity tgActivity = (TGActivity)context.getAttribute(ATTRIBUTE_MENU_ACTIVITY);
-				tgActivity.openContextMenu(tgContextMenuController);
-			}
-		});
+	protected void processAction(final TGActionContext context) {
+		TGContextMenuController tgContextMenuController = (TGContextMenuController)context.getAttribute(ATTRIBUTE_MENU_CONTROLLER);
+		TGActivity tgActivity = (TGActivity)context.getAttribute(ATTRIBUTE_MENU_ACTIVITY);
+		tgActivity.openContextMenu(tgContextMenuController);
 	}
 }

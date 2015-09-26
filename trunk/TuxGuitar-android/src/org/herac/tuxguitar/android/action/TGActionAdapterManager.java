@@ -3,12 +3,14 @@ package org.herac.tuxguitar.android.action;
 import org.herac.tuxguitar.action.TGActionContextFactory;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.installer.TGActionInstaller;
-import org.herac.tuxguitar.android.action.listener.access.TGActionAccessInterceptor;
 import org.herac.tuxguitar.android.action.listener.browser.TGActionUpdateBrowserListener;
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateListener;
 import org.herac.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.android.action.listener.lock.TGLockableActionListener;
 import org.herac.tuxguitar.android.action.listener.navigation.TGActionUpdateFragmentListener;
+import org.herac.tuxguitar.android.action.listener.thread.TGSyncThreadInterceptor;
+import org.herac.tuxguitar.android.action.listener.transport.TGDisableOnPlayInterceptor;
+import org.herac.tuxguitar.android.action.listener.transport.TGStopTransportInterceptor;
 import org.herac.tuxguitar.android.action.listener.undoable.TGUndoableActionListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.util.TGContext;
@@ -19,9 +21,9 @@ public class TGActionAdapterManager {
 	
 	private TGContext context;
 	private TGActionContextFactory actionContextFactory;
-	private TGActionAccessInterceptor actionAccessInterceptor;
-	private TGActionIdList keyBindingActionIds;
-	
+	private TGDisableOnPlayInterceptor disableOnPlayInterceptor;
+	private TGStopTransportInterceptor stopTransportInterceptor;
+	private TGSyncThreadInterceptor syncThreadInterceptor;
 	private TGLockableActionListener lockableActionListener;
 	private TGUndoableActionListener undoableActionListener;
 	private TGUpdateListener updatableActionListener;
@@ -29,13 +31,12 @@ public class TGActionAdapterManager {
 	private TGActionAdapterManager(TGContext context){
 		this.context = context;
 		this.actionContextFactory = new TGActionContextFactoryImpl(context);
-		this.actionAccessInterceptor = new TGActionAccessInterceptor(context);
-		
+		this.disableOnPlayInterceptor = new TGDisableOnPlayInterceptor(context);
+		this.stopTransportInterceptor = new TGStopTransportInterceptor(context);
+		this.syncThreadInterceptor = new TGSyncThreadInterceptor(context);
 		this.lockableActionListener = new TGLockableActionListener(context);
 		this.undoableActionListener = new TGUndoableActionListener(context);
 		this.updatableActionListener = new TGUpdateListener(this);
-		
-		this.keyBindingActionIds = new TGActionIdList();
 	}
 	
 	public void initialize(TGActivity activity){
@@ -49,7 +50,9 @@ public class TGActionAdapterManager {
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
 		
-		tgActionManager.addInterceptor(this.actionAccessInterceptor);
+		tgActionManager.addInterceptor(this.stopTransportInterceptor);
+		tgActionManager.addInterceptor(this.disableOnPlayInterceptor);
+		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		
 		tgActionManager.addPreExecutionListener(processingListener);
 		tgActionManager.addPreExecutionListener(this.lockableActionListener);
@@ -78,12 +81,16 @@ public class TGActionAdapterManager {
 		return this.context;
 	}
 
-	public TGActionAccessInterceptor getActionAccessInterceptor() {
-		return this.actionAccessInterceptor;
+	public TGDisableOnPlayInterceptor getDisableOnPlayInterceptor() {
+		return this.disableOnPlayInterceptor;
+	}
+	
+	public TGStopTransportInterceptor getStopTransportInterceptor() {
+		return stopTransportInterceptor;
 	}
 
-	public TGActionIdList getKeyBindingActionIds() {
-		return this.keyBindingActionIds;
+	public TGSyncThreadInterceptor getSyncThreadInterceptor() {
+		return syncThreadInterceptor;
 	}
 
 	public TGLockableActionListener getLockableActionListener() {
