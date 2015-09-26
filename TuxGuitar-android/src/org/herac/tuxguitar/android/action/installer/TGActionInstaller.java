@@ -339,14 +339,17 @@ public class TGActionInstaller {
 		TGActionManager.getInstance(this.manager.getContext()).mapAction(actionId, action);
 		TGActionConfig config = this.configMap.get(actionId);
 		if( config != null ) {
-			if( config.isShortcutAvailable() ) {
-				this.manager.getKeyBindingActionIds().addActionId(actionId);
-			}
 			if( config.isDisableOnPlaying() ) {
-				this.manager.getActionAccessInterceptor().addDisableOnPlayingAction(actionId);
+				this.manager.getDisableOnPlayInterceptor().addActionId(actionId);
+			}
+			if( config.isStopTransport() ) {
+				this.manager.getStopTransportInterceptor().addActionId(actionId);
+			}
+			if( config.isSyncThread() ) {
+				this.manager.getSyncThreadInterceptor().addActionId(actionId);
 			}
 			if( config.isLockableAction() ) {
-				this.manager.getLockableActionListener().addLockableAction(actionId);
+				this.manager.getLockableActionListener().addActionId(actionId);
 			}
 			
 			this.manager.getUpdatableActionListener().getControllers().set(actionId, config.getUpdateController());

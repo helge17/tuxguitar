@@ -104,7 +104,7 @@ public class TGActionProcessingListener implements TGEventListener {
 				this.processEvent(false);
 			}
 			else if( TGActionErrorEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-				this.resetLevel();
+				this.decreaseLevel();
 				this.processEvent(false);
 			}
 		}

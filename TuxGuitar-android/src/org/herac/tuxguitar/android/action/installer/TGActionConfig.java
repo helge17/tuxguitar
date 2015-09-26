@@ -8,9 +8,10 @@ public class TGActionConfig {
 	private TGUpdateController updateController;
 	private TGUndoableActionController undoableController;
 	private boolean lockableAction;
-	private boolean shortcutAvailable;
 	private boolean disableOnPlaying;
+	private boolean stopTransport;
 	private boolean documentModifier;
+	private boolean syncThread;
 	
 	public TGActionConfig() {
 		super();
@@ -40,14 +41,6 @@ public class TGActionConfig {
 		this.lockableAction = lockableAction;
 	}
 
-	public boolean isShortcutAvailable() {
-		return shortcutAvailable;
-	}
-
-	public void setShortcutAvailable(boolean shortcutAvailable) {
-		this.shortcutAvailable = shortcutAvailable;
-	}
-
 	public boolean isDisableOnPlaying() {
 		return disableOnPlaying;
 	}
@@ -56,11 +49,27 @@ public class TGActionConfig {
 		this.disableOnPlaying = disableOnPlaying;
 	}
 
+	public boolean isStopTransport() {
+		return stopTransport;
+	}
+
+	public void setStopTransport(boolean stopTransport) {
+		this.stopTransport = stopTransport;
+	}
+
 	public boolean isDocumentModifier() {
 		return documentModifier;
 	}
 
 	public void setDocumentModifier(boolean documentModifier) {
 		this.documentModifier = documentModifier;
+	}
+
+	public boolean isSyncThread() {
+		return syncThread;
+	}
+
+	public void setSyncThread(boolean syncThread) {
+		this.syncThread = syncThread;
 	}
 }

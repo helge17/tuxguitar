@@ -184,8 +184,10 @@ import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackSoloMuteControl
 
 public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	
-	private static final int LOCKABLE = 0x01;
-	private static final int DISABLE_ON_PLAY = 0x02;
+	public static final int LOCKABLE = 0x01;
+	public static final int SYNC_THREAD = 0x02;
+	public static final int DISABLE_ON_PLAY = 0x04;
+	public static final int STOP_TRANSPORT = 0x08;
 	
 	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
@@ -204,9 +206,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	
 	public void createConfigMap() {
 		//file actions
-		this.map(TGLoadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
-		this.map(TGNewSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
-		this.map(TGReadSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
+		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGReadSongAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		
 		//edit actions
@@ -351,14 +353,14 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		
 		//view actions
-		this.map(TGToggleTabKeyboardAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGToggleTabKeyboardAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		
 		//browser actions
 		this.map(TGBrowserCdRootAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserCdUpAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserCdElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserRefreshAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		this.map(TGBrowserOpenElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserOpenElementAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserSaveElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserSaveCurrentElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserPrepareForReadAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
@@ -368,11 +370,11 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		
 		//gui actions
-		this.map(TGOpenDialogAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		this.map(TGOpenMenuAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		this.map(TGOpenFragmentAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		this.map(TGBackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		this.map(TGFinishAction.NAME, LOCKABLE, null);
+		this.map(TGOpenDialogAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGOpenMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGOpenFragmentAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGBackAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGFinishAction.NAME, LOCKABLE | SYNC_THREAD, null);
 	}
 	
 	private void map(String actionId, int flags, TGUpdateController updateController) {
@@ -385,6 +387,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		tgActionConfig.setUndoableController(undoableController);
 		tgActionConfig.setLockableAction((flags & LOCKABLE) != 0);
 		tgActionConfig.setDisableOnPlaying((flags & DISABLE_ON_PLAY) != 0);
+		tgActionConfig.setStopTransport((flags & STOP_TRANSPORT) != 0);
+		tgActionConfig.setSyncThread((flags & SYNC_THREAD) != 0);
 		tgActionConfig.setDocumentModifier(undoableController != null);
 		
 		this.set(actionId, tgActionConfig);

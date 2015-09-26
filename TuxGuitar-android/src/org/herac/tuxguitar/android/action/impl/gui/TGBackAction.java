@@ -5,8 +5,6 @@ import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGBackAction extends TGActionBase{
 	
@@ -19,14 +17,10 @@ public class TGBackAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		TGSynchronizer.getInstance(getContext()).executeLater(new Runnable() {
-			public void run() throws TGException {
-				TGActivity tgActivity = (TGActivity) context.getAttribute(ATTRIBUTE_ACTIVITY);
-				if(!tgActivity.getNavigationManager().callOpenPreviousFragment()) {
-					TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-					tgActionManager.execute(TGFinishAction.NAME, context);
-				}
-			}
-		});
+		TGActivity tgActivity = (TGActivity) context.getAttribute(ATTRIBUTE_ACTIVITY);
+		if(!tgActivity.getNavigationManager().callOpenPreviousFragment()) {
+			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
+			tgActionManager.execute(TGFinishAction.NAME, context);
+		}
 	}
 }

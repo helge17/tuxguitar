@@ -38,7 +38,6 @@ public class MidiDriver implements Runnable {
 	private Object mutex;
 	private Thread thread;
 	private AudioTrack audioTrack;
-	
 	private List<byte[]> queuedEvents;
 	
 	public MidiDriver() {
