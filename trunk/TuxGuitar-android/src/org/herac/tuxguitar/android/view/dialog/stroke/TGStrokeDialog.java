@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.stroke;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;

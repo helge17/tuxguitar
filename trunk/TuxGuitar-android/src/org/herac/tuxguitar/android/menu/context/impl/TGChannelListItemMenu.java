@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
@@ -8,6 +7,7 @@ import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.channel.TGRemoveChannelAction;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;

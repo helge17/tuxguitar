@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScalePreviewAction;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 import android.content.Context;
 import android.view.MotionEvent;

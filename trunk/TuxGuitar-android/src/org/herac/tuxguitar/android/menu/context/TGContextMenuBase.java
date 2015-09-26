@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.android.menu.context;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.view.ContextMenu;

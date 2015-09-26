@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.android.browser;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserSessionHandler implements TGBrowserFactoryHandler {

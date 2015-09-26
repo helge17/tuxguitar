@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.android.view.browser;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
@@ -11,6 +10,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 
 public class TGBrowserActionHandler {

@@ -3,13 +3,13 @@ package org.herac.tuxguitar.android.view.dialog.channel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.editor.TGEditorManager;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiInstrument;

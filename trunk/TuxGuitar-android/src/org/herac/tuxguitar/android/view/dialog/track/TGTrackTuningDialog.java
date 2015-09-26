@@ -3,12 +3,12 @@ package org.herac.tuxguitar.android.view.dialog.track;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;

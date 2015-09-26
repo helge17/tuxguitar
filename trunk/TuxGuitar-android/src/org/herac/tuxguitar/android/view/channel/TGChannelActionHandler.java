@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.android.view.channel;
 
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
@@ -10,6 +9,7 @@ import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.channel.TGAddNewChannelAction;
 import org.herac.tuxguitar.editor.action.channel.TGRemoveChannelAction;
 import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;

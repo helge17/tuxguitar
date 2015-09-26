@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.TGActionProcessor;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
@@ -19,6 +18,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.android.view.browser.filesystem.TGBrowserSettingsFactoryImpl;
 import org.herac.tuxguitar.android.view.util.SelectableAdapter;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;

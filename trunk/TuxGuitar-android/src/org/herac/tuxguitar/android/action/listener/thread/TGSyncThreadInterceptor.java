@@ -50,9 +50,17 @@ public class TGSyncThreadInterceptor implements TGActionInterceptor {
 	public void runInUiThread(final String id, final TGActionContext context) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				TGActionManager tgActionManager = TGActionManager.getInstance(TGSyncThreadInterceptor.this.context);
-				tgActionManager.execute(id, context);
+				executeInterceptedAction(id, context);
 			}
 		});
+	}
+	
+	public void executeInterceptedAction(String actionId, TGActionContext context) {
+		try {
+			TGActionManager tgActionManager = TGActionManager.getInstance(TGSyncThreadInterceptor.this.context);
+			tgActionManager.execute(actionId, context);
+		} catch (TGActionException e) {
+			e.printStackTrace();
+		}
 	}
 }
