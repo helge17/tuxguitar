@@ -13,7 +13,7 @@ public class TGException extends RuntimeException {
 	}
 	
 	public TGException(Throwable cause){
-		super(cause);
+		super(cause.getMessage(), cause);
 	}
 	
 	public TGException(String message, Throwable cause){

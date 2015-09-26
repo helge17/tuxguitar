@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.io.base;
 
-public class TGFileFormatException extends Exception{
+import org.herac.tuxguitar.util.TGException;
+
+public class TGFileFormatException extends TGException{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -19,5 +21,4 @@ public class TGFileFormatException extends Exception{
 	public TGFileFormatException(Throwable cause) {
 		super(cause);
 	}
-	
 }

@@ -42,7 +42,7 @@ public class TGReadSongAction extends TGActionBase{
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGLoadSongAction.NAME, context);
 		} catch(TGFileFormatException e){
-			throw new TGActionException(e.getMessage(), e);
+			throw new TGActionException(e);
 		}
 	}
 }
