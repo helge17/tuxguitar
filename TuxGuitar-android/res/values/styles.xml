@@ -73,7 +73,7 @@
 	<!-- ========================================================= -->
 	
 	<style name="TabKeyBoard" >
-		<item name="android:background">#3a3a3a</item>
+		<item name="android:background">@color/dark</item>
 	</style>
 	
 	<style name="TabKeyBoardButton" >
@@ -157,13 +157,13 @@
 	</style>
 	
 	<style name="MainDrawerToolbar" >
-	    <item name="android:background">#6a6a6a</item>
+	    <item name="android:background">@color/medium</item>
 	    <item name="android:textColor">@color/color_text_light</item>
 	    <item name="android:padding">0dp</item>
 	</style>
 	
 	<style name="MainDrawerTransportPanel" >
-	    <item name="android:background">#6a6a6a</item>
+	    <item name="android:background">@color/medium</item>
 	</style>
 	
 	<!-- ========================================================= -->
@@ -171,7 +171,7 @@
 	<!-- ========================================================= -->
 	
 	<style name="BrowserPanel" >
-	    <item name="android:background">#3a3a3a</item>
+	    <item name="android:background">@color/dark</item>
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">48dp</item>
 	</style>
@@ -245,11 +245,11 @@
 	<!-- ========================================================= -->
 	
 	<style name="ChannelList" >
-	    <item name="android:background">#000000</item>
+	    <item name="android:background">@color/darkest</item>
 	</style>
 	
 	<style name="ChannelListItem" >
-	    <item name="android:background">#000000</item>
+	    <item name="android:background">@color/darkest</item>
 	</style>
 	
 	<style name="ChannelListItemTextView" >
@@ -268,6 +268,6 @@
 	<style name="ChannelListItemDivider">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">1dp</item>
-		<item name="android:background">#aaaaaa</item>
+		<item name="android:background">@color/light</item>
 	</style>
 </resources>
