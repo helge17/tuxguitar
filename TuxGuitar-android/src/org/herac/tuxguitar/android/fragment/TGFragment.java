@@ -72,19 +72,19 @@ public abstract class TGFragment extends Fragment {
 		return createdView;
 	}
 	
-	public TGContext getContext() {
+	public TGContext findContext() {
 		return this.context;
 	}
 	
 	public void addListener(TGEventListener listener){
-		TGEventManager.getInstance(getContext()).addListener(TGFragmentEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(findContext()).addListener(TGFragmentEvent.EVENT_TYPE, listener);
 	}
 	
 	public void removeListener(TGEventListener listener){
-		TGEventManager.getInstance(getContext()).removeListener(TGFragmentEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(findContext()).removeListener(TGFragmentEvent.EVENT_TYPE, listener);
 	}
 	
 	public void fireEvent(String action) throws TGActionException{
-		TGEventManager.getInstance(getContext()).fireEvent(new TGFragmentEvent(this, action));
+		TGEventManager.getInstance(findContext()).fireEvent(new TGFragmentEvent(this, action));
 	}
 }

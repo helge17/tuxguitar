@@ -28,7 +28,7 @@ public class TGMainFragment extends TGCachedFragment {
 		menuInflater.inflate(R.menu.menu_main, menu);
 		
 		TGActivity activity = (TGActivity) getActivity();
-		TGMainMenu.getInstance(this.getContext()).initialize(activity, menu);
+		TGMainMenu.getInstance(this.findContext()).initialize(activity, menu);
 	}
 	
 	@Override
