@@ -27,7 +27,7 @@ public class TGBrowserFragment extends TGCachedFragment {
 		menuInflater.inflate(R.menu.menu_browser, menu);
 		
 		TGActivity activity = (TGActivity) getActivity();
-		TGBrowserMenu.getInstance(this.getContext()).initialize(activity, menu);
+		TGBrowserMenu.getInstance(this.findContext()).initialize(activity, menu);
 	}
 	
 	public static TGBrowserFragment getInstance(TGContext context) {

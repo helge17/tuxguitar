@@ -27,7 +27,7 @@ public class TGChannelListFragment extends TGCachedFragment {
 		menuInflater.inflate(R.menu.menu_channel_list, menu);
 		
 		TGActivity activity = (TGActivity) getActivity();
-		TGChannelListMenu.getInstance(this.getContext()).initialize(activity, menu);
+		TGChannelListMenu.getInstance(this.findContext()).initialize(activity, menu);
 	}
 	
 	public static TGChannelListFragment getInstance(TGContext context) {
