@@ -13,8 +13,8 @@ import android.view.MenuInflater;
 
 public class TGBrowserFragment extends TGCachedFragment {
 
-	public TGBrowserFragment(TGContext context) {
-		super(context, R.layout.view_browser);
+	public TGBrowserFragment() {
+		super(R.layout.view_browser);
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class TGBrowserFragment extends TGCachedFragment {
 	public static TGBrowserFragment getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGBrowserFragment.class.getName(), new TGSingletonFactory<TGBrowserFragment>() {
 			public TGBrowserFragment createInstance(TGContext context) {
-				return new TGBrowserFragment(context);
+				return new TGBrowserFragment();
 			}
 		});
 	}

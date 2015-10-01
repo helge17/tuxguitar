@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.fragment;
 
 import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -15,10 +15,8 @@ import android.view.ViewGroup;
 
 public abstract class TGFragment extends Fragment {
 	
-	private TGContext context;
-	
-	public TGFragment(TGContext context) {
-		this.context = context;
+	public TGFragment() {
+		super();
 	}
 	
 	@Override
@@ -73,15 +71,7 @@ public abstract class TGFragment extends Fragment {
 	}
 	
 	public TGContext findContext() {
-		return this.context;
-	}
-	
-	public void addListener(TGEventListener listener){
-		TGEventManager.getInstance(findContext()).addListener(TGFragmentEvent.EVENT_TYPE, listener);
-	}
-	
-	public void removeListener(TGEventListener listener){
-		TGEventManager.getInstance(findContext()).removeListener(TGFragmentEvent.EVENT_TYPE, listener);
+		return ((TGActivity) getActivity()).findContext();
 	}
 	
 	public void fireEvent(String action) throws TGActionException{

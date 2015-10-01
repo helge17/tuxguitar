@@ -13,8 +13,8 @@ import android.view.MenuInflater;
 
 public class TGChannelListFragment extends TGCachedFragment {
 	
-	public TGChannelListFragment(TGContext context) {
-		super(context, R.layout.view_channel_list);
+	public TGChannelListFragment() {
+		super(R.layout.view_channel_list);
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class TGChannelListFragment extends TGCachedFragment {
 	public static TGChannelListFragment getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGChannelListFragment.class.getName(), new TGSingletonFactory<TGChannelListFragment>() {
 			public TGChannelListFragment createInstance(TGContext context) {
-				return new TGChannelListFragment(context);
+				return new TGChannelListFragment();
 			}
 		});
 	}
