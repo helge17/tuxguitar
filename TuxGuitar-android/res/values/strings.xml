@@ -204,6 +204,9 @@
 	<string name="browser_settings_fs_error_nonexistent_path">Nonexistent Path</string>
 	<string name="browser_settings_fs_error_nonfolder_path">Path must be a folder</string>
 	
+	<!-- default filesystem location -->
+	<string name="browser_default_external_storage_title">Device Storage</string>
+	
 	<!-- =================================================================== -->
 	<!-- ========================= DIALOGS ================================= -->
 	<!-- =================================================================== -->
