@@ -31,6 +31,10 @@ import android.widget.Spinner;
 
 public class TGBendDialog extends TGDialog {
 
+	public TGBendDialog() {
+		super(new TGDialogContext());
+	}
+	
 	public TGBendDialog(TGDialogContext dialogContext) {
 		super(dialogContext);
 	}
