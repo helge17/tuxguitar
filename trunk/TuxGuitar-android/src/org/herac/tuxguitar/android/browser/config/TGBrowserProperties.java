@@ -21,6 +21,9 @@ public class TGBrowserProperties {
 	public static final String PROPERTY_COLLECTIONS = "browser-collections";
 	public static final String PROPERTY_DEFAULT_COLLECTION = "default-collection-index";
 	
+	public static final String COLLECTION_TYPE = "type";
+	public static final String COLLECTION_SETTINGS = "settings";
+	
 	private TGContext context;
 	private TGProperties properties;
 	
@@ -57,8 +60,8 @@ public class TGBrowserProperties {
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
 					
 					TGBrowserCollectionInfo collection = new TGBrowserCollectionInfo();
-					collection.setType(jsonObject.getString("type"));
-					collection.setSettings(jsonObject.getString("settings"));
+					collection.setType(jsonObject.getString(COLLECTION_TYPE));
+					collection.setSettings(jsonObject.getString(COLLECTION_SETTINGS));
 					collections.add(collection);
 				}
 			}
@@ -74,8 +77,8 @@ public class TGBrowserProperties {
 			JSONArray jsonArray = new JSONArray();
 			for(TGBrowserCollectionInfo collection : collections) {
 				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("type", collection.getType());
-				jsonObject.put("settings", collection.getSettings());
+				jsonObject.put(COLLECTION_TYPE, collection.getType());
+				jsonObject.put(COLLECTION_SETTINGS, collection.getSettings());
 				jsonArray.put(jsonObject);
 			}
 			
