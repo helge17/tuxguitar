@@ -39,9 +39,7 @@ import android.view.View;
 public class TGSongView extends View implements TGController {
 
 	public static final float EMPTY_SCALE = 0f;
-	public static final float MINIMUM_SCALE = 1.0f;
-	public static final float MAXIMUM_SCALE = 4.0f;
-
+	
 	private TGContext tgContext;
 	private TGResourceFactory tgResourceFactory;
 	private TGLayout tgLayout;
@@ -78,7 +76,7 @@ public class TGSongView extends View implements TGController {
 		this.tgResourceFactory = new TGResourceFactoryImpl();
 		this.tgSongViewBufferController = new TGSongViewBufferController(this);
 		this.tgLayout = new TGLayoutVertical(this, TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT);
-		this.tgLayout.loadStyles(2.5f);
+		this.tgLayout.loadStyles(this.getDefaultScale());
 		this.tgCaret = new TGCaret(this);
 		this.tgScroll = new TGScroll();
 
@@ -89,6 +87,18 @@ public class TGSongView extends View implements TGController {
 		TGSongViewEventListener listener = new TGSongViewEventListener(this);
 		TuxGuitar.getInstance(this.tgContext).getEditorManager().addRedrawListener(listener);
 		TuxGuitar.getInstance(this.tgContext).getEditorManager().addUpdateListener(listener);
+	}
+	
+	public float getDefaultScale() {
+		return this.getResources().getDisplayMetrics().density;
+	}
+	
+	public float getMinimumScale() {
+		return (this.getDefaultScale() / 2f);
+	}
+	
+	public float getMaximumScale() {
+		return (this.getDefaultScale() * 2f);
 	}
 	
 	public void resetCaret() {

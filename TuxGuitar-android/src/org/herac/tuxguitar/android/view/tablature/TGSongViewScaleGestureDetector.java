@@ -35,7 +35,7 @@ public class TGSongViewScaleGestureDetector implements ScaleGestureDetector.OnSc
 	
 	@Override
 	public boolean onScale(ScaleGestureDetector detector) {
-        this.scaleFactor = Math.max(1.0f, Math.min(this.scaleFactor * detector.getScaleFactor(), 5.0f));
+        this.scaleFactor = Math.max(this.songView.getMinimumScale(), Math.min(this.scaleFactor * detector.getScaleFactor(), this.songView.getMaximumScale()));
         this.previewScale();
 		return true;
 	}
