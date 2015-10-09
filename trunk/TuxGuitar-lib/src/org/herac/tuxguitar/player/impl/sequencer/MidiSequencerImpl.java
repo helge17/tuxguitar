@@ -151,7 +151,7 @@ public class MidiSequencerImpl implements MidiSequencer{
 		return "TuxGuitar Sequencer";
 	}
 	
-	private class MidiTimer extends Thread{
+	private class MidiTimer extends Thread {
 		
 		private static final int TIMER_DELAY = 15;
 		
