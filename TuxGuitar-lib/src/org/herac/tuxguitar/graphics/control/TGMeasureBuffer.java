@@ -3,6 +3,7 @@ package org.herac.tuxguitar.graphics.control;
 import org.herac.tuxguitar.graphics.TGColor;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.TGResourceFactory;
 
 public class TGMeasureBuffer {
 	
@@ -22,8 +23,8 @@ public class TGMeasureBuffer {
 		resourceBuffer.register(this.getRegistryKey());
 	}
 	
-	public TGPainter createBuffer(TGResourceBuffer resourceBuffer, TGPainter painter, float width, float height, TGColor background){
-		TGImage buffer = painter.createImage(width, height);
+	public TGPainter createBuffer(TGResourceBuffer resourceBuffer, TGResourceFactory resourceFactory, float width, float height, TGColor background){
+		TGImage buffer = resourceFactory.createImage(width, height);
 		this.width = buffer.getWidth();
 		this.height = buffer.getHeight();
 		
