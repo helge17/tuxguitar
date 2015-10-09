@@ -110,7 +110,7 @@ public class TGActionAdapterManager {
 	public TGUpdateListener getUpdatableActionListener() {
 		return updatableActionListener;
 	}
-	
+
 	public static TGActionAdapterManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGActionAdapterManager.class.getName(), new TGSingletonFactory<TGActionAdapterManager>() {
 			public TGActionAdapterManager createInstance(TGContext context) {

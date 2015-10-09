@@ -12,7 +12,7 @@ public class TGImageImpl implements TGImage{
 	private Bitmap handle;
 	
 	public TGImageImpl(float width, float height){
-		this.handle = Bitmap.createBitmap(Math.round(width), Math.round(height), Bitmap.Config.RGB_565);
+		this.handle = Bitmap.createBitmap(Math.round(width), Math.round(height), Bitmap.Config.ARGB_8888);
 	}
 	
 	public void dispose() {

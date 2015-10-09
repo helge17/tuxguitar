@@ -240,8 +240,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGGoNextTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGGoPreviousTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGGoToTrackAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		this.map(TGMoveTrackDownAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableMoveTrackDownController());
-		this.map(TGMoveTrackUpAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableMoveTrackUpController());
+		this.map(TGMoveTrackDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableMoveTrackDownController());
+		this.map(TGMoveTrackUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, new TGUndoableMoveTrackUpController());
 		this.map(TGRemoveTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateRemovedTrackController(), new TGUndoableRemoveTrackController());
 		this.map(TGSetTrackInfoAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL, new TGUndoableTrackInfoController());
 		this.map(TGSetTrackNameAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
