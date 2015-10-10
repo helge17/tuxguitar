@@ -11,7 +11,7 @@ public class TGSongViewStyles {
 	}
 	
 	public void configureStyles(TGLayoutStyles styles) {
-		styles.setBufferEnabled(true);
+		styles.setBufferEnabled(false);
 		
 		styles.setTrackSpacing(5);
 		styles.setFirstTrackSpacing(15);
