@@ -44,8 +44,9 @@ public class TGSongView extends View implements TGController {
 	private TGResourceFactory tgResourceFactory;
 	private TGLayout tgLayout;
 	private TGSongViewStyles tgSongStyles;
-	private TGSongViewGestureDetector tgSongViewGestureDetector;
-	private TGSongViewBufferController tgSongViewBufferController;
+	private TGSongViewGestureDetector tgGestureDetector;
+	private TGSongViewBufferController tgBufferController;
+	private TGSongViewLayoutPainter tgLayoutPainter;
 	private TGCaret tgCaret;
 	private TGScroll tgScroll;
 
@@ -71,10 +72,11 @@ public class TGSongView extends View implements TGController {
 	private void initializeContext(Context context) {
 		this.tgContext = ((TGApplication) context.getApplicationContext()).getContext();
 		this.tgContext.setAttribute(TGSongView.class.getName(), this);
-		this.tgSongViewGestureDetector = new TGSongViewGestureDetector(context, this);
+		this.tgGestureDetector = new TGSongViewGestureDetector(context, this);
 		this.tgSongStyles = new TGSongViewStyles();
 		this.tgResourceFactory = new TGResourceFactoryImpl();
-		this.tgSongViewBufferController = new TGSongViewBufferController(this);
+		this.tgBufferController = new TGSongViewBufferController(this);
+		this.tgLayoutPainter = new TGSongViewLayoutPainter(this);
 		this.tgLayout = new TGLayoutVertical(this, TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT);
 		this.tgLayout.loadStyles(this.getDefaultScale());
 		this.tgCaret = new TGCaret(this);
@@ -136,7 +138,8 @@ public class TGSongView extends View implements TGController {
 	}
 
 	public void updateSelection() {
-		this.tgSongViewBufferController.updateSelection();
+		this.tgBufferController.updateSelection();
+		this.tgLayoutPainter.refreshBuffer();
 	}
 	
 	public void configureStyles(TGLayoutStyles styles) {
@@ -192,7 +195,7 @@ public class TGSongView extends View implements TGController {
 		TuxGuitar tuxguitar = TuxGuitar.getInstance(this.tgContext);
 
 		if (this.getSong() != null) {
-			this.tgLayout.paint(painter, area, -this.getPaintableScrollX(), -this.getPaintableScrollY());
+			this.tgLayoutPainter.paint(painter, area, -this.getPaintableScrollX(), -this.getPaintableScrollY());
 			this.getCaret().paintCaret(this.getLayout(), painter);
 
 			this.updateScroll(area);
@@ -291,7 +294,7 @@ public class TGSongView extends View implements TGController {
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean success = this.tgSongViewGestureDetector.processTouchEvent(event);
+		boolean success = this.tgGestureDetector.processTouchEvent(event);
 		if (success) {
 			this.redraw();
 		}
@@ -310,6 +313,7 @@ public class TGSongView extends View implements TGController {
 		super.onDetachedFromWindow();
 		
 		this.recycleBuffer();
+		this.tgLayoutPainter.dispose();
 	}
 	
 	public TGPainter createPainter(Canvas canvas) {
@@ -353,7 +357,7 @@ public class TGSongView extends View implements TGController {
 	}
 
 	public TGResourceBuffer getResourceBuffer() {
-		return this.tgSongViewBufferController.getResourceBuffer();
+		return this.tgBufferController.getResourceBuffer();
 	}
 	
 	public TGLayout getLayout() {

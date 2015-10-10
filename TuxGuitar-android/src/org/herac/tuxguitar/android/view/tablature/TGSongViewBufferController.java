@@ -26,7 +26,6 @@ public class TGSongViewBufferController {
 	
 	public TGResourceBuffer getResourceBuffer() {
 		if( this.resourceBuffer == null ) {
-			System.out.println("new TGResourceBuffer()");
 			this.resourceBuffer = new TGResourceBuffer();
 		}
 		return this.resourceBuffer;
