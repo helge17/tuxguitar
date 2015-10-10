@@ -1,0 +1,3 @@
+com.sun.media.sound.WaveFloatFileReader
+com.sun.media.sound.WaveExtensibleFileReader
+com.sun.media.sound.SoftMidiAudioFileReader
