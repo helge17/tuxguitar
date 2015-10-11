@@ -674,7 +674,7 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.moveTo(x1, y1);
 			painter.lineTo(x2, y1);
 			painter.closePath();
-			painter.drawString(string,Math.round( x1 + (5.0f * scale) ),Math.round( y1 + (2.0f * scale) ));
+			painter.drawString(string, (x1 + (5.0f * scale)), (y1 + painter.getFMTopLine() + (4f * scale)));
 		}
 	}
 	

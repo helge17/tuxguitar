@@ -55,7 +55,7 @@
 	<shortcut key="108" mask="0" action="action.note.general.tied"/>
 	<shortcut key="16777232" mask="0" action="action.settings.configure"/>
 	<shortcut key="98" mask="4194304" action="action.gui.toggle-browser-dialog"/>
-	<shortcut key="16777225" mask="393216" action="action.track.add"/>
+	<shortcut key="16777225" mask="393216" action="action.track.add-new"/>
 	<shortcut key="16777217" mask="393216" action="action.track.go-previous"/>
 	<shortcut key="16777218" mask="393216" action="action.track.go-next"/>
 	<shortcut key="127" mask="393216" action="action.track.remove"/>

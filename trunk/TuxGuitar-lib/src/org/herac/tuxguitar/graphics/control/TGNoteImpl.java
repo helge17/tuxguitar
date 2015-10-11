@@ -55,6 +55,7 @@ public class TGNoteImpl extends TGNote {
 		TGSpacing ts = getMeasureImpl().getTs();
 		TGNoteEffect effect = getEffect();
 		
+		float scale = layout.getScale();
 		float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
 		float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
 		
@@ -78,47 +79,47 @@ public class TGNoteImpl extends TGNote {
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_HARMONIC_EFFEC ));
 			String key = new String();
-			key = effect.getHarmonic().isNatural()?TGEffectHarmonic.KEY_NATURAL:key;
-			key = effect.getHarmonic().isArtificial()?TGEffectHarmonic.KEY_ARTIFICIAL:key;
-			key = effect.getHarmonic().isTapped()?TGEffectHarmonic.KEY_TAPPED:key;
-			key = effect.getHarmonic().isPinch()?TGEffectHarmonic.KEY_PINCH:key;
-			key = effect.getHarmonic().isSemi()?TGEffectHarmonic.KEY_SEMI:key;
-			painter.drawString(key,x, y);
+			key = effect.getHarmonic().isNatural() ? TGEffectHarmonic.KEY_NATURAL : key;
+			key = effect.getHarmonic().isArtificial() ? TGEffectHarmonic.KEY_ARTIFICIAL : key;
+			key = effect.getHarmonic().isTapped() ? TGEffectHarmonic.KEY_TAPPED : key;
+			key = effect.getHarmonic().isPinch() ? TGEffectHarmonic.KEY_PINCH : key;
+			key = effect.getHarmonic().isSemi() ? TGEffectHarmonic.KEY_SEMI : key;
+			painter.drawString(key, x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isTapping()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TAPPING_EFFEC ));
-			painter.drawString("T",x, y);
+			painter.drawString("T", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isSlapping()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_SLAPPING_EFFEC ));
-			painter.drawString("S",x, y);
+			painter.drawString("S", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isPopping()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_POPPING_EFFEC ));
-			painter.drawString("P",x, y);
+			painter.drawString("P", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isPalmMute()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_PALM_MUTE_EFFEC ));
-			painter.drawString("P.M",x, y);
+			painter.drawString("P.M", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isLetRing()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_LET_RING_EFFEC ));
-			painter.drawString("L.R",x, y);
+			painter.drawString("L.R", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isVibrato()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_VIBRATO_EFFEC ));
-			paintVibrato(layout, painter,x,y);
+			paintVibrato(layout, painter, x, y);
 		}
 		if(effect.isTrill()){
 			float x = fromX + getPosX() + spacing;
 			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TRILL_EFFEC ));
-			paintTrill(layout, painter,x,y);
+			paintTrill(layout, painter, x, y);
 		}
 	}
 	
