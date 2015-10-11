@@ -275,20 +275,19 @@ public class TGSongManager {
 		return tgTrack;
 	}
 	
-	
 	public void addTrack(TGSong song, TGTrack trackToAdd){
 		this.orderTracks(song);
 		int addIndex = -1;
 		for(int i = 0;i < song.countTracks();i++){
 			TGTrack track = song.getTrack(i);
-			if(addIndex == -1 && track.getNumber() == trackToAdd.getNumber()){
+			if( addIndex == -1 && track.getNumber() == trackToAdd.getNumber() ){
 				addIndex = i;
 			}
-			if(addIndex >= 0){
+			if( addIndex >= 0 ){
 				track.setNumber(track.getNumber() + 1);
 			}
 		}
-		if(addIndex < 0){
+		if( addIndex < 0 ){
 			addIndex = song.countTracks();
 		}
 		song.addTrack(addIndex,trackToAdd);
