@@ -129,6 +129,7 @@ import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
 import org.herac.tuxguitar.editor.action.song.TGClearSongAction;
 import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
+import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGAddTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
@@ -183,6 +184,7 @@ public class TGActionInstaller {
 		
 		//track actions
 		installAction(new TGAddTrackAction(context));
+		installAction(new TGAddNewTrackAction(context));
 		installAction(new TGSetTrackMuteAction(context));
 		installAction(new TGSetTrackSoloAction(context));
 		installAction(new TGChangeTrackMuteAction(context));
