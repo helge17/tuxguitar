@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.herac.tuxguitar</groupId>
+		<artifactId>tuxguitar-pom</artifactId>
+		<version>1.3-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>tuxguitar-android-lib</artifactId>
+	<packaging>aar</packaging>
+	<name>${project.artifactId}</name>
+
+	<dependencies>
+
+		<!-- Project dependencies -->
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.1.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>appcompat-v7</artifactId>
+			<version>18.0.0</version>
+			<type>aar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>gridlayout-v7</artifactId>
+			<version>18.0.0</version>
+			<type>aar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-lib</artifactId>
+			<version>1.3-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-editor-utils</artifactId>
+			<version>1.3-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-gm-utils</artifactId>
+			<version>1.3-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>com.simpligility.maven.plugins</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>4.3.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<sdk>
+						<platform>15</platform>
+					</sdk>
+
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+					<nativeLibrariesDirectory>${project.basedir}/libs</nativeLibrariesDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>android-support</id>
+			<url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+		</repository>
+	</repositories>
+</project>
