@@ -32,6 +32,20 @@
 			<scope>provided</scope>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-ptb</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-gervill</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -61,6 +75,18 @@
 									<destFileName>tuxguitar-gtp.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-ptb</artifactId>
+									<destFileName>tuxguitar-ptb.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-android-gervill</artifactId>
+									<destFileName>tuxguitar-android-gervill.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
@@ -77,21 +103,20 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<target name="dex-libs">
-								<exec dir="${project.assets.directory}" executable="${project.dex.executable}"
-									failonerror="true">
+								<apply 
+									dir="${project.assets.directory}/plugins" 
+									dest="${project.assets.directory}/plugins"
+									executable="${project.dex.executable}" 
+									parallel="false" 
+									force="true">
 									<arg value="--dex" />
 									<arg value="--keep-classes" />
-									<arg value="--output=plugins/tuxguitar-compat.jar" />
-									<arg value="plugins/tuxguitar-compat.jar" />
-								</exec>
-
-								<exec dir="${project.assets.directory}" executable="${project.dex.executable}"
-									failonerror="true">
-									<arg value="--dex" />
-									<arg value="--keep-classes" />
-									<arg value="--output=plugins/tuxguitar-gtp.jar" />
-									<arg value="plugins/tuxguitar-gtp.jar" />
-								</exec>
+									<arg value="--core-library" />
+									<targetfile prefix="--output=" />
+									<srcfile/>
+									<fileset dir="${project.assets.directory}/plugins" includes="*.jar"/>
+									<mapper type="glob" from="*.jar" to="*.jar"/>
+								</apply>
 							</target>
 						</configuration>
 						<goals>

@@ -20,12 +20,15 @@
 	<modules>
 		<module>apk</module>
 		<module>apk-resources</module>
-		<module>../../TuxGuitar-android</module>
 		<module>../../TuxGuitar-lib</module>
 		<module>../../TuxGuitar-editor-utils</module>
 		<module>../../TuxGuitar-gm-utils</module>
 		<module>../../TuxGuitar-compat</module>
 		<module>../../TuxGuitar-gtp</module>
+		<module>../../TuxGuitar-ptb</module>
+		<module>../../TuxGuitar-android</module>
+		<module>../../TuxGuitar-android-gervill</module>
+		<module>../../TuxGuitar-android-gervill-soundbank</module>
 	</modules>
 	
 	<repositories>

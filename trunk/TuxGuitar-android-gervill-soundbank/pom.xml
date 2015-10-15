@@ -8,29 +8,15 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-ptb</artifactId>
+	<artifactId>tuxguitar-android-gervill-soundbank</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
 				<directory>share</directory>
 			</resource>
 		</resources>
 	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>tuxguitar-lib</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>tuxguitar-gm-utils</artifactId>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
 </project>
