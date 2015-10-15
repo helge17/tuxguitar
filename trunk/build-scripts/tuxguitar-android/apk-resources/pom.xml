@@ -14,7 +14,7 @@
 
 	<properties>
 		<project.assets.directory>${project.build.directory}/assets</project.assets.directory>
-		<project.dex.exec>dx</project.dex.exec>
+		<project.dex.executable>dx</project.dex.executable>
 	</properties>
 
 	<dependencies>
