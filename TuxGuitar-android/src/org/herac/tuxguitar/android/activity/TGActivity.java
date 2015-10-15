@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.android.activity;
 
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
 import org.herac.tuxguitar.android.application.TGApplication;

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;

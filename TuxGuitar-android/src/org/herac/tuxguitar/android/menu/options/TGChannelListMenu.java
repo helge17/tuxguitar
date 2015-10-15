@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.menu.options;
 
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.editor.action.channel.TGAddNewChannelAction;
 import org.herac.tuxguitar.util.TGContext;

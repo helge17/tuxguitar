@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.drawer.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 
 import android.view.View;
 import android.view.ViewGroup;

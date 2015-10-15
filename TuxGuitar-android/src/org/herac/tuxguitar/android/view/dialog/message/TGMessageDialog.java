@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.view.dialog.message;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 

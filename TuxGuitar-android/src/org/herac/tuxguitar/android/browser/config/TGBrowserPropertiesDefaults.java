@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.browser.config;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.browser.TGBrowserCollectionInfo;
 import org.herac.tuxguitar.android.browser.filesystem.TGBrowserFactoryImpl;
 import org.herac.tuxguitar.android.browser.filesystem.TGBrowserSettingsImpl;

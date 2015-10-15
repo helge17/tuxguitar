@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.view.dialog.repeat;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;

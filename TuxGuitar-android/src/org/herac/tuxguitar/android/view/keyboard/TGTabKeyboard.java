@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.android.view.keyboard;
 
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
-import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplication;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;

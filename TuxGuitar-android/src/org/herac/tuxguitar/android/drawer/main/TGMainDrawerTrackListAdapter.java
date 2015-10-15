@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.drawer.main;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.editor.TGEditorManager;
 import org.herac.tuxguitar.android.view.tablature.TGSongView;
 import org.herac.tuxguitar.document.TGDocumentManager;
