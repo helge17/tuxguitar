@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-android-build-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>1.3-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-android-build-apk-resources</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.assets.directory>${project.build.directory}/assets</project.assets.directory>
+		<project.dex.exec>dx</project.dex.exec>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-compat</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-gtp</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-libs</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-compat</artifactId>
+									<destFileName>tuxguitar-compat.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gtp</artifactId>
+									<destFileName>tuxguitar-gtp.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>dex-libs</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target name="dex-libs">
+								<exec dir="${project.assets.directory}" executable="${project.dex.executable}"
+									failonerror="true">
+									<arg value="--dex" />
+									<arg value="--keep-classes" />
+									<arg value="--output=plugins/tuxguitar-compat.jar" />
+									<arg value="plugins/tuxguitar-compat.jar" />
+								</exec>
+
+								<exec dir="${project.assets.directory}" executable="${project.dex.executable}"
+									failonerror="true">
+									<arg value="--dex" />
+									<arg value="--keep-classes" />
+									<arg value="--output=plugins/tuxguitar-gtp.jar" />
+									<arg value="plugins/tuxguitar-gtp.jar" />
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
