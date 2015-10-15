@@ -9,18 +9,17 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-android</artifactId>
+	<artifactId>tuxguitar-android-build-pom</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-android</project.finalName>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
 	</properties>
-
+	
 	<modules>
 		<module>apk</module>
+		<module>apk-resources</module>
 		<module>../../TuxGuitar-android</module>
 		<module>../../TuxGuitar-lib</module>
 		<module>../../TuxGuitar-editor-utils</module>
@@ -28,4 +27,11 @@
 		<module>../../TuxGuitar-compat</module>
 		<module>../../TuxGuitar-gtp</module>
 	</modules>
+	
+	<repositories>
+		<repository>
+			<id>android-support</id>
+			<url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+		</repository>
+	</repositories>
 </project>
