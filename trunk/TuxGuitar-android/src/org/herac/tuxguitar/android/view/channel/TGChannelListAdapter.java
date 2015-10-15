@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.view.channel;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.util.TGException;

@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
-import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplication;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.view.dialog.browser.collection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.R;
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 
 import android.content.Context;

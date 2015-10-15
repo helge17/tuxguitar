@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.TuxGuitar;
-import org.herac.tuxguitar.android.activity.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.dialog.bend.TGBendDialogController;
