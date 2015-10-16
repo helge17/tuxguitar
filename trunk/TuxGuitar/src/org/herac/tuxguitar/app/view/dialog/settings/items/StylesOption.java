@@ -21,7 +21,8 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class StylesOption extends Option{
+public class StylesOption extends Option {
+	
 	private static final int BUTTON_WIDTH = 200;
 	private static final int BUTTON_HEIGHT = 0;
 	
@@ -82,29 +83,19 @@ public class StylesOption extends Option{
 		composite.setLayoutData(getTabbedData());
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.default"));
-		this.defaultFontButton = new Button(composite, SWT.PUSH);
-		this.defaultFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.defaultFontButton,this.defaultFontData);
+		this.defaultFontButton = this.createFontButton(composite, this.defaultFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.note"));
-		this.noteFontButton = new Button(composite, SWT.PUSH);
-		this.noteFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.noteFontButton,this.noteFontData);
+		this.noteFontButton = this.createFontButton(composite, this.noteFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.lyric"));
-		this.lyricFontButton = new Button(composite, SWT.PUSH);
-		this.lyricFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.lyricFontButton,this.lyricFontData);
+		this.lyricFontButton = this.createFontButton(composite, this.lyricFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.text"));
-		this.textFontButton = new Button(composite, SWT.PUSH);
-		this.textFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.textFontButton,this.textFontData);
+		this.textFontButton = this.createFontButton(composite, this.textFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.time-signature"));
-		this.timeSignatureFontButton = new Button(composite, SWT.PUSH);
-		this.timeSignatureFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.timeSignatureFontButton,this.timeSignatureFontData);
+		this.timeSignatureFontButton = this.createFontButton(composite, this.timeSignatureFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.score-note"));
 		this.scoreNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
@@ -119,36 +110,26 @@ public class StylesOption extends Option{
 		this.linesColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
 		
 		//=================================================== PRINTER STYLES ===================================================//
-		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.styles.printer"));
+		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP, SWT.BOLD, 0, TuxGuitar.getProperty("settings.config.styles.printer"));
 		
 		composite = new Composite(getComposite(),SWT.NONE);
 		composite.setLayout(new GridLayout(2,false));
 		composite.setLayoutData(getTabbedData());
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.default"));
-		this.printerDefaultFontButton = new Button(composite, SWT.PUSH);
-		this.printerDefaultFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.printerDefaultFontButton,this.printerDefaultFontData);
+		this.printerDefaultFontButton = this.createFontButton(composite, this.printerDefaultFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.note"));
-		this.printerNoteFontButton = new Button(composite, SWT.PUSH);
-		this.printerNoteFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.printerNoteFontButton,this.printerNoteFontData);
+		this.printerNoteFontButton = this.createFontButton(composite, this.printerNoteFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.lyric"));
-		this.printerLyricFontButton = new Button(composite, SWT.PUSH);
-		this.printerLyricFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.printerLyricFontButton,this.printerLyricFontData);
+		this.printerLyricFontButton = this.createFontButton(composite, this.printerLyricFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.text"));
-		this.printerTextFontButton = new Button(composite, SWT.PUSH);
-		this.printerTextFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.printerTextFontButton,this.printerTextFontData);
+		this.printerTextFontButton = this.createFontButton(composite, this.printerTextFontData);
 		
 		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.time-signature"));
-		this.printerTSFontButton = new Button(composite, SWT.PUSH);
-		this.printerTSFontButton.setLayoutData(makeButtonData());
-		this.addFontButtonListeners(this.printerTSFontButton,this.printerTSFontData);
+		this.printerTSFontButton = this.createFontButton(composite, this.printerTSFontData);
 		
 		this.loadConfig();
 	}
@@ -247,6 +228,16 @@ public class StylesOption extends Option{
 		}).start();
 	}
 	
+	public Button createFontButton(Composite parent, FontData fontData) {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setLayoutData(makeButtonData());
+		button.setText("-");
+		
+		this.addFontButtonListeners(button, fontData);
+		
+		return button;
+	}
+	
 	public GridData makeButtonData(){
 		GridData data = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		data.minimumWidth = BUTTON_WIDTH;
@@ -293,6 +284,7 @@ public class StylesOption extends Option{
 	}
 	
 	private class ButtonColor {
+		
 		protected Button button;
 		protected Color color;
 		protected RGB value;
