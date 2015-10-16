@@ -114,10 +114,10 @@ public class TGSettingsEditor{
 		
 		initOptions(toolBar,option);
 		
-		Point optionSize = computeOptionsSize( 0 , toolBar.computeSize(SWT.DEFAULT,SWT.DEFAULT).y );
+		Point optionSize = computeOptionsSize(0 , toolBar.computeSize(SWT.DEFAULT,SWT.DEFAULT).y );
 		option.setLayoutData(new GridData(optionSize.x,optionSize.y));
 		
-		if(this.options.size() > 0){
+		if( this.options.size() > 0 ){
 			select((Option)this.options.get(0));
 		}
 	}
@@ -145,10 +145,10 @@ public class TGSettingsEditor{
 		while(it.hasNext()){
 			Option option = (Option)it.next();
 			Point size = option.computeSize();
-			if(size.x > width){
+			if( size.x > width ){
 				width = size.x;
 			}
-			if(size.y > height){
+			if( size.y > height ){
 				height = size.y;
 			}
 		}

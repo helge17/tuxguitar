@@ -75,7 +75,7 @@ public abstract class Option extends SelectionAdapter{
 	}
 	
 	protected Label showLabel(Composite parent,int labelStyle,int fontStyle,int fontScale,String text){
-		return showLabel(parent,SWT.FILL,SWT.CENTER, labelStyle, fontStyle, fontScale, text);
+		return showLabel(parent, SWT.FILL, SWT.CENTER, labelStyle, fontStyle, fontScale, text);
 	}
 	
 	protected Label showLabel(Composite parent,int hAlign,int vAlign,int labelStyle,int fontStyle,int fontScale,String text){
@@ -131,7 +131,7 @@ public abstract class Option extends SelectionAdapter{
 		return this.computeSize(SWT.DEFAULT,SWT.DEFAULT);
 	}
 	
-	protected Point computeSize(int wHint,int hHint){
+	protected Point computeSize(int wHint,int hHint) {
 		return this.group.computeSize(wHint, hHint);
 	}
 	
