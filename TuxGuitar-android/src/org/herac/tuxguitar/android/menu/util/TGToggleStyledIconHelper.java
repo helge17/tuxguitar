@@ -39,6 +39,7 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 	public void initialize(TGActivity activity, Menu menu) {
 		this.activity = activity;
 		this.menu = menu;
+		this.updateIcons();
 	}
 	
 	public void addHandler(TGToggleStyledIconHandler handler) {

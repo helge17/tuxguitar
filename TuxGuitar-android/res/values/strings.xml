@@ -9,6 +9,7 @@
 	<!-- =================================================================== -->
 	
 	<string name="global_error_message">An unexpected error has occurred</string>
+	<string name="global_exit_confirm_message">Are you sure you want to exit?</string>
 	
 	<string name="global_button_ok">OK</string>
 	<string name="global_button_cancel">Cancel</string>
