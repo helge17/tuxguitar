@@ -34,6 +34,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-gpx</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-ptb</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
@@ -73,6 +80,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gtp</artifactId>
 									<destFileName>tuxguitar-gtp.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gpx</artifactId>
+									<destFileName>tuxguitar-gpx.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

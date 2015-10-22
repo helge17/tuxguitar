@@ -25,6 +25,7 @@
 		<module>../../TuxGuitar-gm-utils</module>
 		<module>../../TuxGuitar-compat</module>
 		<module>../../TuxGuitar-gtp</module>
+		<module>../../TuxGuitar-gpx</module>
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-android</module>
 		<module>../../TuxGuitar-android-gervill</module>
