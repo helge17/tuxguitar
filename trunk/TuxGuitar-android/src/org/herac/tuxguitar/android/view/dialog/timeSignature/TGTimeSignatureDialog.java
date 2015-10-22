@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -19,7 +18,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -27,12 +25,12 @@ import android.widget.Spinner;
 
 public class TGTimeSignatureDialog extends TGDialog {
 
-	public TGTimeSignatureDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGTimeSignatureDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		View view = getActivity().getLayoutInflater().inflate(R.layout.view_time_signature_dialog, null);
 		
 		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);

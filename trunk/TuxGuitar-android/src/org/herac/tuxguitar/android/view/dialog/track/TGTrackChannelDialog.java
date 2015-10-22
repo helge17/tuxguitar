@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -21,7 +20,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -35,18 +33,17 @@ public class TGTrackChannelDialog extends TGDialog implements OnShowListener {
 	private TGTrack track;
 	private TGTrackChannelInstrumentsEditor instrumentsEditor;
 	
-	public TGTrackChannelDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
-		
-		this.instrumentsEditor = new TGTrackChannelInstrumentsEditor(this);
+	public TGTrackChannelDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		this.songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 		this.song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		this.track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		this.dialogView = getActivity().getLayoutInflater().inflate(R.layout.view_track_channel_dialog, null);
+		this.instrumentsEditor = new TGTrackChannelInstrumentsEditor(this);
 		
 		this.fillTrackInstrument();
 		

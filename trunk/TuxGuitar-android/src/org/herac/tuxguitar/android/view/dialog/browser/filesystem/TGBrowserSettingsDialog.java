@@ -7,7 +7,6 @@ import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.browser.filesystem.TGBrowserSettingsImpl;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
@@ -16,7 +15,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,12 +22,12 @@ import android.widget.TextView;
 
 public class TGBrowserSettingsDialog extends TGDialog {
 
-	public TGBrowserSettingsDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGBrowserSettingsDialog() {
+		super();
 	}
 
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_browser_settings_fs_dialog, null);
 
 		this.fillListView(view);

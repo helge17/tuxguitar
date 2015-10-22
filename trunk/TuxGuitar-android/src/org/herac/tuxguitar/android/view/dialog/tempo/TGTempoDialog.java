@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android.view.dialog.tempo;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
@@ -14,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
@@ -23,12 +21,12 @@ import android.widget.Spinner;
 
 public class TGTempoDialog extends TGDialog {
 
-	public TGTempoDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGTempoDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		View view = getActivity().getLayoutInflater().inflate(R.layout.view_tempo_dialog, null);
 		
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);

@@ -11,7 +11,6 @@ import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -19,7 +18,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -32,16 +30,15 @@ public class TGBrowserCollectionsDialog extends TGDialog {
 	private TGBrowserCollectionsEventListener eventListener;
 	private TGBrowserCollectionsActionHandler actionHandler;
 	
-	public TGBrowserCollectionsDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
-		
-		this.actionHandler = new TGBrowserCollectionsActionHandler(this);
-		this.eventListener = new TGBrowserCollectionsEventListener(this);
+	public TGBrowserCollectionsDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		this.view = getActivity().getLayoutInflater().inflate(R.layout.view_browser_collections_dialog, null);
+		this.actionHandler = new TGBrowserCollectionsActionHandler(this);
+		this.eventListener = new TGBrowserCollectionsEventListener(this);
 		
 		this.fillFactories();
 		this.fillAddButton();

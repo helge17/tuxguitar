@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android.view.dialog.tripletFeel;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
@@ -13,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
@@ -21,12 +19,12 @@ import android.widget.RadioGroup;
 
 public class TGTripletFeelDialog extends TGDialog {
 	
-	public TGTripletFeelDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGTripletFeelDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		View view = getActivity().getLayoutInflater().inflate(R.layout.view_triplet_feel_dialog, null);
 		
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);

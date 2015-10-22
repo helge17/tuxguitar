@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android.view.dialog.text;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGInsertTextAction;
@@ -13,18 +12,17 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 public class TGTextDialog extends TGDialog {
 
-	public TGTextDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGTextDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		final TGBeat beat = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_text_dialog, null);
 		
