@@ -2,22 +2,20 @@ package org.herac.tuxguitar.android.view.dialog.confirm;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 
 public class TGConfirmDialog extends TGDialog {
 	
-	public TGConfirmDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGConfirmDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.confirm_dlg_title);
 		builder.setMessage(this.getMessage());

@@ -2,9 +2,9 @@ package org.herac.tuxguitar.android.view.dialog.message;
 
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
+import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 
 public class TGMessageDialogController implements TGDialogController {
 
@@ -17,7 +17,6 @@ public class TGMessageDialogController implements TGDialogController {
 	
 	@Override
 	public void showDialog(Activity activity, TGDialogContext context) {
-        DialogFragment dialog = new TGMessageDialog(context);
-        dialog.show(activity.getFragmentManager(), "NoticeDialogFragment");
+        TGDialogUtil.showDialog(activity, new TGMessageDialog(), context);
 	}
 }

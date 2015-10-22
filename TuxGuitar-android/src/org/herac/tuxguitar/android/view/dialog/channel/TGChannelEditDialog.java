@@ -6,7 +6,6 @@ import java.util.List;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.editor.TGEditorManager;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -23,7 +22,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -41,22 +39,23 @@ import android.widget.Spinner;
 public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	private View view;
-	private TGChannel channel;
 	private TGEventListener eventListener;
 	
 	private ArrayAdapter<SelectableItem> instrumentPrograms;
 	private ArrayAdapter<SelectableItem> percussionPrograms;
 	
-	public TGChannelEditDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
-		
-		this.channel = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL);
-		this.eventListener = new TGChannelEditEventListener(this);
+	public TGChannelEditDialog() {
+		super();
+	}
+	
+	public TGChannel getChannel() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL);
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		this.view = getActivity().getLayoutInflater().inflate(R.layout.view_channel_edit_dialog, null);
+		this.eventListener = new TGChannelEditEventListener(this);
 		
 		this.fillProgramAdapters();
 		this.fillBanks();
@@ -105,10 +104,11 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	public void updateStates() {
 		TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 		TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		TGChannel channel = this.getChannel();
 		
-		boolean percussionChannel = this.channel.isPercussionChannel();
+		boolean percussionChannel = channel.isPercussionChannel();
 		boolean anyPercussionChannel = songManager.isAnyPercussionChannel(song);
-		boolean anyTrackConnectedToChannel = songManager.isAnyTrackConnectedToChannel(song, this.channel.getChannelId());
+		boolean anyTrackConnectedToChannel = songManager.isAnyTrackConnectedToChannel(song, channel.getChannelId());
 		
 		this.setViewEnabled(R.id.channel_edit_dlg_percussion_value, (!anyTrackConnectedToChannel && (!anyPercussionChannel || percussionChannel)));
 		this.setViewEnabled(R.id.channel_edit_dlg_bank_value, !percussionChannel);
@@ -165,11 +165,11 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillPrograms() {
-		updateSpinnerAdapter(R.id.channel_edit_dlg_program_value, (this.channel.isPercussionChannel() ? this.percussionPrograms : this.instrumentPrograms));
+		updateSpinnerAdapter(R.id.channel_edit_dlg_program_value, (this.getChannel().isPercussionChannel() ? this.percussionPrograms : this.instrumentPrograms));
 	}
 	
 	public void fillProgramValue() {
-		updateSpinnerValue(R.id.channel_edit_dlg_program_value, Short.valueOf(this.channel.getProgram()));
+		updateSpinnerValue(R.id.channel_edit_dlg_program_value, Short.valueOf(this.getChannel().getProgram()));
 	}
 	
 	public short findSelectedProgram() {
@@ -191,7 +191,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillBankValue() {
-		updateSpinnerValue(R.id.channel_edit_dlg_bank_value, Short.valueOf(this.channel.getBank()));
+		updateSpinnerValue(R.id.channel_edit_dlg_bank_value, Short.valueOf(this.getChannel().getBank()));
 	}
 	
 	public short findSelectedBank() {
@@ -200,7 +200,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillNameValue() {
-		this.setTextFieldValue(R.id.channel_edit_dlg_name_value, this.channel.getName());
+		this.setTextFieldValue(R.id.channel_edit_dlg_name_value, this.getChannel().getName());
 	}
 	
 	public String findNameValue() {
@@ -208,7 +208,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillPercussionValue() {
-		this.setCheckBoxValue(R.id.channel_edit_dlg_percussion_value, this.channel.isPercussionChannel());
+		this.setCheckBoxValue(R.id.channel_edit_dlg_percussion_value, this.getChannel().isPercussionChannel());
 	}
 	
 	public Boolean findPercussionValue() {
@@ -216,27 +216,27 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillVolumeValue() {
-		this.setSeekBarValue(R.id.channel_edit_dlg_volume_value, Integer.valueOf(this.channel.getVolume()));
+		this.setSeekBarValue(R.id.channel_edit_dlg_volume_value, Integer.valueOf(this.getChannel().getVolume()));
 	}
 	
 	public void fillBalanceValue() {
-		this.setSeekBarValue(R.id.channel_edit_dlg_balance_value, Integer.valueOf(this.channel.getBalance()));
+		this.setSeekBarValue(R.id.channel_edit_dlg_balance_value, Integer.valueOf(this.getChannel().getBalance()));
 	}
 	
 	public void fillReverbValue() {
-		this.setSeekBarValue(R.id.channel_edit_dlg_reverb_value, Integer.valueOf(this.channel.getReverb()));
+		this.setSeekBarValue(R.id.channel_edit_dlg_reverb_value, Integer.valueOf(this.getChannel().getReverb()));
 	}
 	
 	public void fillChorusValue() {
-		this.setSeekBarValue(R.id.channel_edit_dlg_chorus_value, Integer.valueOf(this.channel.getChorus()));
+		this.setSeekBarValue(R.id.channel_edit_dlg_chorus_value, Integer.valueOf(this.getChannel().getChorus()));
 	}
 	
 	public void fillPhaserValue() {
-		this.setSeekBarValue(R.id.channel_edit_dlg_phaser_value, Integer.valueOf(this.channel.getPhaser()));
+		this.setSeekBarValue(R.id.channel_edit_dlg_phaser_value, Integer.valueOf(this.getChannel().getPhaser()));
 	}
 	
 	public void fillTremoloValue() {
-		this.setSeekBarValue(R.id.channel_edit_dlg_tremolo_value, Integer.valueOf(this.channel.getTremolo()));
+		this.setSeekBarValue(R.id.channel_edit_dlg_tremolo_value, Integer.valueOf(this.getChannel().getTremolo()));
 	}
 	
 	public void setViewEnabled(int id, boolean enabled) {
@@ -306,7 +306,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	public TGActionProcessor createUpdateChannelAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGUpdateChannelAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.getChannel());
 		return tgActionProcessor;
 	}
 	

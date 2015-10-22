@@ -2,22 +2,20 @@ package org.herac.tuxguitar.android.view.dialog.message;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 
 public class TGMessageDialog extends TGDialog {
 	
-	public TGMessageDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGMessageDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		String title = this.getAttribute(TGMessageDialogController.ATTRIBUTE_TITLE);
 		String message = this.getAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE);
 		

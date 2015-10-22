@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android.view.dialog.keySignature;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.util.SelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -14,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -22,12 +20,12 @@ import android.widget.Spinner;
 
 public class TGKeySignatureDialog extends TGDialog {
 
-	public TGKeySignatureDialog(TGDialogContext dialogContext) {
-		super(dialogContext);
+	public TGKeySignatureDialog() {
+		super();
 	}
 	
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog() {
 		View view = getActivity().getLayoutInflater().inflate(R.layout.view_key_signature_dialog, null);
 		
 		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
