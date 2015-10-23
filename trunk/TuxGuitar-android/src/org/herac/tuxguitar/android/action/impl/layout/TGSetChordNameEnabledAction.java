@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.action.impl.layout;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -17,7 +17,7 @@ public class TGSetChordNameEnabledAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context) {
-		TGLayout tgLayout = TGSongView.getInstance(getContext()).getLayout();
+		TGLayout tgLayout = TGSongViewController.getInstance(getContext()).getLayout();
 		tgLayout.setStyle((tgLayout.getStyle() ^ TGLayout.DISPLAY_CHORD_NAME));
 	}
 }

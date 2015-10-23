@@ -2,6 +2,7 @@ package org.herac.tuxguitar.android.view.tablature;
 
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScalePreviewAction;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 import android.content.Context;
@@ -29,7 +30,7 @@ public class TGSongViewScaleGestureDetector implements ScaleGestureDetector.OnSc
 	
 	@Override
 	public boolean onScaleBegin(ScaleGestureDetector detector) {
-		this.scaleFactor = this.songView.getLayout().getScale();
+		this.scaleFactor = this.songView.getController().getLayout().getScale();
 		return true;
 	}
 	
@@ -46,13 +47,13 @@ public class TGSongViewScaleGestureDetector implements ScaleGestureDetector.OnSc
 	}
 	
 	public void previewScale() {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.songView.getTGContext(), TGSetLayoutScalePreviewAction.NAME);
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGSetLayoutScalePreviewAction.NAME);
 		tgActionProcessor.setAttribute(TGSetLayoutScalePreviewAction.ATTRIBUTE_SCALE, this.scaleFactor);
 		tgActionProcessor.processOnNewThread();
 	}
 	
 	public void applyScale() {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.songView.getTGContext(), TGSetLayoutScaleAction.NAME);
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGSetLayoutScaleAction.NAME);
 		tgActionProcessor.setAttribute(TGSetLayoutScaleAction.ATTRIBUTE_SCALE, this.scaleFactor);
 		tgActionProcessor.processOnNewThread();
 	}

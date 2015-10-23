@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.action.listener.undoable;
 
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
 import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
 import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
@@ -77,7 +77,7 @@ public class TGUndoableCaretState extends TGUndoableEditBase {
 	}
 	
 	private TGCaret getCaret(){
-		return TGSongView.getInstance(this.getContext()).getCaret();
+		return TGSongViewController.getInstance(this.getContext()).getCaret();
 	}
 	
 	private static class SelectionState {

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.action.listener.cache.controller;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -28,7 +28,7 @@ public class TGUpdateAddedMeasureController extends TGUpdateItemsController {
 		this.findUpdateBuffer(context).doPostUpdate(new Runnable() {
 			public void run() {
 				long start = tgSongManager.getMeasureHeader(tgSong, number.intValue()).getStart();
-				TGCaret tgCaret = TGSongView.getInstance(context).getCaret();
+				TGCaret tgCaret = TGSongViewController.getInstance(context).getCaret();
 				tgCaret.update(tgCaret.getTrack().getNumber(), start, tgCaret.getStringNumber());
 			}
 		});

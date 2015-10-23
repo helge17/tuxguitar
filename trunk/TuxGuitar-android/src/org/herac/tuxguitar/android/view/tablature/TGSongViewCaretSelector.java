@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.view.tablature;
 import java.util.Iterator;
 
 import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAction;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
@@ -31,7 +32,7 @@ public class TGSongViewCaretSelector {
 					if (beat != null) {
 						TGString string = findSelectedString(measure, y);
 						if( string == null ){
-							string = this.songView.getCaret().getSelectedString();
+							string = this.songView.getController().getCaret().getSelectedString();
 						}
 						
 						this.callMoveTo(track, measure, beat, string);
@@ -45,10 +46,10 @@ public class TGSongViewCaretSelector {
 	}
 	
 	private TGTrackImpl findSelectedTrack(float y){
-		TGLayout layout = this.songView.getLayout();
+		TGLayout layout = this.songView.getController().getLayout();
 		int number = layout.getTrackNumberAt(y);
 		if(number >= 0){
-			return (TGTrackImpl)layout.getSongManager().getTrack(this.songView.getSong(), number);
+			return (TGTrackImpl)layout.getSongManager().getTrack(this.songView.getController().getSong(), number);
 		}
 		return null;
 	}
@@ -61,7 +62,7 @@ public class TGSongViewCaretSelector {
 		while(it.hasNext()){
 			TGMeasureImpl m = (TGMeasureImpl)it.next();
 			if(!m.isOutOfBounds() && m.getTs() != null){
-				boolean isAtX = (x >= m.getPosX() && x <= m.getPosX() + m.getWidth(this.songView.getLayout()) + m.getSpacing());
+				boolean isAtX = (x >= m.getPosX() && x <= m.getPosX() + m.getWidth(this.songView.getController().getLayout()) + m.getSpacing());
 				if(isAtX){
 					float measureHeight = m.getTs().getSize();
 					float distanceY = Math.min(Math.abs(y - (m.getPosY())),Math.abs(y - ( m.getPosY() + measureHeight - 10)));
@@ -76,8 +77,8 @@ public class TGSongViewCaretSelector {
 	}
 	
 	private TGBeatImpl findSelectedBeat(TGMeasureImpl measure, float x){
-		TGLayout layout = this.songView.getLayout();
-		int voice = this.songView.getCaret().getVoice();
+		TGLayout layout = this.songView.getController().getLayout();
+		int voice = this.songView.getController().getCaret().getVoice();
 		float posX = measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX();
 		float bestDiff = -1;
 		TGBeatImpl bestBeat = null;
@@ -100,7 +101,7 @@ public class TGSongViewCaretSelector {
 	
 	private TGString findSelectedString(TGMeasureImpl measure, float y) {
 		TGString string = null;
-		float stringSpacing = this.songView.getLayout().getStringSpacing();
+		float stringSpacing = this.songView.getController().getLayout().getStringSpacing();
 		float minorDistance = 0;
 		float firstStringY = measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 		
@@ -118,7 +119,7 @@ public class TGSongViewCaretSelector {
 	}
 	
 	private void callMoveTo(TGTrackImpl track, TGMeasureImpl measure, TGBeat beat, TGString string) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.songView.getTGContext(), TGMoveToAction.NAME);
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGMoveToAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);

@@ -6,7 +6,7 @@ import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -39,7 +39,7 @@ public class TGDurationMenu extends TGContextMenuBase {
 	
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
-		TGCaret caret = TGSongView.getInstance(context).getCaret();
+		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGDuration duration = caret.getDuration();
 		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
 

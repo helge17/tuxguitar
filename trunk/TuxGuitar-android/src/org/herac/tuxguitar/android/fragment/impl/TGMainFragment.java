@@ -1,11 +1,9 @@
-package org.herac.tuxguitar.android.fragment;
+package org.herac.tuxguitar.android.fragment.impl;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.fragment.TGCachedFragment;
 import org.herac.tuxguitar.android.menu.options.TGMainMenu;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +19,7 @@ public class TGMainFragment extends TGCachedFragment {
 	
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
+		this.attachInstance();
 		this.setHasOptionsMenu(true);
 	}
 	
@@ -64,11 +63,7 @@ public class TGMainFragment extends TGCachedFragment {
 		return this.findChildViewById(R.id.main_body);
 	}
 	
-	public static TGMainFragment getInstance(TGContext context) {
-		return TGSingletonUtil.getInstance(context, TGMainFragment.class.getName(), new TGSingletonFactory<TGMainFragment>() {
-			public TGMainFragment createInstance(TGContext context) {
-				return new TGMainFragment();
-			}
-		});
+	public void attachInstance() {
+		TGMainFragmentController.getInstance(this.findContext()).attachInstance(this);
 	}
 }

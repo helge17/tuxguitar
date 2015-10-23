@@ -6,7 +6,7 @@ import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledActio
 import org.herac.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -27,7 +27,7 @@ public class TGViewMenu extends TGContextMenuBase {
 	
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
-		TGLayout layout = TGSongView.getInstance(context).getLayout();
+		TGLayout layout = TGSongViewController.getInstance(context).getLayout();
 		int style = layout.getStyle();
 		
 		this.initializeItem(menu, R.id.menu_view_layout_show_score, this.createActionProcessor(TGSetScoreEnabledAction.NAME), true, (style & TGLayout.DISPLAY_SCORE) != 0);

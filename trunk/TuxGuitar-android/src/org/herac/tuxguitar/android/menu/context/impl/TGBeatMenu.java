@@ -7,7 +7,7 @@ import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
 import org.herac.tuxguitar.android.view.dialog.text.TGTextDialogController;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
@@ -42,7 +42,7 @@ public class TGBeatMenu extends TGContextMenuBase {
 	
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
-		TGCaret caret = TGSongView.getInstance(context).getCaret();
+		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();
 		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();

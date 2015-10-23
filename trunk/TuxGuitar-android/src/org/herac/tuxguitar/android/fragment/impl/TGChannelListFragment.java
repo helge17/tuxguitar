@@ -1,11 +1,9 @@
-package org.herac.tuxguitar.android.fragment;
+package org.herac.tuxguitar.android.fragment.impl;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.fragment.TGCachedFragment;
 import org.herac.tuxguitar.android.menu.options.TGChannelListMenu;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +17,7 @@ public class TGChannelListFragment extends TGCachedFragment {
 	
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
+		this.attachInstance();
 		this.setHasOptionsMenu(true);
 	}
 	
@@ -30,11 +29,7 @@ public class TGChannelListFragment extends TGCachedFragment {
 		TGChannelListMenu.getInstance(this.findContext()).initialize(activity, menu);
 	}
 	
-	public static TGChannelListFragment getInstance(TGContext context) {
-		return TGSingletonUtil.getInstance(context, TGChannelListFragment.class.getName(), new TGSingletonFactory<TGChannelListFragment>() {
-			public TGChannelListFragment createInstance(TGContext context) {
-				return new TGChannelListFragment();
-			}
-		});
+	public void attachInstance() {
+		TGChannelListFragmentController.getInstance(this.findContext()).attachInstance(this);
 	}
 }

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.android.view.dialog.harmonic.TGHarmonicDialogControll
 import org.herac.tuxguitar.android.view.dialog.tremoloBar.TGTremoloBarDialogController;
 import org.herac.tuxguitar.android.view.dialog.tremoloPicking.TGTremoloPickingDialogController;
 import org.herac.tuxguitar.android.view.dialog.trill.TGTrillDialogController;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
@@ -45,7 +45,7 @@ public class TGEffectMenu extends TGContextMenuBase {
 	
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
-		TGNote note = TGSongView.getInstance(context).getCaret().getSelectedNote();
+		TGNote note = TGSongViewController.getInstance(context).getCaret().getSelectedNote();
 		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
 		
 		this.initializeItem(menu, R.id.menu_effect_vibrato, this.createActionProcessor(TGChangeVibratoNoteAction.NAME), !running && note != null);

@@ -6,7 +6,7 @@ import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -30,7 +30,7 @@ public class TGVelocityMenu extends TGContextMenuBase {
 	
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
-		TGCaret caret = TGSongView.getInstance(context).getCaret();
+		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();
 		int selection = ((note != null) ? note.getVelocity() : caret.getVelocity());
 		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();

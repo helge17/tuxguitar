@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.action.listener.cache.controller;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -30,7 +30,7 @@ public class TGUpdateRemovedMeasureController extends TGUpdateItemsController {
 			this.findUpdateBuffer(context).doPostUpdate(new Runnable() {
 				public void run() {
 					int measureCount = tgSong.countMeasureHeaders();
-					TGCaret tgCaret = TGSongView.getInstance(context).getCaret();
+					TGCaret tgCaret = TGSongViewController.getInstance(context).getCaret();
 					if( tgCaret.getMeasure().getNumber() > measureCount ){
 						TGTrack track = tgSongManager.getTrack(tgSong, tgCaret.getTrack().getNumber());
 						TGMeasure measure = tgSongManager.getTrackManager().getMeasure(track, measureCount);

@@ -9,6 +9,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplication;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGDurationMenu;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
@@ -26,12 +27,15 @@ public class TGTabKeyboard extends FrameLayout {
 
 	public TGTabKeyboard(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
-		this.registerInstance();
 	}
 
 	public void onFinishInflate() {
+		this.attachView();
 		this.addListeners();
+	}
+	
+	public void attachView() {
+		TGTabKeyboardController.getInstance(TGApplicationUtil.findContext(this)).setView(this);
 	}
 	
 	public void addListeners() {
@@ -67,10 +71,6 @@ public class TGTabKeyboard extends FrameLayout {
 		return tgActionProcessor;
 	}
 	
-	public void registerInstance() {
-		this.findContext().setAttribute(TGTabKeyboard.class.getName(), this);
-	}
-	
 	public void toggleVisibility() {
 		this.setVisibility(this.getVisibility() == VISIBLE ? GONE : VISIBLE);
 	}
@@ -81,9 +81,5 @@ public class TGTabKeyboard extends FrameLayout {
 	
 	private TGContext findContext() {
 		return ((TGApplication)getContext().getApplicationContext()).getContext();
-	}
-	
-	public static TGTabKeyboard getInstance(TGContext context) {
-		return (TGTabKeyboard) context.getAttribute(TGTabKeyboard.class.getName());
 	}
 }

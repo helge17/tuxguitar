@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.action.impl.layout;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSetLayoutScaleAction extends TGActionBase{
@@ -18,6 +18,6 @@ public class TGSetLayoutScaleAction extends TGActionBase{
 	protected void processAction(TGActionContext context) {
 		Float scale = ((Float) context.getAttribute(ATTRIBUTE_SCALE));
 		
-		TGSongView.getInstance(getContext()).scale(scale.floatValue());
+		TGSongViewController.getInstance(getContext()).scale(scale.floatValue());
 	}
 }

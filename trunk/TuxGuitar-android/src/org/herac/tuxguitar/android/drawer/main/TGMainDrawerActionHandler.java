@@ -9,8 +9,8 @@ import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.android.fragment.TGChannelListFragment;
-import org.herac.tuxguitar.android.fragment.TGFragment;
+import org.herac.tuxguitar.android.fragment.TGFragmentController;
+import org.herac.tuxguitar.android.fragment.impl.TGChannelListFragmentController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.info.TGSongInfoDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -57,9 +57,9 @@ public class TGMainDrawerActionHandler {
 		return this.createBrowserAction(TGBrowserSaveCurrentElementAction.NAME);
 	}
 	
-	public TGActionProcessorListener createFragmentAction(TGFragment fragment) {
+	public TGActionProcessorListener createFragmentAction(TGFragmentController<?> controller) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenFragmentAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_FRAGMENT, fragment);
+		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_CONTROLLER, controller);
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_ACTIVITY, this.mainDrawer.findActivity());
 		return tgActionProcessor;
 	}
@@ -72,7 +72,7 @@ public class TGMainDrawerActionHandler {
 	}
 	
 	public TGActionProcessorListener createOpenInstrumentsAction() {
-		return this.createFragmentAction(TGChannelListFragment.getInstance(this.mainDrawer.findContext()));
+		return this.createFragmentAction(TGChannelListFragmentController.getInstance(this.mainDrawer.findContext()));
 	}
 	
 	public TGActionProcessorListener createOpenInfoAction() {

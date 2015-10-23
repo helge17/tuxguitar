@@ -8,9 +8,9 @@ import org.herac.tuxguitar.event.TGEventListener;
 
 public class TGSongViewEventListener implements TGEventListener {
 	
-	private TGSongView songView;
+	private TGSongViewController songView;
 	
-	public TGSongViewEventListener(TGSongView songView) {
+	public TGSongViewEventListener(TGSongViewController songView) {
 		this.songView = songView;
 	}
 	

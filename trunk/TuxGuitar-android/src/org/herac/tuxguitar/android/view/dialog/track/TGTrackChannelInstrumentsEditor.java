@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.view.dialog.track;
 
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
-import org.herac.tuxguitar.android.fragment.TGChannelListFragment;
+import org.herac.tuxguitar.android.fragment.impl.TGChannelListFragmentController;
 import org.herac.tuxguitar.android.navigation.TGNavigationEvent;
 import org.herac.tuxguitar.android.navigation.TGNavigationFragment;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -31,7 +31,7 @@ public class TGTrackChannelInstrumentsEditor implements TGEventListener {
 	
 	public void openInstrumentsFragment() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.dialog.findContext(), TGOpenFragmentAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_FRAGMENT, TGChannelListFragment.getInstance(this.dialog.findContext()));
+		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_CONTROLLER, TGChannelListFragmentController.getInstance(this.dialog.findContext()));
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_ACTIVITY, this.dialog.findActivity());
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_TAG_ID, this.tagId);
 		tgActionProcessor.processOnNewThread();

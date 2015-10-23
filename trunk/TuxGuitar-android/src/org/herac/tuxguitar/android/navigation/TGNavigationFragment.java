@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.android.navigation;
 
-import org.herac.tuxguitar.android.fragment.TGFragment;
+import org.herac.tuxguitar.android.fragment.TGFragmentController;
 
 public class TGNavigationFragment {
 	
 	private String tagId;
-	private TGFragment fragment;
+	private TGFragmentController<?> controller;
 	
 	public TGNavigationFragment() {
 		super();
@@ -19,20 +19,20 @@ public class TGNavigationFragment {
 		this.tagId = tagId;
 	}
 
-	public TGFragment getFragment() {
-		return fragment;
+	public TGFragmentController<?> getController() {
+		return controller;
 	}
 
-	public void setFragment(TGFragment fragment) {
-		this.fragment = fragment;
+	public void setController(TGFragmentController<?> controller) {
+		this.controller = controller;
 	}
-	
+
 	public int hashCode() {
 		if( this.getTagId() != null ) {
 			return (TGNavigationFragment.class.getName() + "-" + this.getTagId().hashCode()).hashCode();
 		}
-		if( this.getFragment() != null ) {
-			return (TGNavigationFragment.class.getName() + "-fr-" + this.getFragment().hashCode()).hashCode();
+		if( this.getController() != null ) {
+			return (TGNavigationFragment.class.getName() + "-fr-" + this.getController().hashCode()).hashCode();
 		}
 		return super.hashCode();
 	}

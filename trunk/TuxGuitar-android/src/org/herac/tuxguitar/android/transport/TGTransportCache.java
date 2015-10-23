@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.transport;
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.util.MidiTickUtil;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -55,7 +55,7 @@ public class TGTransportCache {
 			
 			TGSongManager manager = tuxguitar.getSongManager();
 			if( this.isPlaying() ){
-				TGCaret caret = TGSongView.getInstance(this.context).getCaret();
+				TGCaret caret = TGSongViewController.getInstance(this.context).getCaret();
 				TGTrack track = caret.getTrack();
 				
 				long tick = tuxguitar.getPlayer().getTickPosition();

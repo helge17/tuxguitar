@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.transport;
 
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.util.MidiTickUtil;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
@@ -66,7 +66,7 @@ public class TGTransport {
 	}
 	
 	public void gotoCaretPosition() {
-		gotoMeasure(TGSongView.getInstance(this.context).getCaret().getMeasure().getHeader(), false);
+		gotoMeasure(TGSongViewController.getInstance(this.context).getCaret().getMeasure().getHeader(), false);
 	}
 	
 	public void gotoMeasure(TGMeasureHeader header, boolean moveCaret){
@@ -80,7 +80,7 @@ public class TGTransport {
 			if( playingMeasure == null || playingMeasure.getHeader().getNumber() != header.getNumber() ){
 				tuxguitar.getPlayer().setTickPosition(MidiTickUtil.getTick(this.context, header.getStart()));
 				if( moveCaret ){
-					TGSongView.getInstance(this.context).getCaret().goToTickPosition();
+					TGSongViewController.getInstance(this.context).getCaret().goToTickPosition();
 					tuxguitar.updateCache(true);
 				}
 			}
@@ -96,7 +96,7 @@ public class TGTransport {
 		if( header != null ){
 			player.setTickPosition(MidiTickUtil.getTick(this.context, header.getStart()));
 		}
-		TGSongView.getInstance(this.context).getCaret().goToTickPosition();
+		TGSongViewController.getInstance(this.context).getCaret().goToTickPosition();
 		
 		tuxguitar.unlock(false);
 		tuxguitar.updateCache(true);
