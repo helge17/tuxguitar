@@ -9,7 +9,7 @@ import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;
 import org.herac.tuxguitar.android.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.android.transport.TGTransportListener;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -51,7 +51,7 @@ public class TuxGuitar {
 	
 	public void destroy() {
 		MidiPlayer.getInstance(this.context).close();
-		TGSongView.getInstance(this.context).dispose();
+		TGSongViewController.getInstance(this.context).dispose();
 		
 		this.disconnectPlugins();
 		this.context.clear();

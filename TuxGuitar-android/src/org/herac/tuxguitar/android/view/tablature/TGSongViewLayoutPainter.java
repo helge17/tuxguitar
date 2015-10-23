@@ -7,12 +7,12 @@ import org.herac.tuxguitar.graphics.TGRectangle;
 
 public class TGSongViewLayoutPainter {
 	
-	private TGSongView controller;
+	private TGSongViewController controller;
 	private TGImage buffer;
 	private TGPoint point;
 	private boolean refreshBuffer;
 	
-	public TGSongViewLayoutPainter(TGSongView controller) {
+	public TGSongViewLayoutPainter(TGSongViewController controller) {
 		this.controller = controller;
 	}
 	

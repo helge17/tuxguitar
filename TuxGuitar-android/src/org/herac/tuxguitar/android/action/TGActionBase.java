@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.action;
 
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.util.TGContext;
 
 public abstract class TGActionBase extends org.herac.tuxguitar.editor.action.TGActionBase {
@@ -9,7 +9,7 @@ public abstract class TGActionBase extends org.herac.tuxguitar.editor.action.TGA
 		super(context, name);
 	}
 	
-	public TGSongView getEditor() {
-		return TGSongView.getInstance(this.getContext());
+	public TGSongViewController getEditor() {
+		return TGSongViewController.getInstance(this.getContext());
 	}
 }

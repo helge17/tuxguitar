@@ -21,7 +21,7 @@ public class TGDrawerEventListener implements TGEventListener {
 	}
 	
 	public void processNavigationEvent(TGEvent event) {
-		this.drawerManager.onOpenFragment(((TGNavigationFragment) event.getAttribute(TGNavigationEvent.PROPERTY_LOADED_FRAGMENT)).getFragment());
+		this.drawerManager.onOpenFragment(((TGNavigationFragment) event.getAttribute(TGNavigationEvent.PROPERTY_LOADED_FRAGMENT)).getController().getFragment());
 	}
 	
 	public void processEvent(final TGEvent event) {

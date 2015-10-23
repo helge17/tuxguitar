@@ -8,10 +8,10 @@ public class TGNavigationEvent extends TGEvent {
 	public static final String PROPERTY_LOADED_FRAGMENT = "loadedFragment";
 	public static final String PROPERTY_BACK_FROM = "backFrom";
 	
-	public TGNavigationEvent(TGNavigationFragment fragment, TGNavigationFragment backFrom) {
+	public TGNavigationEvent(TGNavigationFragment nf, TGNavigationFragment backFrom) {
 		super(EVENT_TYPE);
 		
-		this.setAttribute(PROPERTY_LOADED_FRAGMENT, fragment);
+		this.setAttribute(PROPERTY_LOADED_FRAGMENT, nf);
 		this.setAttribute(PROPERTY_BACK_FROM, backFrom);
 	}
 }

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.drawer.main;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.editor.TGEditorManager;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -60,7 +60,7 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 	}
 	
 	public void updateSelection() {
-		TGTrack track = TGSongView.getInstance(getMainDrawer().findContext()).getCaret().getTrack();
+		TGTrack track = TGSongViewController.getInstance(getMainDrawer().findContext()).getCaret().getTrack();
 		if(!this.isSelected(track)) {
 			this.updateTracks();
 		}

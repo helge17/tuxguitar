@@ -7,7 +7,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGFragment;
+import org.herac.tuxguitar.android.fragment.TGFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGBeatMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGCompositionMenu;
@@ -95,9 +95,9 @@ public class TGMainMenu {
 		return new TGActionProcessorListener(getContext(), actionId);
 	}
 	
-	public TGActionProcessorListener createFragmentActionProcessor(TGFragment fragment) {
+	public TGActionProcessorListener createFragmentActionProcessor(TGFragmentController<?> controller) {
 		TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(getContext(), TGOpenFragmentAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_FRAGMENT, fragment);
+		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_CONTROLLER, controller);
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_ACTIVITY, getActivity());
 		return tgActionProcessor;
 	}

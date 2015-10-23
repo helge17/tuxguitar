@@ -8,7 +8,7 @@ import org.herac.tuxguitar.android.view.dialog.track.TGTrackChannelDialogControl
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackNameDialogController;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackTuningDialogController;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongView;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
@@ -36,7 +36,7 @@ public class TGTrackMenu extends TGContextMenuBase {
 	
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
-		TGCaret caret = TGSongView.getInstance(context).getCaret();
+		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGTrack track = caret.getTrack();
 		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
 		

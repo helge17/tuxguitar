@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.action.impl.gui;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGFragment;
+import org.herac.tuxguitar.android.fragment.TGFragmentController;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenFragmentAction extends TGActionBase{
@@ -11,7 +11,7 @@ public class TGOpenFragmentAction extends TGActionBase{
 	public static final String NAME = "action.gui.open-fragment";
 	
 	public static final String ATTRIBUTE_ACTIVITY = TGActivity.class.getName();
-	public static final String ATTRIBUTE_FRAGMENT = TGFragment.class.getName();
+	public static final String ATTRIBUTE_CONTROLLER = TGFragmentController.class.getName();
 	public static final String ATTRIBUTE_TAG_ID = "tagId";
 	
 	public TGOpenFragmentAction(TGContext context) {
@@ -19,10 +19,10 @@ public class TGOpenFragmentAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		String tagId = (String) context.getAttribute(ATTRIBUTE_TAG_ID);
-		TGFragment tgFragment = (TGFragment) context.getAttribute(ATTRIBUTE_FRAGMENT);
+		String tagId = context.getAttribute(ATTRIBUTE_TAG_ID);
+		TGFragmentController<?> tgFragmentController = context.getAttribute(ATTRIBUTE_CONTROLLER);
 		
 		TGActivity tgActivity = (TGActivity) context.getAttribute(ATTRIBUTE_ACTIVITY);
-		tgActivity.getNavigationManager().processLoadFragment(tgFragment, tagId);
+		tgActivity.getNavigationManager().processLoadFragment(tgFragmentController, tagId);
 	}
 }

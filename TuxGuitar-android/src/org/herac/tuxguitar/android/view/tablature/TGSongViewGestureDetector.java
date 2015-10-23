@@ -34,8 +34,8 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 	
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		this.updateAxis(this.songView.getScroll().getX(), distanceX);
-		this.updateAxis(this.songView.getScroll().getY(), distanceY);
+		this.updateAxis(this.songView.getController().getScroll().getX(), distanceX);
+		this.updateAxis(this.songView.getController().getScroll().getY(), distanceY);
 		return true;
 	}
 	

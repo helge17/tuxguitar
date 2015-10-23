@@ -5,7 +5,7 @@ import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
 import org.herac.tuxguitar.android.application.TGApplication;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
-import org.herac.tuxguitar.android.fragment.TGMainFragment;
+import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.navigation.TGNavigationManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -114,7 +114,7 @@ public class TGActivity extends ActionBarActivity {
 	}
 	
 	public void loadDefaultFragment() {
-		this.getNavigationManager().callOpenFragment(TGMainFragment.getInstance(findContext()));
+		this.getNavigationManager().callOpenFragment(TGMainFragmentController.getInstance(findContext()));
 	}
 	
 	public void callBackAction() {
