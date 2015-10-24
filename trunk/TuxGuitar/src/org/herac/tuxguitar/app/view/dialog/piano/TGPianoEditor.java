@@ -7,11 +7,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerEvent;
-import org.herac.tuxguitar.app.editor.TGRedrawEvent;
+import org.herac.tuxguitar.app.editor.TGExternalBeatViewerManager;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.scale.ScaleEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -50,7 +51,7 @@ public class TGPianoEditor implements TGEventListener{
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getScaleManager().addListener(this);
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
-		TuxGuitar.getInstance().getEditorManager().addBeatViewerListener(this);
+		TGExternalBeatViewerManager.getInstance(this.context).addBeatViewerListener(this);
 	}
 	
 	public void removeListeners(){
@@ -58,7 +59,7 @@ public class TGPianoEditor implements TGEventListener{
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getScaleManager().removeListener(this); 
 		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
-		TuxGuitar.getInstance().getEditorManager().removeBeatViewerListener(this);
+		TGExternalBeatViewerManager.getInstance(this.context).removeBeatViewerListener(this);
 	}
 	
 	private TGPiano getPiano(){

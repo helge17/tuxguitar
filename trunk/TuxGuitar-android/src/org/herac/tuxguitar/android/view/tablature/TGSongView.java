@@ -2,9 +2,9 @@ package org.herac.tuxguitar.android.view.tablature;
 
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.editor.TGEditorManager;
 import org.herac.tuxguitar.android.graphics.TGPainterImpl;
 import org.herac.tuxguitar.android.transport.TGTransportCache;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;

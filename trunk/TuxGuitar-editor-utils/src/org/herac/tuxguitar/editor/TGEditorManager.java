@@ -1,5 +1,8 @@
-package org.herac.tuxguitar.android.editor;
+package org.herac.tuxguitar.editor;
 
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
@@ -20,6 +23,10 @@ public class TGEditorManager {
 	
 	public void setLockControl(TGLock lockControl) {
 		this.lockControl = lockControl;
+	}
+	
+	public TGLock getLockControl() {
+		return lockControl;
 	}
 	
 	public void redraw(){
@@ -165,6 +172,13 @@ public class TGEditorManager {
 		}
 	}
 	
+	public boolean isLocked(){
+		if( this.lockControl != null ) {
+			return this.lockControl.isLocked();
+		}
+		return false;
+	}
+	
 	public void runLocked(Runnable runnable) {
 		this.lock();
 		try {
@@ -185,7 +199,7 @@ public class TGEditorManager {
 			}
 		}).start();
 	}
-	
+
 	public static TGEditorManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGEditorManager.class.getName(), new TGSingletonFactory<TGEditorManager>() {
 			public TGEditorManager createInstance(TGContext context) {

@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.view.channel;
 
-import org.herac.tuxguitar.android.editor.TGUpdateEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGException;

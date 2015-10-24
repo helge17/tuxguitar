@@ -25,7 +25,7 @@ import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
-import org.herac.tuxguitar.app.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGFontImpl;
 import org.herac.tuxguitar.app.graphics.TGImageImpl;

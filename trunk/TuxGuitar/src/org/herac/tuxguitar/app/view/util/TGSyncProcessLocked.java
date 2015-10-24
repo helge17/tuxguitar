@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.app.view.util;
 
-import org.herac.tuxguitar.app.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;

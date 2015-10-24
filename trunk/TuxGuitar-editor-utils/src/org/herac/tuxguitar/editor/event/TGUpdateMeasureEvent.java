@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.editor;
+package org.herac.tuxguitar.editor.event;
 
 import org.herac.tuxguitar.util.TGAbstractContext;
 

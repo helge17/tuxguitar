@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 

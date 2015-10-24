@@ -22,7 +22,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoToMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
-import org.herac.tuxguitar.app.editor.TGUpdateEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;

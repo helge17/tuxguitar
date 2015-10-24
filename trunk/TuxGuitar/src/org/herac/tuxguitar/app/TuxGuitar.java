@@ -16,7 +16,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.editor.EditorCache;
-import org.herac.tuxguitar.app.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
