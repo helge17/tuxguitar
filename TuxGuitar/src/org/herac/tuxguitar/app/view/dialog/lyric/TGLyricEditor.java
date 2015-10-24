@@ -17,7 +17,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
-import org.herac.tuxguitar.app.editor.TGUpdateEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;

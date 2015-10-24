@@ -13,7 +13,7 @@ import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseMoveAction;
 import org.herac.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
-import org.herac.tuxguitar.app.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;

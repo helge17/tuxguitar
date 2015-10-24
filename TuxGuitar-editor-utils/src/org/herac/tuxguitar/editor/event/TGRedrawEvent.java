@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.editor;
+package org.herac.tuxguitar.editor.event;
 
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.util.TGAbstractContext;

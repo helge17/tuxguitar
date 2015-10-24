@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.view.channel;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplication;
-import org.herac.tuxguitar.android.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.content.Context;

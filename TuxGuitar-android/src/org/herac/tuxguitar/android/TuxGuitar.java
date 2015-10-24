@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android;
 
 import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.editor.TGEditorManager;
 import org.herac.tuxguitar.android.error.TGErrorHandlerImpl;
 import org.herac.tuxguitar.android.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;
@@ -11,6 +10,7 @@ import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.android.transport.TGTransportListener;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;

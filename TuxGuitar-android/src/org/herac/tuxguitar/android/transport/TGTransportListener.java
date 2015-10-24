@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.transport;
 
 import org.herac.tuxguitar.android.TuxGuitar;
-import org.herac.tuxguitar.android.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;

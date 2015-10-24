@@ -26,8 +26,8 @@ import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAc
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.app.editor.TGRedrawEvent;
-import org.herac.tuxguitar.app.editor.TGUpdateEvent;
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.transport.TGTransport;

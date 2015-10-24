@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.editor.TGEditorManager;
-import org.herac.tuxguitar.android.editor.TGUpdateEvent;
+import org.herac.tuxguitar.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;

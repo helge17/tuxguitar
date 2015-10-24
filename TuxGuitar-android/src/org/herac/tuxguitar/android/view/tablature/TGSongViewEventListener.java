@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.editor.TGRedrawEvent;
-import org.herac.tuxguitar.android.editor.TGUpdateEvent;
-import org.herac.tuxguitar.android.editor.TGUpdateMeasureEvent;
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 
