@@ -15,15 +15,22 @@ import android.app.ProgressDialog;
 
 public class TGActionProcessingListener implements TGEventListener {
 	
+	private static final long PROCESSING_DELAY = 250;
+	
 	private TGActivity activity;
-	private boolean finished;
 	private ProgressDialog dialog;
 	private Integer level;
+	private boolean dialogOpen;
+	private boolean finished;
+	private boolean updating;
+	private boolean processing;
+	private long processingTime;
 	
 	public TGActionProcessingListener(TGActivity activity){
 		this.activity = activity;
 		this.resetLevel();
 		this.createProgressDialog();
+		this.start();
 	}
 	
 	public void resetLevel() {
@@ -51,43 +58,67 @@ public class TGActionProcessingListener implements TGEventListener {
 		}
 	}
 	
-	public void showProgressDialog() {
+	public void updateProgressDialog(boolean visible) {
 		if(!this.finished) {
-			this.dialog.show();
+			if( visible ) {
+				this.dialog.show();
+			} else {
+				this.dialog.hide();
+			}
+			this.dialogOpen = visible;
 		}
 	}
 	
-	public void hideProgressDialog() {
-		if(!this.finished) {
-			this.dialog.hide();
-		}
+	public void postUpdateProgressDialog(final boolean visible) {
+		this.updating = true;
+		
+		TGSynchronizer.getInstance(this.activity.findContext()).executeLater(new Runnable() {
+			public void run() throws TGException {
+				TGActionProcessingListener.this.updateProgressDialog(visible);
+				TGActionProcessingListener.this.updating = false;
+			}
+		});
 	}
 	
-	public void updateProgressDialogVisibility(boolean processing) {
-		if( processing ) {
-			this.showProgressDialog();
-		} else {
-			this.hideProgressDialog();
-		}
+	public void start() {
+		new Thread(new Runnable() {
+			public void run() {
+				process();
+			}
+		}).start();
 	}
 	
-	public void processEvent(final boolean processing) {
-		if( this.level == 0 ) {
-			TGSynchronizer.getInstance(this.activity.findContext()).executeLater(new Runnable() {
-				public void run() throws TGException {
-					TGActionProcessingListener.this.updateProgressDialogVisibility(processing);
+	public void process() {
+		while(!this.finished) {
+			if(!this.updating ) {
+				if( this.processing && !this.dialogOpen ) {
+					if((this.processingTime + PROCESSING_DELAY) < System.currentTimeMillis()) {
+						this.postUpdateProgressDialog(true);
+					}
 				}
-			});
+				
+				if(!this.processing && this.dialogOpen ) {
+					this.postUpdateProgressDialog(false);
+				}
+			}
+			Thread.yield();
 		}
 	}
 	
 	public void finish() {
-		this.dismissProgressDialog();
 		this.finished = true;
+		this.dismissProgressDialog();
 	}
 	
 	public boolean isFinishAction(TGEvent event) {
 		return (TGFinishAction.NAME.equals(event.getAttribute(TGActionEvent.ATTRIBUTE_ACTION_ID)));
+	}
+	
+	public void processEvent(final boolean processing) {
+		if( this.level == 0 ) {
+			this.processing = processing;
+			this.processingTime = System.currentTimeMillis();
+		}
 	}
 	
 	public void processEvent(TGEvent event) {
