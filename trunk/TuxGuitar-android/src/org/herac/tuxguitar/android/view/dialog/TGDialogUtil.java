@@ -9,7 +9,7 @@ public final class TGDialogUtil {
 	
 	public static void showDialog(Activity activity, TGDialog dialog, TGDialogContext dialogContext) {
 		TGContext tgContext = TGApplicationUtil.findContext(activity);
-		tgContext.setAttribute(TGDialogContext.class.getName(), dialogContext);
+		tgContext.setAttribute(dialog.getDialogContextKey(), dialogContext);
 		
         dialog.show(activity.getFragmentManager(), "NoticeDialogFragment");
 	}

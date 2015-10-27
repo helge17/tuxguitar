@@ -23,8 +23,22 @@ public abstract class TGDialog extends DialogFragment {
 		return null;
 	}
 	
+	public void onDestroy() {
+		this.destroyDialogContext();
+		
+		super.onDestroy();
+	}
+	
+	public String getDialogContextKey() {
+		return (TGDialogContext.class.getName() + "-" + this.getClass().getName());
+	}
+	
 	public TGDialogContext getDialogContext() {
-		return this.findContext().getAttribute(TGDialogContext.class.getName());
+		return this.findContext().getAttribute(this.getDialogContextKey());
+	}
+	
+	public void destroyDialogContext() {
+		this.findContext().removeAttribute(this.getDialogContextKey());
 	}
 	
 	public <T> T getAttribute(String key){
