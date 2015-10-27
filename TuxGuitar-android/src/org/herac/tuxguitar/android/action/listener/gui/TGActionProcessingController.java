@@ -25,7 +25,6 @@ public class TGActionProcessingController {
 		this.activity = activity;
 		this.lock = new Object();
 		this.createProgressDialog();
-		this.start();
 	}
 	
 	private void createProgressDialog() {
