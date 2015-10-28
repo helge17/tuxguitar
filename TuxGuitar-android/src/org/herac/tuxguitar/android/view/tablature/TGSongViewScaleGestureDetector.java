@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.view.tablature;
 
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
-import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScalePreviewAction;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
@@ -21,11 +20,17 @@ public class TGSongViewScaleGestureDetector implements ScaleGestureDetector.OnSc
 	}
 	
 	public boolean processTouchEvent(MotionEvent event) {
-		return this.gestureDetector.onTouchEvent(event);
+		if( this.songView.getController().isScaleActionAvailable() ) {
+			return this.gestureDetector.onTouchEvent(event);
+		}
+		return false;
 	}
 	
 	public boolean isInProgress() {
-		return this.gestureDetector.isInProgress();
+		if( this.songView.getController().isScaleActionAvailable() ) {
+			return this.gestureDetector.isInProgress();
+		}
+		return false;
 	}
 	
 	@Override
@@ -47,9 +52,7 @@ public class TGSongViewScaleGestureDetector implements ScaleGestureDetector.OnSc
 	}
 	
 	public void previewScale() {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGSetLayoutScalePreviewAction.NAME);
-		tgActionProcessor.setAttribute(TGSetLayoutScalePreviewAction.ATTRIBUTE_SCALE, this.scaleFactor);
-		tgActionProcessor.processOnNewThread();
+		this.songView.getController().setScalePreview(this.scaleFactor);
 	}
 	
 	public void applyScale() {

@@ -30,7 +30,6 @@ import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
-import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScalePreviewAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoFirstMeasureAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoLastMeasureAction;
@@ -349,7 +348,6 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//layout actions
 		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL);
-		this.map(TGSetLayoutScalePreviewAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGSetScoreEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);

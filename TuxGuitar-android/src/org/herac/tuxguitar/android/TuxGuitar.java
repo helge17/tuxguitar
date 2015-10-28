@@ -119,12 +119,10 @@ public class TuxGuitar {
 	}
 	
 	public void updateCache(final boolean updateItems, TGAbstractContext sourceContext){
-		if(!this.isLocked()){
-			if( updateItems ){
-				getEditorManager().updateSelection(sourceContext);
-			}
-			getEditorManager().redraw(sourceContext);
+		if( updateItems ){
+			getEditorManager().updateSelection(sourceContext);
 		}
+		getEditorManager().redraw(sourceContext);
 	}
 	
 	public void setUnsavedDocument() {

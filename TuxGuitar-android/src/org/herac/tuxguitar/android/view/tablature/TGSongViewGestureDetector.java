@@ -20,11 +20,11 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 	}
 	
 	public boolean processTouchEvent(MotionEvent event) {
-		boolean success = this.songViewScaleGestureDetector.processTouchEvent(event);
+		this.songViewScaleGestureDetector.processTouchEvent(event);
 		if(!this.songViewScaleGestureDetector.isInProgress() ) {
-			success = (this.gestureDetector.onTouchEvent(event) || success);
+			this.gestureDetector.onTouchEvent(event);
 		}
-		return success;
+		return true;
 	}
 	
 	@Override
@@ -34,8 +34,10 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 	
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		this.updateAxis(this.songView.getController().getScroll().getX(), distanceX);
-		this.updateAxis(this.songView.getController().getScroll().getY(), distanceY);
+		if( this.songView.getController().isScrollActionAvailable() ) {
+			this.updateAxis(this.songView.getController().getScroll().getX(), distanceX);
+			this.updateAxis(this.songView.getController().getScroll().getY(), distanceY);
+		}
 		return true;
 	}
 	

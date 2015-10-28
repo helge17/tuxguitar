@@ -2,6 +2,7 @@ package org.herac.tuxguitar.android.action.listener.gui;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 import android.app.ProgressDialog;
@@ -10,7 +11,7 @@ public class TGActionProcessingController {
 	
 	private static final long PROCESSING_DELAY = 150;
 	
-	private Object lock;
+	private TGLock lock;
 	private TGActivity activity;
 	private ProgressDialog dialog;
 	
@@ -23,7 +24,7 @@ public class TGActionProcessingController {
 	
 	public TGActionProcessingController(TGActivity activity){
 		this.activity = activity;
-		this.lock = new Object();
+		this.lock = new TGLock();
 		this.createProgressDialog();
 	}
 	
@@ -61,7 +62,9 @@ public class TGActionProcessingController {
 	}
 	
 	public void update(boolean processing) {
-		synchronized (this.lock) {
+		try {
+			this.lock.lock();
+			
 			this.processing = processing;
 			this.processingTime = System.currentTimeMillis();
 			
@@ -69,25 +72,31 @@ public class TGActionProcessingController {
 				this.running = true;
 				this.start();
 			}
+		} finally {
+			this.lock.unlock(false);
 		}
 	}
 	
 	public void process() {
 		while( this.running ) {
-			synchronized (this.lock) {
-				if(!this.updating ) {
-					if( this.processing && !this.dialogOpen ) {
-						if((this.processingTime + PROCESSING_DELAY) < System.currentTimeMillis()) {
-							this.postUpdateProgressDialog(true);
+			if (this.lock.tryLock()) {
+				try {
+					if(!this.updating ) {
+						if( this.processing && !this.dialogOpen ) {
+							if((this.processingTime + PROCESSING_DELAY) < System.currentTimeMillis()) {
+								this.postUpdateProgressDialog(true);
+							}
+						}
+						
+						if(!this.processing && this.dialogOpen ) {
+							this.postUpdateProgressDialog(false);
 						}
 					}
 					
-					if(!this.processing && this.dialogOpen ) {
-						this.postUpdateProgressDialog(false);
-					}
+					this.running = (this.updating || this.processing || this.dialogOpen);
+				} finally {
+					this.lock.unlock(false);
 				}
-				
-				this.running = (this.updating || this.processing || this.dialogOpen);
 			}
 			
 			Thread.yield();
@@ -95,12 +104,16 @@ public class TGActionProcessingController {
 	}
 	
 	public void finish() {
-		synchronized (this.lock) {
+		try {
+			this.lock.lock();
+			
 			this.finished = true;
 			this.running = false;
+			
+			this.dismissProgressDialog();
+		} finally {
+			this.lock.unlock(false);
 		}
-		
-		this.dismissProgressDialog();
 	}
 	
 	public void start() {
