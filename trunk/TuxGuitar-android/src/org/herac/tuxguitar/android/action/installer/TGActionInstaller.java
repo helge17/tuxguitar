@@ -31,7 +31,6 @@ import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
-import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScalePreviewAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoFirstMeasureAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoLastMeasureAction;
@@ -305,7 +304,6 @@ public class TGActionInstaller {
 		
 		//layout actions
 		installAction(new TGSetLayoutScaleAction(context));
-		installAction(new TGSetLayoutScalePreviewAction(context));
 		installAction(new TGSetScoreEnabledAction(context));
 		installAction(new TGSetChordNameEnabledAction(context));
 		installAction(new TGSetChordDiagramEnabledAction(context));

@@ -199,13 +199,12 @@ public class TGSongView extends View {
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean success = this.gestureDetector.processTouchEvent(event);
-		if (success) {
-			this.redraw();
-		}
-		return (success || super.onTouchEvent(event));
+		this.gestureDetector.processTouchEvent(event);
+		this.redraw();
+		
+		return true;
 	}
-
+	
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		

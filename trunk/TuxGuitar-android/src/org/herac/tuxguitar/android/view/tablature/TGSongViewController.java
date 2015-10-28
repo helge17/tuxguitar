@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.view.tablature;
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
@@ -195,6 +196,14 @@ public class TGSongViewController implements TGController {
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader) {
 		MidiPlayerMode pm = TuxGuitar.getInstance(this.context).getPlayer().getMode();
 		return (pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber());
+	}
+	
+	public boolean isScaleActionAvailable() {
+		return (!TGEditorManager.getInstance(getContext()).isLocked() && !MidiPlayer.getInstance(getContext()).isRunning());
+	}
+	
+	public boolean isScrollActionAvailable() {
+		return (!TGEditorManager.getInstance(getContext()).isLocked());
 	}
 	
 	public void dispose(){
