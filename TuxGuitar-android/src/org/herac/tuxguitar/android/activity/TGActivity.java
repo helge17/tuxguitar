@@ -21,6 +21,7 @@ import android.view.View;
 
 public class TGActivity extends ActionBarActivity {
 
+	private boolean destroyed;
 	private TGContextMenuController contextMenu;
 	private TGNavigationManager navigationManager;
 	private TGDrawerManager drawerManager;
@@ -29,6 +30,7 @@ public class TGActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		this.destroyed = false;
 		this.initializeTuxGuitar();
 		this.setContentView(R.layout.activity_tg);
 		
@@ -46,6 +48,7 @@ public class TGActivity extends ActionBarActivity {
 		super.onDestroy();
 		
 		this.destroyTuxGuitar();
+		this.destroyed = true;
 	}
 	
 	@Override
@@ -121,5 +124,9 @@ public class TGActivity extends ActionBarActivity {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGBackAction.NAME);
 		tgActionProcessor.setAttribute(TGBackAction.ATTRIBUTE_ACTIVITY, this);
 		tgActionProcessor.process();
+	}
+	
+	public boolean isDestroyed() {
+		return this.destroyed;
 	}
 }
