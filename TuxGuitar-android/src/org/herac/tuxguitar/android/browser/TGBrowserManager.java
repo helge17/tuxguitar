@@ -34,6 +34,10 @@ public class TGBrowserManager {
 		return session;
 	}
 
+	public TGBrowserProperties getProperties() {
+		return properties;
+	}
+
 	public Iterator<TGBrowserFactory> getFactories(){
 		return this.factories.iterator();
 	}

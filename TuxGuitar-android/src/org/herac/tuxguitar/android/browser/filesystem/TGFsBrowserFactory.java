@@ -6,14 +6,14 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 
-public class TGBrowserFactoryImpl implements TGBrowserFactory{
+public class TGFsBrowserFactory implements TGBrowserFactory{
 	
 	public static final String BROWSER_TYPE = "file.system";
 	public static final String BROWSER_NAME = "File System";
 	
-	private TGBrowserSettingsFactory settingsFactory;
+	private TGFsBrowserSettingsFactory settingsFactory;
 	
-	public TGBrowserFactoryImpl(TGBrowserSettingsFactory settingsFactory) {
+	public TGFsBrowserFactory(TGFsBrowserSettingsFactory settingsFactory) {
 		this.settingsFactory = settingsFactory;
 	}
 	
@@ -26,12 +26,12 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	}
 	
 	public TGBrowserSettings restoreSettings(String string) {
-		return TGBrowserSettingsImpl.fromString(string);
+		return TGFsBrowserSettings.fromString(string);
 	}
 	
 	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings data) throws TGBrowserException {
-		if( data instanceof TGBrowserSettingsImpl ){
-			handler.onCreateBrowser(new TGBrowserImpl((TGBrowserSettingsImpl)data));
+		if( data instanceof TGFsBrowserSettings ){
+			handler.onCreateBrowser(new TGFsBrowser((TGFsBrowserSettings)data));
 		}
 	}
 

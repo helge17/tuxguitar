@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.browser.filesystem.TGBrowserSettingsImpl;
+import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserSettings;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
@@ -117,7 +117,7 @@ public class TGBrowserSettingsDialog extends TGDialog {
 		}
 
 		TGBrowserFactorySettingsHandler tgBrowserFactorySettingsHandler = this.getAttribute(TGBrowserSettingsDialogController.ATTRIBUTE_HANDLER);
-		tgBrowserFactorySettingsHandler.onCreateSettings(new TGBrowserSettingsImpl(name, path));
+		tgBrowserFactorySettingsHandler.onCreateSettings(new TGFsBrowserSettings(name, path));
 
 		return true;
 	}

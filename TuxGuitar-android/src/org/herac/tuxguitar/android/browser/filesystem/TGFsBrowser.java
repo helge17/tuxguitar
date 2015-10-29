@@ -9,13 +9,13 @@ import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 
-public class TGBrowserImpl implements TGBrowser{
+public class TGFsBrowser implements TGBrowser{
 	
 	private File root;
-	private TGBrowserElementImpl element;
-	private TGBrowserSettingsImpl data;
+	private TGFsBrowserElement element;
+	private TGFsBrowserSettings data;
 	
-	public TGBrowserImpl(TGBrowserSettingsImpl data){
+	public TGFsBrowser(TGFsBrowserSettings data){
 		this.data = data;
 	}
 	
@@ -30,11 +30,11 @@ public class TGBrowserImpl implements TGBrowser{
 	}
 	
 	public void cdElement(TGBrowserElement element) {
-		this.element = (TGBrowserElementImpl) element;
+		this.element = (TGFsBrowserElement) element;
 	}
 	
 	public void cdRoot() {
-		this.element = new TGBrowserElementImpl(this.root, null);
+		this.element = new TGFsBrowserElement(this.root, null);
 	}
 	
 	public void cdUp() {
@@ -43,30 +43,34 @@ public class TGBrowserImpl implements TGBrowser{
 		}
 	}
 	
-	public List<TGBrowserElement> listElements() {
-		List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
-		if( this.element != null ) {
-			File file = this.element.getFile();
-			if( file.exists() && file.isDirectory() ) {
-				File[] files = file.listFiles();
-				if( files != null ) {
-					for(int i = 0; i < files.length;i ++){
-						elements.add(new TGBrowserElementImpl(files[i], this.element));
+	public List<TGBrowserElement> listElements() throws TGBrowserException {
+		try {
+			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
+			if( this.element != null ) {
+				File file = this.element.getFile();
+				if( file.exists() && file.isDirectory() ) {
+					File[] files = file.listFiles();
+					if( files != null ) {
+						for(int i = 0; i < files.length;i ++){
+							elements.add(new TGFsBrowserElement(files[i], this.element));
+						}
 					}
 				}
+				if( !elements.isEmpty() ){
+					Collections.sort(elements, new TGFsBrowserElementComparator());
+				}
 			}
-			if( !elements.isEmpty() ){
-				Collections.sort(elements, new TGBrowserElementComparator());
-			}
+			return elements;
+		} catch (Throwable e) {
+			throw new TGBrowserException(e);
 		}
-		return elements;
 	}
 
 	public TGBrowserElement createElement(String name) throws TGBrowserException {
 		if( this.isWritable() ) {
 			File file = new File(this.element.getFile(), name);
 			
-			return new TGBrowserElementImpl(file, this.element);
+			return new TGFsBrowserElement(file, this.element);
 		}
 		return null;
 	}

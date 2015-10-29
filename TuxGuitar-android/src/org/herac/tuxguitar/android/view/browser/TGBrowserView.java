@@ -11,7 +11,8 @@ import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplication;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.filesystem.TGBrowserFactoryImpl;
+import org.herac.tuxguitar.android.browser.assets.TGAssetBrowserFactory;
+import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserFactory;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
@@ -156,7 +157,8 @@ public class TGBrowserView extends RelativeLayout {
 	
 	public void addBrowserDefaults() throws TGBrowserException {
 		TGBrowserManager browserManager = TGBrowserManager.getInstance(findContext());
-		browserManager.addFactory(new TGBrowserFactoryImpl(new TGBrowserSettingsFactoryImpl(findContext(), findActivity())));
+		browserManager.addFactory(new TGAssetBrowserFactory(this.findContext()));
+		browserManager.addFactory(new TGFsBrowserFactory(new TGBrowserSettingsFactoryImpl(findContext(), findActivity())));
 		browserManager.restoreCollections();
 		
 		TGBrowserCollection defaultCollection = browserManager.getDefaultCollection();
@@ -270,7 +272,7 @@ public class TGBrowserView extends RelativeLayout {
 		return defaultValue;
 	}
 	
-	public TGFileFormat findFormatByElementName(TGBrowserElement element) {
+	public TGFileFormat findFormatByElementName(TGBrowserElement element) throws TGBrowserException {
 		TGFileFormat defaultFormat = null;
 		String extension = findExtension(element.getName(), null);
 		
@@ -295,7 +297,7 @@ public class TGBrowserView extends RelativeLayout {
 		return defaultFormat;
 	}
 	
-	public TGBrowserElement findElement(String name) {
+	public TGBrowserElement findElement(String name) throws TGBrowserException {
 		TGBrowserSession tgBrowserSession = TGBrowserManager.getInstance(this.findContext()).getSession();
 		if( tgBrowserSession.getCurrentElements() != null ) {
 			for(TGBrowserElement tgBrowserElement : tgBrowserSession.getCurrentElements()){
