@@ -357,7 +357,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//track actions
 		this.map(TGAddNewTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
-		this.map(TGAddTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
+		this.map(TGAddTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
 		this.map(TGSetTrackMuteAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
 		this.map(TGSetTrackSoloAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
 		this.map(TGChangeTrackMuteAction.NAME, SHORTCUT);

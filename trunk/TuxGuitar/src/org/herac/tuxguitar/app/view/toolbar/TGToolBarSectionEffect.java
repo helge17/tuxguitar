@@ -49,7 +49,7 @@ public class TGToolBarSectionEffect implements TGToolBarSection {
 	}
 	
 	public void loadProperties(TGToolBar toolBar){
-		this.menuItem.setToolTipText(toolBar.getText("effect"));
+		this.menuItem.setToolTipText(toolBar.getText("effects"));
 	}
 	
 	public void loadIcons(TGToolBar toolBar){

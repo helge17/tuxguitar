@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.activity;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
-import org.herac.tuxguitar.android.application.TGApplication;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
 import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
@@ -31,6 +31,7 @@ public class TGActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		this.destroyed = false;
+		this.attachInstance();
 		this.initializeTuxGuitar();
 		this.setContentView(R.layout.activity_tg);
 		
@@ -92,6 +93,10 @@ public class TGActivity extends ActionBarActivity {
 		this.openContextMenu(this.findViewById(R.id.root_layout));
 	}
 	
+	public void attachInstance() {
+		TGActivityController.getInstance(findContext()).setActivity(this);
+	}
+	
 	public void initializeTuxGuitar() {
 		TuxGuitar.getInstance(findContext()).initialize(this);
 	}
@@ -113,7 +118,7 @@ public class TGActivity extends ActionBarActivity {
 	}
 
 	public TGContext findContext() {
-		return ((TGApplication) getApplication()).getContext();
+		return TGApplicationUtil.findContext(this);
 	}
 	
 	public void loadDefaultFragment() {

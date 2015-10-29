@@ -10,17 +10,17 @@ import java.io.OutputStream;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 
-public class TGBrowserElementImpl implements TGBrowserElement{
+public class TGFsBrowserElement implements TGBrowserElement{
 	
 	private File file;
-	private TGBrowserElementImpl parent;
+	private TGFsBrowserElement parent;
 	
-	public TGBrowserElementImpl(File file, TGBrowserElementImpl parent) {
+	public TGFsBrowserElement(File file, TGFsBrowserElement parent) {
 		this.file = file;
 		this.parent = parent;
 	}
 	
-	public TGBrowserElementImpl getParent() {
+	public TGFsBrowserElement getParent() {
 		return this.parent;
 	}
 	

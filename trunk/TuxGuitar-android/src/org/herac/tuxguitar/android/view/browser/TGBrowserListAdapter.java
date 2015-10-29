@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
+import org.herac.tuxguitar.android.browser.model.TGBrowserException;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -61,18 +64,22 @@ public class TGBrowserListAdapter extends BaseAdapter {
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_browser_element, parent, false));
 		view.setTag(element);
 		
-		TextView textView = (TextView) view.findViewById(R.id.tg_browser_element_name);
-		textView.setText(element.getName());
-		
-		Drawable elementIcon = this.findElementIcon(element);
-		if( elementIcon != null ) {
-			ImageView imageView = (ImageView) view.findViewById(R.id.tg_browser_element_icon);
-			imageView.setImageDrawable(elementIcon);
+		try {
+			TextView textView = (TextView) view.findViewById(R.id.tg_browser_element_name);
+			textView.setText(element.getName());
+			
+			Drawable elementIcon = this.findElementIcon(element);
+			if( elementIcon != null ) {
+				ImageView imageView = (ImageView) view.findViewById(R.id.tg_browser_element_icon);
+				imageView.setImageDrawable(elementIcon);
+			}
+		} catch (TGBrowserException e) {
+			TGErrorManager.getInstance(TGApplicationUtil.findContext(this.context)).handleError(e);
 		}
 		return view;
 	}
 	
-	public Drawable findElementIcon(TGBrowserElement element) {
+	public Drawable findElementIcon(TGBrowserElement element) throws TGBrowserException {
 		Integer style = (element.isFolder() ? R.style.BrowserElementIconFolder : R.style.BrowserElementIconFile);
 		TypedArray typedArray = this.context.obtainStyledAttributes(style, new int[] {android.R.attr.src});
 		if( typedArray != null ) {
