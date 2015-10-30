@@ -271,20 +271,9 @@
 								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
-									<fileset dir="./src/resources/dist/"/>
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/" overwrite="true">
-									<fileset dir="./src/resources/dll/"/>
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/" overwrite="true">
-									<fileset file="./src/resources/tuxguitar.bat"/>
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/" overwrite="true">
-									<fileset file="./src/resources/tuxguitar.lap"/>
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/" overwrite="true">
-									<fileset file="./src/resources/tuxguitar.exe"/>
+								
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="./src/resources"/>
 								</copy>
 							</target>
 						</configuration>
