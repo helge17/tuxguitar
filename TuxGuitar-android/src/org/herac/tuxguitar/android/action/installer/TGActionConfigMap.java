@@ -27,6 +27,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
@@ -368,6 +369,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGBrowserOpenSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserAddCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		
+		//intent actions
+		this.map(TGProcessIntentAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		
 		//gui actions
 		this.map(TGOpenDialogAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);

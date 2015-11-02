@@ -1,21 +1,17 @@
 package org.herac.tuxguitar.android.application;
 
+import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.Fragment;
 import android.content.Context;
 import android.view.View;
 
 public final class TGApplicationUtil {
 	
-	public static TGContext findContext(Application application) {
-		return ((TGApplication) application).getContext();
-	}
-	
 	public static TGContext findContext(Activity activity) {
-		return TGApplicationUtil.findContext(activity.getApplication());
+		return ((TGActivity) activity).findContext();
 	}
 	
 	public static TGContext findContext(Fragment fragment) {
@@ -23,10 +19,10 @@ public final class TGApplicationUtil {
 	}
 	
 	public static TGContext findContext(View view) {
-		return TGApplicationUtil.findContext(view.getContext());
+		return TGApplicationUtil.findContext((Activity) view.getContext());
 	}
 	
 	public static TGContext findContext(Context context) {
-		return TGApplicationUtil.findContext((Application)context.getApplicationContext());
+		return TGApplicationUtil.findContext((Activity)context);
 	}
 }

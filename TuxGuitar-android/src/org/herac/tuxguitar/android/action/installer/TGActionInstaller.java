@@ -28,6 +28,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
@@ -324,6 +325,9 @@ public class TGActionInstaller {
 		installAction(new TGBrowserOpenSessionAction(context));
 		installAction(new TGBrowserAddCollectionAction(context));
 		installAction(new TGBrowserRemoveCollectionAction(context));
+		
+		//intent actions
+		installAction(new TGProcessIntentAction(context));
 		
 		//gui actions
 		installAction(new TGBackAction(context));
