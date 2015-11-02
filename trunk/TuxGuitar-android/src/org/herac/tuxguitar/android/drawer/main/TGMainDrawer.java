@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.drawer.main;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplication;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.content.Context;
@@ -27,7 +27,7 @@ public class TGMainDrawer extends RelativeLayout {
 	}
 	
 	public TGContext findContext() {
-		return ((TGApplication) getContext().getApplicationContext()).getContext();
+		return TGApplicationUtil.findContext(this);
 	}
 	
 	public TGActivity findActivity() {

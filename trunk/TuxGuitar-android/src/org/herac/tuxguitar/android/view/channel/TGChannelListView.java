@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.view.channel;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplication;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -47,7 +47,7 @@ public class TGChannelListView extends RelativeLayout {
 	}
 	
 	public TGContext findContext() {
-		return ((TGApplication) getContext().getApplicationContext()).getContext();
+		return TGApplicationUtil.findContext(this);
 	}
 
 	public TGActivity findActivity() {

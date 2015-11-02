@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.activity;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
+import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
 import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
@@ -11,6 +11,7 @@ import org.herac.tuxguitar.android.navigation.TGNavigationManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -22,6 +23,7 @@ import android.view.View;
 public class TGActivity extends ActionBarActivity {
 
 	private boolean destroyed;
+	private TGContext context;
 	private TGContextMenuController contextMenu;
 	private TGNavigationManager navigationManager;
 	private TGDrawerManager drawerManager;
@@ -29,19 +31,19 @@ public class TGActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		this.destroyed = false;
 		this.attachInstance();
 		this.initializeTuxGuitar();
 		this.setContentView(R.layout.activity_tg);
 		
 		this.registerForContextMenu(findViewById(R.id.root_layout));
-        this.getActionBar().setDisplayHomeAsUpEnabled(true);
-        this.getActionBar().setHomeButtonEnabled(true);
-        
-        this.navigationManager = new TGNavigationManager(this);
-        this.drawerManager = new TGDrawerManager(this);
-        this.loadDefaultFragment();
+		this.getActionBar().setDisplayHomeAsUpEnabled(true);
+		this.getActionBar().setHomeButtonEnabled(true);
+		
+		this.navigationManager = new TGNavigationManager(this);
+		this.drawerManager = new TGDrawerManager(this);
+		this.loadDefaultFragment();
 	}
 	
 	@Override
@@ -49,6 +51,7 @@ public class TGActivity extends ActionBarActivity {
 		super.onDestroy();
 		
 		this.destroyTuxGuitar();
+		this.detachInstance();
 		this.destroyed = true;
 	}
 	
@@ -57,12 +60,18 @@ public class TGActivity extends ActionBarActivity {
 		super.onPostCreate(savedInstanceState);
 		
 		this.connectPlugins();
+		this.callProcessIntent();
 		this.drawerManager.syncState();
 	}
 	
 	@Override
 	public void onBackPressed() {
 		this.callBackAction();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		this.callProcessIntent();
 	}
 	
 	@Override
@@ -97,6 +106,10 @@ public class TGActivity extends ActionBarActivity {
 		TGActivityController.getInstance(findContext()).setActivity(this);
 	}
 	
+	public void detachInstance() {
+		TGActivityController.getInstance(findContext()).setActivity(null);
+	}
+	
 	public void initializeTuxGuitar() {
 		TuxGuitar.getInstance(findContext()).initialize(this);
 	}
@@ -118,11 +131,20 @@ public class TGActivity extends ActionBarActivity {
 	}
 
 	public TGContext findContext() {
-		return TGApplicationUtil.findContext(this);
+		if( this.context == null ) {
+			this.context = new TGContext();
+		}
+		return context;
 	}
 	
 	public void loadDefaultFragment() {
 		this.getNavigationManager().callOpenFragment(TGMainFragmentController.getInstance(findContext()));
+	}
+	
+	public void callProcessIntent() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGProcessIntentAction.NAME);
+		tgActionProcessor.setAttribute(TGBackAction.ATTRIBUTE_ACTIVITY, this);
+		tgActionProcessor.process();
 	}
 	
 	public void callBackAction() {

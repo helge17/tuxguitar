@@ -8,7 +8,6 @@ import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplication;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGDurationMenu;
@@ -80,6 +79,6 @@ public class TGTabKeyboard extends FrameLayout {
 	}
 	
 	private TGContext findContext() {
-		return ((TGApplication)getContext().getApplicationContext()).getContext();
+		return TGApplicationUtil.findContext(this);
 	}
 }

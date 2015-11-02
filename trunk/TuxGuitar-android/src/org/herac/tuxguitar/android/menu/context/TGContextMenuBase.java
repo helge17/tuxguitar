@@ -4,6 +4,7 @@ import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -25,7 +26,7 @@ public abstract class TGContextMenuBase implements TGContextMenuController {
 	}
 
 	public TGContext findContext() {
-		return this.getActivity().findContext();
+		return TGApplicationUtil.findContext(this.getActivity());
 	}
 	
 	public void initializeItem(ContextMenu menu, int id, TGActionProcessorListener actionProcessor, boolean enabled, boolean checked) {

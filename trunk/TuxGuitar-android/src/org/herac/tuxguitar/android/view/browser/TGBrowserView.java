@@ -8,7 +8,7 @@ import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplication;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.assets.TGAssetBrowserFactory;
@@ -330,7 +330,7 @@ public class TGBrowserView extends RelativeLayout {
 	}
 	
 	public TGContext findContext() {
-		return ((TGApplication) getContext().getApplicationContext()).getContext();
+		return TGApplicationUtil.findContext(this);
 	}
 
 	public TGActivity findActivity() {
