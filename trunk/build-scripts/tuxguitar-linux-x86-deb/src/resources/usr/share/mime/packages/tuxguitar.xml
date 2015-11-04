@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+	<mime-type type="audio/x-tuxguitar">
+		<comment>TuxGuitar file</comment>
+		<glob pattern="*.tg"/>
+	</mime-type>
+	<mime-type type="audio/x-gtp">
+		<comment>GuitarPro file</comment>
+		<glob pattern="*.gtp"/>
+		<glob pattern="*.gp3"/>
+		<glob pattern="*.gp4"/>
+		<glob pattern="*.gp5"/>
+		<glob pattern="*.gpx"/>
+	</mime-type>
+	<mime-type type="audio/x-ptb">
+		<comment>PowerTab file</comment>
+		<glob pattern="*.ptb"/>
+	</mime-type>
+</mime-info>

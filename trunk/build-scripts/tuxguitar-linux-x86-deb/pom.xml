@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>1.3-SNAPSHOT</version>
+		<relativePath>../../</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-linux-x86-deb</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.dpkg.executable>dpkg</project.dpkg.executable>
+		<project.rootPath>${project.parent.relativePath}</project.rootPath>
+		<project.packageName>tuxguitar-${project.version}-linux-x86</project.packageName>
+		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
+	</properties>
+
+	<modules>
+		<module>../tuxguitar-linux-x86</module>
+	</modules>
+
+	<build>
+		<plugins>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>copy-bundle</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="copy-bundle">
+								<copy todir="${project.build.directory}/${project.packageName}/opt/tuxguitar" overwrite="true">
+									<fileset dir="../tuxguitar-linux-x86/target/${project.packageName}" />
+								</copy>
+								
+								<copy todir="${project.build.directory}/${project.packageName}" overwrite="true">
+									<fileset dir="./src/resources"/>
+								</copy>
+								
+								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
+								<chmod file="${project.build.directory}/${project.packageName}/DEBIAN/postinst" perm="755" />
+								<chmod file="${project.build.directory}/${project.packageName}/DEBIAN/postrm" perm="755" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					
+					<execution>
+						<id>package-bundle</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="package-bundle">
+								<exec dir="${project.basedir}" executable="${project.dpkg.executable}" failonerror="true" >
+									<arg value="--build"/>
+									<arg value="${project.build.directory}/${project.packageName}"/>
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+<!-- 					<execution> -->
+<!-- 						<id>remove-bundle</id> -->
+<!-- 						<phase>package</phase> -->
+<!-- 						<configuration> -->
+<!-- 							<target name="remove-bundle"> -->
+<!-- 								<delete quiet="true" dir="${project.build.directory}/${project.packageName}" /> -->
+<!-- 							</target> -->
+<!-- 						</configuration> -->
+<!-- 						<goals> -->
+<!-- 							<goal>run</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
