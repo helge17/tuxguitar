@@ -527,8 +527,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenPluginListDialogAction.NAME, SHORTCUT);
 		
 		//gui actions
-		this.map(TGOpenViewAction.NAME, SYNC_THREAD);
-		this.map(TGToggleViewAction.NAME, SYNC_THREAD);
+		this.map(TGOpenViewAction.NAME, LOCKABLE | SYNC_THREAD);
+		this.map(TGToggleViewAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGOpenSongInfoDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenTempoDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenClefDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);

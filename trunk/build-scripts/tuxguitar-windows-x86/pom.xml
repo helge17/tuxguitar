@@ -257,11 +257,6 @@
 						<phase>package</phase>
 						<configuration>
 							<target name="copy-files">
-								<mkdir dir="${project.build.directory}/${project.finalName}/" />
-								<mkdir dir="${project.build.directory}/${project.finalName}/lib" />
-								<mkdir dir="${project.build.directory}/${project.finalName}/share" />
-								<mkdir dir="${project.build.directory}/${project.finalName}/doc" />
-								
 								<copy todir="${project.build.directory}/${project.finalName}/share" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/"/>
 								</copy>
@@ -270,6 +265,9 @@
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
+									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
 								
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">

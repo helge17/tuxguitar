@@ -83,7 +83,7 @@ public class TGLock {
 	
 	private class TGLockTimeOutController {
 		
-		private static final long TIME_OUT = 60000 * 120;
+		private static final long TIME_OUT = 60000 * 1;
 		
 		private TGLock lock;
 		private Map<Thread, Long> timeStamps;
