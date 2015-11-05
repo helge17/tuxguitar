@@ -18,8 +18,8 @@
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
 		<tuxguitar-jack.jni.rm>rm -f</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>gcc</tuxguitar-jack.jni.cc>
-		<tuxguitar-jack.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-jack.jni.cflags>
-		<tuxguitar-jack.jni.ldflags></tuxguitar-jack.jni.ldflags>
+		<tuxguitar-jack.jni.cflags>-I$(shell gcj -print-file-name=include/) -m32 -fPIC</tuxguitar-jack.jni.cflags>
+		<tuxguitar-jack.jni.ldflags>-m32 -fPIC</tuxguitar-jack.jni.ldflags>
 		<tuxguitar-jack.jni.ldlibs>`pkg-config --libs jack`</tuxguitar-jack.jni.ldlibs>
 		<tuxguitar-jack.jni.ldpath></tuxguitar-jack.jni.ldpath>
 		<tuxguitar-jack.jni.library.name>tuxguitar-jack-jni</tuxguitar-jack.jni.library.name>

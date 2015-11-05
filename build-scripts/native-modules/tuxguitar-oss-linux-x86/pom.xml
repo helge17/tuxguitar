@@ -17,8 +17,8 @@
 	<properties>
 		<tuxguitar-oss.jni.path>${parent.relativePath}/TuxGuitar-oss/jni/</tuxguitar-oss.jni.path>
 		<tuxguitar-oss.jni.cc>gcc</tuxguitar-oss.jni.cc>
-		<tuxguitar-oss.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-oss.jni.cflags>
-		<tuxguitar-oss.jni.ldflags></tuxguitar-oss.jni.ldflags>
+		<tuxguitar-oss.jni.cflags>-I$(shell gcj -print-file-name=include/) -m32 -fPIC</tuxguitar-oss.jni.cflags>
+		<tuxguitar-oss.jni.ldflags>-m32 -fPIC</tuxguitar-oss.jni.ldflags>
 		<tuxguitar-oss.jni.ldlibs></tuxguitar-oss.jni.ldlibs>
 		<tuxguitar-oss.jni.ldpath></tuxguitar-oss.jni.ldpath>
 		<tuxguitar-oss.jni.library.name>tuxguitar-oss-jni</tuxguitar-oss.jni.library.name>
