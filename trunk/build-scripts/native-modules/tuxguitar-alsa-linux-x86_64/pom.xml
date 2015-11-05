@@ -17,8 +17,8 @@
 	<properties>
 		<tuxguitar-alsa.jni.path>${parent.relativePath}/TuxGuitar-alsa/jni/</tuxguitar-alsa.jni.path>
 		<tuxguitar-alsa.jni.cc>gcc</tuxguitar-alsa.jni.cc>
-		<tuxguitar-alsa.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-alsa.jni.cflags>
-		<tuxguitar-alsa.jni.ldflags></tuxguitar-alsa.jni.ldflags>
+		<tuxguitar-alsa.jni.cflags>-I$(shell gcj -print-file-name=include/) -m64 -fPIC</tuxguitar-alsa.jni.cflags>
+		<tuxguitar-alsa.jni.ldflags>-m64 -fPIC</tuxguitar-alsa.jni.ldflags>
 		<tuxguitar-alsa.jni.ldlibs>-lasound</tuxguitar-alsa.jni.ldlibs>
 		<tuxguitar-alsa.jni.ldpath>-L/usr/lib</tuxguitar-alsa.jni.ldpath>
 		<tuxguitar-alsa.jni.library.name>tuxguitar-alsa-jni</tuxguitar-alsa.jni.library.name>

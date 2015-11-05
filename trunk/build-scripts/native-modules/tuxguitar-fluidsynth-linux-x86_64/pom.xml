@@ -17,8 +17,8 @@
 	<properties>
 		<tuxguitar-fluidsynth.jni.path>${parent.relativePath}/TuxGuitar-fluidsynth/jni/</tuxguitar-fluidsynth.jni.path>
 		<tuxguitar-fluidsynth.jni.cc>gcc</tuxguitar-fluidsynth.jni.cc>
-		<tuxguitar-fluidsynth.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-fluidsynth.jni.cflags>
-		<tuxguitar-fluidsynth.jni.ldflags></tuxguitar-fluidsynth.jni.ldflags>
+		<tuxguitar-fluidsynth.jni.cflags>-I$(shell gcj -print-file-name=include/) -m64 -fPIC</tuxguitar-fluidsynth.jni.cflags>
+		<tuxguitar-fluidsynth.jni.ldflags>-m64 -fPIC</tuxguitar-fluidsynth.jni.ldflags>
 		<tuxguitar-fluidsynth.jni.ldlibs>-lfluidsynth</tuxguitar-fluidsynth.jni.ldlibs>
 		<tuxguitar-fluidsynth.jni.ldpath>-L/usr/lib</tuxguitar-fluidsynth.jni.ldpath>
 		<tuxguitar-fluidsynth.jni.library.name>tuxguitar-fluidsynth-jni</tuxguitar-fluidsynth.jni.library.name>
