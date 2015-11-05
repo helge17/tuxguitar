@@ -33,5 +33,6 @@ public class PDFStylesHandler implements TGSongStreamSettingsHandler {
 				callback.run();
 			}
 		});
+		tgActionProcessor.process();
 	}
 }
