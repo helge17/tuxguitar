@@ -46,11 +46,7 @@ public class TGExportFileAction extends TGSongStreamActionBase {
 	
 	public OutputStream createOutputStream(String fileName) {
 		try {
-			File file = new File(fileName);
-			if( file.exists() && file.isFile() ){
-				return new BufferedOutputStream(new FileOutputStream(file));
-			}
-			return null;
+			return new BufferedOutputStream(new FileOutputStream(new File(fileName)));
 		} catch (Throwable e) {
 			throw new TGActionException(e.getMessage(), e);
 		}
