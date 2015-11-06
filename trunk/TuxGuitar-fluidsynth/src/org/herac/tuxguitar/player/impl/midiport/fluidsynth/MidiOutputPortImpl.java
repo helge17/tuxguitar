@@ -13,7 +13,7 @@ public class MidiOutputPortImpl extends GMOutputPort{
 	private MidiReceiverImpl receiver;
 	private String soundFont;
 	
-	public MidiOutputPortImpl(MidiSynth synth,File soundfont){
+	public MidiOutputPortImpl(MidiSynth synth, File soundfont){
 		this.key = getUniqueKey(soundfont);
 		this.name = getUniqueName(soundfont);
 		this.soundFont = soundfont.getAbsolutePath();

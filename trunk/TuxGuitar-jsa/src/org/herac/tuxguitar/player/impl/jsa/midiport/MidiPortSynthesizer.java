@@ -16,6 +16,7 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.jsa.assistant.SBAssistant;
 import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class MidiPortSynthesizer extends GMOutputPort{
 	
@@ -73,12 +74,12 @@ public class MidiPortSynthesizer extends GMOutputPort{
 				this.synth.open();
 				if(!isSoundbankLoaded( false )){
 					String path = MidiConfigUtils.getSoundbankPath(this.context);
-					if(path != null){
-						this.loadSoundbank(new File(path));
+					if( path != null ){
+						this.loadSoundbank(new File(TGExpressionResolver.getInstance(this.context).resolve(path)));
 					}
 					
 					if(!isSoundbankLoaded( true )){
-						this.loadSoundbank( this.synth.getDefaultSoundbank() );
+						this.loadSoundbank(this.synth.getDefaultSoundbank());
 					}
 					
 					if(!isSoundbankLoaded( true )){

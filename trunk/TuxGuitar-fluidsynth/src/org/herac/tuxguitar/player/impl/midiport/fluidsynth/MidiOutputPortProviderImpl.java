@@ -9,6 +9,7 @@ import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
@@ -25,8 +26,8 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 			List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
 			Iterator<String> it = getSettings().getSoundfonts().iterator();
 			while(it.hasNext()){
-				String path = (String)it.next();
-				File soundfont = new File( path );
+				String path = it.next();
+				File soundfont = new File(TGExpressionResolver.getInstance(this.context).resolve(path));
 				if( soundfont.exists() && !soundfont.isDirectory() ){
 					ports.add( new MidiOutputPortImpl( getSynth(), soundfont ) );
 				}
@@ -39,7 +40,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
 	public void closeAll() throws MidiPlayerException {
 		try{
-			if(this.synth != null && this.synth.isInitialized()){
+			if( this.synth != null && this.synth.isInitialized()){
 				this.synth.finalize();
 				this.synth = null;
 			}
@@ -49,7 +50,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	}
 	
 	public MidiSynth getSynth(){
-		if(this.synth == null || !this.synth.isInitialized()){
+		if( this.synth == null || !this.synth.isInitialized()){
 			this.synth = new MidiSynth();
 			this.getSettings().apply();
 		}
@@ -57,7 +58,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	}
 	
 	public MidiOutputPortSettings getSettings(){
-		if(this.settings == null){
+		if( this.settings == null){
 			this.settings = new MidiOutputPortSettings(this);
 		}
 		return this.settings;

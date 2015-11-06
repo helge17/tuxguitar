@@ -9,11 +9,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.util.WindowTitleUtil;
+import org.herac.tuxguitar.app.util.TGWindowTitleUtil;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MainOption  extends Option{
+	
+	private static final String VAR_START = "${";
+	private static final String VAR_END = "}";
+	
 	protected boolean initialized;
 	protected Button showSplash;
 	protected Button autoSizeTable;
@@ -50,29 +54,29 @@ public class MainOption  extends Option{
 		infoBody.setLayout(new GridLayout(2,false));
 		infoBody.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_APP_NAME));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_APP_NAME ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_APP_NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_APP_NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_APP_VERSION));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_APP_VERSION ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_APP_VERSION));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_APP_VERSION ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_FILE_NAME));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_FILE_NAME ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_FILE_NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_FILE_NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_FILE_PATH));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_FILE_PATH ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_FILE_PATH));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_FILE_PATH ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_SONG_NAME));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_SONG_NAME ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_SONG_ALBUM));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_SONG_ALBUM ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_ALBUM));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_ALBUM ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_SONG_ARTIST));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_SONG_ARTIST ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_ARTIST));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_ARTIST ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1,WindowTitleUtil.getVar(WindowTitleUtil.VAR_SONG_AUTHOR));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + WindowTitleUtil.VAR_SONG_AUTHOR ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_AUTHOR));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_AUTHOR ));
 		
 		showLabel(getComposite(),SWT.BOTTOM | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.main.options"));
 		
@@ -124,5 +128,9 @@ public class MainOption  extends Option{
 			getConfig().setValue(TGConfigKeys.SHOW_SPLASH, getDefaults().getValue(TGConfigKeys.SHOW_SPLASH));
 			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE, getDefaults().getValue(TGConfigKeys.TABLE_AUTO_SIZE));
 		}
+	}
+	
+	public String getVar(String varName){
+		return (VAR_START + varName + VAR_END);
 	}
 }
