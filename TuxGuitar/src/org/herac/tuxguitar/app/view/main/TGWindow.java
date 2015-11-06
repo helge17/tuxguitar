@@ -19,7 +19,7 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.system.TGDisposeAction;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.util.WindowTitleUtil;
+import org.herac.tuxguitar.app.util.TGWindowTitleUtil;
 import org.herac.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
@@ -227,7 +227,7 @@ public class TGWindow implements TGEventListener {
 	
 	public void loadTitleInCurrentThread() {
 		if(!this.isDisposed()) {
-			this.getShell().setText(WindowTitleUtil.parseTitle(this.context));
+			this.getShell().setText(TGWindowTitleUtil.parseTitle(this.context));
 		}
 	}
 	
