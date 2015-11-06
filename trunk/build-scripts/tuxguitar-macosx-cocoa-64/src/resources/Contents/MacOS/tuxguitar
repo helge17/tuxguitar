@@ -28,4 +28,4 @@ VM_ARGS="-Xmx512m"
 ##SWT ARGUMENTS
 SWT_ARGS="-XstartOnFirstThread"
 ##LAUNCH
-exec java ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"
+exec java ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"

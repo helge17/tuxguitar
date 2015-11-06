@@ -42,4 +42,4 @@ export CLASSPATH
 export LD_LIBRARY_PATH
 export MOZILLA_FIVE_HOME
 ##LAUNCH
-${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"
+${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"
