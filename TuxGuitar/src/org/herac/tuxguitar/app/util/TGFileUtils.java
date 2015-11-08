@@ -24,6 +24,7 @@ import org.herac.tuxguitar.util.TGVersion;
 
 public class TGFileUtils {
 	
+	private static final String TG_HOME_PATH = "tuxguitar.home.path";
 	private static final String TG_CONFIG_PATH = "tuxguitar.config.path";
 	private static final String TG_SHARE_PATH = "tuxguitar.share.path";
 	private static final String TG_USER_SHARE_PATH = "tuxguitar.user-share.path";
@@ -32,6 +33,7 @@ public class TGFileUtils {
 	private static final String TG_LIBRARY_PREFIX = "tuxguitar.library.prefix";
 	private static final String TG_LIBRARY_EXTENSION = "tuxguitar.library.extension";
 	
+	public static final String PATH_HOME = getHomePath();
 	public static final String PATH_USER_CONFIG = getUserConfigDir();
 	public static final String PATH_USER_PLUGINS_CONFIG = getUserPluginsConfigDir();
 	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
@@ -215,6 +217,28 @@ public class TGFileUtils {
 		return null;
 	}
 	
+	private static String getHomePath(){
+		// Look for the system property
+		String homePath = System.getProperty(TG_HOME_PATH);
+		if( homePath != null ) {
+			File file = new File(homePath).getAbsoluteFile();
+			if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
+				return file.getAbsolutePath();
+			}
+		}
+		
+		// Default user dir
+		homePath = System.getProperty("user.dir");
+		if( homePath != null ) {
+			File file = new File(homePath).getAbsoluteFile();
+			if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
+				return file.getAbsolutePath();
+			}
+		}
+		
+		return new File(".").getAbsolutePath();
+	}
+	
 	private static String getDefaultUserAppDir(){
 		return ((System.getProperty("user.home") + File.separator + ".tuxguitar-" + TGVersion.CURRENT.getVersion()));
 	}
@@ -224,7 +248,7 @@ public class TGFileUtils {
 		String configPath = System.getProperty(TG_CONFIG_PATH);
 		
 		// Default System User Home
-		if(configPath == null){
+		if( configPath == null ){
 			configPath = (getDefaultUserAppDir() + File.separator + "config");
 		}
 		

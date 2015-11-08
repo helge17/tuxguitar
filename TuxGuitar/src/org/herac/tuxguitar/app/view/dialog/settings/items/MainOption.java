@@ -9,7 +9,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.util.TGWindowTitleUtil;
+import org.herac.tuxguitar.app.system.variables.TGVarAppName;
+import org.herac.tuxguitar.app.system.variables.TGVarAppVersion;
+import org.herac.tuxguitar.app.system.variables.TGVarFileName;
+import org.herac.tuxguitar.app.system.variables.TGVarFilePath;
+import org.herac.tuxguitar.app.system.variables.TGVarSongAlbum;
+import org.herac.tuxguitar.app.system.variables.TGVarSongArtist;
+import org.herac.tuxguitar.app.system.variables.TGVarSongAuthor;
+import org.herac.tuxguitar.app.system.variables.TGVarSongName;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -54,29 +61,29 @@ public class MainOption  extends Option{
 		infoBody.setLayout(new GridLayout(2,false));
 		infoBody.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_APP_NAME));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_APP_NAME ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarAppName.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarAppName.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_APP_VERSION));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_APP_VERSION ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarAppVersion.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarAppVersion.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_FILE_NAME));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_FILE_NAME ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarFileName.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarFileName.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_FILE_PATH));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_FILE_PATH ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarFilePath.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarFilePath.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_NAME));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_NAME ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarSongName.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarSongName.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_ALBUM));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_ALBUM ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarSongAlbum.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarSongAlbum.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_ARTIST));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_ARTIST ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarSongArtist.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarSongArtist.NAME ));
 		
-		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGWindowTitleUtil.VAR_SONG_AUTHOR));
-		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGWindowTitleUtil.VAR_SONG_AUTHOR ));
+		showLabel(infoBody, SWT.NONE,SWT.BOLD,-1, this.getVar(TGVarSongAuthor.NAME));
+		showLabel(infoBody,SWT.TOP | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.main.window-title.var.description." + TGVarSongAuthor.NAME ));
 		
 		showLabel(getComposite(),SWT.BOTTOM | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.main.options"));
 		

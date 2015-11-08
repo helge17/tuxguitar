@@ -33,7 +33,10 @@ public class TGExpressionResolver {
 				String property = matcher.group(1);
 				Object value = this.findProperty(property);
 				if( value != null ) {
-					matcher.appendReplacement(sb, value.toString());
+					String stringValue = value.toString();
+					if( stringValue != null ) {
+						matcher.appendReplacement(sb, Matcher.quoteReplacement(stringValue));
+					}
 				}
 			}
 			matcher.appendTail(sb);
