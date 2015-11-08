@@ -16,7 +16,6 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.editor.EditorCache;
-import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
@@ -25,6 +24,7 @@ import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
+import org.herac.tuxguitar.app.system.variables.TGVarAdapter;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.transport.TGTransportListener;
@@ -43,6 +43,7 @@ import org.herac.tuxguitar.app.view.dialog.piano.TGPianoEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.menu.TGMenuManager;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.event.TGEventManager;
@@ -107,6 +108,7 @@ public class TuxGuitar {
 		TGFileUtils.loadClasspath(this.context);
 		TGErrorAdapter.initialize(this.context);
 		TGPropertiesAdapter.initialize(this.context);
+		TGVarAdapter.initialize(this.context);
 		
 		// Priority 2 ----------------------------------------------//
 		Display.setAppName(APPLICATION_NAME);

@@ -15,11 +15,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.system.TGDisposeAction;
+import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.util.TGWindowTitleUtil;
 import org.herac.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
@@ -29,6 +31,7 @@ import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGExpressionResolver;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -227,7 +230,10 @@ public class TGWindow implements TGEventListener {
 	
 	public void loadTitleInCurrentThread() {
 		if(!this.isDisposed()) {
-			this.getShell().setText(TGWindowTitleUtil.parseTitle(this.context));
+			String titleLayout = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.WINDOW_TITLE);
+			String title = TGExpressionResolver.getInstance(this.context).resolve(titleLayout);
+			
+			this.getShell().setText(title != null ? title : TuxGuitar.APPLICATION_NAME);
 		}
 	}
 	
