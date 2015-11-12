@@ -34,6 +34,7 @@ public class TGFileUtils {
 	private static final String TG_LIBRARY_EXTENSION = "tuxguitar.library.extension";
 	
 	public static final String PATH_HOME = getHomePath();
+	public static final String PATH_USER_DIR = getDefaultUserAppDir();
 	public static final String PATH_USER_CONFIG = getUserConfigDir();
 	public static final String PATH_USER_PLUGINS_CONFIG = getUserPluginsConfigDir();
 	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
