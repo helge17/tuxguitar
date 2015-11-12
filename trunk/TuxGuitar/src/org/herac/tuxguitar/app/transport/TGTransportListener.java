@@ -1,8 +1,10 @@
 package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerEvent;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
@@ -21,14 +23,20 @@ public class TGTransportListener implements TGEventListener{
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					TuxGuitar.getInstance().updateCache(true);
-					while( TuxGuitar.getInstance().getPlayer().isRunning() ) {
-						
-						TuxGuitar.getInstance().getEditorCache().updatePlayMode();
-						if( TuxGuitar.getInstance().getEditorCache().shouldRedraw() ) {
-							TuxGuitar.getInstance().getEditorManager().redrawPlayingNewBeat();
+					TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
+					
+					TuxGuitar tuxguitar = TuxGuitar.getInstance();
+					tuxguitar.updateCache(true);
+					
+					MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
+					while( midiPlayer.isRunning() ) {
+						tuxguitar.getEditorCache().updatePlayMode();
+						if( tuxguitar.getEditorCache().shouldRedraw() ) {
+							tgEditorManager.redrawPlayingNewBeat();
 						} else {
-							TuxGuitar.getInstance().getEditorManager().redrawPlayingThread();
+							if(!tgEditorManager.isLocked() ) {
+								tgEditorManager.redrawPlayingThread();
+							}
 						}
 						
 						synchronized( TGTransportListener.this.sync ){
