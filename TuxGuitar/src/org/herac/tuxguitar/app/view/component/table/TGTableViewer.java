@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.view.component.table;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -20,8 +21,6 @@ import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
@@ -30,6 +29,8 @@ import org.herac.tuxguitar.app.view.menu.impl.TrackMenu;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -204,24 +205,16 @@ public class TGTableViewer implements TGEventListener {
 				final TGTableRow row = this.table.getRow(i);
 				if(row != null){
 					//Number
-					row.getNumber().setText(Integer.toString(track.getNumber()));
-					row.getNumber().setData(track);
-					row.getNumber().setMenu(createTrackMenu());
+					this.updateTableRow(row.getNumber(), track, Integer.toString(track.getNumber()));
 					
 					//Solo-Mute
-					row.getSoloMute().setText(getSoloMute(track));
-					row.getSoloMute().setData(track);
-					row.getSoloMute().setMenu(createTrackMenu());
+					this.updateTableRow(row.getSoloMute(), track, getSoloMute(track));
 					
 					//Name
-					row.getName().setText(track.getName());
-					row.getName().setData(track);
-					row.getName().setMenu(createTrackMenu());
+					this.updateTableRow(row.getName(), track, track.getName());
 					
 					//Instrument
-					row.getInstrument().setText(getInstrument(track));
-					row.getInstrument().setData(track);
-					row.getInstrument().setMenu(createTrackMenu());
+					this.updateTableRow(row.getInstrument(), track, getInstrument(track));
 					
 					row.setMouseListenerLabel(new MouseAdapter() {
 						
@@ -288,6 +281,16 @@ public class TGTableViewer implements TGEventListener {
 			
 		}
 		this.update = false;
+	}
+	
+	private void updateTableRow(CLabel control, TGTrack track, String label) {
+		control.setText(label);
+		control.setData(track);
+		
+		Menu menu = control.getMenu();
+		if( menu == null || menu.isDisposed() ) {
+			control.setMenu(createTrackMenu());
+		}
 	}
 	
 	private int getHeight(){
