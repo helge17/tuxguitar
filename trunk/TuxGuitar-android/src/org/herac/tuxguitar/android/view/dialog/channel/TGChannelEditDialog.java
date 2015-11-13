@@ -82,6 +82,8 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	public void onDismiss(DialogInterface dialog) {
 		this.removeListeners();
+		
+		super.onDismiss(dialog);
 	}
 	
 	public void updateItems() {
