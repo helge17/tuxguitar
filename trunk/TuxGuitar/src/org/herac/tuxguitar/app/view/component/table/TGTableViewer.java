@@ -50,6 +50,7 @@ public class TGTableViewer implements TGEventListener {
 	private ScrollBar hScroll;
 	private Color[] backgrounds;
 	private Color[] foregrounds;
+	private Menu menu;
 	private TGTable table;
 	private TGSyncProcessLocked redrawProcess;
 	private TGSyncProcessLocked redrawPlayModeProcess;
@@ -193,7 +194,9 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	private void updateTable(){
-		if(this.update){
+		if( this.update ){
+			this.updateTableMenu();
+			
 			TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
 			int count = song.countTracks();
 			this.table.removeRowsAfter(count);
@@ -270,6 +273,7 @@ public class TGTableViewer implements TGEventListener {
 					row.setPaintListenerCanvas(new TGTableCanvasPainter(this,track));
 				}
 			}
+			
 			this.table.update();
 			this.selectedTrack = 0;
 			this.selectedMeasure = 0;
@@ -286,11 +290,12 @@ public class TGTableViewer implements TGEventListener {
 	private void updateTableRow(CLabel control, TGTrack track, String label) {
 		control.setText(label);
 		control.setData(track);
-		
-		Menu menu = control.getMenu();
-		if( menu == null || menu.isDisposed() ) {
-			control.setMenu(createTrackMenu());
-		}
+		control.setMenu(this.menu);
+	}
+	
+	private void updateTableMenu() {
+		this.disposeMenu();
+		this.createTrackMenu();
 	}
 	
 	private int getHeight(){
@@ -383,8 +388,8 @@ public class TGTableViewer implements TGEventListener {
 		return this.composite;
 	}
 	
-	public Menu createTrackMenu(){
-		final TrackMenu trackMenu = new TrackMenu(getComposite().getShell(),SWT.POP_UP);
+	public void createTrackMenu(){
+		final TrackMenu trackMenu = new TrackMenu(getComposite().getShell(), SWT.POP_UP);
 		trackMenu.showItems();
 		trackMenu.update();
 		
@@ -435,7 +440,7 @@ public class TGTableViewer implements TGEventListener {
 			}
 		});
 		
-		return trackMenu.getMenu();
+		this.menu = trackMenu.getMenu();
 	}
 	
 	public void disposeColors(){
@@ -447,10 +452,18 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
+	public void disposeMenu() {
+		if( this.menu != null && !this.menu.isDisposed() ) {
+			this.menu.dispose();
+			this.menu = null;
+		}
+	}
+	
 	public void dispose(){
-		if(!isDisposed()){
-			getComposite().dispose();
-			disposeColors();
+		if(!this.isDisposed()){
+			this.getComposite().dispose();
+			this.disposeMenu();
+			this.disposeColors();
 		}
 	}
 	
