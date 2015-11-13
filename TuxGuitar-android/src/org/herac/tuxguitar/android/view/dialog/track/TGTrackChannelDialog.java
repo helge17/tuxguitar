@@ -74,6 +74,8 @@ public class TGTrackChannelDialog extends TGDialog implements OnShowListener {
 	
 	public void onDismiss(DialogInterface dialog) {
 		this.removeListeners();
+		
+		super.onDismiss(dialog);
 	}
 	
 	public void appendListeners() {

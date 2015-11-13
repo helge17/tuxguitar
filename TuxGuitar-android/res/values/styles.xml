@@ -243,6 +243,7 @@
 	
 	<style name="ChannelListItem" >
 	    <item name="android:background">@color/darkest</item>
+	    <item name="android:paddingTop">12dp</item>
 	</style>
 	
 	<style name="ChannelListItemTextView" >
