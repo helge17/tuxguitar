@@ -116,7 +116,6 @@ public class TGTabFolder implements TGEventListener {
 					this.tabFolder.setSelection(index);
 				}
 				
-				this.updateFocus();
 				this.ignoreEvents = false;
 			}
 		}
@@ -199,6 +198,7 @@ public class TGTabFolder implements TGEventListener {
 			} else {
 				this.loadSelectedDocument();
 			}
+			this.updateFocus();
 		}
 	}
 	
