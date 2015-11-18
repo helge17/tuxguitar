@@ -14,6 +14,7 @@ import org.herac.tuxguitar.app.util.MidiTickUtil;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -66,7 +67,8 @@ public class TransportPlayAction extends Action {
 	}
 	
 	protected void updateCaretPosition(){
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition()));
+		TGSong song = getDocumentManager().getSong();
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(song, MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition()));
 		TuxGuitar.instance().getTransport().gotoMeasure(header, true);
 	}
 	

@@ -14,9 +14,9 @@ import javax.swing.SwingUtilities;
 
 import org.herac.tuxguitar.app.system.config.TGConfig;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.TGSynchronizer.TGSynchronizerTask;
 
 public class TGApplet extends Applet{
 	
@@ -67,7 +67,7 @@ public class TGApplet extends Applet{
 		TuxGuitar.instance().lock();
 		TuxGuitar.instance().getPlayer().close();
 		TuxGuitar.instance().getTablatureEditor().dispose();
-		TuxGuitar.instance().getSongManager().clearSong();
+		TuxGuitar.instance().getDocumentManager().setSong(null);
 		TuxGuitar.instance().unlock();
 		this.removeAll();
 	}
@@ -89,27 +89,12 @@ public class TGApplet extends Applet{
 	}
 	
 	private void initSynchronizer(){
-		TGSynchronizer.instance().setController(new TGSynchronizer.TGSynchronizerController() {
-			public void execute(final TGSynchronizer.TGSynchronizerTask task) {
-				try{
-					// Just excecute the task if it is on the same thread.
-					if( SwingUtilities.isEventDispatchThread() ){
-						task.run();
-					}else{
-						SwingUtilities.invokeAndWait(new Runnable() {
-							public void run() {
-								task.run();
-							}
-						});
-					}
-				}catch(Throwable throwable){
-					throwable.printStackTrace();
-				}
-			}
-			public void executeLater(final TGSynchronizerTask task) {
+		TGSynchronizer.getInstance(TuxGuitar.instance().getContext()).setController(new TGSynchronizer.TGSynchronizerController() {
+			
+			public void executeLater(final Runnable runnable) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						task.run();
+						runnable.run();
 					}
 				});
 			}
@@ -139,14 +124,19 @@ public class TGApplet extends Applet{
 	public void loadSong(){
 		try{
 			if(TGConfig.SONG_URL != null){
-				TGFileFormatManager.instance().addInputStream(new org.herac.tuxguitar.io.tg10.TGInputStream());
-				TGFileFormatManager.instance().addInputStream(new org.herac.tuxguitar.io.tg11.TGInputStream());
-				TGFileFormatManager.instance().addInputStream(new org.herac.tuxguitar.io.tg12.TGInputStream());
+				TGContext context = TuxGuitar.instance().getContext();
+				TGFileFormatManager.getInstance(context).addInputStream(new org.herac.tuxguitar.io.tg.v10.TGInputStream());
+				TGFileFormatManager.getInstance(context).addInputStream(new org.herac.tuxguitar.io.tg.v11.TGInputStream());
+				TGFileFormatManager.getInstance(context).addInputStream(new org.herac.tuxguitar.io.tg.v12.TGInputStream());
 				
 				URL url = new URL(TGConfig.SONG_URL);
-				InputStream stream = getInputStream(url.openStream());
-				TGSong song = TGFileFormatManager.instance().getLoader().load(TuxGuitar.instance().getSongManager().getFactory(),stream);
-				TuxGuitar.instance().fireNewSong(song);
+				
+				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+				tgSongLoaderHandle.setFactory(TuxGuitar.instance().getSongManager().getFactory());
+				tgSongLoaderHandle.setInputStream(getInputStream(url.openStream()));
+				TGFileFormatManager.getInstance(context).getLoader().load(tgSongLoaderHandle);
+				
+				TuxGuitar.instance().fireNewSong(tgSongLoaderHandle.getSong());
 			}
 		}catch(Throwable t){
 			t.printStackTrace();

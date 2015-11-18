@@ -42,7 +42,7 @@ public class TransportSetupAction extends ActionDialog{
 	}
 	
 	protected void openDialog(){
-		final List ports = TuxGuitar.instance().getPlayer().listOutputPorts();
+		final List<?> ports = TuxGuitar.instance().getPlayer().listOutputPorts();
 		final String[] listData = new String[ ports.size() ];
 		
 		int selectedIndex = -1;
@@ -56,7 +56,7 @@ public class TransportSetupAction extends ActionDialog{
 		
 		final JFrame dialog = createDialog();
 		
-		final JList list = new JList();
+		final JList<String> list = new JList<String>();
 		list.setFont( TGConfig.FONT_WIDGETS );
 		list.setListData(listData);
 		if(selectedIndex >= 0){

@@ -53,20 +53,20 @@ public class SelectMeasureAction extends Action{
 		return 0;
 	}
 	
-	public TGMeasureImpl findSelectedMeasure(TGTrackImpl track,int x,int y){
+	public TGMeasureImpl findSelectedMeasure(TGTrackImpl track, float x, float y){
 		Tablature tablature = getEditor().getTablature();
 		TGMeasureImpl measure = null;
-		int minorDistance = 0;
+		float minorDistance = 0;
 		
-		Iterator it = track.getMeasures();
+		Iterator<?> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl m = (TGMeasureImpl)it.next();
 			if(!m.isOutOfBounds() && m.getTs() != null){
 				boolean isAtX = (x >= m.getPosX() && x <= m.getPosX() + m.getWidth(tablature.getViewLayout()) + m.getSpacing());
 				if(isAtX){
-					int measureHeight = m.getTs().getSize();
-					int distanceY = Math.min(Math.abs(y - (m.getPosY())),Math.abs(y - ( m.getPosY() + measureHeight - 10)));
-					if(measure == null || distanceY < minorDistance){
+					float measureHeight = m.getTs().getSize();
+					float distanceY = Math.min(Math.abs(y - (m.getPosY())),Math.abs(y - ( m.getPosY() + measureHeight - 10)));
+					if( measure == null || distanceY < minorDistance ){
 						measure = m;
 						minorDistance = distanceY;
 					}
