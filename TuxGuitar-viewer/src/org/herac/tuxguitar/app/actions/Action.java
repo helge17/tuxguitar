@@ -11,8 +11,8 @@ import java.awt.AWTEvent;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.util.SyncThread;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian
@@ -82,6 +82,10 @@ public abstract class Action extends ActionAdapter {
 	
 	public TGSongManager getSongManager() {
 		return TuxGuitar.instance().getSongManager();
+	}
+	
+	public TGDocumentManager getDocumentManager() {
+		return TuxGuitar.instance().getDocumentManager();
 	}
 	
 	public TablatureEditor getEditor() {

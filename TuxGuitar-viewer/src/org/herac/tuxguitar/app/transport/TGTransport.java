@@ -8,10 +8,13 @@ package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author julian
@@ -21,35 +24,41 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
  */
 public class TGTransport{
 	
-	public TGTransport() {
-		super();
+	private TGContext context;
+	
+	public TGTransport(TGContext context) {
+		this.context = context;
 	}
 	
-	protected TGSongManager getSongManager(){
-		return TuxGuitar.instance().getSongManager();
+	public TGSongManager getSongManager(){
+		return TGDocumentManager.getInstance(this.context).getSongManager();
+	}
+	
+	public TGSong getSong(){
+		return TGDocumentManager.getInstance(this.context).getSong();
 	}
 	
 	public void gotoFirst(){
-		gotoMeasure(getSongManager().getFirstMeasureHeader(),true);
+		gotoMeasure(getSongManager().getFirstMeasureHeader(getSong()), true);
 	}
 	
 	public void gotoLast(){
-		gotoMeasure(getSongManager().getLastMeasureHeader(),true) ;
+		gotoMeasure(getSongManager().getLastMeasureHeader(getSong()), true) ;
 	}
 	
 	public void gotoNext(){
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
-			gotoMeasure(getSongManager().getNextMeasureHeader(header),true);
+			gotoMeasure(getSongManager().getNextMeasureHeader(getSong(), header), true);
 		}
 	}
 	
 	public void gotoPrevious(){
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(player.getTickPosition()));
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
-			gotoMeasure(getSongManager().getPrevMeasureHeader(header),true);
+			gotoMeasure(getSongManager().getPrevMeasureHeader(getSong(), header), true);
 		}
 	}
 	

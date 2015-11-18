@@ -18,8 +18,8 @@ public class TGScrollBar {
 	
 	public static final int DEFAULT_INCREMENT = 50;
 	
-	private int value;
-	private int maximum;
+	private float value;
+	private float maximum;
 	
 	private JButton buttonUp;
 	private JButton buttonDown;
@@ -59,11 +59,11 @@ public class TGScrollBar {
 		return panel;
 	}
 	
-	public int getValue() {
+	public float getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(float value) {
 		this.value = value;
 		if( this.value < 0 ){
 			this.value = 0;
@@ -72,11 +72,11 @@ public class TGScrollBar {
 		}
 	}
 	
-	public int getMaximum() {
+	public float getMaximum() {
 		return maximum;
 	}
 	
-	public void setMaximum(int maximum) {
+	public void setMaximum(float maximum) {
 		this.maximum = maximum;
 	}
 	

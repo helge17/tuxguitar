@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.Action;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 
 /**
  * @author julian
@@ -33,7 +34,8 @@ public class TransportStopAction extends Action{
 	}
 	
 	protected void updateCaretPosition(){
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition()));
+		TGSong song = getDocumentManager().getSong();
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(song, MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition()));
 		TuxGuitar.instance().getTransport().gotoMeasure(header, true);
 	}
 }

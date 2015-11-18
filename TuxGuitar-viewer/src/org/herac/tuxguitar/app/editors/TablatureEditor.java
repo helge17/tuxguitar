@@ -7,12 +7,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.actions.measure.SelectMeasureAction;
 import org.herac.tuxguitar.app.editors.tab.Tablature;
 import org.herac.tuxguitar.app.system.config.TGConfig;
+import org.herac.tuxguitar.awt.graphics.TGColorImpl;
+import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
 
 public class TablatureEditor extends Canvas{
 	
@@ -87,7 +88,7 @@ public class TablatureEditor extends Canvas{
 	}
 	
 	public void loadTablature(){
-		this.tablature.setSongManager( TuxGuitar.instance().getSongManager() );
+		this.tablature.setDocumentManager(TuxGuitar.instance().getDocumentManager());
 		this.tablature.initDefaults();
 		this.tablature.reloadViewLayout();
 		this.tablature.updateTablature();
@@ -113,9 +114,10 @@ public class TablatureEditor extends Canvas{
 	
 	private void paintLoading(TGPainterImpl painter){
 		painter.setFont( TGConfig.FONT_LOADING_MESSAGE );
-		painter.setForeground( TGConfig.COLOR_LOADING_MESSAGE );
+		painter.setForeground(painter.createColor(TGConfig.COLOR_LOADING_MESSAGE));
 		String msg = "Loading ...";
-		Point p = painter.getStringExtent( msg );
-		painter.drawString(msg, ((this.size.width / 2) - (p.x / 2)), (this.size.height / 2) - (p.y / 2));
+		float width = painter.getFMWidth(msg);
+		float height = painter.getFMHeight();
+		painter.drawString(msg, ((this.size.width / 2) - (width / 2)), (this.size.height / 2) - (height / 2));
 	}
 }

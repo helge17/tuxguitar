@@ -65,9 +65,9 @@ public class TransportMixerAction extends ActionDialog {
 	protected void openDialog(){
 		final JFrame dialog = createDialog();
 		
-		final TrackPanel[] trackPanels = new TrackPanel[getSongManager().getSong().countTracks()];
+		final TrackPanel[] trackPanels = new TrackPanel[getDocumentManager().getSong().countTracks()];
 		for( int i = 0 ; i < trackPanels.length ; i ++ ){
-			trackPanels[i] = new TrackPanel(getSongManager().getSong().getTrack(i));
+			trackPanels[i] = new TrackPanel(getDocumentManager().getSong().getTrack(i));
 			trackPanels[i].init();
 			
 			ChangeVolumeListener volumeListener = new ChangeVolumeListener(trackPanels[i],trackPanels);
@@ -146,7 +146,7 @@ public class TransportMixerAction extends ActionDialog {
 	
 	
 	public void fireChannelChanges(TrackPanel[] trackPanels, int channelId){
-		TGChannel channel = getSongManager().getChannel(channelId);
+		TGChannel channel = getSongManager().getChannel(getDocumentManager().getSong(), channelId);
 		if( channel != null ){
 			this.fireChannelChanges(trackPanels, channel);
 		}
@@ -164,14 +164,14 @@ public class TransportMixerAction extends ActionDialog {
 		}
 	}
 	
-	protected void xxfireUpdate(TrackPanel[] trackPanels, int type){
+	protected void fireUpdate(TrackPanel[] trackPanels, int type){
 		for(int i = 0 ; i < trackPanels.length ; i ++){
-			xxfireUpdate(trackPanels[i], type);
+			fireUpdate(trackPanels[i], type);
 		}
 	}
 	
-	private void xxfireUpdate(TrackPanel track, int type){
-		TGChannel channel = getSongManager().getChannel(track.getTrack().getChannelId());
+	private void fireUpdate(TrackPanel track, int type){
+		TGChannel channel = getSongManager().getChannel(getDocumentManager().getSong(), track.getTrack().getChannelId());
 		if( channel != null ){
 			if((type & SOLO) != 0 || (type & MUTE) != 0){
 				track.getTrackSolo().setSelected( track.getTrack().isSolo() );
@@ -259,7 +259,7 @@ public class TransportMixerAction extends ActionDialog {
 			this.add(trackVolumePanel, BorderLayout.CENTER);
 			this.add(trackVolumeValuePanel, BorderLayout.SOUTH);
 			
-			TGChannel channel = getSongManager().getChannel(this.track.getChannelId());
+			TGChannel channel = getSongManager().getChannel(getDocumentManager().getSong(), this.track.getChannelId());
 			if( channel != null ){
 				this.trackVolume.setValue( channel.getVolume() );
 				this.trackVolumeValue.setText( Integer.toString( channel.getVolume() ) );
@@ -307,7 +307,7 @@ public class TransportMixerAction extends ActionDialog {
 				setLocked(true);
 				
 				int value = this.track.getTrackVolume().getValue();
-				TGChannel channel = getSongManager().getChannel(this.track.getTrack().getChannelId());
+				TGChannel channel = getSongManager().getChannel(getDocumentManager().getSong(), this.track.getTrack().getChannelId());
 				if( channel != null ){
 					if(value != channel.getVolume()){
 						channel.setVolume((short)value );
@@ -334,7 +334,7 @@ public class TransportMixerAction extends ActionDialog {
 				setLocked(true);
 				
 				int value = this.track.getTrackBalance().getValue();
-				TGChannel channel = getSongManager().getChannel(this.track.getTrack().getChannelId());
+				TGChannel channel = getSongManager().getChannel(getDocumentManager().getSong(), this.track.getTrack().getChannelId());
 				if( channel != null ){
 					if(value != channel.getBalance()){
 						channel.setBalance((short)value );

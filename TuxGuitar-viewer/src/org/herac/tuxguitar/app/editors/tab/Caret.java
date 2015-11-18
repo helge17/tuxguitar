@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGPainterImpl;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
@@ -22,6 +22,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -92,9 +93,9 @@ public class Caret {
 	}
 	
 	private TGTrackImpl findTrack(int number){
-		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(number);
-		if(track == null){
-			track = (TGTrackImpl)getSongManager().getFirstTrack();
+		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(getSong(), number);
+		if( track == null ){
+			track = (TGTrackImpl)getSongManager().getFirstTrack(getSong());
 		}
 		return track;
 	}
@@ -137,12 +138,12 @@ public class Caret {
 				org.herac.tuxguitar.graphics.control.TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){
 					boolean expectedVoice = (getSelectedNote() == null || getSelectedNote().getVoice().getIndex() == getVoice());
-					int stringSpacing = this.tablature.getViewLayout().getStringSpacing();
-					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
-					int x = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - 5;
-					int y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
-					int width = 14;
-					int height = 14;
+					float stringSpacing = this.tablature.getViewLayout().getStringSpacing();
+					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
+					float x = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - 5f;
+					float y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
+					float width = 14;
+					float height = 14;
 					painter.setForeground( expectedVoice ? layout.getResources().getLineColor() : layout.getResources().getColorRed());
 					painter.initPath();
 					painter.setAntialias(false);
@@ -150,11 +151,11 @@ public class Caret {
 					painter.closePath();
 				}
 				else if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
-					int line = this.tablature.getViewLayout().getScoreLineSpacing();
-					int leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
+					float line = this.tablature.getViewLayout().getScoreLineSpacing();
+					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float xMargin = (2.0f * layout.getScale());
-					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing() + leftSpacing - xMargin;
-					float x2 = (x1 + layout.getResources().getScoreNoteWidth() + xMargin);
+					float x1 = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - xMargin;
+					float x2 = (x1 + layout.getScoreNoteWidth() + xMargin);
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
 					painter.setForeground(layout.getResources().getLineColor());
@@ -223,7 +224,7 @@ public class Caret {
 	 */
 	private void updateDuration() {
 		if (this.selectedBeat != null && !this.selectedBeat.getVoice(getVoice()).isRestVoice()) {
-			this.selectedBeat.getVoice(getVoice()).getDuration().copy(this.selectedDuration);
+			this.selectedDuration.copyFrom(this.selectedBeat.getVoice(getVoice()).getDuration());
 		}
 	}
 	
@@ -269,8 +270,8 @@ public class Caret {
 	}
 	
 	public TGString getSelectedString() {
-		List strings = this.selectedTrack.getStrings();
-		Iterator it = strings.iterator();
+		List<?> strings = this.selectedTrack.getStrings();
+		Iterator<?> it = strings.iterator();
 		while (it.hasNext()) {
 			TGString instrumentString = (TGString) it.next();
 			if (instrumentString.getNumber() == this.string) {
@@ -338,6 +339,10 @@ public class Caret {
 	
 	public TGSongManager getSongManager(){
 		return this.tablature.getSongManager();
+	}
+	
+	public TGSong getSong(){
+		return this.tablature.getSong();
 	}
 	
 	public int getVoice() {

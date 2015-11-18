@@ -14,12 +14,13 @@ import org.herac.tuxguitar.app.system.config.TGConfig;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.toolbar.TGToolBar;
 import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
 
 /**
@@ -33,11 +34,11 @@ public class TuxGuitar {
 	
 	private TGLock lock;
 	
+	private TGContext context;
+	
 	private TGApplet shell;
 	
 	private MidiPlayer player;
-	
-	private TGSongManager songManager;
 	
 	private KeyBindingActionManager keyBindingManager;
 	
@@ -53,6 +54,7 @@ public class TuxGuitar {
 	
 	private TuxGuitar() {
 		this.lock = new TGLock();
+		this.context = new TGContext();
 	}
 	
 	public static TuxGuitar instance() {
@@ -62,6 +64,14 @@ public class TuxGuitar {
 			}
 		}
 		return instance;
+	}
+	
+	public TGDocumentManager getDocumentManager(){
+		return TGDocumentManager.getInstance(this.context);
+	}
+	
+	public TGSongManager getSongManager(){
+		return getDocumentManager().getSongManager();
 	}
 	
 	public TablatureEditor getTablatureEditor(){
@@ -78,17 +88,9 @@ public class TuxGuitar {
 		return this.toolBar;
 	}
 	
-	public TGSongManager getSongManager(){
-		if(this.songManager == null){
-			this.songManager = new TGSongManager(new TGFactoryImpl());
-			this.songManager.setSong(this.songManager.newSong());
-		}
-		return this.songManager;
-	}
-	
 	public TGTransport getTransport(){
 		if(this.transport == null){
-			this.transport = new TGTransport();
+			this.transport = new TGTransport(this.context);
 		}
 		return this.transport;
 	}
@@ -115,13 +117,13 @@ public class TuxGuitar {
 	}
 	
 	public MidiPlayer getPlayer(){
-		if(this.player == null){
-			this.player = MidiPlayer.getInstance();
-			this.player.init(getSongManager());
+		if( this.player == null){
+			this.player = MidiPlayer.getInstance(this.context);
+			this.player.init(getDocumentManager());
 			try {
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());
 				getPlayer().addSequencerProvider(new org.herac.tuxguitar.player.impl.jsa.sequencer.MidiSequencerProviderImpl());
-				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl());
+				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl(this.context));
 				
 				//check midi sequencer
 				getPlayer().openSequencer(TGConfig.MIDI_SEQUENCER, true);
@@ -170,7 +172,7 @@ public class TuxGuitar {
 	public void fireNewSong(TGSong song){
 		this.lock();
 		
-		getSongManager().setSong(song);
+		getDocumentManager().setSong(song);
 
 		getPlayer().reset();
 		getEditorCache().reset();
@@ -206,6 +208,10 @@ public class TuxGuitar {
 		this.shell = shell;
 	}
 	
+	public TGContext getContext() {
+		return context;
+	}
+
 	public void lock(){
 		this.lock.lock();
 	}

@@ -11,11 +11,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGColorImpl;
-import org.herac.tuxguitar.app.editors.TGPainterImpl;
-import org.herac.tuxguitar.app.editors.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.editors.TGScrollBar;
 import org.herac.tuxguitar.app.system.config.TGConfig;
+import org.herac.tuxguitar.awt.graphics.TGColorImpl;
+import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
+import org.herac.tuxguitar.awt.graphics.TGResourceFactoryImpl;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
@@ -24,11 +25,13 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 /**
  * @author julian
  * 
@@ -39,17 +42,19 @@ public class Tablature implements TGController {
 	private Component component;
 	private TGScrollBar scroll;
 	
-	private TGSongManager songManager;
+	private TGDocumentManager documentManager;
 	private Caret caret;
-	//private int width;
-	private int height;
+	//private float width;
+	private float height;
 	private TGLayout viewLayout;
+	
+	private TGResourceBuffer resourceBuffer;
 	
 	private TGBeatImpl playedBeat;
 	private TGMeasureImpl playedMeasure;
 	
 	//private int scrollX;
-	private int scrollY;
+	private float scrollY;
 	private boolean resetScroll;
 	protected long lastVScrollTime;
 	protected long lastHScrollTime;
@@ -133,9 +138,9 @@ public class Tablature implements TGController {
 	public boolean moveScrollTo(TGMeasureImpl measure, Rectangle area){
 		boolean success = false;
 		if(measure != null && measure.getTs() != null){
-			int mX = measure.getPosY();
-			int mWidth = measure.getTs().getSize();
-			int marginWidth = getViewLayout().getFirstTrackSpacing();
+			float mX = measure.getPosY();
+			float mWidth = measure.getTs().getSize();
+			float marginWidth = getViewLayout().getFirstTrackSpacing();
 			boolean forceRedraw = false;
 			
 			//Solo se ajusta si es necesario
@@ -218,13 +223,21 @@ public class Tablature implements TGController {
 	}
 	
 	public TGSongManager getSongManager() {
-		return this.songManager;
+		return this.documentManager.getSongManager();
 	}
 	
-	public void setSongManager(TGSongManager songManager) {
-		this.songManager = songManager;
+	public TGSong getSong() {
+		return this.documentManager.getSong();
 	}
 	
+	public TGDocumentManager getDocumentManager() {
+		return documentManager;
+	}
+
+	public void setDocumentManager(TGDocumentManager documentManager) {
+		this.documentManager = documentManager;
+	}
+
 	public TGLayout getViewLayout(){
 		return this.viewLayout;
 	}
@@ -265,6 +278,13 @@ public class Tablature implements TGController {
 
 	public TGResourceFactory getResourceFactory() {
 		return new TGResourceFactoryImpl();
+	}
+	
+	public TGResourceBuffer getResourceBuffer(){
+		if( this.resourceBuffer == null ){
+			this.resourceBuffer = new TGResourceBuffer();
+		}
+		return this.resourceBuffer;
 	}
 	
 	public void configureStyles(TGLayoutStyles styles) {

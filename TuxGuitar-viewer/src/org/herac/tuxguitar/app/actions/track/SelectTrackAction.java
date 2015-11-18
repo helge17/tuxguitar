@@ -39,7 +39,7 @@ public class SelectTrackAction extends Action{
 		final Caret caret = getEditor().getTablature().getCaret();
 		final JButton button = (JButton) e.getSource();
 		final JPopupMenu menu = new JPopupMenu();
-		Iterator it = TuxGuitar.instance().getTablatureEditor().getTablature().getSongManager().getSong().getTracks();
+		Iterator<?> it = TuxGuitar.instance().getTablatureEditor().getTablature().getSong().getTracks();
 		while( it.hasNext() ){
 			final TGTrack track = (TGTrack) it.next();
 			JMenuItem item = new JRadioButtonMenuItem( track.getName() , (track.getNumber() == caret.getTrack().getNumber()) );

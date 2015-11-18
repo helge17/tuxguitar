@@ -35,7 +35,6 @@ public class TGConfig{
 	public static final Font FONT_WIDGETS = new Font(DEFAULT_FONT_NAME, Font.BOLD, 12);
 	public static final Font FONT_LOADING_MESSAGE = new Font(DEFAULT_FONT_NAME, Font.BOLD ,18);
 	public static final Color COLOR_WIDGET_BACKGROUND = new Color(255,255,255);
-	public static final Color COLOR_LOADING_MESSAGE = new Color(200,200,200);
 	
 	public static final TGFontModel FONT_DEFAULT = new TGFontModel(DEFAULT_FONT_NAME, 9, false, false);
 	public static final TGFontModel FONT_NOTE = new TGFontModel(DEFAULT_FONT_NAME, 9, false, false);
@@ -47,6 +46,7 @@ public class TGConfig{
 	public static final TGFontModel FONT_CHORD_FRET = new TGFontModel(DEFAULT_FONT_NAME, 7, false, false);
 	public static final TGFontModel FONT_GRACE = new TGFontModel(DEFAULT_FONT_NAME, 6, false, false);
 	
+	public static final TGColorModel COLOR_LOADING_MESSAGE = new TGColorModel(200,200,200);
 	public static final TGColorModel COLOR_BACKGROUND = new TGColorModel(255,255,255);
 	public static final TGColorModel COLOR_LINE = new TGColorModel(225,225,225);
 	public static final TGColorModel COLOR_SCORE_NOTE = new TGColorModel(0,0,0);
