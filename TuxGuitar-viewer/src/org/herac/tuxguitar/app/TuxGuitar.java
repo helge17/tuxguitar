@@ -6,8 +6,8 @@
  */
 package org.herac.tuxguitar.app;
 
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.ActionManager;
+import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.action.TGActionAdapterManager;
 import org.herac.tuxguitar.app.editors.EditorCache;
 import org.herac.tuxguitar.app.editors.TablatureEditor;
 import org.herac.tuxguitar.app.system.config.TGConfig;
@@ -50,8 +50,6 @@ public class TuxGuitar {
 	
 	private TGTransport transport;
 	
-	private ActionManager actionManager;
-	
 	private TuxGuitar() {
 		this.lock = new TGLock();
 		this.context = new TGContext();
@@ -74,44 +72,45 @@ public class TuxGuitar {
 		return getDocumentManager().getSongManager();
 	}
 	
+	public TGActionManager getActionManager(){
+		return TGActionManager.getInstance(this.context);
+	}
+	
+	public TGActionAdapterManager getActionAdapterManager() {
+		return TGActionAdapterManager.getInstance(this.context);
+	}
+	
 	public TablatureEditor getTablatureEditor(){
-		if(this.tablatureEditor == null){
-			this.tablatureEditor = new TablatureEditor();
+		if( this.tablatureEditor == null ){
+			this.tablatureEditor = new TablatureEditor(this.context);
 		}
 		return this.tablatureEditor;
 	}
 	
 	public TGToolBar getToolBar(){
-		if(this.toolBar == null){
-			this.toolBar = new TGToolBar();
+		if( this.toolBar == null ){
+			this.toolBar = new TGToolBar(this.context);
 		}
 		return this.toolBar;
 	}
 	
 	public TGTransport getTransport(){
-		if(this.transport == null){
+		if( this.transport == null ){
 			this.transport = new TGTransport(this.context);
 		}
 		return this.transport;
 	}
 	
 	public EditorCache getEditorCache(){
-		if(this.editorCache == null){
+		if( this.editorCache == null ){
 			this.editorCache = new EditorCache();
 		}
 		return this.editorCache;
 	}
 	
-	public ActionManager getActionManager() {
-		if(this.actionManager == null){
-			this.actionManager = new ActionManager();
-		}
-		return this.actionManager;
-	}
-	
 	public KeyBindingActionManager getkeyBindingManager(){
-		if(this.keyBindingManager == null){
-			this.keyBindingManager = new KeyBindingActionManager();
+		if( this.keyBindingManager == null ){
+			this.keyBindingManager = new KeyBindingActionManager(this.context);
 		}
 		return this.keyBindingManager;
 	}
@@ -122,8 +121,7 @@ public class TuxGuitar {
 			this.player.init(getDocumentManager());
 			try {
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());
-				getPlayer().addSequencerProvider(new org.herac.tuxguitar.player.impl.jsa.sequencer.MidiSequencerProviderImpl());
-				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl(this.context));
+				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl());
 				
 				//check midi sequencer
 				getPlayer().openSequencer(TGConfig.MIDI_SEQUENCER, true);
@@ -143,6 +141,7 @@ public class TuxGuitar {
 		if( updateItems ){
 			this.getToolBar().updateItems();
 		}
+		this.unlock();
 		this.redraw();
 	}
 	
@@ -159,10 +158,6 @@ public class TuxGuitar {
 			this.getTablatureEditor().getTablature().redrawPlayingMode();
 		}
 		this.unlock();
-	}
-	
-	public Action getAction(String name) {
-		return this.getActionManager().getAction(name);
 	}
 	
 	public void newSong(){
@@ -217,7 +212,7 @@ public class TuxGuitar {
 	}
 	
 	public void unlock(){
-		this.lock.unlock();
+		this.lock.unlock(false);
 	}
 	
 	public boolean isLocked(){

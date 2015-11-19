@@ -4,13 +4,16 @@ import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import org.herac.tuxguitar.app.actions.Action;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.util.TGContext;
 
 public class KeyBindingActionManager {
 	
+	private TGContext context;
 	private KeyBindingListener listener;
 	
-	public KeyBindingActionManager(){
+	public KeyBindingActionManager(TGContext context){
+		this.context = context;
 		this.init();
 	}
 	
@@ -18,7 +21,7 @@ public class KeyBindingActionManager {
 		this.listener = new KeyBindingListener();
 	}
 	
-	public Action getActionForKeyBinding(KeyBinding kb){
+	public String getActionForKeyBinding(KeyBinding kb){
 		return KeyBindingActionList.getActionForKeyBinding(kb);
 	}
 	
@@ -30,16 +33,20 @@ public class KeyBindingActionManager {
 		control.addKeyListener(this.listener);
 	}
 	
+	public void processKeyBinding(KeyBinding kb){
+		final String actionId = getActionForKeyBinding(kb);
+		if( actionId != null ){
+			new TGActionProcessor(this.context, actionId).process();
+		}
+	}
+	
 	protected class KeyBindingListener extends KeyAdapter {
 		
 		public void keyPressed(KeyEvent event) {
 			KeyBinding kb = new KeyBinding();
 			kb.setKey(event.getKeyCode());
 			kb.setMask(event.getModifiersEx());
-			Action action = getActionForKeyBinding(kb);
-			if (action != null){
-				action.process(event);
-			}
+			processKeyBinding(kb);
 		}
 	}
 }

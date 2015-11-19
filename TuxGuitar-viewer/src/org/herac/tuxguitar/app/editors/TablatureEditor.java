@@ -9,16 +9,19 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.measure.SelectMeasureAction;
+import org.herac.tuxguitar.app.action.TGActionProcessorListener;
+import org.herac.tuxguitar.app.action.impl.measure.SelectMeasureAction;
 import org.herac.tuxguitar.app.editors.tab.Tablature;
 import org.herac.tuxguitar.app.system.config.TGConfig;
 import org.herac.tuxguitar.awt.graphics.TGColorImpl;
 import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
+import org.herac.tuxguitar.util.TGContext;
 
-public class TablatureEditor extends Canvas{
+public class TablatureEditor extends Canvas {
 	
 	private static final long serialVersionUID = 3033840631768147247L;
 	
+	private TGContext context;
 	private Tablature tablature;
 	private TGScrollBar scrollBar;
 	private Dimension size;
@@ -27,7 +30,8 @@ public class TablatureEditor extends Canvas{
 	private boolean loaded;
 	private boolean started;
 	
-	public TablatureEditor(){
+	public TablatureEditor(TGContext context){
+		this.context = context;
 		this.loaded = false;
 		this.started = false;
 		this.size = new Dimension();
@@ -37,7 +41,7 @@ public class TablatureEditor extends Canvas{
 	public Component getPanel(){
 		this.scrollBar = new TGScrollBar();
 		this.tablature = new Tablature(this, this.scrollBar);
-		this.addMouseListener( TuxGuitar.instance().getAction(SelectMeasureAction.NAME) );
+		this.addMouseListener(new TGActionProcessorListener(this.context, SelectMeasureAction.NAME));
 		return this;
 	}
 	

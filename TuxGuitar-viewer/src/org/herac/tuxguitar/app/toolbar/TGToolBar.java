@@ -15,29 +15,36 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.settings.SettingsAction;
-import org.herac.tuxguitar.app.actions.track.SelectTrackAction;
-import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.app.action.TGActionProcessorListener;
+import org.herac.tuxguitar.app.action.impl.settings.SettingsAction;
+import org.herac.tuxguitar.app.action.impl.track.SelectTrackAction;
+import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
 import org.herac.tuxguitar.app.editors.tab.Tablature;
 import org.herac.tuxguitar.app.system.config.TGConfig;
 import org.herac.tuxguitar.app.util.TGResourceUtils;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGToolBar {
 	
+	private TGContext context;
 	private JPanel buttons;
 	private AbstractButton buttonPlay;
 	private AbstractButton buttonTrack;
 	private AbstractButton buttonSetup;
 	
+	public TGToolBar(TGContext context) {
+		this.context = context;
+	}
+	
 	public void init() {
 		this.buttonPlay = getImageButton(new JToggleButton(), "transport_play", ".png");
-		this.buttonPlay.addActionListener( TuxGuitar.instance().getAction( TransportPlayAction.NAME ) );
+		this.buttonPlay.addActionListener(new TGActionProcessorListener(this.context, TransportPlayAction.NAME));
 		
-		this.buttonTrack = getLinkButton ( getImageButton(new JButton(), null,null) );
-		this.buttonTrack.addActionListener( TuxGuitar.instance().getAction( SelectTrackAction.NAME ) );
+		this.buttonTrack = getLinkButton (getImageButton(new JButton(), null,null) );
+		this.buttonTrack.addActionListener(new TGActionProcessorListener(this.context, SelectTrackAction.NAME));
 		
 		this.buttonSetup = getImageButton(new JButton(), "setup", ".png");
-		this.buttonSetup.addActionListener( TuxGuitar.instance().getAction( SettingsAction.NAME ) );
+		this.buttonSetup.addActionListener(new TGActionProcessorListener(this.context, SettingsAction.NAME));
 	}
 	
 	public Component getPanel(){

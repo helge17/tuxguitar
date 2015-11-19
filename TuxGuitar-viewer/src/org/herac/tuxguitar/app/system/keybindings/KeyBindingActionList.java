@@ -1,10 +1,8 @@
 package org.herac.tuxguitar.app.system.keybindings;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.actions.Action;
-import org.herac.tuxguitar.app.actions.measure.GoNextMeasureAction;
-import org.herac.tuxguitar.app.actions.measure.GoPreviousMeasureAction;
-import org.herac.tuxguitar.app.actions.transport.TransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.measure.GoNextMeasureAction;
+import org.herac.tuxguitar.app.action.impl.measure.GoPreviousMeasureAction;
+import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
 
 public class KeyBindingActionList {
 	
@@ -24,10 +22,10 @@ public class KeyBindingActionList {
 		return false;
 	}
 	
-	public static Action getActionForKeyBinding(KeyBinding kb){
+	public static String getActionForKeyBinding(KeyBinding kb){
 		for(int i = 0;i < KB_ACTIONS.length;i++){
 			if(kb.isSameAs(KB_ACTIONS[i].getKeyBinding())){
-				return TuxGuitar.instance().getAction(KB_ACTIONS[i].getAction());
+				return KB_ACTIONS[i].getAction();
 			}
 		}
 		return null;
