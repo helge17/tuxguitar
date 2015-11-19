@@ -111,6 +111,7 @@ public class TGApplet extends Applet{
 	public void load(){
 		new Thread(new Runnable() {
 			public void run() {
+				TuxGuitar.instance().getActionAdapterManager().initialize();
 				TuxGuitar.instance().getTablatureEditor().loadTablature();
 				TuxGuitar.instance().getkeyBindingManager().appendListenersTo( TGApplet.this );
 				
