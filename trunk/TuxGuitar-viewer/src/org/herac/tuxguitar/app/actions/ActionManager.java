@@ -6,10 +6,7 @@
  */
 package org.herac.tuxguitar.app.actions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.herac.tuxguitar.app.actions.layout.SetChordDiagramEnabledAction;
@@ -76,17 +73,5 @@ public class ActionManager {
 	
 	public Action getAction(String name){
 		return (Action)this.actions.get(name);
-	}
-	
-	public List<String> getAvailableKeyBindingActions(){
-		List<String> availableKeyBindingActions = new ArrayList<String>();
-		Iterator<?> it = this.actions.keySet().iterator();
-		while(it.hasNext()){
-			String actionName = (String)it.next();
-			if(getAction(actionName).isKeyBindingAvailable()){
-				availableKeyBindingActions.add(actionName);
-			}
-		}
-		return availableKeyBindingActions;
 	}
 }
