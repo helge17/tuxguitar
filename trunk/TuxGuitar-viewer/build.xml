@@ -17,10 +17,14 @@
 	<property name="dist.dst.path" value="" />
 	<property name="dist.jar.path" value="." />
 	
-	<path id="class.path">
-		<pathelement location="${path.tuxguitar-lib}"/>
-		<pathelement location="${path.tuxguitar-gm-utils}"/>
-	</path >
+	<path id="source.path">
+		<pathelement location="${build.src.path}"/>
+		<pathelement location="${build.src.tuxguitar-lib}"/>
+		<pathelement location="${build.src.tuxguitar-awt-graphics}"/>
+		<pathelement location="${build.src.tuxguitar-editor-utils}"/>
+		<pathelement location="${build.src.tuxguitar-gm-utils}"/>
+		<pathelement location="${build.src.tuxguitar-jsa}"/>
+	</path>
 	
 	<target name="all" depends="package" />
 	
@@ -36,8 +40,9 @@
 		
 		<mkdir dir="${build.path}" />
 		
-		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
-			<classpath refid="class.path"/>
+		<javac destdir="${build.path}" debug="false" >
+			<src refid="source.path"/>
+			
 			<include name="**/*.java"/>
 		</javac>
 		
