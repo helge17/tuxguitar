@@ -23,7 +23,7 @@
 		<pathelement location="${build.src.tuxguitar-awt-graphics}"/>
 		<pathelement location="${build.src.tuxguitar-editor-utils}"/>
 		<pathelement location="${build.src.tuxguitar-gm-utils}"/>
-		<pathelement location="${build.src.tuxguitar-jsa}"/>
+		<pathelement location="${build.src.tuxguitar-compat}"/>
 	</path>
 	
 	<target name="all" depends="package" />
@@ -42,7 +42,6 @@
 		
 		<javac destdir="${build.path}" debug="false" >
 			<src refid="source.path"/>
-			
 			<include name="**/*.java"/>
 		</javac>
 		
