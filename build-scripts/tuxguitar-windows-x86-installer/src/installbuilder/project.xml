@@ -1,0 +1,195 @@
+<project>
+	<shortName>tuxguitar</shortName>
+	<fullName>TuxGuitar</fullName>
+	<version>1.3</version>
+	<installerFilename>${product_shortname}-${product_version}-${platform_name}-x86-installer.${platform_exec_suffix}</installerFilename>
+	<readmeFile></readmeFile>
+	<licenseFile>${build_project_directory}/../../target/bundle/doc/LICENSE</licenseFile>
+	<wrapLicenseFileText>1</wrapLicenseFileText>
+	<leftImage></leftImage>
+	<logoImage></logoImage>
+	<splashImage></splashImage>
+	<defaultLanguage>en</defaultLanguage>
+	<allowLanguageSelection>0</allowLanguageSelection>
+	<postInstallationScript></postInstallationScript>
+	<postInstallationScriptArguments></postInstallationScriptArguments>
+	<showPostInstallationScriptResult>0</showPostInstallationScriptResult>
+	<preUninstallationScript></preUninstallationScript>
+	<preUninstallationScriptArguments></preUninstallationScriptArguments>
+	<allowedLanguages></allowedLanguages>
+	<cdromPlatforms></cdromPlatforms>
+	<defaultInstallationMode></defaultInstallationMode>
+	<defaultUnixDirectoryPermissions>755</defaultUnixDirectoryPermissions>
+	<defaultUnixFilePermissions>644</defaultUnixFilePermissions>
+	<description>One-line description of your software</description>
+	<outputDirectory>${build_project_directory}/../../target</outputDirectory>
+	<projectSchemaVersion>1.2</projectSchemaVersion>
+	<saveRelativePaths>0</saveRelativePaths>
+	<slideShowLoop>1</slideShowLoop>
+	<slideShowTiming>5</slideShowTiming>
+	<enableRollback>0</enableRollback>
+	<startMenuGroupName>${product_fullname}</startMenuGroupName>
+	<style>standard</style>
+	<summary>Place here a detailed description of your software</summary>
+	<uninstallerDirectory>${installdir}</uninstallerDirectory>
+	<uninstallerName></uninstallerName>
+	<validatorProgram></validatorProgram>
+	<vendor>Name of your company</vendor>
+	<componentList>
+		<component>
+			<name>default</name>
+			<description>Default Component</description>
+			<canBeEdited>1</canBeEdited>
+			<detailedDescription></detailedDescription>
+			<selected>1</selected>
+			<show>1</show>
+			<desktopShortcutList>
+				<shortcut>
+					<comment>${product_fullname}</comment>
+					<exec></exec>
+					<icon></icon>
+					<name>${product_fullname}</name>
+					<path></path>
+					<platforms>windows</platforms>
+					<windowsExec>${installdir}/tuxguitar.exe</windowsExec>
+					<windowsExecArgs></windowsExecArgs>
+					<windowsIcon>${installdir}/share/skins/Lavender/icon.ico</windowsIcon>
+					<windowsPath>${installdir}/</windowsPath>
+				</shortcut>
+			</desktopShortcutList>
+			<folderList>
+				<folder>
+					<description>Program Files</description>
+					<destination>${installdir}</destination>
+					<name>programfileswindows</name>
+					<platforms>windows</platforms>
+					<distributionFileList>
+						<distributionFile>
+							<allowWildcards>1</allowWildcards>
+							<origin>${build_project_directory}/../../target/bundle/*</origin>
+						</distributionFile>
+					</distributionFileList>
+				</folder>
+			</folderList>
+			<postInstallationActionList />
+			<startMenuShortcutList>
+				<startMenuShortcut>
+					<comment>Uninstall ${product_fullname}</comment>
+					<name>Uninstall ${product_fullname}</name>
+					<windowsExec>${installdir}/uninstall.exe</windowsExec>
+					<windowsExecArgs></windowsExecArgs>
+					<windowsIcon></windowsIcon>
+					<windowsPath>${installdir}/</windowsPath>
+				</startMenuShortcut>
+				<startMenuShortcut>
+					<comment>Launch ${product_fullname}</comment>
+					<name>Launch ${product_fullname}</name>
+					<windowsExec>${installdir}/tuxguitar.exe</windowsExec>
+					<windowsExecArgs></windowsExecArgs>
+					<windowsIcon>${installdir}/share/skins/Lavender/icon.ico</windowsIcon>
+					<windowsPath>${installdir}/</windowsPath>
+				</startMenuShortcut>
+			</startMenuShortcutList>
+		</component>
+	</componentList>
+	<customLanguageFileList />
+	<fileList />
+	<finalPageActionList />
+	<parameterList>
+		<directoryParameter>
+			<name>installdir</name>
+			<title></title>
+			<description>Installer.Parameter.installdir.description</description>
+			<explanation>Installer.Parameter.installdir.explanation</explanation>
+			<value>${platform_install_prefix}/${product_shortname}-${product_version}</value>
+			<default>${platform_install_prefix}/${product_shortname}-${product_version}</default>
+			<allowEmptyValue>0</allowEmptyValue>
+			<ask>yes</ask>
+			<cliOptionName>prefix</cliOptionName>
+			<leftImage></leftImage>
+			<mustBeWritable>yes</mustBeWritable>
+			<mustExist>0</mustExist>
+			<width>30</width>
+		</directoryParameter>
+	</parameterList>
+	<platformOptionsList />
+	<postInstallationActionList>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\TuxGuitar.File\shell\open\command</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>${installdir}\tuxguitar.exe "%1"</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.tg</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.gtp</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.gp3</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.gp4</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.gp5</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.ptb</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+	</postInstallationActionList>
+	<postUninstallationActionList>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.tg</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.gtp</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.gp3</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.gp4</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.gp5</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.ptb</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\TuxGuitar.File</key>
+			<name></name>
+		</registryDelete>
+	</postUninstallationActionList>
+	<preBuildActionList />
+	<preInstallationActionList />
+	<preUninstallationActionList />
+	<slideShowImageList />
+</project>
+
