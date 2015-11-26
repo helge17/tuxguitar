@@ -17,17 +17,19 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class KeyBindingActionManager {
 	
+	private TGContext context;
 	private List<KeyBindingAction> keyBindingsActions;
 	private KeyBindingListener listener;
 	
 	private KeyBindingActionManager(TGContext context){
+		this.context = context;
 		this.keyBindingsActions = new ArrayList<KeyBindingAction>();
-		this.init(context);
+		this.init();
 	}
 	
-	public void init(TGContext context){
+	public void init(){
 		List<KeyBindingAction> enabled = KeyBindingReader.getKeyBindings(getUserFileName());
-		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings(context)) );
+		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings(this.context)) );
 		this.listener = new KeyBindingListener(this);
 	}
 	
@@ -89,7 +91,7 @@ public class KeyBindingActionManager {
 	public void processKeyBinding(KeyBinding kb){
 		final String actionId = getActionForKeyBinding(kb);
 		if( actionId != null ){
-			new TGActionProcessor(TuxGuitar.getInstance().getContext(), actionId).process();
+			new TGActionProcessor(this.context, actionId).process();
 		}
 	}
 	
