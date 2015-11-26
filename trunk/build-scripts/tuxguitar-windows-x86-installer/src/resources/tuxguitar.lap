@@ -1,0 +1,10 @@
+-Djava.class.path=${FOUND_EXE_FOLDER}\lib\tuxguitar.jar;${FOUND_EXE_FOLDER}\lib\tuxguitar-lib.jar;${FOUND_EXE_FOLDER}\lib\tuxguitar-editor-utils.jar;${FOUND_EXE_FOLDER}\lib\tuxguitar-gm-utils.jar;${FOUND_EXE_FOLDER}\lib\tuxguitar-awt-graphics.jar;${FOUND_EXE_FOLDER}\lib\swt.jar;${FOUND_EXE_FOLDER}\lib\itext-pdf.jar;${FOUND_EXE_FOLDER}\lib\itext-xmlworker.jar;${FOUND_EXE_FOLDER}\share\;${FOUND_EXE_FOLDER}\dist\
+-Dtuxguitar.home.path=${FOUND_EXE_FOLDER}
+
+janel.main.class=org.herac.tuxguitar.app.TGMainSingleton
+janel.java.home.path=${FOUND_EXE_FOLDER}\jre
+janel.library.path.dir=${FOUND_EXE_FOLDER}\lib
+janel.working.dir=${FOUND_EXE_FOLDER}
+janel.memory.max.total.percent=50
+janel.error.default.text=Error in TuxGuitar
+janel.error.show.detail=true
