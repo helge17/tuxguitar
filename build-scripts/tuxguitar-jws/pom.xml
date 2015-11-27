@@ -1,0 +1,483 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>1.3-SNAPSHOT</version>
+		<relativePath>../../</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-jws</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.rootPath>${project.parent.relativePath}</project.rootPath>
+		<project.finalName>tuxguitar-${project.version}-jws</project.finalName>
+		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
+		
+		<project.keystore.file>${project.basedir}/src/resources/keystore/tuxguitar-jws.keystore</project.keystore.file>
+		<project.keystore.storepass>tuxguitar</project.keystore.storepass>
+		<project.keystore.keypass>tuxguitar</project.keystore.keypass>
+		<project.keystore.alias>tuxguitar</project.keystore.alias>
+		<project.codebase>./</project.codebase>
+	</properties>
+
+	<modules>
+		<module>../../TuxGuitar</module>
+		<module>../../TuxGuitar-lib</module>
+		<module>../../TuxGuitar-editor-utils</module>
+		<module>../../TuxGuitar-gm-utils</module>
+		<module>../../TuxGuitar-ascii</module>
+		<module>../../TuxGuitar-browser-ftp</module>
+		<module>../../TuxGuitar-community</module>
+		<module>../../TuxGuitar-compat</module>
+		<module>../../TuxGuitar-converter</module>
+		<module>../../TuxGuitar-gervill</module>
+		<module>../../TuxGuitar-gm-settings</module>
+		<module>../../TuxGuitar-gtp</module>
+		<module>../../TuxGuitar-gtp-ui</module>
+		<module>../../TuxGuitar-gpx</module>
+		<module>../../TuxGuitar-jsa</module>
+		<module>../../TuxGuitar-lilypond</module>
+		<module>../../TuxGuitar-midi</module>
+		<module>../../TuxGuitar-musicxml</module>
+		<module>../../TuxGuitar-awt-graphics</module>
+		<module>../../TuxGuitar-pdf</module>
+		<module>../../TuxGuitar-ptb</module>
+		<module>../../TuxGuitar-tef</module>
+		<module>../../TuxGuitar-tuner</module>
+		<module>../../TuxGuitar-svg</module>
+		<module>../../TuxGuitar-image</module>
+	</modules>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-libs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<!-- LIBRARIES -->
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar</artifactId>
+									<destFileName>tuxguitar.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-lib</artifactId>
+									<destFileName>tuxguitar-lib.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-editor-utils</artifactId>
+									<destFileName>tuxguitar-editor-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gm-utils</artifactId>
+									<destFileName>tuxguitar-gm-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-awt-graphics</artifactId>
+									<destFileName>tuxguitar-awt-graphics.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<!-- /LIBRARIES -->
+
+								<!-- PLUGINS -->
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-ascii</artifactId>
+									<destFileName>tuxguitar-ascii.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-browser-ftp</artifactId>
+									<destFileName>tuxguitar-browser-ftp.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-community</artifactId>
+									<destFileName>tuxguitar-community.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-compat</artifactId>
+									<destFileName>tuxguitar-compat.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-converter</artifactId>
+									<destFileName>tuxguitar-converter.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gervill</artifactId>
+									<destFileName>tuxguitar-gervill.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gm-settings</artifactId>
+									<destFileName>tuxguitar-gm-settings.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gtp</artifactId>
+									<destFileName>tuxguitar-gtp.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gtp-ui</artifactId>
+									<destFileName>tuxguitar-gtp-ui.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-gpx</artifactId>
+									<destFileName>tuxguitar-gpx.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-jsa</artifactId>
+									<destFileName>tuxguitar-jsa.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-lilypond</artifactId>
+									<destFileName>tuxguitar-lilypond.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-midi</artifactId>
+									<destFileName>tuxguitar-midi.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-musicxml</artifactId>
+									<destFileName>tuxguitar-musicxml.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-pdf</artifactId>
+									<destFileName>tuxguitar-pdf.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-ptb</artifactId>
+									<destFileName>tuxguitar-ptb.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-tef</artifactId>
+									<destFileName>tuxguitar-tef.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-tuner</artifactId>
+									<destFileName>tuxguitar-tuner.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-svg</artifactId>
+									<destFileName>tuxguitar-svg.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-image</artifactId>
+									<destFileName>tuxguitar-image.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<!-- /PLUGINS -->
+
+
+								<!-- 3RD PARTY LIBRARIES -->
+								<artifactItem>
+									<groupId>com.itextpdf</groupId>
+									<artifactId>itextpdf</artifactId>
+									<destFileName>itext-pdf.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.itextpdf.tool</groupId>
+									<artifactId>xmlworker</artifactId>
+									<destFileName>itext-xmlworker.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								
+								
+								<artifactItem>
+									<groupId>${org.eclipse.swt.groupId}</groupId>
+									<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+									<destFileName>swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib/gnu-linux-x86</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${org.eclipse.swt.groupId}</groupId>
+									<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+									<destFileName>swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib/gnu-linux-x86-64</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${org.eclipse.swt.groupId}</groupId>
+									<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+									<destFileName>swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib/windows-x86</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${org.eclipse.swt.groupId}</groupId>
+									<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
+									<destFileName>swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib/macosx-x86</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${org.eclipse.swt.groupId}</groupId>
+									<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+									<destFileName>swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib/macosx-x86-64</outputDirectory>
+								</artifactItem>
+								<!-- /3RD PARTY LIBRARIES -->
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="copy-files">
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset file="./src/resources/tuxguitar.jnlp"/>
+								</copy>
+								
+								<copy todir="${project.build.directory}/tmp/dist/windows-x86">
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
+								</copy>
+								<copy todir="${project.build.directory}/tmp/dist/gnu-linux-x86">
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
+								</copy>
+								<copy todir="${project.build.directory}/tmp/dist/gnu-linux-x86-64">
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
+								</copy>
+								<copy todir="${project.build.directory}/tmp/dist/macosx-x86">
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
+								</copy>
+								<copy todir="${project.build.directory}/tmp/dist/macosx-x86-64">
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
+								</copy>
+								<copy todir="${project.build.directory}/tmp/dist/" overwrite="true">
+									<fileset dir="./src/resources/dist/"/>
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					
+					<execution>
+						<id>replace</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="replace-vars">
+								<replace token= "@codebase@" value="${project.codebase}" dir="${project.build.directory}/${project.finalName}">                                 
+								  <include name="tuxguitar.jnlp"/>
+								</replace>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+<!--
+					<execution>
+						<id>manifest</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="update-manifest">
+								<jar update="true" file="${project.build.directory}/${project.finalName}/lib/tuxguitar.jar">
+									<manifest>
+										<attribute name="Application-Name" value="TuxGuitar"/>
+										<attribute name="Codebase" value="*"/>
+										<attribute name="Permissions" value="all-permissions"/>
+									</manifest>
+								</jar>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+-->
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>tuxguitar-share</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<classesDirectory>${project.rootPath}/TuxGuitar/share/</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+							<finalName>tuxguitar-share</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>tuxguitar-dist-windows-x86</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<classesDirectory>${project.build.directory}/tmp/dist/windows-x86</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib/windows-x86</outputDirectory>
+							<finalName>tuxguitar-dist</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tuxguitar-dist-gnu-linux-x86</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<classesDirectory>${project.build.directory}/tmp/dist/gnu-linux-x86</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib/gnu-linux-x86</outputDirectory>
+							<finalName>tuxguitar-dist</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tuxguitar-dist-gnu-linux-x86-64</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<classesDirectory>${project.build.directory}/tmp/dist/gnu-linux-x86-64</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib/gnu-linux-x86-64</outputDirectory>
+							<finalName>tuxguitar-dist</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tuxguitar-dist-macosx-x86</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<classesDirectory>${project.build.directory}/tmp/dist/macosx-x86</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib/macosx-x86</outputDirectory>
+							<finalName>tuxguitar-dist</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tuxguitar-dist-macosx-x86-64</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<classesDirectory>${project.build.directory}/tmp/dist/macosx-x86-64</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib/macosx-x86-64</outputDirectory>
+							<finalName>tuxguitar-dist</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>signing</id>
+						<goals>
+							<goal>sign</goal>
+							<goal>verify</goal>
+						</goals>
+						<phase>package</phase>
+						<inherited>true</inherited>
+						<configuration>
+							<removeExistingSignatures>true</removeExistingSignatures>
+							<archiveDirectory>${project.build.directory}/${project.finalName}</archiveDirectory>
+							<includes>
+								<include>**/*.jar</include>
+							</includes>
+							<keystore>${project.keystore.file}</keystore>
+							<storepass>${project.keystore.storepass}</storepass>
+							<keypass>${project.keystore.keypass}</keypass>
+							<alias>${project.keystore.alias}</alias>
+							<verbose>true</verbose>
+							<arguments>
+								<argument>-sigalg</argument><argument>MD5withRSA</argument>
+								<argument>-digestalg</argument><argument>SHA1</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
