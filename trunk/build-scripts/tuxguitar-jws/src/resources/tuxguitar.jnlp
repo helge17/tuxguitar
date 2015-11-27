@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="@codebase@" href="tuxguitar.jnlp">
+	<information>
+  		<title>TuxGuitar</title>
+  		<vendor>Herac Modern Solutions</vendor>
+  		<homepage href="http://www.herac.com.ar" />
+		<offline-allowed/>
+	</information>
+	
+	<security>
+		<all-permissions />
+	</security>
+	
+	<resources>
+		<jar href="lib/tuxguitar.jar" />
+		<jar href="lib/tuxguitar-lib.jar" />
+		<jar href="lib/tuxguitar-editor-utils.jar" />
+		<jar href="lib/tuxguitar-gm-utils.jar" />
+		<jar href="lib/tuxguitar-share.jar" />
+		<jar href="lib/tuxguitar-ascii.jar" />
+		<jar href="lib/tuxguitar-browser-ftp.jar" />
+		<jar href="lib/tuxguitar-community.jar" />
+		<jar href="lib/tuxguitar-compat.jar" />
+		<jar href="lib/tuxguitar-converter.jar" />
+		<jar href="lib/tuxguitar-gervill.jar" />
+		<jar href="lib/tuxguitar-gm-settings.jar" />
+		<jar href="lib/tuxguitar-gtp.jar" />
+		<jar href="lib/tuxguitar-gtp-ui.jar" />
+		<jar href="lib/tuxguitar-gpx.jar" />
+		<jar href="lib/tuxguitar-jsa.jar" />
+		<jar href="lib/tuxguitar-lilypond.jar" />
+		<jar href="lib/tuxguitar-midi.jar" />
+		<jar href="lib/tuxguitar-musicxml.jar" />
+		<jar href="lib/tuxguitar-awt-graphics.jar" />
+		<jar href="lib/tuxguitar-pdf.jar" />
+		<jar href="lib/tuxguitar-ptb.jar" />
+		<jar href="lib/tuxguitar-tef.jar" />
+		<jar href="lib/tuxguitar-tuner.jar" />
+		<jar href="lib/tuxguitar-svg.jar" />
+		<jar href="lib/tuxguitar-image.jar" />
+	</resources>
+	
+	<resources os="Windows">
+		<j2se version="1.5+" />
+		<jar href="lib/windows-x86/swt.jar" />
+		<jar href="lib/windows-x86/tuxguitar-dist.jar" />
+	</resources>
+	
+	<resources os="Linux" arch="x86 i386">
+		<j2se version="1.5+" />
+		<jar href="lib/gnu-linux-x86/swt.jar" />
+		<jar href="lib/gnu-linux-x86/tuxguitar-dist.jar" />
+	</resources>
+	
+	<resources os="Linux" arch="x86_64">
+		<j2se version="1.5+" />
+		<jar href="lib/gnu-linux-x86-64/swt.jar" />
+		<jar href="lib/gnu-linux-x86-64/tuxguitar-dist.jar" />
+	</resources>
+	
+	<resources os="Mac\ OS\ X" arch="i386">
+		<j2se version="1.5+" java-vm-args="-XstartOnFirstThread"/>
+		<jar href="lib/macosx-x86/swt.jar" />
+		<jar href="lib/macosx-x86/tuxguitar-dist.jar" />
+	</resources>
+	
+	<resources os="Mac\ OS\ X" arch="x86_64">
+		<j2se version="1.5+" java-vm-args="-XstartOnFirstThread"/>
+		<jar href="lib/macosx-x86-64/swt.jar" />
+		<jar href="lib/macosx-x86-64/tuxguitar-dist.jar" />
+	</resources>
+	
+	<application-desc main-class="org.herac.tuxguitar.app.TGMain" />
+</jnlp>
