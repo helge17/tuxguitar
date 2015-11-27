@@ -71,18 +71,18 @@
 						</configuration>
 					</execution>
 					
-<!-- 					<execution> -->
-<!-- 						<id>remove-bundle</id> -->
-<!-- 						<phase>package</phase> -->
-<!-- 						<configuration> -->
-<!-- 							<target name="remove-bundle"> -->
-<!-- 								<delete quiet="true" dir="${project.build.directory}/${project.packageName}" /> -->
-<!-- 							</target> -->
-<!-- 						</configuration> -->
-<!-- 						<goals> -->
-<!-- 							<goal>run</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
+					<execution>
+						<id>remove-bundle</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="remove-bundle">
+								<delete quiet="true" dir="${project.build.directory}/${project.packageName}" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
