@@ -331,7 +331,7 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-<!--
+					
 					<execution>
 						<id>manifest</id>
 						<phase>package</phase>
@@ -340,7 +340,7 @@
 								<jar update="true" file="${project.build.directory}/${project.finalName}/lib/tuxguitar.jar">
 									<manifest>
 										<attribute name="Application-Name" value="TuxGuitar"/>
-										<attribute name="Codebase" value="*"/>
+										<attribute name="Codebase" value="${project.codebase}"/>
 										<attribute name="Permissions" value="all-permissions"/>
 									</manifest>
 								</jar>
@@ -350,7 +350,6 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
--->
 				</executions>
 			</plugin>
 
