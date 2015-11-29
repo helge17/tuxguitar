@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Debug Helper Plugin
+plugin.description=Help find bugs
+plugin.author=Julian Casadesus
+plugin.version=1.0
