@@ -271,7 +271,10 @@
 								</copy>
 								
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="./src/resources"/>
+									<fileset dir="../common-resources/common"/>
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-windows"/>
 								</copy>
 							</target>
 						</configuration>
