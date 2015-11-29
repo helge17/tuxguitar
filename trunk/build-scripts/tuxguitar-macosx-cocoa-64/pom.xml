@@ -287,8 +287,15 @@
 								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS/dist">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/" overwrite="true">
-									<fileset dir="./src/resources/" />
+								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS/share/soundfont" overwrite="true">
+									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
+								</copy>
+								
+								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS" overwrite="true">
+									<fileset dir="../common-resources/common"/>
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-macosx"/>
 								</copy>
 								
 								<chmod file="${project.build.directory}/${project.finalName}/Contents/MacOS/tuxguitar" perm="755" />
