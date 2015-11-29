@@ -38,6 +38,10 @@
 		<jar href="lib/tuxguitar-tuner.jar" />
 		<jar href="lib/tuxguitar-svg.jar" />
 		<jar href="lib/tuxguitar-image.jar" />
+		
+		<jar href="lib/gervill.jar" />
+		<jar href="lib/itext-pdf.jar" />
+		<jar href="lib/itext-xmlworker.jar" />
 	</resources>
 	
 	<resources os="Windows">
