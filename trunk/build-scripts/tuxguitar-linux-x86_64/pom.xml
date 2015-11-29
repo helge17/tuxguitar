@@ -257,11 +257,6 @@
 						<phase>package</phase>
 						<configuration>
 							<target name="copy-files">
-								<mkdir dir="${project.build.directory}/${project.finalName}/" />
-								<mkdir dir="${project.build.directory}/${project.finalName}/lib" />
-								<mkdir dir="${project.build.directory}/${project.finalName}/share" />
-								<mkdir dir="${project.build.directory}/${project.finalName}/doc" />
-								
 								<copy todir="${project.build.directory}/${project.finalName}/share">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/"/>
 								</copy>
@@ -271,11 +266,15 @@
 								<copy todir="${project.build.directory}/${project.finalName}/dist">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
-									<fileset dir="./src/resources/dist/"/>
+								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
+									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/">
-									<fileset file="./src/resources/tuxguitar.sh"/>
+								
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common"/>
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-linux"/>
 								</copy>
 								
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
