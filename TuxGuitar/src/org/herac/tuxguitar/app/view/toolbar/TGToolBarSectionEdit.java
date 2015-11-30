@@ -18,6 +18,8 @@ import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
 import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
+import org.herac.tuxguitar.editor.undo.TGUndoableManager;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 
 public class TGToolBarSectionEdit implements TGToolBarSection {
 	
@@ -44,9 +46,11 @@ public class TGToolBarSectionEdit implements TGToolBarSection {
 	}
 	
 	public void updateItems(TGToolBar toolBar){
-		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
-		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
-		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
+		boolean running = MidiPlayer.getInstance(toolBar.getContext()).isRunning();
+		TGUndoableManager undoableManager = TGUndoableManager.getInstance(toolBar.getContext());
+		
+		this.undo.setEnabled(!running && undoableManager.canUndo());
+		this.redo.setEnabled(!running && undoableManager.canRedo());
 	}
 	
 	public void loadProperties(TGToolBar toolBar){

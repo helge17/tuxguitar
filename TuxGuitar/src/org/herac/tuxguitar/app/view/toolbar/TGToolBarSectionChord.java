@@ -14,6 +14,7 @@ import org.herac.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
 import org.herac.tuxguitar.app.view.dialog.chord.TGCustomChordManager;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGInsertChordAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChord;
 
 public class TGToolBarSectionChord implements TGToolBarSection {
@@ -41,7 +42,7 @@ public class TGToolBarSectionChord implements TGToolBarSection {
 	}
 	
 	public void updateItems(TGToolBar toolBar){
-		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		boolean running = MidiPlayer.getInstance(toolBar.getContext()).isRunning();
 		this.menuItem.setEnabled(!running);
 	}
 	

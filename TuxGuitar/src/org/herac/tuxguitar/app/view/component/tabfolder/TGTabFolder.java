@@ -15,13 +15,13 @@ import org.eclipse.swt.widgets.TabItem;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -32,8 +32,8 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGTabFolder implements TGEventListener {
 	
 	private TGContext context;
-	private TGSyncProcess updateDocumentProcess;
-	private TGSyncProcess updateSelectionProcess;
+	private TGSyncProcessLocked updateDocumentProcess;
+	private TGSyncProcessLocked updateSelectionProcess;
 	
 	private TabFolder tabFolder;
 	private List<TabItem> tabItems;
@@ -179,12 +179,12 @@ public class TGTabFolder implements TGEventListener {
 	}
 	
 	public void createSyncProcesses() {
-		this.updateDocumentProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.updateDocumentProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateDocument();
 			}
 		});
-		this.updateSelectionProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.updateSelectionProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateSelection();
 			}
