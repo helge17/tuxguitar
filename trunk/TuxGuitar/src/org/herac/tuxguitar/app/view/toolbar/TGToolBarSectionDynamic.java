@@ -16,9 +16,10 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVelocities;
 
 public class TGToolBarSectionDynamic implements TGToolBarSection {
@@ -63,10 +64,11 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 	public void loadDynamicIcon(TGToolBar toolBar, boolean force){
 		int dynamicValue = TGVelocities.DEFAULT;
 		
-		TablatureEditor editor = TablatureEditor.getInstance(toolBar.getContext());
-		if( editor != null && editor.getTablature() != null ) {
-			Caret caret = editor.getTablature().getCaret();
-			dynamicValue = ((caret.getSelectedNote() != null) ? caret.getSelectedNote().getVelocity() : caret.getVelocity());
+		Tablature tablature = toolBar.getTablature();
+		if( tablature != null ) {
+			Caret caret = tablature.getCaret();
+			TGNote selectedNote = caret.getSelectedNote();
+			dynamicValue = ((selectedNote != null) ? selectedNote.getVelocity() : caret.getVelocity());
 		}
 		
 		if( force || (this.dynamicValue == null || !this.dynamicValue.equals(dynamicValue))) {

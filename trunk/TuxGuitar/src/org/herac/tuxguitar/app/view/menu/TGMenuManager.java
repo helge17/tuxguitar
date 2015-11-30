@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.view.menu.impl.BeatMenuItem;
@@ -23,7 +22,8 @@ import org.herac.tuxguitar.app.view.menu.impl.ToolMenuItem;
 import org.herac.tuxguitar.app.view.menu.impl.TrackMenuItem;
 import org.herac.tuxguitar.app.view.menu.impl.TransportMenuItem;
 import org.herac.tuxguitar.app.view.menu.impl.ViewMenuItem;
-import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
@@ -37,10 +37,10 @@ public class TGMenuManager implements TGEventListener {
 	private List<TGMenuItem> loadedMenuItems;
 	private List<TGMenuItem> loadedPopupMenuItems;
 	
-	private TGSyncProcess loadIconsProcess;
-	private TGSyncProcess loadPropertiesProcess;
-	private TGSyncProcess updateItemsProcess;
-	private TGSyncProcess createMenuProcess;
+	private TGSyncProcessLocked loadIconsProcess;
+	private TGSyncProcessLocked loadPropertiesProcess;
+	private TGSyncProcessLocked updateItemsProcess;
+	private TGSyncProcessLocked createMenuProcess;
 	
 	public TGMenuManager(TGContext context){
 		this.context = context;
@@ -159,25 +159,25 @@ public class TGMenuManager implements TGEventListener {
 	}
 	
 	public void createSyncProcesses() {		
-		this.updateItemsProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateItems();
 			}
 		});
 		
-		this.loadIconsProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.loadIconsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				loadIcons();
 			}
 		});
 		
-		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.loadPropertiesProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				loadProperties();
 			}
 		});
 
-		this.createMenuProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.createMenuProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				createMenu();
 			}

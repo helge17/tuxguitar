@@ -13,7 +13,6 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import org.herac.tuxguitar.song.models.TGMeasure;
 
@@ -47,7 +46,7 @@ public class TGToolBarSectionComposition implements TGToolBarSection {
 	
 	public void createMenu(TGToolBar toolBar, ToolItem item) {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
-		TGMeasure measure = TablatureEditor.getInstance(toolBar.getContext()).getTablature().getCaret().getMeasure();
+		TGMeasure measure = toolBar.getTablature().getCaret().getMeasure();
 		
 		Menu menu = new Menu(item.getParent().getShell());
 		

@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
@@ -89,9 +90,9 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 	public void loadDurationIcon(TGToolBar toolBar, boolean force) {
 		int durationValue = TGDuration.QUARTER;
 		
-		TablatureEditor editor = TablatureEditor.getInstance(toolBar.getContext());
-		if( editor != null && editor.getTablature() != null ) {
-			durationValue = editor.getTablature().getCaret().getDuration().getValue();
+		Tablature tablature = toolBar.getTablature();
+		if( tablature != null ) {
+			durationValue = tablature.getCaret().getDuration().getValue();
 		}
 		
 		if( force || (this.durationValue == null || !this.durationValue.equals(durationValue))) {

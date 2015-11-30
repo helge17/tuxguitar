@@ -10,18 +10,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -33,10 +33,15 @@ public class TGToolBar implements TGEventListener {
 	private List<TGToolBarSection> sections;
 	private ToolBar control;
 	
+	private TGSyncProcessLocked loadIconsProcess;
+	private TGSyncProcessLocked loadPropertiesProcess;
+	private TGSyncProcessLocked updateItemsProcess;
+	
 	private TGToolBar(TGContext context) {
 		this.context = context;
-		this.appendListeners();
 		this.createSections();
+		this.createSyncProcesses();
+		this.appendListeners();
 	}
 	
 	public void appendListeners() {
@@ -81,6 +86,26 @@ public class TGToolBar implements TGEventListener {
 		}
 	}
 
+	public void createSyncProcesses() {		
+		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				updateItems();
+			}
+		});
+		
+		this.loadIconsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				loadIcons();
+			}
+		});
+		
+		this.loadPropertiesProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				loadProperties();
+			}
+		});
+	}
+	
 	public void updateItems() {
 		for(TGToolBarSection section : this.sections) {
 			section.updateItems(this);
@@ -166,26 +191,20 @@ public class TGToolBar implements TGEventListener {
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.updateItems();
+			this.updateItemsProcess.process();
 		}
 	}
 	
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if(!isDisposed()) {
-					if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-						loadIcons();
-					}
-					else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-						loadProperties();
-					}
-					else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-						processUpdateEvent(event);
-					}
-				}
-			}
-		});
+		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
+		}
+		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIconsProcess.process();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadPropertiesProcess.process();
+		}
 	}
 	
 	public static TGToolBar getInstance(TGContext context) {
