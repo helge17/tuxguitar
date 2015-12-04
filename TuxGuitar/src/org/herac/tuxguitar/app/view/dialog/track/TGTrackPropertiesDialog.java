@@ -24,15 +24,17 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackPropertiesAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackInfoAction;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -41,7 +43,6 @@ import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGTrackPropertiesDialog implements TGEventListener {
 	
@@ -55,23 +56,25 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	private static final int MAX_NOTES = 12;
 	
 	private TGViewContext context;
-	protected Shell dialog;
-	protected Text nameText;
-	protected TGColor trackColor;
-	protected List<TGString> tempStrings;
-	protected Button stringTransposition;
-	protected Button stringTranspositionTryKeepString;
-	protected Button stringTranspositionApplyToChords;
-	protected Spinner stringCountSpinner;
-	protected Combo[] stringCombos = new Combo[MAX_STRINGS];
-	protected Combo offsetCombo;
-	protected int stringCount;
-	protected Combo instrumentCombo;
-	protected Color colorButtonValue;
-	protected boolean percussionChannel;
+	private Shell dialog;
+	private Text nameText;
+	private TGColor trackColor;
+	private List<TGString> tempStrings;
+	private Button stringTransposition;
+	private Button stringTranspositionTryKeepString;
+	private Button stringTranspositionApplyToChords;
+	private Spinner stringCountSpinner;
+	private Combo[] stringCombos = new Combo[MAX_STRINGS];
+	private Combo offsetCombo;
+	private int stringCount;
+	private Combo instrumentCombo;
+	private Color colorButtonValue;
+	private boolean percussionChannel;
+	private TGProcess updateItemsProcess;
 	
 	public TGTrackPropertiesDialog(TGViewContext context) {
 		this.context = context;
+		this.createSyncProcesses();
 	}
 	
 	public void show() {
@@ -592,20 +595,24 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		}
 	}
 	
+	public void createSyncProcesses() {		
+		this.updateItemsProcess = new TGSyncProcessLocked(this.context.getContext(), new Runnable() {
+			public void run() {
+				updateItems();
+			}
+		});
+	}
+	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.updateItems();
+			this.updateItemsProcess.process();
 		}
 	}
 	
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			TGSynchronizer.getInstance(this.context.getContext()).executeLater(new Runnable() {
-				public void run() {
-					processUpdateEvent(event);
-				}
-			});
+			this.processUpdateEvent(event);
 		}
 	}
 }

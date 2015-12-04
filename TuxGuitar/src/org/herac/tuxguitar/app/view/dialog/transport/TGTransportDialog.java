@@ -26,20 +26,25 @@ import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAc
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
+import org.herac.tuxguitar.app.editor.EditorCache;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.util.TGProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -64,12 +69,17 @@ public class TGTransportDialog implements TGEventListener {
 	private ToolItem next;
 	private ToolItem stop;
 	private ToolItem play;
+	private TGProcess loadPropertiesProcess;
+	private TGProcess loadIconsProcess;
+	private TGProcess updateItemsProcess;
+	private TGProcess redrawPlayModeProcess;
 	private boolean editingTickScale;
 	private long redrawTime;
 	private int status;
 	
 	public TGTransportDialog(TGContext context) {
 		this.context = context;
+		this.createSyncProcesses();
 	}
 	
 	public void show() {
@@ -79,7 +89,7 @@ public class TGTransportDialog implements TGEventListener {
 		this.dialog.setText(TuxGuitar.getProperty("transport"));
 		this.initComposites();
 		this.initToolBar();
-		this.redraw();
+		this.redrawProgress();
 		
 		this.addListeners();
 		this.dialog.addDisposeListener(new DisposeListener() {
@@ -188,12 +198,12 @@ public class TGTransportDialog implements TGEventListener {
 		if(isEditingTickScale()){
 			int selection = (this.tickProgress.getMinimum() + (( x * (this.tickProgress.getMaximum() - this.tickProgress.getMinimum())) / this.tickProgress.getSize().x) );
 			this.tickProgress.setSelection(Math.max((int)TGDuration.QUARTER_TIME,selection));
-			this.redraw();
+			this.redrawProgress();
 		}
 	}
 	
 	private void initToolBar(){
-		if(this.toolBar != null){
+		if( this.toolBar != null){
 			this.toolBar.dispose();
 		}
 		this.toolBar = new ToolBar(this.dialog,SWT.FLAT);
@@ -244,7 +254,7 @@ public class TGTransportDialog implements TGEventListener {
 				setStatus(STATUS_STOPPED);
 			}
 			
-			if(force || lastStatus != getStatus()){
+			if( force || lastStatus != getStatus()){
 				if(getStatus() == STATUS_RUNNING){
 					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst2());
 					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast2());
@@ -275,7 +285,7 @@ public class TGTransportDialog implements TGEventListener {
 			this.tickProgress.setMaximum((int)(last.getStart() + last.getLength()) -1);
 			this.metronome.setSelection(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
 			
-			this.redraw();
+			this.redrawProgress();
 		}
 	}
 	
@@ -343,77 +353,90 @@ public class TGTransportDialog implements TGEventListener {
 		TGTransport.getInstance(this.context).gotoMeasure(header, moveCaret);
 	}
 	
-	public void redraw(){
-		if(!TuxGuitar.getInstance().isLocked()){
-			if(!isDisposed()){
-				TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-					public void run() {
-						if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
-							if(isEditingTickScale()){
-								TGTransportDialog.this.label.setText(Long.toString(TGTransportDialog.this.tickProgress.getSelection()));
-							}
-							else if(!TuxGuitar.getInstance().getPlayer().isRunning()){
-								long tickPosition = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getPosition();
-								
-								TGTransportDialog.this.label.setText(Long.toString(tickPosition));
-								TGTransportDialog.this.tickProgress.setSelection((int)tickPosition);
-							}
-						}
-					}
-				});
+	public void redrawProgress(){
+		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
+			if( isEditingTickScale() ){
+				TGTransportDialog.this.label.setText(Long.toString(TGTransportDialog.this.tickProgress.getSelection()));
+			}
+			else if(!MidiPlayer.getInstance(this.context).isRunning()){
+				long tickPosition = TablatureEditor.getInstance(this.context).getTablature().getCaret().getPosition();
+				
+				TGTransportDialog.this.label.setText(Long.toString(tickPosition));
+				TGTransportDialog.this.tickProgress.setSelection((int)tickPosition);
 			}
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!TuxGuitar.getInstance().isLocked()){
-			//TuxGuitar.instance().lock();
-			if(!isDisposed()){
-				if(!isEditingTickScale() && TuxGuitar.getInstance().getPlayer().isRunning()){
-					long time = System.currentTimeMillis();
-					if(time > this.redrawTime + PLAY_MODE_DELAY){
-						long position = (TuxGuitar.getInstance().getEditorCache().getPlayStart() + (TuxGuitar.getInstance().getPlayer().getTickPosition() - TuxGuitar.getInstance().getEditorCache().getPlayTick()));
-						this.label.setText(Long.toString(position));
-						this.tickProgress.setSelection((int)position);
-						this.redrawTime = time;
-					}
+		if(!isDisposed()){
+			MidiPlayer player = MidiPlayer.getInstance(this.context);
+			if(!isEditingTickScale() && player.isRunning()){
+				EditorCache editorCache = TuxGuitar.getInstance().getEditorCache();
+				
+				long time = System.currentTimeMillis();
+				if( time > this.redrawTime + PLAY_MODE_DELAY ){
+					long position = (editorCache.getPlayStart() + (player.getTickPosition() - editorCache.getPlayTick()));
+					this.label.setText(Long.toString(position));
+					this.tickProgress.setSelection((int)position);
+					this.redrawTime = time;
 				}
 			}
-			//TuxGuitar.instance().unlock();
 		}
+	}
+	
+	public void createSyncProcesses() {
+		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadProperties();
+			}
+		});
+		
+		this.loadIconsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				loadIcons();
+			}
+		});
+		
+		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				updateItems();
+			}
+		});
+		
+		this.redrawPlayModeProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				redrawPlayingMode();
+			}
+		});
 	}
 	
 	public void processRedrawEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
 		if( type == TGRedrawEvent.PLAYING_THREAD || type == TGRedrawEvent.PLAYING_NEW_BEAT ){
-			this.redrawPlayingMode();
+			this.redrawPlayModeProcess.process();
 		}
 	}
 	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.updateItems();
+			this.updateItemsProcess.process();
 		}
 	}
 	
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadIcons();
-				}
-				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadProperties();
-				}
-				else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					processRedrawEvent(event);
-				}
-				else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					processUpdateEvent(event);
-				}
-			}
-		});
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIconsProcess.process();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadPropertiesProcess.process();
+		}
+		else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processRedrawEvent(event);
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
+		}
 	}
 	
 	public static TGTransportDialog getInstance(TGContext context) {
