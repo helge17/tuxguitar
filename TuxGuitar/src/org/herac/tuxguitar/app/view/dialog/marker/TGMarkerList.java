@@ -22,18 +22,20 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoToMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.util.TGProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -55,11 +57,16 @@ public class TGMarkerList implements TGEventListener {
 	private Button buttonGo;
 	private Button buttonClose;
 	
+	private TGProcess loadPropertiesProcess;
+	private TGProcess loadIconsProcess;
+	private TGProcess updateProcess;
+	
 	private int markerCount;
 	
 	private TGMarkerList(TGContext context) {
 		this.context = context;
 		this.markerCount = 0;
+		this.createSyncProcesses();
 	}
 	
 	public void show() {
@@ -159,21 +166,19 @@ public class TGMarkerList implements TGEventListener {
 	}
 	
 	public void dispose(){
-		if(!isDisposed()){
+		if(!this.isDisposed()){
 			this.dialog.dispose();
 		}
 	}
 	
 	public void update(){
-		if(!isDisposed()){
-			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-				public void run() {
-					if(!isDisposed()){
-						loadTableItems();
-					}
-				}
-			});
+		if(!this.isDisposed()){
+			this.loadTableItems();
 		}
+	}
+	
+	public void fireUpdateProcess(){
+		this.updateProcess.process();
 	}
 	
 	private GridData makeGridData(int horizontalAlignment,int verticalAlignment,boolean grabExcessVerticalSpace){
@@ -276,22 +281,40 @@ public class TGMarkerList implements TGEventListener {
 		}
 	}
 	
+	public void createSyncProcesses() {
+		this.updateProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				update();
+			}
+		});
+		this.loadIconsProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadIcons();
+			}
+		});
+		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadProperties();
+			}
+		});
+	}
+	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type ==  TGUpdateEvent.SONG_LOADED ){
-			this.update();
+			this.fireUpdateProcess();
 		}
 	}
 	
 	public void processEvent(TGEvent event) {
-		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			this.loadIcons();
+		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
+		}
+		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIconsProcess.process();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			this.loadProperties();
-		}
-		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			this.processUpdateEvent(event);
+			this.loadPropertiesProcess.process();
 		}
 	}
 	

@@ -12,7 +12,7 @@ public class TGUpdateModifiedMarkerController extends TGUpdateItemsController {
 	
 	@Override
 	public void update(final TGContext context, TGActionContext actionContext) {
-		TGMarkerList.getInstance(context).update();
+		TGMarkerList.getInstance(context).fireUpdateProcess();
 		
 		// Call super update.
 		super.update(context, actionContext);
