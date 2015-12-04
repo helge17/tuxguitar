@@ -80,15 +80,12 @@ public class TGTransport {
 	}
 	
 	public void gotoPlayerPosition(){
-		TuxGuitar.getInstance().lock();
-		
 		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
 		if(header != null){
 			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
 		}
 		TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
-		TuxGuitar.getInstance().unlock();
 		
 		TuxGuitar.getInstance().updateCache(true);
 	}
