@@ -107,20 +107,26 @@ public class TGToolBar implements TGEventListener {
 	}
 	
 	public void updateItems() {
-		for(TGToolBarSection section : this.sections) {
-			section.updateItems(this);
+		if(!this.isDisposed()) {
+			for(TGToolBarSection section : this.sections) {
+				section.updateItems(this);
+			}
 		}
 	}
 
 	public void loadIcons() {
-		for(TGToolBarSection section : this.sections) {
-			section.loadIcons(this);
+		if(!this.isDisposed()) {
+			for(TGToolBarSection section : this.sections) {
+				section.loadIcons(this);
+			}
 		}
 	}
 	
 	public void loadProperties() {
-		for(TGToolBarSection section : this.sections) {
-			section.loadProperties(this);
+		if(!this.isDisposed()) {
+			for(TGToolBarSection section : this.sections) {
+				section.loadProperties(this);
+			}
 		}
 	}
 	
