@@ -6,6 +6,7 @@ import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -112,11 +113,11 @@ public class TGTransportCache {
 	}
 	
 	public boolean isPlaying(){
-		return TuxGuitar.getInstance(this.context).getPlayer().isRunning();
+		return MidiPlayer.getInstance(this.context).isRunning();
 	}
 	
 	public boolean isPlayingCountDown(){
-		return TuxGuitar.getInstance(this.context).getPlayer().getCountDown().isRunning();
+		return MidiPlayer.getInstance(this.context).getCountDown().isRunning();
 	}
 	
 	public boolean isPlaying(TGMeasure measure){

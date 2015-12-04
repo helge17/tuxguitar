@@ -1,18 +1,18 @@
 package org.herac.tuxguitar.android.view.util;
 
-public class SelectableItem {
+public class TGSelectableItem {
 	
 	private Object item;
 	private String label;
 	private String dropDownLabel;
 	
-	public SelectableItem(Object item, String label, String dropDownLabel) {
+	public TGSelectableItem(Object item, String label, String dropDownLabel) {
 		this.item = item;
 		this.label = label;
 		this.dropDownLabel = dropDownLabel;
 	}
 	
-	public SelectableItem(Object item, String label) {
+	public TGSelectableItem(Object item, String label) {
 		this(item, label, label);
 	}
 	
@@ -33,9 +33,9 @@ public class SelectableItem {
 	}
 	
 	public boolean equals(Object o) {
-		if( o instanceof SelectableItem ) {
+		if( o instanceof TGSelectableItem ) {
 			Object item1 = getItem();
-			Object item2 = ((SelectableItem) o).getItem();
+			Object item2 = ((TGSelectableItem) o).getItem();
 			if( item1 != null && item2 != null ) {
 				return item1.equals(item2);
 			}

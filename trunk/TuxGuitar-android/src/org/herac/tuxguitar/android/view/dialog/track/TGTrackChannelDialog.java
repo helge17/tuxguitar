@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackChannelAction;
@@ -104,17 +104,17 @@ public class TGTrackChannelDialog extends TGDialog implements OnShowListener {
 		this.findActivity().getNavigationManager().removeNavigationListener(this.instrumentsEditor);
 	}
 	
-	public SelectableItem[] createSelectableChannels() {
-		List<SelectableItem> selectableChannels = new ArrayList<SelectableItem>();
-		selectableChannels.add(new SelectableItem(null, getString(R.string.global_spinner_select_option)));
+	public TGSelectableItem[] createSelectableChannels() {
+		List<TGSelectableItem> selectableChannels = new ArrayList<TGSelectableItem>();
+		selectableChannels.add(new TGSelectableItem(null, getString(R.string.global_spinner_select_option)));
 		
 		Iterator<TGChannel> it = this.songManager.getChannels(this.song).iterator();
 		while( it.hasNext() ) {
 			TGChannel channel = it.next();
-			selectableChannels.add(new SelectableItem(channel, channel.getName()));
+			selectableChannels.add(new TGSelectableItem(channel, channel.getName()));
 		}
 		
-		SelectableItem[] builtItems = new SelectableItem[selectableChannels.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableChannels.size()];
 		selectableChannels.toArray(builtItems);
 		
 		return builtItems;
@@ -123,15 +123,15 @@ public class TGTrackChannelDialog extends TGDialog implements OnShowListener {
 	public TGChannel findSelectedChannel() {
 		Spinner spinner = (Spinner) this.dialogView.findViewById(R.id.track_channel_dlg_channel_value);
 		
-		return (TGChannel) ((SelectableItem)spinner.getSelectedItem()).getItem();
+		return (TGChannel) ((TGSelectableItem)spinner.getSelectedItem()).getItem();
 	}
 	
 	public void fillTrackInstrument() {
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableChannels());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableChannels());
 		
 		Spinner spinner = (Spinner) this.dialogView.findViewById(R.id.track_channel_dlg_channel_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(this.songManager.getChannel(this.song, this.track.getChannelId()), null)));
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(this.songManager.getChannel(this.song, this.track.getChannelId()), null)));
 	}
 	
 	public TGActionProcessor createActionProcessor(String actionId) {

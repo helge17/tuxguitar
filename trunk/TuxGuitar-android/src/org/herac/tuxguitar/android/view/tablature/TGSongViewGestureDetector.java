@@ -1,5 +1,9 @@
 package org.herac.tuxguitar.android.view.tablature;
 
+import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAxisPositionAction;
+import org.herac.tuxguitar.android.application.TGApplicationUtil;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
@@ -9,13 +13,11 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 
 	private GestureDetectorCompat gestureDetector;
 	private TGSongViewScaleGestureDetector songViewScaleGestureDetector;
-	private TGSongViewCaretSelector songViewCaretSelector;
 	private TGSongView songView;
 	
 	public TGSongViewGestureDetector(Context context, TGSongView songView) {
 		this.gestureDetector = new GestureDetectorCompat(context, this);
 		this.songViewScaleGestureDetector = new TGSongViewScaleGestureDetector(context, songView);
-		this.songViewCaretSelector = new TGSongViewCaretSelector(songView);
 		this.songView = songView;
 	}
 	
@@ -29,7 +31,9 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 	
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		return this.songViewCaretSelector.select(e.getX(), e.getY());
+		this.moveToAxisPosition(e.getX(), e.getY());
+		
+		return true;
 	}
 	
 	@Override
@@ -45,5 +49,12 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 		if( axis.isEnabled() ) {
 			axis.setValue(Math.max(Math.min(axis.getValue() + distance, axis.getMaximum()), axis.getMinimum()));
 		}
+	}
+	
+	private void moveToAxisPosition(Float x, Float y) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGMoveToAxisPositionAction.NAME);
+		tgActionProcessor.setAttribute(TGMoveToAxisPositionAction.ATTRIBUTE_X, x);
+		tgActionProcessor.setAttribute(TGMoveToAxisPositionAction.ATTRIBUTE_Y, y);
+		tgActionProcessor.processOnNewThread();
 	}
 }

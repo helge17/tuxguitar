@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeBendNoteAction;
@@ -138,22 +138,22 @@ public class TGBendDialog extends TGDialog {
 		return presets;
 	}
 	
-	public SelectableItem[] createSelectablePresets(List<TGBendPreset> presets) {
-		List<SelectableItem> selectablePresets = new ArrayList<SelectableItem>();
-		selectablePresets.add(new SelectableItem(null, getString(R.string.global_spinner_select_option)));
+	public TGSelectableItem[] createSelectablePresets(List<TGBendPreset> presets) {
+		List<TGSelectableItem> selectablePresets = new ArrayList<TGSelectableItem>();
+		selectablePresets.add(new TGSelectableItem(null, getString(R.string.global_spinner_select_option)));
 		
 		for(TGBendPreset preset : presets) {
-			selectablePresets.add(new SelectableItem(preset, preset.getName()));
+			selectablePresets.add(new TGSelectableItem(preset, preset.getName()));
 		}
 		
-		SelectableItem[] builtItems = new SelectableItem[selectablePresets.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectablePresets.size()];
 		selectablePresets.toArray(builtItems);
 		
 		return builtItems;
 	}
 	
 	public void fillSelectablePresets(final View dlgView, List<TGBendPreset> presets, TGBendPreset selection) {
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets(presets));
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets(presets));
 		
 		final Spinner spinner = (Spinner) dlgView.findViewById(R.id.bend_dlg_preset_value);
 		spinner.setAdapter(adapter);
@@ -164,12 +164,12 @@ public class TGBendDialog extends TGDialog {
 	
 	@SuppressWarnings("unchecked")
 	public void updateSelectedPreset(Spinner spinner, TGBendPreset selection) {
-		ArrayAdapter<SelectableItem> adapter = (ArrayAdapter<SelectableItem>) spinner.getAdapter();
-		spinner.setSelection(adapter.getPosition(new SelectableItem(selection, null)), false);
+		ArrayAdapter<TGSelectableItem> adapter = (ArrayAdapter<TGSelectableItem>) spinner.getAdapter();
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(selection, null)), false);
 	}
 	
 	public TGBendPreset findSelectedPreset(Spinner spinner) {
-		return ((TGBendPreset) ((SelectableItem)spinner.getSelectedItem()).getItem());
+		return ((TGBendPreset) ((TGSelectableItem)spinner.getSelectedItem()).getItem());
 	}
 	
 	public void loadSelectedPreset(View view, Spinner spinner) {

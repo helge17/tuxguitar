@@ -18,6 +18,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAxisPositionAction;
 import org.herac.tuxguitar.android.action.impl.edit.TGRedoAction;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
@@ -224,6 +225,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGGoLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGGoUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGGoDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGMoveToAxisPositionAction.NAME, LOCKABLE, null);
+		
 		
 		//song actions
 		this.map(TGCopySongFromAction.NAME, LOCKABLE, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);

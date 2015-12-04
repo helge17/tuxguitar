@@ -35,10 +35,17 @@ public class TGTransportListener implements TGEventListener{
 					
 					MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
 					while( midiPlayer.isRunning() ) {
-						tgTransport.getCache().updatePlayMode();
+						tgEditorManager.lock();
+						try {
+							tgTransport.getCache().updatePlayMode();
+						} finally {
+							tgEditorManager.unlock(false);
+						}
+						
 						if( tgTransport.getCache().shouldRedraw() ) {
 							tgEditorManager.redrawPlayingNewBeat();
 						}
+						
 						synchronized( TGTransportListener.this.sync ){
 							TGTransportListener.this.sync.wait(25);
 						}
@@ -54,12 +61,17 @@ public class TGTransportListener implements TGEventListener{
 	public void notifyStopped() {
 		new Thread(new Runnable() {
 			public void run() {
+				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
+					tgEditorManager.lock();
+					
 					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 					tgTransport.gotoPlayerPosition();
 					tgTransport.getCache().reset();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
+				} finally {
+					tgEditorManager.unlock(false);
 				}
 			}
 		}).start();

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.measure.TGAddMeasureListAction;
@@ -55,28 +55,28 @@ public class TGMeasureAddDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createCountValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createCountValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 100; i++) {
-			selectableItems.add(new SelectableItem(Integer.valueOf(i), Integer.toString(i)));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), Integer.toString(i)));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
 	
 	public void fillCount(View view) {
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createCountValues());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createCountValues());
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.measure_add_dlg_count_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(1), null)));
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(1), null)));
 	}
 	
 	public int findSelectedCount(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.measure_add_dlg_count_value);
 		
-		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
 	public void fillOptions(View view, TGSong song, TGMeasureHeader header) {

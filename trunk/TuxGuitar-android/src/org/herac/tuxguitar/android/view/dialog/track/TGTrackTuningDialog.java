@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
@@ -104,52 +104,52 @@ public class TGTrackTuningDialog extends TGDialog {
 		}
 	}
 	
-	public SelectableItem[] createSelectableTunings() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createSelectableTunings() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		
 		int count = (MAX_NOTES * MAX_OCTAVES);
 		for (int i = 0; i < count; i++) {
 			String noteName = (KEY_NAMES[ (i -  ((i / MAX_NOTES) * MAX_NOTES) ) ] + (i / MAX_NOTES));
-			selectableItems.add(new SelectableItem(Integer.valueOf(i), noteName));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), noteName));
 		}
 		
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		
 		return builtItems;
 	}
 	
-	public SelectableItem[] createSelectableIntegers(int minimum, int maximum) {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createSelectableIntegers(int minimum, int maximum) {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		
 		for(int value = minimum ; value <= maximum ; value ++) {
-			selectableItems.add(new SelectableItem(Integer.valueOf(value), Integer.toString(value)));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(value), Integer.toString(value)));
 		}
 		
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		
 		return builtItems;
 	}
 	
-	public SelectableItem[] createSelectableStrings() {
+	public TGSelectableItem[] createSelectableStrings() {
 		return this.createSelectableIntegers(MIN_STRINGS, MAX_STRINGS);
 	}
 	
-	public SelectableItem[] createSelectableOffsets() {
+	public TGSelectableItem[] createSelectableOffsets() {
 		return this.createSelectableIntegers(TGTrack.MIN_OFFSET, TGTrack.MAX_OFFSET);
 	}
 	
 	public int findSelectedStrings(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_strings_value);
 		
-		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
 	public int findSelectedOffset(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_offset_value);
 		
-		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
 	public List<TGString> findSelectedTunings(View view, TGSongManager songManager) {
@@ -161,7 +161,7 @@ public class TGTrackTuningDialog extends TGDialog {
 				Spinner spinner = (Spinner) view.findViewById(TUNING_SPINNER_IDS[i]);
 				TGString tgString = songManager.getFactory().newString();
 				tgString.setNumber((i + 1));
-				tgString.setValue(((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue());
+				tgString.setValue(((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue());
 				strings.add(tgString);
 			}
 		}
@@ -173,11 +173,11 @@ public class TGTrackTuningDialog extends TGDialog {
 	}
 	
 	public void fillStrings(final View view, final TGSongManager songManager, final TGSong song, final TGTrack track, final List<TGString> strings) {
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableStrings());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableStrings());
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_strings_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(track.stringCount()), null)), false);
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(track.stringCount()), null)), false);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				onStringCountChange(view, songManager, song, track, strings);
@@ -190,17 +190,17 @@ public class TGTrackTuningDialog extends TGDialog {
 	}
 	
 	public void fillOffset(View view, TGTrack track) {
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_offset_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(track.getOffset()), null)), false);
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(track.getOffset()), null)), false);
 	}
 	
 	public void fillTunings(View view) {
 		for(int i = 0 ; i < TUNING_SPINNER_IDS.length ; i ++ ) {
 			Spinner spinner = (Spinner) view.findViewById(TUNING_SPINNER_IDS[i]);
-			spinner.setAdapter(new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings()));
+			spinner.setAdapter(new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings()));
 		}
 	}
 	
@@ -256,9 +256,9 @@ public class TGTrackTuningDialog extends TGDialog {
 	
 	@SuppressWarnings("unchecked")
 	public void updateTuningValues(View view, int spinnerId, int value, boolean enabled, int visibility) {
-		SelectableItem selection = new SelectableItem(Integer.valueOf(value), null);
+		TGSelectableItem selection = new TGSelectableItem(Integer.valueOf(value), null);
 		Spinner spinner = (Spinner) view.findViewById(spinnerId);
-		spinner.setSelection(((ArrayAdapter<SelectableItem>)spinner.getAdapter()).getPosition(selection), false);
+		spinner.setSelection(((ArrayAdapter<TGSelectableItem>)spinner.getAdapter()).getPosition(selection), false);
 		spinner.setVisibility(visibility);
 		spinner.setEnabled(enabled);
 	}

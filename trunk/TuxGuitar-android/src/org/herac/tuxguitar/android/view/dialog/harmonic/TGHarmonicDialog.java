@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeHarmonicNoteAction;
@@ -105,15 +105,15 @@ public class TGHarmonicDialog extends TGDialog {
 		return new String();
 	}
 	
-	public SelectableItem[] createDataValues(int type) {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createDataValues(int type) {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		if(type != TGEffectHarmonic.TYPE_NATURAL){
 			String label = getTypeLabel(type);
 			for(int i = 0; i < TGEffectHarmonic.NATURAL_FREQUENCIES.length; i ++){
-				selectableItems.add(new SelectableItem(Integer.valueOf(i), label + "(" + Integer.toString(TGEffectHarmonic.NATURAL_FREQUENCIES[i][0]) + ")"));
+				selectableItems.add(new TGSelectableItem(Integer.valueOf(i), label + "(" + Integer.toString(TGEffectHarmonic.NATURAL_FREQUENCIES[i][0]) + ")"));
 			}
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
@@ -129,21 +129,21 @@ public class TGHarmonicDialog extends TGDialog {
 	}
 	
 	public void fillData(View view, int type, int selection) {
-		SelectableItem[] selectableItems = createDataValues(type);
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, selectableItems);
+		TGSelectableItem[] selectableItems = createDataValues(type);
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, selectableItems);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.harmonic_dlg_data_value);
 		spinner.setAdapter(adapter);
 		spinner.setEnabled(selectableItems.length > 0);
 		spinner.setVisibility(selectableItems.length > 0 ? View.VISIBLE : View.GONE);
 		if( selectableItems.length > 0 ) {
-			spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(selection), null)));
+			spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 		}
 	}
 	
 	public int findSelectedData(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.harmonic_dlg_data_value);
-		SelectableItem selectableItem = (SelectableItem) spinner.getSelectedItem();
+		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? ((Integer)selectableItem.getItem()).intValue() : 0);
 	}
 	

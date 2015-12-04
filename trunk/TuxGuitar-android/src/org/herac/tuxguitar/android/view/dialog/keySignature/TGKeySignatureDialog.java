@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.view.dialog.keySignature;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeKeySignatureAction;
@@ -30,11 +30,11 @@ public class TGKeySignatureDialog extends TGDialog {
 		
 		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createKeyValues());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createKeyValues());
 		
 		final Spinner spinner = (Spinner) view.findViewById(R.id.key_signature_dlg_ks_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(measure.getKeySignature(), null)));
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(measure.getKeySignature(), null)));
 		
 		final CheckBox applyToEnd = (CheckBox) view.findViewById(R.id.key_signature_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
@@ -59,28 +59,28 @@ public class TGKeySignatureDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createKeyValues() {
-		return new SelectableItem[]  {
-			new SelectableItem(Integer.valueOf(0), getString(R.string.key_signature_dlg_ks_value_natural)),
-			new SelectableItem(Integer.valueOf(1), getString(R.string.key_signature_dlg_ks_value_sharp_1)),
-			new SelectableItem(Integer.valueOf(2), getString(R.string.key_signature_dlg_ks_value_sharp_2)),
-			new SelectableItem(Integer.valueOf(3), getString(R.string.key_signature_dlg_ks_value_sharp_3)),
-			new SelectableItem(Integer.valueOf(4), getString(R.string.key_signature_dlg_ks_value_sharp_4)),
-			new SelectableItem(Integer.valueOf(5), getString(R.string.key_signature_dlg_ks_value_sharp_5)),
-			new SelectableItem(Integer.valueOf(6), getString(R.string.key_signature_dlg_ks_value_sharp_6)),
-			new SelectableItem(Integer.valueOf(7), getString(R.string.key_signature_dlg_ks_value_sharp_7)),
-			new SelectableItem(Integer.valueOf(8), getString(R.string.key_signature_dlg_ks_value_flat_1)),
-			new SelectableItem(Integer.valueOf(9), getString(R.string.key_signature_dlg_ks_value_flat_2)),
-			new SelectableItem(Integer.valueOf(10), getString(R.string.key_signature_dlg_ks_value_flat_3)),
-			new SelectableItem(Integer.valueOf(11), getString(R.string.key_signature_dlg_ks_value_flat_4)),
-			new SelectableItem(Integer.valueOf(12), getString(R.string.key_signature_dlg_ks_value_flat_5)),
-			new SelectableItem(Integer.valueOf(13), getString(R.string.key_signature_dlg_ks_value_flat_6)),
-			new SelectableItem(Integer.valueOf(14), getString(R.string.key_signature_dlg_ks_value_flat_7)),
+	public TGSelectableItem[] createKeyValues() {
+		return new TGSelectableItem[]  {
+			new TGSelectableItem(Integer.valueOf(0), getString(R.string.key_signature_dlg_ks_value_natural)),
+			new TGSelectableItem(Integer.valueOf(1), getString(R.string.key_signature_dlg_ks_value_sharp_1)),
+			new TGSelectableItem(Integer.valueOf(2), getString(R.string.key_signature_dlg_ks_value_sharp_2)),
+			new TGSelectableItem(Integer.valueOf(3), getString(R.string.key_signature_dlg_ks_value_sharp_3)),
+			new TGSelectableItem(Integer.valueOf(4), getString(R.string.key_signature_dlg_ks_value_sharp_4)),
+			new TGSelectableItem(Integer.valueOf(5), getString(R.string.key_signature_dlg_ks_value_sharp_5)),
+			new TGSelectableItem(Integer.valueOf(6), getString(R.string.key_signature_dlg_ks_value_sharp_6)),
+			new TGSelectableItem(Integer.valueOf(7), getString(R.string.key_signature_dlg_ks_value_sharp_7)),
+			new TGSelectableItem(Integer.valueOf(8), getString(R.string.key_signature_dlg_ks_value_flat_1)),
+			new TGSelectableItem(Integer.valueOf(9), getString(R.string.key_signature_dlg_ks_value_flat_2)),
+			new TGSelectableItem(Integer.valueOf(10), getString(R.string.key_signature_dlg_ks_value_flat_3)),
+			new TGSelectableItem(Integer.valueOf(11), getString(R.string.key_signature_dlg_ks_value_flat_4)),
+			new TGSelectableItem(Integer.valueOf(12), getString(R.string.key_signature_dlg_ks_value_flat_5)),
+			new TGSelectableItem(Integer.valueOf(13), getString(R.string.key_signature_dlg_ks_value_flat_6)),
+			new TGSelectableItem(Integer.valueOf(14), getString(R.string.key_signature_dlg_ks_value_flat_7)),
 		};
 	}
 	
 	public Integer parseSpinnerValue(Spinner keySignature) {
-		return (Integer) ((SelectableItem)keySignature.getSelectedItem()).getItem();
+		return (Integer) ((TGSelectableItem)keySignature.getSelectedItem()).getItem();
 	}
 	
 	public Boolean parseApplyToEnd(CheckBox applyToEnd) {

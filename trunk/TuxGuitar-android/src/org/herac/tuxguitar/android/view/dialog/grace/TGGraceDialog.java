@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
@@ -74,12 +74,12 @@ public class TGGraceDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createFretValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createFretValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 0; i <= 100; i++) {
-			selectableItems.add(new SelectableItem(Integer.valueOf(i), Integer.toString(i)));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), Integer.toString(i)));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
@@ -90,17 +90,17 @@ public class TGGraceDialog extends TGDialog {
 			selection = (note.getEffect().isGrace() ? note.getEffect().getGrace().getFret() : note.getValue());
 		}
 		
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.grace_dlg_fret_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(selection), null)));
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 	}
 	
 	public int findSelectedFret(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.grace_dlg_fret_value);
 		
-		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
 	public void fillDeadNoteOption(View view, TGNote note) {

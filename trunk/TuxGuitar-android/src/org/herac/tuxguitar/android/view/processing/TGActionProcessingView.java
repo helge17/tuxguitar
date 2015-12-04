@@ -23,7 +23,7 @@ public class TGActionProcessingView {
 		this.dialog = new ProgressDialog(this.activity);
 		this.dialog.setMessage("Processing");
 		this.dialog.setIndeterminate(true);
-		this.dialog.setCancelable(true);
+		this.dialog.setCancelable(false);
 	}
 	
 	private void dismissProgressDialog() {
