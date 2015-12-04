@@ -3,7 +3,7 @@ package org.herac.tuxguitar.app.view.util;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class TGSyncProcess {
+public class TGSyncProcess implements TGProcess {
 	
 	private TGContext context;
 	private Runnable runnable;

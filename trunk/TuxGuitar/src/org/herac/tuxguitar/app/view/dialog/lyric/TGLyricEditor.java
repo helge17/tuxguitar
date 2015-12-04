@@ -17,23 +17,25 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.util.TGProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
 import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGLyric;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -67,9 +69,14 @@ public class TGLyricEditor implements TGEventListener {
 	private int lastMeasuseCount;
 	private String lastTrackName;
 	
+	private TGProcess loadPropertiesProcess;
+	private TGProcess loadIconsProcess;
+	private TGProcess updateItemsProcess;
+	
 	public TGLyricEditor(TGContext context){
 		this.context = context;
 		this.listener = new TGLyricModifyListener(this);
+		this.createSyncProcesses();
 	}
 	
 	public TGLyric createLyrics() {
@@ -151,7 +158,7 @@ public class TGLyricEditor implements TGEventListener {
 		this.fromLabel.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
 		
 		this.from = new Spinner(composite,SWT.BORDER);
-		this.from.setLayoutData(new GridData(50,SWT.DEFAULT));
+		this.from.setLayoutData(new GridData(SWT.DEFAULT, SWT.DEFAULT));
 		
 		this.from.setMinimum(1);
 		this.from.setMaximum(this.track.countMeasures());
@@ -314,11 +321,31 @@ public class TGLyricEditor implements TGEventListener {
 		return false;
 	}
 	
+	public void createSyncProcesses() {
+		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadProperties();
+			}
+		});
+		
+		this.loadIconsProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadIcons();
+			}
+		});
+		
+		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				updateItems();
+			}
+		});
+	}
+	
 	public void processUpdateEvent(TGEvent event) {
 		if(!this.isByPassEvent(event)) {
 			int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 			if( type == TGUpdateEvent.SELECTION ){
-				this.updateItems();
+				this.updateItemsProcess.process();
 			}else if( type == TGUpdateEvent.SONG_UPDATED || type == TGUpdateEvent.SONG_LOADED){
 				this.update();
 			}
@@ -326,19 +353,15 @@ public class TGLyricEditor implements TGEventListener {
 	}
 	
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadIcons();
-				}
-				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadProperties();
-				}
-				else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					processUpdateEvent(event);
-				}
-			}
-		});
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIconsProcess.process();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadPropertiesProcess.process();
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
+		}
 	}
 	
 	public static TGLyricEditor getInstance(TGContext context) {

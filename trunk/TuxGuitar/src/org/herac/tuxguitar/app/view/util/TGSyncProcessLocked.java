@@ -6,7 +6,7 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class TGSyncProcessLocked {
+public class TGSyncProcessLocked implements TGProcess {
 	
 	private TGContext context;
 	private Runnable runnable;
