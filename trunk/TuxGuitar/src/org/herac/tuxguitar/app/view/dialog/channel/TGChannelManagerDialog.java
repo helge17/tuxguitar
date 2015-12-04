@@ -15,17 +15,19 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
+import org.herac.tuxguitar.app.view.util.TGProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -38,6 +40,9 @@ public class TGChannelManagerDialog implements TGEventListener {
 	private TGChannelList channelList;
 	private TGChannelSettingsHandlerManager channelSettingsHandlerManager;
 	private TGCursorController cursorController;
+	private TGProcess loadPropertiesProcess;
+	private TGProcess loadIconsProcess;
+	private TGProcess updateItemsProcess;
 	
 	private Button addChannelButton;
 	
@@ -51,6 +56,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 		this.context = context;
 		this.channelHandle = new TGChannelHandle(context);
 		this.channelSettingsHandlerManager = new TGChannelSettingsHandlerManager();
+		this.createSyncProcesses();
 	}
 	
 	public void show(TGViewContext viewContext){
@@ -263,27 +269,43 @@ public class TGChannelManagerDialog implements TGEventListener {
 		return this.channelSettingsHandlerManager;
 	}
 	
+	public void createSyncProcesses() {
+		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadProperties();
+			}
+		});
+		
+		this.loadIconsProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				loadIcons();
+			}
+		});
+		
+		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				updateItems();
+			}
+		});
+	}
+	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.updateItems();
+			this.updateItemsProcess.process();
 		}
 	}
 	
 	public void processEvent(final TGEvent event) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadIcons();
-				}
-				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadProperties();
-				}
-				else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					processUpdateEvent(event);
-				}
-			}
-		});
+		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIconsProcess.process();
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadPropertiesProcess.process();
+		}
+		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.processUpdateEvent(event);
+		}
 	}
 	
 	public static TGChannelManagerDialog getInstance(TGContext context) {

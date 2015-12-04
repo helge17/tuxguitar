@@ -2,8 +2,6 @@ package org.herac.tuxguitar.app.view.component.table;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -14,7 +12,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
@@ -22,10 +19,13 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogActio
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.menu.impl.TrackMenu;
+import org.herac.tuxguitar.app.view.util.TGProcess;
+import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -39,7 +39,6 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -50,11 +49,13 @@ public class TGTableViewer implements TGEventListener {
 	private ScrollBar hScroll;
 	private Color[] backgrounds;
 	private Color[] foregrounds;
-	private Menu menu;
+	private TrackMenu menu;
 	private TGTable table;
-	private TGSyncProcessLocked redrawProcess;
-	private TGSyncProcessLocked redrawPlayModeProcess;
-	private TGSyncProcessLocked loadPropertiesProcess;
+	private TGProcess redrawProcess;
+	private TGProcess redrawPlayModeProcess;
+	private TGProcess loadPropertiesProcess;
+	private TGProcess loadIconsProcess;
+	private TGProcess updateMenuItemsProcess;
 	private int selectedTrack;
 	private int selectedMeasure;
 	private int trackCount = 0;
@@ -73,6 +74,7 @@ public class TGTableViewer implements TGEventListener {
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
+		TuxGuitar.getInstance().getIconManager().addLoader(this);
 	}
 	
 	public void init(Composite parent){
@@ -141,11 +143,16 @@ public class TGTableViewer implements TGEventListener {
 		this.table.getColumnSoloMute().setTitle(TuxGuitar.getProperty("track.short-solo-mute"));
 		this.table.getColumnName().setTitle(TuxGuitar.getProperty("track.name"));
 		this.table.getColumnInstrument().setTitle(TuxGuitar.getProperty("track.instrument"));
+		this.loadMenuProperties();
+	}
+	
+	public void loadIcons() {
+		this.loadMenuIcons();
 	}
 	
 	public void fireUpdate(boolean newSong){
 		this.update = true;
-		if(newSong){
+		if( newSong ){
 			this.trackCount = 0;
 		}
 	}
@@ -290,12 +297,30 @@ public class TGTableViewer implements TGEventListener {
 	private void updateTableRow(CLabel control, TGTrack track, String label) {
 		control.setText(label);
 		control.setData(track);
-		control.setMenu(this.menu);
+		control.setMenu(this.menu.getMenu());
 	}
 	
 	private void updateTableMenu() {
 		this.disposeMenu();
 		this.createTrackMenu();
+	}
+	
+	private void updateMenuItems() {
+		if( this.menu != null && !this.menu.isDisposed() ) {
+			this.menu.update();
+		}
+	}
+	
+	private void loadMenuProperties() {
+		if( this.menu != null && !this.menu.isDisposed() ) {
+			this.menu.loadProperties();
+		}
+	}
+	
+	private void loadMenuIcons() {
+		if( this.menu != null && !this.menu.isDisposed() ) {
+			this.menu.loadIcons();
+		}
 	}
 	
 	private int getHeight(){
@@ -389,58 +414,9 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void createTrackMenu(){
-		final TrackMenu trackMenu = new TrackMenu(getComposite().getShell(), SWT.POP_UP);
-		trackMenu.showItems();
-		trackMenu.update();
-		
-		final TGEventListener trackMenuUpdateListener = new TGEventListener() {
-			public void processEvent(TGEvent event) {
-				int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
-				if(!trackMenu.isDisposed() && type == TGUpdateEvent.SELECTION ){
-					TGSynchronizer.getInstance(TGTableViewer.this.context).executeLater(new Runnable() {
-						public void run() {
-							trackMenu.update();
-						}
-					});
-				}
-			}
-		};
-		final TGEventListener trackMenuLanguageLoader = new TGEventListener() {
-			public void processEvent(TGEvent event) {
-				if(!trackMenu.isDisposed()){
-					TGSynchronizer.getInstance(TGTableViewer.this.context).executeLater(new Runnable() {
-						public void run() {
-							trackMenu.loadProperties();
-						}
-					});
-				}
-			}
-		};
-		final TGEventListener trackMenuIconLoader = new TGEventListener() {
-			public void processEvent(TGEvent event) {
-				if(!trackMenu.isDisposed()){
-					TGSynchronizer.getInstance(TGTableViewer.this.context).executeLater(new Runnable() {
-						public void run() {
-							trackMenu.loadIcons();
-						}
-					});
-				}
-			}
-		};
-		
-		TuxGuitar.getInstance().getEditorManager().addUpdateListener(trackMenuUpdateListener);
-		TuxGuitar.getInstance().getLanguageManager().addLoader(trackMenuLanguageLoader);
-		TuxGuitar.getInstance().getIconManager().addLoader(trackMenuIconLoader);
-		
-		trackMenu.getMenu().addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				TuxGuitar.getInstance().getEditorManager().removeUpdateListener(trackMenuUpdateListener);
-				TuxGuitar.getInstance().getLanguageManager().removeLoader(trackMenuLanguageLoader);
-				TuxGuitar.getInstance().getIconManager().removeLoader(trackMenuIconLoader);
-			}
-		});
-		
-		this.menu = trackMenu.getMenu();
+		this.menu = new TrackMenu(getComposite().getShell(), SWT.POP_UP);
+		this.menu.showItems();
+		this.menu.update();
 	}
 	
 	public void disposeColors(){
@@ -486,9 +462,19 @@ public class TGTableViewer implements TGEventListener {
 				redrawPlayingMode();
 			}
 		});
-		this.loadPropertiesProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				loadProperties();
+			}
+		});
+		this.loadIconsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				loadIcons();
+			}
+		});
+		this.updateMenuItemsProcess = new TGSyncProcess(this.context, new Runnable() {
+			public void run() {
+				updateMenuItems();
 			}
 		});
 	}
@@ -520,6 +506,7 @@ public class TGTableViewer implements TGEventListener {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItems();
+			this.updateMenuItemsProcess.process();
 		}else if( type == TGUpdateEvent.SONG_UPDATED ){
 			this.fireUpdate( false );
 		}else if( type == TGUpdateEvent.SONG_LOADED ){
@@ -528,14 +515,17 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void processEvent(TGEvent event) {
-		if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			this.loadPropertiesProcess.process();
-		}
-		else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processRedrawEvent(event);
 		}
 		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
+		}
+		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadPropertiesProcess.process();
+		}
+		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			this.loadIconsProcess.process();
 		}
 	}
 	
