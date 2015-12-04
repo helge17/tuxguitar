@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
@@ -36,16 +36,16 @@ public class TGTimeSignatureDialog extends TGDialog {
 		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-		ArrayAdapter<SelectableItem> numeratorAdapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createNumeratorValues());
+		ArrayAdapter<TGSelectableItem> numeratorAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createNumeratorValues());
 		
 		final Spinner numerator = (Spinner) view.findViewById(R.id.time_signature_dlg_ts_numerator_value);
 		numerator.setAdapter(numeratorAdapter);
-		numerator.setSelection(numeratorAdapter.getPosition(new SelectableItem(header.getTimeSignature().getNumerator(), null)));
+		numerator.setSelection(numeratorAdapter.getPosition(new TGSelectableItem(header.getTimeSignature().getNumerator(), null)));
 		
-		ArrayAdapter<SelectableItem> denominatorAdapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDenominatorValues());
+		ArrayAdapter<TGSelectableItem> denominatorAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDenominatorValues());
 		final Spinner denominator = (Spinner) view.findViewById(R.id.time_signature_dlg_ts_denominator_value);
 		denominator.setAdapter(denominatorAdapter);
-		denominator.setSelection(denominatorAdapter.getPosition(new SelectableItem(header.getTimeSignature().getDenominator().getValue(), null)));
+		denominator.setSelection(denominatorAdapter.getPosition(new TGSelectableItem(header.getTimeSignature().getDenominator().getValue(), null)));
 		
 		final CheckBox applyToEnd = (CheckBox) view.findViewById(R.id.time_signature_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
@@ -68,22 +68,22 @@ public class TGTimeSignatureDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createNumeratorValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createNumeratorValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 32; i++) {
-			selectableItems.add(new SelectableItem(Integer.valueOf(i), Integer.toString(i)));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), Integer.toString(i)));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
 	
-	public SelectableItem[] createDenominatorValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createDenominatorValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 32; i = i * 2) {
-			selectableItems.add(new SelectableItem(Integer.valueOf(i), Integer.toString(i)));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), Integer.toString(i)));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
@@ -96,11 +96,11 @@ public class TGTimeSignatureDialog extends TGDialog {
 	}
 	
 	public Integer parseNumeratorValue(Spinner numerator) {
-		return (Integer) ((SelectableItem) numerator.getSelectedItem()).getItem();
+		return (Integer) ((TGSelectableItem) numerator.getSelectedItem()).getItem();
 	}
 	
 	public Integer parseDenominatorValue(Spinner denominator) {
-		return (Integer) ((SelectableItem) denominator.getSelectedItem()).getItem();
+		return (Integer) ((TGSelectableItem) denominator.getSelectedItem()).getItem();
 	}
 	
 	public Boolean parseApplyToEnd(CheckBox applyToEnd) {

@@ -19,6 +19,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAction;
+import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAxisPositionAction;
 import org.herac.tuxguitar.android.action.impl.edit.TGRedoAction;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
@@ -177,6 +178,7 @@ public class TGActionInstaller {
 		installAction(new TGGoLeftAction(context));
 		installAction(new TGGoUpAction(context));
 		installAction(new TGGoDownAction(context));
+		installAction(new TGMoveToAxisPositionAction(context));
 		
 		//song actions
 		installAction(new TGCopySongFromAction(context));

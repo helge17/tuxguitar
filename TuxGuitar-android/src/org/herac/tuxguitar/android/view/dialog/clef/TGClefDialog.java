@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.view.dialog.clef;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeClefAction;
@@ -32,11 +32,11 @@ public class TGClefDialog extends TGDialog {
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createClefValues());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createClefValues());
 		
 		final Spinner spinner = (Spinner) view.findViewById(R.id.clef_dlg_clef_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(measure.getClef(), null)));
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(measure.getClef(), null)));
 		
 		final CheckBox applyToEnd = (CheckBox) view.findViewById(R.id.clef_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
@@ -59,17 +59,17 @@ public class TGClefDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createClefValues() {
-		return new SelectableItem[]  {
-			new SelectableItem(Integer.valueOf(TGMeasure.CLEF_TREBLE), getString(R.string.clef_dlg_clef_value_treble)),
-			new SelectableItem(Integer.valueOf(TGMeasure.CLEF_BASS), getString(R.string.clef_dlg_clef_value_bass)),
-			new SelectableItem(Integer.valueOf(TGMeasure.CLEF_TENOR), getString(R.string.clef_dlg_clef_value_tenor)),
-			new SelectableItem(Integer.valueOf(TGMeasure.CLEF_ALTO), getString(R.string.clef_dlg_clef_value_alto))
+	public TGSelectableItem[] createClefValues() {
+		return new TGSelectableItem[]  {
+			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_TREBLE), getString(R.string.clef_dlg_clef_value_treble)),
+			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_BASS), getString(R.string.clef_dlg_clef_value_bass)),
+			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_TENOR), getString(R.string.clef_dlg_clef_value_tenor)),
+			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_ALTO), getString(R.string.clef_dlg_clef_value_alto))
 		};
 	}
 	
 	public Integer parseClefValue(Spinner clef) {
-		return (Integer) ((SelectableItem)clef.getSelectedItem()).getItem();
+		return (Integer) ((TGSelectableItem)clef.getSelectedItem()).getItem();
 	}
 	
 	public Boolean parseApplyToEnd(CheckBox applyToEnd) {

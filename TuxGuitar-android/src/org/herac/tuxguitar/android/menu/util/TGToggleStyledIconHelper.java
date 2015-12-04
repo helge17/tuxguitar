@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.view.util.TGProcess;
+import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 import android.annotation.SuppressLint;
 import android.content.res.TypedArray;
@@ -25,21 +25,24 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 	
 	private TGContext context;
 	private TGActivity activity;
+	private TGProcess updateIcons;
 	private Menu menu;
 	private Map<Integer, Drawable> styledIcons;
 	private List<TGToggleStyledIconHandler> handlers;
+	
 	
 	public TGToggleStyledIconHelper(TGContext context) {
 		this.context = context;
 		this.styledIcons = new HashMap<Integer, Drawable>();
 		this.handlers = new ArrayList<TGToggleStyledIconHandler>();
+		this.createSyncProcesses();
 		this.appendListeners();
 	}
 	
 	public void initialize(TGActivity activity, Menu menu) {
 		this.activity = activity;
 		this.menu = menu;
-		this.updateIcons();
+		this.updateIcons.process();
 	}
 	
 	public void addHandler(TGToggleStyledIconHandler handler) {
@@ -88,20 +91,24 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 		}
 	}
 	
+	public void createSyncProcesses() {
+		this.updateIcons = new TGSyncProcessLocked(this.context, new Runnable() {
+			public void run() {
+				updateIcons();
+			}
+		});
+	}
+	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.updateIcons();
+			this.updateIcons.process();
 		}
 	}
 	
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-				public void run() throws TGException {
-					TGToggleStyledIconHelper.this.processUpdateEvent(event);
-				}
-			});
+			this.processUpdateEvent(event);
 		}
 	}
 }

@@ -1,10 +1,11 @@
 package org.herac.tuxguitar.android.view.channel;
 
+import java.util.List;
+
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.android.view.util.TGProcess;
+import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,30 +18,29 @@ import android.widget.TextView;
 
 public class TGChannelListAdapter extends BaseAdapter {
 
+	private List<TGChannel> channels;
 	private TGChannelListView channelList;
+	private TGProcess notifyDataSetChangedLater;
 	private boolean eventInProgress;
 	
 	public TGChannelListAdapter(TGChannelListView channelList) {
 		this.channelList = channelList;
 		this.eventInProgress = false;
+		this.createSyncProcesses();
 	}
-
+	
+	public void setChannels(List<TGChannel> channels) {
+		this.channels = channels;
+	}
+	
 	@Override
 	public int getCount() {
-		TGDocumentManager documentManager = TGDocumentManager.getInstance(this.channelList.findContext());
-		if( documentManager.getSong() != null ) {
-			return documentManager.getSong().countChannels();
-		}
-		return 0;
+		return (this.channels != null ? this.channels.size() : 0);
 	}
-
+	
 	@Override
 	public Object getItem(int position) {
-		TGDocumentManager documentManager = TGDocumentManager.getInstance(this.channelList.findContext());
-		if( documentManager.getSong() != null ) {
-			return documentManager.getSong().getChannel(position);
-		}
-		return null;
+		return (this.channels != null && this.channels.size() > position ? this.channels.get(position) : null);
 	}
 
 	@Override
@@ -104,13 +104,13 @@ public class TGChannelListAdapter extends BaseAdapter {
 		if(!this.eventInProgress ) {
 			super.notifyDataSetChanged();
 		} else {
-			this.notifyDataSetChangedLater();
+			this.notifyDataSetChangedLater.process();
 		}
 	}
 	
-	public void notifyDataSetChangedLater() {
-		TGSynchronizer.getInstance(this.channelList.findContext()).executeLater(new Runnable() {
-			public void run() throws TGException {
+	public void createSyncProcesses() {
+		this.notifyDataSetChangedLater = new TGSyncProcessLocked(this.channelList.findContext(), new Runnable() {
+			public void run() {
 				notifyDataSetChanged();
 			}
 		});

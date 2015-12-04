@@ -11,7 +11,7 @@ import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 import android.annotation.SuppressLint;
@@ -65,22 +65,22 @@ public class TGBrowserCollectionsDialog extends TGDialog {
 		TGActionManager.getInstance(findContext()).removePostExecutionListener(this.eventListener);
 	}
 	
-	public SelectableItem[] createFactoryValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createFactoryValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		
 		Iterator<TGBrowserFactory> factories = TGBrowserManager.getInstance(this.findContext()).getFactories();
 		while( factories.hasNext() ) {
 			TGBrowserFactory factory = factories.next();
-			selectableItems.add(new SelectableItem(factory, factory.getName()));
+			selectableItems.add(new TGSelectableItem(factory, factory.getName()));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
 	
 	public void fillFactories() {
 		Spinner spinner = (Spinner) this.view.findViewById(R.id.browser_collections_dlg_add_type);
-		spinner.setAdapter(new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFactoryValues()));
+		spinner.setAdapter(new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFactoryValues()));
 	}
 	
 	public void fillAddButton() {
@@ -102,7 +102,7 @@ public class TGBrowserCollectionsDialog extends TGDialog {
 	public TGBrowserFactory findSelectedFactory() {
 		Spinner spinner = (Spinner) this.view.findViewById(R.id.browser_collections_dlg_add_type);
 		
-		return (TGBrowserFactory) ((SelectableItem) spinner.getSelectedItem()).getItem();
+		return (TGBrowserFactory) ((TGSelectableItem) spinner.getSelectedItem()).getItem();
 	}
 	
 	public void createCollection(TGBrowserFactory factory) {

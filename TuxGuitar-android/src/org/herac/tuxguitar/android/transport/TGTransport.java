@@ -89,7 +89,6 @@ public class TGTransport {
 	
 	public void gotoPlayerPosition() {
 		TuxGuitar tuxguitar = TuxGuitar.getInstance(this.context);
-		tuxguitar.lock();
 		
 		MidiPlayer player = tuxguitar.getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(this.context, player.getTickPosition()));
@@ -98,7 +97,6 @@ public class TGTransport {
 		}
 		TGSongViewController.getInstance(this.context).getCaret().goToTickPosition();
 		
-		tuxguitar.unlock(false);
 		tuxguitar.updateCache(true);
 	}
 	

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -41,8 +41,8 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	private View view;
 	private TGEventListener eventListener;
 	
-	private ArrayAdapter<SelectableItem> instrumentPrograms;
-	private ArrayAdapter<SelectableItem> percussionPrograms;
+	private ArrayAdapter<TGSelectableItem> instrumentPrograms;
+	private ArrayAdapter<TGSelectableItem> percussionPrograms;
 	
 	public TGChannelEditDialog() {
 		super();
@@ -135,16 +135,16 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 		TGEditorManager.getInstance(findContext()).removeUpdateListener(this.eventListener);
 	}
 	
-	public List<SelectableItem> createUnamedPrograms(){
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public List<TGSelectableItem> createUnamedPrograms(){
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 0; i < 128; i++) {
 			Short value = Short.valueOf(Integer.valueOf(i).shortValue());
-			selectableItems.add(new SelectableItem(value, getString(R.string.channel_edit_dlg_program_value, value)));
+			selectableItems.add(new TGSelectableItem(value, getString(R.string.channel_edit_dlg_program_value, value)));
 		}
 		return selectableItems;
 	}
 	
-	public List<SelectableItem> createInstrumentPrograms(){
+	public List<TGSelectableItem> createInstrumentPrograms(){
 		MidiInstrument[] instruments = MidiPlayer.getInstance(findContext()).getInstruments();
 		if (instruments != null) {
 			int count = instruments.length;
@@ -152,9 +152,9 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 				count = 128;
 			}
 			
-			List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+			List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 			for(int i = 0; i < count; i++) {
-				selectableItems.add(new SelectableItem(Short.valueOf(Integer.valueOf(i).shortValue()), instruments[i].getName()));
+				selectableItems.add(new TGSelectableItem(Short.valueOf(Integer.valueOf(i).shortValue()), instruments[i].getName()));
 			}
 			return selectableItems;
 		}
@@ -162,8 +162,8 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillProgramAdapters() {
-		this.instrumentPrograms = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createInstrumentPrograms());
-		this.percussionPrograms = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createUnamedPrograms());
+		this.instrumentPrograms = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createInstrumentPrograms());
+		this.percussionPrograms = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createUnamedPrograms());
 	}
 	
 	public void fillPrograms() {
@@ -176,20 +176,20 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	public short findSelectedProgram() {
 		Spinner spinner = (Spinner) this.view.findViewById(R.id.channel_edit_dlg_program_value);
-		return ((Short) ((SelectableItem)spinner.getSelectedItem()).getItem()).shortValue();
+		return ((Short) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).shortValue();
 	}
 
-	public List<SelectableItem> createBankValues(){
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public List<TGSelectableItem> createBankValues(){
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 0; i < 128; i++) {
 			Short value = Short.valueOf(Integer.valueOf(i).shortValue());
-			selectableItems.add(new SelectableItem(value, getString(R.string.channel_edit_dlg_bank_value, value)));
+			selectableItems.add(new TGSelectableItem(value, getString(R.string.channel_edit_dlg_bank_value, value)));
 		}
 		return selectableItems;
 	}
 	
 	public void fillBanks() {
-		updateSpinnerAdapter(R.id.channel_edit_dlg_bank_value, new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createBankValues()));
+		updateSpinnerAdapter(R.id.channel_edit_dlg_bank_value, new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createBankValues()));
 	}
 	
 	public void fillBankValue() {
@@ -198,7 +198,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	public short findSelectedBank() {
 		Spinner spinner = (Spinner) this.view.findViewById(R.id.channel_edit_dlg_bank_value);
-		return ((Short) ((SelectableItem)spinner.getSelectedItem()).getItem()).shortValue();
+		return ((Short) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).shortValue();
 	}
 	
 	public void fillNameValue() {
@@ -246,10 +246,10 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void updateSpinnerValue(int id, Object value) {
-		this.setSpinnerValue(id, new SelectableItem(value, null));
+		this.setSpinnerValue(id, new TGSelectableItem(value, null));
 	}
 	
-	public void updateSpinnerAdapter(int id, ArrayAdapter<SelectableItem> adapter) {
+	public void updateSpinnerAdapter(int id, ArrayAdapter<TGSelectableItem> adapter) {
 		Spinner spinner = (Spinner) this.view.findViewById(id);
 		if(!isSameValue(adapter, spinner.getAdapter())) {
 			spinner.setAdapter(adapter);
@@ -276,15 +276,15 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 		return ((CheckBox) this.view.findViewById(id)).isChecked();
 	}
 	
-	public SelectableItem getSpinnerValue(int id) {
-		return (SelectableItem) ((Spinner) this.view.findViewById(id)).getSelectedItem();
+	public TGSelectableItem getSpinnerValue(int id) {
+		return (TGSelectableItem) ((Spinner) this.view.findViewById(id)).getSelectedItem();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void setSpinnerValue(int id, SelectableItem selectedItem) {
+	public void setSpinnerValue(int id, TGSelectableItem selectedItem) {
 		if(!isSameValue(selectedItem, getSpinnerValue(id))) {
 			Spinner spinner = (Spinner) this.view.findViewById(id);
-			spinner.setSelection(((ArrayAdapter<SelectableItem>) spinner.getAdapter()).getPosition(selectedItem), false);
+			spinner.setSelection(((ArrayAdapter<TGSelectableItem>) spinner.getAdapter()).getPosition(selectedItem), false);
 		}
 	}
 	

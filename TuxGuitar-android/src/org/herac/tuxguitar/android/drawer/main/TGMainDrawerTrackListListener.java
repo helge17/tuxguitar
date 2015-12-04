@@ -1,37 +1,50 @@
 package org.herac.tuxguitar.android.drawer.main;
 
+import org.herac.tuxguitar.android.view.util.TGProcess;
+import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGMainDrawerTrackListListener implements TGEventListener {
 	
 	private TGMainDrawerTrackListAdapter adapter;
+	private TGProcess updateSelection;
+	private TGProcess updateTracks;
 	
 	public TGMainDrawerTrackListListener(TGMainDrawerTrackListAdapter adapter) {
 		this.adapter = adapter;
+		this.createSyncProcesses();
+	}
+	
+	public void createSyncProcesses() {
+		this.updateSelection = new TGSyncProcessLocked(this.adapter.getMainDrawer().findContext(), new Runnable() {
+			public void run() {
+				TGMainDrawerTrackListListener.this.adapter.updateSelection();
+			}
+		});
+		
+		this.updateTracks = new TGSyncProcessLocked(this.adapter.getMainDrawer().findContext(), new Runnable() {
+			public void run() {
+				TGMainDrawerTrackListListener.this.adapter.updateTracks();
+			}
+		});
 	}
 	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.adapter.updateSelection();
+			this.updateSelection.process();
 		}if( type == TGUpdateEvent.SONG_UPDATED ){
-			this.adapter.updateTracks();
+			this.updateTracks.process();
 		}else if( type == TGUpdateEvent.SONG_LOADED ){
-			this.adapter.updateTracks();
+			this.updateTracks.process();
 		}
 	}
 	
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			TGSynchronizer.getInstance(this.adapter.getMainDrawer().findContext()).executeLater(new Runnable() {
-				public void run() throws TGException {
-					TGMainDrawerTrackListListener.this.processUpdateEvent(event);
-				}
-			});
+			this.processUpdateEvent(event);
 		}
 	}
 }

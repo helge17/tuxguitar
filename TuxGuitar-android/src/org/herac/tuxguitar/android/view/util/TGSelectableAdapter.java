@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class SelectableAdapter extends ArrayAdapter<SelectableItem> {
+public class TGSelectableAdapter extends ArrayAdapter<TGSelectableItem> {
 
-	public SelectableAdapter(Context context, int resource, List<SelectableItem> items) {
+	public TGSelectableAdapter(Context context, int resource, List<TGSelectableItem> items) {
 		super(context, resource, items);
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = super.getView(position, convertView, parent);
 		
-		SelectableItem item = this.getItem(position);
+		TGSelectableItem item = this.getItem(position);
 		if( item != null ) {
 			this.updateTextView(view, item.getLabel());
 		}
@@ -28,7 +28,7 @@ public class SelectableAdapter extends ArrayAdapter<SelectableItem> {
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		View view = super.getDropDownView(position, convertView, parent);
 		
-		SelectableItem item = this.getItem(position);
+		TGSelectableItem item = this.getItem(position);
 		if( item != null ) {
 			this.updateTextView(view, item.getDropDownLabel());
 		}

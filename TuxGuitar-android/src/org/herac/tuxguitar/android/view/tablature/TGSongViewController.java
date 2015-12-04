@@ -34,6 +34,7 @@ public class TGSongViewController implements TGController {
 	private TGSongViewStyles songStyles;
 	private TGSongViewBufferController bufferController;
 	private TGSongViewLayoutPainter layoutPainter;
+	private TGSongViewAxisSelector axisSelector;
 	private TGCaret caret;
 	private TGScroll scroll;
 	private TGSongView songView;
@@ -48,6 +49,7 @@ public class TGSongViewController implements TGController {
 		this.layout = new TGLayoutVertical(this, TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT);
 		this.caret = new TGCaret(this);
 		this.scroll = new TGScroll();
+		this.axisSelector = new TGSongViewAxisSelector(this);
 		
 		this.resetCaret();
 		this.resetScroll();
@@ -157,6 +159,10 @@ public class TGSongViewController implements TGController {
 		return scroll;
 	}
 	
+	public TGSongViewAxisSelector getAxisSelector() {
+		return axisSelector;
+	}
+
 	public TGSongView getSongView() {
 		return songView;
 	}

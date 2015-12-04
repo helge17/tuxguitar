@@ -17,8 +17,8 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.android.view.browser.filesystem.TGBrowserSettingsFactoryImpl;
-import org.herac.tuxguitar.android.view.util.SelectableAdapter;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableAdapter;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
@@ -69,25 +69,25 @@ public class TGBrowserView extends RelativeLayout {
 		});
 	}
 	
-	public SelectableItem[] createCollectionValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
-		selectableItems.add(new SelectableItem(null, getContext().getString(R.string.global_spinner_select_option)));
+	public TGSelectableItem[] createCollectionValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
+		selectableItems.add(new TGSelectableItem(null, getContext().getString(R.string.global_spinner_select_option)));
 		
 		Iterator<TGBrowserCollection> collections = TGBrowserManager.getInstance(this.findContext()).getCollections();
 		while( collections.hasNext() ) {
 			TGBrowserCollection collection = collections.next();
-			selectableItems.add(new SelectableItem(collection, collection.getSettings().getTitle()));
+			selectableItems.add(new TGSelectableItem(collection, collection.getSettings().getTitle()));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
 	
 	public void refreshCollections() {
-		ArrayAdapter<SelectableItem> arrayAdapter = new ArrayAdapter<SelectableItem>(findActivity(), R.layout.view_browser_spinner_item, createCollectionValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(findActivity(), R.layout.view_browser_spinner_item, createCollectionValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		SelectableItem selectedItem = new SelectableItem(findCurrentCollection(), null);
+		TGSelectableItem selectedItem = new TGSelectableItem(findCurrentCollection(), null);
 		
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
 		OnItemSelectedListener listener = spinner.getOnItemSelectedListener();
@@ -99,13 +99,13 @@ public class TGBrowserView extends RelativeLayout {
 	
 	public TGBrowserCollection selectCollection() {
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
-		SelectableItem selectableItem = (SelectableItem) spinner.getSelectedItem();
+		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? (TGBrowserCollection) selectableItem.getItem() : null);
 	}
 	
 	public TGBrowserCollection findSelectedCollection() {
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
-		SelectableItem selectableItem = (SelectableItem) spinner.getSelectedItem();
+		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? (TGBrowserCollection) selectableItem.getItem() : null);
 	}
 	
@@ -122,14 +122,14 @@ public class TGBrowserView extends RelativeLayout {
 		return format.getName();
 	}
 	
-	public List<SelectableItem> createFormatValues() {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public List<TGSelectableItem> createFormatValues() {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		
 		Iterator<?> outputStreams = TGFileFormatManager.getInstance(findContext()).getOutputStreams();
 		while( outputStreams.hasNext() ) {
 			TGOutputStreamBase outputStream = (TGOutputStreamBase) outputStreams.next();
 			TGFileFormat format = outputStream.getFileFormat();
-			selectableItems.add(new SelectableItem(format, createFormatLabel(format), createFormatDropDownLabel(format)));
+			selectableItems.add(new TGSelectableItem(format, createFormatLabel(format), createFormatDropDownLabel(format)));
 		}
 		
 		return selectableItems;
@@ -142,7 +142,7 @@ public class TGBrowserView extends RelativeLayout {
 	}
 	
 	public void fillFormats() {
-		SelectableAdapter selectableAdapter = new SelectableAdapter(findActivity(), R.layout.view_browser_spinner_item, createFormatValues());
+		TGSelectableAdapter selectableAdapter = new TGSelectableAdapter(findActivity(), R.layout.view_browser_spinner_item, createFormatValues());
 		selectableAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_save_format);
@@ -151,7 +151,7 @@ public class TGBrowserView extends RelativeLayout {
 	
 	public TGFileFormat findSelectedFormat() {
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_save_format);
-		SelectableItem selectableItem = (SelectableItem) spinner.getSelectedItem();
+		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? (TGFileFormat) selectableItem.getItem() : null);
 	}
 	

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.view.dialog.stroke;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
@@ -57,11 +57,11 @@ public class TGStrokeDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createDirectionValues() {
-		SelectableItem[] selectableItems = new SelectableItem[] {
-			new SelectableItem(Integer.valueOf( TGStroke.STROKE_NONE ), getString(R.string.stroke_dlg_direction_none)),
-			new SelectableItem(Integer.valueOf( TGStroke.STROKE_UP ), getString(R.string.stroke_dlg_direction_up)),
-			new SelectableItem(Integer.valueOf( TGStroke.STROKE_DOWN ), getString(R.string.stroke_dlg_direction_down))
+	public TGSelectableItem[] createDirectionValues() {
+		TGSelectableItem[] selectableItems = new TGSelectableItem[] {
+			new TGSelectableItem(Integer.valueOf( TGStroke.STROKE_NONE ), getString(R.string.stroke_dlg_direction_none)),
+			new TGSelectableItem(Integer.valueOf( TGStroke.STROKE_UP ), getString(R.string.stroke_dlg_direction_up)),
+			new TGSelectableItem(Integer.valueOf( TGStroke.STROKE_DOWN ), getString(R.string.stroke_dlg_direction_down))
 		};
 		return selectableItems;
 	}
@@ -69,11 +69,11 @@ public class TGStrokeDialog extends TGDialog {
 	public void fillDirection(final View dlgView, TGBeat beat) {
 		int selection = (beat != null ? beat.getStroke().getDirection() : TGStroke.STROKE_NONE);
 		
-		ArrayAdapter<SelectableItem> adapter = new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDirectionValues());
+		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDirectionValues());
 		
 		Spinner spinner = (Spinner) dlgView.findViewById(R.id.stroke_dlg_direction_value);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(selection), null)), false);
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
 		
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -88,7 +88,7 @@ public class TGStrokeDialog extends TGDialog {
 	public int findSelectedDirection(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.stroke_dlg_direction_value);
 		
-		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
 	public void fillDurations(View view, TGBeat beat) {

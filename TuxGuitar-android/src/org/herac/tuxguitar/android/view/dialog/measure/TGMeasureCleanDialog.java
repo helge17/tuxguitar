@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.SelectableItem;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
@@ -54,18 +54,18 @@ public class TGMeasureCleanDialog extends TGDialog {
 		return builder.create();
 	}
 	
-	public SelectableItem[] createRangeValues(int minimum, int maximum) {
-		List<SelectableItem> selectableItems = new ArrayList<SelectableItem>();
+	public TGSelectableItem[] createRangeValues(int minimum, int maximum) {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = minimum; i <= maximum; i++) {
-			selectableItems.add(new SelectableItem(Integer.valueOf(i), Integer.toString(i)));
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), Integer.toString(i)));
 		}
-		SelectableItem[] builtItems = new SelectableItem[selectableItems.size()];
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
 	
 	public void fillSpinner(Spinner spinner, int minimum, int maximum) {
-		spinner.setAdapter(new ArrayAdapter<SelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createRangeValues(minimum, maximum)));
+		spinner.setAdapter(new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createRangeValues(minimum, maximum)));
 	}
 	
 	public void fillRanges(View view, TGTrack track, TGMeasure measure) {
@@ -131,13 +131,13 @@ public class TGMeasureCleanDialog extends TGDialog {
 	}
 	
 	public int findSelectedValue(Spinner spinner) {
-		return ((Integer) ((SelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void updateSpinnerSelection(Spinner spinner, int selection) {
-		ArrayAdapter<SelectableItem> adapter = (ArrayAdapter<SelectableItem>) spinner.getAdapter();
-		spinner.setSelection(adapter.getPosition(new SelectableItem(Integer.valueOf(selection), null)), false);
+		ArrayAdapter<TGSelectableItem> adapter = (ArrayAdapter<TGSelectableItem>) spinner.getAdapter();
+		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
 	}
 	
 	public void processAction(TGTrack track, Integer measure1, Integer measure2) {
