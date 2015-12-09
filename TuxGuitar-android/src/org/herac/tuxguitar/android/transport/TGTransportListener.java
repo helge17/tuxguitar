@@ -39,7 +39,7 @@ public class TGTransportListener implements TGEventListener{
 						try {
 							tgTransport.getCache().updatePlayMode();
 						} finally {
-							tgEditorManager.unlock(false);
+							tgEditorManager.unlock();
 						}
 						
 						if( tgTransport.getCache().shouldRedraw() ) {
@@ -71,7 +71,7 @@ public class TGTransportListener implements TGEventListener{
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
 				} finally {
-					tgEditorManager.unlock(false);
+					tgEditorManager.unlock();
 				}
 			}
 		}).start();

@@ -56,7 +56,7 @@ public class TGBufferedPainterLocked {
 			try {
 				this.fillPaintBuffer();
 			} finally {
-				editor.unlock(false);
+				editor.unlock();
 			}
 		} else {
 			// try later

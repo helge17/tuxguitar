@@ -212,7 +212,7 @@ public class TuxGuitar {
 	}
 	
 	public void unlock(){
-		this.lock.unlock(false);
+		this.lock.unlock();
 	}
 	
 	public boolean isLocked(){

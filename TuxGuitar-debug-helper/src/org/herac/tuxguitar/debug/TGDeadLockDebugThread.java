@@ -101,7 +101,7 @@ public class TGDeadLockDebugThread implements Runnable {
 			try {
 				this.success = true;
 			} finally {
-				tgEditorManager.unlock(false);
+				tgEditorManager.unlock();
 			}
 		}
 	}
