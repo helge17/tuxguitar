@@ -166,9 +166,9 @@ public class TGEditorManager {
 		return true;
 	}
 	
-	public void unlock(boolean force){
+	public void unlock(){
 		if( this.lockControl != null ) {
-			this.lockControl.unlock(force);
+			this.lockControl.unlock();
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class TGEditorManager {
 		try {
 			runnable.run();
 		} finally {
-			this.unlock(false);
+			this.unlock();
 		}
 	}
 	

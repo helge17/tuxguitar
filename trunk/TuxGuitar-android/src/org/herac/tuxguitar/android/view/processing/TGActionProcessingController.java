@@ -32,7 +32,7 @@ public class TGActionProcessingController {
 				}
 			}
 		} finally {
-			this.lock.unlock(false);
+			this.lock.unlock();
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class TGActionProcessingController {
 					
 					this.running = (this.model.isProcessing() || this.view.isUpdating() || this.view.isVisible());
 				} finally {
-					this.lock.unlock(false);
+					this.lock.unlock();
 				}
 			}
 			
@@ -70,7 +70,7 @@ public class TGActionProcessingController {
 			
 			this.view.destroy();
 		} finally {
-			this.lock.unlock(false);
+			this.lock.unlock();
 		}
 	}
 	

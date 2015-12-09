@@ -42,7 +42,7 @@ public class TGLockableActionListener implements TGEventListener {
 	
 	public void checkForUnlock(String actionId) {
 		if( this.containsActionId(actionId) ) {
-			TGEditorManager.getInstance(this.context).unlock(false);
+			TGEditorManager.getInstance(this.context).unlock();
 		}
 	}
 	

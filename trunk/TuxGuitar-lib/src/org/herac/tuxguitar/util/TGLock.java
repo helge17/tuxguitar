@@ -43,7 +43,7 @@ public class TGLock {
 	}
 	
 	public void unlock() {
-		this.unlock(true);
+		this.unlock(false);
 	}
 	
 	public boolean tryLock() {

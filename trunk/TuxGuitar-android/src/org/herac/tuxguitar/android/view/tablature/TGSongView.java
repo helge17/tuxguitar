@@ -183,7 +183,7 @@ public class TGSongView extends View {
 	
 					this.setPainting(false);
 				} finally {
-					editor.unlock(false);
+					editor.unlock();
 				}
 			} else {
 				// try later

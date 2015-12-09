@@ -34,7 +34,7 @@ public class TGTransportListener implements TGEventListener{
 						try {
 							tuxguitar.getEditorCache().updatePlayMode();
 						} finally {
-							tgEditorManager.unlock(false);
+							tgEditorManager.unlock();
 						}
 						
 						if( tuxguitar.getEditorCache().shouldRedraw() ) {
@@ -70,7 +70,7 @@ public class TGTransportListener implements TGEventListener{
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
 				} finally {
-					tgEditorManager.unlock(false);
+					tgEditorManager.unlock();
 				}
 			}
 		}).start();

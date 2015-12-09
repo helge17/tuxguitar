@@ -38,7 +38,7 @@ public class TGSyncProcessLocked implements TGProcess {
 					try {
 						processRunnable();
 					} finally {
-						lock.unlock(false);
+						lock.unlock();
 					}
 				} else {
 					processLaterLocked();

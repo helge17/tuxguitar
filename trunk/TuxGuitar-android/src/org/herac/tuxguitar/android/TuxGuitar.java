@@ -148,7 +148,7 @@ public class TuxGuitar {
 	}
 	
 	public void unlock(boolean force){
-		this.lock.unlock(force);
+		this.lock.unlock();
 	}
 	
 	public boolean tryLock(){
