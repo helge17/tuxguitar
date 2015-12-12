@@ -16,6 +16,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 import com.sun.media.sound.AudioSynthesizer;
 import com.sun.media.sound.ModelPatch;
+import com.sun.media.sound.SF2Instrument;
 import com.sun.media.sound.SoftSynthesizer;
 
 public class MidiSynthesizerManager {
@@ -24,6 +25,9 @@ public class MidiSynthesizerManager {
 	
 	private static final int PERCUSSION_BANK = 128;
 	private static final int PERCUSSION_CHANNEL = 9;
+	
+	private static final int DEFAULT_INSTRUMENT_BANK = 0;
+	private static final int DEFAULT_PERCUSSION_PROGRAM  = 0;
 	
 	private TGContext context;
 	private AudioSynthesizer synth;
@@ -82,20 +86,36 @@ public class MidiSynthesizerManager {
 		return this.synthesizerLoaded;
 	}
 	
+	public InputStream findResource(Patch patch) {
+		String resourceName = (SOUNDBANK_RESOUCE_PREFIX + "-" + patch.getBank() + "-" + patch.getProgram() + ".sf2");
+		
+		return TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName);
+	}
+	
 	public Instrument findInstrument(Patch patch) {
+		Instrument instrument = null;
 		try {
-			String resourceName = (SOUNDBANK_RESOUCE_PREFIX + "-" + patch.getBank() + "-" + patch.getProgram() + ".sf2");
-			InputStream inputStream = TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName);
+			Patch resourcePatch = patch;
+			InputStream inputStream = this.findResource(resourcePatch);
+			if( inputStream == null ) {
+				resourcePatch = this.toDefaultPatch(patch);
+				if( resourcePatch.getBank() != patch.getBank() || resourcePatch.getProgram() != patch.getProgram() ) {
+					inputStream = this.findResource(resourcePatch);
+				}
+			}
 			if( inputStream != null ) {
 				Soundbank soundbank = MidiSystem.getSoundbank(inputStream);
 				if( soundbank != null ) {
-					return soundbank.getInstrument(this.toModelPatch(patch));
+					instrument = soundbank.getInstrument(this.toModelPatch(resourcePatch));
 				}
+			}
+			if( instrument != null ) {
+				this.setInstrumentPatch(instrument, patch);
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
-		return null;
+		return instrument;
 	}
 	
 	public void loadInstrument(Patch patch) {
@@ -176,11 +196,28 @@ public class MidiSynthesizerManager {
 		return new Patch(bank, program);
 	}
 	
+	private Patch toDefaultPatch(Patch patch) {
+		if( patch.getBank() == PERCUSSION_BANK && patch.getProgram() != DEFAULT_PERCUSSION_PROGRAM ) {
+			return new Patch(patch.getBank(), DEFAULT_PERCUSSION_PROGRAM);
+		}
+		
+		if( patch.getBank() != PERCUSSION_BANK && patch.getBank() != DEFAULT_INSTRUMENT_BANK ) {
+			return new Patch(DEFAULT_INSTRUMENT_BANK, patch.getProgram());
+		}
+		return patch;
+	}
+	
 	private ModelPatch toModelPatch(Patch patch) {
 		if( patch instanceof ModelPatch ) {
 			return (ModelPatch) patch;
 		}
 		return new ModelPatch(patch.getBank() == PERCUSSION_BANK ? 0 : patch.getBank(), patch.getProgram(), patch.getBank() == PERCUSSION_BANK);
+	}
+	
+	private void setInstrumentPatch(Instrument instrument, Patch patch) {
+		if( instrument instanceof SF2Instrument ) {
+			((SF2Instrument) instrument).setPatch(this.toModelPatch(patch));
+		}
 	}
 	
 	private boolean isSamePatch(Patch p1, Patch p2) {
