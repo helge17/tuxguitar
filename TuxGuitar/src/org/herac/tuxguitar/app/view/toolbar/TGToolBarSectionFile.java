@@ -9,12 +9,12 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
-import org.herac.tuxguitar.app.action.impl.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.app.action.impl.file.TGOpenFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGPrintAction;
 import org.herac.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 
 public class TGToolBarSectionFile implements TGToolBarSection {
 	

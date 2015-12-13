@@ -1,11 +1,9 @@
-package org.herac.tuxguitar.app.action.impl.file;
+package org.herac.tuxguitar.editor.action.file;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
-import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
 import org.herac.tuxguitar.editor.template.TGTemplate;
 import org.herac.tuxguitar.editor.template.TGTemplateManager;
 import org.herac.tuxguitar.song.models.TGSong;
