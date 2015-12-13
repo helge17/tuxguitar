@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGCloseDocumentsAction extends TGActionBase {
