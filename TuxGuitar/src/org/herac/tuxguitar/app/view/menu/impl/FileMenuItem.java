@@ -36,9 +36,9 @@ import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
-import org.herac.tuxguitar.app.tools.template.TGTemplate;
-import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
+import org.herac.tuxguitar.editor.template.TGTemplate;
+import org.herac.tuxguitar.editor.template.TGTemplateManager;
 import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
@@ -181,12 +181,13 @@ public class FileMenuItem extends TGMenuItem {
 		this.loadProperties();
 	}
 	
-	private void addNewSongTemplates(){		
-		if( TuxGuitar.getInstance().getTemplateManager().countTemplates() > 0 ){
+	private void addNewSongTemplates() {
+		TGTemplateManager templateManager = TGTemplateManager.getInstance(this.findContext());
+		if( templateManager.countTemplates() > 0 ){
 			//--SEPARATOR--
 			new MenuItem(this.newSongMenu, SWT.SEPARATOR);
 			
-			Iterator<TGTemplate> it = TGTemplateManager.getInstance(this.findContext()).getTemplates();
+			Iterator<TGTemplate> it = templateManager.getTemplates();
 			while( it.hasNext() ){
 				TGTemplate tgTemplate = (TGTemplate)it.next();
 				

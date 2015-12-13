@@ -21,6 +21,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class SkinOption extends Option{
@@ -92,7 +93,7 @@ public class SkinOption extends Option{
 					for(int i = 0;i < skinNames.length;i++){
 						Properties properties = new Properties();
 						try {
-							InputStream skinInfo = TGFileUtils.getResourceAsStream(getViewContext().getContext(), "skins/" + skinNames[i] + "/skin.properties");
+							InputStream skinInfo = TGResourceManager.getInstance(getViewContext().getContext()).getResourceAsStream("skins/" + skinNames[i] + "/skin.properties");
 							if( skinInfo != null ){
 								properties.load( skinInfo );
 							}

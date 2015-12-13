@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
-import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGContext;
 
 public class KeyBindingActionDefaults {
@@ -15,7 +15,7 @@ public class KeyBindingActionDefaults {
 	public static List<KeyBindingAction> getDefaultKeyBindings(TGContext context) {
 		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
 		try {
-			InputStream stream = TGFileUtils.getResourceAsStream(context, DEFAULT_SHORTCUT_FILE);
+			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream(DEFAULT_SHORTCUT_FILE);
 			if (stream != null) {
 				List<KeyBindingAction> defaults = KeyBindingReader.getKeyBindings(stream);
 				if (defaults != null) {

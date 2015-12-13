@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.template;
+package org.herac.tuxguitar.editor.template;
 
 public class TGTemplate {
 	

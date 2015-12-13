@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.scale.xml.ScaleReader;
-import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.models.TGScale;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
@@ -127,7 +127,7 @@ public class ScaleManager {
 	
 	private void loadScales(){
 		try{
-			new ScaleReader().loadScales(this.scales, TGFileUtils.getResourceAsStream(this.context, "scales/scales.xml") );
+			new ScaleReader().loadScales(this.scales, TGResourceManager.getInstance(this.context).getResourceAsStream("scales/scales.xml") );
 		} catch (Throwable e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		} 

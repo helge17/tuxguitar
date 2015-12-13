@@ -9,6 +9,7 @@ import java.net.URL;
 import org.eclipse.swt.program.Program;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGException;
 
 public class TGDocumentationDialog {
@@ -34,7 +35,7 @@ public class TGDocumentationDialog {
 	}
 	
 	private URL getIndexUrl() throws Throwable{
-		URL url = TGFileUtils.getResourceUrl(this.context.getContext(), RESOURCE_PATH + "/index.html");
+		URL url = TGResourceManager.getInstance(this.context.getContext()).getResource(RESOURCE_PATH + "/index.html");
 		if( url != null && !TGFileUtils.isLocalFile( url ) ){
 			String path = TEMPORAL_PATH + File.separator + RESOURCE_PATH;
 			copyTemporalResources(path, RESOURCE_PATH, TGFileUtils.getFileNames(this.context.getContext(), RESOURCE_PATH ));
@@ -53,7 +54,7 @@ public class TGDocumentationDialog {
 				if( children != null && children.length > 0 ){
 					copyTemporalResources( file.getAbsolutePath(), resource , children );
 				}else if( !file.exists() ){
-					InputStream in = TGFileUtils.getResourceAsStream(this.context.getContext(), resource);
+					InputStream in = TGResourceManager.getInstance(this.context.getContext()).getResourceAsStream(resource);
 					if( in != null ){
 						OutputStream out = new FileOutputStream( file );
 						int len = 0;
