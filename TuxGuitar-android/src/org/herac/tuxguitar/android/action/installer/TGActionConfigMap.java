@@ -111,6 +111,7 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTrillNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
@@ -210,6 +211,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_SONG_LOADED_CTL);
 		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGReadSongAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		
