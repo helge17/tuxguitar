@@ -63,14 +63,16 @@ public class TGTemplateManager {
 			if( tgTemplate != null && tgTemplate.getResource() != null ){
 				InputStream stream = TGResourceManager.getInstance(this.context).getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
 				
-				TGSongManager tgSongManager = TGDocumentManager.getInstance(this.context).getSongManager();
-				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
-				tgSongLoaderHandle.setFactory(tgSongManager.getFactory());
-				tgSongLoaderHandle.setInputStream(stream);
-				
-				TGFileFormatManager.getInstance(this.context).getLoader().load(tgSongLoaderHandle);
-				
-				return tgSongLoaderHandle.getSong();
+				if( stream != null ) {
+					TGSongManager tgSongManager = TGDocumentManager.getInstance(this.context).getSongManager();
+					TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
+					tgSongLoaderHandle.setFactory(tgSongManager.getFactory());
+					tgSongLoaderHandle.setInputStream(stream);
+					
+					TGFileFormatManager.getInstance(this.context).getLoader().load(tgSongLoaderHandle);
+					
+					return tgSongLoaderHandle.getSong();
+				}
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();

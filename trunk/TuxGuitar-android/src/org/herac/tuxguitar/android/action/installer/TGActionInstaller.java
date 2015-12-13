@@ -96,6 +96,7 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTrillNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
@@ -163,6 +164,7 @@ public class TGActionInstaller {
 		//file actions
 		installAction(new TGLoadSongAction(context));
 		installAction(new TGNewSongAction(context));
+		installAction(new TGLoadTemplateAction(context));
 		installAction(new TGReadSongAction(context));
 		installAction(new TGWriteSongAction(context));
 		

@@ -9,6 +9,7 @@ import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.navigation.TGNavigationManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.content.Intent;
@@ -60,7 +61,7 @@ public class TGActivity extends ActionBarActivity {
 		super.onPostCreate(savedInstanceState);
 		
 		this.connectPlugins();
-		this.callProcessIntent();
+		this.loadDefaultSong();
 		this.drawerManager.syncState();
 	}
 	
@@ -139,6 +140,21 @@ public class TGActivity extends ActionBarActivity {
 	
 	public void loadDefaultFragment() {
 		this.getNavigationManager().callOpenFragment(TGMainFragmentController.getInstance(findContext()));
+	}
+	
+	public void loadDefaultSong() {
+		Intent intent = this.getIntent();
+		if( intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+			this.callProcessIntent();
+		} else {
+			this.callLoadDefaultSong();
+		}
+	}
+	
+	public void callLoadDefaultSong() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGLoadTemplateAction.NAME);
+		tgActionProcessor.setAttribute(TGBackAction.ATTRIBUTE_ACTIVITY, this);
+		tgActionProcessor.process();
 	}
 	
 	public void callProcessIntent() {
