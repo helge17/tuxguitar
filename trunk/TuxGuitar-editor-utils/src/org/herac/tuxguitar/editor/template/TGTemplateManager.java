@@ -1,14 +1,15 @@
-package org.herac.tuxguitar.app.tools.template;
+package org.herac.tuxguitar.editor.template;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
+import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -40,7 +41,7 @@ public class TGTemplateManager {
 	
 	public void loadTemplates(){
 		try{
-			InputStream templateInputStream = TGFileUtils.getResourceAsStream(this.context, TEMPLATES_CONFIG_PATH);
+			InputStream templateInputStream = TGResourceManager.getInstance(this.context).getResourceAsStream(TEMPLATES_CONFIG_PATH);
 			if( templateInputStream != null ){
 				TGTemplateReader tgTemplateReader = new TGTemplateReader();
 				tgTemplateReader.loadTemplates(this.templates, templateInputStream);
@@ -60,10 +61,11 @@ public class TGTemplateManager {
 	public TGSong getTemplateAsSong(TGTemplate tgTemplate){
 		try{
 			if( tgTemplate != null && tgTemplate.getResource() != null ){
-				InputStream stream = TGFileUtils.getResourceAsStream(this.context, TEMPLATES_PREFIX + tgTemplate.getResource());
+				InputStream stream = TGResourceManager.getInstance(this.context).getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
 				
+				TGSongManager tgSongManager = TGDocumentManager.getInstance(this.context).getSongManager();
 				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
-				tgSongLoaderHandle.setFactory(TuxGuitar.getInstance().getSongManager().getFactory());
+				tgSongLoaderHandle.setFactory(tgSongManager.getFactory());
 				tgSongLoaderHandle.setInputStream(stream);
 				
 				TGFileFormatManager.getInstance(this.context).getLoader().load(tgSongLoaderHandle);

@@ -2,7 +2,6 @@ package org.herac.tuxguitar.app.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -11,7 +10,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -38,91 +36,15 @@ public class TGFileUtils {
 	public static final String PATH_USER_CONFIG = getUserConfigDir();
 	public static final String PATH_USER_PLUGINS_CONFIG = getUserPluginsConfigDir();
 	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
+	
 	//writable
 	public static final String[] TG_STATIC_SHARED_PATHS = getStaticSharedPaths();
 	
-	public static InputStream getResourceAsStream(TGContext context, String resource) {
-		try {
-			if(TG_STATIC_SHARED_PATHS != null){
-				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
-					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( isExistentAndReadable( file ) ){
-						return new FileInputStream( file );
-					}
-				}
-			}
-			return TGResourceManager.getInstance(context).getResourceAsStream(resource);
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static URL getResourceUrl(TGContext context, String resource) {
-		try {
-			if(TG_STATIC_SHARED_PATHS != null){
-				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
-					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( isExistentAndReadable( file ) ){
-						return file.toURI().toURL();
-					}
-				}
-			}
-			return TGResourceManager.getInstance(context).getResource(resource);
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static Enumeration<URL> getResourceUrls(TGContext context, String resource) {
-		try {
-			Vector<URL> vector = new Vector<URL>();
-			if(TG_STATIC_SHARED_PATHS != null){
-				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
-					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( isExistentAndReadable( file ) ){
-						vector.addElement( file.toURI().toURL() );
-					}
-				}
-			}
-			Enumeration<URL> resources = TGResourceManager.getInstance(context).getResources(resource);
-			while( resources.hasMoreElements() ){
-				URL url = (URL)resources.nextElement();
-				if( !vector.contains(url) ){
-					vector.addElement( url );
-				}
-			}
-			return vector.elements();
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return null;
-	}
-	
-	private static String getResourcePath(TGContext context, String resource) {
-		try {
-			if(TG_STATIC_SHARED_PATHS != null){
-				for( int i = 0; i < TG_STATIC_SHARED_PATHS.length ; i ++ ){
-					File file = new File(TG_STATIC_SHARED_PATHS[i] + File.separator + resource);
-					if( isExistentAndReadable( file ) ){
-						return file.getAbsolutePath() + File.separator;
-					}
-				}
-			}
-			URL url = TGResourceManager.getInstance(context).getResource(resource);
-			if(url != null){
-				return getUrlPath(url);
-			}
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		return null;
-	}
-	
 	public static void loadClasspath(TGContext context){
 		try {
-			Enumeration<URL> plugins = getResourceUrls(context, "plugins");
+			TGClassLoader.getInstance(context).setFilePaths(TG_STATIC_SHARED_PATHS);
+			
+			Enumeration<URL> plugins = TGResourceManager.getInstance(context).getResources("plugins");
 			while( plugins.hasMoreElements() ){
 				URL url = (URL)plugins.nextElement();
 				TGClassLoader.getInstance(context).addPaths(new File(getUrlPath(url)));
@@ -152,6 +74,18 @@ public class TGFileUtils {
 		}
 	}
 	
+	private static String getResourcePath(TGContext context, String resource) {
+		try {
+			URL url = TGResourceManager.getInstance(context).getResource(resource);
+			if(url != null){
+				return getUrlPath(url);
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static String[] getFileNames(TGContext context, String resource ){
 		try {
 			String path = getResourcePath(context, resource);
@@ -161,7 +95,8 @@ public class TGFileUtils {
 					return file.list();
 				}
 			}
-			InputStream stream = getResourceAsStream(context, resource + "/list.properties" );
+			
+			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream(resource + "/list.properties");
 			if( stream != null ){
 				BufferedReader reader = new BufferedReader( new InputStreamReader(stream) );
 				List<String> fileNameList = new ArrayList<String>();
@@ -187,7 +122,7 @@ public class TGFileUtils {
 	
 	public static Image loadImage(TGContext context, String skin,String name){
 		try{
-			InputStream stream = getResourceAsStream(context, "skins/" + skin + "/" + name);
+			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream("skins/" + skin + "/" + name);
 			if(stream != null){			
 				return new Image(TuxGuitar.getInstance().getDisplay(),new ImageData(stream));
 			}
@@ -303,7 +238,7 @@ public class TGFileUtils {
 		return (new File(URLDecoder.decode(url.getPath(), "UTF-8")).getAbsolutePath() + File.separator);
 	}
 	
-	private static boolean isExistentAndReadable( File file ){
+	public static boolean isExistentAndReadable( File file ){
 		try{
 			return file.exists();
 		}catch(SecurityException se){
@@ -311,7 +246,7 @@ public class TGFileUtils {
 		}
 	}
 	
-	private static boolean isDirectoryAndReadable( File file ){
+	public static boolean isDirectoryAndReadable( File file ){
 		try{
 			return file.isDirectory();
 		}catch(SecurityException se){
@@ -319,7 +254,7 @@ public class TGFileUtils {
 		}
 	}
 	
-	private static boolean tryCreateDirectory( File file ){
+	public static boolean tryCreateDirectory( File file ){
 		try{
 			return file.mkdirs();
 		}catch(SecurityException se){

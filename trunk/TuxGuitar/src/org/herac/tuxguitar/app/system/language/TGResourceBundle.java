@@ -6,7 +6,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGResourceBundle {
@@ -66,7 +66,7 @@ public class TGResourceBundle {
 	
 	private static void loadResources(TGContext context, String name, Properties p){
 		try {
-			Enumeration<URL> enumeration = TGFileUtils.getResourceUrls(context, name);
+			Enumeration<URL> enumeration = TGResourceManager.getInstance(context).getResources(name);
 			while (enumeration.hasMoreElements()) {
 				URL url = (URL) enumeration.nextElement();
 				Properties properties = new Properties();

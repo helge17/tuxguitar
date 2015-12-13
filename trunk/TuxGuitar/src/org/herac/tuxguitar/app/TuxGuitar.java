@@ -26,7 +26,6 @@ import org.herac.tuxguitar.app.system.language.TGLanguageManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.system.variables.TGVarAdapter;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
-import org.herac.tuxguitar.app.tools.template.TGTemplateManager;
 import org.herac.tuxguitar.app.transport.TGTransportListener;
 import org.herac.tuxguitar.app.util.TGClassLoader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
@@ -103,7 +102,7 @@ public class TuxGuitar {
 	
 	public void displayGUI(URL url) {		
 		// Priority 1 ----------------------------------------------//
-		TGResourceManager.getInstance(this.context).setResourceLoader(TGClassLoader.getInstance(context));
+		TGResourceManager.getInstance(this.context).setResourceLoader(TGClassLoader.getInstance(this.context));
 		TGFileUtils.loadLibraries(this.context);
 		TGFileUtils.loadClasspath(this.context);
 		TGErrorAdapter.initialize(this.context);
@@ -330,10 +329,6 @@ public class TuxGuitar {
 
 	public KeyBindingActionManager getKeyBindingManager(){
 		return KeyBindingActionManager.getInstance(this.context);
-	}
-	
-	public TGTemplateManager getTemplateManager(){
-		return TGTemplateManager.getInstance(this.context);
 	}
 	
 	public MidiPlayer getPlayer(){
