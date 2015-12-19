@@ -1,9 +1,3 @@
-/*
- * Created on 16-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.io.tg.v08;
 
 import java.io.DataInputStream;
@@ -15,10 +9,12 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGInputStreamBase;
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGColor;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -30,16 +26,9 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class TGInputStream extends TGStream implements TGInputStreamBase{
 	
 	private DataInputStream dataInputStream;
@@ -299,7 +288,7 @@ public class TGInputStream extends TGStream implements TGInputStreamBase{
 		}
 		if( channel.getChannelId() <= 0 ){
 			channel.setChannelId( song.countChannels() + 1 );
-			channel.setName(("#" + channel.getChannelId()));
+			channel.setName(new TGSongManager(this.factory).createChannelNameFromProgram(song, channel));
 			channel.addParameter(gmChannel1Param);
 			channel.addParameter(gmChannel2Param);
 			song.addChannel(channel);

@@ -8,6 +8,7 @@ import java.util.List;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
@@ -470,7 +471,7 @@ public class GP5InputStream extends GTPInputStream {
 		return track;
 	}
 	
-	private void readChannel(TGSong song, TGTrack track,List<TGChannel> channels) throws IOException {
+	private void readChannel(TGSong song, TGTrack track, List<TGChannel> channels) throws IOException {
 		int gmChannel1 = (readInt() - 1);
 		int gmChannel2 = (readInt() - 1);
 		if( gmChannel1 >= 0 && gmChannel1 < channels.size()){
@@ -498,8 +499,8 @@ public class GP5InputStream extends GTPInputStream {
 				}
 			}
 			if( channel.getChannelId() <= 0 ){
-				channel.setChannelId( song.countChannels() + 1 );
-				channel.setName(("#" + channel.getChannelId()));
+				channel.setChannelId(song.countChannels() + 1);
+				channel.setName(new TGSongManager(getFactory()).createChannelNameFromProgram(song, channel));
 				channel.addParameter(gmChannel1Param);
 				channel.addParameter(gmChannel2Param);
 				song.addChannel(channel);

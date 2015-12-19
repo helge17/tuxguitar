@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiInstrument;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -247,7 +248,7 @@ public class TGChannelItem {
 	private List<String> getProgramNames(){
 		List<String> programNames = new ArrayList<String>();
 		if(!getChannel().isPercussionChannel() ){
-			MidiInstrument[] instruments = TuxGuitar.getInstance().getPlayer().getInstruments();
+			MidiInstrument[] instruments = MidiPlayer.getInstance(getContext()).getInstruments();
 			if (instruments != null) {
 				int count = instruments.length;
 				if (count > 128) {

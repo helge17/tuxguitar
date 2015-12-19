@@ -1240,8 +1240,8 @@ public class MidiPlayer{
 		return MidiInstrument.INSTRUMENT_LIST;
 	}
 	
-	public MidiPercussion[] getPercussions(){
-		return MidiPercussion.PERCUSSION_LIST;
+	public MidiPercussionKey[] getPercussionKeys(){
+		return MidiPercussionKey.PERCUSSION_KEY_LIST;
 	}
 	
 	public int getLoopSHeader() {
