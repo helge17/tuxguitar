@@ -86,7 +86,7 @@ public class TGSongManager {
 	public void fillSong(TGSong song){
 		TGChannel channel = getFactory().newChannel();
 		channel.setChannelId(1);
-		channel.setName(createChannelNameFromId(channel));
+		channel.setName(createDefaultChannelName(song, channel));
 		
 		TGMeasureHeader header = getFactory().newHeader();
 		header.setNumber(1);
@@ -123,9 +123,9 @@ public class TGSongManager {
 		return getFactory().newChannel();
 	}
 	
-	public TGChannel addChannel(TGSong song){
-		TGChannel tgChannel = addChannel(song, createChannel());
-		tgChannel.setName(this.createChannelNameFromId((tgChannel)));
+	public TGChannel addChannel(TGSong tgSong){
+		TGChannel tgChannel = addChannel(tgSong, createChannel());
+		tgChannel.setName(this.createDefaultChannelName(tgSong, tgChannel));
 		return tgChannel;
 	}
 	
@@ -254,18 +254,9 @@ public class TGSongManager {
 		return false;
 	}
 	
-	public String createChannelNameFromId(TGChannel channel) {
-		if( channel.getChannelId() > 0 ) {
-			return ("#" + channel.getChannelId());
-		}
-		return new String();
-	}
-	
-	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {
+	public String createChannelName(TGSong song, TGChannel channel, String prefix) {
 		int number = 0;
-		int program = channel.getProgram();
 		
-		String prefix = ( program >= 0 && program < TGChannelNames.DEFAULT_NAMES.length ? TGChannelNames.DEFAULT_NAMES[program] : "Channel");
 		String unusedName = null;
 		while( unusedName == null ) {
 			number ++;
@@ -275,6 +266,17 @@ public class TGSongManager {
 			}
 		}
 		return unusedName;
+	}
+	
+	public String createDefaultChannelName(TGSong song, TGChannel channel) {
+		return this.createChannelName(song, channel, "Unnamed");
+	}
+	
+	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {
+		if( channel.getProgram() >= 0 && channel.getProgram() < TGChannelNames.DEFAULT_NAMES.length ) {
+			return this.createChannelName(song, channel, TGChannelNames.DEFAULT_NAMES[channel.getProgram()]);
+		}
+		return this.createDefaultChannelName(song, channel);
 	}
 	
 	// -------------------------------------------------------------- // 
