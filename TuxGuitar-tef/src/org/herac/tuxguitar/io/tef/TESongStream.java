@@ -105,6 +105,7 @@ public class TESongStream implements TGSongStream {
 			tgChannel.setBalance((short)(( tracks[i].getPan() * 127) / 15));
 			tgChannel.setProgram((short)tracks[i].getInstrument());
 			tgChannel.setBank( tracks[i].isPercussion() ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+			tgChannel.setName(this.manager.createChannelNameFromProgram(tgSong, tgChannel));
 			
 			track.setChannelId(tgChannel.getChannelId());
 			

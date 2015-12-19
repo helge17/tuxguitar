@@ -135,6 +135,7 @@ public class GP1InputStream extends GTPInputStream {
 			TGSongManager tgSongManager = new TGSongManager(getFactory());
 			tgSongManager.autoCompleteSilences(song);
 			
+			this.updateChannelNames(tgSongManager, song);
 			this.close();
 			
 			return song;
@@ -435,6 +436,14 @@ public class GP1InputStream extends GTPInputStream {
 			}
 		}
 		return null;
+	}
+	
+	private void updateChannelNames(TGSongManager songManager, TGSong song) {
+		Iterator<TGChannel> it = song.getChannels();
+		while( it.hasNext() ) {
+			TGChannel tgChannel = it.next();
+			tgChannel.setName(songManager.createChannelNameFromProgram(song, tgChannel));
+		}
 	}
 	
 	private boolean isPercussionChannel( TGSong song, int channelId ){

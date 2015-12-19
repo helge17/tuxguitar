@@ -340,6 +340,7 @@ public class PTSongParser {
 		tgChannel.setProgram((short) info.getInstrument() );
 		tgChannel.setVolume((short) info.getVolume() );
 		tgChannel.setBalance((short) info.getBalance() );
+		tgChannel.setName(this.manager.createChannelNameFromProgram(tgSong, tgChannel));
 		
 		tgTrack.setName( info.getName() );
 		tgTrack.setChannelId(tgChannel.getChannelId());
@@ -394,99 +395,3 @@ public class PTSongParser {
 		return beat;
 	}
 }
-/*
-class TGSongAdjuster{
-	
-	protected TGSongManager manager;
-	
-	public TGSongAdjuster(TGSongManager manager){
-		this.manager = manager;
-	}
-	
-	public TGSong process(){
-		Iterator tracks = this.manager.getSong().getTracks();
-		while(tracks.hasNext()){
-			TGTrack track = (TGTrack)tracks.next();
-			Iterator measures = track.getMeasures();
-			while(measures.hasNext()){
-				TGMeasure measure = (TGMeasure)measures.next();
-				this.process(measure);
-			}
-		}
-		return this.manager.getSong();
-	}
-	
-	public void process(TGMeasure measure){
-		this.manager.getMeasureManager().orderBeats(measure);
-		
-		joinBeats(measure);
-	}
-	
-	public void joinBeats(TGMeasure measure){
-		TGBeat previous = null;
-		boolean finish = true;
-		
-		long measureStart = measure.getStart();
-		long measureEnd = (measureStart + measure.getLength());
-		for(int i = 0;i < measure.countBeats();i++){
-			TGBeat beat = measure.getBeat( i );
-			long beatStart = beat.getStart();
-			long beatLength = beat.getDuration().getTime();
-			if(previous != null){
-				long previousStart = previous.getStart();
-				long previousLength = previous.getDuration().getTime();
-				
-				if(previousStart == beatStart){
-					// add beat notes to previous
-					for(int n = 0;n < beat.countNotes();n++){
-						TGNote note = beat.getNote( n );
-						previous.addNote( note );
-					}
-					
-					// add beat chord to previous
-					if(!previous.isChordBeat() && beat.isChordBeat()){
-						previous.setChord( beat.getChord() );
-					}
-					
-					// add beat text to previous
-					if(!previous.isTextBeat() && beat.isTextBeat()){
-						previous.setText( beat.getText() );
-					}
-					
-					// set the best duration
-					if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
-						beat.getDuration().copy(previous.getDuration());
-					}
-					
-					measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				
-				else if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
-					if(beat.isRestBeat()){
-						measure.removeBeat(beat);
-						finish = false;
-						break;
-					}
-					TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (beatStart - previousStart) );
-					duration.copy( previous.getDuration() );
-				}
-			}
-			if( (beatStart + beatLength) > measureEnd ){
-				if(beat.isRestBeat()){
-					measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (measureEnd - beatStart) );
-				duration.copy( beat.getDuration() );
-			}
-			previous = beat;
-		}
-		if(!finish){
-			joinBeats(measure);
-		}
-	}
-}
-*/

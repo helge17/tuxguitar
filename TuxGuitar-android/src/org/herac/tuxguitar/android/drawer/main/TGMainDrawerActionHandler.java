@@ -14,7 +14,7 @@ import org.herac.tuxguitar.android.fragment.impl.TGChannelListFragmentController
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.info.TGSongInfoDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGMainDrawerActionHandler {
@@ -42,7 +42,7 @@ public class TGMainDrawerActionHandler {
 	}
 	
 	public TGActionProcessorListener createNewFileAction() {
-		return this.createAction(TGNewSongAction.NAME);
+		return this.createAction(TGLoadTemplateAction.NAME);
 	}
 	
 	public TGActionProcessorListener createOpenFileAction() {

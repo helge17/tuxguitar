@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelNames;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -85,7 +86,7 @@ public class TGSongManager {
 	public void fillSong(TGSong song){
 		TGChannel channel = getFactory().newChannel();
 		channel.setChannelId(1);
-		channel.setName(getDefaultChannelName(channel));
+		channel.setName(createChannelNameFromId(channel));
 		
 		TGMeasureHeader header = getFactory().newHeader();
 		header.setNumber(1);
@@ -124,7 +125,7 @@ public class TGSongManager {
 	
 	public TGChannel addChannel(TGSong song){
 		TGChannel tgChannel = addChannel(song, createChannel());
-		tgChannel.setName(getDefaultChannelName(tgChannel));
+		tgChannel.setName(this.createChannelNameFromId((tgChannel)));
 		return tgChannel;
 	}
 	
@@ -179,6 +180,20 @@ public class TGSongManager {
 		return channels;
 	}
 	
+	public List<TGChannel> findChannelsByName(TGSong song, String name){
+		List<TGChannel> channels = new ArrayList<TGChannel>();
+		
+		Iterator<TGChannel> it = song.getChannels();
+		while( it.hasNext() ){
+			TGChannel channel = it.next();
+			if( channel.getName().equals(name) ) {
+				channels.add(channel);
+			}
+		}
+		
+		return channels;
+	}
+	
 	public int getNextChannelId(TGSong song){
 		int maximumId = 0;
 		
@@ -191,13 +206,6 @@ public class TGSongManager {
 		}
 		
 		return (maximumId + 1);
-	}
-	
-	public String getDefaultChannelName(TGChannel tgChannel){
-		if( tgChannel != null && tgChannel.getChannelId() > 0 ){
-			return new String("#" + tgChannel.getChannelId());
-		}
-		return new String();
 	}
 	
 	public TGChannel updateChannel(TGSong song, int id,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
@@ -245,6 +253,30 @@ public class TGSongManager {
 		}
 		return false;
 	}
+	
+	public String createChannelNameFromId(TGChannel channel) {
+		if( channel.getChannelId() > 0 ) {
+			return ("#" + channel.getChannelId());
+		}
+		return new String();
+	}
+	
+	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {
+		int number = 0;
+		int program = channel.getProgram();
+		
+		String prefix = ( program >= 0 && program < TGChannelNames.DEFAULT_NAMES.length ? TGChannelNames.DEFAULT_NAMES[program] : "Channel");
+		String unusedName = null;
+		while( unusedName == null ) {
+			number ++;
+			String name = (prefix + " " + number);
+			if( this.findChannelsByName(song, name).isEmpty() ) {
+				unusedName = name;
+			}
+		}
+		return unusedName;
+	}
+	
 	// -------------------------------------------------------------- // 
 
 	private TGTrack createTrack(TGSong song){
@@ -269,8 +301,11 @@ public class TGSongManager {
 			this.fillSong(song);
 			return getLastTrack(song);
 		}
+		TGChannel tgChannel = addChannel(song);
+		tgChannel.setName(createChannelNameFromProgram(song, tgChannel));
+		
 		TGTrack tgTrack = createTrack(song);
-		tgTrack.setChannelId(addChannel(song).getChannelId());
+		tgTrack.setChannelId(tgChannel.getChannelId());
 		addTrack(song, tgTrack);
 		return tgTrack;
 	}

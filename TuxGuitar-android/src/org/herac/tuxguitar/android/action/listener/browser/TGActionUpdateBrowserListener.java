@@ -4,6 +4,7 @@ import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
+import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.editor.action.file.TGNewSongAction;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -14,6 +15,7 @@ public class TGActionUpdateBrowserListener implements TGEventListener {
 	
 	private static final String[] RESETTABLE_ACTION_IDS = {
 		TGNewSongAction.NAME,
+		TGLoadTemplateAction.NAME,
 		TGProcessIntentAction.NAME
 	};
 	

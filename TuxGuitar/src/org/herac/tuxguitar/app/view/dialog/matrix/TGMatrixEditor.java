@@ -57,7 +57,7 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
-import org.herac.tuxguitar.player.base.MidiPercussion;
+import org.herac.tuxguitar.player.base.MidiPercussionKey;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -78,7 +78,7 @@ public class TGMatrixEditor implements TGEventListener {
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_MATRIX);
-	private static final MidiPercussion[] PERCUSSIONS = TuxGuitar.getInstance().getPlayer().getPercussions();
+	private static final MidiPercussionKey[] PERCUSSIONS = TuxGuitar.getInstance().getPlayer().getPercussionKeys();
 	protected static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
 	private TGContext context;
