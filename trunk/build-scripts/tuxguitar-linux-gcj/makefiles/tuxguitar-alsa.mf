@@ -41,7 +41,7 @@ JAVA_SOURCES?=$(shell find $(JAVA_SOURCE_PATH) -name "*.java")
 JAVA_OBJECTS?=$(PACKAGE).o
 JNI_SOURCE_PATH?=$(TG_PROJECT_HOME)/jni/
 JNI_SOURCES?=$(shell find $(JNI_SOURCE_PATH) -name "*.c")
-JNI_OBJECTS?=$(JNI_SOURCES:%.c=%.o)
+JNI_OBJECTS?=$(PACKAGE)-jni.o
 
 GCJ?=gcj
 GCJFLAGS?=-fjni -I$(TG_LIB_SOURCE_PATH) -I$(TG_GM_UTILS_SOURCE_PATH) -I$(TG_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.5
@@ -77,8 +77,8 @@ clean:
 	-rm *.so -f
 	-rm *.o -f
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $(@F) $<
+$(PACKAGE)-jni.o: $(JNI_SOURCES)
+	$(CC) $(CFLAGS) -c -o $(@F) $^
 
 $(PACKAGE).o: $(JAVA_SOURCES)
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^

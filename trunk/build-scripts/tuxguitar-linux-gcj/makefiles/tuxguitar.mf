@@ -22,6 +22,10 @@ TG_LIB_PREFIX?=$(PREFIX)
 TG_LIB_SOURCE_PATH?=$(TG_LIB_PREFIX)/src
 TG_LIB_LIBRARY_PATH?=$(TG_LIB_PREFIX)/lib
 
+# tuxguitar editor-utils paths
+TG_EDITOR_UTILS_PREFIX?=$(PREFIX)
+TG_EDITOR_UTILS_SOURCE_PATH?=$(TG_EDITOR_UTILS_PREFIX)/src
+
 # install
 PREFIX?=/usr
 TG_BINARY_PATH?=$(PREFIX)/bin
@@ -40,6 +44,7 @@ SWT_JAR?=$(SWT_PATH)
 # sources
 SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
 SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
+SOURCES+=$(shell find $(TG_EDITOR_UTILS_SOURCE_PATH) -name "*.java")
 RESOURCE_PATH?=$(TG_PROJECT_HOME)/dist/
 RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
 RESOURCES_DIST?=$(shell find $(RESOURCE_PATH) -name "*.dist")
