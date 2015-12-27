@@ -19,8 +19,10 @@ ENVIRONMENT_PROPERTIES?=\
 	TG_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar/src/\
 	TG_LIB_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar-lib/src/\
 	TG_LIB_LIBRARY_PATH=$(TG_BUILD_DESTDIR)$(TG_BUILD_PREFIX)/lib\
+	TG_EDITOR_UTILS_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar-editor-utils/src/\
 	TG_GM_UTILS_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar-gm-utils/src/\
 	TG_JACK_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar-jack/src/\
+	TG_GTP_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar-gtp/src/\
 
 # build paths
 MAKEFILE_PATH?=./makefiles
