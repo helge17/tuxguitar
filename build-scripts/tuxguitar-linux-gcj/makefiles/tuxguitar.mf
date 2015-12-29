@@ -28,14 +28,15 @@ TG_EDITOR_UTILS_SOURCE_PATH?=$(TG_EDITOR_UTILS_PREFIX)/src
 
 # install
 PREFIX?=/usr
+TG_SHARE_PATH?=$(PREFIX)/share/$(PACKAGE)
+TG_DOC_PATH?=$(PREFIX)/share/doc/$(PACKAGE)
+
 TG_BINARY_PATH?=$(PREFIX)/bin
 TG_LIBRARY_PATH?=$(PREFIX)/lib
 TG_LIBRARY_PATH_JNI?=$(TG_LIBRARY_PATH)/jni
 TG_LIBRARY_PATH_EXT?=$(TG_LIBRARY_PATH)/ext
 TG_LIBRARY_PATH_PLUGINS?=$(TG_SHARE_PATH)/plugins
 TG_LIBRARY_PATH_PROPERTY?=$(TG_LIBRARY_PATH_EXT):$(TG_LIBRARY_PATH_PLUGINS)
-TG_SHARE_PATH?=$(PREFIX)/share/$(PACKAGE)
-TG_DOC_PATH?=$(PREFIX)/share/doc/$(PACKAGE)
 
 
 # jar dependencies
@@ -45,15 +46,17 @@ SWT_JAR?=$(SWT_PATH)
 SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
 SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 SOURCES+=$(shell find $(TG_EDITOR_UTILS_SOURCE_PATH) -name "*.java")
-RESOURCE_PATH?=$(TG_PROJECT_HOME)/dist/
-RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
+RESOURCE_PATH?=$(TG_BUILD_RESOURCES)
 RESOURCES_DIST?=$(shell find $(RESOURCE_PATH) -name "*.dist")
+RESOURCES_CFG?=$(shell find $(RESOURCE_PATH) -name "*.cfg")
+RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
 DEPENDENCIES?=$(SWT_JAR)
 OBJECTS?=\
  $(PACKAGE).o\
- $(RESOURCES_DIST:%.dist=%.o)\
- $(RESOURCES_XML:%.xml=%.o)\
- $(DEPENDENCIES:%.jar=%.o)\
+ $(DEPENDENCIES:%.jar=%.jar.o)\
+ $(RESOURCES_DIST:%.dist=%.dist.o)\
+ $(RESOURCES_CFG:%.cfg=%.cfg.o)\
+ $(RESOURCES_XML:%.xml=%.xml.o)\
 
 # runtime
 MAINCLASS?=org.herac.tuxguitar.app.TGMainSingleton
@@ -100,13 +103,16 @@ clean:
 	-rm *.so -f
 	-rm *.o -f
 
-%.o: %.jar
+%.jar.o: %.jar
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $<
 
-%.o: %.dist
+%.dist.o: %.dist
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
 
-%.o: %.xml
+%.cfg.o: %.cfg
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
+
+%.xml.o: %.xml
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
 
 $(PACKAGE).o: $(SOURCES)

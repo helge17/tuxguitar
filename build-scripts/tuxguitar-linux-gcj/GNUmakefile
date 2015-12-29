@@ -10,11 +10,13 @@ PACKAGE?=tuxguitar-1.3-gcj
 TG_ROOT_PATH?=../..
 TG_BUILD_PATH?=./target
 TG_BUILD_PREFIX?=$(PREFIX)
+TG_BUILD_RESOURCES?=$(TG_BUILD_PATH)/resources/
 TG_BUILD_DESTDIR?=$(TG_BUILD_PATH)/$(PACKAGE)/
 
 ENVIRONMENT_PROPERTIES?=\
 	PREFIX=$(TG_BUILD_PREFIX)\
 	DESTDIR=$(TG_BUILD_DESTDIR)\
+	TG_BUILD_RESOURCES=$(TG_BUILD_RESOURCES)\
 	TG_ROOT_PATH=$(TG_ROOT_PATH)\
 	TG_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar/src/\
 	TG_LIB_SOURCE_PATH=$(TG_ROOT_PATH)/TuxGuitar-lib/src/\
@@ -56,11 +58,21 @@ MAKEFILE_OBJECTS?=$(MAKEFILE_SCRIPTS:%.mf=%.make)
 
 default: all
 
-all: $(MAKEFILE_OBJECTS) resources
+all: create_tmp_files $(MAKEFILE_OBJECTS) resources clean_tmp_files
+
+create_tmp_files:
+	-install -d $(TG_BUILD_RESOURCES)
+	-cp -rf $(TG_ROOT_PATH)/TuxGuitar/dist/* $(TG_BUILD_RESOURCES)
+	-cp -rf src/resources/dist/* $(TG_BUILD_RESOURCES)
+
+clean_tmp_files: 
+	-rm $(TG_BUILD_RESOURCES) -rf
 
 resources:
-	-install -d $(TG_BUILD_DESTDIR)$(TG_BUILD_PREFIX)/
+	-install -d $(TG_BUILD_DESTDIR)$(TG_BUILD_PREFIX)
+	-install -d $(TG_BUILD_DESTDIR)$(TG_BUILD_PREFIX)/share/tuxguitar/soundfont
 	-install src/resources/tuxguitar.sh $(TG_BUILD_DESTDIR)$(TG_BUILD_PREFIX)/tuxguitar.sh
+	-install $(TG_ROOT_PATH)/TuxGuitar-resources/resources/soundfont/* $(TG_BUILD_DESTDIR)$(TG_BUILD_PREFIX)/share/tuxguitar/soundfont
 
 %.make: %.mf
 	$(ENVIRONMENT_PROPERTIES) make clean -f $^
