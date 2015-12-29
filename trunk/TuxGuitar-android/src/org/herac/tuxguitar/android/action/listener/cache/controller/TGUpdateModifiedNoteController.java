@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.action.listener.cache.controller;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.TuxGuitar;
+import org.herac.tuxguitar.android.transport.TGTransportAdapter;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -19,8 +19,7 @@ public class TGUpdateModifiedNoteController extends TGUpdateMeasureController {
 			TGBeat beat = (TGBeat) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 			
 			//reproduzco las notas en el pulso
-			TuxGuitar tuxguitar = TuxGuitar.getInstance(context);
-			tuxguitar.playBeat(beat);
+			TGTransportAdapter.getInstance(context).playBeat(beat);
 		}
 		
 		// Call super update.

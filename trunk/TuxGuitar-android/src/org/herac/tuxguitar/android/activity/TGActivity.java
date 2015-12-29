@@ -72,6 +72,9 @@ public class TGActivity extends ActionBarActivity {
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		
+		this.setIntent(intent);
 		this.callProcessIntent();
 	}
 	
