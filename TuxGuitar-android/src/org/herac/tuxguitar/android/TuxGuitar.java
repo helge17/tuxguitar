@@ -7,20 +7,16 @@ import org.herac.tuxguitar.android.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;
 import org.herac.tuxguitar.android.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.android.transport.TGTransport;
-import org.herac.tuxguitar.android.transport.TGTransportListener;
+import org.herac.tuxguitar.android.transport.TGTransportAdapter;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
@@ -45,12 +41,11 @@ public class TuxGuitar {
 		TGActionAdapterManager.getInstance(this.context).initialize(activity);
 		TGEditorManager.getInstance(this.context).setLockControl(this.lock);
 		TGPropertiesAdapter.initialize(this.context, activity);
-		
-		this.initMidiPlayer();
+		TGTransportAdapter.getInstance(this.context).initialize();
 	}
 	
 	public void destroy() {
-		MidiPlayer.getInstance(this.context).close();
+		TGTransportAdapter.getInstance(this.context).destroy();
 		TGSongViewController.getInstance(this.context).dispose();
 		
 		this.disconnectPlugins();
@@ -85,19 +80,6 @@ public class TuxGuitar {
 		return MidiPlayer.getInstance(this.context);
 	}
 	
-	public void initMidiPlayer(){
-		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
-		midiPlayer.init(TGDocumentManager.getInstance(this.context));
-		midiPlayer.addListener(new TGTransportListener(getContext()));
-		midiPlayer.setVolume(8);
-		midiPlayer.setTryOpenFistDevice(true);
-		try {
-			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(), true);
-		} catch (MidiPlayerException e) {
-			TGErrorManager.getInstance(this.context).handleError(e);
-		}
-	}
-	
 	public void updateSavedSong(){
 		this.getEditorManager().updateSavedSong();
 	}
@@ -129,34 +111,8 @@ public class TuxGuitar {
 		// TODO
 	}
 	
-	public void playBeat( final TGBeat beat ){
-		new Thread(new Runnable() {
-			public void run() throws TGException {
-				if(!getPlayer().isRunning() ){
-					getPlayer().playBeat(beat);
-				}
-			}
-		}).start();
-	}
-	
 	public TGContext getContext() {
 		return this.context;
-	}
-
-	public void lock(){
-		this.lock.lock();
-	}
-	
-	public void unlock(boolean force){
-		this.lock.unlock();
-	}
-	
-	public boolean tryLock(){
-		return this.lock.tryLock();
-	}
-	
-	public boolean isLocked(){
-		return this.lock.isLocked();
 	}
 	
 	public static TuxGuitar getInstance(TGContext context) {
