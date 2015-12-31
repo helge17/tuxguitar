@@ -1,7 +1,7 @@
 <project>
 	<shortName>tuxguitar</shortName>
 	<fullName>TuxGuitar</fullName>
-	<version>1.3</version>
+	<version>1.3-SNAPSHOT</version>
 	<installerFilename>${product_shortname}-${product_version}-${platform_name}-x86-installer.${platform_exec_suffix}</installerFilename>
 	<readmeFile></readmeFile>
 	<licenseFile>${build_project_directory}/../../target/bundle/doc/LICENSE</licenseFile>
