@@ -1,24 +1,24 @@
 package org.herac.tuxguitar.app.util;
 
-import java.net.URL;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class TGResourceUtils {
 	
 	public static Icon loadIcon(String resource){
-		try{
+		try {
 			if( resource != null ){
-				URL url = TGResourceUtils.class.getClassLoader().getResource("skin/" + resource );
-				if( url != null ){
-					return new ImageIcon( url );
+				InputStream stream = TGResourceUtils.class.getClassLoader().getResourceAsStream("skin/" + resource );
+				if( stream != null ){
+					return new ImageIcon(ImageIO.read(stream));
 				}
 			}
-		}catch( Throwable throwable ){
+		} catch( Throwable throwable ){
 			throwable.printStackTrace();
 		}
 		return null;
 	}
-	
 }

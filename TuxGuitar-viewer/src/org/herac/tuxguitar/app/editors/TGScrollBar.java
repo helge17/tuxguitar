@@ -7,12 +7,12 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfig;
+import org.herac.tuxguitar.app.util.TGResourceUtils;
 
 public class TGScrollBar {
 	
@@ -30,8 +30,8 @@ public class TGScrollBar {
 	
 	public Component getComponent(){
 		this.buttonUp = new JButton();
-		this.buttonUp.setIcon( new ImageIcon( getClass().getClassLoader().getResource("skin/scroll_up.png") ) );
-		this.buttonUp.setPressedIcon( new ImageIcon( getClass().getClassLoader().getResource("skin/scroll_up_pressed.png") ) );
+		this.buttonUp.setIcon(TGResourceUtils.loadIcon("scroll_up.png"));
+		this.buttonUp.setPressedIcon(TGResourceUtils.loadIcon("scroll_up_pressed.png"));
 		this.buttonUp.setBorderPainted( false );
 		this.buttonUp.setContentAreaFilled( false );
 		this.buttonUp.setFocusPainted( false );
@@ -39,8 +39,8 @@ public class TGScrollBar {
 		this.buttonUp.addMouseListener( new TGScrollBarAction( this, -1) );
 		
 		this.buttonDown = new JButton();
-		this.buttonDown.setIcon( new ImageIcon( getClass().getClassLoader().getResource("skin/scroll_down.png") ) );
-		this.buttonDown.setPressedIcon( new ImageIcon( getClass().getClassLoader().getResource("skin/scroll_down_pressed.png") ) );
+		this.buttonDown.setIcon(TGResourceUtils.loadIcon("scroll_down.png"));
+		this.buttonDown.setPressedIcon(TGResourceUtils.loadIcon("scroll_down_pressed.png"));
 		this.buttonDown.setBorderPainted( false );
 		this.buttonDown.setContentAreaFilled( false );
 		this.buttonDown.setFocusPainted( false );
