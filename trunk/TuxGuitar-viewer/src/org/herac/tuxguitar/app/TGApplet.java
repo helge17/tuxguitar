@@ -103,7 +103,6 @@ public class TGApplet extends Applet{
 	
 	private void initConfig(){
 		TGConfig.SONG_URL = getParameter("song_url_download");
-		TGConfig.SOUNDBANK_URL = getParameter("soundbank_url_download");
 		TGConfig.LOOK_FEEL = getParameter("look_and_feel");
 		TGConfig.MIDI_PORT = getParameter("midi_port");
 	}

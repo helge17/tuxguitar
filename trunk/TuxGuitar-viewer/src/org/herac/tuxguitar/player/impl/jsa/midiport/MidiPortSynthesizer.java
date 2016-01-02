@@ -1,10 +1,7 @@
 package org.herac.tuxguitar.player.impl.jsa.midiport;
 
-import java.io.File;
-
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
@@ -76,15 +73,6 @@ public class MidiPortSynthesizer extends GMOutputPort{
 			throwable.printStackTrace();
 		}
 		return this.synth;
-	}
-	
-	public boolean loadSoundbank(File file){
-		try {
-			return loadSoundbank( MidiSystem.getSoundbank(file) );
-		}catch (Throwable throwable) {
-			new MidiPlayerException("jsa.error.soundbank.custom", throwable).printStackTrace();
-		}
-		return false;
 	}
 	
 	public boolean loadSoundbank(Soundbank sb) {
