@@ -11,8 +11,9 @@
 	
 	<property name="build.src.path" value="src${file.separator}" />
 	<property name="build.resource.path" value="resources${file.separator}" />
-	<property name="build.path" value="build${file.separator}" />
-	<property name="build.jar" value="tuxguitar-viewer.jar" />
+	<property name="build.target.path" value="target${file.separator}" />
+	<property name="build.path" value="${build.target.path}/build${file.separator}" />
+	<property name="build.jar" value="${build.target.path}/tuxguitar-viewer.jar" />
 	
 	<property name="dist.dst.path" value="" />
 	<property name="dist.jar.path" value="." />
@@ -29,8 +30,7 @@
 	<target name="all" depends="package" />
 	
 	<target name="clean">
-		<delete quiet="true" dir="${build.path}" />
-		<delete quiet="true" file="${build.jar}" />
+		<delete quiet="true" dir="${build.target.path}" />
 	</target>
 	
 	<target name="build" depends="clean">
