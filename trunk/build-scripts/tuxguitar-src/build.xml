@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="tuxguitar-src" basedir="." default="package">
+	
+	<description>
+		TuxGuitar Source Package
+	</description>
+	
+	<property name="source.version" value="1.3-SNAPSHOT"/>
+	
+	<property name="source.dir" value="../../"/>
+	<property name="target.dir" value="target"/>
+	<property name="package.name" value="tuxguitar-${dist.version}-src" />
+	
+	<target name="init" >
+		<fail unless="dist.version">Usage: ant -Ddist.version=[VERSION]</fail>
+	</target>
+	
+	<target name="clean" depends="init">
+		<delete quiet="true" dir="${target.dir}" />
+	</target>
+	
+	<target name="package" depends="clean">
+		
+		<copy todir="${target.dir}/${package.name}">
+			<fileset dir="${source.dir}">
+				<include name="build-scripts/common-resources/**"/>
+				<include name="build-scripts/native-modules/**"/>
+				<include name="build-scripts/tuxguitar-android/**"/>
+				<include name="build-scripts/tuxguitar-jws/**"/>
+				<include name="build-scripts/tuxguitar-linux-gcj/**"/>
+				<include name="build-scripts/tuxguitar-linux-x86/**"/>
+				<include name="build-scripts/tuxguitar-linux-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-linux-x86-deb/**"/>
+				<include name="build-scripts/tuxguitar-macosx-cocoa-32/**"/>
+				<include name="build-scripts/tuxguitar-macosx-cocoa-64/**"/>
+				<include name="build-scripts/tuxguitar-windows-x86/**"/>
+				<include name="build-scripts/tuxguitar-windows-x86-installer/**"/>
+				
+				<include name="TuxGuitar/**"/>
+				<include name="TuxGuitar-alsa/**"/>
+				<include name="TuxGuitar-ascii/**"/>
+				<include name="TuxGuitar-AudioUnit/**"/>
+				<include name="TuxGuitar-awt-graphics/**"/>
+				<include name="TuxGuitar-browser-ftp/**"/>
+				<include name="TuxGuitar-carbon-integration/**"/>
+				<include name="TuxGuitar-cocoa-integration/**"/>
+				<include name="TuxGuitar-community/**"/>
+				<include name="TuxGuitar-compat/**"/>
+				<include name="TuxGuitar-converter/**"/>
+				<include name="TuxGuitar-CoreAudio/**"/>
+				<include name="TuxGuitar-editor-utils/**"/>
+				<include name="TuxGuitar-fluidsynth/**"/>
+				<include name="TuxGuitar-gervill/**"/>
+				<include name="TuxGuitar-gm-settings/**"/>
+				<include name="TuxGuitar-gm-utils/**"/>
+				<include name="TuxGuitar-gpx/**"/>
+				<include name="TuxGuitar-gtp/**"/>
+				<include name="TuxGuitar-gtp-ui/**"/>
+				<include name="TuxGuitar-image/**"/>
+				<include name="TuxGuitar-jack/**"/>
+				<include name="TuxGuitar-jack-ui/**"/>
+				<include name="TuxGuitar-jsa/**"/>
+				<include name="TuxGuitar-lib/**"/>
+				<include name="TuxGuitar-lilypond/**"/>
+				<include name="TuxGuitar-midi/**"/>
+				<include name="TuxGuitar-musicxml/**"/>
+				<include name="TuxGuitar-oss/**"/>
+				<include name="TuxGuitar-pdf/**"/>
+				<include name="TuxGuitar-ptb/**"/>
+				<include name="TuxGuitar-resources/**"/>
+				<include name="TuxGuitar-svg/**"/>
+				<include name="TuxGuitar-tef/**"/>
+				<include name="TuxGuitar-tray/**"/>
+				<include name="TuxGuitar-tuner/**"/>
+				<include name="TuxGuitar-viewer/**"/>
+				<include name="TuxGuitar-winmm/**"/>
+				
+				<include name="TuxGuitar-android/**"/>
+				<include name="TuxGuitar-android-gervill/**"/>
+				<include name="TuxGuitar-android-gervill-soundbank/**"/>
+				<include name="TuxGuitar-android-midi/**"/>
+				
+				<include name="misc/**"/>
+				<include name="README"/>
+				<include name="AUTHORS"/>
+				<include name="CHANGES"/>
+				<include name="LICENSE"/>
+				<include name="pom.xml"/>
+				
+				<exclude name="**/.*"/>
+				<exclude name="**/.*/**"/>
+				<exclude name="**/target/**"/>
+				<exclude name="**/lang/last_additions/**"/>
+				
+				<exclude name="TuxGuitar*/**/*.o"/>
+				<exclude name="TuxGuitar*/**/*.so"/>
+				<exclude name="TuxGuitar*/**/*.dll"/>
+				<exclude name="TuxGuitar*/**/*.jnilib"/>
+				<exclude name="TuxGuitar*/**/*.jar"/>
+			</fileset>
+		</copy>
+		
+		<replace dir="${target.dir}/${package.name}" token="${source.version}" value="${dist.version}" >
+			<include name="**/*.xml"/>
+			<include name="**/GNUmakefile"/>
+		</replace>
+		
+		<echo>+------------------------------------------------------------------------------+</echo>
+		<echo>${package.name} was created. Now you can use that package to build binary files.</echo>
+		<echo>+-------------------------------------------------------------------------------+</echo>
+	</target>
+	
+</project>
