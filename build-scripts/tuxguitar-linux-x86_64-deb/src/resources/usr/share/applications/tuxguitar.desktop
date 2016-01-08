@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=TuxGuitar
+GenericName=TuxGuitar
+Comment=TuxGuitar
+Type=Application
+MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb
+Categories=Application;AudioVideo;
+Exec=/opt/tuxguitar/tuxguitar.sh %F
+Icon=/opt/tuxguitar/share/skins/Oxygen/icon-96x96.png
+Terminal=false
+StartupNotify=false
