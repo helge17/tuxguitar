@@ -11,20 +11,20 @@ public class TGSingletonUtil {
 			}
 			context.setAttribute(key, factory.createInstance(context));
 			
-			return getInstance(context, key, factory);
+			return TGSingletonUtil.getInstance(context, key, factory);
 		}
 	}
 	
 	private static Object getSingletonLock(TGContext context, String key) {
 		synchronized (TGSingletonUtil.class) {
-			String contextKey = (TGSingletonUtil.class.getName() + "-" + key);
+			String contextKey = (key + "-singletonLock");
 			
 			if( context.hasAttribute(contextKey) ) {
 				return context.getAttribute(contextKey);
 			}
 			context.setAttribute(contextKey, new Object());
 			
-			return getSingletonLock(context, key);
+			return TGSingletonUtil.getSingletonLock(context, key);
 		}
 	}
 }
