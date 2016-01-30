@@ -1,16 +1,11 @@
 package org.herac.tuxguitar.util.singleton;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSingletonUtil {
 	
-	private static Map<String, Object> singletonLocks;
-	
 	public static <T> T getInstance(TGContext context, String key, TGSingletonFactory<T> factory) {
-		synchronized (TGSingletonUtil.getSingletonLock(key)) {
+		synchronized (TGSingletonUtil.getSingletonLock(context, key)) {
 			if( context.hasAttribute(key) ) {
 				return context.getAttribute(key);
 			}
@@ -20,18 +15,16 @@ public class TGSingletonUtil {
 		}
 	}
 	
-	private static Object getSingletonLock(String key) {
+	private static Object getSingletonLock(TGContext context, String key) {
 		synchronized (TGSingletonUtil.class) {
-			if( singletonLocks == null ) {
-				singletonLocks = new HashMap<String, Object>();
-			}
+			String contextKey = (TGSingletonUtil.class.getName() + "-" + key);
 			
-			if( singletonLocks.containsKey(key) ) {
-				return singletonLocks.get(key);
+			if( context.hasAttribute(contextKey) ) {
+				return context.getAttribute(contextKey);
 			}
-			singletonLocks.put(key, new Object());
+			context.setAttribute(contextKey, new Object());
 			
-			return getSingletonLock(key);
+			return getSingletonLock(context, key);
 		}
 	}
 }
