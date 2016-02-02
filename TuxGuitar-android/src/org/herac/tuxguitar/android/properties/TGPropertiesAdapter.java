@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.properties;
 
 import org.herac.tuxguitar.android.browser.config.TGBrowserProperties;
-import org.herac.tuxguitar.android.browser.config.TGBrowserPropertiesDefaults;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
@@ -30,7 +29,7 @@ public class TGPropertiesAdapter {
 	}
 	
 	public static TGPropertiesReader createBrowserPropertiesReader(TGContext context, Activity activity) {
-		return new TGSharedPreferencesReader(activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE, new TGBrowserPropertiesDefaults(activity));
+		return new TGSharedPreferencesReader(activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE, new TGResourcePropertiesReader(context, TGBrowserProperties.RESOURCE));
 	}
 	
 	public static TGPropertiesWriter createBrowserPropertiesWriter(TGContext context, Activity activity) {

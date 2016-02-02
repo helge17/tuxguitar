@@ -41,7 +41,8 @@
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/browser_save_format"
             android:gravity="fill_horizontal|center_vertical"
-            android:inputType="text" />
+            android:inputType="text"
+            android:imeOptions="actionDone" />
 
         <Spinner
             android:id="@+id/browser_save_format"
