@@ -8,6 +8,7 @@ import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;
 import org.herac.tuxguitar.android.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.android.transport.TGTransportAdapter;
+import org.herac.tuxguitar.android.variables.TGVarAdapter;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
@@ -40,6 +41,7 @@ public class TuxGuitar {
 		TGResourceManager.getInstance(this.context).setResourceLoader(new TGResourceLoaderImpl(activity));
 		TGActionAdapterManager.getInstance(this.context).initialize(activity);
 		TGEditorManager.getInstance(this.context).setLockControl(this.lock);
+		TGVarAdapter.initialize(this.context);
 		TGPropertiesAdapter.initialize(this.context, activity);
 		TGTransportAdapter.getInstance(this.context).initialize();
 	}

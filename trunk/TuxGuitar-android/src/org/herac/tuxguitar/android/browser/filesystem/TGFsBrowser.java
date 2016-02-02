@@ -8,19 +8,23 @@ import java.util.List;
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class TGFsBrowser implements TGBrowser{
 	
-	private File root;
-	private TGFsBrowserElement element;
+	private TGContext context;
 	private TGFsBrowserSettings data;
+	private TGFsBrowserElement element;
+	private File root;
 	
-	public TGFsBrowser(TGFsBrowserSettings data){
+	public TGFsBrowser(TGContext context, TGFsBrowserSettings data){
+		this.context = context;
 		this.data = data;
 	}
 	
 	public void open(){
-		this.root = new File(this.data.getPath());
+		this.root = new File(TGExpressionResolver.getInstance(this.context).resolve(this.data.getPath()));
 		this.element = null;
 	}
 	
@@ -77,6 +81,5 @@ public class TGFsBrowser implements TGBrowser{
 
 	public boolean isWritable() throws TGBrowserException {
 		return (this.element != null && this.element.isFolder() && this.element.isWritable());
-	}
-	
+	}	
 }

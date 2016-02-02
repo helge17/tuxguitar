@@ -18,6 +18,7 @@
 		<EditText
 			android:id="@+id/track_name_dlg_name_value"
 			android:inputType="text" 
+			android:imeOptions="actionDone"
 			app:layout_gravity="fill_horizontal|center_vertical" />
 			
 	</android.support.v7.widget.GridLayout>

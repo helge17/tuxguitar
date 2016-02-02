@@ -15,7 +15,8 @@
     <EditText
         android:id="@+id/browser_settings_fs_name_value"
         app:layout_gravity="fill_horizontal|center_vertical"
-        android:inputType="text" />
+        android:inputType="text"
+        android:imeOptions="actionDone" />
 
     <android.support.v7.widget.Space
         style="@style/DialogSectionSpacer"

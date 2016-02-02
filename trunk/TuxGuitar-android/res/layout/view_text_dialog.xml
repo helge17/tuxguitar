@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:inputType="text" />
+        android:inputType="text" 
+        android:imeOptions="actionDone"/>
 
 </RelativeLayout>
