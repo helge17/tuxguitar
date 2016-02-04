@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.tools.browser.filesystem;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,5 +89,13 @@ public class TGBrowserImpl implements TGBrowser {
 		} catch (Throwable throwable ) {
 			cb.handleError(throwable);
 		}
-	}	
+	}
+	
+	public void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
+		try {
+			cb.onSuccess(((TGBrowserElementImpl) element).getInputStream());
+		} catch (Throwable e) {
+			cb.handleError(e);
+		}
+	}
 }

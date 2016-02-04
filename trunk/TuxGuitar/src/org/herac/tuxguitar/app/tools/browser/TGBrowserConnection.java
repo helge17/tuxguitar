@@ -133,26 +133,21 @@ public class TGBrowserConnection {
 		}
 	}
 	
-	public void openStream(final int callId,final TGBrowserElement element){
+	public void openStream(final int callId, final TGBrowserElement element){
 		if(!isLocked()){
 			this.lock();
 			new Thread(new Runnable() {
 				public void run() {
-					try {
-						if( element == null ){
-							release();
-							return;
-						}
-						if( element.isFolder() ){
-							release();
-							cd(callId,element);
-						}
-						else{
-							InputStream stream = element.getInputStream();
-							notifyStream(callId,stream,element);
-						}
-					} catch (TGBrowserException e) {
-						notifyError(callId,e);
+					if( element == null ){
+						release();
+						return;
+					}
+					if( element.isFolder() ){
+						release();
+						cd(callId,element);
+					}
+					else{
+						getBrowser().getInputStream(new TGBrowserInputStreamHandlerImpl(callId, element), element);
 					}
 				}
 			}).start();
@@ -245,6 +240,21 @@ public class TGBrowserConnection {
 		
 		public void onSuccess(List<TGBrowserElement> elements) {
 			TGBrowserConnection.this.notifyElements(this.getCallId(), elements);
+		}
+	}
+	
+	private class TGBrowserInputStreamHandlerImpl extends TGBrowserErrorHandlerImpl<InputStream> {
+		
+		private TGBrowserElement element;
+		
+		public TGBrowserInputStreamHandlerImpl(int callId, TGBrowserElement element) {
+			super(callId);
+			
+			this.element = element;
+		}
+		
+		public void onSuccess(InputStream stream) {
+			TGBrowserConnection.this.notifyStream(this.getCallId(), stream, this.element);
 		}
 	}
 }

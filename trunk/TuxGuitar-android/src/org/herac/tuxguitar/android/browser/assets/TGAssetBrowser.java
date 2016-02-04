@@ -63,7 +63,7 @@ public class TGAssetBrowser implements TGBrowser{
 		}
 	}
 	
-	public void cdUp(final TGBrowserCallBack<Object> cb) {
+	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			if( this.element != null && this.element.getParent() != null ){
 				this.element = this.element.getParent();
@@ -101,7 +101,7 @@ public class TGAssetBrowser implements TGBrowser{
 
 	public void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
 		try {
-			cb.onSuccess(this.element.getInputStream());
+			cb.onSuccess(((TGAssetBrowserElement) element).getInputStream());
 		} catch (Throwable e) {
 			cb.handleError(e);
 		}

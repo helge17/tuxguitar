@@ -18,10 +18,10 @@ public class TGBrowserElementComparator implements Comparator<TGBrowserElement> 
 	
 	public int compare(TGBrowserElement element1, TGBrowserElement element2) {
 		if( element1 != null && element2 != null ){
-			if(element1.isFolder() && !element2.isFolder()){
+			if( element1.isFolder() && !element2.isFolder() ){
 				return (DIRECTION_FOLDER * RESULT_LESS);
 			}
-			if(element2.isFolder() && !element1.isFolder()){
+			if( element2.isFolder() && !element1.isFolder() ){
 				return (DIRECTION_FOLDER * RESULT_GREATER);
 			}
 			

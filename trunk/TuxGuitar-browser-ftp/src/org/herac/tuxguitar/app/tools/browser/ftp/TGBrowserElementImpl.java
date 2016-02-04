@@ -1,21 +1,25 @@
 package org.herac.tuxguitar.app.tools.browser.ftp;
 
-import java.io.InputStream;
-
-import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
-public class TGBrowserElementImpl extends TGBrowserElement{
+public class TGBrowserElementImpl implements TGBrowserElement{
 	
-	private TGBrowserImpl browser;
+	private String name;
 	private String path;
 	private String info;
 	
-	public TGBrowserElementImpl(TGBrowserImpl browser,String name,String info,String path) {
-		super(name);
-		this.browser = browser;
+	public TGBrowserElementImpl(String name, String info, String path) {
+		this.name = name;
 		this.info = info;
 		this.path = path;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getPath() {
+		return this.path;
 	}
 	
 	public boolean isFolder(){
@@ -25,9 +29,4 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 	public boolean isSymLink() {
 		return (this.info != null && this.info.length() > 0 && this.info.charAt(0) == 'l');
 	}
-	
-	public InputStream getInputStream()throws TGBrowserException {
-		return this.browser.getInputStream(this.path,this);
-	}
-	
 }

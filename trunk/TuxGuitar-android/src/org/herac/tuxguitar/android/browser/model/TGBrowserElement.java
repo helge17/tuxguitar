@@ -2,9 +2,9 @@ package org.herac.tuxguitar.android.browser.model;
 
 public interface TGBrowserElement {
 	
-	String getName() throws TGBrowserException;
+	String getName();
 	
-	boolean isFolder() throws TGBrowserException;
+	boolean isFolder();
 	
-	boolean isWritable() throws TGBrowserException;
+	boolean isWritable();
 }

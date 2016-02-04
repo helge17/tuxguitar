@@ -30,15 +30,15 @@ public class TGAssetBrowserElement implements TGBrowserElement{
 		return this.parent;
 	}
 	
-	public String getName() throws TGBrowserException {
+	public String getName() {
 		return this.name;
 	}
 	
-	public boolean isFolder() throws TGBrowserException {
+	public boolean isFolder() {
 		return (this.name.indexOf(".") == -1);
 	}
 	
-	public boolean isWritable() throws TGBrowserException {
+	public boolean isWritable() {
 		return false;
 	}
 	
