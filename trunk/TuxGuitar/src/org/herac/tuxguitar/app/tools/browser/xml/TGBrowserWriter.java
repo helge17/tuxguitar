@@ -31,6 +31,7 @@ public class TGBrowserWriter {
 	private static final String ITEM_TAG = "browser-collection";
 	private static final String ATTRIBUTE_TYPE = "type";
 	private static final String ATTRIBUTE_DATA = "data";
+	private static final String ATTRIBUTE_TITLE = "title";
 	
 	public void saveCollections(TGBrowserManager manager,String fileName) {
 		try{
@@ -42,7 +43,7 @@ public class TGBrowserWriter {
 		}
 	}
 	
-	private static void saveCollections(TGBrowserManager manager,Document document){
+	private static void saveCollections(TGBrowserManager manager, Document document){
 		//chords tag
 		Node listNode = document.createElement(ITEM_LIST_TAG);
 		
@@ -50,19 +51,24 @@ public class TGBrowserWriter {
 		while(collections.hasNext()){
 			TGBrowserCollection collection = (TGBrowserCollection)collections.next();
 			
-			//chord tag
+			//collection tag
 			Node node = document.createElement(ITEM_TAG);
 			listNode.appendChild(node);
 			
-			//name attribute
+			//type attribute
 			Attr typeAttr = document.createAttribute(ATTRIBUTE_TYPE);
 			typeAttr.setNodeValue(collection.getType());
 			
-			//name attribute
+			//title attribute
+			Attr titleAttr = document.createAttribute(ATTRIBUTE_TITLE);
+			titleAttr.setNodeValue(collection.getData().getTitle());
+			
+			//data attribute
 			Attr dataAttr = document.createAttribute(ATTRIBUTE_DATA);
-			dataAttr.setNodeValue(collection.getData().toString());
+			dataAttr.setNodeValue(collection.getData().getData());
 			
 			node.getAttributes().setNamedItem(typeAttr);
+			node.getAttributes().setNamedItem(titleAttr);
 			node.getAttributes().setNamedItem(dataAttr);
 		}
 		

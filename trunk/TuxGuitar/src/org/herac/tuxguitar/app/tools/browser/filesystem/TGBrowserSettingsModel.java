@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.android.browser.filesystem;
+package org.herac.tuxguitar.app.tools.browser.filesystem;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 
-public class TGFsBrowserSettings {
+public class TGBrowserSettingsModel {
 	
 	private String title;
 	private String path;
 	
-	public TGFsBrowserSettings(String title,String path){
+	public TGBrowserSettingsModel(String title, String path){
 		this.title = title;
 		this.path = path;
 	}
@@ -27,7 +27,7 @@ public class TGFsBrowserSettings {
 		return settings;
 	}
 	
-	public static TGFsBrowserSettings createInstance(TGBrowserSettings settings) {
-		return new TGFsBrowserSettings(settings.getTitle(), settings.getData());
+	public static TGBrowserSettingsModel createInstance(TGBrowserSettings settings) {
+		return new TGBrowserSettingsModel(settings.getTitle(), settings.getData());
 	}
 }

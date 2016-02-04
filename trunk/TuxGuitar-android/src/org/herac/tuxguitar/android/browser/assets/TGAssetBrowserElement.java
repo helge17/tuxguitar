@@ -3,7 +3,6 @@ package org.herac.tuxguitar.android.browser.assets;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,10 +81,6 @@ public class TGAssetBrowserElement implements TGBrowserElement{
 			}
 		}
 		return null;
-	}
-	
-	public OutputStream getOutputStream() throws TGBrowserException {
-		throw new TGBrowserException("No writable file system");
 	}
 	
 	private String getFullPath() throws TGBrowserException {

@@ -235,16 +235,17 @@ public class TGBrowserView extends RelativeLayout {
 				String elementName = editText.getText().toString() + createExtension(format, TGFileFormatManager.DEFAULT_EXTENSION);
 				
 				TGBrowserElement element = findElement(elementName);
-				if( element != null && element.isWritable() ) {
-					TGActionProcessor actionProcessor = this.getActionHandler().createBrowserSaveElementAction(element, format);
-					this.getActionHandler().processConfirmableAction(actionProcessor, this.findActivity().getString(R.string.browser_file_overwrite_question));
-				} 
+				if( element != null ) {
+					if( element.isWritable() ) {
+						TGActionProcessor actionProcessor = this.getActionHandler().createBrowserSaveElementAction(element, format);
+						this.getActionHandler().processConfirmableAction(actionProcessor, this.findActivity().getString(R.string.browser_file_overwrite_question));
+					} else {
+						throw new TGBrowserException(this.findActivity().getString(R.string.browser_file_overwrite_readonly_error));
+					}
+				}
 				else {
 					if( session.getBrowser().isWritable() ) {
-						element = session.getBrowser().createElement(elementName);
-						if( element != null && element.isWritable() ) {
-							this.getActionHandler().createBrowserSaveElementAction(element, format).process();
-						}
+						this.getActionHandler().createBrowserSaveNewElementAction(elementName, format).process();
 					}
 				}
 			}

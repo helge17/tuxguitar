@@ -6,61 +6,72 @@ import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdElementHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdRootHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdUpHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCloseHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserOpenHandler;
 
 public class TGBrowserImpl implements TGBrowser {
 	
 	private File root;
 	private TGBrowserElementImpl element;
-	private TGBrowserDataImpl data;
+	private TGBrowserSettingsModel data;
 	
-	public TGBrowserImpl(TGBrowserDataImpl data){
+	public TGBrowserImpl(TGBrowserSettingsModel data){
 		this.data = data;
 	}
 	
-	public void open(TGBrowserOpenHandler handler) {
+	public void open(TGBrowserCallBack<Object> cb) {
 		try {
 			this.root = new File(this.data.getPath());
 			
-			handler.onSuccess();
+			cb.onSuccess(null);
 		} catch(Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 	
-	public void close(TGBrowserCloseHandler handler) {
-		this.root = null;
-		
-		handler.onSuccess();
-	}
-	
-	public void cdElement(TGBrowserElement element, TGBrowserCdElementHandler handler) {
-		this.element = (TGBrowserElementImpl)element;
-		
-		handler.onSuccess();
-	}
-	
-	public void cdRoot(TGBrowserCdRootHandler handler) {
-		this.element = null;
-		
-		handler.onSuccess();
-	}
-	
-	public void cdUp(TGBrowserCdUpHandler handler) {
-		if( this.element != null ){
-			this.element = this.element.getParent();
+	public void close(TGBrowserCallBack<Object> cb) {
+		try {
+			this.root = null;
+			
+			cb.onSuccess(null);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
 		}
-		
-		handler.onSuccess();
 	}
 	
-	public void listElements(TGBrowserListElementsHandler handler) {
+	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
+		try {
+			this.element = (TGBrowserElementImpl)element;
+			
+			cb.onSuccess(this.element);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
+		}
+	}
+	
+	public void cdRoot(TGBrowserCallBack<Object> cb) {
+		try {
+			this.element = null;
+			
+			cb.onSuccess(this.element);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
+		}
+	}
+	
+	public void cdUp(TGBrowserCallBack<Object> cb) {
+		try {
+			if( this.element != null ){
+				this.element = this.element.getParent();
+			}
+			
+			cb.onSuccess(this.element);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
+		}
+	}
+	
+	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try { 
 			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
 			File file = ((this.element != null)?this.element.getFile():this.root);
@@ -73,9 +84,9 @@ public class TGBrowserImpl implements TGBrowser {
 			if( !elements.isEmpty() ){
 				Collections.sort(elements, new TGBrowserElementComparator());
 			}
-			handler.onSuccess(elements);
+			cb.onSuccess(elements);
 		} catch (Throwable throwable ) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}	
 }

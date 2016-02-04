@@ -1,23 +1,18 @@
 package org.herac.tuxguitar.app.tools.browser.base;
 
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdElementHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdRootHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdUpHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCloseHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserOpenHandler;
+import java.util.List;
 
 public interface TGBrowser {
 	
-	void open(TGBrowserOpenHandler handler);
+	void open(TGBrowserCallBack<Object> cb);
 	
-	void close(TGBrowserCloseHandler handler);
+	void close(TGBrowserCallBack<Object> cb);
 	
-	void cdRoot(TGBrowserCdRootHandler handler);
+	void cdRoot(TGBrowserCallBack<Object> cb);
 	
-	void cdUp(TGBrowserCdUpHandler handler);
+	void cdUp(TGBrowserCallBack<Object> cb);
 	
-	void cdElement(TGBrowserElement element, TGBrowserCdElementHandler handler);
+	void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element);
 	
-	void listElements(TGBrowserListElementsHandler handler);
+	void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb);
 }

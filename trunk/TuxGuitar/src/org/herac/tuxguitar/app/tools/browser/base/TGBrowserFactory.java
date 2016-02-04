@@ -8,9 +8,7 @@ public interface TGBrowserFactory {
 	
 	public String getType();
 	
-	public TGBrowserData parseData(String string);
+	public TGBrowserSettings dataDialog(Shell parent);
 	
-	public TGBrowserData dataDialog(Shell parent);
-	
-	public TGBrowser newTGBrowser(TGBrowserData data);
+	public TGBrowser newTGBrowser(TGBrowserSettings data);
 }

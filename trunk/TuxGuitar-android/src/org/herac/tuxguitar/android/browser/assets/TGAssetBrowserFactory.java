@@ -33,24 +33,16 @@ public class TGAssetBrowserFactory implements TGBrowserFactory{
 		return this.settings;
 	}
 	
-	public TGBrowserSettings restoreSettings(String string) {
-		if( this.getDefaultSettings().getId().equals(string)) {
-			return this.getDefaultSettings();
-		}
-		return null;
-	}
-	
 	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings data) throws TGBrowserException {
-		if( data instanceof TGAssetBrowserSettings ){
-			handler.onCreateBrowser(new TGAssetBrowser(this.context, this.getDefaultSettings()));
-		}
+		handler.onCreateBrowser(new TGAssetBrowser(this.context, this.getDefaultSettings()));
 	}
 
 	public void createSettings(TGBrowserFactorySettingsHandler handler) throws TGBrowserException {
-		if( TGBrowserManager.getInstance(this.context).getCollection(this.getType(), this.getDefaultSettings()) != null ) {
+		TGBrowserSettings settings = this.getDefaultSettings().toBrowserSettings();
+		if( TGBrowserManager.getInstance(this.context).getCollection(this.getType(), settings) != null ) {
 			throw new TGBrowserException(BROWSER_NAME + " already exists.");
 		}
 		
-		handler.onCreateSettings(new TGAssetBrowserSettings());
+		handler.onCreateSettings(settings);
 	}
 }

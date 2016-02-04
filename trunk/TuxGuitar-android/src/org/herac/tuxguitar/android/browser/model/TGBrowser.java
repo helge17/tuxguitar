@@ -1,22 +1,28 @@
 package org.herac.tuxguitar.android.browser.model;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface TGBrowser {
 	
-	void open() throws TGBrowserException;
+	void open(TGBrowserCallBack<Object> cb);
 	
-	void close() throws TGBrowserException;
+	void close(TGBrowserCallBack<Object> cb);
 	
-	void cdRoot() throws TGBrowserException;
+	void cdRoot(TGBrowserCallBack<Object> cb);
 	
-	void cdUp() throws TGBrowserException;
+	void cdUp(TGBrowserCallBack<Object> cb);
 	
-	void cdElement(TGBrowserElement element) throws TGBrowserException;
+	void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element);
 	
-	List<TGBrowserElement> listElements() throws TGBrowserException;
+	void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb);
 	
-	TGBrowserElement createElement(String name) throws TGBrowserException;
+	void createElement(TGBrowserCallBack<TGBrowserElement> cb, String name);
 	
-	boolean isWritable() throws TGBrowserException;
+	void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element);
+	
+	void getOutputStream(TGBrowserCallBack<OutputStream> cb, TGBrowserElement element);
+	
+	boolean isWritable();
 }

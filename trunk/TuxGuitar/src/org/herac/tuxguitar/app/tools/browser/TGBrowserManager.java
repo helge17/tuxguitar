@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.tools.browser.filesystem.TGBrowserFactoryImpl;
 import org.herac.tuxguitar.app.tools.browser.xml.TGBrowserReader;
@@ -20,7 +20,6 @@ public class TGBrowserManager {
 	private TGContext context;
 	private List<TGBrowserFactory> factories;
 	private List<TGBrowserCollection> collections;
-	private List<TGBrowserCollectionInfo> collectionInfos;
 	private boolean changes;
 	
 	private TGBrowserFactoryHandler handler;
@@ -29,7 +28,6 @@ public class TGBrowserManager {
 		this.context = context;
 		this.factories = new ArrayList<TGBrowserFactory>();
 		this.collections = new ArrayList<TGBrowserCollection>();
-		this.collectionInfos = new ArrayList<TGBrowserCollectionInfo>();
 		this.readCollections();
 		this.addDefaultFactory();
 	}
@@ -56,17 +54,6 @@ public class TGBrowserManager {
 	public void addFactory(TGBrowserFactory factory){
 		this.factories.add(factory);
 		
-		Iterator<TGBrowserCollectionInfo> it = this.collectionInfos.iterator();
-		while(it.hasNext()){
-			TGBrowserCollectionInfo info = (TGBrowserCollectionInfo)it.next();
-			if(info.getType().equals(factory.getType())){
-				TGBrowserCollection collection = new TGBrowserCollection();
-				collection.setType(factory.getType());
-				collection.setData(factory.parseData(info.getData()));
-				addCollection(collection);
-			}
-		}
-		
 		if(this.handler != null){
 			this.handler.notifyAdded();
 		}
@@ -89,10 +76,6 @@ public class TGBrowserManager {
 		}
 	}
 	
-	public void addInfo(TGBrowserCollectionInfo info){
-		this.collectionInfos.add(info);
-	}
-	
 	public Iterator<TGBrowserCollection> getCollections(){
 		return this.collections.iterator();
 	}
@@ -107,7 +90,7 @@ public class TGBrowserManager {
 	}
 	
 	public TGBrowserCollection addCollection(TGBrowserCollection collection){
-		if(collection.getData() != null ){
+		if( collection.getData() != null ){
 			TGBrowserCollection existent = getCollection(collection.getType(), collection.getData());
 			if( existent != null ){
 				return existent;
@@ -118,11 +101,11 @@ public class TGBrowserManager {
 		return collection;
 	}
 	
-	public TGBrowserCollection getCollection(String type, TGBrowserData data ){
+	public TGBrowserCollection getCollection(String type, TGBrowserSettings data){
 		Iterator<TGBrowserCollection> it = this.getCollections();
 		while( it.hasNext() ){
 			TGBrowserCollection collection = ( TGBrowserCollection ) it.next();
-			if( collection.getType().equals(type) && collection.getData().equals(data) ){
+			if( collection.getType().equals(type) && collection.getData().getTitle().equals(data.getTitle()) && collection.getData().getData().equals(data.getData()) ){
 				return collection;
 			}
 		}

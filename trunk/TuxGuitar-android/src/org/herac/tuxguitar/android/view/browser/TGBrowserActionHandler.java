@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.view.browser;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
@@ -41,6 +42,13 @@ public class TGBrowserActionHandler {
 	public TGActionProcessorListener createBrowserSaveElementAction(TGBrowserElement element, TGFileFormat format) {
 		TGActionProcessorListener tgActionProcessor = this.createBrowserElementAction(TGBrowserSaveElementAction.NAME, element);
 		tgActionProcessor.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, format);
+		return tgActionProcessor;
+	}
+	
+	public TGActionProcessorListener createBrowserSaveNewElementAction(String elementName, TGFileFormat format) {
+		TGActionProcessorListener tgActionProcessor = this.createBrowserAction(TGBrowserSaveNewElementAction.NAME);
+		tgActionProcessor.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, format);
+		tgActionProcessor.setAttribute(TGBrowserSaveNewElementAction.ATTRIBUTE_NAME, elementName);
 		return tgActionProcessor;
 	}
 	

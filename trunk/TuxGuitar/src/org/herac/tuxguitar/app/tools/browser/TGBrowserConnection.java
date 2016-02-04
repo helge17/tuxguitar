@@ -4,14 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdElementHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdRootHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdUpHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCloseHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserErrorHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserOpenHandler;
 
 public class TGBrowserConnection {
 	
@@ -115,7 +109,7 @@ public class TGBrowserConnection {
 			new Thread(new Runnable() {
 				public void run() {
 					if( isOpen() ){
-						getBrowser().cdElement(element, new TGBrowserCdHandlerImpl(callId));
+						getBrowser().cdElement(new TGBrowserCdHandlerImpl(callId), element);
 					}else{
 						notifyClosed(callId);
 					}
@@ -193,7 +187,7 @@ public class TGBrowserConnection {
 		this.handler.notifyStream(callId,stream,element);
 	}
 	
-	private class TGBrowserErrorHandlerImpl implements TGBrowserErrorHandler {
+	private abstract class TGBrowserErrorHandlerImpl<T> implements TGBrowserCallBack<T> {
 		
 		private int callId;
 		
@@ -210,40 +204,40 @@ public class TGBrowserConnection {
 		}
 	}
 	
-	private class TGBrowserOpenHandlerImpl extends TGBrowserErrorHandlerImpl implements TGBrowserOpenHandler {
+	private class TGBrowserOpenHandlerImpl extends TGBrowserErrorHandlerImpl<Object> {
 		
 		public TGBrowserOpenHandlerImpl(int callId) {
 			super(callId);
 		}
 		
-		public void onSuccess() {
+		public void onSuccess(Object successData) {
 			TGBrowserConnection.this.notifyOpened(this.getCallId());
 		}
 	}
 	
-	private class TGBrowserCloseHandlerImpl extends TGBrowserErrorHandlerImpl implements TGBrowserCloseHandler {
+	private class TGBrowserCloseHandlerImpl extends TGBrowserErrorHandlerImpl<Object> {
 		
 		public TGBrowserCloseHandlerImpl(int callId) {
 			super(callId);
 		}
 		
-		public void onSuccess() {
+		public void onSuccess(Object successData) {
 			TGBrowserConnection.this.notifyClosed(this.getCallId());
 		}
 	}
 	
-	private class TGBrowserCdHandlerImpl extends TGBrowserErrorHandlerImpl implements TGBrowserCdRootHandler, TGBrowserCdUpHandler, TGBrowserCdElementHandler {
+	private class TGBrowserCdHandlerImpl extends TGBrowserErrorHandlerImpl<Object> {
 		
 		public TGBrowserCdHandlerImpl(int callId) {
 			super(callId);
 		}
 		
-		public void onSuccess() {
+		public void onSuccess(Object successData) {
 			TGBrowserConnection.this.notifyCd(this.getCallId());
 		}
 	}
 	
-	private class TGBrowserListElementsHandlerImpl extends TGBrowserErrorHandlerImpl implements TGBrowserListElementsHandler {
+	private class TGBrowserListElementsHandlerImpl extends TGBrowserErrorHandlerImpl<List<TGBrowserElement>> {
 
 		public TGBrowserListElementsHandlerImpl(int callId) {
 			super(callId);

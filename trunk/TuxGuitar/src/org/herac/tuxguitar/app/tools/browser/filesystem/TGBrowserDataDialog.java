@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.util.TGContext;
@@ -23,21 +23,21 @@ import org.herac.tuxguitar.util.TGContext;
 public class TGBrowserDataDialog {
 	
 	private TGContext context;
-	private TGBrowserData data;
+	private TGBrowserSettings data;
 	
 	public TGBrowserDataDialog(TGContext context) {
 		this.context = context;
 	}
 	
-	public TGBrowserData getData() {
+	public TGBrowserSettings getData() {
 		return this.data;
 	}
 	
-	public void setData(TGBrowserData data) {
+	public void setData(TGBrowserSettings data) {
 		this.data = data;
 	}
 	
-	public TGBrowserData open(Shell parent) {
+	public TGBrowserSettings open(Shell parent) {
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("browser.collection.fs.editor-title"));
@@ -96,7 +96,8 @@ public class TGBrowserDataDialog {
 				if(isBlank(selectedTitle)){
 					selectedTitle = selectedPath;
 				}
-				setData(new TGBrowserDataImpl(selectedTitle,selectedPath));
+				
+				setData(new TGBrowserSettingsModel(selectedTitle, selectedPath).toBrowserSettings());
 				dialog.dispose();
 			}
 		});

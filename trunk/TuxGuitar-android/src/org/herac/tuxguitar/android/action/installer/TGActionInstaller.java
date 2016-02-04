@@ -6,6 +6,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAct
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
@@ -14,6 +15,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
@@ -323,9 +325,11 @@ public class TGActionInstaller {
 		installAction(new TGBrowserRefreshAction(context));
 		installAction(new TGBrowserOpenElementAction(context));
 		installAction(new TGBrowserSaveElementAction(context));
+		installAction(new TGBrowserSaveNewElementAction(context));
 		installAction(new TGBrowserSaveCurrentElementAction(context));
 		installAction(new TGBrowserPrepareForReadAction(context));
 		installAction(new TGBrowserPrepareForWriteAction(context));
+		installAction(new TGBrowserLoadSessionAction(context));
 		installAction(new TGBrowserOpenSessionAction(context));
 		installAction(new TGBrowserAddCollectionAction(context));
 		installAction(new TGBrowserRemoveCollectionAction(context));

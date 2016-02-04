@@ -2,18 +2,18 @@ package org.herac.tuxguitar.community.browser;
 
 import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory {
 	
 	private TGContext context;
-	private TGBrowserDataImpl data;
+	private TGBrowserSettings data;
 	
 	public TGBrowserFactoryImpl(TGContext context){
 		this.context = context;
-		this.data = new TGBrowserDataImpl();
+		this.data = new TGBrowserSettingsModel().toBrowserSettings();
 	}
 	
 	public String getName() {
@@ -24,15 +24,15 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory {
 		return "community";
 	}
 	
-	public TGBrowser newTGBrowser(TGBrowserData data) {
-		return new TGBrowserImpl(this.context, (TGBrowserDataImpl)data);
+	public TGBrowser newTGBrowser(TGBrowserSettings data) {
+		return new TGBrowserImpl(this.context);
 	}
 	
-	public TGBrowserData parseData(String string) {
+	public TGBrowserSettings parseData(String string) {
 		return this.data;
 	}
 	
-	public TGBrowserData dataDialog(Shell parent) {
+	public TGBrowserSettings dataDialog(Shell parent) {
 		TGBrowserAuthDialog authDialog = new TGBrowserAuthDialog(this.context);
 		authDialog.open( parent );
 		if( authDialog.isAccepted() ){

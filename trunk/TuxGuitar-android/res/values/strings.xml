@@ -186,6 +186,7 @@
 	<string name="browser_remove_collection">Remove Collection</string>
 	<string name="browser_file_default_name">Untitled</string>
 	<string name="browser_file_overwrite_question">This file already exists. Do you want to overwrite it?</string>
+	<string name="browser_file_overwrite_readonly_error">This file already exists and cannot be modified</string>
 	<string name="browser_element_icon_description">Browser Element</string>
 	
 	<!-- collections -->

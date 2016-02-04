@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.model;
+package org.herac.tuxguitar.app.tools.browser.base;
 
 public class TGBrowserSettings {
 	

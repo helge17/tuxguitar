@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -31,24 +31,24 @@ public abstract class TGBrowserBar implements TGEventListener{
 	
 	protected void newCollection(String type){
 		TGBrowserFactory factory = TGBrowserManager.getInstance(getBrowser().getContext()).getFactory(type);
-		if(factory != null){
-			TGBrowserData data = factory.dataDialog(getBrowser().getShell());
-			if(data != null){
+		if( factory != null ){
+			TGBrowserSettings data = factory.dataDialog(getBrowser().getShell());
+			if( data != null ){
 				openCollection(addCollection(factory, data, true));
 			}
 		}
 	}
 	
-	protected TGBrowserCollection addCollection(TGBrowserFactory factory,String data){
-		return this.addCollection(factory,factory.parseData(data),false);
+	protected TGBrowserCollection addCollection(TGBrowserFactory factory, TGBrowserSettings data){
+		return this.addCollection(factory, data,false);
 	}
 	
-	protected TGBrowserCollection addCollection(TGBrowserFactory factory,TGBrowserData data,boolean reload){
+	protected TGBrowserCollection addCollection(TGBrowserFactory factory, TGBrowserSettings data, boolean reload){
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(factory.getType());
 		collection.setData(data);
 		collection = TGBrowserManager.getInstance(getBrowser().getContext()).addCollection(collection);
-		if(reload){
+		if( reload ){
 			getBrowser().updateCollections(collection);
 		}
 		return collection;
