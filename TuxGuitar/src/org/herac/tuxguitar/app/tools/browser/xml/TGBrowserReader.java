@@ -7,8 +7,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.herac.tuxguitar.app.tools.browser.TGBrowserCollectionInfo;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -18,6 +19,7 @@ import org.xml.sax.SAXException;
 public class TGBrowserReader {
 	private static final String ITEM_TAG = "browser-collection";
 	private static final String ATTRIBUTE_TYPE = "type";
+	private static final String ATTRIBUTE_TITLE = "title";
 	private static final String ATTRIBUTE_DATA = "data";
 	
 	public void loadCollections(TGBrowserManager manager,File file){
@@ -40,12 +42,15 @@ public class TGBrowserReader {
 				NamedNodeMap params = child.getAttributes();
 				
 				String type = params.getNamedItem(ATTRIBUTE_TYPE).getNodeValue();
+				String title = params.getNamedItem(ATTRIBUTE_TITLE).getNodeValue();
 				String data = params.getNamedItem(ATTRIBUTE_DATA).getNodeValue();
 				if(type != null){
-					TGBrowserCollectionInfo info = new TGBrowserCollectionInfo();
-					info.setType(type);
-					info.setData(data);
-					manager.addInfo(info);
+					TGBrowserCollection collection = new TGBrowserCollection();
+					collection.setType(type);
+					collection.setData(new TGBrowserSettings());
+					collection.getData().setTitle(title);
+					collection.getData().setData(data);
+					manager.addCollection(collection);
 				}
 			}
 		}

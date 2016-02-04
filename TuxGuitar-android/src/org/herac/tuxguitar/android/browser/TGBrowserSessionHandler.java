@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.browser;
 
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
@@ -22,23 +22,10 @@ public class TGBrowserSessionHandler implements TGBrowserFactoryHandler {
 	
 	@Override
 	public void onCreateBrowser(TGBrowser browser) throws TGBrowserException {
-		this.session.setBrowser(browser);
-		if( this.session.getBrowser() != null ) {
-			this.session.getBrowser().open();
-			this.session.getBrowser().cdRoot();
-			this.session.setCollection(this.collection);
-			this.storeDefaultCollection();
-			this.fireRefreshAction();
-		}
-	}
-	
-	public void storeDefaultCollection() throws TGBrowserException {
-		TGBrowserManager.getInstance(this.context).storeDefaultCollection();
-	}
-	
-	public void fireRefreshAction() {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGBrowserRefreshAction.NAME);
-		tgActionProcessor.setAttribute(TGBrowserRefreshAction.ATTRIBUTE_SESSION, this.session);
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGBrowserLoadSessionAction.NAME);
+		tgActionProcessor.setAttribute(TGBrowserLoadSessionAction.ATTRIBUTE_SESSION, this.session);
+		tgActionProcessor.setAttribute(TGBrowserLoadSessionAction.ATTRIBUTE_COLLECTION, this.collection);
+		tgActionProcessor.setAttribute(TGBrowserLoadSessionAction.ATTRIBUTE_BROWSER, browser);
 		tgActionProcessor.process();
 	}
 }

@@ -28,14 +28,8 @@ public class TGFsBrowserFactory implements TGBrowserFactory{
 		return BROWSER_NAME;
 	}
 	
-	public TGBrowserSettings restoreSettings(String string) {
-		return TGFsBrowserSettings.fromString(string);
-	}
-	
-	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings data) throws TGBrowserException {
-		if( data instanceof TGFsBrowserSettings ){
-			handler.onCreateBrowser(new TGFsBrowser(this.context, (TGFsBrowserSettings)data));
-		}
+	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings) throws TGBrowserException {
+		handler.onCreateBrowser(new TGFsBrowser(this.context, TGFsBrowserSettings.createInstance(settings)));
 	}
 
 	public void createSettings(TGBrowserFactorySettingsHandler handler) throws TGBrowserException {

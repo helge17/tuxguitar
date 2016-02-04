@@ -80,11 +80,11 @@ public class TGBrowserManager {
 		return null;
 	}
 	
-	public TGBrowserCollection getCollection(String type, TGBrowserSettings data ){
+	public TGBrowserCollection getCollection(String type, TGBrowserSettings settings){
 		Iterator<TGBrowserCollection> it = this.getCollections();
 		while( it.hasNext() ){
 			TGBrowserCollection collection = it.next();
-			if( collection.getType().equals(type) && collection.getSettings().equals(data) ){
+			if( collection.getType().equals(type) && collection.getSettings().getTitle().equals(settings.getTitle()) && collection.getSettings().getData().equals(settings.getData()) ){
 				return collection;
 			}
 		}
@@ -110,14 +110,6 @@ public class TGBrowserManager {
 		return collection;
 	}
 	
-	public TGBrowserCollection createCollection(TGBrowserCollectionInfo info){
-		TGBrowserFactory factory = getFactory(info.getType());
-		if( factory != null ){
-			return createCollection(factory.getType(), factory.restoreSettings(info.getSettings()));
-		}
-		return null;
-	}
-	
 	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserCollection collection) throws TGBrowserException {
 		TGBrowserFactory factory = this.getFactory(collection.getType());
 		if( factory != null ) {
@@ -138,29 +130,16 @@ public class TGBrowserManager {
 	}
 	
 	public void storeCollections() throws TGBrowserException {
-		List<TGBrowserCollectionInfo> collectionsInfo = new ArrayList<TGBrowserCollectionInfo>();
-		
-		for(TGBrowserCollection collection : this.collections) {
-			TGBrowserCollectionInfo collectionInfo = new TGBrowserCollectionInfo();
-			collectionInfo.setType(collection.getType());
-			collectionInfo.setSettings(collection.getSettings().toString());
-			collectionsInfo.add(collectionInfo);
-		}
-		
-		this.properties.setCollections(collectionsInfo);
+		this.properties.setCollections(this.collections);
 		this.properties.save();
 	}
 	
 	public void restoreCollections() throws TGBrowserException {
-		List<TGBrowserCollectionInfo> collectionsInfo = this.properties.getCollections();
-		
 		this.collections.clear();
 		
-		for(TGBrowserCollectionInfo collectionInfo : collectionsInfo) {
-			TGBrowserCollection collection = createCollection(collectionInfo);
-			if( collection != null ){
-				addCollection(collection);
-			}
+		List<TGBrowserCollection> collections = this.properties.getCollections();
+		for(TGBrowserCollection collection : collections) {
+			addCollection(collection);
 		}
 	}
 	

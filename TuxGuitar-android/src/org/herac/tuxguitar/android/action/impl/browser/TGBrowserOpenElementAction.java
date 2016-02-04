@@ -6,6 +6,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.TGActionBase;
+import org.herac.tuxguitar.android.browser.TGBrowserSyncCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
@@ -28,7 +29,11 @@ public class TGBrowserOpenElementAction extends TGActionBase{
 			TGBrowserSession session = (TGBrowserSession) context.getAttribute(ATTRIBUTE_SESSION);
 			TGBrowserElement element = (TGBrowserElement) context.getAttribute(ATTRIBUTE_ELEMENT);
 			
-			InputStream stream = element.getInputStream();
+			TGBrowserSyncCallBack<InputStream> syncCallBack = new TGBrowserSyncCallBack<InputStream>();
+			session.getBrowser().getInputStream(syncCallBack, element);
+			syncCallBack.syncCallBack();
+			
+			InputStream stream = syncCallBack.getSuccessData();
 			try {
 				context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 				

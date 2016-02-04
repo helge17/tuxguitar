@@ -1,13 +1,10 @@
 package org.herac.tuxguitar.community.browser;
 
+import java.util.List;
+
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdElementHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdRootHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdUpHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCloseHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserOpenHandler;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserImpl implements TGBrowser {
@@ -15,44 +12,64 @@ public class TGBrowserImpl implements TGBrowser {
 	private TGBrowserConnection connection;
 	private TGBrowserElementImpl element;
 	
-	public TGBrowserImpl(TGContext context, TGBrowserDataImpl data){
+	public TGBrowserImpl(TGContext context){
 		this.element = null;
 		this.connection = new TGBrowserConnection(context);
 	}
 	
-	public void open(TGBrowserOpenHandler handler) {
-		handler.onSuccess();
-	}
-	
-	public void close(TGBrowserCloseHandler handler) {
-		handler.onSuccess();
-	}
-	
-	public void cdRoot(TGBrowserCdRootHandler handler) {
-		this.element = null;
-		
-		handler.onSuccess();
-	}
-	
-	public void cdUp(TGBrowserCdUpHandler handler) {
-		if( this.element != null ){
-			this.element = this.element.getParent();
+	public void open(TGBrowserCallBack<Object> cb) {
+		try {
+			cb.onSuccess(null);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
 		}
-		
-		handler.onSuccess();
 	}
 	
-	public void cdElement(TGBrowserElement element, TGBrowserCdElementHandler handler) {
-		if( element instanceof TGBrowserElementImpl ){
-			TGBrowserElementImpl nextElement = (TGBrowserElementImpl)element;
-			nextElement.setParent( this.element );
-			this.element = nextElement;
+	public void close(TGBrowserCallBack<Object> cb) {
+		try {
+			cb.onSuccess(null);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
 		}
-		
-		handler.onSuccess();
 	}
 	
-	public void listElements(TGBrowserListElementsHandler handler) {
-		this.connection.fillElements(this.element, handler);
+	public void cdRoot(TGBrowserCallBack<Object> cb) {
+		try {
+			this.element = null;
+			
+			cb.onSuccess(this.element);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
+		}
+	}
+	
+	public void cdUp(TGBrowserCallBack<Object> cb) {
+		try {
+			if( this.element != null ){
+				this.element = this.element.getParent();
+			}
+			
+			cb.onSuccess(this.element);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
+		}
+	}
+	
+	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
+		try {
+			if( element instanceof TGBrowserElementImpl ){
+				TGBrowserElementImpl nextElement = (TGBrowserElementImpl)element;
+				nextElement.setParent( this.element );
+				this.element = nextElement;
+			}
+			
+			cb.onSuccess(this.element);
+		} catch(Throwable throwable) {
+			cb.handleError(throwable);
+		}
+	}
+	
+	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
+		this.connection.fillElements(cb, this.element);
 	}
 }

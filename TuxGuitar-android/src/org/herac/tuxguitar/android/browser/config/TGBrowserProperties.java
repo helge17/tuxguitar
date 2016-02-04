@@ -3,8 +3,9 @@ package org.herac.tuxguitar.android.browser.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.browser.TGBrowserCollectionInfo;
+import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
+import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
@@ -22,6 +23,7 @@ public class TGBrowserProperties {
 	public static final String PROPERTY_DEFAULT_COLLECTION = "default-collection-index";
 	
 	public static final String COLLECTION_TYPE = "type";
+	public static final String COLLECTION_TITLE = "title";
 	public static final String COLLECTION_SETTINGS = "settings";
 	
 	private TGContext context;
@@ -49,9 +51,9 @@ public class TGBrowserProperties {
 		TGPropertiesUtil.setValue(this.properties, PROPERTY_DEFAULT_COLLECTION, index);
 	}
 	
-	public List<TGBrowserCollectionInfo> getCollections() throws TGBrowserException{
+	public List<TGBrowserCollection> getCollections() throws TGBrowserException{
 		try {
-			List<TGBrowserCollectionInfo> collections =  new ArrayList<TGBrowserCollectionInfo>();
+			List<TGBrowserCollection> collections =  new ArrayList<TGBrowserCollection>();
 			
 			String jsonCollections = this.properties.getValue(PROPERTY_COLLECTIONS);
 			if( jsonCollections != null && jsonCollections.length() > 0 ) {
@@ -59,9 +61,11 @@ public class TGBrowserProperties {
 				for(int i = 0; i< jsonArray.length() ; i++){
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
 					
-					TGBrowserCollectionInfo collection = new TGBrowserCollectionInfo();
+					TGBrowserCollection collection = new TGBrowserCollection();
 					collection.setType(jsonObject.getString(COLLECTION_TYPE));
-					collection.setSettings(jsonObject.getString(COLLECTION_SETTINGS));
+					collection.setSettings(new TGBrowserSettings());
+					collection.getSettings().setTitle(jsonObject.getString(COLLECTION_TITLE));
+					collection.getSettings().setData(jsonObject.getString(COLLECTION_SETTINGS));
 					collections.add(collection);
 				}
 			}
@@ -72,13 +76,14 @@ public class TGBrowserProperties {
 		}
 	}
 	
-	public void setCollections(List<TGBrowserCollectionInfo> collections) throws TGBrowserException{
+	public void setCollections(List<TGBrowserCollection> collections) throws TGBrowserException{
 		try {
 			JSONArray jsonArray = new JSONArray();
-			for(TGBrowserCollectionInfo collection : collections) {
+			for(TGBrowserCollection collection : collections) {
 				JSONObject jsonObject = new JSONObject();
 				jsonObject.put(COLLECTION_TYPE, collection.getType());
-				jsonObject.put(COLLECTION_SETTINGS, collection.getSettings());
+				jsonObject.put(COLLECTION_TITLE, collection.getSettings().getTitle());
+				jsonObject.put(COLLECTION_SETTINGS, collection.getSettings().getData());
 				jsonArray.put(jsonObject);
 			}
 			

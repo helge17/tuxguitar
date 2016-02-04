@@ -20,7 +20,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
@@ -42,18 +42,11 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 		return "FTP";
 	}
 	
-	public TGBrowser newTGBrowser(TGBrowserData data) {
-		if( data instanceof TGBrowserDataImpl ){
-			return new TGBrowserImpl((TGBrowserDataImpl)data);
-		}
-		return null;
+	public TGBrowser newTGBrowser(TGBrowserSettings data) {
+		return new TGBrowserImpl(TGBrowserSettingsModel.createInstance(data));
 	}
 	
-	public TGBrowserData parseData(String string) {
-		return TGBrowserDataImpl.fromString(string);
-	}
-	
-	public TGBrowserData dataDialog(Shell parent) {
+	public TGBrowserSettings dataDialog(Shell parent) {
 		return new TGBrowserDataDialog(this.context).show(parent);
 	}
 	
@@ -61,13 +54,13 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 class TGBrowserDataDialog{
 	
 	private TGContext context;
-	private TGBrowserDataImpl data;
+	private TGBrowserSettings data;
 	
 	public TGBrowserDataDialog(TGContext context) {
 		this.context = context;
 	}
 	
-	public TGBrowserDataImpl show(final Shell parent){
+	public TGBrowserSettings show(final Shell parent){
 		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		
 		dialog.setLayout(new GridLayout());
@@ -193,7 +186,7 @@ class TGBrowserDataDialog{
 					TGMessageDialogUtil.errorMessage(getContext(), parent, buffer.getBuffer().toString() );
 				}else{
 					int proxyPort = Integer.parseInt( proxyPortStr );
-					TGBrowserDataDialog.this.data = new TGBrowserDataImpl(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort);
+					TGBrowserDataDialog.this.data = new TGBrowserSettingsModel(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort).toBrowserSettings();
 				
 					dialog.dispose();
 				}

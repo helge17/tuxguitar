@@ -1,21 +1,21 @@
 package org.herac.tuxguitar.app.tools.browser;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserData;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 
 public class TGBrowserCollection {
 	
 	private String type;
-	private TGBrowserData data;
+	private TGBrowserSettings data;
 	
 	public TGBrowserCollection(){
 		super();
 	}
 	
-	public TGBrowserData getData() {
+	public TGBrowserSettings getData() {
 		return this.data;
 	}
 	
-	public void setData(TGBrowserData data) {
+	public void setData(TGBrowserSettings data) {
 		this.data = data;
 	}
 	
@@ -25,6 +25,5 @@ public class TGBrowserCollection {
 	
 	public void setType(String type) {
 		this.type = type;
-	}
-	
+	}	
 }

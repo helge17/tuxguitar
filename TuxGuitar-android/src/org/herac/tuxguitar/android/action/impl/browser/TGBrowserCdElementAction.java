@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.action.impl.browser;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.android.action.TGActionBase;
+import org.herac.tuxguitar.android.browser.TGBrowserSyncCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
@@ -24,7 +25,10 @@ public class TGBrowserCdElementAction extends TGActionBase{
 			TGBrowserSession tgBrowserSession = (TGBrowserSession) context.getAttribute(ATTRIBUTE_SESSION);
 			if( tgBrowserSession.getBrowser() != null ) {
 				TGBrowserElement tgBrowserElement = (TGBrowserElement) context.getAttribute(ATTRIBUTE_ELEMENT);
-				tgBrowserSession.getBrowser().cdElement(tgBrowserElement);
+				
+				TGBrowserSyncCallBack<Object> tgBrowserSyncCallBack = new TGBrowserSyncCallBack<Object>();
+				tgBrowserSession.getBrowser().cdElement(tgBrowserSyncCallBack, tgBrowserElement);
+				tgBrowserSyncCallBack.syncCallBack();
 			}
 		} catch (TGBrowserException e)  {
 			throw new TGActionException(e);

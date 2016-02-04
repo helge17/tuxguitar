@@ -117,7 +117,7 @@ public class TGBrowserSettingsDialog extends TGDialog {
 		}
 
 		TGBrowserFactorySettingsHandler tgBrowserFactorySettingsHandler = this.getAttribute(TGBrowserSettingsDialogController.ATTRIBUTE_HANDLER);
-		tgBrowserFactorySettingsHandler.onCreateSettings(new TGFsBrowserSettings(name, path));
+		tgBrowserFactorySettingsHandler.onCreateSettings(new TGFsBrowserSettings(name, path).toBrowserSettings());
 
 		return true;
 	}

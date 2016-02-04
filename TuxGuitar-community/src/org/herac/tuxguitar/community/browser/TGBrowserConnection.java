@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuth;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
@@ -27,7 +27,7 @@ public class TGBrowserConnection {
 		this.auth.update();
 	}
 	
-	public void fillElements(final TGBrowserElementImpl element, final TGBrowserListElementsHandler handler) {
+	public void fillElements(final TGBrowserCallBack<List<TGBrowserElement>> cb, final TGBrowserElementImpl element) {
 		try {
 			TGBrowserRequest request = new TGBrowserRequest(this.context, this.auth, element);
 			TGBrowserResponse response = request.getResponse();
@@ -36,7 +36,7 @@ public class TGBrowserConnection {
 			if( status != null && status.equals(HTTP_STATUS_OK) ){
 				List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
 				response.loadElements(elements);
-				handler.onSuccess(elements);
+				cb.onSuccess(elements);
 			}else if( status != null && status.equals(HTTP_STATUS_UNAUTHORIZED) ){
 				TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 					public void run() throws TGException {
@@ -45,18 +45,18 @@ public class TGBrowserConnection {
 							authDialog.open( TuxGuitar.getInstance().getBrowser().getShell() );
 							if( authDialog.isAccepted() ){
 								TGBrowserConnection.this.auth.update();
-								TGBrowserConnection.this.fillElements(element, handler);
+								TGBrowserConnection.this.fillElements(cb, element);
 							} else {
-								handler.onSuccess(null);
+								cb.onSuccess(null);
 							}
 						}
 					}
 				});
 			} else {
-				handler.onSuccess(null);
+				cb.onSuccess(null);
 			}
 		} catch(Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAct
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
@@ -13,6 +14,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
@@ -368,9 +370,11 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGBrowserRefreshAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserOpenElementAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserSaveElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserSaveNewElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserSaveCurrentElementAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserPrepareForReadAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserPrepareForWriteAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserLoadSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserOpenSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserAddCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);

@@ -11,22 +11,17 @@ import java.util.Properties;
 
 import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdElementHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdRootHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCdUpHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserCloseHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserListElementsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.handler.TGBrowserOpenHandler;
 
 public class TGBrowserImpl implements TGBrowser {
 	
-	private TGBrowserDataImpl data;
+	private TGBrowserSettingsModel data;
 	private String root; 
 	private String path; 
 	private TGBrowserFTPClient client;
 	
-	public TGBrowserImpl(TGBrowserDataImpl data){
+	public TGBrowserImpl(TGBrowserSettingsModel data){
 		this.data = data;
 	}
 	
@@ -43,7 +38,7 @@ public class TGBrowserImpl implements TGBrowser {
 		return this.root;
 	}
 	
-	public void open(TGBrowserOpenHandler handler) {
+	public void open(TGBrowserCallBack<Object> cb) {
 		try {
 			checkForProxy();
 			this.client = new TGBrowserFTPClient();
@@ -52,25 +47,25 @@ public class TGBrowserImpl implements TGBrowser {
 			this.client.cd(getRoot());
 			this.path = this.client.pwd();
 			
-			handler.onSuccess();
+			cb.onSuccess(null);
 		} catch(Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 
 	
-	public void close(TGBrowserCloseHandler handler) {
+	public void close(TGBrowserCallBack<Object> cb) {
 		try {
 			this.closeProxy();
 			this.client.close();
 			
-			handler.onSuccess();
+			cb.onSuccess(null);
 		} catch(Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 	
-	public void cdElement(TGBrowserElement element, TGBrowserCdElementHandler handler) {
+	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try {
 			boolean isCDSuccess = this.client.cd(element.getName());
 			if(!isCDSuccess) {
@@ -78,35 +73,35 @@ public class TGBrowserImpl implements TGBrowser {
 			}
 			this.path = this.client.pwd();
 			
-			handler.onSuccess();
+			cb.onSuccess(null);
 		} catch (Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 	
-	public void cdRoot(TGBrowserCdRootHandler handler) {
+	public void cdRoot(TGBrowserCallBack<Object> cb) {
 		try {
 			this.client.cd(getRoot());
 			this.path = this.client.pwd();
 			
-			handler.onSuccess();
+			cb.onSuccess(null);
 		} catch(Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 	
-	public void cdUp(TGBrowserCdUpHandler handler) {
+	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			this.client.cdUp();
 			this.path = this.client.pwd();
 			
-			handler.onSuccess();
+			cb.onSuccess(null);
 		} catch (Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 	
-	public void listElements(TGBrowserListElementsHandler handler) {
+	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try {
 			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
 			
@@ -139,9 +134,9 @@ public class TGBrowserImpl implements TGBrowser {
 				Collections.sort(elements, new TGBrowserElementComparator());
 			}
 			
-			handler.onSuccess(elements);
+			cb.onSuccess(elements);
 		} catch (Throwable throwable) {
-			handler.handleError(throwable);
+			cb.handleError(throwable);
 		}
 	}
 	

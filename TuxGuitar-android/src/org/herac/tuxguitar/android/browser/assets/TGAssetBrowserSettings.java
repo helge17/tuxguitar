@@ -2,7 +2,7 @@ package org.herac.tuxguitar.android.browser.assets;
 
 import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 
-public class TGAssetBrowserSettings implements TGBrowserSettings{
+public class TGAssetBrowserSettings  {
 
 	private static final String DEFAULT_ID = "browser-assets";
 	private static final String DEFAULT_PATH = "demo-songs";
@@ -24,10 +24,6 @@ public class TGAssetBrowserSettings implements TGBrowserSettings{
 		return DEFAULT_PATH;
 	}
 	
-	public String toString(){
-		return DEFAULT_ID;
-	}
-	
 	public boolean equals(Object o) {
 		return (this.hashCode() == o.hashCode());
 	}
@@ -36,10 +32,10 @@ public class TGAssetBrowserSettings implements TGBrowserSettings{
 		return (TGAssetBrowserSettings.class.getName() + "-" + this.getId()).hashCode();
 	}
 	
-	public static TGBrowserSettings fromString(String string) {
-		if( DEFAULT_ID.equals(string) ){
-			return new TGAssetBrowserSettings();
-		}
-		return null;
+	public TGBrowserSettings toBrowserSettings() {
+		TGBrowserSettings settings = new TGBrowserSettings();
+		settings.setTitle(this.getTitle());
+		settings.setData(this.getId());
+		return settings;
 	}
 }
