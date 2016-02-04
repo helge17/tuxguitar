@@ -1,11 +1,9 @@
 package org.herac.tuxguitar.android.action.impl.browser;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.util.TGContext;
@@ -21,20 +19,16 @@ public class TGBrowserSaveCurrentElementAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		try {
-			TGBrowserSession session = (TGBrowserSession) context.getAttribute(ATTRIBUTE_SESSION);
-			TGBrowserElement element = session.getCurrentElement();
-			TGFileFormat fileFormat = session.getCurrentFormat();
-			if( element != null && element.isWritable() && fileFormat != null ) {
-				context.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_ELEMENT, element);
-				context.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, fileFormat);
-				
-				TGActionManager.getInstance(getContext()).execute(TGBrowserSaveElementAction.NAME, context);
-			} else {
-				TGActionManager.getInstance(getContext()).execute(TGBrowserPrepareForWriteAction.NAME, context);
-			}
-		} catch (TGBrowserException e) {
-			throw new TGActionException(e);
+		TGBrowserSession session = (TGBrowserSession) context.getAttribute(ATTRIBUTE_SESSION);
+		TGBrowserElement element = session.getCurrentElement();
+		TGFileFormat fileFormat = session.getCurrentFormat();
+		if( element != null && element.isWritable() && fileFormat != null ) {
+			context.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_ELEMENT, element);
+			context.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, fileFormat);
+			
+			TGActionManager.getInstance(getContext()).execute(TGBrowserSaveElementAction.NAME, context);
+		} else {
+			TGActionManager.getInstance(getContext()).execute(TGBrowserPrepareForWriteAction.NAME, context);
 		}
 	}
 }

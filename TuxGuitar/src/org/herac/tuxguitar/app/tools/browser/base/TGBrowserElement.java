@@ -1,23 +1,8 @@
 package org.herac.tuxguitar.app.tools.browser.base;
 
-import java.io.InputStream;
-
-import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
-
-public abstract class TGBrowserElement {
+public interface TGBrowserElement {
 	
-	private String name;
+	String getName();
 	
-	public TGBrowserElement(String name){
-		this.name = name;
-	}
-	
-	public String getName(){
-		return this.name;
-	}
-	
-	public abstract boolean isFolder();
-	
-	public abstract InputStream getInputStream() throws TGBrowserException;
-	
+	boolean isFolder();
 }

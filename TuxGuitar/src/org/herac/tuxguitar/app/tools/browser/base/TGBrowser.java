@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.tools.browser.base;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface TGBrowser {
@@ -15,4 +16,6 @@ public interface TGBrowser {
 	void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element);
 	
 	void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb);
+	
+	void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element);
 }

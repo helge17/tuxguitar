@@ -8,13 +8,12 @@ import java.io.InputStream;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
-public class TGBrowserElementImpl extends TGBrowserElement{
+public class TGBrowserElementImpl implements TGBrowserElement{
 	
 	private TGBrowserElementImpl parent;
 	private File file;
 	
 	public TGBrowserElementImpl(TGBrowserElementImpl parent,File file) {
-		super(file.getName());
 		this.parent = parent;
 		this.file = file;
 	}
@@ -25,6 +24,10 @@ public class TGBrowserElementImpl extends TGBrowserElement{
 	
 	public TGBrowserElementImpl getParent() {
 		return this.parent;
+	}
+	
+	public String getName(){
+		return getFile().getName();
 	}
 	
 	public boolean isFolder(){

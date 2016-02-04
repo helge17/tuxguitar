@@ -123,7 +123,7 @@ public class TGBrowserImpl implements TGBrowser {
 						for(int j = 0;j < infos.length;j++){
 							String info = infos[j].trim();
 							if(info.indexOf(name) > 0){
-								elements.add(new TGBrowserElementImpl(this,name,info,this.path));
+								elements.add(new TGBrowserElementImpl(name, info, this.path));
 								break;
 							}
 						}
@@ -140,16 +140,16 @@ public class TGBrowserImpl implements TGBrowser {
 		}
 	}
 	
-	public InputStream getInputStream(String path,TGBrowserElement element)throws TGBrowserException {
+	public void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
 		try {
-			this.client.cd(path);
+			this.client.cd(((TGBrowserElementImpl) element).getPath());
 			this.client.binary();
 			
 			byte[] bytes = this.client.get(element.getName());
 			
-			return new ByteArrayInputStream( bytes );
-		} catch (Throwable throwable) {
-			throw new TGBrowserException(throwable);
+			cb.onSuccess(new ByteArrayInputStream(bytes));
+		} catch (Throwable e) {
+			cb.handleError(e);
 		}
 	}
 	
