@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.app.system.icons;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Resource;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
@@ -20,8 +20,8 @@ public class TGIconManager {
 	
 	private TGContext context;
 	
-	private String theme;
-	private List<Resource> disposableIcons;
+	private TGIconTheme theme;
+	private Map<String, TGIconTheme> themeCache;
 	
 	private Image[] durations;
 	private Image editUndo;
@@ -151,7 +151,7 @@ public class TGIconManager {
 	
 	private TGIconManager(TGContext context){
 		this.context = context;
-		this.disposableIcons = new ArrayList<Resource>();
+		this.themeCache = new HashMap<String, TGIconTheme>();
 		this.loadIcons();
 	}
 	
@@ -167,15 +167,31 @@ public class TGIconManager {
 		TGEventManager.getInstance(this.context).fireEvent(new TGIconEvent());
 	}
 	
+	public TGIconTheme findIconTheme(String theme) {
+		if( this.themeCache.containsKey(theme) ) {
+			return this.themeCache.get(theme);
+		}
+		
+		this.themeCache.put(theme, new TGIconTheme(theme));
+		
+		return this.findIconTheme(theme);
+	}
+	
+	public String findConfiguredThemeName() {
+		return TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
+	}
+	
+	public boolean shouldReload(){
+		return ( this.theme == null || !this.theme.getName().equals(findConfiguredThemeName()));
+	}
+	
 	public void reloadIcons(){
-		List<Resource> disposableIcons = purgeDisposableIcons();
 		this.loadIcons();
 		this.fireChanges();
-		this.disposeIcons(disposableIcons);
 	}
 	
 	public void loadIcons(){
-		this.theme = TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN);
+		this.theme = this.findIconTheme(this.findConfiguredThemeName());
 		this.durations = new Image[]{
 			loadIcon("1.png"),
 			loadIcon("2.png"),
@@ -311,37 +327,32 @@ public class TGIconManager {
 		this.settings = loadIcon("settings.png");
 	}
 	
-	private Image loadIcon(String name){
-		Image image = TGFileUtils.loadImage(this.context, this.theme,name);
-		this.disposableIcons.add(image);
+	private Image loadIcon(String name) {
+		Image image = this.theme.getResource(name);
+		if( image == null ) {
+			image = TGFileUtils.loadImage(this.context, this.theme.getName(), name);
+			
+			this.theme.setResource(name, image);
+		}
 		return image;
 	}
 	
-	private List<Resource> purgeDisposableIcons(){
-		List<Resource> disposableIcons = new ArrayList<Resource>();
-		Iterator<Resource> it = this.disposableIcons.iterator();
-		while( it.hasNext() ){
-			Resource resource = (Resource)it.next();
-			disposableIcons.add( resource );
+	public void disposeThemes() {
+		List<String> themes = new ArrayList<String>(this.themeCache.keySet());
+		for(String theme : themes) {
+			this.disposeTheme(this.themeCache.remove(theme));
 		}
-		this.disposableIcons.clear();
-		return disposableIcons;
 	}
 	
-	public void disposeIcons(List<Resource> resources){
-		Iterator<Resource> it = resources.iterator();
-		while( it.hasNext() ){
-			Image image = (Image)it.next();
+	public void disposeTheme(TGIconTheme theme) {
+		List<Image> images = new ArrayList<Image>(theme.getResources().values());
+		for(Image image : images) {
 			image.dispose();
 		}
 	}
 	
 	public void disposeIcons(){
-		this.disposeIcons(purgeDisposableIcons());
-	}
-	
-	public boolean shouldReload(){
-		return (!this.theme.equals(TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN)));
+		this.disposeThemes();
 	}
 	
 	public Image getDuration(int value){

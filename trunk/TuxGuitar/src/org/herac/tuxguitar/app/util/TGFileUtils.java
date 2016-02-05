@@ -120,7 +120,7 @@ public class TGFileUtils {
 		return loadImage(context, TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
 	}
 	
-	public static Image loadImage(TGContext context, String skin,String name){
+	public static Image loadImage(TGContext context, String skin, String name){
 		try{
 			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream("skins/" + skin + "/" + name);
 			if(stream != null){			
