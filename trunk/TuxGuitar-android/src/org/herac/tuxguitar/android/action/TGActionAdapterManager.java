@@ -8,6 +8,7 @@ import org.herac.tuxguitar.android.action.listener.cache.TGUpdateListener;
 import org.herac.tuxguitar.android.action.listener.error.TGActionErrorHandler;
 import org.herac.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.android.action.listener.gui.TGFinishConfirmInterceptor;
+import org.herac.tuxguitar.android.action.listener.gui.TGHideSoftInputListener;
 import org.herac.tuxguitar.android.action.listener.lock.TGLockableActionListener;
 import org.herac.tuxguitar.android.action.listener.navigation.TGActionUpdateFragmentListener;
 import org.herac.tuxguitar.android.action.listener.thread.TGSyncThreadInterceptor;
@@ -50,6 +51,7 @@ public class TGActionAdapterManager {
 	
 	private void initializeHandlers(TGActivity activity){
 		TGActionProcessingListener processingListener = new TGActionProcessingListener(activity);
+		TGHideSoftInputListener hideSoftInputListener = new TGHideSoftInputListener(activity);
 		
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
@@ -69,11 +71,13 @@ public class TGActionAdapterManager {
 		tgActionManager.addPostExecutionListener(this.undoableActionListener);
 		tgActionManager.addPostExecutionListener(this.lockableActionListener);
 		tgActionManager.addPostExecutionListener(this.errorHandler);
+		tgActionManager.addPostExecutionListener(hideSoftInputListener);
 		tgActionManager.addPostExecutionListener(processingListener);
 		tgActionManager.addPostExecutionListener(new TGActionUpdateBrowserListener(activity));
 		tgActionManager.addPostExecutionListener(new TGActionUpdateFragmentListener(activity));
 		
 		tgActionManager.addErrorListener(processingListener);
+		tgActionManager.addErrorListener(hideSoftInputListener);
 		tgActionManager.addErrorListener(this.lockableActionListener);
 		tgActionManager.addErrorListener(this.updatableActionListener);
 		tgActionManager.addErrorListener(this.undoableActionListener);

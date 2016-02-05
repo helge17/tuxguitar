@@ -5,7 +5,7 @@
 #licence: LGPL
 #------------------------------------------------------------------------------
 PREFIX?=./
-PACKAGE?=tuxguitar-1.3-SNAPSHOT-linux-gcj
+PACKAGE?=tuxguitar-1.3.1-SNAPSHOT-linux-gcj
 
 TG_ROOT_PATH?=../..
 TG_BUILD_PATH?=./target
