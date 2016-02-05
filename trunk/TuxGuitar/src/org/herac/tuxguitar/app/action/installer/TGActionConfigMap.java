@@ -304,7 +304,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	
 	public void createConfigMap() {
 		//system actions
-		this.map(TGDisposeAction.NAME, SYNC_THREAD | SAVE_BEFORE);
+		this.map(TGDisposeAction.NAME, LOCKABLE | SYNC_THREAD | SAVE_BEFORE);
 		
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
@@ -325,7 +325,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT);
-		this.map(TGExitAction.NAME, SYNC_THREAD);
+		this.map(TGExitAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
 		
