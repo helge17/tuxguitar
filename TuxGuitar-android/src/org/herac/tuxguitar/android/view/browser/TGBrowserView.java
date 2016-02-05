@@ -29,7 +29,6 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -71,13 +70,17 @@ public class TGBrowserView extends RelativeLayout {
 	
 	public TGSelectableItem[] createCollectionValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
-		selectableItems.add(new TGSelectableItem(null, getContext().getString(R.string.global_spinner_select_option)));
 		
 		Iterator<TGBrowserCollection> collections = TGBrowserManager.getInstance(this.findContext()).getCollections();
 		while( collections.hasNext() ) {
 			TGBrowserCollection collection = collections.next();
 			selectableItems.add(new TGSelectableItem(collection, collection.getSettings().getTitle()));
 		}
+		
+		if( selectableItems.isEmpty() ) {
+			selectableItems.add(new TGSelectableItem(null, findActivity().getString(R.string.global_spinner_select_option)));
+		}
+		
 		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
@@ -164,7 +167,7 @@ public class TGBrowserView extends RelativeLayout {
 		
 		TGBrowserCollection defaultCollection = browserManager.getDefaultCollection();
 		if( defaultCollection != null ) {
-			this.getActionHandler().createOpenSessionAction((defaultCollection)).process();
+			this.getActionHandler().createOpenSessionAction(defaultCollection).process();
 		}
 	}
 	
@@ -229,9 +232,6 @@ public class TGBrowserView extends RelativeLayout {
 				TGFileFormat format = findSelectedFormat();
 				
 				EditText editText = (EditText) findViewById(R.id.browser_save_element_name);
-				InputMethodManager inputMethodManager = (InputMethodManager) findActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputMethodManager.hideSoftInputFromWindow(editText.getApplicationWindowToken(), 0);
-				
 				String elementName = editText.getText().toString() + createExtension(format, TGFileFormatManager.DEFAULT_EXTENSION);
 				
 				TGBrowserElement element = findElement(elementName);
