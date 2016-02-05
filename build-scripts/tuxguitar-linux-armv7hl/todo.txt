@@ -1,0 +1,5 @@
+# Install SWT as maven artifact
+mvn install:install-file -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.armv7hl -Dversion=4.4 -Dpackaging=jar -Dfile=/PATH_TO_SWT_ARMV7HL.jar
+
+# Run maven
+mvn clean package -Pnative-modules
