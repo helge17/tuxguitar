@@ -5,6 +5,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAct
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
@@ -376,6 +377,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGBrowserPrepareForWriteAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserLoadSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserOpenSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserCloseSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserAddCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		

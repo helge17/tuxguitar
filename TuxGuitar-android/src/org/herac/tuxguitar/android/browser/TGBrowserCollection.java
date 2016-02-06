@@ -26,5 +26,4 @@ public class TGBrowserCollection {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
 }

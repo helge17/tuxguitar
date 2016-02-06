@@ -5,7 +5,8 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAct
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
@@ -22,7 +23,8 @@ public class TGBrowserEventListener implements TGEventListener {
 		TGBrowserCdUpAction.NAME, 
 		TGBrowserCdElementAction.NAME,
 		TGBrowserSaveElementAction.NAME, 
-		TGBrowserOpenSessionAction.NAME,
+		TGBrowserLoadSessionAction.NAME,
+		TGBrowserCloseSessionAction.NAME,
 		TGBrowserAddCollectionAction.NAME, 
 		TGBrowserRemoveCollectionAction.NAME
 	};
