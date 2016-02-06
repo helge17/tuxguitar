@@ -3,7 +3,6 @@ package org.herac.tuxguitar.android.view.dialog.browser.collection;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
@@ -23,12 +22,6 @@ public class TGBrowserCollectionsActionHandler {
 	
 	public TGActionProcessorListener createAction(String actionId) {
 		return new TGActionProcessorListener(this.view.findContext(), actionId);
-	}
-	
-	public TGActionProcessorListener createOpenSessionAction(TGBrowserCollection collection) {
-		TGActionProcessorListener tgActionProcessor = this.createAction(TGBrowserOpenSessionAction.NAME);
-		tgActionProcessor.setAttribute(TGBrowserOpenSessionAction.ATTRIBUTE_COLLECTION, collection);
-		return tgActionProcessor;
 	}
 	
 	public TGActionProcessorListener createAddCollectionAction(TGBrowserCollection collection) {

@@ -49,11 +49,10 @@ public class TGBrowserView extends RelativeLayout {
 
 	public void onFinishInflate() {
 		try {
-			this.addBrowserDefaults();
 			this.fillFormats();
 			this.fillListView();
 			this.addListeners();
-			this.refresh();
+			this.addBrowserDefaults();
 		} catch (TGBrowserException e) {
 			TGErrorManager.getInstance(findContext()).handleError(e);
 		}
@@ -86,17 +85,23 @@ public class TGBrowserView extends RelativeLayout {
 		return builtItems;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void refreshCollections() {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(findActivity(), R.layout.view_browser_spinner_item, createCollectionValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		TGSelectableItem selectedItem = new TGSelectableItem(findCurrentCollection(), null);
+		Integer selectedItemPosition = arrayAdapter.getPosition(selectedItem);
 		
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
 		OnItemSelectedListener listener = spinner.getOnItemSelectedListener();
 		spinner.setOnItemSelectedListener(null);
-		spinner.setAdapter(arrayAdapter);
-		spinner.setSelection(arrayAdapter.getPosition(selectedItem), false);
+		if(!this.isSameCollection(arrayAdapter, (ArrayAdapter<TGSelectableItem>) spinner.getAdapter())) {
+			spinner.setAdapter(arrayAdapter);
+		}
+		if( spinner.getSelectedItemPosition() != selectedItemPosition ) {
+			spinner.setSelection(selectedItemPosition, false);
+		}
 		spinner.setOnItemSelectedListener(listener);
 	}
 	
@@ -165,10 +170,7 @@ public class TGBrowserView extends RelativeLayout {
 		browserManager.addFactory(new TGFsBrowserFactory(context, new TGBrowserSettingsFactoryImpl(context, findActivity())));
 		browserManager.restoreCollections();
 		
-		TGBrowserCollection defaultCollection = browserManager.getDefaultCollection();
-		if( defaultCollection != null ) {
-			this.getActionHandler().createOpenSessionAction(defaultCollection).process();
-		}
+		this.processOpenCloseSession(browserManager.getDefaultCollection());
 	}
 	
 	public void requestRefresh() {
@@ -221,8 +223,22 @@ public class TGBrowserView extends RelativeLayout {
 		};
 	}
 	
+	public void processOpenCloseSession(TGBrowserCollection collection) {
+		if( collection != null ) {
+			this.getActionHandler().createOpenSessionAction(collection).process();
+		} else {
+			this.getActionHandler().createCloseSessionAction().process();
+		}
+	}
+	
 	public void processSelectedCollection() {
-		this.getActionHandler().createOpenSessionAction(findSelectedCollection()).process();
+		TGBrowserSession session = TGBrowserManager.getInstance(this.findContext()).getSession();
+		TGBrowserCollection currentCollection = session.getCollection();
+		TGBrowserCollection selectedCollection = findSelectedCollection();
+		
+		if(!this.isSameObject(selectedCollection, currentCollection) ) {
+			this.processOpenCloseSession(selectedCollection);
+		}
 	}
 	
 	public void processSaveButton() {
@@ -329,6 +345,32 @@ public class TGBrowserView extends RelativeLayout {
 		this.refreshListView();
 		this.refreshCollections();
 		this.updateItems();
+	}
+	
+	public boolean isSameCollection(ArrayAdapter<TGSelectableItem> c1, ArrayAdapter<TGSelectableItem> c2) {
+		if( c1 == c2 ) {
+			return true;
+		}
+		if( c1 != null && c2 != null && c1.getCount() == c2.getCount() ) {
+			int count = c1.getCount();
+			for(int i = 0 ; i < count ; i ++) {
+				if(!this.isSameObject(c1.getItem(i), c2.getItem(i))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isSameObject(Object c1, Object c2) {
+		if( c1 == c2 ) {
+			return true;
+		}
+		if( c1 != null && c2 != null && c1.equals(c2)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public TGContext findContext() {

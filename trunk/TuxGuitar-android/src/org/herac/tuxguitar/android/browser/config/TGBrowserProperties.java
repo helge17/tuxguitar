@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class TGBrowserProperties {
 	
 	public static final String MODULE = "tuxguitar";
-	public static final String RESOURCE = "browser-settings";
+	public static final String RESOURCE = "browser";
 	
 	public static final String PROPERTY_COLLECTIONS = "browser-collections";
 	public static final String PROPERTY_DEFAULT_COLLECTION = "default-collection-index";

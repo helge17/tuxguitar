@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.android.view.browser;
 
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
@@ -56,6 +57,10 @@ public class TGBrowserActionHandler {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGBrowserOpenSessionAction.NAME);
 		tgActionProcessor.setAttribute(TGBrowserOpenSessionAction.ATTRIBUTE_COLLECTION, collection);
 		return tgActionProcessor;
+	}
+	
+	public TGActionProcessorListener createCloseSessionAction() {
+		return this.createAction(TGBrowserCloseSessionAction.NAME);
 	}
 	
 	public TGActionProcessorListener createOpenDialogAction(TGDialogController controller) {
