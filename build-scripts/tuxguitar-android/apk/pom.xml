@@ -13,6 +13,7 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
+		<project.versionCode>1</project.versionCode>
 		<project.resources.directory>${project.basedir}/../apk-resources/target</project.resources.directory>
 		<project.assets.directory>${project.resources.directory}/assets</project.assets.directory>
 	</properties>
@@ -59,6 +60,21 @@
 					</sdk>
 					<assetsDirectory>${project.assets.directory}</assetsDirectory>
 				</configuration>
+				<executions>
+					<execution>
+						<id>update-manifest</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+						<configuration>
+							<manifest>
+								<versionName>${project.version}</versionName>
+								<versionCode>${project.versionCode}</versionCode>
+							</manifest>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
