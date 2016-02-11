@@ -1,3 +1,4 @@
+RM?=rm -f
 CFLAGS?=-mno-cygwin -I$(shell gcj -print-file-name=include/)
 LDFLAGS?=-mno-cygwin -Wl,--kill-at
 LDLIBS?=-lwinmm
@@ -18,4 +19,4 @@ $(LIBRARY):	$(OBJECTS)
 	$(CC) $(LDFLAGS) -shared -o $(LIBRARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
 
 clean: 
-	rm -f $(OBJECTS) $(LIBRARY)
+	$(RM) $(OBJECTS) $(LIBRARY)
