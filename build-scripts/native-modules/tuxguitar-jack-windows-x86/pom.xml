@@ -15,16 +15,22 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
+		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.rm>del</tuxguitar.jni.rm>
+		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
+		
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
-		<tuxguitar-jack.jni.rm>del</tuxguitar-jack.jni.rm>
-		<tuxguitar-jack.jni.cc>gcc</tuxguitar-jack.jni.cc>
+		<tuxguitar-jack.jni.rm>${tuxguitar.jni.rm}</tuxguitar-jack.jni.rm>
+		<tuxguitar-jack.jni.cc>${tuxguitar.jni.cc}</tuxguitar-jack.jni.cc>
 		<tuxguitar-jack.jni.cflags>-mno-cygwin -I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-jack.jni.cflags>
 		<tuxguitar-jack.jni.ldflags>-mno-cygwin -Wl,--kill-at</tuxguitar-jack.jni.ldflags>
 		<tuxguitar-jack.jni.ldlibs>-ljack -lpthreadVC2</tuxguitar-jack.jni.ldlibs>
-		<tuxguitar-jack.jni.ldpath>-L${basedir}/lib</tuxguitar-jack.jni.ldpath>
+		<tuxguitar-jack.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-jack.jni.ldpath>
 		<tuxguitar-jack.jni.library.name>tuxguitar-jack-jni</tuxguitar-jack.jni.library.name>
-		<tuxguitar-jack.jni.library.prefix></tuxguitar-jack.jni.library.prefix>
-		<tuxguitar-jack.jni.library.suffix>.dll</tuxguitar-jack.jni.library.suffix>
+		<tuxguitar-jack.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-jack.jni.library.prefix>
+		<tuxguitar-jack.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-jack.jni.library.suffix>
 	</properties>
 	
 	<modules>
@@ -134,25 +140,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			
 		</plugins>
 	</build>
-	
-	
-	<profiles>
-		<profile>
-			<id>platform-linux-x86</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<name>linux</name>
-					<arch>i386</arch>
-				</os>
-			</activation>
-			<properties>
-				<tuxguitar-jack.jni.cc>i586-mingw32msvc-gcc</tuxguitar-jack.jni.cc>
-				<tuxguitar-jack.jni.rm>rm -f</tuxguitar-jack.jni.rm>
-			</properties>
-		</profile>
-	</profiles>
 </project>

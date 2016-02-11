@@ -15,15 +15,20 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
+		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		
 		<tuxguitar-oss.jni.path>${parent.relativePath}/TuxGuitar-oss/jni/</tuxguitar-oss.jni.path>
-		<tuxguitar-oss.jni.cc>gcc</tuxguitar-oss.jni.cc>
+		<tuxguitar-oss.jni.cc>${tuxguitar.jni.cc}</tuxguitar-oss.jni.cc>
 		<tuxguitar-oss.jni.cflags>-I$(shell gcj -print-file-name=include/) -m32 -fPIC</tuxguitar-oss.jni.cflags>
 		<tuxguitar-oss.jni.ldflags>-m32 -fPIC</tuxguitar-oss.jni.ldflags>
 		<tuxguitar-oss.jni.ldlibs></tuxguitar-oss.jni.ldlibs>
-		<tuxguitar-oss.jni.ldpath></tuxguitar-oss.jni.ldpath>
+		<tuxguitar-oss.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-oss.jni.ldpath>
 		<tuxguitar-oss.jni.library.name>tuxguitar-oss-jni</tuxguitar-oss.jni.library.name>
-		<tuxguitar-oss.jni.library.prefix>lib</tuxguitar-oss.jni.library.prefix>
-		<tuxguitar-oss.jni.library.suffix>.so</tuxguitar-oss.jni.library.suffix>
+		<tuxguitar-oss.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-oss.jni.library.prefix>
+		<tuxguitar-oss.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-oss.jni.library.suffix>
 	</properties>
 	
 	<modules>

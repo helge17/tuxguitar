@@ -15,15 +15,22 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
+		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
+		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		
 		<tuxguitar-fluidsynth.jni.path>${parent.relativePath}/TuxGuitar-fluidsynth/jni/</tuxguitar-fluidsynth.jni.path>
-		<tuxguitar-fluidsynth.jni.cc>gcc</tuxguitar-fluidsynth.jni.cc>
+		<tuxguitar-fluidsynth.jni.rm>${tuxguitar.jni.rm}</tuxguitar-fluidsynth.jni.rm>
+		<tuxguitar-fluidsynth.jni.cc>${tuxguitar.jni.cc}</tuxguitar-fluidsynth.jni.cc>
 		<tuxguitar-fluidsynth.jni.cflags>-I$(shell gcj -print-file-name=include/) -m32 -fPIC</tuxguitar-fluidsynth.jni.cflags>
 		<tuxguitar-fluidsynth.jni.ldflags>-m32 -fPIC</tuxguitar-fluidsynth.jni.ldflags>
 		<tuxguitar-fluidsynth.jni.ldlibs>-lfluidsynth</tuxguitar-fluidsynth.jni.ldlibs>
-		<tuxguitar-fluidsynth.jni.ldpath>-L/usr/lib</tuxguitar-fluidsynth.jni.ldpath>
+		<tuxguitar-fluidsynth.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-fluidsynth.jni.ldpath>
 		<tuxguitar-fluidsynth.jni.library.name>tuxguitar-fluidsynth-jni</tuxguitar-fluidsynth.jni.library.name>
-		<tuxguitar-fluidsynth.jni.library.prefix>lib</tuxguitar-fluidsynth.jni.library.prefix>
-		<tuxguitar-fluidsynth.jni.library.suffix>.so</tuxguitar-fluidsynth.jni.library.suffix>
+		<tuxguitar-fluidsynth.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-fluidsynth.jni.library.prefix>
+		<tuxguitar-fluidsynth.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-fluidsynth.jni.library.suffix>
 	</properties>
 	
 	<modules>
@@ -69,6 +76,7 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-fluidsynth.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-fluidsynth.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-fluidsynth.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-fluidsynth.jni.library.prefix}" />
 									<env key="LIBRARY_SUFFIX" value="${tuxguitar-fluidsynth.jni.library.suffix}" />

@@ -1,3 +1,4 @@
+RM?=rm -f
 CFLAGS?=-I$(shell gcj -print-file-name=include/) -fPIC
 LDFLAGS?=
 LDLIBS?=-lfluidsynth
@@ -18,4 +19,4 @@ $(LIBRARY):	$(OBJECTS)
 	$(CC) $(LDFLAGS) -shared -o $(LIBRARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
 
 clean: 
-	rm -f $(OBJECTS) $(LIBRARY)
+	$(RM) $(OBJECTS) $(LIBRARY)

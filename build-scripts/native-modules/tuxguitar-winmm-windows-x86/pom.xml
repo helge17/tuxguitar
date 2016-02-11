@@ -15,15 +15,22 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
+		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.rm>del</tuxguitar.jni.rm>
+		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
+		
 		<tuxguitar-winmm.jni.path>${parent.relativePath}/TuxGuitar-winmm/jni/</tuxguitar-winmm.jni.path>
-		<tuxguitar-winmm.jni.cc>gcc</tuxguitar-winmm.jni.cc>
+		<tuxguitar-winmm.jni.rm>${tuxguitar.jni.rm}</tuxguitar-winmm.jni.rm>
+		<tuxguitar-winmm.jni.cc>${tuxguitar.jni.cc}</tuxguitar-winmm.jni.cc>
 		<tuxguitar-winmm.jni.cflags>-mno-cygwin -I$(shell gcj -print-file-name=include/)</tuxguitar-winmm.jni.cflags>
 		<tuxguitar-winmm.jni.ldflags>-mno-cygwin -Wl,--kill-at</tuxguitar-winmm.jni.ldflags>
 		<tuxguitar-winmm.jni.ldlibs>-lwinmm</tuxguitar-winmm.jni.ldlibs>
-		<tuxguitar-winmm.jni.ldpath></tuxguitar-winmm.jni.ldpath>
+		<tuxguitar-winmm.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-winmm.jni.ldpath>
 		<tuxguitar-winmm.jni.library.name>tuxguitar-winmm-jni</tuxguitar-winmm.jni.library.name>
-		<tuxguitar-winmm.jni.library.prefix></tuxguitar-winmm.jni.library.prefix>
-		<tuxguitar-winmm.jni.library.suffix>.dll</tuxguitar-winmm.jni.library.suffix>
+		<tuxguitar-winmm.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-winmm.jni.library.prefix>
+		<tuxguitar-winmm.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-winmm.jni.library.suffix>
 	</properties>
 
 	<modules>
@@ -69,6 +76,7 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-winmm.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-winmm.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-winmm.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-winmm.jni.library.prefix}" />
 									<env key="LIBRARY_SUFFIX" value="${tuxguitar-winmm.jni.library.suffix}" />
@@ -120,24 +128,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			
 		</plugins>
 	</build>
-	
-	
-	<profiles>
-		<profile>
-			<id>platform-linux-x86</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<name>linux</name>
-					<arch>i386</arch>
-				</os>
-			</activation>
-			<properties>
-				<tuxguitar-winmm.jni.cc>i586-mingw32msvc-gcc</tuxguitar-winmm.jni.cc>
-			</properties>
-		</profile>
-	</profiles>
 </project>

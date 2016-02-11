@@ -15,15 +15,20 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
+		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		
 		<tuxguitar-alsa.jni.path>${parent.relativePath}/TuxGuitar-alsa/jni/</tuxguitar-alsa.jni.path>
-		<tuxguitar-alsa.jni.cc>gcc</tuxguitar-alsa.jni.cc>
+		<tuxguitar-alsa.jni.cc>${tuxguitar.jni.cc}</tuxguitar-alsa.jni.cc>
 		<tuxguitar-alsa.jni.cflags>-I$(shell gcj -print-file-name=include/) -m32 -fPIC</tuxguitar-alsa.jni.cflags>
 		<tuxguitar-alsa.jni.ldflags>-m32 -fPIC</tuxguitar-alsa.jni.ldflags>
 		<tuxguitar-alsa.jni.ldlibs>-lasound</tuxguitar-alsa.jni.ldlibs>
-		<tuxguitar-alsa.jni.ldpath>-L/usr/lib</tuxguitar-alsa.jni.ldpath>
+		<tuxguitar-alsa.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-alsa.jni.ldpath>
 		<tuxguitar-alsa.jni.library.name>tuxguitar-alsa-jni</tuxguitar-alsa.jni.library.name>
-		<tuxguitar-alsa.jni.library.prefix>lib</tuxguitar-alsa.jni.library.prefix>
-		<tuxguitar-alsa.jni.library.suffix>.so</tuxguitar-alsa.jni.library.suffix>
+		<tuxguitar-alsa.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-alsa.jni.library.prefix>
+		<tuxguitar-alsa.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-alsa.jni.library.suffix>
 	</properties>
 	
 	<modules>
