@@ -40,6 +40,7 @@ public class TGBufferedPainterLocked {
 		int clientHeight = size.height;
 		
 		if( this.buffer == null || this.buffer.isDisposed() || this.buffer.getWidth() != clientWidth || this.buffer.getHeight() != clientHeight ) {
+			this.disposePaintBuffer();
 			this.buffer = new TGImageImpl(this.handle.getPaintableControl().getDisplay(), clientWidth, clientHeight);
 		}
 		

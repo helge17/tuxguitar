@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.events.MenuListener;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
@@ -46,9 +45,6 @@ public class EditorKit {
 	public EditorKit(Tablature tablature){
 		this.tablature = tablature;
 		this.mouseKit = new MouseKit(this);
-		this.tablature.addMouseListener(this.mouseKit);
-		this.tablature.addMouseMoveListener(this.mouseKit);
-		this.tablature.addMouseTrackListener(this.mouseKit);
 		this.setDefaults();
 	}
 	
@@ -77,7 +73,7 @@ public class EditorKit {
 		return this.tablature;
 	}	
 	
-	public MenuListener getMenuListener(){
+	public MouseKit getMouseKit(){
 		return this.mouseKit;
 	}
 	
@@ -261,7 +257,7 @@ public class EditorKit {
 		int x = context.getAttribute(ATTRIBUTE_X);
 		int y = context.getAttribute(ATTRIBUTE_Y);
 		
-		if(!this.getTablature().isPainting()){
+//		if(!this.getTablature().isPainting()){
 			TGLayout.TrackPosition pos = this.getTablature().getViewLayout().getTrackPositionAt(y) ;
 			if( pos != null){
 				TGTrackImpl track = this.getTablature().getCaret().getTrack();
@@ -311,7 +307,7 @@ public class EditorKit {
 					}
 				}
 			}
-		}
+//		}
 		return false;
 	}
 	

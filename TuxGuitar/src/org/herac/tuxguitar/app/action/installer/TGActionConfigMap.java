@@ -29,6 +29,7 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAct
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
@@ -322,6 +323,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGExportSongAction.NAME, LOCKABLE);
 		this.map(TGExportFileAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
+		this.map(TGCloseDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT);

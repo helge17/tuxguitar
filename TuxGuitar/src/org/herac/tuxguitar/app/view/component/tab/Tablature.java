@@ -1,39 +1,21 @@
-/*
- * Created on 29-nov-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.component.tab;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -43,15 +25,8 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
-public class Tablature extends Composite implements TGController {
-	
-	private static final int SCROLL_DELAY = 15;
-	private static final int SCROLL_INCREMENT = 50;
+
+public class Tablature implements TGController {
 	
 	private TGContext context; 
 	private TGResourceFactory resourceFactory;
@@ -60,60 +35,15 @@ public class Tablature extends Composite implements TGController {
 	private TGSyncProcess disposeUnregisteredResources;
 	
 	private Caret caret;
-	private int width;
-	private int height;
 	private TGLayout viewLayout;
 	private EditorKit editorKit;
 	
-	private TGBeatImpl playedBeat;
-	private TGMeasureImpl playedMeasure;
-	private int scrollX;
-	private int scrollY;
-	private boolean resetScroll;
-	protected long lastVScrollTime;
-	protected long lastHScrollTime;
-	
-	private boolean painting;
-	
-	public Tablature(TGContext context, Composite parent, int style, TGDocumentManager documentManager ) {
-		super(parent, style);
+	public Tablature(TGContext context, TGDocumentManager documentManager) {
 		this.context = context;
 		this.documentManager = documentManager;
 		this.caret = new Caret(this);
 		this.editorKit = new EditorKit(this);
 		this.createSyncProcesses();
-	}
-	
-	public void initGUI(){
-		this.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TablaturePaintListener(this)) );
-		
-		final ScrollBar hBar = getHorizontalBar();
-		hBar.setIncrement(SCROLL_INCREMENT);
-		hBar.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				if(Tablature.this.lastHScrollTime + SCROLL_DELAY < System.currentTimeMillis()){
-					redraw();
-					Tablature.this.lastHScrollTime = System.currentTimeMillis();
-				}
-			}
-		});
-		
-		final ScrollBar vBar = getVerticalBar();
-		vBar.setIncrement(SCROLL_INCREMENT);
-		vBar.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				if(Tablature.this.lastVScrollTime + SCROLL_DELAY < System.currentTimeMillis()){
-					redraw();
-					Tablature.this.lastVScrollTime = System.currentTimeMillis();
-				}
-			}
-		});
-		
-		this.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent arg0) {
-				updateScroll();
-			}
-		});
 	}
 	
 	public void createSyncProcesses() {
@@ -125,16 +55,12 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void updateTablature(){
-		this.playedBeat = null;
-		this.playedMeasure = null;
 		this.getViewLayout().updateSong();
 		this.getCaret().update();
 		this.disposeUnregisteredResources.process();
 	}
 	
 	public void updateMeasure(int number){
-		this.playedBeat = null;
-		this.playedMeasure = null;
 		this.getViewLayout().updateMeasureNumber(number);
 		this.getCaret().update();
 		this.disposeUnregisteredResources.process();
@@ -144,43 +70,11 @@ public class Tablature extends Composite implements TGController {
 		this.caret.update(1, TGDuration.QUARTER_TIME,1);
 	}
 	
-	public void paintTablature(TGPainter painter){
-		this.setPainting(true);
-		try{
-			this.checkScroll();
-			
-			TGRectangle area = createRectangle(getClientArea());
-			ScrollBar xScroll = getHorizontalBar();
-			ScrollBar yScroll = getVerticalBar();
-			this.scrollX = xScroll.getSelection();
-			this.scrollY = yScroll.getSelection();
-			
-			this.fillBackground(painter, area);
-			this.getViewLayout().paint(painter, area, -this.scrollX, -this.scrollY);
-			this.getCaret().paintCaret(this.getViewLayout(), painter);
-			this.getEditorKit().paintSelection(this.getViewLayout(), painter);
-			
-			this.width = Math.round(this.viewLayout.getWidth());
-			this.height = Math.round(this.viewLayout.getHeight());
-			
-			this.updateScroll();
-			
-			if(TuxGuitar.getInstance().getPlayer().isRunning()){
-				redrawPlayingMode(painter,true);
-			}
-			// Si no estoy reproduciendo y hay cambios
-			// muevo el scroll al compas que tiene el caret
-			else if(getCaret().hasChanges()){
-				// Mover el scroll puede necesitar redibujar
-				// por eso es importante desmarcar los cambios antes de hacer el moveScrollTo
-				getCaret().setChanges(false);
-				
-				moveScrollTo(getCaret().getMeasure(), xScroll, yScroll,area);
-			}
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		this.setPainting(false);
+	public void paintTablature(TGPainter painter, TGRectangle area, float fromX, float fromY){
+		this.fillBackground(painter, area);
+		this.getViewLayout().paint(painter, area, fromX, fromY);
+		this.getCaret().paintCaret(this.getViewLayout(), painter);
+		this.getEditorKit().paintSelection(this.getViewLayout(), painter);
 	}
 	
 	public void fillBackground(TGPainter painter, TGRectangle area) {
@@ -188,125 +82,6 @@ public class Tablature extends Composite implements TGController {
 		painter.initPath(TGPainter.PATH_FILL);
 		painter.addRectangle(0, 0, area.getWidth(), area.getHeight());
 		painter.closePath();
-	}
-	
-	public void resetScroll(){
-		this.resetScroll = true;
-	}
-	
-	public void checkScroll(){
-		if(this.resetScroll){
-			getHorizontalBar().setSelection(0);
-			getVerticalBar().setSelection(0);
-			this.resetScroll = false;
-		}
-	}
-	
-	public void updateScroll(){
-		Rectangle bounds = getBounds();
-		Rectangle client = getClientArea();
-		ScrollBar hBar = getHorizontalBar();
-		ScrollBar vBar = getVerticalBar();
-		hBar.setMaximum(this.width);
-		vBar.setMaximum(this.height);
-		hBar.setThumb(Math.min(bounds.width, client.width));
-		vBar.setThumb(Math.min(bounds.height, client.height));
-	}
-	
-	public boolean moveScrollTo(TGMeasureImpl measure){
-		return moveScrollTo(measure, getHorizontalBar(), getVerticalBar(), createRectangle(getClientArea()));
-	}
-	
-	public boolean moveScrollTo(TGMeasureImpl measure,ScrollBar xScroll,ScrollBar yScroll,TGRectangle area){
-		boolean success = false;
-		if( measure != null && measure.getTs() != null ){
-			int mX = Math.round(measure.getPosX());
-			int mY = Math.round(measure.getPosY());
-			int mWidth = Math.round(measure.getWidth(getViewLayout()));
-			int mHeight = Math.round(measure.getTs().getSize());
-			int marginWidth = Math.round(getViewLayout().getFirstMeasureSpacing());
-			int marginHeight = Math.round(getViewLayout().getFirstTrackSpacing());
-			boolean forceRedraw = false;
-			
-			//Solo se ajusta si es necesario
-			//si el largo del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
-			if( mX < 0 || ( (mX + mWidth ) > area.getWidth() && (area.getWidth() >= mWidth + marginWidth || mX > marginWidth) ) ){
-				xScroll.setSelection((this.scrollX + mX) - marginWidth );
-				success = true;
-			}
-			
-			//Solo se ajusta si es necesario
-			//si el alto del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
-			if( mY < 0 || ( (mY + mHeight ) > area.getHeight() && (area.getHeight() >= mHeight + marginHeight || mY > marginHeight) ) ){
-				yScroll.setSelection( (this.scrollY + mY)  - marginHeight );
-				success = true;
-			}
-			
-			if(!success){
-				// Si la seleccion "real" del scroll es distinta a la anterior, se fuerza el redraw
-				forceRedraw = (this.scrollX != xScroll.getSelection() || this.scrollY != yScroll.getSelection());
-			}
-			
-			if(forceRedraw || success){
-				redraw();
-			}
-		}
-		return success;
-	}
-	
-	public void redraw(){
-		if(!super.isDisposed() ){
-			this.playedBeat = null;
-			this.playedMeasure = null;
-			this.setPainting(true);
-			super.redraw();
-		}
-	}
-	
-	public void redrawPlayingMode(){
-		if(!super.isDisposed() && !isPainting()){
-			if( TuxGuitar.getInstance().getPlayer().isRunning() ){
-				this.setPainting(true);
-				
-				TGPainter painter = new TGPainterImpl(new GC(this));
-				redrawPlayingMode(painter, false);
-				painter.dispose();
-				
-				this.setPainting(false);
-			}
-		}
-	}
-	
-	private void redrawPlayingMode(TGPainter painter, boolean force){
-		if(!super.isDisposed()){
-			try{
-				TGMeasureImpl measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
-				TGBeatImpl beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
-				if(measure != null && measure.hasTrack(getCaret().getTrack().getNumber())){
-					if(!moveScrollTo(measure) || force){
-						boolean paintMeasure = (force || this.playedMeasure == null || !this.playedMeasure.equals(measure));
-						if(this.playedMeasure != null && this.playedBeat != null && !this.playedMeasure.isOutOfBounds() && this.playedMeasure.hasTrack(getCaret().getTrack().getNumber())){
-							getViewLayout().paintPlayMode(painter, this.playedMeasure, this.playedBeat,paintMeasure);
-						}
-						if(!measure.isOutOfBounds()){
-							getViewLayout().paintPlayMode(painter, measure, beat, paintMeasure);
-						}
-						this.playedBeat = beat;
-						this.playedMeasure =  measure;
-					}
-				}
-			}catch(Throwable throwable){
-				throwable.printStackTrace();
-			}
-		}
-	}
-	
-	public boolean isPainting() {
-		return this.painting;
-	}
-	
-	public void setPainting(boolean painting) {
-		this.painting = painting;
 	}
 	
 	public Caret getCaret(){
@@ -338,12 +113,6 @@ public class Tablature extends Composite implements TGController {
 			getViewLayout().disposeLayout();
 		}
 		this.viewLayout = viewLayout;
-		if( this.getHorizontalBar() != null ){
-			this.getHorizontalBar().setSelection(0);
-		}
-		if( this.getVerticalBar() != null ){
-			this.getVerticalBar().setSelection(0);
-		}
 		this.reloadStyles();
 	}
 	
@@ -380,7 +149,6 @@ public class Tablature extends Composite implements TGController {
 	}
 	
 	public void dispose(){
-		super.dispose();
 		this.getCaret().dispose();
 		this.getViewLayout().disposeLayout();
 		this.getResourceBuffer().disposeAllResources();
@@ -388,7 +156,7 @@ public class Tablature extends Composite implements TGController {
 	
 	public TGResourceFactory getResourceFactory(){
 		if( this.resourceFactory == null ){
-			this.resourceFactory = new TGResourceFactoryImpl(this.getDisplay());
+			this.resourceFactory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
 		}
 		return this.resourceFactory;
 	}
