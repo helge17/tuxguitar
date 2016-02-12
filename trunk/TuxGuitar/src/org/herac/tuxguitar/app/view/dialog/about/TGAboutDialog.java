@@ -10,8 +10,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -85,11 +83,10 @@ public class TGAboutDialog {
 		//-------------------TABS-----------------------
 		Composite tabs = new Composite(dialog, SWT.NONE);
 		tabs.setLayout(new GridLayout());
-		tabs.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		tabs.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		final TabFolder tabFolder = new TabFolder(tabs, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		tabFolder.setLayout(new FormLayout());
+		tabFolder.setLayoutData(new GridData(TAB_ITEM_WIDTH, TAB_ITEM_HEIGHT));
 		
 		TGAboutContentReader docReader = new TGAboutContentReader(context.getContext());
 		
@@ -141,10 +138,9 @@ public class TGAboutDialog {
 	private void makeTabItem(TabFolder tabFolder,String itemName,String itemText){
 		Composite control = new Composite(tabFolder, SWT.NONE);
 		control.setLayout(new GridLayout());
-		control.setLayoutData(new FormData(TAB_ITEM_WIDTH,TAB_ITEM_HEIGHT));
 		
 		Text text = new Text(control,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-		text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		text.setBackground(TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		text.setEditable(false);
 		text.append(itemText);

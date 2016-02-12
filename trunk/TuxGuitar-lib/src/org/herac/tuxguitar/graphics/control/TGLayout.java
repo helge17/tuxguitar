@@ -528,6 +528,10 @@ public abstract class TGLayout {
 		return getComponent().getResourceBuffer();
 	}
 	
+	public TGLayoutStyles getStyles() {
+		return this.styles;
+	}
+	
 	public TGController getComponent(){
 		return this.controller;
 	}

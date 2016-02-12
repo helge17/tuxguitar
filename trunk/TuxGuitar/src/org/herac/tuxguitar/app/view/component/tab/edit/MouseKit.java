@@ -51,7 +51,7 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 	public void mouseUp(final MouseEvent e) {
 		this.position.x = e.x;
 		this.position.y = e.y;
-		this.kit.getTablature().setFocus();
+//		this.kit.getTablature().setFocus();
 		this.executeAction(TGMouseClickAction.NAME, e.x, e.y, false);
 	}
 	

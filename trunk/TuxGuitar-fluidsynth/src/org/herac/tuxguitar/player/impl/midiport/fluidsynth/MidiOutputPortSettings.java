@@ -7,8 +7,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,12 +41,11 @@ public class MidiOutputPortSettings extends MidiSettings {
 		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
 		TabFolder tabs = new TabFolder(dialog, SWT.TOP);
-		tabs.setLayout( new FormLayout() );
+		tabs.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 		
 		// ----------------------------------------------------------------------
 		Composite cSoundfonts = new Composite( tabs , SWT.NONE);
 		cSoundfonts.setLayout(getGridLayout( 2 ));
-		cSoundfonts.setLayoutData(new FormData());
 		
 		TabItem tSoundfonts = new TabItem( tabs  , SWT.None ); 
 		tSoundfonts.setText(TuxGuitar.getProperty("fluidsynth.settings.soundfonts"));
@@ -93,7 +90,6 @@ public class MidiOutputPortSettings extends MidiSettings {
 		// ----------------------------------------------------------------------
 		Composite cAudio = new Composite( tabs , SWT.NONE);
 		cAudio.setLayout(new GridLayout(2, false));
-		cAudio.setLayoutData(new FormData());
 		
 		TabItem tAudio = new TabItem( tabs  , SWT.None ); 
 		tAudio.setText(TuxGuitar.getProperty("fluidsynth.settings.audio"));
@@ -150,7 +146,6 @@ public class MidiOutputPortSettings extends MidiSettings {
 		// ----------------------------------------------------------------------
 		Composite cSynth = new Composite( tabs , SWT.NONE);
 		cSynth.setLayout(new GridLayout(2, false));
-		cSynth.setLayoutData(new FormData());
 		
 		TabItem tSynth = new TabItem( tabs  , SWT.None ); 
 		tSynth.setText(TuxGuitar.getProperty("fluidsynth.settings.synth"));

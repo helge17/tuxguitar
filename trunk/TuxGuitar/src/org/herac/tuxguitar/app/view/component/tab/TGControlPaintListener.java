@@ -4,19 +4,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.graphics.TGPainter;
 
-public class TablaturePaintListener implements TGBufferedPainterHandle {
+public class TGControlPaintListener implements TGBufferedPainterHandle {
 	
-	private Tablature tablature;
+	private TGControl control;
 	
-	public TablaturePaintListener(Tablature tablature){
-		this.tablature = tablature;
+	public TGControlPaintListener(TGControl tablature){
+		this.control = tablature;
 	}
 	
 	public void paintControl(TGPainter painter) {
-		this.tablature.paintTablature(painter);
+		this.control.paintTablature(painter);
 	}
 
 	public Composite getPaintableControl() {
-		return this.tablature;
+		return this.control;
 	}
 }

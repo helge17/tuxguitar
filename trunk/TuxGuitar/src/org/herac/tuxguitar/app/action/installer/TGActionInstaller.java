@@ -30,6 +30,7 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAct
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
@@ -264,6 +265,7 @@ public class TGActionInstaller {
 		installAction(new TGExportSongAction(context));
 		installAction(new TGExportFileAction(context));
 		installAction(new TGCloseDocumentsAction(context));
+		installAction(new TGCloseDocumentAction(context));
 		installAction(new TGCloseCurrentDocumentAction(context));
 		installAction(new TGCloseOtherDocumentsAction(context));
 		installAction(new TGCloseAllDocumentsAction(context));
