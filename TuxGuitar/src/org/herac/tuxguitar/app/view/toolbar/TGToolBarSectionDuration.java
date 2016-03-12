@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -38,6 +40,12 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 	private ToolItem durationItem;
 	private ToolItem divisionTypeItem;
 	
+	private Menu durationMenu;
+	private List<MenuItem> durationMenuItems;
+	
+	private Menu divisionTypeMenu;
+	private List<MenuItem> divisionTypeMenuItems;
+	
 	private Map<Integer, String> durationNameKeys;
 	private Map<Integer, String> durationActions;
 	
@@ -52,9 +60,19 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 		this.durationItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
 		this.durationItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				createDurationMenu(toolBar, (ToolItem) event.widget);
+				displayDurationMenu();
 			}
 		});
+		this.durationMenu = new Menu(this.durationItem.getParent().getShell());
+		
+		this.durationMenuItems = new ArrayList<MenuItem>();
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.WHOLE));
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.HALF));
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.QUARTER));
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.EIGHTH));
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.SIXTEENTH));
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.THIRTY_SECOND));
+		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.SIXTY_FOURTH));
 		
 		this.dotted = new ToolItem(toolBar.getControl(), SWT.CHECK);
 		this.dotted.addSelectionListener(toolBar.createActionProcessor(TGChangeDottedDurationAction.NAME));
@@ -69,15 +87,25 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 			}
 		});
 		
+		this.divisionTypeMenu = new Menu(this.divisionTypeItem.getParent().getShell());
+		this.divisionTypeMenuItems = new ArrayList<MenuItem>();
+		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
+			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(toolBar, TGDivisionType.ALTERED_DIVISION_TYPES[i]));
+		}
+		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
 	}
 	
 	public void loadProperties(TGToolBar toolBar){
+		TGDuration duration = toolBar.getTablature().getCaret().getDuration();
+		
 		this.durationItem.setToolTipText(toolBar.getText("duration"));
 		this.dotted.setToolTipText(toolBar.getText("duration.dotted"));
 		this.doubleDotted.setToolTipText(toolBar.getText("duration.doubledotted"));
 		this.divisionTypeItem.setToolTipText(toolBar.getText("duration.division-type"));
+		this.loadDurationMenuProperties(toolBar, duration.getValue());
+		this.loadDivisionTypeMenuProperties(toolBar);
 	}
 	
 	public void loadIcons(TGToolBar toolBar){
@@ -85,6 +113,7 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 		this.doubleDotted.setImage(toolBar.getIconManager().getDurationDoubleDotted());
 		this.divisionTypeItem.setImage(toolBar.getIconManager().getDivisionType());
 		this.loadDurationIcon(toolBar, true);
+		this.loadDurationMenuIcons(toolBar);
 	}
 	
 	public void loadDurationIcon(TGToolBar toolBar, boolean force) {
@@ -115,39 +144,57 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 		this.doubleDotted.setSelection(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled(!running);
 		this.divisionTypeItem.setEnabled(!running);
+		this.updateDurationMenuItems(toolBar, duration.getValue(), running);
+		this.updateDivisionTypeMenuItems(toolBar, duration.getDivision(), running);
 	}
 	
-	public void createDurationMenu(TGToolBar toolBar, ToolItem item) {
-		TGDuration duration = TablatureEditor.getInstance(toolBar.getContext()).getTablature().getCaret().getDuration();
-		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+	public void displayDurationMenu() {
+		Rectangle rect = this.durationItem.getBounds();
+		Point pt = this.durationItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		Menu menu = new Menu(item.getParent().getShell());
-		
-		this.createDurationMenuItem(toolBar, menu, TGDuration.WHOLE, duration.getValue(), running);
-		this.createDurationMenuItem(toolBar, menu, TGDuration.HALF, duration.getValue(), running);
-		this.createDurationMenuItem(toolBar, menu, TGDuration.QUARTER, duration.getValue(), running);
-		this.createDurationMenuItem(toolBar, menu, TGDuration.EIGHTH, duration.getValue(), running);
-		this.createDurationMenuItem(toolBar, menu, TGDuration.SIXTEENTH, duration.getValue(), running);
-		this.createDurationMenuItem(toolBar, menu, TGDuration.THIRTY_SECOND, duration.getValue(), running);
-		this.createDurationMenuItem(toolBar, menu, TGDuration.SIXTY_FOURTH, duration.getValue(), running);
-		
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.durationMenu.setLocation(pt.x, pt.y + rect.height);
+		this.durationMenu.setVisible(true);
 	}
 	
-	private void createDurationMenuItem(TGToolBar toolBar, Menu menu, int value, int selection, boolean running) {
-		Image icon = this.findDurationIcon(toolBar, value);
+	private MenuItem createDurationMenuItem(TGToolBar toolBar, int value) {
+		MenuItem menuItem = new MenuItem(this.durationMenu, SWT.PUSH);
+		menuItem.setData(value);
+		
 		String action = this.findDurationAction(value);
-		String nameKey = this.findDurationNameKey(value);
-		if( icon != null && action != null && nameKey != null ) {
-			MenuItem menuItem = new MenuItem(menu, SWT.PUSH);
-			menuItem.setEnabled(!running);
+		if( action != null ) {
 			menuItem.addSelectionListener(toolBar.createActionProcessor(action));
-			menuItem.setText(toolBar.getText(nameKey, (value == selection)));
-			menuItem.setImage(icon);
+		}
+		return menuItem;
+	}
+	
+	private void updateDurationMenuItems(TGToolBar toolBar, int selection, boolean running) {
+		for(MenuItem menuItem : this.durationMenuItems) {
+			Integer value = (Integer) menuItem.getData();
+			String nameKey = this.findDurationNameKey(value);
+			if( nameKey != null ) {
+				menuItem.setEnabled(!running);
+				menuItem.setText(toolBar.getText(nameKey, (value == selection)));
+			}
+		}
+	}
+	
+	private void loadDurationMenuIcons(TGToolBar toolBar) {
+		for(MenuItem menuItem : this.durationMenuItems) {
+			Integer value = (Integer) menuItem.getData();
+			Image icon = this.findDurationIcon(toolBar, value);
+			if( icon != null ) {
+				menuItem.setImage(icon);
+			}
+		}
+	}
+	
+	private void loadDurationMenuProperties(TGToolBar toolBar, int selection) {
+		for(MenuItem menuItem : this.durationMenuItems) {
+			Integer value = (Integer) menuItem.getData();
+			String nameKey = this.findDurationNameKey(value);
+			if( nameKey != null ) {
+				menuItem.setText(toolBar.getText(nameKey, (value == selection)));
+			}
 		}
 	}
 	
@@ -193,7 +240,7 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 	
 	public void processDivisionTypeSelection(TGToolBar toolBar, SelectionEvent event) {
 		if (event.detail == SWT.ARROW) {
-			this.createDivisionTypeMenu(toolBar, (ToolItem) event.widget);
+			this.displayDivisionTypeMenu();
 		}else{
 			this.toggleDivisionType(toolBar);
 		}
@@ -211,23 +258,35 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 		this.createDivisionTypeAction(toolBar, divisionType).process();
 	}
 	
-	private void createDivisionTypeMenu(TGToolBar toolBar, ToolItem item) {
-		TGDuration duration = TablatureEditor.getInstance(toolBar.getContext()).getTablature().getCaret().getDuration();
-		Menu menu = new Menu(item.getParent().getShell());
+	private MenuItem createDivisionTypeMenuItem(TGToolBar toolBar, TGDivisionType divisionType) {
+		MenuItem menuItem = new MenuItem(this.divisionTypeMenu, SWT.CHECK);
+		menuItem.setData(divisionType);
+		menuItem.addSelectionListener(this.createDivisionTypeAction(toolBar, divisionType));
 		
-		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
-			TGDivisionType divisionType = TGDivisionType.ALTERED_DIVISION_TYPES[i];
-			
-			MenuItem menuItem = new MenuItem(menu, SWT.CHECK);
-			menuItem.setText(toolBar.toCheckString(Integer.toString(TGDivisionType.ALTERED_DIVISION_TYPES[i].getEnters()), (divisionType.isEqual(duration.getDivision()))));
-			menuItem.addSelectionListener(this.createDivisionTypeAction(toolBar, divisionType));
+		return menuItem;
+	}
+	
+	private void updateDivisionTypeMenuItems(TGToolBar toolBar, TGDivisionType selection, boolean running) {
+		for(MenuItem menuItem : this.divisionTypeMenuItems) {
+			TGDivisionType divisionType = (TGDivisionType) menuItem.getData();
+			menuItem.setSelection(divisionType.isEqual(selection));
 		}
+	}
+	
+	private void loadDivisionTypeMenuProperties(TGToolBar toolBar) {
+		for(MenuItem menuItem : this.divisionTypeMenuItems) {
+			TGDivisionType divisionType = (TGDivisionType) menuItem.getData();
+			
+			menuItem.setText(Integer.toString(divisionType.getEnters()));
+		}
+	}
+	
+	private void displayDivisionTypeMenu() {
+		Rectangle rect = this.divisionTypeItem.getBounds();
+		Point pt = this.divisionTypeItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.divisionTypeMenu.setLocation(pt.x, pt.y + rect.height);
+		this.divisionTypeMenu.setVisible(true);
 	}
 	
 	private TGDivisionType createDivisionType(TGToolBar toolBar, TGDivisionType tgDivisionTypeSrc) {

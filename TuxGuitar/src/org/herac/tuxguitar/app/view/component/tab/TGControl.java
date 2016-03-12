@@ -5,14 +5,12 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.graphics.TGPainter;
@@ -24,7 +22,6 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGControl extends Composite {
 	
-//	private static final int SCROLL_DELAY = 15;
 	private static final int SCROLL_INCREMENT = 50;
 	
 	private TGContext context; 
@@ -33,8 +30,6 @@ public class TGControl extends Composite {
 	private int width;
 	private int height;
 	
-	private TGBeatImpl playedBeat;
-	private TGMeasureImpl playedMeasure;
 	private int scrollX;
 	private int scrollY;
 	private boolean resetScroll;
@@ -60,10 +55,7 @@ public class TGControl extends Composite {
 		hBar.setIncrement(SCROLL_INCREMENT);
 		hBar.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-//				if(TGControl.this.lastHScrollTime + SCROLL_DELAY < System.currentTimeMillis()){
-					redraw();
-//					TGControl.this.lastHScrollTime = System.currentTimeMillis();
-//				}
+				redraw();
 			}
 		});
 		
@@ -71,10 +63,7 @@ public class TGControl extends Composite {
 		vBar.setIncrement(SCROLL_INCREMENT);
 		vBar.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-//				if(TGControl.this.lastVScrollTime + SCROLL_DELAY < System.currentTimeMillis()){
-					redraw();
-//					TGControl.this.lastVScrollTime = System.currentTimeMillis();
-//				}
+				redraw();
 			}
 		});
 		
@@ -116,7 +105,7 @@ public class TGControl extends Composite {
 			this.updateScroll();
 			
 			if( MidiPlayer.getInstance(this.context).isRunning()){
-				this.redrawPlayingMode(painter,true);
+				this.paintTablaturePlayMode(painter);
 			}
 			// Si no estoy reproduciendo y hay cambios
 			// muevo el scroll al compas que tiene el caret
@@ -131,6 +120,22 @@ public class TGControl extends Composite {
 			throwable.printStackTrace();
 		}
 		this.setPainting(false);
+	}
+	
+	private void paintTablaturePlayMode(TGPainter painter){
+		try{
+			TGMeasureImpl measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
+			TGBeatImpl beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
+			if(measure != null && measure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
+				this.moveScrollTo(measure);
+				
+				if(!measure.isOutOfBounds()){
+					this.tablature.getViewLayout().paintPlayMode(painter, measure, beat);
+				}
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
 	}
 	
 	public void resetScroll(){
@@ -199,48 +204,14 @@ public class TGControl extends Composite {
 	
 	public void redraw(){
 		if(!super.isDisposed() ){
-			this.playedBeat = null;
-			this.playedMeasure = null;
 			this.setPainting(true);
 			super.redraw();
 		}
 	}
 	
-	public void redrawPlayingMode(){
-		if(!super.isDisposed() && !isPainting()){
-			if( TuxGuitar.getInstance().getPlayer().isRunning() ){
-				this.setPainting(true);
-				
-				TGPainter painter = new TGPainterImpl(new GC(this));
-				redrawPlayingMode(painter, false);
-				painter.dispose();
-				
-				this.setPainting(false);
-			}
-		}
-	}
-	
-	private void redrawPlayingMode(TGPainter painter, boolean force){
-		if(!super.isDisposed()){
-			try{
-				TGMeasureImpl measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
-				TGBeatImpl beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
-				if(measure != null && measure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
-					if(!moveScrollTo(measure) || force){
-						boolean paintMeasure = (force || this.playedMeasure == null || !this.playedMeasure.equals(measure));
-						if(this.playedMeasure != null && this.playedBeat != null && !this.playedMeasure.isOutOfBounds() && this.playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
-							this.tablature.getViewLayout().paintPlayMode(painter, this.playedMeasure, this.playedBeat,paintMeasure);
-						}
-						if(!measure.isOutOfBounds()){
-							this.tablature.getViewLayout().paintPlayMode(painter, measure, beat, paintMeasure);
-						}
-						this.playedBeat = beat;
-						this.playedMeasure =  measure;
-					}
-				}
-			}catch(Throwable throwable){
-				throwable.printStackTrace();
-			}
+	public void redrawPlayingMode() {
+		if(!super.isDisposed() && !this.isPainting() && MidiPlayer.getInstance(this.context).isRunning()) {
+			this.redraw();
 		}
 	}
 	

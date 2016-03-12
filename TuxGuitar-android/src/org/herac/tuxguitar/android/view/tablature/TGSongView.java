@@ -131,7 +131,7 @@ public class TGSongView extends View {
 			this.moveScrollTo(measure, area);
 
 			if(!measure.isOutOfBounds() ) {
-				this.controller.getLayout().paintPlayMode(painter, measure, beat, true);
+				this.controller.getLayout().paintPlayMode(painter, measure, beat);
 			}
 		}
 	}

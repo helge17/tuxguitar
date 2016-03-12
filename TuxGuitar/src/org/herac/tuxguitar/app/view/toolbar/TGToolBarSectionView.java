@@ -19,13 +19,32 @@ public class TGToolBarSectionView implements TGToolBarSection {
 	
 	private ToolItem menuItem;
 	
+	private Menu menu;
+	private MenuItem showFretBoard;
+	private MenuItem showInstruments;
+	private MenuItem showTransport;
+	
 	public void createSection(final TGToolBar toolBar) {
 		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
 		this.menuItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				createMenu(toolBar, (ToolItem) event.widget);
+				displayMenu();
 			}
 		});
+		
+		this.menu = new Menu(this.menuItem.getParent().getShell());
+		
+		//--FRETBOARD--
+		this.showFretBoard = new MenuItem(this.menu, SWT.PUSH);
+		this.showFretBoard.addSelectionListener(toolBar.createActionProcessor(TGToggleFretBoardEditorAction.NAME));
+		
+		//--INSTRUMENTS--
+		this.showInstruments = new MenuItem(this.menu, SWT.PUSH);
+		this.showInstruments.addSelectionListener(toolBar.createActionProcessor(TGToggleChannelsDialogAction.NAME));
+		
+		//--TRANSPORT--
+		this.showTransport = new MenuItem(this.menu, SWT.PUSH);
+		this.showTransport.addSelectionListener(toolBar.createActionProcessor(TGToggleTransportDialogAction.NAME));
 		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
@@ -33,41 +52,29 @@ public class TGToolBarSectionView implements TGToolBarSection {
 	
 	public void loadProperties(TGToolBar toolBar){
 		this.menuItem.setToolTipText(toolBar.getText("view"));
+		this.showFretBoard.setText(toolBar.getText("view.show-fretboard", TGFretBoardEditor.getInstance(toolBar.getContext()).isVisible()));
+		this.showInstruments.setText(toolBar.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(toolBar.getContext()).isDisposed())));
+		this.showTransport.setText(toolBar.getText("view.show-transport", (!TGTransportDialog.getInstance(toolBar.getContext()).isDisposed())));
 	}
 	
 	public void loadIcons(TGToolBar toolBar){
 		this.menuItem.setImage(toolBar.getIconManager().getFretboard());
+		this.showFretBoard.setImage(toolBar.getIconManager().getFretboard());
+		this.showInstruments.setImage(toolBar.getIconManager().getInstruments());
+		this.showTransport.setImage(toolBar.getIconManager().getTransport());
 	}
 	
 	public void updateItems(TGToolBar toolBar){
-		//Nothing to do
+		this.showFretBoard.setText(toolBar.getText("view.show-fretboard", TGFretBoardEditor.getInstance(toolBar.getContext()).isVisible()));
+		this.showInstruments.setText(toolBar.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(toolBar.getContext()).isDisposed())));
+		this.showTransport.setText(toolBar.getText("view.show-transport", (!TGTransportDialog.getInstance(toolBar.getContext()).isDisposed())));
 	}
 	
-	public void createMenu(TGToolBar toolBar, ToolItem item) {
-		Menu menu = new Menu(item.getParent().getShell());
+	public void displayMenu() {		
+		Rectangle rect = this.menuItem.getBounds();
+		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		//--FRETBOARD--
-		MenuItem showFretBoard = new MenuItem(menu, SWT.PUSH);
-		showFretBoard.addSelectionListener(toolBar.createActionProcessor(TGToggleFretBoardEditorAction.NAME));
-		showFretBoard.setImage(toolBar.getIconManager().getFretboard());
-		showFretBoard.setText(toolBar.getText("view.show-fretboard", TGFretBoardEditor.getInstance(toolBar.getContext()).isVisible()));
-
-		//--INSTRUMENTS--
-		MenuItem showInstruments = new MenuItem(menu, SWT.PUSH);
-		showInstruments.addSelectionListener(toolBar.createActionProcessor(TGToggleChannelsDialogAction.NAME));
-		showInstruments.setImage(toolBar.getIconManager().getInstruments());
-		showInstruments.setText(toolBar.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(toolBar.getContext()).isDisposed())));
-
-		//--TRANSPORT--
-		MenuItem showTransport = new MenuItem(menu, SWT.PUSH);
-		showTransport.addSelectionListener(toolBar.createActionProcessor(TGToggleTransportDialogAction.NAME));
-		showTransport.setImage(toolBar.getIconManager().getTransport());
-		showTransport.setText(toolBar.getText("view.show-transport", (!TGTransportDialog.getInstance(toolBar.getContext()).isDisposed())));
-		
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.menu.setLocation(pt.x, pt.y + rect.height);
+		this.menu.setVisible(true);
 	}
 }
