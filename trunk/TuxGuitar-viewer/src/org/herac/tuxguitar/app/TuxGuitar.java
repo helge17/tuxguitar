@@ -154,8 +154,8 @@ public class TuxGuitar {
 	public void redrawPayingMode(){
 		this.lock();
 		this.getEditorCache().updatePlayMode();
-		if(this.getEditorCache().shouldRedraw()){
-			this.getTablatureEditor().getTablature().redrawPlayingMode();
+		if( this.getEditorCache().shouldRedraw() ){
+			this.getTablatureEditor().repaint();
 		}
 		this.unlock();
 	}

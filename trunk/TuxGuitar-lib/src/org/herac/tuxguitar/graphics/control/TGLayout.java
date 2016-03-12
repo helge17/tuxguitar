@@ -206,13 +206,12 @@ public abstract class TGLayout {
 	/**
 	 * Pinta el compas y las notas que estan sonando
 	 */
-	public void paintPlayMode(TGPainter painter,TGMeasureImpl measure,TGBeatImpl beat,boolean paintMeasure){
+	public void paintPlayMode(TGPainter painter, TGMeasureImpl measure, TGBeatImpl beat){
 		this.playModeEnabled = true;
 		
 		//pinto el compas
-		if( paintMeasure ){
-			measure.paintMeasure(this,painter);
-		}
+		measure.paintPlayMode(this, painter);
+		
 		//pinto el pulso
 		if( beat != null ){
 			beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this), measure.getPosY());

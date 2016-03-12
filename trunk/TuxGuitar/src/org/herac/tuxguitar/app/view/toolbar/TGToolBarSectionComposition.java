@@ -20,72 +20,83 @@ public class TGToolBarSectionComposition implements TGToolBarSection {
 	
 	private ToolItem menuItem;
 	
+	private Menu menu;
+	private MenuItem tempo;
+	private MenuItem timeSignature;
+	private MenuItem repeatOpen;
+	private MenuItem repeatClose;
+	private MenuItem repeatAlternative;
+	
 	public void createSection(final TGToolBar toolBar) {
 		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
 		this.menuItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				createMenu(toolBar, (ToolItem) event.widget);
+				displayMenu();
 			}
 		});
+		
+		this.menu = new Menu(this.menuItem.getParent().getShell());
+		
+		this.tempo = new MenuItem(this.menu, SWT.PUSH);
+		this.tempo.addSelectionListener(toolBar.createActionProcessor(TGOpenTempoDialogAction.NAME));
+		
+		this.timeSignature = new MenuItem(this.menu, SWT.PUSH);
+		this.timeSignature.addSelectionListener(toolBar.createActionProcessor(TGOpenTimeSignatureDialogAction.NAME));
+		
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		this.repeatOpen = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatOpen.addSelectionListener(toolBar.createActionProcessor(TGRepeatOpenAction.NAME));
+		
+		this.repeatClose = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatClose.addSelectionListener(toolBar.createActionProcessor(TGOpenRepeatCloseDialogAction.NAME));
+		
+		this.repeatAlternative = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatAlternative.addSelectionListener(toolBar.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
 		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
 	}
 	
-	public void loadProperties(TGToolBar toolBar){
+	public void loadProperties(TGToolBar toolBar) {
+		TGMeasure measure = toolBar.getTablature().getCaret().getMeasure();
+		
 		this.menuItem.setToolTipText(toolBar.getText("composition"));
+		this.tempo.setText(toolBar.getText("composition.tempo"));
+		this.timeSignature.setText(toolBar.getText("composition.timesignature"));
+		this.repeatOpen.setText(toolBar.getText("repeat.open", (measure != null && measure.isRepeatOpen())));
+		this.repeatClose.setText(toolBar.getText("repeat.close", (measure != null && measure.getRepeatClose() > 0)));
+		this.repeatAlternative.setText(toolBar.getText("repeat.alternative", (measure != null && measure.getHeader().getRepeatAlternative() > 0)));
 	}
 	
-	public void loadIcons(TGToolBar toolBar){
+	public void loadIcons(TGToolBar toolBar) {
 		this.menuItem.setImage(toolBar.getIconManager().getCompositionTimeSignature());
+		this.tempo.setImage(toolBar.getIconManager().getCompositionTempo());
+		this.timeSignature.setImage(toolBar.getIconManager().getCompositionTimeSignature());
+		this.repeatOpen.setImage(toolBar.getIconManager().getCompositionRepeatOpen());
+		this.repeatClose.setImage(toolBar.getIconManager().getCompositionRepeatClose());
+		this.repeatAlternative.setImage(toolBar.getIconManager().getCompositionRepeatAlternative());
 	}
 	
-	public void updateItems(TGToolBar toolBar){
-		//Nothing to do
-	}
-	
-	public void createMenu(TGToolBar toolBar, ToolItem item) {
+	public void updateItems(TGToolBar toolBar) {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGMeasure measure = toolBar.getTablature().getCaret().getMeasure();
 		
-		Menu menu = new Menu(item.getParent().getShell());
+		this.tempo.setEnabled(!running);
+		this.timeSignature.setEnabled(!running);
+		this.repeatOpen.setEnabled( !running );
+		this.repeatOpen.setText(toolBar.getText("repeat.open", (measure != null && measure.isRepeatOpen())));
+		this.repeatClose.setEnabled( !running );
+		this.repeatClose.setText(toolBar.getText("repeat.close", (measure != null && measure.getRepeatClose() > 0)));
+		this.repeatAlternative.setEnabled( !running );
+		this.repeatAlternative.setText(toolBar.getText("repeat.alternative", (measure != null && measure.getHeader().getRepeatAlternative() > 0)));
+	}
+	
+	public void displayMenu() {
+		Rectangle rect = this.menuItem.getBounds();
+		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		MenuItem tempo = new MenuItem(menu, SWT.PUSH);
-		tempo.addSelectionListener(toolBar.createActionProcessor(TGOpenTempoDialogAction.NAME));
-		tempo.setEnabled(!running);
-		tempo.setText(toolBar.getText("composition.tempo"));
-		tempo.setImage(toolBar.getIconManager().getCompositionTempo());
-
-		MenuItem timeSignature = new MenuItem(menu, SWT.PUSH);
-		timeSignature.addSelectionListener(toolBar.createActionProcessor(TGOpenTimeSignatureDialogAction.NAME));
-		timeSignature.setEnabled(!running);
-		timeSignature.setText(toolBar.getText("composition.timesignature"));
-		timeSignature.setImage(toolBar.getIconManager().getCompositionTimeSignature());
-
-		new MenuItem(menu, SWT.SEPARATOR);
-		
-		MenuItem repeatOpen = new MenuItem(menu, SWT.PUSH);
-		repeatOpen.addSelectionListener(toolBar.createActionProcessor(TGRepeatOpenAction.NAME));
-		repeatOpen.setEnabled( !running );
-		repeatOpen.setText(toolBar.getText("repeat.open", (measure != null && measure.isRepeatOpen())));
-		repeatOpen.setImage(toolBar.getIconManager().getCompositionRepeatOpen());
-
-		MenuItem repeatClose = new MenuItem(menu, SWT.PUSH);
-		repeatClose.addSelectionListener(toolBar.createActionProcessor(TGOpenRepeatCloseDialogAction.NAME));
-		repeatClose.setEnabled( !running );
-		repeatClose.setText(toolBar.getText("repeat.close", (measure != null && measure.getRepeatClose() > 0)));
-		repeatClose.setImage(toolBar.getIconManager().getCompositionRepeatClose());
-		
-		MenuItem repeatAlternative = new MenuItem(menu, SWT.PUSH);
-		repeatAlternative.addSelectionListener(toolBar.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
-		repeatAlternative.setEnabled( !running );
-		repeatAlternative.setText(toolBar.getText("repeat.alternative", (measure != null && measure.getHeader().getRepeatAlternative() > 0)));
-		repeatAlternative.setImage(toolBar.getIconManager().getCompositionRepeatAlternative());
-		
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.menu.setLocation(pt.x, pt.y + rect.height);
+		this.menu.setVisible(true);
 	}
 }

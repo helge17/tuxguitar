@@ -21,7 +21,7 @@
 	<defaultInstallationMode></defaultInstallationMode>
 	<defaultUnixDirectoryPermissions>755</defaultUnixDirectoryPermissions>
 	<defaultUnixFilePermissions>644</defaultUnixFilePermissions>
-	<description>One-line description of your software</description>
+	<description>TuxGuitar is an Open Source multitrack tablature editor and player</description>
 	<outputDirectory>${build_project_directory}/../../target</outputDirectory>
 	<projectSchemaVersion>1.2</projectSchemaVersion>
 	<saveRelativePaths>0</saveRelativePaths>
@@ -30,11 +30,11 @@
 	<enableRollback>0</enableRollback>
 	<startMenuGroupName>${product_fullname}</startMenuGroupName>
 	<style>standard</style>
-	<summary>Place here a detailed description of your software</summary>
+	<summary>TuxGuitar is an Open Source multitrack tablature editor and player</summary>
 	<uninstallerDirectory>${installdir}</uninstallerDirectory>
 	<uninstallerName></uninstallerName>
 	<validatorProgram></validatorProgram>
-	<vendor>Name of your company</vendor>
+	<vendor>TuxGuitar</vendor>
 	<componentList>
 		<component>
 			<name>default</name>

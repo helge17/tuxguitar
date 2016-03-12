@@ -19,13 +19,50 @@ public class TGToolBarSectionMarker implements TGToolBarSection {
 	
 	private ToolItem menuItem;
 	
+	private Menu menu;
+	private MenuItem add;
+	private MenuItem list;
+	private MenuItem first;
+	private MenuItem previous;
+	private MenuItem next;
+	private MenuItem last;
+	
 	public void createSection(final TGToolBar toolBar) {
 		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
 		this.menuItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				createMenu(toolBar, (ToolItem) event.widget);
+				displayMenu();
 			}
 		});
+		
+		this.menu = new Menu(this.menuItem.getParent().getShell());
+		
+		//--ADD--
+		this.add = new MenuItem(this.menu, SWT.PUSH);
+		this.add.addSelectionListener(toolBar.createActionProcessor(TGOpenMarkerEditorAction.NAME));
+		
+		//--LIST--
+		this.list = new MenuItem(this.menu, SWT.PUSH);
+		this.list.addSelectionListener(toolBar.createActionProcessor(TGToggleMarkerListAction.NAME));
+		
+		//--SEPARATOR--
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		//--FIRST--
+		this.first = new MenuItem(this.menu, SWT.PUSH);
+		this.first.addSelectionListener(toolBar.createActionProcessor(TGGoFirstMarkerAction.NAME));
+		
+		//--PREVIOUS--
+		this.previous = new MenuItem(this.menu, SWT.PUSH);
+		this.previous.addSelectionListener(toolBar.createActionProcessor(TGGoPreviousMarkerAction.NAME));
+		
+		//--PREVIOUS--
+		this.next = new MenuItem(this.menu, SWT.PUSH);
+		this.next.addSelectionListener(toolBar.createActionProcessor(TGGoNextMarkerAction.NAME));
+		
+		//--LAST--
+		this.last = new MenuItem(this.menu, SWT.PUSH);
+		this.last.addSelectionListener(toolBar.createActionProcessor(TGGoLastMarkerAction.NAME));
 		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
@@ -33,62 +70,33 @@ public class TGToolBarSectionMarker implements TGToolBarSection {
 	
 	public void loadProperties(TGToolBar toolBar){
 		this.menuItem.setToolTipText(toolBar.getText("marker"));
+		this.add.setText(toolBar.getText("marker.add"));
+		this.list.setText(toolBar.getText("marker.list"));
+		this.first.setText(toolBar.getText("marker.first"));
+		this.previous.setText(toolBar.getText("marker.previous"));
+		this.next.setText(toolBar.getText("marker.next"));
+		this.last.setText(toolBar.getText("marker.last"));
 	}
 	
 	public void loadIcons(TGToolBar toolBar){
 		this.menuItem.setImage(toolBar.getIconManager().getMarkerList());
+		this.add.setImage(toolBar.getIconManager().getMarkerAdd());
+		this.list.setImage(toolBar.getIconManager().getMarkerList());
+		this.first.setImage(toolBar.getIconManager().getMarkerFirst());
+		this.previous.setImage(toolBar.getIconManager().getMarkerPrevious());
+		this.next.setImage(toolBar.getIconManager().getMarkerNext());
+		this.last.setImage(toolBar.getIconManager().getMarkerLast());
 	}
 	
 	public void updateItems(TGToolBar toolBar){
 		//Nothing to do
 	}
 	
-	public void createMenu(TGToolBar toolBar, ToolItem item) {
-		Menu menu = new Menu(item.getParent().getShell());
+	public void displayMenu() {
+		Rectangle rect = this.menuItem.getBounds();
+		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		//--ADD--
-		MenuItem add = new MenuItem(menu, SWT.PUSH);
-		add.addSelectionListener(toolBar.createActionProcessor(TGOpenMarkerEditorAction.NAME));
-		add.setText(toolBar.getText("marker.add"));
-		add.setImage(toolBar.getIconManager().getMarkerAdd());
-		
-		//--LIST--
-		MenuItem list = new MenuItem(menu, SWT.PUSH);
-		list.addSelectionListener(toolBar.createActionProcessor(TGToggleMarkerListAction.NAME));
-		list.setText(toolBar.getText("marker.list"));
-		list.setImage(toolBar.getIconManager().getMarkerList());
-		
-		//--SEPARATOR--
-		new MenuItem(menu, SWT.SEPARATOR);
-		
-		//--FIRST--
-		MenuItem first = new MenuItem(menu, SWT.PUSH);
-		first.addSelectionListener(toolBar.createActionProcessor(TGGoFirstMarkerAction.NAME));
-		first.setText(toolBar.getText("marker.first"));
-		first.setImage(toolBar.getIconManager().getMarkerFirst());
-		
-		//--PREVIOUS--
-		MenuItem previous = new MenuItem(menu, SWT.PUSH);
-		previous.addSelectionListener(toolBar.createActionProcessor(TGGoPreviousMarkerAction.NAME));
-		previous.setText(toolBar.getText("marker.previous"));
-		previous.setImage(toolBar.getIconManager().getMarkerPrevious());
-		
-		//--PREVIOUS--
-		MenuItem next = new MenuItem(menu, SWT.PUSH);
-		next.addSelectionListener(toolBar.createActionProcessor(TGGoNextMarkerAction.NAME));
-		next.setText(toolBar.getText("marker.next"));
-		next.setImage(toolBar.getIconManager().getMarkerNext());
-		
-		//--LAST--
-		MenuItem last = new MenuItem(menu, SWT.PUSH);
-		last.addSelectionListener(toolBar.createActionProcessor(TGGoLastMarkerAction.NAME));
-		last.setText(toolBar.getText("marker.last"));
-		last.setImage(toolBar.getIconManager().getMarkerLast());
-		
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.menu.setLocation(pt.x, pt.y + rect.height);
+		this.menu.setVisible(true);
 	}
 }

@@ -19,14 +19,47 @@ import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 public class TGToolBarSectionFile implements TGToolBarSection {
 	
 	private ToolItem menuItem;
+	private Menu menu;
+	private MenuItem newSong;
+	private MenuItem openSong;
+	private MenuItem saveSong;
+	private MenuItem saveAsSong;
+	private MenuItem printSong;
+	private MenuItem printPreviewSong;
+	private MenuItem properties;
 	
 	public void createSection(final TGToolBar toolBar) {
 		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
 		this.menuItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				createMenu(toolBar, (ToolItem) event.widget);
+				displayMenu();
 			}
 		});
+		
+		this.menu = new Menu(this.menuItem.getParent().getShell());
+		
+		this.newSong = new MenuItem(this.menu, SWT.PUSH);
+		this.newSong.addSelectionListener(toolBar.createActionProcessor(TGLoadTemplateAction.NAME));
+		
+		this.openSong = new MenuItem(this.menu, SWT.PUSH);
+		this.openSong.addSelectionListener(toolBar.createActionProcessor(TGOpenFileAction.NAME));
+		
+		this.saveSong = new MenuItem(this.menu, SWT.PUSH);
+		this.saveSong.addSelectionListener(toolBar.createActionProcessor(TGSaveFileAction.NAME));
+		
+		this.saveAsSong = new MenuItem(this.menu, SWT.PUSH);
+		this.saveAsSong.addSelectionListener(toolBar.createActionProcessor(TGSaveAsFileAction.NAME));
+		
+		this.printSong = new MenuItem(this.menu, SWT.PUSH);
+		this.printSong.addSelectionListener(toolBar.createActionProcessor(TGPrintAction.NAME));
+		
+		this.printPreviewSong = new MenuItem(this.menu, SWT.PUSH);
+		this.printPreviewSong.addSelectionListener(toolBar.createActionProcessor(TGPrintPreviewAction.NAME));
+		
+		new MenuItem(this.menu, SWT.SEPARATOR);
+		
+		this.properties = new MenuItem(this.menu, SWT.PUSH);
+		this.properties.addSelectionListener(toolBar.createActionProcessor(TGOpenSongInfoDialogAction.NAME));
 		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
@@ -34,60 +67,35 @@ public class TGToolBarSectionFile implements TGToolBarSection {
 	
 	public void loadProperties(TGToolBar toolBar){
 		this.menuItem.setToolTipText(toolBar.getText("file"));
+		this.newSong.setText(toolBar.getText("file.new"));
+		this.openSong.setText(toolBar.getText("file.open"));
+		this.saveSong.setText(toolBar.getText("file.save"));
+		this.saveAsSong.setText(toolBar.getText("file.save-as"));
+		this.printSong.setText(toolBar.getText("file.print"));
+		this.printPreviewSong.setText(toolBar.getText("file.print-preview"));
+		this.properties.setText(toolBar.getText("composition.properties"));
 	}
 	
 	public void loadIcons(TGToolBar toolBar){
 		this.menuItem.setImage(toolBar.getIconManager().getFileNew());
+		this.newSong.setImage(toolBar.getIconManager().getFileNew());
+		this.openSong.setImage(toolBar.getIconManager().getFileOpen());
+		this.saveSong.setImage(toolBar.getIconManager().getFileSave());
+		this.saveAsSong.setImage(toolBar.getIconManager().getFileSaveAs());
+		this.printSong.setImage(toolBar.getIconManager().getFilePrint());
+		this.printPreviewSong.setImage(toolBar.getIconManager().getFilePrintPreview());
+		this.properties.setImage(toolBar.getIconManager().getSongProperties());
 	}
 	
 	public void updateItems(TGToolBar toolBar){
 		//Nothing to do
 	}
 	
-	public void createMenu(TGToolBar toolBar, ToolItem item) {
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
+	public void displayMenu() {
+		Rectangle rect = this.menuItem.getBounds();
+		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		Menu menu = new Menu(item.getParent().getShell());
-		
-		MenuItem newSong = new MenuItem(menu, SWT.PUSH);
-		newSong.addSelectionListener(toolBar.createActionProcessor(TGLoadTemplateAction.NAME));
-		newSong.setText(toolBar.getText("file.new"));
-		newSong.setImage(toolBar.getIconManager().getFileNew());
-		
-		MenuItem openSong = new MenuItem(menu, SWT.PUSH);
-		openSong.addSelectionListener(toolBar.createActionProcessor(TGOpenFileAction.NAME));
-		openSong.setText(toolBar.getText("file.open"));
-		openSong.setImage(toolBar.getIconManager().getFileOpen());
-		
-		MenuItem saveSong = new MenuItem(menu, SWT.PUSH);
-		saveSong.addSelectionListener(toolBar.createActionProcessor(TGSaveFileAction.NAME));
-		saveSong.setText(toolBar.getText("file.save"));
-		saveSong.setImage(toolBar.getIconManager().getFileSave());
-		
-		MenuItem saveAsSong = new MenuItem(menu, SWT.PUSH);
-		saveAsSong.addSelectionListener(toolBar.createActionProcessor(TGSaveAsFileAction.NAME));
-		saveAsSong.setText(toolBar.getText("file.save-as"));
-		saveAsSong.setImage(toolBar.getIconManager().getFileSaveAs());
-		
-		MenuItem printSong = new MenuItem(menu, SWT.PUSH);
-		printSong.addSelectionListener(toolBar.createActionProcessor(TGPrintAction.NAME));
-		printSong.setText(toolBar.getText("file.print"));
-		printSong.setImage(toolBar.getIconManager().getFilePrint());
-		
-		MenuItem printPreviewSong = new MenuItem(menu, SWT.PUSH);
-		printPreviewSong.addSelectionListener(toolBar.createActionProcessor(TGPrintPreviewAction.NAME));
-		printPreviewSong.setText(toolBar.getText("file.print-preview"));
-		printPreviewSong.setImage(toolBar.getIconManager().getFilePrintPreview());
-		
-		new MenuItem(menu, SWT.SEPARATOR);
-		
-		MenuItem properties = new MenuItem(menu, SWT.PUSH);
-		properties.addSelectionListener(toolBar.createActionProcessor(TGOpenSongInfoDialogAction.NAME));
-		properties.setText(toolBar.getText("composition.properties"));
-		properties.setImage(toolBar.getIconManager().getSongProperties());
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.menu.setLocation(pt.x, pt.y + rect.height);
+		this.menu.setVisible(true);
 	}
 }

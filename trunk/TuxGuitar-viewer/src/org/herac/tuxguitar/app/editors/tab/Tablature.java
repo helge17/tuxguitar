@@ -1,13 +1,6 @@
-/*
- * Created on 29-nov-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.editors.tab;
 
 import java.awt.Component;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -32,11 +25,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
+
 public class Tablature implements TGController {
 	
 	private Component component;
@@ -44,16 +33,11 @@ public class Tablature implements TGController {
 	
 	private TGDocumentManager documentManager;
 	private Caret caret;
-	//private float width;
 	private float height;
 	private TGLayout viewLayout;
 	
 	private TGResourceBuffer resourceBuffer;
 	
-	private TGBeatImpl playedBeat;
-	private TGMeasureImpl playedMeasure;
-	
-	//private int scrollX;
 	private float scrollY;
 	private boolean resetScroll;
 	protected long lastVScrollTime;
@@ -71,8 +55,6 @@ public class Tablature implements TGController {
 	}
 	
 	public void updateTablature(){
-		this.playedBeat = null;
-		this.playedMeasure = null;
 		getViewLayout().updateSong();
 	}
 	
@@ -98,7 +80,7 @@ public class Tablature implements TGController {
 			this.updateScroll();
 			
 			if(TuxGuitar.instance().getPlayer().isRunning()){
-				redrawPlayingMode(painter,true);
+				redrawPlayingMode(painter);
 			}
 			// Si no estoy reproduciendo y hay cambios
 			// muevo el scroll al compas que tiene el caret
@@ -164,49 +146,23 @@ public class Tablature implements TGController {
 	
 	public void beforeRedraw(){
 		TuxGuitar.instance().lock();
-		this.playedBeat = null;
-		this.playedMeasure = null;
 		this.setPainting(true);
 		TuxGuitar.instance().unlock();
 	}
 	
-	public void redrawPlayingMode(){
-		if(!isPainting() && !TuxGuitar.instance().isLocked()){
-			TuxGuitar.instance().lock();
-			if(TuxGuitar.instance().getPlayer().isRunning()){
-				this.setPainting(true);
+	private void redrawPlayingMode(TGPainterImpl painter){
+		try{
+			TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
+			TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
+			if(measure != null && beat != null && measure.hasTrack(getCaret().getTrack().getNumber())){
+				this.moveScrollTo(measure);
 				
-				TGPainterImpl painter = new TGPainterImpl((Graphics2D)this.component.getGraphics());
-				redrawPlayingMode(painter,false);
-				painter.dispose();
-				
-				this.setPainting(false);
-			}
-			TuxGuitar.instance().unlock();
-		}
-	}
-	
-	private void redrawPlayingMode(TGPainterImpl painter,boolean force){
-		if(!TuxGuitar.instance().isLocked()){
-			try{
-				org.herac.tuxguitar.graphics.control.TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
-				TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
-				if(measure != null && beat != null && measure.hasTrack(getCaret().getTrack().getNumber())){
-					if(!moveScrollTo(measure) || force){
-						boolean paintMeasure = (force || this.playedMeasure == null || !this.playedMeasure.equals(measure));
-						if(this.playedMeasure != null && this.playedBeat != null && !this.playedMeasure.isOutOfBounds() && this.playedMeasure.hasTrack(getCaret().getTrack().getNumber())){
-							getViewLayout().paintPlayMode(painter, this.playedMeasure, this.playedBeat,paintMeasure);
-						}
-						if(!measure.isOutOfBounds()){
-							getViewLayout().paintPlayMode(painter, measure, beat,paintMeasure);
-						}
-						this.playedBeat = beat;
-						this.playedMeasure =  measure;
-					}
+				if(!measure.isOutOfBounds()){
+					getViewLayout().paintPlayMode(painter, measure, beat);
 				}
-			}catch(Throwable throwable){
-				throwable.printStackTrace();
 			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
 		}
 	}
 	

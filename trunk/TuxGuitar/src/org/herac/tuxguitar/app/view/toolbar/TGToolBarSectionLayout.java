@@ -21,66 +21,80 @@ public class TGToolBarSectionLayout implements TGToolBarSection {
 	
 	private ToolItem menuItem;
 	
+	private Menu menu;
+	private MenuItem pageLayout;
+	private MenuItem linearLayout;
+	private MenuItem multitrack;
+	private MenuItem scoreEnabled;
+	private MenuItem compact;
+	
 	public void createSection(final TGToolBar toolBar) {
 		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
 		this.menuItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				createMenu(toolBar, (ToolItem) event.widget);
+				displayMenu();
 			}
 		});
+		
+		this.menu = new Menu(this.menuItem.getParent().getShell());
+		
+		this.pageLayout = new MenuItem(this.menu, SWT.PUSH);
+		this.pageLayout.addSelectionListener(toolBar.createActionProcessor(TGSetPageLayoutAction.NAME));
+		
+		this.linearLayout = new MenuItem(this.menu, SWT.PUSH);
+		this.linearLayout.addSelectionListener(toolBar.createActionProcessor(TGSetLinearLayoutAction.NAME));
+		
+		this.multitrack = new MenuItem(this.menu, SWT.PUSH);
+		this.multitrack.addSelectionListener(toolBar.createActionProcessor(TGSetMultitrackViewAction.NAME));
+		
+		this.scoreEnabled = new MenuItem(this.menu, SWT.PUSH);
+		this.scoreEnabled.addSelectionListener(toolBar.createActionProcessor(TGSetScoreEnabledAction.NAME));
+		
+		this.compact = new MenuItem(this.menu, SWT.PUSH);
+		this.compact.addSelectionListener(toolBar.createActionProcessor(TGSetCompactViewAction.NAME));
 		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
 	}
 	
-	public void loadProperties(TGToolBar toolBar){
+	public void loadProperties(TGToolBar toolBar) {
+		TGLayout layout = toolBar.getTablature().getViewLayout();
+		int style = layout.getStyle();
+		
 		this.menuItem.setToolTipText(toolBar.getText("view.layout"));
+		this.pageLayout.setText(toolBar.getText("view.layout.page", (layout instanceof TGLayoutVertical)));
+		this.linearLayout.setText(toolBar.getText("view.layout.linear", (layout instanceof TGLayoutHorizontal)));
+		this.multitrack.setText(toolBar.getText("view.layout.multitrack", ( (style & TGLayout.DISPLAY_MULTITRACK) != 0 )));
+		this.scoreEnabled.setText(toolBar.getText("view.layout.score-enabled", ( (style & TGLayout.DISPLAY_SCORE) != 0 )));
+		this.compact.setText(toolBar.getText("view.layout.compact", ( (style & TGLayout.DISPLAY_COMPACT) != 0 )));
 	}
 	
 	public void loadIcons(TGToolBar toolBar){
 		this.menuItem.setImage(toolBar.getIconManager().getLayoutScore());
+		this.pageLayout.setImage(toolBar.getIconManager().getLayoutPage());
+		this.linearLayout.setImage(toolBar.getIconManager().getLayoutLinear());
+		this.multitrack.setImage(toolBar.getIconManager().getLayoutMultitrack());
+		this.scoreEnabled.setImage(toolBar.getIconManager().getLayoutScore());
+		this.compact.setImage(toolBar.getIconManager().getLayoutCompact());
 	}
 	
 	public void updateItems(TGToolBar toolBar){
-		//Nothing to do
-	}
-	
-	public void createMenu(TGToolBar toolBar, ToolItem item) {
 		TGLayout layout = toolBar.getTablature().getViewLayout();
 		int style = layout.getStyle();
 		
-		Menu menu = new Menu(item.getParent().getShell());
+		this.pageLayout.setText(toolBar.getText("view.layout.page", (layout instanceof TGLayoutVertical)));
+		this.linearLayout.setText(toolBar.getText("view.layout.linear", (layout instanceof TGLayoutHorizontal)));
+		this.multitrack.setText(toolBar.getText("view.layout.multitrack", ( (style & TGLayout.DISPLAY_MULTITRACK) != 0 )));
+		this.scoreEnabled.setText(toolBar.getText("view.layout.score-enabled", ( (style & TGLayout.DISPLAY_SCORE) != 0 )));
+		this.compact.setText(toolBar.getText("view.layout.compact", ( (style & TGLayout.DISPLAY_COMPACT) != 0 )));
+		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || toolBar.getSong().countTracks() == 1);
+	}
+	
+	public void displayMenu() {
+		Rectangle rect = this.menuItem.getBounds();
+		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
 		
-		MenuItem pageLayout = new MenuItem(menu, SWT.PUSH);
-		pageLayout.addSelectionListener(toolBar.createActionProcessor(TGSetPageLayoutAction.NAME));
-		pageLayout.setText(toolBar.getText("view.layout.page", (layout instanceof TGLayoutVertical)));
-		pageLayout.setImage(toolBar.getIconManager().getLayoutPage());
-		
-		MenuItem linearLayout = new MenuItem(menu, SWT.PUSH);
-		linearLayout.addSelectionListener(toolBar.createActionProcessor(TGSetLinearLayoutAction.NAME));
-		linearLayout.setText(toolBar.getText("view.layout.linear", (layout instanceof TGLayoutHorizontal)));
-		linearLayout.setImage(toolBar.getIconManager().getLayoutLinear());
-		
-		MenuItem multitrack = new MenuItem(menu, SWT.PUSH);
-		multitrack.addSelectionListener(toolBar.createActionProcessor(TGSetMultitrackViewAction.NAME));
-		multitrack.setText(toolBar.getText("view.layout.multitrack", ( (style & TGLayout.DISPLAY_MULTITRACK) != 0 )));
-		multitrack.setImage(toolBar.getIconManager().getLayoutMultitrack());
-		
-		MenuItem scoreEnabled = new MenuItem(menu, SWT.PUSH);
-		scoreEnabled.addSelectionListener(toolBar.createActionProcessor(TGSetScoreEnabledAction.NAME));
-		scoreEnabled.setText(toolBar.getText("view.layout.score-enabled", ( (style & TGLayout.DISPLAY_SCORE) != 0 )));
-		scoreEnabled.setImage(toolBar.getIconManager().getLayoutScore());
-		
-		MenuItem compact = new MenuItem(menu, SWT.PUSH);
-		compact.addSelectionListener(toolBar.createActionProcessor(TGSetCompactViewAction.NAME));
-		compact.setText(toolBar.getText("view.layout.compact", ( (style & TGLayout.DISPLAY_COMPACT) != 0 )));
-		compact.setImage(toolBar.getIconManager().getLayoutCompact());
-		compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || toolBar.getSong().countTracks() == 1);
-		
-		Rectangle rect = item.getBounds();
-		Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		menu.setLocation(pt.x, pt.y + rect.height);
-		menu.setVisible(true);
+		this.menu.setLocation(pt.x, pt.y + rect.height);
+		this.menu.setVisible(true);
 	}
 }

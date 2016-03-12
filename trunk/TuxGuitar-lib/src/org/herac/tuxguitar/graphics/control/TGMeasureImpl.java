@@ -1049,7 +1049,7 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
-	private void paintPlayMode(TGLayout layout,TGPainter painter){
+	public void paintPlayMode(TGLayout layout,TGPainter painter){
 		if(layout.isPlayModeEnabled() && isPlaying(layout)){
 			float scale = layout.getScale();
 			float width = getWidth(layout) + getSpacing();

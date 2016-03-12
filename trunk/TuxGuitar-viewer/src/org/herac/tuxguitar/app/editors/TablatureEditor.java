@@ -54,7 +54,7 @@ public class TablatureEditor extends Canvas {
 	}
 	
 	public void repaint(){
-		if(this.loaded && this.tablature != null){
+		if( this.loaded && this.tablature != null){
 			this.tablature.beforeRedraw();
 		}
 		super.repaint();
