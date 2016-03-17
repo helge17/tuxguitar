@@ -9,14 +9,14 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-x86_64</artifactId>
+	<artifactId>tuxguitar-windows-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-x86_64</project.finalName>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
+		<project.finalName>tuxguitar-${project.version}-windows-x86_64</project.finalName>
+		<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</org.eclipse.swt.artifactId>
 	</properties>
 	
 	<modules>
@@ -79,8 +79,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-editor-utils</artifactId>
-                  					<destFileName>tuxguitar-editor-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-editor-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -257,13 +257,13 @@
 						<phase>package</phase>
 						<configuration>
 							<target name="copy-files">
-								<copy todir="${project.build.directory}/${project.finalName}/share">
+								<copy todir="${project.build.directory}/${project.finalName}/share" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/"/>
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/doc">
+								<copy todir="${project.build.directory}/${project.finalName}/doc" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/doc/"/>
 								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}/dist">
+								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
@@ -274,10 +274,8 @@
 									<fileset dir="../common-resources/common"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux"/>
+									<fileset dir="../common-resources/common-windows"/>
 								</copy>
-								
-								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
 							</target>
 						</configuration>
 						<goals>
@@ -289,60 +287,54 @@
 		</plugins>
 	</build>
 	
-	<profiles>
-		<profile>
-			<id>native-modules</id>
-			<activation>
-				<property>
-					<name>native-modules</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<modules>
-				<module>../native-modules/tuxguitar-alsa-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-jack-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-oss-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-fluidsynth-linux-x86_64</module>
-			</modules>
+<!-- 	<profiles> -->
+<!-- 		<profile> -->
+<!-- 			<id>native-modules</id> -->
+<!-- 			<activation> -->
+<!-- 				<property> -->
+<!-- 					<name>native-modules</name> -->
+<!-- 					<value>true</value> -->
+<!-- 				</property> -->
+<!-- 			</activation> -->
+<!-- 			<modules> -->
+<!-- 				<module>../native-modules/tuxguitar-winmm-windows-x86_64</module> -->
+<!-- 				<module>../native-modules/tuxguitar-fluidsynth-windows-x86_64</module> -->
+<!-- 				<module>../native-modules/tuxguitar-jack-windows-x86_64</module> -->
+<!-- 			</modules> -->
 			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<id>native-module-copy</id>
-								<phase>package</phase>
-								<configuration>
-									<target name="copy-files">
-										<!-- PLUGIN FILES -->				
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-alsa-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-jack-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-oss-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86_64/target/build" />
-										</copy>
-										
-										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
-										<!-- /PLUGINS FILES -->
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+<!-- 			<build> -->
+<!-- 				<plugins> -->
+<!-- 					<plugin> -->
+<!-- 						<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 						<artifactId>maven-antrun-plugin</artifactId> -->
+<!-- 						<version>1.7</version> -->
+<!-- 						<executions> -->
+<!-- 							<execution> -->
+<!-- 								<id>native-module-copy</id> -->
+<!-- 								<phase>package</phase> -->
+<!-- 								<configuration> -->
+<!-- 									<target name="copy-files"> -->
+<!-- 										PLUGIN FILES -->
+<!-- 										<copy todir="${project.build.directory}/${project.finalName}/"> -->
+<!-- 											<fileset dir="../native-modules/tuxguitar-winmm-windows-x86_64/target/build" /> -->
+<!-- 										</copy> -->
+<!-- 										<copy todir="${project.build.directory}/${project.finalName}/"> -->
+<!-- 											<fileset dir="../native-modules/tuxguitar-fluidsynth-windows-x86_64/target/build" /> -->
+<!-- 										</copy> -->
+<!-- 										<copy todir="${project.build.directory}/${project.finalName}/"> -->
+<!-- 											<fileset dir="../native-modules/tuxguitar-jack-windows-x86_64/target/build" /> -->
+<!-- 										</copy> -->
+<!-- 										/PLUGINS FILES -->
+<!-- 									</target> -->
+<!-- 								</configuration> -->
+<!-- 								<goals> -->
+<!-- 									<goal>run</goal> -->
+<!-- 								</goals> -->
+<!-- 							</execution> -->
+<!-- 						</executions> -->
+<!-- 					</plugin> -->
+<!-- 				</plugins> -->
+<!-- 			</build> -->
+<!-- 		</profile> -->
+<!-- 	</profiles> -->
 </project>

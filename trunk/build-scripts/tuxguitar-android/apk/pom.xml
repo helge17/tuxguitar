@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-android-build-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
-		<version>1.3.1-SNAPSHOT</version>
+		<version>SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -29,13 +29,13 @@
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-gm-utils</artifactId>
-			<version>1.3.1-SNAPSHOT</version>
+			<version>SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-gervill-soundbank</artifactId>
-			<version>1.3.1-SNAPSHOT</version>
+			<version>SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

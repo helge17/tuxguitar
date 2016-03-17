@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-android-build-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
-		<version>1.3.1-SNAPSHOT</version>
+		<version>SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
