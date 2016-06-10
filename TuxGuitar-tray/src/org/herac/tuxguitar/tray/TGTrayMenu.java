@@ -11,10 +11,9 @@ import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.ui.swt.resource.SWTImage;
+import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
-
-import swtimpl.resource.SWTImage;
-import swtimpl.widget.SWTWindow;
 
 public class TGTrayMenu {
 	

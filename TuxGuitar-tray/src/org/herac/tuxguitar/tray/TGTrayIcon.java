@@ -2,8 +2,7 @@ package org.herac.tuxguitar.tray;
 
 import org.eclipse.swt.widgets.TrayItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-
-import swtimpl.resource.SWTImage;
+import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 
 public class TGTrayIcon {
 	

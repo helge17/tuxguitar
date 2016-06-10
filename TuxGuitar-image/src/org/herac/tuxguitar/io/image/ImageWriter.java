@@ -10,8 +10,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.ui.resource.UIImage;
-
-import swtimpl.resource.SWTImage;
+import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 
 public class ImageWriter {
 	

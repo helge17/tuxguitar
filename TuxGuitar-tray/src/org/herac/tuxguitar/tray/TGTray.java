@@ -13,9 +13,8 @@ import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.ui.swt.SWTApplication;
 import org.herac.tuxguitar.util.TGContext;
-
-import swtimpl.SWTApplication;
 
 public class TGTray implements TGEventListener {
 	
