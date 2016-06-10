@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -23,26 +24,26 @@ public class TGUndoableManager {
 		this.getBuffer().getEdits().clear();
 	}
 	
-	public synchronized void undo() throws TGCannotUndoException {
+	public synchronized void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		TGUndoableEdit edit = editToBeUndone();
 		if( edit == null ) {
 			throw new TGCannotUndoException();
 		}
 		try{
-			edit.undo();
+			edit.undo(actionContext);
 		}catch(Throwable throwable){
 			throw new TGCannotUndoException(throwable);
 		}
 		this.decrementIndexOfNextAdd();
 	}
 	
-	public synchronized void redo() throws TGCannotRedoException {
+	public synchronized void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		TGUndoableEdit edit = editToBeRedone();
 		if( edit == null ) {
 			throw new TGCannotRedoException();
 		}
 		try{
-			edit.redo();
+			edit.redo(actionContext);
 		}catch(Throwable throwable){
 			throw new TGCannotRedoException();
 		}

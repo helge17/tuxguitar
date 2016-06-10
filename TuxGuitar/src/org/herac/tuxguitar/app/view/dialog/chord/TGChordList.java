@@ -21,43 +21,44 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGFontImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.graphics.TGColor;
+import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 /**
  * @author julian
  * 
  * Component that shows the list of (alternative) chords - bottom of the screen
  */
-public class TGChordList extends Composite {
+public class TGChordList {
 	
-	private static final int MIN_HEIGHT = 160;
 	private static final int SCROLL_INCREMENT = 25;
+	private static final float MIN_HEIGHT = 160f;
 	private static final float CHORD_FIRST_FRET_SPACING = 12;
 	private static final float CHORD_STRING_SPACING = 8;
 	private static final float CHORD_FRET_SPACING = 10;
@@ -70,56 +71,51 @@ public class TGChordList extends Composite {
 	private List<TGChord> graphicChords;
 	private float height;
 	private TGChordImpl selectedChord;
-	private Composite composite;
-	private Font font;
+	private UIScrollBarPanel control;
+	private UICanvas canvas;
+	private UIFont font;
 	
-	public TGChordList(TGChordDialog dialog,Composite parent,TGBeat beat) {
-		super(parent, SWT.NONE);
-		this.setLayout(dialog.gridLayout(1,false,0,0));
-		this.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+	public TGChordList(TGChordDialog dialog, UIContainer parent, TGBeat beat) {
 		this.graphicChords = new ArrayList<TGChord>();
 		this.resourceBuffer = new TGResourceBuffer();
 		this.dialog = dialog;
 		this.beat = beat;
-		this.init();
+		this.createControl(parent);
 	}
 	
-	private void init(){
-		this.composite = new Composite(this,SWT.BORDER | SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
-		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.composite.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				TGPainterImpl painter = new TGPainterImpl(e.gc);
-				paintChords(painter);
+	public void createControl(UIContainer parent) {
+		final UIFactory uiFactory = this.dialog.getUIFactory();
+		
+		UITableLayout scrollBarLayout = new UITableLayout(0f);
+		this.control = uiFactory.createScrollBarPanel(parent, true, false, true);
+		this.control.setLayout(scrollBarLayout);
+		
+		this.canvas = uiFactory.createCanvas(this.control, false);
+		this.canvas.setBgColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		this.canvas.addPaintListener(new UIPaintListener() {
+			public void onPaint(UIPaintEvent event) {
+				paintChords(new TGPainterImpl(uiFactory, event.getPainter()));
 			}
 		});
-		this.composite.addMouseListener(new MouseAdapter() {
-			public void mouseUp(MouseEvent e) {
+		this.canvas.addMouseUpListener(new UIMouseUpListener() {
+			public void onMouseUp(UIMouseEvent event) {
 				getComposite().setFocus();
-				getDialog().getEditor().setChord(getChord(e.x, e.y,true));
+				getDialog().getEditor().setChord(getChord(event.getPosition().getX(), event.getPosition().getY(), true));
+				redraw();
+			}
+		});
+		scrollBarLayout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, MIN_HEIGHT, 0f);
+		
+		final UIScrollBar uiScrollBar = this.control.getVScroll();
+		uiScrollBar.setIncrement(SCROLL_INCREMENT);
+		uiScrollBar.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				redraw();
 			}
 		});
 		
-		final Point origin = new Point(0, 0);
-		final ScrollBar vBar = this.composite.getVerticalBar();
-		vBar.setIncrement(SCROLL_INCREMENT);
-		vBar.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				int vSelection = vBar.getSelection();
-				int destY = -vSelection - origin.y;
-				Rectangle rect = getComposite().getBounds();
-				getShell().scroll(0, destY, 0, 0, rect.width, rect.height, false);
-				origin.y = -vSelection;
-				redraw();
-			}
-		});
-		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumHeight = MIN_HEIGHT;
-		this.composite.setLayoutData(data);
-		this.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent arg0) {
+		this.control.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				disposeChords();
 				disposeFont();
 			}
@@ -127,34 +123,33 @@ public class TGChordList extends Composite {
 	}
 	
 	public void redraw(){
-		super.redraw();
-		this.composite.redraw();
+		this.canvas.redraw();
 	}
 	
-	protected void paintChords(TGPainterImpl painter) {
+	private void paintChords(TGPainter painter) {
 		float maxHeight = 0;
 		float fromX = 15;
 		float fromY = 10;
-		float vScroll = this.composite.getVerticalBar().getSelection();
+		float vScroll = this.control.getVScroll().getValue();
 		Iterator<TGChord> it = this.graphicChords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
 			
 			TGColor color = new TGColorImpl(getChordColor(chord));
 			chord.registerBuffer(this.resourceBuffer);
-			chord.setBackgroundColor(new TGColorImpl(this.composite.getBackground()));
+			chord.setBackgroundColor(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_WHITE)));
 			chord.setColor(color);
 			chord.setNoteColor(color);
-			chord.setTonicColor(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_DARK_RED)));
+			chord.setTonicColor(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_DARK_RED)));
 			chord.setFirstFretSpacing(CHORD_FIRST_FRET_SPACING);
 			chord.setStringSpacing(CHORD_STRING_SPACING);
 			chord.setFretSpacing(CHORD_FRET_SPACING);
 			chord.setNoteSize(CHORD_NOTE_SIZE);
 			chord.setLineWidth(CHORD_LINE_WIDTH);
-			chord.setFirstFretFont(new TGFontImpl(getFont(painter.getGC())));
+			chord.setFirstFretFont(new TGFontImpl(getFont()));
 			chord.setStyle(TGLayout.DISPLAY_CHORD_DIAGRAM);
 			chord.update(painter, this.resourceBuffer);
-			if(fromX + chord.getWidth() >= ((getBounds().x + getBounds().width) - 20)){
+			if( fromX + chord.getWidth() >= ((this.control.getBounds().getX() + this.control.getBounds().getWidth()) - 20)){
 				fromX = 15;
 				fromY += chord.getHeight() + 10;
 			}
@@ -170,41 +165,32 @@ public class TGChordList extends Composite {
 		this.updateScroll();
 	}
 	
-	private Color getChordColor(TGChordImpl chord){
+	private UIColor getChordColor(TGChordImpl chord){
 		if(this.selectedChord != null && this.selectedChord.equals(chord)){
-			return getDisplay().getSystemColor(SWT.COLOR_BLUE);
+			return this.dialog.getColor(TGColorManager.COLOR_BLUE);
 		}
-		return getDisplay().getSystemColor(SWT.COLOR_BLACK);
+		return this.dialog.getColor(TGColorManager.COLOR_BLACK);
 	}
 	
-	public void updateScroll(){
-		Rectangle rect = this.composite.getBounds();
-		Rectangle client = this.composite.getClientArea();
-		ScrollBar vBar = this.composite.getVerticalBar();
-		vBar.setMaximum(Math.round(this.height));
-		vBar.setThumb(Math.min(rect.height, client.height));
+	public void updateScroll() {
+		UIRectangle bounds = this.canvas.getBounds();
+		
+		UIScrollBar uiScrollBar = this.control.getVScroll();
+		uiScrollBar.setMaximum(Math.round(this.height));
+		uiScrollBar.setThumb(Math.round(bounds.getHeight()));
 	}
 	
-	protected int getTrackString(int number){
-		TGString string = TGChordList.this.beat.getMeasure().getTrack().getString(number);
-		return string.getValue();
-	}
-	
-	protected Font getFont(GC painter){
-		if(this.font == null || this.font.isDisposed()){ 
-			Font available = painter.getFont();
-			if(available == null || available.isDisposed()){
-				available = getDisplay().getSystemFont();
-			}
-			FontData[] datas = available.getFontData();
-			if(datas.length > 0){
-				this.font = new Font(getDisplay(),datas[0].getName(),Math.min(7,datas[0].getHeight()),SWT.BOLD);
-			}
+	private UIFont getFont(){
+		if( this.font == null || this.font.isDisposed() ){
+			UIFont font = this.control.getFont();
+			UIFontModel model = new UIFontModel((font != null ? font.getName() : null), 7, true, false);
+			
+			this.font = this.dialog.getUIFactory().createFont(model);
 		}
 		return this.font;
 	}
 	
-	protected TGChordImpl getChord(int x, int y,boolean setAsSelected) {
+	private TGChordImpl getChord(float x, float y, boolean setAsSelected) {
 		Iterator<TGChord> it = this.graphicChords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
@@ -233,7 +219,7 @@ public class TGChordList extends Composite {
 		Iterator<TGChord> it = chords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
-			chord.setTonic( TGChordList.this.dialog.getSelector().getTonicList().getSelectionIndex() );
+			chord.setTonic( TGChordList.this.dialog.getSelector().getTonicList().getSelectedValue() );
 			chord.setBeat(TGChordList.this.beat);
 			this.graphicChords.add(chord);
 		}
@@ -251,11 +237,15 @@ public class TGChordList extends Composite {
 		this.resourceBuffer.disposeAllResources();
 	}
 	
-	protected Composite getComposite(){
-		return this.composite;
+	public UIScrollBarPanel getControl() {
+		return control;
 	}
 	
-	protected TGChordDialog getDialog(){
+	public UICanvas getComposite(){
+		return this.canvas;
+	}
+	
+	public TGChordDialog getDialog(){
 		return this.dialog;
 	}
 }

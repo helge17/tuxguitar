@@ -3,20 +3,11 @@ package org.herac.tuxguitar.app.view.component.tabfolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolderEvent;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TGControl;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -27,31 +18,37 @@ import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UICloseEvent;
+import org.herac.tuxguitar.ui.event.UICloseListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UITabFolder;
+import org.herac.tuxguitar.ui.widget.UITabItem;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTabFolder implements TGEventListener {
 	
-	private static final int TAB_HEIGHT = 28;
-	
 	private TGContext context;
 	private TGSyncProcessLocked updateDocumentProcess;
 	private TGSyncProcessLocked updateSelectionProcess;
 	
-	private CTabFolder tabFolder;
-	private List<CTabItem> tabItems;
+	private UITabFolder tabFolder;
+	private List<UITabItem> tabItems;
 	private boolean ignoreEvents;
 	private boolean currentUnsaved;
 	
 	public TGTabFolder(TGContext context) {
 		this.context = context;
-		this.tabItems = new ArrayList<CTabItem>();
+		this.tabItems = new ArrayList<UITabItem>();
 		this.createSyncProcesses();
 		this.appendListeners();
 	}
 	
-	public Control getControl() {
+	public UITabFolder getControl() {
 		return this.tabFolder;
 	}
 	
@@ -65,22 +62,20 @@ public class TGTabFolder implements TGEventListener {
 		tgEditorManager.addRedrawListener(new TGTabEventListener(this.context));
 	}
 	
-	public void init(Composite parent) {
-		this.tabFolder = new CTabFolder(parent, SWT.TOP);
-		this.tabFolder.setTabHeight(TAB_HEIGHT);
-		this.tabFolder.setLayout(new FillLayout());
-		this.tabFolder.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+	public void init(UIContainer parent) {
+		UIFactory factory = TGApplication.getInstance(this.context).getFactory();
+		
+		this.tabFolder = factory.createTabFolder(parent, true);
+		this.tabFolder.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGTabFolder.this.onTabItemSelected();
 			}
 		});
-		
-		this.tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-			public void close(CTabFolderEvent event) {
-				TGDocument document = (TGDocument) event.item.getData();
+		this.tabFolder.addTabCloseListener(new UICloseListener() {
+			public void onClose(UICloseEvent event) {
+				TGDocument document = ((UITabItem)event.getComponent()).getData(TGDocument.class.getName());
 				if( document != null ) {
 					closeDocument(document);
-					event.doit = false;
 				}
 			}
 		});
@@ -125,7 +120,7 @@ public class TGTabFolder implements TGEventListener {
 				
 				int index = documentManager.findCurrentDocumentIndex();
 				if( index >= 0 && index < this.tabItems.size() ) {
-					this.tabFolder.setSelection(index);
+					this.tabFolder.setSelectedIndex(index);
 				}
 				
 				this.ignoreEvents = false;
@@ -144,11 +139,11 @@ public class TGTabFolder implements TGEventListener {
 			for(int i = 0 ; i < documents.size() ; i ++) {
 				TGDocument document = documents.get(i);
 				
-				CTabItem cTabItem = this.findTabItem(i);
-				cTabItem.setText(this.createTabItemLabel(document));
-				cTabItem.setData(document);
+				UITabItem uiTabItem = this.findTabItem(i);
+				uiTabItem.setText(this.createTabItemLabel(document));
+				uiTabItem.setData(TGDocument.class.getName(), document);
 				if( currentDocument != null && currentDocument.equals(document) ) {
-					this.tabFolder.setSelection(i);
+					this.tabFolder.setSelectedIndex(i);
 				}
 			}
 			
@@ -162,22 +157,21 @@ public class TGTabFolder implements TGEventListener {
 			List<TGDocument> documents = TGDocumentListManager.getInstance(this.context).getDocuments();
 			while( this.tabItems.size() > documents.size() ) {
 				int index = (this.tabItems.size() - 1);
-				CTabItem cTabItem = this.tabItems.get(index);
-				cTabItem.dispose();
+				UITabItem uiTabItem = this.tabItems.get(index);
+				uiTabItem.dispose();
 				this.tabItems.remove(index);
 			}
 		}
 	}
 	
-	public CTabItem findTabItem(int index) {
+	public UITabItem findTabItem(int index) {
 		if(!this.isDisposed()) {
 			if( index >= 0 ) {
 				while( this.tabItems.size() <= index ) {
-					CTabItem cTabItem = new CTabItem(this.tabFolder, SWT.NONE);
-					cTabItem.setControl(new TGControl(this.context, this.tabFolder));
-					cTabItem.setShowClose(true);
+					UITabItem uiTabItem = this.tabFolder.createTab();
+					uiTabItem.setData(TGControl.class.getName(), new TGControl(this.context, uiTabItem));
 					
-					this.tabItems.add(cTabItem);
+					this.tabItems.add(uiTabItem);
 				}
 				return this.tabItems.get(index);
 			}
@@ -186,15 +180,15 @@ public class TGTabFolder implements TGEventListener {
 	}
 	
 	public TGControl findControl(int index) {
-		CTabItem tabItem = this.findTabItem(index);
+		UITabItem tabItem = this.findTabItem(index);
 		if( tabItem != null ) {
-			return (TGControl) tabItem.getControl();
+			return tabItem.getData(TGControl.class.getName());
 		}
 		return null;
 	}
 	
 	public TGControl findSelectedControl() {
-		int index = this.tabFolder.getSelectionIndex();
+		int index = this.tabFolder.getSelectedIndex();
 		if( index >= 0 ) {
 			return this.findControl(index);
 		}
@@ -239,7 +233,7 @@ public class TGTabFolder implements TGEventListener {
 		if(!this.isDisposed()) {
 			TGDocumentListManager documentManager = TGDocumentListManager.getInstance(this.context);
 			List<TGDocument> documents = documentManager.getDocuments();
-			int index = this.tabFolder.getSelectionIndex();
+			int index = this.tabFolder.getSelectedIndex();
 			if( index >= 0 && index < documents.size() ) {
 				TGDocument document = documents.get(index);
 				TGDocument currentDocument = documentManager.findCurrentDocument();

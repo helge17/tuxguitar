@@ -1,104 +1,101 @@
 package org.herac.tuxguitar.io.midi;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSettingsDialog {
 	
 	public static final int MAX_TRANSPOSE = 24;
-	
 	public static final int MIN_TRANSPOSE = -24;
 	
 	private static final int STATUS_NONE = 0;
-	
 	private static final int STATUS_CANCELLED = 1;
-	
 	private static final int STATUS_ACCEPTED = 2;
 	
-	protected int status;
+	private TGContext context;
+	private MidiSettings settings;
+	private int status;
 	
-	protected MidiSettings settings;
-	
-	public MidiSettingsDialog(){
+	public MidiSettingsDialog(TGContext context){
+		this.context = context;
 		this.settings = new MidiSettings();
 	}
 	
 	public MidiSettings open() {
 		this.status = STATUS_NONE;
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow parent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText("Options");
 		
 		//------------------TRACK SELECTION------------------
-		Group trackGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		trackGroup.setLayout(new GridLayout(2,false));
-		trackGroup.setLayoutData(getGroupData());
-		trackGroup.setText("Transpose notes");
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
+		group.setText("Transpose notes");
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
 		
-		//------------------TRANSPOSE----------------------
-		Label transposeLabel = new Label(trackGroup, SWT.NONE);
+		final UILabel transposeLabel = uiFactory.createLabel(group);
 		transposeLabel.setText("Transpose:");
-		transposeLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
+		groupLayout.set(transposeLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Combo transposeCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		transposeCombo.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
+		final UIDropDownSelect<Integer> transposeCombo = uiFactory.createDropDownSelect(group);
 		for(int i = MIN_TRANSPOSE;i <= MAX_TRANSPOSE;i ++){
-			transposeCombo.add(Integer.toString(i));
+			transposeCombo.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
 		}
-		transposeCombo.select(-MIN_TRANSPOSE);
+		transposeCombo.setSelectedValue(0);
+		groupLayout.set(transposeCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(data);
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				Integer transposition = transposeCombo.getSelectedValue();
 				MidiSettingsDialog.this.status = STATUS_ACCEPTED;
-				MidiSettingsDialog.this.settings.setTranspose( (MIN_TRANSPOSE + transposeCombo.getSelectionIndex()) );
+				MidiSettingsDialog.this.settings.setTranspose(transposition != null ? transposition : 0);
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(data);
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				MidiSettingsDialog.this.status = STATUS_CANCELLED;
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		
 		return ((this.status == STATUS_ACCEPTED)?MidiSettingsDialog.this.settings:null);
-	}
-	
-	private GridData getGroupData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 300;
-		return data;
 	}
 }

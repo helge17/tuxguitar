@@ -2,27 +2,27 @@ package org.herac.tuxguitar.midiinput;
 
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 class MiConfig
 {
-	private			TGConfigManager	f_Config;
 	static final	String			KEY_MIDI_INPUT_PORT		= "midi.input.port";
 	static final	String			KEY_MIDI_BASE_CHANNEL	= "midi.input.base.channel";
 	static final	String			KEY_MIN_VELOCITY		= "midi.input.min.velocity";
@@ -62,7 +62,9 @@ class MiConfig
 	static final int	MODE_SCALES_RECOGNITION	=    2;	// notes are used to identify a scale
 	static final int	MODE_SONG_RECORDING		=    3;	// notes are recorded with their actual timing
 
-
+	private			TGContext	f_Context;
+	private			TGConfigManager	f_Config;
+	
 	private	MiConfig()
 	{
 	super();
@@ -79,6 +81,7 @@ class MiConfig
 
 	static void	init(TGContext context)
 	{
+		instance().f_Context = context;
 		if( instance().f_Config == null ) {
 			instance().f_Config = new TGConfigManager(context, "tuxguitar-midi-input");
 		}
@@ -100,7 +103,7 @@ class MiConfig
 	int		getChordMode()			{ return s_Instance.f_Config.getIntegerValue(KEY_CHORD_MODE, CHORD_MODE_DIAGRAM); }
 
 
-	void	showDialog(Shell parent)
+	void	showDialog(UIWindow parent)
 	{
 	try {
 		final List<String> portsNames			= MiPortProvider.listPortsNames();
@@ -112,163 +115,169 @@ class MiConfig
 		final int		currInputTimeOut	= getInputTimeOut();
 		//final int		currChordMode		= getChordMode();
 
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.f_Context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("midiinput.config.title"));
 
 		// MIDI
-		Group	groupMidi = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-		groupMidi.setLayout(new GridLayout(2, false));
-		groupMidi.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupMidiLayout = new UITableLayout();
+		UILegendPanel groupMidi = uiFactory.createLegendPanel(dialog);
+		groupMidi.setLayout(groupMidiLayout);
 		groupMidi.setText(TuxGuitar.getProperty("midiinput.config.label.group.midi"));
-
+		dialogLayout.set(groupMidi, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//------------------MIDI INPUT PORT------------------
-		Label	lblPort = new Label(groupMidi, SWT.LEFT);
+		UILabel	lblPort = uiFactory.createLabel(groupMidi);
 		lblPort.setText(TuxGuitar.getProperty("midiinput.config.label.port") + ":");
-
-		final Combo	cmbPort = new Combo(groupMidi, SWT.DROP_DOWN | SWT.READ_ONLY);
-		cmbPort.setLayoutData(new GridData(130, SWT.DEFAULT));
-
+		groupMidiLayout.set(lblPort, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UIDropDownSelect<String>	cmbPort = uiFactory.createDropDownSelect(groupMidi);
 		for(int i = 0 ; i < portsNames.size(); i++)
 			{
 			String	portName = (String)portsNames.get(i);
 
-			cmbPort.add(portName);
-
-			if(portName.equals(currPortName))
-				cmbPort.select(i);
+			cmbPort.addItem(new UISelectItem<String>(portName, portName));
 			}
-
+		cmbPort.setSelectedValue(currPortName);
+		groupMidiLayout.set(cmbPort, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 		//------------------MIDI BASE CHANNEL------------------
-		Label	lblChannel = new Label(groupMidi, SWT.LEFT);
+		UILabel	lblChannel = uiFactory.createLabel(groupMidi);
 		lblChannel.setText(TuxGuitar.getProperty("midiinput.config.label.basechannel") + ":");
-
-		final Combo	cmbChannel = new Combo(groupMidi, SWT.DROP_DOWN | SWT.READ_ONLY);
-		cmbChannel.setLayoutData(new GridData(130, SWT.DEFAULT));
-
-		for(int i = 1 ; i <= 16; i++)
-			cmbChannel.add(Integer.toString(i));
-
-		cmbChannel.select(currBaseChannel);
-
+		groupMidiLayout.set(lblChannel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UIDropDownSelect<Integer>	cmbChannel = uiFactory.createDropDownSelect(groupMidi);
+		for(int i = 0 ; i < 16; i++) {
+			cmbChannel.addItem(new UISelectItem<Integer>(Integer.toString(i + 1), i));
+		}
+		cmbChannel.setSelectedValue(currBaseChannel);
+		groupMidiLayout.set(cmbChannel, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 		// General input
-		Group	groupInput = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-		groupInput.setLayout(new GridLayout(2, false));
-		groupInput.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupInputLayout = new UITableLayout();
+		UILegendPanel groupInput = uiFactory.createLegendPanel(dialog);
+		groupInput.setLayout(groupInputLayout);
 		groupInput.setText(TuxGuitar.getProperty("midiinput.config.label.group.input"));
-
+		dialogLayout.set(groupInput, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//------------------MIN VELOCITY THRESHOLD------------------
-		Label	lblVelocity = new Label(groupInput, SWT.LEFT);
+		UILabel	lblVelocity = uiFactory.createLabel(groupInput);
 		lblVelocity.setText(TuxGuitar.getProperty("midiinput.config.label.minvelocity") + ":");
-
-		final Spinner	spnMinVelocity = new Spinner(groupInput, SWT.BORDER);
-		spnMinVelocity.setLayoutData(new GridData(130, SWT.DEFAULT));
+		groupInputLayout.set(lblVelocity, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UISpinner	spnMinVelocity = uiFactory.createSpinner(groupInput);
 		spnMinVelocity.setMinimum(MIN_VELOCITY_THRESHOLD);
 		spnMinVelocity.setMaximum(MAX_VELOCITY_THRESHOLD);
-
-		spnMinVelocity.setSelection(currMinVelocity);
-
+		spnMinVelocity.setValue(currMinVelocity);
+		groupInputLayout.set(spnMinVelocity, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 		//------------------MIN VELOCITY DURATION------------------
-		Label	lblDuration = new Label(groupInput, SWT.LEFT);
+		UILabel	lblDuration = uiFactory.createLabel(groupInput);
 		lblDuration.setText(TuxGuitar.getProperty("midiinput.config.label.minduration") + ":");
-
-		final Spinner	spnMinDuration = new Spinner(groupInput, SWT.BORDER);
-		spnMinDuration.setLayoutData(new GridData(130, SWT.DEFAULT));
+		groupInputLayout.set(lblDuration, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UISpinner	spnMinDuration = uiFactory.createSpinner(groupInput);
 		spnMinDuration.setMinimum(MIN_DURATION_THRESHOLD);
 		spnMinDuration.setMaximum(MAX_DURATION_THRESHOLD);
-
-		spnMinDuration.setSelection(currMinDuration);
-
+		spnMinDuration.setValue(currMinDuration);
+		groupInputLayout.set(spnMinDuration, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 		// Echo/Chords/Scales
-		Group	groupEcho = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-		groupEcho.setLayout(new GridLayout(2, false));
-		groupEcho.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupEchoLayout = new UITableLayout();
+		UILegendPanel groupEcho = uiFactory.createLegendPanel(dialog);
+		groupEcho.setLayout(groupEchoLayout);
 		groupEcho.setText(TuxGuitar.getProperty("midiinput.config.label.group.echo"));
+		dialogLayout.set(groupEcho, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		//------------------ECHO TIME OUT------------------
-		Label	lblEchoTimeOut = new Label(groupEcho, SWT.LEFT);
+		UILabel	lblEchoTimeOut = uiFactory.createLabel(groupEcho);
 		lblEchoTimeOut.setText(TuxGuitar.getProperty("midiinput.config.label.echotimeout") + ":");
-
-		final Spinner	spnEchoTimeOut = new Spinner(groupEcho, SWT.BORDER);
-		spnEchoTimeOut.setLayoutData(new GridData(130, SWT.DEFAULT));
+		groupEchoLayout.set(lblEchoTimeOut, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UISpinner	spnEchoTimeOut = uiFactory.createSpinner(groupEcho);
 		spnEchoTimeOut.setMinimum(MIN_ECHO_TIMEOUT);
 		spnEchoTimeOut.setMaximum(MAX_ECHO_TIMEOUT);
 
-		spnEchoTimeOut.setSelection(currEchoTimeOut);
-
+		spnEchoTimeOut.setValue(currEchoTimeOut);
+		groupEchoLayout.set(spnEchoTimeOut, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 		//------------------INPUT TIME OUT------------------
-		Label	lblInputTimeOut = new Label(groupEcho, SWT.LEFT);
+		UILabel	lblInputTimeOut = uiFactory.createLabel(groupEcho);
 		lblInputTimeOut.setText(TuxGuitar.getProperty("midiinput.config.label.inputtimeout") + ":");
-
-		final Spinner	spnInputTimeOut = new Spinner(groupEcho, SWT.BORDER);
-		spnInputTimeOut.setLayoutData(new GridData(130, SWT.DEFAULT));
+		groupEchoLayout.set(lblInputTimeOut, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UISpinner	spnInputTimeOut = uiFactory.createSpinner(groupEcho);
 		spnInputTimeOut.setMinimum(MIN_INPUT_TIMEOUT);
 		spnInputTimeOut.setMaximum(MAX_INPUT_TIMEOUT);
 
-		spnInputTimeOut.setSelection(currInputTimeOut);
-
+		spnInputTimeOut.setValue(currInputTimeOut);
+		groupEchoLayout.set(spnInputTimeOut, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 		//------------------CHORD MODE------------------
-		Label	lblMode = new Label(groupEcho, SWT.LEFT);
+		UILabel	lblMode = uiFactory.createLabel(groupEcho);
 		lblMode.setText(TuxGuitar.getProperty("midiinput.config.label.chordmode") + ":");
-
-		final Combo	cmbChordMode = new Combo(groupEcho, SWT.DROP_DOWN | SWT.READ_ONLY);
-		cmbChordMode.setLayoutData(new GridData(130, SWT.DEFAULT));
-
-		cmbChordMode.add(TuxGuitar.getProperty("midiinput.chordmode.diagram"));
-		cmbChordMode.add(TuxGuitar.getProperty("midiinput.chordmode.all"));
-
-		cmbChordMode.select(MiConfig.instance().getChordMode());
-
+		groupEchoLayout.set(lblMode, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UIDropDownSelect<Integer>	cmbChordMode = uiFactory.createDropDownSelect(groupEcho);
+		
+		cmbChordMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.chordmode.diagram"), 0));
+		cmbChordMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.chordmode.all"), 1));
+		cmbChordMode.setSelectedValue(MiConfig.instance().getChordMode());
+		
+		groupEchoLayout.set(cmbChordMode, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
 	///* RECORDING
 		// Recording
-		Group	groupRec = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-		groupRec.setLayout(new GridLayout(2, false));
-		groupRec.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		groupRec.setText(TuxGuitar.getProperty("midiinput.config.label.group.rec"));
-
+//		UITableLayout groupRecLayout = new UITableLayout();
+//		UILegendPanel groupRec = uiFactory.createLegendPanel(dialog);
+//		groupRec.setLayout(groupRecLayout);
+//		groupRec.setText(TuxGuitar.getProperty("midiinput.config.label.group.rec"));
+//		dialogLayout.set(groupRec, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//------------------REC COUNTDOWN BARS------------------
-		Label	lblCountdownBars = new Label(groupRec, SWT.LEFT);
-		lblCountdownBars.setText(TuxGuitar.getProperty("midiinput.config.label.countdown") + ":");
-
-		final Spinner	spnCountdownBars = new Spinner(groupRec, SWT.BORDER);
-		spnCountdownBars.setLayoutData(new GridData(130, SWT.DEFAULT));
-		spnCountdownBars.setMinimum(MIN_COUNTDOWN_BARS);
-		spnCountdownBars.setMaximum(MAX_COUNTDOWN_BARS);
-
-		//spnCountdownBars.setSelection(currInputTimeOut);
+//		UILabel	lblCountdownBars = uiFactory.createLabel(groupRec);
+//		lblCountdownBars.setText(TuxGuitar.getProperty("midiinput.config.label.countdown") + ":");
+//		groupRecLayout.set(lblCountdownBars, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+//		
+//		final UISpinner	spnCountdownBars = uiFactory.createSpinner(groupRec);
+//		spnCountdownBars.setMinimum(MIN_COUNTDOWN_BARS);
+//		spnCountdownBars.setMaximum(MAX_COUNTDOWN_BARS);
+//		spnCountdownBars.setValue(0);
+//		groupRecLayout.set(spnCountdownBars, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 		//------------------USE METRONOME------------------
-		final Button	chkMetronome = new Button(groupRec, SWT.CHECK);
-		chkMetronome.setText(TuxGuitar.getProperty("midiinput.config.label.metronome"));
-		chkMetronome.setSelection(true);
-
+//		final UICheckBox	chkMetronome = uiFactory.createCheckBox(groupRec);
+//		chkMetronome.setText(TuxGuitar.getProperty("midiinput.config.label.metronome"));
+//		chkMetronome.setSelected(true);
+//		groupRecLayout.set(chkMetronome, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
+//		
 		//------------------USE PLAYBACK------------------
-		final Button	chkPlayback = new Button(groupRec, SWT.CHECK);
-		chkPlayback.setText(TuxGuitar.getProperty("midiinput.config.label.playback"));
-		chkPlayback.setSelection(true);
+//		final UICheckBox	chkPlayback = uiFactory.createCheckBox(groupRec);
+//		chkPlayback.setText(TuxGuitar.getProperty("midiinput.config.label.playback"));
+//		chkPlayback.setSelected(true);
+//		groupRecLayout.set(chkPlayback, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
+//		
 	 //*/
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2, false));
-		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
-
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 4, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(data);
-		buttonOK.addSelectionListener(new SelectionAdapter()
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() 
 			{
-			public void widgetSelected(SelectionEvent arg0)
+			public void onSelect(UISelectionEvent event) 
 				{
-				int		portSelection = cmbPort.getSelectionIndex();
+				String portName = cmbPort.getSelectedValue();
 
-				if(portSelection >= 0 && portSelection < portsNames.size())
+				if( portName != null )
 					{
-					String	portName = (String)portsNames.get(portSelection);
-
 					s_Instance.f_Config.setValue(KEY_MIDI_INPUT_PORT, portName);
 					s_Instance.f_Config.save();
 
@@ -281,10 +290,9 @@ class MiConfig
 						}
 					}
 
-				int		baseChannel = cmbChannel.getSelectionIndex();
+				Integer baseChannel = cmbChannel.getSelectedValue();
 
-				if(	baseChannel >= 0 &&
-					baseChannel < 16)
+				if(	baseChannel != null && baseChannel >= 0 && baseChannel < 16)
 					{
 					s_Instance.f_Config.setValue(KEY_MIDI_BASE_CHANNEL, baseChannel);
 					s_Instance.f_Config.save();
@@ -292,7 +300,7 @@ class MiConfig
 					MiProvider.instance().setBaseChannel(baseChannel);
 					}
 
-				int		minVelocity = spnMinVelocity.getSelection();
+				int		minVelocity = spnMinVelocity.getValue();
 
 				if(	minVelocity >= MIN_VELOCITY_THRESHOLD &&
 					minVelocity <= MAX_VELOCITY_THRESHOLD)
@@ -303,7 +311,7 @@ class MiConfig
 					MiProvider.instance().setMinVelocity((byte)minVelocity);
 					}
 
-				int		minDuration = spnMinDuration.getSelection();
+				int		minDuration = spnMinDuration.getValue();
 
 				if(	minDuration >= MIN_DURATION_THRESHOLD &&
 					minDuration <= MAX_DURATION_THRESHOLD)
@@ -314,7 +322,7 @@ class MiConfig
 					MiProvider.instance().setMinDuration(minDuration);
 					}
 
-				int		echoTimeOut = spnEchoTimeOut.getSelection();
+				int		echoTimeOut = spnEchoTimeOut.getValue();
 
 				if(	echoTimeOut >= MIN_ECHO_TIMEOUT &&
 					echoTimeOut <= MAX_ECHO_TIMEOUT)
@@ -325,7 +333,7 @@ class MiConfig
 					MiProvider.instance().setEchoTimeOut(echoTimeOut);
 					}
 
-				int		inputTimeOut = spnInputTimeOut.getSelection();
+				int		inputTimeOut = spnInputTimeOut.getValue();
 
 				if(	inputTimeOut >= MIN_INPUT_TIMEOUT &&
 					inputTimeOut <= MAX_INPUT_TIMEOUT)
@@ -336,29 +344,32 @@ class MiConfig
 					MiProvider.instance().setInputTimeOut(inputTimeOut);
 					}
 
-				int		chordMode = cmbChordMode.getSelectionIndex();
+				Integer		chordMode = cmbChordMode.getSelectedValue();
+				if(	chordMode != null)
+					{
+					s_Instance.f_Config.setValue(KEY_CHORD_MODE, chordMode);
+					s_Instance.f_Config.save();
 
-				s_Instance.f_Config.setValue(KEY_CHORD_MODE, chordMode);
-				s_Instance.f_Config.save();
-
-				MiProvider.instance().setChordMode(chordMode);
+					MiProvider.instance().setChordMode(chordMode);
+					}
 
 				dialog.dispose();
 				}
 			});
-
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(data);
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
+		
 
-		dialog.setDefaultButton(buttonOK);
-
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		}
 	catch(Exception e)
 		{

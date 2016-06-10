@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
@@ -27,25 +28,25 @@ public class TGUndoableTripletFeel extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeTripletFeel(getSong(), getMeasureHeaderAt(this.position), this.redoableTripletFeel, this.toEnd);
+		this.changeTripletFeel(actionContext, getSong(), getMeasureHeaderAt(this.position), this.redoableTripletFeel, this.toEnd);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeTripletFeel(getSong(), getMeasureHeaderAt(this.position), this.undoableTripletFeel, this.toEnd);
+		this.changeTripletFeel(actionContext, getSong(), getMeasureHeaderAt(this.position), this.undoableTripletFeel, this.toEnd);
 		
 		if(this.toEnd){
 			Iterator<Object> it = this.nextTripletFeelPositions.iterator();
 			while(it.hasNext()){
 				TripletFeelPosition tfp = (TripletFeelPosition)it.next();
-				this.changeTripletFeel(getSong(), getMeasureHeaderAt(tfp.getPosition()), tfp.getTripletFeel(), true);
+				this.changeTripletFeel(actionContext, getSong(), getMeasureHeaderAt(tfp.getPosition()), tfp.getTripletFeel(), true);
 			}
 		}
 		this.doAction = REDO_ACTION;
@@ -93,14 +94,14 @@ public class TGUndoableTripletFeel extends TGUndoableEditBase {
 		return getSongManager().getMeasureHeaderAt(getSong(), start);
 	}
 	
-	public void changeTripletFeel(TGSong song, TGMeasureHeader header, Integer tripletFeel, Boolean applyToEnd) {
+	public void changeTripletFeel(TGActionContext context, TGSong song, TGMeasureHeader header, Integer tripletFeel, Boolean applyToEnd) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeTripletFeelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
 		tgActionProcessor.setAttribute(TGChangeTripletFeelAction.ATTRIBUTE_TRIPLET_FEEL, tripletFeel);
 		tgActionProcessor.setAttribute(TGChangeTripletFeelAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
 		
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 	
 	private class TripletFeelPosition{

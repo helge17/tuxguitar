@@ -2,23 +2,24 @@ package org.herac.tuxguitar.app.view.dialog.repeat;
 
 import java.util.Iterator;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatAlternativeAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGRepeatAlternativeDialog {
@@ -30,79 +31,72 @@ public class TGRepeatAlternativeDialog {
 		final int existentEndings = getExistentEndings(song, header);
 		final int selectedEndings = (header.getRepeatAlternative() > 0 ? header.getRepeatAlternative() : getDefaultEndings(existentEndings));
 		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("repeat.alternative.editor"));
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(4,true));
-		group.setLayoutData(getMainData());
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("repeat.alternative"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 350f, null, null);		
 		
-		final Button[] selections = new Button[8];
+		final UICheckBox[] selections = new UICheckBox[8];
 		for(int i = 0; i < selections.length; i ++){
 			boolean enabled = ((existentEndings & (1 << i)) == 0);
-			selections[i] = new Button(group,SWT.CHECK);
+			selections[i] = uiFactory.createCheckBox(group);
 			selections[i].setText(Integer.toString( i + 1 ));
-			selections[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 			selections[i].setEnabled(enabled);
-			selections[i].setSelection(enabled && ((selectedEndings & (1 << i)) != 0)  );
+			selections[i].setSelected(enabled && ((selectedEndings & (1 << i)) != 0));
+			groupLayout.set(selections[i], (1 + (int)(i / 4)), (1 + (i - (i & 4))), UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		}
 		
 		//----------------------BUTTONS--------------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(3,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				int values = 0;
 				for(int i = 0; i < selections.length; i ++){
-					values |=  (  (selections[i].getSelection()) ? (1 << i) : 0  );
+					values |=  (  (selections[i].isSelected()) ? (1 << i) : 0  );
 				}
 				changeRepeatAlternative(context.getContext(), song, header, values);
 				dialog.dispose();
 			}
 		});
-		Button buttonClean = new Button(buttons, SWT.PUSH);
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		
+		UIButton buttonClean = uiFactory.createButton(buttons);
 		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.setLayoutData(getButtonData());
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonClean.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				changeRepeatAlternative(context.getContext(), song, header, 0);
 				dialog.dispose();
 			}
 		});
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-	}
-	
-	private GridData getMainData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 350;
-		return data;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	protected int getExistentEndings(TGSong song, TGMeasureHeader header){

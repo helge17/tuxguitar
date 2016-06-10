@@ -1,17 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.stroke;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
@@ -19,9 +11,18 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGStroke;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGStrokeDialog extends SelectionAdapter{
+public class TGStrokeDialog {
 	
 	public static final int WIDTH = 400;
 	
@@ -31,11 +32,11 @@ public class TGStrokeDialog extends SelectionAdapter{
 	public static final int STATUS_CLEAN = 2;
 	public static final int STATUS_CANCEL = 3;
 	
-	private Button duration4;
-	private Button duration8;
-	private Button duration16;
-	private Button duration32;
-	private Button duration64;
+	private UIRadioButton duration4;
+	private UIRadioButton duration8;
+	private UIRadioButton duration16;
+	private UIRadioButton duration32;
+	private UIRadioButton duration64;
 	
 	public TGStrokeDialog(){
 		super();
@@ -46,9 +47,12 @@ public class TGStrokeDialog extends SelectionAdapter{
 		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		final Integer direction = context.getAttribute(TGChangeStrokeAction.ATTRIBUTE_STROKE_DIRECTION);
 		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("beat.stroke"));
 		
 		//-----defaults-------------------------------------------------
@@ -60,97 +64,93 @@ public class TGStrokeDialog extends SelectionAdapter{
 		//---------------------------------------------------
 		//------------------DURATION-------------------------
 		//---------------------------------------------------
-		Group group = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		group.setLayout(new GridLayout(5,false));
-		group.setText( TuxGuitar.getProperty("duration") );
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
+		group.setText(TuxGuitar.getProperty("duration"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.duration64 = new Button(group,SWT.RADIO);
+		this.duration64 = uiFactory.createRadioButton(group);
 		this.duration64.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
-		this.duration64.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.duration64.setSelection(duration == TGDuration.SIXTY_FOURTH);
+		this.duration64.setSelected(duration == TGDuration.SIXTY_FOURTH);
+		groupLayout.set(this.duration64, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.duration32 = new Button(group,SWT.RADIO);
+		this.duration32 = uiFactory.createRadioButton(group);
 		this.duration32.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
-		this.duration32.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.duration32.setSelection(duration == TGDuration.THIRTY_SECOND);
+		this.duration32.setSelected(duration == TGDuration.THIRTY_SECOND);
+		groupLayout.set(this.duration32, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.duration16 = new Button(group,SWT.RADIO);
+		this.duration16 = uiFactory.createRadioButton(group);
 		this.duration16.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
-		this.duration16.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.duration16.setSelection(duration == TGDuration.SIXTEENTH);
+		this.duration16.setSelected(duration == TGDuration.SIXTEENTH);
+		groupLayout.set(this.duration16, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.duration8 = new Button(group,SWT.RADIO);
+		this.duration8 = uiFactory.createRadioButton(group);
 		this.duration8.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
-		this.duration8.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.duration8.setSelection(duration == TGDuration.EIGHTH);
+		this.duration8.setSelected(duration == TGDuration.EIGHTH);
+		groupLayout.set(this.duration8, 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.duration4 = new Button(group,SWT.RADIO);
+		this.duration4 = uiFactory.createRadioButton(group);
 		this.duration4.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
-		this.duration4.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.duration4.setSelection(duration == TGDuration.QUARTER);
+		this.duration4.setSelected(duration == TGDuration.QUARTER);
+		groupLayout.set(this.duration4, 1, 5, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//---------------------------------------------------
 		//------------------BUTTONS--------------------------
 		//---------------------------------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(3,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.BOTTOM,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				changeStroke(context.getContext(), measure, beat, direction, getSelection());
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonClean = new Button(buttons, SWT.PUSH);
+		UIButton buttonClean = uiFactory.createButton(buttons);
 		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.setLayoutData(getButtonData());
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonClean.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				changeStroke(context.getContext(), measure, beat, TGStroke.STROKE_NONE, 0);
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	protected GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	protected int getSelection(){
-		if( this.duration4.getSelection() ){
+	public int getSelection(){
+		if( this.duration4.isSelected() ){
 			return TGDuration.QUARTER;
 		}
-		if( this.duration8.getSelection() ){
+		if( this.duration8.isSelected() ){
 			return TGDuration.EIGHTH;
 		}
-		if( this.duration16.getSelection() ){
+		if( this.duration16.isSelected() ){
 			return TGDuration.SIXTEENTH;
 		}
-		if( this.duration32.getSelection() ){
+		if( this.duration32.isSelected() ){
 			return TGDuration.THIRTY_SECOND;
 		}
-		if( this.duration64.getSelection() ){
+		if( this.duration64.isSelected() ){
 			return TGDuration.SIXTY_FOURTH;
 		}
 		return 0;

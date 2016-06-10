@@ -1,19 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.trill;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTrillNoteAction;
@@ -23,14 +13,25 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGTrillDialog extends SelectionAdapter{
+public class TGTrillDialog {
 	
-	private Spinner fretSpinner;
-	private Button sixtyFourthButton;
-	private Button thirtySecondButton;
-	private Button sixTeenthButton;
+	private UISpinner fretSpinner;
+	private UIRadioButton sixtyFourthButton;
+	private UIRadioButton thirtySecondButton;
+	private UIRadioButton sixTeenthButton;
 	
 	public TGTrillDialog(){
 		super();
@@ -42,18 +43,13 @@ public class TGTrillDialog extends SelectionAdapter{
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
 		if( measure != null && beat != null && note != null && string != null ) {
-			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+			final UITableLayout dialogLayout = new UITableLayout();
+			final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 			
-			dialog.setLayout(new GridLayout());
+			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.trill-editor"));
-			
-			
-			Composite composite = new Composite(dialog,SWT.NONE);
-			composite.setLayout(new GridLayout());
-			composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			
-			int horizontalSpan = 2;
 			
 			//-----defaults-------------------------------------------------
 			int fret = note.getValue();
@@ -65,114 +61,102 @@ public class TGTrillDialog extends SelectionAdapter{
 			//---------------------------------------------------
 			//------------------NOTE-----------------------------
 			//---------------------------------------------------
-			Group noteGroup = makeGroup(composite,horizontalSpan, TuxGuitar.getProperty("note"));
-			noteGroup.setLayout(new GridLayout(2,false));
+			UITableLayout noteLayout = new UITableLayout();
+			UILegendPanel noteGroup = uiFactory.createLegendPanel(dialog);
+			noteGroup.setText(TuxGuitar.getProperty("note"));
+			noteGroup.setLayout(noteLayout);
+			dialogLayout.set(noteGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			Label fretLabel = new Label(noteGroup,SWT.NONE);
-			
+			UILabel fretLabel = uiFactory.createLabel(noteGroup);
 			fretLabel.setText(TuxGuitar.getProperty("fret") + ": ");
+			noteLayout.set(fretLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 			
-			this.fretSpinner = new Spinner(noteGroup,SWT.BORDER);
-			this.fretSpinner.setLayoutData(makeGridData(1));
-			this.fretSpinner.setSelection(fret);
+			this.fretSpinner = uiFactory.createSpinner(noteGroup);
+			this.fretSpinner.setValue(fret);
+			this.fretSpinner.setMaximum(30);
+			this.fretSpinner.setMinimum(0);
+			noteLayout.set(this.fretSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			//---------------------------------------------------
 			//------------------DURATION-------------------------
 			//---------------------------------------------------
-			Group durationGroup = makeGroup(composite,horizontalSpan, TuxGuitar.getProperty("duration"));
-			durationGroup.setLayout(new GridLayout(3,false));
+			UITableLayout durationLayout = new UITableLayout();
+			UILegendPanel durationGroup = uiFactory.createLegendPanel(dialog);
+			durationGroup.setText(TuxGuitar.getProperty("duration"));
+			durationGroup.setLayout(durationLayout);
+			dialogLayout.set(durationGroup, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			this.sixtyFourthButton = new Button(durationGroup,SWT.RADIO);
+			this.sixtyFourthButton = uiFactory.createRadioButton(durationGroup);
 			this.sixtyFourthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
-			this.sixtyFourthButton.setLayoutData(makeGridData(1));
-			this.sixtyFourthButton.setSelection(duration == TGDuration.SIXTY_FOURTH);
+			this.sixtyFourthButton.setSelected(duration == TGDuration.SIXTY_FOURTH);
+			durationLayout.set(this.sixtyFourthButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			this.thirtySecondButton = new Button(durationGroup,SWT.RADIO);
+			this.thirtySecondButton = uiFactory.createRadioButton(durationGroup);
 			this.thirtySecondButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
-			this.thirtySecondButton.setLayoutData(makeGridData(1));
-			this.thirtySecondButton.setSelection(duration == TGDuration.THIRTY_SECOND);
+			this.thirtySecondButton.setSelected(duration == TGDuration.THIRTY_SECOND);
+			durationLayout.set(this.thirtySecondButton, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			this.sixTeenthButton = new Button(durationGroup,SWT.RADIO);
+			this.sixTeenthButton = uiFactory.createRadioButton(durationGroup);
 			this.sixTeenthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
-			this.sixTeenthButton.setLayoutData(makeGridData(1));
-			this.sixTeenthButton.setSelection(duration == TGDuration.SIXTEENTH);
+			this.sixTeenthButton.setSelected(duration == TGDuration.SIXTEENTH);
+			durationLayout.set(this.sixTeenthButton, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			//---------------------------------------------------
 			//------------------BUTTONS--------------------------
 			//---------------------------------------------------
-			Composite buttons = new Composite(dialog, SWT.NONE);
-			buttons.setLayout(new GridLayout(3,false));
-			buttons.setLayoutData(new GridData(SWT.END,SWT.BOTTOM,true,true));
+			UITableLayout buttonsLayout = new UITableLayout(0f);
+			UIPanel buttons = uiFactory.createPanel(dialog, false);
+			buttons.setLayout(buttonsLayout);
+			dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 			
-			final Button buttonOK = new Button(buttons, SWT.PUSH);
+			final UIButton buttonOK = uiFactory.createButton(buttons);
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
-			buttonOK.setLayoutData(getButtonData());
-			buttonOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonOK.setDefaultButton();
+			buttonOK.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeTrill(context.getContext(), measure, beat, string, getTrill());
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			
-			Button buttonClean = new Button(buttons, SWT.PUSH);
+			UIButton buttonClean = uiFactory.createButton(buttons);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
-			buttonClean.setLayoutData(getButtonData());
-			buttonClean.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonClean.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeTrill(context.getContext(), measure, beat, string, null);
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			
-			Button buttonCancel = new Button(buttons, SWT.PUSH);
+			UIButton buttonCancel = uiFactory.createButton(buttons);
 			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-			buttonCancel.setLayoutData(getButtonData());
-			buttonCancel.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonCancel.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+			buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 			
-			dialog.setDefaultButton( buttonOK );
-			
-			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
-	}
-	
-	private Group makeGroup(Composite parent,int horizontalSpan,String text){
-		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		group.setLayoutData(makeGridData(horizontalSpan));
-		group.setText(text);
-		
-		return group;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private GridData makeGridData(int horizontalSpan){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.horizontalSpan = horizontalSpan;
-		return data;
 	}
 	
 	public TGEffectTrill getTrill(){
-		TGEffectTrill effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTrill();
-		effect.setFret(this.fretSpinner.getSelection());
-		if(this.sixtyFourthButton.getSelection()){
-			effect.getDuration().setValue(TGDuration.SIXTY_FOURTH);
-		}else if(this.thirtySecondButton.getSelection()){
-			effect.getDuration().setValue(TGDuration.THIRTY_SECOND);
-		}else if(this.sixTeenthButton.getSelection()){
-			effect.getDuration().setValue(TGDuration.SIXTEENTH);
-		}else{
+		TGEffectTrill tgEffect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTrill();
+		tgEffect.setFret(this.fretSpinner.getValue());
+		if(this.sixtyFourthButton.isSelected()) {
+			tgEffect.getDuration().setValue(TGDuration.SIXTY_FOURTH);
+		} else if(this.thirtySecondButton.isSelected()) {
+			tgEffect.getDuration().setValue(TGDuration.THIRTY_SECOND);
+		} else if(this.sixTeenthButton.isSelected()) {
+			tgEffect.getDuration().setValue(TGDuration.SIXTEENTH);
+		} else {
 			return null;
 		}
-		return effect;
+		return tgEffect;
 	}
 	
 	public void changeTrill(TGContext context, TGMeasure measure, TGBeat beat, TGString string, TGEffectTrill effect) {

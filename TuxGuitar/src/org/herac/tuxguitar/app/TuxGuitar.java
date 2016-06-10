@@ -2,8 +2,6 @@ package org.herac.tuxguitar.app;
 
 import java.net.URL;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.action.TGActionAdapterManager;
 import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
@@ -26,6 +24,7 @@ import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.app.system.variables.TGVarAdapter;
 import org.herac.tuxguitar.app.tools.scale.ScaleManager;
 import org.herac.tuxguitar.app.transport.TGTransportListener;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGClassLoader;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.util.TGSplash;
@@ -53,6 +52,10 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.ui.resource.UIPosition;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -65,15 +68,11 @@ import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 
 public class TuxGuitar {
 	
-	public static final String APPLICATION_NAME = "TuxGuitar";
-	
 	private static TuxGuitar instance;
 	
 	private boolean initialized;
 	
 	private TGLock lock;
-	
-	private Display display;
 	
 	private TGContext context;
 	
@@ -109,16 +108,12 @@ public class TuxGuitar {
 		TGPropertiesAdapter.initialize(this.context);
 		TGVarAdapter.initialize(this.context);
 		
-		// Priority 2 ----------------------------------------------//
-		Display.setAppName(APPLICATION_NAME);
+		// Priority 2 ----------------------------------------------//		
+		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context));
 		
-		this.display = new Display();
+		TGSplash.getInstance(this.context).init();
 		
-		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context, this.display));
-		
-		TGSplash.instance().init();
-		
-		TGWindow.getInstance(this.context).createShell(this.getDisplay());
+		TGWindow.getInstance(this.context).createWindow();
 		
 		// Priority 3 ----------------------------------------------//
 		this.initMidiPlayer();
@@ -128,7 +123,7 @@ public class TuxGuitar {
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
 		
-		TGSplash.instance().finish();
+		TGSplash.getInstance(this.context).finish();
 		
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(this.context).open();
@@ -136,12 +131,8 @@ public class TuxGuitar {
 		this.startSong(url);
 		this.setInitialized( true );
 		
-		while (!getDisplay().isDisposed() && !getShell().isDisposed()) {
-			if (!getDisplay().readAndDispatch()) {
-				getDisplay().sleep();
-			}
-		}
-		getDisplay().dispose();
+		TGWindow.getInstance(this.context).getWindow().join();
+		TGApplication.getInstance(this.context).getApplication().dispose();
 	}
 	
 	private void startSong(URL url){
@@ -173,17 +164,27 @@ public class TuxGuitar {
 		
 		//---Main Shell---
 		boolean maximized = config.getBooleanValue(TGConfigKeys.MAXIMIZED);
-		getShell().setMaximized(maximized);
-		if(!maximized){
-			int width = config.getIntegerValue(TGConfigKeys.WIDTH);
-			int height = config.getIntegerValue(TGConfigKeys.HEIGHT);
-			if(width > 0 && height > 0){
-				getShell().setSize(width,height);
+		
+		UIWindow uiWindow = TGWindow.getInstance(this.context).getWindow();
+		if( maximized ) {
+			uiWindow.maximize();
+		}
+		else {
+			float width = config.getFloatValue(TGConfigKeys.WIDTH);
+			float height = config.getFloatValue(TGConfigKeys.HEIGHT);
+			if( width > 0 && height > 0 ){
+				UIPosition uiPosition = uiWindow.getBounds().getPosition();
+				UIRectangle uiRectangle = new UIRectangle();
+				uiRectangle.setSize(new UISize(width, height));
+				uiRectangle.getPosition().setX(Math.max(uiPosition.getX(), 0f));
+				uiRectangle.getPosition().setY(Math.max(uiPosition.getY(), 0f));
+				
+				uiWindow.setBounds(uiRectangle);
 			}
 		}
-		getShell().setMinimumSize(640,480);
+		
 		//---Fretboard---
-		if(config.getBooleanValue(TGConfigKeys.SHOW_FRETBOARD)){
+		if( config.getBooleanValue(TGConfigKeys.SHOW_FRETBOARD)){
 			getFretBoardEditor().showFretBoard();
 		}else{
 			getFretBoardEditor().hideFretBoard();
@@ -387,14 +388,6 @@ public class TuxGuitar {
 		}
 	}
 	
-	public Display getDisplay(){
-		return this.display;
-	}
-	
-	public Shell getShell(){
-		return TGWindow.getInstance(this.context).getShell();
-	}
-	
 	public static String getProperty(String key) {
 		return TuxGuitar.getInstance().getLanguageManager().getProperty(key);
 	}
@@ -403,8 +396,8 @@ public class TuxGuitar {
 		return  TuxGuitar.getInstance().getLanguageManager().getProperty(key,arguments);
 	}
 	
-	public static boolean isDisposed(){
-		return (TuxGuitar.getInstance().getDisplay().isDisposed() || TuxGuitar.getInstance().getShell().isDisposed());
+	public boolean isDisposed(){
+		return (TGApplication.getInstance(this.context).isDisposed() || TGWindow.getInstance(this.context).isDisposed());
 	}
 	
 	public void updateSong(){

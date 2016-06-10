@@ -1,13 +1,5 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
@@ -19,51 +11,46 @@ import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
 import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionEdit implements TGToolBarSection {
 	
-	private ToolItem undo;
-	private ToolItem redo;
-	private ToolItem menuItem;
+	private UIToolActionItem undo;
+	private UIToolActionItem redo;
+	private UIToolMenuItem menuItem;
 	
-	private Menu menu;
-	private MenuItem voice1;
-	private MenuItem voice2;
-	private MenuItem modeSelection;
-	private MenuItem modeEdition;
-	private MenuItem notNaturalKey;
+	private UIMenuActionItem voice1;
+	private UIMenuActionItem voice2;
+	private UIMenuActionItem modeSelection;
+	private UIMenuActionItem modeEdition;
+	private UIMenuActionItem notNaturalKey;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.undo = new ToolItem(toolBar.getControl(), SWT.PUSH);
+		this.undo = toolBar.getControl().createActionItem();
 		this.undo.addSelectionListener(toolBar.createActionProcessor(TGUndoAction.NAME));
 		
-		this.redo = new ToolItem(toolBar.getControl(), SWT.PUSH);
+		this.redo = toolBar.getControl().createActionItem();
 		this.redo.addSelectionListener(toolBar.createActionProcessor(TGRedoAction.NAME));
 		
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
-		
-		this.voice1 = new MenuItem(this.menu, SWT.PUSH);
+		this.voice1 = this.menuItem.getMenu().createActionItem();
 		this.voice1.addSelectionListener(toolBar.createActionProcessor(TGSetVoice1Action.NAME));
 		
-		this.voice2 = new MenuItem(this.menu, SWT.PUSH);
+		this.voice2 = this.menuItem.getMenu().createActionItem();
 		this.voice2.addSelectionListener(toolBar.createActionProcessor(TGSetVoice2Action.NAME));
 		
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
-		this.modeSelection = new MenuItem(this.menu, SWT.PUSH);
+		this.modeSelection = this.menuItem.getMenu().createActionItem();
 		this.modeSelection.addSelectionListener(toolBar.createActionProcessor(TGSetMouseModeSelectionAction.NAME));
 		
-		this.modeEdition = new MenuItem(this.menu, SWT.PUSH);
+		this.modeEdition = this.menuItem.getMenu().createActionItem();
 		this.modeEdition.addSelectionListener(toolBar.createActionProcessor(TGSetMouseModeEditionAction.NAME));
 		
-		this.notNaturalKey = new MenuItem(this.menu, SWT.PUSH);
+		this.notNaturalKey = this.menuItem.getMenu().createActionItem();
 		this.notNaturalKey.addSelectionListener(toolBar.createActionProcessor(TGSetNaturalKeyAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -120,13 +107,5 @@ public class TGToolBarSectionEdit implements TGToolBarSection {
 		this.modeSelection.setImage(toolBar.getIconManager().getEditModeSelection());
 		this.modeEdition.setImage(toolBar.getIconManager().getEditModeEdition());
 		this.notNaturalKey.setImage(toolBar.getIconManager().getEditModeEditionNotNatural());
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 }

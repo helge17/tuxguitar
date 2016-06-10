@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.controller.TGOpenViewController;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -34,8 +34,8 @@ public class TGOpenViewAction extends TGActionBase {
 			tgViewContext.setAttribute(entry.getKey(), entry.getValue());
 		}
 		
-		if( tgViewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT) == null ) {
-			tgViewContext.setAttribute(TGViewContext.ATTRIBUTE_PARENT, TuxGuitar.getInstance().getShell());
+		if( tgViewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT2) == null ) {
+			tgViewContext.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, TGWindow.getInstance(this.getContext()).getWindow());
 		}
 		
 		return tgViewContext;

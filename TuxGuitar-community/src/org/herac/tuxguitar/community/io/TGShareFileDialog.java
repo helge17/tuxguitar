@@ -1,21 +1,24 @@
 package org.herac.tuxguitar.community.io;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIReadOnlyTextField;
+import org.herac.tuxguitar.ui.widget.UITextArea;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGShareFileDialog {
@@ -33,37 +36,40 @@ public class TGShareFileDialog {
 	}
 	
 	public void open() {
-		this.open( TuxGuitar.getInstance().getShell() );
+		this.open(TGWindow.getInstance(this.context).getWindow());
 	}
 	
-	protected void open(Shell shell) {
+	protected void open(UIWindow parent) {
 		this.accepted = false;
 		
-		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		
-		dialog.setLayout(new GridLayout());
-		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		dialog.setLayout(dialogLayout);
 		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.title"));
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(makeGroupLayout(5));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.details"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 350f, null, null);
 		
 		//-------USERNAME---------------------------------
-		Label usernameLabel = new Label(group, SWT.NULL);
-		usernameLabel.setLayoutData(makeLabelData()); 
+		UILabel usernameLabel = uiFactory.createLabel(group);
 		usernameLabel.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.details.user") + ":");
+		groupLayout.set(usernameLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text usernameText = new Text(group, SWT.BORDER | SWT.READ_ONLY );
-		usernameText.setLayoutData(makeUsernameTextData());
+		final UIReadOnlyTextField usernameText = uiFactory.createReadOnlyTextField(group);
 		usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
+		usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
+		groupLayout.set(usernameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		final Button usernameChooser = new Button(group, SWT.PUSH );
+		final UIButton usernameChooser = uiFactory.createButton(group);
 		usernameChooser.setText("...");
-		usernameChooser.addSelectionListener( new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		usernameChooser.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(getContext());
 				authDialog.open( dialog );
 				if( authDialog.isAccepted() ){
@@ -71,110 +77,74 @@ public class TGShareFileDialog {
 					usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
 				}
 			}
-		} );
+		});
+		groupLayout.set(usernameChooser, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		//-------TITLE------------------------------------
-		Label titleLabel = new Label(group, SWT.NULL);
-		titleLabel.setLayoutData(makeLabelData()); 
+		UILabel titleLabel = uiFactory.createLabel(group);
 		titleLabel.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.details.title") + ":");
+		groupLayout.set(titleLabel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text titleText = new Text(group, SWT.BORDER);
-		titleText.setLayoutData(makeTextData());
+		final UITextField titleText = uiFactory.createTextField(group);
 		titleText.setText( this.file.getTitle() );
+		groupLayout.set(titleText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
+		groupLayout.set(titleText, UITableLayout.PACKED_WIDTH, 0f);
 		
 		//-------TAGKEYS------------------------------------
-		Label tagkeysLabel = new Label(group, SWT.NULL);
-		tagkeysLabel.setLayoutData(makeLabelData());
+		UILabel tagkeysLabel = uiFactory.createLabel(group);
 		tagkeysLabel.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.details.tagkeys") + ":");
+		groupLayout.set(tagkeysLabel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text tagkeysText = new Text(group, SWT.BORDER);
-		tagkeysText.setLayoutData(makeTextData());
+		final UITextField tagkeysText = uiFactory.createTextField(group);
 		tagkeysText.setText( this.file.getTagkeys() );
+		groupLayout.set(tagkeysText, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
+		groupLayout.set(tagkeysText, UITableLayout.PACKED_WIDTH, 0f);
 		
 		//-------DESCRIPTION------------------------------------
-		Label descriptionLabel = new Label(group, SWT.NULL);
-		descriptionLabel.setLayoutData(makeLabelData());
+		UILabel descriptionLabel = uiFactory.createLabel(group);
 		descriptionLabel.setText(TuxGuitar.getProperty("tuxguitar-community.share-dialog.details.description") + ":");
+		groupLayout.set(descriptionLabel, 4, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text descriptionText = new Text(group, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-		descriptionText.setLayoutData(makeTextAreaData());
+		final UITextArea descriptionText = uiFactory.createTextArea(group, true, false);
 		descriptionText.setText( this.file.getDescription() );
+		groupLayout.set(descriptionText,4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2, null, 100f, null);
+		groupLayout.set(descriptionText, UITableLayout.PACKED_WIDTH, 0f);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				update(titleText.getText(), tagkeysText.getText() , descriptionText.getText() );
 				
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
-		
-		dialog.setDefaultButton( buttonOK );
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
 		if( this.errors != null ){
 			TGMessageDialogUtil.errorMessage(this.context, dialog, this.errors);
 		}
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 	}
 	
-	private GridLayout makeGroupLayout(int spacing){
-		GridLayout layout = new GridLayout(3,false);
-		layout.marginTop = spacing;
-		layout.marginBottom = spacing;
-		layout.marginLeft = spacing;
-		layout.marginRight = spacing;
-		layout.verticalSpacing = spacing;
-		layout.horizontalSpacing = spacing;
-		return layout;
-	}
-	
-	private GridData makeLabelData(){
-		return new GridData(SWT.RIGHT,SWT.CENTER,false,true);
-	}
-	
-	private GridData makeTextAreaData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true, 2 , 1);
-		data.minimumWidth = 250;
-		data.minimumHeight = 100;
-		return data;
-	}
-	
-	private GridData makeTextData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true, 2 , 1);
-		data.minimumWidth = 250;
-		return data;
-	}
-	
-	private GridData makeUsernameTextData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 250;
-		return data;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	protected void update( String title, String tagkeys, String description ){
+	public void update( String title, String tagkeys, String description ){
 		this.file.setTitle( title );
 		this.file.setTagkeys( tagkeys );
 		this.file.setDescription( description );

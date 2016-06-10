@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.custom;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
@@ -25,19 +26,19 @@ public class TGUndoableTimeSignature extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeTimeSignature(getSong(), this.getMeasureHeaderAt(this.tsStart), this.ts, this.tsToEnd);
+		this.changeTimeSignature(actionContext, getSong(), this.getMeasureHeaderAt(this.tsStart), this.ts, this.tsToEnd);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.copySongFrom(getSong(), this.song);
+		this.copySongFrom(actionContext, getSong(), this.song);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -69,19 +70,19 @@ public class TGUndoableTimeSignature extends TGUndoableEditBase {
 		return getSongManager().getMeasureHeaderAt(getSong(), start);
 	}
 	
-	public void changeTimeSignature(TGSong song, TGMeasureHeader header, TGTimeSignature timeSignature, Boolean toEnd) {
+	public void changeTimeSignature(TGActionContext context, TGSong song, TGMeasureHeader header, TGTimeSignature timeSignature, Boolean toEnd) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeTimeSignatureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TIME_SIGNATURE, timeSignature);
 		tgActionProcessor.setAttribute(TGChangeTimeSignatureAction.ATTRIBUTE_APPLY_TO_END, toEnd);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 	
-	public void copySongFrom(TGSong song, TGSong from) {
+	public void copySongFrom(TGActionContext context, TGSong song, TGSong from) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGCopySongFromAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGCopySongFromAction.ATTRIBUTE_FROM, from);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

@@ -24,6 +24,12 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-ui-toolkit</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-gm-utils</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
@@ -263,6 +269,11 @@
 				<type>jar</type>
 			</dependency>
 			
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-ui-toolkit-swt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- SWT Platforms -->
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
@@ -345,7 +356,7 @@
 	<repositories>
 		<repository>
 			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
+			<url>http://maven-eclipse.github.io/maven</url>
 		</repository>
 	</repositories>
 

@@ -1,24 +1,22 @@
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIScale;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UITextArea;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
-
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
@@ -26,17 +24,15 @@ import org.herac.tuxguitar.util.TGContext;
  */
 public class TGTunerSettingsDialog {
 
-	private static final int SHELL_WIDTH = 350;
-	protected TGTunerDialog tunerDialog = null;
-	// protected Combo deviceCombo = null;
-	protected Combo sampleRateCombo = null;
-	protected Combo sampleSizeCombo = null;
-	protected Combo bufferSizeCombo = null;
-	protected Combo FFTSizeCombo = null;
-	protected Scale noiseGate = null;
-	protected Label noiseGateValue = null;
-	protected Text settingsInfo = null;
-	protected boolean updated;
+	private TGTunerDialog tunerDialog = null;
+	private UIDropDownSelect<Float> sampleRateCombo = null;
+	private UIDropDownSelect<Integer> sampleSizeCombo = null;
+	private UIDropDownSelect<Integer> bufferSizeCombo = null;
+	private UIDropDownSelect<Integer> FFTSizeCombo = null;
+	private UIScale noiseGate = null;
+	private UILabel noiseGateValue = null;
+	private UITextArea settingsInfo = null;
+	private boolean updated;
 	
 	public TGTunerSettingsDialog(TGTunerDialog dialog) {
 		this.tunerDialog = dialog;
@@ -44,230 +40,185 @@ public class TGTunerSettingsDialog {
 	}
 
 	public void show() {
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = this.tunerDialog.getUIFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(this.tunerDialog.getWindow(), true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuner.settings"));
-		dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);            
-		group.setLayout(new GridLayout());
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		group.setText(TuxGuitar.getProperty("tuner.device-settings"));
+		// ---------------------------------------------------------------------------
+		UITableLayout sampleLayout = new UITableLayout();
+		UILegendPanel sampleComposite = uiFactory.createLegendPanel(dialog);
+		sampleComposite.setLayout(sampleLayout);
+		sampleComposite.setText(TuxGuitar.getProperty("tuner.sound-format"));
+		dialogLayout.set(sampleComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-/*		this.deviceCombo = new Combo(group, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.deviceCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
-		this.fillDeviceCombo(dialog);
-		this.deviceCombo.addSelectionListener(new UpdatedListener());
-*/
+		UILabel sampleRateLabel = uiFactory.createLabel(sampleComposite);
+		sampleRateLabel.setText(TuxGuitar.getProperty("tuner.sample-rate"));
+		sampleLayout.set(sampleRateLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		Composite sampleComposite = this.createGroup(TuxGuitar.getProperty("tuner.sound-format"), group);
-
-		
-		new Label(sampleComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sample-rate"));
-		this.sampleRateCombo = new Combo(sampleComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.sampleRateCombo.add("48000");
-		this.sampleRateCombo.add("44100");
-		this.sampleRateCombo.add("22050");
-		this.sampleRateCombo.add("11025");
-		this.sampleRateCombo.add("8000");
+		this.sampleRateCombo = uiFactory.createDropDownSelect(sampleComposite);
+		this.sampleRateCombo.addItem(new UISelectItem<Float>("48000", 48000f));
+		this.sampleRateCombo.addItem(new UISelectItem<Float>("44100", 44100f));
+		this.sampleRateCombo.addItem(new UISelectItem<Float>("22050", 22050f));
+		this.sampleRateCombo.addItem(new UISelectItem<Float>("11025", 11025f));
+		this.sampleRateCombo.addItem(new UISelectItem<Float>("8000", 8000f));
 		this.sampleRateCombo.addSelectionListener(new UpdatedListener());
-
+		sampleLayout.set(this.sampleRateCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		new Label(sampleComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sample-size"));
-		this.sampleSizeCombo = new Combo(sampleComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.sampleSizeCombo.add("16");
-		this.sampleSizeCombo.add("8");
+		UILabel sampleSizeLabel = uiFactory.createLabel(sampleComposite);
+		sampleSizeLabel.setText(TuxGuitar.getProperty("tuner.sample-size"));
+		sampleLayout.set(sampleSizeLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		this.sampleSizeCombo = uiFactory.createDropDownSelect(sampleComposite);
+		this.sampleSizeCombo.addItem(new UISelectItem<Integer>("16", 16));
+		this.sampleSizeCombo.addItem(new UISelectItem<Integer>("8", 8));
 		this.sampleSizeCombo.addSelectionListener(new UpdatedListener());
+		sampleLayout.set(this.sampleSizeCombo, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
-
-		Composite analyzeComposite = this.createGroup(TuxGuitar.getProperty("tuner.sampling-and-analyze"), group);
-
+		// ---------------------------------------------------------------------------
+		UITableLayout analyzeLayout = new UITableLayout();
+		UILegendPanel analyzeComposite = uiFactory.createLegendPanel(dialog);
+		analyzeComposite.setLayout(analyzeLayout);
+		analyzeComposite.setText(TuxGuitar.getProperty("tuner.sampling-and-analyze"));
+		dialogLayout.set(analyzeComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		// buffer size
-		new Label(analyzeComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.sampling-buffer-size"));
-		this.bufferSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.bufferSizeCombo.add(new Integer(512).toString());
-		this.bufferSizeCombo.add(new Integer(1024).toString());
-		this.bufferSizeCombo.add(new Integer(2048).toString());
-		this.bufferSizeCombo.add(new Integer(4096).toString());
-		this.bufferSizeCombo.add(new Integer(8192).toString());
-		this.bufferSizeCombo.add(new Integer(16348).toString());
+		UILabel bufferSizeLabel = uiFactory.createLabel(analyzeComposite);
+		bufferSizeLabel.setText(TuxGuitar.getProperty("tuner.sampling-buffer-size"));
+		analyzeLayout.set(bufferSizeLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		this.bufferSizeCombo = uiFactory.createDropDownSelect(analyzeComposite);
+		this.bufferSizeCombo.addItem(new UISelectItem<Integer>("512", 512));
+		this.bufferSizeCombo.addItem(new UISelectItem<Integer>("1024", 1024));
+		this.bufferSizeCombo.addItem(new UISelectItem<Integer>("2048", 2048));
+		this.bufferSizeCombo.addItem(new UISelectItem<Integer>("4096", 4096));
+		this.bufferSizeCombo.addItem(new UISelectItem<Integer>("8192", 8192));
+		this.bufferSizeCombo.addItem(new UISelectItem<Integer>("16348", 16348));
 		this.bufferSizeCombo.addSelectionListener(new UpdatedListener());
-
+		analyzeLayout.set(this.bufferSizeCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		// FFT buffer size
-		new Label(analyzeComposite,SWT.LEFT).setText(TuxGuitar.getProperty("tuner.fourier-buffer-size"));
-		this.FFTSizeCombo = new Combo(analyzeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.FFTSizeCombo.add(new Integer(1024).toString());
-		this.FFTSizeCombo.add(new Integer(2048).toString());
-		this.FFTSizeCombo.add(new Integer(4096).toString());
-		this.FFTSizeCombo.add(new Integer(8192).toString());
-		this.FFTSizeCombo.add(new Integer(16384).toString());
-		this.FFTSizeCombo.add(new Integer(32768).toString());
-		this.FFTSizeCombo.addSelectionListener(new UpdatedListener());
+		UILabel FFTSizeLabel = uiFactory.createLabel(analyzeComposite);
+		FFTSizeLabel.setText(TuxGuitar.getProperty("tuner.fourier-buffer-size"));
+		analyzeLayout.set(FFTSizeLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		Composite noiseGateComposite = this.createGroup(TuxGuitar.getProperty("tuner.noise-gate"), group);
-		this.noiseGate = new Scale(noiseGateComposite, SWT.BORDER);
+		this.FFTSizeCombo = uiFactory.createDropDownSelect(analyzeComposite);
+		this.FFTSizeCombo.addItem(new UISelectItem<Integer>("1024", 1024));
+		this.FFTSizeCombo.addItem(new UISelectItem<Integer>("2048", 2048));
+		this.FFTSizeCombo.addItem(new UISelectItem<Integer>("4096", 4096));
+		this.FFTSizeCombo.addItem(new UISelectItem<Integer>("8192", 8192));
+		this.FFTSizeCombo.addItem(new UISelectItem<Integer>("16384", 16384));
+		this.FFTSizeCombo.addItem(new UISelectItem<Integer>("32768", 32768));
+		this.FFTSizeCombo.addSelectionListener(new UpdatedListener());
+		analyzeLayout.set(this.FFTSizeCombo, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
+		// ---------------------------------------------------------------------------
+		UITableLayout noiseGateLayout = new UITableLayout();
+		final UILegendPanel noiseGateComposite = uiFactory.createLegendPanel(dialog);
+		noiseGateComposite.setLayout(noiseGateLayout);
+		noiseGateComposite.setText(TuxGuitar.getProperty("tuner.noise-gate"));
+		dialogLayout.set(noiseGateComposite, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		this.noiseGate = uiFactory.createHorizontalScale(noiseGateComposite);
 		this.noiseGate.setMaximum(100);
 		this.noiseGate.setIncrement(5);
-		this.noiseGate.setPageIncrement(10);
-		this.noiseGate.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				TGTunerSettingsDialog.this.noiseGateValue.setText(
-						new Integer(TGTunerSettingsDialog.this.noiseGate.getSelection()).toString()+"%");
+		this.noiseGate.setIncrement(1);
+		this.noiseGate.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTunerSettingsDialog.this.noiseGateValue.setText(new Integer(TGTunerSettingsDialog.this.noiseGate.getValue()).toString()+"%");
+				noiseGateComposite.layout();
 			}
 		});
 		this.noiseGate.addSelectionListener(new UpdatedListener());
-		this.noiseGate.setLayoutData(new GridData(SWT.None, SWT.NONE, true,false,1,1));
-		((GridData)this.noiseGate.getLayoutData()).widthHint=270;
-		((GridData)this.noiseGate.getLayoutData()).grabExcessHorizontalSpace=true;
-		this.noiseGateValue = new Label(noiseGateComposite,SWT.LEFT);
-		this.noiseGateValue.setText("                       ");
+		noiseGateLayout.set(this.noiseGate, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		Composite infoComposite = this.createGroup(TuxGuitar.getProperty("tuner.info"), group);
+		this.noiseGateValue = uiFactory.createLabel(noiseGateComposite);
+		noiseGateLayout.set(this.noiseGateValue, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.settingsInfo = new Text(infoComposite, SWT.READ_ONLY | SWT.MULTI );
-		this.settingsInfo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,2,1));
-		((GridData)this.settingsInfo.getLayoutData()).heightHint=30;
-		((GridData)this.settingsInfo.getLayoutData()).grabExcessHorizontalSpace=true;
-		((GridData)this.settingsInfo.getLayoutData()).grabExcessVerticalSpace=true;
-		((GridData)this.settingsInfo.getLayoutData()).widthHint=300;
-		//// buttons ok/cancel
-		Composite btnComposite = new Composite(dialog,SWT.NONE);
-		btnComposite.setLayout(new GridLayout(2,false));
-		btnComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		// ---------------------------------------------------------------------------
+		UITableLayout infoLayout = new UITableLayout();
+		UILegendPanel infoComposite = uiFactory.createLegendPanel(dialog);
+		infoComposite.setLayout(infoLayout);
+		infoComposite.setText(TuxGuitar.getProperty("tuner.info"));
+		dialogLayout.set(infoComposite, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(btnComposite, SWT.PUSH);
+		this.settingsInfo = uiFactory.createTextArea(infoComposite, true, false);
+		infoLayout.set(this.settingsInfo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, 100f, null);
+		
+		//------------------BUTTONS--------------------------
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 5, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(TGTunerDialog.getGridData(80,25));
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
-            	TGTunerSettingsDialog.this.dispose(dialog,true);
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+            	TGTunerSettingsDialog.this.dispose(dialog, true);
             }
         });
-		final Button buttonExit = new Button(btnComposite, SWT.PUSH);
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		
+		UIButton buttonExit = uiFactory.createButton(buttons);
         buttonExit.setText(TuxGuitar.getProperty("close"));
-        buttonExit.setLayoutData(TGTunerDialog.getGridData(80,25));
-        buttonExit.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
-            	TGTunerSettingsDialog.this.dispose(dialog,false);
+        buttonExit.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+            	TGTunerSettingsDialog.this.dispose(dialog, false);
             }
         });
-        
+		buttonsLayout.set(buttonExit, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonExit, UITableLayout.MARGIN_RIGHT, 0f);
+		
         this.loadSettings(this.tunerDialog.getTuner().getSettings(), dialog);
         
-        DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+        TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-
-
-	protected void loadSettings(TGTunerSettings settings, Shell dialog) {
-		
-		// TODO: this is no good! vvvvvvvvv
-		
+	
+	private void loadSettings(TGTunerSettings settings, UIWindow dialog) {
 		boolean loadedDefaults=false;
-		if (settings==null) {
+		if( settings == null ) {
 			settings = TGTunerSettings.getDefaults();
 			loadedDefaults=true;
 		}
-		// TODO: this is no good! ^^^^^^^^^
-		
-		boolean found = false;
-		int i = 0;
 		
 		try {
-			while (!found) {
-				if ( Float.parseFloat(this.sampleRateCombo.getItem(i)) == settings.getSampleRate()  ) {
-						this.sampleRateCombo.select(i);
-						found=true;
-				}
-				i++;
-			}
-			i=0; found=false;
-		
-			while (!found) {
-				if ( Integer.parseInt(this.sampleSizeCombo.getItem(i)) == settings.getSampleSize()  ) {
-							this.sampleSizeCombo.select(i);
-							found=true;
-				}
-				i++;
-			}
-
-			i=0; found=false;
-			while (!found) {
-				if ( Integer.parseInt(this.FFTSizeCombo.getItem(i)) == settings.getFFTSize()  ) {
-							this.FFTSizeCombo.select(i);
-							found=true;
-				}
-				i++;
-			}
+			this.sampleRateCombo.setSelectedValue(settings.getSampleRate());
+			this.sampleSizeCombo.setSelectedValue(settings.getSampleSize());
 			
-			this.bufferSizeCombo.setText(new Integer(settings.getBufferSize()).toString());
-			this.noiseGate.setSelection((int)Math.round(settings.getThreshold()*100));
-			this.noiseGateValue.setText(new Integer(this.noiseGate.getSelection()).toString()+"%");
-
-/*			i=0; found=false;
-			if (settings.deviceName==null)
-				found=true;
-			while (!found) {
-				if ( this.deviceCombo.getItem(i).equals(settings.getDeviceName())  ) {
-							this.deviceCombo.select(i);
-							found=true;
-				}
-				i++;
-			}
-*/		} catch (Exception ex) {
+			this.FFTSizeCombo.setSelectedValue(settings.getFFTSize());
+			
+			this.bufferSizeCombo.setSelectedValue(settings.getBufferSize());
+			
+			this.noiseGate.setValue((int)Math.round(settings.getThreshold()*100));
+			this.noiseGateValue.setText(new Integer(this.noiseGate.getValue()).toString()+"%");
+		} catch (Exception ex) {
 			if (!loadedDefaults) {
 				TGMessageDialogUtil.errorMessage(getContext(), dialog, "Failed to load TuxGuitar settings.\nLoading defaults.");
 				loadSettings(TGTunerSettings.getDefaults(),dialog);
 			}
-		}
-		
+		}	
 	}
-
 	
-/*	
-	*//** cycles through available SourceData audio devices *//*
-	private void fillDeviceCombo(Shell dialog) {
-		Mixer.Info[] aInfos = AudioSystem.getMixerInfo();
-		for (int i = 0; i < aInfos.length; i++)
-		{
-			Mixer mixer = AudioSystem.getMixer(aInfos[i]);
-			Line.Info lineInfo = new Line.Info(SourceDataLine.class);
-			if (mixer.isLineSupported(lineInfo))
-			{
-				this.deviceCombo.add(aInfos[i].getName());
-			}
-		}
-		if (aInfos.length == 0)
-		{
-			MessageDialog.errorMessage(dialog,"No input sound devices available.");
-		}
-	}
-
-*/	
-	protected void dispose(Shell dialog, boolean saveWanted) {
+	private void dispose(UIWindow dialog, boolean saveWanted) {
 		try {
 			if (this.updated & saveWanted) {
 				TGTunerSettings settings = new TGTunerSettings();
 				settings.setSampleRate(this.getSampleRate());
-				settings.setSampleSize(Integer.parseInt(this.sampleSizeCombo.getItem(this.sampleSizeCombo.getSelectionIndex())));
-	
+				settings.setSampleSize(this.getSampleSize());
+				
 				settings.setBufferSize(this.getBufferSize());
 				settings.setFFTSize(this.getFFTSize());
-				settings.setThreshold((float)this.noiseGate.getSelection()/100);
+				settings.setThreshold((float)this.noiseGate.getValue()/100);
 				settings.setWaitPeriod(100); // TODO: hard coded?
 				
 				this.checkBufferValues(settings); // check if they are divisable with buffer size
 				
-	
-	/*			if (this.deviceCombo.getSelectionIndex()<0) {
-					MessageDialog.errorMessage(dialog,"You didn't set the input device.");
-					return;
-				}
-				settings.setDeviceName(this.deviceCombo.getItem(this.deviceCombo.getSelectionIndex()));
-	*/			
 				this.tunerDialog.getTuner().setSettings(settings);
-				// TODO: save the settings in the system
 			}
 			
 	    	this.tunerDialog.getTuner().resumeFromPause();
@@ -278,24 +229,32 @@ public class TGTunerSettingsDialog {
 		}
 	}
 	
-	
-	
-	
 	private float getSampleRate() {
-		return Float.parseFloat(this.sampleRateCombo.getItem(this.sampleRateCombo.getSelectionIndex()));
+		Float value = this.sampleRateCombo.getSelectedValue();
+		return (value != null ? value : 0f);
 	}
+	
+	private int getSampleSize() {
+		Integer value = this.sampleSizeCombo.getSelectedValue();
+		return (value != null ? value : 0);
+	}
+	
 	private int getFFTSize() {
-		return Integer.parseInt(this.FFTSizeCombo.getItem(this.FFTSizeCombo.getSelectionIndex()));
+		Integer value = this.FFTSizeCombo.getSelectedValue();
+		return (value != null ? value : 0);
 	}
+	
 	private int getBufferSize() {
-		return Integer.parseInt(this.bufferSizeCombo.getText());
+		Integer value = this.bufferSizeCombo.getSelectedValue();
+		return (value != null ? value : 0);
 	}
 	
 	
 
 	/** adapter class which sets update flag */
-	protected class UpdatedListener extends SelectionAdapter {
-		public void widgetSelected(SelectionEvent arg0) {
+	private class UpdatedListener implements UISelectionListener {
+		
+		public void onSelect(UISelectionEvent event) {
         	TGTunerSettingsDialog.this.updated=true;
         	TGTunerSettingsDialog.this.settingsInfo.setText(" Minimal freq diff = "+this.getMinimalFrequencyDiff()+"Hz   \n Time to fill the buffer = "+ this.getTimeToFillBuffer()+" sec");
         }
@@ -307,31 +266,15 @@ public class TGTunerSettingsDialog {
     	private double getTimeToFillBuffer() {
     		return TGTunerSettingsDialog.this.getBufferSize() / TGTunerSettingsDialog.this.getSampleRate();
     	}
-
 	}
 	
-	
-	
-
-	/** because there are many groups */
-	protected Composite createGroup(String groupCaption, Composite parent) {
-		Group tempGroup = new Group(parent,SWT.SHADOW_ETCHED_IN);            
-		tempGroup.setLayout(new GridLayout());
-		tempGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		tempGroup.setText(groupCaption);
-		Composite groupComposite = new Composite(tempGroup,SWT.NONE);
-		groupComposite.setLayout(new GridLayout(2,false));
-		groupComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		return groupComposite;
-	}
-	
-	protected void checkBufferValues(TGTunerSettings settings) throws Exception {
+	private void checkBufferValues(TGTunerSettings settings) throws Exception {
 		if (settings.bufferSize % settings.sampleSize != 0 ||
 			settings.bufferSize > settings.fftSize	)
 			throw new Exception("Invalid sampling buffer size");
 	}
 
-	protected TGContext getContext() {
+	private TGContext getContext() {
 		return this.tunerDialog.getContext();
 	}
 }

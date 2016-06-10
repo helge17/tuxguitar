@@ -1,10 +1,12 @@
 package org.herac.tuxguitar.cocoa.toolbar;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
+
+import swtimpl.widget.SWTWindow;
 
 public class MacToolbarPlugin implements TGPlugin {
 	
@@ -21,7 +23,7 @@ public class MacToolbarPlugin implements TGPlugin {
 			 }else {
 				this.macToolbar = new MacToolbar();
 				this.macToolbar.setEnabled(true);
-				this.macToolbar.init( TuxGuitar.getInstance().getShell() );
+				this.macToolbar.init(((SWTWindow) TGWindow.getInstance(context).getWindow()).getControl());
 			}
 		} catch( Throwable throwable ){
 			throw new TGPluginException( throwable );

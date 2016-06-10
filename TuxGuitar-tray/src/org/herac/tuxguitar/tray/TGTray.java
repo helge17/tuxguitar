@@ -10,9 +10,12 @@ import org.eclipse.swt.widgets.TrayItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
+
+import swtimpl.SWTApplication;
 
 public class TGTray implements TGEventListener {
 	
@@ -23,7 +26,7 @@ public class TGTray implements TGEventListener {
 	private TGTrayMenu menu;
 	
 	public TGTray(TGContext context){
-		this.display = TuxGuitar.getInstance().getDisplay();
+		this.display = ((SWTApplication)TGApplication.getInstance(context).getApplication()).getDisplay();
 		this.tray = this.display.getSystemTray();
 		this.icon = new TGTrayIcon();
 		this.menu = new TGTrayMenu(context);
@@ -47,7 +50,7 @@ public class TGTray implements TGEventListener {
 			this.menu.make();
 			this.visible = true;
 			TrayItem item = new TrayItem (this.tray, SWT.NONE);
-			item.setToolTipText(TuxGuitar.APPLICATION_NAME);
+			item.setToolTipText(TGApplication.NAME);
 			item.addListener (SWT.Selection, new Listener () {
 				public void handleEvent (Event event) {
 					setVisible();

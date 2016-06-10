@@ -3,11 +3,11 @@
  */
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIToggleButton;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
@@ -16,28 +16,27 @@ import org.eclipse.swt.widgets.Composite;
 public class TGTuningString {
 
 	private int string;
-	private Button stringButton = null;
+	private UIToggleButton stringButton = null;
 	private TGTunerListener listener = null;
 	
 	
 	
-	TGTuningString(int string, Composite parent, TGTunerListener listener) {
+	TGTuningString(UIFactory factory, UIContainer parent, TGTunerListener listener, int string) {
 		this.string = string;
 		this.listener = listener;
 		
-		this.stringButton = new Button(parent,SWT.TOGGLE);
+		this.stringButton = factory.createToggleButton(parent);
 		this.stringButton.setText("--------- "+TGTunerRoughWidget.TONESSTRING[string%12]+(int)Math.floor(string/12)+" ---------");
 	}
 
 	
 	
 	void addListener() {
-		this.stringButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-					TGTuningString.this.stringButton.setSelection(true);
-					TGTuningString.this.listener.fireCurrentString(TGTuningString.this.string);
+		this.stringButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTuningString.this.stringButton.setSelected(true);
+				TGTuningString.this.listener.fireCurrentString(TGTuningString.this.string);
 			}
-			
 		});
 	}
 	
@@ -45,7 +44,7 @@ public class TGTuningString {
 		return this.string;
 	}
 	
-	public Button getStringButton() {
+	public UIToggleButton getStringButton() {
 		return this.stringButton;
 	}
 	

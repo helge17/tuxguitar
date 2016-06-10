@@ -1,17 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.tremolopicking;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
@@ -21,13 +13,22 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGTremoloPickingDialog extends SelectionAdapter{
+public class TGTremoloPickingDialog {
 	
-	private Button thirtySecondButton;
-	private Button sixTeenthButton;
-	private Button eighthButton;
+	private UIRadioButton thirtySecondButton;
+	private UIRadioButton sixTeenthButton;
+	private UIRadioButton eighthButton;
 	
 	public TGTremoloPickingDialog(){
 		super();
@@ -39,17 +40,13 @@ public class TGTremoloPickingDialog extends SelectionAdapter{
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
 		if( measure != null && beat != null && note != null && string != null ) {
-			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+			final UITableLayout dialogLayout = new UITableLayout();
+			final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 			
-			dialog.setLayout(new GridLayout());
+			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.tremolo-picking-editor"));
-			
-			Composite composite = new Composite(dialog,SWT.NONE);
-			composite.setLayout(new GridLayout());
-			composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			
-			int horizontalSpan = 2;
 			
 			//-----defaults-------------------------------------------------
 			int duration = TGDuration.EIGHTH;
@@ -60,95 +57,79 @@ public class TGTremoloPickingDialog extends SelectionAdapter{
 			//---------------------------------------------------
 			//------------------DURATION-------------------------
 			//---------------------------------------------------
-			Group durationGroup = makeGroup(composite,horizontalSpan, TuxGuitar.getProperty("duration"));
-			durationGroup.setLayout(new GridLayout(3,false));
+			UITableLayout durationLayout = new UITableLayout();
+			UILegendPanel durationGroup = uiFactory.createLegendPanel(dialog);
+			durationGroup.setText(TuxGuitar.getProperty("duration"));
+			durationGroup.setLayout(durationLayout);
+			dialogLayout.set(durationGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			this.thirtySecondButton = new Button(durationGroup,SWT.RADIO);
+			this.thirtySecondButton = uiFactory.createRadioButton(durationGroup);
 			this.thirtySecondButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
-			this.thirtySecondButton.setLayoutData(makeGridData(1));
-			this.thirtySecondButton.setSelection(duration == TGDuration.THIRTY_SECOND);
+			this.thirtySecondButton.setSelected(duration == TGDuration.THIRTY_SECOND);
+			durationLayout.set(this.thirtySecondButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			this.sixTeenthButton = new Button(durationGroup,SWT.RADIO);
+			this.sixTeenthButton = uiFactory.createRadioButton(durationGroup);
 			this.sixTeenthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
-			this.sixTeenthButton.setLayoutData(makeGridData(1));
-			this.sixTeenthButton.setSelection(duration == TGDuration.SIXTEENTH);
+			this.sixTeenthButton.setSelected(duration == TGDuration.SIXTEENTH);
+			durationLayout.set(this.sixTeenthButton, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			this.eighthButton = new Button(durationGroup,SWT.RADIO);
+			this.eighthButton = uiFactory.createRadioButton(durationGroup);
 			this.eighthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
-			this.eighthButton.setLayoutData(makeGridData(1));
-			this.eighthButton.setSelection(duration == TGDuration.EIGHTH);
+			this.eighthButton.setSelected(duration == TGDuration.EIGHTH);
+			durationLayout.set(this.eighthButton, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			
 			//---------------------------------------------------
 			//------------------BUTTONS--------------------------
 			//---------------------------------------------------
-			Composite buttons = new Composite(dialog, SWT.NONE);
-			buttons.setLayout(new GridLayout(3,false));
-			buttons.setLayoutData(new GridData(SWT.END,SWT.BOTTOM,true,true));
+			UITableLayout buttonsLayout = new UITableLayout(0f);
+			UIPanel buttons = uiFactory.createPanel(dialog, false);
+			buttons.setLayout(buttonsLayout);
+			dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 			
-			final Button buttonOK = new Button(buttons, SWT.PUSH);
+			final UIButton buttonOK = uiFactory.createButton(buttons);
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
-			buttonOK.setLayoutData(getButtonData());
-			buttonOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonOK.setDefaultButton();
+			buttonOK.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeTremoloPicking(context.getContext(), measure, beat, string, getTremoloPicking());
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			
-			Button buttonClean = new Button(buttons, SWT.PUSH);
+			UIButton buttonClean = uiFactory.createButton(buttons);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
-			buttonClean.setLayoutData(getButtonData());
-			buttonClean.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonClean.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeTremoloPicking(context.getContext(), measure, beat, string, null);
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			
-			Button buttonCancel = new Button(buttons, SWT.PUSH);
+			UIButton buttonCancel = uiFactory.createButton(buttons);
 			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-			buttonCancel.setLayoutData(getButtonData());
-			buttonCancel.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonCancel.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+			buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 			
-			dialog.setDefaultButton( buttonOK );
-			
-			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
-	}
-	
-	private Group makeGroup(Composite parent,int horizontalSpan,String text){
-		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		group.setLayoutData(makeGridData(horizontalSpan));
-		group.setText(text);
-		
-		return group;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private GridData makeGridData(int horizontalSpan){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.horizontalSpan = horizontalSpan;
-		return data;
 	}
 	
 	public TGEffectTremoloPicking getTremoloPicking(){
 		TGEffectTremoloPicking effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloPicking();
-		if(this.thirtySecondButton.getSelection()){
+		if(this.thirtySecondButton.isSelected()) {
 			effect.getDuration().setValue(TGDuration.THIRTY_SECOND);
-		}else if(this.sixTeenthButton.getSelection()){
+		} else if(this.sixTeenthButton.isSelected()) {
 			effect.getDuration().setValue(TGDuration.SIXTEENTH);
-		}else if(this.eighthButton.getSelection()){
+		} else if(this.eighthButton.isSelected()) {
 			effect.getDuration().setValue(TGDuration.EIGHTH);
-		}else{
+		} else {
 			return null;
 		}
 		return effect;

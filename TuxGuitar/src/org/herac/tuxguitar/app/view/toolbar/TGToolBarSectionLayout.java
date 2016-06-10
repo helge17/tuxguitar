@@ -1,13 +1,5 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
@@ -16,41 +8,35 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionLayout implements TGToolBarSection {
 	
-	private ToolItem menuItem;
+	private UIToolMenuItem menuItem;
 	
-	private Menu menu;
-	private MenuItem pageLayout;
-	private MenuItem linearLayout;
-	private MenuItem multitrack;
-	private MenuItem scoreEnabled;
-	private MenuItem compact;
+	private UIMenuActionItem pageLayout;
+	private UIMenuActionItem linearLayout;
+	private UIMenuActionItem multitrack;
+	private UIMenuActionItem scoreEnabled;
+	private UIMenuActionItem compact;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
-		
-		this.pageLayout = new MenuItem(this.menu, SWT.PUSH);
+		this.pageLayout = this.menuItem.getMenu().createActionItem();
 		this.pageLayout.addSelectionListener(toolBar.createActionProcessor(TGSetPageLayoutAction.NAME));
 		
-		this.linearLayout = new MenuItem(this.menu, SWT.PUSH);
+		this.linearLayout = this.menuItem.getMenu().createActionItem();
 		this.linearLayout.addSelectionListener(toolBar.createActionProcessor(TGSetLinearLayoutAction.NAME));
 		
-		this.multitrack = new MenuItem(this.menu, SWT.PUSH);
+		this.multitrack = this.menuItem.getMenu().createActionItem();
 		this.multitrack.addSelectionListener(toolBar.createActionProcessor(TGSetMultitrackViewAction.NAME));
 		
-		this.scoreEnabled = new MenuItem(this.menu, SWT.PUSH);
+		this.scoreEnabled = this.menuItem.getMenu().createActionItem();
 		this.scoreEnabled.addSelectionListener(toolBar.createActionProcessor(TGSetScoreEnabledAction.NAME));
 		
-		this.compact = new MenuItem(this.menu, SWT.PUSH);
+		this.compact = this.menuItem.getMenu().createActionItem();
 		this.compact.addSelectionListener(toolBar.createActionProcessor(TGSetCompactViewAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -88,13 +74,5 @@ public class TGToolBarSectionLayout implements TGToolBarSection {
 		this.scoreEnabled.setText(toolBar.getText("view.layout.score-enabled", ( (style & TGLayout.DISPLAY_SCORE) != 0 )));
 		this.compact.setText(toolBar.getText("view.layout.compact", ( (style & TGLayout.DISPLAY_COMPACT) != 0 )));
 		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || toolBar.getSong().countTracks() == 1);
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 }

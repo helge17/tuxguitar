@@ -1,106 +1,122 @@
 package org.herac.tuxguitar.app.view.dialog.about;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
+import org.herac.tuxguitar.ui.widget.UITabFolder;
+import org.herac.tuxguitar.ui.widget.UITabItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class TGAboutDialog {
 	
-	private static final String RELEASE_NAME = (TuxGuitar.APPLICATION_NAME + " " + TGVersion.CURRENT.getVersion());
+	private static final String RELEASE_NAME = (TGApplication.NAME + " " + TGVersion.CURRENT.getVersion());
 	private static final String PROPERTY_PREFIX = ("help.about.");
 	
-	private static final int IMAGE_WIDTH = 100;
-	private static final int IMAGE_HEIGHT = 100;
+	private static final float IMAGE_WIDTH = 100;
+	private static final float IMAGE_HEIGHT = 100;
 	
-	private static final int TAB_ITEM_WIDTH = 660;
-	private static final int TAB_ITEM_HEIGHT = 300;
+	private static final float TAB_ITEM_WIDTH = 660;
+	private static final float TAB_ITEM_HEIGHT = 300;
 	
-	protected Composite imageComposite;
-	protected Image image;
+	protected UICanvas imageComposite;
+	protected UIImage image;
 	
 	public TGAboutDialog() {
 		super();
 	}
 	
 	public void show(final TGViewContext context){
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final TGConfigManager configManager = TGConfigManager.getInstance(context.getContext());
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("help.about"));
 		
 		//--------------------HEADER----------------------------------
-		Composite header = new Composite(dialog,SWT.NONE);
-		header.setLayout(new GridLayout(2,false));
-		header.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true ,true));
+		UITableLayout headerLayout = new UITableLayout();
+		UIPanel header = uiFactory.createPanel(dialog, false);
+		header.setLayout(headerLayout);
+		dialogLayout.set(header, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		this.image = TuxGuitar.getInstance().getIconManager().getAboutDescription();
 		
-		this.imageComposite = new Composite(header,SWT.NONE);
-		this.imageComposite.setLayoutData(new GridData(IMAGE_WIDTH,IMAGE_HEIGHT));
-		this.imageComposite.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				Rectangle bounds = TGAboutDialog.this.image.getBounds();
-				TGPainterImpl painter = new TGPainterImpl(e.gc);
-				painter.drawImage(new TGImageImpl(TGAboutDialog.this.image),((IMAGE_WIDTH - bounds.width) /2),((IMAGE_HEIGHT - bounds.height) /2));
+		this.imageComposite = uiFactory.createCanvas(header, false);
+		this.imageComposite.addPaintListener(new UIPaintListener() {
+			public void onPaint(UIPaintEvent event) {
+				float width = TGAboutDialog.this.image.getWidth();
+				float height = TGAboutDialog.this.image.getHeight();
+				
+				TGPainter tgPainter = new TGPainterImpl(uiFactory, event.getPainter());
+				tgPainter.drawImage(new TGImageImpl(uiFactory, TGAboutDialog.this.image), ((IMAGE_WIDTH - width) / 2f),((IMAGE_HEIGHT - height) / 2f));
 			}
 		});
+		headerLayout.set(this.imageComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, IMAGE_WIDTH, IMAGE_HEIGHT, null);
 		
-		final Font titleFont = new Font(dialog.getDisplay(),TuxGuitar.getInstance().getConfig().getFontDataConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
-		Label title = new Label(header,SWT.NONE);
-		title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true ,true));
+		final UIColor titleColor = uiFactory.createColor(0xc0, 0xc0, 0xc0);
+		final UIFont titleFont = uiFactory.createFont(configManager.getUIFontModelConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
+		UILabel title = uiFactory.createLabel(header);
 		title.setFont(titleFont);
-		title.setForeground(dialog.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		title.setFgColor(titleColor);
 		title.setText(RELEASE_NAME);
-		title.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		title.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				titleFont.dispose();
+				titleColor.dispose();
 			}
 		});
+		headerLayout.set(title, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//-------------------TABS-----------------------
-		Composite tabs = new Composite(dialog, SWT.NONE);
-		tabs.setLayout(new GridLayout());
-		tabs.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout tabsLayout = new UITableLayout();
+		UIPanel tabs = uiFactory.createPanel(dialog, false);
+		tabs.setLayout(tabsLayout);
+		dialogLayout.set(tabs, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final TabFolder tabFolder = new TabFolder(tabs, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(TAB_ITEM_WIDTH, TAB_ITEM_HEIGHT));
+		final UITabFolder tabFolder = uiFactory.createTabFolder(tabs, false);
+		tabsLayout.set(tabFolder, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		tabsLayout.set(tabFolder, UITableLayout.PACKED_WIDTH, TAB_ITEM_WIDTH);
+		tabsLayout.set(tabFolder, UITableLayout.PACKED_HEIGHT, TAB_ITEM_HEIGHT);
 		
 		TGAboutContentReader docReader = new TGAboutContentReader(context.getContext());
 		
-		makeTabItem(tabFolder,TGAboutContentReader.DESCRIPTION,docReader.read(TGAboutContentReader.DESCRIPTION).toString());
-		makeTabItem(tabFolder,TGAboutContentReader.AUTHORS,docReader.read(TGAboutContentReader.AUTHORS).toString());
-		makeTabItem(tabFolder,TGAboutContentReader.LICENSE,docReader.read(TGAboutContentReader.LICENSE).toString());
+		createTabItem(uiFactory, tabFolder, TGAboutContentReader.DESCRIPTION, docReader.read(TGAboutContentReader.DESCRIPTION).toString());
+		createTabItem(uiFactory, tabFolder, TGAboutContentReader.AUTHORS, docReader.read(TGAboutContentReader.AUTHORS).toString());
+		createTabItem(uiFactory, tabFolder, TGAboutContentReader.LICENSE, docReader.read(TGAboutContentReader.LICENSE).toString());
 		
-		tabFolder.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if(tabFolder.getSelectionIndex() == 0){
+		tabFolder.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				int selectedIndex = tabFolder.getSelectedIndex();
+				if( selectedIndex == 0 ){
 					TGAboutDialog.this.image = TuxGuitar.getInstance().getIconManager().getAboutDescription();
-				}else if(tabFolder.getSelectionIndex() == 1){
+				}else if( selectedIndex == 1 ){
 					TGAboutDialog.this.image = TuxGuitar.getInstance().getIconManager().getAboutAuthors();
-				}else if(tabFolder.getSelectionIndex() == 2){
+				}else if( selectedIndex == 2 ){
 					TGAboutDialog.this.image = TuxGuitar.getInstance().getIconManager().getAboutLicense();
 				}
 				TGAboutDialog.this.imageComposite.redraw();
@@ -108,46 +124,45 @@ public class TGAboutDialog {
 		});
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout());
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout();
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		Button buttonClose = new Button(buttons, SWT.PUSH);
-		buttonClose.setLayoutData(getButtonData());
+		UIButton buttonClose = uiFactory.createButton(buttons);
+		buttonClose.setDefaultButton();
 		buttonClose.setText(TuxGuitar.getProperty("close"));
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonClose.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonClose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		tabFolder.setSelection(0);
+		tabFolder.setSelectedIndex(0);
 		
-		dialog.setDefaultButton( buttonClose );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private void makeTabItem(TabFolder tabFolder,String itemName,String itemText){
-		Composite control = new Composite(tabFolder, SWT.NONE);
-		control.setLayout(new GridLayout());
+	private void createTabItem(UIFactory uiFactory, UITabFolder tabFolder, String itemName, String itemText){
+		final UIColor white = uiFactory.createColor(0xff, 0xff, 0xff);
 		
-		Text text = new Text(control,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		text.setBackground(TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		text.setEditable(false);
-		text.append(itemText);
-		text.setSelection(0);
+		UITabItem uiTabItem = tabFolder.createTab();
+		uiTabItem.setText(TuxGuitar.getProperty(PROPERTY_PREFIX + itemName));
 		
-		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText(TuxGuitar.getProperty(PROPERTY_PREFIX + itemName));
-		tabItem.setControl(control);
+		UITableLayout controlLayout = new UITableLayout();
+		UIPanel control = uiFactory.createPanel(uiTabItem, false);
+		control.setLayout(controlLayout);
+		
+		UIReadOnlyTextBox text = uiFactory.createReadOnlyTextBox(control, true, false);
+		text.setBgColor(white);
+		text.setText(itemText);
+		text.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
+				white.dispose();
+			}
+		});
+		
+		controlLayout.set(text, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
 }

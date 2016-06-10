@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordNameEnabledAction;
@@ -31,105 +21,95 @@ import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class ViewMenuItem extends TGMenuItem{
+public class ViewMenuItem extends TGMenuItem {
 	
-	private Menu menu;
-	private Menu chordMenu;
-	private MenuItem layoutMenuItem;
-	private MenuItem showToolbars;
-	private MenuItem showInstruments;
-	private MenuItem showTransport;
-	private MenuItem showFretBoard;
-	private MenuItem showPiano;
-	private MenuItem showMatrix;
-	private MenuItem pageLayout;
-	private MenuItem linearLayout;
-	private MenuItem multitrack;
-	private MenuItem scoreEnabled;
-	private MenuItem tablatureEnabled;
-	private MenuItem compact;
+	private UIMenuSubMenuItem layoutMenuItem;
+	private UIMenuCheckableItem showToolbars;
+	private UIMenuCheckableItem showInstruments;
+	private UIMenuCheckableItem showTransport;
+	private UIMenuCheckableItem showFretBoard;
+	private UIMenuCheckableItem showPiano;
+	private UIMenuCheckableItem showMatrix;
+	private UIMenuCheckableItem pageLayout;
+	private UIMenuCheckableItem linearLayout;
+	private UIMenuCheckableItem multitrack;
+	private UIMenuCheckableItem scoreEnabled;
+	private UIMenuCheckableItem tablatureEnabled;
+	private UIMenuCheckableItem compact;
 	
-	private MenuItem chordMenuItem;
-	private MenuItem chordName;
-	private MenuItem chordDiagram;
+	private UIMenuSubMenuItem chordMenuItem;
+	private UIMenuCheckableItem chordName;
+	private UIMenuCheckableItem chordDiagram;
 	
-	public ViewMenuItem(Shell shell,Menu parent, int style) {
-		this.layoutMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public ViewMenuItem(UIMenu parent) {
+		this.layoutMenuItem = parent.createSubMenuItem();
 	}
 	
 	public void showItems(){
 		//--TOOLBARS--
-		this.showToolbars = new MenuItem(this.menu, SWT.CHECK);
+		this.showToolbars = this.layoutMenuItem.getMenu().createCheckItem();
 		this.showToolbars.addSelectionListener(this.createActionProcessor(TGToggleToolbarsAction.NAME));
 		
 		//--INSTRUMENTS--
-		this.showInstruments = new MenuItem(this.menu, SWT.CHECK);
+		this.showInstruments = this.layoutMenuItem.getMenu().createCheckItem();
 		this.showInstruments.addSelectionListener(this.createActionProcessor(TGToggleChannelsDialogAction.NAME));
 		
 		//--TRANSPORT--
-		this.showTransport = new MenuItem(this.menu, SWT.CHECK);
+		this.showTransport = this.layoutMenuItem.getMenu().createCheckItem();
 		this.showTransport.addSelectionListener(this.createActionProcessor(TGToggleTransportDialogAction.NAME));
 		
 		//--FRETBOARD--
-		this.showFretBoard = new MenuItem(this.menu, SWT.CHECK);
+		this.showFretBoard = this.layoutMenuItem.getMenu().createCheckItem();
 		this.showFretBoard.addSelectionListener(this.createActionProcessor(TGToggleFretBoardEditorAction.NAME));
 		
 		//--PIANO--
-		this.showPiano = new MenuItem(this.menu, SWT.CHECK);
+		this.showPiano = this.layoutMenuItem.getMenu().createCheckItem();
 		this.showPiano.addSelectionListener(this.createActionProcessor(TGTogglePianoEditorAction.NAME));
 		
 		//--MATRIX--
-		this.showMatrix = new MenuItem(this.menu, SWT.CHECK);
+		this.showMatrix = this.layoutMenuItem.getMenu().createCheckItem();
 		this.showMatrix.addSelectionListener(this.createActionProcessor(TGToggleMatrixEditorAction.NAME));
 		
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.layoutMenuItem.getMenu().createSeparator();
 		
 		//--PAGE LAYOUT--
-		this.pageLayout = new MenuItem(this.menu, SWT.RADIO);
+		this.pageLayout = this.layoutMenuItem.getMenu().createRadioItem();
 		this.pageLayout.addSelectionListener(this.createActionProcessor(TGSetPageLayoutAction.NAME));
 		
 		//--LINEAR LAYOUT--
-		this.linearLayout = new MenuItem(this.menu, SWT.RADIO);
+		this.linearLayout = this.layoutMenuItem.getMenu().createRadioItem();
 		this.linearLayout.addSelectionListener(this.createActionProcessor(TGSetLinearLayoutAction.NAME));
 		
 		//--MULTITRACK--
-		this.multitrack = new MenuItem(this.menu, SWT.CHECK);
+		this.multitrack = this.layoutMenuItem.getMenu().createCheckItem();
 		this.multitrack.addSelectionListener(this.createActionProcessor(TGSetMultitrackViewAction.NAME));
 		
 		//--SCORE
-		this.scoreEnabled = new MenuItem(this.menu, SWT.CHECK);
+		this.scoreEnabled = this.layoutMenuItem.getMenu().createCheckItem();
 		this.scoreEnabled.addSelectionListener(this.createActionProcessor(TGSetScoreEnabledAction.NAME));
 		
 		//--SCORE
-		this.tablatureEnabled = new MenuItem(this.menu, SWT.CHECK);
+		this.tablatureEnabled = this.layoutMenuItem.getMenu().createCheckItem();
 		this.tablatureEnabled.addSelectionListener(this.createActionProcessor(TGSetTablatureEnabledAction.NAME));
 		
 		//--COMPACT
-		this.compact = new MenuItem(this.menu, SWT.CHECK);
+		this.compact = this.layoutMenuItem.getMenu().createCheckItem();
 		this.compact.addSelectionListener(this.createActionProcessor(TGSetCompactViewAction.NAME));
 		
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.layoutMenuItem.getMenu().createSeparator();
 		
 		//--CHORD STYLE
-		this.chordMenuItem = new MenuItem(this.menu,SWT.CASCADE);
-		this.chordMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
+		this.chordMenuItem = this.layoutMenuItem.getMenu().createSubMenuItem();
 		
-		this.chordName = new MenuItem(this.chordMenu, SWT.CHECK);
+		this.chordName = this.chordMenuItem.getMenu().createCheckItem();
 		this.chordName.addSelectionListener(this.createActionProcessor(TGSetChordNameEnabledAction.NAME));
 		
-		this.chordDiagram = new MenuItem(this.chordMenu, SWT.CHECK);
+		this.chordDiagram = this.chordMenuItem.getMenu().createCheckItem();
 		this.chordDiagram.addSelectionListener(this.createActionProcessor(TGSetChordDiagramEnabledAction.NAME));
-		
-		this.chordMenuItem.setMenu(this.chordMenu);
-		this.layoutMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -138,21 +118,21 @@ public class ViewMenuItem extends TGMenuItem{
 	public void update(){
 		TGLayout layout = TuxGuitar.getInstance().getTablatureEditor().getTablature().getViewLayout();
 		int style = layout.getStyle();
-		this.showToolbars.setSelection(TGToolBar.getInstance(this.findContext()).isVisible());
-		this.showInstruments.setSelection(!TuxGuitar.getInstance().getChannelManager().isDisposed());
-		this.showTransport.setSelection(!TGTransportDialog.getInstance(this.findContext()).isDisposed());
-		this.showFretBoard.setSelection(TuxGuitar.getInstance().getFretBoardEditor().isVisible());
-		this.showPiano.setSelection(!TuxGuitar.getInstance().getPianoEditor().isDisposed());
-		this.showMatrix.setSelection(!TuxGuitar.getInstance().getMatrixEditor().isDisposed());
-		this.pageLayout.setSelection(layout instanceof TGLayoutVertical);
-		this.linearLayout.setSelection(layout instanceof TGLayoutHorizontal);
-		this.multitrack.setSelection( (style & TGLayout.DISPLAY_MULTITRACK) != 0 );
-		this.scoreEnabled.setSelection( (style & TGLayout.DISPLAY_SCORE) != 0 );
-		this.tablatureEnabled.setSelection( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
-		this.compact.setSelection( (style & TGLayout.DISPLAY_COMPACT) != 0 );
+		this.showToolbars.setChecked(TGToolBar.getInstance(this.findContext()).isVisible());
+		this.showInstruments.setChecked(!TuxGuitar.getInstance().getChannelManager().isDisposed());
+		this.showTransport.setChecked(!TGTransportDialog.getInstance(this.findContext()).isDisposed());
+		this.showFretBoard.setChecked(TuxGuitar.getInstance().getFretBoardEditor().isVisible());
+		this.showPiano.setChecked(!TuxGuitar.getInstance().getPianoEditor().isDisposed());
+		this.showMatrix.setChecked(!TuxGuitar.getInstance().getMatrixEditor().isDisposed());
+		this.pageLayout.setChecked(layout instanceof TGLayoutVertical);
+		this.linearLayout.setChecked(layout instanceof TGLayoutHorizontal);
+		this.multitrack.setChecked( (style & TGLayout.DISPLAY_MULTITRACK) != 0 );
+		this.scoreEnabled.setChecked( (style & TGLayout.DISPLAY_SCORE) != 0 );
+		this.tablatureEnabled.setChecked( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
+		this.compact.setChecked( (style & TGLayout.DISPLAY_COMPACT) != 0 );
 		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || layout.getSong().countTracks() == 1);
-		this.chordName.setSelection( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
-		this.chordDiagram.setSelection( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
+		this.chordName.setChecked( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
+		this.chordDiagram.setChecked( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
 	}
 	
 	public void loadProperties(){

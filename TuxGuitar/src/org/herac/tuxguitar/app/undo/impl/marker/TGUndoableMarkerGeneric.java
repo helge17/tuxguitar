@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.undo.impl.marker;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGUpdateMarkerAction;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -21,26 +22,26 @@ public class TGUndoableMarkerGeneric extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
 		if(this.redoMarker != null){
-			this.updateMarker(getSong(), this.redoMarker.clone(getSongManager().getFactory()));
+			this.updateMarker(actionContext, getSong(), this.redoMarker.clone(getSongManager().getFactory()));
 		}else if(this.undoMarker != null){
-			this.removeMarker(getSong(), this.undoMarker.clone(getSongManager().getFactory()));
+			this.removeMarker(actionContext, getSong(), this.undoMarker.clone(getSongManager().getFactory()));
 		}
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
 		if(this.undoMarker != null){
-			this.updateMarker(getSong(), this.undoMarker.clone(getSongManager().getFactory()));
+			this.updateMarker(actionContext, getSong(), this.undoMarker.clone(getSongManager().getFactory()));
 		}else if(this.redoMarker != null){
-			this.removeMarker(getSong(), this.redoMarker.clone(getSongManager().getFactory()));
+			this.removeMarker(actionContext, getSong(), this.redoMarker.clone(getSongManager().getFactory()));
 		}
 		this.doAction = REDO_ACTION;
 	}
@@ -67,17 +68,17 @@ public class TGUndoableMarkerGeneric extends TGUndoableEditBase {
 		return this;
 	}
 	
-	public void updateMarker(TGSong song, TGMarker marker) {
+	public void updateMarker(TGActionContext context, TGSong song, TGMarker marker) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGUpdateMarkerAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, marker);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 	
-	public void removeMarker(TGSong song, TGMarker marker) {
+	public void removeMarker(TGActionContext context, TGSong song, TGMarker marker) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRemoveMarkerAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, marker);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

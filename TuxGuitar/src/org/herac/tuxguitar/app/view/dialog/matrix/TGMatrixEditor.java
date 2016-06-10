@@ -3,55 +3,33 @@ package org.herac.tuxguitar.app.view.dialog.matrix;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGFontImpl;
 import org.herac.tuxguitar.app.graphics.TGImageImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
+import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.graphics.TGImage;
@@ -68,6 +46,31 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIMouseEnterListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseExitListener;
+import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResource;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UIImageView;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISeparator;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -83,16 +86,21 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	private TGContext context;
 	private TGMatrixConfig config;
-	private Shell dialog;
-	private Composite composite;
-	private Composite toolbar;
-	private Composite editor;
-	private Rectangle clientArea;
+	private UIWindow dialog;
+	private UIPanel composite;
+	private UIPanel toolbar;
+	private UIScrollBarPanel canvasPanel;
+	private UICanvas editor;
+	private UIRectangle clientArea;
 	private TGImage buffer;
 	private BufferDisposer bufferDisposer;
-	private Label durationLabel;
-	private Label gridsLabel;
-	private Button settings;
+	private UIImageView durationLabel;
+	private UILabel gridsLabel;
+	private UIButton goLeft;
+	private UIButton goRight;
+	private UIButton increment;
+	private UIButton decrement;
+	private UIButton settings;
 	private float width;
 	private float height;
 	private float bufferWidth;
@@ -105,9 +113,6 @@ public class TGMatrixEditor implements TGEventListener {
 	private int duration;
 	private int selection;
 	private int grids;
-	private int playedTrack;
-	private int playedMeasure;
-	private TGBeat playedBeat;
 	
 	public TGMatrixEditor(TGContext context){
 		this.context = context;
@@ -115,31 +120,40 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 	
 	public void show(){
-		this.config = new TGMatrixConfig();
+		this.config = new TGMatrixConfig(this.context);
 		this.config.load();
 		
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
+		this.dialog = getUIFactory().createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setText(TuxGuitar.getProperty("matrix.editor"));
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-		this.dialog.setLayout(new GridLayout());
 		this.dialog.addDisposeListener(new DisposeListenerImpl());
 		this.bufferDisposer = new BufferDisposer();
 		
-		this.composite = new Composite(this.dialog,SWT.NONE);
-		this.composite.setLayout(new GridLayout());
-		this.composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.composite = getUIFactory().createPanel(this.dialog, false);
 		
 		this.initToolBar();
 		this.initEditor();
+		this.createWindowLayout();
+		this.createControlLayout();
 		this.loadIcons();
-		
 		this.addListeners();
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				removeListeners();
-			}
-		});
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER);
+		
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
+	}
+	
+	public void createWindowLayout() {
+		UITableLayout uiLayout = new UITableLayout();
+		uiLayout.set(this.composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		this.dialog.setLayout(uiLayout);
+	}
+	
+	public void createControlLayout() {
+		UITableLayout uiLayout = new UITableLayout(0f);
+		uiLayout.set(this.toolbar, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+		uiLayout.set(this.canvasPanel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		this.composite.setLayout(uiLayout);
 	}
 	
 	public void addListeners(){
@@ -157,88 +171,98 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 	
 	private void initToolBar() {
-		GridLayout layout = new GridLayout();
-		layout.makeColumnsEqualWidth = false;
-		layout.numColumns = 0;
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
+		UIFactory uiFactory = getUIFactory();
 		
-		this.toolbar = new Composite(this.composite, SWT.NONE);
+		int column = 0;
+		
+		this.toolbar = uiFactory.createPanel(this.composite, false);
+		this.createToolBarLayout();
 		
 		// position
-		layout.numColumns ++;
-		Button goLeft = new Button(this.toolbar, SWT.ARROW | SWT.LEFT);
-		goLeft.addSelectionListener(new TGActionProcessorListener(this.context, TGGoLeftAction.NAME));
+		this.goLeft = uiFactory.createButton(this.toolbar);
+		this.goLeft.addSelectionListener(new TGActionProcessorListener(this.context, TGGoLeftAction.NAME));
+		this.createToolItemLayout(this.goLeft, ++column);
 		
-		layout.numColumns ++;
-		Button goRight = new Button(this.toolbar, SWT.ARROW | SWT.RIGHT);
-		goRight.addSelectionListener(new TGActionProcessorListener(this.context, TGGoRightAction.NAME));
+		this.goRight = uiFactory.createButton(this.toolbar);
+		this.goRight.addSelectionListener(new TGActionProcessorListener(this.context, TGGoRightAction.NAME));
+		this.createToolItemLayout(this.goRight, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolbar);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// duration
-		layout.numColumns ++;
-		Button decrement = new Button(this.toolbar, SWT.ARROW | SWT.MIN);
-		decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.decrement = uiFactory.createButton(this.toolbar);
+		this.decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.createToolItemLayout(this.decrement, ++column);
 		
-		layout.numColumns ++;
-		this.durationLabel = new Label(this.toolbar, SWT.BORDER);
+		this.durationLabel = uiFactory.createImageView(this.toolbar);
+		this.createToolItemLayout(this.durationLabel, ++column);
 		
-		layout.numColumns ++;
-		Button increment = new Button(this.toolbar, SWT.ARROW | SWT.MAX);
-		increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.increment = uiFactory.createButton(this.toolbar);
+		this.increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.createToolItemLayout(this.increment, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolbar);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// grids
-		layout.numColumns ++;
-		this.gridsLabel = new Label(this.toolbar,SWT.NONE);
+		this.gridsLabel = uiFactory.createLabel(this.toolbar);
 		this.gridsLabel.setText(TuxGuitar.getProperty("matrix.grids"));
+		this.createToolItemLayout(this.gridsLabel, ++column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		layout.numColumns ++;
-		final Combo divisionsCombo = new Combo(this.toolbar, SWT.DROP_DOWN | SWT.READ_ONLY);
-		divisionsCombo.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false, true));
+		final UIDropDownSelect<Integer> divisionsCombo = uiFactory.createDropDownSelect(this.toolbar);
 		for(int i = 0; i < DIVISIONS.length; i ++){
-			divisionsCombo.add(Integer.toString(DIVISIONS[i]));
-			if(this.grids == DIVISIONS[i]){
-				divisionsCombo.select(i);
-			}
+			divisionsCombo.addItem(new UISelectItem<Integer>(Integer.toString(DIVISIONS[i]), DIVISIONS[i]));
 		}
-		if(this.grids == 0){
-			divisionsCombo.select(0);
-		}
-		divisionsCombo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int index = divisionsCombo.getSelectionIndex();
-				if(index >= 0 && index < DIVISIONS.length){
-					setGrids(DIVISIONS[index]);
+		divisionsCombo.setSelectedValue(this.grids > 0 ? this.grids : null);
+		divisionsCombo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				Integer grids = divisionsCombo.getSelectedValue();
+				if( grids != null ){
+					setGrids(grids);
 				}
 			}
 		});
+		this.createToolItemLayout(divisionsCombo, ++column);
 		
 		// settings
-		layout.numColumns ++;
-		this.settings = new Button(this.toolbar, SWT.PUSH);
+		this.settings = uiFactory.createButton(this.toolbar);
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
-		this.settings.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
-		this.settings.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.settings.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				configure();
 			}
 		});
+		this.createToolItemLayout(this.settings, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.toolbar.setLayout(layout);
-		this.toolbar.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
+		this.toolbar.getLayout().set(goLeft, UITableLayout.MARGIN_LEFT, 0f);
+		this.toolbar.getLayout().set(this.settings, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 	
-	private void makeToolSeparator(Composite parent){
-		Label separator = new Label(parent,SWT.SEPARATOR);
-		separator.setLayoutData(new GridData(20,20));
+	private void createToolBarLayout(){
+		UITableLayout uiLayout = new UITableLayout();
+		uiLayout.set(UITableLayout.MARGIN_LEFT, 0f);
+		uiLayout.set(UITableLayout.MARGIN_RIGHT, 0f);
+		
+		this.toolbar.setLayout(uiLayout);
+	}
+	
+	private void createToolItemLayout(UIControl uiControl, int column){
+		this.createToolItemLayout(uiControl, column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+	}
+	
+	private void createToolItemLayout(UIControl uiControl, int column, Integer alignX, Integer alignY, Boolean fillX, Boolean fillY){
+		UITableLayout uiLayout = (UITableLayout) this.toolbar.getLayout();
+		uiLayout.set(uiControl, 1, column, alignX, alignY, fillX, fillX);
+	}
+	
+	private void createToolSeparator(UIFactory uiFactory, int column){
+		UISeparator uiSeparator = uiFactory.createVerticalSeparator(this.toolbar);
+		UITableLayout uiLayout = (UITableLayout) this.toolbar.getLayout();
+		uiLayout.set(uiSeparator, 1, column, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
+		uiLayout.set(uiSeparator, UITableLayout.PACKED_WIDTH, 20f);
+		uiLayout.set(uiSeparator, UITableLayout.PACKED_HEIGHT, 20f);
 	}
 	
 	private void loadDurationImage(boolean force) {
@@ -251,64 +275,67 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	public void initEditor(){
 		TGMatrixMouseListener mouseListener = new TGMatrixMouseListener();
+		UIFactory uiFactory = this.getUIFactory();
+		UITableLayout uiLayout = new UITableLayout(0f);
+		
+		this.canvasPanel = uiFactory.createScrollBarPanel(this.composite, true, true, true);
+		this.canvasPanel.setLayout(uiLayout);
 		
 		this.selection = -1;
-		this.editor = new Composite(this.composite,SWT.DOUBLE_BUFFERED | SWT.BORDER  | SWT.H_SCROLL | SWT.V_SCROLL);
-		this.editor.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.editor.setLayout(new FillLayout());
+		this.editor = uiFactory.createCanvas(this.canvasPanel, false);
 		this.editor.setFocus();
 		this.editor.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGMatrixPainterListener()));
-		this.editor.addMouseListener(mouseListener);
+		this.editor.addMouseUpListener(mouseListener);
+		this.editor.addMouseEnterListener(mouseListener);
+		this.editor.addMouseExitListener(mouseListener);
 		this.editor.addMouseMoveListener(mouseListener);
-		this.editor.addMouseTrackListener(mouseListener);
-		this.editor.getHorizontalBar().setIncrement(SCROLL_INCREMENT);
-		this.editor.getHorizontalBar().addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
+		
+		this.canvasPanel.getHScroll().setIncrement(SCROLL_INCREMENT);
+		this.canvasPanel.getHScroll().addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				redraw();
 			}
 		});
-		this.editor.getVerticalBar().setIncrement(SCROLL_INCREMENT);
-		this.editor.getVerticalBar().addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
+
+		this.canvasPanel.getVScroll().setIncrement(SCROLL_INCREMENT);
+		this.canvasPanel.getVScroll().addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				redraw();
 			}
 		});
+		
+		uiLayout.set(this.editor, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f); 
 	}
 	
 	protected void updateScroll(){
 		if( this.clientArea != null ){
-			int borderWidth = this.editor.getBorderWidth();
-			ScrollBar vBar = this.editor.getVerticalBar();
-			ScrollBar hBar = this.editor.getHorizontalBar();
-			vBar.setMaximum(Math.round(this.height + (borderWidth * 2)));
-			vBar.setThumb(Math.round(Math.min(this.height + (borderWidth * 2), this.clientArea.height)));
-			hBar.setMaximum(Math.round(this.width + (borderWidth * 2)));
-			hBar.setThumb(Math.round(Math.min(this.width + (borderWidth * 2), this.clientArea.width)));
+			UIScrollBar vBar = this.canvasPanel.getVScroll();
+			UIScrollBar hBar = this.canvasPanel.getHScroll();
+			vBar.setMaximum(Math.round(this.height));
+			vBar.setThumb(Math.round(Math.min(this.height, this.clientArea.getHeight())));
+			hBar.setMaximum(Math.round(this.width));
+			hBar.setThumb(Math.round(Math.min(this.width , this.clientArea.getWidth())));
 		}
 	}
 	
 	protected int getValueAt(float y){
-		if(this.clientArea == null || (y - BORDER_HEIGHT) < 0 || y + BORDER_HEIGHT > this.clientArea.height){
+		if(this.clientArea == null || (y - BORDER_HEIGHT) < 0 || y + BORDER_HEIGHT > this.clientArea.getHeight()){
 			return -1;
 		}
-		int scroll = this.editor.getVerticalBar().getSelection();
+		int scroll = this.canvasPanel.getVScroll().getValue();
 		int value = (this.maxNote -  ((int)(  (y + scroll - BORDER_HEIGHT)  / this.lineHeight)) );
 		return value;
 	}
 	
 	protected long getStartAt(float x){
 		TGMeasure measure = getMeasure();
-		float posX = (x + this.editor.getHorizontalBar().getSelection());
+		float posX = (x + this.canvasPanel.getHScroll().getValue());
 		long start =(long) (measure.getStart() + (((posX - this.leftSpacing) * measure.getLength()) / (this.timeWidth * measure.getTimeSignature().getNumerator())));
 		return start;
 	}
 	
-	protected void paintEditor(TGPainter painter){
-		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
-			this.resetPlayed();
-		}
-		
-		this.clientArea = this.editor.getClientArea();
+	protected void paintEditor(TGPainter painter) {
+		this.clientArea = this.editor.getBounds();
 		
 		if( this.clientArea != null ){
 			TGImage buffer = getBuffer();
@@ -317,8 +344,8 @@ public class TGMatrixEditor implements TGEventListener {
 			this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
 			
 			this.updateScroll();
-			int scrollX = this.editor.getHorizontalBar().getSelection();
-			int scrollY = this.editor.getVerticalBar().getSelection();
+			int scrollX = this.canvasPanel.getHScroll().getValue();
+			int scrollY = this.canvasPanel.getVScroll().getValue();
 			
 			painter.drawImage(buffer,-scrollX,(BORDER_HEIGHT - scrollY));
 			this.paintMeasure(painter,(-scrollX), (BORDER_HEIGHT - scrollY) );
@@ -330,8 +357,10 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	protected TGImage getBuffer(){
 		if( this.clientArea != null ){
-			this.bufferDisposer.update(this.clientArea.width, this.clientArea.height);
+			this.bufferDisposer.update(this.clientArea.getWidth(), this.clientArea.getHeight());
 			if(this.buffer == null || this.buffer.isDisposed()){
+				UIFactory uiFactory = getUIFactory();
+				
 				String[] names = null;
 				TGMeasure measure = getMeasure();
 				this.maxNote = 0;
@@ -356,32 +385,34 @@ public class TGMatrixEditor implements TGEventListener {
 				}
 				
 				float minimumNameWidth = 110;
-				float minimumNameHeight = 0;
-				TGPainter painter = new TGPainterImpl(new GC(this.dialog.getDisplay()));
-				painter.setFont(new TGFontImpl(this.config.getFont()));
+				float minimumNameHeight = 1;
+				TGImage auxImage = new TGImageImpl(uiFactory, uiFactory.createImage(1f, 1f));
+				TGPainter auxPainter = auxImage.createPainter();
+				auxPainter.setFont(new TGFontImpl(this.config.getFont()));
 				for(int i = 0; i < names.length;i ++){
-					float fmWidth = painter.getFMWidth(names[i]);
+					float fmWidth = auxPainter.getFMWidth(names[i]);
 					if( fmWidth > minimumNameWidth ){
 						minimumNameWidth = fmWidth;
 					}
-					float fmHeight = painter.getFMHeight();
+					float fmHeight = auxPainter.getFMHeight();
 					if( fmHeight > minimumNameHeight ){
 						minimumNameHeight = fmHeight;
 					}
 				}
-				painter.dispose();
+				auxPainter.dispose();
+				auxImage.dispose();
 				
 				int cols = measure.getTimeSignature().getNumerator();
 				int rows = (this.maxNote - this.minNote);
 				
 				this.leftSpacing = minimumNameWidth + 10;
-				this.lineHeight = Math.max(minimumNameHeight,( (this.clientArea.height - (BORDER_HEIGHT * 2.0f))/ (rows + 1.0f)));
-				this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.width-this.leftSpacing) / cols)  );
+				this.lineHeight = Math.max(minimumNameHeight,( (this.clientArea.getHeight() - (BORDER_HEIGHT * 2.0f))/ (rows + 1.0f)));
+				this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.getWidth() - this.leftSpacing) / cols)  );
 				this.bufferWidth = this.leftSpacing + (this.timeWidth * cols);
 				this.bufferHeight = (this.lineHeight * (rows + 1));
-				this.buffer = new TGImageImpl(this.editor.getDisplay(),Math.round( this.bufferWidth),Math.round(this.bufferHeight));
+				this.buffer = new TGImageImpl(uiFactory, uiFactory.createImage(this.bufferWidth, this.bufferHeight));
 				
-				painter = this.buffer.createPainter();
+				TGPainter painter = this.buffer.createPainter();
 				painter.setFont(new TGFontImpl(this.config.getFont()));
 				painter.setForeground(new TGColorImpl(this.config.getColorForeground()));
 				
@@ -430,8 +461,8 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	protected void paintBeat(TGPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
 		if( this.clientArea != null ){
-			int minimumY = BORDER_HEIGHT;
-			int maximumY = (this.clientArea.height - BORDER_HEIGHT);
+			float minimumY = BORDER_HEIGHT;
+			float maximumY = (this.clientArea.getHeight() - BORDER_HEIGHT);
 			
 			for( int v = 0; v < beat.countVoices(); v ++ ){
 				TGVoice voice = beat.getVoice(v);
@@ -467,12 +498,12 @@ public class TGMatrixEditor implements TGEventListener {
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
-			painter.addRectangle(fromX,fromY + (this.clientArea.height - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
+			painter.addRectangle(fromX,fromY + (this.clientArea.getHeight() - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
 			painter.closePath();
 			
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.addRectangle(fromX,fromY,this.width,this.clientArea.height);
+			painter.addRectangle(fromX,fromY,this.width,this.clientArea.getHeight());
 			painter.closePath();
 		}
 	}
@@ -493,7 +524,7 @@ public class TGMatrixEditor implements TGEventListener {
 				
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.setAntialias(false);
-				painter.addRectangle(fromX + (this.leftSpacing + x),fromY + (this.clientArea.height - BORDER_HEIGHT), width,BORDER_HEIGHT);
+				painter.addRectangle(fromX + (this.leftSpacing + x),fromY + (this.clientArea.getHeight() - BORDER_HEIGHT), width,BORDER_HEIGHT);
 				painter.closePath();
 			}
 		}
@@ -688,12 +719,6 @@ public class TGMatrixEditor implements TGEventListener {
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
 	
-	protected void resetPlayed(){
-		this.playedBeat = null;
-		this.playedMeasure = -1;
-		this.playedTrack = -1;
-	}
-	
 	public void redraw(){
 		if(!isDisposed()){
 			this.editor.redraw();
@@ -701,52 +726,32 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	public void redrawPlayingMode(){
-		if(!isDisposed() && !TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked() && TuxGuitar.getInstance().getPlayer().isRunning()){
-			TGMeasure measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
-			TGBeat beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
-			if(measure != null && beat != null){
-				int currentMeasure = measure.getNumber();
-				int currentTrack = measure.getTrack().getNumber();
-				boolean changed = (currentMeasure != this.playedMeasure || currentTrack != this.playedTrack);
-				if(changed){
-					this.resetPlayed();
-					this.editor.redraw();
-				}
-				else{
-					TGPainter painter = new TGPainterImpl(new GC(this.editor));
-					int scrollX = this.editor.getHorizontalBar().getSelection();
-					int scrollY = this.editor.getVerticalBar().getSelection();
-					if(this.playedBeat != null){
-						this.paintBeat(painter,measure,this.playedBeat,(-scrollX), (BORDER_HEIGHT - scrollY));
-					}
-					this.paintBeat(painter,measure,beat,(-scrollX), (BORDER_HEIGHT - scrollY));
-					painter.dispose();
-				}
-				this.playedMeasure = currentMeasure;
-				this.playedTrack = currentTrack;
-				this.playedBeat = beat;
-			}
-		}
+	public void redrawPlayingMode() {
+		this.redraw();
 	}
 	
 	protected void configure(){
 		this.config.configure(this.dialog);
+	}
+	
+	public void reloadFromConfig(){
 		this.disposeBuffer();
 		this.redraw();
 	}
 	
 	private void layout(){
-		if( !isDisposed() ){
-			this.toolbar.layout();
-			this.editor.layout();
-			this.composite.layout(true,true);
+		if(!this.isDisposed() ){
+			this.composite.layout();
 		}
 	}
 	
 	public void loadIcons(){
-		if( !isDisposed() ){
+		if(!this.isDisposed() ){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+			this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
+			this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
+			this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
+			this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
 			this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 			this.loadDurationImage(true);
 			this.layout();
@@ -755,7 +760,7 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 	
 	public void loadProperties() {
-		if( !isDisposed() ){
+		if(!this.isDisposed() ){
 			this.dialog.setText(TuxGuitar.getProperty("matrix.editor"));
 			this.gridsLabel.setText(TuxGuitar.getProperty("matrix.grids"));
 			this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
@@ -766,7 +771,7 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 	
 	public void dispose(){
-		if(!isDisposed()){
+		if(!this.isDisposed()){
 			this.dialog.dispose();
 		}
 	}
@@ -778,7 +783,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void dispose(Resource[] resources){
+	protected void dispose(UIResource[] resources){
 		if(resources != null){
 			for(int i = 0; i < resources.length; i ++){
 				dispose(resources[i]);
@@ -786,7 +791,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void dispose(Resource resource){
+	protected void dispose(UIResource resource){
 		if(resource != null){
 			resource.dispose();
 		}
@@ -797,7 +802,7 @@ public class TGMatrixEditor implements TGEventListener {
 		this.config.dispose();
 	}
 	
-	protected Composite getEditor(){
+	protected UICanvas getEditor(){
 		return this.editor;
 	}
 	
@@ -807,10 +812,10 @@ public class TGMatrixEditor implements TGEventListener {
 		private int track;
 		private boolean percussion;
 		
-		private int width;
-		private int height;
+		private float width;
+		private float height;
 		
-		public void update(int width, int height){
+		public void update(float width, float height){
 			TGMeasure measure = getMeasure();
 			int track = measure.getTrack().getNumber();
 			int numerator = measure.getTimeSignature().getNumerator();
@@ -828,59 +833,49 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected class DisposeListenerImpl implements DisposeListener{
-		public void widgetDisposed(DisposeEvent e) {
-			disposeAll();
+	protected class DisposeListenerImpl implements UIDisposeListener {
+		
+		public void onDispose(UIDisposeEvent event) {
+			TGMatrixEditor.this.disposeAll();
+			TGMatrixEditor.this.removeListeners();
 		}
 	}
 	
-	protected class TGMatrixMouseListener implements MouseListener, MouseMoveListener, MouseTrackListener {
+	protected class TGMatrixMouseListener implements UIMouseUpListener, UIMouseEnterListener, UIMouseExitListener, UIMouseMoveListener {
 		
 		public TGMatrixMouseListener(){
 			super();
 		}
 		
-		public void mouseUp(MouseEvent e) {
+		public void onMouseUp(UIMouseEvent event) {
 			getEditor().setFocus();
-			if( e.button == 1 ){
+			if( event.getButton() == 1 ){
 				if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
-					hit(e.x,e.y);
+					hit(event.getPosition().getX(), event.getPosition().getY());
 				}
 			}
 		}
 		
-		public void mouseMove(MouseEvent e) {
+		public void onMouseMove(UIMouseEvent event) {
 			if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
-				updateSelection(e.y);
+				updateSelection(event.getPosition().getY());
 			}
 		}
 		
-		public void mouseExit(MouseEvent e) {
+		public void onMouseExit(UIMouseEvent event) {
 			if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
 				updateSelection(-1);
 			}
 		}
 		
-		public void mouseEnter(MouseEvent e) {
+		public void onMouseEnter(UIMouseEvent event) {
 			if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
 				redraw();
 			}
 		}
-		
-		public void mouseDoubleClick(MouseEvent e) {
-			// not implemented
-		}
-		
-		public void mouseDown(MouseEvent e) {
-			// not implemented
-		}
-		
-		public void mouseHover(MouseEvent e) {
-			// not implemented
-		}
 	}
 	
-	private class TGMatrixPainterListener implements TGBufferedPainterHandle {
+	private class TGMatrixPainterListener implements TG2BufferedPainterHandle {
 		
 		public TGMatrixPainterListener(){
 			super();
@@ -890,7 +885,7 @@ public class TGMatrixEditor implements TGEventListener {
 			TGMatrixEditor.this.paintEditor(painter);
 		}
 
-		public Composite getPaintableControl() {
+		public UICanvas getPaintableControl() {
 			return TGMatrixEditor.this.editor;
 		}
 	}
@@ -918,6 +913,10 @@ public class TGMatrixEditor implements TGEventListener {
 				}
 			}
 		});
+	}
+	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
 	}
 	
 	public static TGMatrixEditor getInstance(TGContext context) {

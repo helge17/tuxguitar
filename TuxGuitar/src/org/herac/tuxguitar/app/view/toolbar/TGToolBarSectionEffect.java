@@ -1,13 +1,5 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenBendDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
@@ -29,128 +21,122 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionEffect implements TGToolBarSection {
 	
-	private ToolItem menuItem;
+	private UIToolMenuItem menuItem;
 	
-	private Menu menu;
-	private MenuItem deadNote;
-	private MenuItem ghostNote;
-	private MenuItem accentuatedNote;
-	private MenuItem heavyAccentuatedNote;
-	private MenuItem harmonicNote;
-	private MenuItem graceNote;
-	private MenuItem vibrato;
-	private MenuItem bend;
-	private MenuItem tremoloBar;
-	private MenuItem slide;
-	private MenuItem hammer;
-	private MenuItem trill;
-	private MenuItem tremoloPicking;
-	private MenuItem palmMute;
-	private MenuItem staccato;
-	private MenuItem tapping;
-	private MenuItem slapping;
-	private MenuItem popping;
-	private MenuItem fadeIn;
+	private UIMenuActionItem deadNote;
+	private UIMenuActionItem ghostNote;
+	private UIMenuActionItem accentuatedNote;
+	private UIMenuActionItem heavyAccentuatedNote;
+	private UIMenuActionItem harmonicNote;
+	private UIMenuActionItem graceNote;
+	private UIMenuActionItem vibrato;
+	private UIMenuActionItem bend;
+	private UIMenuActionItem tremoloBar;
+	private UIMenuActionItem slide;
+	private UIMenuActionItem hammer;
+	private UIMenuActionItem trill;
+	private UIMenuActionItem tremoloPicking;
+	private UIMenuActionItem palmMute;
+	private UIMenuActionItem staccato;
+	private UIMenuActionItem tapping;
+	private UIMenuActionItem slapping;
+	private UIMenuActionItem popping;
+	private UIMenuActionItem fadeIn;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
-		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
 		//--DEAD NOTE--
-		this.deadNote = new MenuItem(this.menu, SWT.PUSH);
+		this.deadNote = this.menuItem.getMenu().createActionItem();
 		this.deadNote.addSelectionListener(toolBar.createActionProcessor(TGChangeDeadNoteAction.NAME));
 		
 		//--GHOST NOTE--
-		this.ghostNote = new MenuItem(this.menu, SWT.PUSH);
+		this.ghostNote = this.menuItem.getMenu().createActionItem();
 		this.ghostNote.addSelectionListener(toolBar.createActionProcessor(TGChangeGhostNoteAction.NAME));
 		
 		//--ACCENTUATED NOTE--
-		this.accentuatedNote = new MenuItem(this.menu, SWT.PUSH);
+		this.accentuatedNote = this.menuItem.getMenu().createActionItem();
 		this.accentuatedNote.addSelectionListener(toolBar.createActionProcessor(TGChangeAccentuatedNoteAction.NAME));
 		
 		//--HEAVY ACCENTUATED NOTE--
-		this.heavyAccentuatedNote = new MenuItem(this.menu, SWT.PUSH);
+		this.heavyAccentuatedNote = this.menuItem.getMenu().createActionItem();
 		this.heavyAccentuatedNote.addSelectionListener(toolBar.createActionProcessor(TGChangeHeavyAccentuatedNoteAction.NAME));
 		
 		//--HARMONIC NOTE--
-		this.harmonicNote = new MenuItem(this.menu, SWT.PUSH);
+		this.harmonicNote = this.menuItem.getMenu().createActionItem();
 		this.harmonicNote.addSelectionListener(toolBar.createActionProcessor(TGOpenHarmonicDialogAction.NAME));
 		
 		//--GRACE NOTE--
-		this.graceNote = new MenuItem(this.menu, SWT.PUSH);
+		this.graceNote = this.menuItem.getMenu().createActionItem();
 		this.graceNote.addSelectionListener(toolBar.createActionProcessor(TGOpenGraceDialogAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
 		//--VIBRATO--
-		this.vibrato = new MenuItem(this.menu, SWT.PUSH);
+		this.vibrato = this.menuItem.getMenu().createActionItem();
 		this.vibrato.addSelectionListener(toolBar.createActionProcessor(TGChangeVibratoNoteAction.NAME));
 		
 		//--BEND--
-		this.bend = new MenuItem(this.menu, SWT.PUSH);
+		this.bend = this.menuItem.getMenu().createActionItem();
 		this.bend.addSelectionListener(toolBar.createActionProcessor(TGOpenBendDialogAction.NAME));
 		
 		//--BEND--
-		this.tremoloBar = new MenuItem(this.menu, SWT.PUSH);
+		this.tremoloBar = this.menuItem.getMenu().createActionItem();
 		this.tremoloBar.addSelectionListener(toolBar.createActionProcessor(TGOpenTremoloBarDialogAction.NAME));
 		
 		//--SLIDE--
-		this.slide = new MenuItem(this.menu, SWT.PUSH);
+		this.slide = this.menuItem.getMenu().createActionItem();
 		this.slide.addSelectionListener(toolBar.createActionProcessor(TGChangeSlideNoteAction.NAME));
 		
 		//--HAMMER--
-		this.hammer = new MenuItem(this.menu, SWT.PUSH);
+		this.hammer = this.menuItem.getMenu().createActionItem();
 		this.hammer.addSelectionListener(toolBar.createActionProcessor(TGChangeHammerNoteAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
 		//--TRILL--
-		this.trill = new MenuItem(this.menu, SWT.PUSH);
+		this.trill = this.menuItem.getMenu().createActionItem();
 		this.trill.addSelectionListener(toolBar.createActionProcessor(TGOpenTrillDialogAction.NAME));
 		
 		//--TREMOLO PICKING--
-		this.tremoloPicking = new MenuItem(this.menu, SWT.PUSH);
+		this.tremoloPicking = this.menuItem.getMenu().createActionItem();
 		this.tremoloPicking.addSelectionListener(toolBar.createActionProcessor(TGOpenTremoloPickingDialogAction.NAME));
 		
 		//--PALM MUTE--
-		this.palmMute = new MenuItem(this.menu, SWT.PUSH);
+		this.palmMute = this.menuItem.getMenu().createActionItem();
 		this.palmMute.addSelectionListener(toolBar.createActionProcessor(TGChangePalmMuteAction.NAME));
 		
 		//--STACCATO
-		this.staccato = new MenuItem(this.menu, SWT.PUSH);
+		this.staccato = this.menuItem.getMenu().createActionItem();
 		this.staccato.addSelectionListener(toolBar.createActionProcessor(TGChangeStaccatoAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
 		//--TAPPING
-		this.tapping = new MenuItem(this.menu, SWT.PUSH);
+		this.tapping = this.menuItem.getMenu().createActionItem();
 		this.tapping.addSelectionListener(toolBar.createActionProcessor(TGChangeTappingAction.NAME));
 		
 		//--SLAPPING
-		this.slapping = new MenuItem(this.menu, SWT.PUSH);
+		this.slapping = this.menuItem.getMenu().createActionItem();
 		this.slapping.addSelectionListener(toolBar.createActionProcessor(TGChangeSlappingAction.NAME));
 		
 		//--POPPING
-		this.popping = new MenuItem(this.menu, SWT.PUSH);
+		this.popping = this.menuItem.getMenu().createActionItem();
 		this.popping.addSelectionListener(toolBar.createActionProcessor(TGChangePoppingAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
 		//--FADE IN
-		this.fadeIn = new MenuItem(this.menu, SWT.PUSH);
+		this.fadeIn = this.menuItem.getMenu().createActionItem();
 		this.fadeIn.addSelectionListener(toolBar.createActionProcessor(TGChangeFadeInAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -266,13 +252,5 @@ public class TGToolBarSectionEffect implements TGToolBarSection {
 		
 		this.fadeIn.setEnabled(!running && note != null);
 		this.fadeIn.setText(toolBar.getText("effects.fade-in", (note != null && note.getEffect().isFadeIn())));
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 }

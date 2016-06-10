@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.measure;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
@@ -19,19 +20,19 @@ public class TGUndoableAddMeasure extends TGUndoableEditBase{
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.addMeasure(getSong(), this.number);
+		this.addMeasure(actionContext, getSong(), this.number);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.removeMeasure(getSong(), this.number);
+		this.removeMeasure(actionContext, getSong(), this.number);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -54,17 +55,17 @@ public class TGUndoableAddMeasure extends TGUndoableEditBase{
 		return this;
 	}
 	
-	public void addMeasure(TGSong song, Integer number) {
+	public void addMeasure(TGActionContext context, TGSong song, Integer number) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGAddMeasureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGAddMeasureAction.ATTRIBUTE_MEASURE_NUMBER, number);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 	
-	public void removeMeasure(TGSong song, Integer number) {
+	public void removeMeasure(TGActionContext context, TGSong song, Integer number) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRemoveMeasureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGRemoveMeasureAction.ATTRIBUTE_MEASURE_NUMBER, number);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

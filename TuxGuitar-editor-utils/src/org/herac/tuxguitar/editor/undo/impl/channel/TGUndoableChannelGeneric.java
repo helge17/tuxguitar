@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.channel.TGSetChannelsAction;
@@ -25,19 +26,19 @@ public class TGUndoableChannelGeneric extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.setChannels(this.getSong(), this.cloneChannels(getSongManager().getFactory(), this.redoChannels));
+		this.setChannels(actionContext, this.getSong(), this.cloneChannels(getSongManager().getFactory(), this.redoChannels));
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.setChannels(this.getSong(), this.cloneChannels(getSongManager().getFactory(), this.undoChannels));
+		this.setChannels(actionContext, this.getSong(), this.cloneChannels(getSongManager().getFactory(), this.undoChannels));
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -78,10 +79,10 @@ public class TGUndoableChannelGeneric extends TGUndoableEditBase {
 		return clonedChannels;
 	}
 	
-	public void setChannels(TGSong song, List<TGChannel> channels) {
+	public void setChannels(TGActionContext context, TGSong song, List<TGChannel> channels) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGSetChannelsAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGSetChannelsAction.ATTRIBUTE_CHANNELS, channels);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

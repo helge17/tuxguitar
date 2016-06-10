@@ -5,86 +5,103 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class SkinOption extends Option{
+public class SkinOption extends TGSettingsOption{
 	
-	protected boolean initialized;
-	protected List<SkinInfo> skins;
-	protected Combo combo;
-	protected Label nameLabel;
-	protected Label authorLabel;
-	protected Label versionLabel;
-	protected Label descriptionLabel;
-	protected Image preview;
-	protected Composite previewArea;
+	private static final float PREVIEW_WIDTH = 450f;
+	private static final float PREVIEW_HEIGHT = 324f;
 	
-	public SkinOption(TGSettingsEditor configEditor,ToolBar toolBar,final Composite parent){
-		super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.skin"), SWT.FILL,SWT.FILL);
+	private boolean initialized;
+	private List<SkinInfo> skins;
+	private UIDropDownSelect<SkinInfo> combo;
+	private UILabel nameLabel;
+	private UILabel authorLabel;
+	private UILabel versionLabel;
+	private UILabel descriptionLabel;
+	private UIImage preview;
+	private UICanvas previewArea;
+	
+	public SkinOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
+		super(configEditor, toolBar, parent,TuxGuitar.getProperty("settings.config.skin"), UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL);
 		this.initialized = false;
 	}
 	
 	public void createOption() {
+		UIFactory uiFactory = this.getUIFactory();
+		
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.skin"));
 		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionSkin());
 		getToolItem().addSelectionListener(this);
 		
-		showLabel(getComposite(),SWT.FILL,SWT.TOP,true, false, SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.skin.choose"));
+		showLabel(getPanel(), TuxGuitar.getProperty("settings.config.skin.choose"), true, 1, 1);
 		
-		Composite composite = new Composite(getComposite(),SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(getTabbedData(SWT.FILL, SWT.FILL, true, false));
+		UITableLayout compositeLayout = new UITableLayout();
+		UIPanel composite = uiFactory.createPanel(getPanel(), false);
+		composite.setLayout(compositeLayout);
+		this.indent(composite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.combo = new Combo(composite,SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.combo = uiFactory.createDropDownSelect(composite);
+		compositeLayout.set(this.combo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Composite skinInfoComposite = new Composite(getComposite(),SWT.NONE);
-		skinInfoComposite.setLayout(new GridLayout(2,false));
-		skinInfoComposite.setLayoutData(getTabbedData(SWT.FILL, SWT.FILL, true, false));
-		showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,false,true,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("name") + ": ");
-		this.nameLabel = showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.NONE,0,"");
-		showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,false,true,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("author")+": ");
-		this.authorLabel = showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.NONE,0,"");
-		showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,false,true,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("version")+": ");
-		this.versionLabel = showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.NONE,0,"");
-		showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,false,true,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("description")+": ");
-		this.descriptionLabel = showLabel(skinInfoComposite,SWT.FILL,SWT.CENTER,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.NONE,0,"");
+		UITableLayout skinInfoLayout = new UITableLayout();
+		UIPanel skinInfoComposite = uiFactory.createPanel(getPanel(), false);
+		skinInfoComposite.setLayout(skinInfoLayout);
+		this.indent(skinInfoComposite, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		Composite skinPreviewComposite = new Composite(getComposite(),SWT.NONE);
-		skinPreviewComposite.setLayout(new GridLayout());
-		skinPreviewComposite.setLayoutData(getTabbedData(SWT.FILL, SWT.FILL ,true, true));
+		showLabel(skinInfoComposite, TuxGuitar.getProperty("name") + ": ", true, 1, 1);
+		this.nameLabel = showLabel(skinInfoComposite, "" + ": ", false, 1, 2);
 		
-		this.previewArea = new Composite(skinPreviewComposite,SWT.DOUBLE_BUFFERED);
-		this.previewArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		this.previewArea.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				if(SkinOption.this.preview != null && !SkinOption.this.preview.isDisposed()){
-					e.gc.drawImage(SkinOption.this.preview, 0, 0);
+		showLabel(skinInfoComposite, TuxGuitar.getProperty("author") + ": ", true, 2, 1);
+		this.authorLabel = showLabel(skinInfoComposite, "" + ": ", false, 2, 2);
+		
+		showLabel(skinInfoComposite, TuxGuitar.getProperty("version") + ": ", true, 3, 1);
+		this.versionLabel = showLabel(skinInfoComposite, "" + ": ", false, 3, 2);
+		
+		showLabel(skinInfoComposite, TuxGuitar.getProperty("description") + ": ", true, 4, 1);
+		this.descriptionLabel = showLabel(skinInfoComposite, "" + ": ", false, 4, 2);
+		
+		UITableLayout skinPreviewLayout = new UITableLayout();
+		UIPanel skinPreviewComposite = uiFactory.createPanel(getPanel(), false);
+		skinPreviewComposite.setLayout(skinPreviewLayout);
+		this.indent(skinPreviewComposite, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+		
+		this.previewArea = uiFactory.createCanvas(skinPreviewComposite, false);
+		this.previewArea.addPaintListener(new UIPaintListener() {
+			public void onPaint(UIPaintEvent event) {
+				if( SkinOption.this.preview != null && !SkinOption.this.preview.isDisposed() ){
+					event.getPainter().drawImage(SkinOption.this.preview, 0, 0);
 				}
 			}
 		});
+		skinPreviewLayout.set(this.previewArea, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		skinPreviewLayout.set(this.previewArea, UITableLayout.PACKED_WIDTH, PREVIEW_WIDTH);
+		skinPreviewLayout.set(this.previewArea, UITableLayout.PACKED_HEIGHT, PREVIEW_HEIGHT);
 		
 		this.loadConfig();
 	}
 	
-	protected void loadConfig(){
+	public void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
 				SkinOption.this.skins = new ArrayList<SkinInfo>();
@@ -113,26 +130,20 @@ public class SkinOption extends Option{
 				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
-							for(int i = 0;i < SkinOption.this.skins.size();i++){
-								SkinInfo info = (SkinInfo)SkinOption.this.skins.get(i);
-								SkinOption.this.combo.add(info.getName());
-								if(info.getSkin().equals(getConfig().getStringValue(TGConfigKeys.SKIN))){
-									SkinOption.this.combo.select(i);
+							for(SkinInfo info : SkinOption.this.skins) {
+								UISelectItem<SkinInfo> item = new UISelectItem<SkinOption.SkinInfo>(info.getName(), info);
+								SkinOption.this.combo.addItem(item);
+								if( info.getSkin().equals(getConfig().getStringValue(TGConfigKeys.SKIN))){
+									SkinOption.this.combo.setSelectedItem(item);
 								}
 							}
-							SkinOption.this.combo.addSelectionListener(new SelectionAdapter() {
-								public void widgetSelected(SelectionEvent e) {
-									int selection = SkinOption.this.combo.getSelectionIndex();
-									if(selection >= 0 && selection < SkinOption.this.skins.size()){
-										showSkinInfo((SkinInfo)SkinOption.this.skins.get(selection));
-									}
+							SkinOption.this.combo.addSelectionListener(new UISelectionListener() {
+								public void onSelect(UISelectionEvent event) {
+									SkinOption.this.showSkinInfo();
 								}
 							});
 							
-							int selection = SkinOption.this.combo.getSelectionIndex();
-							if(selection >= 0 && selection < SkinOption.this.skins.size()){
-								showSkinInfo((SkinInfo)SkinOption.this.skins.get(selection));
-							}
+							SkinOption.this.showSkinInfo();
 							SkinOption.this.initialized = true;
 							SkinOption.this.pack();
 						}
@@ -142,8 +153,15 @@ public class SkinOption extends Option{
 		}).start();
 	}
 	
-	protected void showSkinInfo(final SkinInfo info){
-		loadCursor(SWT.CURSOR_WAIT);
+	public void showSkinInfo() {
+		SkinInfo skinInfo = SkinOption.this.combo.getSelectedValue();
+		if( skinInfo != null ){
+			this.showSkinInfo(skinInfo);
+		}
+	}
+	
+	public void showSkinInfo(final SkinInfo info){
+		loadCursor(UICursor.WAIT);
 		TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 			public void run() {
 				if(!isDisposed()){
@@ -152,11 +170,12 @@ public class SkinOption extends Option{
 					SkinOption.this.authorLabel.setText(info.getAuthor());
 					SkinOption.this.descriptionLabel.setText(info.getDescription());
 					SkinOption.this.versionLabel.setText((info.getDate() == null)?info.getVersion():info.getVersion() + " (" + info.getDate() + ")");
-					if(info.getPreview() != null){
-						SkinOption.this.preview = TGFileUtils.loadImage(getViewContext().getContext(), info.getSkin(), info.getPreview());
+					if( info.getPreview() != null){
+						SkinOption.this.preview = TGFileUtils.loadImage2(getViewContext().getContext(), info.getSkin(), info.getPreview());
 					}
 					SkinOption.this.previewArea.redraw();
-					loadCursor(SWT.CURSOR_ARROW);
+					
+					loadCursor(UICursor.NORMAL);
 				}
 			}
 		});
@@ -164,10 +183,9 @@ public class SkinOption extends Option{
 	
 	public void updateConfig() {
 		if(this.initialized){
-			int selection = this.combo.getSelectionIndex();
-			if(selection >= 0 && selection < this.skins.size()){
-				SkinInfo info = (SkinInfo)this.skins.get(selection);
-				getConfig().setValue(TGConfigKeys.SKIN,info.getSkin());
+			SkinInfo skinInfo = this.combo.getSelectedValue();
+			if( skinInfo != null ){
+				getConfig().setValue(TGConfigKeys.SKIN, skinInfo.getSkin());
 			}
 		}
 	}

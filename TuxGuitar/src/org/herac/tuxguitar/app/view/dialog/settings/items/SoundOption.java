@@ -2,66 +2,72 @@ package org.herac.tuxguitar.app.view.dialog.settings.items;
 
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiSequencer;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class SoundOption extends Option{
-	protected boolean initialized;
+public class SoundOption extends TGSettingsOption {
+	
+	private boolean initialized;
 	
 	//**MidiSequencer module**//
-	protected String msCurrentKey;
-	protected List<MidiSequencer> msList;
-	protected Combo msCombo;
+	private String msCurrentKey;
+	private List<MidiSequencer> msList;
+	private UIDropDownSelect<MidiSequencer> msCombo;
 	
 	//**MidiPort module**//
-	protected String mpCurrentKey;
-	protected List<MidiOutputPort> mpList;
-	protected Combo mpCombo;
+	private String mpCurrentKey;
+	private List<MidiOutputPort> mpList;
+	private UIDropDownSelect<MidiOutputPort> mpCombo;
 	
-	public SoundOption(TGSettingsEditor configEditor,ToolBar toolBar,final Composite parent){
-		super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.sound"));
+	public SoundOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
+		super(configEditor, toolBar, parent, TuxGuitar.getProperty("settings.config.sound"));
 		this.initialized = false;
 	}
 	
-	public void createOption(){
+	public void createOption() {
+		UIFactory uiFactory = this.getUIFactory();
+		
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.sound"));
 		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionSound());
 		getToolItem().addSelectionListener(this);
 		
 		//---Midi Sequencer---//
-		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("midi.sequencer"));
+		showLabel(getPanel(), TuxGuitar.getProperty("midi.sequencer"), true, 1, 1);
 		
-		Composite msComposite = new Composite(getComposite(),SWT.NONE);
-		msComposite.setLayout(new GridLayout());
-		msComposite.setLayoutData(getTabbedData());
+		UITableLayout msCompositeLayout = new UITableLayout();
+		UIPanel msComposite = uiFactory.createPanel(getPanel(), false);
+		msComposite.setLayout(msCompositeLayout);
+		this.indent(msComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.msCombo = new Combo(msComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.msCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.msCombo = uiFactory.createDropDownSelect(msComposite);
+		msCompositeLayout.set(this.msCombo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//---Midi Port---//
-		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("midi.port"));
+		showLabel(getPanel(), TuxGuitar.getProperty("midi.port"), true, 3, 1);
 		
-		Composite mpComposite = new Composite(getComposite(),SWT.NONE);
-		mpComposite.setLayout(new GridLayout());
-		mpComposite.setLayoutData(getTabbedData());
+		UITableLayout mpCompositeLayout = new UITableLayout();
+		UIPanel mpComposite = uiFactory.createPanel(getPanel(), false);
+		mpComposite.setLayout(mpCompositeLayout);
+		this.indent(mpComposite, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.mpCombo = new Combo(mpComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.mpCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.mpCombo = uiFactory.createDropDownSelect(mpComposite);
+		mpCompositeLayout.set(this.mpCombo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		this.loadConfig();
 	}
 	
-	protected void loadConfig(){
+	public void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
 				SoundOption.this.mpList = TuxGuitar.getInstance().getPlayer().listOutputPorts();
@@ -81,34 +87,44 @@ public class SoundOption extends Option{
 						if(!isDisposed()){
 							//---Midi Sequencer---//
 							String loadedSequencer = msLoaded;
-							for (int i = 0; i < SoundOption.this.msList.size(); i++) {
-								MidiSequencer sequencer = (MidiSequencer)SoundOption.this.msList.get(i);
-								SoundOption.this.msCombo.add(sequencer.getName());
-								if(SoundOption.this.msCurrentKey != null && SoundOption.this.msCurrentKey.equals(sequencer.getKey())){
-									SoundOption.this.msCombo.select(i);
+							UISelectItem<MidiSequencer> selectedSequencerItem = null;
+							for(MidiSequencer sequencer : SoundOption.this.msList) {
+								UISelectItem<MidiSequencer> item = new UISelectItem<MidiSequencer>(sequencer.getName(), sequencer);
+								
+								SoundOption.this.msCombo.addItem(item);
+								if( SoundOption.this.msCurrentKey != null && SoundOption.this.msCurrentKey.equals(sequencer.getKey())){
 									loadedSequencer = null;
-								}else if(loadedSequencer != null && loadedSequencer.equals(sequencer.getKey())){
-									SoundOption.this.msCombo.select(i);
+									
+									selectedSequencerItem = item;
+								} else if(loadedSequencer != null && loadedSequencer.equals(sequencer.getKey())){
+									selectedSequencerItem = item;
+								} else if(selectedSequencerItem == null) {
+									selectedSequencerItem = item;
 								}
 							}
-							if(SoundOption.this.msCombo.getSelectionIndex() < 0 && SoundOption.this.msCombo.getItemCount() > 0){
-								SoundOption.this.msCombo.select(0);
+							if( selectedSequencerItem != null ){
+								SoundOption.this.msCombo.setSelectedItem(selectedSequencerItem);
 							}
 							
 							//---Midi Port---//
 							String loadedPort = mpLoaded;
-							for (int i = 0; i < SoundOption.this.mpList.size(); i++) {
-								MidiOutputPort port = (MidiOutputPort)SoundOption.this.mpList.get(i);
-								SoundOption.this.mpCombo.add(port.getName());
-								if(SoundOption.this.mpCurrentKey != null && SoundOption.this.mpCurrentKey.equals(port.getKey())){
-									SoundOption.this.mpCombo.select(i);
+							UISelectItem<MidiOutputPort> selectedPortItem = null;
+							for(MidiOutputPort port : SoundOption.this.mpList) {
+								UISelectItem<MidiOutputPort> item = new UISelectItem<MidiOutputPort>(port.getName(), port);
+								
+								SoundOption.this.mpCombo.addItem(item);
+								if( SoundOption.this.mpCurrentKey != null && SoundOption.this.mpCurrentKey.equals(port.getKey())){
 									loadedPort = null;
-								}else if(loadedPort != null && loadedPort.equals(port.getKey())){
-									SoundOption.this.mpCombo.select(i);
+									
+									selectedPortItem = item;
+								} else if(loadedPort != null && loadedPort.equals(port.getKey())) {
+									selectedPortItem = item;
+								} else if(selectedPortItem == null) {
+									selectedPortItem = item;
 								}
 							}
-							if(SoundOption.this.mpCombo.getSelectionIndex() < 0 && SoundOption.this.mpCombo.getItemCount() > 0){
-								SoundOption.this.mpCombo.select(0);
+							if( selectedPortItem != null ){
+								SoundOption.this.mpCombo.setSelectedItem(selectedPortItem);
 							}
 							
 							SoundOption.this.initialized = true;
@@ -122,13 +138,12 @@ public class SoundOption extends Option{
 	
 	public void updateConfig(){
 		if(this.initialized){
-			int msIndex = this.msCombo.getSelectionIndex();
-			if(msIndex >= 0 && msIndex < this.msList.size()){
-				getConfig().setValue(TGConfigKeys.MIDI_SEQUENCER, ((MidiSequencer)this.msList.get(msIndex)).getKey());
+			MidiSequencer midiSequencer = this.msCombo.getSelectedValue();
+			if( midiSequencer != null ){
+				getConfig().setValue(TGConfigKeys.MIDI_SEQUENCER, midiSequencer.getKey());
 			}
-			int mpIndex = this.mpCombo.getSelectionIndex();
-			if(mpIndex >= 0 && mpIndex < this.mpList.size()){
-				MidiOutputPort midiPort = (MidiOutputPort)this.mpList.get(mpIndex);
+			MidiOutputPort midiPort = this.mpCombo.getSelectedValue();
+			if( midiPort != null ){
 				getConfig().setValue(TGConfigKeys.MIDI_PORT, midiPort.getKey());
 			}
 		}

@@ -1,12 +1,5 @@
 package org.herac.tuxguitar.app.view.component.tab.edit;
 
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MenuListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.graphics.Point;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMenuShownAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
@@ -16,17 +9,26 @@ import org.herac.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.ui.event.UIMenuEvent;
+import org.herac.tuxguitar.ui.event.UIMenuHideListener;
+import org.herac.tuxguitar.ui.event.UIMenuShowListener;
+import org.herac.tuxguitar.ui.event.UIMouseDownListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseExitListener;
+import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.util.TGContext;
 
-public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackListener, MenuListener{
+public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouseMoveListener, UIMouseExitListener, UIMenuShowListener, UIMenuHideListener {
 	
 	private EditorKit kit;
-	private Point position;
+	private UIPosition position;
 	private boolean menuOpen;
 	
 	public MouseKit(EditorKit kit){
 		this.kit = kit;
-		this.position = new Point(0,0);
+		this.position = new UIPosition(0,0);
 		this.menuOpen = false;
 	}
 	
@@ -35,7 +37,7 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 		return (TGEditorManager.getInstance(context).isLocked() || MidiPlayer.getInstance(context).isRunning());
 	}
 	
-	public void executeAction(String actionId, int x, int y, boolean byPassProcessing) {
+	public void executeAction(String actionId, float x, float y, boolean byPassProcessing) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.kit.getTablature().getContext(), actionId);
 		tgActionProcessor.setAttribute(EditorKit.ATTRIBUTE_X, x);
 		tgActionProcessor.setAttribute(EditorKit.ATTRIBUTE_Y, y);
@@ -43,49 +45,36 @@ public class MouseKit implements MouseListener, MouseMoveListener, MouseTrackLis
 		tgActionProcessor.process();
 	}
 	
-	public void mouseDown(MouseEvent e) {
-		this.position.x = e.x;
-		this.position.y = e.y;
+	public void onMouseDown(UIMouseEvent event) {
+		this.position.setX(event.getPosition().getX());
+		this.position.setY(event.getPosition().getY());
+	}
+
+	public void onMouseUp(UIMouseEvent event) {
+		this.position.setX(event.getPosition().getX());
+		this.position.setY(event.getPosition().getY());
+		this.executeAction(TGMouseClickAction.NAME, event.getPosition().getX(), event.getPosition().getY(), false);
 	}
 	
-	public void mouseUp(final MouseEvent e) {
-		this.position.x = e.x;
-		this.position.y = e.y;
-//		this.kit.getTablature().setFocus();
-		this.executeAction(TGMouseClickAction.NAME, e.x, e.y, false);
-	}
-	
-	public void mouseMove(final MouseEvent e) {
+	public void onMouseMove(UIMouseEvent event) {
 		if(!this.menuOpen && this.kit.isMouseEditionAvailable() && !this.isBusy()){
-			this.executeAction(TGMouseMoveAction.NAME, e.x, e.y, true);
+			this.executeAction(TGMouseMoveAction.NAME, event.getPosition().getX(), event.getPosition().getY(), true);
 		}
 	}
 	
-	public void mouseExit(final MouseEvent e) {
+	public void onMouseExit(UIMouseEvent event) {
 		if(!this.menuOpen && this.kit.isMouseEditionAvailable()) {
-			this.executeAction(TGMouseExitAction.NAME, e.x, e.y, true);
+			this.executeAction(TGMouseExitAction.NAME, event.getPosition().getX(), event.getPosition().getY(), true);
 		}
 	}
 	
-	public void menuShown(final MenuEvent e) {
+	public void onMenuShow(UIMenuEvent event) {
 		this.menuOpen = true;
-		this.executeAction(TGMenuShownAction.NAME, this.position.x, this.position.y, false);
+		this.executeAction(TGMenuShownAction.NAME, this.position.getX(), this.position.getY(), false);
 	}
 	
-	public void menuHidden(MenuEvent e){
+	public void onMenuHide(UIMenuEvent event) {
 		this.menuOpen = false;
 		TuxGuitar.getInstance().updateCache(true);
-	}
-	
-	public void mouseDoubleClick(MouseEvent e) {
-		//not implemented
-	}
-	
-	public void mouseEnter(MouseEvent e) {
-		//not implemented
-	}
-	
-	public void mouseHover(MouseEvent e) {
-		//not implemented
 	}
 }

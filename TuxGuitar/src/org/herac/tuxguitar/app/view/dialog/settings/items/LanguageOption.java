@@ -5,59 +5,60 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITable;
+import org.herac.tuxguitar.ui.widget.UITableItem;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class LanguageOption extends Option{
-	protected boolean initialized;
-	protected Table table;
-	protected TableColumn column;
+public class LanguageOption extends TGSettingsOption {
 	
-	public LanguageOption(TGSettingsEditor configEditor,ToolBar toolBar,final Composite parent){
-		super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.language"), SWT.FILL, SWT.FILL);
+	private static final float PACKED_HEIGHT = 10f;
+	
+	private boolean initialized;
+	private UITable<String> table;
+	
+	public LanguageOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
+		super(configEditor, toolBar, parent, TuxGuitar.getProperty("settings.config.language"), UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL);
 		this.initialized = false;
 	}
 	
-	public void createOption(){
+	public void createOption() {
+		UIFactory uiFactory = this.getUIFactory();
+		
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.language"));
 		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionLanguage());
 		getToolItem().addSelectionListener(this);
 		
-		showLabel(getComposite(),SWT.FILL,SWT.TOP, true, false,SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.language.choose"));
+		showLabel(getPanel(), TuxGuitar.getProperty("settings.config.language.choose"), true, 1, 1);
 		
-		Composite composite = new Composite(getComposite(),SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(getTabbedData(SWT.FILL, SWT.FILL));
+		UITableLayout compositeLayout = new UITableLayout();
+		UIPanel composite = uiFactory.createPanel(getPanel(), false);
+		composite.setLayout(compositeLayout);
+		this.indent(composite, 2, 1);
 		
-		this.table = new Table(composite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
-		this.table.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.table.setHeaderVisible(true);
-		this.table.setLinesVisible(false);
-		
-		this.column = new TableColumn(this.table, SWT.LEFT);
-		this.column.setText(TuxGuitar.getProperty("settings.config.language.choose"));
-		this.column.pack();
+		this.table = uiFactory.createTable(composite, true);
+		this.table.setColumns(1);
+		this.table.setColumnName(0, TuxGuitar.getProperty("settings.config.language.choose"));
+		compositeLayout.set(this.table, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		compositeLayout.set(this.table, UITableLayout.PACKED_HEIGHT, PACKED_HEIGHT);
 		
 		this.loadConfig();
 	}
 	
 	protected void loadTableItem(String text, String data, boolean selected){
-		TableItem item = new TableItem(this.table, SWT.NONE);
-		item.setText(text);
-		item.setData(data);
+		UITableItem<String> uiTableItem = new UITableItem<String>(data);
+		uiTableItem.setText(0, text);
+		
+		this.table.addItem(uiTableItem);
 		if( selected ){
-			this.table.setSelection(item);
+			this.table.setSelectedItem(uiTableItem);
 		}
 	}
 	
@@ -96,7 +97,6 @@ public class LanguageOption extends Option{
 							}
 							
 							LanguageOption.this.initialized = true;
-							LanguageOption.this.column.pack();
 							LanguageOption.this.pack();
 						}
 					}
@@ -106,14 +106,9 @@ public class LanguageOption extends Option{
 	}
 	
 	public void updateConfig(){
-		if(this.initialized){
-			String language = null;
-			if(this.table != null && !this.table.isDisposed()){
-				int index = this.table.getSelectionIndex();
-				if(index >= 0 && index < this.table.getItemCount() ){
-					language = (String)this.table.getItem(index).getData();
-				}
-			}
+		if( this.initialized ){
+			String language = (this.table != null && !this.table.isDisposed() ? this.table.getSelectedValue() : null);
+			
 			getConfig().setValue(TGConfigKeys.LANGUAGE, language );
 		}
 	}
@@ -124,11 +119,8 @@ public class LanguageOption extends Option{
 		}
 	}
 	
-	public Point computeSize(){
-		return this.computeSize(SWT.DEFAULT,SWT.NONE);
-	}
-	
 	private class LanguageItem {
+		
 		private String key;
 		private String value;
 		

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.player.impl.midiport.oss;
 
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSettingsHandler implements TGPluginSettingsHandler {
@@ -14,7 +14,7 @@ public class MidiSettingsHandler implements TGPluginSettingsHandler {
 		this.midiSettingsPlugin = midiSettingsPlugin;
 	}
 	
-	public void openSettingsDialog(Shell parent) {
+	public void openSettingsDialog(UIWindow parent) {
 		MidiConfigUtils.setupDialog(this.context, parent, this.midiSettingsPlugin.findMidiOutputPortProvider(this.context));
 	}
 }

@@ -4,21 +4,9 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnection;
@@ -27,13 +15,27 @@ import org.herac.tuxguitar.app.tools.browser.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UITable;
+import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
@@ -56,9 +58,8 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	private TGContext context;
 	private TGBrowserCollection collection;
 	private TGBrowserConnection connection;
-	private Shell dialog;
-	private Table table;
-	private TableColumn column;
+	private UIWindow dialog;
+	private UITable<TGBrowserElement> table;
 	private List<TGBrowserElement> elements;
 	private TGBrowserMenuBar menu;
 	private TGBrowserToolBar toolBar;
@@ -87,7 +88,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		this.collection = collection;
 	}
 	
-	public Shell getShell(){
+	public UIWindow getWindow(){
 		return this.dialog;
 	}
 	
@@ -98,19 +99,21 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		TuxGuitar.getInstance().getIconManager().removeLoader(this);
 	}
 	
-	public void show(){
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.DIALOG_TRIM | SWT.RESIZE);
-		this.dialog.setLayout(new GridLayout());
+	public void show() {
+		this.dialog = getUIFactory().createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		
-		this.menu.init(getShell());
-		this.toolBar.init(getShell());
+		this.menu.createMenuBar(getWindow());
+		this.toolBar.createToolBar(getWindow());
 		this.initTable(this.dialog);
+		this.createLayout();
+		
 		this.updateCollections(null);
 		this.updateTable();
-		this.dialog.setSize(SHELL_WIDTH,SHELL_HEIGHT);
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		
+		this.dialog.setBounds(new UIRectangle(0, 0, SHELL_WIDTH,SHELL_HEIGHT));
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				exit();
 			}
 		});
@@ -121,19 +124,24 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		TGBrowserManager.getInstance(this.context).setFactoryHandler(this);
 		TuxGuitar.getInstance().getIconManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER);
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
 	
-	private void initTable(Composite parent){
-		this.table = new Table(parent, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-		this.table.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.table.setLinesVisible(TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.BROWSER_LINES_VISIBLE));
-		this.table.setHeaderVisible(false);
+	public void createLayout() {
+		UITableLayout uiLayout = new UITableLayout();
+		uiLayout.set(this.toolBar.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, null, null, 0f);
+		uiLayout.set(this.table, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		uiLayout.set(this.table, UITableLayout.PACKED_WIDTH, 10f);
+		uiLayout.set(this.table, UITableLayout.PACKED_HEIGHT, 10f);
 		
-		this.column = new TableColumn(this.table, SWT.LEFT);
-		
-		this.table.addListener (SWT.MouseDoubleClick, new Listener() {
-			public void handleEvent (Event event) {
+		this.dialog.setLayout(uiLayout);
+	}
+	
+	private void initTable(UIContainer parent){
+		this.table = getUIFactory().createTable(parent, true);
+		this.table.setColumns(1);
+		this.table.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
+			public void onMouseDoubleClick(UIMouseEvent event) {
 				openElement();
 			}
 		});
@@ -154,26 +162,22 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
 					if(!isDisposed()){
-						TGBrowserDialog.this.table.removeAll();
-						if(TGBrowserDialog.this.elements != null){
+						TGBrowserDialog.this.table.removeItems();
+						if( TGBrowserDialog.this.elements != null ){
 							Iterator<TGBrowserElement> it = TGBrowserDialog.this.elements.iterator();
 							while(it.hasNext()){
-								TGBrowserElement element = (TGBrowserElement)it.next();
-								TableItem item = new TableItem(TGBrowserDialog.this.table, SWT.NONE);
-								item.setImage(element.isFolder()?TuxGuitar.getInstance().getIconManager().getBrowserFolder():TuxGuitar.getInstance().getIconManager().getBrowserFile());
-								item.setText(element.getName());
+								TGBrowserElement element = it.next();
+								TGIconManager iconManager = TGIconManager.getInstance(TGBrowserDialog.this.context);
+								
+								UITableItem<TGBrowserElement> item = new UITableItem<TGBrowserElement>(element);
+								item.setImage(element.isFolder() ? iconManager.getBrowserFolder(): iconManager.getBrowserFile());
+								item.setText(0, element.getName());
+								TGBrowserDialog.this.table.addItem(item);
 							}
 						}
-						updateColumn();
 					}
 				}
 			});
-		}
-	}
-	
-	protected void updateColumn(){
-		if(!isDisposed()){
-			this.column.pack();
 		}
 	}
 	
@@ -195,15 +199,6 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 				}
 			});
 		}
-	}
-	
-	public TGBrowserElement getSelection(int index){
-		if(!isDisposed() && getConnection().isOpen()){
-			if(this.elements != null && index >= 0 && index < this.elements.size()){
-				return (TGBrowserElement)this.elements.get(index);
-			}
-		}
-		return null;
 	}
 	
 	protected void removeElements(){
@@ -238,10 +233,12 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		}
 	}
 	
-	public void openElement(){
-		TGBrowserElement element = getSelection(this.table.getSelectionIndex());
-		if(element != null){
-			this.getConnection().openStream(CALL_ELEMENT,element);
+	public void openElement() {
+		if(!isDisposed() && getConnection().isOpen()) {
+			TGBrowserElement element = this.table.getSelectedValue();
+			if( element != null ){
+				this.getConnection().openStream(CALL_ELEMENT,element);
+			}
 		}
 	}
 	
@@ -250,7 +247,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 			public void run() {
 				if(!isDisposed()){
 					updateBars();
-					loadCursor(getConnection().isLocked() ? SWT.CURSOR_WAIT : SWT.CURSOR_ARROW);
+					loadCursor(getConnection().isLocked() ? UICursor.WAIT : UICursor.NORMAL);
 				}
 			}
 		});
@@ -282,7 +279,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		if(!isDisposed()){
 			this.updateTable();
 			this.getConnection().release();
-//			MessageDialog.errorMessage(getShell(),throwable);
+			
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
@@ -314,7 +311,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 			public void handleError(Throwable throwable) {
 				getConnection().release();
 				
-				TGMessageDialogUtil.errorMessage(getContext(), getShell(), TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}));
+				TGMessageDialogUtil.errorMessage(getContext(), getWindow(), TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}));
 			}
 		});
 		tgActionProcessor.process();
@@ -322,7 +319,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	public void loadIcons() {
 		if(!isDisposed()){
-			this.getShell().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+			this.getWindow().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			this.reload();
 		}
 	}
@@ -335,12 +332,12 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		}
 	}
 	
-	public void loadCursor(int cursorStyle) {
+	public void loadCursor(UICursor cursor) {
 		if(!this.isDisposed()) {
 			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
 				this.cursorController = new TGCursorController(this.context, this.dialog);
 			}
-			this.cursorController.loadCursor(cursorStyle);
+			this.cursorController.loadCursor(cursor);
 		}
 	}
 	
@@ -357,14 +354,19 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	protected void reload(){
 		if(!isDisposed()){
-			this.menu.reload(getShell());
+			this.menu.reload(getWindow());
 			this.toolBar.reload();
 			this.updateTable();
 			this.updateCollections(getCollection());
-			this.getShell().layout();
+			this.createLayout();
+			this.getWindow().layout();
 		}
 	}
 
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
 	public void processEvent(TGEvent event) {
 		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIcons();

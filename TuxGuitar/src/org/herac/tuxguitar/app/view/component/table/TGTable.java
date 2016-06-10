@@ -3,109 +3,130 @@ package org.herac.tuxguitar.app.view.component.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UIDivider;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTable {
 	
 	private TGContext context;
-	private ScrolledComposite sComposite;
-	private Composite table;
-	private SashForm columnControl;
-	private Composite rowControl;
+	private UIPanel table;
+	private UIPanel columnControl;
+	private UIPanel rowControl;
 	private TGTableColumn columnNumber;
 	private TGTableColumn columnSoloMute;
 	private TGTableColumn columnName;
 	private TGTableColumn columnInstrument;
 	private TGTableColumn columnCanvas;
 	private List<TGTableRow> rows;
-	private int rowHeight;
-	private int scrollIncrement;
+	private float rowHeight;
 	
-	public TGTable(TGContext context, Composite parent){
+	public TGTable(TGContext context, UILayoutContainer parent){
 		this.context = context;
 		this.rows = new ArrayList<TGTableRow>();
 		this.newTable(parent);
 	}
 	
-	public void newTable(Composite parent){
-		this.sComposite = new ScrolledComposite(parent,SWT.BORDER | SWT.V_SCROLL);
-		this.sComposite.setLayout(new GridLayout());
-		this.sComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.sComposite.setAlwaysShowScrollBars(true);
-		this.sComposite.setExpandHorizontal(true);
-		this.sComposite.setExpandVertical(true);
-		this.table = new Composite(this.sComposite,SWT.NONE);
-		this.table.setLayout(newGridLayout(1,0,0,0,0));
-		this.table.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+	public void newTable(UILayoutContainer parent){
+		UIFactory uiFactory = this.getUIFactory();
 		
-		this.columnControl = new SashForm(this.table,SWT.HORIZONTAL);
-		this.columnControl.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
+		this.table = uiFactory.createPanel(parent, false);
 		
-		this.columnNumber = new TGTableColumn(this,SWT.LEFT);
-		this.columnSoloMute = new TGTableColumn(this,SWT.LEFT);
-		this.columnName = new TGTableColumn(this,SWT.LEFT);
-		this.columnInstrument = new TGTableColumn(this,SWT.LEFT);
-		this.columnCanvas = new TGTableColumn(this,SWT.CENTER);
-		this.columnControl.setWeights(new int[]{1,2,7,7,20});
+		this.columnControl = uiFactory.createPanel(this.table, false);
 		
-		this.rowControl = new Composite(this.table,SWT.NONE);
-		this.rowControl.setLayout(newGridLayout(1,0,1,0,1));
-		this.rowControl.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.columnNumber = new TGTableColumn(this);
+		this.columnSoloMute = new TGTableColumn(this);
+		this.columnName = new TGTableColumn(this);
+		this.columnInstrument = new TGTableColumn(this);
+		this.columnCanvas = new TGTableColumn(this);
 		
-		this.sComposite.setContent(this.table);
+		this.rowControl = uiFactory.createPanel(this.table, false);
+		this.rowControl.setLayout(new UITableLayout(0f));
+		
+		this.createTableLayout();
+		this.createColumnLayout();
 	}
 	
-	public Composite getControl(){
+	public UIPanel getControl(){
 		return this.table;
+	}	
+
+	public void createTableLayout() {
+		UITableLayout uiLayout = new UITableLayout(0f);
+		uiLayout.set(this.columnControl, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, null, null, 0f);
+		uiLayout.set(this.rowControl, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, null, null, 0f);
+		
+		this.table.setLayout(uiLayout);
 	}
 	
-	public void newRow(){
-		this.rows.add(new TGTableRow(this));
+	public void createColumnLayout() {
+		TGTableDividerHelper dividerHelper = new TGTableDividerHelper(this);
+		UITableLayout uiLayout = new UITableLayout(0f);
+		
+		int columnIndex = 0;
+		this.createColumnHeaderLayout(uiLayout, this.columnNumber, ++columnIndex, false, null);
+		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnNumber, this.columnSoloMute), ++columnIndex);
+		this.createColumnHeaderLayout(uiLayout, this.columnSoloMute, ++columnIndex, false, null);
+		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnSoloMute, this.columnName), ++columnIndex);
+		this.createColumnHeaderLayout(uiLayout, this.columnName, ++columnIndex, false, 250f);
+		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnName, this.columnInstrument), ++columnIndex);
+		this.createColumnHeaderLayout(uiLayout, this.columnInstrument, ++columnIndex, false, 250f);
+		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnInstrument, this.columnCanvas), ++columnIndex);
+		this.createColumnHeaderLayout(uiLayout, this.columnCanvas, ++columnIndex, true, null);
+		
+		this.columnControl.setLayout(uiLayout);
 	}
 	
-	private GridLayout newGridLayout(int cols,int marginWidth,int marginHeight,int horizontalSpacing,int verticalSpacing){
-		GridLayout layout = new GridLayout(cols,false);
-		layout.marginWidth = marginWidth;
-		layout.marginHeight = marginHeight;
-		layout.horizontalSpacing = horizontalSpacing;
-		layout.verticalSpacing = verticalSpacing;
-		return layout;
+	public void createColumnDividerLayout(UITableLayout uiLayout, UIDivider divider, int columnIndex) {
+		uiLayout.set(divider, 1, columnIndex, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		uiLayout.set(divider, UITableLayout.PACKED_WIDTH, 2f);
+		uiLayout.set(divider, UITableLayout.MARGIN, 0f);
 	}
 	
-	public void addRowItem(TGTableColumn column,Control control,boolean computeSize){
-		if(computeSize){
-			this.rowHeight = Math.max(this.rowHeight,control.computeSize(SWT.DEFAULT,SWT.DEFAULT).y);
-			this.scrollIncrement = this.rowHeight;
-		}
-		column.addControl(control);
+	public void createColumnHeaderLayout(UITableLayout uiLayout, TGTableColumn column, int columnIndex, Boolean fillX, Float minimumPackedWidth) {
+		uiLayout.set(column.getControl(), 1, columnIndex, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, fillX, false);
+		uiLayout.set(column.getControl(), UITableLayout.MINIMUM_PACKED_WIDTH, minimumPackedWidth);
+		uiLayout.set(column.getControl(), UITableLayout.MARGIN, 0f);
 	}
 	
-	public int getMinHeight(){
-		return (this.sComposite.getMinHeight() + ( this.sComposite.getBorderWidth() * 2 ) );
+	public void createRow(){
+		TGTableRow row = new TGTableRow(this);
+		row.getControl().computePackedSize();
+		
+		this.rows.add(row);
+		this.rowHeight = Math.max(this.rowHeight, row.getControl().getPackedSize().getHeight());
+		
+		this.createRowLayout(row);
 	}
 	
-	public Composite getColumnControl(){
+	public void createRowLayout(TGTableRow row) {
+		UITableLayout uiTableLayout = (UITableLayout) this.rowControl.getLayout();
+		uiTableLayout.set(row.getControl(), this.rows.size(), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		uiTableLayout.set(row.getControl(), UITableLayout.MARGIN, 0f);
+		uiTableLayout.set(row.getControl(), UITableLayout.MARGIN_TOP, 1f);
+	}
+	
+	public float getMinHeight(){
+		return this.table.getPackedSize().getHeight();
+	}
+	
+	public UIPanel getColumnControl(){
 		return this.columnControl;
 	}
 	
-	public Composite getRowControl(){
+	public UIPanel getRowControl(){
 		return this.rowControl;
 	}
 	
-	public int getRowHeight(){
+	public float getRowHeight(){
 		return this.rowHeight;
 	}
-	
-	public int getScrollIncrement(){
-		return this.scrollIncrement;
-	}	
 	
 	public TGTableColumn getColumnInstrument() {
 		return this.columnInstrument;
@@ -140,37 +161,25 @@ public class TGTable {
 			row.dispose();
 			this.rows.remove(index);
 		}
-		this.notifyRemoved();
 	}
 	
 	public int getRowCount(){
 		return this.rows.size();
 	}
 	
+	public void appendListeners(UIControl control){
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(control);
+	}
+	
 	public void update(){
-		this.layoutColumns();
-		this.table.layout(true,true);
-		this.sComposite.setMinHeight(this.table.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		this.sComposite.getVerticalBar().setIncrement( (getScrollIncrement() + this.sComposite.getBorderWidth() ) );
+		this.table.layout();
 	}
 	
-	private void notifyRemoved(){
-		this.columnNumber.notifyRemoved();
-		this.columnSoloMute.notifyRemoved();
-		this.columnName.notifyRemoved();
-		this.columnInstrument.notifyRemoved();
-		this.columnCanvas.notifyRemoved();
-	}
-	
-	private void layoutColumns(){
-		this.columnNumber.layout();
-		this.columnSoloMute.layout();
-		this.columnName.layout();
-		this.columnInstrument.layout();
-		this.columnCanvas.layout();
-	}
-
 	public TGContext getContext() {
 		return context;
+	}
+	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
 	}
 }

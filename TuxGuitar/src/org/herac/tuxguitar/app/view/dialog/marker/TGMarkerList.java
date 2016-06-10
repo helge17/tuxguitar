@@ -3,28 +3,15 @@ package org.herac.tuxguitar.app.view.dialog.marker;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoToMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.app.view.util.TGProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
@@ -35,6 +22,19 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITable;
+import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -42,115 +42,113 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGMarkerList implements TGEventListener {
 	
 	private TGContext context;
-	private Shell dialog;
-	private Table table;
+	private UIWindow dialog;
+	private UITable<TGMarker> table;
 	private List<TGMarker> markers;
 	
-	private Composite compositeTable;
-	private TableColumn measureColumn;
-	private TableColumn titleColumn;
-	
-	private Composite compositeButtons;
-	private Button buttonAdd;
-	private Button buttonEdit;
-	private Button buttonDelete;
-	private Button buttonGo;
-	private Button buttonClose;
+	private UIPanel compositeTable;
+	private UIPanel compositeButtons;
+	private UIButton buttonAdd;
+	private UIButton buttonEdit;
+	private UIButton buttonDelete;
+	private UIButton buttonGo;
+	private UIButton buttonClose;
 	
 	private TGProcess loadPropertiesProcess;
 	private TGProcess loadIconsProcess;
 	private TGProcess updateProcess;
 	
-	private int markerCount;
-	
 	private TGMarkerList(TGContext context) {
 		this.context = context;
-		this.markerCount = 0;
 		this.createSyncProcesses();
 	}
 	
-	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
-		this.dialog.setLayout(new GridLayout(2,false));
-		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		// ----------------------------------------------------------------------
-		this.compositeTable = new Composite(this.dialog, SWT.NONE);
-		this.compositeTable.setLayout(new GridLayout());
-		this.compositeTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+	public void show(TGViewContext context) {
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
 		
-		this.table = new Table(this.compositeTable, SWT.BORDER | SWT.FULL_SELECTION);
-		this.table.setLayoutData(new GridData(250,200));
-		this.table.setHeaderVisible(true);
-		this.table.addListener (SWT.MouseDoubleClick, new Listener() {
-			public void handleEvent (Event event) {
+		this.dialog = uiFactory.createWindow(uiParent, false, false);
+		this.dialog.setLayout(dialogLayout);
+		// ----------------------------------------------------------------------
+		
+		UITableLayout tableLayout = new UITableLayout();
+		this.compositeTable = uiFactory.createPanel(this.dialog, false);
+		this.compositeTable.setLayout(tableLayout);
+		dialogLayout.set(this.compositeTable, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		this.table = uiFactory.createTable(this.compositeTable, true);
+		this.table.setColumns(2);
+		this.table.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
+			public void onMouseDoubleClick(UIMouseEvent event) {
 				TGMarkerList.this.goToSelectedMarker();
 			}
 		});
-		this.measureColumn = new TableColumn(this.table, SWT.LEFT);
-		this.measureColumn.setWidth(70);
-		
-		this.titleColumn = new TableColumn(this.table, SWT.LEFT);
-		this.titleColumn.setWidth(180);
+		tableLayout.set(this.table, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		tableLayout.set(this.table, UITableLayout.PACKED_WIDTH, 250f);
+		tableLayout.set(this.table, UITableLayout.PACKED_HEIGHT, 200f);
 		
 		this.loadTableItems();
 		
 		// ------------------BUTTONS--------------------------
-		this.compositeButtons = new Composite(this.dialog, SWT.NONE);
-		this.compositeButtons.setLayout(new GridLayout(1,false));
-		this.compositeButtons.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout();
+		this.compositeButtons = uiFactory.createPanel(this.dialog, false);
+		this.compositeButtons.setLayout(buttonsLayout);
+		dialogLayout.set(this.compositeButtons, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.buttonAdd = new Button(this.compositeButtons, SWT.PUSH);
-		this.buttonAdd.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
-		this.buttonAdd.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.buttonAdd = uiFactory.createButton(this.compositeButtons);
+		this.buttonAdd.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGMarkerList.this.openMarkerEditor(null);
 			}
 		});
 		
-		this.buttonEdit = new Button(this.compositeButtons, SWT.PUSH);
-		this.buttonEdit.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
-		this.buttonEdit.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		this.buttonEdit = uiFactory.createButton(this.compositeButtons);
+		this.buttonEdit.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGMarkerList.this.openMarkerEditor(getSelectedMarker());
 			}
 		});
-		
-		this.buttonDelete = new Button(this.compositeButtons, SWT.PUSH);
-		this.buttonDelete.setLayoutData(makeGridData(SWT.FILL, SWT.TOP,false));
-		this.buttonDelete.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+
+		this.buttonDelete = uiFactory.createButton(this.compositeButtons);
+		this.buttonDelete.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGMarkerList.this.removeMarker(getSelectedMarker());
 			}
 		});
-		
-		this.buttonGo = new Button(this.compositeButtons, SWT.PUSH);
-		this.buttonGo.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,true));
-		this.buttonGo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+
+		this.buttonGo = uiFactory.createButton(this.compositeButtons);
+		this.buttonGo.setDefaultButton();
+		this.buttonGo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGMarkerList.this.goToSelectedMarker();
 			}
 		});
 		
-		this.buttonClose = new Button(this.compositeButtons, SWT.PUSH);
-		this.buttonClose.setLayoutData(makeGridData(SWT.FILL, SWT.BOTTOM,false));
-		this.buttonClose.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		this.buttonClose = uiFactory.createButton(this.compositeButtons);
+		this.buttonClose.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGMarkerList.this.dialog.dispose();
 			}
 		});
+		
+		buttonsLayout.set(this.buttonAdd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(this.buttonEdit, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(this.buttonDelete, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(this.buttonGo, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(this.buttonClose, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false, 1, 1, 80f, 25f, null);
 		
 		this.loadIcons();
 		this.loadProperties(false);
 		
 		this.addListeners();
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
 			}
 		});
-		this.dialog.setDefaultButton( this.buttonGo );
 		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void addListeners(){
@@ -181,49 +179,29 @@ public class TGMarkerList implements TGEventListener {
 		this.updateProcess.process();
 	}
 	
-	private GridData makeGridData(int horizontalAlignment,int verticalAlignment,boolean grabExcessVerticalSpace){
-		GridData data = new GridData();
-		data.horizontalAlignment = horizontalAlignment;
-		data.verticalAlignment = verticalAlignment;
-		data.grabExcessHorizontalSpace = true;
-		data.grabExcessVerticalSpace = grabExcessVerticalSpace;
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		
-		return data;
-	}
-	
 	protected void loadTableItems(){
-		int itemSelected = this.table.getSelectionIndex();
-		
 		TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+		TGMarker selection = this.table.getSelectedValue();
 		
-		this.table.removeAll();
+		this.table.removeItems();
 		this.markers = TuxGuitar.getInstance().getSongManager().getMarkers(song);
 		
 		Iterator<TGMarker> it = this.markers.iterator();
 		while (it.hasNext()) {
 			TGMarker marker = (TGMarker) it.next();
-			
-			TableItem item = new TableItem(this.table, SWT.NONE);
-			item.setText(new String[] { Integer.toString(marker.getMeasure()),marker.getTitle() });
+			UITableItem<TGMarker> item = new UITableItem<TGMarker>(marker);
+			item.setText(0, Integer.toString(marker.getMeasure()));
+			item.setText(1, marker.getTitle());
+			this.table.addItem(item);
 		}
 		
-		int markerCount = this.markers.size();
-		if( this.markerCount >= markerCount ) {
-			if( itemSelected >= 0 && itemSelected < markerCount ){
-				this.table.select(itemSelected);
-			}
+		if( selection != null ) {
+			this.table.setSelectedValue(selection);
 		}
-		this.markerCount = markerCount;
 	}
 	
 	protected TGMarker getSelectedMarker(){
-		int itemSelected = this.table.getSelectionIndex();
-		if(itemSelected >= 0 && itemSelected < this.markers.size()){
-			return (TGMarker)this.markers.get(itemSelected);
-		}
-		return null;
+		return this.table.getSelectedValue();
 	}
 	
 	public void goToSelectedMarker() {
@@ -264,19 +242,16 @@ public class TGMarkerList implements TGEventListener {
 	public void loadProperties(boolean layout) {
 		if(!isDisposed()){
 			this.dialog.setText(TuxGuitar.getProperty("marker.list"));
-			this.measureColumn.setText(TuxGuitar.getProperty("measure"));
-			this.titleColumn.setText(TuxGuitar.getProperty("title"));
+			this.table.setColumnName(0, TuxGuitar.getProperty("measure"));
+			this.table.setColumnName(1, TuxGuitar.getProperty("title"));
 			this.buttonAdd.setText(TuxGuitar.getProperty("add"));
 			this.buttonEdit.setText(TuxGuitar.getProperty("edit"));
 			this.buttonDelete.setText(TuxGuitar.getProperty("remove"));
 			this.buttonGo.setText(TuxGuitar.getProperty("go"));
 			this.buttonClose.setText(TuxGuitar.getProperty("close"));
 			
-			if(layout){
-				this.table.layout();
-				this.compositeTable.layout();
-				this.compositeButtons.layout();
-				this.dialog.pack(true);
+			if( layout){
+				this.dialog.pack();
 			}
 		}
 	}

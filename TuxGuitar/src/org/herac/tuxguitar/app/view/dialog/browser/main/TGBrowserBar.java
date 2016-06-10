@@ -1,11 +1,10 @@
 package org.herac.tuxguitar.app.view.dialog.browser.main;
 
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 
@@ -16,8 +15,6 @@ public abstract class TGBrowserBar implements TGEventListener{
 	public TGBrowserBar(TGBrowserDialog browser){
 		this.browser = browser;
 	}
-	
-	public abstract void init(Shell shell);
 	
 	public abstract void updateItems();
 	
@@ -32,7 +29,7 @@ public abstract class TGBrowserBar implements TGEventListener{
 	protected void newCollection(String type){
 		TGBrowserFactory factory = TGBrowserManager.getInstance(getBrowser().getContext()).getFactory(type);
 		if( factory != null ){
-			TGBrowserSettings data = factory.dataDialog(getBrowser().getShell());
+			TGBrowserSettings data = factory.dataDialog(getBrowser().getWindow());
 			if( data != null ){
 				openCollection(addCollection(factory, data, true));
 			}

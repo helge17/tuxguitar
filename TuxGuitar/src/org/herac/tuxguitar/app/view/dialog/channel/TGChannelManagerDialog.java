@@ -1,25 +1,12 @@
 package org.herac.tuxguitar.app.view.dialog.channel;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.app.view.util.TGProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
@@ -27,13 +14,28 @@ import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIScale;
+import org.herac.tuxguitar.ui.widget.UISeparator;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGChannelManagerDialog implements TGEventListener {
 	
-	private Shell dialog;
+	private UIWindow dialog;
 	
 	private TGContext context;
 	private TGChannelHandle channelHandle;
@@ -44,11 +46,11 @@ public class TGChannelManagerDialog implements TGEventListener {
 	private TGProcess loadIconsProcess;
 	private TGProcess updateItemsProcess;
 	
-	private Button addChannelButton;
+	private UIButton addChannelButton;
 	
-	private Scale volumeScale;
-	private Label volumeValueLabel;
-	private Label volumeValueTitleLabel;
+	private UIScale volumeScale;
+	private UILabel volumeValueLabel;
+	private UILabel volumeValueTitleLabel;
 	private String volumeTip;
 	private int volumeValue;
 	
@@ -60,28 +62,47 @@ public class TGChannelManagerDialog implements TGEventListener {
 	}
 	
 	public void show(TGViewContext viewContext){
-		Shell parent = viewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		UIFactory uiFactory = this.getUIFactory();
+		UIWindow uiParent = viewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		UITableLayout dialogLayout = new UITableLayout();
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.RESIZE );
-		this.dialog.setLayout(createGridLayout(1,false, true, true));
+		this.dialog = uiFactory.createWindow(uiParent, false, true);
+		this.dialog.setLayout(dialogLayout);
 		
-		this.createWindow(this.dialog, new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout compositeLayout = new UITableLayout();
+		UIPanel composite = uiFactory.createPanel(this.dialog, false);
+		composite.setLayout(compositeLayout);
+		dialogLayout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		UIControl mainControl = this.createChannelList(composite);
+		compositeLayout.set(mainControl, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		UIControl rightControl = this.createRightComposite(composite);
+		compositeLayout.set(rightControl, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
+		
+		this.updateItems(true);
+		this.loadProperties();
+		this.loadIcons();
 		
 		this.addListeners();
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
 			}
 		});
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public TGContext getContext(){
 		return this.context;
 	}
 	
-	public Shell getShell(){
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
+	public UIWindow getWindow(){
 		return this.dialog;
 	}
 	
@@ -107,128 +128,100 @@ public class TGChannelManagerDialog implements TGEventListener {
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
 	
-	private void createWindow(Composite parent, Object layoutData){
-		Composite composite = new Composite(parent, SWT.BORDER);
-		composite.setLayout(createGridLayout(2,false,true,true));
-		composite.setLayoutData(layoutData);
+	private UIPanel createRightComposite(UILayoutContainer parent){
+		UIFactory uiFactory = this.getUIFactory();
 		
-		createChannelList(composite);
-		createRightComposite(composite);
+		UITableLayout rightCompositeLayout = new UITableLayout();
+		UIPanel rightComposite = uiFactory.createPanel(parent, true);
+		rightComposite.setLayout(rightCompositeLayout);
 		
-		updateItems();
-		loadProperties();
-		loadIcons();
-	}
-	
-	private void createRightComposite(Composite composite){
-		Composite rightComposite = new Composite(composite, SWT.NONE);
-		rightComposite.setLayout(createGridLayout(1,false, true, false));
-		rightComposite.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,false,true));
+		UITableLayout toolbarCompositeLayout = new UITableLayout();
+		UIPanel toolbarComposite = uiFactory.createPanel(rightComposite, true);
+		toolbarComposite.setLayout(toolbarCompositeLayout);
+		rightCompositeLayout.set(toolbarComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
 		
-		Composite toolbarComposite = new Composite(rightComposite, SWT.BORDER);
-		toolbarComposite.setLayout(createGridLayout(1,false, true, true));
-		toolbarComposite.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
-		
-		this.addChannelButton = new Button(toolbarComposite, SWT.PUSH);
-		this.addChannelButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		this.addChannelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.addChannelButton = uiFactory.createButton(toolbarComposite);
+		this.addChannelButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				getHandle().addChannel();
 			}
 		});
+		toolbarCompositeLayout.set(this.addChannelButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
+		UITableLayout volumeCompositeLayout = new UITableLayout();
+		UIPanel volumeComposite = uiFactory.createPanel(rightComposite, true);
+		volumeComposite.setLayout(volumeCompositeLayout);
+		rightCompositeLayout.set(volumeComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Composite volumeComposite = new Composite(rightComposite, SWT.BORDER);
-		volumeComposite.setLayout(createGridLayout(1,false, true, true));
-		volumeComposite.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
-		
-		this.volumeScale = new Scale(volumeComposite, SWT.VERTICAL);
+		this.volumeScale = uiFactory.createVerticalScale(volumeComposite);
 		this.volumeScale.setMaximum(10);
 		this.volumeScale.setMinimum(0);
 		this.volumeScale.setIncrement(1);
-		this.volumeScale.setPageIncrement(1);
-		this.volumeScale.setLayoutData(new GridData(SWT.CENTER,SWT.FILL,true,true));
+		volumeCompositeLayout.set(this.volumeScale, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_FILL, true, true);
 		
-		Label separator = new Label(volumeComposite, SWT.HORIZONTAL | SWT.SEPARATOR);
-		separator.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+		UISeparator separator = uiFactory.createHorizontalSeparator(volumeComposite);
+		volumeCompositeLayout.set(separator, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		Composite volumeValueComposite = new Composite(volumeComposite, SWT.NONE);
-		volumeValueComposite.setLayout(createGridLayout(2,false, true, true));
+		UITableLayout volumeValueLayout = new UITableLayout();
+		UIPanel volumeValueComposite = uiFactory.createPanel(volumeComposite, false);
+		volumeValueComposite.setLayout(volumeValueLayout);
+		volumeCompositeLayout.set(volumeValueComposite, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.volumeValueTitleLabel = new Label(volumeValueComposite, SWT.NONE);
+		this.volumeValueTitleLabel = uiFactory.createLabel(volumeValueComposite);
+		volumeValueLayout.set(this.volumeValueTitleLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.volumeValueLabel = new Label(volumeValueComposite, SWT.CENTER);
-		this.volumeValueLabel.setLayoutData(createGridData(SWT.CENTER,SWT.NONE,true,false,1,1,40,0));
+		this.volumeValueLabel = uiFactory.createLabel(volumeValueComposite);
+		volumeValueLayout.set(this.volumeValueLabel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		this.volumeScale.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
+		this.volumeScale.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				changeVolume();
 			}
 		});
+		
+		return rightComposite;
 	}
 	
-	private void createChannelList(Composite composite){
+	private UIControl createChannelList(UILayoutContainer parent){
 		this.channelList = new TGChannelList(this);
-		this.channelList.show(composite);
+		this.channelList.show(parent);
+		
+		return this.channelList.getControl();
 	}
 	
-	public GridLayout createGridLayout(int numColumns, boolean makeColumnsEqualWidth, boolean addSpacings, boolean addMargins) {
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = numColumns;
-		gridLayout.makeColumnsEqualWidth = makeColumnsEqualWidth;
-		gridLayout.horizontalSpacing = (addSpacings ? gridLayout.horizontalSpacing : 0);
-		gridLayout.verticalSpacing = (addSpacings ? gridLayout.verticalSpacing : 0);
-		gridLayout.marginWidth = (addMargins ? gridLayout.marginWidth : 0);
-		gridLayout.marginHeight = (addMargins ? gridLayout.marginHeight : 0);
-		gridLayout.marginLeft = (addMargins ? gridLayout.marginLeft : 0);
-		gridLayout.marginTop = (addMargins ? gridLayout.marginTop : 0);
-		gridLayout.marginRight = (addMargins ? gridLayout.marginRight : 0);
-		gridLayout.marginBottom = (addMargins ? gridLayout.marginBottom : 0);
-		return gridLayout;
-	}
-	
-	public GridData createGridData(int hAlign, int vAlign, boolean gEHSpace, boolean gEVSpace, int hSpan, int vSpan,int mWidth, int mHeight){
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = hAlign;
-		gridData.verticalAlignment = vAlign;
-		gridData.grabExcessHorizontalSpace = gEHSpace;
-		gridData.grabExcessVerticalSpace = gEVSpace;
-		gridData.horizontalSpan = hSpan;
-		gridData.verticalSpan = vSpan;
-		gridData.minimumWidth = mWidth;
-		gridData.minimumHeight = mHeight;
-		return gridData;
-	}
-	
-	protected void changeVolume(){
-		int volume = (short)(this.volumeScale.getMaximum() - this.volumeScale.getSelection());
-		if(volume != TuxGuitar.getInstance().getPlayer().getVolume()){
+	private void changeVolume(){
+		int volume = (short)(this.volumeScale.getMaximum() - this.volumeScale.getValue());
+		if( volume != TuxGuitar.getInstance().getPlayer().getVolume()){
 			TuxGuitar.getInstance().getPlayer().setVolume(volume);
 			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.getInstance().getPlayer().getVolume());
-			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getValue()));
 			this.volumeValue = volume;
 		}
 	}
 	
-	private void updateItems(){
-		if(!isDisposed()){
-			this.loadCursor(SWT.CURSOR_WAIT);
+	public void updateItems() {
+		this.updateItems(false);
+	}
+	
+	public void updateItems(boolean force){
+		if(!this.isDisposed()){
+			this.loadCursor(UICursor.WAIT);
 			
 			this.channelList.updateItems();
 			
 			int volume = TuxGuitar.getInstance().getPlayer().getVolume();
-			if(this.volumeValue != volume){
-				this.volumeScale.setSelection(this.volumeScale.getMaximum() - TuxGuitar.getInstance().getPlayer().getVolume());
-				this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getSelection()));
+			if( force || this.volumeValue != volume ){
+				this.volumeScale.setValue(this.volumeScale.getMaximum() - TuxGuitar.getInstance().getPlayer().getVolume());
+				this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getValue()));
 				this.volumeValue = volume;
 			}
 			
-			this.loadCursor(SWT.CURSOR_ARROW);
+			this.loadCursor(UICursor.NORMAL);
 		}
 	}
 
 	public void loadProperties() {
-		if(!isDisposed()){
+		if(!this.isDisposed()){
 			this.addChannelButton.setText(TuxGuitar.getProperty("add"));
 			
 			this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("instruments.volume") + ":");
@@ -241,17 +234,17 @@ public class TGChannelManagerDialog implements TGEventListener {
 	}
 
 	public void loadIcons() {
-		if(!isDisposed()){
+		if(!this.isDisposed()){
 			this.channelList.loadIcons();
 		}
 	}
 	
-	public void loadCursor(int cursorStyle) {
+	public void loadCursor(UICursor cursor) {
 		if(!this.isDisposed()) {
 			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
 				this.cursorController = new TGCursorController(this.context, this.dialog);
 			}
-			this.cursorController.loadCursor(cursorStyle);
+			this.cursorController.loadCursor(cursor);
 		}
 	}
 	

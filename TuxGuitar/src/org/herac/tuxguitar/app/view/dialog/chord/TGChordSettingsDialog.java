@@ -1,19 +1,23 @@
 package org.herac.tuxguitar.app.view.dialog.chord;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * Dialog for customizing chord criteria parameters
@@ -23,173 +27,180 @@ import org.herac.tuxguitar.app.util.DialogUtils;
  */
 public class TGChordSettingsDialog {
 	
-	private boolean updated;
-	private Shell dialog;
-	private Button emptyStringChords = null;
-	private Spinner chordsToDisplay = null;
-	private Combo typeCombo = null;
-	private Spinner minFret = null;
-	private Spinner maxFret = null;
+	private TGContext context;
+	private UIWindow dialog;
+	private UICheckBox emptyStringChords;
+	private UISpinner chordsToDisplay;
+	private UIDropDownSelect<Integer> typeCombo;
+	private UISpinner minFret;
+	private UISpinner maxFret;
 	
-	public TGChordSettingsDialog() {
-		super();
+	public TGChordSettingsDialog(TGContext context) {
+		this.context = context;
 	}
 	
-	public boolean open(Shell parent){
-		this.updated = false;
+	public void open(UIWindow parent, final TGChordSettingsHandler handler){
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());
+		this.dialog = uiFactory.createWindow(parent, true, false);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("settings"));
-		this.init();
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
 		
-		return this.updated;
-	}
-	
-	protected void init() {
-		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout());
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("chord.settings.tip"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Composite composite = new Composite(group,SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		initTypeCombo(composite);
-		initChordsToDisplay(composite);
-		initEmptyStringChords(composite);
-		initFretSearch(composite);
+		initTypeCombo(uiFactory, group, 1);
+		initChordsToDisplay(uiFactory, group, 2);
+		initEmptyStringChords(uiFactory, group, 3);
+		initFretSearch(uiFactory, group, 4);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dispose(true);
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGChordSettingsDialog.this.updateAndDispose(handler);
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dispose(false);
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGChordSettingsDialog.this.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		this.dialog.setDefaultButton( buttonOK );
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getGridData(int minimumWidth, int minimumHeight){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = minimumWidth;
-		data.minimumHeight = minimumHeight;
-		return data;
+	private void initTypeCombo(UIFactory factory, UILayoutContainer parent, int row) {
+		UILabel label = factory.createLabel(parent);
+		label.setText(TuxGuitar.getProperty("chord.settings.type"));
+		
+		this.typeCombo = factory.createDropDownSelect(parent);
+		this.typeCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("chord.settings.type.most-common"), 0));
+		this.typeCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("chord.settings.type.inversions"), 1));
+		this.typeCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("chord.settings.type.close-voiced"), 2));
+		this.typeCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("chord.settings.type.open-voiced"), 3));
+		this.typeCombo.setSelectedValue(TGChordSettings.instance().getChordTypeIndex());
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(label, row, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		uiLayout.set(this.typeCombo, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 200f, null, null);
 	}
 	
-	private GridData getGridData(){
-		return getGridData(125,0);
+	private void initChordsToDisplay(UIFactory factory, UILayoutContainer parent, int row) {
+		UILabel label = factory.createLabel(parent);
+		label.setText(TuxGuitar.getProperty("chord.settings.chords-to-display"));
+		
+		this.chordsToDisplay = factory.createSpinner(parent);
+		this.chordsToDisplay.setMinimum(1);
+		this.chordsToDisplay.setMaximum(100);
+		this.chordsToDisplay.setValue(TGChordSettings.instance().getChordsToDisplay());
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(label, row, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		uiLayout.set(this.chordsToDisplay, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 200f, null, null);
 	}
 	
-	private GridData getButtonData(){
-		return getGridData(80,25);
-	}
-	
-	private Spinner makeSpinner(Composite parent,String label,int value, int min, int max){
-		this.newLabel(parent,label);
-		Spinner spinner = new Spinner(parent,SWT.BORDER);
-		spinner.setMinimum(min);
-		spinner.setMaximum(max);
-		spinner.setSelection(value);
-		spinner.setLayoutData(getGridData());
-		return spinner;
-	}
-	
-	private Label newLabel(Composite parent,String text){
-		Label label = new Label(parent,SWT.HORIZONTAL);
-		label.setText(text);
-		return label;
-	}
-	
-	private void initTypeCombo(Composite parent) {
-		this.newLabel(parent, TuxGuitar.getProperty("chord.settings.type"));
-		this.typeCombo = new Combo(parent,SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.typeCombo.setLayoutData(getGridData());
-		this.typeCombo.add(TuxGuitar.getProperty("chord.settings.type.most-common"));
-		this.typeCombo.add(TuxGuitar.getProperty("chord.settings.type.inversions"));
-		this.typeCombo.add(TuxGuitar.getProperty("chord.settings.type.close-voiced"));
-		this.typeCombo.add(TuxGuitar.getProperty("chord.settings.type.open-voiced"));
-		this.typeCombo.select(TGChordSettings.instance().getChordTypeIndex());
-	}
-	
-	private void initChordsToDisplay(Composite parent) {
-		this.chordsToDisplay = makeSpinner(parent,TuxGuitar.getProperty("chord.settings.chords-to-display"),TGChordSettings.instance().getChordsToDisplay(),1,100);
-	}
-	
-	private void initEmptyStringChords(Composite parent) {
-		this.emptyStringChords = new Button(parent,SWT.CHECK);
-		this.emptyStringChords.setSelection(TGChordSettings.instance().isEmptyStringChords());
+	private void initEmptyStringChords(UIFactory factory, UILayoutContainer parent, int row) {
+		this.emptyStringChords = factory.createCheckBox(parent);
+		this.emptyStringChords.setSelected(TGChordSettings.instance().isEmptyStringChords());
 		this.emptyStringChords.setText(TuxGuitar.getProperty("chord.settings.open-chords"));
-		this.emptyStringChords.setSize(100,20);
-		this.emptyStringChords.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,2,1));
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(this.emptyStringChords, row, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 2);
 	}
 	
-	private void initFretSearch(Composite parent) {
-		Group group = new Group(parent,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(4,false));
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true,2,1));
+	private void initFretSearch(UIFactory factory, UILayoutContainer parent, int row) {
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = factory.createLegendPanel(parent);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("chord.settings.search-frets"));
-		this.minFret = makeSpinner(group,TuxGuitar.getProperty("chord.settings.minimum-fret"),TGChordSettings.instance().getFindChordsMin(),0,15);
-		this.maxFret = makeSpinner(group,TuxGuitar.getProperty("chord.settings.maximum-fret"),TGChordSettings.instance().getFindChordsMax(),2,25);
-		this.minFret.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(group, row, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 2);
+		
+		UILabel minFretLabel = factory.createLabel(group);
+		minFretLabel.setText(TuxGuitar.getProperty("chord.settings.minimum-fret"));
+		
+		this.minFret = factory.createSpinner(group);
+		this.minFret.setMinimum(0);
+		this.minFret.setMaximum(15);
+		this.minFret.setValue(TGChordSettings.instance().getFindChordsMin());
+		
+		UILabel maxFretLabel = factory.createLabel(group);
+		maxFretLabel.setText(TuxGuitar.getProperty("chord.settings.maximum-fret"));
+		
+		this.maxFret = factory.createSpinner(group);
+		this.maxFret.setMinimum(2);
+		this.maxFret.setMaximum(25);
+		this.maxFret.setValue(TGChordSettings.instance().getFindChordsMax());
+		
+		this.minFret.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				checkMinimumFretValue();
 			}
 		});
-		this.maxFret.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.maxFret.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				checkMaximumFretValue();
 			}
 		});
+		
+		groupLayout.set(minFretLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+		groupLayout.set(this.minFret, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		groupLayout.set(maxFretLabel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+		groupLayout.set(this.maxFret, 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
 	
-	protected void checkMinimumFretValue(){
-		int maxSelection = this.maxFret.getSelection();
-		int minSelection = this.minFret.getSelection();
+	private void checkMinimumFretValue(){
+		int maxSelection = this.maxFret.getValue();
+		int minSelection = this.minFret.getValue();
 		if(maxSelection < minSelection){
-			this.maxFret.setSelection(minSelection);
+			this.maxFret.setValue(minSelection);
 		}
 	}
 	
-	protected void checkMaximumFretValue(){
-		int maxSelection = this.maxFret.getSelection();
-		int minSelection = this.minFret.getSelection();
+	private void checkMaximumFretValue(){
+		int maxSelection = this.maxFret.getValue();
+		int minSelection = this.minFret.getValue();
 		if(maxSelection < minSelection){
-			this.maxFret.setSelection(minSelection);
+			this.maxFret.setValue(minSelection);
 		}
 	}
 	
 	private void update(){
-		TGChordSettings.instance().setChordTypeIndex(this.typeCombo.getSelectionIndex());
-		TGChordSettings.instance().setEmptyStringChords(this.emptyStringChords.getSelection());
-		TGChordSettings.instance().setChordsToDisplay(this.chordsToDisplay.getSelection() );
-		TGChordSettings.instance().setFindChordsMax(this.maxFret.getSelection());
-		TGChordSettings.instance().setFindChordsMin(this.minFret.getSelection());
+		Integer type = this.typeCombo.getSelectedValue();
+		TGChordSettings.instance().setChordTypeIndex(type != null ? type : 0);
+		TGChordSettings.instance().setEmptyStringChords(this.emptyStringChords.isSelected());
+		TGChordSettings.instance().setChordsToDisplay(this.chordsToDisplay.getValue());
+		TGChordSettings.instance().setFindChordsMax(this.maxFret.getValue());
+		TGChordSettings.instance().setFindChordsMin(this.minFret.getValue());
 	}
 	
-	protected void dispose(boolean updated){
-		this.updated = updated;
-		if(this.updated){
-			this.update();
-		}
+	private void dispose() {
 		this.dialog.dispose();
+	}
+	
+	private void updateAndDispose(TGChordSettingsHandler handler){
+		this.update();
+		this.dispose();
+		if( handler != null ) {
+			handler.onSettingsUpdated();
+		}
 	}
 }

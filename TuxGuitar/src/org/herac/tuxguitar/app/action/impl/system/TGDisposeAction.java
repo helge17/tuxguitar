@@ -2,13 +2,20 @@ package org.herac.tuxguitar.app.action.impl.system;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
+import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.dialog.marker.TGMarkerList;
 import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGDisposeAction extends TGActionBase {
 	
@@ -25,6 +32,7 @@ public class TGDisposeAction extends TGActionBase {
 	}
 	
 	protected void saveConfig(){
+		TGWindow tgWindow = TGWindow.getInstance(getContext());
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		config.setValue(TGConfigKeys.LAYOUT_MODE,TablatureEditor.getInstance(getContext()).getTablature().getViewLayout().getMode());
@@ -35,9 +43,9 @@ public class TGDisposeAction extends TGActionBase {
 		config.setValue(TGConfigKeys.SHOW_INSTRUMENTS,!TuxGuitar.getInstance().getChannelManager().isDisposed());
 		config.setValue(TGConfigKeys.SHOW_TRANSPORT,!TGTransportDialog.getInstance(getContext()).isDisposed());
 		config.setValue(TGConfigKeys.SHOW_MARKERS,!TGMarkerList.getInstance(getContext()).isDisposed());
-		config.setValue(TGConfigKeys.MAXIMIZED,TuxGuitar.getInstance().getShell().getMaximized());
-		config.setValue(TGConfigKeys.WIDTH,TuxGuitar.getInstance().getShell().getClientArea().width);
-		config.setValue(TGConfigKeys.HEIGHT,TuxGuitar.getInstance().getShell().getClientArea().height);
+		config.setValue(TGConfigKeys.MAXIMIZED, tgWindow.getWindow().isMaximized());
+		config.setValue(TGConfigKeys.WIDTH, tgWindow.getWindow().getBounds().getWidth());
+		config.setValue(TGConfigKeys.HEIGHT, tgWindow.getWindow().getBounds().getHeight());
 		config.setValue(TGConfigKeys.EDITOR_MOUSE_MODE,TablatureEditor.getInstance(getContext()).getTablature().getEditorKit().getMouseMode());
 		config.setValue(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.getInstance().getMatrixEditor().getGrids());
 		
@@ -45,15 +53,16 @@ public class TGDisposeAction extends TGActionBase {
 	}
 	
 	protected void closeModules(){
-		TuxGuitar.getInstance().getPlayer().close();
-		TuxGuitar.getInstance().getPluginManager().disconnectAll();
+		MidiPlayer.getInstance(getContext()).close();
+		TGPluginManager.getInstance(getContext()).disconnectAll();
 	}
 	
 	protected void dispose(){
-		TuxGuitar.getInstance().getTable().dispose();
-		TuxGuitar.getInstance().getFretBoardEditor().dispose();
-		TuxGuitar.getInstance().getTablatureEditor().getTablature().dispose();
-		TuxGuitar.getInstance().getIconManager().disposeIcons();
-		TuxGuitar.getInstance().getShell().dispose();
+		TGTableViewer.getInstance(getContext()).dispose();
+		TGFretBoardEditor.getInstance(getContext()).dispose();
+		TablatureEditor.getInstance(getContext()).getTablature().dispose();
+		TGIconManager.getInstance(getContext()).disposeIcons();
+		TGColorManager.getInstance(getContext()).dispose();
+		TGWindow.getInstance(getContext()).getWindow().dispose();
 	}
 }

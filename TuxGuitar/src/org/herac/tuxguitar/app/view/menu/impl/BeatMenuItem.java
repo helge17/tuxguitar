@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
@@ -34,152 +24,147 @@ import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGStroke;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class BeatMenuItem extends TGMenuItem{
+public class BeatMenuItem extends TGMenuItem {
 	
-	private MenuItem noteMenuItem;
-	private Menu menu;
-	private MenuItem tiedNote;
-	private MenuItem insertRestBeat;
-	private MenuItem deleteNoteOrRest;
-	private MenuItem cleanBeat;
-	private MenuItem removeVoice;
-	private MenuItem insertText;
-	private MenuItem voiceAuto;
-	private MenuItem voiceUp;
-	private MenuItem voiceDown;
-	private MenuItem strokeUp;
-	private MenuItem strokeDown;
-	private MenuItem shiftUp;
-	private MenuItem shiftDown;
-	private MenuItem semitoneUp;
-	private MenuItem semitoneDown;
-	private MenuItem moveBeatsLeft;
-	private MenuItem moveBeatsRight;
-	private MenuItem moveBeatsCustom;
+	private UIMenuSubMenuItem noteMenuItem;
+	private UIMenuCheckableItem tiedNote;
+	private UIMenuActionItem insertRestBeat;
+	private UIMenuActionItem deleteNoteOrRest;
+	private UIMenuActionItem cleanBeat;
+	private UIMenuActionItem removeVoice;
+	private UIMenuActionItem insertText;
+	private UIMenuActionItem voiceAuto;
+	private UIMenuActionItem voiceUp;
+	private UIMenuActionItem voiceDown;
+	private UIMenuCheckableItem strokeUp;
+	private UIMenuCheckableItem strokeDown;
+	private UIMenuActionItem shiftUp;
+	private UIMenuActionItem shiftDown;
+	private UIMenuActionItem semitoneUp;
+	private UIMenuActionItem semitoneDown;
+	private UIMenuActionItem moveBeatsLeft;
+	private UIMenuActionItem moveBeatsRight;
+	private UIMenuActionItem moveBeatsCustom;
+	
 	private DurationMenuItem durationMenuItem;
 	private ChordMenuItem chordMenuItem;
 	private NoteEffectsMenuItem effectMenuItem;
 	private DynamicMenuItem dynamicMenuItem;
 	
-	public BeatMenuItem(Shell shell,Menu parent, int style) {
-		this.noteMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public BeatMenuItem(UIMenu parent) {
+		this.noteMenuItem = parent.createSubMenuItem();
 	}
 	
 	public void showItems(){
 		//--Tied Note
-		this.tiedNote = new MenuItem(this.menu, SWT.CHECK);
+		this.tiedNote = this.noteMenuItem.getMenu().createCheckItem();
 		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
 		
 		//--Insert Rest Beat
-		this.insertRestBeat = new MenuItem(this.menu, SWT.PUSH);
+		this.insertRestBeat = this.noteMenuItem.getMenu().createActionItem();
 		this.insertRestBeat.addSelectionListener(this.createActionProcessor(TGInsertRestBeatAction.NAME));
 		
 		//--Delete Note or Rest
-		this.deleteNoteOrRest = new MenuItem(this.menu, SWT.PUSH);
+		this.deleteNoteOrRest = this.noteMenuItem.getMenu().createActionItem();
 		this.deleteNoteOrRest.addSelectionListener(this.createActionProcessor(TGDeleteNoteOrRestAction.NAME));
 		
 		//--Clean Beat
-		this.cleanBeat = new MenuItem(this.menu, SWT.PUSH);
+		this.cleanBeat = this.noteMenuItem.getMenu().createActionItem();
 		this.cleanBeat.addSelectionListener(this.createActionProcessor(TGCleanBeatAction.NAME));
 		
 		//--Remove Voice
-		this.removeVoice = new MenuItem(this.menu, SWT.PUSH);
+		this.removeVoice = this.noteMenuItem.getMenu().createActionItem();
 		this.removeVoice.addSelectionListener(this.createActionProcessor(TGRemoveUnusedVoiceAction.NAME));
 		
 		//--Duration--
-		this.durationMenuItem = new DurationMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
+		this.durationMenuItem = new DurationMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
 		this.durationMenuItem.showItems();
 		
 		//--Chord--
-		this.chordMenuItem = new ChordMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
+		this.chordMenuItem = new ChordMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
 		this.chordMenuItem.showItems();
 		
 		//--Effects--
-		this.effectMenuItem = new NoteEffectsMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
+		this.effectMenuItem = new NoteEffectsMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
 		this.effectMenuItem.showItems();
 		
 		//--Dynamic--
-		this.dynamicMenuItem = new DynamicMenuItem(this.menu.getShell(),this.menu,SWT.CASCADE);
+		this.dynamicMenuItem = new DynamicMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
 		this.dynamicMenuItem.showItems();
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteMenuItem.getMenu().createSeparator();
 		
-		this.insertText = new MenuItem(this.menu, SWT.PUSH);
+		this.insertText = this.noteMenuItem.getMenu().createActionItem();
 		this.insertText.addSelectionListener(this.createActionProcessor(TGOpenTextDialogAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteMenuItem.getMenu().createSeparator();
 		
 		//--Semitone Down
-		this.voiceAuto = new MenuItem(this.menu, SWT.PUSH);
+		this.voiceAuto = this.noteMenuItem.getMenu().createActionItem();
 		this.voiceAuto.addSelectionListener(this.createActionProcessor(TGSetVoiceAutoAction.NAME));
 		
 		//--Semitone Up
-		this.voiceUp = new MenuItem(this.menu, SWT.PUSH);
+		this.voiceUp = this.noteMenuItem.getMenu().createActionItem();
 		this.voiceUp.addSelectionListener(this.createActionProcessor(TGSetVoiceUpAction.NAME));
 		
 		//--Semitone Down
-		this.voiceDown = new MenuItem(this.menu, SWT.PUSH);
+		this.voiceDown = this.noteMenuItem.getMenu().createActionItem();
 		this.voiceDown.addSelectionListener(this.createActionProcessor(TGSetVoiceDownAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteMenuItem.getMenu().createSeparator();
 		
 		//--Semitone Up
-		this.strokeUp = new MenuItem(this.menu, SWT.CHECK);
+		this.strokeUp = this.noteMenuItem.getMenu().createCheckItem();
 		this.strokeUp.addSelectionListener(this.createActionProcessor(TGOpenStrokeUpDialogAction.NAME));
 		
 		//--Semitone Down
-		this.strokeDown = new MenuItem(this.menu, SWT.CHECK);
+		this.strokeDown = this.noteMenuItem.getMenu().createCheckItem();
 		this.strokeDown.addSelectionListener(this.createActionProcessor(TGOpenStrokeDownDialogAction.NAME));
 				
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteMenuItem.getMenu().createSeparator();
 		
 		//--Semitone Up
-		this.semitoneUp = new MenuItem(this.menu, SWT.PUSH);
+		this.semitoneUp = this.noteMenuItem.getMenu().createActionItem();
 		this.semitoneUp.addSelectionListener(this.createActionProcessor(TGIncrementNoteSemitoneAction.NAME));
 		
 		//--Semitone Down
-		this.semitoneDown = new MenuItem(this.menu, SWT.PUSH);
+		this.semitoneDown = this.noteMenuItem.getMenu().createActionItem();
 		this.semitoneDown.addSelectionListener(this.createActionProcessor(TGDecrementNoteSemitoneAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteMenuItem.getMenu().createSeparator();
 		
 		//--Shift Up
-		this.shiftUp = new MenuItem(this.menu, SWT.PUSH);
+		this.shiftUp = this.noteMenuItem.getMenu().createActionItem();
 		this.shiftUp.addSelectionListener(this.createActionProcessor(TGShiftNoteUpAction.NAME));
 		
 		//--Shift Down
-		this.shiftDown = new MenuItem(this.menu, SWT.PUSH);
+		this.shiftDown = this.noteMenuItem.getMenu().createActionItem();
 		this.shiftDown.addSelectionListener(this.createActionProcessor(TGShiftNoteDownAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteMenuItem.getMenu().createSeparator();
 		
 		//--Move Beats Left
-		this.moveBeatsLeft = new MenuItem(this.menu, SWT.PUSH);
+		this.moveBeatsLeft = this.noteMenuItem.getMenu().createActionItem();
 		this.moveBeatsLeft.addSelectionListener(this.createActionProcessor(TGMoveBeatsLeftAction.NAME));
 		
 		//--Move Beats Right
-		this.moveBeatsRight = new MenuItem(this.menu, SWT.PUSH);
+		this.moveBeatsRight = this.noteMenuItem.getMenu().createActionItem();
 		this.moveBeatsRight.addSelectionListener(this.createActionProcessor(TGMoveBeatsRightAction.NAME));
 		
 		//--Move Beats Custom
-		this.moveBeatsCustom = new MenuItem(this.menu, SWT.PUSH);
+		this.moveBeatsCustom = this.noteMenuItem.getMenu().createActionItem();
 		this.moveBeatsCustom.addSelectionListener(this.createActionProcessor(TGOpenBeatMoveDialogAction.NAME));
-		
-		this.noteMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -192,7 +177,7 @@ public class BeatMenuItem extends TGMenuItem{
 		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
-		this.tiedNote.setSelection(note != null && note.isTiedNote());
+		this.tiedNote.setChecked(note != null && note.isTiedNote());
 		this.insertRestBeat.setEnabled(!running);
 		this.deleteNoteOrRest.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
@@ -201,9 +186,9 @@ public class BeatMenuItem extends TGMenuItem{
 		this.voiceUp.setEnabled(!running && !restBeat);
 		this.voiceDown.setEnabled(!running && !restBeat);
 		this.strokeUp.setEnabled(!running && !restBeat);
-		this.strokeUp.setSelection( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
+		this.strokeUp.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
 		this.strokeDown.setEnabled(!running && !restBeat);
-		this.strokeDown.setSelection( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
+		this.strokeDown.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
 		this.semitoneUp.setEnabled(!running && note != null);
 		this.semitoneDown.setEnabled(!running && note != null);
 		this.shiftUp.setEnabled(!running && note != null);

@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.channel;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
@@ -23,19 +24,19 @@ public class TGUndoableModifyChannel extends TGUndoableEditBase {
 		this.channelId = channelId;
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.updateChannel(this.getSong(), this.redoChannel);
+		this.updateChannel(actionContext, this.getSong(), this.redoChannel);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.updateChannel(this.getSong(), this.undoChannel);
+		this.updateChannel(actionContext, this.getSong(), this.undoChannel);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -67,10 +68,10 @@ public class TGUndoableModifyChannel extends TGUndoableEditBase {
 		return getSongManager().getChannel(getSong(), this.channelId);
 	}
 	
-	public void updateChannel(TGSong song, TGChannel channel) {
+	public void updateChannel(TGActionContext context, TGSong song, TGChannel channel) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGUpdateChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, channel);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

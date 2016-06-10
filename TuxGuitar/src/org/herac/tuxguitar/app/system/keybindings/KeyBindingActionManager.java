@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.widgets.Control;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -37,11 +38,11 @@ public class KeyBindingActionManager {
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "shortcuts.xml";
 	}
 	
-	public String getActionForKeyBinding(KeyBinding kb){
+	public String getActionForKeyBinding(UIKeyConvination kb){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
-			if( keyBindingAction.getKeyBinding() != null && kb.isSameAs( keyBindingAction.getKeyBinding() )){
+			if( keyBindingAction.getConvination() != null && kb.equals( keyBindingAction.getConvination() )){
 				if( isKeyBindingAvailable(keyBindingAction) ){
 					return keyBindingAction.getAction();
 				}
@@ -50,13 +51,13 @@ public class KeyBindingActionManager {
 		return null;
 	}
 	
-	public KeyBinding getKeyBindingForAction(String action){
+	public UIKeyConvination getKeyBindingForAction(String action){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
 			if(action.equals( keyBindingAction.getAction() )){
 				if( isKeyBindingAvailable(keyBindingAction) ){
-					return keyBindingAction.getKeyBinding();
+					return keyBindingAction.getConvination();
 				}
 			}
 		}
@@ -84,11 +85,11 @@ public class KeyBindingActionManager {
 		KeyBindingWriter.setBindings(getKeyBindingActions(),getUserFileName());
 	}
 	
-	public void appendListenersTo(Control control){
-		control.addKeyListener(this.listener);
+	public void appendListenersTo(UIControl control){
+		control.addKeyPressedListener(this.listener);
 	}
 	
-	public void processKeyBinding(KeyBinding kb){
+	public void processKeyBinding(UIKeyConvination kb){
 		final String actionId = getActionForKeyBinding(kb);
 		if( actionId != null ){
 			new TGActionProcessor(this.context, actionId).process();

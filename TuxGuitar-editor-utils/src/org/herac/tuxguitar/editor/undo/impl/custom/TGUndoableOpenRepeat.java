@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.custom;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
@@ -18,19 +19,19 @@ public class TGUndoableOpenRepeat extends TGUndoableEditBase{
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeOpenRepeat(getMeasureHeaderAt(this.position));
+		this.changeOpenRepeat(actionContext, getMeasureHeaderAt(this.position));
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeOpenRepeat(getMeasureHeaderAt(this.position));
+		this.changeOpenRepeat(actionContext, getMeasureHeaderAt(this.position));
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -58,9 +59,9 @@ public class TGUndoableOpenRepeat extends TGUndoableEditBase{
 		return getSongManager().getMeasureHeaderAt(getSong(), start);
 	}
 	
-	public void changeOpenRepeat(TGMeasureHeader header) {
+	public void changeOpenRepeat(TGActionContext context, TGMeasureHeader header) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRepeatOpenAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

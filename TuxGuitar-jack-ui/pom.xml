@@ -43,8 +43,8 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>${org.eclipse.swt.groupId}</groupId>
-			<artifactId>${org.eclipse.swt.artifactId}</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-ui-toolkit</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

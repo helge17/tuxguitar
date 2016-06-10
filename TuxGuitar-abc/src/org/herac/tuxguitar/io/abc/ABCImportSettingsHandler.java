@@ -20,7 +20,7 @@ public class ABCImportSettingsHandler implements TGSongStreamSettingsHandler {
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				ABCSettings settings = new ABCImportSettingsDialog().open();
+				ABCSettings settings = new ABCImportSettingsDialog(ABCImportSettingsHandler.this.context).open();
 				if( settings != null ) {
 					context.setAttribute(ABCSettings.class.getName(), settings);
 					callback.run();

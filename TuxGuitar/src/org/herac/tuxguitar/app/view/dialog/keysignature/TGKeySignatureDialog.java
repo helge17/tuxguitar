@@ -1,115 +1,113 @@
 package org.herac.tuxguitar.app.view.dialog.keysignature;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeKeySignatureAction;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGKeySignatureDialog {
 	
 	public void show(final TGViewContext context) {
-		Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("composition.keysignature"));
 		
 		//-------key Signature-------------------------------------
-		Group keySignature = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		keySignature.setLayout(new GridLayout(2,false));
-		keySignature.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout keySignatureLayout = new UITableLayout();
+		UILegendPanel keySignature = uiFactory.createLegendPanel(dialog);
+		keySignature.setLayout(keySignatureLayout);
 		keySignature.setText(TuxGuitar.getProperty("composition.keysignature"));
+		dialogLayout.set(keySignature, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Label numeratorLabel = new Label(keySignature, SWT.NULL);
-		numeratorLabel.setText(TuxGuitar.getProperty("composition.keysignature") + ":");
+		UILabel keySignatureLabel = uiFactory.createLabel(keySignature);
+		keySignatureLabel.setText(TuxGuitar.getProperty("composition.keysignature") + ":");
+		keySignatureLayout.set(keySignatureLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Combo keySignatures = new Combo(keySignature, SWT.DROP_DOWN | SWT.READ_ONLY);
+		final UIDropDownSelect<Integer> keySignatures = uiFactory.createDropDownSelect(keySignature);
 		
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.natural"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-1"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-2"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-3"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-4"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-5"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-6"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.sharp-7"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-1"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-2"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-3"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-4"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-5"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-6"));
-		keySignatures.add(TuxGuitar.getProperty("composition.keysignature.flat-7"));
-		keySignatures.select(measure.getKeySignature());
-		keySignatures.setLayoutData(getComboData());
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.natural"), 0));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-1"), 1));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-2"), 2));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-3"), 3));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-4"), 4));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-5"), 5));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-6"), 6));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.sharp-7"), 7));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-1"), 8));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-2"), 9));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-3"), 10));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-4"), 11));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-5"), 12));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-6"), 13));
+		keySignatures.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.keysignature.flat-7"), 14));
+		keySignatures.setSelectedValue(measure.getKeySignature());
+		keySignatureLayout.set(keySignatures, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
+		
 		//--------------------To End Checkbox-------------------------------
-		Group check = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		check.setLayout(new GridLayout());
-		check.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout checkLayout = new UITableLayout();
+		UILegendPanel check = uiFactory.createLegendPanel(dialog);
+		check.setLayout(checkLayout);
 		check.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(check, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button toEnd = new Button(check, SWT.CHECK);
+		final UICheckBox toEnd = uiFactory.createCheckBox(check);
 		toEnd.setText(TuxGuitar.getProperty("composition.keysignature.to-the-end"));
-		toEnd.setSelection(true);
+		toEnd.setSelected(true);
+		checkLayout.set(toEnd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeKeySignature(context.getContext(), track, measure, keySignatures.getSelectionIndex(), toEnd.getSelection());
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				changeKeySignature(context.getContext(), track, measure, keySignatures.getSelectedValue(), toEnd.isSelected());
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private GridData getComboData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 150;
-		return data;
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void changeKeySignature(TGContext context, TGTrack track, TGMeasure measure, Integer value, Boolean applyToEnd) {

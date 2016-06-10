@@ -12,7 +12,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.util.TGContext;
+
+import swtimpl.widget.SWTWindow;
 
 public class ABCImportSettingsDialog {
 	
@@ -22,17 +26,20 @@ public class ABCImportSettingsDialog {
 	
 	private static final int STATUS_ACCEPTED = 2;
 	
+	private TGContext context;
+	
 	protected int status;
 	
-	public ABCImportSettingsDialog(){
-		super();
+	public ABCImportSettingsDialog(TGContext context){
+		this.context = context;
 	}
 	
 	public ABCSettings open() {
 		this.status = STATUS_NONE;
 		final ABCSettings settings = ABCSettings.getDefaults();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell parent = ((SWTWindow) TGWindow.getInstance(this.context).getWindow()).getControl();
+		final Shell dialog = SWTDialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout(2, false));
 		dialog.setText(TuxGuitar.getProperty("abc.options"));
 		
@@ -154,7 +161,7 @@ public class ABCImportSettingsDialog {
 		
 		dialog.setDefaultButton( buttonOK );
 		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		SWTDialogUtils.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		
 		return ( ( this.status == STATUS_ACCEPTED )? settings : null );
 	}

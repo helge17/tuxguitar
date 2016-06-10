@@ -1,129 +1,130 @@
 package org.herac.tuxguitar.app.view.dialog.info;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeInfoAction;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITextArea;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSongInfoDialog {
 	
-	private static final int GROUP_WIDTH  = 450;
-	private static final int GROUP_HEIGHT = SWT.DEFAULT;
+	private static final float GROUP_WIDTH = 450;
 	
-	public void show(final TGViewContext context) {
-		Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+	public void show(final TGViewContext context) {		
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		
-		dialog.setLayout(new GridLayout());
-		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("composition.properties"));
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(makeGroupLayout(5));
-		group.setLayoutData(new GridData(GROUP_WIDTH,GROUP_HEIGHT));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
 		group.setText(TuxGuitar.getProperty("composition.properties"));
-		
+		group.setLayout(groupLayout);
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, GROUP_WIDTH, null, null);
+
 		//-------NAME------------------------------------
-		Label nameLabel = new Label(group, SWT.NULL);
-		nameLabel.setLayoutData(makeLabelData()); 
+		UILabel nameLabel = uiFactory.createLabel(group);
 		nameLabel.setText(TuxGuitar.getProperty("composition.name") + ":");
+		groupLayout.set(nameLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text nameText = new Text(group, SWT.BORDER);
-		nameText.setLayoutData(makeTextData());
+		final UITextField nameText = uiFactory.createTextField(group);
 		nameText.setText(song.getName());
+		groupLayout.set(nameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------ARTIST------------------------------------
-		Label artistLabel = new Label(group, SWT.NULL);
-		artistLabel.setLayoutData(makeLabelData());
+		UILabel artistLabel = uiFactory.createLabel(group);
 		artistLabel.setText(TuxGuitar.getProperty("composition.artist") + ":");
+		groupLayout.set(artistLabel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text artistText = new Text(group, SWT.BORDER);
-		artistText.setLayoutData(makeTextData());
+		final UITextField artistText = uiFactory.createTextField(group);
 		artistText.setText(song.getArtist());
+		groupLayout.set(artistText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------ALBUM------------------------------------
-		Label albumLabel = new Label(group, SWT.NULL);
-		albumLabel.setLayoutData(makeLabelData());
+		UILabel albumLabel = uiFactory.createLabel(group);
 		albumLabel.setText(TuxGuitar.getProperty("composition.album") + ":");
+		groupLayout.set(albumLabel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text albumText = new Text(group, SWT.BORDER);
-		albumText.setLayoutData(makeTextData());
+		final UITextField albumText = uiFactory.createTextField(group);
 		albumText.setText(song.getAlbum());
+		groupLayout.set(albumText, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------AUTHOR------------------------------------
-		Label authorLabel = new Label(group, SWT.NULL);
-		authorLabel.setLayoutData(makeLabelData());
+		UILabel authorLabel = uiFactory.createLabel(group);
 		authorLabel.setText(TuxGuitar.getProperty("composition.author") + ":");
+		groupLayout.set(authorLabel, 4, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text authorText = new Text(group, SWT.BORDER);
-		authorText.setLayoutData(makeTextData());
+		final UITextField authorText = uiFactory.createTextField(group);
 		authorText.setText(song.getAuthor());
+		groupLayout.set(authorText, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------DATE------------------------------------
-		Label dateLabel = new Label(group, SWT.NULL);
-		dateLabel.setLayoutData(makeLabelData());
+		UILabel dateLabel = uiFactory.createLabel(group);
 		dateLabel.setText(TuxGuitar.getProperty("composition.date") + ":");
+		groupLayout.set(dateLabel, 5, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text dateText = new Text(group, SWT.BORDER);
-		dateText.setLayoutData(makeTextData());
+		final UITextField dateText = uiFactory.createTextField(group);
 		dateText.setText(song.getDate());
+		groupLayout.set(dateText, 5, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------COPYRIGHT------------------------------------
-		Label copyrightLabel = new Label(group, SWT.NULL);
-		copyrightLabel.setLayoutData(makeLabelData());
+		UILabel copyrightLabel = uiFactory.createLabel(group);
 		copyrightLabel.setText(TuxGuitar.getProperty("composition.copyright") + ":");
+		groupLayout.set(copyrightLabel, 6, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text copyrightText = new Text(group, SWT.BORDER);
-		copyrightText.setLayoutData(makeTextData());
+		final UITextField copyrightText = uiFactory.createTextField(group);
 		copyrightText.setText(song.getCopyright());
+		groupLayout.set(copyrightText, 6, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------WRITER-------------------------------------
-		Label writerLabel = new Label(group, SWT.NULL);
-		writerLabel.setLayoutData(makeLabelData());
+		UILabel writerLabel = uiFactory.createLabel(group);
 		writerLabel.setText(TuxGuitar.getProperty("composition.writer") + ":");
+		groupLayout.set(writerLabel, 7, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text writerText = new Text(group, SWT.BORDER);
-		writerText.setLayoutData(makeTextData());
+		final UITextField writerText = uiFactory.createTextField(group);
 		writerText.setText(song.getWriter());
+		groupLayout.set(writerText, 7, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------TRANSCRIBER------------------------------------
-		Label transcriberLabel = new Label(group, SWT.NULL);
-		transcriberLabel.setLayoutData(makeLabelData());
+		UILabel transcriberLabel = uiFactory.createLabel(group);
 		transcriberLabel.setText(TuxGuitar.getProperty("composition.transcriber") + ":");
+		groupLayout.set(transcriberLabel, 8, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text transcriberText = new Text(group, SWT.BORDER);
-		transcriberText.setLayoutData(makeTextData());
+		final UITextField transcriberText = uiFactory.createTextField(group);
 		transcriberText.setText(song.getTranscriber());
-		
+		groupLayout.set(transcriberText, 8, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		//-------COMMENTS------------------------------------
-		Label commentsLabel = new Label(group, SWT.NULL);
-		commentsLabel.setLayoutData(makeLabelData());
+		UILabel commentsLabel = uiFactory.createLabel(group);
 		commentsLabel.setText(TuxGuitar.getProperty("composition.comments") + ":");
+		groupLayout.set(commentsLabel, 9, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Text commentsText = new Text(group, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-		commentsText.setLayoutData(makeTextAreaData());
+		final UITextArea commentsText = uiFactory.createTextArea(group, true, false);
 		commentsText.setText(song.getComments());
+		groupLayout.set(commentsText, 9, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, 100f, null);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				String name = nameText.getText();
 				String artist = artistText.getText();
 				String album = albumText.getText();
@@ -138,51 +139,19 @@ public class TGSongInfoDialog {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-	}
-	
-	private GridLayout makeGroupLayout(int spacing){
-		GridLayout layout = new GridLayout(2,false);
-		layout.marginTop = spacing;
-		layout.marginBottom = spacing;
-		layout.marginLeft = spacing;
-		layout.marginRight = spacing;
-		layout.verticalSpacing = spacing;
-		layout.horizontalSpacing = spacing;
-		return layout;
-	}
-	
-	private GridData makeTextAreaData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumHeight = 100;
-		return data;
-	}
-	
-	private GridData makeTextData(){
-		return new GridData(SWT.FILL, SWT.FILL, true, true);
-	}
-	
-	private GridData makeLabelData(){
-		return new GridData(SWT.RIGHT,SWT.CENTER,false,true);
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void updateSongInfo(TGContext context, TGSong song, String name, String artist, String album, String author, String date, String copyright, String writer, String transcriber, String comments) {

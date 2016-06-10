@@ -1,8 +1,5 @@
 package org.herac.tuxguitar.app.view.dialog.fretboard;
 
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerEvent;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerManager;
@@ -15,6 +12,8 @@ import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -37,7 +36,7 @@ public class TGFretBoardEditor implements TGEventListener{
 		TuxGuitar.getInstance().getScaleManager().addListener(this);
 	}
 	
-	private TGFretBoard getFretBoard(){
+	public TGFretBoard getFretBoard(){
 		return this.fretBoard;
 	}
 	
@@ -49,29 +48,26 @@ public class TGFretBoardEditor implements TGEventListener{
 		TGExternalBeatViewerManager.getInstance(this.context).removeBeatViewerListener(this);
 		
 		TGWindow tgWindow = TGWindow.getInstance(this.context);
-		tgWindow.updateShellFooter(0,0,0);
+		tgWindow.getWindow().layout();
 	}
 	
 	public void showFretBoard(){
 		this.visible = true;
 		getFretBoard().setVisible(this.visible);
+		getFretBoard().computePackedSize();
 		
 		TGEditorManager.getInstance(this.context).addRedrawListener(this);
 		TGExternalBeatViewerManager.getInstance(this.context).addBeatViewerListener(this);
 		
 		TGWindow tgWindow = TGWindow.getInstance(this.context);
-		tgWindow.updateShellFooter(getFretBoard().getHeight(), 730,520);
+		tgWindow.getWindow().layout();
 	}
 	
-	public void showFretBoard(Composite parent) {
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0,0);
-		data.bottom = new FormAttachment(100,0);
-		
+	public void showFretBoard(UIPanel parent) {
 		this.fretBoard = new TGFretBoard(this.context, parent);
-		this.fretBoard.setLayoutData(data);
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(this.fretBoard.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 	}
 	
 	public void dispose(){

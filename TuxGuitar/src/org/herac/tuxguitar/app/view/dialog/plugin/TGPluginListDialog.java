@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsManager;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
+import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckTable;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginInfo;
@@ -30,27 +30,26 @@ import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGPluginListDialog {
 	
-	private static final int TABLE_WIDTH = 400;
-	private static final int TABLE_HEIGHT = 300;
+	private static final float TABLE_WIDTH = 400;
+	private static final float TABLE_HEIGHT = 300;
 	
 	public void show(final TGViewContext context) {
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
-		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("plugins"));
 		
-		final Table table = new Table(dialog, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.CHECK | SWT.H_SCROLL | SWT.V_SCROLL);
-		table.setLayoutData(new GridData(TABLE_WIDTH,TABLE_HEIGHT));
-		table.setHeaderVisible(true);
+		final UICheckTable<String> table = uiFactory.createCheckTable(dialog, true);
+		table.setColumns(2);
+		table.setColumnName(0, TuxGuitar.getProperty("plugin.column.enabled"));
+		table.setColumnName(1, TuxGuitar.getProperty("plugin.column.name"));
 		
-		final TableColumn columnEnabled = new TableColumn(table, SWT.LEFT);
-		final TableColumn columnPlugin = new TableColumn(table, SWT.LEFT);
-		columnEnabled.setText(TuxGuitar.getProperty("plugin.column.enabled"));
-		columnPlugin.setText(TuxGuitar.getProperty("plugin.column.name"));
-		columnEnabled.setWidth( (TABLE_WIDTH / 4) );
-		columnPlugin.setWidth( (TABLE_WIDTH - (TABLE_WIDTH / 4)) );
+		dialogLayout.set(table, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(table, UITableLayout.PACKED_WIDTH, TABLE_WIDTH);
+		dialogLayout.set(table, UITableLayout.PACKED_HEIGHT, TABLE_HEIGHT);
 		
 		Iterator<String> it = getModuleIds().iterator();
 		while(it.hasNext()){
@@ -62,85 +61,78 @@ public class TGPluginListDialog {
 				pluginName = moduleId;
 			}
 			
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setData(moduleId);
-			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin") );
-			item.setChecked(TuxGuitar.getInstance().getPluginManager().isEnabled(moduleId));
+			UITableItem<String> item = new UITableItem<String>(moduleId);
+			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin"));
+			table.addItem(item);
+			table.setCheckedItem(item, TuxGuitar.getInstance().getPluginManager().isEnabled(moduleId));
 		}
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(3,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonSetup = new Button(buttons, SWT.PUSH);
+		final UIButton buttonSetup = uiFactory.createButton(buttons);
 		buttonSetup.setText(TuxGuitar.getProperty("configure"));
-		buttonSetup.setLayoutData(getButtonData());
 		buttonSetup.setEnabled(false);
-		buttonSetup.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				TableItem item = table.getItem(table.getSelectionIndex());
-				if( item.getData() instanceof String ){
-					String moduleId = (String)item.getData();
-					if( isConfigurable(moduleId) ){
-						configure(context.getContext(), dialog, moduleId);
-					}
+		buttonSetup.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String moduleId = table.getSelectedValue();
+				if( moduleId != null && isConfigurable(moduleId) ){
+					configure(context.getContext(), dialog, moduleId);
 				}
 			}
 		});
+		buttonsLayout.set(buttonSetup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		final Button buttonInfo = new Button(buttons, SWT.PUSH);
+		final UIButton buttonInfo = uiFactory.createButton(buttons);
 		buttonInfo.setText(TuxGuitar.getProperty("info"));
-		buttonInfo.setLayoutData(getButtonData());
+		buttonInfo.setDefaultButton();
 		buttonInfo.setEnabled(false);
-		buttonInfo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				TableItem item = table.getItem(table.getSelectionIndex());
-				if( item.getData() instanceof String ){
-					showInfo(context.getContext(), dialog, (String)item.getData());
+		buttonInfo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String moduleId = table.getSelectedValue();
+				if( moduleId != null ){
+					showInfo(context.getContext(), dialog, moduleId);
 				}
 			}
 		});
+		buttonsLayout.set(buttonInfo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonClose = new Button(buttons, SWT.PUSH);
+		UIButton buttonClose = uiFactory.createButton(buttons);
 		buttonClose.setText(TuxGuitar.getProperty("close"));
-		buttonClose.setLayoutData(getButtonData());
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonClose.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonClose, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonClose, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		table.addListener (SWT.Selection, new Listener() {
-			public void handleEvent (Event event) {
-				buttonInfo.setEnabled(false);
-				buttonSetup.setEnabled(false);
-				if(event.item instanceof TableItem && event.item.getData() instanceof String){
-					final TableItem item = (TableItem)event.item;
-					if( event.detail == SWT.CHECK ){
-						dialog.setCursor(dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
-						
-						TGPluginManager.getInstance(context.getContext()).updatePluginStatus((String)item.getData(), item.getChecked());
-						table.setSelection(item);
-						
-						dialog.setCursor(dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
-					}
-					buttonInfo.setEnabled(true);
-					buttonSetup.setEnabled(isConfigurable((String)item.getData()));
+		table.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String moduleId = table.getSelectedValue();
+				
+				buttonInfo.setEnabled(moduleId != null);
+				buttonSetup.setEnabled(moduleId != null && isConfigurable(moduleId));
+			}
+		});
+		table.addCheckSelectionListener(new UICheckTableSelectionListener<String>() {
+			public void onSelect(UICheckTableSelectionEvent<String> event) {
+				if( event.getSelectedItem() != null ) {
+					dialog.setCursor(UICursor.WAIT);
+					
+					UITableItem<String> item = event.getSelectedItem();
+					TGPluginManager.getInstance(context.getContext()).updatePluginStatus(item.getValue(), table.isCheckedItem(item));
+					table.setSelectedItem(item);
+					
+					dialog.setCursor(UICursor.NORMAL);
 				}
 			}
 		});
 		
-		dialog.setDefaultButton( buttonInfo );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	private List<String> getModuleIds(){
@@ -159,18 +151,18 @@ public class TGPluginListDialog {
 		return TGPluginSettingsManager.getInstance().containsPluginSettingsHandler(moduleId);
 	}
 	
-	public void showInfo(TGContext context, Shell parent, String moduleId) {
+	public void showInfo(TGContext context, UIWindow parent, String moduleId) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPluginInfoDialogController());
-		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT, parent);
+		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, parent);
 		tgActionProcessor.setAttribute(TGPluginInfoDialog.ATTRIBUTE_MODULE_ID, moduleId);
 		tgActionProcessor.process();
 	}
 	
-	public void configure(TGContext context, Shell parent, String moduleId) {
+	public void configure(TGContext context, UIWindow parent, String moduleId) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPluginSettingsDialogController());
-		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT, parent);
+		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, parent);
 		tgActionProcessor.setAttribute(TGPluginSettingsDialogController.ATTRIBUTE_MODULE_ID, moduleId);
 		tgActionProcessor.process();
 	}

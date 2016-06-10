@@ -7,7 +7,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionInterceptor;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -43,9 +43,7 @@ public class TGSyncThreadInterceptor implements TGActionInterceptor {
 	}
 	
 	private boolean isUiThread() {
-		Thread uiThread = TuxGuitar.getInstance().getDisplay().getThread();
-		Thread currentThread = Thread.currentThread();
-		return (currentThread == uiThread);
+		return TGApplication.getInstance(this.context).getApplication().isInUiThread();
 	}
 	
 	public void runInUiThread(final String id, final TGActionContext context) {

@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.custom;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeInfoAction;
@@ -35,19 +36,19 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeInfo(getSong(), this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor,this.redoDate,this.redoCopyright,this.redoWriter,this.redoTranscriber,this.redoComments);
+		this.changeInfo(actionContext, getSong(), this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor,this.redoDate,this.redoCopyright,this.redoWriter,this.redoTranscriber,this.redoComments);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeInfo(getSong(), this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor,this.undoDate,this.undoCopyright,this.undoWriter,this.undoTranscriber,this.undoComments);
+		this.changeInfo(actionContext, getSong(), this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor,this.undoDate,this.undoCopyright,this.undoWriter,this.undoTranscriber,this.undoComments);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -89,7 +90,7 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		return this;
 	}
 	
-	public void changeInfo(TGSong song, String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments) {
+	public void changeInfo(TGActionContext context, TGSong song, String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeInfoAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGChangeInfoAction.ATTRIBUTE_NAME, name);
@@ -102,6 +103,6 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		tgActionProcessor.setAttribute(TGChangeInfoAction.ATTRIBUTE_TRANSCRIBER, transcriber);
 		tgActionProcessor.setAttribute(TGChangeInfoAction.ATTRIBUTE_COMMENTS, comments);
 		
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

@@ -3,19 +3,12 @@ package org.herac.tuxguitar.app.view.dialog.chord;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGCursorController;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGInsertChordAction;
@@ -29,17 +22,27 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGChordDialog {
 	
-	private static final int DEFAULT_STYLE = SWT.BORDER;
-	
-	private Shell dialog;
+	private UIWindow dialog;
 	private TGViewContext context;
 	private TGChordEditor editor;
 	private TGChordSelector selector;
 	private TGChordList list;
 	private TGChordRecognizer recognizer;
+	private TGCursorController cursorController;
 	
 	public TGChordDialog(TGViewContext context) {
 		this.context = context;
@@ -51,89 +54,93 @@ public class TGChordDialog {
 		final TGBeat beat = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		final TGVoice voice= this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		
-		final Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final UIFactory uiFactory = this.getUIFactory();
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());
+		this.dialog = uiFactory.createWindow(uiParent, true, false);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("chord.editor"));
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				TuxGuitar.getInstance().getCustomChordManager().write();
 			}
 		});
 		
-		Composite topComposite = new Composite(this.dialog, SWT.NONE);
-		topComposite.setLayout(new GridLayout(4,false));
-		topComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout topLayout = new UITableLayout();
+		UIPanel topComposite = uiFactory.createPanel(this.dialog, false);
+		topComposite.setLayout(topLayout);
+		dialogLayout.set(topComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Composite bottomComposite = new Composite(this.dialog, SWT.NONE);  
-		bottomComposite.setLayout(new GridLayout());
-		bottomComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout bottomLayout = new UITableLayout();
+		UIPanel bottomComposite = uiFactory.createPanel(this.dialog, false);  
+		bottomComposite.setLayout(bottomLayout);
+		dialogLayout.set(bottomComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		int[] tuning = findCurrentTuning(measure.getTrack());
 		
 		//---------------SELECTOR--------------------------------
-		this.selector = new TGChordSelector(this,topComposite,DEFAULT_STYLE, tuning);
-		this.selector.pack();
+		this.selector = new TGChordSelector(this, topComposite, tuning);
+		topLayout.set(this.selector.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//---------------EDITOR--------------------------------
-		this.editor = new TGChordEditor(this, topComposite, DEFAULT_STYLE,(short)tuning.length);
-		this.editor.pack();
-		
+		this.editor = new TGChordEditor(this, topComposite, (short)tuning.length);
 		this.editor.setCurrentTrack(measure.getTrack());
+		topLayout.set(this.editor.getControl(), 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//---------------RECOGNIZER------------------------------------
-		this.recognizer = new TGChordRecognizer(this, topComposite, DEFAULT_STYLE);
+		this.recognizer = new TGChordRecognizer(this, topComposite);
+		topLayout.set(this.recognizer.getControl(), 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 180f, null, null);
 		
 		//---------------CUSTOM CHORDS---------------------------------
-		new TGChordCustomList(this, topComposite, DEFAULT_STYLE,Math.max(this.selector.getBounds().height,this.editor.getBounds().height));
+		TGChordCustomList customList = new TGChordCustomList(this, topComposite);
+		topLayout.set(customList.getControl(), 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//---------------LIST--------------------------------
-		Composite listComposite = new Composite(bottomComposite, SWT.NONE);
-		listComposite.setLayout(gridLayout(1,false,0,0));
-		listComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.list = new TGChordList(this,listComposite,beat);
+		this.list = new TGChordList(this, bottomComposite, beat);
+		bottomLayout.set(this.list.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(gridLayout(3,false,0,0));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout();
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				insertChord(track, measure, beat, voice, getEditor().getChord());
-				getDialog().dispose();
+				getWindow().dispose();
 			}
 		});
 		
-		Button buttonClean = new Button(buttons, SWT.PUSH);
+		UIButton buttonClean = uiFactory.createButton(buttons);
 		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.setLayoutData(getButtonData());
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonClean.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				removeChord(measure, beat);
-				getDialog().dispose();
+				getWindow().dispose();
 			}
 		});
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				getDialog().dispose();
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				getWindow().dispose();
 			}
 		});
+		
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
 		// load the current chord
 		this.editor.setChord(findCurrentChord(measure, beat.getStart()));
 		
-		this.dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public TGChordEditor getEditor() {
@@ -156,24 +163,21 @@ public class TGChordDialog {
 		return this.dialog.isDisposed();
 	}
 	
-	public Shell getDialog(){
+	public UIWindow getWindow(){
 		return this.dialog;
 	}
 	
-	public GridLayout gridLayout(int numColumns,boolean makeColumnsEqualWidth,int marginWidth,int marginHeight){
-		GridLayout layout = new GridLayout();
-		layout.numColumns = numColumns;
-		layout.makeColumnsEqualWidth = makeColumnsEqualWidth;
-		layout.marginWidth = (marginWidth >= 0)?marginWidth:layout.marginWidth;
-		layout.marginHeight = (marginHeight >= 0)?marginHeight:layout.marginHeight;
-		return layout;
+	public void loadCursor(UICursor cursor) {
+		if(!this.dialog.isDisposed()) {
+			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
+				this.cursorController = new TGCursorController(this.getContext().getContext(), this.dialog);
+			}
+			this.cursorController.loadCursor(cursor);
+		}
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+	public UIColor getColor(int color) {
+		return TGColorManager.getInstance(this.context.getContext()).getColor(color);
 	}
 	
 	private int[] findCurrentTuning(TGTrack track){
@@ -201,10 +205,10 @@ public class TGChordDialog {
 				Iterator<TGNote> it = notes.iterator();
 				while(it.hasNext()){
 					TGNote note = (TGNote)it.next(); 
-					if(maxValue < 0 || maxValue < note.getValue()){
+					if( maxValue < 0 || maxValue < note.getValue()){
 						maxValue = note.getValue();
 					}
-					if(note.getValue() > 0 && (minValue < 0 || minValue > note.getValue())){
+					if( note.getValue() > 0 && (minValue < 0 || minValue > note.getValue())){
 						minValue = note.getValue();
 					}
 				}
@@ -238,6 +242,10 @@ public class TGChordDialog {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
 		tgActionProcessor.processOnNewThread();
+	}
+	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context.getContext()).getFactory();
 	}
 	
 	public TGViewContext getContext() {

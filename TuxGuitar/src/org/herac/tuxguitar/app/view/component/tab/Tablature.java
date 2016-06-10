@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
-import org.eclipse.swt.graphics.Rectangle;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.document.TGDocumentManager;
@@ -116,10 +116,6 @@ public class Tablature implements TGController {
 		this.reloadStyles();
 	}
 	
-	public TGRectangle createRectangle( Rectangle rectangle ){
-		return new TGRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
-	}
-	
 	public void reloadStyles(){
 		if( this.getViewLayout() != null ){
 			this.getViewLayout().loadStyles(1f);
@@ -156,7 +152,7 @@ public class Tablature implements TGController {
 	
 	public TGResourceFactory getResourceFactory(){
 		if( this.resourceFactory == null ){
-			this.resourceFactory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
+			this.resourceFactory = new TGResourceFactoryImpl(TGApplication.getInstance(this.context).getFactory());
 		}
 		return this.resourceFactory;
 	}

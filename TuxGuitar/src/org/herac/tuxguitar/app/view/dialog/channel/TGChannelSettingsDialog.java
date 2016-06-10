@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.app.view.dialog.channel;
 
-import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public interface TGChannelSettingsDialog {
 	
-	public void show(Shell parent);
+	void show(UIWindow parent);
 }

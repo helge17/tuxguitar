@@ -1,23 +1,24 @@
 package org.herac.tuxguitar.community.auth;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.utils.TGCommunityWeb;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UILinkEvent;
+import org.herac.tuxguitar.ui.event.UILinkListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UILinkLabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 
@@ -34,124 +35,97 @@ public class TGCommunityAuthDialog {
 	}
 	
 	public void open() {
-		this.open( TuxGuitar.getInstance().getShell() );
+		this.open(TGWindow.getInstance(this.context).getWindow());
 	}
 	
-	public void open(final Shell shell) {
+	public void open(UIWindow parent) {
 		this.accepted = false;
 		
-		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		
-		dialog.setLayout(new GridLayout());
-		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		dialog.setLayout(dialogLayout);
 		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.title"));
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(makeGroupLayout(2,5));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signin"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//-------USERNAME------------------------------------
-		Label usernameLabel = new Label(group, SWT.NULL);
-		usernameLabel.setLayoutData(makeLabelData()); 
+		UILabel usernameLabel = uiFactory.createLabel(group);
 		usernameLabel.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signin.username") + ":");
+		groupLayout.set(usernameLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text usernameText = new Text(group, SWT.BORDER);
-		usernameText.setLayoutData(makeTextData());
+		final UITextField usernameText = uiFactory.createTextField(group);
 		usernameText.setText( this.auth.getUsername() );
+		groupLayout.set(usernameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//-------PASSWORD------------------------------------
-		Label passwordLabel = new Label(group, SWT.NULL);
-		passwordLabel.setLayoutData(makeLabelData());
+		UILabel passwordLabel = uiFactory.createLabel(group);
 		passwordLabel.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signin.password") + ":");
+		groupLayout.set(passwordLabel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text passwordText = new Text(group, SWT.BORDER | SWT.PASSWORD );
-		passwordText.setLayoutData(makeTextData());
+		final UITextField passwordText = uiFactory.createTextField(group);
 		passwordText.setText( this.auth.getPassword() );
+		groupLayout.set(passwordText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//-------JOIN------------------------------------
-		Group join = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		join.setLayout(makeGroupLayout(1,5));
-		//join.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		join.setLayoutData(new GridData(group.computeSize(SWT.DEFAULT, SWT.DEFAULT).x , SWT.DEFAULT));
+		UITableLayout joinLayout = new UITableLayout();
+		UILegendPanel join = uiFactory.createLegendPanel(dialog);
+		join.setLayout(joinLayout);
 		join.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signup"));
+		dialogLayout.set(join, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Link joinLink = new Link( join, SWT.LEFT );
-		joinLink.setLayoutData( new GridData(SWT.LEFT, SWT.CENTER, true, true ));
+		final UILinkLabel joinLink = uiFactory.createLinkLabel(join);
 		joinLink.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signup.tip"));
-		joinLink.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				final String href = event.text;
-				if( href != null ){
-					new Thread( new Runnable() {
-						public void run() throws TGException {
-							TGCommunityWeb.open(getContext(), href);
-						}
-					} ).start();
-				}
+		joinLink.setWrapWidth(320f);
+		joinLink.addLinkListener(new UILinkListener() {
+			public void onLinkSelect(final UILinkEvent event) {
+				new Thread( new Runnable() {
+					public void run() throws TGException {
+						TGCommunityWeb.open(getContext(), event.getLink());
+					}
+				} ).start();
 			}
 		});
+		joinLayout.set(joinLink, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				update(usernameText.getText(), passwordText.getText());
 				
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 	}
 	
-	private GridLayout makeGroupLayout(int columns, int spacing){
-		GridLayout layout = new GridLayout(columns,false);
-		layout.marginTop = spacing;
-		layout.marginBottom = spacing;
-		layout.marginLeft = spacing;
-		layout.marginRight = spacing;
-		layout.verticalSpacing = spacing;
-		layout.horizontalSpacing = spacing;
-		return layout;
-	}
-	
-	private GridData makeLabelData(){
-		return new GridData(SWT.RIGHT,SWT.CENTER,false,true);
-	}
-	
-	private GridData makeTextData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 250;
-		return data;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	protected void update( String username, String password){
+	public void update( String username, String password){
 		this.auth.setUsername(username);
 		this.auth.setPassword(password);
 		this.accepted = true;

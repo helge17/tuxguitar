@@ -1,19 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.harmonic;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeHarmonicNoteAction;
@@ -22,15 +12,29 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGHarmonicDialog extends SelectionAdapter{
+public class TGHarmonicDialog {
 	
-	public static final int WIDTH = 400;
+	private static final String TYPE_DATA = "type";
+
+	public static final float WIDTH = 400;
 	
-	protected Combo harmonicType;
-	protected Combo harmonicDataCombo;
-	protected Button[] typeButtons;
+	protected UIDropDownSelect<Integer> harmonicType;
+	protected UIDropDownSelect<Integer> harmonicDataCombo;
+	protected UIRadioButton[] typeButtons;
 	
 	public TGHarmonicDialog(){
 		super();
@@ -42,113 +46,107 @@ public class TGHarmonicDialog extends SelectionAdapter{
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
 		if( measure != null && beat != null && note != null && string != null ) {
-			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+			final UITableLayout dialogLayout = new UITableLayout();
+			final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 			
-			dialog.setLayout(new GridLayout());
+			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.harmonic-editor"));
 			
 			//---------------------------------------------------------------------
 			//------------HARMONIC-------------------------------------------------
 			//---------------------------------------------------------------------
-			Group group = new Group(dialog, SWT.SHADOW_ETCHED_IN);
-			group.setLayout(new GridLayout());
-			group.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true),WIDTH));
+			UITableLayout groupLayout = new UITableLayout();
+			UILegendPanel group = uiFactory.createLegendPanel(dialog);
+			group.setLayout(groupLayout);
 			group.setText(TuxGuitar.getProperty("effects.harmonic.type-of-harmonic"));
+			dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, null, null, WIDTH, null, null);
 			
-			this.typeButtons = new Button[5];
-			SelectionListener listener = new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					update(note,getSelectedType());
+			this.typeButtons = new UIRadioButton[5];
+			UISelectionListener listener = new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					update(note, getSelectedType());
 				}
 			};
 			
 			// Natural
 			String label = "[" + TGEffectHarmonic.KEY_NATURAL + "] " + TuxGuitar.getProperty("effects.harmonic.natural");
-			initButton(group,listener,0,TGEffectHarmonic.TYPE_NATURAL,label);
+			initButton(uiFactory, group, listener, 0, TGEffectHarmonic.TYPE_NATURAL, label);
 			
 			// Artificial
 			label = ("[" + TGEffectHarmonic.KEY_ARTIFICIAL + "] " + TuxGuitar.getProperty("effects.harmonic.artificial"));
-			initButton(group,listener,1,TGEffectHarmonic.TYPE_ARTIFICIAL,label);
+			initButton(uiFactory, group, listener, 1, TGEffectHarmonic.TYPE_ARTIFICIAL, label);
 			
 			// Tapped
 			label = ("[" + TGEffectHarmonic.KEY_TAPPED + "] " + TuxGuitar.getProperty("effects.harmonic.tapped"));
-			initButton(group,listener,2,TGEffectHarmonic.TYPE_TAPPED,label);
+			initButton(uiFactory, group, listener, 2, TGEffectHarmonic.TYPE_TAPPED, label);
 			
 			// Pinch
 			label = ("[" + TGEffectHarmonic.KEY_PINCH + "] " + TuxGuitar.getProperty("effects.harmonic.pinch"));
-			initButton(group,listener,3,TGEffectHarmonic.TYPE_PINCH,label);
+			initButton(uiFactory, group, listener, 3, TGEffectHarmonic.TYPE_PINCH, label);
 			
 			// Semi
 			label = ("[" + TGEffectHarmonic.KEY_SEMI + "] " + TuxGuitar.getProperty("effects.harmonic.semi"));
-			initButton(group,listener,4,TGEffectHarmonic.TYPE_SEMI,label);
+			initButton(uiFactory, group, listener, 4, TGEffectHarmonic.TYPE_SEMI, label);
 			
-			this.harmonicDataCombo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
-			this.harmonicDataCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			this.harmonicDataCombo = uiFactory.createDropDownSelect(group);
+			groupLayout.set(this.harmonicDataCombo, 6, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			//---------------------------------------------------
 			//------------------BUTTONS--------------------------
 			//---------------------------------------------------
-			Composite buttons = new Composite(dialog, SWT.NONE);
-			buttons.setLayout(new GridLayout(3,false));
-			buttons.setLayoutData(new GridData(SWT.END,SWT.BOTTOM,true,true));
+			UITableLayout buttonsLayout = new UITableLayout(0f);
+			UIPanel buttons = uiFactory.createPanel(dialog, false);
+			buttons.setLayout(buttonsLayout);
+			dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, true, true);
 			
-			Button buttonOK = new Button(buttons, SWT.PUSH);
+			UIButton buttonOK = uiFactory.createButton(buttons);
+			buttonOK.setDefaultButton();
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
-			buttonOK.setLayoutData(getButtonData());
-			buttonOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonOK.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeHarmonic(context.getContext(), measure, beat, string, getHarmonic());
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			
-			Button buttonClean = new Button(buttons, SWT.PUSH);
+			UIButton buttonClean = uiFactory.createButton(buttons);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
-			buttonClean.setLayoutData(getButtonData());
 			buttonClean.setEnabled( note.getEffect().isHarmonic());
-			buttonClean.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonClean.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeHarmonic(context.getContext(), measure, beat, string, null);
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			
-			Button buttonCancel = new Button(buttons, SWT.PUSH);
+			UIButton buttonCancel = uiFactory.createButton(buttons);
 			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-			buttonCancel.setLayoutData(getButtonData());
-			buttonCancel.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonCancel.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					dialog.dispose();
 				}
 			});
+			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+			buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 			
 			this.initDefaults(note);
 			
-			dialog.setDefaultButton( buttonOK );
-			
-			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
 	}
 	
-	private GridData resizeData(GridData data,int minWidth){
-		data.minimumWidth = minWidth;
-		return data;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private void initButton(Composite parent,SelectionListener listener,int index, int type, String label){
-		this.typeButtons[index] = new Button(parent,SWT.RADIO);
+	private void initButton(UIFactory uiFactory, UILayoutContainer parent, UISelectionListener listener, int index, int type, String label){
+		this.typeButtons[index] = uiFactory.createRadioButton(parent);
 		this.typeButtons[index].setText(label);
-		this.typeButtons[index].setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.typeButtons[index].setData(new Integer(type));
+		this.typeButtons[index].setData(TYPE_DATA, type);
 		this.typeButtons[index].addSelectionListener(listener);
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(this.typeButtons[index], (index + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
 	
 	protected void initDefaults(TGNote note){
@@ -171,16 +169,16 @@ public class TGHarmonicDialog extends SelectionAdapter{
 			
 		}
 		for(int i = 0; i < this.typeButtons.length; i ++){
-			int data = ((Integer)this.typeButtons[i].getData()).intValue();
-			this.typeButtons[i].setSelection((data == type));
+			int data = ((Integer)this.typeButtons[i].getData(TYPE_DATA)).intValue();
+			this.typeButtons[i].setSelected((data == type));
 		}
 		update(note,type);
 	}
 	
 	protected int getSelectedType(){
 		for(int i = 0; i < this.typeButtons.length; i ++){
-			if(this.typeButtons[i].getSelection()){
-				return ((Integer)this.typeButtons[i].getData()).intValue();
+			if(this.typeButtons[i].isSelected()){
+				return ((Integer)this.typeButtons[i].getData(TYPE_DATA)).intValue();
 			}
 		}
 		return 0;
@@ -188,14 +186,14 @@ public class TGHarmonicDialog extends SelectionAdapter{
 	
 	protected void update(TGNote note,int type){
 		TGEffectHarmonic h = note.getEffect().getHarmonic();
-		this.harmonicDataCombo.removeAll();
+		this.harmonicDataCombo.removeItems();
 		this.harmonicDataCombo.setEnabled(type != TGEffectHarmonic.TYPE_NATURAL);
-		if(type != TGEffectHarmonic.TYPE_NATURAL){
+		if( type != TGEffectHarmonic.TYPE_NATURAL ){
 			String label = getTypeLabel(type);
-			for(int i = 0;i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
-				this.harmonicDataCombo.add(label + "(" + Integer.toString(TGEffectHarmonic.NATURAL_FREQUENCIES[i][0]) + ")" );
+			for(int i = 0; i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
+				this.harmonicDataCombo.addItem(new UISelectItem<Integer>(label + "(" + Integer.toString(TGEffectHarmonic.NATURAL_FREQUENCIES[i][0]) + ")", i));
 			}
-			this.harmonicDataCombo.select((h != null && h.getType() == type)?h.getData():0);
+			this.harmonicDataCombo.setSelectedValue((h != null && h.getType() == type)?h.getData():0);
 		}
 	}
 	
@@ -220,10 +218,11 @@ public class TGHarmonicDialog extends SelectionAdapter{
 	
 	public TGEffectHarmonic getHarmonic(){
 		int type = getSelectedType();
-		if(type > 0){
+		if(	type > 0 ){
+			Integer data = this.harmonicDataCombo.getSelectedValue();
 			TGEffectHarmonic effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectHarmonic();
 			effect.setType(type);
-			effect.setData(this.harmonicDataCombo.getSelectionIndex());
+			effect.setData(data != null ? data : 0);
 			return effect;
 		}
 		return null;

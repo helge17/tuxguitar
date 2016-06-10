@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeClefAction;
@@ -28,25 +29,25 @@ public class TGUndoableClef extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeClef(this.track, this.getMeasureAt(this.track, this.position), this.redoableClef, this.toEnd);
+		this.changeClef(actionContext, this.track, this.getMeasureAt(this.track, this.position), this.redoableClef, this.toEnd);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeClef(this.track, this.getMeasureAt(this.track, this.position), this.undoableClef, this.toEnd);
+		this.changeClef(actionContext, this.track, this.getMeasureAt(this.track, this.position), this.undoableClef, this.toEnd);
 		
 		if(this.toEnd){
 			Iterator<Object> it = this.nextClefPositions.iterator();
 			while(it.hasNext()){
 				ClefPosition ksp = (ClefPosition)it.next();
-				this.changeClef(this.track, this.getMeasureAt(this.track, ksp.getPosition()), ksp.getClef(), true);
+				this.changeClef(actionContext, this.track, this.getMeasureAt(this.track, ksp.getPosition()), ksp.getClef(), true);
 			}
 		}
 		this.doAction = REDO_ACTION;
@@ -95,13 +96,13 @@ public class TGUndoableClef extends TGUndoableEditBase {
 		return getSongManager().getTrackManager().getMeasureAt(track, start);
 	}
 	
-	public void changeClef(TGTrack track, TGMeasure measure, Integer clef, Boolean applyToEnd) {
+	public void changeClef(TGActionContext context, TGTrack track, TGMeasure measure, Integer clef, Boolean applyToEnd) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeClefAction.NAME);
 		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_CLEF, clef);
 		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 	
 	private static class ClefPosition{

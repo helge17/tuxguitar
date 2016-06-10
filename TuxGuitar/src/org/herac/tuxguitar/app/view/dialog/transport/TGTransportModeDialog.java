@@ -1,51 +1,53 @@
 package org.herac.tuxguitar.app.view.dialog.transport;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
-public class TGTransportModeDialog extends SelectionAdapter{
+public class TGTransportModeDialog {
 	
 	protected static final int MIN_SELECTION = 1;
 	protected static final int MAX_SELECTION = 500;
-	protected static final int[] DEFAULT_PERCENTS = new int[]{25,50,75,100,125,150,175,200};
+	protected static final int[] DEFAULT_PERCENTS = new int[]{25, 50, 75, 100, 125, 150, 175, 200};
 	
 	private TGViewContext context;
-	protected Button simple;
-	protected Button simpleLoop;
-	protected Combo simplePercent;
+	protected UIRadioButton simple;
+	protected UICheckBox simpleLoop;
+	protected UIDropDownSelect<Integer> simplePercent;
 	
-	protected Button custom;
-	protected Spinner customFrom;
-	protected Spinner customTo;
-	protected Spinner customIncrement;
+	protected UIRadioButton custom;
+	protected UISpinner customFrom;
+	protected UISpinner customTo;
+	protected UISpinner customIncrement;
 	
-	protected MHeaderCombo loopSHeader;
-	protected MHeaderCombo loopEHeader;
+	protected UIDropDownSelect<Integer> loopSHeader;
+	protected UIDropDownSelect<Integer> loopEHeader;
 	
 	public TGTransportModeDialog(TGViewContext context){
 		this.context = context;
@@ -53,110 +55,146 @@ public class TGTransportModeDialog extends SelectionAdapter{
 	
 	public void show(){
 		final MidiPlayerMode mode = MidiPlayer.getInstance(this.context.getContext()).getMode();
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("transport.mode"));
 		
 		// ----------------------------------------------------------------------
 		
-		Composite radios = new Composite(dialog, SWT.NONE);
-		radios.setLayout(new GridLayout());
-		radios.setLayoutData(getMainData());
-		
 		//---Simple---
-		this.simple = new Button(radios, SWT.RADIO);
+		this.simple = uiFactory.createRadioButton(dialog);
 		this.simple.setText(TuxGuitar.getProperty("transport.mode.simple"));
-		this.simple.setSelection(mode.getType() == MidiPlayerMode.TYPE_SIMPLE);
+		this.simple.setSelected(mode.getType() == MidiPlayerMode.TYPE_SIMPLE);
+		dialogLayout.set(this.simple, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		RadioSelectionAdapter simpleAdapter = new RadioSelectionAdapter(this.simple);
 		
-		Group simpleGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
-		simpleGroup.setLayout(new GridLayout(2,false));
-		simpleGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout simpleLayout = new UITableLayout();
+		UILegendPanel simpleGroup = uiFactory.createLegendPanel(dialog);
+		simpleGroup.setLayout(simpleLayout);
 		simpleGroup.setText(TuxGuitar.getProperty("transport.mode.simple"));
 		simpleAdapter.addControl(simpleGroup);
+		dialogLayout.set(simpleGroup, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		simpleAdapter.addControl(makeLabel(simpleGroup, TuxGuitar.getProperty("transport.mode.simple.tempo-percent"),SWT.LEFT,1));
-		this.simplePercent = new Combo(simpleGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.simplePercent.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UILabel simplePercentLabel = uiFactory.createLabel(simpleGroup);
+		simplePercentLabel.setText(TuxGuitar.getProperty("transport.mode.simple.tempo-percent"));
+		simpleLayout.set(simplePercentLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		simpleAdapter.addControl(simplePercentLabel);
+		
+		this.simplePercent = uiFactory.createDropDownSelect(simpleGroup);
 		for(int i = 0; i < DEFAULT_PERCENTS.length; i ++){
-			this.simplePercent.add(Integer.toString(DEFAULT_PERCENTS[i]) + "%",i);
-			if(mode.getSimplePercent() == DEFAULT_PERCENTS[i]){
-				this.simplePercent.select(i);
-			}
+			this.simplePercent.addItem(new UISelectItem<Integer>(Integer.toString(DEFAULT_PERCENTS[i]) + "%", DEFAULT_PERCENTS[i]));
 		}
+		this.simplePercent.setSelectedValue(mode.getSimplePercent());
+		simpleLayout.set(this.simplePercent, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		simpleAdapter.addControl(this.simplePercent);
 		
-		this.simpleLoop = new Button(simpleGroup, SWT.CHECK);
+		this.simpleLoop = uiFactory.createCheckBox(simpleGroup);
 		this.simpleLoop.setText(TuxGuitar.getProperty("transport.mode.simple.loop"));
-		this.simpleLoop.setSelection(mode.isLoop());
+		this.simpleLoop.setSelected(mode.isLoop());
+		simpleLayout.set(this.simpleLoop, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 2);
 		simpleAdapter.addControl(this.simpleLoop);
 		
-		GridData loopedData = new GridData(SWT.FILL,SWT.FILL,true,true);
-		loopedData.horizontalSpan = 2;
-		this.simpleLoop.setLayoutData(loopedData);
-		
 		//---Trainer---
-		this.custom = new Button(radios, SWT.RADIO);
+		this.custom = uiFactory.createRadioButton(dialog);
 		this.custom.setText(TuxGuitar.getProperty("transport.mode.trainer"));
-		this.custom.setSelection(mode.getType() == MidiPlayerMode.TYPE_CUSTOM);
+		this.custom.setSelected(mode.getType() == MidiPlayerMode.TYPE_CUSTOM);
+		dialogLayout.set(this.custom, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		RadioSelectionAdapter customAdapter = new RadioSelectionAdapter(this.custom);
 		
-		Group trainerGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
-		trainerGroup.setLayout(new GridLayout(6,false));
-		trainerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		trainerGroup.setText(TuxGuitar.getProperty("transport.mode.trainer"));
-		customAdapter.addControl(trainerGroup);
+		UITableLayout customLayout = new UITableLayout();
+		UILegendPanel customGroup = uiFactory.createLegendPanel(dialog);
+		customGroup.setLayout(customLayout);
+		customGroup.setText(TuxGuitar.getProperty("transport.mode.trainer"));
+		customAdapter.addControl(customGroup);
+		dialogLayout.set(customGroup, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		customAdapter.addControl(makeLabel(trainerGroup, TuxGuitar.getProperty("composition.tempo"),SWT.LEFT,1));
-		this.customFrom = new Spinner(trainerGroup,SWT.BORDER);
-		this.customFrom.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UILabel tempoLabel = uiFactory.createLabel(customGroup);
+		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo"));
+		customLayout.set(tempoLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		customAdapter.addControl(tempoLabel);
+		
+		this.customFrom = uiFactory.createSpinner(customGroup);
 		this.customFrom.setMinimum(MIN_SELECTION);
 		this.customFrom.setMaximum(MAX_SELECTION);
-		this.customFrom.setSelection(mode.getCustomPercentFrom());
+		this.customFrom.setValue(mode.getCustomPercentFrom());
 		customAdapter.addControl(this.customFrom);
-		customAdapter.addControl(makeLabel(trainerGroup, "%",SWT.LEFT,1));
+		customLayout.set(this.customFrom, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		customAdapter.addControl(makeLabel(trainerGroup, TuxGuitar.getProperty("edit.to"),SWT.RIGHT,1));
-		this.customTo = new Spinner(trainerGroup,SWT.BORDER);
-		this.customTo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UILabel tempoPercentLabel = uiFactory.createLabel(customGroup);
+		tempoPercentLabel.setText("%");
+		customLayout.set(tempoPercentLabel, 1, 3, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		customAdapter.addControl(tempoPercentLabel);
+		
+		UILabel tempoToLabel = uiFactory.createLabel(customGroup);
+		tempoToLabel.setText(TuxGuitar.getProperty("edit.to"));
+		customLayout.set(tempoToLabel, 1, 4, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
+		customAdapter.addControl(tempoToLabel);
+		
+		this.customTo = uiFactory.createSpinner(customGroup);
 		this.customTo.setMinimum(MIN_SELECTION);
 		this.customTo.setMaximum(MAX_SELECTION);
-		this.customTo.setSelection(mode.getCustomPercentTo());
+		this.customTo.setValue(mode.getCustomPercentTo());
+		customLayout.set(this.customTo, 1, 5, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		customAdapter.addControl(this.customTo);
-		customAdapter.addControl(makeLabel(trainerGroup, "%",SWT.LEFT,1));
 		
-		customAdapter.addControl(makeLabel(trainerGroup, TuxGuitar.getProperty("transport.mode.trainer.increment-description"),SWT.LEFT,4));
-		this.customIncrement = new Spinner(trainerGroup,SWT.BORDER);
-		this.customIncrement.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UILabel tempoToPercentLabel = uiFactory.createLabel(customGroup);
+		tempoToPercentLabel.setText("%");
+		customLayout.set(tempoToPercentLabel, 1, 6, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		customAdapter.addControl(tempoToPercentLabel);
+		
+		UILabel incrementLabel = uiFactory.createLabel(customGroup);
+		incrementLabel.setText(TuxGuitar.getProperty("transport.mode.trainer.increment-description"));
+		customLayout.set(incrementLabel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true, 1, 4);
+		customAdapter.addControl(incrementLabel);
+		
+		this.customIncrement = uiFactory.createSpinner(customGroup);
 		this.customIncrement.setMinimum(MIN_SELECTION);
 		this.customIncrement.setMaximum(MAX_SELECTION);
-		this.customIncrement.setSelection(mode.getCustomPercentIncrement());
+		this.customIncrement.setValue(mode.getCustomPercentIncrement());
+		customLayout.set(this.customIncrement, 2, 5, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		customAdapter.addControl(this.customIncrement);
-		customAdapter.addControl(makeLabel(trainerGroup, "%",SWT.LEFT,1));
 		
-		SpinnerSelectionAdapter spinnerAdapter = new SpinnerSelectionAdapter(this.customFrom,this.customTo,this.customIncrement);
+		UILabel incrementPercentLabel = uiFactory.createLabel(customGroup);
+		incrementPercentLabel.setText("%");
+		customLayout.set(incrementPercentLabel, 2, 6, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		customAdapter.addControl(incrementPercentLabel);
+		
+		SpinnerSelectionAdapter spinnerAdapter = new SpinnerSelectionAdapter(this.customFrom, this.customTo, this.customIncrement);
 		this.customFrom.addSelectionListener(spinnerAdapter);
 		this.customTo.addSelectionListener(spinnerAdapter);
 		this.customIncrement.addSelectionListener(spinnerAdapter);
 		
 		//--- Loop Range ---
-		MHeaderRangeStatus mHeaderRangeStatus = new MHeaderRangeStatus(this.simple,this.simpleLoop,this.custom);
+		MHeaderRangeStatus mHeaderRangeStatus = new MHeaderRangeStatus(this.simple, this.simpleLoop, this.custom);
 		
-		Group rangeGroup = new Group(radios, SWT.SHADOW_ETCHED_IN);
-		rangeGroup.setLayout(new GridLayout(2,false));
-		rangeGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout rangeLayout = new UITableLayout();
+		UILegendPanel rangeGroup = uiFactory.createLegendPanel(dialog);
+		rangeGroup.setLayout(rangeLayout);
 		rangeGroup.setText(TuxGuitar.getProperty("transport.mode.loop-range"));
-		mHeaderRangeStatus.addControl( rangeGroup );
+		dialogLayout.set(rangeGroup, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		mHeaderRangeStatus.addControl(rangeGroup);
 		
-		mHeaderRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.from"), SWT.LEFT, 1) );
-		this.loopSHeader = new MHeaderCombo(rangeGroup);
-		mHeaderRangeStatus.addControl( this.loopSHeader.getControl() );
+		UILabel loopSLabel = uiFactory.createLabel(rangeGroup);
+		loopSLabel.setText(TuxGuitar.getProperty("transport.mode.loop-range.from"));
+		rangeLayout.set(loopSLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		mHeaderRangeStatus.addControl(loopSLabel);
 		
-		mHeaderRangeStatus.addControl( makeLabel(rangeGroup, TuxGuitar.getProperty("transport.mode.loop-range.to"), SWT.LEFT, 1) );
-		this.loopEHeader = new MHeaderCombo(rangeGroup);
-		mHeaderRangeStatus.addControl( this.loopEHeader.getControl() );
+		this.loopSHeader = uiFactory.createDropDownSelect(rangeGroup);
+		rangeLayout.set(this.loopSHeader, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		mHeaderRangeStatus.addControl(this.loopSHeader);
+		
+		UILabel loopELabel = uiFactory.createLabel(rangeGroup);
+		loopELabel.setText(TuxGuitar.getProperty("transport.mode.loop-range.to"));
+		rangeLayout.set(loopELabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		mHeaderRangeStatus.addControl(loopELabel);
+		
+		this.loopEHeader = uiFactory.createDropDownSelect(rangeGroup);
+		rangeLayout.set(this.loopEHeader, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		mHeaderRangeStatus.addControl(this.loopEHeader);
 		
 		MHeaderComboController mHeaderController = new MHeaderComboController(this.loopSHeader, this.loopEHeader);
 		mHeaderController.updateLoopSHeader( mode.getLoopSHeader() );
@@ -166,144 +204,126 @@ public class TGTransportModeDialog extends SelectionAdapter{
 		simpleAdapter.update();
 		customAdapter.update();
 		mHeaderRangeStatus.update();
-		// ------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2, false));
-		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		// ------------------BUTTONS--------------------------
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 6, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				changeTransportMode();
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-	}
-	
-	private GridData getMainData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 350;
-		return data;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private Label makeLabel(Composite parent,String text,int aligment,int horizontalSpan){
-		Label label = new Label(parent,SWT.CENTER | aligment);
-		label.setText(text);
-		GridData data = new GridData(SWT.FILL,SWT.CENTER,true,true);
-		data.horizontalSpan = horizontalSpan;
-		label.setLayoutData(data);
-		return label;
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void changeTransportMode() {
-		Integer type = (this.custom.getSelection() ? MidiPlayerMode.TYPE_CUSTOM : MidiPlayerMode.TYPE_SIMPLE );
-		Boolean loop = (type == MidiPlayerMode.TYPE_CUSTOM || (type == MidiPlayerMode.TYPE_SIMPLE && this.simpleLoop.getSelection()));
+		Integer type = (this.custom.isSelected() ? MidiPlayerMode.TYPE_CUSTOM : MidiPlayerMode.TYPE_SIMPLE );
+		Boolean loop = (type == MidiPlayerMode.TYPE_CUSTOM || (type == MidiPlayerMode.TYPE_SIMPLE && this.simpleLoop.isSelected()));
+		Integer simplePercent = this.simplePercent.getSelectedValue();
+		Integer loopSHeader = this.loopSHeader.getSelectedValue();
+		Integer loopEHeader = this.loopEHeader.getSelectedValue();
 		
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGTransportModeAction.NAME);
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_TYPE, type);
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP, loop);
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_SIMPLE_PERCENT, (this.simplePercent.getSelectionIndex() >= 0 ? DEFAULT_PERCENTS[this.simplePercent.getSelectionIndex()] : MidiPlayerMode.DEFAULT_TEMPO_PERCENT));
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_FROM, this.customFrom.getSelection());
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_TO, this.customTo.getSelection());
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_INCREMENT, this.customIncrement.getSelection());
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_S_HEADER, (loop ? this.loopSHeader.getValue() : -1 ));
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_E_HEADER, (loop ? this.loopEHeader.getValue() : -1 ));
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_SIMPLE_PERCENT, (simplePercent != null ? simplePercent : MidiPlayerMode.DEFAULT_TEMPO_PERCENT));
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_FROM, this.customFrom.getValue());
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_TO, this.customTo.getValue());
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_INCREMENT, this.customIncrement.getValue());
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_S_HEADER, (loop && loopSHeader != null ? loopSHeader : -1 ));
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_E_HEADER, (loop && loopEHeader != null ? loopEHeader : -1 ));
 		tgActionProcessor.process();
 	}
 	
-	private class RadioSelectionAdapter extends SelectionAdapter{
-		private Button control;
-		private List<Control> controls;
+	private class RadioSelectionAdapter implements UISelectionListener {
+		private UIRadioButton control;
+		private List<UIControl> controls;
 		
-		public RadioSelectionAdapter(Button control) {
-			this.controls = new ArrayList<Control>();
+		public RadioSelectionAdapter(UIRadioButton control) {
+			this.controls = new ArrayList<UIControl>();
 			this.control = control;
 			this.control.addSelectionListener(this);
 		}
 		
-		public void addControl(Control control){
+		public void addControl(UIControl control){
 			this.controls.add(control);
 		}
 		
 		public void update(){
-			boolean enabled = this.control.getSelection();
-			Iterator<Control> it = this.controls.iterator();
-			while(it.hasNext()){
-				Control control = (Control)it.next();
+			boolean enabled = this.control.isSelected();
+			
+			for(UIControl control : this.controls) {
 				control.setEnabled(enabled);
 			}
 		}
 		
-		public void widgetSelected(SelectionEvent e) {
-			update();
+		public void onSelect(UISelectionEvent event) {
+			this.update();
 		}
-		
 	}
 	
-	private class SpinnerSelectionAdapter extends SelectionAdapter{
-		private Spinner to;
-		private Spinner from;
-		private Spinner increment;
+	private class SpinnerSelectionAdapter implements UISelectionListener {
 		
-		public SpinnerSelectionAdapter(Spinner from,Spinner to, Spinner increment) {
+		private UISpinner to;
+		private UISpinner from;
+		private UISpinner increment;
+		
+		public SpinnerSelectionAdapter(UISpinner from, UISpinner to, UISpinner increment) {
 			this.from = from;
 			this.to = to;
 			this.increment = increment;
 		}
 		
-		public void widgetSelected(SelectionEvent e) {
-			if(e.widget.equals(this.from)){
-				if(this.from.getSelection() < MIN_SELECTION){
-					this.from.setSelection(MIN_SELECTION);
-				}else if(this.from.getSelection() >= this.to.getSelection()){
-					this.from.setSelection(this.to.getSelection() - 1);
+		public void onSelect(UISelectionEvent event) {
+			if( event.getComponent().equals(this.from)){
+				if( this.from.getValue() < MIN_SELECTION){
+					this.from.setValue(MIN_SELECTION);
+				}else if(this.from.getValue() >= this.to.getValue()){
+					this.from.setValue(this.to.getValue() - 1);
 				}
-			}else if(e.widget.equals(this.to)){
-				if(this.to.getSelection() <= this.from.getSelection()){
-					this.to.setSelection(this.from.getSelection() + 1);
-				}else if(this.to.getSelection() > MAX_SELECTION){
-					this.to.setSelection(MAX_SELECTION);
+			}else if(event.getComponent().equals(this.to)){
+				if( this.to.getValue() <= this.from.getValue()){
+					this.to.setValue(this.from.getValue() + 1);
+				}else if(this.to.getValue() > MAX_SELECTION){
+					this.to.setValue(MAX_SELECTION);
 				}
 			}
-			if(this.increment.getSelection() > (this.to.getSelection() - this.from.getSelection())){
-				this.increment.setSelection(this.to.getSelection() - this.from.getSelection());
+			if( this.increment.getValue() > (this.to.getValue() - this.from.getValue())){
+				this.increment.setValue(this.to.getValue() - this.from.getValue());
 			}
 		}
 	}
 	
-	private class MHeaderRangeStatus extends SelectionAdapter{
+	private class MHeaderRangeStatus implements UISelectionListener {
 		
-		private List<Control> controls;
+		private List<UIControl> controls;
 		private boolean enabled;
 		
-		private Button simpleMode;
-		private Button simpleLoop;
-		private Button customLoop;
+		private UIRadioButton simpleMode;
+		private UICheckBox simpleLoop;
+		private UIRadioButton customLoop;
 		
-		public MHeaderRangeStatus(Button simpleMode, Button simpleLoop, Button customLoop) {
-			this.controls = new ArrayList<Control>();
+		public MHeaderRangeStatus(UIRadioButton simpleMode, UICheckBox simpleLoop, UIRadioButton customLoop) {
+			this.controls = new ArrayList<UIControl>();
 			this.enabled = false;
 			this.simpleMode = simpleMode;
 			this.simpleLoop = simpleLoop;
@@ -313,138 +333,84 @@ public class TGTransportModeDialog extends SelectionAdapter{
 			this.customLoop.addSelectionListener(this);
 		}
 		
-		public void addControl(Control control){
+		public void addControl(UIControl control){
 			this.controls.add(control);
 		}
 		
 		public void update(){
 			// Check enabled
-			this.enabled = this.customLoop.getSelection();
+			this.enabled = this.customLoop.isSelected();
 			if( !this.enabled ){
-				if( this.simpleMode.getSelection() ){
-					this.enabled = this.simpleLoop.getSelection();
+				if( this.simpleMode.isSelected() ){
+					this.enabled = this.simpleLoop.isSelected();
 				}
 			}
 			
 			// Update controls
-			Iterator<Control> it = this.controls.iterator();
-			while(it.hasNext()){
-				Control control = (Control)it.next();
-				control.setEnabled( this.enabled );
+			for(UIControl uiControl : this.controls) {
+				uiControl.setEnabled( this.enabled );
 			}
 		}
 		
-		public void widgetSelected(SelectionEvent e) {
+		public void onSelect(UISelectionEvent event) {
 			this.update();
-		}
-	}
-	
-	private class MHeaderCombo {
-		private List<Integer> values;
-		private Combo combo;
-		
-		public MHeaderCombo( Composite parent ){
-			this.values = new ArrayList<Integer>();
-			this.combo = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY );
-			this.combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		}
-		
-		public Combo getControl(){
-			return this.combo;
-		}
-		
-		public void clear(){
-			this.values.clear();
-			this.combo.removeAll();
-		}
-		
-		public void addItem( String text , int value ){
-			this.values.add( new Integer( value ) );
-			this.combo.add( text );
-		}
-		
-		public void addItem( TGMeasureHeader header ){
-			this.addItem( getItemText(header) , header.getNumber() );
-		}
-		
-		public void setValue( int value ){
-			for( int index = 0 ; index < this.values.size() ; index++ ){
-				Integer currentValue = (Integer) this.values.get( index );
-				if( currentValue != null && currentValue.intValue() == value ){
-					int currentIndex = this.combo.getSelectionIndex();
-					if( currentIndex != index ){
-						this.combo.select( index );
-					}
-				}
-			}
-		}
-		
-		public int getValue(){
-			int index = this.combo.getSelectionIndex();
-			if( index >= 0 && index < this.values.size() ){
-				Integer value = (Integer) this.values.get( index );
-				if( value != null ){
-					return value.intValue();
-				}
-			}
-			return -1;
-		}
-		
-		private String getItemText( TGMeasureHeader header ){
-			String text = ("#" + header.getNumber());
-			if( header.hasMarker() ){
-				text += (" (" + header.getMarker().getTitle() + ")");
-			}
-			return text;
 		}
 	}
 	
 	private class MHeaderComboController {
 		
-		protected MHeaderCombo loopSHeader;
-		protected MHeaderCombo loopEHeader;
+		protected UIDropDownSelect<Integer> loopSHeader;
+		protected UIDropDownSelect<Integer> loopEHeader;
 		
-		public MHeaderComboController(MHeaderCombo loopSHeader, MHeaderCombo loopEHeader){
+		public MHeaderComboController(UIDropDownSelect<Integer> loopSHeader, UIDropDownSelect<Integer> loopEHeader){
 			this.loopSHeader = loopSHeader;
 			this.loopEHeader = loopEHeader;
 		}
 		
 		public void updateLoopSHeader( int sHeader ){
 			TGSong song = TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			this.loopSHeader.clear();
-			this.loopSHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.from-default"), -1 );
+			this.loopSHeader.removeItems();
+			this.loopSHeader.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("transport.mode.loop-range.from-default"), -1));
 			for(int i = 0; i < song.countMeasureHeaders() ; i ++){
 				TGMeasureHeader header = song.getMeasureHeader( i );
-				this.loopSHeader.addItem( header );
+				this.loopSHeader.addItem(new UISelectItem<Integer>(this.getItemText(header), header.getNumber()));
 			}
-			this.loopSHeader.setValue( sHeader );
+			this.loopSHeader.setSelectedValue(sHeader);
 		}
 		
-		public void updateLoopEHeader( int sHeader , int eHeader ){
+		public void updateLoopEHeader(Integer sHeader, Integer eHeader){
 			TGSong song = TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			this.loopEHeader.clear();
-			this.loopEHeader.addItem(TuxGuitar.getProperty("transport.mode.loop-range.to-default"), -1 );
+			this.loopEHeader.removeItems();
+			this.loopEHeader.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("transport.mode.loop-range.to-default"), -1));
 			for(int i = 0; i < song.countMeasureHeaders() ; i ++){
 				TGMeasureHeader header = song.getMeasureHeader( i );
-				if( sHeader == -1 || header.getNumber() >= sHeader ){
-					this.loopEHeader.addItem( header );
+				if( sHeader == null || header.getNumber() >= sHeader ){
+					this.loopEHeader.addItem(new UISelectItem<Integer>(this.getItemText(header), header.getNumber()));
 				}
 			}
-			this.loopEHeader.setValue( eHeader );
+			this.loopEHeader.setSelectedValue(eHeader);
 		}
 		
 		public void updateLoopEHeader(){
-			int sHeader = this.loopSHeader.getValue();
-			int eHeader = this.loopEHeader.getValue();
-			if( eHeader != -1 && sHeader > eHeader ){
+			Integer sHeader = this.loopSHeader.getSelectedValue();
+			Integer eHeader = this.loopEHeader.getSelectedValue();
+			if( eHeader != null && sHeader != null && sHeader > eHeader ){
 				eHeader = sHeader;
 			}
-			this.updateLoopEHeader( sHeader , eHeader );
+			this.updateLoopEHeader(sHeader , eHeader);
+		}
+		
+		public String getItemText(TGMeasureHeader header){
+			String text = ("#" + header.getNumber());
+			if( header.hasMarker() ){
+				text += (" (" + header.getMarker().getTitle() + ")");
+			}
+			return text;
 		}
 		
 		public void appendListener(){
-			this.loopSHeader.getControl().addSelectionListener( new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
+			this.loopSHeader.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					updateLoopEHeader();
 				}
 			});

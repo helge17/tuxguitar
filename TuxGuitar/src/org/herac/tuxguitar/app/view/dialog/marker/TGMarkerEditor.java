@@ -1,45 +1,46 @@
 package org.herac.tuxguitar.app.view.dialog.marker;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.ColorDialog;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.marker.TGModifyMarkerAction;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.chooser.UIColorChooser;
+import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGMarkerEditor {
 	
-	private static final int MINIMUM_CONTROL_WIDTH = 180;
-	private static final int MINIMUM_BUTTON_WIDTH = 80;
-	private static final int MINIMUM_BUTTON_HEIGHT = 25;
+	private static final float MINIMUM_CONTROL_WIDTH = 180;
+	private static final float MINIMUM_BUTTON_WIDTH = 80;
+	private static final float MINIMUM_BUTTON_HEIGHT = 25;
 	
 	private TGViewContext context;
 	private TGMarker marker;
-	private Shell dialog;
-	private Spinner measureSpinner;
-	private Text titleText;
-	private Button colorButton;
-	private Color colorButtonValue;
+	private UIWindow dialog;
+	private UISpinner measureSpinner;
+	private UITextField titleText;
+	private UIButton colorButton;
+	private UIColor colorButtonValue;
 	
 	public TGMarkerEditor(TGViewContext context) {
 		this.context = context;
@@ -48,135 +49,136 @@ public class TGMarkerEditor {
 	public void show() {
 		this.createEditableMarker();
 		
-		final Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.context.getContext()).getFactory();
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		this.dialog = uiFactory.createWindow(uiParent, true, false);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("marker"));
 		
 		// ----------------------------------------------------------------------
-		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(2, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(this.dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("marker"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		// Measure Number
 		final int measureCount = TuxGuitar.getInstance().getDocumentManager().getSong().countMeasureHeaders();
-		Label measureLabel = new Label(group, SWT.NULL);
-		measureLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true,true));
+		UILabel measureLabel = uiFactory.createLabel(group);
 		measureLabel.setText(TuxGuitar.getProperty("measure"));
+		groupLayout.set(measureLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
 		
-		this.measureSpinner = new Spinner(group, SWT.BORDER);
-		this.measureSpinner.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
+		this.measureSpinner = uiFactory.createSpinner(group);
 		this.measureSpinner.setMinimum(1);
 		this.measureSpinner.setMaximum(measureCount);
-		this.measureSpinner.setSelection(this.marker.getMeasure());
-		this.measureSpinner.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int selection = TGMarkerEditor.this.measureSpinner.getSelection();
+		this.measureSpinner.setValue(this.marker.getMeasure());
+		this.measureSpinner.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				int selection = TGMarkerEditor.this.measureSpinner.getValue();
 				if (selection < 1) {
-					TGMarkerEditor.this.measureSpinner.setSelection(1);
+					TGMarkerEditor.this.measureSpinner.setValue(1);
 				} else if (selection > measureCount) {
-					TGMarkerEditor.this.measureSpinner.setSelection(measureCount);
+					TGMarkerEditor.this.measureSpinner.setValue(measureCount);
 				}
 			}
 		});
+		groupLayout.set(this.measureSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
 		
 		// Title
-		Label titleLabel = new Label(group, SWT.NULL);
-		titleLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
+		UILabel titleLabel = uiFactory.createLabel(group);
 		titleLabel.setText(TuxGuitar.getProperty("title"));
-		this.titleText = new Text(group, SWT.BORDER);
-		this.titleText.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
+		groupLayout.set(titleLabel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
+		
+		this.titleText = uiFactory.createTextField(group);
 		this.titleText.setText(this.marker.getTitle());
+		groupLayout.set(this.titleText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
 		
 		// Color
-		Label colorLabel = new Label(group, SWT.NULL);
-		colorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
+		UILabel colorLabel = uiFactory.createLabel(group);
 		colorLabel.setText(TuxGuitar.getProperty("color"));
-		this.colorButton = new Button(group, SWT.PUSH);
-		this.colorButton.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
+		groupLayout.set(colorLabel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
+		
+		this.colorButton = uiFactory.createButton(group);
 		this.colorButton.setText(TuxGuitar.getProperty("choose"));
-		this.colorButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				ColorDialog dlg = new ColorDialog(TGMarkerEditor.this.dialog);
-				dlg.setRGB(TGMarkerEditor.this.dialog.getDisplay().getSystemColor(SWT.COLOR_BLACK).getRGB());
-				dlg.setText(TuxGuitar.getProperty("choose-color"));
-				RGB rgb = dlg.open();
-				if (rgb != null) {
-					TGMarkerEditor.this.marker.getColor().setR(rgb.red);
-					TGMarkerEditor.this.marker.getColor().setG(rgb.green);
-					TGMarkerEditor.this.marker.getColor().setB(rgb.blue);
-					TGMarkerEditor.this.setButtonColor();
-				}
+		this.colorButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				UIColorModel colorModel = new UIColorModel();
+				colorModel.setRed(TGMarkerEditor.this.marker.getColor().getR());
+				colorModel.setGreen(TGMarkerEditor.this.marker.getColor().getG());
+				colorModel.setBlue(TGMarkerEditor.this.marker.getColor().getB());
+				
+				UIColorChooser colorChooser = uiFactory.createColorChooser(TGMarkerEditor.this.dialog);
+				colorChooser.setDefaultModel(colorModel);
+				colorChooser.setText(TuxGuitar.getProperty("choose-color"));
+				colorChooser.choose(new UIColorChooserHandler() {
+					public void onSelectColor(UIColorModel selection) {
+						if( selection != null ) {
+							TGMarkerEditor.this.marker.getColor().setR(selection.getRed());
+							TGMarkerEditor.this.marker.getColor().setG(selection.getGreen());
+							TGMarkerEditor.this.marker.getColor().setB(selection.getBlue());
+							TGMarkerEditor.this.setButtonColor(uiFactory);
+						}
+					}
+				});
 			}
 		});
-		this.colorButton.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.colorButton.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				TGMarkerEditor.this.disposeButtonColor();
 			}
 		});
-		this.setButtonColor();
+		this.setButtonColor(uiFactory);
+		groupLayout.set(this.colorButton, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
 		
 		// ------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2, false));
-		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = MINIMUM_BUTTON_WIDTH;
-		data.minimumHeight = MINIMUM_BUTTON_HEIGHT;
-		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(data);
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateMarker();
 				TGMarkerEditor.this.dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(data);
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGMarkerEditor.this.dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		this.dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
-		GridData data = new GridData();
-		data.minimumWidth = minimumWidth;
-		data.horizontalAlignment = horizontalAlignment;
-		data.verticalAlignment = SWT.DEFAULT;
-		data.grabExcessHorizontalSpace = true;
-		data.grabExcessVerticalSpace = true;
-		return data;
-	}
-	
-	protected void setButtonColor(){
-		Color color = new Color(this.dialog.getDisplay(), this.marker.getColor().getR(), this.marker.getColor().getG(), this.marker.getColor().getB());
-		
-		this.colorButton.setForeground( color );
+	private void setButtonColor(UIFactory factory) {
+		this.colorButton.setFgColor(null);
 		this.disposeButtonColor();
-		this.colorButtonValue = color;
+		this.colorButtonValue = factory.createColor(this.marker.getColor().getR(), this.marker.getColor().getG(), this.marker.getColor().getB());
+		this.colorButton.setFgColor(this.colorButtonValue);
 	}
 	
-	protected void disposeButtonColor(){
-		if(this.colorButtonValue != null && !this.colorButtonValue.isDisposed()){
+	private void disposeButtonColor() {
+		if( this.colorButtonValue != null && !this.colorButtonValue.isDisposed()){
+			this.colorButton.setFgColor(null);
 			this.colorButtonValue.dispose();
 			this.colorButtonValue = null;
 		}
 	}
 	
-	protected void updateMarker() {
-		this.marker.setMeasure(this.measureSpinner.getSelection());
+	private void updateMarker() {
+		this.marker.setMeasure(this.measureSpinner.getValue());
 		this.marker.setTitle(this.titleText.getText());
 		
 		TGSongManager songManager = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);

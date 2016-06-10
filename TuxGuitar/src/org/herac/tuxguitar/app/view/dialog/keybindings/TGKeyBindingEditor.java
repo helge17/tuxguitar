@@ -1,239 +1,190 @@
 package org.herac.tuxguitar.app.view.dialog.keybindings;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadLanguageAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
-import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionDefaults;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITable;
+import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGKeyBindingEditor {
 	
-	private static final int ACTION_WIDTH = 400;
-	private static final int SHORTCUT_WIDTH = 100;
-	
 	private TGViewContext context;
-	private Shell dialog;
-	private Table table;
-	private List<TableItem> items;
+	private UIWindow dialog;
+	private UITable<KeyBindingAction> table;
+	private List<KeyBindingAction> kbActions;
 	
 	public TGKeyBindingEditor(TGViewContext context){
 		this.context = context;
-		this.items = new ArrayList<TableItem>();
+		this.kbActions = new ArrayList<KeyBindingAction>();
 	}
 	
 	public void show() {
-		Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		this.dialog = uiFactory.createWindow(uiParent, true, false);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
-		this.dialog.setLayout(new GridLayout());
 		
-		Composite composite = new Composite(this.dialog,SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.NONE,true,true));
-		
-		this.table = new Table(composite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-		this.table.setLayoutData(new GridData((ACTION_WIDTH + SHORTCUT_WIDTH) ,250));
-		this.table.setHeaderVisible(true);
-		this.table.addMouseListener(new MouseAdapter() {
-			public void mouseDoubleClick(MouseEvent e) {
-				final TableItem item = getSelectedItem();
-				if( item != null ){
-					final KeyBindingAction itemData = (KeyBindingAction)item.getData();
-					TGKeyBindingSelector keyBindingSelector = new TGKeyBindingSelector(TGKeyBindingEditor.this, itemData, new TGKeyBindingSelectorHandler() {
-						public void handleSelection(KeyBinding kb) {
-							removeKeyBindingAction(kb);
-							itemData.setKeyBinding(kb);
-							loadTableItemLabel(item);
+		this.table = uiFactory.createTable(this.dialog, true);
+		this.table.setColumns(2);
+		this.table.setColumnName(0, TuxGuitar.getProperty("key-bindings-editor-action-column"));
+		this.table.setColumnName(0, TuxGuitar.getProperty("key-bindings-editor-shortcut-column"));
+		this.table.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
+			public void onMouseDoubleClick(UIMouseEvent event) {
+				final KeyBindingAction kbAction = TGKeyBindingEditor.this.table.getSelectedValue();
+				if( kbAction != null ){
+					TGKeyBindingSelector keyBindingSelector = new TGKeyBindingSelector(TGKeyBindingEditor.this, kbAction, new TGKeyBindingSelectorHandler() {
+						public void handleSelection(UIKeyConvination kb) {
+							TGKeyBindingEditor.this.removeKeyBindingAction(kb);
+							kbAction.setConvination(kb);
+							TGKeyBindingEditor.this.updateTableItems();
 						}
 					});
-					keyBindingSelector.select(TGKeyBindingEditor.this.dialog.getShell());
+					keyBindingSelector.select(TGKeyBindingEditor.this.dialog);
 				}
 			}
 		});
+		dialogLayout.set(this.table, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(this.table, UITableLayout.MAXIMUM_PACKED_WIDTH, 500f);
+		dialogLayout.set(this.table, UITableLayout.PACKED_HEIGHT, 250f);
 		
-		TableColumn actionColumn = new TableColumn(this.table, SWT.LEFT);
-		actionColumn.setText(TuxGuitar.getProperty("key-bindings-editor-action-column"));
-		
-		TableColumn shortcutColumn = new TableColumn(this.table, SWT.LEFT);
-		shortcutColumn.setText(TuxGuitar.getProperty("key-bindings-editor-shortcut-column"));
-		
-		loadAvailableActionKeyBindings();
-		loadEnableActionKeyBindings(TuxGuitar.getInstance().getKeyBindingManager().getKeyBindingActions());
+		this.loadCurrentKeyBindingActions();
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		Button defaults = new Button(buttons,SWT.PUSH);
+		UIButton defaults = uiFactory.createButton(buttons);
 		defaults.setText(TuxGuitar.getProperty("defaults"));
-		defaults.setLayoutData(getButtonData());
-		defaults.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				loadEnableActionKeyBindings(KeyBindingActionDefaults.getDefaultKeyBindings(getContext().getContext()));
+		defaults.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGKeyBindingEditor.this.loadDefaultKeyBindingActions();
 			}
 		});
+		buttonsLayout.set(defaults, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button close = new Button(buttons,SWT.PUSH);
+		UIButton close = uiFactory.createButton(buttons);
 		close.setText(TuxGuitar.getProperty("close"));
-		close.setLayoutData(getButtonData());
-		close.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		close.setDefaultButton();
+		close.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGKeyBindingEditor.this.dialog.dispose();
 			}
 		});
+		buttonsLayout.set(close, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(close, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				save();
 			}
 		});
 		
-		this.table.setLayoutData(new GridData( (adjustWidth(actionColumn,ACTION_WIDTH) + adjustWidth(shortcutColumn,SHORTCUT_WIDTH)) ,250) );
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+	
+	public void createKeyBindingActions(List<KeyBindingAction> keyBindingActions) {
+		this.kbActions.clear();
 		
-		this.dialog.setDefaultButton( close );
+		List<String> actionIds = TuxGuitar.getInstance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
+		for(String actionId : actionIds) {
+			this.kbActions.add(new KeyBindingAction(actionId, this.findKeyBinding(keyBindingActions, actionId)));
+		}
+	}
+	
+	public UIKeyConvination findKeyBinding(List<KeyBindingAction> keyBindingActions, String actionId) {
+		for(KeyBindingAction keyBindingAction : keyBindingActions) {
+			if( keyBindingAction.getAction().equals(actionId)){
+				return (UIKeyConvination) keyBindingAction.getConvination().clone();
+			}
+		}
+		return null;
+	}
+	
+	public void loadCurrentKeyBindingActions() {
+		this.createKeyBindingActions(TuxGuitar.getInstance().getKeyBindingManager().getKeyBindingActions());
+		this.updateTableItems();
+	}
+	
+	public void loadDefaultKeyBindingActions() {
+		this.createKeyBindingActions(KeyBindingActionDefaults.getDefaultKeyBindings(getContext().getContext()));
+		this.updateTableItems();
+	}
+	
+	public void updateTableItems() {
+		KeyBindingAction selection = this.table.getSelectedValue();
 		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
-	}
-	
-	protected int adjustWidth(TableColumn column, int defaultWidth){
-		column.pack();
-		int width = column.getWidth();
-		if( width < defaultWidth ){
-			width = defaultWidth;
-			column.setWidth( width );
+		this.table.removeItems();
+		for(KeyBindingAction kbAction : this.kbActions) {
+			UITableItem<KeyBindingAction> item = new UITableItem<KeyBindingAction>(kbAction);
+			item.setText(0, TuxGuitar.getProperty(kbAction.getAction()));
+			item.setText(1, (kbAction.getConvination() != null ? kbAction.getConvination().toString() : ""));
+			
+			this.table.addItem(item);
 		}
-		return width;
+		this.table.setSelectedValue(selection);
 	}
 	
-	protected GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	protected void loadTableItemLabel(TableItem item){
-		if(item.getData() instanceof KeyBindingAction){
-			KeyBindingAction actionkeyBinding = (KeyBindingAction)item.getData();
-			String action = actionkeyBinding.getAction();
-			String shortcut = (actionkeyBinding.getKeyBinding() != null)?actionkeyBinding.getKeyBinding().toString():"";
-			item.setText(new String[] { TuxGuitar.getProperty(action),shortcut});
-		}
-	}
-	
-	protected void loadAvailableActionKeyBindings(){
-		List<String> list = TuxGuitar.getInstance().getActionAdapterManager().getKeyBindingActionIds().getActionIds();
-		Collections.sort(list);
-		Iterator<String> it = list.iterator();
-		while (it.hasNext()) {
-			String action = (String) it.next();
-			TableItem item = new TableItem(this.table, SWT.NONE);
-			item.setData(new KeyBindingAction(action,null));
-			this.items.add(item);
-		}
-	}
-	
-	protected void loadEnableActionKeyBindings(List<KeyBindingAction> list){
-		Iterator<TableItem> items = this.items.iterator();
-		while (items.hasNext()) {
-			TableItem item = (TableItem) items.next();
-			if(item.getData() instanceof KeyBindingAction){
-				KeyBindingAction itemData = (KeyBindingAction)item.getData();
-				KeyBinding keyBinding = null;
-				Iterator<KeyBindingAction> it = list.iterator();
-				while (it.hasNext()) {
-					KeyBindingAction keyBindingAction = (KeyBindingAction) it.next();
-					if(keyBindingAction.getAction().equals(itemData.getAction())){
-						keyBinding = (KeyBinding) keyBindingAction.getKeyBinding().clone();
-						break;
-					}
-				}
-				itemData.setKeyBinding(keyBinding);
-				loadTableItemLabel(item);
-			}
-		}
-	}
-	
-	protected void removeKeyBindingAction(KeyBinding kb){
-		if(kb != null){
-			Iterator<TableItem> it = this.items.iterator();
-			while(it.hasNext()){
-				TableItem item = (TableItem) it.next();
-				if(item.getData() instanceof KeyBindingAction){
-					KeyBindingAction itemData = (KeyBindingAction)item.getData();
-					if(kb.isSameAs(itemData.getKeyBinding())){
-						itemData.setKeyBinding(null);
-						loadTableItemLabel(item);
-					}
+	public KeyBindingAction findKeyBindingAction(UIKeyConvination kb){
+		if( kb != null ){
+			for(KeyBindingAction kbAction : this.kbActions){
+				if( kb.equals(kbAction.getConvination())){
+					return kbAction;
 				}
 			}
 		}
+		return null;
 	}
 	
-	protected TableItem getSelectedItem(){
-		TableItem item = null;
-		int itemSelected = this.table.getSelectionIndex();
-		if(itemSelected >= 0){
-			item = this.table.getItem(itemSelected);
+	public void removeKeyBindingAction(UIKeyConvination kb){
+		KeyBindingAction kbAction = this.findKeyBindingAction(kb);
+		if( kbAction != null ){
+			kbAction.setConvination(null);
 		}
-		return item;
 	}
 	
-	public boolean exists(KeyBinding kb){
-		Iterator<TableItem> it = this.items.iterator();
-		while(it.hasNext()){
-			TableItem item = (TableItem) it.next();
-			if(item.getData() instanceof KeyBindingAction){
-				KeyBindingAction itemData = (KeyBindingAction)item.getData();
-				if(itemData.getKeyBinding() != null && kb.isSameAs(itemData.getKeyBinding())){
-					return true;
-				}
-			}
-		}
-		return false;
+	public boolean exists(UIKeyConvination kb){
+		KeyBindingAction kbAction = this.findKeyBindingAction(kb);
+		
+		return (kbAction != null);
 	}
 	
-	protected void save(){
+	public void save(){
 		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
-		Iterator<TableItem> it = this.items.iterator();
-		while (it.hasNext()) {
-			TableItem item = (TableItem) it.next();
-			if(item.getData() instanceof KeyBindingAction){
-				KeyBindingAction keyBindingAction = (KeyBindingAction)item.getData();
-				if(keyBindingAction.getAction() != null && keyBindingAction.getKeyBinding() != null){
-					list.add(keyBindingAction);
-				}
+		for(KeyBindingAction kbAction : this.kbActions){
+			if( kbAction.getAction() != null && kbAction.getConvination() != null){
+				list.add(kbAction);
 			}
 		}
+		
 		TuxGuitar.getInstance().getKeyBindingManager().reset(list);
 		TuxGuitar.getInstance().getKeyBindingManager().saveKeyBindings();
-//		TuxGuitar.getInstance().loadLanguage();
+		
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGReloadLanguageAction.NAME);
 		tgActionProcessor.setAttribute(TGReloadSettingsAction.ATTRIBUTE_FORCE, true);
 		tgActionProcessor.process();
@@ -243,11 +194,7 @@ public class TGKeyBindingEditor {
 		return this.context;
 	}
 	
-	public Shell getDialog(){
-		return this.dialog;
-	}
-	
 	public boolean isDisposed(){
-		return (this.dialog == null || this.dialog.isDisposed() );
+		return (this.dialog == null || this.dialog.isDisposed());
 	}
 }

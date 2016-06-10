@@ -5,6 +5,4 @@ public interface TGImage extends TGResource,TGPainterFactory {
 	public float getWidth();
 	
 	public float getHeight();
-	
-	public void applyTransparency( TGColor background );
 }

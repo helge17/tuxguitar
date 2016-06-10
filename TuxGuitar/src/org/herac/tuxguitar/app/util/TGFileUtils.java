@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLibraryLoader;
 import org.herac.tuxguitar.util.TGVersion;
@@ -116,21 +115,18 @@ public class TGFileUtils {
 		return null;
 	}
 	
-	public static Image loadImage(TGContext context, String name){
-		return loadImage(context, TuxGuitar.getInstance().getConfig().getStringValue(TGConfigKeys.SKIN),name);
-	}
-	
-	public static Image loadImage(TGContext context, String skin, String name){
+	public static UIImage loadImage2(TGContext context, String skin, String name){
+		UIFactory uiFactory = TGApplication.getInstance(context).getFactory();
 		try{
 			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream("skins/" + skin + "/" + name);
-			if(stream != null){			
-				return new Image(TuxGuitar.getInstance().getDisplay(),new ImageData(stream));
+			if( stream != null ){
+				return uiFactory.createImage(stream);
 			}
 			System.err.println(name + ": not found");
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
-		return new Image(TuxGuitar.getInstance().getDisplay(),16,16);
+		return uiFactory.createImage(16, 16);
 	}
 	
 	public static boolean isLocalFile(URL url){

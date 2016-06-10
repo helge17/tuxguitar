@@ -78,6 +78,9 @@
 				<include name="TuxGuitar-viewer/**"/>
 				<include name="TuxGuitar-winmm/**"/>
 				
+				<include name="TuxGuitar-ui-toolkit/**"/>
+				<include name="TuxGuitar-ui-toolkit-swt/**"/>
+				
 				<include name="TuxGuitar-android/**"/>
 				<include name="TuxGuitar-android-gervill/**"/>
 				<include name="TuxGuitar-android-gervill-soundbank/**"/>

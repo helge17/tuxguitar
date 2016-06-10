@@ -42,7 +42,7 @@ public class TGBrowserConnection {
 					public void run() throws TGException {
 						if(!TuxGuitar.getInstance().getBrowser().isDisposed()){
 							TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(TGBrowserConnection.this.context);
-							authDialog.open( TuxGuitar.getInstance().getBrowser().getShell() );
+							authDialog.open( TuxGuitar.getInstance().getBrowser().getWindow() );
 							if( authDialog.isAccepted() ){
 								TGBrowserConnection.this.auth.update();
 								TGBrowserConnection.this.fillElements(cb, element);

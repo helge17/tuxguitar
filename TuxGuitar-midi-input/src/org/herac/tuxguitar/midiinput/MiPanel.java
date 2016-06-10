@@ -1,27 +1,29 @@
 package org.herac.tuxguitar.midiinput;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 class MiPanel
 {
-	private			Shell		f_Dialog = null;
-	private			Combo		f_CmbMode;
-	private			Button		f_BtnConfig;
-	private			Button		f_BtnRecord;
-	private			Button		f_BtnStop;
-	static private	MiPanel		s_Instance;
+	private			UIWindow					f_Dialog = null;
+	private			UIDropDownSelect<Integer>	f_CmbMode;
+	private			UIButton					f_BtnConfig;
+	private			UIButton					f_BtnRecord;
+	private			UIButton					f_BtnStop;
+	static private	MiPanel						s_Instance;
 
 
 	static MiPanel	instance()
@@ -53,47 +55,44 @@ class MiPanel
 	}
 
 
-	void	showDialog(Shell parent)
+	void	showDialog(final TGContext context, UIWindow parent)
 	{
-	if(f_Dialog != null)
-		f_Dialog.forceActive();
+	if( f_Dialog != null)
+		f_Dialog.moveToTop();
 	else
 		{
 		try {
-			f_Dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM);
-			f_Dialog.setLayout(new GridLayout());
+			final UIFactory uiFactory = TGApplication.getInstance(context).getFactory();
+			final UITableLayout dialogLayout = new UITableLayout();
+			
+			f_Dialog = uiFactory.createWindow(parent, true, false);
+			f_Dialog.setLayout(dialogLayout);
 			f_Dialog.setText(TuxGuitar.getProperty("midiinput.panel.title"));
 
-			GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-			data.minimumWidth = 80;
-			data.minimumHeight = 25;
-
 			// MODE
-			Group	groupMode = new Group(f_Dialog, SWT.SHADOW_ETCHED_IN);
-			groupMode.setLayout(new GridLayout(3, false));
-			groupMode.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			UITableLayout groupModeLayout = new UITableLayout();
+			UILegendPanel groupMode = uiFactory.createLegendPanel(f_Dialog);
+			groupMode.setLayout(groupModeLayout);
 			groupMode.setText(TuxGuitar.getProperty("midiinput.panel.label.group.mode"));
-
+			dialogLayout.set(groupMode, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			
 			// MODE combo
-			Label	lblMode = new Label(groupMode, SWT.LEFT);
+			UILabel lblMode = uiFactory.createLabel(groupMode);
 			lblMode.setText(TuxGuitar.getProperty("midiinput.panel.label.mode") + ":");
+			groupModeLayout.set(lblMode, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+			
+			f_CmbMode = uiFactory.createDropDownSelect(groupMode);
+			f_CmbMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.mode.echo"), MiConfig.MODE_FRETBOARD_ECHO));
+			f_CmbMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.mode.chords"), MiConfig.MODE_CHORDS_RECORDING));
+			f_CmbMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.mode.scales"), MiConfig.MODE_SCALES_RECOGNITION));
+			f_CmbMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.mode.record"), MiConfig.MODE_SONG_RECORDING));
+			f_CmbMode.setSelectedValue(MiConfig.instance().getMode());
 
-			f_CmbMode = new Combo(groupMode, SWT.DROP_DOWN | SWT.READ_ONLY);
-			f_CmbMode.setLayoutData(new GridData(130, SWT.DEFAULT));
+			f_CmbMode.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					Integer mode = f_CmbMode.getSelectedValue();
 
-			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.echo"));
-			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.chords"));
-			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.scales"));
-		///* RECORDING
-			f_CmbMode.add(TuxGuitar.getProperty("midiinput.mode.record"));
-		//*/
-			f_CmbMode.select(MiConfig.instance().getMode());
-
-			f_CmbMode.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
-					int		mode = f_CmbMode.getSelectionIndex();
-
-					if(mode != MiConfig.instance().getMode())
+					if(mode != null && mode != MiConfig.instance().getMode())
 						{
 						MiConfig.getConfig().setValue(MiConfig.KEY_MODE, mode);
 						MiConfig.getConfig().save();
@@ -103,52 +102,51 @@ class MiPanel
 						}
 				}
 			});
-
+			groupModeLayout.set(f_CmbMode, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+			
 			// CONFIGURE button
-			f_BtnConfig = new Button(groupMode, SWT.PUSH);
-			f_BtnConfig.setLayoutData(data);
-
+			f_BtnConfig = uiFactory.createButton(groupMode);
 			f_BtnConfig.setText(TuxGuitar.getProperty("midiinput.panel.button.config"));
-			f_BtnConfig.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			f_BtnConfig.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					MiConfig.instance().showDialog(f_Dialog);
 				}
 			});
-
+			groupModeLayout.set(f_BtnConfig, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 1, 80f, 25f, null);
+			
 		///* RECORDING
 			// Recording
-			Group	groupRec = new Group(f_Dialog, SWT.SHADOW_ETCHED_IN);
-			groupRec.setLayout(new GridLayout(2, false));
-			groupRec.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			UITableLayout groupRecLayout = new UITableLayout();
+			UILegendPanel groupRec = uiFactory.createLegendPanel(f_Dialog);
+			groupRec.setLayout(groupRecLayout);
 			groupRec.setText(TuxGuitar.getProperty("midiinput.panel.label.group.rec"));
-
+			dialogLayout.set(groupRec, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			
 			// START button
-			f_BtnRecord = new Button(groupRec, SWT.PUSH);
-			f_BtnRecord.setLayoutData(data);
-
+			f_BtnRecord = uiFactory.createButton(groupRec);
 			f_BtnRecord.setText(TuxGuitar.getProperty("midiinput.panel.button.start"));
-			f_BtnRecord.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			f_BtnRecord.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					MiRecorder.instance().start();
 					updateControls();
 				}
 			});
-
+			groupRecLayout.set(f_BtnRecord, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 80f, 25f, null);
+			
 			// STOP button
-			f_BtnStop = new Button(groupRec, SWT.PUSH);
-			f_BtnStop.setLayoutData(data);
-
+			f_BtnStop = uiFactory.createButton(groupRec);
 			f_BtnStop.setText(TuxGuitar.getProperty("midiinput.panel.button.stop"));
-			f_BtnStop.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			f_BtnStop.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					MiRecorder.instance().stop();
 					updateControls();
 				}
 			});
+			groupRecLayout.set(f_BtnStop, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 80f, 25f, null);
 		//*/
 
 			updateControls();
-			DialogUtils.openDialog(f_Dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+			TGDialogUtil.openDialog(f_Dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 			f_Dialog = null;
 			}
 		catch(Exception e)

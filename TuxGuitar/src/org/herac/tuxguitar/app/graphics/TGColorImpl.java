@@ -1,22 +1,17 @@
 package org.herac.tuxguitar.app.graphics;
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
 import org.herac.tuxguitar.graphics.TGColor;
+import org.herac.tuxguitar.ui.resource.UIColor;
 
 public class TGColorImpl implements TGColor{
 	
-	private Color handle;
+	private UIColor handle;
 	
-	public TGColorImpl( Color handle ){
+	public TGColorImpl(UIColor handle){
 		this.handle = handle;
 	}
 	
-	public TGColorImpl( Device device , int red, int green, int blue ){
-		this( new Color(device,red,green,blue) );
-	}
-	
-	public Color getHandle(){
+	public UIColor getHandle(){
 		return this.handle;
 	}
 	

@@ -6,20 +6,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.io.gtp.GTPSettingsManager;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class GTPSettingsDialog {
@@ -30,68 +31,67 @@ public class GTPSettingsDialog {
 		this.context = context;
 	}
 	
-	public void configure(Shell parent) {
+	public void configure(UIWindow parent) {
 		final List<String> charsets = getAvailableCharsets();
 		final GTPSettingsManager settingsUtil = GTPSettingsManager.getInstance(this.context);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("gtp.settings.title"));
 		
 		//------------------DEVICE-----------------------
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(2,false));
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("gtp.settings.charset.tip"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Label label = new Label(group,SWT.LEFT);
-		label.setText(TuxGuitar.getProperty("gtp.settings.charset.select") + ":");
+		UILabel label = uiFactory.createLabel(group);
+		label.setText(TuxGuitar.getProperty("gtp.settings.charset.select") + ":");		
+		groupLayout.set(label, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Combo value = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
-		value.setLayoutData(new GridData(250,SWT.DEFAULT));
-		for(int i = 0 ; i < charsets.size(); i ++){
-			String charset = (String)charsets.get(i);
-			value.add( charset );
-			if( charset.equals(settingsUtil.getSettings().getCharset()) ){
-				value.select( i );
-			}
+		final UIDropDownSelect<String> value = uiFactory.createDropDownSelect(group);
+		for(String charset : charsets) {
+			value.addItem(new UISelectItem<String>(charset, charset));
 		}
+		value.setSelectedValue(settingsUtil.getSettings().getCharset());
+		groupLayout.set(value, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, 250f, null, null);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(data);
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				int selection = value.getSelectionIndex();
-				if( selection >= 0 && selection < charsets.size() ){
-					settingsUtil.getSettings().setCharset(charsets.get(selection));
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String charset = value.getSelectedValue();
+				if( charset != null ){
+					settingsUtil.getSettings().setCharset(charset);
 					settingsUtil.saveSettings();
 				}
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(data);
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	private List<String> getAvailableCharsets(){

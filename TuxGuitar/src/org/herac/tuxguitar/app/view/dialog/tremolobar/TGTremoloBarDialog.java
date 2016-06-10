@@ -4,32 +4,39 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloBarAction;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIPosition;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTremoloBarDialog{
@@ -43,9 +50,9 @@ public class TGTremoloBarDialog{
 	private int[] y;
 	private int width;
 	private int height;
-	private List<Point> points;
-	protected Composite editor;
-	protected DefaultTremoloBar[] defaultTremoloBars;
+	private List<UIPosition> points;
+	private UICanvas editor;
+	private TGColorManager colorManager;
 	
 	public TGTremoloBarDialog() {
 		this.init();
@@ -56,7 +63,7 @@ public class TGTremoloBarDialog{
 		this.y = new int[Y_LENGTH];
 		this.width = ((X_SPACING * X_LENGTH) - X_SPACING);
 		this.height = ((Y_SPACING * Y_LENGTH) - Y_SPACING);
-		this.points = new ArrayList<Point>();
+		this.points = new ArrayList<UIPosition>();
 		
 		for(int i = 0;i < this.x.length;i++){
 			this.x[i] = ((i + 1) * X_SPACING);
@@ -72,198 +79,198 @@ public class TGTremoloBarDialog{
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
 		if( measure != null && beat != null && note != null && string != null ) {
-			final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-			final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+			final UITableLayout dialogLayout = new UITableLayout();
+			final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 			
-			dialog.setLayout(new GridLayout());
+			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.tremolo-bar-editor"));
 			
 			//----------------------------------------------------------------------
-			Composite composite = new Composite(dialog,SWT.NONE);
-			composite.setLayout(new GridLayout(2,false));
-			composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			UITableLayout compositeLayout = new UITableLayout();
+			UIPanel composite = uiFactory.createPanel(dialog, false);
+			composite.setLayout(compositeLayout);
+			dialogLayout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			Composite leftComposite = new Composite(composite,SWT.NONE);
-			leftComposite.setLayout(new GridLayout());
-			leftComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			UITableLayout leftCompositeLayout = new UITableLayout();
+			UIPanel leftComposite = uiFactory.createPanel(composite, false);
+			leftComposite.setLayout(leftCompositeLayout);
+			compositeLayout.set(leftComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
-			Composite rightComposite = new Composite(composite,SWT.NONE);
-			rightComposite.setLayout(new GridLayout());
-			rightComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+			UITableLayout rightCompositeLayout = new UITableLayout();
+			UIPanel rightComposite = uiFactory.createPanel(composite, false);
+			rightComposite.setLayout(rightCompositeLayout);
+			compositeLayout.set(rightComposite, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			//-------------EDITOR---------------------------------------------------
-			this.editor = new Composite(leftComposite, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-			this.editor.setBackground(this.editor.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-			this.editor.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.FILL,true,true) , getWidth() + (X_SPACING * 2),getHeight() + (Y_SPACING * 2))  );
-			this.editor.addPaintListener(new PaintListener() {
-				public void paintControl(PaintEvent e) {
-					TGPainterImpl painter = new TGPainterImpl(e.gc);
-					paintEditor(painter);
+			this.colorManager = TGColorManager.getInstance(context.getContext());
+			
+			this.editor = uiFactory.createCanvas(leftComposite, true);
+			this.editor.setBgColor(this.colorManager.getColor(TGColorManager.COLOR_WHITE));
+			this.editor.addPaintListener(new UIPaintListener() {
+				public void onPaint(UIPaintEvent event) {
+					paintEditor(new TGPainterImpl(uiFactory, event.getPainter()));
 				}
 			});
-			this.editor.addMouseListener(new MouseAdapter() {
-				public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
-					checkPoint(e.x,e.y);
+			this.editor.addMouseUpListener(new UIMouseUpListener() {
+				public void onMouseUp(UIMouseEvent event) {
+					TGTremoloBarDialog.this.checkPoint(event.getPosition().getX(), event.getPosition().getY());
 					TGTremoloBarDialog.this.editor.redraw();
 				}
 			});
+			leftCompositeLayout.set(this.editor, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, getWidth() + (X_SPACING * 2f), getHeight() + (Y_SPACING * 2f), null);
 			
 			//-------------DEFAULT BEND LIST---------------------------------------------------
-			this.resetDefaultTremoloBars();
-			final org.eclipse.swt.widgets.List defaultTremoloBarList = new org.eclipse.swt.widgets.List(rightComposite,SWT.BORDER);
-			for(int i = 0;i < this.defaultTremoloBars.length;i++){
-				defaultTremoloBarList.add(this.defaultTremoloBars[i].getName());
+			final List<UISelectItem<TGEffectTremoloBar>> presetItems = this.createPresetItems();
+			final UIListBoxSelect<TGEffectTremoloBar> defaultTremoloBarList = uiFactory.createListBoxSelect(rightComposite);
+			
+			for(UISelectItem<TGEffectTremoloBar> presetItem : presetItems) {
+				defaultTremoloBarList.addItem(presetItem);
 			}
-			defaultTremoloBarList.select(0);
-			defaultTremoloBarList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			defaultTremoloBarList.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					int index = defaultTremoloBarList.getSelectionIndex();
-					if(index >= 0 && index < TGTremoloBarDialog.this.defaultTremoloBars.length){
-						setTremoloBar(TGTremoloBarDialog.this.defaultTremoloBars[index].getTremoloBar());
+			
+			defaultTremoloBarList.setSelectedItem(presetItems.get(0));
+			defaultTremoloBarList.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					TGEffectTremoloBar selection = defaultTremoloBarList.getSelectedValue();
+					if( selection != null ){
+						setTremoloBar(selection);
 						TGTremoloBarDialog.this.editor.redraw();
 					}
 				}
 			});
+			rightCompositeLayout.set(defaultTremoloBarList, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			//------------------BUTTONS--------------------------
-			Button buttonClean = new Button(rightComposite, SWT.PUSH);
-			buttonClean.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,true), 80,25));
+			UIButton buttonClean = uiFactory.createButton(rightComposite);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
-			buttonClean.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonClean.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeTremoloBar(context.getContext(), measure, beat, string, null);
 					dialog.dispose();
 				}
 			});
-			Button buttonOK = new Button(rightComposite, SWT.PUSH);
-			buttonOK.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
+			rightCompositeLayout.set(buttonClean, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true, 1, 1, 80f, 25f, null);
+			
+			UIButton buttonOK = uiFactory.createButton(rightComposite);
+			buttonOK.setDefaultButton();
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
-			buttonOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonOK.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					changeTremoloBar(context.getContext(), measure, beat, string, getTremoloBar());
 					dialog.dispose();
 				}
 			});
-			Button buttonCancel = new Button(rightComposite, SWT.PUSH);
-			buttonCancel.setLayoutData(resizeData(new GridData(SWT.FILL,SWT.BOTTOM,true,false), 80,25));
+			rightCompositeLayout.set(buttonOK, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false, 1, 1, 80f, 25f, null);
+			
+			UIButton buttonCancel = uiFactory.createButton(rightComposite);
 			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-			buttonCancel.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
+			buttonCancel.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					dialog.dispose();
 				}
 			});
+			rightCompositeLayout.set(buttonCancel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false, 1, 1, 80f, 25f, null);
 			
 			if(note.getEffect().isTremoloBar()){
 				setTremoloBar(note.getEffect().getTremoloBar());
 			}else{
-				setTremoloBar(this.defaultTremoloBars[0].getTremoloBar());
+				setTremoloBar(presetItems.get(0).getValue());
 			}
 			
-			dialog.setDefaultButton( buttonOK );
-			
-			DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
 	}
 	
-	private GridData resizeData(GridData data,int minimumWidth,int minimumHeight){
-		data.minimumWidth = minimumWidth;
-		data.minimumHeight = minimumHeight;
-		return data;
-	}
-	
-	protected void paintEditor(TGPainterImpl painter){
+	private void paintEditor(TGPainter painter){
 		for(int i = 0;i < this.x.length;i++){
 			this.setStyleX(painter,i);
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.moveTo(this.x[i],Y_SPACING);
-			painter.lineTo(this.x[i],Y_SPACING + this.height);
+			painter.moveTo(this.x[i], Y_SPACING);
+			painter.lineTo(this.x[i], Y_SPACING + this.height);
 			painter.closePath();
 		}
 		for(int i = 0;i < this.y.length;i++){
 			this.setStyleY(painter,i);
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.moveTo(X_SPACING,this.y[i]);
-			painter.lineTo(X_SPACING + this.width,this.y[i]);
+			painter.moveTo(X_SPACING, this.y[i]);
+			painter.lineTo(X_SPACING + this.width, this.y[i]);
 			painter.closePath();
 		}
 		
-		Iterator<Point> it = null;
-		Point prevPoint = null;
 		painter.setLineStyleSolid();
 		painter.setLineWidth(2);
-		painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_GRAY)));
-		it = this.points.iterator();
-		while(it.hasNext()){
-			Point point = (Point)it.next();
-			if(prevPoint != null){
+		painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_GRAY)));
+		
+		UIPosition prevPoint = null;
+		for(UIPosition point : this.points) {
+			if( prevPoint != null){
 				painter.initPath();
-				painter.moveTo(prevPoint.x,prevPoint.y);
-				painter.lineTo(point.x,point.y);
+				painter.moveTo(prevPoint.getX() ,prevPoint.getY());
+				painter.lineTo(point.getX(), point.getY());
 				painter.closePath();
 			}
 			prevPoint = point;
 		}
 		
 		painter.setLineWidth(5);
-		painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
-		it = this.points.iterator();
-		while(it.hasNext()){
-			Point point = (Point)it.next();
+		painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
+		
+		for(UIPosition point : this.points) {
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.addRectangle(point.x - 2,point.y - 2,5,5);
+			painter.addRectangle(point.getX() - 2, point.getY() - 2, 5, 5);
 			painter.closePath();
 		}
 		painter.setLineWidth(1);
 	}
 	
-	private void setStyleX(TGPainterImpl painter,int i){
+	private void setStyleX(TGPainter painter,int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (X_LENGTH - 1)){
-			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
+			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
 		}else{
-			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLUE)));
+			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLUE)));
 			if((i % 3) > 0){
 				painter.setLineStyleDot();
 			}
 		}
 	}
 	
-	private void setStyleY(TGPainterImpl painter,int i){
+	private void setStyleY(TGPainter painter,int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (Y_LENGTH - 1)){
-			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
+			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
 		}
 		else if(i == (TGEffectTremoloBar.MAX_VALUE_LENGTH)){
-			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_BLACK)));
+			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
 		}else{
-			painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_RED)));
+			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_RED)));
 			if((i % 2) > 0){
 				painter.setLineStyleDot();
-				painter.setForeground(new TGColorImpl(this.editor.getDisplay().getSystemColor(SWT.COLOR_GRAY)));
+				painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_GRAY)));
 			}
 		}
 	}
 	
-	protected void checkPoint(int x,int y){
-		Point point = new Point(this.getX(x),this.getY(y));
+	protected void checkPoint(float x, float y){
+		UIPosition point = new UIPosition(this.getX(x), this.getY(y));
 		if(!this.removePoint(point)){
-			this.removePointsAtXLine(point.x);
+			this.removePointsAtXLine(point.getX());
 			this.addPoint(point);
 			this.orderPoints();
 		}
 	}
 	
-	private boolean removePoint(Point point){
-		Point pointToRemove = null;
+	private boolean removePoint(UIPosition point){
+		UIPosition pointToRemove = null;
 		
-		Iterator<Point> it = this.points.iterator();
+		Iterator<UIPosition> it = this.points.iterator();
 		while(it.hasNext()){
-			Point currPoint = (Point)it.next();
-			if( currPoint.x == point.x && currPoint.y == point.y ){
+			UIPosition currPoint = it.next();
+			if( currPoint.getX() == point.getX() && currPoint.getY() == point.getY() ){
 				pointToRemove = currPoint;
 				break;
 			}
@@ -278,10 +285,10 @@ public class TGTremoloBarDialog{
 	
 	private void orderPoints(){
 		for(int i = 0;i < this.points.size();i++){
-			Point minPoint = null;
+			UIPosition minPoint = null;
 			for(int noteIdx = i;noteIdx < this.points.size();noteIdx++){
-				Point point = (Point)this.points.get(noteIdx);
-				if(minPoint == null || point.x < minPoint.x){
+				UIPosition point = this.points.get(noteIdx);
+				if( minPoint == null || point.getX() < minPoint.getX()){
 					minPoint = point;
 				}
 			}
@@ -290,12 +297,12 @@ public class TGTremoloBarDialog{
 		}
 	}
 	
-	private void removePointsAtXLine(int x){
-		List<Point> pointsToRemove = new ArrayList<Point>();
-		Iterator<Point> it = this.points.iterator();
+	private void removePointsAtXLine(float x){
+		List<UIPosition> pointsToRemove = new ArrayList<UIPosition>();
+		Iterator<UIPosition> it = this.points.iterator();
 		while(it.hasNext()){
-			Point point = (Point)it.next();
-			if( point.x == x ){
+			UIPosition point = it.next();
+			if( point.getX() == x ){
 				pointsToRemove.add(point);
 				break;
 			}
@@ -303,19 +310,19 @@ public class TGTremoloBarDialog{
 		this.points.removeAll(pointsToRemove);
 	}
 	
-	private void addPoint(Point point){
+	private void addPoint(UIPosition point){
 		this.points.add(point);
 	}
 	
-	private int getX(int pointX){
-		int currPointX = -1;
+	private float getX(float pointX){
+		float currPointX = -1;
 		for(int i = 0;i < this.x.length;i++){
-			if(currPointX < 0){
+			if( currPointX < 0){
 				currPointX = this.x[i];
 			}else{
-				int distanceX = Math.abs(pointX - currPointX);
-				int currDistanceX = Math.abs(pointX - this.x[i]);
-				if(currDistanceX < distanceX){
+				float distanceX = Math.abs(pointX - currPointX);
+				float currDistanceX = Math.abs(pointX - this.x[i]);
+				if( currDistanceX < distanceX){
 					currPointX = this.x[i];
 				}
 			}
@@ -323,15 +330,15 @@ public class TGTremoloBarDialog{
 		return currPointX;
 	}
 	
-	private int getY(int pointY){
-		int currPointY = -1;
+	private float getY(float pointY){
+		float currPointY = -1;
 		for(int i = 0;i < this.y.length;i++){
-			if(currPointY < 0){
+			if( currPointY < 0){
 				currPointY = this.y[i];
 			}else{
-				int distanceX = Math.abs(pointY - currPointY);
-				int currDistanceX = Math.abs(pointY - this.y[i]);
-				if(currDistanceX < distanceX){
+				float distanceX = Math.abs(pointY - currPointY);
+				float currDistanceX = Math.abs(pointY - this.y[i]);
+				if( currDistanceX < distanceX){
 					currPointY = this.y[i];
 				}
 			}
@@ -345,27 +352,25 @@ public class TGTremoloBarDialog{
 	
 	public TGEffectTremoloBar getTremoloBar(){
 		if(this.points != null && !this.points.isEmpty()){
-			TGEffectTremoloBar tremoloBar = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar();//new TremoloBarEffect();
-			Iterator<Point> it = this.points.iterator();
-			while(it.hasNext()){
-				Point point = (Point)it.next();
-				addTremoloBarPoint(tremoloBar,point);
+			TGEffectTremoloBar tremoloBar = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar();
+			for(UIPosition point : this.points){
+				addTremoloBarPoint(tremoloBar, point);
 			}
 			return tremoloBar;
 		}
 		return null;
 	}
 	
-	private void addTremoloBarPoint(TGEffectTremoloBar effect,Point point){
+	private void addTremoloBarPoint(TGEffectTremoloBar effect, UIPosition point){
 		int position = 0;
 		int value = 0;
-		for(int i=0;i<this.x.length;i++){
-			if(point.x == this.x[i]){
+		for(int i = 0; i < this.x.length; i++){
+			if( point.getX() == this.x[i]){
 				position = i;
 			}
 		}
-		for(int i=0;i<this.y.length;i++){
-			if(point.y == this.y[i]){
+		for(int i = 0; i < this.y.length; i++){
+			if(point.getY() == this.y[i]){
 				value = (TGEffectTremoloBar.MAX_VALUE_LENGTH - i);
 			}
 		}
@@ -383,11 +388,11 @@ public class TGTremoloBarDialog{
 	
 	private void makePoint(TGEffectTremoloBar.TremoloBarPoint tremoloBarPoint){
 		int indexX = tremoloBarPoint.getPosition();
-		int indexY = ( (this.y.length - TGEffectTremoloBar.MAX_VALUE_LENGTH) - tremoloBarPoint.getValue()) - 1;
-		if(indexX >= 0 && indexX < this.x.length && indexY >= 0 && indexY < this.y.length){
-			Point point = new Point(0,0);
-			point.x = this.x[indexX];
-			point.y = this.y[indexY];
+		int indexY = ((this.y.length - TGEffectTremoloBar.MAX_VALUE_LENGTH) - tremoloBarPoint.getValue()) - 1;
+		if( indexX >= 0 && indexX < this.x.length && indexY >= 0 && indexY < this.y.length ){
+			UIPosition point = new UIPosition(0, 0);
+			point.setX(this.x[indexX]);
+			point.setY(this.y[indexY]);
 			this.points.add(point);
 		}
 	}
@@ -400,56 +405,48 @@ public class TGTremoloBarDialog{
 		return this.height;
 	}
 	
-	private void resetDefaultTremoloBars(){
-		this.defaultTremoloBars = new DefaultTremoloBar[6];
+	private List<UISelectItem<TGEffectTremoloBar>> createPresetItems() {
+		TGEffectTremoloBar tremoloBar = null;
+		TGFactory factory = TuxGuitar.getInstance().getSongManager().getFactory();
+		List<UISelectItem<TGEffectTremoloBar>> items = new ArrayList<UISelectItem<TGEffectTremoloBar>>();
 		
-		this.defaultTremoloBars[0] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.dip"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
-		this.defaultTremoloBars[0].getTremoloBar().addPoint(0,0);
-		this.defaultTremoloBars[0].getTremoloBar().addPoint(6,-2);
-		this.defaultTremoloBars[0].getTremoloBar().addPoint(12,0);
+		tremoloBar = factory.newEffectTremoloBar();
+		tremoloBar.addPoint(0,0);
+		tremoloBar.addPoint(6,-2);
+		tremoloBar.addPoint(12,0);
+		items.add(new UISelectItem<TGEffectTremoloBar>(TuxGuitar.getProperty("effects.tremolo-bar.dip"), tremoloBar));
 		
-		this.defaultTremoloBars[1] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.dive"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
-		this.defaultTremoloBars[1].getTremoloBar().addPoint(0,0);
-		this.defaultTremoloBars[1].getTremoloBar().addPoint(9,-2);
-		this.defaultTremoloBars[1].getTremoloBar().addPoint(12,-2);
+		tremoloBar = factory.newEffectTremoloBar();
+		tremoloBar.addPoint(0,0);
+		tremoloBar.addPoint(9,-2);
+		tremoloBar.addPoint(12,-2);
+		items.add(new UISelectItem<TGEffectTremoloBar>(TuxGuitar.getProperty("effects.tremolo-bar.dive"), tremoloBar));
 		
-		this.defaultTremoloBars[2] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.release-up"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
-		this.defaultTremoloBars[2].getTremoloBar().addPoint(0,-2);
-		this.defaultTremoloBars[2].getTremoloBar().addPoint(9,-2);
-		this.defaultTremoloBars[2].getTremoloBar().addPoint(12,0);
+		tremoloBar = factory.newEffectTremoloBar();
+		tremoloBar.addPoint(0,-2);
+		tremoloBar.addPoint(9,-2);
+		tremoloBar.addPoint(12,0);
+		items.add(new UISelectItem<TGEffectTremoloBar>(TuxGuitar.getProperty("effects.tremolo-bar.release-up"), tremoloBar));
 		
-		this.defaultTremoloBars[3] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.inverted-dip"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
-		this.defaultTremoloBars[3].getTremoloBar().addPoint(0,0);
-		this.defaultTremoloBars[3].getTremoloBar().addPoint(6,2);
-		this.defaultTremoloBars[3].getTremoloBar().addPoint(12,0);
+		tremoloBar = factory.newEffectTremoloBar();
+		tremoloBar.addPoint(0,0);
+		tremoloBar.addPoint(6,2);
+		tremoloBar.addPoint(12,0);
+		items.add(new UISelectItem<TGEffectTremoloBar>(TuxGuitar.getProperty("effects.tremolo-bar.inverted-dip"), tremoloBar));
 		
-		this.defaultTremoloBars[4] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.return"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
-		this.defaultTremoloBars[4].getTremoloBar().addPoint(0,0);
-		this.defaultTremoloBars[4].getTremoloBar().addPoint(9,2);
-		this.defaultTremoloBars[4].getTremoloBar().addPoint(12,2);
+		tremoloBar = factory.newEffectTremoloBar();
+		tremoloBar.addPoint(0,0);
+		tremoloBar.addPoint(9,2);
+		tremoloBar.addPoint(12,2);
+		items.add(new UISelectItem<TGEffectTremoloBar>(TuxGuitar.getProperty("effects.tremolo-bar.return"), tremoloBar));
 		
-		this.defaultTremoloBars[5] = new DefaultTremoloBar(TuxGuitar.getProperty("effects.tremolo-bar.release-down"),TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloBar());
-		this.defaultTremoloBars[5].getTremoloBar().addPoint(0,2);
-		this.defaultTremoloBars[5].getTremoloBar().addPoint(9,2);
-		this.defaultTremoloBars[5].getTremoloBar().addPoint(12,0);
-	}
-	
-	private class DefaultTremoloBar{
-		private String name;
-		private TGEffectTremoloBar tremoloBar;
+		tremoloBar = factory.newEffectTremoloBar();
+		tremoloBar.addPoint(0,2);
+		tremoloBar.addPoint(9,2);
+		tremoloBar.addPoint(12,0);
+		items.add(new UISelectItem<TGEffectTremoloBar>(TuxGuitar.getProperty("effects.tremolo-bar.release-down"), tremoloBar));
 		
-		public DefaultTremoloBar(String name,TGEffectTremoloBar tremoloBar){
-			this.name = name;
-			this.tremoloBar = tremoloBar;
-		}
-		
-		public TGEffectTremoloBar getTremoloBar() {
-			return this.tremoloBar;
-		}
-		
-		public String getName() {
-			return this.name;
-		}
+		return items;
 	}
 	
 	public void changeTremoloBar(TGContext context, TGMeasure measure, TGBeat beat, TGString string, TGEffectTremoloBar effect) {

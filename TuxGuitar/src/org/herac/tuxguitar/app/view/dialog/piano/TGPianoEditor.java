@@ -1,21 +1,22 @@
 package org.herac.tuxguitar.app.view.dialog.piano;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerEvent;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerManager;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.scale.ScaleEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -30,20 +31,36 @@ public class TGPianoEditor implements TGEventListener{
 		this.context = context;
 	}
 	
+	public TGPiano getPiano(){
+		return this.piano;
+	}
+	
+	private UIWindow getPianoWindow() {
+		if(!this.isDisposed()) {
+			return (UIWindow)this.getPiano().getControl().getParent();
+		}
+		return null;
+	}
+	
 	public void show() {
-		Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
-		dialog.setLayout(new GridLayout());
+		UIWindow parent = TGWindow.getInstance(this.context).getWindow();
+		UIWindow dialog = TGApplication.getInstance(this.context).getFactory().createWindow(parent, false, false);
 		dialog.setText(TuxGuitar.getProperty("piano.editor"));
 		
-		this.piano = new TGPiano(this.context, dialog,SWT.NONE);
+		this.piano = new TGPiano(this.context, dialog);
 		
 		this.addListeners();
-		dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
 			}
 		});
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		
+		UITableLayout dialogLayout = new UITableLayout();
+		dialogLayout.set(this.piano.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialog.setLayout(dialogLayout);
+		
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void addListeners(){
@@ -62,19 +79,15 @@ public class TGPianoEditor implements TGEventListener{
 		TGExternalBeatViewerManager.getInstance(this.context).removeBeatViewerListener(this);
 	}
 	
-	private TGPiano getPiano(){
-		return this.piano;
-	}
-	
 	public void dispose(){
 		if(!isDisposed()){
-			getPiano().getShell().dispose();
+			getPianoWindow().dispose();
 			getPiano().dispose();
 		}
 	}
 	
 	public void redraw(){
-		if(!isDisposed()/* && !TuxGuitar.getInstance().isLocked()*/){
+		if(!isDisposed()){
 			getPiano().redraw();
 		}
 	}
@@ -92,13 +105,14 @@ public class TGPianoEditor implements TGEventListener{
 	public void loadProperties(){
 		if(!isDisposed()){
 			getPiano().loadProperties();
-			getPiano().getShell().setText(TuxGuitar.getProperty("piano.editor"));
+			getPianoWindow().setText(TuxGuitar.getProperty("piano.editor"));
 		}
 	}
 	
 	public void loadIcons(){
 		if(!isDisposed()){
 			getPiano().loadIcons();
+			getPianoWindow().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		}
 	}
 	

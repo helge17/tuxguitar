@@ -1,28 +1,19 @@
 package org.herac.tuxguitar.app.view.dialog.lyric;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
-import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
+import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.app.view.util.TGProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
@@ -34,6 +25,20 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGLyric;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIKeyEvent;
+import org.herac.tuxguitar.ui.event.UIKeyPressedListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UITextArea;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -43,26 +48,20 @@ public class TGLyricEditor implements TGEventListener {
 	
 	public static final String ATTRIBUTE_BYPASS_EVENTS_FROM = "bypass-events-from";
 	
-	private static final int EDITOR_WIDTH = 450;
-	private static final int EDITOR_HEIGHT = 200;
-	
-	protected static final KeyBindingAction KB_ACTIONS[] = new KeyBindingAction[]{
-		new KeyBindingAction(TGUndoAction.NAME,new KeyBinding(122, KeyBindingUtil.CONTROL)),
-		new KeyBindingAction(TGRedoAction.NAME,new KeyBinding(121, KeyBindingUtil.CONTROL)),
-	};
+	private static final float EDITOR_WIDTH = 450f;
+	private static final float EDITOR_HEIGHT = 200f;
 	
 	private TGContext context;
 	private TGTrack track;
-	private Shell dialog;
+	private UIWindow dialog;
 	private TGLyricModifyListener listener;
 	
-	private Button previous;
-	private Button next;
-	private Label label;
-	private Label fromLabel;
-	private Spinner from;
-	private Text text;
-	private int caretPosition;
+	private UIButton previous;
+	private UIButton next;
+	private UILabel label;
+	private UILabel fromLabel;
+	private UISpinner from;
+	private UITextArea text;
 	
 	private boolean updated;
 	private int lastTrack;
@@ -73,16 +72,19 @@ public class TGLyricEditor implements TGEventListener {
 	private TGProcess loadIconsProcess;
 	private TGProcess updateItemsProcess;
 	
+	private List<KeyBindingAction> keyBindings;
+	
 	public TGLyricEditor(TGContext context){
 		this.context = context;
 		this.listener = new TGLyricModifyListener(this);
+		this.keyBindings = new ArrayList<KeyBindingAction>();
 		this.createSyncProcesses();
 	}
 	
 	public TGLyric createLyrics() {
 		if(!this.isDisposed()) {
 			TGLyric tgLyric = TGDocumentManager.getInstance(this.context).getSongManager().getFactory().newLyric();
-			tgLyric.setFrom(this.from.getSelection());
+			tgLyric.setFrom(this.from.getValue());
 			tgLyric.setLyrics(this.text.getText());
 			
 			return tgLyric;
@@ -91,12 +93,14 @@ public class TGLyricEditor implements TGEventListener {
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.RESIZE);
-		this.dialog.setLayout(getDialogLayout());
-		this.dialog.setSize(EDITOR_WIDTH,EDITOR_HEIGHT);
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				onDispose();
+		UIFactory uiFactory = this.getUIFactory();
+		
+		this.dialog = uiFactory.createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
+		this.dialog.setLayout(new UITableLayout(0f));
+		this.dialog.setBounds(new UIRectangle(0, 0, EDITOR_WIDTH, EDITOR_HEIGHT));
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
+				TGLyricEditor.this.onDispose();
 			}
 		});
 		
@@ -106,7 +110,7 @@ public class TGLyricEditor implements TGEventListener {
 		this.loadIcons();
 		this.updateItems();
 		this.addListeners();
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER);
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
 	
 	public void addListeners(){
@@ -129,67 +133,69 @@ public class TGLyricEditor implements TGEventListener {
 		this.removeListeners();
 	}
 	
-	private GridLayout getDialogLayout(){
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		layout.verticalSpacing = 0;
-		return layout;
-	}
-	
 	private void loadComposites(){
-		loadToolBar(this.dialog);
-		loadLyricText(this.dialog);
+		loadToolBar();
+		loadLyricText();
 	}
 	
-	private void loadToolBar(Composite parent){
-		final Composite composite = new Composite(parent,SWT.NONE);
-		composite.setLayout(new GridLayout(5,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
+	private void loadToolBar(){
+		UIFactory uiFactory = this.getUIFactory();
+		UITableLayout parentLayout = (UITableLayout) this.dialog.getLayout();
 		
-		this.previous = new Button(composite, SWT.ARROW | SWT.LEFT);
-		this.next = new Button(composite, SWT.ARROW | SWT.RIGHT);
+		UITableLayout panelLayout = new UITableLayout();
+		UIPanel panel = uiFactory.createPanel(this.dialog, false);
+		panel.setLayout(panelLayout);
+		parentLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, null, null, 0f);
 		
-		this.label = new Label(composite,SWT.NONE);
+		this.previous = uiFactory.createButton(panel);
+		panelLayout.set(this.previous, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		this.next = uiFactory.createButton(panel);
+		panelLayout.set(this.next, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		this.label = uiFactory.createLabel(panel);
 		this.label.setText(this.track.getName());
-		this.label.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
+		panelLayout.set(this.label, 1, 3, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 		
-		this.fromLabel = new Label(composite,SWT.NONE);
-		this.fromLabel.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
+		this.fromLabel = uiFactory.createLabel(panel);
+		panelLayout.set(this.fromLabel, 1, 4, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, false);
 		
-		this.from = new Spinner(composite,SWT.BORDER);
-		this.from.setLayoutData(new GridData(SWT.DEFAULT, SWT.DEFAULT));
-		
+		this.from = uiFactory.createSpinner(panel);
 		this.from.setMinimum(1);
 		this.from.setMaximum(this.track.countMeasures());
-		this.from.setSelection(this.track.getLyrics().getFrom());
+		this.from.setValue(this.track.getLyrics().getFrom());
 		this.from.setEnabled(this.track.countMeasures() > 1);
-		this.from.addModifyListener(this.listener);
+		this.from.addSelectionListener(this.listener);
+		panelLayout.set(this.from, 1, 5, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false, 1, 1, 60f, null, null);
 		
 		this.previous.addSelectionListener(new TGActionProcessorListener(TGLyricEditor.this.context, TGGoPreviousTrackAction.NAME));
 		this.next.addSelectionListener(new TGActionProcessorListener(TGLyricEditor.this.context, TGGoNextTrackAction.NAME));
 	}
 	
-	private void loadLyricText(Composite parent){
-		Composite composite = new Composite(parent,SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+	private void loadLyricText(){
+		UIFactory uiFactory = this.getUIFactory();
+		UITableLayout parentLayout = (UITableLayout) this.dialog.getLayout();
 		
-		this.text = new Text(composite,SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-		this.text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout panelLayout = new UITableLayout();
+		UIPanel panel = uiFactory.createPanel(this.dialog, false);
+		panel.setLayout(panelLayout);
+		parentLayout.set(panel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		
+		this.text = uiFactory.createTextArea(panel, true, false);
 		this.text.setFocus();
 		this.text.setText(this.track.getLyrics().getLyrics());
 		this.text.addModifyListener(this.listener);
-		this.text.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent event) {
-				for( int i = 0 ; i < KB_ACTIONS.length ; i ++ ){
-					if( event.keyCode == KB_ACTIONS[i].getKeyBinding().getKey() && event.stateMask == KB_ACTIONS[i].getKeyBinding().getMask() ){
-						new TGActionProcessorListener(TGLyricEditor.this.context, KB_ACTIONS[i].getAction()).processEvent(event);
+		this.text.addKeyPressedListener(new UIKeyPressedListener() {
+			public void onKeyPressed(UIKeyEvent event) {
+				for(KeyBindingAction keyBinding : TGLyricEditor.this.keyBindings) {
+					if( event.getKeyConvination().equals(keyBinding.getConvination()) ){
+						new TGActionProcessorListener(TGLyricEditor.this.context, keyBinding.getAction()).processEvent(event);
 						return;
 					}
 				}
 			}
 		});
+		panelLayout.set(this.text, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
 	
 	public void updateItems(){
@@ -214,21 +220,18 @@ public class TGLyricEditor implements TGEventListener {
 			}
 			if( isTrackChanged() || isTrackLyricChanged() ){
 				doLayout = true;
-				this.from.setSelection(this.track.getLyrics().getFrom());
+				this.from.setValue(this.track.getLyrics().getFrom());
 				this.text.setText(this.track.getLyrics().getLyrics());
-				this.text.setSelection( (this.caretPosition >= 0 ? this.caretPosition : this.text.getCharCount()));
 			}
 			
 			this.from.setEnabled( enabled && (this.track.countMeasures() > 1) );
 			this.text.setEnabled( enabled );
 			
-			this.setCaretPosition(-1);
-			
 			this.listener.setEnabled( enabled );
 			this.updated = false;
 			
 			if( doLayout ) {
-				this.dialog.layout(true, true);
+				this.dialog.layout();
 			}
 		}
 	}
@@ -243,7 +246,7 @@ public class TGLyricEditor implements TGEventListener {
 	}
 	
 	private boolean isTrackLyricChanged(){
-		if( this.track.getLyrics().getFrom() != this.from.getSelection() ) {
+		if( this.track.getLyrics().getFrom() != this.from.getValue() ) {
 			return true;
 		}
 		if(!this.track.getLyrics().getLyrics().equals(this.text.getText()) ) {
@@ -274,10 +277,6 @@ public class TGLyricEditor implements TGEventListener {
 		this.updated = true;
 	}
 	
-	public void setCaretPosition(int caretPosition) {
-		this.caretPosition = caretPosition;
-	}
-	
 	public TGTrack getTrack(){
 		return this.track;
 	}
@@ -286,17 +285,39 @@ public class TGLyricEditor implements TGEventListener {
 		return this.context;
 	}
 	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
+	public void loadKeyBinding(String actionId) {
+		UIKeyConvination keyConvination = KeyBindingActionManager.getInstance(this.context).getKeyBindingForAction(actionId);
+		if( keyConvination != null ) {
+			this.keyBindings.add(new KeyBindingAction(actionId, keyConvination));
+		}
+	}
+	
+	public void loadKeyBindings() {
+		if(!isDisposed()){
+			this.keyBindings.clear();
+			this.loadKeyBinding(TGUndoAction.NAME);
+			this.loadKeyBinding(TGRedoAction.NAME);
+		}
+	}
+	
 	public void loadProperties(){
 		if(!isDisposed()){
+			this.loadKeyBindings();
 			this.dialog.setText(TuxGuitar.getProperty("lyric.editor"));
 			this.fromLabel.setText(TuxGuitar.getProperty("edit.from"));
-			this.dialog.layout(true, true);
+			this.dialog.layout();
 		}
 	}
 	
 	public void loadIcons(){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+			this.previous.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
+			this.next.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
 		}
 	}
 	

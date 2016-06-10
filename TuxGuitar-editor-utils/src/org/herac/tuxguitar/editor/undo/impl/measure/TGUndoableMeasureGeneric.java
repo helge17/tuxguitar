@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.measure;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
@@ -23,19 +24,19 @@ public class TGUndoableMeasureGeneric extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.copyMeasureFrom(this.getMeasure(this.redoMeasure.getNumber()), this.redoMeasure);
+		this.copyMeasureFrom(actionContext, this.getMeasure(this.redoMeasure.getNumber()), this.redoMeasure);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.copyMeasureFrom(this.getMeasure(this.undoMeasure.getNumber()), this.undoMeasure);
+		this.copyMeasureFrom(actionContext, this.getMeasure(this.undoMeasure.getNumber()), this.undoMeasure);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -68,11 +69,11 @@ public class TGUndoableMeasureGeneric extends TGUndoableEditBase {
 		return tgSongManager.getTrackManager().getMeasure(track, number);
 	}
 	
-	public void copyMeasureFrom(TGMeasure measure, TGMeasure from) {
+	public void copyMeasureFrom(TGActionContext context, TGMeasure measure, TGMeasure from) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGCopyMeasureFromAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, measure.getHeader());
 		tgActionProcessor.setAttribute(TGCopyMeasureFromAction.ATTRIBUTE_FROM, from);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

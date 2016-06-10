@@ -1,13 +1,5 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
 import org.herac.tuxguitar.app.action.impl.file.TGOpenFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGPrintAction;
@@ -15,50 +7,44 @@ import org.herac.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionFile implements TGToolBarSection {
 	
-	private ToolItem menuItem;
-	private Menu menu;
-	private MenuItem newSong;
-	private MenuItem openSong;
-	private MenuItem saveSong;
-	private MenuItem saveAsSong;
-	private MenuItem printSong;
-	private MenuItem printPreviewSong;
-	private MenuItem properties;
+	private UIToolMenuItem menuItem;
+	private UIMenuActionItem newSong;
+	private UIMenuActionItem openSong;
+	private UIMenuActionItem saveSong;
+	private UIMenuActionItem saveAsSong;
+	private UIMenuActionItem printSong;
+	private UIMenuActionItem printPreviewSong;
+	private UIMenuActionItem properties;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
-		
-		this.newSong = new MenuItem(this.menu, SWT.PUSH);
+		this.newSong = this.menuItem.getMenu().createActionItem();
 		this.newSong.addSelectionListener(toolBar.createActionProcessor(TGLoadTemplateAction.NAME));
 		
-		this.openSong = new MenuItem(this.menu, SWT.PUSH);
+		this.openSong = this.menuItem.getMenu().createActionItem();
 		this.openSong.addSelectionListener(toolBar.createActionProcessor(TGOpenFileAction.NAME));
 		
-		this.saveSong = new MenuItem(this.menu, SWT.PUSH);
+		this.saveSong = this.menuItem.getMenu().createActionItem();
 		this.saveSong.addSelectionListener(toolBar.createActionProcessor(TGSaveFileAction.NAME));
 		
-		this.saveAsSong = new MenuItem(this.menu, SWT.PUSH);
+		this.saveAsSong = this.menuItem.getMenu().createActionItem();
 		this.saveAsSong.addSelectionListener(toolBar.createActionProcessor(TGSaveAsFileAction.NAME));
 		
-		this.printSong = new MenuItem(this.menu, SWT.PUSH);
+		this.printSong = this.menuItem.getMenu().createActionItem();
 		this.printSong.addSelectionListener(toolBar.createActionProcessor(TGPrintAction.NAME));
 		
-		this.printPreviewSong = new MenuItem(this.menu, SWT.PUSH);
+		this.printPreviewSong = this.menuItem.getMenu().createActionItem();
 		this.printPreviewSong.addSelectionListener(toolBar.createActionProcessor(TGPrintPreviewAction.NAME));
 		
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
-		this.properties = new MenuItem(this.menu, SWT.PUSH);
+		this.properties = this.menuItem.getMenu().createActionItem();
 		this.properties.addSelectionListener(toolBar.createActionProcessor(TGOpenSongInfoDialogAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -89,13 +75,5 @@ public class TGToolBarSectionFile implements TGToolBarSection {
 	
 	public void updateItems(TGToolBar toolBar){
 		//Nothing to do
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 }

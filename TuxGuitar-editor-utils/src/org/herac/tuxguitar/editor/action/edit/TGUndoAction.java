@@ -19,7 +19,7 @@ public class TGUndoAction extends TGActionBase {
 		try {
 			TGUndoableManager tgUndoableManager = TGUndoableManager.getInstance(this.getContext());
 			if( tgUndoableManager.canUndo()){
-				tgUndoableManager.undo();
+				tgUndoableManager.undo(context);
 			}
 		} catch (TGCannotUndoException e) {
 			throw new TGActionException(e);

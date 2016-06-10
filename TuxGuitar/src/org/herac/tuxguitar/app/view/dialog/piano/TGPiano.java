@@ -3,29 +3,19 @@ package org.herac.tuxguitar.app.view.dialog.piano;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
-import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGImageImpl;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
@@ -40,9 +30,23 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UIImageView;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISeparator;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGPiano extends Composite {
+public class TGPiano {
 	
 	private static final boolean TYPE_NOTES[] = new boolean[]{true,false,true,false,true,true,false,true,false,true,false,true};
 	private static final int NATURAL_NOTES = 7;
@@ -56,104 +60,134 @@ public class TGPiano extends Composite {
 	private int duration;
 	private boolean changes;
 	private TGPianoConfig config;
-	private Composite pianoComposite;
-	private Composite toolComposite;
-	private Label durationLabel;
-	private Label scaleName;
-	private Button scale;
-	private Button settings;
+	private UIPanel control;
+	private UIPanel toolComposite;
+	private UICanvas canvas;
+	private UIImageView durationLabel;
+	private UILabel scaleName;
+	private UIButton scale;
+	private UIButton goLeft;
+	private UIButton goRight;
+	private UIButton increment;
+	private UIButton decrement;
+	private UIButton settings;
 	private TGBeat beat;
 	private TGBeat externalBeat;
 	private TGImage image;
 	
-	public TGPiano(TGContext context, Composite parent, int style) {
-		super(parent, style);
+	public TGPiano(TGContext context, UIWindow parent) {
 		this.context = context;
-		this.config = new TGPianoConfig();
+		this.config = new TGPianoConfig(context);
 		this.config.load();
-		this.setLayout(new GridLayout());
-		this.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.control = getUIFactory().createPanel(parent, false);
 		this.initToolBar();
-		this.makePiano();
+		this.initCanvas();
+		this.createControlLayout();
 		this.loadIcons();
 		this.loadProperties();
 		
 		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.toolComposite);
-		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.pianoComposite);
+		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.canvas);
+	}
+	
+	public void createControlLayout() {
+		UITableLayout uiLayout = new UITableLayout(0f);
+		uiLayout.set(this.toolComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+		uiLayout.set(this.canvas, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		uiLayout.set(this.canvas, UITableLayout.PACKED_WIDTH, Float.valueOf(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)));
+		uiLayout.set(this.canvas, UITableLayout.PACKED_HEIGHT, Float.valueOf(NATURAL_HEIGHT));
+		
+		this.control.setLayout(uiLayout);
 	}
 	
 	private void initToolBar() {
-		GridLayout layout = new GridLayout();
-		layout.makeColumnsEqualWidth = false;
-		layout.numColumns = 0;
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
+		UIFactory uiFactory = getUIFactory();
 		
-		this.toolComposite = new Composite(this, SWT.NONE);
+		int column = 0;
+		
+		this.toolComposite = uiFactory.createPanel(this.control, false);
+		this.createToolBarLayout();
 		
 		// position
-		layout.numColumns ++;
-		Button goLeft = new Button(this.toolComposite, SWT.ARROW | SWT.LEFT);
-		goLeft.addSelectionListener(new TGActionProcessorListener(this.context, TGGoLeftAction.NAME));
+		this.goLeft = uiFactory.createButton(this.toolComposite);
+		this.goLeft.addSelectionListener(new TGActionProcessorListener(this.context, TGGoLeftAction.NAME));
+		this.createToolItemLayout(this.goLeft, ++column);
 		
-		layout.numColumns ++;
-		Button goRight = new Button(this.toolComposite, SWT.ARROW | SWT.RIGHT);
-		goRight.addSelectionListener(new TGActionProcessorListener(this.context, TGGoRightAction.NAME));
+		this.goRight = uiFactory.createButton(this.toolComposite);
+		this.goRight.addSelectionListener(new TGActionProcessorListener(this.context, TGGoRightAction.NAME));
+		this.createToolItemLayout(this.goRight, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolComposite);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// duration
-		layout.numColumns ++;
-		Button decrement = new Button(this.toolComposite, SWT.ARROW | SWT.MIN);
-		decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.decrement = uiFactory.createButton(this.toolComposite);
+		this.decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.createToolItemLayout(this.decrement, ++column);
 		
-		layout.numColumns ++;
-		this.durationLabel = new Label(this.toolComposite, SWT.BORDER);
+		this.durationLabel = uiFactory.createImageView(this.toolComposite);
+		this.createToolItemLayout(this.durationLabel, ++column);
 		
-		layout.numColumns ++;
-		Button increment = new Button(this.toolComposite, SWT.ARROW | SWT.MAX);
-		increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.increment = uiFactory.createButton(this.toolComposite);
+		this.increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.createToolItemLayout(this.increment, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolComposite);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// scale
-		layout.numColumns ++;
-		this.scale = new Button(this.toolComposite, SWT.PUSH);
+		this.scale = uiFactory.createButton(this.toolComposite);
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.scale.addSelectionListener(new TGActionProcessorListener(this.context, TGOpenScaleDialogAction.NAME));
+		this.createToolItemLayout(this.scale, ++column);
 		
 		// scale name
-		layout.numColumns ++;
-		this.scaleName = new Label(this.toolComposite, SWT.LEFT);
+		this.scaleName = uiFactory.createLabel(this.toolComposite);
+		this.createToolItemLayout(this.scaleName, ++column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		// settings
-		layout.numColumns ++;
-		this.settings = new Button(this.toolComposite, SWT.PUSH);
+		this.settings = uiFactory.createButton(this.toolComposite);
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
-		this.settings.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
-		this.settings.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.settings.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				configure();
 			}
 		});
+		this.createToolItemLayout(this.settings, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.toolComposite.setLayout(layout);
-		this.toolComposite.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
+		this.toolComposite.getLayout().set(goLeft, UITableLayout.MARGIN_LEFT, 0f);
+		this.toolComposite.getLayout().set(this.settings, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 	
-	private void makeToolSeparator(Composite parent){
-		Label separator = new Label(parent,SWT.SEPARATOR);
-		separator.setLayoutData(new GridData(20,20));
+	private void createToolBarLayout(){
+		UITableLayout uiLayout = new UITableLayout();
+		uiLayout.set(UITableLayout.MARGIN_LEFT, 0f);
+		uiLayout.set(UITableLayout.MARGIN_RIGHT, 0f);
+		
+		this.toolComposite.setLayout(uiLayout);
+	}
+	
+	private void createToolItemLayout(UIControl uiControl, int column){
+		this.createToolItemLayout(uiControl, column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+	}
+	
+	private void createToolItemLayout(UIControl uiControl, int column, Integer alignX, Integer alignY, Boolean fillX, Boolean fillY){
+		UITableLayout uiLayout = (UITableLayout) this.toolComposite.getLayout();
+		uiLayout.set(uiControl, 1, column, alignX, alignY, fillX, fillX);
+	}
+	
+	private void createToolSeparator(UIFactory uiFactory, int column){
+		UISeparator uiSeparator = uiFactory.createVerticalSeparator(this.toolComposite);
+		UITableLayout uiLayout = (UITableLayout) this.toolComposite.getLayout();
+		uiLayout.set(uiSeparator, 1, column, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
+		uiLayout.set(uiSeparator, UITableLayout.PACKED_WIDTH, 20f);
+		uiLayout.set(uiSeparator, UITableLayout.PACKED_HEIGHT, 20f);
 	}
 	
 	private void loadDurationImage(boolean force) {
 		int duration = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration().getValue();
-		if(force || this.duration != duration){
+		if( force || this.duration != duration ){
 			this.duration = duration;
 			this.durationLabel.setImage(TuxGuitar.getInstance().getIconManager().getDuration(this.duration));
 		}
@@ -165,17 +199,14 @@ public class TGPiano extends Composite {
 		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKey );
 		String name = TuxGuitar.getInstance().getScaleManager().getScaleName( scaleIndex );
 		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
-		this.scaleName.pack();
 	}
 	
-	private void makePiano(){
+	private void initCanvas(){
 		this.image = makePianoImage();
-		this.pianoComposite = new Composite(this,SWT.BORDER);
-		this.pianoComposite.setLayout(new GridLayout());
-		this.pianoComposite.setLayoutData(new GridData((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT));
-		this.pianoComposite.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGPianoPainterListener()));
-		this.pianoComposite.addMouseListener(new TGPianoMouseListener());
-		this.pianoComposite.setFocus();
+		this.canvas = getUIFactory().createCanvas(this.control, true);
+		this.canvas.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGPianoPainterListener()));
+		this.canvas.addMouseUpListener(new TGPianoMouseListener());
+		this.canvas.setFocus();
 	}
 	
 	/**
@@ -184,7 +215,8 @@ public class TGPiano extends Composite {
 	 * @return
 	 */
 	private TGImage makePianoImage(){
-		TGImage image = new TGImageImpl(getDisplay(),(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ), NATURAL_HEIGHT);
+		UIFactory factory = getUIFactory();
+		TGImage image = new TGImageImpl(factory, factory.createImage((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)), NATURAL_HEIGHT));
 		TGPainter painter = image.createPainter();
 		
 		int x = 0;
@@ -340,11 +372,11 @@ public class TGPiano extends Composite {
 	 * @param point
 	 * @return
 	 */
-	private int getSelection(Point point){
-		int posX = 0;
+	private int getSelection(float x){
+		float posX = 0;
 		
 		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
-			int width = 0;
+			float width = 0f;
 			
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
 				width = NATURAL_WIDTH;
@@ -358,7 +390,7 @@ public class TGPiano extends Composite {
 				width = SHARP_WIDTH;
 			}
 			
-			if(point.x >= posX && point.x < (posX + width)  ){
+			if( x >= posX && x < (posX + width)  ){
 				return i;
 			}
 			
@@ -367,8 +399,8 @@ public class TGPiano extends Composite {
 		return -1;
 	}
 	
-	protected void hit(int x, int y) {
-		int value = getSelection(new Point(x,y));
+	protected void hit(float x, float y) {
+		int value = this.getSelection(x);
 		
 		if(!this.removeNote(value)) {
 			this.addNote(value);
@@ -486,21 +518,33 @@ public class TGPiano extends Composite {
 	}
 	
 	public void redraw() {
-		if(!super.isDisposed()){
-			super.redraw();
-			this.pianoComposite.redraw();
+		if(!this.isDisposed()){
+			this.control.redraw();
+			this.canvas.redraw();
 			this.loadDurationImage(false);
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!super.isDisposed() /*&& !TuxGuitar.getInstance().isLocked()*/){
-			this.pianoComposite.redraw();
+		if(!this.isDisposed() ){
+			this.canvas.redraw();
 		}
 	}
 	
+	public void setVisible(boolean visible) {
+		this.control.setVisible(visible);
+	}
+	
+	public boolean isVisible() {
+		return (this.control.isVisible());
+	}
+	
+	public boolean isDisposed() {
+		return (this.control.isDisposed());
+	}
+	
 	public void dispose(){
-		super.dispose();
+		this.control.dispose();
 		this.image.dispose();
 		this.config.dispose();
 	}
@@ -509,43 +553,58 @@ public class TGPiano extends Composite {
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.loadScaleName();
-		this.layout(true,true);
+		this.control.layout();
 	}
 	
 	public void loadIcons(){
-		this.getShell().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
+		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
+		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
+		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.loadDurationImage(true);
-		this.layout(true,true);
+		this.control.layout();
 	}
 	
 	public void loadScale(){
 		this.loadScaleName();
 		this.setChanges(true);
+		this.control.layout();
 	}
 	
-	protected void configure(){
-		this.config.configure(getShell());
+	public void configure(){
+		this.config.configure((UIWindow) this.control.getParent());
+	}
+	
+	public void reloadFromConfig() {
 		this.setChanges(true);
 		this.redraw();
 	}
 	
-	public Composite getPianoComposite() {
-		return this.pianoComposite;
+	public UIPanel getControl(){
+		return this.control;
 	}
 	
-	private class TGPianoMouseListener implements MouseListener {
+	public UICanvas getCanvas() {
+		return this.canvas;
+	}
+	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
+	private class TGPianoMouseListener implements UIMouseUpListener {
 		
 		public TGPianoMouseListener(){
 			super();
 		}
 		
-		public void mouseUp(MouseEvent e) {
-			getPianoComposite().setFocus();
-			if(e.button == 1){
+		public void onMouseUp(UIMouseEvent event) {
+			getCanvas().setFocus();
+			if( event.getButton() == 1 ){
 				if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TGEditorManager.getInstance(TGPiano.this.context).isLocked()){
 					if( getExternalBeat() == null ){
-						hit(e.x, e.y);
+						hit(event.getPosition().getX(), event.getPosition().getY());
 					}else{
 						setExternalBeat( null );
 						TuxGuitar.getInstance().updateCache(true);
@@ -555,17 +614,9 @@ public class TGPiano extends Composite {
 				new TGActionProcessor(TGPiano.this.context, TGGoRightAction.NAME).process();
 			}
 		}
-		
-		public void mouseDoubleClick(MouseEvent e) {
-			//Not implemented
-		}
-		
-		public void mouseDown(MouseEvent e) {
-			//Not implemented
-		}
 	}
 	
-	private class TGPianoPainterListener implements TGBufferedPainterHandle {
+	private class TGPianoPainterListener implements TG2BufferedPainterHandle {
 		
 		public TGPianoPainterListener(){
 			super();
@@ -575,8 +626,8 @@ public class TGPiano extends Composite {
 			TGPiano.this.paintEditor(painter);
 		}
 
-		public Composite getPaintableControl() {
-			return TGPiano.this.pianoComposite;
+		public UICanvas getPaintableControl() {
+			return TGPiano.this.canvas;
 		}
 	}
 }

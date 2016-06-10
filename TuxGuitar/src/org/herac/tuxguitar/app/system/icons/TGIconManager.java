@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.graphics.Image;
+//import org.eclipse.swt.graphics.Image;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -23,131 +24,137 @@ public class TGIconManager {
 	private TGIconTheme theme;
 	private Map<String, TGIconTheme> themeCache;
 	
-	private Image[] durations;
-	private Image editUndo;
-	private Image editRedo;
-	private Image editVoice1;
-	private Image editVoice2;
-	private Image editModeSelection;
-	private Image editModeEdition;
-	private Image editModeEditionNotNatural;
-	private Image layoutPage;
-	private Image layoutLinear;
-	private Image layoutMultitrack;
-	private Image layoutScore;
-	private Image layoutCompact;
-	private Image transport;
-	private Image transportFirst1;
-	private Image transportFirst2;
-	private Image transportLast1;
-	private Image transportLast2;
-	private Image transportPrevious1;
-	private Image transportPrevious2;
-	private Image transportNext1;
-	private Image transportNext2;
-	private Image transportStop1;
-	private Image transportStop2;
-	private Image transportPlay1;
-	private Image transportPlay2;
-	private Image transportPause;
-	private Image transportIconFirst1;
-	private Image transportIconFirst2;
-	private Image transportIconLast1;
-	private Image transportIconLast2;
-	private Image transportIconPrevious1;
-	private Image transportIconPrevious2;
-	private Image transportIconNext1;
-	private Image transportIconNext2;
-	private Image transportIconStop1;
-	private Image transportIconStop2;
-	private Image transportIconPlay1;
-	private Image transportIconPlay2;
-	private Image transportIconPause;
-	private Image transportMetronome;
-	private Image transportMode;
-	private Image markerList;
-	private Image markerAdd;
-	private Image markerRemove;
-	private Image markerFirst;
-	private Image markerLast;
-	private Image markerPrevious;
-	private Image markerNext;
-	private Image aboutDescription;
-	private Image aboutLicense;
-	private Image aboutAuthors;
-	private Image appIcon;
-	private Image appIcon16;
-	private Image appIcon24;
-	private Image appIcon32;
-	private Image appIcon48;
-	private Image appIcon64;
-	private Image appIcon96;
-	private Image appSplash;
-	private Image optionMain;
-	private Image optionStyle;
-	private Image optionSound;
-	private Image optionLanguage;
-	private Image optionToolbars;
-	private Image optionSkin;
-	private Image trackAdd;
-	private Image trackRemove;
-	private Image paintableTempo;
-	private Image paintableGrace;
-	private Image fretboard;
-	private Image fretboardFirstFret;
-	private Image fretboardFret;
-	private Image compositionTimeSignature;
-	private Image compositionTempo;
-	private Image compositionRepeatOpen;
-	private Image compositionRepeatClose;
-	private Image compositionRepeatAlternative;
-	private Image songProperties;
-	private Image durationDotted;
-	private Image durationDoubleDotted;
-	private Image divisionType;
-	private Image fileNew;
-	private Image fileOpen;
-	private Image fileSave;
-	private Image fileSaveAs;
-	private Image filePrint;
-	private Image filePrintPreview;
-	private Image chord;
-	private Image noteTied;
-	private Image instruments;
-	private Image dynamicPPP;
-	private Image dynamicPP;
-	private Image dynamicP;
-	private Image dynamicMP;
-	private Image dynamicMF;
-	private Image dynamicF;
-	private Image dynamicFF;
-	private Image dynamicFFF;
-	private Image effectDead;
-	private Image effectGhost;
-	private Image effectAccentuated;
-	private Image effectHeavyAccentuated;
-	private Image effectHarmonic;
-	private Image effectGrace;
-	private Image effectBend;
-	private Image effectTremoloBar;
-	private Image effectSlide;
-	private Image effectHammer;
-	private Image effectVibrato;
-	private Image effectTrill;
-	private Image effectTremoloPicking;
-	private Image effectPalmMute;
-	private Image effectStaccato;
-	private Image effectTapping;
-	private Image effectSlapping;
-	private Image effectPopping;
-	private Image effectFadeIn;
-	private Image browserNew;
-	private Image browserFile;
-	private Image browserFolder;
-	private Image browserRoot;
-	private Image browserBack;
-	private Image browserRefresh;
-	private Image settings;
+	private UIImage[] durations;
+	private UIImage editUndo;
+	private UIImage editRedo;
+	private UIImage editVoice1;
+	private UIImage editVoice2;
+	private UIImage editModeSelection;
+	private UIImage editModeEdition;
+	private UIImage editModeEditionNotNatural;
+	private UIImage layoutPage;
+	private UIImage layoutLinear;
+	private UIImage layoutMultitrack;
+	private UIImage layoutScore;
+	private UIImage layoutCompact;
+	private UIImage transport;
+	private UIImage transportFirst1;
+	private UIImage transportFirst2;
+	private UIImage transportLast1;
+	private UIImage transportLast2;
+	private UIImage transportPrevious1;
+	private UIImage transportPrevious2;
+	private UIImage transportNext1;
+	private UIImage transportNext2;
+	private UIImage transportStop1;
+	private UIImage transportStop2;
+	private UIImage transportPlay1;
+	private UIImage transportPlay2;
+	private UIImage transportPause;
+	private UIImage transportIconFirst1;
+	private UIImage transportIconFirst2;
+	private UIImage transportIconLast1;
+	private UIImage transportIconLast2;
+	private UIImage transportIconPrevious1;
+	private UIImage transportIconPrevious2;
+	private UIImage transportIconNext1;
+	private UIImage transportIconNext2;
+	private UIImage transportIconStop1;
+	private UIImage transportIconStop2;
+	private UIImage transportIconPlay1;
+	private UIImage transportIconPlay2;
+	private UIImage transportIconPause;
+	private UIImage transportMetronome;
+	private UIImage transportMode;
+	private UIImage markerList;
+	private UIImage markerAdd;
+	private UIImage markerRemove;
+	private UIImage markerFirst;
+	private UIImage markerLast;
+	private UIImage markerPrevious;
+	private UIImage markerNext;
+	private UIImage aboutDescription;
+	private UIImage aboutLicense;
+	private UIImage aboutAuthors;
+	private UIImage appIcon;
+	private UIImage appIcon16;
+	private UIImage appIcon24;
+	private UIImage appIcon32;
+	private UIImage appIcon48;
+	private UIImage appIcon64;
+	private UIImage appIcon96;
+	private UIImage appSplash;
+	private UIImage optionMain;
+	private UIImage optionStyle;
+	private UIImage optionSound;
+	private UIImage optionLanguage;
+	private UIImage optionToolbars;
+	private UIImage optionSkin;
+	private UIImage trackAdd;
+	private UIImage trackRemove;
+	private UIImage fretboard;
+	private UIImage fretboardFirstFret;
+	private UIImage fretboardFret;
+	private UIImage compositionTimeSignature;
+	private UIImage compositionTempo;
+	private UIImage compositionRepeatOpen;
+	private UIImage compositionRepeatClose;
+	private UIImage compositionRepeatAlternative;
+	private UIImage songProperties;
+	private UIImage durationDotted;
+	private UIImage durationDoubleDotted;
+	private UIImage divisionType;
+	private UIImage fileNew;
+	private UIImage fileOpen;
+	private UIImage fileSave;
+	private UIImage fileSaveAs;
+	private UIImage filePrint;
+	private UIImage filePrintPreview;
+	private UIImage chord;
+	private UIImage noteTied;
+	private UIImage instruments;
+	private UIImage dynamicPPP;
+	private UIImage dynamicPP;
+	private UIImage dynamicP;
+	private UIImage dynamicMP;
+	private UIImage dynamicMF;
+	private UIImage dynamicF;
+	private UIImage dynamicFF;
+	private UIImage dynamicFFF;
+	private UIImage effectDead;
+	private UIImage effectGhost;
+	private UIImage effectAccentuated;
+	private UIImage effectHeavyAccentuated;
+	private UIImage effectHarmonic;
+	private UIImage effectGrace;
+	private UIImage effectBend;
+	private UIImage effectTremoloBar;
+	private UIImage effectSlide;
+	private UIImage effectHammer;
+	private UIImage effectVibrato;
+	private UIImage effectTrill;
+	private UIImage effectTremoloPicking;
+	private UIImage effectPalmMute;
+	private UIImage effectStaccato;
+	private UIImage effectTapping;
+	private UIImage effectSlapping;
+	private UIImage effectPopping;
+	private UIImage effectFadeIn;
+	private UIImage browserNew;
+	private UIImage browserFile;
+	private UIImage browserFolder;
+	private UIImage browserRoot;
+	private UIImage browserBack;
+	private UIImage browserRefresh;
+	private UIImage arrowUp;
+	private UIImage arrowDown;
+	private UIImage arrowLeft;
+	private UIImage arrowRight;
+	private UIImage statusQuestion;
+	private UIImage statusError;
+	private UIImage statusWarning;
+	private UIImage statusInfo;
+	private UIImage settings;
 	
 	private TGIconManager(TGContext context){
 		this.context = context;
@@ -192,7 +199,7 @@ public class TGIconManager {
 	
 	public void loadIcons(){
 		this.theme = this.findIconTheme(this.findConfiguredThemeName());
-		this.durations = new Image[]{
+		this.durations = new UIImage[]{
 			loadIcon("1.png"),
 			loadIcon("2.png"),
 			loadIcon("4.png"),
@@ -201,8 +208,6 @@ public class TGIconManager {
 			loadIcon("32.png"),
 			loadIcon("64.png")
 		};
-		this.paintableTempo = loadIcon("tempo.png");
-		this.paintableGrace = loadIcon("grace.png");
 		this.layoutPage = loadIcon("layout_page.png");
 		this.layoutLinear = loadIcon("layout_linear.png");
 		this.layoutMultitrack = loadIcon("layout_multitrack.png");
@@ -324,13 +329,21 @@ public class TGIconManager {
 		this.browserRoot = loadIcon("browser_root.png");
 		this.browserBack = loadIcon("browser_back.png");
 		this.browserRefresh = loadIcon("browser_refresh.png");
+		this.arrowUp = loadIcon("arrow_up.png");
+		this.arrowDown = loadIcon("arrow_down.png");
+		this.arrowLeft = loadIcon("arrow_left.png");
+		this.arrowRight = loadIcon("arrow_right.png");
+		this.statusQuestion = loadIcon("status_question.png");
+		this.statusError = loadIcon("status_error.png");
+		this.statusWarning = loadIcon("status_warning.png");
+		this.statusInfo = loadIcon("status_info.png");
 		this.settings = loadIcon("settings.png");
 	}
 	
-	private Image loadIcon(String name) {
-		Image image = this.theme.getResource(name);
+	private UIImage loadIcon(String name) {
+		UIImage image = this.theme.getResource(name);
 		if( image == null ) {
-			image = TGFileUtils.loadImage(this.context, this.theme.getName(), name);
+			image = TGFileUtils.loadImage2(this.context, this.theme.getName(), name);
 			
 			this.theme.setResource(name, image);
 		}
@@ -345,9 +358,9 @@ public class TGIconManager {
 	}
 	
 	public void disposeTheme(TGIconTheme theme) {
-		List<Image> images = new ArrayList<Image>(theme.getResources().values());
-		for(Image image : images) {
-			image.dispose();
+		List<UIImage> uiImages = new ArrayList<UIImage>(theme.getResources().values());
+		for(UIImage uiImage : uiImages) {
+			uiImage.dispose();
 		}
 	}
 	
@@ -355,7 +368,7 @@ public class TGIconManager {
 		this.disposeThemes();
 	}
 	
-	public Image getDuration(int value){
+	public UIImage getDuration(int value){
 		switch(value){
 		case TGDuration.WHOLE:
 			return this.durations[0];
@@ -374,503 +387,527 @@ public class TGIconManager {
 		}
 		return null;
 	}
-	
-	public Image getAboutAuthors() {
+
+	public UIImage getAboutAuthors() {
 		return this.aboutAuthors;
 	}
 	
-	public Image getAboutDescription() {
+	public UIImage getAboutDescription() {
 		return this.aboutDescription;
 	}
 	
-	public Image getAboutLicense() {
+	public UIImage getAboutLicense() {
 		return this.aboutLicense;
 	}
 	
-	public Image getAppIcon() {
+	public UIImage getAppIcon() {
 		return this.appIcon;
 	}
 	
-	public Image getAppIcon16() {
+	public UIImage getAppIcon16() {
 		return this.appIcon16;
 	}
 	
-	public Image getAppIcon24() {
+	public UIImage getAppIcon24() {
 		return this.appIcon24;
 	}
 	
-	public Image getAppIcon32() {
+	public UIImage getAppIcon32() {
 		return this.appIcon32;
 	}
 	
-	public Image getAppIcon48() {
+	public UIImage getAppIcon48() {
 		return this.appIcon48;
 	}
 	
-	public Image getAppIcon64() {
+	public UIImage getAppIcon64() {
 		return this.appIcon64;
 	}
 	
-	public Image getAppIcon96() {
+	public UIImage getAppIcon96() {
 		return this.appIcon96;
 	}
 	
-	public Image getAppSplash() {
+	public UIImage getAppSplash() {
 		return this.appSplash;
 	}
 	
-	public Image getChord() {
+	public UIImage getChord() {
 		return this.chord;
 	}
 	
-	public Image getCompositionRepeatClose() {
+	public UIImage getCompositionRepeatClose() {
 		return this.compositionRepeatClose;
 	}
 	
-	public Image getCompositionRepeatAlternative() {
+	public UIImage getCompositionRepeatAlternative() {
 		return this.compositionRepeatAlternative;
 	}
 	
-	public Image getCompositionRepeatOpen() {
+	public UIImage getCompositionRepeatOpen() {
 		return this.compositionRepeatOpen;
 	}
 	
-	public Image getCompositionTempo() {
+	public UIImage getCompositionTempo() {
 		return this.compositionTempo;
 	}
 	
-	public Image getCompositionTimeSignature() {
+	public UIImage getCompositionTimeSignature() {
 		return this.compositionTimeSignature;
 	}
 	
-	public Image getDurationDotted() {
+	public UIImage getDurationDotted() {
 		return this.durationDotted;
 	}
 	
-	public Image getDurationDoubleDotted() {
+	public UIImage getDurationDoubleDotted() {
 		return this.durationDoubleDotted;
 	}
 	
-	public Image getDivisionType() {
+	public UIImage getDivisionType() {
 		return this.divisionType;
 	}
 	
-	public Image getDynamicF() {
+	public UIImage getDynamicF() {
 		return this.dynamicF;
 	}
 	
-	public Image getDynamicFF() {
+	public UIImage getDynamicFF() {
 		return this.dynamicFF;
 	}
 	
-	public Image getDynamicFFF() {
+	public UIImage getDynamicFFF() {
 		return this.dynamicFFF;
 	}
 	
-	public Image getDynamicMF() {
+	public UIImage getDynamicMF() {
 		return this.dynamicMF;
 	}
 	
-	public Image getDynamicMP() {
+	public UIImage getDynamicMP() {
 		return this.dynamicMP;
 	}
 	
-	public Image getDynamicP() {
+	public UIImage getDynamicP() {
 		return this.dynamicP;
 	}
 	
-	public Image getDynamicPP() {
+	public UIImage getDynamicPP() {
 		return this.dynamicPP;
 	}
 	
-	public Image getDynamicPPP() {
+	public UIImage getDynamicPPP() {
 		return this.dynamicPPP;
 	}
 	
-	public Image getEditModeEdition() {
+	public UIImage getEditModeEdition() {
 		return this.editModeEdition;
 	}
 	
-	public Image getEditModeEditionNotNatural() {
+	public UIImage getEditModeEditionNotNatural() {
 		return this.editModeEditionNotNatural;
 	}
 	
-	public Image getEditModeSelection() {
+	public UIImage getEditModeSelection() {
 		return this.editModeSelection;
 	}
 	
-	public Image getEditRedo() {
+	public UIImage getEditRedo() {
 		return this.editRedo;
 	}
 	
-	public Image getEditUndo() {
+	public UIImage getEditUndo() {
 		return this.editUndo;
 	}
 	
-	public Image getEditVoice1() {
+	public UIImage getEditVoice1() {
 		return this.editVoice1;
 	}
 	
-	public Image getEditVoice2() {
+	public UIImage getEditVoice2() {
 		return this.editVoice2;
 	}
 	
-	public Image getEffectAccentuated() {
+	public UIImage getEffectAccentuated() {
 		return this.effectAccentuated;
 	}
 	
-	public Image getEffectBend() {
+	public UIImage getEffectBend() {
 		return this.effectBend;
 	}
 	
-	public Image getEffectDead() {
+	public UIImage getEffectDead() {
 		return this.effectDead;
 	}
 	
-	public Image getEffectFadeIn() {
+	public UIImage getEffectFadeIn() {
 		return this.effectFadeIn;
 	}
 	
-	public Image getEffectGhost() {
+	public UIImage getEffectGhost() {
 		return this.effectGhost;
 	}
 	
-	public Image getEffectGrace() {
+	public UIImage getEffectGrace() {
 		return this.effectGrace;
 	}
 	
-	public Image getEffectHammer() {
+	public UIImage getEffectHammer() {
 		return this.effectHammer;
 	}
 	
-	public Image getEffectHarmonic() {
+	public UIImage getEffectHarmonic() {
 		return this.effectHarmonic;
 	}
 	
-	public Image getEffectHeavyAccentuated() {
+	public UIImage getEffectHeavyAccentuated() {
 		return this.effectHeavyAccentuated;
 	}
 	
-	public Image getEffectPalmMute() {
+	public UIImage getEffectPalmMute() {
 		return this.effectPalmMute;
 	}
 	
-	public Image getEffectPopping() {
+	public UIImage getEffectPopping() {
 		return this.effectPopping;
 	}
 	
-	public Image getEffectSlapping() {
+	public UIImage getEffectSlapping() {
 		return this.effectSlapping;
 	}
 	
-	public Image getEffectSlide() {
+	public UIImage getEffectSlide() {
 		return this.effectSlide;
 	}
 	
-	public Image getEffectStaccato() {
+	public UIImage getEffectStaccato() {
 		return this.effectStaccato;
 	}
 	
-	public Image getEffectTapping() {
+	public UIImage getEffectTapping() {
 		return this.effectTapping;
 	}
 	
-	public Image getEffectTremoloBar() {
+	public UIImage getEffectTremoloBar() {
 		return this.effectTremoloBar;
 	}
 	
-	public Image getEffectTremoloPicking() {
+	public UIImage getEffectTremoloPicking() {
 		return this.effectTremoloPicking;
 	}
 	
-	public Image getEffectTrill() {
+	public UIImage getEffectTrill() {
 		return this.effectTrill;
 	}
 	
-	public Image getEffectVibrato() {
+	public UIImage getEffectVibrato() {
 		return this.effectVibrato;
 	}
 	
-	public Image getFileNew() {
+	public UIImage getFileNew() {
 		return this.fileNew;
 	}
 	
-	public Image getFileOpen() {
+	public UIImage getFileOpen() {
 		return this.fileOpen;
 	}
 	
-	public Image getFilePrint() {
+	public UIImage getFilePrint() {
 		return this.filePrint;
 	}
 	
-	public Image getFilePrintPreview() {
+	public UIImage getFilePrintPreview() {
 		return this.filePrintPreview;
 	}
 	
-	public Image getFileSave() {
+	public UIImage getFileSave() {
 		return this.fileSave;
 	}
 	
-	public Image getFileSaveAs() {
+	public UIImage getFileSaveAs() {
 		return this.fileSaveAs;
 	}
 	
-	public Image getFretboard() {
+	public UIImage getFretboard() {
 		return this.fretboard;
 	}
 	
-	public Image getFretboardFirstFret() {
+	public UIImage getFretboardFirstFret() {
 		return this.fretboardFirstFret;
 	}
 	
-	public Image getFretboardFret() {
+	public UIImage getFretboardFret() {
 		return this.fretboardFret;
 	}
 	
-	public Image getLayoutLinear() {
+	public UIImage getLayoutLinear() {
 		return this.layoutLinear;
 	}
 	
-	public Image getLayoutMultitrack() {
+	public UIImage getLayoutMultitrack() {
 		return this.layoutMultitrack;
 	}
 	
-	public Image getLayoutPage() {
+	public UIImage getLayoutPage() {
 		return this.layoutPage;
 	}
 	
-	public Image getLayoutScore() {
+	public UIImage getLayoutScore() {
 		return this.layoutScore;
 	}
 	
-	public Image getLayoutCompact() {
+	public UIImage getLayoutCompact() {
 		return this.layoutCompact;
 	}
 	
-	public Image getMarkerAdd() {
+	public UIImage getMarkerAdd() {
 		return this.markerAdd;
 	}
 	
-	public Image getMarkerFirst() {
+	public UIImage getMarkerFirst() {
 		return this.markerFirst;
 	}
 	
-	public Image getMarkerLast() {
+	public UIImage getMarkerLast() {
 		return this.markerLast;
 	}
 	
-	public Image getMarkerList() {
+	public UIImage getMarkerList() {
 		return this.markerList;
 	}
 	
-	public Image getMarkerNext() {
+	public UIImage getMarkerNext() {
 		return this.markerNext;
 	}
 	
-	public Image getMarkerPrevious() {
+	public UIImage getMarkerPrevious() {
 		return this.markerPrevious;
 	}
 	
-	public Image getMarkerRemove() {
+	public UIImage getMarkerRemove() {
 		return this.markerRemove;
 	}
 	
-	public Image getInstruments() {
+	public UIImage getInstruments() {
 		return this.instruments;
 	}
 	
-	public Image getNoteTied() {
+	public UIImage getNoteTied() {
 		return this.noteTied;
 	}
 	
-	public Image getOptionLanguage() {
+	public UIImage getOptionLanguage() {
 		return this.optionLanguage;
 	}
 	
-	public Image getOptionMain() {
+	public UIImage getOptionMain() {
 		return this.optionMain;
 	}
 	
-	public Image getOptionSound() {
+	public UIImage getOptionSound() {
 		return this.optionSound;
 	}
 	
-	public Image getOptionStyle() {
+	public UIImage getOptionStyle() {
 		return this.optionStyle;
 	}
 	
-	public Image getOptionToolbars() {
+	public UIImage getOptionToolbars() {
 		return this.optionToolbars;
 	}
 	
-	public Image getOptionSkin() {
+	public UIImage getOptionSkin() {
 		return this.optionSkin;
 	}
 	
-	public Image getPaintableGrace() {
-		return this.paintableGrace;
-	}
-	
-	public Image getPaintableTempo() {
-		return this.paintableTempo;
-	}
-	
-	public Image getSongProperties() {
+	public UIImage getSongProperties() {
 		return this.songProperties;
 	}
 	
-	public Image getTrackAdd() {
+	public UIImage getTrackAdd() {
 		return this.trackAdd;
 	}
 	
-	public Image getTrackRemove() {
+	public UIImage getTrackRemove() {
 		return this.trackRemove;
 	}
 	
-	public Image getTransport() {
+	public UIImage getTransport() {
 		return this.transport;
 	}
 	
-	public Image getTransportFirst1() {
+	public UIImage getTransportFirst1() {
 		return this.transportFirst1;
 	}
 	
-	public Image getTransportFirst2() {
+	public UIImage getTransportFirst2() {
 		return this.transportFirst2;
 	}
 	
-	public Image getTransportIconFirst1() {
+	public UIImage getTransportIconFirst1() {
 		return this.transportIconFirst1;
 	}
 	
-	public Image getTransportIconFirst2() {
+	public UIImage getTransportIconFirst2() {
 		return this.transportIconFirst2;
 	}
 	
-	public Image getTransportIconLast1() {
+	public UIImage getTransportIconLast1() {
 		return this.transportIconLast1;
 	}
 	
-	public Image getTransportIconLast2() {
+	public UIImage getTransportIconLast2() {
 		return this.transportIconLast2;
 	}
 	
-	public Image getTransportIconNext1() {
+	public UIImage getTransportIconNext1() {
 		return this.transportIconNext1;
 	}
 	
-	public Image getTransportIconNext2() {
+	public UIImage getTransportIconNext2() {
 		return this.transportIconNext2;
 	}
 	
-	public Image getTransportIconPause() {
+	public UIImage getTransportIconPause() {
 		return this.transportIconPause;
 	}
 	
-	public Image getTransportIconPlay1() {
+	public UIImage getTransportIconPlay1() {
 		return this.transportIconPlay1;
 	}
 	
-	public Image getTransportIconPlay2() {
+	public UIImage getTransportIconPlay2() {
 		return this.transportIconPlay2;
 	}
 	
-	public Image getTransportIconPrevious1() {
+	public UIImage getTransportIconPrevious1() {
 		return this.transportIconPrevious1;
 	}
 	
-	public Image getTransportIconPrevious2() {
+	public UIImage getTransportIconPrevious2() {
 		return this.transportIconPrevious2;
 	}
 	
-	public Image getTransportIconStop1() {
+	public UIImage getTransportIconStop1() {
 		return this.transportIconStop1;
 	}
 	
-	public Image getTransportIconStop2() {
+	public UIImage getTransportIconStop2() {
 		return this.transportIconStop2;
 	}
 	
-	public Image getTransportLast1() {
+	public UIImage getTransportLast1() {
 		return this.transportLast1;
 	}
 	
-	public Image getTransportLast2() {
+	public UIImage getTransportLast2() {
 		return this.transportLast2;
 	}
 	
-	public Image getTransportNext1() {
+	public UIImage getTransportNext1() {
 		return this.transportNext1;
 	}
 	
-	public Image getTransportNext2() {
+	public UIImage getTransportNext2() {
 		return this.transportNext2;
 	}
 	
-	public Image getTransportPause() {
+	public UIImage getTransportPause() {
 		return this.transportPause;
 	}
 	
-	public Image getTransportPlay1() {
+	public UIImage getTransportPlay1() {
 		return this.transportPlay1;
 	}
 	
-	public Image getTransportPlay2() {
+	public UIImage getTransportPlay2() {
 		return this.transportPlay2;
 	}
 	
-	public Image getTransportPrevious1() {
+	public UIImage getTransportPrevious1() {
 		return this.transportPrevious1;
 	}
 	
-	public Image getTransportPrevious2() {
+	public UIImage getTransportPrevious2() {
 		return this.transportPrevious2;
 	}
 	
-	public Image getTransportStop1() {
+	public UIImage getTransportStop1() {
 		return this.transportStop1;
 	}
 	
-	public Image getTransportStop2() {
+	public UIImage getTransportStop2() {
 		return this.transportStop2;
 	}
 	
-	public Image getTransportMetronome() {
+	public UIImage getTransportMetronome() {
 		return this.transportMetronome;
 	}
 	
-	public Image getTransportMode() {
+	public UIImage getTransportMode() {
 		return this.transportMode;
 	}
 	
-	public Image getBrowserBack() {
+	public UIImage getBrowserBack() {
 		return this.browserBack;
 	}
 	
-	public Image getBrowserFile() {
+	public UIImage getBrowserFile() {
 		return this.browserFile;
 	}
 	
-	public Image getBrowserFolder() {
+	public UIImage getBrowserFolder() {
 		return this.browserFolder;
 	}
 	
-	public Image getBrowserRefresh() {
+	public UIImage getBrowserRefresh() {
 		return this.browserRefresh;
 	}
 	
-	public Image getBrowserRoot() {
+	public UIImage getBrowserRoot() {
 		return this.browserRoot;
 	}
 	
-	public Image getBrowserNew() {
+	public UIImage getBrowserNew() {
 		return this.browserNew;
 	}
 	
-	public Image getSettings() {
+	public UIImage getSettings() {
 		return this.settings;
 	}
 	
+	public UIImage getArrowUp() {
+		return this.arrowUp;
+	}
+
+	public UIImage getArrowDown() {
+		return this.arrowDown;
+	}
+
+	public UIImage getArrowLeft() {
+		return this.arrowLeft;
+	}
+
+	public UIImage getArrowRight() {
+		return this.arrowRight;
+	}
+
+	public UIImage getStatusQuestion() {
+		return statusQuestion;
+	}
+
+	public UIImage getStatusError() {
+		return statusError;
+	}
+
+	public UIImage getStatusWarning() {
+		return statusWarning;
+	}
+
+	public UIImage getStatusInfo() {
+		return statusInfo;
+	}
+
 	public static TGIconManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGIconManager.class.getName(), new TGSingletonFactory<TGIconManager>() {
 			public TGIconManager createInstance(TGContext context) {

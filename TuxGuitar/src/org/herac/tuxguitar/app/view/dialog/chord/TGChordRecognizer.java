@@ -4,15 +4,17 @@ package org.herac.tuxguitar.app.view.dialog.chord;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -20,76 +22,77 @@ import org.herac.tuxguitar.util.TGSynchronizer;
  * @author Nikola Kolarovic
  * 
  */
-public class TGChordRecognizer extends Composite {
+public class TGChordRecognizer {
 	
 	// index for parameter array
-	protected static final int TONIC_INDEX = 0;
-	protected static final int CHORD_INDEX = 1;
-	protected static final int ALTERATION_INDEX = 2;
-	protected static final int PLUSMINUS_INDEX = 3;
-	protected static final int BASS_INDEX = 4;
-	protected static final int ADDCHK_INDEX = 5;
-	protected static final int I5_INDEX = 6;
-	protected static final int I9_INDEX = 7;
-	protected static final int I11_INDEX = 8;
+	public static final int TONIC_INDEX = 0;
+	public static final int CHORD_INDEX = 1;
+	public static final int ALTERATION_INDEX = 2;
+	public static final int PLUSMINUS_INDEX = 3;
+	public static final int BASS_INDEX = 4;
+	public static final int ADDCHK_INDEX = 5;
+	public static final int I5_INDEX = 6;
+	public static final int I9_INDEX = 7;
+	public static final int I11_INDEX = 8;
 	
 	private TGChordDialog dialog;
-	private List proposalList;
-	private java.util.List<int[]> proposalParameters;
+	private UIPanel control;
+	private UIListBoxSelect<Integer> proposalList;
+	private List<int[]> proposalParameters;
 	
 	// this var keep a control to running threads.
 	private long runningProcess;
 	
-	public TGChordRecognizer(TGChordDialog dialog, Composite parent,int style) {
-		super(parent,style);
-		this.setLayout(dialog.gridLayout(1,false,0,0));
-		this.setLayoutData(makeGridData());
+	public TGChordRecognizer(TGChordDialog dialog, UIContainer parent) {
 		this.runningProcess = 0;
 		this.dialog = dialog;
-		this.init();
+		this.createControl(parent);
 	}
 	
-	public GridData makeGridData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 180;
-		return data;
-	}
-	
-	public void init(){
-		Composite composite = new Composite(this,SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+	public void createControl(UIContainer parent) {
+		final UIFactory uiFactory = this.dialog.getUIFactory();
+		UITableLayout layout = new UITableLayout(0f);
+		
+		this.control = uiFactory.createPanel(parent, true);
+		this.control.setLayout(layout);
+		
+		UITableLayout compositeLayout = new UITableLayout();
+		UIPanel composite = uiFactory.createPanel(this.control, false);
+		composite.setLayout(compositeLayout);
+		layout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		this.proposalParameters = new ArrayList<int[]>();
 		
-		this.proposalList = new List(composite,SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		this.proposalList.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.proposalList.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if(getDialog().getEditor() != null){
-					showChord(getProposalList().getSelectionIndex());
+		this.proposalList = uiFactory.createListBoxSelect(composite);
+		this.proposalList.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				if( getDialog().getEditor() != null ){
+					showChord();
 				}
 			}
 		});
-		
+		compositeLayout.set(this.proposalList, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
 	
 	/** sets the current chord to be selected proposal */
-	protected void showChord(int index) {
-		int[] params = (int[])this.proposalParameters.get(index);
-		this.dialog.getSelector().adjustWidgets(params[TONIC_INDEX],
-		                                        params[CHORD_INDEX],
-		                                        params[ALTERATION_INDEX],
-		                                        params[BASS_INDEX],
-		                                        params[PLUSMINUS_INDEX],
-		                                        params[ADDCHK_INDEX],
-		                                        params[I5_INDEX],
-		                                        params[I9_INDEX],
-		                                        params[I11_INDEX]);
-		String chordName = this.proposalList.getItem(index);
-		chordName = chordName.substring(0, chordName.indexOf('(')-1);
-		this.dialog.getEditor().getChordName().setText(chordName);
-		this.dialog.getEditor().redraw();
+	protected void showChord() {
+		UISelectItem<Integer> selectedItem = this.proposalList.getSelectedItem();
+		if( selectedItem != null && selectedItem.getValue() < this.proposalParameters.size()) {
+			int[] params = this.proposalParameters.get(selectedItem.getValue());
+			this.dialog.getSelector().adjustWidgets(params[TONIC_INDEX],
+			                                        params[CHORD_INDEX],
+			                                        params[ALTERATION_INDEX],
+			                                        params[BASS_INDEX],
+			                                        params[PLUSMINUS_INDEX],
+			                                        params[ADDCHK_INDEX],
+			                                        params[I5_INDEX],
+			                                        params[I9_INDEX],
+			                                        params[I11_INDEX]);
+			String chordName = selectedItem.getText();
+			chordName = chordName.substring(0, chordName.indexOf('(')-1);
+			this.dialog.getEditor().getChordName().setText(chordName);
+			this.dialog.getEditor().redraw();
+		}
 	}
 	
 	/**
@@ -105,7 +108,7 @@ public class TGChordRecognizer extends Composite {
 	public void recognize(final TGChord chord,final boolean redecorate,final boolean setChordName) {
 		
 		final long processId = (++ this.runningProcess);
-		final boolean sharp = this.dialog.getSelector().getSharpButton().getSelection();
+		final boolean sharp = this.dialog.getSelector().getSharpButton().isSelected();
 		
 		this.clearProposals();
 		
@@ -122,10 +125,10 @@ public class TGChordRecognizer extends Composite {
 	 * @param chord TGChord to be recognized
 	 * @return parameters for adjustWidgets and getChordName methods 
 	 */
-	protected /*int[]*/void makeProposals(long processId, TGChord chord, boolean sharp, boolean redecorate, boolean setChordName) {
-		java.util.List<int[]> proposalParameters = new ArrayList<int[]>();
-		java.util.List<String> proposalNames = new ArrayList<String>();		
-		java.util.List<Integer> notesInside = new ArrayList<Integer>();
+	protected void makeProposals(long processId, TGChord chord, boolean sharp, boolean redecorate, boolean setChordName) {
+		List<int[]> proposalParameters = new ArrayList<int[]>();
+		List<String> proposalNames = new ArrayList<String>();		
+		List<Integer> notesInside = new ArrayList<Integer>();
 		int[] tuning = this.dialog.getSelector().getTuning();
 		
 		// find and put in all the distinct notes
@@ -146,7 +149,7 @@ public class TGChordRecognizer extends Composite {
 		// Now search:
 		// go through all the possible tonics
 		// it is required because tonic isn't mandatory in a chord
-		java.util.List<Proposal> allProposals = new ArrayList<Proposal>(10);
+		List<Proposal> allProposals = new ArrayList<Proposal>(10);
 		
 		for (int tonic=0; tonic<12; tonic++) {
 			
@@ -219,7 +222,7 @@ public class TGChordRecognizer extends Composite {
 		}
 		
 		Iterator<Proposal> props = allProposals.iterator();
-		java.util.List<Proposal> unsortedProposals = new ArrayList<Proposal>(5);
+		List<Proposal> unsortedProposals = new ArrayList<Proposal>(5);
 		while (props.hasNext()) {
 			// place the still missing alterations notes accordingly... bass also
 			///////////////////////////////////////////////////////////////
@@ -312,7 +315,7 @@ public class TGChordRecognizer extends Composite {
 		notifyProposals(processId, sharp, redecorate, setChordName, proposalParameters, proposalNames);
 	}
 	
-	public void notifyProposals(final long processId, final boolean sharp, final boolean redecorate, final boolean setChordName, final java.util.List<int[]> proposalParameters, final java.util.List<String> proposalNames) {
+	public void notifyProposals(final long processId, final boolean sharp, final boolean redecorate, final boolean setChordName, final List<int[]> proposalParameters, final List<String> proposalNames) {
 		final int params[] = (!proposalParameters.isEmpty() ? (int[])proposalParameters.get(0) : null);
 		final String chordName = (params != null ? getChordName(params, sharp) : "");
 		
@@ -337,7 +340,7 @@ public class TGChordRecognizer extends Composite {
 	}
 	
 	/** adjusts widgets on the Recognizer combo */
-	protected void redecorate(int params[]){
+	public void redecorate(int params[]){
 		this.dialog.getSelector().adjustWidgets(params[TONIC_INDEX],
 		                                        params[CHORD_INDEX],
 		                                        params[ALTERATION_INDEX],
@@ -350,7 +353,7 @@ public class TGChordRecognizer extends Composite {
 	}
 	
 	/** Assembles chord name according to ChordNamingConvention */
-	protected String getChordName(int[] param, boolean sharp) {
+	public String getChordName(int[] param, boolean sharp) {
 		return new TGChordNamingConvention().createChordName(param[TONIC_INDEX],
 		                                                   param[CHORD_INDEX],
 		                                                   param[ALTERATION_INDEX],
@@ -367,7 +370,7 @@ public class TGChordRecognizer extends Composite {
 	 * @param type 0=add9, 1=add11, 2=add13
 	 * @param selectionIndex 0=usual, 1="+", 2="-"
 	 */
-	protected int getAddNote(int type, int selectionIndex) {
+	public int getAddNote(int type, int selectionIndex) {
 		
 		int wantedNote = 0;
 		
@@ -398,7 +401,7 @@ public class TGChordRecognizer extends Composite {
 		
 	}
 	
-	void findChordLogic(Proposal current) {
+	public void findChordLogic(Proposal current) {
 		boolean[] found = current.filled;
 		int[] plusMinus = current.plusminusValue;
 		/*if (!found[3])
@@ -470,7 +473,7 @@ public class TGChordRecognizer extends Composite {
 	 * @param sortIndex 1 to sort by don'tHaveGrade, 2 to sort by unusualGrade
 	 * @return sorted list by selected criteria
 	 */
-	public void shellsort( java.util.List<Proposal> a, int sortIndex ){
+	public void shellsort( List<Proposal> a, int sortIndex ){
 		int length = a.size();
 		for( int gap = length / 2; gap > 0;
 					 gap = gap == 2 ? 1 : (int) ( gap / 2.2 ) )
@@ -489,37 +492,36 @@ public class TGChordRecognizer extends Composite {
 			}
 	}
 
-	protected void addProposalParameters(int[] params){
+	public void addProposalParameters(int[] params){
 		this.proposalParameters.add(params);
 	}
 	
-	protected void addProposalName(String name){
-		this.proposalList.add(name);
+	public void addProposalName(String name) {
+		this.proposalList.addItem(new UISelectItem<Integer>(name, this.proposalList.getItemCount()));
 	}
 	
-//	protected void addProposal(int[] params, String name){
-//		this.proposalParameters.add(params);
-//		this.proposalList.add(name);
-//	}
-	
-	protected void clearProposals(){
-		this.proposalList.removeAll();
+	public void clearProposals(){
+		this.proposalList.removeItems();
 		this.proposalParameters.clear();
 	}
 	
-	protected TGChordDialog getDialog(){
+	public TGChordDialog getDialog(){
 		return this.dialog;
 	}
 	
-	protected List getProposalList(){
-		return this.proposalList;
-	}
+//	public UIListBoxSelect<Integer> getProposalList(){
+//		return this.proposalList;
+//	}
 	
-	protected boolean isValidProcess(long processId){
+	public boolean isValidProcess(long processId){
 		return (this.runningProcess == processId);
 	}
 	
-	protected class Proposal implements Cloneable{
+	public UIPanel getControl() {
+		return control;
+	}
+	
+	private class Proposal implements Cloneable{
 		int[] params;
 		
 		/** grade for chord "unusualness" - Cm is less unusual than E7/9+/C */
@@ -542,7 +544,7 @@ public class TGChordRecognizer extends Composite {
 		}
 		
 		/** initialize with needed notes */
-		public Proposal(java.util.List<Integer> notes) {
+		public Proposal(List<Integer> notes) {
 			this.params = new int[9];
 			for (int i=0; i<9; i++)
 				this.params[i]=-1;

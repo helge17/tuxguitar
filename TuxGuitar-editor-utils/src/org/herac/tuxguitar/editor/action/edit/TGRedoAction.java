@@ -19,7 +19,7 @@ public class TGRedoAction extends TGActionBase {
 		try {
 			TGUndoableManager tgUndoableManager = TGUndoableManager.getInstance(this.getContext());
 			if( tgUndoableManager.canRedo()){
-				tgUndoableManager.redo();
+				tgUndoableManager.redo(context);
 			}
 		} catch (TGCannotRedoException e) {
 			throw new TGActionException(e);

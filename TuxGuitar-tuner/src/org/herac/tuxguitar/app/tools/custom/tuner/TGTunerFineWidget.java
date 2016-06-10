@@ -3,103 +3,102 @@
  */
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGFontImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
  *
  */
-public class TGTunerFineWidget extends Composite {
-
-	private static final int MIN_HEIGHT = 60;
-	private static final int MIN_WIDTH = 80;
-	private final float bottomY = 10.0f;
+public class TGTunerFineWidget {
 	
-	private Composite composite = null;
+	private static final float BOTTOM_Y = 10.0f;
+	
+	private TGContext context;
+	private UIPanel panel;
+	private UICanvas composite = null;
 	protected String currentNoteString = null;
 	protected int currentNoteValue = -1;
 	protected double currentFrequency = 0.0f;
-	protected Font letterFont = null;
+	protected UIFont letterFont = null;
 	protected final float FINE_TUNING_RANGE = 1.5f;
 
-	public TGTunerFineWidget(Composite parent) {
-		super(parent, SWT.NONE);
-		this.setEnabled(false);
-		this.init();
+	public TGTunerFineWidget(TGContext context, UIFactory factory, UILayoutContainer parent) {
+		this.context = context;
+		
+		this.init(factory, parent);
 	}
 
-	protected void init() {
-		this.setLayout(new GridLayout(1,true));
-		this.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+	private void init(final UIFactory factory, UILayoutContainer parent) {
+		UITableLayout layout = new UITableLayout();
 		
+		this.panel = factory.createPanel(parent, false);
+		this.panel.setLayout(layout);
+		this.panel.setEnabled(false);
 		
-		this.composite = new Composite(this,SWT.BORDER | SWT.DOUBLE_BUFFERED);
-		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.composite.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				TGPainterImpl painter = new TGPainterImpl(e.gc);
+		this.composite = factory.createCanvas(this.panel, true);
+		this.composite.setBgColor(TGColorManager.getInstance(this.context).getColor(TGColorManager.COLOR_WHITE));
+		this.composite.addPaintListener(new UIPaintListener() {
+			public void onPaint(UIPaintEvent event) {
+				TGPainterImpl painter = new TGPainterImpl(factory, event.getPainter());
 				TGTunerFineWidget.this.paintWidget(painter);
 			}
 		});
+		layout.set(this.composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumHeight = MIN_HEIGHT;
-		data.minimumWidth = MIN_WIDTH;
-		data.grabExcessHorizontalSpace=true;
-		data.grabExcessVerticalSpace=true;
-		this.composite.setLayoutData(data);
-		this.letterFont = new Font(this.getDisplay(),
-							TuxGuitar.getInstance().getConfig().getFontDataConfigValue(TGConfigKeys.MATRIX_FONT).getName(),
-							14,
-							SWT.BOLD
-							);
-
+		this.letterFont = factory.createFont(TGConfigManager.getInstance(this.context).getFontModelConfigValue(TGConfigKeys.MATRIX_FONT).getName(), 14, true, false);
 	}
 	
 	
-	public void paintWidget(TGPainterImpl painter) {
-		Point compositeSize = this.composite.getSize();
+	public void paintWidget(TGPainter painter) {
+		TGColorManager colorManager = TGColorManager.getInstance(this.context);
+		
+		UIRectangle compositeSize = this.composite.getBounds();
 		
 		// margins & stuff
 		
-		painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLACK)));
+		painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLACK)));
 		painter.initPath();
 		painter.setLineWidth(2);
-		float height = compositeSize.y-this.bottomY-25;
-		painter.moveTo(compositeSize.x/2, compositeSize.y-this.bottomY);
-		painter.lineTo(compositeSize.x/2, 25);
+		float height = compositeSize.getHeight() - BOTTOM_Y-25;
+		painter.moveTo(compositeSize.getWidth()/2, compositeSize.getHeight() - BOTTOM_Y);
+		painter.lineTo(compositeSize.getWidth()/2, 25);
 		painter.closePath();
 		painter.initPath();
-		height = Math.min(height, compositeSize.x/2);
-		painter.moveTo(compositeSize.x/2-height, compositeSize.y-this.bottomY);
-		painter.lineTo(compositeSize.x/2+height, compositeSize.y-this.bottomY);
+		height = Math.min(height, compositeSize.getWidth()/2);
+		painter.moveTo(compositeSize.getWidth()/2-height, compositeSize.getHeight()-BOTTOM_Y);
+		painter.lineTo(compositeSize.getWidth()/2+height, compositeSize.getHeight()-BOTTOM_Y);
 		painter.closePath();
 		
-		if (this.isEnabled()) {
+		if (this.panel.isEnabled()) {
 			// tone name
-			painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLUE)));
+			painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLUE)));
 			painter.setFont(new TGFontImpl(this.letterFont));
-			painter.drawString(this.currentNoteString, compositeSize.x*12/15, 10);
+			painter.drawString(this.currentNoteString, compositeSize.getWidth()*12/15, 10);
 
 			// pointer
 			if (this.currentFrequency!=-1) {
 				painter.setLineWidth(3);
-				painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_RED)));
+				painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_RED)));
 				painter.initPath();
-				painter.moveTo(compositeSize.x/2, compositeSize.y-this.bottomY);
-				painter.lineTo((float)(compositeSize.x/2 + height*Math.cos(this.getAngleRad())),(float)( compositeSize.y-this.bottomY-height*Math.sin(this.getAngleRad())));
+				painter.moveTo(compositeSize.getWidth()/2, compositeSize.getHeight()-BOTTOM_Y);
+				painter.lineTo((float)(compositeSize.getWidth()/2 + height*Math.cos(this.getAngleRad())),(float)( compositeSize.getHeight()-BOTTOM_Y-height*Math.sin(this.getAngleRad())));
 			painter.closePath();
 			}
 		}
@@ -111,7 +110,7 @@ public class TGTunerFineWidget extends Composite {
 	
 	
 	public void setWantedTone(int tone) {
-		this.setEnabled(true);
+		this.panel.setEnabled(true);
 		this.currentNoteValue = tone;
 		this.currentNoteString = TGTunerRoughWidget.TONESSTRING[tone%12]+(int)Math.floor(tone/12);
 		this.redraw();
@@ -123,8 +122,7 @@ public class TGTunerFineWidget extends Composite {
 		this.redraw();
 	}
 
-	public void redraw(){
-		super.redraw();
+	public void redraw() {
 		this.composite.redraw();
 	}
 	
@@ -146,5 +144,11 @@ public class TGTunerFineWidget extends Composite {
 		return diff;
 	}
 
+	public UIControl getControl() {
+		return this.panel;
+	}
 	
+	public boolean isDisposed() {
+		return (this.panel == null || this.panel.isDisposed());
+	}
 }

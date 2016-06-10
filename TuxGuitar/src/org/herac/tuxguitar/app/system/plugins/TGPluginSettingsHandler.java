@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.app.system.plugins;
 
-import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public interface TGPluginSettingsHandler {
 	
-	public void openSettingsDialog(Shell parent);
+	public void openSettingsDialog(UIWindow parent);
 	
 }

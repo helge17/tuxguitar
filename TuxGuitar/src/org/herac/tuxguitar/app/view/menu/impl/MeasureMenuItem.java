@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
@@ -22,69 +12,70 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class MeasureMenuItem extends TGMenuItem{
+public class MeasureMenuItem extends TGMenuItem {
 	
-	private MenuItem measureMenuItem;
-	private Menu menu; 
-	private MenuItem first;
-	private MenuItem last;
-	private MenuItem next;
-	private MenuItem previous;
-	private MenuItem addMeasure;
-	private MenuItem cleanMeasure;
-	private MenuItem removeMeasure;
-	private MenuItem copyMeasure;
-	private MenuItem pasteMeasure;
+	private UIMenuSubMenuItem measureMenuItem;
+	private UIMenuActionItem first;
+	private UIMenuActionItem last;
+	private UIMenuActionItem next;
+	private UIMenuActionItem previous;
+	private UIMenuActionItem addMeasure;
+	private UIMenuActionItem cleanMeasure;
+	private UIMenuActionItem removeMeasure;
+	private UIMenuActionItem copyMeasure;
+	private UIMenuActionItem pasteMeasure;
 	
-	public MeasureMenuItem(Shell shell,Menu parent, int style) {
-		this.measureMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public MeasureMenuItem(UIMenu parent) {
+		this.measureMenuItem = parent.createSubMenuItem();
 	}
 	
 	public void showItems(){
 		//--first--
-		this.first = new MenuItem(this.menu, SWT.PUSH);
+		this.first = this.measureMenuItem.getMenu().createActionItem();
 		this.first.addSelectionListener(this.createActionProcessor(TGGoFirstMeasureAction.NAME));
+		
 		//--previous--
-		this.previous = new MenuItem(this.menu, SWT.PUSH);
+		this.previous = this.measureMenuItem.getMenu().createActionItem();
 		this.previous.addSelectionListener(this.createActionProcessor(TGGoPreviousMeasureAction.NAME));
+		
 		//--next--
-		this.next = new MenuItem(this.menu, SWT.PUSH);
+		this.next = this.measureMenuItem.getMenu().createActionItem();
 		this.next.addSelectionListener(this.createActionProcessor(TGGoNextMeasureAction.NAME));
+		
 		//--last--
-		this.last = new MenuItem(this.menu, SWT.PUSH);
+		this.last = this.measureMenuItem.getMenu().createActionItem();
 		this.last.addSelectionListener(this.createActionProcessor(TGGoLastMeasureAction.NAME));
 		
 		//--SEPARATOR
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.measureMenuItem.getMenu().createSeparator();
+		
 		//--add--
-		this.addMeasure = new MenuItem(this.menu, SWT.PUSH);
+		this.addMeasure = this.measureMenuItem.getMenu().createActionItem();
 		this.addMeasure.addSelectionListener(this.createActionProcessor(TGOpenMeasureAddDialogAction.NAME));
+		
 		//--clean--
-		this.cleanMeasure = new MenuItem(this.menu, SWT.PUSH);
+		this.cleanMeasure = this.measureMenuItem.getMenu().createActionItem();
 		this.cleanMeasure.addSelectionListener(this.createActionProcessor(TGOpenMeasureCleanDialogAction.NAME));
+
 		//--remove--
-		this.removeMeasure = new MenuItem(this.menu, SWT.PUSH);
+		this.removeMeasure = this.measureMenuItem.getMenu().createActionItem();
 		this.removeMeasure.addSelectionListener(this.createActionProcessor(TGOpenMeasureRemoveDialogAction.NAME));
 		
 		//--SEPARATOR
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.measureMenuItem.getMenu().createSeparator();
+		
 		//--copy--
-		this.copyMeasure = new MenuItem(this.menu, SWT.PUSH);
+		this.copyMeasure = this.measureMenuItem.getMenu().createActionItem();
 		this.copyMeasure.addSelectionListener(this.createActionProcessor(TGOpenMeasureCopyDialogAction.NAME));
+		
 		//--paste--
-		this.pasteMeasure = new MenuItem(this.menu, SWT.PUSH);
+		this.pasteMeasure = this.measureMenuItem.getMenu().createActionItem();
 		
 		this.pasteMeasure.addSelectionListener(this.createActionProcessor(TGOpenMeasurePasteDialogAction.NAME));
-		
-		this.measureMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();

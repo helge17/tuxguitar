@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.community.browser;
 
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory {
@@ -32,7 +32,7 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory {
 		return this.data;
 	}
 	
-	public TGBrowserSettings dataDialog(Shell parent) {
+	public TGBrowserSettings dataDialog(UIWindow parent) {
 		TGBrowserAuthDialog authDialog = new TGBrowserAuthDialog(this.context);
 		authDialog.open( parent );
 		if( authDialog.isAccepted() ){

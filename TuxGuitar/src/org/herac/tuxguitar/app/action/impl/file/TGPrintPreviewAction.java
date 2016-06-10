@@ -1,15 +1,10 @@
 package org.herac.tuxguitar.app.action.impl.file;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Image;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
@@ -17,6 +12,7 @@ import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.printer.PrintDocument;
 import org.herac.tuxguitar.app.printer.PrintLayout;
 import org.herac.tuxguitar.app.printer.PrintStyles;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintPreviewDialog;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintPreviewDialogController;
@@ -32,6 +28,10 @@ import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGPrintPreviewAction extends TGActionBase{
@@ -56,7 +56,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		
-		TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
+		TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
 		PrintController controller = new PrintController(targetSong, manager, factory);
 		PrintLayout printLayout = new PrintLayout(controller, styles);
 		printLayout.loadStyles(1f);
@@ -84,16 +84,20 @@ public class TGPrintPreviewAction extends TGActionBase{
 		}).start();
 	}
 	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.getContext()).getFactory();
+	}
+	
 	private class PrintDocumentImpl implements PrintDocument{
 		
 		private TGPainterImpl painter;
 		private TGRectangle bounds;
-		private List<Image> pages;
+		private List<UIImage> pages;
 		
 		public PrintDocumentImpl(TGRectangle bounds){
 			this.bounds = bounds;
-			this.painter = new TGPainterImpl();
-			this.pages = new ArrayList<Image>();
+			this.painter = new TGPainterImpl(getUIFactory());
+			this.pages = new ArrayList<UIImage>();
 		}
 		
 		public TGPainter getPainter() {
@@ -107,8 +111,10 @@ public class TGPrintPreviewAction extends TGActionBase{
 		public void pageStart() {
 			int width = Math.round(this.bounds.getWidth() - this.bounds.getX());
 			int height = Math.round(this.bounds.getHeight() - this.bounds.getY());
-			Image page = new Image(TuxGuitar.getInstance().getDisplay(), width, height);
-			this.painter.init( page );
+			
+			UIFactory factory = getUIFactory();
+			UIImage page = factory.createImage(width, height);
+			this.painter.setHandle(page.createPainter());
 			this.pages.add( page );
 		}
 		
@@ -122,18 +128,16 @@ public class TGPrintPreviewAction extends TGActionBase{
 		
 		public void finish() {
 			final TGRectangle bounds = this.bounds;
-			final List<Image> pages = this.pages;
+			final List<UIImage> pages = this.pages;
 			
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGOpenViewAction.NAME);
 			tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintPreviewDialogController());
 			tgActionProcessor.setAttribute(TGPrintPreviewDialog.ATTRIBUTE_PAGES, pages);
 			tgActionProcessor.setAttribute(TGPrintPreviewDialog.ATTRIBUTE_BOUNDS, bounds);
-			tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_DISPOSE_LISTENER, new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					Iterator<Image> it = pages.iterator();
-					while(it.hasNext()){
-						Image image = (Image)it.next();
-						image.dispose();
+			tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_DISPOSE_LISTENER, new UIDisposeListener() {
+				public void onDispose(UIDisposeEvent event) {
+					for(UIImage uiImage : pages) {
+						uiImage.dispose();
 					}
 				}
 			});

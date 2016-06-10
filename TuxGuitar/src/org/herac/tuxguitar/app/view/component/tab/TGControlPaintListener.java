@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
-import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
 import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.widget.UICanvas;
 
-public class TGControlPaintListener implements TGBufferedPainterHandle {
+public class TGControlPaintListener implements TG2BufferedPainterHandle {
 	
 	private TGControl control;
 	
@@ -16,7 +16,7 @@ public class TGControlPaintListener implements TGBufferedPainterHandle {
 		this.control.paintTablature(painter);
 	}
 
-	public Composite getPaintableControl() {
-		return this.control;
+	public UICanvas getPaintableControl() {
+		return this.control.getCanvas();
 	}
 }

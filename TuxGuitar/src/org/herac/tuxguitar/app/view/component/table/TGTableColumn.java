@@ -1,73 +1,44 @@
 package org.herac.tuxguitar.app.view.component.table;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
 
 public class TGTableColumn {
-	private TGTable table;
-	private CLabel column;
-	private List<Control> controls;
 	
-	public TGTableColumn(TGTable table,int align){
+	private TGTable table;
+	private UIPanel column;
+	private UILabel label;
+	
+	public TGTableColumn(TGTable table){
 		this.table = table;
-		this.controls = new ArrayList<Control>();
-		this.column = new CLabel(this.table.getColumnControl(),align | SWT.SHADOW_OUT);
-		this.column.setLayout(new GridLayout());
-		this.column.addListener(SWT.Resize,new Listener() {
-			public void handleEvent(Event arg0) {
-				layout();
-			}
-		});
-		this.column.pack();
-		this.appendListeners(this.column);
+		this.column = this.table.getUIFactory().createPanel(this.table.getColumnControl(), true);
+		this.label = this.table.getUIFactory().createLabel(this.column);
+		
+		this.table.appendListeners(this.column);
+		
+		this.createLayout();
 	}
 	
-	public CLabel getControl(){
+	public void createLayout() {
+		UITableLayout uiTableLayout = new UITableLayout();
+		uiTableLayout.set(UITableLayout.MARGIN_TOP, 2f);
+		uiTableLayout.set(UITableLayout.MARGIN_BOTTOM, 2f);
+		uiTableLayout.set(this.label, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+		
+		this.column.setLayout(uiTableLayout);
+	}
+	
+	public UIControl getControl(){
 		return this.column;
 	}
 	
+	public UILabel getLabel(){
+		return this.label;
+	}
+	
 	public void setTitle(String title){
-		this.column.setText(title);
+		this.label.setText(title);
 	}
-	
-	public void addControl(Control control){
-		this.controls.add(control);
-		this.appendListeners(control);
-	}
-	
-	public void appendListeners(Control control){
-		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(control);
-	}
-	
-	public void layout(){
-		Point location = this.column.getLocation();
-		Point size = this.column.getSize();
-		
-		for(int i = 0; i < this.controls.size(); i ++){
-			Control control = (Control)this.controls.get(i);
-			if(!control.isDisposed()){
-				control.setSize(size.x,this.table.getRowHeight());
-				control.setLocation(location.x, 0);
-			}
-		}
-	}
-	
-	public void notifyRemoved(){
-		for(int i = 0; i < this.controls.size(); i ++){
-			Control control = (Control)this.controls.get(i);
-			if(control.isDisposed()){
-				this.controls.remove(i --);
-			}
-		}
-	}
-	
 }

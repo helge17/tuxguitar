@@ -20,7 +20,7 @@ public class ImageExporterSettingsHandler implements TGSongStreamSettingsHandler
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				new ImageExporterSettingsDialog().openSettingsDialog(context, callback);
+				new ImageExporterSettingsDialog(ImageExporterSettingsHandler.this.context).openSettingsDialog(context, callback);
 			}
 		});
 	}

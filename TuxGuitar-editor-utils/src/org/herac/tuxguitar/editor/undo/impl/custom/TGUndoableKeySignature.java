@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeKeySignatureAction;
@@ -28,25 +29,25 @@ public class TGUndoableKeySignature extends TGUndoableEditBase{
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeKeySignature(this.track, this.getMeasureAt(this.track, this.position), this.redoableKeySignature, this.toEnd);
+		this.changeKeySignature(actionContext, this.track, this.getMeasureAt(this.track, this.position), this.redoableKeySignature, this.toEnd);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeKeySignature(this.track, this.getMeasureAt(this.track, this.position), this.undoableKeySignature, this.toEnd);
+		this.changeKeySignature(actionContext, this.track, this.getMeasureAt(this.track, this.position), this.undoableKeySignature, this.toEnd);
 		
 		if(this.toEnd){
 			Iterator<Object> it = this.nextKeySignaturePositions.iterator();
 			while(it.hasNext()){
 				KeySignaturePosition ksp = (KeySignaturePosition)it.next();
-				this.changeKeySignature(this.track, this.getMeasureAt(this.track, ksp.getPosition()), ksp.getKeySignature(), true);
+				this.changeKeySignature(actionContext, this.track, this.getMeasureAt(this.track, ksp.getPosition()), ksp.getKeySignature(), true);
 			}
 		}
 		this.doAction = REDO_ACTION;
@@ -95,13 +96,13 @@ public class TGUndoableKeySignature extends TGUndoableEditBase{
 		return getSongManager().getTrackManager().getMeasureAt(track, start);
 	}
 	
-	public void changeKeySignature(TGTrack track, TGMeasure measure, Integer keySignature, Boolean applyToEnd) {
+	public void changeKeySignature(TGActionContext context, TGTrack track, TGMeasure measure, Integer keySignature, Boolean applyToEnd) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeKeySignatureAction.NAME);
 		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_KEY_SIGNATURE, keySignature);
 		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 	
 	private static class KeySignaturePosition{
