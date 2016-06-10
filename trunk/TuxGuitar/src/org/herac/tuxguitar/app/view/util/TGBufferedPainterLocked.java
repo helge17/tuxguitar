@@ -1,13 +1,15 @@
 package org.herac.tuxguitar.app.view.util;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
+import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -15,13 +17,13 @@ public class TGBufferedPainterLocked {
 	
 	private TGContext context;
 	private TGImage buffer;
-	private TGBufferedPainterHandle handle;
+	private TG2BufferedPainterHandle handle;
 	
-	public TGBufferedPainterLocked(TGContext context, TGBufferedPainterHandle handle) {
+	public TGBufferedPainterLocked(TGContext context, TG2BufferedPainterHandle handle) {
 		this.context = context;
 		this.handle = handle;
-		this.handle.getPaintableControl().addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.handle.getPaintableControl().addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				disposePaintBuffer();
 			}
 		});
@@ -35,13 +37,13 @@ public class TGBufferedPainterLocked {
 	}
 	
 	public void fillPaintBuffer() {
-		Rectangle size = this.handle.getPaintableControl().getClientArea();
-		int clientWidth = size.width;
-		int clientHeight = size.height;
+		UIRectangle size = this.handle.getPaintableControl().getBounds();
+		float clientWidth = size.getWidth();
+		float clientHeight = size.getHeight();
 		
 		if( this.buffer == null || this.buffer.isDisposed() || this.buffer.getWidth() != clientWidth || this.buffer.getHeight() != clientHeight ) {
 			this.disposePaintBuffer();
-			this.buffer = new TGImageImpl(this.handle.getPaintableControl().getDisplay(), clientWidth, clientHeight);
+			this.buffer = new TGResourceFactoryImpl(this.getResourceFactory()).createImage(clientWidth, clientHeight);
 		}
 		
 		TGPainter tgPainter = this.buffer.createPainter();
@@ -70,7 +72,7 @@ public class TGBufferedPainterLocked {
 	}
 	
 	public void redrawLater() {
-		final Composite paintableControl = this.handle.getPaintableControl();
+		final UICanvas paintableControl = this.handle.getPaintableControl();
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				if(!paintableControl.isDisposed()) {
@@ -80,10 +82,18 @@ public class TGBufferedPainterLocked {
 		});
 	}
 	
-	public static interface TGBufferedPainterHandle {
+	public UIResourceFactory getResourceFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
+	public TGContext getContext() {
+		return this.context;
+	}
+	
+	public static interface TG2BufferedPainterHandle {
 		
 		void paintControl(TGPainter painter);
 		
-		Composite getPaintableControl();
+		UICanvas getPaintableControl();
 	}
 }

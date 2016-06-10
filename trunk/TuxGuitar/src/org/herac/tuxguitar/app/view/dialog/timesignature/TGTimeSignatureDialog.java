@@ -1,19 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.timesignature;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
@@ -21,102 +11,114 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTimeSignatureDialog {
 	
 	public void show(final TGViewContext context) {
-		Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final TGSongManager songManager = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("composition.timesignature"));
 		
 		//-------------TIME SIGNATURE-----------------------------------------------
-		Group timeSignature = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		timeSignature.setLayout(new GridLayout(2,false));
-		timeSignature.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout timeSignatureLayout = new UITableLayout();
+		UILegendPanel timeSignature = uiFactory.createLegendPanel(dialog);
+		timeSignature.setLayout(timeSignatureLayout);
 		timeSignature.setText(TuxGuitar.getProperty("composition.timesignature"));
+		dialogLayout.set(timeSignature, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		TGTimeSignature currentTimeSignature = header.getTimeSignature();
+		
 		//numerator
-		Label numeratorLabel = new Label(timeSignature, SWT.NULL);
+		UILabel numeratorLabel = uiFactory.createLabel(timeSignature);
 		numeratorLabel.setText(TuxGuitar.getProperty("composition.timesignature.Numerator"));
-		final Combo numerator = new Combo(timeSignature, SWT.DROP_DOWN | SWT.READ_ONLY);
+		timeSignatureLayout.set(numeratorLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		
+		final UIDropDownSelect<Integer> numerator = uiFactory.createDropDownSelect(timeSignature);
 		for (int i = 1; i <= 32; i++) {
-			numerator.add(Integer.toString(i));
+			numerator.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
 		}
-		numerator.setText(Integer.toString(currentTimeSignature.getNumerator()));
-		numerator.setLayoutData(getComboData());
+		numerator.setSelectedValue(currentTimeSignature.getNumerator());
+		timeSignatureLayout.set(numerator, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
+		
 		//denominator
-		Label denominatorLabel = new Label(timeSignature, SWT.NULL);
+		UILabel denominatorLabel = uiFactory.createLabel(timeSignature);
 		denominatorLabel.setText(TuxGuitar.getProperty("composition.timesignature.denominator"));
-		final Combo denominator = new Combo(timeSignature, SWT.DROP_DOWN | SWT.READ_ONLY);
+		timeSignatureLayout.set(denominatorLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		
+		final UIDropDownSelect<Integer> denominator = uiFactory.createDropDownSelect(timeSignature);
 		for (int i = 1; i <= 32; i = i * 2) {
-			denominator.add(Integer.toString(i));
+			denominator.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
 		}
-		denominator.setText(Integer.toString(currentTimeSignature.getDenominator().getValue()));
-		denominator.setLayoutData(getComboData());
+		denominator.setSelectedValue(currentTimeSignature.getDenominator().getValue());
+		timeSignatureLayout.set(denominator, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
 		
 		//--------------------To End Checkbox-------------------------------
-		Group check = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		check.setLayout(new GridLayout());
+		UITableLayout checkLayout = new UITableLayout();
+		UILegendPanel check = uiFactory.createLegendPanel(dialog);
+		check.setLayout(checkLayout);
 		check.setText(TuxGuitar.getProperty("options"));
-		check.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		dialogLayout.set(check, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button toEnd = new Button(check, SWT.CHECK);
+		final UICheckBox toEnd = uiFactory.createCheckBox(check);
 		toEnd.setText(TuxGuitar.getProperty("composition.timesignature.to-the-end"));
-		toEnd.setSelection(true);
+		toEnd.setSelected(true);
+		checkLayout.set(toEnd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOk = new Button(buttons, SWT.PUSH);
-		buttonOk.setText(TuxGuitar.getProperty("ok"));
-		buttonOk.setLayoutData(getButtonData());
-		buttonOk.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeTimeSignature(context.getContext(), song, header, parseTimeSignature(songManager, numerator, denominator), toEnd.getSelection());
+		final UIButton buttonOK = uiFactory.createButton(buttons);
+		buttonOK.setText(TuxGuitar.getProperty("ok"));
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				changeTimeSignature(context.getContext(), song, header, parseTimeSignature(songManager, numerator, denominator), toEnd.isSelected());
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
-		buttonCancel.setLayoutData(getButtonData());
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOk );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private GridData getComboData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 150;
-		return data;
-	}
-	
-	public TGTimeSignature parseTimeSignature(TGSongManager songManager, Combo numerator, Combo denominator) {
+	public TGTimeSignature parseTimeSignature(TGSongManager songManager, UIDropDownSelect<Integer> numerator, UIDropDownSelect<Integer> denominator) {
 		TGTimeSignature tgTimeSignature = songManager.getFactory().newTimeSignature();
-		tgTimeSignature.setNumerator(Integer.parseInt(numerator.getText()));
-		tgTimeSignature.getDenominator().setValue(Integer.parseInt(denominator.getText()));
+		tgTimeSignature.setNumerator(numerator.getSelectedValue());
+		tgTimeSignature.getDenominator().setValue(denominator.getSelectedValue());
 		return tgTimeSignature;
 	}
 	

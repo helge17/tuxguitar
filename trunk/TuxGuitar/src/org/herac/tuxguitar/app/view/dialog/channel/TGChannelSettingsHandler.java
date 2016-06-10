@@ -6,7 +6,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 
 public interface TGChannelSettingsHandler {
 	
-	public boolean isMidiDeviceSupported(MidiDevice midiDevice);
+	boolean isMidiDeviceSupported(MidiDevice midiDevice);
 	
-	public TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel, TGSong song) ;
+	TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel, TGSong song) ;
 }

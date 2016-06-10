@@ -21,6 +21,8 @@
 
 	<modules>
 		<module>../../TuxGuitar</module>
+		<module>../../TuxGuitar-ui-toolkit</module>
+		<module>../../TuxGuitar-ui-toolkit-swt</module>
 		<module>../../TuxGuitar-lib</module>
 		<module>../../TuxGuitar-editor-utils</module>
 		<module>../../TuxGuitar-gm-utils</module>
@@ -82,6 +84,18 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-editor-utils</artifactId>
 									<destFileName>tuxguitar-editor-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-ui-toolkit</artifactId>
+									<destFileName>tuxguitar-ui-toolkit.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-ui-toolkit-swt</artifactId>
+									<destFileName>tuxguitar-ui-toolkit-swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>

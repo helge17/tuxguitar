@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenBendDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
@@ -33,138 +23,134 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class NoteEffectsMenuItem extends TGMenuItem{
+public class NoteEffectsMenuItem extends TGMenuItem {
 	
-	private MenuItem noteEffectsMenuItem;
-	private Menu menu; 
-	private MenuItem vibrato;
-	private MenuItem bend;
-	private MenuItem tremoloBar;
-	private MenuItem deadNote;
-	private MenuItem slide;
-	private MenuItem hammer;
-	private MenuItem ghostNote;
-	private MenuItem accentuatedNote;
-	private MenuItem heavyAccentuatedNote;
-	private MenuItem letRing;
-	private MenuItem harmonicNote;
-	private MenuItem graceNote;
-	private MenuItem trill;
-	private MenuItem tremoloPicking;
-	private MenuItem palmMute;
-	private MenuItem staccato;
-	private MenuItem tapping;
-	private MenuItem slapping;
-	private MenuItem popping;
+	private UIMenuSubMenuItem noteEffectsMenuItem;
+	private UIMenuCheckableItem vibrato;
+	private UIMenuCheckableItem bend;
+	private UIMenuCheckableItem tremoloBar;
+	private UIMenuCheckableItem deadNote;
+	private UIMenuCheckableItem slide;
+	private UIMenuCheckableItem hammer;
+	private UIMenuCheckableItem ghostNote;
+	private UIMenuCheckableItem accentuatedNote;
+	private UIMenuCheckableItem heavyAccentuatedNote;
+	private UIMenuCheckableItem letRing;
+	private UIMenuCheckableItem harmonicNote;
+	private UIMenuCheckableItem graceNote;
+	private UIMenuCheckableItem trill;
+	private UIMenuCheckableItem tremoloPicking;
+	private UIMenuCheckableItem palmMute;
+	private UIMenuCheckableItem staccato;
+	private UIMenuCheckableItem tapping;
+	private UIMenuCheckableItem slapping;
+	private UIMenuCheckableItem popping;
+	private UIMenuCheckableItem fadeIn;
 	
-	private MenuItem fadeIn;
+	public NoteEffectsMenuItem(UIMenuSubMenuItem noteEffectsMenuItem) {
+		this.noteEffectsMenuItem = noteEffectsMenuItem;
+	}
 	
-	public NoteEffectsMenuItem(Shell shell,Menu parent, int style) {
-		this.noteEffectsMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public NoteEffectsMenuItem(UIMenu parent) {
+		this(parent.createSubMenuItem());
 	}
 	
 	public void showItems(){
 		//--VIBRATO--
-		this.vibrato = new MenuItem(this.menu, SWT.CHECK);
+		this.vibrato = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.vibrato.addSelectionListener(this.createActionProcessor(TGChangeVibratoNoteAction.NAME));
 		
 		//--BEND--
-		this.bend = new MenuItem(this.menu, SWT.CHECK);
+		this.bend = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.bend.addSelectionListener(this.createActionProcessor(TGOpenBendDialogAction.NAME));
 		
 		//--BEND--
-		this.tremoloBar = new MenuItem(this.menu, SWT.CHECK);
+		this.tremoloBar = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.tremoloBar.addSelectionListener(this.createActionProcessor(TGOpenTremoloBarDialogAction.NAME));
 		
 		//--SLIDE--
-		this.slide = new MenuItem(this.menu, SWT.CHECK);
+		this.slide = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.slide.addSelectionListener(this.createActionProcessor(TGChangeSlideNoteAction.NAME));
 		
 		//--SLIDE--
-		this.deadNote = new MenuItem(this.menu, SWT.CHECK);
+		this.deadNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.deadNote.addSelectionListener(this.createActionProcessor(TGChangeDeadNoteAction.NAME));
 		
 		//--HAMMER--
-		this.hammer = new MenuItem(this.menu, SWT.CHECK);
+		this.hammer = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.hammer.addSelectionListener(this.createActionProcessor(TGChangeHammerNoteAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteEffectsMenuItem.getMenu().createSeparator();
 		
 		//--GHOST NOTE--
-		this.ghostNote = new MenuItem(this.menu, SWT.CHECK);
+		this.ghostNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.ghostNote.addSelectionListener(this.createActionProcessor(TGChangeGhostNoteAction.NAME));
 		
 		//--ACCENTUATED NOTE--
-		this.accentuatedNote = new MenuItem(this.menu, SWT.CHECK);
+		this.accentuatedNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.accentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeAccentuatedNoteAction.NAME));
 		
 		//--HEAVY ACCENTUATED NOTE--
-		this.heavyAccentuatedNote = new MenuItem(this.menu, SWT.CHECK);
+		this.heavyAccentuatedNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.heavyAccentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeHeavyAccentuatedNoteAction.NAME));
 		
 		//--LET RING--
-		this.letRing = new MenuItem(this.menu, SWT.CHECK);
+		this.letRing = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.letRing.addSelectionListener(this.createActionProcessor(TGChangeLetRingAction.NAME));
 		
 		//--HARMONIC NOTE--
-		this.harmonicNote = new MenuItem(this.menu, SWT.CHECK);
+		this.harmonicNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.harmonicNote.addSelectionListener(this.createActionProcessor(TGOpenHarmonicDialogAction.NAME));
 		
 		//--GRACE NOTE--
-		this.graceNote = new MenuItem(this.menu, SWT.CHECK);
+		this.graceNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.graceNote.addSelectionListener(this.createActionProcessor(TGOpenGraceDialogAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteEffectsMenuItem.getMenu().createSeparator();
 		
 		//--TRILL--
-		this.trill = new MenuItem(this.menu, SWT.CHECK);
+		this.trill = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.trill.addSelectionListener(this.createActionProcessor(TGOpenTrillDialogAction.NAME));
 		
 		//--TREMOLO PICKING--
-		this.tremoloPicking = new MenuItem(this.menu, SWT.CHECK);
+		this.tremoloPicking = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.tremoloPicking.addSelectionListener(this.createActionProcessor(TGOpenTremoloPickingDialogAction.NAME));
 		
 		//--PALM MUTE--
-		this.palmMute = new MenuItem(this.menu, SWT.CHECK);
+		this.palmMute = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.palmMute.addSelectionListener(this.createActionProcessor(TGChangePalmMuteAction.NAME));
 		
 		//--STACCATO
-		this.staccato = new MenuItem(this.menu, SWT.CHECK);
+		this.staccato = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.staccato.addSelectionListener(this.createActionProcessor(TGChangeStaccatoAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteEffectsMenuItem.getMenu().createSeparator();
 		
 		//--TAPPING
-		this.tapping = new MenuItem(this.menu, SWT.CHECK);
+		this.tapping = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.tapping.addSelectionListener(this.createActionProcessor(TGChangeTappingAction.NAME));
 		
 		//--SLAPPING
-		this.slapping = new MenuItem(this.menu, SWT.CHECK);
+		this.slapping = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.slapping.addSelectionListener(this.createActionProcessor(TGChangeSlappingAction.NAME));
 		
 		//--POPPING
-		this.popping = new MenuItem(this.menu, SWT.CHECK);
+		this.popping = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.popping.addSelectionListener(this.createActionProcessor(TGChangePoppingAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.noteEffectsMenuItem.getMenu().createSeparator();
 		
 		//--FADE IN
-		this.fadeIn = new MenuItem(this.menu, SWT.CHECK);
+		this.fadeIn = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.fadeIn.addSelectionListener(this.createActionProcessor(TGChangeFadeInAction.NAME));
-		
-		this.noteEffectsMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -173,45 +159,45 @@ public class NoteEffectsMenuItem extends TGMenuItem{
 	public void update(){
 		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
-		this.vibrato.setSelection(note != null && note.getEffect().isVibrato());
+		this.vibrato.setChecked(note != null && note.getEffect().isVibrato());
 		this.vibrato.setEnabled(!running && note != null);
-		this.bend.setSelection(note != null && note.getEffect().isBend());
+		this.bend.setChecked(note != null && note.getEffect().isBend());
 		this.bend.setEnabled(!running && note != null);
-		this.tremoloBar.setSelection(note != null && note.getEffect().isTremoloBar());
+		this.tremoloBar.setChecked(note != null && note.getEffect().isTremoloBar());
 		this.tremoloBar.setEnabled(!running && note != null);
-		this.deadNote.setSelection(note != null && note.getEffect().isDeadNote());
+		this.deadNote.setChecked(note != null && note.getEffect().isDeadNote());
 		this.deadNote.setEnabled(!running && note != null);
-		this.slide.setSelection(note != null && note.getEffect().isSlide());
+		this.slide.setChecked(note != null && note.getEffect().isSlide());
 		this.slide.setEnabled(!running && note != null);
-		this.hammer.setSelection(note != null && note.getEffect().isHammer());
+		this.hammer.setChecked(note != null && note.getEffect().isHammer());
 		this.hammer.setEnabled(!running && note != null);
-		this.ghostNote.setSelection(note != null && note.getEffect().isGhostNote());
+		this.ghostNote.setChecked(note != null && note.getEffect().isGhostNote());
 		this.ghostNote.setEnabled(!running && note != null);
-		this.accentuatedNote.setSelection(note != null && note.getEffect().isAccentuatedNote());
+		this.accentuatedNote.setChecked(note != null && note.getEffect().isAccentuatedNote());
 		this.accentuatedNote.setEnabled(!running && note != null);
-		this.heavyAccentuatedNote.setSelection(note != null && note.getEffect().isHeavyAccentuatedNote());
+		this.heavyAccentuatedNote.setChecked(note != null && note.getEffect().isHeavyAccentuatedNote());
 		this.heavyAccentuatedNote.setEnabled(!running && note != null);
-		this.letRing.setSelection(note != null && note.getEffect().isLetRing());
+		this.letRing.setChecked(note != null && note.getEffect().isLetRing());
 		this.letRing.setEnabled(!running && note != null);
-		this.harmonicNote.setSelection(note != null && note.getEffect().isHarmonic());
+		this.harmonicNote.setChecked(note != null && note.getEffect().isHarmonic());
 		this.harmonicNote.setEnabled(!running && note != null);
-		this.graceNote.setSelection(note != null && note.getEffect().isGrace());
+		this.graceNote.setChecked(note != null && note.getEffect().isGrace());
 		this.graceNote.setEnabled(!running && note != null);
-		this.trill.setSelection(note != null && note.getEffect().isTrill());
+		this.trill.setChecked(note != null && note.getEffect().isTrill());
 		this.trill.setEnabled(!running && note != null);
-		this.tremoloPicking.setSelection(note != null && note.getEffect().isTremoloPicking());
+		this.tremoloPicking.setChecked(note != null && note.getEffect().isTremoloPicking());
 		this.tremoloPicking.setEnabled(!running && note != null);
-		this.palmMute.setSelection(note != null && note.getEffect().isPalmMute());
+		this.palmMute.setChecked(note != null && note.getEffect().isPalmMute());
 		this.palmMute.setEnabled(!running && note != null);
-		this.staccato.setSelection(note != null && note.getEffect().isStaccato());
+		this.staccato.setChecked(note != null && note.getEffect().isStaccato());
 		this.staccato.setEnabled(!running && note != null);
-		this.tapping.setSelection(note != null && note.getEffect().isTapping());
+		this.tapping.setChecked(note != null && note.getEffect().isTapping());
 		this.tapping.setEnabled(!running && note != null);
-		this.slapping.setSelection(note != null && note.getEffect().isSlapping());
+		this.slapping.setChecked(note != null && note.getEffect().isSlapping());
 		this.slapping.setEnabled(!running && note != null);
-		this.popping.setSelection(note != null && note.getEffect().isPopping());
+		this.popping.setChecked(note != null && note.getEffect().isPopping());
 		this.popping.setEnabled(!running && note != null);
-		this.fadeIn.setSelection(note != null && note.getEffect().isFadeIn());
+		this.fadeIn.setChecked(note != null && note.getEffect().isFadeIn());
 		this.fadeIn.setEnabled(!running && note != null);
 	}
 	

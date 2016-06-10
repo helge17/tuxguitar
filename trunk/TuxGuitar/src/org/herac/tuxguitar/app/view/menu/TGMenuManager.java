@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.menu.impl.BeatMenuItem;
 import org.herac.tuxguitar.app.view.menu.impl.CompositionMenuItem;
 import org.herac.tuxguitar.app.view.menu.impl.EditMenuItem;
@@ -27,13 +25,17 @@ import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
+import org.herac.tuxguitar.ui.menu.UIMenuBar;
+import org.herac.tuxguitar.ui.menu.UIMenuItem;
+import org.herac.tuxguitar.ui.menu.UIPopupMenu;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMenuManager implements TGEventListener {
 	
 	private TGContext context;
-	private Menu menu;
-	private Menu popupMenu;
+	private UIMenuBar menu;
+	private UIPopupMenu popupMenu;
 	private List<TGMenuItem> loadedMenuItems;
 	private List<TGMenuItem> loadedPopupMenuItems;
 	
@@ -57,51 +59,55 @@ public class TGMenuManager implements TGEventListener {
 	}
 	
 	public void createMenu() {
-		Shell shell = TuxGuitar.getInstance().getShell();
-		if(!shell.isDisposed()) {
+		UIWindow window = TGWindow.getInstance(this.context).getWindow();
+		if(!window.isDisposed()) {
 			if( this.menu == null || this.menu.isDisposed() ) {
-				this.menu = new Menu(shell, SWT.BAR);
+				this.menu = TGApplication.getInstance(this.context).getFactory().createMenuBar(window);
 			}
-			MenuItem[] items = this.menu.getItems();
-			for(int i = 0; i < items.length;i ++){
-				items[i].dispose();
+			List<UIMenuItem> items = this.menu.getItems();
+			for(UIMenuItem uiMenuItem : items){
+				uiMenuItem.dispose();
 			}
 			
 			this.loadedMenuItems.clear();
-			this.loadedMenuItems.add(new FileMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new EditMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new ViewMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new CompositionMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new TrackMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new MeasureMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new BeatMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new MarkerMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new TransportMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new ToolMenuItem(shell,this.menu, SWT.CASCADE));
-			this.loadedMenuItems.add(new HelpMenuItem(shell,this.menu, SWT.CASCADE));
+			this.loadedMenuItems.add(new FileMenuItem(this.menu));
+			this.loadedMenuItems.add(new EditMenuItem(this.menu));
+			this.loadedMenuItems.add(new ViewMenuItem(this.menu));
+			this.loadedMenuItems.add(new CompositionMenuItem(this.menu));
+			this.loadedMenuItems.add(new TrackMenuItem(this.menu));
+			this.loadedMenuItems.add(new MeasureMenuItem(this.menu));
+			this.loadedMenuItems.add(new BeatMenuItem(this.menu));
+			this.loadedMenuItems.add(new MarkerMenuItem(this.menu));
+			this.loadedMenuItems.add(new TransportMenuItem(this.menu));
+			this.loadedMenuItems.add(new ToolMenuItem(this.menu));
+			this.loadedMenuItems.add(new HelpMenuItem(this.menu));
 			this.showMenuItems(this.loadedMenuItems);
-			shell.setMenuBar(this.menu);
+			
+			window.setMenuBar(this.menu);
 		}
 	}
 	
 	public void createPopupMenu() {
-		Shell shell = TuxGuitar.getInstance().getShell();
-		if( this.popupMenu == null || this.popupMenu.isDisposed() ){
-			this.popupMenu = new Menu(shell, SWT.POP_UP);
+		UIWindow window = TGWindow.getInstance(this.context).getWindow();
+		if(!window.isDisposed()) {
+			if( this.popupMenu == null || this.popupMenu.isDisposed() ){
+				this.popupMenu = TGApplication.getInstance(this.context).getFactory().createPopupMenu(window);
+			}
+			List<UIMenuItem> items = this.popupMenu.getItems();
+			for(UIMenuItem uiMenuItem : items){
+				uiMenuItem.dispose();
+			}
+			
+			this.loadedPopupMenuItems.clear();
+			this.loadedPopupMenuItems.add(new EditMenuItem(this.popupMenu));
+			this.loadedPopupMenuItems.add(new CompositionMenuItem(this.popupMenu));
+			this.loadedPopupMenuItems.add(new TrackMenuItem(this.popupMenu));
+			this.loadedPopupMenuItems.add(new MeasureMenuItem(this.popupMenu));
+			this.loadedPopupMenuItems.add(new BeatMenuItem(this.popupMenu)); 
+			this.loadedPopupMenuItems.add(new MarkerMenuItem(this.popupMenu));
+			this.loadedPopupMenuItems.add(new TransportMenuItem(this.popupMenu));
+			this.showMenuItems(this.loadedPopupMenuItems);
 		}
-		MenuItem[] items = this.popupMenu.getItems();
-		for(int i = 0; i < items.length;i ++){
-			items[i].dispose();
-		}
-		this.loadedPopupMenuItems.clear();
-		this.loadedPopupMenuItems.add(new EditMenuItem(shell,this.popupMenu, SWT.CASCADE));
-		this.loadedPopupMenuItems.add(new CompositionMenuItem(shell,this.popupMenu, SWT.CASCADE));
-		this.loadedPopupMenuItems.add(new TrackMenuItem(shell,this.popupMenu, SWT.CASCADE));
-		this.loadedPopupMenuItems.add(new MeasureMenuItem(shell,this.popupMenu, SWT.CASCADE));
-		this.loadedPopupMenuItems.add(new BeatMenuItem(shell,this.popupMenu, SWT.CASCADE)); 
-		this.loadedPopupMenuItems.add(new MarkerMenuItem(shell,this.popupMenu, SWT.CASCADE));
-		this.loadedPopupMenuItems.add(new TransportMenuItem(shell,this.popupMenu, SWT.CASCADE));
-		this.showMenuItems(this.loadedPopupMenuItems);
 	}
 	
 	private void showMenuItems(List<TGMenuItem> items){
@@ -142,7 +148,7 @@ public class TGMenuManager implements TGEventListener {
 		this.loadItems();
 	}
 	
-	public Menu getPopupMenu(){
+	public UIPopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}
 	

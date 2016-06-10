@@ -1,19 +1,7 @@
 package org.herac.tuxguitar.app.view.component.table;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
@@ -21,6 +9,7 @@ import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogActi
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.menu.impl.TrackMenu;
@@ -38,6 +27,23 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import org.herac.tuxguitar.ui.event.UIMouseDownListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UIResizeEvent;
+import org.herac.tuxguitar.ui.event.UIResizeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.menu.UIPopupMenu;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -45,10 +51,11 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGTableViewer implements TGEventListener {
 	
 	private TGContext context;
-	private Composite composite;
-	private ScrollBar hScroll;
-	private Color[] backgrounds;
-	private Color[] foregrounds;
+	private UIScrollBarPanel composite;
+	private UIScrollBar hScroll;
+	private UIScrollBar vScroll;
+	private UIColor[] backgrounds;
+	private UIColor[] foregrounds;
 	private TrackMenu menu;
 	private TGTable table;
 	private TGProcess redrawProcess;
@@ -77,61 +84,67 @@ public class TGTableViewer implements TGEventListener {
 		TuxGuitar.getInstance().getIconManager().addLoader(this);
 	}
 	
-	public void init(Composite parent){
-		this.composite = new Composite(parent,SWT.H_SCROLL);
+	public void init(UIContainer parent){
+		this.composite = this.getUIFactory().createScrollBarPanel(parent, true, true, true);
 		this.addColors();
 		this.addLayout();
 		this.addTable();
 		this.addHScroll();
+		this.addVScroll();
 		this.loadConfig();
 	}
 	
 	private void addColors(){
-		Display display = this.getComposite().getDisplay();
-
-		this.backgrounds = new Color[]{
-			new Color(display,255,255,255),
-			new Color(display,238,238,238),
-			new Color(display,192,192,192),
+		UIFactory uiFactory = this.getUIFactory();
+		
+		this.backgrounds = new UIColor[]{
+			uiFactory.createColor(255,255,255),
+			uiFactory.createColor(238,238,238),
+			uiFactory.createColor(192,192,192),
 		};
-		this.foregrounds = new Color[]{
-			new Color( display, 0, 0, 0 ),
-			new Color( display, 0, 0, 0 ),
-			new Color( display, 0, 0, 0 ),
+		this.foregrounds = new UIColor[]{
+			uiFactory.createColor(0, 0, 0),
+			uiFactory.createColor(0, 0, 0),
+			uiFactory.createColor(0, 0, 0),
 		};
 	}
 	
 	private void addLayout(){
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		layout.marginTop = 0;
-		layout.marginBottom = 0;
-		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
-		getComposite().setLayout(layout);
+		getControl().setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, false));
 	}
 	
 	private void addHScroll(){
-		this.hScroll = getComposite().getHorizontalBar();
-		this.hScroll.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
+		this.hScroll = getControl().getHScroll();
+		this.hScroll.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGTableViewer.this.redrawProcess.process();
 			}
 		});
 	}
 	
+	private void addVScroll(){
+		this.vScroll = getControl().getVScroll();
+		this.vScroll.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTableViewer.this.getControl().layout();
+			}
+		});
+	}
+	
 	private void addTable(){
-		MouseListener listener = mouseFocusListener();
-		this.table = new TGTable(this.context, getComposite());
-		this.table.getColumnNumber().getControl().addMouseListener(listener);
-		this.table.getColumnSoloMute().getControl().addMouseListener(listener);
-		this.table.getColumnName().getControl().addMouseListener(listener);
-		this.table.getColumnInstrument().getControl().addMouseListener(listener);
-		this.table.getColumnCanvas().getControl().addMouseListener(listener);
-		this.table.getColumnCanvas().getControl().addMouseListener(new MouseAdapter() {
-			public void mouseDoubleClick(MouseEvent e) {
-				new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGOpenSongInfoDialogAction.NAME).process();
+		UIMouseUpListener listener = mouseFocusListener();
+		this.table = new TGTable(this.context, getControl());
+		this.table.getColumnNumber().getControl().addMouseUpListener(listener);
+		this.table.getColumnSoloMute().getControl().addMouseUpListener(listener);
+		this.table.getColumnName().getControl().addMouseUpListener(listener);
+		this.table.getColumnInstrument().getControl().addMouseUpListener(listener);
+		this.table.getColumnCanvas().getControl().addMouseUpListener(listener);
+		this.table.getColumnCanvas().getLabel().addMouseDoubleClickListener(new TGActionProcessorListener(this.context, TGOpenSongInfoDialogAction.NAME));
+		this.table.getColumnCanvas().getControl().addMouseDoubleClickListener(new TGActionProcessorListener(this.context, TGOpenSongInfoDialogAction.NAME));
+		
+		this.table.getColumnCanvas().getControl().addResizeListener(new UIResizeListener() {
+			public void onResize(UIResizeEvent event) {
+				TGTableViewer.this.updateHScroll();
 			}
 		});
 		this.fireUpdate(true);
@@ -163,10 +176,14 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void updateHScroll(){
-		int width = (getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());
-		this.hScroll.setIncrement(this.table.getScrollIncrement());
+		int width = Math.round(getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());
+		this.hScroll.setIncrement(Math.round(this.table.getRowHeight()));
 		this.hScroll.setMaximum(width);
-		this.hScroll.setThumb(Math.min(width ,this.table.getColumnCanvas().getControl().getClientArea().width));
+		this.hScroll.setThumb(Math.min(width, Math.round(this.table.getColumnCanvas().getControl().getBounds().getWidth())));
+	}
+	
+	public void updateVScroll(){
+		this.vScroll.setIncrement(Math.round(this.table.getRowHeight()));
 	}
 	
 	public TGTable getTable(){
@@ -174,7 +191,11 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public int getHScrollSelection(){
-		return this.hScroll.getSelection();
+		return this.hScroll.getValue();
+	}
+	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
 	}
 	
 	public TablatureEditor getEditor(){
@@ -208,7 +229,7 @@ public class TGTableViewer implements TGEventListener {
 			int count = song.countTracks();
 			this.table.removeRowsAfter(count);
 			for(int i = this.table.getRowCount(); i < count; i ++){
-				this.table.newRow();
+				this.table.createRow();
 			}
 			for(int i = 0; i < count; i ++){
 				final TGTrack track = song.getTrack(i);
@@ -226,21 +247,22 @@ public class TGTableViewer implements TGEventListener {
 					//Instrument
 					this.updateTableRow(row.getInstrument(), track, getInstrument(track));
 					
-					row.setMouseListenerLabel(new MouseAdapter() {
-						
-						public void mouseUp(MouseEvent e) {
+					row.setMouseUpListenerLabel(new UIMouseUpListener() {
+						public void onMouseUp(UIMouseEvent event) {
 							row.getPainter().setFocus();
 						}
-						
-						public void mouseDown(MouseEvent e) {
+					});
+					row.setMouseDownListenerLabel(new UIMouseDownListener() {
+						public void onMouseDown(UIMouseEvent event) {
 							if( track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber() ){
 								TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGGoToTrackAction.NAME);
 								tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 								tgActionProcessor.process();
 							}
 						}
-						
-						public void mouseDoubleClick(final MouseEvent e) {
+					});
+					row.setMouseDoubleClickListenerLabel(new UIMouseDoubleClickListener() {
+						public void onMouseDoubleClick(UIMouseEvent event) {
 							new Thread(new Runnable() {
 								public void run() {
 									TGActionProcessor tgActionProcessor = new TGActionProcessor(TGTableViewer.this.context, TGGoToTrackAction.NAME);
@@ -255,14 +277,15 @@ public class TGTableViewer implements TGEventListener {
 							}).start();
 						}
 					});
-					row.setMouseListenerCanvas(new MouseAdapter() {
-						
-						public void mouseUp(MouseEvent e) {
+					
+					row.setMouseUpListenerCanvas(new UIMouseUpListener() {
+						public void onMouseUp(UIMouseEvent event) {
 							row.getPainter().setFocus();
 						}
-						
-						public void mouseDown(MouseEvent e) {
-							int index = ((e.x + getHScrollSelection())/ getTable().getRowHeight());
+					});
+					row.setMouseDownListenerCanvas(new UIMouseDownListener() {
+						public void onMouseDown(UIMouseEvent event) {
+							int index = (int)((event.getPosition().getX() + getHScrollSelection()) / getTable().getRowHeight());
 							if( index >= 0 && index < track.countMeasures() ){
 								TGMeasure measure = track.getMeasure(index);
 								TGBeat beat = TuxGuitar.getInstance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
@@ -277,6 +300,7 @@ public class TGTableViewer implements TGEventListener {
 							}
 						}
 					});
+					
 					row.setPaintListenerCanvas(new TGTableCanvasPainter(this,track));
 				}
 			}
@@ -284,20 +308,38 @@ public class TGTableViewer implements TGEventListener {
 			this.table.update();
 			this.selectedTrack = 0;
 			this.selectedMeasure = 0;
+			this.updateVScroll();
 			
-			if(this.autoSizeEnabled && this.trackCount != count){
-				TGWindow.getInstance(this.context).setTableHeight( getHeight() );
-				this.trackCount = count;
+			if(!this.resizeTable(count) && this.trackCount != count) {
+				this.getControl().layout();
 			}
-			
+			this.trackCount = count;
 		}
 		this.update = false;
 	}
 	
-	private void updateTableRow(CLabel control, TGTrack track, String label) {
-		control.setText(label);
-		control.setData(track);
-		control.setMenu(this.menu.getMenu());
+	private boolean resizeTable(int trackCount) {
+		UIWindow uiWindow = TGWindow.getInstance(this.context).getWindow();
+		if(!this.autoSizeEnabled ) {
+			Float packedHeight = uiWindow.getLayout().get(this.getControl(), UITableLayout.PACKED_HEIGHT);
+			if( packedHeight == null ) {
+				uiWindow.getLayout().set(this.getControl(), UITableLayout.PACKED_HEIGHT, 150f);
+				uiWindow.layout();
+				return true;
+			}
+		}
+		else if(this.trackCount != trackCount){
+			uiWindow.getLayout().set(this.getControl(), UITableLayout.PACKED_HEIGHT, null);
+			uiWindow.layout();
+			return true;
+		}
+		return false;
+	}
+	
+	private void updateTableRow(TGTableRowCell cell, TGTrack track, String label) {
+		cell.setText(label);
+		cell.setData(TGTrack.class.getName(), track);
+		cell.setMenu((UIPopupMenu) this.menu.getMenu());
 	}
 	
 	private void updateTableMenu() {
@@ -323,21 +365,15 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
-	private int getHeight(){
-		Rectangle r1 = this.composite.getBounds();
-		Rectangle r2 = this.composite.getClientArea();
-		return ( this.table.getMinHeight() + (r1.height - r2.height) );
-	}
-	
 	private void resetTextsValues(){
 		int rows = this.table.getRowCount();
 		for(int i = 0; i < rows; i ++){
 			TGTableRow row = this.table.getRow(i);
 			
-			row.getNumber().setText(Integer.toString(((TGTrack)row.getNumber().getData()).getNumber()));
-			row.getSoloMute().setText(getSoloMute((TGTrack)row.getSoloMute().getData()));
-			row.getName().setText(((TGTrack)row.getName().getData()).getName());
-			row.getInstrument().setText(getInstrument((TGTrack)row.getInstrument().getData()));
+			row.getNumber().setText(Integer.toString(((TGTrack)row.getNumber().getData(TGTrack.class.getName())).getNumber()));
+			row.getSoloMute().setText(getSoloMute((TGTrack)row.getSoloMute().getData(TGTrack.class.getName())));
+			row.getName().setText(((TGTrack)row.getName().getData(TGTrack.class.getName())).getName());
+			row.getInstrument().setText(getInstrument((TGTrack)row.getInstrument().getData(TGTrack.class.getName())));
 		}
 	}
 	
@@ -347,8 +383,8 @@ public class TGTableViewer implements TGEventListener {
 			TGTableRow row = this.table.getRow(i); 
 			row.getPainter().redraw();
 			if(this.selectedTrack != selectedTrack){
-				row.setBackground( this.backgrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
-				row.setForeground( this.foregrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
+				row.setBgColor( this.backgrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
+				row.setFgColor( this.foregrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
 			}
 		}
 	}
@@ -371,7 +407,7 @@ public class TGTableViewer implements TGEventListener {
 				this.followHorizontalScroll(getEditor().getTablature().getCaret().getMeasure().getNumber());
 				this.followScroll = false;
 			}
-			getComposite().redraw();
+			getControl().redraw();
 		}
 	}
 	
@@ -393,14 +429,14 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	private void followHorizontalScroll(int selectedMeasure){
-		int hScrollSelection = this.hScroll.getSelection();
+		int hScrollSelection = this.hScroll.getValue();
 		int hScrollThumb = this.hScroll.getThumb();
 		
-		int measureSize = this.table.getRowHeight();
-		int measurePosition = ( (selectedMeasure * measureSize) - measureSize );
+		float measureSize = this.table.getRowHeight();
+		int measurePosition = Math.round((selectedMeasure * measureSize) - measureSize );
 		
 		if( (measurePosition - hScrollSelection) < 0 || (measurePosition + measureSize - hScrollSelection ) > hScrollThumb){
-			this.hScroll.setSelection(measurePosition);
+			this.hScroll.setValue(measurePosition);
 		}
 	}
 	
@@ -409,12 +445,12 @@ public class TGTableViewer implements TGEventListener {
 		this.trackCount = 0;
 	}
 	
-	public Composite getComposite(){
+	public UIScrollBarPanel getControl(){
 		return this.composite;
 	}
 	
 	public void createTrackMenu(){
-		this.menu = new TrackMenu(getComposite().getShell(), SWT.POP_UP);
+		this.menu = new TrackMenu(this.getUIFactory().createPopupMenu(TGWindow.getInstance(this.context).getWindow()));
 		this.menu.showItems();
 		this.menu.update();
 	}
@@ -437,14 +473,14 @@ public class TGTableViewer implements TGEventListener {
 	
 	public void dispose(){
 		if(!this.isDisposed()){
-			this.getComposite().dispose();
+			this.getControl().dispose();
 			this.disposeMenu();
 			this.disposeColors();
 		}
 	}
 	
 	public boolean isDisposed(){
-		return (getComposite() == null || getComposite().isDisposed());
+		return (getControl() == null || getControl().isDisposed());
 	}
 	
 	protected int getSelectedTrack(){
@@ -479,9 +515,9 @@ public class TGTableViewer implements TGEventListener {
 		});
 	}
 	
-	private MouseListener mouseFocusListener(){
-		return new MouseAdapter() {
-			public void mouseUp(MouseEvent e) {
+	private UIMouseUpListener mouseFocusListener(){
+		return new UIMouseUpListener() {
+			public void onMouseUp(UIMouseEvent event) {
 				TGTable table = getTable();
 				if(table != null){
 					TGTableRow row = table.getRow( ( getSelectedTrack() - 1 ) );

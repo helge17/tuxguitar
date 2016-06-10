@@ -1,107 +1,111 @@
 package org.herac.tuxguitar.app.view.dialog.tripletfeel;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTripletFeelDialog {
 	
 	public void show(final TGViewContext context) {
-		Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("composition.tripletfeel"));
-		dialog.setMinimumSize(300,0);
 		
-		//-------------TIME SIGNATURE-----------------------------------------------
-		Group tripletFeel = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		tripletFeel.setLayout(new GridLayout());
-		tripletFeel.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		//-------------TRIPLET FEEL-----------------------------------------------
+		UITableLayout tripletFeelLayout = new UITableLayout();
+		UILegendPanel tripletFeel = uiFactory.createLegendPanel(dialog);
+		tripletFeel.setLayout(tripletFeelLayout);
 		tripletFeel.setText(TuxGuitar.getProperty("composition.tripletfeel"));
+		dialogLayout.set(tripletFeel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 250f, null, null);
 		
 		//none
-		final Button tripletFeelNone = new Button(tripletFeel, SWT.RADIO);
+		final UIRadioButton tripletFeelNone = uiFactory.createRadioButton(tripletFeel);		
 		tripletFeelNone.setText(TuxGuitar.getProperty("composition.tripletfeel.none"));
-		tripletFeelNone.setSelection(header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE);
+		tripletFeelNone.setSelected(header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE);
+		tripletFeelLayout.set(tripletFeelNone, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button tripletFeelEighth = new Button(tripletFeel, SWT.RADIO);
+		final UIRadioButton tripletFeelEighth = uiFactory.createRadioButton(tripletFeel);
 		tripletFeelEighth.setText(TuxGuitar.getProperty("composition.tripletfeel.eighth"));
-		tripletFeelEighth.setSelection(header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH);
+		tripletFeelEighth.setSelected(header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH);
+		tripletFeelLayout.set(tripletFeelEighth, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button tripletFeelSixteenth = new Button(tripletFeel, SWT.RADIO);
+		final UIRadioButton tripletFeelSixteenth = uiFactory.createRadioButton(tripletFeel);
 		tripletFeelSixteenth.setText(TuxGuitar.getProperty("composition.tripletfeel.sixteenth"));
-		tripletFeelSixteenth.setSelection(header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH);
+		tripletFeelSixteenth.setSelected(header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH);
+		tripletFeelLayout.set(tripletFeelSixteenth, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//--------------------To End Checkbox-------------------------------
-		Group check = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		check.setLayout(new GridLayout());
-		check.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout checkLayout = new UITableLayout();
+		UILegendPanel check = uiFactory.createLegendPanel(dialog);
+		check.setLayout(checkLayout);
 		check.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(check, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button toEnd = new Button(check, SWT.CHECK);
+		final UICheckBox toEnd = uiFactory.createCheckBox(check);
 		toEnd.setText(TuxGuitar.getProperty("composition.tripletfeel.to-the-end"));
-		toEnd.setSelection(true);
+		toEnd.setSelected(true);
+		checkLayout.set(toEnd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOk = new Button(buttons, SWT.PUSH);
-		buttonOk.setText(TuxGuitar.getProperty("ok"));
-		buttonOk.setLayoutData(getButtonData());
-		buttonOk.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				changeTripletFeel(context.getContext(), song, header, parseTripletFeel(tripletFeelNone, tripletFeelEighth, tripletFeelSixteenth), toEnd.getSelection());
+		final UIButton buttonOK = uiFactory.createButton(buttons);
+		buttonOK.setText(TuxGuitar.getProperty("ok"));
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				changeTripletFeel(context.getContext(), song, header, parseTripletFeel(tripletFeelNone, tripletFeelEighth, tripletFeelSixteenth), toEnd.isSelected());
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
-		buttonCancel.setLayoutData(getButtonData());
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOk );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	protected int parseTripletFeel(Button tripletFeelNone,Button tripletFeelEighth, Button tripletFeelSixteenth){
-		if(tripletFeelNone.getSelection()){
+	protected int parseTripletFeel(UIRadioButton tripletFeelNone, UIRadioButton tripletFeelEighth, UIRadioButton tripletFeelSixteenth){
+		if(tripletFeelNone.isSelected()){
 			return TGMeasureHeader.TRIPLET_FEEL_NONE;
-		}else if(tripletFeelEighth.getSelection()){
+		}else if(tripletFeelEighth.isSelected()){
 			return TGMeasureHeader.TRIPLET_FEEL_EIGHTH;
-		}else if(tripletFeelSixteenth.getSelection()){
+		}else if(tripletFeelSixteenth.isSelected()){
 			return TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH;
 		}
 		return TGMeasureHeader.TRIPLET_FEEL_NONE;

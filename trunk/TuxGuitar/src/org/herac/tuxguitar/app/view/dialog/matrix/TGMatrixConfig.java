@@ -1,91 +1,111 @@
 package org.herac.tuxguitar.app.view.dialog.matrix;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.ColorDialog;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.graphics.TGColorModel;
+import org.herac.tuxguitar.graphics.TGFontModel;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.chooser.UIColorChooser;
+import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
+import org.herac.tuxguitar.ui.chooser.UIFontChooser;
+import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIResource;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGMatrixConfig {
 	
-	private Font font;
-	private Color[] colorLines;
-	private Color colorForeground;
-	private Color colorBorder;
-	private Color colorPosition;
-	private Color colorNote;
-	private Color colorPlay;
+	private static final float MINIMUM_CONTROL_WIDTH = 180;
+	private static final float MINIMUM_BUTTON_WIDTH = 80;
+	private static final float MINIMUM_BUTTON_HEIGHT = 25;
 	
-	public TGMatrixConfig(){
-		super();
+	private TGContext context;
+	private UIFont font;
+	private UIColor[] colorLines;
+	private UIColor colorForeground;
+	private UIColor colorBorder;
+	private UIColor colorPosition;
+	private UIColor colorNote;
+	private UIColor colorPlay;
+	
+	public TGMatrixConfig(TGContext context){
+		this.context = context;
 	}
 	
-	public Font getFont() {
+	public UIFont getFont() {
 		return this.font;
 	}
 	
-	public Color getColorForeground() {
+	public UIColor getColorForeground() {
 		return this.colorForeground;
 	}
 	
-	public Color getColorBorder() {
+	public UIColor getColorBorder() {
 		return this.colorBorder;
 	}
 	
-	public Color getColorPosition() {
+	public UIColor getColorPosition() {
 		return this.colorPosition;
 	}
 	
-	public Color getColorNote() {
+	public UIColor getColorNote() {
 		return this.colorNote;
 	}
 	
-	public Color getColorPlay() {
+	public UIColor getColorPlay() {
 		return this.colorPlay;
 	}
 	
-	public Color[] getColorLines() {
+	public UIColor[] getColorLines() {
 		return this.colorLines;
 	}
 	
-	public Color getColorLine(int index) {
+	public UIColor getColorLine(int index) {
 		return this.colorLines[index];
 	}
 	
+	public UIFont createFont(UIFactory factory, TGFontModel fm) {
+		return TGApplication.getInstance(this.context).getFactory().createFont(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
+	}
+	
+	public UIColor createColor(UIFactory factory, TGColorModel cm) {
+		return TGApplication.getInstance(this.context).getFactory().createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
+	}
+	
 	public void load(){
-		Display display = TuxGuitar.getInstance().getDisplay();
+		UIFactory factory = TGApplication.getInstance(this.context).getFactory();
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
-		this.font = new Font(display,config.getFontDataConfigValue(TGConfigKeys.MATRIX_FONT));
-		this.colorForeground = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
-		this.colorBorder = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_BORDER));
-		this.colorPosition = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_POSITION));
-		this.colorNote = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_NOTE));
-		this.colorPlay = new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE));
-		this.colorLines = new Color[]{
-				new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_1)),
-				new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_2)),
-				new Color(display,config.getRGBConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_3)),
+		this.font = createFont(factory, config.getFontModelConfigValue(TGConfigKeys.MATRIX_FONT));
+		this.colorForeground = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_FOREGROUND));
+		this.colorBorder = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_BORDER));
+		this.colorPosition = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_POSITION));
+		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_NOTE));
+		this.colorPlay = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_PLAY_NOTE));
+		this.colorLines = new UIColor[]{
+			createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_1)),
+			createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_2)),
+			createColor(factory,config.getColorModelConfigValue(TGConfigKeys.MATRIX_COLOR_LINE_3))
 		};
 	}
 	
@@ -103,13 +123,14 @@ public class TGMatrixConfig {
 		config.setValue(TGConfigKeys.MATRIX_COLOR_LINE_3,defaults.getValue(TGConfigKeys.MATRIX_COLOR_LINE_3));
 	}
 	
-	public void save(FontData fontData,
-					 RGB rgbForeground,
-					 RGB rgbBorder,
-					 RGB rgbPosition,
-					 RGB rgbNote,
-					 RGB rgbPlay,
-					 RGB rgbLines[]){
+	public void save(
+			UIFontModel fontData,
+			UIColorModel rgbForeground,
+			UIColorModel rgbBorder,
+			UIColorModel rgbPosition,
+			UIColorModel rgbNote,
+			UIColorModel rgbPlay,
+			UIColorModel rgbLines[]){
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		
 		config.setValue(TGConfigKeys.MATRIX_FONT,fontData);
@@ -133,7 +154,7 @@ public class TGMatrixConfig {
 		dispose(this.colorLines);
 	}
 	
-	protected void dispose(Resource[] resources){
+	protected void dispose(UIResource[] resources){
 		if(resources != null){
 			for(int i = 0; i < resources.length; i ++){
 				dispose(resources[i]);
@@ -141,200 +162,205 @@ public class TGMatrixConfig {
 		}
 	}
 	
-	protected void dispose(Resource resource){
+	protected void dispose(UIResource resource){
 		if(resource != null){
 			resource.dispose();
 		}
 	}
 	
-	private static final int MINIMUM_CONTROL_WIDTH = 180;
-	private static final int MINIMUM_BUTTON_WIDTH = 80;
-	private static final int MINIMUM_BUTTON_HEIGHT = 25;
-	
-	public void configure(Shell shell) {
-		final Shell dialog = DialogUtils.newDialog(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
-		dialog.setText(TuxGuitar.getProperty("matrix.settings"));
+	public void configure(UIWindow parent) {
+		final UIFactory factory = getUIFactory();
+		final UITableLayout windowLayout = new UITableLayout();
+		final UIWindow window = factory.createWindow(parent, true, false);
+		window.setLayout(windowLayout);
+		window.setText(TuxGuitar.getProperty("matrix.settings"));
 		
 		// ----------------------------------------------------------------------
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(2, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = factory.createLegendPanel(window);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("matrix.settings"));
+		windowLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		int groupRow = 0;
 		
 		// fonts
-		final FontData fontData = getFontChooser(group,TuxGuitar.getProperty("matrix.font"),this.font.getFontData()[0]);
+		final UIFontModel fontData = getFontChooser(window, group, TuxGuitar.getProperty("matrix.font"), this.font, ++groupRow);
 		
 		// colors
-		final RGB rgbForeground = getColorChooser(group,TuxGuitar.getProperty("matrix.foreground-color"), this.colorForeground.getRGB());
+		final UIColorModel rgbForeground = getColorChooser(window, group, TuxGuitar.getProperty("matrix.foreground-color"), this.colorForeground, ++groupRow);
 		
-		final RGB rgbLines[] = new RGB[]{
-				getColorChooser(group,TuxGuitar.getProperty("matrix.line-color-1"), this.colorLines[0].getRGB()),
-				getColorChooser(group,TuxGuitar.getProperty("matrix.line-color-2"), this.colorLines[1].getRGB()),
-				getColorChooser(group,TuxGuitar.getProperty("matrix.line-color-over"), this.colorLines[2].getRGB()),
+		final UIColorModel rgbLines[] = new UIColorModel[]{
+			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-1"), this.colorLines[0], ++groupRow),
+			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-2"), this.colorLines[1], ++groupRow),
+			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-over"), this.colorLines[2], ++groupRow),
 		};
 		
-		final RGB rgbBorder = getColorChooser(group,TuxGuitar.getProperty("matrix.border-color"), this.colorBorder.getRGB());
-		final RGB rgbPosition = getColorChooser(group,TuxGuitar.getProperty("matrix.position-color"), this.colorPosition.getRGB());
-		final RGB rgbNote = getColorChooser(group,TuxGuitar.getProperty("matrix.note-color"), this.colorNote.getRGB());
-		final RGB rgbPlay = getColorChooser(group,TuxGuitar.getProperty("matrix.play-note-color"), this.colorPlay.getRGB());
+		final UIColorModel rgbBorder = getColorChooser(window, group, TuxGuitar.getProperty("matrix.border-color"), this.colorBorder, ++groupRow);
+		final UIColorModel rgbPosition = getColorChooser(window, group, TuxGuitar.getProperty("matrix.position-color"), this.colorPosition, ++groupRow);
+		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("matrix.note-color"), this.colorNote, ++groupRow);
+		final UIColorModel rgbPlay = getColorChooser(window, group, TuxGuitar.getProperty("matrix.play-note-color"), this.colorPlay, ++groupRow);
 		
 		// ------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(3, false));
-		buttons.setLayoutData(new GridData(SWT.END, SWT.FILL, true, true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = factory.createPanel(window, false);
+		buttons.setLayout(buttonsLayout);
+		windowLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonDefaults = new Button(buttons, SWT.PUSH);
+		final UIButton buttonDefaults = factory.createButton(buttons);
 		buttonDefaults.setText(TuxGuitar.getProperty("defaults"));
-		buttonDefaults.setLayoutData(getButtonData());
-		buttonDefaults.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dialog.dispose();
+		buttonDefaults.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				window.dispose();
 				defaults();
 				applyChanges();
 			}
 		});
+		buttonsLayout.set(buttonDefaults, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = factory.createButton(buttons);
+		buttonOK.setDefaultButton();
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dialog.dispose();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				window.dispose();
 				save(fontData, rgbForeground, rgbBorder, rgbPosition, rgbNote, rgbPlay, rgbLines);
 				applyChanges();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		final UIButton buttonCancel = factory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				dialog.dispose();
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				window.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(window, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	protected GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = MINIMUM_BUTTON_WIDTH;
-		data.minimumHeight = MINIMUM_BUTTON_HEIGHT;
-		return data;
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
 	}
 	
 	protected void applyChanges(){
 		this.dispose();
 		this.load();
+		
+		TGMatrixEditor.getInstance(this.context).reloadFromConfig();
 	}
 	
-	private RGB getColorChooser(final Composite parent,String title,RGB rgb){
-		Label label = new Label(parent, SWT.NULL);
-		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
-		label.setText(title);
+	private UIFontModel getFontChooser(final UIWindow window, UILayoutContainer parent, String title, UIFont font, int row) {
+		final UIFactory factory = getUIFactory();
+		final UIFontModel selection = new UIFontModel(font.getName(), font.getHeight(), font.isBold(), font.isItalic());
 		
-		ButtonColor button = new ButtonColor(parent, SWT.PUSH, TuxGuitar.getProperty("choose"));
-		button.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
-		button.loadColor(rgb);
+		UITableLayout layout = (UITableLayout) parent.getLayout();
+		UILabel label = factory.createLabel(parent);
+		label.setText(title);
+		layout.set(label, row, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
+		
+		UIButton button = factory.createButton(parent);
+		button.setText(TuxGuitar.getProperty("choose"));
+		button.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				UIFontChooser uiFontChooser = factory.createFontChooser(window);
+				uiFontChooser.setDefaultModel(selection);
+				uiFontChooser.choose(new UIFontChooserHandler() {
+					public void onSelectFont(UIFontModel model) {
+						if( model != null ){
+							selection.setName(model.getName());
+							selection.setHeight(model.getHeight());
+							selection.setBold(model.isBold());
+							selection.setItalic(model.isItalic());
+						}
+					}
+				});
+			}
+		});
+		layout.set(button, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
+		
+		return selection;
+	}
+	
+	private UIColorModel getColorChooser(final UIWindow window, UILayoutContainer parent, String title, UIColor rgb, int row){
+		final UIFactory factory = getUIFactory();
+		
+		UITableLayout layout = (UITableLayout) parent.getLayout();
+		UILabel label = factory.createLabel(parent);
+		label.setText(title);
+		layout.set(label, row, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
+		
+		ButtonColor button = new ButtonColor(window, parent, TuxGuitar.getProperty("choose"));
+		button.loadColor(new UIColorModel(rgb.getRed(), rgb.getGreen(), rgb.getBlue()));
+		layout.set(button.getControl(), row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
 		
 		return button.getValue();
 	}
 	
-	private FontData getFontChooser(final Composite parent,String title,FontData fontData){
-		final FontData selection = new FontData(fontData.getName(),fontData.getHeight(),fontData.getStyle());
-		
-		Label label = new Label(parent, SWT.NULL);
-		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
-		label.setText(title);
-		
-		Button button = new Button(parent, SWT.PUSH);
-		button.setLayoutData(getAlignmentData(MINIMUM_CONTROL_WIDTH,SWT.FILL));
-		button.setText(TuxGuitar.getProperty("choose"));
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				Font font = new Font(parent.getDisplay(),selection);
-				FontDialog fontDialog = new FontDialog(parent.getShell());
-				fontDialog.setFontList(font.getFontData());
-				FontData fd = fontDialog.open();
-				if(fd != null){
-					selection.setName( fd.getName() );
-					selection.setHeight( fd.getHeight() );
-					selection.setStyle( fd.getStyle() );
-				}
-				font.dispose();
-			}
-		});
-		return selection;
-	}
-	
-	private GridData getAlignmentData(int minimumWidth,int horizontalAlignment){
-		GridData data = new GridData();
-		data.minimumWidth = minimumWidth;
-		data.horizontalAlignment = horizontalAlignment;
-		data.verticalAlignment = SWT.DEFAULT;
-		data.grabExcessHorizontalSpace = true;
-		data.grabExcessVerticalSpace = true;
-		return data;
-	}
-	
 	private class ButtonColor {
-		protected Button button;
-		protected Color color;
-		protected RGB value;
 		
-		public ButtonColor(Composite parent, int style, String text){
-			this.value = new RGB(0,0,0);
-			this.button = new Button(parent, style);			
+		private UIWindow window;
+		private UIButton button;
+		private UIColor color;
+		private UIColorModel value;
+		
+		public ButtonColor(UIWindow window, UIContainer parent, String text){
+			this.window = window;
+			this.value = new UIColorModel();
+			this.button = getUIFactory().createButton(parent);			
 			this.button.setText(text);
 			this.addListeners();
 		}
 		
-		protected void setLayoutData(Object layoutData){
-			this.button.setLayoutData(layoutData);
-		}
-		
-		protected void loadColor(RGB rgb){
-			this.value.red = rgb.red;
-			this.value.green = rgb.green;
-			this.value.blue = rgb.blue;
+		public void loadColor(UIColorModel cm){
+			this.value.setRed(cm.getRed());
+			this.value.setGreen(cm.getGreen());
+			this.value.setBlue(cm.getBlue());
 			
-			Color color = new Color(this.button.getDisplay(), this.value);
-			this.button.setForeground(color);
+			UIColor color = getUIFactory().createColor(this.value);
+			this.button.setFgColor(color);
 			this.disposeColor();
 			this.color = color;
 		}
 		
-		protected void disposeColor(){
-			if(this.color != null && !this.color.isDisposed()){
+		public void disposeColor(){
+			if( this.color != null && !this.color.isDisposed()){
 				this.color.dispose();
 				this.color = null;
 			}
 		}
 		
-		private void addListeners(){
-			this.button.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent event) {
-					ColorDialog dlg = new ColorDialog(ButtonColor.this.button.getShell());
-					dlg.setRGB(ButtonColor.this.value);
+		public void addListeners(){
+			this.button.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					UIColorChooser dlg = getUIFactory().createColorChooser(ButtonColor.this.window);
+					dlg.setDefaultModel(ButtonColor.this.value);
 					dlg.setText(TuxGuitar.getProperty("choose-color"));
-					RGB result = dlg.open();
-					if (result != null) {
-						ButtonColor.this.loadColor(result);
-					}
+					dlg.choose(new UIColorChooserHandler() {
+						public void onSelectColor(UIColorModel model) {
+							if( model != null) {
+								ButtonColor.this.loadColor(model);
+							}
+						}
+					});
 				}
 			});
-			this.button.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
+			this.button.addDisposeListener(new UIDisposeListener() {
+				public void onDispose(UIDisposeEvent event) {
 					ButtonColor.this.disposeColor();
 				}
 			});
 		}
 		
-		protected RGB getValue(){
+		public UIControl getControl() {
+			return this.button;
+		}
+		
+		public UIColorModel getValue(){
 			return this.value;
 		}
 	}

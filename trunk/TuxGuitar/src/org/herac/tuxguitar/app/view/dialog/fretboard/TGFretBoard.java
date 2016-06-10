@@ -2,38 +2,24 @@ package org.herac.tuxguitar.app.view.dialog.fretboard;
 
 import java.util.Iterator;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
-import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGFontImpl;
 import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
@@ -47,9 +33,28 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UIImageView;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISeparator;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGFretBoard extends Composite {
+public class TGFretBoard {
 	
 	public static final int MAX_FRETS = 24;
 	public static final int TOP_SPACING = 10;
@@ -60,11 +65,16 @@ public class TGFretBoard extends Composite {
 	
 	private TGContext context;
 	private TGFretBoardConfig config;
-	private Composite toolComposite;
-	private Label durationLabel;
-	private Label scaleName;
-	private Button scale;
-	private Button settings;
+	private UIPanel control;
+	private UIPanel toolComposite;
+	private UIImageView durationLabel;
+	private UILabel scaleName;
+	private UIButton scale;
+	private UIButton goLeft;
+	private UIButton goRight;
+	private UIButton increment;
+	private UIButton decrement;
+	private UIButton settings;
 	private TGImage fretBoard;
 	
 	private TGBeat beat;
@@ -72,21 +82,22 @@ public class TGFretBoard extends Composite {
 	
 	private int[] frets;
 	private int[] strings;
-	private int fretSpacing;
+	private float fretSpacing;
 	private boolean changes;
-	private Point lastSize;
+	private UISize lastSize;
 	private int duration;
-	protected Combo handSelector;
-	protected Composite fretBoardComposite;
+	protected UIDropDownSelect<Integer> handSelector;
+	protected UICanvas fretBoardComposite;
 	
-	public TGFretBoard(TGContext context, Composite parent) {
-		super(parent, SWT.NONE);
+	public TGFretBoard(TGContext context, UIContainer parent) {
 		this.context = context;
-		this.config = new TGFretBoardConfig();
+		this.config = new TGFretBoardConfig(context);
 		this.config.load();
-		this.setLayout(new FormLayout());
+		this.control = getUIFactory().createPanel(parent, false);
+		
 		this.initToolBar();
 		this.initEditor();
+		this.createControlLayout();
 		this.loadIcons();
 		this.loadProperties();
 		
@@ -94,108 +105,119 @@ public class TGFretBoard extends Composite {
 		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.fretBoardComposite);
 	}
 	
+	public void createControlLayout() {
+		UITableLayout uiLayout = new UITableLayout(0f);
+		uiLayout.set(this.toolComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, null, null, 0f);
+		uiLayout.set(this.fretBoardComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		
+		this.control.setLayout(uiLayout);
+	}
+	
 	private void initToolBar() {
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0,0);
+		UIFactory uiFactory = getUIFactory();
 		
-		GridLayout layout = new GridLayout();
-		layout.makeColumnsEqualWidth = false;
-		layout.numColumns = 0;
-		layout.marginWidth = 0;
+		int column = 0;
 		
-		this.toolComposite = new Composite(this, SWT.NONE);
+		this.toolComposite = uiFactory.createPanel(this.control, false);
+		this.createToolBarLayout();
 		
 		// position
-		layout.numColumns ++;
-		Button goLeft = new Button(this.toolComposite, SWT.ARROW | SWT.LEFT);
-		goLeft.addSelectionListener(new TGActionProcessorListener(this.context, TGGoLeftAction.NAME));
+		this.goLeft = uiFactory.createButton(this.toolComposite);
+		this.goLeft.addSelectionListener(new TGActionProcessorListener(this.context, TGGoLeftAction.NAME));
+		this.createToolItemLayout(this.goLeft, ++column);
 		
-		layout.numColumns ++;
-		Button goRight = new Button(this.toolComposite, SWT.ARROW | SWT.RIGHT);
-		goRight.addSelectionListener(new TGActionProcessorListener(this.context, TGGoRightAction.NAME));
+		this.goRight = uiFactory.createButton(this.toolComposite);
+		this.goRight.addSelectionListener(new TGActionProcessorListener(this.context, TGGoRightAction.NAME));
+		this.createToolItemLayout(this.goRight, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolComposite);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// duration
-		layout.numColumns ++;
-		Button decrement = new Button(this.toolComposite, SWT.ARROW | SWT.MIN);
-		decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.decrement = uiFactory.createButton(this.toolComposite);
+		this.decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.createToolItemLayout(decrement, ++column);
 		
-		layout.numColumns ++;
-		this.durationLabel = new Label(this.toolComposite, SWT.BORDER);
+		this.durationLabel = uiFactory.createImageView(this.toolComposite);
+		this.createToolItemLayout(this.durationLabel, ++column);
 		
-		layout.numColumns ++;
-		Button increment = new Button(this.toolComposite, SWT.ARROW | SWT.MAX);
-		increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.increment = uiFactory.createButton(this.toolComposite);
+		this.increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.createToolItemLayout(increment, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolComposite);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// hand selector
-		layout.numColumns ++;
-		this.handSelector = new Combo(this.toolComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.handSelector.add(TuxGuitar.getProperty("fretboard.right-mode"));
-		this.handSelector.add(TuxGuitar.getProperty("fretboard.left-mode"));
-		this.handSelector.select( this.getDirection(this.config.getDirection()) );
-		this.handSelector.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				updateDirection(TGFretBoard.this.handSelector.getSelectionIndex());
+		this.handSelector = uiFactory.createDropDownSelect(this.toolComposite);
+		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.right-mode"), TGFretBoardConfig.DIRECTION_RIGHT));
+		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.left-mode"), TGFretBoardConfig.DIRECTION_LEFT));
+		this.handSelector.setSelectedItem(new UISelectItem<Integer>(null, this.getDirection(this.config.getDirection())));
+		this.handSelector.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				updateDirection(TGFretBoard.this.handSelector.getSelectedItem().getValue());
 			}
 		});
+		this.createToolItemLayout(this.handSelector, ++column);
 		
 		// separator
-		layout.numColumns ++;
-		makeToolSeparator(this.toolComposite);
+		this.createToolSeparator(uiFactory, ++column);
 		
 		// scale
-		layout.numColumns ++;
-		this.scale = new Button(this.toolComposite, SWT.PUSH);
+		this.scale = uiFactory.createButton(this.toolComposite);
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.scale.addSelectionListener(new TGActionProcessorListener(this.context, TGOpenScaleDialogAction.NAME));
+		this.createToolItemLayout(this.scale, ++column);
 		
 		// scale name
-		layout.numColumns ++;
-		this.scaleName = new Label(this.toolComposite, SWT.LEFT);
+		this.scaleName = uiFactory.createLabel(this.toolComposite);
+		this.createToolItemLayout(this.scaleName, ++column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		// settings
-		layout.numColumns ++;
-		this.settings = new Button(this.toolComposite, SWT.PUSH);
+		this.settings = uiFactory.createButton(this.toolComposite);
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
-		this.settings.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
-		this.settings.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.settings.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				configure();
 			}
 		});
+		this.createToolItemLayout(this.settings, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 		
-		this.toolComposite.setLayoutData(data);
-		this.toolComposite.setLayout(layout);
+		this.toolComposite.getLayout().set(goLeft, UITableLayout.MARGIN_LEFT, 0f);
+		this.toolComposite.getLayout().set(this.settings, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 	
-	private void makeToolSeparator(Composite parent){
-		Label separator = new Label(parent,SWT.SEPARATOR);
-		separator.setLayoutData(new GridData(20,20));
+	private void createToolBarLayout(){
+		UITableLayout uiLayout = new UITableLayout();
+		uiLayout.set(UITableLayout.MARGIN_LEFT, 0f);
+		uiLayout.set(UITableLayout.MARGIN_RIGHT, 0f);
+		
+		this.toolComposite.setLayout(uiLayout);
+	}
+	
+	private void createToolItemLayout(UIControl uiControl, int column){
+		this.createToolItemLayout(uiControl, column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+	}
+	
+	private void createToolItemLayout(UIControl uiControl, int column, Integer alignX, Integer alignY, Boolean fillX, Boolean fillY){
+		UITableLayout uiLayout = (UITableLayout) this.toolComposite.getLayout();
+		uiLayout.set(uiControl, 1, column, alignX, alignY, fillX, fillX);
+	}
+	
+	private void createToolSeparator(UIFactory uiFactory, int column){
+		UISeparator uiSeparator = uiFactory.createVerticalSeparator(this.toolComposite);
+		UITableLayout uiLayout = (UITableLayout) this.toolComposite.getLayout();
+		uiLayout.set(uiSeparator, 1, column, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
+		uiLayout.set(uiSeparator, UITableLayout.PACKED_WIDTH, 20f);
+		uiLayout.set(uiSeparator, UITableLayout.PACKED_HEIGHT, 20f);
 	}
 	
 	private void initEditor() {
-		this.lastSize = new Point(0,0);
-		
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(this.toolComposite,0);
-		data.bottom = new FormAttachment(100, 0);
-		
-		this.fretBoardComposite = new Composite(this, SWT.BORDER);
-		this.fretBoardComposite.setLayoutData(data);
-		this.fretBoardComposite.setBackground(this.config.getColorBackground());
-		this.fretBoardComposite.addMouseListener(new TGFretBoardMouseListener());
+		this.lastSize = new UISize();
+		this.fretBoardComposite = getUIFactory().createCanvas(this.control, false);
+		this.fretBoardComposite.setBgColor(this.config.getColorBackground());
+		this.fretBoardComposite.addMouseUpListener(new TGFretBoardMouseListener());
 		this.fretBoardComposite.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGFretBoardPainterListener()));
 	}
 	
@@ -213,10 +235,9 @@ public class TGFretBoard extends Composite {
 		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKey );
 		String name = TuxGuitar.getInstance().getScaleManager().getScaleName( scaleIndex );
 		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
-		this.scaleName.pack();
 	}
 	
-	private void calculateFretSpacing(int width) {
+	private void calculateFretSpacing(float width) {
 		this.fretSpacing = (width / MAX_FRETS);
 		int aux = 0;
 		for (int i = 0; i < MAX_FRETS; i++) {
@@ -279,48 +300,51 @@ public class TGFretBoard extends Composite {
 				disposeFretBoardImage();
 				initStrings(getStringCount());
 				//Fuerzo a cambiar el ancho
-				this.lastSize.y = 0;
+				this.lastSize.setHeight(0);
 			}
 			
-			int clientWidth = getClientArea().width;
-			int clientHeight = getClientArea().height;
+			UIRectangle childArea = this.control.getChildArea();
+			float clientWidth = childArea.getWidth();
+			float clientHeight = childArea.getHeight();
 			
-			if( this.lastSize.x != clientWidth || hasChanges() ){
-				this.layout(getClientArea().width);
+			if( this.lastSize.getWidth() != clientWidth || hasChanges() ){
+				this.layout(clientWidth);
 			}
 			
-			if(this.lastSize.y != clientHeight){
+			if( this.lastSize.getHeight() != clientHeight ) {
 				TuxGuitar.getInstance().getFretBoardEditor().showFretBoard();
 			}
-			this.lastSize.x = clientWidth;
-			this.lastSize.y = clientHeight;
+			this.lastSize.setWidth(clientWidth);
+			this.lastSize.setHeight(clientHeight);
 		}
 	}
 	
 	private void paintFretBoard(TGPainter painter){
 		if(this.fretBoard == null || this.fretBoard.isDisposed()){
-			Rectangle clientArea = getClientArea();
+			UIFactory factory = getUIFactory();
+			UIRectangle area = this.control.getChildArea();
 			
-			this.fretBoard = new TGImageImpl(getDisplay(),clientArea.width,((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
+			this.fretBoard = new TGImageImpl(factory, factory.createImage(area.getWidth(), ((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
 			
 			TGPainter painterBuffer = this.fretBoard.createPainter();
 			
 			//fondo
 			painterBuffer.setBackground(new TGColorImpl(this.config.getColorBackground()));
 			painterBuffer.initPath(TGPainter.PATH_FILL);
-			painterBuffer.addRectangle(clientArea.x,clientArea.y,clientArea.width,clientArea.height);
+			painterBuffer.addRectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight());
 			painterBuffer.closePath();
 			
 			
 			// pinto las cegillas
-			TGImage fretImage = new TGImageImpl(TuxGuitar.getInstance().getIconManager().getFretboardFret());
-			TGImage firstFretImage = new TGImageImpl(TuxGuitar.getInstance().getIconManager().getFretboardFirstFret());
+			TGIconManager iconManager = TGIconManager.getInstance(this.context);
+			TGImage fretImage = new TGImageImpl(factory, iconManager.getFretboardFret());
+			TGImage firstFretImage = new TGImageImpl(factory, iconManager.getFretboardFirstFret());
 			
-			painterBuffer.drawImage(firstFretImage,0,0,firstFretImage.getWidth(),firstFretImage.getHeight(),this.frets[0] - 5,this.strings[0] - 5,firstFretImage.getWidth(),this.strings[this.strings.length - 1] );
+			painterBuffer.drawImage(firstFretImage, 0, 0, firstFretImage.getWidth(), firstFretImage.getHeight(), this.frets[0] - 5,this.strings[0] - 5, firstFretImage.getWidth(),this.strings[this.strings.length - 1] );
 			
 			paintFretPoints(painterBuffer,0);
 			for (int i = 1; i < this.frets.length; i++) {
-				painterBuffer.drawImage(fretImage,0,0,fretImage.getWidth(),fretImage.getHeight(),this.frets[i],this.strings[0] - 5,fretImage.getWidth(),this.strings[this.strings.length - 1] );
+				painterBuffer.drawImage(fretImage, 0, 0, fretImage.getWidth(), fretImage.getHeight(), this.frets[i], this.strings[0] - 5,fretImage.getWidth(),this.strings[this.strings.length - 1] );
 				paintFretPoints(painterBuffer, i);
 			}
 			
@@ -431,7 +455,7 @@ public class TGFretBoard extends Composite {
 		}
 	}
 	
-	private void paintKeyOval(TGPainter painter,Color background,int x, int y) {
+	private void paintKeyOval(TGPainter painter, UIColor background,int x, int y) {
 		int size = getOvalSize();
 		painter.setBackground(new TGColorImpl(background));
 		painter.initPath(TGPainter.PATH_FILL);
@@ -440,8 +464,8 @@ public class TGFretBoard extends Composite {
 		painter.closePath();
 	}
 	
-	private void paintKeyText(TGPainter painter,Color foreground,int x, int y,String text) {
-		painter.setBackground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_WHITE)));
+	private void paintKeyText(TGPainter painter, UIColor foreground, int x, int y, String text) {
+		painter.setBackground(new TGColorImpl(this.config.getColorKeyTextBackground()));
 		painter.setForeground(new TGColorImpl(foreground));
 		painter.setFont(new TGFontImpl(this.config.getFont()));
 		
@@ -462,7 +486,7 @@ public class TGFretBoard extends Composite {
 		}
 	}
 	
-	protected void hit(int x, int y) {
+	protected void hit(float x, float y) {
 		int fretIndex = getFretIndex(x);
 		int stringIndex = getStringIndex(y);
 		int stringNumber = (stringIndex + 1);
@@ -479,15 +503,15 @@ public class TGFretBoard extends Composite {
 		tgActionProcessor.process();
 	}
 	
-	private int getStringIndex(int y) {
+	private int getStringIndex(float y) {
 		int index = -1;
 		for (int i = 0; i < this.strings.length; i++) {
 			if (index < 0) {
 				index = i;
 			} else {
-				int distanceY = Math.abs(y - this.strings[index]);
-				int currDistanceY = Math.abs(y - this.strings[i]);
-				if (currDistanceY < distanceY) {
+				float distanceY = Math.abs(y - this.strings[index]);
+				float currDistanceY = Math.abs(y - this.strings[i]);
+				if( currDistanceY < distanceY) {
 					index = i;
 				}
 			}
@@ -495,7 +519,7 @@ public class TGFretBoard extends Composite {
 		return index;
 	}
 	
-	private int getFretIndex(int x) {
+	private int getFretIndex(float x) {
 		int length = this.frets.length;
 		if ((x - 10) <= this.frets[0] && this.frets[0] < this.frets[length - 1]) {
 			return 0;
@@ -590,66 +614,78 @@ public class TGFretBoard extends Composite {
 	}
 	
 	public void redraw() {
-		if(!super.isDisposed()){
-			super.redraw();
+		if(!this.isDisposed()){
+			this.control.redraw();
 			this.fretBoardComposite.redraw();
 			this.loadDurationImage(false);
 		}
 	}
 	
 	public void redrawPlayingMode(){
-		if(!super.isDisposed() /*&& !TuxGuitar.getInstance().isLocked()*/){
+		if(!this.isDisposed()){
 			this.fretBoardComposite.redraw();
 		}
 	 }
 	
+	public void setVisible(boolean visible) {
+		this.control.setVisible(visible);
+	}
+	
+	public boolean isVisible() {
+		return (this.control.isVisible());
+	}
+	
+	public boolean isDisposed() {
+		return (this.control.isDisposed());
+	}
+	
 	public void dispose(){
-		super.dispose();
+		this.control.dispose();
 		this.disposeFretBoardImage();
 		this.config.dispose();
 	}
 	
 	public void loadProperties(){
-		int selection = this.handSelector.getSelectionIndex();
-		this.handSelector.removeAll();
-		this.handSelector.add(TuxGuitar.getProperty("fretboard.right-mode"));
-		this.handSelector.add(TuxGuitar.getProperty("fretboard.left-mode"));
-		this.handSelector.select(selection);
+		int selection = this.handSelector.getSelectedItem().getValue();
+		this.handSelector.removeItems();
+		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.right-mode"), TGFretBoardConfig.DIRECTION_RIGHT));
+		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.left-mode"), TGFretBoardConfig.DIRECTION_LEFT));
+		this.handSelector.setSelectedItem(new UISelectItem<Integer>(null, selection));
+		
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.loadScaleName();
 		this.setChanges(true);
-		this.layout(true,true);
+		this.control.layout();
 	}
 	
 	public void loadIcons(){
+		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
+		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
+		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
+		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.loadDurationImage(true);
-		this.layout(true,true);
-		this.layout(getClientArea().width);
+		this.control.layout();
+		this.layout(this.control.getChildArea().getWidth());
 	}
 	
 	public void loadScale(){
 		this.loadScaleName();
 		this.setChanges(true);
-	}
-	
-	public int getHeight(){
-		int borderWidth = (2 * this.fretBoardComposite.getBorderWidth());
-		int toolBarHeight = (this.toolComposite.getBounds().height);
-		int fretBoardHeight = (((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
-		return (borderWidth + toolBarHeight + fretBoardHeight);
+		this.control.layout();
 	}
 	
 	public int getWidth(){
 		return this.frets[this.frets.length - 1];
 	}
 	
-	public void layout(){
-		super.layout();
+	public void computePackedSize() {
+		this.control.getLayout().set(this.fretBoardComposite, UITableLayout.PACKED_HEIGHT, Float.valueOf(((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
+		this.control.computePackedSize();
 	}
 	
-	public void layout(int width){
+	public void layout(float width){
 		this.disposeFretBoardImage();
 		this.calculateFretSpacing(width);
 		this.initFrets(10);
@@ -657,29 +693,40 @@ public class TGFretBoard extends Composite {
 		this.setChanges(false);
 	}
 	
-	protected void configure(){
-		this.config.configure(getShell());
-		this.handSelector.select( this.getDirection(this.config.getDirection()) );
+	public void configure(){
+		this.config.configure(TGWindow.getInstance(this.context).getWindow());
+	}
+	
+	public void reloadFromConfig(){
+		this.handSelector.setSelectedItem(new UISelectItem<Integer>(null, this.getDirection(this.config.getDirection())));
 		this.setChanges(true);
 		this.redraw();
 	}
 	
-	public Composite getFretBoardComposite(){
+	public UIPanel getControl(){
+		return this.control;
+	}
+	
+	public UICanvas getFretBoardComposite(){
 		return this.fretBoardComposite;
 	}
 	
-	private class TGFretBoardMouseListener implements MouseListener {
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
+	private class TGFretBoardMouseListener implements UIMouseUpListener {
 		
 		public TGFretBoardMouseListener(){
 			super();
 		}
 		
-		public void mouseUp(MouseEvent e) {
+		public void onMouseUp(UIMouseEvent event) {
 			getFretBoardComposite().setFocus();
-			if( e.button == 1 ){
+			if( event.getButton() == 1 ){
 				if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TGEditorManager.getInstance(TGFretBoard.this.context).isLocked()){
 					if( getExternalBeat() == null ){
-						hit(e.x, e.y);
+						hit(event.getPosition().getX(), event.getPosition().getY());
 					}else{
 						setExternalBeat( null );
 						TuxGuitar.getInstance().updateCache(true);
@@ -689,17 +736,9 @@ public class TGFretBoard extends Composite {
 				new TGActionProcessor(TGFretBoard.this.context, TGGoRightAction.NAME).process();
 			}
 		}
-		
-		public void mouseDown(MouseEvent e) {
-			//Not implemented
-		}
-		
-		public void mouseDoubleClick(MouseEvent e) {
-			//Not implemented
-		}
 	}
 	
-	private class TGFretBoardPainterListener implements TGBufferedPainterHandle {
+	private class TGFretBoardPainterListener implements TG2BufferedPainterHandle {
 		
 		public TGFretBoardPainterListener(){
 			super();
@@ -709,7 +748,7 @@ public class TGFretBoard extends Composite {
 			TGFretBoard.this.paintEditor(painter);
 		}
 
-		public Composite getPaintableControl() {
+		public UICanvas getPaintableControl() {
 			return TGFretBoard.this.fretBoardComposite;
 		}
 	}

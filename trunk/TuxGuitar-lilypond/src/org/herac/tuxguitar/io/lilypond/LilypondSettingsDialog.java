@@ -1,21 +1,25 @@
 package org.herac.tuxguitar.io.lilypond;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGContext;
 
 public class LilypondSettingsDialog {
 	
@@ -25,11 +29,14 @@ public class LilypondSettingsDialog {
 	
 	private static final int STATUS_ACCEPTED = 2;
 	
+	private TGContext context;
+	
 	private TGSong song;
 	
 	protected int status;
 	
-	public LilypondSettingsDialog(TGSong song){
+	public LilypondSettingsDialog(TGContext context, TGSong song){
+		this.context = context;
 		this.song = song;
 	}
 	
@@ -37,237 +44,224 @@ public class LilypondSettingsDialog {
 		this.status = STATUS_NONE;
 		final LilypondSettings settings = LilypondSettings.getDefaults();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout(2, false));
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("lilypond.options"));
 		
-		Composite columnLeft = new Composite(dialog, SWT.NONE);
-		columnLeft.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		columnLeft.setLayout(getColumnLayout());
+		UITableLayout columnLeftLayout = new UITableLayout(0f);
+		UIPanel columnLeft = uiFactory.createPanel(dialog, false);
+		columnLeft.setLayout(columnLeftLayout);
+		dialogLayout.set(columnLeft, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, 200f, null, 0f);
 		
-		Composite columnRight = new Composite(dialog, SWT.NONE);
-		columnRight.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		columnRight.setLayout(getColumnLayout());
+		UITableLayout columnRightLayout = new UITableLayout(0f);
+		UIPanel columnRight = uiFactory.createPanel(dialog, false);
+		columnRight.setLayout(columnRightLayout);
+		dialogLayout.set(columnRight, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, 200f, null, 0f);
 		
 		//------------------TRACK SELECTION------------------
-		Group trackGroup = new Group(columnLeft ,SWT.SHADOW_ETCHED_IN);
-		trackGroup.setLayout(new GridLayout(2,false));
-		trackGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout trackLayout = new UITableLayout();
+		UILegendPanel trackGroup = uiFactory.createLegendPanel(columnLeft);
+		trackGroup.setLayout(trackLayout);
 		trackGroup.setText(TuxGuitar.getProperty("lilypond.options.select-track.tip"));
+		columnLeftLayout.set(trackGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Label trackLabel = new Label(trackGroup, SWT.NULL);
+		final UILabel trackLabel = uiFactory.createLabel(trackGroup);
 		trackLabel.setText(TuxGuitar.getProperty("lilypond.options.select-track") + ":");
-		trackLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		trackLayout.set(trackLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Combo trackCombo = new Combo(trackGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		trackCombo.setLayoutData(getComboData());
+		final UIDropDownSelect<Integer> trackCombo = uiFactory.createDropDownSelect(trackGroup);
 		for(int number = 1; number <= this.song.countTracks(); number ++){
-			trackCombo.add(TuxGuitar.getInstance().getSongManager().getTrack(this.song, number).getName());
+			trackCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getInstance().getSongManager().getTrack(this.song, number).getName(), number));
 		}
-		trackCombo.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		trackCombo.setSelectedValue(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
 		trackCombo.setEnabled( settings.getTrack() != LilypondSettings.ALL_TRACKS );
+		trackLayout.set(trackCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, 120f, null, null);
 		
-		final Button trackAllCheck = new Button(trackGroup,SWT.CHECK);
-		trackAllCheck.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true,2,1));
+		final UICheckBox trackAllCheck = uiFactory.createCheckBox(trackGroup);
 		trackAllCheck.setText(TuxGuitar.getProperty("lilypond.options.select-all-tracks"));
-		trackAllCheck.setSelection( settings.getTrack() == LilypondSettings.ALL_TRACKS );
+		trackAllCheck.setSelected( settings.getTrack() == LilypondSettings.ALL_TRACKS );
+		trackLayout.set(trackAllCheck, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 2);
 		
 		//------------------MEASURE RANGE------------------
-		Group measureGroup = new Group(columnLeft,SWT.SHADOW_ETCHED_IN);
-		measureGroup.setLayout(new GridLayout(2,false));
-		measureGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		measureGroup.setText(TuxGuitar.getProperty("lilypond.options.measure-range.tip"));
+		UITableLayout measureRangeLayout = new UITableLayout();
+		UILegendPanel measureRange = uiFactory.createLegendPanel(columnLeft);
+		measureRange.setLayout(measureRangeLayout);
+		measureRange.setText(TuxGuitar.getProperty("lilypond.options.measure-range.tip"));
+		columnLeftLayout.set(measureRange, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final int minSelection = 1;
 		final int maxSelection = this.song.countMeasureHeaders();
 		
-		Label measureFromLabel = new Label(measureGroup, SWT.NULL);
+		UILabel measureFromLabel = uiFactory.createLabel(measureRange);
 		measureFromLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.from"));
-		measureFromLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		measureRangeLayout.set(measureFromLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Spinner measureFromSpinner = new Spinner(measureGroup, SWT.BORDER);
-		measureFromSpinner.setLayoutData(getSpinnerData());
+		final UISpinner measureFromSpinner = uiFactory.createSpinner(measureRange);
 		measureFromSpinner.setMaximum(maxSelection);
 		measureFromSpinner.setMinimum(minSelection);
-		measureFromSpinner.setSelection(minSelection);
+		measureFromSpinner.setValue(minSelection);
+		measureRangeLayout.set(measureFromSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 60f, null, null);
 		
-		Label measureToLabel = new Label(measureGroup, SWT.NULL);
+		UILabel measureToLabel = uiFactory.createLabel(measureRange);
 		measureToLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.to"));
-		measureToLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		measureRangeLayout.set(measureToLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Spinner measureToSpinner = new Spinner(measureGroup, SWT.BORDER);
-		measureToSpinner.setLayoutData(getSpinnerData());
+		final UISpinner measureToSpinner = uiFactory.createSpinner(measureRange);
 		measureToSpinner.setMinimum(minSelection);
 		measureToSpinner.setMaximum(maxSelection);
-		measureToSpinner.setSelection(maxSelection);
+		measureToSpinner.setValue(maxSelection);
+		measureRangeLayout.set(measureToSpinner, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 60f, null, null);
 		
-		measureFromSpinner.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int fromSelection = measureFromSpinner.getSelection();
-				int toSelection = measureToSpinner.getSelection();
+		measureFromSpinner.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				int fromSelection = measureFromSpinner.getValue();
+				int toSelection = measureToSpinner.getValue();
 				
 				if(fromSelection < minSelection){
-					measureFromSpinner.setSelection(minSelection);
+					measureFromSpinner.setValue(minSelection);
 				}else if(fromSelection > toSelection){
-					measureFromSpinner.setSelection(toSelection);
+					measureFromSpinner.setValue(toSelection);
 				}
 			}
 		});
-		measureToSpinner.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int toSelection = measureToSpinner.getSelection();
-				int fromSelection = measureFromSpinner.getSelection();
+		measureToSpinner.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				int toSelection = measureToSpinner.getValue();
+				int fromSelection = measureFromSpinner.getValue();
 				if(toSelection < fromSelection){
-					measureToSpinner.setSelection(fromSelection);
+					measureToSpinner.setValue(fromSelection);
 				}else if(toSelection > maxSelection){
-					measureToSpinner.setSelection(maxSelection);
+					measureToSpinner.setValue(maxSelection);
 				}
 			}
 		});
 		
 		//------------------VERSION OPTIONS------------------
-		Group versionGroup = new Group(columnRight,SWT.SHADOW_ETCHED_IN);
-		versionGroup.setLayout(new GridLayout());
-		versionGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout versionLayout = new UITableLayout();
+		UILegendPanel versionGroup = uiFactory.createLegendPanel(columnRight);
+		versionGroup.setLayout(versionLayout);
 		versionGroup.setText(TuxGuitar.getProperty("lilypond.options.format-version"));
+		columnRightLayout.set(versionGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Text lilyVersion = new Text(versionGroup, SWT.LEFT | SWT.BORDER);
+		final UITextField lilyVersion = uiFactory.createTextField(versionGroup);
 		lilyVersion.setText(settings.getLilypondVersion());
-		lilyVersion.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		versionLayout.set(lilyVersion, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//------------------LAYOUT OPTIONS------------------
-		Group layoutGroup = new Group(columnRight,SWT.SHADOW_ETCHED_IN);
-		layoutGroup.setLayout(new GridLayout());
-		layoutGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		
+		UITableLayout layoutGroupLayout = new UITableLayout();
+		UILegendPanel layoutGroup = uiFactory.createLegendPanel(columnRight);
+		layoutGroup.setLayout(layoutGroupLayout);
 		layoutGroup.setText(TuxGuitar.getProperty("lilypond.options.layout.tip"));
+		columnRightLayout.set(layoutGroup, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button scoreCheck = new Button(layoutGroup,SWT.CHECK);
-		scoreCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		final UICheckBox scoreCheck = uiFactory.createCheckBox(layoutGroup);
 		scoreCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-score"));
-		scoreCheck.setSelection(settings.isScoreEnabled());
+		scoreCheck.setSelected(settings.isScoreEnabled());
+		layoutGroupLayout.set(scoreCheck, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		final Button tablatureCheck = new Button(layoutGroup,SWT.CHECK);
-		tablatureCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		final UICheckBox tablatureCheck = uiFactory.createCheckBox(layoutGroup);
 		tablatureCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-tablature"));
-		tablatureCheck.setSelection(settings.isTablatureEnabled());
+		tablatureCheck.setSelected(settings.isTablatureEnabled());
+		layoutGroupLayout.set(tablatureCheck, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		final Button trackGroupCheck = new Button(layoutGroup,SWT.CHECK);
-		trackGroupCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		final UICheckBox trackGroupCheck = uiFactory.createCheckBox(layoutGroup);
 		trackGroupCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-track-groups"));
-		trackGroupCheck.setSelection(settings.isTrackGroupEnabled());
+		trackGroupCheck.setSelected(settings.isTrackGroupEnabled());
 		trackGroupCheck.setEnabled(settings.getTrack() == LilypondSettings.ALL_TRACKS);
+		layoutGroupLayout.set(trackGroupCheck, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		final Button trackNameCheck = new Button(layoutGroup,SWT.CHECK);
-		trackNameCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		trackNameCheck.setSelection(settings.isTrackNameEnabled());
+		final UICheckBox trackNameCheck = uiFactory.createCheckBox(layoutGroup);
+		trackNameCheck.setSelected(settings.isTrackNameEnabled());
 		trackNameCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-track-names"));
-
-		final Button lyricsCheck = new Button(layoutGroup,SWT.CHECK);
-		lyricsCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		lyricsCheck.setSelection(settings.isLyricsEnabled());
+		layoutGroupLayout.set(trackNameCheck, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
+		final UICheckBox lyricsCheck = uiFactory.createCheckBox(layoutGroup);
+		lyricsCheck.setSelected(settings.isLyricsEnabled());
 		lyricsCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-lyrics"));
-
-		final Button textsCheck = new Button(layoutGroup,SWT.CHECK);
-		textsCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		textsCheck.setSelection(settings.isTextEnabled());
+		layoutGroupLayout.set(lyricsCheck, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
+		final UICheckBox textsCheck = uiFactory.createCheckBox(layoutGroup);
+		textsCheck.setSelected(settings.isTextEnabled());
 		textsCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-texts"));
+		layoutGroupLayout.set(textsCheck, 6, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		final Button chordDiagramsCheck = new Button(layoutGroup,SWT.CHECK);
-		chordDiagramsCheck.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		chordDiagramsCheck.setSelection(settings.isChordDiagramEnabled());
+		final UICheckBox chordDiagramsCheck = uiFactory.createCheckBox(layoutGroup);
+		chordDiagramsCheck.setSelected(settings.isChordDiagramEnabled());
 		chordDiagramsCheck.setText(TuxGuitar.getProperty("lilypond.options.layout.enable-chord-diagrams"));
+		layoutGroupLayout.set(chordDiagramsCheck, 7, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		tablatureCheck.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				if(!tablatureCheck.getSelection()){
-					scoreCheck.setSelection(true);
+		tablatureCheck.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				if(!tablatureCheck.isSelected()){
+					scoreCheck.setSelected(true);
 				}
 			}
 		});
-		scoreCheck.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				if(!scoreCheck.getSelection()){
-					tablatureCheck.setSelection(true);
+		scoreCheck.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				if(!scoreCheck.isSelected()){
+					tablatureCheck.setSelected(true);
 				}
 			}
 		});
-		trackAllCheck.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				trackLabel.setEnabled( !trackAllCheck.getSelection() );
-				trackCombo.setEnabled( !trackAllCheck.getSelection() );
-				trackGroupCheck.setEnabled( trackAllCheck.getSelection() );
+		trackAllCheck.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				trackLabel.setEnabled( !trackAllCheck.isSelected() );
+				trackCombo.setEnabled( !trackAllCheck.isSelected() );
+				trackGroupCheck.setEnabled( trackAllCheck.isSelected() );
 			}
 		});
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true,2,1));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true, 1, 2);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				LilypondSettingsDialog.this.status = STATUS_ACCEPTED;
+				Integer selectedTrack = trackCombo.getSelectedValue();
 				
-				settings.setTrack( trackAllCheck.getSelection()?LilypondSettings.ALL_TRACKS:trackCombo.getSelectionIndex() + 1);
-				settings.setTrackGroupEnabled( trackAllCheck.getSelection()? trackGroupCheck.getSelection() : false);
-				settings.setTrackNameEnabled( trackNameCheck.getSelection() );
-				settings.setMeasureFrom(measureFromSpinner.getSelection());
-				settings.setMeasureTo(measureToSpinner.getSelection());
-				settings.setScoreEnabled(scoreCheck.getSelection());
-				settings.setTablatureEnabled(tablatureCheck.getSelection());
-				settings.setChordDiagramEnabled(chordDiagramsCheck.getSelection());
-				settings.setLyricsEnabled(lyricsCheck.getSelection());
-				settings.setTextEnabled(textsCheck.getSelection());
+				settings.setTrack(trackAllCheck.isSelected() || selectedTrack == null ? LilypondSettings.ALL_TRACKS : selectedTrack);
+				settings.setTrackGroupEnabled( trackAllCheck.isSelected()? trackGroupCheck.isSelected() : false);
+				settings.setTrackNameEnabled( trackNameCheck.isSelected() );
+				settings.setMeasureFrom(measureFromSpinner.getValue());
+				settings.setMeasureTo(measureToSpinner.getValue());
+				settings.setScoreEnabled(scoreCheck.isSelected());
+				settings.setTablatureEnabled(tablatureCheck.isSelected());
+				settings.setChordDiagramEnabled(chordDiagramsCheck.isSelected());
+				settings.setLyricsEnabled(lyricsCheck.isSelected());
+				settings.setTextEnabled(textsCheck.isSelected());
 				settings.setLilypondVersion(lilyVersion.getText());
 				settings.check();
 				
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				LilypondSettingsDialog.this.status = STATUS_CANCELLED;
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-		
-		return ( ( this.status == STATUS_ACCEPTED )? settings : null );
-	}
-	
-	private GridLayout getColumnLayout(){
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		return layout;
-	}
-	
-	private GridData getComboData(){
-		GridData data = new GridData(SWT.FILL,SWT.CENTER,true,true);
-		data.minimumWidth = 120;
-		return data;
-	}
-	
-	private GridData getSpinnerData(){
-		GridData data = new GridData(SWT.FILL,SWT.CENTER,true,true);
-		data.minimumWidth = 60;
-		return data;
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+		return ((this.status == STATUS_ACCEPTED )? settings : null);
 	}
 }

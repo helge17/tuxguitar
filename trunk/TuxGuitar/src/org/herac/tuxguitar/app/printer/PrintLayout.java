@@ -258,11 +258,11 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	public float getMaxWidth(){
-		return (this.document.getBounds().getWidth() - this.document.getBounds().getX() - 10);
+		return (this.document.getBounds().getWidth() - getScale());
 	}
 	
 	public float getMaxHeight(){
-		return (this.document.getBounds().getHeight() - this.document.getBounds().getY() - 10);
+		return (this.document.getBounds().getHeight() - getScale());
 	}
 	
 	public boolean isFirstMeasure(TGMeasureHeader mh){

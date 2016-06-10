@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
@@ -35,8 +36,8 @@ public abstract class TGUndoableEditBase implements TGUndoableEdit{
 		return tgActionProcessor;
 	}
 	
-	public void processByPassUndoableAction(TGActionProcessor tgActionProcessor) {
-		tgActionProcessor.processOnCurrentThread();
+	public void processByPassUndoableAction(TGActionProcessor tgActionProcessor, TGActionContext context) {
+		tgActionProcessor.processOnCurrentThread(context);
 	}
 	
 	public static TGSong getSong(TGContext context) {

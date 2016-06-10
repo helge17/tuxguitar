@@ -5,15 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
@@ -23,13 +14,16 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionDynamic implements TGToolBarSection {
 	
-	private ToolItem menuItem;
+	private static final String VELOCITY_VALUE = "velocity";
 	
-	private Menu menu;
-	private List<MenuItem> menuItems;
+	private UIToolMenuItem menuItem;
+	private List<UIMenuActionItem> menuItems;
 	
 	private Map<Integer, String> dynamicNameKeys;
 	
@@ -48,16 +42,9 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 	}
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
-		
-		this.menuItems = new ArrayList<MenuItem>();
+		this.menuItems = new ArrayList<UIMenuActionItem>();
 		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.PIANO_PIANISSIMO));
 		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.PIANISSIMO));
 		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.PIANO));
@@ -95,7 +82,7 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		}
 		
 		if( force || (this.dynamicValue == null || !this.dynamicValue.equals(dynamicValue))) {
-			Image icon = this.getDynamicIcon(toolBar, dynamicValue);
+			UIImage icon = this.getDynamicIcon(toolBar, dynamicValue);
 			if( icon != null ) { 
 				this.menuItem.setImage(icon);
 				this.dynamicValue = dynamicValue;
@@ -112,18 +99,18 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		this.updateMenuItems(toolBar, selection, running);
 	}
 	
-	private MenuItem createMenuItem(TGToolBar toolBar, int velocity) {
-		MenuItem menuItem = new MenuItem(this.menu, SWT.PUSH);
-		menuItem.setData(velocity);
+	private UIMenuActionItem createMenuItem(TGToolBar toolBar, int velocity) {
+		UIMenuActionItem menuItem = this.menuItem.getMenu().createActionItem();
+		menuItem.setData(VELOCITY_VALUE, velocity);
 		menuItem.addSelectionListener(this.createChangeVelocityAction(toolBar, velocity));
 		return menuItem;
 	}
 	
 	private void updateMenuItems(TGToolBar toolBar, int selection, boolean running) {
-		for(MenuItem menuItem : this.menuItems) {
+		for(UIMenuActionItem menuItem : this.menuItems) {
 			menuItem.setEnabled(!running);
 			
-			Integer velocity = (Integer) menuItem.getData();
+			Integer velocity = menuItem.getData(VELOCITY_VALUE);
 			String nameKey = getNameKey(velocity);
 			if( nameKey != null ) {
 				menuItem.setText(toolBar.getText(nameKey, (velocity == selection)));
@@ -132,8 +119,8 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 	}
 	
 	private void loadMenuProperties(TGToolBar toolBar, int selection) {
-		for(MenuItem menuItem : this.menuItems) {
-			Integer velocity = (Integer) menuItem.getData();
+		for(UIMenuActionItem menuItem : this.menuItems) {
+			Integer velocity = menuItem.getData(VELOCITY_VALUE);
 			String nameKey = getNameKey(velocity);
 			if( nameKey != null ) {
 				menuItem.setText(toolBar.getText(nameKey, (velocity == selection)));
@@ -142,21 +129,13 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 	}
 	
 	private void loadMenuIcons(TGToolBar toolBar) {
-		for(MenuItem menuItem : this.menuItems) {
-			Integer velocity = (Integer) menuItem.getData();
-			Image icon = this.getDynamicIcon(toolBar, velocity);
+		for(UIMenuActionItem menuItem : this.menuItems) {
+			Integer velocity = menuItem.getData(VELOCITY_VALUE);
+			UIImage icon = this.getDynamicIcon(toolBar, velocity);
 			if( icon != null ) {
 				menuItem.setImage(icon);
 			}
 		}
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 	
 	private String getNameKey(int velocity) {
@@ -167,7 +146,7 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		return null;
 	}
 	
-	private Image getDynamicIcon(TGToolBar toolBar, int velocity) {
+	private UIImage getDynamicIcon(TGToolBar toolBar, int velocity) {
 		TGIconManager iconManager = toolBar.getIconManager();
 		if( velocity == TGVelocities.PIANO_PIANISSIMO ) {
 			return iconManager.getDynamicPPP();

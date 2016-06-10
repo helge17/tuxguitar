@@ -1,21 +1,14 @@
 package org.herac.tuxguitar.app.graphics;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.herac.tuxguitar.graphics.TGFont;
+import org.herac.tuxguitar.ui.resource.UIFont;
 
 public class TGFontImpl implements TGFont {
 	
-	private Font handle;
+	private UIFont handle;
 	
-	public TGFontImpl( Font handle ){
+	public TGFontImpl(UIFont handle) {
 		this.handle = handle;
-	}
-	
-	public TGFontImpl( Device device , String name, float height, boolean bold, boolean italic){
-		this( new Font( device, name, Math.round(height), (SWT.NORMAL | (bold ? SWT.BOLD : 0) | (italic ? SWT.ITALIC : 0)) ) );
 	}
 	
 	public void dispose(){
@@ -26,27 +19,23 @@ public class TGFontImpl implements TGFont {
 		return this.handle.isDisposed();
 	}
 	
-	public Font getHandle(){
+	public UIFont getHandle(){
 		return this.handle;
 	}
 	
 	public String getName() {
-		FontData[] fd = this.handle.getFontData();
-		return ( fd != null && fd.length > 0 ? fd[0].getName() : new String() );
+		return this.handle.getName();
 	}
 	
 	public float getHeight() {
-		FontData[] fd = this.handle.getFontData();
-		return ( fd != null && fd.length > 0 ? fd[0].getHeight() : 0 );
+		return this.handle.getHeight();
 	}
 	
 	public boolean isBold() {
-		FontData[] fd = this.handle.getFontData();
-		return ( fd != null && fd.length > 0 ? ((fd[0].getStyle() & SWT.BOLD) != 0) : false );
+		return this.handle.isBold();
 	}
 	
 	public boolean isItalic() {
-		FontData[] fd = this.handle.getFontData();
-		return ( fd != null && fd.length > 0 ? ((fd[0].getStyle() & SWT.ITALIC) != 0) : false );
+		return this.handle.isItalic();
 	}
 }

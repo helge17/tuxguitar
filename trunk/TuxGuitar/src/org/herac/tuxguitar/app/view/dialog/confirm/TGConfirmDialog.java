@@ -1,17 +1,20 @@
 package org.herac.tuxguitar.app.view.dialog.confirm;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIImageView;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGConfirmDialog {
 
@@ -34,50 +37,53 @@ public class TGConfirmDialog {
 		final Runnable noRunnable = context.getAttribute(ATTRIBUTE_RUNNABLE_NO);
 		final Runnable cancelRunnable = context.getAttribute(ATTRIBUTE_RUNNABLE_CANCEL);
 		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout(1, true));
-		
-		//========================================================================
-		Composite labelComposite = new Composite(dialog, SWT.NONE);
-		labelComposite.setLayout(new GridLayout(2, false));
-		labelComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		Label icon = new Label(labelComposite, SWT.NONE);
-		icon.setImage(parent.getDisplay().getSystemImage(SWT.ICON_QUESTION));
-		
-		Label messageLabel = new Label(labelComposite, SWT.NONE);
-		messageLabel.setText(message);
+		dialog.setLayout(dialogLayout);
+		dialog.setText(TuxGuitar.getProperty("confirm"));
 		
 		//========================================================================
-		GridLayout buttonsLayout = new GridLayout(0,false);
-		Composite buttonsComposite = new Composite(dialog, SWT.NONE);
-		buttonsComposite.setLayout(buttonsLayout);
-		buttonsComposite.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout panelLayout = new UITableLayout();
+		UIPanel uiPanel = uiFactory.createPanel(dialog, false);
+		uiPanel.setLayout(panelLayout);
+		dialogLayout.set(uiPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
+		UIImageView uiIcon = uiFactory.createImageView(uiPanel);
+		uiIcon.setImage(TGIconManager.getInstance(context.getContext()).getStatusQuestion());
+		panelLayout.set(uiIcon, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
+		
+		UILabel uiMessage = uiFactory.createLabel(uiPanel);
+		uiMessage.setText(message);
+		panelLayout.set(uiMessage, 1, 2, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
+		
+		//========================================================================
+		UITableLayout buttonsLayout = new UITableLayout();
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		
+		int columns = 0;
 		if((style & BUTTON_YES) != 0){
-			addCloseButton(dialog, buttonsComposite, TuxGuitar.getProperty("yes"), yesRunnable, (defaultButton == BUTTON_YES));
-			buttonsLayout.numColumns ++;
+			addCloseButton(uiFactory, dialog, buttons, TuxGuitar.getProperty("yes"), yesRunnable, (defaultButton == BUTTON_YES), ++columns);
 		}
 		if((style & BUTTON_NO) != 0){
-			addCloseButton(dialog, buttonsComposite, TuxGuitar.getProperty("no"), noRunnable, (defaultButton == BUTTON_NO));
-			buttonsLayout.numColumns ++;
+			addCloseButton(uiFactory, dialog, buttons, TuxGuitar.getProperty("no"), noRunnable, (defaultButton == BUTTON_NO), ++columns);
 		}
 		if((style & BUTTON_CANCEL) != 0){
-			addCloseButton(dialog, buttonsComposite, TuxGuitar.getProperty("cancel"), cancelRunnable, (defaultButton == BUTTON_CANCEL));
-			buttonsLayout.numColumns ++;
+			addCloseButton(uiFactory, dialog, buttons, TuxGuitar.getProperty("cancel"), cancelRunnable, (defaultButton == BUTTON_CANCEL), ++columns);
 		}
 		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private void addCloseButton(final Shell dialog, Composite parent, String text, final Runnable runnable, boolean defaultButton){
-		Button button = new Button(parent, SWT.PUSH);
-		button.setLayoutData(getButtonData());
-		button.setText(text);
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+	private void addCloseButton(final UIFactory factory, final UIWindow dialog, UILayoutContainer parent, String text, final Runnable runnable, boolean defaultButton, int column){
+		UIButton uiButton = factory.createButton(parent);
+		uiButton.setText(text);
+		uiButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 				if( runnable != null ) {
 					runnable.run();
@@ -85,14 +91,10 @@ public class TGConfirmDialog {
 			}
 		});
 		if( defaultButton ){
-			dialog.setDefaultButton(button);
+			uiButton.setDefaultButton();
 		}
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(uiButton, 1, column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 	}
 }

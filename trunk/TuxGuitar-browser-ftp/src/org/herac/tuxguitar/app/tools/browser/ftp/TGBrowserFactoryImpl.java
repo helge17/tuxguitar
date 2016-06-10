@@ -6,24 +6,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
@@ -46,12 +48,14 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 		return new TGBrowserImpl(TGBrowserSettingsModel.createInstance(data));
 	}
 	
-	public TGBrowserSettings dataDialog(Shell parent) {
+	public TGBrowserSettings dataDialog(UIWindow parent) {
 		return new TGBrowserDataDialog(this.context).show(parent);
 	}
-	
 }
+
 class TGBrowserDataDialog{
+	
+	private static final Float MINIMUM_LEGEND_WIDTH = 350f;
 	
 	private TGContext context;
 	private TGBrowserSettings data;
@@ -60,111 +64,131 @@ class TGBrowserDataDialog{
 		this.context = context;
 	}
 	
-	public TGBrowserSettings show(final Shell parent){
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+	public TGBrowserSettings show(final UIWindow parent){
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		
-		dialog.setLayout(new GridLayout());
-		dialog.setText(TuxGuitar.getProperty("FTP Location"));
+		dialog.setLayout(dialogLayout);
+		dialog.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.title"));
 		
 		//-------------LIBRARY DATA-----------------------------------------------
-		Composite composite = new Composite(dialog, SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		GridData textData = new GridData(SWT.FILL,SWT.FILL,true,true);
-		textData.minimumWidth = 300;
+		UITableLayout serverLayout = new UITableLayout();
+		UILegendPanel server = uiFactory.createLegendPanel(dialog);
+		server.setLayout(serverLayout);
+		server.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.server.settings"));
+		dialogLayout.set(server, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_LEGEND_WIDTH, null, null);
 		
 		//name
-		Label nameLabel = new Label(composite, SWT.NULL);
-		nameLabel.setText(TuxGuitar.getProperty("Name"));
-		final Text nameText = new Text(composite,SWT.BORDER);
-		nameText.setLayoutData(textData);
+		UILabel nameLabel = uiFactory.createLabel(server);
+		nameLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.name"));
+		serverLayout.set(nameLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
+		final UITextField nameText = uiFactory.createTextField(server);
+		serverLayout.set(nameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//host
-		Label hostLabel = new Label(composite, SWT.NULL);
-		hostLabel.setText(TuxGuitar.getProperty("Host"));
-		final Text hostText = new Text(composite,SWT.BORDER);
-		hostText.setLayoutData(textData);
+		UILabel hostLabel = uiFactory.createLabel(server);
+		hostLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.host"));
+		serverLayout.set(hostLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField hostText = uiFactory.createTextField(server);
+		serverLayout.set(hostText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//path
-		Label pathLabel = new Label(composite, SWT.NULL);
-		pathLabel.setText(TuxGuitar.getProperty("Path"));
-		final Text pathText = new Text(composite,SWT.BORDER);
-		pathText.setLayoutData(textData);
+		UILabel pathLabel = uiFactory.createLabel(server);
+		pathLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.path"));
+		serverLayout.set(pathLabel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField pathText = uiFactory.createTextField(server);
+		serverLayout.set(pathText, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//user
-		Label userLabel = new Label(composite, SWT.NULL);
-		userLabel.setText(TuxGuitar.getProperty("Login name"));
-		final Text userText = new Text(composite,SWT.BORDER);
-		userText.setLayoutData(textData);
+		UILabel userLabel = uiFactory.createLabel(server);
+		userLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.username"));
+		serverLayout.set(userLabel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField userText = uiFactory.createTextField(server);
+		serverLayout.set(userText, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//password
-		Label passwordLabel = new Label(composite, SWT.NULL);
-		passwordLabel.setText(TuxGuitar.getProperty("Password"));
-		final Text passwordText = new Text(composite,SWT.BORDER | SWT.PASSWORD);
-		passwordText.setLayoutData(textData);
+		UILabel passwordLabel = uiFactory.createLabel(server);
+		passwordLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.password"));
+		serverLayout.set(passwordLabel, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField passwordText = uiFactory.createTextField(server);
+		serverLayout.set(passwordText, 5, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
+		
+		UITableLayout proxyLayout = new UITableLayout();
+		UILegendPanel proxy = uiFactory.createLegendPanel(dialog);
+		proxy.setLayout(proxyLayout);
+		proxy.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.proxy.settings"));
+		dialogLayout.set(proxy, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_LEGEND_WIDTH, null, null);
 		
 		// Proxy
-		final Button hasProxy = new Button(composite,SWT.CHECK);
-		hasProxy.setText("Connect via Proxy Server");
-		Label dummyLabel = new Label(composite, SWT.NULL);
-		dummyLabel.setLayoutData(textData);
+		final UICheckBox hasProxy = uiFactory.createCheckBox(proxy);
+		hasProxy.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.proxy.enabled"));
+		proxyLayout.set(hasProxy, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
 		
 		//proxy host
-		final Label proxyHostLabel = new Label(composite, SWT.NULL);
-		proxyHostLabel.setText(TuxGuitar.getProperty("Proxy Server Host"));
-		final Text proxyHostText = new Text(composite,SWT.BORDER);
-		proxyHostText.setLayoutData(textData);
+		final UILabel proxyHostLabel = uiFactory.createLabel(proxy);
+		proxyHostLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.proxy.host"));
+		proxyLayout.set(proxyHostLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField proxyHostText = uiFactory.createTextField(proxy);
+		proxyLayout.set(proxyHostText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//proxy port
-		final Label proxyPortLabel = new Label(composite, SWT.NULL); 
-		proxyPortLabel.setText(TuxGuitar.getProperty("Proxy Server Port"));
-		final Text proxyPortText = new Text(composite,SWT.BORDER);
+		final UILabel proxyPortLabel = uiFactory.createLabel(proxy); 
+		proxyPortLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.proxy.port"));
+		proxyLayout.set(proxyPortLabel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField proxyPortText = uiFactory.createTextField(proxy);
 		proxyPortText.setText("1080");
-		proxyPortText.setLayoutData(textData);
+		proxyLayout.set(proxyPortText, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//proxy user
-		final Label proxyUserLabel = new Label(composite, SWT.NULL);
-		proxyUserLabel.setText(TuxGuitar.getProperty("Proxy Server User"));
-		final Text proxyUserText = new Text(composite,SWT.BORDER);
-		proxyUserText.setLayoutData(textData);
+		final UILabel proxyUserLabel = uiFactory.createLabel(proxy);
+		proxyUserLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.proxy.username"));
+		proxyLayout.set(proxyUserLabel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField proxyUserText = uiFactory.createTextField(proxy);
+		proxyLayout.set(proxyUserText, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//proxy password
-		final Label proxyPwdLabel = new Label(composite, SWT.NULL);
-		proxyPwdLabel.setText(TuxGuitar.getProperty("Proxy Server Password"));
-		final Text proxyPwdText = new Text(composite,SWT.BORDER | SWT.PASSWORD);
-		proxyPwdText.setLayoutData(textData);
+		final UILabel proxyPwdLabel = uiFactory.createLabel(proxy);
+		proxyPwdLabel.setText(TuxGuitar.getProperty("tuxguitar-browser-ftp.browser-dialog.proxy.password"));
+		proxyLayout.set(proxyPwdLabel, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		final UITextField proxyPwdText = uiFactory.createTextField(proxy);
+		proxyLayout.set(proxyPwdText, 5, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		proxyHostText.setEnabled(false);
 		proxyPortText.setEnabled(false);
 		proxyUserText.setEnabled(false);
 		proxyPwdText.setEnabled(false);
 		
-		hasProxy.addSelectionListener(new SelectionAdapter(){
-			public void widgetSelected(SelectionEvent e) {
-				proxyHostText.setEnabled(hasProxy.getSelection());
-				proxyPortText.setEnabled(hasProxy.getSelection());
-				proxyUserText.setEnabled(hasProxy.getSelection());
-				proxyPwdText.setEnabled(hasProxy.getSelection());
+		hasProxy.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				proxyHostText.setEnabled(hasProxy.isSelected());
+				proxyPortText.setEnabled(hasProxy.isSelected());
+				proxyUserText.setEnabled(hasProxy.isSelected());
+				proxyPwdText.setEnabled(hasProxy.isSelected());
 			}
 		});
-	
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		
-		final Button buttonOk = new Button(buttons, SWT.PUSH);
-		buttonOk.setText(TuxGuitar.getProperty("ok"));
-		buttonOk.setLayoutData(data);
-		buttonOk.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		final UIButton buttonOK = uiFactory.createButton(buttons);
+		buttonOK.setText(TuxGuitar.getProperty("ok"));
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				String name = nameText.getText();
 				String host = hostText.getText();
 				String path = pathText.getText();
@@ -175,7 +199,7 @@ class TGBrowserDataDialog{
 				String proxyUser = proxyUserText.getText();
 				String proxyPwd = proxyPwdText.getText();
 				
-				List<String> errors = validate(name, host, proxyHost, proxyPortStr, hasProxy.getSelection());
+				List<String> errors = validate(name, host, proxyHost, proxyPortStr, hasProxy.isSelected());
 				if( !errors.isEmpty() ){
 					StringWriter buffer = new StringWriter();
 					PrintWriter writer = new PrintWriter( buffer );
@@ -192,24 +216,24 @@ class TGBrowserDataDialog{
 				}
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
-		buttonCancel.setLayoutData(data);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOk );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		
 		return this.data;
 	}
 	
-	protected List<String> validate(String name, String host, String pHost, String pPort, boolean pEnabled){
+	public List<String> validate(String name, String host, String pHost, String pPort, boolean pEnabled){
 		List<String> errors = new ArrayList<String>();
 		// Check the Name
 		if (name == null || name.trim().length() == 0) {
@@ -241,7 +265,7 @@ class TGBrowserDataDialog{
 		return errors;
 	}
 	
-	private boolean isNumber( String s ){
+	public boolean isNumber( String s ){
 		try {
 			Integer.parseInt(s);
 		} catch (Throwable e) {

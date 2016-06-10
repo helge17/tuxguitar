@@ -2,22 +2,23 @@ package org.herac.tuxguitar.app.tools.browser.filesystem;
 
 import java.io.File;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
+import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserDataDialog {
@@ -37,56 +38,64 @@ public class TGBrowserDataDialog {
 		this.data = data;
 	}
 	
-	public TGBrowserSettings open(Shell parent) {
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+	
+	public TGBrowserSettings open(UIWindow parent) {
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("browser.collection.fs.editor-title"));
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout());
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("browser.collection.fs.editor-tip"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 420f, null, null);
 		
-		Composite composite = new Composite(group,SWT.NONE);
-		composite.setLayout(new GridLayout(3,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		final Label titleLabel = new Label(composite,SWT.LEFT);
+		final UILabel titleLabel = uiFactory.createLabel(group);
 		titleLabel.setText(TuxGuitar.getProperty("browser.collection.fs.name"));
-		titleLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
+		groupLayout.set(titleLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text titleValue = new Text(composite,SWT.BORDER);
-		titleValue.setLayoutData(getTextData(2));
+		final UITextField titleValue = uiFactory.createTextField(group);
+		groupLayout.set(titleValue, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
 		
-		final Label pathLabel = new Label(composite,SWT.LEFT);
+		final UILabel pathLabel = uiFactory.createLabel(group);
 		pathLabel.setText(TuxGuitar.getProperty("browser.collection.fs.path"));
-		pathLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
+		groupLayout.set(pathLabel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Text pathValue = new Text(composite,SWT.BORDER);
-		pathValue.setLayoutData(getTextData(1));
+		final UITextField pathValue = uiFactory.createTextField(group);
+		groupLayout.set(pathValue, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		final Button pathChooser = new Button(composite,SWT.PUSH);
+		final UIButton pathChooser = uiFactory.createButton(group);
 		pathChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-		pathChooser.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog directoryDialog = new DirectoryDialog(dialog);
-				String selection = directoryDialog.open();
-				if(selection != null){
-					pathValue.setText(selection);
-				}
+		pathChooser.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String defaultPath = pathValue.getText();
+				UIDirectoryChooser chooser = uiFactory.createDirectoryChooser(dialog);
+				chooser.setDefaultPath(defaultPath != null ? new File(defaultPath) : null);
+				chooser.choose(new UIDirectoryChooserHandler() {
+					public void onSelectDirectory(File file) {
+						if( file != null ){
+							pathValue.setText(file.getAbsolutePath());
+						}
+					}
+				});
 			}
 		});
+		groupLayout.set(pathChooser, 2, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				String selectedTitle = titleValue.getText();
 				String selectedPath = pathValue.getText();
 				if(!isValidPath(selectedPath)){
@@ -101,41 +110,28 @@ public class TGBrowserDataDialog {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		
 		return getData();
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private GridData getTextData(int span){
-		GridData data = new GridData(SWT.LEFT, SWT.CENTER, true, true,span,1);
-		data.minimumWidth = 350;
-		return data;
-	}
-	
-	protected boolean isBlank(String s){
+	public boolean isBlank(String s){
 		return (s == null || s.length() == 0);
 	}
 	
-	protected boolean isValidPath(String path){
+	public boolean isValidPath(String path){
 		if(!isBlank(path)){
 			File file = new File(path);
 			return (file.exists() && file.isDirectory());

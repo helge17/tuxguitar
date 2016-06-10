@@ -1,40 +1,40 @@
 package org.herac.tuxguitar.jack.console;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.jack.connection.JackConnectionManager;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class JackConsoleDialog implements TGEventListener {
 	
-	private static final int SHELL_WIDTH = 350;
-	
 	private TGContext context;
 	private JackConnectionManager jackConnectionManager;
 	
-	private Shell dialog;
-	private Group groupOptions;
+	private UIWindow dialog;
+	private UILegendPanel groupOptions;
 
-	private Button buttonAutoConnectPorts;
-	private Button buttonStoreConnections;
-	private Button buttonRestoreConnections;
+	private UICheckBox buttonAutoConnectPorts;
+	private UIButton buttonStoreConnections;
+	private UIButton buttonRestoreConnections;
 	
 	public JackConsoleDialog(TGContext context, JackConnectionManager jackConnectionManager) {
 		this.context = context;
@@ -42,31 +42,30 @@ public class JackConsoleDialog implements TGEventListener {
 	}
 	
 	public void show() {
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM);
-		this.dialog.setLayout(new GridLayout());
-		this.dialog.setMinimumSize(SHELL_WIDTH,SWT.DEFAULT);
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		this.dialog = uiFactory.createWindow(uiParent, false, false);
+		this.dialog.setLayout(dialogLayout);
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				TuxGuitar.getInstance().getIconManager().removeLoader( JackConsoleDialog.this );
 				TuxGuitar.getInstance().getLanguageManager().removeLoader( JackConsoleDialog.this );
 			}
 		});
 		
 		// Options
-		this.groupOptions = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
-		this.groupOptions.setLayout(new GridLayout());
-		this.groupOptions.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		UITableLayout groupLayout = new UITableLayout();
+		this.groupOptions = uiFactory.createLegendPanel(this.dialog);
+		this.groupOptions.setLayout(groupLayout);
+		dialogLayout.set(this.groupOptions, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 350f, null, null);
 		
-		Composite composite = new Composite(this.groupOptions, SWT.NONE);
-		composite.setLayout(new GridLayout(1,false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
-		this.buttonAutoConnectPorts = new Button(composite,SWT.CHECK);
-		this.buttonAutoConnectPorts.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,false,false));
-		this.buttonAutoConnectPorts.setSelection(this.jackConnectionManager.isAutoConnectPorts());
-		this.buttonAutoConnectPorts.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				final boolean selection = ((Button) e.widget).getSelection();
+		this.buttonAutoConnectPorts = uiFactory.createCheckBox(this.groupOptions);
+		this.buttonAutoConnectPorts.setSelected(this.jackConnectionManager.isAutoConnectPorts());
+		this.buttonAutoConnectPorts.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				final boolean selection = JackConsoleDialog.this.buttonAutoConnectPorts.isSelected();
 				new Thread(new Runnable() {
 					public void run() {
 						updateAutoConnectPorts(selection);
@@ -74,16 +73,17 @@ public class JackConsoleDialog implements TGEventListener {
 				}).start();
 			}
 		});
+		groupLayout.set(this.buttonAutoConnectPorts, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(1,false));
-		buttons.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,false));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.buttonStoreConnections = new Button(buttons, SWT.PUSH);
-		this.buttonStoreConnections.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		this.buttonStoreConnections.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		this.buttonStoreConnections = uiFactory.createButton(buttons);
+		this.buttonStoreConnections.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				new Thread(new Runnable() {
 					public void run() {
 						storeConnections();
@@ -91,11 +91,11 @@ public class JackConsoleDialog implements TGEventListener {
 				}).start();
 			}
 		});
+		buttonsLayout.set(this.buttonStoreConnections, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, null, null, 0f);
 		
-		this.buttonRestoreConnections = new Button(buttons, SWT.PUSH);
-		this.buttonRestoreConnections.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		this.buttonRestoreConnections.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		this.buttonRestoreConnections = uiFactory.createButton(buttons);
+		this.buttonRestoreConnections.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				new Thread(new Runnable() {
 					public void run() {
 						restoreConnections();
@@ -103,6 +103,7 @@ public class JackConsoleDialog implements TGEventListener {
 				}).start();
 			}
 		});
+		buttonsLayout.set(this.buttonRestoreConnections, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, null, null, 0f);
 		
 		this.loadIcons(false);
 		this.loadProperties(false);
@@ -110,7 +111,7 @@ public class JackConsoleDialog implements TGEventListener {
 		TuxGuitar.getInstance().getIconManager().addLoader( this );
 		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public boolean isDisposed(){
@@ -128,8 +129,8 @@ public class JackConsoleDialog implements TGEventListener {
 			this.buttonAutoConnectPorts.setText(TuxGuitar.getProperty("jack.console.autoconnect.ports"));
 			this.buttonStoreConnections.setText(TuxGuitar.getProperty("jack.console.store.connections"));
 			this.buttonRestoreConnections.setText(TuxGuitar.getProperty("jack.console.restore.connections"));
-			if(layout){
-				this.dialog.layout(true, true);
+			if( layout ){
+				this.dialog.layout();
 			}
 		}
 	}
@@ -141,8 +142,8 @@ public class JackConsoleDialog implements TGEventListener {
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-			if(layout){
-				this.dialog.layout(true, true);
+			if( layout ){
+				this.dialog.layout();
 			}
 		}
 	}

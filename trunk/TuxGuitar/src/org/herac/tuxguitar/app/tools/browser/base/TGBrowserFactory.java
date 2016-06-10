@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.app.tools.browser.base;
 
-import org.eclipse.swt.widgets.Shell;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public interface TGBrowserFactory {
 	
-	public String getName();
+	String getName();
 	
-	public String getType();
+	String getType();
 	
-	public TGBrowserSettings dataDialog(Shell parent);
+	TGBrowserSettings dataDialog(UIWindow parent);
 	
-	public TGBrowser newTGBrowser(TGBrowserSettings data);
+	TGBrowser newTGBrowser(TGBrowserSettings data);
 }

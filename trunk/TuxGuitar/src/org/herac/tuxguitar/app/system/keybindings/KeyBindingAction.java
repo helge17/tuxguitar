@@ -1,13 +1,15 @@
 package org.herac.tuxguitar.app.system.keybindings;
 
+import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+
 public class KeyBindingAction {
 	
 	private String action;
-	private KeyBinding keyBinding;
+	private UIKeyConvination convination;
 	
-	public KeyBindingAction(String action,KeyBinding keyBinding){
+	public KeyBindingAction(String action, UIKeyConvination convination){
 		this.action = action;
-		this.keyBinding = keyBinding;
+		this.convination = convination;
 	}
 	
 	public String getAction() {
@@ -18,11 +20,11 @@ public class KeyBindingAction {
 		this.action = action;
 	}
 	
-	public KeyBinding getKeyBinding() {
-		return this.keyBinding;
+	public UIKeyConvination getConvination() {
+		return this.convination;
 	}
 	
-	public void setKeyBinding(KeyBinding keyBinding) {
-		this.keyBinding = keyBinding;
+	public void setConvination(UIKeyConvination convination) {
+		this.convination = convination;
 	}
 }

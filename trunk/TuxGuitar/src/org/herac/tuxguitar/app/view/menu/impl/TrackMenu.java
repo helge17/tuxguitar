@@ -1,22 +1,12 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoFirstTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
+import org.herac.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
@@ -26,90 +16,83 @@ import org.herac.tuxguitar.editor.action.track.TGMoveTrackDownAction;
 import org.herac.tuxguitar.editor.action.track.TGMoveTrackUpAction;
 import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class TrackMenu extends TGMenuItem{
+public class TrackMenu extends TGMenuItem {
 	
-	private Menu menu;
-	private MenuItem first;
-	private MenuItem last;
-	private MenuItem next;
-	private MenuItem previous;
-	private MenuItem addTrack;
-	private MenuItem cloneTrack;
-	private MenuItem removeTrack;
-	private MenuItem moveUp;
-	private MenuItem moveDown;
-	private MenuItem changeMute;
-	private MenuItem changeSolo;
-	private MenuItem lyrics;
-	private MenuItem properties;
+	private UIMenu menu;
+	private UIMenuActionItem first;
+	private UIMenuActionItem last;
+	private UIMenuActionItem next;
+	private UIMenuActionItem previous;
+	private UIMenuActionItem addTrack;
+	private UIMenuActionItem cloneTrack;
+	private UIMenuActionItem removeTrack;
+	private UIMenuActionItem moveUp;
+	private UIMenuActionItem moveDown;
+	private UIMenuCheckableItem changeMute;
+	private UIMenuCheckableItem changeSolo;
+	private UIMenuActionItem lyrics;
+	private UIMenuActionItem properties;
 	
-	public TrackMenu(Menu menu) {
+	public TrackMenu(UIMenu menu) {
 		this.menu = menu;
 	}
 	
-	public TrackMenu(Shell shell, int style) {
-		this(new Menu(shell, style));
-	}
-	
-	public Menu getMenu() {
+	public UIMenu getMenu() {
 		return this.menu;
 	}
 	
 	public void showItems(){
 		if(!isDisposed()){
 			//--First--
-			this.first = new MenuItem(this.menu, SWT.PUSH);
+			this.first = this.menu.createActionItem();
 			this.first.addSelectionListener(this.createActionProcessor(TGGoFirstTrackAction.NAME));
 			//--previous--
-			this.previous = new MenuItem(this.menu, SWT.PUSH);
+			this.previous = this.menu.createActionItem();
 			this.previous.addSelectionListener(this.createActionProcessor(TGGoPreviousTrackAction.NAME));
 			//--next--
-			this.next = new MenuItem(this.menu, SWT.PUSH);
+			this.next = this.menu.createActionItem();
 			this.next.addSelectionListener(this.createActionProcessor(TGGoNextTrackAction.NAME));
 			//--last--
-			this.last = new MenuItem(this.menu, SWT.PUSH);
+			this.last = this.menu.createActionItem();
 			this.last.addSelectionListener(this.createActionProcessor(TGGoLastTrackAction.NAME));
 			//--SEPARATOR
-			new MenuItem(this.menu, SWT.SEPARATOR);
+			this.menu.createSeparator();
 			//--ADD TRACK--
-			this.addTrack = new MenuItem(this.menu, SWT.PUSH);
+			this.addTrack = this.menu.createActionItem();
 			this.addTrack.addSelectionListener(this.createActionProcessor(TGAddNewTrackAction.NAME));
 			//--CLONE TRACK--
-			this.cloneTrack = new MenuItem(this.menu, SWT.PUSH);
+			this.cloneTrack = this.menu.createActionItem();
 			this.cloneTrack.addSelectionListener(this.createActionProcessor(TGCloneTrackAction.NAME));
 			//--REMOVE TRACK--
-			this.removeTrack = new MenuItem(this.menu, SWT.PUSH);
+			this.removeTrack = this.menu.createActionItem();
 			this.removeTrack.addSelectionListener(this.createActionProcessor(TGRemoveTrackAction.NAME));
 			//--SEPARATOR
-			new MenuItem(this.menu, SWT.SEPARATOR);
+			this.menu.createSeparator();
 			//--MOVE UP--
-			this.moveUp = new MenuItem(this.menu, SWT.PUSH);
+			this.moveUp = this.menu.createActionItem();
 			this.moveUp.addSelectionListener(this.createActionProcessor(TGMoveTrackUpAction.NAME));
 			//--MOVE DOWN--
-			this.moveDown = new MenuItem(this.menu, SWT.PUSH);
+			this.moveDown = this.menu.createActionItem();
 			this.moveDown.addSelectionListener(this.createActionProcessor(TGMoveTrackDownAction.NAME));
 			//--SEPARATOR
-			new MenuItem(this.menu, SWT.SEPARATOR);
+			this.menu.createSeparator();
 			//--SOLO--
-			this.changeSolo = new MenuItem(this.menu, SWT.CHECK);
+			this.changeSolo = this.menu.createCheckItem();
 			this.changeSolo.addSelectionListener(this.createActionProcessor(TGChangeTrackSoloAction.NAME));
 			//--MUTE--
-			this.changeMute = new MenuItem(this.menu, SWT.CHECK);
+			this.changeMute = this.menu.createCheckItem();
 			this.changeMute.addSelectionListener(this.createActionProcessor(TGChangeTrackMuteAction.NAME));
 			//--SEPARATOR
-			new MenuItem(this.menu, SWT.SEPARATOR);
+			this.menu.createSeparator();
 			//--LYRICS--
-			this.lyrics = new MenuItem(this.menu, SWT.PUSH);
+			this.lyrics = this.menu.createActionItem();
 			this.lyrics.addSelectionListener(this.createActionProcessor(TGToggleLyricEditorAction.NAME));
 			//--PROPERTIES--
-			this.properties = new MenuItem(this.menu, SWT.PUSH);
+			this.properties = this.menu.createActionItem();
 			this.properties.addSelectionListener(this.createActionProcessor(TGOpenTrackPropertiesDialogAction.NAME));
 			
 			this.loadIcons();
@@ -152,8 +135,8 @@ public class TrackMenu extends TGMenuItem{
 			this.next.setEnabled(!isLast);
 			this.last.setEnabled(!isLast);
 			this.properties.setEnabled(!running);
-			this.changeSolo.setSelection(track.isSolo());
-			this.changeMute.setSelection(track.isMute());
+			this.changeSolo.setChecked(track.isSolo());
+			this.changeMute.setChecked(track.isMute());
 		}
 	}
 	

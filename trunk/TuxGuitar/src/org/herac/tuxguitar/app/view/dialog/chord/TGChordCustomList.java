@@ -1,256 +1,189 @@
-/*
- * Created on 02-ene-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.dialog.chord;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
-public class TGChordCustomList extends Composite {
+public class TGChordCustomList {
+	
+	private static final float MAXIMUM_LIST_PACKED_HEIGHT = 200f;
 	
 	private TGChordDialog dialog;
-	private List chords;
+	private UIPanel control;
+	private UIListBoxSelect<Integer> chords;
 	
-	public TGChordCustomList(TGChordDialog dialog,Composite parent,int style,int height) {
-		super(parent,style);
-		this.setLayout(dialog.gridLayout(1,false,0,0));
-		this.setLayoutData(makeGridData(height));
+	public TGChordCustomList(TGChordDialog dialog, UIContainer parent) {
 		this.dialog = dialog;
-		this.init();
+		this.createControl(parent);
 	}
 	
-	public GridData makeGridData(int height){
-		GridData data = new GridData(SWT.FILL,SWT.TOP,true,true);
-		data.heightHint = height;
+	public void createControl(UIContainer parent) {
+		final UIFactory uiFactory = this.dialog.getUIFactory();
+		UITableLayout layout = new UITableLayout(0f);
 		
-		return data;
-	}
-	
-	public void init(){
-		Composite composite = new Composite(this,SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		this.control = uiFactory.createPanel(parent, true);
+		this.control.setLayout(layout);
 		
-		this.chords = new List(composite,SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		this.chords.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.chords.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if(getDialog().getEditor() != null){
-					showChord(getChords().getSelectionIndex());
+		UITableLayout compositeLayout = new UITableLayout();
+		UIPanel composite = uiFactory.createPanel(this.control, false);
+		composite.setLayout(compositeLayout);
+		layout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		this.chords = uiFactory.createListBoxSelect(composite);
+		this.chords.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				Integer index = getChords().getSelectedValue();
+				if( index != null && getDialog().getEditor() != null) {
+					showChord(index);
 				}
 			}
 		});
+		compositeLayout.set(this.chords, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		compositeLayout.set(this.chords, UITableLayout.MAXIMUM_PACKED_HEIGHT, MAXIMUM_LIST_PACKED_HEIGHT);
 		
 		//-------------BUTTONS-----------------------------
-		Composite buttons = new Composite(this,SWT.NONE);
-		buttons.setLayout(new GridLayout(3,false));
+		UITableLayout buttonsLayout = new UITableLayout();
+		UIPanel buttons = uiFactory.createPanel(this.control, false);
+		buttons.setLayout(buttonsLayout);
+		layout.set(buttons, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
-		Button add = new Button(buttons,SWT.PUSH);
+		UIButton add = uiFactory.createButton(buttons);
 		add.setText(TuxGuitar.getProperty("add"));
-		add.addSelectionListener(new SelectionAdapter(){
-			public void widgetSelected(SelectionEvent e) {
+		add.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				addCustomChord();
 			}
 		});
+		buttonsLayout.set(add, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
-		Button rename = new Button(buttons,SWT.PUSH);
+		UIButton rename = uiFactory.createButton(buttons);
 		rename.setText(TuxGuitar.getProperty("rename"));
-		rename.addSelectionListener(new SelectionAdapter(){
-			public void widgetSelected(SelectionEvent e) {
-				renameCustomChord(getChords().getSelectionIndex());
+		rename.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				Integer index = getChords().getSelectedValue();
+				if( index != null ) {
+					renameCustomChord(index);
+				}
 			}
 		});
+		buttonsLayout.set(rename, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
-		Button remove = new Button(buttons,SWT.PUSH);
+		UIButton remove = uiFactory.createButton(buttons);
 		remove.setText(TuxGuitar.getProperty("remove"));
-		remove.addSelectionListener(new SelectionAdapter(){
-			public void widgetSelected(SelectionEvent e) {
-				removeCustomChord(getChords().getSelectionIndex());
+		remove.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				Integer index = getChords().getSelectedValue();
+				if( index != null ) {
+					removeCustomChord(index);
+				}
 			}
 		});
+		buttonsLayout.set(remove, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
 		loadChords();
 	}
 	
-	private void loadChords(){
-		int selectionIndex = this.chords.getSelectionIndex();
-		this.chords.removeAll();
+	public void loadChords(){
+		Integer selectionIndex = this.chords.getSelectedValue();
+		if( selectionIndex == null ) {
+			selectionIndex = 0;
+		}
+		this.chords.removeItems();
 		
-		for(int i = 0;i < TuxGuitar.getInstance().getCustomChordManager().countChords();i ++){
+		for(int i = 0; i < TuxGuitar.getInstance().getCustomChordManager().countChords(); i ++){
 			TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
-			if(chord != null){
-				this.chords.add(chord.getName());
-			}
+			
+			this.chords.addItem(new UISelectItem<Integer>(chord.getName(), i));
 		}
 		
-		if(selectionIndex >= 0 && selectionIndex < this.chords.getItemCount()){
-			this.chords.select(selectionIndex);
+		if( selectionIndex >= 0 && selectionIndex < this.chords.getItemCount()){
+			this.chords.setSelectedValue(selectionIndex);
 		}else if(selectionIndex > 0 && (selectionIndex - 1) < this.chords.getItemCount()){
-			this.chords.select((selectionIndex - 1));
+			this.chords.setSelectedValue((selectionIndex - 1));
 		}
 	}
 	
-	protected void showChord(int index) {
+	public void showChord(int index) {
 		TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(index);
 		if (chord != null) {
 			this.dialog.getEditor().setChord(chord);
 		}
 	}
 	
-	protected void addCustomChord(){
-		TGChord chord = this.dialog.getEditor().getChord();
-		if(chord != null){
-			NameDialog nDialog = new NameDialog();
-			nDialog.name = this.dialog.getEditor().getChordName().getText().trim();
-			String name = nDialog.open();
-			if(name != null){
-				if(name.length() == 0){
-					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-empty-error"));
-					return;
+	public void addCustomChord(){
+		final TGChord chord = this.dialog.getEditor().getChord();
+		if( chord != null ){
+			TGChordCustomNameChooser nameChooser = new TGChordCustomNameChooser(this.dialog.getContext().getContext());
+			nameChooser.setDefaultName(this.dialog.getEditor().getChordName().getText().trim());
+			nameChooser.choose(this.dialog.getWindow(), new TGChordCustomNameChooserHandler() {
+				public void onSelectName(String name) {
+					if( name != null ) {
+						if(name.length() == 0){
+							TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getDialog().getWindow(), TuxGuitar.getProperty("chord.custom.name-empty-error"));
+							return;
+						}
+						if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,-1)){
+							TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getDialog().getWindow(), TuxGuitar.getProperty("chord.custom.name-exist-error"));
+							return;
+						}
+						chord.setName(name);
+						TuxGuitar.getInstance().getCustomChordManager().addChord(chord);
+						loadChords();
+					}
 				}
-				if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,-1)){
-					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-exist-error"));
-					return;
-				}
-				chord.setName(name);
-				TuxGuitar.getInstance().getCustomChordManager().addChord(chord);
-				loadChords();
-			}
+			});
 		}
 	}
 	
-	protected void renameCustomChord(int index){
+	public void renameCustomChord(final int index){
 		TGChord chord =  TuxGuitar.getInstance().getCustomChordManager().getChord(index);
-		if(chord != null){
-			String name = new NameDialog(chord.getName()).open();
-			if(name != null){
-				if(name.length() == 0){
-					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-empty-error"));
-					return;
+		if( chord != null){
+			TGChordCustomNameChooser nameChooser = new TGChordCustomNameChooser(this.dialog.getContext().getContext());
+			nameChooser.setDefaultName(chord.getName());
+			nameChooser.choose(this.dialog.getWindow(), new TGChordCustomNameChooserHandler() {
+				public void onSelectName(String name) {
+					if(name != null){
+						if(name.length() == 0){
+							TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getDialog().getWindow(), TuxGuitar.getProperty("chord.custom.name-empty-error"));
+							return;
+						}
+						if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,index)){
+							TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getDialog().getWindow(), TuxGuitar.getProperty("chord.custom.name-exist-error"));
+							return;
+						}
+						TuxGuitar.getInstance().getCustomChordManager().renameChord(index, name);
+						loadChords();
+					}
 				}
-				if(TuxGuitar.getInstance().getCustomChordManager().existOtherEqualCustomChord(name,index)){
-					TGMessageDialogUtil.errorMessage(getDialog().getContext().getContext(), getShell(), TuxGuitar.getProperty("chord.custom.name-exist-error"));
-					return;
-				}
-				TuxGuitar.getInstance().getCustomChordManager().renameChord(index,name);
-				loadChords();
-			}
+			});
 		}
 	}
 	
-	protected void removeCustomChord(int index){
+	public void removeCustomChord(int index){
 		if (index >= 0 && index < TuxGuitar.getInstance().getCustomChordManager().countChords()) {
 			TuxGuitar.getInstance().getCustomChordManager().removeChord(index);
 			loadChords();
 		}
 	}
 	
-	protected TGChordDialog getDialog(){
+	public TGChordDialog getDialog(){
 		return this.dialog;
 	}
 	
-	protected List getChords(){
-		return this.chords;
+	public UIPanel getControl() {
+		return control;
 	}
 	
-	private class NameDialog{
-		protected String name;
-		
-		public NameDialog(String name){
-			this.name = name;
-		}
-		
-		public NameDialog(){
-			this(new String());
-		}
-		
-		public String open(){
-			final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-			dialog.setLayout(new GridLayout());
-			dialog.setText(TuxGuitar.getProperty("chord.custom"));
-			
-			Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-			group.setLayout(new GridLayout());
-			group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			group.setText(TuxGuitar.getProperty("chord.custom"));
-			
-			Composite composite = new Composite(group, SWT.NONE);
-			composite.setLayout(new GridLayout(2,false));
-			composite.setLayoutData(getMainData());
-			
-			final Label label = new Label(composite,SWT.LEFT);
-			label.setText(TuxGuitar.getProperty("chord.name") + ":");
-			label.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
-			
-			final Text text = new Text(composite,SWT.BORDER | SWT.SINGLE);
-			text.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-			text.setText(this.name);
-			
-			//------------------BUTTONS--------------------------
-			Composite buttons = new Composite(dialog, SWT.NONE);
-			buttons.setLayout(new GridLayout(2,false));
-			buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
-			
-			final Button buttonOK = new Button(buttons, SWT.PUSH);
-			buttonOK.setText(TuxGuitar.getProperty("ok"));
-			buttonOK.setLayoutData(getButtonData());
-			buttonOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
-					NameDialog.this.name = text.getText();
-					dialog.dispose();
-				}
-			});
-			
-			Button buttonCancel = new Button(buttons, SWT.PUSH);
-			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-			buttonCancel.setLayoutData(getButtonData());
-			buttonCancel.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent arg0) {
-					NameDialog.this.name = null;
-					dialog.dispose();
-				}
-			});
-			
-			dialog.setDefaultButton( buttonOK );
-			
-			DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
-			
-			return this.name;
-		}
-		
-		private GridData getMainData(){
-			GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-			data.minimumWidth = 300;
-			return data;
-		}
-		
-		private GridData getButtonData(){
-			GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-			data.minimumWidth = 80;
-			data.minimumHeight = 25;
-			return data;
-		}
+	public UIListBoxSelect<Integer> getChords(){
+		return this.chords;
 	}
 }

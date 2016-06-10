@@ -1,9 +1,3 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
 import java.io.UnsupportedEncodingException;
@@ -13,10 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
@@ -43,81 +33,72 @@ import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGLocalFileImporter;
 import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
 public class FileMenuItem extends TGMenuItem {
 	
-	private MenuItem fileMenuItem;
-	private Menu menu;
-	private Menu newSongMenu;
-	private Menu importMenu; 
-	private Menu exportMenu; 
-	private Menu historyMenu;
-	private MenuItem newSong;
-	private MenuItem newSongDefault;
-	private MenuItem open;
-	private MenuItem openURL;
-	private MenuItem save;
-	private MenuItem saveAs;
-	private MenuItem close;
-	private MenuItem closeOthers;
-	private MenuItem closeAll;
-	private MenuItem importItem;
-	private MenuItem exportItem;
-	private MenuItem printPreview;
-	private MenuItem print;
-	private MenuItem historyItem;
-	private MenuItem[] historyFiles;
-	private MenuItem exit;
+	private UIMenuSubMenuItem fileMenuItem;
+	private UIMenuSubMenuItem newSong;
+	private UIMenuActionItem newSongDefault;
+	private UIMenuActionItem open;
+	private UIMenuActionItem openURL;
+	private UIMenuActionItem save;
+	private UIMenuActionItem saveAs;
+	private UIMenuActionItem close;
+	private UIMenuActionItem closeOthers;
+	private UIMenuActionItem closeAll;
+	private UIMenuSubMenuItem importItem;
+	private UIMenuSubMenuItem exportItem;
+	private UIMenuActionItem printPreview;
+	private UIMenuActionItem print;
+	private UIMenuSubMenuItem historyItem;
+	private UIMenuActionItem[] historyFiles;
+	private UIMenuActionItem exit;
 	
-	private List<MenuItem> importItems;
-	private List<MenuItem> exportItems;
+	private List<UIMenuActionItem> importItems;
+	private List<UIMenuActionItem> exportItems;
 	
-	public FileMenuItem(Shell shell,Menu parent, int style) {
-		this.fileMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
-		this.importItems = new ArrayList<MenuItem>();
-		this.exportItems = new ArrayList<MenuItem>();
+	public FileMenuItem(UIMenu parent) {
+		this.fileMenuItem = parent.createSubMenuItem();
+		this.importItems = new ArrayList<UIMenuActionItem>();
+		this.exportItems = new ArrayList<UIMenuActionItem>();
 	}
 	
 	public void showItems(){
 		//---------------------------------------------------
 		//--NEW--
-		this.newSong = new MenuItem(this.menu, SWT.CASCADE);
-		this.newSongMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
-		this.newSongDefault = new MenuItem(this.newSongMenu, SWT.PUSH);
+		this.newSong = this.fileMenuItem.getMenu().createSubMenuItem();
+		this.newSongDefault = this.newSong.getMenu().createActionItem();
 		this.newSongDefault.addSelectionListener(this.createNewSongFromTemplateActionProcessor(null));
 		
 		this.addNewSongTemplates();
 		
 		//--OPEN--
-		this.open = new MenuItem(this.menu, SWT.PUSH);
+		this.open = this.fileMenuItem.getMenu().createActionItem();
 		this.open.addSelectionListener(this.createActionProcessor(TGOpenFileAction.NAME));
 		//--OPEN--
-		this.openURL = new MenuItem(this.menu, SWT.PUSH);
+		this.openURL = this.fileMenuItem.getMenu().createActionItem();
 		this.openURL.addSelectionListener(this.createActionProcessor(TGOpenURLAction.NAME));
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.fileMenuItem.getMenu().createSeparator();
 		//--CLOSE--
-		this.close = new MenuItem(this.menu, SWT.PUSH);
+		this.close = this.fileMenuItem.getMenu().createActionItem();
 		this.close.addSelectionListener(this.createActionProcessor(TGCloseCurrentDocumentAction.NAME));
 		//--CLOSE OTHERS--
-		this.closeOthers = new MenuItem(this.menu, SWT.PUSH);
+		this.closeOthers = this.fileMenuItem.getMenu().createActionItem();
 		this.closeOthers.addSelectionListener(this.createActionProcessor(TGCloseOtherDocumentsAction.NAME));
 		//--CLOSE ALL--
-		this.closeAll = new MenuItem(this.menu, SWT.PUSH);
+		this.closeAll = this.fileMenuItem.getMenu().createActionItem();
 		this.closeAll.addSelectionListener(this.createActionProcessor(TGCloseAllDocumentsAction.NAME));
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.fileMenuItem.getMenu().createSeparator();
 		//--SAVE--
-		this.save = new MenuItem(this.menu, SWT.PUSH);
+		this.save = this.fileMenuItem.getMenu().createActionItem();
 		this.save.addSelectionListener(this.createActionProcessor(TGSaveFileAction.NAME));
 		//--SAVE AS--
-		this.saveAs = new MenuItem(this.menu, SWT.PUSH);
+		this.saveAs = this.fileMenuItem.getMenu().createActionItem();
 		this.saveAs.addSelectionListener(this.createActionProcessor(TGSaveAsFileAction.NAME));
 		
 		//-- IMPORT | EXPORT --
@@ -125,57 +106,45 @@ public class FileMenuItem extends TGMenuItem {
 		int countExporters = TuxGuitar.getInstance().getFileFormatManager().countExporters();
 		if( ( countImporters + countExporters ) > 0 ){
 			//--SEPARATOR--
-			new MenuItem(this.menu, SWT.SEPARATOR);
+			this.fileMenuItem.getMenu().createSeparator();
 			
 			//--IMPORT--
 			this.importItems.clear();
 			if( countImporters > 0 ){
-				this.importItem = new MenuItem(this.menu,SWT.CASCADE);
-				this.importMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
+				this.importItem = this.fileMenuItem.getMenu().createSubMenuItem();
 				this.addImporters();
 			}
 			
 			//--EXPORT--
 			this.exportItems.clear();
 			if( countExporters > 0 ){
-				this.exportItem = new MenuItem(this.menu,SWT.CASCADE);
-				this.exportMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
+				this.exportItem = this.fileMenuItem.getMenu().createSubMenuItem();
 				this.addExporters();
 			}
 		}
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.fileMenuItem.getMenu().createSeparator();
 		
 		//--PRINT PREVIEW--
-		this.printPreview = new MenuItem(this.menu, SWT.PUSH);
+		this.printPreview = this.fileMenuItem.getMenu().createActionItem();
 		this.printPreview.addSelectionListener(this.createActionProcessor(TGPrintPreviewAction.NAME));
 		//--PRINT--
-		this.print = new MenuItem(this.menu, SWT.PUSH);
+		this.print = this.fileMenuItem.getMenu().createActionItem();
 		this.print.addSelectionListener(this.createActionProcessor(TGPrintAction.NAME));
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.fileMenuItem.getMenu().createSeparator();
 		
 		//--HISTORY--
-		this.historyItem = new MenuItem(this.menu,SWT.CASCADE);
-		this.historyMenu = new Menu(this.menu.getShell(), SWT.DROP_DOWN);
+		this.historyItem = this.fileMenuItem.getMenu().createSubMenuItem();
 		this.updateHistoryFiles();
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.fileMenuItem.getMenu().createSeparator();
 		//--EXIT--
-		this.exit = new MenuItem(this.menu, SWT.PUSH);
+		this.exit = this.fileMenuItem.getMenu().createActionItem();
 		this.exit.addSelectionListener(this.createActionProcessor(TGExitAction.NAME));
 		
 		//---------------------------------------------------
-		if( this.importItem != null ){
-			this.importItem.setMenu(this.importMenu);
-		}
-		if( this.exportItem != null ){
-			this.exportItem.setMenu(this.exportMenu);
-		}
-		this.newSong.setMenu(this.newSongMenu);
-		this.historyItem.setMenu(this.historyMenu);
-		this.fileMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -185,15 +154,15 @@ public class FileMenuItem extends TGMenuItem {
 		TGTemplateManager templateManager = TGTemplateManager.getInstance(this.findContext());
 		if( templateManager.countTemplates() > 0 ){
 			//--SEPARATOR--
-			new MenuItem(this.newSongMenu, SWT.SEPARATOR);
+			this.newSong.getMenu().createSeparator();
 			
 			Iterator<TGTemplate> it = templateManager.getTemplates();
 			while( it.hasNext() ){
 				TGTemplate tgTemplate = (TGTemplate)it.next();
 				
-				MenuItem menuItem = new MenuItem(this.newSongMenu, SWT.PUSH);
-				menuItem.setText(tgTemplate.getName());
-				menuItem.addSelectionListener(this.createNewSongFromTemplateActionProcessor(tgTemplate));
+				UIMenuActionItem uiMenuItem = this.newSong.getMenu().createActionItem();
+				uiMenuItem.setText(tgTemplate.getName());
+				uiMenuItem.addSelectionListener(this.createNewSongFromTemplateActionProcessor(tgTemplate));
 			}
 		}
 	}
@@ -214,23 +183,23 @@ public class FileMenuItem extends TGMenuItem {
 		
 		for( int i = 0 ; i < importersFile.size() ; i ++ ){
 			TGLocalFileImporter importer = importersFile.get( i );
-			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
-			item.setData(importer);
-			item.addSelectionListener(this.createImportFileActionProcessor(importer));
-			this.importItems.add( item );
+			UIMenuActionItem uiMenuItem = this.importItem.getMenu().createActionItem();
+			uiMenuItem.setData(TGRawImporter.class.getName(), importer);
+			uiMenuItem.addSelectionListener(this.createImportFileActionProcessor(importer));
+			this.importItems.add( uiMenuItem );
 		}
 		
 		//--SEPARATOR--
 		if( !importersFile.isEmpty() && !importersRaw.isEmpty() ){
-			new MenuItem(this.importMenu, SWT.SEPARATOR);
+			this.importItem.getMenu().createSeparator();
 		}
 		
 		for( int i = 0 ; i < importersRaw.size() ; i ++ ){
 			TGRawImporter importer = importersRaw.get( i );
-			MenuItem item = new MenuItem(this.importMenu, SWT.PUSH);
-			item.setData(importer);
-			item.addSelectionListener(this.createImportSongActionProcessor(importer));
-			this.importItems.add( item );
+			UIMenuActionItem uiMenuItem = this.importItem.getMenu().createActionItem();
+			uiMenuItem.setData(TGRawImporter.class.getName(), importer);
+			uiMenuItem.addSelectionListener(this.createImportSongActionProcessor(importer));
+			this.importItems.add( uiMenuItem );
 		}
 	}
 	
@@ -250,23 +219,23 @@ public class FileMenuItem extends TGMenuItem {
 		
 		for( int i = 0 ; i < exportersFile.size() ; i ++ ){
 			TGLocalFileExporter exporter = exportersFile.get( i );
-			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
-			item.setData(exporter);
-			item.addSelectionListener(this.createExportFileActionProcessor(exporter));
-			this.exportItems.add( item );
+			UIMenuActionItem uiMenuItem = this.exportItem.getMenu().createActionItem();
+			uiMenuItem.setData(TGRawExporter.class.getName(), exporter);
+			uiMenuItem.addSelectionListener(this.createExportFileActionProcessor(exporter));
+			this.exportItems.add( uiMenuItem );
 		}
 		
 		//--SEPARATOR--
 		if( !exportersFile.isEmpty() && !exportersRaw.isEmpty() ){
-			new MenuItem(this.exportMenu, SWT.SEPARATOR);
+			this.exportItem.getMenu().createSeparator();
 		}
 		
 		for( int i = 0 ; i < exportersRaw.size() ; i ++ ){
 			TGRawExporter exporter = exportersRaw.get( i );
-			MenuItem item = new MenuItem(this.exportMenu, SWT.PUSH);
-			item.setData(exporter);
-			item.addSelectionListener(this.createExportSongActionProcessor(exporter));
-			this.exportItems.add( item );
+			UIMenuActionItem uiMenuItem = this.exportItem.getMenu().createActionItem();
+			uiMenuItem.setData(TGRawExporter.class.getName(), exporter);
+			uiMenuItem.addSelectionListener(this.createExportSongActionProcessor(exporter));
+			this.exportItems.add( uiMenuItem );
 		}
 	}
 	
@@ -278,10 +247,10 @@ public class FileMenuItem extends TGMenuItem {
 	
 	private void updateHistoryFiles(){
 		List<URL> urls = TGFileHistory.getInstance(this.findContext()).getURLs();
-		this.historyFiles = new MenuItem[urls.size()];
+		this.historyFiles = new UIMenuActionItem[urls.size()];
 		for(int i = 0;i < this.historyFiles.length; i++){
 			URL url = (URL)urls.get(i);
-			this.historyFiles[i] = new MenuItem(this.historyMenu, SWT.PUSH);
+			this.historyFiles[i] = this.historyItem.getMenu().createActionItem();
 			this.historyFiles[i].setText(decode(url.toString()));
 			this.historyFiles[i].addSelectionListener(this.createOpenUrlActionProcessor(url));
 		}
@@ -361,11 +330,8 @@ public class FileMenuItem extends TGMenuItem {
 		if( this.importItem != null ){
 			setMenuItemTextAndAccelerator(this.importItem, "file.import", TGImportFileAction.NAME);
 			
-			Iterator<MenuItem> importItems = this.importItems.iterator();
-			while(importItems.hasNext()){
-				MenuItem item = (MenuItem)importItems.next();
-				
-				TGRawImporter itemImporter = (TGRawImporter) item.getData();
+			for(UIMenuActionItem item : this.importItems) {
+				TGRawImporter itemImporter = item.getData(TGRawImporter.class.getName());
 				if( itemImporter instanceof TGLocalFileImporter ){
 					item.setText(TuxGuitar.getProperty("file.import") + " " + ((TGRawImporter)itemImporter).getImportName());
 				} else {
@@ -376,11 +342,8 @@ public class FileMenuItem extends TGMenuItem {
 		if( this.exportItem != null ){
 			setMenuItemTextAndAccelerator(this.exportItem, "file.export", TGExportFileAction.NAME);
 			
-			Iterator<MenuItem> exportItems = this.exportItems.iterator();
-			while(exportItems.hasNext()){
-				MenuItem item = (MenuItem)exportItems.next();
-				
-				TGRawExporter itemExporter = (TGRawExporter) item.getData();
+			for(UIMenuActionItem item : this.exportItems) {
+				TGRawExporter itemExporter = item.getData(TGRawExporter.class.getName());
 				if( itemExporter instanceof TGLocalFileExporter ){
 					item.setText(TuxGuitar.getProperty("file.export") + " " + ((TGRawExporter)itemExporter).getExportName());
 				} else {

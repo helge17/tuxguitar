@@ -3,24 +3,27 @@ package org.herac.tuxguitar.player.impl.jsa.assistant;
 import java.io.File;
 import java.net.URL;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIImageView;
+import org.herac.tuxguitar.ui.widget.UIIndeterminateProgressBar;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.ui.widget.UIWrapLabel;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
@@ -31,8 +34,8 @@ public class SBInstallerGui implements SBInstallerlistener{
 	private static final String SB_PATH = ( TGFileUtils.PATH_USER_PLUGINS_CONFIG + File.separator + "tuxguitar-jsa" );
 	
 	private TGContext context;
-	private Shell dialog;
-	private Label progressLabel;
+	private UIWindow dialog;
+	private UILabel progressLabel;
 
 	private SBInstaller installer;	
 	
@@ -55,68 +58,71 @@ public class SBInstallerGui implements SBInstallerlistener{
 	}
 	
 	public void open(){
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());
-
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		this.dialog = uiFactory.createWindow(uiParent, true, false);
+		this.dialog.setLayout(dialogLayout);
+		
 		//-----------------------------------------------------
-		Composite header = new Composite(this.dialog,SWT.NONE);
-		header.setLayout(new GridLayout(2,false));
-		header.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));		
+		UITableLayout headerLayout = new UITableLayout();
+		UIPanel header = uiFactory.createPanel(this.dialog, false);
+		header.setLayout(headerLayout);
+		dialogLayout.set(header, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);		
         
-		Label headerImage = new Label(header, SWT.NONE);
-		headerImage.setImage(TuxGuitar.getInstance().getDisplay().getSystemImage(SWT.ICON_INFORMATION));
-		headerImage.setLayoutData(new GridData(SWT.LEFT,SWT.TOP,false,false));
+		UIImageView headerImage = uiFactory.createImageView(header);
+		headerImage.setImage(TGIconManager.getInstance(this.context).getStatusInfo());
+		headerLayout.set(headerImage, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_TOP, false, false);
 		
-		Label headerTip = new Label(header, SWT.WRAP);
-		headerTip.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
+		UIWrapLabel headerTip = uiFactory.createWrapLabel(header);
 		headerTip.setText(TuxGuitar.getProperty("jsa.soundbank-assistant.process.tip"));
+		headerLayout.set(headerTip, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		FontData[] fontData = headerTip.getFont().getFontData();
-		for(int i = 0; i < fontData.length; i ++){
-			fontData[i].setStyle(SWT.BOLD);
+		UIFont defaultFont = headerTip.getFont();
+		if( defaultFont != null ) {
+			final UIFont font = uiFactory.createFont(defaultFont.getName(), defaultFont.getHeight(), true, false);
+			headerTip.setFont(font);
+			headerTip.addDisposeListener(new UIDisposeListener() {
+				public void onDispose(UIDisposeEvent event) {
+					font.dispose();
+				}
+			});
 		}
-		final Font font = new Font(headerTip.getDisplay(),fontData);
-		headerTip.setFont(font);
-		headerTip.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent arg0) {
-				font.dispose();
-			}
-		});
-			
 		
         //------------------PROGRESS--------------------------		
-        Composite composite = new Composite(this.dialog,SWT.NONE);            
-        composite.setLayout(new GridLayout());
-        composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));		
-	        
-		final ProgressBar progressBar = new ProgressBar(composite, SWT.INDETERMINATE);
-		progressBar.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,false));
+		UITableLayout compositeLayout = new UITableLayout();
+		UIPanel composite = uiFactory.createPanel(this.dialog, false);
+		composite.setLayout(compositeLayout);
+		dialogLayout.set(composite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.progressLabel = new Label(composite, SWT.WRAP);
-		this.progressLabel.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
+		//SWT.INDETERMINATE
+		final UIIndeterminateProgressBar progressBar = uiFactory.createIndeterminateProgressBar(composite);
+		compositeLayout.set(progressBar, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		
+		this.progressLabel = uiFactory.createLabel(composite);
+		compositeLayout.set(this.progressLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
         //------------------BUTTONS--------------------------            
-        Composite buttons = new Composite(this.dialog, SWT.NONE);
-        buttons.setLayout(new GridLayout());
-        buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.BOTTOM,true,false));    	
-
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;        
-
-        Button buttonCancel = new Button(buttons, SWT.PUSH);
-        buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-        buttonCancel.setLayoutData(data);
-        buttonCancel.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
+		
+		UIButton buttonCancel = uiFactory.createButton(buttons);
+		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
                 getInstaller().setCancelled(true);
             	getDialog().dispose();
             }
         });
-
+        buttonsLayout.set(buttonCancel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
+        
         this.process();
         
-        DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+        TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 
 	private void process(){
@@ -168,14 +174,14 @@ public class SBInstallerGui implements SBInstallerlistener{
 	}	
 
 	public boolean isDisposed(){
-		return ( TuxGuitar.isDisposed() || getDialog().isDisposed() );
+		return ( TuxGuitar.getInstance().isDisposed() || getDialog().isDisposed() );
 	}
 	
-	public Shell getDialog() {
+	public UIWindow getDialog() {
 		return this.dialog;
 	}
 	
-	public Label getProgressLabel() {
+	public UILabel getProgressLabel() {
 		return this.progressLabel;
 	}
 	

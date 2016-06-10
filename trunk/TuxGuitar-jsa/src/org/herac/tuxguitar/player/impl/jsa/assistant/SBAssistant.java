@@ -3,22 +3,24 @@ package org.herac.tuxguitar.player.impl.jsa.assistant;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -57,75 +59,68 @@ public class SBAssistant {
 	}
 	
 	protected void open(){		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		dialog.setLayout(dialogLayout);
 		
 		//------------------------------------------------------------------------------
-        Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-        group.setLayout(new GridLayout());
-        group.setLayoutData(getGroupData());   
-        group.setText(TuxGuitar.getProperty("jsa.soundbank-assistant.select"));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
+		group.setText(TuxGuitar.getProperty("jsa.soundbank-assistant.select"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 250f, null, null);
         
-        
-        final Button urls[] = new Button[ URLS.length ];
+        final UIRadioButton urls[] = new UIRadioButton[URLS.length];
         for(int i = 0; i < URLS.length ; i ++){
-	        urls[i] = new Button(group, SWT.RADIO);
+	        urls[i] = uiFactory.createRadioButton(group);
 	        urls[i].setText(URLS[i].getName());
-	        urls[i].setData(URLS[i]);
-	        urls[i].setSelection(i == 0);
+	        urls[i].setData(SBUrl.class.getName(), URLS[i]);
+	        urls[i].setSelected(i == 0);
+	        groupLayout.set(urls[i], (i + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
         }
 		
         //------------------BUTTONS--------------------------            
-        Composite buttons = new Composite(dialog, SWT.NONE);
-        buttons.setLayout(new GridLayout(2,false));
-        buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.BOTTOM,true,false));    	
-
-        Button buttonOk = new Button(buttons, SWT.PUSH);
-        buttonOk.setText(TuxGuitar.getProperty("ok"));
-        buttonOk.setLayoutData(getButtonsData());
-        buttonOk.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		
+		UIButton buttonOK = uiFactory.createButton(buttons);
+		buttonOK.setText(TuxGuitar.getProperty("ok"));
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
             	URL url = getSelection(urls);
             	
             	dialog.dispose();
             	
-            	if(url != null ){
+            	if( url != null ){
             		install(url);
             	}
             }
         });		
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-        Button buttonCancel = new Button(buttons, SWT.PUSH);
-        buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-        buttonCancel.setLayoutData(getButtonsData());
-        buttonCancel.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent arg0) {
-                dialog.dispose();
-            }
-        });
-		
-        dialog.setDefaultButton( buttonOk );
+		UIButton buttonCancel = uiFactory.createButton(buttons);
+		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				dialog.dispose();
+			}
+		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
         
-        DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+        TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	protected GridData getGroupData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 250;
-		return data;
-	}	
-	
-	protected GridData getButtonsData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	protected URL getSelection(Button[] buttons){
+	protected URL getSelection(UIRadioButton[] buttons){
     	for(int i = 0; i < buttons.length ; i ++){
-    		if( buttons[i].getSelection() && buttons[i].getData() instanceof SBUrl ){
-    			return ((SBUrl)buttons[i].getData()).getUrl();
+    		if( buttons[i].isSelected() ){
+    			return ((SBUrl) buttons[i].getData(SBUrl.class.getName())).getUrl();
     		}
     	}
     	return null;

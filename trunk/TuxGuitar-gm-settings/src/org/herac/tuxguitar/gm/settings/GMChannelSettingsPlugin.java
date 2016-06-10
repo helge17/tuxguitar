@@ -14,7 +14,7 @@ public class GMChannelSettingsPlugin extends TGChannelSettingsPlugin{
 	}
 	
 	protected TGChannelSettingsHandler createHandler(TGContext context) throws TGPluginException {
-		return new GMChannelSettingsHandler();
+		return new GMChannelSettingsHandler(context);
 	}
 	
 	public String getModuleId(){

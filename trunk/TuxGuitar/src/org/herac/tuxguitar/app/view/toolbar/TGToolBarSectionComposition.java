@@ -1,13 +1,5 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
@@ -15,43 +7,37 @@ import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogA
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionComposition implements TGToolBarSection {
 	
-	private ToolItem menuItem;
+	private UIToolMenuItem menuItem;
 	
-	private Menu menu;
-	private MenuItem tempo;
-	private MenuItem timeSignature;
-	private MenuItem repeatOpen;
-	private MenuItem repeatClose;
-	private MenuItem repeatAlternative;
+	private UIMenuActionItem tempo;
+	private UIMenuActionItem timeSignature;
+	private UIMenuActionItem repeatOpen;
+	private UIMenuActionItem repeatClose;
+	private UIMenuActionItem repeatAlternative;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
-		
-		this.tempo = new MenuItem(this.menu, SWT.PUSH);
+		this.tempo = this.menuItem.getMenu().createActionItem();
 		this.tempo.addSelectionListener(toolBar.createActionProcessor(TGOpenTempoDialogAction.NAME));
 		
-		this.timeSignature = new MenuItem(this.menu, SWT.PUSH);
+		this.timeSignature = this.menuItem.getMenu().createActionItem();
 		this.timeSignature.addSelectionListener(toolBar.createActionProcessor(TGOpenTimeSignatureDialogAction.NAME));
 		
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
-		this.repeatOpen = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatOpen = this.menuItem.getMenu().createActionItem();
 		this.repeatOpen.addSelectionListener(toolBar.createActionProcessor(TGRepeatOpenAction.NAME));
 		
-		this.repeatClose = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatClose = this.menuItem.getMenu().createActionItem();
 		this.repeatClose.addSelectionListener(toolBar.createActionProcessor(TGOpenRepeatCloseDialogAction.NAME));
 		
-		this.repeatAlternative = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatAlternative = this.menuItem.getMenu().createActionItem();
 		this.repeatAlternative.addSelectionListener(toolBar.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -90,13 +76,5 @@ public class TGToolBarSectionComposition implements TGToolBarSection {
 		this.repeatClose.setText(toolBar.getText("repeat.close", (measure != null && measure.getRepeatClose() > 0)));
 		this.repeatAlternative.setEnabled( !running );
 		this.repeatAlternative.setText(toolBar.getText("repeat.alternative", (measure != null && measure.getHeader().getRepeatAlternative() > 0)));
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 }

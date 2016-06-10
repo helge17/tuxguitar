@@ -1,25 +1,26 @@
 package org.herac.tuxguitar.app.view.dialog.tempo;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTempoDialog {
@@ -30,100 +31,97 @@ public class TGTempoDialog {
 	protected static final int[] DEFAULT_PERCENTS = new int[]{25,50,75,100,125,150,175,200};
 	
 	public void show(final TGViewContext context) {
-		Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
-		dialog.setLayout(new GridLayout());
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("composition.tempo"));
 		
 		//-----------------TEMPO------------------------
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(2,false));
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("composition.tempo"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		TGTempo currentTempo = header.getTempo();
-		Label tempoLabel = new Label(group, SWT.NULL);
+		UILabel tempoLabel = uiFactory.createLabel(group);
 		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo"));
+		groupLayout.set(tempoLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Spinner tempo = new Spinner(group, SWT.BORDER);
-		tempo.setLayoutData(getSpinnerData());
+		
+		final UISpinner tempo = uiFactory.createSpinner(group);
 		tempo.setMinimum(MIN_TEMPO);
 		tempo.setMaximum(MAX_TEMPO);
-		tempo.setSelection(currentTempo.getValue());
+		tempo.setValue(currentTempo.getValue());
+		groupLayout.set(tempo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
 		
 		//------------------OPTIONS--------------------------
-		Group options = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		options.setLayout(new GridLayout());
-		options.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout optionsLayout = new UITableLayout();
+		UILegendPanel options = uiFactory.createLegendPanel(dialog);
+		options.setLayout(optionsLayout);
 		options.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(options, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button applyToAllMeasures = new Button(options, SWT.RADIO);
+		final UIRadioButton applyToAllMeasures = uiFactory.createRadioButton(options);
 		applyToAllMeasures.setText(TuxGuitar.getProperty("composition.tempo.start-to-end"));
+		applyToAllMeasures.setSelected(true);
+		optionsLayout.set(applyToAllMeasures, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button applyToEnd = new Button(options, SWT.RADIO);
+		final UIRadioButton applyToEnd = uiFactory.createRadioButton(options);
 		applyToEnd.setText(TuxGuitar.getProperty("composition.tempo.position-to-end"));
+		optionsLayout.set(applyToEnd, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button applyToNext = new Button(options, SWT.RADIO);
+		final UIRadioButton applyToNext = uiFactory.createRadioButton(options);
 		applyToNext.setText(TuxGuitar.getProperty("composition.tempo.position-to-next"));
+		optionsLayout.set(applyToNext, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		applyToAllMeasures.setSelection(true);
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				Integer value = tempo.getSelection();
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				Integer value = tempo.getValue();
 				Integer applyTo = parseApplyTo(applyToAllMeasures, applyToEnd, applyToNext);
 				
 				changeTempo(context.getContext(), song, header, value, applyTo);
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private GridData getSpinnerData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 150;
-		return data;
-	}
-	
-	private Integer parseApplyTo(Button applyToAll, Button applyToEnd, Button applyToNext) {
-		if( applyToAll.getSelection() ) {
+	private Integer parseApplyTo(UIRadioButton applyToAll, UIRadioButton applyToEnd, UIRadioButton applyToNext) {
+		if( applyToAll.isSelected() ) {
 			return TGChangeTempoRangeAction.APPLY_TO_ALL;
 		}
-		if( applyToEnd.getSelection() ) {
+		if( applyToEnd.isSelected() ) {
 			return TGChangeTempoRangeAction.APPLY_TO_END;
 		}
-		if( applyToNext.getSelection() ) {
+		if( applyToNext.isSelected() ) {
 			return TGChangeTempoRangeAction.APPLY_TO_NEXT;
 		}
 		return 0;

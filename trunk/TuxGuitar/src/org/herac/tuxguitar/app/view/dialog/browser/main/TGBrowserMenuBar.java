@@ -1,128 +1,117 @@
 package org.herac.tuxguitar.app.view.dialog.browser.main;
 
 import java.util.Iterator;
+import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuBar;
+import org.herac.tuxguitar.ui.menu.UIMenuItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGBrowserMenuBar extends TGBrowserBar{
 	
-	private Menu menu;
-	private Menu newCollection;
-	private Menu openCollection;
-	private Menu removeCollection;
+	private UIMenuBar menu;
 	
-	private MenuItem menuFileItem;
-	private MenuItem menuCollectionItem;
-	private MenuItem menuGoItem;
-	private MenuItem open;
-	private MenuItem exit;
-	private MenuItem newItem;
-	private MenuItem openItem;
-	private MenuItem removeItem;
-	private MenuItem close;
-	private MenuItem root;
-	private MenuItem back;
-	private MenuItem refresh;
+	private UIMenuSubMenuItem menuFileItem;
+	private UIMenuSubMenuItem menuCollectionItem;
+	private UIMenuSubMenuItem menuGoItem;
+	private UIMenuActionItem open;
+	private UIMenuActionItem exit;
+	
+	private UIMenuSubMenuItem newItem;
+	private UIMenuSubMenuItem openItem;
+	private UIMenuSubMenuItem removeItem;
+	
+	private UIMenuActionItem close;
+	private UIMenuActionItem root;
+	private UIMenuActionItem back;
+	private UIMenuActionItem refresh;
 	
 	public TGBrowserMenuBar(TGBrowserDialog browser){
 		super(browser);
 	}
 	
-	public void init(Shell shell){
-		this.menu = new Menu(shell, SWT.BAR);
+	public void createMenuBar(UIWindow window){
+		this.menu = this.getBrowser().getUIFactory().createMenuBar(window);
 		
 		//---File menu------------------------------------------------------
-		Menu menuFile = new Menu(shell,SWT.DROP_DOWN);
-		this.menuFileItem = new MenuItem(this.menu, SWT.CASCADE);
-		this.menuFileItem.setMenu(menuFile);
+		this.menuFileItem = this.menu.createSubMenuItem();
 		
-		this.open = new MenuItem(menuFile,SWT.PUSH);
+		this.open = this.menuFileItem.getMenu().createActionItem();
 		this.open.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-		this.open.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.open.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				getBrowser().openElement();
 			}
 		});
 		
-		new MenuItem(menuFile,SWT.SEPARATOR);
+		this.menuFileItem.getMenu().createSeparator();
 		
-		this.exit = new MenuItem(menuFile,SWT.PUSH);
-		this.exit.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				getBrowser().getShell().dispose();
+		this.exit = this.menuFileItem.getMenu().createActionItem();
+		this.exit.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				getBrowser().dispose();
 			}
 		});
 		
 		//---Collection menu------------------------------------------------------
-		Menu menuCollection = new Menu(shell,SWT.DROP_DOWN);
-		this.menuCollectionItem = new MenuItem(this.menu, SWT.CASCADE);
-		this.menuCollectionItem.setMenu(menuCollection);
+		this.menuCollectionItem = this.menu.createSubMenuItem();
 		
-		this.newCollection = new Menu(menuCollection.getShell(), SWT.DROP_DOWN);
-		this.newItem = new MenuItem(menuCollection,SWT.CASCADE);
+		this.newItem = this.menuCollectionItem.getMenu().createSubMenuItem();
 		this.newItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserNew());
-		this.newItem.setMenu(this.newCollection);
 		this.updateTypes();
 		
-		this.openCollection = new Menu(menuCollection.getShell(), SWT.DROP_DOWN);
-		this.openItem = new MenuItem(menuCollection,SWT.CASCADE);
+		this.openItem = this.menuCollectionItem.getMenu().createSubMenuItem();
 		this.openItem.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-		this.openItem.setMenu(this.openCollection);
 		
-		this.removeCollection = new Menu(menuCollection.getShell(), SWT.DROP_DOWN);
-		this.removeItem = new MenuItem(menuCollection,SWT.CASCADE);
-		this.removeItem.setMenu(this.removeCollection);
+		this.removeItem = this.menuCollectionItem.getMenu().createSubMenuItem();
 		
-		new MenuItem(menuCollection,SWT.SEPARATOR);
+		this.menuCollectionItem.getMenu().createSeparator();
 		
-		this.close = new MenuItem(menuCollection,SWT.PUSH);
-		this.close.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.close = this.menuCollectionItem.getMenu().createActionItem();
+		this.close.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				closeCollection();
 			}
 		});
 		
 		//---Go menu------------------------------------------------------
-		final Menu menuGo = new Menu(shell,SWT.DROP_DOWN);  
-		this.menuGoItem = new MenuItem(this.menu, SWT.CASCADE);
-		this.menuGoItem.setMenu(menuGo);
+		this.menuGoItem = this.menu.createSubMenuItem();
 		
-		this.root = new MenuItem(menuGo,SWT.PUSH);
+		this.root = this.menuGoItem.getMenu().createActionItem();
 		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
-		this.root.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.root.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				getBrowser().getConnection().cdRoot(TGBrowserDialog.CALL_CD_ROOT);
 			}
 		});
 		
 		//---Back Folder------------------------------------------------------
-		this.back = new MenuItem(menuGo,SWT.PUSH);
+		this.back = this.menuGoItem.getMenu().createActionItem();
 		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
-		this.back.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.back.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				getBrowser().getConnection().cdUp(TGBrowserDialog.CALL_CD_UP);
 			}
 		});
 		
 		//---Refresh Folder------------------------------------------------------
-		this.refresh = new MenuItem(menuGo,SWT.PUSH);
+		this.refresh = this.menuGoItem.getMenu().createActionItem();
 		this.refresh.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRefresh());
-		this.refresh.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.refresh.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				getBrowser().getConnection().listElements(TGBrowserDialog.CALL_LIST);
 			}
 		});
 		
-		shell.setMenuBar(this.menu);
+		window.setMenuBar(this.menu);
 	}
 	
 	public void updateItems(){
@@ -152,66 +141,63 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 	}
 	
 	public void updateCollections(TGBrowserCollection selection){
-		MenuItem[] openItems = this.openCollection.getItems();
-		for(int i = 0;i < openItems.length; i ++){
-			openItems[i].dispose();
+		List<UIMenuItem> openItems = this.openItem.getMenu().getItems();
+		for(UIMenuItem uiMenuItem : openItems){
+			uiMenuItem.dispose();
 		}
-		MenuItem[] removeItems = this.removeCollection.getItems();
-		for(int i = 0;i < removeItems.length; i ++){
-			removeItems[i].dispose();
+		
+		List<UIMenuItem> removeItems = this.removeItem.getMenu().getItems();
+		for(UIMenuItem uiMenuItem : removeItems){
+			uiMenuItem.dispose();
 		}
+		
 		Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getBrowser().getContext()).getCollections();
 		while(it.hasNext()){
 			final TGBrowserCollection collection = (TGBrowserCollection)it.next();
-			if(collection.getData() != null){
-				MenuItem openItem = new MenuItem(this.openCollection,SWT.PUSH);
+			if( collection.getData() != null) {
+				UIMenuActionItem openItem = this.openItem.getMenu().createActionItem();
 				openItem.setText(collection.getData().getTitle());
-				openItem.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent e) {
+				openItem.addSelectionListener(new UISelectionListener() {
+					public void onSelect(UISelectionEvent event) {
 						openCollection(collection);
 					}
 				});
-				if(selection != null && selection.equals(collection)){
-					openItem.setSelection(true);
-				}
 				
-				MenuItem removeItem = new MenuItem(this.removeCollection,SWT.PUSH);
+				UIMenuActionItem removeItem = this.removeItem.getMenu().createActionItem();
 				removeItem.setText(collection.getData().getTitle());
-				removeItem.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent e) {
+				removeItem.addSelectionListener(new UISelectionListener() {
+					public void onSelect(UISelectionEvent event) {
 						removeCollection(collection);
 					}
 				});
-				if(selection != null && selection.equals(collection)){
-					removeItem.setSelection(true);
-				}
 			}
 		}
 	}
 	
-	public void updateTypes(){
-		MenuItem[] items = this.newCollection.getItems();
-		for(int i = 0;i < items.length; i ++){
-			items[i].dispose();
+	public void updateTypes() {
+		List<UIMenuItem> newItems = this.newItem.getMenu().getItems();
+		for(UIMenuItem uiMenuItem : newItems){
+			uiMenuItem.dispose();
 		}
+		
 		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
 		while(bookTypes.hasNext()){
 			final TGBrowserFactory bookType = (TGBrowserFactory)bookTypes.next();
-			MenuItem item = new MenuItem(this.newCollection,SWT.PUSH);
+			UIMenuActionItem item = this.newItem.getMenu().createActionItem();
 			item.setText(bookType.getName());
-			item.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
+			item.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
 					newCollection( bookType.getType());
 				}
 			});
 		}
 	}
 	
-	public void reload(Shell shell){
-		if(this.menu != null && !this.menu.isDisposed()){
+	public void reload(UIWindow window){
+		if( this.menu != null && !this.menu.isDisposed()){
 			this.menu.dispose();
 		}
-		this.init(shell);
+		this.createMenuBar(window);
 		this.loadProperties();
 		this.updateItems();
 	}

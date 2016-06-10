@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.track;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
 import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
 import org.herac.tuxguitar.song.factory.TGFactory;
@@ -22,19 +23,19 @@ public class TGUndoableTrackInfo extends TGUndoableTrackBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.setTrackInfo(this.getTrack(this.trackNumber), this.redoName, this.redoOffset, this.redoColor);
+		this.setTrackInfo(actionContext, this.getTrack(this.trackNumber), this.redoName, this.redoOffset, this.redoColor);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.setTrackInfo(this.getTrack(this.trackNumber), this.undoName, this.undoOffset, this.undoColor);
+		this.setTrackInfo(actionContext, this.getTrack(this.trackNumber), this.undoName, this.undoOffset, this.undoColor);
 		this.doAction = REDO_ACTION;
 	}
 	

@@ -1,13 +1,7 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
+import java.util.List;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
 import org.herac.tuxguitar.app.view.dialog.chord.TGCustomChordManager;
@@ -16,22 +10,20 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.note.TGInsertChordAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
 
 public class TGToolBarSectionChord implements TGToolBarSection {
 	
-	private ToolItem menuItem;
-	
-	private Menu menu;
+	private UIToolActionMenuItem menuItem;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.DROP_DOWN);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				processItemSelection(toolBar, event);
-			}
-		});
-		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
+		this.menuItem = toolBar.getControl().createActionMenuItem();
+		this.menuItem.addSelectionListener(toolBar.createActionProcessor(TGOpenChordDialogAction.NAME));
 		
 		this.loadIcons(toolBar);
 		this.loadProperties(toolBar);
@@ -52,44 +44,29 @@ public class TGToolBarSectionChord implements TGToolBarSection {
 		this.updateMenuItems(toolBar);
 	}
 	
-	public void processItemSelection(TGToolBar toolBar, SelectionEvent event) {
-		if (event.detail == SWT.ARROW) {
-			this.displayMenu();
-		}
-		else{
-			toolBar.createActionProcessor(TGOpenChordDialogAction.NAME).process();
-		}
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
-	}
-	
 	public void updateMenuItems(final TGToolBar toolBar) {
 		TGCustomChordManager customChordManager = TuxGuitar.getInstance().getCustomChordManager();
-		MenuItem[] menuItems = this.menu.getItems();
-		for( int i = customChordManager.countChords(); i < menuItems.length; i++) {
-			menuItems[i].dispose();
+		UIMenu uiMenu = this.menuItem.getMenu(); 
+		List<UIMenuItem> uiMenuItems = this.menuItem.getMenu().getItems();
+		for(int i = customChordManager.countChords(); i < uiMenuItems.size(); i++) {
+			uiMenuItems.get(i).dispose();
 		}
 		
 		for(int i = 0; i < customChordManager.countChords(); i++) {
 			TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
 			
-			MenuItem menuItem = (this.menu.getItemCount() > i ? this.menu.getItem(i) : null);
-			if( menuItem == null ) {
-				menuItem = new MenuItem(this.menu, SWT.PUSH);
-				menuItem.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent e) {
-						processInsertChordAction(toolBar, (TGChord)((MenuItem) e.widget).getData());
+			UIMenuItem uiMenuItem = (uiMenu.getItemCount() > i ? uiMenu.getItem(i) : null);
+			if( uiMenuItem == null ) {
+				UIMenuActionItem uiMenuActionItem = uiMenu.createActionItem();
+				uiMenuActionItem.addSelectionListener(new UISelectionListener() {
+					public void onSelect(UISelectionEvent event) {
+						processInsertChordAction(toolBar, (TGChord) event.getComponent().getData(TGChord.class.getName()));
 					}
 				});
+				uiMenuItem = uiMenuActionItem;
 			}
-			menuItem.setText(chord.getName());
-			menuItem.setData(chord);
+			uiMenuItem.setText(chord.getName());
+			uiMenuItem.setData(TGChord.class.getName(), chord);
 		}
 	}
 	

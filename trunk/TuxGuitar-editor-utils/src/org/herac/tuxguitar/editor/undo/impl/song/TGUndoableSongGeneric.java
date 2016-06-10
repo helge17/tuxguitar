@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.song;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
@@ -20,19 +21,19 @@ public class TGUndoableSongGeneric extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.copySongFrom(getSong(), this.redoSong);
+		this.copySongFrom(actionContext, getSong(), this.redoSong);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.copySongFrom(getSong(), this.undoSong);
+		this.copySongFrom(actionContext, getSong(), this.undoSong);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -56,10 +57,10 @@ public class TGUndoableSongGeneric extends TGUndoableEditBase {
 		return this;
 	}
 	
-	public void copySongFrom(TGSong song, TGSong from) {
+	public void copySongFrom(TGActionContext context, TGSong song, TGSong from) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGCopySongFromAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGCopySongFromAction.ATTRIBUTE_FROM, from);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

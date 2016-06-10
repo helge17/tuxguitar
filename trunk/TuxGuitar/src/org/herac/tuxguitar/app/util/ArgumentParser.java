@@ -3,7 +3,7 @@ package org.herac.tuxguitar.app.util;
 import java.io.File;
 import java.net.URL;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class ArgumentParser {
@@ -59,7 +59,7 @@ public class ArgumentParser {
 		for(int i = 0;i < this.arguments.length;i++){
 			for(int j = 0;j < OPTION_VERSION.length;j++){
 				if(this.arguments[i].equals(OPTION_VERSION[j])){
-					print(TuxGuitar.APPLICATION_NAME + " - " + TGVersion.CURRENT.getVersion());
+					print(TGApplication.NAME + " - " + TGVersion.CURRENT.getVersion());
 					
 					this.processAndExit = true;
 				}

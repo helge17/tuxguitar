@@ -1,13 +1,12 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
 
 public class TGToolBarSectionTransport implements TGToolBarSection {
 	
@@ -15,45 +14,45 @@ public class TGToolBarSectionTransport implements TGToolBarSection {
 	private static final int STATUS_PAUSED = 2;
 	private static final int STATUS_RUNNING = 3;
 	
-	private ToolItem first;
-	private ToolItem last;
-	private ToolItem previous;
-	private ToolItem next;
-	private ToolItem stop;
-	private ToolItem play;
+	private UIToolActionItem first;
+	private UIToolActionItem last;
+	private UIToolActionItem previous;
+	private UIToolActionItem next;
+	private UIToolActionItem stop;
+	private UIToolActionItem play;
 	private int status;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.first = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.first.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.first = toolBar.getControl().createActionItem();
+		this.first.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGTransport.getInstance(toolBar.getContext()).gotoFirst();
 			}
 		});
 		
-		this.previous = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.previous.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.previous = toolBar.getControl().createActionItem();
+		this.previous.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGTransport.getInstance(toolBar.getContext()).gotoPrevious();
 			}
 		});
 		
-		this.stop = new ToolItem(toolBar.getControl(), SWT.PUSH);
+		this.stop = toolBar.getControl().createActionItem();
 		this.stop.addSelectionListener(toolBar.createActionProcessor(TGTransportStopAction.NAME));
 		
-		this.play = new ToolItem(toolBar.getControl(), SWT.PUSH);
+		this.play = toolBar.getControl().createActionItem();
 		this.play.addSelectionListener(toolBar.createActionProcessor(TGTransportPlayAction.NAME));
 		
-		this.next = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.next.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.next = toolBar.getControl().createActionItem();
+		this.next.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGTransport.getInstance(toolBar.getContext()).gotoNext();
 			}
 		});
 		
-		this.last = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.last.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.last = toolBar.getControl().createActionItem();
+		this.last.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGTransport.getInstance(toolBar.getContext()).gotoLast();
 			}
 		});

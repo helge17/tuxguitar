@@ -2,7 +2,7 @@ package org.herac.tuxguitar.app.system.keybindings;
 
 import java.awt.event.KeyEvent;
 
-public class KeyBindingConstants{
+public class KeyBindingConstants {
 	public static final int F1 = KeyEvent.VK_F1;
 	public static final int F2 = KeyEvent.VK_F2;
 	public static final int F3 = KeyEvent.VK_F3;

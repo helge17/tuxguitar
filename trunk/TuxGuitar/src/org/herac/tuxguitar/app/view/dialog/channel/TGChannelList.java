@@ -4,35 +4,43 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 
 public class TGChannelList {
 	
 	private List<TGChannelItem> channelItems;
 	private TGChannelManagerDialog dialog;
 	
-	protected ScrolledComposite channelItemAreaSC;
-	protected Composite channelItemArea;
+	protected UIScrollBarPanel channelItemAreaSC;
+	protected UIPanel channelItemArea;
 	
 	public TGChannelList(TGChannelManagerDialog dialog){
 		this.dialog = dialog;
 		this.channelItems = new ArrayList<TGChannelItem>();
 	}
 	
-	public void show(final Composite parent){
-		this.channelItemAreaSC = new ScrolledComposite(parent, SWT.NONE | SWT.V_SCROLL);
-		this.channelItemAreaSC.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.channelItemAreaSC.setExpandHorizontal(true);
-		this.channelItemAreaSC.setExpandVertical(true);
+	public void show(UILayoutContainer parent){
+		UIFactory uiFactory = this.dialog.getUIFactory();
 		
-		this.channelItemArea = new Composite(this.channelItemAreaSC, SWT.NONE);
-		this.channelItemArea.setLayout(this.dialog.createGridLayout(1,false, true, false));
-		this.channelItemArea.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.channelItemAreaSC.setContent(this.channelItemArea);
+		this.channelItemAreaSC = uiFactory.createScrollBarPanel(parent, true, false, true);
+		this.channelItemAreaSC.setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, true));
+		
+		this.channelItemAreaSC.getVScroll().addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGChannelList.this.channelItemAreaSC.layout();
+			}
+		});
+		
+		this.channelItemArea = uiFactory.createPanel(this.channelItemAreaSC, false);
+		this.channelItemArea.setLayout(new UITableLayout());
 	}
 	
 	public void removeChannelsAfter( int count ){
@@ -40,8 +48,7 @@ public class TGChannelList {
 			TGChannelItem tgChannelItem = (TGChannelItem)this.channelItems.get(0);
 			tgChannelItem.dispose();
 			
-			this.channelItemAreaSC.setMinSize(this.channelItemArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-			this.channelItemArea.layout(true,true);
+			this.channelItemAreaSC.layout();
 			this.channelItems.remove(tgChannelItem);
 		}
 	}
@@ -49,10 +56,12 @@ public class TGChannelList {
 	public TGChannelItem getOrCreateChannelItemAt( int index ){
 		while( this.channelItems.size() <= index ){
 			TGChannelItem tgChannelItem = new TGChannelItem(this.dialog);
-			tgChannelItem.show(this.channelItemArea, new GridData(SWT.FILL,SWT.TOP,true,false));
+			tgChannelItem.show(this.channelItemArea);
 			
-			this.channelItemAreaSC.setMinSize(this.channelItemArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-			this.channelItemArea.layout(true,true);
+			UITableLayout uiLayout = (UITableLayout) this.channelItemArea.getLayout();
+			uiLayout.set(tgChannelItem.getComposite(), (this.channelItems.size() + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
+			
+			this.channelItemAreaSC.layout();
 			this.channelItems.add(tgChannelItem);
 		}
 		return (TGChannelItem)this.channelItems.get(index);
@@ -85,5 +94,9 @@ public class TGChannelList {
 			tgChannelItem.setChannel(channel);
 			tgChannelItem.updateItems();
 		}
+	}
+	
+	public UIScrollBarPanel getControl() {
+		return this.channelItemAreaSC;
 	}
 }

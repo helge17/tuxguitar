@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.custom;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTempoAction;
@@ -21,19 +22,19 @@ public class TGUndoableTempo extends TGUndoableEditBase{
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeTempo(this.getMeasureHeaderAt(this.position), this.redoableTempo);
+		this.changeTempo(actionContext, this.getMeasureHeaderAt(this.position), this.redoableTempo);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeTempo(this.getMeasureHeaderAt(this.position), this.undoableTempo);
+		this.changeTempo(actionContext, this.getMeasureHeaderAt(this.position), this.undoableTempo);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -66,10 +67,10 @@ public class TGUndoableTempo extends TGUndoableEditBase{
 		return header.getTempo().clone(getSongManager().getFactory());
 	}
 	
-	public void changeTempo(TGMeasureHeader header, TGTempo tempo) {
+	public void changeTempo(TGActionContext context, TGMeasureHeader header, TGTempo tempo) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeTempoAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TEMPO, tempo);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

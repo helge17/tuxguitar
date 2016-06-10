@@ -1,30 +1,36 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGControl extends Composite {
+public class TGControl {
 	
 	private static final int SCROLL_INCREMENT = 50;
 	
-	private TGContext context; 
+	private TGContext context;
+	private UIScrollBarPanel container;
+	private UICanvas canvas;
+	private UIScrollBar hScroll;
+	private UIScrollBar vScroll;
 	
 	private Tablature tablature;
 	private int width;
@@ -38,49 +44,62 @@ public class TGControl extends Composite {
 	
 	private boolean painting;
 	
-	public TGControl(TGContext context, Composite parent) {
-		super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.DOUBLE_BUFFERED);
+	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
-		this.initialize();
+		this.initialize(parent);
 	}
 	
-	public void initialize() {
-		this.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGControlPaintListener(this)) );
-		this.addMouseListener(this.tablature.getEditorKit().getMouseKit());
-		this.addMouseMoveListener(this.tablature.getEditorKit().getMouseKit());
-		this.addMouseTrackListener(this.tablature.getEditorKit().getMouseKit());
+	public void initialize(UIContainer parent) {
+		UIFactory factory = TGApplication.getInstance(this.context).getFactory();
+		UITableLayout layout = new UITableLayout(0f);
 		
-		final ScrollBar hBar = getHorizontalBar();
-		hBar.setIncrement(SCROLL_INCREMENT);
-		hBar.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				redraw();
+		this.container = factory.createScrollBarPanel(parent, true, true, false);
+		this.container.setLayout(layout);
+		
+		this.canvas = factory.createCanvas(this.container, false);
+		this.hScroll = this.container.getHScroll();
+		this.vScroll = this.container.getVScroll();
+		
+		this.canvas.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGControlPaintListener(this)));
+		this.canvas.addMouseDownListener(this.tablature.getEditorKit().getMouseKit());
+		this.canvas.addMouseUpListener(this.tablature.getEditorKit().getMouseKit());
+		this.canvas.addMouseMoveListener(this.tablature.getEditorKit().getMouseKit());
+		this.canvas.addMouseExitListener(this.tablature.getEditorKit().getMouseKit());
+		
+		this.hScroll.setIncrement(SCROLL_INCREMENT);
+		this.hScroll.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGControl.this.redraw();
 			}
 		});
 		
-		final ScrollBar vBar = getVerticalBar();
-		vBar.setIncrement(SCROLL_INCREMENT);
-		vBar.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				redraw();
+		this.vScroll.setIncrement(SCROLL_INCREMENT);
+		this.vScroll.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGControl.this.redraw();
 			}
 		});
 		
-		this.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent arg0) {
-				updateScroll();
+		KeyBindingActionManager.getInstance(this.context).appendListenersTo(this.canvas);
+		
+		this.canvas.setPopupMenu(TuxGuitar.getInstance().getItemManager().getPopupMenu());
+		this.canvas.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
+				TGControl.this.canvas.setPopupMenu(null);
 			}
 		});
 		
-		KeyBindingActionManager.getInstance(this.context).appendListenersTo(this);
+//		layout.set(UITableLayout.MARGIN_TOP, 0f);
+//		layout.set(UITableLayout.MARGIN_BOTTOM, 0f);
+//		layout.set(UITableLayout.MARGIN_LEFT, 0f);
+//		layout.set(UITableLayout.MARGIN_RIGHT, 0f);
 		
-		this.setMenu(TuxGuitar.getInstance().getItemManager().getPopupMenu());
-		this.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				TGControl.this.setMenu(null);
-			}
-		});
+		layout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+//		layout.set(this.canvas, UITableLayout.MARGIN_TOP, 0f);
+//		layout.set(this.canvas, UITableLayout.MARGIN_BOTTOM, 0f);
+//		layout.set(this.canvas, UITableLayout.MARGIN_LEFT, 0f);
+//		layout.set(this.canvas, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 	
 	public void paintTablature(TGPainter painter){
@@ -91,11 +110,10 @@ public class TGControl extends Composite {
 			int oldWidth = this.width;
 			int oldHeight = this.height;
 			
-			TGRectangle area = createRectangle(getClientArea());
-			ScrollBar xScroll = getHorizontalBar();
-			ScrollBar yScroll = getVerticalBar();
-			this.scrollX = xScroll.getSelection();
-			this.scrollY = yScroll.getSelection();
+			TGRectangle area = createRectangle(this.canvas.getBounds());
+			
+			this.scrollX = this.hScroll.getValue();
+			this.scrollY = this.vScroll.getValue();
 			
 			this.tablature.paintTablature(painter, area, -this.scrollX, -this.scrollY);
 			
@@ -114,7 +132,7 @@ public class TGControl extends Composite {
 				// por eso es importante desmarcar los cambios antes de hacer el moveScrollTo
 				this.tablature.getCaret().setChanges(false);
 				
-				this.moveScrollTo(this.tablature.getCaret().getMeasure(), xScroll, yScroll, area);
+				this.moveScrollTo(this.tablature.getCaret().getMeasure(), area);
 			}
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
@@ -144,28 +162,26 @@ public class TGControl extends Composite {
 	
 	public void checkScroll(){
 		if( this.resetScroll ){
-			getHorizontalBar().setSelection(0);
-			getVerticalBar().setSelection(0);
+			this.hScroll.setValue(0);
+			this.vScroll.setValue(0);
 			this.resetScroll = false;
 		}
 	}
 	
 	public void updateScroll(){
-		Rectangle bounds = getBounds();
-		Rectangle client = getClientArea();
-		ScrollBar hBar = getHorizontalBar();
-		ScrollBar vBar = getVerticalBar();
-		hBar.setMaximum(this.width);
-		vBar.setMaximum(this.height);
-		hBar.setThumb(Math.min(bounds.width, client.width));
-		vBar.setThumb(Math.min(bounds.height, client.height));
+		UIRectangle bounds = this.canvas.getBounds();
+		
+		this.hScroll.setMaximum(this.width);
+		this.vScroll.setMaximum(this.height);
+		this.hScroll.setThumb(Math.round(bounds.getWidth()));
+		this.vScroll.setThumb(Math.round(bounds.getHeight()));
 	}
 	
 	public boolean moveScrollTo(TGMeasureImpl measure){
-		return moveScrollTo(measure, getHorizontalBar(), getVerticalBar(), createRectangle(getClientArea()));
+		return moveScrollTo(measure, createRectangle(this.canvas.getBounds()));
 	}
 	
-	public boolean moveScrollTo(TGMeasureImpl measure,ScrollBar xScroll,ScrollBar yScroll,TGRectangle area){
+	public boolean moveScrollTo(TGMeasureImpl measure, TGRectangle area){
 		boolean success = false;
 		if( measure != null && measure.getTs() != null ){
 			int mX = Math.round(measure.getPosX());
@@ -179,20 +195,20 @@ public class TGControl extends Composite {
 			//Solo se ajusta si es necesario
 			//si el largo del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
 			if( mX < 0 || ( (mX + mWidth ) > area.getWidth() && (area.getWidth() >= mWidth + marginWidth || mX > marginWidth) ) ){
-				xScroll.setSelection((this.scrollX + mX) - marginWidth );
+				this.hScroll.setValue((this.scrollX + mX) - marginWidth );
 				success = true;
 			}
 			
 			//Solo se ajusta si es necesario
 			//si el alto del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
 			if( mY < 0 || ( (mY + mHeight ) > area.getHeight() && (area.getHeight() >= mHeight + marginHeight || mY > marginHeight) ) ){
-				yScroll.setSelection( (this.scrollY + mY)  - marginHeight );
+				this.vScroll.setValue( (this.scrollY + mY)  - marginHeight );
 				success = true;
 			}
 			
 			if(!success){
 				// Si la seleccion "real" del scroll es distinta a la anterior, se fuerza el redraw
-				forceRedraw = (this.scrollX != xScroll.getSelection() || this.scrollY != yScroll.getSelection());
+				forceRedraw = (this.scrollX != this.hScroll.getValue() || this.scrollY != this.vScroll.getValue());
 			}
 			
 			if(forceRedraw || success){
@@ -202,15 +218,19 @@ public class TGControl extends Composite {
 		return success;
 	}
 	
+	public void setFocus() {
+		this.container.setFocus();
+	}
+	
 	public void redraw(){
-		if(!super.isDisposed() ){
+		if(!this.isDisposed() ){
 			this.setPainting(true);
-			super.redraw();
+			this.canvas.redraw();
 		}
 	}
 	
 	public void redrawPlayingMode() {
-		if(!super.isDisposed() && !this.isPainting() && MidiPlayer.getInstance(this.context).isRunning()) {
+		if(!this.isDisposed() && !this.isPainting() && MidiPlayer.getInstance(this.context).isRunning()) {
 			this.redraw();
 		}
 	}
@@ -230,8 +250,20 @@ public class TGControl extends Composite {
 	public Tablature getTablature() {
 		return tablature;
 	}
+	
+	public UIContainer getContainer() {
+		return container;
+	}
 
-	public TGRectangle createRectangle( Rectangle rectangle ){
-		return new TGRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
+	public UICanvas getCanvas() {
+		return canvas;
+	}
+
+	public boolean isDisposed() {
+		return (this.container == null || this.container.isDisposed() || this.canvas == null || this.canvas.isDisposed());
+	}
+	
+	public TGRectangle createRectangle(UIRectangle rectangle){
+		return new TGRectangle(rectangle.getX(),rectangle.getY(),rectangle.getWidth(),rectangle.getHeight());
 	}
 }

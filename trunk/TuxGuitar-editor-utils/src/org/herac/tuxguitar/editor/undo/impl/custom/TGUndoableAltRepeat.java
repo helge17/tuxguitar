@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.custom;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatAlternativeAction;
@@ -19,19 +20,19 @@ public class TGUndoableAltRepeat extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeAlternativeRepeat(getMeasureHeaderAt(this.position), this.redoRepeatAlternative);
+		this.changeAlternativeRepeat(actionContext, getMeasureHeaderAt(this.position), this.redoRepeatAlternative);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeAlternativeRepeat(getMeasureHeaderAt(this.position), this.undoRepeatAlternative);
+		this.changeAlternativeRepeat(actionContext, getMeasureHeaderAt(this.position), this.undoRepeatAlternative);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -61,10 +62,10 @@ public class TGUndoableAltRepeat extends TGUndoableEditBase {
 		return getSongManager().getMeasureHeaderAt(getSong(), start);
 	}
 	
-	public void changeAlternativeRepeat(TGMeasureHeader header, Integer repeatAlternative) {
+	public void changeAlternativeRepeat(TGActionContext context, TGMeasureHeader header, Integer repeatAlternative) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRepeatAlternativeAction.NAME);
 		tgActionProcessor.setAttribute(TGRepeatAlternativeAction.ATTRIBUTE_REPEAT_ALTERNATIVE, repeatAlternative);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

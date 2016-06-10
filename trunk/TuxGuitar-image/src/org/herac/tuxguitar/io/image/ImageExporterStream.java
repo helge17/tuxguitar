@@ -3,14 +3,12 @@ package org.herac.tuxguitar.io.image;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.printer.PrintDocument;
 import org.herac.tuxguitar.app.printer.PrintLayout;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
@@ -21,6 +19,8 @@ import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -44,7 +44,7 @@ public class ImageExporterStream implements TGSongStream{
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = song.clone(manager.getFactory());
 			
-			TGResourceFactory factory = new TGResourceFactoryImpl(TuxGuitar.getInstance().getDisplay());
+			TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
 			
 			PrintController controller = new PrintController(clonedSong, manager, factory);
 			PrintLayout layout = new PrintLayout(controller, settings.getStyles());
@@ -55,20 +55,23 @@ public class ImageExporterStream implements TGSongStream{
 		}
 	}
 	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
 	private class PrintDocumentImpl implements PrintDocument{
 		
 		private TGPainterImpl painter;
 		private TGRectangle bounds;
 		private String path;
-		private Image buffer;
-		private List<ImageData> pages;
+		private List<UIImage> pages;
 		private ImageFormat format;
 		
 		public PrintDocumentImpl(TGRectangle bounds, ImageFormat format, String path){
 			this.bounds = bounds;
 			this.path = path;
-			this.painter = new TGPainterImpl();
-			this.pages = new ArrayList<ImageData>();
+			this.painter = new TGPainterImpl(getUIFactory());
+			this.pages = new ArrayList<UIImage>();
 			this.format = format;
 		}
 		
@@ -83,14 +86,15 @@ public class ImageExporterStream implements TGSongStream{
 		public void pageStart() {
 			int width = Math.round(this.bounds.getWidth() + (this.bounds.getX() * 2));
 			int height = Math.round(this.bounds.getHeight() + (this.bounds.getY() * 2));
-			this.buffer = new Image(TuxGuitar.getInstance().getDisplay(), width, height);
-			this.painter.init( this.buffer );
+			
+			UIFactory factory = getUIFactory();
+			UIImage page = factory.createImage(width, height);
+			this.painter.setHandle(page.createPainter());
+			this.pages.add( page );
 		}
 		
 		public void pageFinish() {
-			this.pages.add( this.buffer.getImageData() );
 			this.painter.dispose();
-			this.buffer.dispose();
 		}
 		
 		public void start() {
@@ -100,6 +104,10 @@ public class ImageExporterStream implements TGSongStream{
 		public void finish() {
 			try {
 				ImageWriter.write(this.format, this.path, this.pages);
+				
+				for(UIImage uiImage : this.pages) {
+					uiImage.dispose();
+				}
 			} catch (Throwable throwable) {
 				TGErrorManager.getInstance(ImageExporterStream.this.context).handleError(throwable);
 			}

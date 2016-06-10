@@ -1,67 +1,53 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoPreviousMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class TGToolBarSectionMarker implements TGToolBarSection {
 	
-	private ToolItem menuItem;
+	private UIToolMenuItem menuItem;
 	
-	private Menu menu;
-	private MenuItem add;
-	private MenuItem list;
-	private MenuItem first;
-	private MenuItem previous;
-	private MenuItem next;
-	private MenuItem last;
+	private UIMenuActionItem add;
+	private UIMenuActionItem list;
+	private UIMenuActionItem first;
+	private UIMenuActionItem previous;
+	private UIMenuActionItem next;
+	private UIMenuActionItem last;
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = new ToolItem(toolBar.getControl(), SWT.PUSH);
-		this.menuItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				displayMenu();
-			}
-		});
-		
-		this.menu = new Menu(this.menuItem.getParent().getShell());
+		this.menuItem = toolBar.getControl().createMenuItem();
 		
 		//--ADD--
-		this.add = new MenuItem(this.menu, SWT.PUSH);
+		this.add = this.menuItem.getMenu().createActionItem();
 		this.add.addSelectionListener(toolBar.createActionProcessor(TGOpenMarkerEditorAction.NAME));
 		
 		//--LIST--
-		this.list = new MenuItem(this.menu, SWT.PUSH);
+		this.list = this.menuItem.getMenu().createActionItem();
 		this.list.addSelectionListener(toolBar.createActionProcessor(TGToggleMarkerListAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.menuItem.getMenu().createSeparator();
 		
 		//--FIRST--
-		this.first = new MenuItem(this.menu, SWT.PUSH);
+		this.first = this.menuItem.getMenu().createActionItem();
 		this.first.addSelectionListener(toolBar.createActionProcessor(TGGoFirstMarkerAction.NAME));
 		
 		//--PREVIOUS--
-		this.previous = new MenuItem(this.menu, SWT.PUSH);
+		this.previous = this.menuItem.getMenu().createActionItem();
 		this.previous.addSelectionListener(toolBar.createActionProcessor(TGGoPreviousMarkerAction.NAME));
 		
 		//--PREVIOUS--
-		this.next = new MenuItem(this.menu, SWT.PUSH);
+		this.next = this.menuItem.getMenu().createActionItem();
 		this.next.addSelectionListener(toolBar.createActionProcessor(TGGoNextMarkerAction.NAME));
 		
 		//--LAST--
-		this.last = new MenuItem(this.menu, SWT.PUSH);
+		this.last = this.menuItem.getMenu().createActionItem();
 		this.last.addSelectionListener(toolBar.createActionProcessor(TGGoLastMarkerAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -90,13 +76,5 @@ public class TGToolBarSectionMarker implements TGToolBarSection {
 	
 	public void updateItems(TGToolBar toolBar){
 		//Nothing to do
-	}
-	
-	public void displayMenu() {
-		Rectangle rect = this.menuItem.getBounds();
-		Point pt = this.menuItem.getParent().toDisplay(new Point(rect.x, rect.y));
-		
-		this.menu.setLocation(pt.x, pt.y + rect.height);
-		this.menu.setVisible(true);
 	}
 }

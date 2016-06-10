@@ -2,35 +2,36 @@ package org.herac.tuxguitar.app.view.dialog.printer;
 
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingUtil;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIKeyEvent;
+import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIKey;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGPrintPreviewDialog{
 	
@@ -44,14 +45,14 @@ public class TGPrintPreviewDialog{
 	public static final String ATTRIBUTE_BOUNDS = (TGPrintPreviewDialog.class.getName() + "-bounds");
 	
 	private TGViewContext context;
-	private Shell dialog;
-	private Composite previewComposite;
-	private Composite pageComposite;
-	private Text currentText;
-	private Button previous;
-	private Button next;
+	private UIWindow dialog;
+	private UIScrollBarPanel previewComposite;
+	private UICanvas pageComposite;
+	private UITextField currentText;
+	private UIButton previous;
+	private UIButton next;
 	private TGRectangle bounds;
-	private List<Image> pages;
+	private List<UIImage> pages;
 	private int currentPage;
 	
 	public TGPrintPreviewDialog(TGViewContext context) {
@@ -61,41 +62,56 @@ public class TGPrintPreviewDialog{
 	}
 	
 	public void show() {
-		Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());
+		this.dialog = uiFactory.createWindow(uiParent, true, true);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("print.preview"));
 		
 		this.initToolBar();
 		this.initPreviewComposite();
 		this.changePage(0);
 		
-		DisposeListener disposeListener = this.context.getAttribute(TGViewContext.ATTRIBUTE_DISPOSE_LISTENER);
+		UIDisposeListener disposeListener = this.context.getAttribute(TGViewContext.ATTRIBUTE_DISPOSE_LISTENER);
 		if( disposeListener != null ) {
 			this.dialog.addDisposeListener(disposeListener);
 		}
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_MAXIMIZED);
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_MAXIMIZED);
 	}
 	
 	private void initToolBar(){
-		Composite composite = new Composite(this.dialog,SWT.NONE);
-		composite.setLayout(new GridLayout(5,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
+		UIFactory factory = this.getUIFactory();
+		UITableLayout dialogLayout = (UITableLayout) this.dialog.getLayout();
 		
-		this.previous = new Button(composite,SWT.ARROW | SWT.LEFT);
-		this.currentText = new Text(composite,SWT.BORDER);
-		this.currentText.setLayoutData(new GridData(25,SWT.DEFAULT));
-		this.next = new Button(composite,SWT.ARROW | SWT.RIGHT);
-		Label maxPages = new Label(composite,SWT.NONE);
+		UITableLayout compositeLayout = new UITableLayout(0f);
+		UIPanel composite = factory.createPanel(this.dialog,false);
+		composite.setLayout(compositeLayout);
+		dialogLayout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, null, null, 0f);
 		
-		Button close = new Button(composite,SWT.PUSH);
-		close.setLayoutData(getButtonData());
+		this.previous = factory.createButton(composite);
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
+		compositeLayout.set(this.previous, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.currentText.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {
-				if(e.keyCode == KeyBindingUtil.ENTER){
+		this.currentText = factory.createTextField(composite);
+		compositeLayout.set(this.currentText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		compositeLayout.set(this.currentText, UITableLayout.PACKED_WIDTH, 25f);
+		
+		this.next = factory.createButton(composite);
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
+		compositeLayout.set(this.next, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		UILabel maxPages = factory.createLabel(composite);
+		compositeLayout.set(maxPages, 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		
+		UIButton close = factory.createButton(composite);
+		compositeLayout.set(close, 1, 5, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 80f, 25f, null);
+		
+		this.currentText.addKeyReleasedListener(new UIKeyReleasedListener() {
+			public void onKeyReleased(UIKeyEvent event) {
+				if( event.getKeyConvination().getKey().equals(UIKey.ENTER)){
 					try{
 						Integer number = new Integer(TGPrintPreviewDialog.this.currentText.getText());
 						changePage(number.intValue() - 1);
@@ -105,22 +121,22 @@ public class TGPrintPreviewDialog{
 				}
 			}
 		});
-		this.previous.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.previous.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				if(TGPrintPreviewDialog.this.currentPage >= 0){
 					changePage(TGPrintPreviewDialog.this.currentPage - 1);
 				}
 			}
 		});
-		this.next.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.next.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				if(TGPrintPreviewDialog.this.currentPage >= 0){
 					changePage(TGPrintPreviewDialog.this.currentPage + 1);
 				}
 			}
 		});
-		close.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		close.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGPrintPreviewDialog.this.dialog.dispose();
 			}
 		});
@@ -128,56 +144,53 @@ public class TGPrintPreviewDialog{
 		close.setText(TuxGuitar.getProperty("close"));
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.RIGHT, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private void initPreviewComposite(){
-		this.previewComposite = new Composite(this.dialog,SWT.BORDER | SWT.V_SCROLL);
-		this.previewComposite.setLayout(new GridLayout());
-		this.previewComposite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.previewComposite.setBackground(this.previewComposite.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+	private void initPreviewComposite() {
+		final UIFactory factory = this.getUIFactory();
+		UITableLayout dialogLayout = (UITableLayout) this.dialog.getLayout();
+		UITableLayout previewLayout = new UITableLayout();
+		
+		this.previewComposite = factory.createScrollBarPanel(this.dialog, true, false, true);
+		this.previewComposite.setLayout(previewLayout);
+		this.previewComposite.setBgColor(TGColorManager.getInstance(this.context.getContext()).getColor(TGColorManager.COLOR_GRAY));
 		this.previewComposite.setFocus();
-		this.pageComposite = new Composite(this.previewComposite,SWT.BORDER | SWT.DOUBLE_BUFFERED);
-		this.pageComposite.setLayout(new GridLayout());
-		this.pageComposite.setBackground(this.previewComposite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.pageComposite.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
+		dialogLayout.set(this.previewComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(this.previewComposite, UITableLayout.PACKED_WIDTH, 0f);
+		dialogLayout.set(this.previewComposite, UITableLayout.PACKED_HEIGHT, 0f);
+		
+		this.pageComposite = factory.createCanvas(this.previewComposite, true);
+		this.pageComposite.setBgColor(TGColorManager.getInstance(this.context.getContext()).getColor(TGColorManager.COLOR_WHITE));
+		this.pageComposite.addPaintListener(new UIPaintListener() {
+			public void onPaint(UIPaintEvent event) {
 				if(TGPrintPreviewDialog.this.currentPage >= 0){
 					updateScroll();
 					
-					int vScroll = TGPrintPreviewDialog.this.previewComposite.getVerticalBar().getSelection();
+					int vScroll = TGPrintPreviewDialog.this.previewComposite.getVScroll().getValue();
 					
-					TGImage page = new TGImageImpl((Image)TGPrintPreviewDialog.this.pages.get(TGPrintPreviewDialog.this.currentPage));
-					TGPainter painter = new TGPainterImpl(e.gc);
+					TGImage page = new TGImageImpl(factory, TGPrintPreviewDialog.this.pages.get(TGPrintPreviewDialog.this.currentPage));
+					TGPainter painter = new TGPainterImpl(factory, event.getPainter());
 					painter.drawImage(page, MARGIN_LEFT, MARGIN_TOP - vScroll);
 				}
 			}
 		});
-		GridData pageData = new GridData();
-		pageData.horizontalAlignment = SWT.CENTER;
-		pageData.verticalAlignment = SWT.CENTER;
-		pageData.grabExcessHorizontalSpace = true;
-		pageData.grabExcessVerticalSpace = true;
-		pageData.widthHint = Math.round((this.bounds.getWidth() - this.bounds.getX()) + (MARGIN_LEFT + MARGIN_RIGHT));
-		pageData.heightHint = Math.round((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
-		this.pageComposite.setLayoutData(pageData);
-		this.previewComposite.getVerticalBar().setIncrement(SCROLL_INCREMENT);
-		this.previewComposite.getVerticalBar().addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
+		
+		previewLayout.set(this.pageComposite, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, true, true);
+		previewLayout.set(this.pageComposite, UITableLayout.PACKED_WIDTH, (this.bounds.getWidth() - this.bounds.getX()) + (MARGIN_LEFT + MARGIN_RIGHT));
+		previewLayout.set(this.pageComposite, UITableLayout.PACKED_HEIGHT, (this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
+		
+		this.previewComposite.getVScroll().setIncrement(SCROLL_INCREMENT);
+		this.previewComposite.getVScroll().addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGPrintPreviewDialog.this.pageComposite.redraw();
 			}
 		});
 	}
 	
 	protected void updateScroll(){
-		ScrollBar vBar = this.previewComposite.getVerticalBar();
-		Rectangle client = this.pageComposite.getClientArea();
+		UIScrollBar vBar = this.previewComposite.getVScroll();
+		UIRectangle client = this.previewComposite.getChildArea();
+		
 		vBar.setMaximum(Math.round(this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
-		vBar.setThumb(Math.min(Math.round(this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM), client.height));
+		vBar.setThumb(Math.round(Math.min((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM), client.getHeight())));
 	}
 	
 	protected void changePage(int index){
@@ -192,7 +205,7 @@ public class TGPrintPreviewDialog{
 			}
 			this.previous.setEnabled(this.currentPage > 0);
 			this.next.setEnabled((this.currentPage + 1) < pageCount);
-			this.previewComposite.getVerticalBar().setSelection(0);
+			this.previewComposite.getVScroll().setValue(0);
 			this.previewComposite.setFocus();
 		}else{
 			this.currentText.setEnabled(false);
@@ -202,6 +215,10 @@ public class TGPrintPreviewDialog{
 		
 	}
 
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context.getContext()).getFactory();
+	}
+	
 	public TGViewContext getContext() {
 		return context;
 	}

@@ -1,215 +1,258 @@
 package org.herac.tuxguitar.io.image;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
+import java.io.File;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.printer.PrintStyles;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
+import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGContext;
 
 public class ImageExporterSettingsDialog {
+	
+	private TGContext context;
+	
+	public ImageExporterSettingsDialog(TGContext context) {
+		this.context = context;
+	}
 	
 	public void openSettingsDialog(final TGSongStreamContext context, final Runnable callback) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final PrintStyles styles = createDefaultStyles(song) ;
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("options"));
 		
 		//------------------FORMAT SELECTION------------------
-		Group formatGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		formatGroup.setLayout(new GridLayout(2,false));
-		formatGroup.setLayoutData(getGroupData());
+		UITableLayout formatLayout = new UITableLayout();
+		UILegendPanel formatGroup = uiFactory.createLegendPanel(dialog);
+		formatGroup.setLayout(formatLayout);
 		formatGroup.setText(TuxGuitar.getProperty("tuxguitar-image.format"));
+		dialogLayout.set(formatGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
-		Label formatLabel = new Label(formatGroup, SWT.NULL);
+		UILabel formatLabel = uiFactory.createLabel(formatGroup);
 		formatLabel.setText(TuxGuitar.getProperty("tuxguitar-image.format"));
+		formatLayout.set(formatLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Combo formatCombo = new Combo(formatGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		formatCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		final UIDropDownSelect<ImageFormat> formatCombo = uiFactory.createDropDownSelect(formatGroup);
 		for(int i = 0; i < ImageFormat.IMAGE_FORMATS.length; i ++){
-			formatCombo.add( ImageFormat.IMAGE_FORMATS[i].getName() );
+			formatCombo.addItem(new UISelectItem<ImageFormat>(ImageFormat.IMAGE_FORMATS[i].getName(), ImageFormat.IMAGE_FORMATS[i]));
 		}
-		formatCombo.select(0);
+		formatCombo.setSelectedValue(ImageFormat.IMAGE_FORMATS[0]);
+		formatLayout.set(formatCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//------------------TRACK SELECTION------------------
-		Group track = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		track.setLayout(new GridLayout(2,false));
-		track.setLayoutData(getGroupData());
+		UITableLayout trackLayout = new UITableLayout();
+		UILegendPanel track = uiFactory.createLegendPanel(dialog);
+		track.setLayout(trackLayout);
 		track.setText(TuxGuitar.getProperty("track"));
+		dialogLayout.set(track, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
-		Label trackLabel = new Label(track, SWT.NULL);
+		UILabel trackLabel = uiFactory.createLabel(track);
 		trackLabel.setText(TuxGuitar.getProperty("track"));
+		trackLayout.set(trackLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final Combo tracks = new Combo(track, SWT.DROP_DOWN | SWT.READ_ONLY);
-		tracks.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		final UIDropDownSelect<Integer> tracks = uiFactory.createDropDownSelect(track);
 		for(int number = 1; number <= song.countTracks(); number ++){
-			tracks.add(TuxGuitar.getInstance().getSongManager().getTrack(song, number).getName());
+			tracks.addItem(new UISelectItem<Integer>(TuxGuitar.getInstance().getSongManager().getTrack(song, number).getName(), number));
 		}
-		tracks.select(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber() - 1);
+		tracks.setSelectedValue(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
+		trackLayout.set(tracks, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//------------------MEASURE RANGE------------------
-		Group range = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		range.setLayout(new GridLayout(2,false));
-		range.setLayoutData(getGroupData());
+		UITableLayout rangeLayout = new UITableLayout();
+		UILegendPanel range = uiFactory.createLegendPanel(dialog);
+		range.setLayout(rangeLayout);
 		range.setText(TuxGuitar.getProperty("print.range"));
+		dialogLayout.set(range, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
 		final int minSelection = 1;
 		final int maxSelection = song.countMeasureHeaders();
 		
-		Label fromLabel = new Label(range, SWT.NULL);
+		UILabel fromLabel = uiFactory.createLabel(range);
 		fromLabel.setText(TuxGuitar.getProperty("edit.from"));
-		final Spinner fromSpinner = new Spinner(range, SWT.BORDER);
-		fromSpinner.setLayoutData(getSpinnerData());
+		rangeLayout.set(fromLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		
+		final UISpinner fromSpinner = uiFactory.createSpinner(range);
 		fromSpinner.setMaximum(maxSelection);
 		fromSpinner.setMinimum(minSelection);
-		fromSpinner.setSelection(minSelection);
+		fromSpinner.setValue(minSelection);
+		rangeLayout.set(fromSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 60f, null, null);
 		
-		Label toLabel = new Label(range, SWT.NULL);
+		UILabel toLabel = uiFactory.createLabel(range);
 		toLabel.setText(TuxGuitar.getProperty("edit.to"));
-		final Spinner toSpinner = new Spinner(range, SWT.BORDER);
-		toSpinner.setLayoutData(getSpinnerData());
+		rangeLayout.set(toLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		
+		final UISpinner toSpinner = uiFactory.createSpinner(range);
 		toSpinner.setMinimum(minSelection);
 		toSpinner.setMaximum(maxSelection);
-		toSpinner.setSelection(maxSelection);
+		toSpinner.setValue(maxSelection);
+		rangeLayout.set(toSpinner, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 60f, null, null);
 		
-		fromSpinner.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int fromSelection = fromSpinner.getSelection();
-				int toSelection = toSpinner.getSelection();
+		fromSpinner.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				int fromSelection = fromSpinner.getValue();
+				int toSelection = toSpinner.getValue();
 				
 				if(fromSelection < minSelection){
-					fromSpinner.setSelection(minSelection);
+					fromSpinner.setValue(minSelection);
 				}else if(fromSelection > toSelection){
-					fromSpinner.setSelection(toSelection);
+					fromSpinner.setValue(toSelection);
 				}
 			}
 		});
-		toSpinner.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int toSelection = toSpinner.getSelection();
-				int fromSelection = fromSpinner.getSelection();
+		toSpinner.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				int toSelection = toSpinner.getValue();
+				int fromSelection = fromSpinner.getValue();
 				if(toSelection < fromSelection){
-					toSpinner.setSelection(fromSelection);
+					toSpinner.setValue(fromSelection);
 				}else if(toSelection > maxSelection){
-					toSpinner.setSelection(maxSelection);
+					toSpinner.setValue(maxSelection);
 				}
 			}
 		});
 		//------------------CHECK OPTIONS--------------------
-		Group options = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		options.setLayout(new GridLayout());
-		options.setLayoutData(getGroupData());
+		UITableLayout optionsLayout = new UITableLayout();
+		UILegendPanel options = uiFactory.createLegendPanel(dialog);
+		options.setLayout(optionsLayout);
 		options.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(options, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
-		final Button tablatureEnabled = new Button(options,SWT.CHECK);
+		final UICheckBox tablatureEnabled = uiFactory.createCheckBox(options);
 		tablatureEnabled.setText(TuxGuitar.getProperty("export.tablature-enabled"));
-		tablatureEnabled.setSelection(true);
+		tablatureEnabled.setSelected(true);
+		optionsLayout.set(tablatureEnabled, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button scoreEnabled = new Button(options,SWT.CHECK);
+		final UICheckBox scoreEnabled = uiFactory.createCheckBox(options);
 		scoreEnabled.setText(TuxGuitar.getProperty("export.score-enabled"));
-		scoreEnabled.setSelection(true);
+		scoreEnabled.setSelected(true);
+		optionsLayout.set(scoreEnabled, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button chordNameEnabled = new Button(options,SWT.CHECK);
+		final UICheckBox chordNameEnabled = uiFactory.createCheckBox(options);
 		chordNameEnabled.setText(TuxGuitar.getProperty("export.chord-name-enabled"));
-		chordNameEnabled.setSelection(true);
+		chordNameEnabled.setSelected(true);
+		optionsLayout.set(chordNameEnabled, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button chordDiagramEnabled = new Button(options,SWT.CHECK);
+		final UICheckBox chordDiagramEnabled = uiFactory.createCheckBox(options);
 		chordDiagramEnabled.setText(TuxGuitar.getProperty("export.chord-diagram-enabled"));
-		chordDiagramEnabled.setSelection(true);
+		chordDiagramEnabled.setSelected(true);
+		optionsLayout.set(chordDiagramEnabled, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button blackAndWhite = new Button(options,SWT.CHECK);
+		final UICheckBox blackAndWhite = uiFactory.createCheckBox(options);
 		blackAndWhite.setText(TuxGuitar.getProperty("export.black-and-white"));
-		blackAndWhite.setSelection(true);
+		blackAndWhite.setSelected(true);
+		optionsLayout.set(blackAndWhite, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		tablatureEnabled.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				if(!tablatureEnabled.getSelection()){
-					scoreEnabled.setSelection(true);
+		tablatureEnabled.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				if(!tablatureEnabled.isSelected()){
+					scoreEnabled.setSelected(true);
 				}
 			}
 		});
-		scoreEnabled.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				if(!scoreEnabled.getSelection()){
-					tablatureEnabled.setSelection(true);
+		scoreEnabled.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				if(!scoreEnabled.isSelected()){
+					tablatureEnabled.setSelected(true);
 				}
 			}
 		});
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 5, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(getButtonData());
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				int format = formatCombo.getSelectionIndex();
-				if( format < 0 || format >= ImageFormat.IMAGE_FORMATS.length ){
-					format = 0;
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				ImageFormat imageFormat = formatCombo.getSelectedValue();
+				if( imageFormat == null ) {
+					imageFormat = ImageFormat.IMAGE_FORMATS[0];
+				}
+				
+				Integer trackNumber = tracks.getSelectedValue();
+				if( trackNumber == null ) {
+					trackNumber = 1;
 				}
 				
 				int style = 0;
-				style |= (scoreEnabled.getSelection() ? TGLayout.DISPLAY_SCORE : 0);
-				style |= (tablatureEnabled.getSelection() ? TGLayout.DISPLAY_TABLATURE : 0);
-				style |= (chordNameEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_NAME : 0);
-				style |= (chordDiagramEnabled.getSelection() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
-				style |= (blackAndWhite.getSelection() ? TGLayout.DISPLAY_MODE_BLACK_WHITE : 0);
-				styles.setTrackNumber(tracks.getSelectionIndex() + 1);
-				styles.setFromMeasure(fromSpinner.getSelection());
-				styles.setToMeasure(toSpinner.getSelection());
+				style |= (scoreEnabled.isSelected() ? TGLayout.DISPLAY_SCORE : 0);
+				style |= (tablatureEnabled.isSelected() ? TGLayout.DISPLAY_TABLATURE : 0);
+				style |= (chordNameEnabled.isSelected() ? TGLayout.DISPLAY_CHORD_NAME : 0);
+				style |= (chordDiagramEnabled.isSelected() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
+				style |= (blackAndWhite.isSelected() ? TGLayout.DISPLAY_MODE_BLACK_WHITE : 0);
+				styles.setTrackNumber(trackNumber);
+				styles.setFromMeasure(fromSpinner.getValue());
+				styles.setToMeasure(toSpinner.getValue());
 				styles.setStyle(style);
 				
 				dialog.dispose();
 				
 				ImageExporterSettings settings = new ImageExporterSettings();
 				settings.setStyles(styles);
-				settings.setFormat(ImageFormat.IMAGE_FORMATS[ format ]);
+				settings.setFormat(imageFormat);
 				
-				openDirectoryDialog(settings, context, callback);
+				openDirectoryDialog(uiFactory, settings, context, callback);
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	public void openDirectoryDialog(final ImageExporterSettings settings, final TGSongStreamContext context, final Runnable callback){
-		DirectoryDialog dialog = new DirectoryDialog( TuxGuitar.getInstance().getShell() );
-		dialog.setText(TuxGuitar.getProperty("tuxguitar-image.directory-dialog.title"));
-		settings.setPath(dialog.open());
-		if( settings.getPath() != null ){
-			context.setAttribute(ImageExporterSettings.class.getName(), settings);
-			callback.run();
-		}
+	public void openDirectoryDialog(final UIFactory uiFactory, final ImageExporterSettings settings, final TGSongStreamContext context, final Runnable callback){
+		UIWindow uiWindow = TGWindow.getInstance(this.context).getWindow();
+		UIDirectoryChooser uiDirectoryChooser = uiFactory.createDirectoryChooser(uiWindow);
+		uiDirectoryChooser.setText(TuxGuitar.getProperty("tuxguitar-image.directory-dialog.title"));
+		uiDirectoryChooser.choose(new UIDirectoryChooserHandler() {
+			public void onSelectDirectory(File file) {
+				settings.setPath(file != null ? file.getAbsolutePath() : null);
+				if( settings.getPath() != null ){
+					context.setAttribute(ImageExporterSettings.class.getName(), settings);
+					callback.run();
+				}
+			}
+		});
 	}
 	
 	public PrintStyles createDefaultStyles(TGSong song){
@@ -219,24 +262,5 @@ public class ImageExporterSettingsDialog {
 		styles.setToMeasure(song.countMeasureHeaders());
 		styles.setTrackNumber(1);
 		return styles;
-	}
-	
-	private static GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	private static GridData getSpinnerData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 60;
-		return data;
-	}
-	
-	private static GridData getGroupData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 300;
-		return data;
 	}
 }

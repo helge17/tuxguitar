@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
@@ -23,69 +13,74 @@ import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction
 import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
 import org.herac.tuxguitar.song.models.TGDuration;
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class DurationMenuItem  extends TGMenuItem{
-	private MenuItem durationMenuItem;
-	private Menu menu;
-	private MenuItem whole;
-	private MenuItem half;
-	private MenuItem quarter;
-	private MenuItem eighth;
-	private MenuItem sixteenth;
-	private MenuItem thirtySecond;
-	private MenuItem sixtyFourth;
-	private MenuItem dotted;
-	private MenuItem doubleDotted;
-	private MenuItem division;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+
+public class DurationMenuItem  extends TGMenuItem {
 	
-	public DurationMenuItem(Shell shell,Menu parent, int style) {
-		this.durationMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	private UIMenuSubMenuItem durationMenuItem;
+	private UIMenuActionItem whole;
+	private UIMenuActionItem half;
+	private UIMenuActionItem quarter;
+	private UIMenuActionItem eighth;
+	private UIMenuActionItem sixteenth;
+	private UIMenuActionItem thirtySecond;
+	private UIMenuActionItem sixtyFourth;
+	private UIMenuActionItem dotted;
+	private UIMenuActionItem doubleDotted;
+	private UIMenuActionItem division;
+	
+	public DurationMenuItem(UIMenuSubMenuItem durationMenuItem) {
+		this.durationMenuItem = durationMenuItem;
+	}
+	
+	public DurationMenuItem(UIMenu parent) {
+		this(parent.createSubMenuItem());
 	}
 	
 	public void showItems(){
 		//--whole--
-		this.whole = new MenuItem(this.menu, SWT.PUSH);
+		this.whole = this.durationMenuItem.getMenu().createActionItem();
 		this.whole.addSelectionListener(this.createActionProcessor(TGSetWholeDurationAction.NAME));
+		
 		//--half--
-		this.half = new MenuItem(this.menu, SWT.PUSH);
+		this.half = this.durationMenuItem.getMenu().createActionItem();
 		this.half.addSelectionListener(this.createActionProcessor(TGSetHalfDurationAction.NAME));
+		
 		//--quarter--
-		this.quarter = new MenuItem(this.menu, SWT.PUSH);
+		this.quarter = this.durationMenuItem.getMenu().createActionItem();
 		this.quarter.addSelectionListener(this.createActionProcessor(TGSetQuarterDurationAction.NAME));
+		
 		//--Eighth--
-		this.eighth = new MenuItem(this.menu, SWT.PUSH);
+		this.eighth = this.durationMenuItem.getMenu().createActionItem();
 		this.eighth.addSelectionListener(this.createActionProcessor(TGSetEighthDurationAction.NAME));
+		
 		//--sixteenth--
-		this.sixteenth = new MenuItem(this.menu, SWT.PUSH);
+		this.sixteenth = this.durationMenuItem.getMenu().createActionItem();
 		this.sixteenth.addSelectionListener(this.createActionProcessor(TGSetSixteenthDurationAction.NAME));
+		
 		//--thirtySecond--
-		this.thirtySecond = new MenuItem(this.menu, SWT.PUSH);
+		this.thirtySecond = this.durationMenuItem.getMenu().createActionItem();
 		this.thirtySecond.addSelectionListener(this.createActionProcessor(TGSetThirtySecondDurationAction.NAME));
+		
 		//--sixtyFourth--
-		this.sixtyFourth = new MenuItem(this.menu, SWT.PUSH);
+		this.sixtyFourth = this.durationMenuItem.getMenu().createActionItem();
 		this.sixtyFourth.addSelectionListener(this.createActionProcessor(TGSetSixtyFourthDurationAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.durationMenuItem.getMenu().createSeparator();
 		
 		//--dotted---
-		this.dotted = new MenuItem(this.menu, SWT.PUSH);
+		this.dotted = this.durationMenuItem.getMenu().createActionItem();
 		this.dotted.addSelectionListener(this.createActionProcessor(TGChangeDottedDurationAction.NAME));
 		
-		this.doubleDotted = new MenuItem(this.menu, SWT.PUSH);
+		this.doubleDotted = this.durationMenuItem.getMenu().createActionItem();
 		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
 		
 		//--division---
-		this.division = new MenuItem(this.menu, SWT.PUSH);
+		this.division = this.durationMenuItem.getMenu().createActionItem();
 		this.division.addSelectionListener(this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME));
-		
-		this.durationMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();

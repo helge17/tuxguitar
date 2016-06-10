@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.app.system.keybindings;
 
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
+import org.herac.tuxguitar.ui.event.UIKeyEvent;
+import org.herac.tuxguitar.ui.event.UIKeyPressedListener;
 
-public class KeyBindingListener implements KeyListener {
+public class KeyBindingListener implements UIKeyPressedListener {
 	
 	private KeyBindingActionManager keyBindingActionManager;
 	
@@ -11,14 +11,7 @@ public class KeyBindingListener implements KeyListener {
 		this.keyBindingActionManager = keyBindingActionManager;
 	}
 	
-	public void keyPressed(KeyEvent event) {
-		KeyBinding keyBinding = new KeyBinding();
-		keyBinding.setKey(event.keyCode);
-		keyBinding.setMask(event.stateMask);
-		this.keyBindingActionManager.processKeyBinding(keyBinding);
-	}
-	
-	public void keyReleased(KeyEvent evt) {
-		//not implemented
+	public void onKeyPressed(UIKeyEvent event) {
+		this.keyBindingActionManager.processKeyBinding(event.getKeyConvination());
 	}
 }

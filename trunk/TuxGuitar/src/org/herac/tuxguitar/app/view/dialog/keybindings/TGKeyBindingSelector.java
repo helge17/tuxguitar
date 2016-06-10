@@ -1,38 +1,38 @@
 package org.herac.tuxguitar.app.view.dialog.keybindings;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIKeyEvent;
+import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
+import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIImageView;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGKeyBindingSelector {
 	
 	public static final String ATTRIBUTE_EDITOR = TGKeyBindingEditor.class.getName();
 	public static final String ATTRIBUTE_KB_ACTION = KeyBindingAction.class.getName();
 	
-	private Shell dialog;
 	private TGKeyBindingEditor editor;
 	private KeyBindingAction keyBindingAction;
 	private TGKeyBindingSelectorHandler handler;
@@ -43,92 +43,94 @@ public class TGKeyBindingSelector {
 		this.handler = handler;
 	}
 	
-	public void select(Shell parent){
-		this.dialog = DialogUtils.newDialog(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-		this.dialog.setLayout(new GridLayout());
-		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
+	public void select(UIWindow parent){
+		final UIFactory uiFactory = TGApplication.getInstance(this.editor.getContext().getContext()).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		
-		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout());
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		group.setText(TuxGuitar.getProperty(this.keyBindingAction.getAction()));
+		dialog.setLayout(dialogLayout);
+		dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
 		
-		final Composite composite = new Composite(group,SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		composite.setFocus();
-		composite.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {
-				handleSelection( new KeyBinding(e.keyCode,e.stateMask));
-				TGKeyBindingSelector.this.dialog.dispose();
+		UITableLayout legendLayout = new UITableLayout();
+		UILegendPanel legend = uiFactory.createLegendPanel(dialog);
+		legend.setLayout(legendLayout);
+		legend.setText(TuxGuitar.getProperty(this.keyBindingAction.getAction()));
+		dialogLayout.set(legend, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		UITableLayout panelLayout = new UITableLayout();
+		final UIPanel panel = uiFactory.createPanel(legend, false);
+		panel.setLayout(panelLayout);
+		panel.setFocus();
+		panel.addKeyReleasedListener(new UIKeyReleasedListener() {
+			public void onKeyReleased(UIKeyEvent event) {
+				TGKeyBindingSelector.this.handleSelection(event.getKeyConvination());
+				
+				dialog.dispose();
 			}
 		});
+		legendLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Label iconLabel = new Label(composite, SWT.CENTER );
-		iconLabel.setImage(iconLabel.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
-		iconLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		UIImageView iconLabel = uiFactory.createImageView(panel);
+		iconLabel.setImage(TGIconManager.getInstance(this.editor.getContext().getContext()).getStatusInfo());
+		panelLayout.set(iconLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		Label textLabel = new Label(composite,SWT.CENTER);
-		textLabel.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,false,true));
+		UILabel textLabel = uiFactory.createLabel(panel);
 		textLabel.setText(TuxGuitar.getProperty("key-bindings-editor-push-a-key"));
+		panelLayout.set(textLabel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		FontData[] fd = textLabel.getFont().getFontData();
-		if(fd != null && fd.length > 0){
-			final Font font = new Font(textLabel.getDisplay(),new FontData( fd[0].getName(), 14 , SWT.BOLD) );
+		UIFont defaultFont = textLabel.getFont();
+		if( defaultFont != null ) {
+			final UIFont font = uiFactory.createFont(defaultFont.getName(), 14, true, false);
 			textLabel.setFont(font);
-			textLabel.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent arg0) {
+			textLabel.addDisposeListener(new UIDisposeListener() {
+				public void onDispose(UIDisposeEvent event) {
 					font.dispose();
 				}
 			});
 		}
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		final Button buttonClean = new Button(buttons, SWT.PUSH);
+		final UIButton buttonClean = uiFactory.createButton(buttons);
 		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.setLayoutData(getButtonData());
-		buttonClean.addMouseListener(new MouseAdapter() {
-			public void mouseUp(MouseEvent e) {
-				composite.setFocus();
+		buttonClean.addMouseUpListener(new UIMouseUpListener() {
+			public void onMouseUp(UIMouseEvent event) {
+				panel.setFocus();
 			}
 		});
-		buttonClean.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				TGKeyBindingSelector.this.dialog.dispose();
+		buttonClean.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGKeyBindingSelector.this.handleSelection(null);
+				dialog.dispose();
 			}
 		});
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(getButtonData());
-		buttonCancel.addMouseListener(new MouseAdapter() {
-			public void mouseUp(MouseEvent e) {
-				composite.setFocus();
+		buttonCancel.addMouseUpListener(new UIMouseUpListener() {
+			public void onMouseUp(UIMouseEvent event) {
+				panel.setFocus();
 			}
 		});
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				TGKeyBindingSelector.this.dialog.dispose();
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				dialog.dispose();
 			}
 		});
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		buttonsLayout.set(buttonClean, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
+		
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	public void handleSelection(final KeyBinding kb) {
-		if( kb.isSameAs(this.keyBindingAction.getKeyBinding()) || !this.editor.exists(kb) ){
+	public void handleSelection(final UIKeyConvination kb) {
+		if( kb == null || kb.equals(this.keyBindingAction.getConvination()) || !this.editor.exists(kb) ){
 			this.handler.handleSelection(kb);
 		}
 		

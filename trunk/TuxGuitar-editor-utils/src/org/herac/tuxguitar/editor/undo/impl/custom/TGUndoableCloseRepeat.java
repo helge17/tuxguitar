@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.undo.impl.custom;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatCloseAction;
@@ -20,19 +21,19 @@ public class TGUndoableCloseRepeat extends TGUndoableEditBase {
 		super(context);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeCloseRepeat(getMeasureHeaderAt(this.position), this.redoRepeatClose);
+		this.changeCloseRepeat(actionContext, getMeasureHeaderAt(this.position), this.redoRepeatClose);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeCloseRepeat(getMeasureHeaderAt(this.position), this.undoRepeatClose);
+		this.changeCloseRepeat(actionContext, getMeasureHeaderAt(this.position), this.undoRepeatClose);
 		this.doAction = REDO_ACTION;
 	}
 	
@@ -62,10 +63,10 @@ public class TGUndoableCloseRepeat extends TGUndoableEditBase {
 		return getSongManager().getMeasureHeaderAt(getSong(), start);
 	}
 	
-	public void changeCloseRepeat(TGMeasureHeader header, Integer repeatCount) {
+	public void changeCloseRepeat(TGActionContext context, TGMeasureHeader header, Integer repeatCount) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRepeatCloseAction.NAME);
 		tgActionProcessor.setAttribute(TGRepeatCloseAction.ATTRIBUTE_REPEAT_COUNT, repeatCount);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
-		this.processByPassUndoableAction(tgActionProcessor);
+		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

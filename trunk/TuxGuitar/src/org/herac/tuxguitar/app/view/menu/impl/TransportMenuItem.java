@@ -1,19 +1,9 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
@@ -21,64 +11,60 @@ import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class TransportMenuItem extends TGMenuItem{
+public class TransportMenuItem extends TGMenuItem {
+	
 	private static final int STATUS_STOPPED = 1;
 	private static final int STATUS_PAUSED = 2;
 	private static final int STATUS_RUNNING = 3;
 	
-	private MenuItem transportMenuItem;
-	private Menu menu;
-	private MenuItem play;
-	private MenuItem stop;
-	private MenuItem metronome;
-	private MenuItem countDown;
-	private MenuItem mode;
-	private MenuItem loopSHeader;
-	private MenuItem loopEHeader;
+	private UIMenuSubMenuItem transportMenuItem;
+	
+	private UIMenuActionItem play;
+	private UIMenuActionItem stop;
+	private UIMenuCheckableItem metronome;
+	private UIMenuCheckableItem countDown;
+	private UIMenuActionItem mode;
+	private UIMenuCheckableItem loopSHeader;
+	private UIMenuCheckableItem loopEHeader;
 	
 	private int status;
 	
-	public TransportMenuItem(Shell shell,Menu parent, int style) {
-		this.transportMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public TransportMenuItem(UIMenu parent) {
+		this.transportMenuItem = parent.createSubMenuItem();
 	}
 	
 	public void showItems(){
-		this.play = new MenuItem(this.menu,SWT.PUSH);
+		this.play = this.transportMenuItem.getMenu().createActionItem();
 		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayAction.NAME));
 		
-		this.stop = new MenuItem(this.menu, SWT.PUSH);
+		this.stop = this.transportMenuItem.getMenu().createActionItem();
 		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.transportMenuItem.getMenu().createSeparator();
 		
-		this.metronome = new MenuItem(this.menu, SWT.CHECK);
+		this.metronome = this.transportMenuItem.getMenu().createCheckItem();
 		this.metronome.addSelectionListener(this.createActionProcessor(TGTransportMetronomeAction.NAME));
 		
-		this.countDown = new MenuItem(this.menu, SWT.CHECK);
+		this.countDown = this.transportMenuItem.getMenu().createCheckItem();
 		this.countDown.addSelectionListener(this.createActionProcessor(TGTransportCountDownAction.NAME));
 		
-		this.mode = new MenuItem(this.menu, SWT.PUSH);
+		this.mode = this.transportMenuItem.getMenu().createActionItem();
 		this.mode.addSelectionListener(this.createActionProcessor(TGOpenTransportModeDialogAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.transportMenuItem.getMenu().createSeparator();
 		
-		this.loopSHeader = new MenuItem(this.menu, SWT.CHECK);
+		this.loopSHeader = this.transportMenuItem.getMenu().createCheckItem();
 		this.loopSHeader.addSelectionListener(this.createActionProcessor(TGTransportSetLoopSHeaderAction.NAME));
 		
-		this.loopEHeader = new MenuItem(this.menu, SWT.CHECK);
+		this.loopEHeader = this.transportMenuItem.getMenu().createCheckItem();
 		this.loopEHeader.addSelectionListener(this.createActionProcessor(TGTransportSetLoopEHeaderAction.NAME));
-		
-		this.transportMenuItem.setMenu(this.menu);
 		
 		this.status = STATUS_STOPPED;
 		this.loadIcons();
@@ -88,12 +74,12 @@ public class TransportMenuItem extends TGMenuItem{
 	public void update(){
 		TGMeasure measure = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
-		this.metronome.setSelection(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
-		this.countDown.setSelection(TuxGuitar.getInstance().getPlayer().getCountDown().isEnabled());
+		this.metronome.setChecked(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
+		this.countDown.setChecked(TuxGuitar.getInstance().getPlayer().getCountDown().isEnabled());
 		this.loopSHeader.setEnabled( pm.isLoop() );
-		this.loopSHeader.setSelection( measure != null && measure.getNumber() == pm.getLoopSHeader() );
+		this.loopSHeader.setChecked( measure != null && measure.getNumber() == pm.getLoopSHeader() );
 		this.loopEHeader.setEnabled( pm.isLoop() );
-		this.loopEHeader.setSelection( measure != null && measure.getNumber() == pm.getLoopEHeader() );
+		this.loopEHeader.setChecked( measure != null && measure.getNumber() == pm.getLoopEHeader() );
 		this.loadIcons(false);
 	}
 	

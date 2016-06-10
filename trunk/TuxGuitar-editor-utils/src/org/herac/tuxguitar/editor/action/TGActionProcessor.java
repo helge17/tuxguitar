@@ -48,11 +48,14 @@ public class TGActionProcessor {
 		this.errorHandler = errorHandler;
 	}
 
-	public TGActionContext createActionContext(Map<String, Object> customAttributes) {
-		TGActionContext tgActionContext = TGActionManager.getInstance(getContext()).createActionContext();
-		this.appendAttributes(tgActionContext, this.attributes);
-		this.appendAttributes(tgActionContext, customAttributes);
-		return tgActionContext;
+	public TGActionContext createActionContext() {
+		return TGActionManager.getInstance(getContext()).createActionContext();
+	}
+	
+	public TGActionContext fillActionContext(TGActionContext actionContext, Map<String, Object> customAttributes) {
+		this.appendAttributes(actionContext, this.attributes);
+		this.appendAttributes(actionContext, customAttributes);
+		return actionContext;
 	}
 	
 	public void appendAttributes(TGActionContext actionContext, Map<String, Object> attributes) {
@@ -65,10 +68,10 @@ public class TGActionProcessor {
 		}
 	}
 	
-	public void processOnCurrentThread(final Map<String, Object> customAttributes){
+	public void processOnCurrentThread(TGActionContext actionContext, Map<String, Object> customAttributes){
 		try {
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-			tgActionManager.execute(getActionName(), createActionContext(customAttributes));
+			tgActionManager.execute(getActionName(), this.fillActionContext(actionContext, customAttributes));
 		
 			this.onFinish();
 		} catch (TGActionException e) {
@@ -76,8 +79,16 @@ public class TGActionProcessor {
 		}
 	}
 	
+	public void processOnCurrentThread(TGActionContext actionContext){
+		this.processOnCurrentThread(actionContext, null);
+	}
+	
+	public void processOnCurrentThread(Map<String, Object> customAttributes){
+		this.processOnCurrentThread(this.createActionContext(), customAttributes);
+	}
+	
 	public void processOnCurrentThread(){
-		this.processOnCurrentThread(null);
+		this.processOnCurrentThread(this.createActionContext());
 	}
 	
 	public void processOnNewThread(final Map<String, Object> customAttributes){

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.midiinput;
 
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class MiSettingsHandler implements TGPluginSettingsHandler {
 	
@@ -9,7 +9,7 @@ public class MiSettingsHandler implements TGPluginSettingsHandler {
 		super();
 	}
 	
-	public void openSettingsDialog(Shell parent) {
+	public void openSettingsDialog(UIWindow parent) {
 		MiConfig.instance().showDialog(parent);
 	}
 }

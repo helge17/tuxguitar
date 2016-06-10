@@ -5,17 +5,21 @@ import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
 
+import swtimpl.widget.SWTWindow;
+
 public class ModifiedMarker implements TGEventListener {
 	
+	private TGContext context;
 	private boolean enabled;
 	
-	public ModifiedMarker(){
-		super();
+	public ModifiedMarker(TGContext context){
+		this.context = context;
 	}
 	
 	public void init() throws Throwable{
@@ -33,14 +37,13 @@ public class ModifiedMarker implements TGEventListener {
 	}
 	
 	private void setFrameState(boolean modified) {
-	    Shell shell = TuxGuitar.getInstance().getShell();
+	    Shell shell = ((SWTWindow) TGWindow.getInstance(this.context).getWindow()).getControl();
    	    NSWindow nsWindow = shell.view.window();
         nsWindow.setDocumentEdited(modified);
 	}
 	
 	private boolean isUnsavedFile() {
-		TGContext context = TuxGuitar.getInstance().getContext();
-		TGDocument document = TGDocumentListManager.getInstance(context).findCurrentDocument();
+		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
 		if( document != null ) {
 			return document.isUnsaved();
 		}

@@ -1,13 +1,7 @@
 package org.herac.tuxguitar.app.action.impl.file;
 
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.printing.Printer;
-import org.eclipse.swt.printing.PrinterData;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
@@ -15,12 +9,13 @@ import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.printer.PrintDocument;
 import org.herac.tuxguitar.app.printer.PrintLayout;
 import org.herac.tuxguitar.app.printer.PrintStyles;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialog;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialogController;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesHandler;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterDataDialog;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterDataDialogController;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterDataHandler;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserDialog;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserDialogController;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.graphics.TGPainter;
@@ -28,6 +23,10 @@ import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.printer.UIPrinter;
+import org.herac.tuxguitar.ui.printer.UIPrinterJob;
+import org.herac.tuxguitar.ui.printer.UIPrinterPage;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -36,7 +35,7 @@ public class TGPrintAction extends TGActionBase{
 	public static final String NAME = "action.file.print";
 	
 	public static final String ATTRIBUTE_STYLES = PrintStyles.class.getName();
-	public static final String ATTRIBUTE_DATA = PrinterData.class.getName();
+	public static final String ATTRIBUTE_PRINTER = UIPrinter.class.getName();
 	
 	public TGPrintAction(TGContext context) {
 		super(context, NAME);
@@ -49,8 +48,8 @@ public class TGPrintAction extends TGActionBase{
 			return;
 		}
 		
-		PrinterData printerData = context.getAttribute(ATTRIBUTE_DATA);
-		if( printerData == null ) {
+		UIPrinter printer = context.getAttribute(ATTRIBUTE_PRINTER);
+		if( printer == null ) {
 			this.configurePrinterData(context);
 			return;
 		}
@@ -59,12 +58,11 @@ public class TGPrintAction extends TGActionBase{
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		
-		Printer printer = new Printer(printerData);
-		PrintController controller = new PrintController(targetSong, manager, new TGResourceFactoryImpl(printer));
+		PrintController controller = new PrintController(targetSong, manager, new TGResourceFactoryImpl(printer.getResourceFactory()));
 		PrintLayout printLayout = new PrintLayout(controller, styles);
-		printLayout.loadStyles(getPrinterScale(printer), 1f);
+		printLayout.loadStyles(printer.getDpiScale(), 1f);
 		printLayout.updateSong();
-		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, printerData, getPrinterArea(printer, 0.5f)));
+		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, getPrinterArea(printer, 10f)));
 		printLayout.getResourceBuffer().disposeAllResources();
 	}
 	
@@ -80,10 +78,10 @@ public class TGPrintAction extends TGActionBase{
 	}
 	
 	public void configurePrinterData(final TGActionContext context) {
-		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrinterDataDialogController());
-		context.setAttribute(TGPrinterDataDialog.ATTRIBUTE_HANDLER, new TGPrinterDataHandler() {
-			public void updatePrinterData(PrinterData printerData) {
-				context.setAttribute(ATTRIBUTE_DATA, printerData);
+		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrinterChooserDialogController());
+		context.setAttribute(TGPrinterChooserDialog.ATTRIBUTE_HANDLER, new TGPrinterChooserHandler() {
+			public void updatePrinter(UIPrinter printer) {
+				context.setAttribute(ATTRIBUTE_PRINTER, printer);
 				executeActionInNewThread(TGPrintAction.NAME, context);
 			}
 		});
@@ -98,42 +96,29 @@ public class TGPrintAction extends TGActionBase{
 		}).start();
 	}
 	
-	protected TGRectangle getPrinterArea(Printer printer, float margin) {
-		Rectangle clientArea = printer.getClientArea();
-		Rectangle trim = printer.computeTrim(0, 0, 0, 0);
-		Point dpi = printer.getDPI();
+	protected TGRectangle getPrinterArea(UIPrinter printer, float margin) {
+		Float scale = printer.getDpiScale();
+		Float scaledMargin = (margin * (scale != null ? scale : 1f));
+		UIRectangle bounds = printer.getBounds();
 		
-		float x = (trim.x + (dpi.x * margin));
-		float y = (trim.y + (dpi.y * margin));
-		float width = ((clientArea.width + trim.width) - (dpi.x * margin));
-		float height = ((clientArea.height + trim.height) - (dpi.y * margin));
-		
-		return new TGRectangle(x, y, width, height);
-	}
-	
-	protected float getPrinterScale(Printer printer) {
-		Point dpi = printer.getDPI();
-		if( dpi != null ){
-			return ( dpi.x / 100.0f );
-		}
-		return 1.0f;
+		return new TGRectangle(bounds.getX() + scaledMargin, bounds.getY() + scaledMargin, bounds.getWidth() - (scaledMargin * 2f), bounds.getHeight() - (scaledMargin * 2f));
 	}
 	
 	private class PrintDocumentImpl implements PrintDocument{
 		
-		private Printer printer;
-		private PrinterData printerData;
 		private PrintLayout layout;
+		private UIPrinter printer;
+		private UIPrinterJob printerJob;
+		private UIPrinterPage printerPage;
+		
 		private TGPainterImpl painter;
 		private TGRectangle bounds;
-		private boolean started;
 		
-		public PrintDocumentImpl(PrintLayout layout, Printer printer,PrinterData printerData, TGRectangle bounds){
+		public PrintDocumentImpl(PrintLayout layout, UIPrinter printer, TGRectangle bounds){
 			this.layout = layout;
 			this.printer = printer;
-			this.printerData = printerData;
 			this.bounds = bounds;
-			this.painter = new TGPainterImpl();
+			this.painter = new TGPainterImpl(printer.getResourceFactory());
 		}
 		
 		public TGPainter getPainter() {
@@ -145,27 +130,26 @@ public class TGPrintAction extends TGActionBase{
 		}
 		
 		public void pageStart() {
-			if(this.started){
-				this.printer.startPage();
-				this.painter.init(new GC(this.printer));
+			if( this.printerJob != null && !this.printerJob.isDisposed() ){
+				this.printerPage = this.printerJob.createPage();
+				this.painter.setHandle(this.printerPage.getPainter());
 			}
 		}
 		
 		public void pageFinish() {
-			if(this.started){
-				this.painter.dispose();
-				this.printer.endPage();
+			if( this.printerPage != null && !this.printerPage.isDisposed() ){
+				this.printerPage.dispose();
 			}
 		}
 		
 		public void start() {
-			this.started = this.printer.startJob(getJobName());
+			this.printerJob = this.printer.createJob(getJobName());
 		}
 		
 		public void finish() {
-			if(this.started){
-				this.printer.endJob();
-				this.started = false;
+			if( this.printerJob != null && !this.printerJob.isDisposed() ){
+				this.printerJob.dispose();
+				this.printerJob = null;
 				TGSynchronizer.getInstance(getContext()).executeLater(new Runnable(){
 					public void run() {
 						dispose();
@@ -175,19 +159,20 @@ public class TGPrintAction extends TGActionBase{
 		}
 		
 		public boolean isPaintable(int page){
-			if(this.printerData.scope == PrinterData.PAGE_RANGE){
-				if(this.printerData.startPage > 0 && this.printerData.startPage > page){
-					return false;
-				}
-				if(this.printerData.endPage > 0 && this.printerData.endPage < page){
-					return false;
-				}
+			Integer startPage = this.printer.getStartPage();
+			if( startPage != null && startPage > 0 && startPage > page){
+				return false;
+			}
+			
+			Integer endPage = this.printer.getEndPage();
+			if( endPage != null && endPage > 0 && endPage < page){
+				return false;
 			}
 			return true;
 		}
 		
 		public String getJobName(){
-			String prefix = TuxGuitar.APPLICATION_NAME;
+			String prefix = TGApplication.NAME;
 			String song = this.layout.getSong().getName();
 			return ( song != null && song.length() > 0 ? (prefix + "-" + song) : prefix );
 		}

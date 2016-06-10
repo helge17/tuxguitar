@@ -1,47 +1,45 @@
 package org.herac.tuxguitar.app.tools.custom.converter;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyleRange;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UICloseEvent;
+import org.herac.tuxguitar.ui.event.UICloseListener;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	
-	private static final int SHELL_WIDTH = 650;
-	private static final int SHELL_HEIGHT = 350;
+	private static final float SHELL_WIDTH = 650f;
+	private static final float SHELL_HEIGHT = 350f;
 	
-	protected static final String EOL = ("\n");
-	
-	protected static final Color COLOR_INFO  = TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_BLUE);
-	protected static final Color COLOR_ERROR = TuxGuitar.getInstance().getDisplay().getSystemColor(SWT.COLOR_RED );
+	private static final String EOL = ("\n");
 	
 	private TGContext context;
-	protected Shell dialog;
-	protected StyledText output;
-	protected Button buttonCancel;
-	protected Button buttonClose;
-	protected TGConverter converter;
-	protected boolean finished;
+	private UIWindow dialog;
+	private UIReadOnlyTextBox output;
+	private UIButton buttonCancel;
+	private UIButton buttonClose;
+	private TGConverter converter;
+	private boolean finished;
 	
 	public TGConverterProcess(TGContext context) {
 		this.context = context;
@@ -64,51 +62,54 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	protected void showProcess() {
 		this.finished = false;
 		
-		this.dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(),SWT.SHELL_TRIM);
-		this.dialog.setLayout(new GridLayout());
-		this.dialog.setSize( SHELL_WIDTH , SHELL_HEIGHT );
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		this.dialog = uiFactory.createWindow(uiParent, false, true);
+		this.dialog.setLayout(dialogLayout);
+		this.dialog.setBounds(new UIRectangle(0, 0, SHELL_WIDTH, SHELL_HEIGHT));
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				TuxGuitar.getInstance().getIconManager().removeLoader( TGConverterProcess.this );
 				TuxGuitar.getInstance().getLanguageManager().removeLoader( TGConverterProcess.this );
 			}
 		});
-		this.dialog.addShellListener(new ShellAdapter() {
-			public void shellClosed(ShellEvent e) {
-				e.doit = TGConverterProcess.this.finished;
+		this.dialog.addCloseListener(new UICloseListener() {
+			public void onClose(UICloseEvent event) {
+				if( TGConverterProcess.this.finished ) {
+					TGConverterProcess.this.dialog.dispose();
+				}
 			}
 		});
 		
-		Composite composite = new Composite(this.dialog,SWT.NONE);
-		composite.setLayout(new GridLayout());
-		composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		
-		this.output = new StyledText(composite,SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		this.output.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		this.output.setEditable(false);
+		this.output = uiFactory.createReadOnlyTextBox(this.dialog, true, true);
+		dialogLayout.set(this.output, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(this.dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.BOTTOM,true,false));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, true, false);
 		
-		this.buttonCancel = new Button(buttons, SWT.PUSH);
+		this.buttonCancel = uiFactory.createButton(buttons);
 		this.buttonCancel.setEnabled( false );
-		this.buttonCancel.setLayoutData(getButtonsData());
-		this.buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		this.buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGConverterProcess.this.converter.setCancelled( true );
 			}
 		});
+		buttonsLayout.set(this.buttonCancel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		this.buttonClose = new Button(buttons, SWT.PUSH);
+		this.buttonClose = uiFactory.createButton(buttons);
 		this.buttonClose.setEnabled( false );
-		this.buttonClose.setLayoutData(getButtonsData());
-		this.buttonClose.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		this.buttonClose.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGConverterProcess.this.dialog.dispose();
 			}
 		});
+		buttonsLayout.set(this.buttonClose, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(this.buttonClose, UITableLayout.MARGIN_RIGHT, 0f);
 		
 		this.loadIcons(false);
 		this.loadProperties(false);
@@ -116,14 +117,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 		TuxGuitar.getInstance().getIconManager().addLoader( this );
 		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
 		
-		DialogUtils.openDialog(this.dialog, DialogUtils.OPEN_STYLE_CENTER);
-	}
-	
-	private GridData getButtonsData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
 	
 	public boolean isDisposed(){
@@ -139,8 +133,8 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			this.dialog.setText(TuxGuitar.getProperty("batch.converter"));
 			this.buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 			this.buttonClose.setText(TuxGuitar.getProperty("close"));
-			if(layout){
-				this.dialog.layout(true, true);
+			if( layout ){
+				this.dialog.layout();
 			}
 		}
 	}
@@ -152,8 +146,8 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-			if(layout){
-				this.dialog.layout(true, true);
+			if( layout ){
+				this.dialog.layout();
 			}
 		}
 	}
@@ -168,7 +162,6 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 				public void run() throws TGException {
 					if(!isDisposed() ){
 						TGConverterProcess.this.output.append(TuxGuitar.getProperty("batch.converter.messages.converting", new String[] {filename}));
-						TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
 					}
 				}
 			});
@@ -181,7 +174,6 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 				public void run() throws TGException {
 					if(!isDisposed() ){
 						TGConverterProcess.this.appendLogMessage(result, filename);
-						TGConverterProcess.this.output.setSelection( TGConverterProcess.this.output.getCharCount() );
 					}
 				}
 			});
@@ -196,7 +188,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 						TGConverterProcess.this.finished = false;
 						TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
 						TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
-						TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+						TGConverterProcess.this.output.setCursor(UICursor.WAIT);
 					}
 				}
 			});
@@ -211,14 +203,14 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 						TGConverterProcess.this.finished = true;
 						TGConverterProcess.this.buttonClose.setEnabled( TGConverterProcess.this.finished );
 						TGConverterProcess.this.buttonCancel.setEnabled( !TGConverterProcess.this.finished );
-						TGConverterProcess.this.output.setCursor(TGConverterProcess.this.dialog.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+						TGConverterProcess.this.output.setCursor(UICursor.NORMAL);
 					}
 				}
 			});
 		}
 	}
 	
-	protected void appendLogMessage(int result, String fileName) {
+	public void appendLogMessage(int result, String fileName) {
 		String message = (TuxGuitar.getProperty( "batch.converter.messages." + (result == TGConverter.FILE_OK ? "ok" : "failed") ) + EOL);
 		
 		switch (result) {
@@ -242,13 +234,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 				break;
 		}
 		
-		StyleRange range = new StyleRange();
-		range.foreground = ( result == TGConverter.FILE_OK ? TGConverterProcess.COLOR_INFO : TGConverterProcess.COLOR_ERROR );
-		range.start = TGConverterProcess.this.output.getCharCount();
-		range.length = message.length();
-		
 		TGConverterProcess.this.output.append( message );
-		TGConverterProcess.this.output.setStyleRange(range);
 	}
 
 	public void processEvent(TGEvent event) {

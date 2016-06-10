@@ -24,6 +24,8 @@ LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}
 ##CLASSPATH
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar.jar
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit.jar
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit-swt.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-lib.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-editor-utils.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-gm-utils.jar

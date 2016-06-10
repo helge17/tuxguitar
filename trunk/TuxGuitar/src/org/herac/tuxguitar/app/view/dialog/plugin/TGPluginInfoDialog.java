@@ -1,21 +1,20 @@
 package org.herac.tuxguitar.app.view.dialog.plugin;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.plugin.TGPluginInfo;
 
 public class TGPluginInfoDialog {
@@ -25,69 +24,69 @@ public class TGPluginInfoDialog {
 	public void show(final TGViewContext context) {
 		final String moduleId = context.getAttribute(ATTRIBUTE_MODULE_ID);
 		
-		final Shell parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
 		TGPluginInfo pluginInfo = new TGPluginInfo(context.getContext(), moduleId);
 		
-		dialog.setLayout(new GridLayout());
-		dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("plugins"));
 		
-		Composite info = new Composite(dialog,SWT.NONE);
-		info.setLayout(new GridLayout(2,false));
+		UIPanel info = uiFactory.createPanel(dialog,false);
+		info.setLayout(new UITableLayout());
+		dialogLayout.set(info, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		showInfoString(info,TuxGuitar.getProperty("name") + ":", pluginInfo.getName());
-		showInfoString(info,TuxGuitar.getProperty("version") + ":", pluginInfo.getVersion());
-		showInfoString(info,TuxGuitar.getProperty("author") + ":", pluginInfo.getAuthor());
-		showInfoString(info,TuxGuitar.getProperty("description") + ":", pluginInfo.getDescription());
+		showInfoString(uiFactory, info, TuxGuitar.getProperty("name") + ":", pluginInfo.getName(), 1);
+		showInfoString(uiFactory, info, TuxGuitar.getProperty("version") + ":", pluginInfo.getVersion(), 2);
+		showInfoString(uiFactory, info, TuxGuitar.getProperty("author") + ":", pluginInfo.getAuthor(), 3);
+		showInfoString(uiFactory, info, TuxGuitar.getProperty("description") + ":", pluginInfo.getDescription(), 4);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout());
-		buttons.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		Button buttonExit = new Button(buttons, SWT.PUSH);
+		UIButton buttonExit = uiFactory.createButton(buttons);
+		buttonExit.setDefaultButton();
 		buttonExit.setText(TuxGuitar.getProperty("exit"));
-		buttonExit.setLayoutData(getButtonData());
-		buttonExit.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonExit.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonExit, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, 0f);
 		
-		dialog.setDefaultButton( buttonExit );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private void showInfoString(Composite parent,String key,String value){
-		Label labelKey = new Label(parent,SWT.LEFT);
-		Label labelValue = new Label(parent,SWT.LEFT | SWT.WRAP);
-		labelKey.setLayoutData(new GridData(SWT.LEFT,SWT.TOP,false,true));
-		labelValue.setLayoutData(new GridData(SWT.FILL,SWT.TOP,true,true));
-		setBold(labelKey);
+	private void showInfoString(UIFactory factory, UIPanel parent, String key, String value, int row){
+		UILabel labelKey = factory.createLabel(parent);
+		UILabel labelValue = factory.createLabel(parent);
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(labelKey, row, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_TOP, false, true);
+		uiLayout.set(labelValue, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true);
+		
+		setBold(factory, labelKey);
+		
 		labelKey.setText(key);
-		labelValue.setText( (value != null && value.length() > 0)?value:TuxGuitar.getProperty("plugin.unknown-value"));
+		labelValue.setText( (value != null && value.length() > 0) ? value : TuxGuitar.getProperty("plugin.unknown-value"));
 	}
 	
-	private void setBold(Label label){
-		FontData[] fontDatas = label.getFont().getFontData();
-		if(fontDatas.length > 0){
-			final Font font = new Font(label.getDisplay(),fontDatas[0].getName(),(fontDatas[0].getHeight()),SWT.BOLD);
+	private void setBold(UIFactory factory, UILabel label){
+		UIFont defaultFont = label.getFont();
+		if( defaultFont != null ) {
+			final UIFont font = factory.createFont(defaultFont.getName(), defaultFont.getHeight(), true, defaultFont.isItalic());
+			
 			label.setFont(font);
-			label.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
+			label.addDisposeListener(new UIDisposeListener() {
+				public void onDispose(UIDisposeEvent event) {
 					font.dispose();
 				}
 			});
 		}
-	}
-	
-	private GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
 	}
 }

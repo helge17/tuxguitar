@@ -1,23 +1,32 @@
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.app.graphics.TGColorImpl;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
+import org.herac.tuxguitar.app.system.color.TGColorManager;
+import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.widget.UICanvas;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
  *
  */
-public class TGTunerRoughWidget extends Composite {
-
-	private static final int MIN_HEIGHT = 25;
-	protected Composite composite = null;
+public class TGTunerRoughWidget {
+	
+	private static final float CANVAS_PACKED_WIDTH = 600f;
+	private static final float CANVAS_PACKED_HEIGHT = 100f;
+	
+	private TGContext context;
+	private UIPanel panel;
+	protected UICanvas composite = null;
 	protected float currentFrequency = 0;
 	
 	/** constants for drawing */
@@ -29,63 +38,61 @@ public class TGTunerRoughWidget extends Composite {
 	static String[] TONESSTRING = {"C","C#","D","D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 	
 	
-	public TGTunerRoughWidget(Composite parent) {
-		super(parent, SWT.NONE);
-		this.init();
+	public TGTunerRoughWidget(TGContext context, UIFactory factory, UILayoutContainer parent) {
+		this.context = context;
+		
+		this.init(factory, parent);
 	}
 	
-	public void init() {
-		this.setLayout(new GridLayout(1,true));
-		this.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		((GridData)this.getLayoutData()).widthHint = 600;
+	private void init(final UIFactory factory, UILayoutContainer parent) {
+		UITableLayout layout = new UITableLayout();
 		
+		this.panel = factory.createPanel(parent, false);
+		this.panel.setLayout(layout);
+		this.panel.setEnabled(false);
 		
-		this.composite = new Composite(this,SWT.BORDER | SWT.DOUBLE_BUFFERED);
-		this.composite.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		this.composite.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				TGPainterImpl painter = new TGPainterImpl(e.gc);
+		this.composite = factory.createCanvas(this.panel, true);
+		this.composite.setBgColor(TGColorManager.getInstance(this.context).getColor(TGColorManager.COLOR_WHITE));
+		this.composite.addPaintListener(new UIPaintListener() {
+			public void onPaint(UIPaintEvent event) {
+				TGPainterImpl painter = new TGPainterImpl(factory, event.getPainter());
 				TGTunerRoughWidget.this.paintWidget(painter);
 			}
 
 		});
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumHeight = MIN_HEIGHT;
-		data.grabExcessHorizontalSpace = true;
-		this.composite.setLayoutData(data);
-
+		layout.set(this.composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, CANVAS_PACKED_WIDTH, CANVAS_PACKED_HEIGHT, null);
 	}
 	
-	
-	private void paintWidget(TGPainterImpl painter) {
+	private void paintWidget(TGPainter painter) {
+		TGColorManager colorManager = TGColorManager.getInstance(this.context);
 		
-		Point compositeSize = this.composite.getSize();
+		UIRectangle compositeSize = this.composite.getBounds();
 		
 		// lines and tones
-		painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLACK)));
+		painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLACK)));
 		painter.initPath();
-		painter.moveTo(this.startA, compositeSize.y/2);
-		painter.lineTo(compositeSize.x-this.endAb, compositeSize.y/2);
+		painter.moveTo(this.startA, compositeSize.getHeight()/2);
+		painter.lineTo(compositeSize.getWidth()-this.endAb, compositeSize.getHeight()/2);
 		painter.closePath();
-		int increment = (int)Math.round((compositeSize.x-this.startA-this.endAb) / 12.0);
+		int increment = (int)Math.round((compositeSize.getWidth()-this.startA-this.endAb) / 12.0);
 		int currentTone = 0;
-		for (int i=this.startA; i<compositeSize.x+1-this.endAb; i+=increment) {
+		for (int i=this.startA; i<compositeSize.getWidth()+1-this.endAb; i+=increment) {
 			painter.initPath();
-			painter.moveTo(i,compositeSize.y/2-this.boundaryHeight/2);
-			painter.lineTo(i, compositeSize.y/2+this.boundaryHeight/2);
+			painter.moveTo(i,compositeSize.getHeight()/2-this.boundaryHeight/2);
+			painter.lineTo(i, compositeSize.getHeight()/2+this.boundaryHeight/2);
 			painter.closePath();
-			painter.drawString(TONESSTRING[currentTone%12], i, compositeSize.y/2-this.boundaryHeight/2-20);
+			painter.drawString(TONESSTRING[currentTone%12], i, compositeSize.getHeight()/2-this.boundaryHeight/2-20);
 			currentTone++;
 		}
 		
 		// marker
 		if (this.currentFrequency>0) {
-			painter.setForeground(new TGColorImpl(getDisplay().getSystemColor(SWT.COLOR_BLUE)));
+			painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLUE)));
 			painter.initPath();
-			int markerPos = this.markerWidth/2 + this.startA+(int)Math.round(((compositeSize.x-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
-			painter.moveTo(markerPos, compositeSize.y/2-this.markerHeight/2);
+			int markerPos = this.markerWidth/2 + this.startA+(int)Math.round(((compositeSize.getWidth()-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
+			painter.moveTo(markerPos, compositeSize.getHeight()/2-this.markerHeight/2);
 			painter.setLineWidth(this.markerWidth);
-			painter.lineTo(markerPos, compositeSize.y/2+this.markerHeight/2);
+			painter.lineTo(markerPos, compositeSize.getHeight()/2+this.markerHeight/2);
 			painter.closePath();
 		}
 		
@@ -97,7 +104,6 @@ public class TGTunerRoughWidget extends Composite {
 	}
 
 	public void redraw(){
-		super.redraw();
 		this.composite.redraw();
 	}
 
@@ -110,4 +116,11 @@ public class TGTunerRoughWidget extends Composite {
 		return Math.round(  20 *   (midiTone % 12));
 	}
 	
+	public UIControl getControl() {
+		return this.panel;
+	}
+	
+	public boolean isDisposed() {
+		return (this.panel == null || this.panel.isDisposed());
+	}
 }

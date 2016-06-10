@@ -1,48 +1,47 @@
 package org.herac.tuxguitar.app.view.dialog.settings;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
 import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.app.view.dialog.settings.items.LanguageOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.MainOption;
-import org.herac.tuxguitar.app.view.dialog.settings.items.Option;
 import org.herac.tuxguitar.app.view.dialog.settings.items.SkinOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.SoundOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.StylesOption;
+import org.herac.tuxguitar.app.view.dialog.settings.items.TGSettingsOption;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGSettingsEditor{
 	
 	private TGViewContext context;
 	private TGCursorController cursorController;
-	private Shell dialog;
 	private TGConfigManager config;
-	private List<Option> options;
 	private TGProperties defaults;
+	private UIWindow dialog;
+	private List<TGSettingsOption> options;
 	
 	private List<Runnable> runnables;
 	
@@ -52,115 +51,99 @@ public class TGSettingsEditor{
 	}
 	
 	public void show() {
-		Shell parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final UIFactory uiFactory = this.getUIFactory();
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UITableLayout dialogLayout = new UITableLayout();
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.dialog.setLayout(new GridLayout());
+		this.dialog = uiFactory.createWindow(uiParent, true, false);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("settings.config"));
 		
 		//-------main-------------------------------------
-		Composite mainComposite = new Composite(this.dialog,SWT.NONE);
-		mainComposite.setLayout(new GridLayout(2,false));
-		mainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true , true));
-		createComposites(mainComposite);
+		UIPanel mainComposite = uiFactory.createPanel(this.dialog, false);
+		mainComposite.setLayout(new UITableLayout());
+		dialogLayout.set(mainComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		this.createComposites(mainComposite);
 		
 		//-------buttons-------------------------------------
-		Composite buttonComposite = new Composite(this.dialog,SWT.NONE);
-		buttonComposite.setLayout(new GridLayout(3,true));
-		buttonComposite.setLayoutData(new GridData(SWT.RIGHT,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout();
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		Button buttonDefaults = new Button(buttonComposite, SWT.PUSH);
-		buttonDefaults.setLayoutData(getButtonData()); 
+		UIButton buttonDefaults = uiFactory.createButton(buttons); 
 		buttonDefaults.setText(TuxGuitar.getProperty("defaults"));
-		buttonDefaults.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		buttonDefaults.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dispose();
 				setDefaults();
 				applyConfigWithConfirmation(true);
 			}
 		});
+		buttonsLayout.set(buttonDefaults, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonOK = new Button(buttonComposite, SWT.PUSH);
-		buttonOK.setLayoutData(getButtonData());
+		UIButton buttonOK = uiFactory.createButton(buttons);
+		buttonOK.setDefaultButton();
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateOptions();
 				dispose();
 				applyConfigWithConfirmation(false);
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttonComposite, SWT.PUSH);
-		buttonCancel.setLayoutData(getButtonData()); 
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		this.dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private void createComposites(Composite parent) {
-		ToolBar toolBar = new ToolBar(parent, SWT.VERTICAL | SWT.FLAT | SWT.WRAP);
-		toolBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true , true));
+	private void createComposites(UILayoutContainer parent) {
+		UIFactory uiFactory = this.getUIFactory();
+		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
 		
-		Composite option = new Composite(parent,SWT.NONE);
-		option.setLayout(new FormLayout());
+		UIToolBar toolBar = uiFactory.createVerticalToolBar(parent);
+		parentLayout.set(toolBar, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		initOptions(toolBar,option);
+		UIPanel option = uiFactory.createPanel(parent, false);
+		option.setLayout(new UITableLayout(0f));
+		parentLayout.set(option, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Point optionSize = computeOptionsSize(0 , toolBar.computeSize(SWT.DEFAULT,SWT.DEFAULT).y );
-		option.setLayoutData(new GridData(optionSize.x,optionSize.y));
+		initOptions(toolBar, option);
 		
 		if( this.options.size() > 0 ){
-			select((Option)this.options.get(0));
+			select(this.options.get(0));
 		}
 	}
 	
-	private void initOptions(ToolBar toolBar,Composite parent){
-		this.options = new ArrayList<Option>();
-		this.options.add(new MainOption(this,toolBar,parent));
-		this.options.add(new StylesOption(this,toolBar,parent));
-		this.options.add(new LanguageOption(this,toolBar,parent));
-		this.options.add(new SkinOption(this,toolBar,parent));
-		this.options.add(new SoundOption(this,toolBar,parent));
+	private void initOptions(UIToolBar toolBar, UILayoutContainer parent){
 		
-		Iterator<Option> it = this.options.iterator();
-		while(it.hasNext()){
-			Option option = (Option)it.next();
+		this.options = new ArrayList<TGSettingsOption>();
+		this.options.add(new MainOption(this, toolBar, parent));
+		this.options.add(new StylesOption(this, toolBar, parent));
+		this.options.add(new LanguageOption(this, toolBar, parent));
+		this.options.add(new SkinOption(this, toolBar, parent));
+		this.options.add(new SoundOption(this, toolBar, parent));
+		
+		for(TGSettingsOption option : this.options) {
 			option.createOption();
 		}
 	}
 	
-	private Point computeOptionsSize(int minimumWidth, int minimumHeight){
-		int width = minimumWidth;
-		int height = minimumHeight;
-		
-		Iterator<Option> it = this.options.iterator();
-		while(it.hasNext()){
-			Option option = (Option)it.next();
-			Point size = option.computeSize();
-			if( size.x > width ){
-				width = size.x;
-			}
-			if( size.y > height ){
-				height = size.y;
-			}
-		}
-		return new Point(width, height);
-	}
-	
-	public void loadCursor(int cursorStyle) {
+	public void loadCursor(UICursor cursor) {
 		if(!this.isDisposed()) {
 			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
 				this.cursorController = new TGCursorController(this.context.getContext(), this.dialog);
 			}
-			this.cursorController.loadCursor(cursorStyle);
+			this.cursorController.loadCursor(cursor);
 		}
 	}
 	
@@ -168,60 +151,27 @@ public class TGSettingsEditor{
 		this.dialog.pack();
 	}
 	
-	public GridData getButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		return data;
-	}
-	
-	public GridData makeGridData(int with,int height,int minWith,int minHeight){
-		GridData data = new GridData();
-		data.minimumWidth = minWith;
-		data.minimumHeight = minHeight;
-		if(with > 0){
-			data.widthHint = with;
-		}else{
-			data.horizontalAlignment = SWT.FILL;
-			data.grabExcessHorizontalSpace = true;
-		}
-		if(height > 0){
-			data.heightHint = with;
-		}else{
-			data.verticalAlignment = SWT.FILL;
-			data.grabExcessVerticalSpace = true;
-		}
-		
-		return data;
-	}
-	
-	public void select(Option option){
+	public void select(TGSettingsOption option){
 		hideAll();
 		option.setVisible(true);
 		this.dialog.redraw();
 	}
 	
 	private void hideAll(){
-		Iterator<Option> it = this.options.iterator();
-		while(it.hasNext()){
-			Option option = (Option)it.next();
+		for(TGSettingsOption option : this.options) {
 			option.setVisible(false);
 		}
 	}
 	
 	protected void updateOptions(){
-		Iterator<Option> it = this.options.iterator();
-		while(it.hasNext()){
-			Option option = (Option)it.next();
+		for(TGSettingsOption option : this.options) {
 			option.updateConfig();
 		}
 		this.config.save();
 	}
 	
 	protected void setDefaults(){
-		Iterator<Option> it = this.options.iterator();
-		while(it.hasNext()){
-			Option option = (Option)it.next();
+		for(TGSettingsOption option : this.options) {
 			option.updateDefaults();
 		}
 		this.config.save();
@@ -248,12 +198,10 @@ public class TGSettingsEditor{
 	}
 	
 	protected void dispose(){
-		Iterator<Option> it = this.options.iterator();
-		while(it.hasNext()){
-			Option option = (Option)it.next();
+		for(TGSettingsOption option : this.options) {
 			option.dispose();
 		}
-		getDialog().dispose();
+		getWindow().dispose();
 	}
 	
 	public TGProperties getDefaults(){
@@ -271,12 +219,16 @@ public class TGSettingsEditor{
 		return TuxGuitar.getInstance().getTablatureEditor();
 	}
 	
-	public Shell getDialog(){
+	public TGViewContext getViewContext() {
+		return this.context;
+	}
+	
+	public UIWindow getWindow(){
 		return this.dialog;
 	}
 	
-	public TGViewContext getViewContext() {
-		return this.context;
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context.getContext()).getFactory();
 	}
 	
 	public void addSyncThread(Runnable runnable){

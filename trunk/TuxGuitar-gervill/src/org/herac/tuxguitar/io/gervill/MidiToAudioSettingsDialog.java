@@ -8,25 +8,27 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGFileChooser;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
+import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MidiToAudioSettingsDialog {
@@ -44,77 +46,83 @@ public class MidiToAudioSettingsDialog {
 		final List<MidiToAudioFormat> formats = getAvailableFormats();
 		final List<TGFileFormat> soundbankFormats = getSupportedSoundbankFormats();
 		
-		final Shell dialog = DialogUtils.newDialog(TuxGuitar.getInstance().getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("gervill.options"));
 		
 		//------------------AUDIO FORMAT------------------
-		Group audioFormatGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		audioFormatGroup.setLayout(new GridLayout(2,false));
-		audioFormatGroup.setLayoutData(getGroupData());
+		UITableLayout audioFormatLayout = new UITableLayout();
+		UILegendPanel audioFormatGroup = uiFactory.createLegendPanel(dialog);
+		audioFormatGroup.setLayout(audioFormatLayout);
 		audioFormatGroup.setText(TuxGuitar.getProperty("gervill.options.audio-format"));
+		dialogLayout.set(audioFormatGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, null, null);
 		
-		Label eLabel = new Label(audioFormatGroup, SWT.NONE);
+		UILabel eLabel = uiFactory.createLabel(audioFormatGroup);
 		eLabel.setText(TuxGuitar.getProperty("gervill.options.file-encoding") + ":");
-		eLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
+		audioFormatLayout.set(eLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Combo eCombo = new Combo(audioFormatGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		eCombo.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
+		final UIDropDownSelect<MidiToAudioFormat> eCombo = uiFactory.createDropDownSelect(audioFormatGroup);
+		audioFormatLayout.set(eCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		Label tLabel = new Label(audioFormatGroup, SWT.NONE);
+		UILabel tLabel = uiFactory.createLabel(audioFormatGroup);
 		tLabel.setText(TuxGuitar.getProperty("gervill.options.file-type") + ":");
-		tLabel.setLayoutData(new GridData(SWT.LEFT,SWT.CENTER,true,true));
+		audioFormatLayout.set(tLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final Combo tCombo = new Combo(audioFormatGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		tCombo.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,true));
+		final UIDropDownSelect<AudioFileFormat.Type> tCombo = uiFactory.createDropDownSelect(audioFormatGroup);
+		audioFormatLayout.set(tCombo, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		int eSelectionIndex = 0;
-		for( int i = 0 ; i < formats.size() ; i ++ ) {
-			MidiToAudioFormat format = (MidiToAudioFormat)formats.get(i);
-			eCombo.add( format.getFormat().getEncoding().toString() );
-			if( isSameEncoding(settings.getFormat(), format.getFormat() )){
-				eSelectionIndex = i;
+		MidiToAudioFormat selectedFormat = null;
+		for(MidiToAudioFormat format : formats) {
+			eCombo.addItem(new UISelectItem<MidiToAudioFormat>(format.getFormat().getEncoding().toString(), format));
+			if( isSameEncoding(settings.getFormat(), format.getFormat())){
+				selectedFormat = format;
 			}
 		}
 		
-		if( !formats.isEmpty() ){
-			eCombo.select( eSelectionIndex );
-			updateTypesCombo( settings, formats, eCombo, tCombo );
+		if( selectedFormat != null ) {
+			eCombo.setSelectedValue(selectedFormat);
+			updateTypesCombo(settings, formats, eCombo, tCombo);
 		}
 		
-		eCombo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				updateTypesCombo( settings, formats, eCombo, tCombo );
+		eCombo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				updateTypesCombo(settings, formats, eCombo, tCombo);
 			}
 		});
 		
 		//------------------SOUNDBANK-----------------------
-		Group soundbankGroup = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		soundbankGroup.setLayout(new GridLayout());
-		soundbankGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout soundbankLayout = new UITableLayout();
+		UILegendPanel soundbankGroup = uiFactory.createLegendPanel(dialog);
+		soundbankGroup.setLayout(soundbankLayout);
 		soundbankGroup.setText(TuxGuitar.getProperty("gervill.options.soundbank.tip"));
+		dialogLayout.set(soundbankGroup, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, null, null);
 		
-		final Button sbDefault = new Button(soundbankGroup,SWT.RADIO);
+		final UIRadioButton sbDefault = uiFactory.createRadioButton(soundbankGroup);
 		sbDefault.setText(TuxGuitar.getProperty("gervill.options.soundbank.default"));
-		sbDefault.setSelection( (settings.getSoundbankPath() == null) );
+		sbDefault.setSelected((settings.getSoundbankPath() == null));
+		soundbankLayout.set(sbDefault, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 2);
+		soundbankLayout.set(sbDefault, UITableLayout.PACKED_WIDTH, 0f);
 		
-		final Button sbCustom = new Button(soundbankGroup,SWT.RADIO);
+		final UIRadioButton sbCustom = uiFactory.createRadioButton(soundbankGroup);
 		sbCustom.setText(TuxGuitar.getProperty("gervill.options.soundbank.custom"));
-		sbCustom.setSelection( (settings.getSoundbankPath() != null) );
+		sbCustom.setSelected((settings.getSoundbankPath() != null));
+		soundbankLayout.set(sbCustom, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 2);
+		soundbankLayout.set(sbCustom, UITableLayout.PACKED_WIDTH, 0f);
 		
-		Composite chooser = new Composite(soundbankGroup,SWT.NONE);
-		chooser.setLayout(new GridLayout(2,false));
-		
-		final Text sbCustomPath = new Text(chooser,SWT.BORDER);
-		sbCustomPath.setLayoutData(new GridData(350,SWT.DEFAULT));
+		final UITextField sbCustomPath = uiFactory.createTextField(soundbankGroup);
 		sbCustomPath.setText( (settings.getSoundbankPath() == null ? new String() : settings.getSoundbankPath())  );
 		sbCustomPath.setEnabled( (settings.getSoundbankPath() != null) );
+		soundbankLayout.set(sbCustomPath, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		final Button sbCustomChooser = new Button(chooser,SWT.PUSH);
+		final UIButton sbCustomChooser = uiFactory.createButton(soundbankGroup);
 		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-		sbCustomChooser.setEnabled( (settings.getSoundbankPath() != null) );
-		sbCustomChooser.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		sbCustomChooser.setEnabled((settings.getSoundbankPath() != null));
+		sbCustomChooser.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGFileChooser.getInstance(MidiToAudioSettingsDialog.this.context).openChooser(new TGFileChooserHandler() {
 					public void updateFileName(String fileName) {
 						sbCustomPath.setText(fileName);
@@ -122,83 +130,66 @@ public class MidiToAudioSettingsDialog {
 				}, soundbankFormats, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
+		soundbankLayout.set(sbCustomChooser, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
-		SelectionListener sbRadioSelectionListener = new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				sbCustomPath.setEnabled(sbCustom.getSelection());
-				sbCustomChooser.setEnabled(sbCustom.getSelection());
+		UISelectionListener sbRadioSelectionListener = new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				sbCustomPath.setEnabled(sbCustom.isSelected());
+				sbCustomChooser.setEnabled(sbCustom.isSelected());
 			}
 		};
 		sbDefault.addSelectionListener(sbRadioSelectionListener);
 		sbCustom.addSelectionListener(sbRadioSelectionListener);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(data);
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				String soundbankPath = (sbCustom.getSelection() ? sbCustomPath.getText() : null);
-				int tIndex = tCombo.getSelectionIndex();
-				int eIndex = eCombo.getSelectionIndex();
-				if( eIndex >= 0 && eIndex < formats.size() ){
-					MidiToAudioFormat format = (MidiToAudioFormat)formats.get( eIndex );
-					if( tIndex >= 0 && tIndex < format.getTypes().length ){
-						settings.setType( format.getTypes()[tIndex] );
-						settings.setFormat( format.getFormat() );
-						settings.setSoundbankPath( soundbankPath );
-						MidiToAudioSettingsDialog.this.success = true;
-					}
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String soundbankPath = (sbCustom.isSelected() ? sbCustomPath.getText() : null);
+				AudioFileFormat.Type type = tCombo.getSelectedValue();
+				MidiToAudioFormat format = eCombo.getSelectedValue();
+				if( format != null && type != null ){
+					settings.setType(type);
+					settings.setFormat(format.getFormat());
+					settings.setSoundbankPath( soundbankPath );
+					MidiToAudioSettingsDialog.this.success = true;
 				}
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(data);
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog, DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 		
 		return this.success;
 	}
 	
-	private GridData getGroupData(){
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 300;
-		return data;
-	}
-	
-	private void updateTypesCombo( MidiToAudioSettings settings, List<MidiToAudioFormat> encodings, Combo eCombo , Combo tCombo ){
-		tCombo.removeAll();
+	private void updateTypesCombo(MidiToAudioSettings settings, List<MidiToAudioFormat> encodings, UIDropDownSelect<MidiToAudioFormat> eCombo, UIDropDownSelect<AudioFileFormat.Type> tCombo){
+		tCombo.removeItems();
 		
-		int eIndex = eCombo.getSelectionIndex();		
-		if( eIndex >= 0 && eIndex < encodings.size() ){
-			MidiToAudioFormat encoding = (MidiToAudioFormat)encodings.get( eIndex );
-			AudioFileFormat.Type[] types = encoding.getTypes();
-			int tSelectionIndex = 0;
-			for( int tIndex = 0 ; tIndex < types.length ; tIndex ++ ) {
-				tCombo.add( types[ tIndex ] + " (*." + types[ tIndex ].getExtension() + ")");
-				if( settings.getType() != null && settings.getType().equals( types[ tIndex] )){
-					tSelectionIndex = tIndex;
-				}
+		MidiToAudioFormat encoding = eCombo.getSelectedValue();
+		if( encoding != null ){
+			for(AudioFileFormat.Type type : encoding.getTypes()) {
+				tCombo.addItem(new UISelectItem<AudioFileFormat.Type>(type.toString() + " (*." + type.getExtension() + ")", type));
 			}
-			tCombo.select( tSelectionIndex );
+			tCombo.setSelectedValue(settings.getType());
 		}
 	}
 	

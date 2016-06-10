@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.app.view.menu;
 
-import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.system.keybindings.KeyBinding;
+import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
+import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.util.TGContext;
 
 public abstract class TGMenuItem {
@@ -14,15 +14,9 @@ public abstract class TGMenuItem {
 	
 	public abstract void showItems();
 	
-	protected void setMenuItemTextAndAccelerator(MenuItem menuItem, String key,String action) {
-		String text = TuxGuitar.getProperty(key);
-		if (action != null) {
-			KeyBinding keyBinding = TuxGuitar.getInstance().getKeyBindingManager().getKeyBindingForAction(action);
-			if (keyBinding != null) {
-				text += "\t" + keyBinding.toString() + "\u0000";
-			}
-		}
-		menuItem.setText(text);
+	public void setMenuItemTextAndAccelerator(UIMenuItem menuItem, String key,String action) {
+		menuItem.setKeyConvination(action != null ? KeyBindingActionManager.getInstance(this.findContext()).getKeyBindingForAction(action) : null);
+		menuItem.setText(TuxGuitar.getProperty(key));
 	}
 	
 	public TGActionProcessorListener createActionProcessor(String actionId) {

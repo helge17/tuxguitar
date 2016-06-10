@@ -1,220 +1,244 @@
 package org.herac.tuxguitar.app.view.dialog.settings.items;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.ColorDialog;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FontDialog;
-import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.chooser.UIColorChooser;
+import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
+import org.herac.tuxguitar.ui.chooser.UIFontChooser;
+import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIControl;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class StylesOption extends Option {
+public class StylesOption extends TGSettingsOption {
 	
-	private static final int BUTTON_WIDTH = 200;
-	private static final int BUTTON_HEIGHT = 0;
+	private static final float BUTTON_WIDTH = 200;
 	
-	protected boolean initialized;
-	protected FontData defaultFontData;
-	protected FontData noteFontData;
-	protected FontData timeSignatureFontData;
-	protected FontData textFontData;
-	protected FontData lyricFontData;
-	protected FontData printerDefaultFontData;
-	protected FontData printerNoteFontData;
-	protected FontData printerTSFontData;
-	protected FontData printerTextFontData;
-	protected FontData printerLyricFontData;
+	private boolean initialized;
+	private UIFontModel defaultFontData;
+	private UIFontModel noteFontData;
+	private UIFontModel timeSignatureFontData;
+	private UIFontModel textFontData;
+	private UIFontModel lyricFontData;
+	private UIFontModel printerDefaultFontData;
+	private UIFontModel printerNoteFontData;
+	private UIFontModel printerTSFontData;
+	private UIFontModel printerTextFontData;
+	private UIFontModel printerLyricFontData;
 	
-	protected Button defaultFontButton;
-	protected Button noteFontButton;
-	protected Button timeSignatureFontButton;
-	protected Button textFontButton;
-	protected Button lyricFontButton;
+	private UIButton defaultFontButton;
+	private UIButton noteFontButton;
+	private UIButton timeSignatureFontButton;
+	private UIButton textFontButton;
+	private UIButton lyricFontButton;
 	
-	protected Button printerDefaultFontButton;
-	protected Button printerNoteFontButton;
-	protected Button printerTSFontButton;
-	protected Button printerTextFontButton;
-	protected Button printerLyricFontButton;
+	private UIButton printerDefaultFontButton;
+	private UIButton printerNoteFontButton;
+	private UIButton printerTSFontButton;
+	private UIButton printerTextFontButton;
+	private UIButton printerLyricFontButton;
 	
-	protected ButtonColor scoreNoteColorButton;
-	protected ButtonColor tabNoteColorButton;
-	protected ButtonColor playNoteColorButton;
-	protected ButtonColor linesColorButton;
+	private UIColorButton scoreNoteColorButton;
+	private UIColorButton tabNoteColorButton;
+	private UIColorButton playNoteColorButton;
+	private UIColorButton linesColorButton;
 	
-	public StylesOption(TGSettingsEditor configEditor,ToolBar toolBar,final Composite parent){
+	public StylesOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
 		super(configEditor,toolBar,parent,TuxGuitar.getProperty("settings.config.styles"));
 		this.initialized = false;
-		this.defaultFontData = new FontData();
-		this.noteFontData = new FontData();
-		this.timeSignatureFontData = new FontData();
-		this.textFontData = new FontData();
-		this.lyricFontData = new FontData();
-		this.printerDefaultFontData = new FontData();
-		this.printerNoteFontData = new FontData();
-		this.printerTSFontData = new FontData();
-		this.printerTextFontData = new FontData();
-		this.printerLyricFontData = new FontData();
+		this.defaultFontData = new UIFontModel();
+		this.noteFontData = new UIFontModel();
+		this.timeSignatureFontData = new UIFontModel();
+		this.textFontData = new UIFontModel();
+		this.lyricFontData = new UIFontModel();
+		this.printerDefaultFontData = new UIFontModel();
+		this.printerNoteFontData = new UIFontModel();
+		this.printerTSFontData = new UIFontModel();
+		this.printerTextFontData = new UIFontModel();
+		this.printerLyricFontData = new UIFontModel();
 	}
 	
 	public void createOption(){
+		UIFactory uiFactory = this.getUIFactory();
+		
 		getToolItem().setText(TuxGuitar.getProperty("settings.config.styles"));
 		getToolItem().setImage(TuxGuitar.getInstance().getIconManager().getOptionStyle());
 		getToolItem().addSelectionListener(this);
 		
 		//=================================================== EDITOR STYLES ===================================================//
-		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP,SWT.BOLD,0,TuxGuitar.getProperty("settings.config.styles.general"));
+		showLabel(getPanel(), TuxGuitar.getProperty("settings.config.styles.general"), true, 1, 1);
 		
-		Composite composite = new Composite(getComposite(),SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(getTabbedData());
+		UIPanel mainSection = uiFactory.createPanel(getPanel(), false);
+		mainSection.setLayout(new UITableLayout());
+		this.indent(mainSection, 2, 1);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.default"));
-		this.defaultFontButton = this.createFontButton(composite, this.defaultFontData);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.default"), false, 1, 1);
+		this.defaultFontButton = this.createFontButton(mainSection, this.defaultFontData, 1, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.note"));
-		this.noteFontButton = this.createFontButton(composite, this.noteFontData);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.note"), false, 2, 1);
+		this.noteFontButton = this.createFontButton(mainSection, this.noteFontData, 2, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.lyric"));
-		this.lyricFontButton = this.createFontButton(composite, this.lyricFontData);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.lyric"), false, 3, 1);
+		this.lyricFontButton = this.createFontButton(mainSection, this.lyricFontData, 3, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.text"));
-		this.textFontButton = this.createFontButton(composite, this.textFontData);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.text"), false, 4, 1);
+		this.textFontButton = this.createFontButton(mainSection, this.textFontData, 4, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.time-signature"));
-		this.timeSignatureFontButton = this.createFontButton(composite, this.timeSignatureFontData);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.time-signature"), false, 5, 1);
+		this.timeSignatureFontButton = this.createFontButton(mainSection, this.timeSignatureFontData, 5, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.score-note"));
-		this.scoreNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.score-note"), false, 6, 1);
+		this.scoreNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 6, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.tab-note"));
-		this.tabNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.tab-note"), false, 7, 1);
+		this.tabNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 7, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.play-note"));
-		this.playNoteColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.play-note"), false, 8, 1);
+		this.playNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 8, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.color.lines"));
-		this.linesColorButton = new ButtonColor(composite, SWT.PUSH, makeButtonData(), TuxGuitar.getProperty("choose"));
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.lines"), false, 9, 1);
+		this.linesColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 9, 2);
 		
 		//=================================================== PRINTER STYLES ===================================================//
-		showLabel(getComposite(),SWT.TOP | SWT.LEFT | SWT.WRAP, SWT.BOLD, 0, TuxGuitar.getProperty("settings.config.styles.printer"));
+		showLabel(getPanel(), TuxGuitar.getProperty("settings.config.styles.printer"), true, 3, 1);
 		
-		composite = new Composite(getComposite(),SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(getTabbedData());
+		UIPanel printerSection = uiFactory.createPanel(getPanel(), false);
+		printerSection.setLayout(new UITableLayout());
+		this.indent(printerSection, 4, 1);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.default"));
-		this.printerDefaultFontButton = this.createFontButton(composite, this.printerDefaultFontData);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.default"), false, 1, 1);
+		this.printerDefaultFontButton = this.createFontButton(printerSection, this.printerDefaultFontData, 1, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.note"));
-		this.printerNoteFontButton = this.createFontButton(composite, this.printerNoteFontData);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.note"), false, 2, 1);
+		this.printerNoteFontButton = this.createFontButton(printerSection, this.printerNoteFontData, 2, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.lyric"));
-		this.printerLyricFontButton = this.createFontButton(composite, this.printerLyricFontData);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.lyric"), false, 3, 1);
+		this.printerLyricFontButton = this.createFontButton(printerSection, this.printerLyricFontData, 3, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.text"));
-		this.printerTextFontButton = this.createFontButton(composite, this.printerTextFontData);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.text"), false, 4, 1);
+		this.printerTextFontButton = this.createFontButton(printerSection, this.printerTextFontData, 4, 2);
 		
-		showLabel(composite,SWT.FILL,SWT.CENTER,SWT.LEFT | SWT.WRAP,SWT.NORMAL,0,TuxGuitar.getProperty("settings.config.styles.font.time-signature"));
-		this.printerTSFontButton = this.createFontButton(composite, this.printerTSFontData);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.time-signature"), false, 5, 1);
+		this.printerTSFontButton = this.createFontButton(printerSection, this.printerTSFontData, 5, 2);
 		
 		this.loadConfig();
 	}
 	
-	private void addFontButtonListeners(final Button button, final FontData fontData){
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				if(StylesOption.this.initialized){
-					Font font = new Font(getDisplay(),fontData);
-					FontData[] fontDataList = font.getFontData();
-					font.dispose();
-					FontDialog fontDialog = new FontDialog(getShell());
-					fontDialog.setFontList(fontDataList);
-					FontData result = fontDialog.open();
-					if(result != null){
-						loadFontData(result, fontData,button);
-					}
+	public UIColorButton createColorButton(UILayoutContainer parent, String text, int row, int col) {
+		UIColorButton button = new UIColorButton(getWindow(), parent, text);
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(button.getControl(), row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, BUTTON_WIDTH, null, null);
+		
+		return button;
+	}
+	
+	public UIButton createFontButton(UILayoutContainer parent, UIFontModel fontModel, int row, int col) {
+		UIButton uiButton = getUIFactory().createButton(parent);
+		uiButton.setText("-");
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(uiButton, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, BUTTON_WIDTH, null, null);
+		
+		this.addFontButtonListeners(uiButton, fontModel);
+		
+		return uiButton;
+	}
+	
+	private void addFontButtonListeners(final UIButton button, final UIFontModel fontModel){
+		button.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				if( StylesOption.this.initialized ) {
+					UIFontModel defaultModel = new UIFontModel();
+					copyFontData(fontModel, defaultModel);
+					
+					UIFontChooser uiFontChooser = getUIFactory().createFontChooser(getWindow());
+					uiFontChooser.setDefaultModel(defaultModel);
+					uiFontChooser.choose(new UIFontChooserHandler() {
+						public void onSelectFont(UIFontModel selection) {
+							if( selection != null ) {
+								loadFontData(selection, fontModel, button);
+							}
+						}
+					});
 				}
 			}
 		});
 	}
 	
-	protected void loadFontData(FontData src, FontData dst, Button button){
+	protected void loadFontData(UIFontModel src, UIFontModel dst, UIButton button){
 		copyFontData(src, dst);
 		setButtonFontData(button, dst);
 	}
 	
-	protected void loadColor(ButtonColor button, RGB rgb){
+	protected void loadColor(UIColorButton button, UIColorModel rgb){
 		button.loadColor(rgb);
 	}
 	
-	protected void setButtonFontData(Button button,FontData fontData) {
-		String text = fontData.getName();
-		if( (fontData.getStyle() & SWT.BOLD) != 0 ){
+	protected void setButtonFontData(UIButton button, UIFontModel fontModel) {
+		String text = fontModel.getName();
+		if( fontModel.isBold()){
 			text += " Bold";
 		}
-		if( (fontData.getStyle() & SWT.ITALIC) != 0 ){
+		if( fontModel.isItalic()){
 			text += " Italic";
 		}
-		text += (" " + fontData.getHeight());
+		text += (" " + fontModel.getHeight());
 		button.setText(text);
 	}
 	
-	protected void copyFontData(FontData src, FontData dst){
+	protected void copyFontData(UIFontModel src, UIFontModel dst){
 		dst.setName( src.getName() );
-		dst.setStyle( src.getStyle() );
 		dst.setHeight( src.getHeight() );
-	}
-	
-	protected void copyRGB(RGB src, RGB dst){
-		dst.red = src.red;
-		dst.green = src.green;
-		dst.blue = src.blue;
+		dst.setBold( src.isBold() );
+		dst.setItalic( src.isItalic() );
 	}
 	
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				final FontData defaultFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_DEFAULT);
-				final FontData noteFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_NOTE);
-				final FontData timeSignatureFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE);
-				final FontData textFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_TEXT);
-				final FontData lyricFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_LYRIC);
-				final FontData printerDefaultFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT);
-				final FontData printerNoteFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_PRINTER_NOTE);
-				final FontData printerTSFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE);
-				final FontData printerTextFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_PRINTER_TEXT);
-				final FontData printerLyricFontData = getConfig().getFontDataConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC);
-				final RGB scoreNoteRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_SCORE_NOTE);
-				final RGB tabNoteRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_TAB_NOTE);
-				final RGB playNoteRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_PLAY_NOTE);
-				final RGB linesRGB  = getConfig().getRGBConfigValue(TGConfigKeys.COLOR_LINE);
+				final UIFontModel defaultFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_DEFAULT);
+				final UIFontModel noteFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_NOTE);
+				final UIFontModel timeSignatureFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE);
+				final UIFontModel textFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_TEXT);
+				final UIFontModel lyricFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_LYRIC);
+				final UIFontModel printerDefaultFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT);
+				final UIFontModel printerNoteFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE);
+				final UIFontModel printerTSFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE);
+				final UIFontModel printerTextFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT);
+				final UIFontModel printerLyricFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC);
+				final UIColorModel scoreNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE);
+				final UIColorModel tabNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE);
+				final UIColorModel playNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE);
+				final UIColorModel linesRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_LINE);
 				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
-							loadFontData(defaultFontData,StylesOption.this.defaultFontData,StylesOption.this.defaultFontButton);
-							loadFontData(noteFontData,StylesOption.this.noteFontData,StylesOption.this.noteFontButton);
-							loadFontData(timeSignatureFontData,StylesOption.this.timeSignatureFontData,StylesOption.this.timeSignatureFontButton);
-							loadFontData(textFontData,StylesOption.this.textFontData,StylesOption.this.textFontButton);
-							loadFontData(lyricFontData,StylesOption.this.lyricFontData,StylesOption.this.lyricFontButton);
-							loadFontData(printerDefaultFontData,StylesOption.this.printerDefaultFontData,StylesOption.this.printerDefaultFontButton);
-							loadFontData(printerNoteFontData,StylesOption.this.printerNoteFontData,StylesOption.this.printerNoteFontButton);
-							loadFontData(printerTSFontData,StylesOption.this.printerTSFontData,StylesOption.this.printerTSFontButton);
-							loadFontData(printerTextFontData,StylesOption.this.printerTextFontData,StylesOption.this.printerTextFontButton);
-							loadFontData(printerLyricFontData,StylesOption.this.printerLyricFontData,StylesOption.this.printerLyricFontButton);
+							loadFontData(defaultFontData, StylesOption.this.defaultFontData, StylesOption.this.defaultFontButton);
+							loadFontData(noteFontData, StylesOption.this.noteFontData, StylesOption.this.noteFontButton);
+							loadFontData(timeSignatureFontData, StylesOption.this.timeSignatureFontData, StylesOption.this.timeSignatureFontButton);
+							loadFontData(textFontData, StylesOption.this.textFontData, StylesOption.this.textFontButton);
+							loadFontData(lyricFontData, StylesOption.this.lyricFontData, StylesOption.this.lyricFontButton);
+							loadFontData(printerDefaultFontData, StylesOption.this.printerDefaultFontData, StylesOption.this.printerDefaultFontButton);
+							loadFontData(printerNoteFontData, StylesOption.this.printerNoteFontData, StylesOption.this.printerNoteFontButton);
+							loadFontData(printerTSFontData, StylesOption.this.printerTSFontData, StylesOption.this.printerTSFontButton);
+							loadFontData(printerTextFontData, StylesOption.this.printerTextFontData, StylesOption.this.printerTextFontButton);
+							loadFontData(printerLyricFontData, StylesOption.this.printerLyricFontData, StylesOption.this.printerLyricFontButton);
 							StylesOption.this.scoreNoteColorButton.loadColor(scoreNoteRGB);
 							StylesOption.this.tabNoteColorButton.loadColor(tabNoteRGB);
 							StylesOption.this.playNoteColorButton.loadColor(playNoteRGB);
@@ -226,23 +250,6 @@ public class StylesOption extends Option {
 				});
 			}
 		}).start();
-	}
-	
-	public Button createFontButton(Composite parent, FontData fontData) {
-		Button button = new Button(parent, SWT.PUSH);
-		button.setLayoutData(makeButtonData());
-		button.setText("-");
-		
-		this.addFontButtonListeners(button, fontData);
-		
-		return button;
-	}
-	
-	public GridData makeButtonData(){
-		GridData data = new GridData(SWT.FILL, SWT.CENTER, true, true);
-		data.minimumWidth = BUTTON_WIDTH;
-		data.minimumHeight = BUTTON_HEIGHT;
-		return data;
 	}
 	
 	public void updateConfig(){
@@ -283,60 +290,66 @@ public class StylesOption extends Option {
 		}
 	}
 	
-	private class ButtonColor {
+	private class UIColorButton {
 		
-		protected Button button;
-		protected Color color;
-		protected RGB value;
+		private UIWindow window;
+		private UIButton button;
+		private UIColor color;
+		private UIColorModel value;
 		
-		public ButtonColor(Composite parent, int style, Object layoutData, String text){
-			this.value = new RGB(0,0,0);
-			this.button = new Button(parent, style);
-			this.button.setLayoutData(layoutData);
+		public UIColorButton(UIWindow window, UIContainer parent, String text){
+			this.window = window;
+			this.value = new UIColorModel();
+			this.button = getUIFactory().createButton(parent);			
 			this.button.setText(text);
 			this.addListeners();
 		}
 		
-		protected void loadColor(RGB rgb){
-			this.value.red = rgb.red;
-			this.value.green = rgb.green;
-			this.value.blue = rgb.blue;
+		public void loadColor(UIColorModel cm){
+			this.value.setRed(cm.getRed());
+			this.value.setGreen(cm.getGreen());
+			this.value.setBlue(cm.getBlue());
 			
-			Color color = new Color(this.button.getDisplay(), this.value);
-			this.button.setForeground(color);
+			UIColor color = getUIFactory().createColor(this.value);
+			this.button.setFgColor(color);
 			this.disposeColor();
 			this.color = color;
 		}
 		
-		protected void disposeColor(){
-			if(this.color != null && !this.color.isDisposed()){
+		public void disposeColor(){
+			if( this.color != null && !this.color.isDisposed()){
 				this.color.dispose();
 				this.color = null;
 			}
 		}
 		
-		private void addListeners(){
-			this.button.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent event) {
-					if(StylesOption.this.initialized){
-						ColorDialog dlg = new ColorDialog(getShell());
-						dlg.setRGB(ButtonColor.this.value);
-						dlg.setText(TuxGuitar.getProperty("choose-color"));
-						RGB result = dlg.open();
-						if (result != null) {
-							ButtonColor.this.loadColor(result);
+		public void addListeners(){
+			this.button.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					UIColorChooser dlg = getUIFactory().createColorChooser(UIColorButton.this.window);
+					dlg.setDefaultModel(UIColorButton.this.value);
+					dlg.setText(TuxGuitar.getProperty("choose-color"));
+					dlg.choose(new UIColorChooserHandler() {
+						public void onSelectColor(UIColorModel model) {
+							if( model != null) {
+								UIColorButton.this.loadColor(model);
+							}
 						}
-					}
+					});
 				}
 			});
-			this.button.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					ButtonColor.this.disposeColor();
+			this.button.addDisposeListener(new UIDisposeListener() {
+				public void onDispose(UIDisposeEvent event) {
+					UIColorButton.this.disposeColor();
 				}
 			});
 		}
 		
-		protected RGB getValue(){
+		public UIControl getControl() {
+			return this.button;
+		}
+		
+		public UIColorModel getValue(){
 			return this.value;
 		}
 	}

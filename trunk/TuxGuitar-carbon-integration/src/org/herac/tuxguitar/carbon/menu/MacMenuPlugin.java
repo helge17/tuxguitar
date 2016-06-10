@@ -1,10 +1,14 @@
 package org.herac.tuxguitar.carbon.menu;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.carbon.TGCarbonIntegrationPlugin;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
+
+import swtimpl.SWTApplication;
+import swtimpl.widget.SWTWindow;
 
 public class MacMenuPlugin implements TGPlugin {
 	
@@ -16,7 +20,7 @@ public class MacMenuPlugin implements TGPlugin {
 		}else if(enabled){
 			this.macMenu = new MacMenu(context);
 			this.macMenu.setEnabled(true);
-			this.macMenu.hookApplicationMenu(TuxGuitar.getInstance().getDisplay(), TuxGuitar.getInstance().getShell());
+			this.macMenu.hookApplicationMenu(((SWTApplication)TGApplication.getInstance(context).getApplication()).getDisplay(), ((SWTWindow) TGWindow.getInstance(context).getWindow()).getControl());
 		}
 	}
 

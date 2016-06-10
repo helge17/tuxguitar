@@ -1,35 +1,21 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class TrackMenuItem extends TGMenuItem{
-	private MenuItem trackMenuItem;
+public class TrackMenuItem extends TGMenuItem {
+	
+	private UIMenuSubMenuItem trackMenuItem;
 	private TrackMenu menu;
 	
-	public TrackMenuItem(Shell shell,Menu parent, int style) {
-		this.trackMenuItem = new MenuItem(parent, style);
-		this.menu = new TrackMenu(shell, SWT.DROP_DOWN);
+	public TrackMenuItem(UIMenu parent) {
+		this.trackMenuItem = parent.createSubMenuItem();
+		this.menu = new TrackMenu(this.trackMenuItem.getMenu());
 	}
 	
 	public void showItems(){
 		this.menu.showItems();
-		this.trackMenuItem.setMenu(this.menu.getMenu());
 		this.loadIcons();
 		this.loadProperties();
 	}

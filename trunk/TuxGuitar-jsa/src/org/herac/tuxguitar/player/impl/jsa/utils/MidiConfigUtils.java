@@ -1,21 +1,22 @@
 package org.herac.tuxguitar.player.impl.jsa.utils;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGFileChooser;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import org.herac.tuxguitar.ui.widget.UITextField;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
@@ -35,43 +36,49 @@ public class MidiConfigUtils {
 		return config.getStringValue(SOUNDBANK_KEY);
 	}
 	
-	public static void setupDialog(TGContext context, Shell parent) {
+	public static void setupDialog(TGContext context, UIWindow parent) {
 		setupDialog(context, parent, getConfig(context));
 	}
 	
-	public static void setupDialog(final TGContext context, final Shell parent, final TGConfigManager config) {
+	public static void setupDialog(final TGContext context, final UIWindow parent, final TGConfigManager config) {
 		final String soundbank = getSoundbankPath(config);
 		
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		dialog.setLayout(new GridLayout());
+		final UIFactory uiFactory = TGApplication.getInstance(context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
+		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("jsa.settings.title"));
 		
 		//------------------SOUNDBANK-----------------------
+		UITableLayout soundbankLayout = new UITableLayout();
+		UILegendPanel soundbankGroup = uiFactory.createLegendPanel(dialog);
+		soundbankGroup.setLayout(soundbankLayout);
+		soundbankGroup.setText(TuxGuitar.getProperty("jsa.settings.soundbank.tip"));
+		dialogLayout.set(soundbankGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, null, null);
 		
-		Group group = new Group(dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout());
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		group.setText(TuxGuitar.getProperty("jsa.settings.soundbank.tip"));
-		
-		final Button sbDefault = new Button(group,SWT.RADIO);
+		final UIRadioButton sbDefault = uiFactory.createRadioButton(soundbankGroup);
 		sbDefault.setText(TuxGuitar.getProperty("jsa.settings.soundbank.default"));
-		sbDefault.setSelection( (soundbank == null) );
+		sbDefault.setSelected( (soundbank == null) );
+		soundbankLayout.set(sbDefault, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 2);
+		soundbankLayout.set(sbDefault, UITableLayout.PACKED_WIDTH, 0f);
 		
-		final Button sbCustom = new Button(group,SWT.RADIO);
+		final UIRadioButton sbCustom = uiFactory.createRadioButton(soundbankGroup);
 		sbCustom.setText(TuxGuitar.getProperty("jsa.settings.soundbank.custom"));
-		sbCustom.setSelection( (soundbank != null) );
+		sbCustom.setSelected( (soundbank != null) );
+		soundbankLayout.set(sbCustom, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 2);
+		soundbankLayout.set(sbCustom, UITableLayout.PACKED_WIDTH, 0f);
 		
-		Composite chooser = new Composite(group,SWT.NONE);
-		chooser.setLayout(new GridLayout(2,false));
+		final UITextField sbCustomPath = uiFactory.createTextField(soundbankGroup);
+		sbCustomPath.setText((soundbank == null ? new String() : soundbank));
+		sbCustomPath.setEnabled( (soundbank != null) );
+		soundbankLayout.set(sbCustomPath, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		
-		final Text sbCustomPath = new Text(chooser,SWT.BORDER);
-		sbCustomPath.setLayoutData(new GridData(350,SWT.DEFAULT));
-		sbCustomPath.setText( (soundbank == null ? new String() : soundbank)  );
-		
-		final Button sbCustomChooser = new Button(chooser,SWT.PUSH);
+		final UIButton sbCustomChooser = uiFactory.createButton(soundbankGroup);
 		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-		sbCustomChooser.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		sbCustomChooser.setEnabled((soundbank != null));
+		sbCustomChooser.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				TGFileChooser.getInstance(context).openChooser(new TGFileChooserHandler() {
 					public void updateFileName(String fileName) {
 						sbCustomPath.setText(fileName);
@@ -79,22 +86,29 @@ public class MidiConfigUtils {
 				}, TGFileChooser.ALL_FORMATS, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
+		soundbankLayout.set(sbCustomChooser, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		
+		UISelectionListener sbRadioSelectionListener = new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				sbCustomPath.setEnabled(sbCustom.isSelected());
+				sbCustomChooser.setEnabled(sbCustom.isSelected());
+			}
+		};
+		sbDefault.addSelectionListener(sbRadioSelectionListener);
+		sbCustom.addSelectionListener(sbRadioSelectionListener);
 		
 		//------------------BUTTONS--------------------------
-		Composite buttons = new Composite(dialog, SWT.NONE);
-		buttons.setLayout(new GridLayout(2,false));
-		buttons.setLayoutData(new GridData(SWT.END,SWT.FILL,true,true));
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		buttons.setLayout(buttonsLayout);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
-		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-		data.minimumWidth = 80;
-		data.minimumHeight = 25;
-		
-		final Button buttonOK = new Button(buttons, SWT.PUSH);
+		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setLayoutData(data);
-		buttonOK.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				String selection = ( sbCustom.getSelection() ? sbCustomPath.getText() : null);
+		buttonOK.setDefaultButton();
+		buttonOK.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				String selection = (sbCustom.isSelected() ? sbCustomPath.getText() : null);
 				
 				boolean changed = false;
 				changed = (selection == null && soundbank != null);
@@ -113,18 +127,18 @@ public class MidiConfigUtils {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		
-		Button buttonCancel = new Button(buttons, SWT.PUSH);
+		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.setLayoutData(data);
-		buttonCancel.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
+		buttonCancel.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
 			}
 		});
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		dialog.setDefaultButton( buttonOK );
-		
-		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
 	}
 }

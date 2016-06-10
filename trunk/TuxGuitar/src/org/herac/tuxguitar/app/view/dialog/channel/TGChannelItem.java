@@ -3,24 +3,26 @@ package org.herac.tuxguitar.app.view.dialog.channel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIFocusEvent;
+import org.herac.tuxguitar.ui.event.UIFocusLostListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UIKnob;
+import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChannelItem {
@@ -28,127 +30,140 @@ public class TGChannelItem {
 	private TGChannel channel;
 	private TGChannelManagerDialog dialog;
 	
-	private Composite composite;
+	private UIPanel composite;
 	
-	private Text nameText;
-	private Combo programCombo;
-	private Combo bankCombo;
+	private UITextField nameText;
+	private UIDropDownSelect<Short> programCombo;
+	private UIDropDownSelect<Short> bankCombo;
 	
-	private Button setupChannelButton;
-	private Button removeChannelButton;
-	private Button percussionButton;
+	private UIButton setupChannelButton;
+	private UIButton removeChannelButton;
+	private UICheckBox percussionButton;
 	
-	private TGScalePopup volumeScale;
-	private TGScalePopup balanceScale;
-	private TGScalePopup reverbScale;
-	private TGScalePopup chorusScale;
-	private TGScalePopup tremoloScale;
-	private TGScalePopup phaserScale;
+	private UIKnob volumeScale;
+	private UIKnob balanceScale;
+	private UIKnob reverbScale;
+	private UIKnob chorusScale;
+	private UIKnob tremoloScale;
+	private UIKnob phaserScale;
 	
 	public TGChannelItem(TGChannelManagerDialog dialog){
 		this.dialog = dialog;
 	}
 	
-	public void show(final Composite parent, Object layoutData){
-		this.composite = new Composite(parent, SWT.BORDER);
-		this.composite.setLayout(this.dialog.createGridLayout(3, false, true, true));
-		this.composite.setLayoutData(layoutData);
+	public void show(final UIContainer parent){
+		UIFactory uiFactory = this.dialog.getUIFactory();
+		UITableLayout uiLayout = new UITableLayout(0f);
+		
+		this.composite = uiFactory.createPanel(parent, true);
+		this.composite.setLayout(uiLayout);
 		
 		// Column 1
-		Composite col1Composite = new Composite(this.composite, SWT.NONE);
-		col1Composite.setLayout(this.dialog.createGridLayout(1,false, true, false));
-		col1Composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout col1Layout = new UITableLayout();
+		UIPanel col1Panel = uiFactory.createPanel(this.composite, false);
+		col1Panel.setLayout(col1Layout);
+		uiLayout.set(col1Panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		
-		this.nameText = new Text(col1Composite, SWT.BORDER | SWT.LEFT);
-		this.nameText.setLayoutData(new GridData(150, SWT.DEFAULT));
-		this.nameText.addFocusListener(new FocusAdapter() {
-			public void focusLost(FocusEvent e) {
+		this.nameText = uiFactory.createTextField(col1Panel);
+		this.nameText.addFocusLostListener(new UIFocusLostListener() {
+			public void onFocusLost(UIFocusEvent event) {
 				checkForNameModified();
 			}
 		});
-		this.nameText.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+		this.nameText.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				checkForNameModified();
 			}
 		});
+		col1Layout.set(this.nameText, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 250f, null, null);
 		
-		this.programCombo = new Combo(col1Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.programCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
-		this.programCombo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.programCombo = uiFactory.createDropDownSelect(col1Panel);
+		this.programCombo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateChannel(false);
 			}
 		});
+		col1Layout.set(this.programCombo, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		this.bankCombo = new Combo(col1Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.bankCombo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
-		this.bankCombo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.bankCombo = uiFactory.createDropDownSelect(col1Panel);
+		this.bankCombo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateChannel(false);
 			}
 		});
+		col1Layout.set(this.bankCombo, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		// Column 2
-		Composite col2Composite = new Composite(this.composite, SWT.NONE);
-		col2Composite.setLayout(this.dialog.createGridLayout(1,false, true, false));
-		col2Composite.setLayoutData(new GridData(SWT.FILL,SWT.BOTTOM,true,true));
+		UITableLayout col2Layout = new UITableLayout();
+		UIPanel col2Panel = uiFactory.createPanel(this.composite, false);
+		col2Panel.setLayout(col2Layout);
+		uiLayout.set(col2Panel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		
-		this.percussionButton = new Button(col2Composite, SWT.CHECK);
-		this.percussionButton.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-		this.percussionButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.percussionButton = uiFactory.createCheckBox(col2Panel);
+		this.percussionButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateChannel(true);
 			}
 		});
+		col2Layout.set(this.percussionButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true);
 		
 		// Column 3
-		Composite col3Composite = new Composite(this.composite, SWT.NONE);
-		col3Composite.setLayout(this.dialog.createGridLayout(1,false, true, false));
-		col3Composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout col3Layout = new UITableLayout();
+		UIPanel col3Panel = uiFactory.createPanel(this.composite, false);
+		col3Panel.setLayout(col3Layout);
+		uiLayout.set(col3Panel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		
-		Composite actionButtonsComposite = new Composite(col3Composite, SWT.NONE);
-		actionButtonsComposite.setLayout(this.dialog.createGridLayout(2, false, true, false));
-		actionButtonsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		UITableLayout actionButtonsLayout = new UITableLayout(0f);
+		UIPanel actionButtonsComposite = uiFactory.createPanel(col3Panel, false);
+		actionButtonsComposite.setLayout(actionButtonsLayout);
+		col3Layout.set(actionButtonsComposite, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_TOP, true, true, 1, 1, null, null, 0f);
 		
-		this.setupChannelButton = new Button(actionButtonsComposite, SWT.PUSH);
-		this.setupChannelButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false));
-		this.setupChannelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.setupChannelButton = uiFactory.createButton(actionButtonsComposite);
+		this.setupChannelButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				setupChannel();
 			}
 		});
+		actionButtonsLayout.set(this.setupChannelButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
-		this.removeChannelButton = new Button(actionButtonsComposite, SWT.PUSH);
-		this.removeChannelButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
-		this.removeChannelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.removeChannelButton = uiFactory.createButton(actionButtonsComposite);
+		this.removeChannelButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				removeChannel();
 			}
 		});
+		actionButtonsLayout.set(this.removeChannelButton, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
-		Composite controllerScalesComposite = new Composite(col3Composite, SWT.NONE);
-		controllerScalesComposite.setLayout(new RowLayout());
-		controllerScalesComposite.setLayoutData(new GridData(SWT.RIGHT,SWT.BOTTOM,true,true));
+		UITableLayout controllerScalesLayout = new UITableLayout(0f);
+		UIPanel controllerScalesComposite = uiFactory.createPanel(col3Panel, false);
+		controllerScalesComposite.setLayout(controllerScalesLayout);
+		col3Layout.set(controllerScalesComposite, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, false, true, 1, 1, null, null, 0f);
 		
-		SelectionListener scaleSelectionListener = new TGScaleSelectionListener(this);
+		TGKnobSelectionListener scaleSelectionListener = new TGKnobSelectionListener(this);
 		
-		this.volumeScale = new TGScalePopup(controllerScalesComposite);
-		this.volumeScale.setSelectionListener(scaleSelectionListener);
+		this.volumeScale = uiFactory.createKnob(controllerScalesComposite);
+		this.volumeScale.addSelectionListener(scaleSelectionListener);
+		controllerScalesLayout.set(this.volumeScale, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.balanceScale = new TGScalePopup(controllerScalesComposite);
-		this.balanceScale.setSelectionListener(scaleSelectionListener);
+		this.balanceScale = uiFactory.createKnob(controllerScalesComposite);
+		this.balanceScale.addSelectionListener(scaleSelectionListener);
+		controllerScalesLayout.set(this.balanceScale, 1, 2, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.reverbScale = new TGScalePopup(controllerScalesComposite);
-		this.reverbScale.setSelectionListener(scaleSelectionListener);
+		this.reverbScale = uiFactory.createKnob(controllerScalesComposite);
+		this.reverbScale.addSelectionListener(scaleSelectionListener);
+		controllerScalesLayout.set(this.reverbScale, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.chorusScale = new TGScalePopup(controllerScalesComposite);
-		this.chorusScale.setSelectionListener(scaleSelectionListener);
+		this.chorusScale = uiFactory.createKnob(controllerScalesComposite);
+		this.chorusScale.addSelectionListener(scaleSelectionListener);
+		controllerScalesLayout.set(this.chorusScale, 1, 4, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.tremoloScale = new TGScalePopup(controllerScalesComposite);
-		this.tremoloScale.setSelectionListener(scaleSelectionListener);
+		this.tremoloScale = uiFactory.createKnob(controllerScalesComposite);
+		this.tremoloScale.addSelectionListener(scaleSelectionListener);
+		controllerScalesLayout.set(this.tremoloScale, 1, 5, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.phaserScale = new TGScalePopup(controllerScalesComposite);
-		this.phaserScale.setSelectionListener(scaleSelectionListener);
+		this.phaserScale = uiFactory.createKnob(controllerScalesComposite);
+		this.phaserScale.addSelectionListener(scaleSelectionListener);
+		controllerScalesLayout.set(this.phaserScale, 1, 6, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		//--------------------------------------------------------------//
 		
@@ -163,29 +178,18 @@ public class TGChannelItem {
 			this.removeChannelButton.setText(TuxGuitar.getProperty("remove"));
 			this.setupChannelButton.setToolTipText(TuxGuitar.getProperty("settings"));
 			
-			this.volumeScale.setText(TuxGuitar.getProperty("instrument.volume"));
-			this.balanceScale.setText(TuxGuitar.getProperty("instrument.balance"));
-			this.reverbScale.setText(TuxGuitar.getProperty("instrument.reverb"));
-			this.chorusScale.setText(TuxGuitar.getProperty("instrument.chorus"));
-			this.tremoloScale.setText(TuxGuitar.getProperty("instrument.tremolo"));
-			this.phaserScale.setText(TuxGuitar.getProperty("instrument.phaser"));
+			this.volumeScale.setToolTipText(TuxGuitar.getProperty("instrument.volume"));
+			this.balanceScale.setToolTipText(TuxGuitar.getProperty("instrument.balance"));
+			this.reverbScale.setToolTipText(TuxGuitar.getProperty("instrument.reverb"));
+			this.chorusScale.setToolTipText(TuxGuitar.getProperty("instrument.chorus"));
+			this.tremoloScale.setToolTipText(TuxGuitar.getProperty("instrument.tremolo"));
+			this.phaserScale.setToolTipText(TuxGuitar.getProperty("instrument.phaser"));
 		}
 	}
 	
 	public void loadIcons(){
 		if(!isDisposed()){
 			this.setupChannelButton.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
-		}
-	}
-	
-	public void resetItems(){
-		if(!isDisposed() ){
-			this.volumeScale.reset();
-			this.balanceScale.reset();
-			this.reverbScale.reset();
-			this.chorusScale.reset();
-			this.tremoloScale.reset();
-			this.phaserScale.reset();
 		}
 	}
 	
@@ -196,7 +200,7 @@ public class TGChannelItem {
 			boolean anyTrackConnectedToChannel = this.getHandle().isAnyTrackConnectedToChannel(getChannel());
 			
 			this.nameText.setText(getChannel().getName());
-			this.percussionButton.setSelection(getChannel().isPercussionChannel());
+			this.percussionButton.setSelected(getChannel().isPercussionChannel());
 			this.percussionButton.setEnabled(!anyTrackConnectedToChannel && (!anyPercussionChannel || getChannel().isPercussionChannel()));
 			this.removeChannelButton.setEnabled(!anyTrackConnectedToChannel);
 			this.setupChannelButton.setEnabled(this.dialog.getChannelSettingsHandlerManager().isChannelSettingsHandlerAvailable());
@@ -217,30 +221,31 @@ public class TGChannelItem {
 		if(!isDisposed() && getChannel() != null){
 			if( this.bankCombo.getItemCount() == 0 ){
 				String bankPrefix = TuxGuitar.getProperty("instrument.bank");
-				for (int i = 0; i < 128; i++) {
-					this.bankCombo.add((bankPrefix + " #" + i));
+				for(short i = 0; i < 128; i++) {
+					this.bankCombo.addItem(new UISelectItem<Short>((bankPrefix + " #" + i), i));
 				}
 			}
 			if( getChannel().getBank() >= 0 && getChannel().getBank() < this.bankCombo.getItemCount() ){
-				this.bankCombo.select(getChannel().getBank());
+				this.bankCombo.setSelectedValue(getChannel().getBank());
 			}
 			this.bankCombo.setEnabled(!getChannel().isPercussionChannel());
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void updateProgramCombo(boolean playerRunning){
 		if(!isDisposed() && getChannel() != null){
+			String programNamesKey = ("programNames");
 			List<String> programNames = getProgramNames();
-			if(!(this.programCombo.getData() instanceof List) || isDifferentList(programNames, (List<String>)this.programCombo.getData())){
-				this.programCombo.removeAll();
-				this.programCombo.setData(programNames);
-				for( int i = 0 ; i < programNames.size() ; i ++ ){
-					this.programCombo.add((String)programNames.get(i));
+			List<String> cachedProgramNames = this.programCombo.getData(programNamesKey);
+			if( cachedProgramNames == null || isDifferentList(programNames, cachedProgramNames)){
+				this.programCombo.removeItems();
+				this.programCombo.setData(programNamesKey, programNames);
+				for(Short i = 0 ; i < programNames.size(); i ++ ){
+					this.programCombo.addItem(new UISelectItem<Short>(programNames.get(i), i));
 				}
 			}
 			if( getChannel().getProgram() >= 0 && getChannel().getProgram() < this.programCombo.getItemCount() ){
-				this.programCombo.select(getChannel().getProgram());
+				this.programCombo.setSelectedValue(getChannel().getProgram());
 			}
 		}
 	}
@@ -287,12 +292,6 @@ public class TGChannelItem {
 		}
 	}
 	
-	public void checkForChannelChanged( TGChannel newChannel ){
-		if( this.channel == null || (newChannel != null && !newChannel.equals(this.channel))){
-			this.resetItems();
-		}
-	}
-	
 	public TGContext getContext() {
 		return this.dialog.getContext();
 	}
@@ -306,11 +305,10 @@ public class TGChannelItem {
 	}
 
 	public void setChannel(TGChannel channel) {
-		this.checkForChannelChanged(channel);
 		this.channel = channel;
 	}
 	
-	public Composite getComposite(){
+	public UIPanel getComposite(){
 		return this.composite;
 	}
 	
@@ -326,22 +324,22 @@ public class TGChannelItem {
 	
 	public void updateChannel(boolean percussionChanged){
 		if( getChannel() != null && !isDisposed() ){			
-			boolean percussionChannel = this.percussionButton.getSelection();
+			boolean percussionChannel = this.percussionButton.isSelected();
 			
-			int bank = getChannel().getBank();
-			int program = getChannel().getProgram();
+			short bank = getChannel().getBank();
+			short program = getChannel().getProgram();
 			if( percussionChanged ){
 				bank = (percussionChannel ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 				program = (percussionChannel ? TGChannel.DEFAULT_PERCUSSION_PROGRAM : TGChannel.DEFAULT_PROGRAM);
 			}else{
 				if(!percussionChannel ){
-					int bankSelection = this.bankCombo.getSelectionIndex();
+					Short bankSelection = this.bankCombo.getSelectedValue();
 					if( bankSelection >= 0 ){
 						bank = bankSelection;
 					}
 				}
 				
-				int programSelection = this.programCombo.getSelectionIndex();
+				Short programSelection = this.programCombo.getSelectedValue();
 				if( programSelection >= 0 ){
 					program = programSelection;
 				}
@@ -349,8 +347,8 @@ public class TGChannelItem {
 			
 			getHandle().updateChannel(
 				getChannel().getChannelId(), 
-				(short)bank,
-				(short)program,
+				bank,
+				program,
 				(short)this.volumeScale.getValue(),
 				(short)this.balanceScale.getValue(),
 				(short)this.chorusScale.getValue(),
@@ -372,7 +370,7 @@ public class TGChannelItem {
 		if( getChannel() != null && !isDisposed() ){
 			TGChannelSettingsDialog settingsDialog = this.dialog.getChannelSettingsHandlerManager().findChannelSettingsDialog(getChannel());
 			if( settingsDialog != null ){
-				settingsDialog.show(this.dialog.getShell());
+				settingsDialog.show(this.dialog.getWindow());
 			}
 		}
 	}

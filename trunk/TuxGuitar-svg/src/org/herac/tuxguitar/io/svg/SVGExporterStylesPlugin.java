@@ -12,6 +12,6 @@ public class SVGExporterStylesPlugin extends TGSongStreamSettingsHandlerPlugin {
 	}
 	
 	public TGSongStreamSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException {
-		return new SVGExporterStylesHandler();
+		return new SVGExporterStylesHandler(context);
 	}	
 }

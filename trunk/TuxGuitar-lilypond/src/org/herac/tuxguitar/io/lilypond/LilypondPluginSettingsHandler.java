@@ -12,6 +12,6 @@ public class LilypondPluginSettingsHandler extends TGSongStreamSettingsHandlerPl
 	}
 	
 	public TGSongStreamSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException {
-		return new LilypondSettingsHandler();
+		return new LilypondSettingsHandler(context);
 	}	
 }

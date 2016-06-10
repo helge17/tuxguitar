@@ -86,8 +86,8 @@ public class EditorKit {
 	}
 	
 	public boolean fillSelection(TGAbstractContext context) {
-		int x = context.getAttribute(ATTRIBUTE_X);
-		int y = context.getAttribute(ATTRIBUTE_Y);
+		float x = context.getAttribute(ATTRIBUTE_X);
+		float y = context.getAttribute(ATTRIBUTE_Y);
 		if( x >= 0 && y >= 0 ){
 			TGTrackImpl track = findSelectedTrack(y);
 			if (track != null) {
@@ -114,10 +114,10 @@ public class EditorKit {
 		return false;
 	}
 	
-	private TGTrackImpl findSelectedTrack(int y){
+	private TGTrackImpl findSelectedTrack(float y){
 		TGLayout layout = getTablature().getViewLayout();
 		int number = layout.getTrackNumberAt(y);
-		if(number >= 0){
+		if( number >= 0){
 			return (TGTrackImpl)layout.getSongManager().getTrack(getTablature().getSong(), number);
 		}
 		return null;
@@ -254,8 +254,8 @@ public class EditorKit {
 	}
 	
 	public boolean fillAddOrRemoveBeat(TGAbstractContext context) {
-		int x = context.getAttribute(ATTRIBUTE_X);
-		int y = context.getAttribute(ATTRIBUTE_Y);
+		float x = context.getAttribute(ATTRIBUTE_X);
+		float y = context.getAttribute(ATTRIBUTE_Y);
 		
 //		if(!this.getTablature().isPainting()){
 			TGLayout.TrackPosition pos = this.getTablature().getViewLayout().getTrackPositionAt(y) ;
@@ -374,7 +374,7 @@ public class EditorKit {
 	public boolean fillCreateNoteContext(TGAbstractContext targetContext) {		
 		TGVoiceImpl voice = targetContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		Integer value = targetContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VALUE);
-		int x = targetContext.getAttribute(ATTRIBUTE_X);
+		float x = targetContext.getAttribute(ATTRIBUTE_X);
 		long start = getRealStart(voice, x);
 		
 		Caret caret = this.getTablature().getCaret();
@@ -393,8 +393,8 @@ public class EditorKit {
 	}
 	
 	public boolean updateSelectedMeasure(TGAbstractContext context){
-		int x = context.getAttribute(ATTRIBUTE_X);
-		int y = context.getAttribute(ATTRIBUTE_Y);
+		float x = context.getAttribute(ATTRIBUTE_X);
+		float y = context.getAttribute(ATTRIBUTE_Y);
 		TGMeasureImpl previousSelection = this.selectedMeasure;
 		
 		TGTrackImpl track = this.findSelectedTrack(y);

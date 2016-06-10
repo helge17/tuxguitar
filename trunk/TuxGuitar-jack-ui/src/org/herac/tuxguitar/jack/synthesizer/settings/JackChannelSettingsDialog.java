@@ -4,21 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.DialogUtils;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
@@ -28,6 +17,18 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UICheckBox;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -38,14 +39,16 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	public static final short DEFAULT_INSTRUMENT_CHANNEL_2 = 1;
 	public static final short DEFAULT_PERCUSSION_CHANNEL = 9;
 	
+	public static final String CHANNELS_DATA = "channels";
+	
 	private TGContext context;
 	private TGSong song;
 	private TGChannel channel;
 	private GMChannelRouter router;
-	private Shell dialog;
-	private Combo gmChannel1Combo;
-	private Combo gmChannel2Combo;
-	private Button exclusiveButton;
+	private UIWindow dialog;
+	private UIDropDownSelect<Integer> gmChannel1Combo;
+	private UIDropDownSelect<Integer> gmChannel2Combo;
+	private UICheckBox exclusiveButton;
 	private JackMidiPlayerListener jackMidiPlayerListener;
 	
 	public JackChannelSettingsDialog(TGContext context, TGChannel channel, TGSong song){
@@ -56,55 +59,59 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.jackMidiPlayerListener = new JackMidiPlayerListener(this.context, this);
 	}
 	
-	public void show(final Shell parent) {
+	public void show(UIWindow parent) {
 		this.configureRouter(true);
 		
-		this.dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM);
-		this.dialog.setLayout(new GridLayout(1,false));
-		this.dialog.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		final UITableLayout dialogLayout = new UITableLayout();
+		
+		this.dialog = uiFactory.createWindow(parent, false, false);
+		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("jack.settings.channel.dialog"));
 		
 		//-------------------- GM Channels -------------------------------
-		Group group = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new GridLayout(2,false));
-		group.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout groupLayout = new UITableLayout();
+		UILegendPanel group = uiFactory.createLegendPanel(this.dialog);
+		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("jack.settings.channel.gm.tip"));
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		Label gmChannel1Label = new Label(group, SWT.NULL);
-		gmChannel1Label.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
+		UILabel gmChannel1Label = uiFactory.createLabel(group);
 		gmChannel1Label.setText(TuxGuitar.getProperty("jack.settings.channel.gm.channel.label-1") + ":");
+		groupLayout.set(gmChannel1Label, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.gmChannel1Combo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.gmChannel1Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
-		this.gmChannel1Combo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.gmChannel1Combo = uiFactory.createDropDownSelect(group);
+		this.gmChannel1Combo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateChannel();
 			}
 		});
+		groupLayout.set(this.gmChannel1Combo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		Label gmChannel2Label = new Label(group, SWT.NULL);
-		gmChannel2Label.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,false,true));
+		UILabel gmChannel2Label = uiFactory.createLabel(group);
 		gmChannel2Label.setText(TuxGuitar.getProperty("jack.settings.channel.gm.channel.label-2") + ":");
+		groupLayout.set(gmChannel2Label, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		this.gmChannel2Combo = new Combo(group,SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.gmChannel2Combo.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,false));
-		this.gmChannel2Combo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.gmChannel2Combo = uiFactory.createDropDownSelect(group);
+		this.gmChannel2Combo.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateChannel();
 			}
 		});
+		groupLayout.set(this.gmChannel2Combo, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		//-------------------- Jack Options-------------------------------
-		Group optionsGroup = new Group(this.dialog,SWT.SHADOW_ETCHED_IN);
-		optionsGroup.setLayout(new GridLayout());
-		optionsGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		UITableLayout optionsLayout = new UITableLayout();
+		UILegendPanel optionsGroup = uiFactory.createLegendPanel(this.dialog);
+		optionsGroup.setLayout(optionsLayout);
 		optionsGroup.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(optionsGroup, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.exclusiveButton = new Button(optionsGroup, SWT.CHECK);
+		this.exclusiveButton = uiFactory.createCheckBox(optionsGroup);
 		this.exclusiveButton.setText(TuxGuitar.getProperty("jack.settings.channel.exclusive.port"));
-		this.exclusiveButton.setSelection(isExclusive());
-		this.exclusiveButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		this.exclusiveButton.setSelected(isExclusive());
+		this.exclusiveButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
 				updateExclusive();
 			}
 		});
@@ -116,13 +123,13 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.updateControls();
 		
 		this.addMidiPlayerListener();
-		this.dialog.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent arg0) {
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
 				removeMidiPlayerListener();
 			}
 		});
 		
-		DialogUtils.openDialog(this.dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void addMidiPlayerListener(){
@@ -185,24 +192,19 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void reloadChannelCombo(Combo combo, List<Integer> channels, int selected, String valueKey){
-		if(!(combo.getData() instanceof List) || isDifferentList(channels, (List<Integer>) combo.getData())){
-			combo.removeAll();
-			combo.setData(channels);
-			for( int i = 0 ; i < channels.size() ; i ++ ){
-				combo.add(TuxGuitar.getProperty(valueKey, new String[]{channels.get(i).toString()}));
+	private void reloadChannelCombo(UIDropDownSelect<Integer> combo, List<Integer> channels, int selected, String valueKey){
+		if(!(combo.getData(CHANNELS_DATA) instanceof List) || isDifferentList(channels, (List<Integer>) combo.getData(CHANNELS_DATA))){
+			combo.removeItems();
+			combo.setData(CHANNELS_DATA, channels);
+			for(Integer channel : channels){
+				combo.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty(valueKey, new String[]{channel.toString()}), channel));
 			}
 		}
-		for( int i = 0 ; i < channels.size() ; i ++ ){
-			Integer channel = (Integer)channels.get(i);
-			if( channel.intValue() == selected ){
-				combo.select( i );
-			}
-		}
+		combo.setSelectedValue(selected);
 	}
 	
 	public void updateExclusive(){
-		boolean exclusive = this.exclusiveButton.getSelection();
+		boolean exclusive = this.exclusiveButton.isSelected();
 		
 		this.setChannelParameter(this.channel, JackChannelParameter.PARAMETER_EXCLUSIVE_PORT, Boolean.toString(exclusive));
 		this.removeChannelParameter(this.channel, JackChannelParameter.PARAMETER_GM_CHANNEL_1);
@@ -214,22 +216,12 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.updatePlayerChannels();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void updateChannel(){
-		int channel1 = -1;
-		int channel2 = -1;
-		int channel1Selection = this.gmChannel1Combo.getSelectionIndex();
+		Integer channel1Selection = this.gmChannel1Combo.getSelectedValue();
+		Integer channel2Selection = this.gmChannel2Combo.getSelectedValue();
 		
-		Object channel1Data = this.gmChannel1Combo.getData();
-		if( channel1Selection >= 0 && channel1Data instanceof List && ((List<Integer>)channel1Data).size() > channel1Selection ){
-			channel1 = ((Integer)((List<Integer>)channel1Data).get(channel1Selection)).intValue();
-		}
-		
-		int channel2Selection = this.gmChannel2Combo.getSelectionIndex();
-		Object channel2Data = this.gmChannel2Combo.getData();
-		if( channel2Selection >= 0 && channel2Data instanceof List && ((List<Integer>)channel2Data).size() > channel2Selection ){
-			channel2 = ((Integer)((List<Integer>)channel2Data).get(channel2Selection)).intValue();
-		}
+		int channel1 = (channel1Selection != null ? channel1Selection : -1);
+		int channel2 = (channel2Selection != null ? channel2Selection : -1);
 		
 		setChannelParameter(this.channel, JackChannelParameter.PARAMETER_GM_CHANNEL_1, Integer.toString(channel1));
 		setChannelParameter(this.channel, JackChannelParameter.PARAMETER_GM_CHANNEL_2, Integer.toString(channel2));

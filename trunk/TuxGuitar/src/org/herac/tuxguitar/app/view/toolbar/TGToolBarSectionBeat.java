@@ -1,21 +1,20 @@
 package org.herac.tuxguitar.app.view.toolbar;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGToolBarSectionBeat implements TGToolBarSection {
 	
-	private ToolItem tiedNote;
+	private UIToolCheckableItem tiedNote;
 	
 	public TGToolBarSectionBeat() {
 		super();
 	}
 	
 	public void createSection(final TGToolBar toolBar) {
-		this.tiedNote = new ToolItem(toolBar.getControl(), SWT.CHECK);
+		this.tiedNote = toolBar.getControl().createCheckItem();
 		this.tiedNote.addSelectionListener(toolBar.createActionProcessor(TGChangeTiedNoteAction.NAME));
 		
 		this.loadIcons(toolBar);
@@ -35,6 +34,6 @@ public class TGToolBarSectionBeat implements TGToolBarSection {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		
 		this.tiedNote.setEnabled(!running);
-		this.tiedNote.setSelection(note != null && note.isTiedNote());
+		this.tiedNote.setChecked(note != null && note.isTiedNote());
 	}
 }

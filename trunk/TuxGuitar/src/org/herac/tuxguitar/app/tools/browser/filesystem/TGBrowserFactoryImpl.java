@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.tools.browser.filesystem;
 
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
@@ -27,8 +27,8 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 		return new TGBrowserImpl(TGBrowserSettingsModel.createInstance(data));
 	}
 	
-	public TGBrowserSettings dataDialog(Shell parent) {
-		TGBrowserDataDialog dialog = new TGBrowserDataDialog(context);
+	public TGBrowserSettings dataDialog(UIWindow parent) {
+		TGBrowserDataDialog dialog = new TGBrowserDataDialog(this.context);
 		return dialog.open(parent);
 	}
 }

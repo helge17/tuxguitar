@@ -22,6 +22,7 @@ public class PDFDocument implements PrintDocument{
 	private TGContext context;
 	private TGPainterImpl painter;
 	private TGRectangle bounds;
+	private TGRectangle painterBounds;
 	private OutputStream stream;
 	
 	private Document document;
@@ -31,8 +32,9 @@ public class PDFDocument implements PrintDocument{
 	
 	public PDFDocument(TGContext context, TGRectangle bounds, OutputStream stream){
 		this.context = context;
-		this.bounds = bounds;
 		this.stream = stream;
+		this.bounds = bounds;
+		this.painterBounds = new TGRectangle(0, 0, (bounds.getWidth() - bounds.getX()), (bounds.getHeight() - bounds.getY()));
 		this.painter = new TGPainterImpl();
 	}
 	
@@ -41,14 +43,14 @@ public class PDFDocument implements PrintDocument{
 	}
 	
 	public TGRectangle getBounds(){
-		return this.bounds;
+		return this.painterBounds;
 	}
 	
 	public void pageStart() {
 		this.document.newPage();
-		this.template = this.cb.createTemplate(this.bounds.getWidth(), this.bounds.getHeight());
+		this.template = this.cb.createTemplate(this.painterBounds.getWidth(), this.painterBounds.getHeight());
 		
-		this.graphics = new PdfGraphics2D(this.template, this.bounds.getWidth(), this.bounds.getHeight());
+		this.graphics = new PdfGraphics2D(this.template, this.painterBounds.getWidth(), this.painterBounds.getHeight());
 		this.painter.init(this.graphics);
 	}
 	

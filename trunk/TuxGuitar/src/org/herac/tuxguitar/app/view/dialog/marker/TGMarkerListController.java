@@ -8,7 +8,7 @@ public class TGMarkerListController implements TGToggleViewController {
 	public void toggleView(TGViewContext context) {
 		TGMarkerList view = TGMarkerList.getInstance(context.getContext());
 		if( view.isDisposed()){
-			view.show();
+			view.show(context);
 		} else {
 			view.dispose();
 		}

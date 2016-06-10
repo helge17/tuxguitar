@@ -2,6 +2,7 @@ package org.herac.tuxguitar.midiinput;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
@@ -108,7 +109,7 @@ public class MidiInputPlugin
 
 	protected void doAction(TGContext context)
 	{
-	MiPanel.instance().showDialog(TuxGuitar.getInstance().getShell());
+	MiPanel.instance().showDialog(context, TGWindow.getInstance(context).getWindow());
 	}
 
 

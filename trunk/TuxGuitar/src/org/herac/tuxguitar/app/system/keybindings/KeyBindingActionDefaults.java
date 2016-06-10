@@ -26,6 +26,5 @@ public class KeyBindingActionDefaults {
 			throwable.printStackTrace();
 		}
 		return list;
-
 	}
 }

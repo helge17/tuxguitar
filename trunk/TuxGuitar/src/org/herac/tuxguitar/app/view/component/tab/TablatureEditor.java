@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
-import org.eclipse.swt.widgets.Menu;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.clipboard.ClipBoard;
 import org.herac.tuxguitar.document.TGDocumentManager;
@@ -9,6 +8,7 @@ import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -41,8 +41,9 @@ public class TablatureEditor implements TGEventListener{
 	}
 	
 	private void initMenu(){
-		Menu menu = TuxGuitar.getInstance().getItemManager().getPopupMenu();
-		menu.addMenuListener(getTablature().getEditorKit().getMouseKit());
+		UIPopupMenu uiPopupMenu = TuxGuitar.getInstance().getItemManager().getPopupMenu();
+		uiPopupMenu.addMenuShowListener(getTablature().getEditorKit().getMouseKit());
+		uiPopupMenu.addMenuHideListener(getTablature().getEditorKit().getMouseKit());
 	}
 	
 	public void reloadConfig(){

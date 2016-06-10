@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenClefDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenKeySignatureDialogAction;
@@ -21,67 +11,61 @@ import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogA
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class CompositionMenuItem extends TGMenuItem{
-	private MenuItem compositionMenuItem;
-	private Menu menu;
-	private MenuItem timeSignature;
-	private MenuItem tempo;
-	private MenuItem clef;
-	private MenuItem keySignature;
-	private MenuItem repeatOpen;
-	private MenuItem repeatClose;
-	private MenuItem repeatAlternative;
-	private MenuItem tripletFeel;
+public class CompositionMenuItem extends TGMenuItem {
 	
-	private MenuItem properties;
+	private UIMenuSubMenuItem compositionMenuItem;
+	private UIMenuActionItem timeSignature;
+	private UIMenuActionItem tempo;
+	private UIMenuActionItem clef;
+	private UIMenuActionItem keySignature;
+	private UIMenuActionItem repeatOpen;
+	private UIMenuActionItem repeatClose;
+	private UIMenuActionItem repeatAlternative;
+	private UIMenuActionItem tripletFeel;
+	private UIMenuActionItem properties;
 	
-	public CompositionMenuItem(Shell shell,Menu parent, int style) {
-		this.compositionMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public CompositionMenuItem(UIMenu parent) {
+		this.compositionMenuItem = parent.createSubMenuItem();
 	}
 	
 	public void showItems(){
 		//--TIME SIGNATURE--
-		this.timeSignature = new MenuItem(this.menu, SWT.PUSH);
+		this.timeSignature = this.compositionMenuItem.getMenu().createActionItem();
 		this.timeSignature.addSelectionListener(this.createActionProcessor(TGOpenTimeSignatureDialogAction.NAME));
 		//--TEMPO--
-		this.tempo = new MenuItem(this.menu, SWT.PUSH);
+		this.tempo = this.compositionMenuItem.getMenu().createActionItem();
 		this.tempo.addSelectionListener(this.createActionProcessor(TGOpenTempoDialogAction.NAME));
 		//--CLEF--
-		this.clef = new MenuItem(this.menu, SWT.PUSH);
+		this.clef = this.compositionMenuItem.getMenu().createActionItem();
 		this.clef.addSelectionListener(this.createActionProcessor(TGOpenClefDialogAction.NAME));
 		//--KEY SIGNATURE--
-		this.keySignature = new MenuItem(this.menu, SWT.PUSH);
+		this.keySignature = this.compositionMenuItem.getMenu().createActionItem();
 		this.keySignature.addSelectionListener(this.createActionProcessor(TGOpenKeySignatureDialogAction.NAME));
 		//--TRIPLET FEEL--
-		this.tripletFeel = new MenuItem(this.menu, SWT.PUSH);
+		this.tripletFeel = this.compositionMenuItem.getMenu().createActionItem();
 		this.tripletFeel.addSelectionListener(this.createActionProcessor(TGOpenTripletFeelDialogAction.NAME));
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.compositionMenuItem.getMenu().createSeparator();
 		//--REPEAT OPEN--
-		this.repeatOpen = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatOpen = this.compositionMenuItem.getMenu().createActionItem();
 		this.repeatOpen.addSelectionListener(this.createActionProcessor(TGRepeatOpenAction.NAME));
 		//--REPEAT CLOSE--
-		this.repeatClose = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatClose = this.compositionMenuItem.getMenu().createActionItem();
 		this.repeatClose.addSelectionListener(this.createActionProcessor(TGOpenRepeatCloseDialogAction.NAME));
 		//--REPEAT ALTERNATIVE--
-		this.repeatAlternative = new MenuItem(this.menu, SWT.PUSH);
+		this.repeatAlternative = this.compositionMenuItem.getMenu().createActionItem();
 		this.repeatAlternative.addSelectionListener(this.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
 		
 		//--SEPARATOR--
-		new MenuItem(this.menu, SWT.SEPARATOR);
-		//--INFO--
-		this.properties = new MenuItem(this.menu, SWT.PUSH);
-		this.properties.addSelectionListener(this.createActionProcessor(TGOpenSongInfoDialogAction.NAME));
+		this.compositionMenuItem.getMenu().createSeparator();
 		
-		this.compositionMenuItem.setMenu(this.menu);
+		//--INFO--
+		this.properties = this.compositionMenuItem.getMenu().createActionItem();
+		this.properties.addSelectionListener(this.createActionProcessor(TGOpenSongInfoDialogAction.NAME));
 		
 		this.loadIcons();
 		this.loadProperties();

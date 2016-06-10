@@ -29,6 +29,10 @@ public class MidiSettings {
 		this.provider = provider;
 	}
 	
+	public MidiOutputPortProviderImpl getProvider(){
+		return this.provider;
+	}
+	
 	public MidiSynth getSynth(){
 		return this.provider.getSynth();
 	}

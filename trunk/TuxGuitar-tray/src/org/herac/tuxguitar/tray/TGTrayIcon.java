@@ -3,6 +3,8 @@ package org.herac.tuxguitar.tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 
+import swtimpl.resource.SWTImage;
+
 public class TGTrayIcon {
 	
 	private TrayItem item;
@@ -17,7 +19,7 @@ public class TGTrayIcon {
 	
 	public void loadImage(){
 		if( this.item != null && !this.item.isDisposed() ){
-			this.item.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon24());
+			this.item.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getAppIcon24()).getHandle());
 		}
 	}
 }

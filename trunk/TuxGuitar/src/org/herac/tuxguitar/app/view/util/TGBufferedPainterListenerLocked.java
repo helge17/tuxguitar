@@ -1,17 +1,17 @@
 package org.herac.tuxguitar.app.view.util;
 
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
+import org.herac.tuxguitar.ui.event.UIPaintEvent;
+import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGBufferedPainterListenerLocked extends TGBufferedPainterLocked implements PaintListener {
+public class TGBufferedPainterListenerLocked extends TGBufferedPainterLocked implements UIPaintListener {
 	
-	public TGBufferedPainterListenerLocked(TGContext context, TGBufferedPainterHandle handle) {
+	public TGBufferedPainterListenerLocked(TGContext context, TG2BufferedPainterHandle handle) {
 		super(context, handle);
 	}
-	
-	public void paintControl(PaintEvent e) {
-		this.paintBufferLocked(new TGPainterImpl(e.gc));
+
+	public void onPaint(UIPaintEvent event) {
+		this.paintBufferLocked(new TGPainterImpl(this.getResourceFactory(), event.getPainter()));
 	}
 }

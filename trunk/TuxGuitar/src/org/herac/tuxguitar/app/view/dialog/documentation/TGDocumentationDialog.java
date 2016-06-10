@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import org.eclipse.swt.program.Program;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.resource.TGResourceManager;
@@ -27,7 +27,7 @@ public class TGDocumentationDialog {
 		try {
 			URL url = getIndexUrl();
 			if( url != null ){
-				Program.launch( url.toExternalForm() );
+				TGApplication.getInstance(this.context.getContext()).getApplication().openUrl(url);
 			}
 		} catch (Throwable throwable ) {
 			throw new TGException(throwable);

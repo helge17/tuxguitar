@@ -3,24 +3,24 @@ package org.herac.tuxguitar.app.view.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ToolBar;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -31,7 +31,7 @@ public class TGToolBar implements TGEventListener {
 	
 	private TGContext context;
 	private List<TGToolBarSection> sections;
-	private ToolBar control;
+	private UIToolBar control;
 	
 	private TGSyncProcessLocked loadIconsProcess;
 	private TGSyncProcessLocked loadPropertiesProcess;
@@ -73,14 +73,9 @@ public class TGToolBar implements TGEventListener {
 		this.sections.add(new TGToolBarSectionTransport());
 	}
 	
-	public void createToolBar(Composite parent){
-		FormData formData = new FormData();
-		formData.left = new FormAttachment(0);
-		formData.right = new FormAttachment(100);
-		formData.top = new FormAttachment(0,0);
-		
-		this.control = new ToolBar(parent, SWT.HORIZONTAL | SWT.FLAT | SWT.WRAP);
-		this.control.setLayoutData(formData);
+	public void createToolBar(UIContainer parent){
+		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
+		this.control = uiFactory.createHorizontalToolBar(parent);
 		for(TGToolBarSection section : this.sections) {
 			section.createSection(this);
 		}
@@ -158,19 +153,11 @@ public class TGToolBar implements TGEventListener {
 		return TGDocumentManager.getInstance(getContext()).getSong();
 	}
 	
-	public void layout() {
-		if(!this.isDisposed()) {
-			this.getControl().getParent().layout(true, true);
-		}
-	}
-	
 	public void updateVisibility(boolean visible) {
 		if(!this.isDisposed()) {
-			FormData formData = (FormData) this.getControl().getLayoutData(); 
-			formData.bottom = (visible ? null : new FormAttachment(0));
-			
 			this.getControl().setVisible(visible);
-			this.layout();
+			
+			TGWindow.getInstance(this.context).getWindow().layout();
 		}
 	}
 	
@@ -190,7 +177,7 @@ public class TGToolBar implements TGEventListener {
 		return context;
 	}
 
-	public ToolBar getControl() {
+	public UIToolBar getControl() {
 		return control;
 	}
 	

@@ -1,15 +1,5 @@
-/*
- * Created on 02-dic-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.view.menu.impl;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
@@ -20,59 +10,53 @@ import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
 import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
+import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class EditMenuItem extends TGMenuItem{
 	
-	private MenuItem editMenuItem;
-	private Menu menu; 
-	private MenuItem undo;
-	private MenuItem redo;
-	private MenuItem modeSelection;
-	private MenuItem modeEdition;
-	private MenuItem notNaturalKey;
-	private MenuItem voice1;
-	private MenuItem voice2;
+	private UIMenuSubMenuItem editMenuItem; 
+	private UIMenuActionItem undo;
+	private UIMenuActionItem redo;
+	private UIMenuCheckableItem modeSelection;
+	private UIMenuCheckableItem modeEdition;
+	private UIMenuCheckableItem notNaturalKey;
+	private UIMenuCheckableItem voice1;
+	private UIMenuCheckableItem voice2;
 	
-	public EditMenuItem(Shell shell,Menu parent, int style) {
-		this.editMenuItem = new MenuItem(parent, style);
-		this.menu = new Menu(shell, SWT.DROP_DOWN);
+	public EditMenuItem(UIMenu parent) {
+		this.editMenuItem = parent.createSubMenuItem();
 	}
 	
-	public void showItems(){
+	public void showItems() {
 		//---------------------------------------------------
 		//--UNDO--
-		this.undo = new MenuItem(this.menu, SWT.PUSH);
+		this.undo = this.editMenuItem.getMenu().createActionItem();
 		this.undo.addSelectionListener(this.createActionProcessor(TGUndoAction.NAME));
 		//--REDO--
-		this.redo = new MenuItem(this.menu, SWT.PUSH);
+		this.redo = this.editMenuItem.getMenu().createActionItem();
 		this.redo.addSelectionListener(this.createActionProcessor(TGRedoAction.NAME));
 		//--SEPARATOR
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.editMenuItem.getMenu().createSeparator();
 		//--TABLATURE EDIT MODE
-		this.modeSelection = new MenuItem(this.menu, SWT.RADIO);
+		this.modeSelection = this.editMenuItem.getMenu().createRadioItem();
 		this.modeSelection.addSelectionListener(this.createActionProcessor(TGSetMouseModeSelectionAction.NAME));
 		//--SCORE EDIT MODE
-		this.modeEdition = new MenuItem(this.menu, SWT.RADIO);
+		this.modeEdition = this.editMenuItem.getMenu().createRadioItem();
 		this.modeEdition.addSelectionListener(this.createActionProcessor(TGSetMouseModeEditionAction.NAME));
 		//--NATURAL NOTES
-		this.notNaturalKey = new MenuItem(this.menu, SWT.CHECK);
+		this.notNaturalKey = this.editMenuItem.getMenu().createCheckItem();
 		this.notNaturalKey.addSelectionListener(this.createActionProcessor(TGSetNaturalKeyAction.NAME));
 		//--SEPARATOR
-		new MenuItem(this.menu, SWT.SEPARATOR);
+		this.editMenuItem.getMenu().createSeparator();
 		//--VOICE 1
-		this.voice1 = new MenuItem(this.menu, SWT.RADIO);
+		this.voice1 = this.editMenuItem.getMenu().createRadioItem();
 		this.voice1.addSelectionListener(this.createActionProcessor(TGSetVoice1Action.NAME));
 		//--VOICE 2
-		this.voice2 = new MenuItem(this.menu, SWT.RADIO);
+		this.voice2 = this.editMenuItem.getMenu().createRadioItem();
 		this.voice2.addSelectionListener(this.createActionProcessor(TGSetVoice2Action.NAME));
-		
-		this.editMenuItem.setMenu(this.menu);
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -83,14 +67,14 @@ public class EditMenuItem extends TGMenuItem{
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
 		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
-		this.modeSelection.setSelection(kit.getMouseMode() == EditorKit.MOUSE_MODE_SELECTION);
+		this.modeSelection.setChecked(kit.getMouseMode() == EditorKit.MOUSE_MODE_SELECTION);
 		this.modeSelection.setEnabled(!running);
-		this.modeEdition.setSelection(kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
+		this.modeEdition.setChecked(kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
 		this.modeEdition.setEnabled(!running);
-		this.notNaturalKey.setSelection(!kit.isNatural());
+		this.notNaturalKey.setChecked(!kit.isNatural());
 		this.notNaturalKey.setEnabled(!running && kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
-		this.voice1.setSelection(kit.getTablature().getCaret().getVoice() == 0);
-		this.voice2.setSelection(kit.getTablature().getCaret().getVoice() == 1);
+		this.voice1.setChecked(kit.getTablature().getCaret().getVoice() == 0);
+		this.voice2.setChecked(kit.getTablature().getCaret().getVoice() == 1);
 	}
 	
 	public void loadProperties(){
