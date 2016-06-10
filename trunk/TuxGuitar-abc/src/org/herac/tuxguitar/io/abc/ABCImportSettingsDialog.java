@@ -14,9 +14,8 @@ import org.eclipse.swt.widgets.Spinner;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
-
-import swtimpl.widget.SWTWindow;
 
 public class ABCImportSettingsDialog {
 	

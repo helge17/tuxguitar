@@ -2,11 +2,10 @@ package org.herac.tuxguitar.cocoa.toolbar;
 
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
+import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
-
-import swtimpl.widget.SWTWindow;
 
 public class MacToolbarPlugin implements TGPlugin {
 	

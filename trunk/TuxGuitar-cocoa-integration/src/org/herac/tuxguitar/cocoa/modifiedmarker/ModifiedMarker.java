@@ -9,9 +9,8 @@ import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
-
-import swtimpl.widget.SWTWindow;
 
 public class ModifiedMarker implements TGEventListener {
 	

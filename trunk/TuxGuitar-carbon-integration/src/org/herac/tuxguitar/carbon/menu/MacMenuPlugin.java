@@ -3,12 +3,11 @@ package org.herac.tuxguitar.carbon.menu;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.carbon.TGCarbonIntegrationPlugin;
+import org.herac.tuxguitar.ui.swt.SWTApplication;
+import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
-
-import swtimpl.SWTApplication;
-import swtimpl.widget.SWTWindow;
 
 public class MacMenuPlugin implements TGPlugin {
 	
