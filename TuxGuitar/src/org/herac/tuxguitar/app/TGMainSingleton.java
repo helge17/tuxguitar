@@ -56,7 +56,7 @@ public class TGMainSingleton {
 	}
 	
 	public void launchTuxGuitar(URL url) {
-		TuxGuitar.getInstance().displayGUI(url);
+		TuxGuitar.getInstance().createApplication(url);
 	}
 	
 	public void joinTuxGuitar(URL url) {

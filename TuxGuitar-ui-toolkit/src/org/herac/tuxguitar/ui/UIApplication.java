@@ -10,6 +10,8 @@ public interface UIApplication extends UIComponent {
 	
 	void openUrl(URL url);
 	
+	void start(Runnable runnable);
+	
 	void runInUiThread(Runnable runnable);
 	
 	boolean isInUiThread();
