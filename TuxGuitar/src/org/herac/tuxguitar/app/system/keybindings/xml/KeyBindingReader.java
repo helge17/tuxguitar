@@ -13,7 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.ui.resource.UIKey;
 import org.herac.tuxguitar.ui.resource.UIKeyConvination;
-import org.herac.tuxguitar.ui.resource.UIKeyMask;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -24,9 +23,8 @@ public class KeyBindingReader {
 	
 	private static final String SHORTCUT_TAG = "shortcut";
 	private static final String SHORTCUT_ATTRIBUTE_ACTION = "action";
-	private static final String SHORTCUT_ATTRIBUTE_KEY = "key";
-	private static final String SHORTCUT_ATTRIBUTE_MASK = "mask";
-	private static final String MASK_SEPARATOR = ",";
+	private static final String SHORTCUT_ATTRIBUTE_KEYS = "keys";
+	private static final String KEY_SEPARATOR = " ";
 	
 	public static List<KeyBindingAction>getKeyBindings(String fileName) {
 		try{
@@ -101,30 +99,24 @@ public class KeyBindingReader {
 			if (nodeName.equals(SHORTCUT_TAG)) {
 				NamedNodeMap params = child.getAttributes();
 				
-				Node nodeKey = params.getNamedItem(SHORTCUT_ATTRIBUTE_KEY);
-				Node nodeMask = params.getNamedItem(SHORTCUT_ATTRIBUTE_MASK);
+				Node nodeKeys = params.getNamedItem(SHORTCUT_ATTRIBUTE_KEYS);
 				Node nodeAction = params.getNamedItem(SHORTCUT_ATTRIBUTE_ACTION);
-				if( nodeKey != null && nodeAction != null){
+				if( nodeKeys != null && nodeAction != null){
 					String action = nodeAction.getNodeValue();
-					String key = nodeKey.getNodeValue();
+					String keys = nodeKeys.getNodeValue();
 					
-					if (key != null && action != null) {
-						UIKey uiKey = new UIKey(Integer.parseInt(key));
-						UIKeyMask uiKeyMask = new UIKeyMask();
+					if (keys != null && action != null) {
+						UIKeyConvination uiKeyMask = new UIKeyConvination();
 						
-						if( nodeMask != null ) {
-							String mask = nodeMask.getNodeValue();
-							if( mask != null && mask.length() > 0 ) {
-								String[] maskKeys = mask.toString().split(MASK_SEPARATOR);
-								for(String maskKey : maskKeys) {
-									String maskKeyTrimmed = maskKey.trim();
-									if( maskKeyTrimmed.length() > 0 ) {
-										uiKeyMask.getKeys().add(new UIKey(Integer.parseInt(maskKeyTrimmed)));
-									}
-								}
+						String[] keyCodes = keys.toString().split(KEY_SEPARATOR);
+						for(String keyCode : keyCodes) {
+							String keyCodeTrimmed = keyCode.trim();
+							if( keyCodeTrimmed.length() > 0 ) {
+								uiKeyMask.getKeys().add(new UIKey(keyCodeTrimmed));
 							}
 						}
-						list.add(new KeyBindingAction(action, new UIKeyConvination(uiKey, uiKeyMask)));
+						
+						list.add(new KeyBindingAction(action, uiKeyMask));
 					}
 				}
 			}

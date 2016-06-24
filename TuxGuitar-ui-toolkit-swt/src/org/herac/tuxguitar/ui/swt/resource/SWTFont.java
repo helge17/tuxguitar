@@ -58,14 +58,14 @@ public class SWTFont extends SWTComponent<Font> implements UIFont {
 		if( name != null && name.length() > 0 ) {
 			return name;
 		}
-		
-		Font systemFont = device.getSystemFont();
-		if( systemFont != null ) {
-			FontData[] fd = systemFont.getFontData();
-			if( fd != null && fd.length > 0 ) {
-				return fd[0].getName();
-			}
-		}
-		return null;
+//		
+//		Font systemFont = device.getSystemFont();
+//		if( systemFont != null ) {
+//			FontData[] fd = systemFont.getFontData();
+//			if( fd != null && fd.length > 0 ) {
+//				return fd[0].getName();
+//			}
+//		}
+		return "";
 	}
 }

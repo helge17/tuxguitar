@@ -17,7 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyMask;
+import org.herac.tuxguitar.ui.resource.UIKeyConvination;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -27,9 +27,8 @@ public class KeyBindingWriter {
 	private static final String SHORTCUT_ROOT = "shortcuts";
 	private static final String SHORTCUT_TAG = "shortcut";
 	private static final String SHORTCUT_ATTRIBUTE_ACTION = "action";
-	private static final String SHORTCUT_ATTRIBUTE_KEY = "key";
-	private static final String SHORTCUT_ATTRIBUTE_MASK = "mask";
-	private static final String MASK_SEPARATOR = ",";
+	private static final String SHORTCUT_ATTRIBUTE_KEYS = "keys";
+	private static final String KEY_SEPARATOR = " ";
 	
 	public static void setBindings(List<KeyBindingAction> list,String fileName) {
 		try{
@@ -86,32 +85,26 @@ public class KeyBindingWriter {
 			Node node = document.createElement(SHORTCUT_TAG);
 			shortcutsNode.appendChild(node);
 			
-			Attr attrKey = document.createAttribute(SHORTCUT_ATTRIBUTE_KEY);
+			Attr attrKeys = document.createAttribute(SHORTCUT_ATTRIBUTE_KEYS);
 			Attr attrAction = document.createAttribute(SHORTCUT_ATTRIBUTE_ACTION);
 			
-			attrKey.setNodeValue(Integer.toString(keyBindingAction.getConvination().getKey().getCode()));
+			attrKeys.setNodeValue(toString(keyBindingAction.getConvination()));
 			attrAction.setNodeValue(keyBindingAction.getAction());
 			
-			node.getAttributes().setNamedItem(attrKey);
+			node.getAttributes().setNamedItem(attrKeys);
 			node.getAttributes().setNamedItem(attrAction);
-			
-			if( keyBindingAction.getConvination().getMask() != null && !keyBindingAction.getConvination().getMask().getKeys().isEmpty()) {
-				Attr attrMask = document.createAttribute(SHORTCUT_ATTRIBUTE_MASK);
-				attrMask.setNodeValue(toString(keyBindingAction.getConvination().getMask()));
-				node.getAttributes().setNamedItem(attrMask);
-			}
 		}
 		document.appendChild(shortcutsNode);
 	}
 	
-	private static String toString(UIKeyMask mask) {
-		StringBuffer sb = new StringBuffer();
-		for(UIKey key : mask.getKeys()) {
-			if( sb.length() > 0 ) {
-				sb.append(MASK_SEPARATOR);
+	private static String toString(UIKeyConvination convination) {
+		StringBuffer fullMask = new StringBuffer();
+		for(UIKey key : convination.getKeys()){
+			if( fullMask.length() > 0 ) {
+				fullMask.append(KEY_SEPARATOR);
 			}
-			sb.append(key.getCode());
+			fullMask.append(key.toString());
 		}
-		return sb.toString();
+		return fullMask.toString();
 	}
 }

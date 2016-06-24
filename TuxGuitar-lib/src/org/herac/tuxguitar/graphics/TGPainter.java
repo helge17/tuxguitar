@@ -22,17 +22,17 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public void drawImage(TGImage image, float x, float y);
 	
-	public void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
+	public void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1);
 	
-	public void lineTo(float arg0, float arg1);
+	public void lineTo(float x, float y);
 	
-	public void moveTo(float arg0, float arg1);
+	public void moveTo(float x, float y);
 	
-	public void addString(String arg0, float arg1, float arg2, TGFont arg3);
+	public void addString(String text, float x, float y, TGFont font);
 	
-	public void addArc(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
+	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle);
 	
-	public void addOval(float arg0, float arg1, float arg2, float arg3);
+	public void addOval(float x, float y, float width, float height);
 	
 	public void addRectangle(float x,float y,float width,float height);
 	

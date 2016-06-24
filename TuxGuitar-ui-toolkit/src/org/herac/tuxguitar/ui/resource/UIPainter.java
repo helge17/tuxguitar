@@ -32,7 +32,7 @@ public interface UIPainter extends UIResource {
 	
 	void addArc(float x, float y, float width, float height, float startAngle, float arcAngle);
 	
-	void addOval(float arg0, float arg1, float arg2, float arg3);
+	void addOval(float x, float y, float width, float height);
 	
 	void addRectangle(float x,float y,float width,float height);
 	

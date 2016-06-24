@@ -39,9 +39,10 @@ public class TGMeasureBuffer {
 		return bufferedPainter;
 	}
 	
-	public void paintBuffer(TGResourceBuffer resourceBuffer, TGPainter painter,float x,float y,float srcY){
+	public void paintBuffer(TGResourceBuffer resourceBuffer, TGPainter painter,float x,float y /*,float srcY*/){
 		TGImage buffer = resourceBuffer.getResource(this.getRegistryKey());
-		painter.drawImage(buffer, 0, srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
+//		painter.drawImage(buffer, 0, srcY, this.width, (this.height - srcY), x, (y + srcY), this.width, (this.height - srcY));
+		painter.drawImage(buffer, x, y);
 	}
 	
 	public boolean isDisposed(TGResourceBuffer resourceBuffer){

@@ -3,7 +3,6 @@ package org.herac.tuxguitar.ui.swt.resource;
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.ui.resource.UIKey;
 import org.herac.tuxguitar.ui.resource.UIKeyConvination;
-import org.herac.tuxguitar.ui.resource.UIKeyMask;
 
 public class SWTKey {
 	
@@ -50,31 +49,49 @@ public class SWTKey {
 				return keyMap.getKey();
 			}
 		}
-		return new UIKey(keyCode & 0xffff);
+		return new UIKey(Character.toString((char) (keyCode & 0xffff)));
 	}
 	
-	public UIKeyMask getKeyMask(int keyCode, int stateMask) {
-		UIKeyMask mask = new UIKeyMask();
-		
+//	public UIKeyMask getKeyMask(int keyCode, int stateMask) {
+//		UIKeyMask mask = new UIKeyMask();
+//		
+//		if((stateMask & keyCode) == 0) {
+//			if((stateMask & SWT.ALT) != 0) {
+//				mask.getKeys().add(UIKey.ALT);
+//			}
+//			if((stateMask & SWT.SHIFT) != 0) {
+//				mask.getKeys().add(UIKey.SHIFT);
+//			}
+//			if((stateMask & SWT.CONTROL) != 0) {
+//				mask.getKeys().add(UIKey.CONTROL);
+//			}
+//			if((stateMask & SWT.COMMAND) != 0) {
+//				mask.getKeys().add(UIKey.COMMAND);
+//			}
+//		}
+//		return mask;
+//	}
+//	
+	public UIKeyConvination getConvination(int keyCode, int stateMask) {
+		UIKeyConvination keyConvination = new UIKeyConvination();
 		if((stateMask & keyCode) == 0) {
 			if((stateMask & SWT.ALT) != 0) {
-				mask.getKeys().add(UIKey.ALT);
+				keyConvination.getKeys().add(UIKey.ALT);
 			}
 			if((stateMask & SWT.SHIFT) != 0) {
-				mask.getKeys().add(UIKey.SHIFT);
+				keyConvination.getKeys().add(UIKey.SHIFT);
 			}
 			if((stateMask & SWT.CONTROL) != 0) {
-				mask.getKeys().add(UIKey.CONTROL);
+				keyConvination.getKeys().add(UIKey.CONTROL);
 			}
 			if((stateMask & SWT.COMMAND) != 0) {
-				mask.getKeys().add(UIKey.COMMAND);
+				keyConvination.getKeys().add(UIKey.COMMAND);
 			}
 		}
-		return mask;
-	}
-	
-	public UIKeyConvination getConvination(int keyCode, int stateMask) {
-		return new UIKeyConvination(this.getKey(keyCode), this.getKeyMask(keyCode, stateMask));
+		
+		keyConvination.getKeys().add(this.getKey(keyCode));
+		
+		return keyConvination;
 	}
 	
 	private static class SWTKeyMap {
