@@ -12,6 +12,5 @@ public class TGMain {
 		
 		TuxGuitar.getInstance().displayGUI(argumentParser.getURL());
 		System.exit(0);
-	}
-	
+	}	
 }

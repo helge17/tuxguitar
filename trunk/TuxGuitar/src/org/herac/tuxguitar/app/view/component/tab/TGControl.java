@@ -90,16 +90,7 @@ public class TGControl {
 			}
 		});
 		
-//		layout.set(UITableLayout.MARGIN_TOP, 0f);
-//		layout.set(UITableLayout.MARGIN_BOTTOM, 0f);
-//		layout.set(UITableLayout.MARGIN_LEFT, 0f);
-//		layout.set(UITableLayout.MARGIN_RIGHT, 0f);
-		
 		layout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
-//		layout.set(this.canvas, UITableLayout.MARGIN_TOP, 0f);
-//		layout.set(this.canvas, UITableLayout.MARGIN_BOTTOM, 0f);
-//		layout.set(this.canvas, UITableLayout.MARGIN_LEFT, 0f);
-//		layout.set(this.canvas, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 	
 	public void paintTablature(TGPainter painter){

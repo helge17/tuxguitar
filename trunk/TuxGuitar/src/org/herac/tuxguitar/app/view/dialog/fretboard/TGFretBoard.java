@@ -155,7 +155,10 @@ public class TGFretBoard {
 		this.handSelector.setSelectedItem(new UISelectItem<Integer>(null, this.getDirection(this.config.getDirection())));
 		this.handSelector.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				updateDirection(TGFretBoard.this.handSelector.getSelectedItem().getValue());
+				Integer direction = TGFretBoard.this.handSelector.getSelectedValue();
+				if( direction != null ) {
+					updateDirection(direction);
+				}
 			}
 		});
 		this.createToolItemLayout(this.handSelector, ++column);
