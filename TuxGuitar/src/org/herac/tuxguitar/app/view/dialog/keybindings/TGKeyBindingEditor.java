@@ -51,7 +51,7 @@ public class TGKeyBindingEditor {
 		this.table = uiFactory.createTable(this.dialog, true);
 		this.table.setColumns(2);
 		this.table.setColumnName(0, TuxGuitar.getProperty("key-bindings-editor-action-column"));
-		this.table.setColumnName(0, TuxGuitar.getProperty("key-bindings-editor-shortcut-column"));
+		this.table.setColumnName(1, TuxGuitar.getProperty("key-bindings-editor-shortcut-column"));
 		this.table.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
 			public void onMouseDoubleClick(UIMouseEvent event) {
 				final KeyBindingAction kbAction = TGKeyBindingEditor.this.table.getSelectedValue();
