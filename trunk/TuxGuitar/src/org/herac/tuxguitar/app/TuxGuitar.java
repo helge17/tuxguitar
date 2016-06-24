@@ -99,40 +99,52 @@ public class TuxGuitar {
 		return instance;
 	}
 	
-	public void displayGUI(URL url) {		
-		// Priority 1 ----------------------------------------------//
+	public void createApplication(final URL url) {
+		this.createMainContext();
+		this.createUIContext(url);
+	}
+	
+	private void createMainContext() {
 		TGResourceManager.getInstance(this.context).setResourceLoader(TGClassLoader.getInstance(this.context));
 		TGFileUtils.loadLibraries(this.context);
 		TGFileUtils.loadClasspath(this.context);
 		TGErrorAdapter.initialize(this.context);
 		TGPropertiesAdapter.initialize(this.context);
 		TGVarAdapter.initialize(this.context);
-		
-		// Priority 2 ----------------------------------------------//		
+	}
+	
+	private void createUIContext(final URL url) {
 		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context));
+		TGApplication.getInstance(TuxGuitar.this.context).getApplication().start(new Runnable() {
+			public void run() {
+				TuxGuitar.this.startUIContext(url);
+			}
+		});
+	}
+	
+	private void startUIContext(URL url) {
+		TGSplash.getInstance(TuxGuitar.this.context).init();
 		
-		TGSplash.getInstance(this.context).init();
-		
-		TGWindow.getInstance(this.context).createWindow();
+		TGWindow.getInstance(TuxGuitar.this.context).createWindow();
 		
 		// Priority 3 ----------------------------------------------//
 		this.initMidiPlayer();
-		this.getEditorManager().setLockControl(this.lock);
+		this.getEditorManager().setLockControl(TuxGuitar.this.lock);
 		this.getActionAdapterManager().initialize();
 		this.getPluginManager().connectEnabled();
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
 		
-		TGSplash.getInstance(this.context).finish();
+		TGSplash.getInstance(TuxGuitar.this.context).finish();
 		
 		// Priority 4 ----------------------------------------------//
-		TGWindow.getInstance(this.context).open();
+		TGWindow.getInstance(TuxGuitar.this.context).open();
 		
 		this.startSong(url);
-		this.setInitialized( true );
+		this.setInitialized(true);
 		
-		TGWindow.getInstance(this.context).getWindow().join();
-		TGApplication.getInstance(this.context).getApplication().dispose();
+		TGWindow.getInstance(TuxGuitar.this.context).getWindow().join();
+		TGApplication.getInstance(TuxGuitar.this.context).getApplication().dispose();
 	}
 	
 	private void startSong(URL url){

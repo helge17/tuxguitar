@@ -10,7 +10,7 @@ public class TGMain {
 			return;
 		}
 		
-		TuxGuitar.getInstance().displayGUI(argumentParser.getURL());
+		TuxGuitar.getInstance().createApplication(argumentParser.getURL());
 		System.exit(0);
 	}	
 }

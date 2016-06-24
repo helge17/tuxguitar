@@ -50,4 +50,14 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 		Thread currentThread = Thread.currentThread();
 		return (currentThread == uiThread);
 	}
+	
+	public void start(Runnable runnable) {
+		this.runInUiThread(runnable);
+		
+		while(!this.isDisposed()) {
+			if(!this.getDisplay().readAndDispatch()) {
+				this.getControl().sleep();
+			}
+		}
+	}
 }

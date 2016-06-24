@@ -203,13 +203,7 @@ public class Tablature implements TGController {
 			getViewLayout().disposeLayout();
 		}
 		this.viewLayout = viewLayout;
-		/*
-		if(this.getHorizontalBar() != null){
-			this.getHorizontalBar().setSelection(0);
-		}
-		if(this.getVerticalBar() != null){
-			this.getVerticalBar().setSelection(0);
-		}*/
+		
 		this.reloadStyles();
 	}
 	

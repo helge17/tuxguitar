@@ -22,15 +22,15 @@ public interface UIPainter extends UIResource {
 	
 	void drawImage(UIImage image, float x, float y);
 	
-	void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
+	void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1);
 	
-	void lineTo(float arg0, float arg1);
+	void lineTo(float x, float y);
 	
-	void moveTo(float arg0, float arg1);
+	void moveTo(float x, float y);
 	
-	void addString(String arg0, float arg1, float arg2, UIFont arg3);
+	void addString(String text, float x, float y, UIFont font);
 	
-	void addArc(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
+	void addArc(float x, float y, float width, float height, float startAngle, float arcAngle);
 	
 	void addOval(float arg0, float arg1, float arg2, float arg3);
 	
