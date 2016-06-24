@@ -635,7 +635,8 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 			if( bufferEnabled ){
 				painter.setBackground(layout.getResources().getBackgroundColor());
-				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+//				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
+				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY());
 			}
 			
 			this.paintMarker(layout, painter);

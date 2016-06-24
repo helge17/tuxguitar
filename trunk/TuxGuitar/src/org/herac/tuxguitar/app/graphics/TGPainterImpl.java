@@ -76,8 +76,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.handle.addString(arg0, arg1, arg2, ((TGFontImpl) font).getHandle());
 	}
 
-	public void addArc(float arg0, float arg1, float arg2, float arg3,
-			float arg4, float arg5) {
+	public void addArc(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
 		this.handle.addArc(arg0, arg1, arg2, arg3, arg4, arg5);
 	}
 

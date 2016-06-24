@@ -1,61 +1,65 @@
 package org.herac.tuxguitar.ui.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UIKeyConvination {
 	
 	private static final String MASK_SEPARATOR = "+";
 	
-	private UIKey key;
-	private UIKeyMask mask;
+	private List<UIKey> keys;
 	
-	public UIKeyConvination(UIKey key, UIKeyMask mask){
-		this.key = key;
-		this.mask = mask;
+	public UIKeyConvination(List<UIKey> keys) {
+		this.keys = new ArrayList<UIKey>();
+		
+		if( keys != null ) {
+			this.keys.addAll(keys);
+		}
 	}
 	
-	public UIKeyConvination(){
-		this(null, null);
+	public UIKeyConvination() {
+		this(new ArrayList<UIKey>());
 	}
 	
-	public UIKey getKey() {
-		return this.key;
+	public List<UIKey> getKeys() {
+		return this.keys;
 	}
 	
-	public void setKey(UIKey key) {
-		this.key = key;
+	public boolean contains(UIKey key) {
+		return this.keys.contains(key);
 	}
 	
-	public UIKeyMask getMask() {
-		return this.mask;
-	}
-	
-	public void setMask(UIKeyMask mask) {
-		this.mask = mask;
-	}
-	
-	public boolean equals(Object o){
+	public boolean equals(Object o) {
 		if( o instanceof UIKeyConvination ) {
-			UIKeyConvination kc = (UIKeyConvination) o;
-			if( this.getMask().equals(kc.getMask()) ){
-				if( this.getKey().equals(kc.getKey()) ){
-					return true;
+			UIKeyConvination keyConvination = (UIKeyConvination) o;
+			if( keyConvination.getKeys().size() == this.getKeys().size()) {
+				for(UIKey key : keyConvination.getKeys()) {
+					if(!this.contains(key)) {
+						return false;
+					}
 				}
+				return true;
 			}
 		}
 		return false;
 	}
 	
-	public String toString(){
+	public String toString(String separator) {
 		StringBuffer fullMask = new StringBuffer();
-		fullMask.append(this.getMask().toString());
-		if( fullMask.length() > 0 ) {
-			fullMask.append(MASK_SEPARATOR);
+		for(UIKey key : this.getKeys()){
+			if( fullMask.length() > 0 ) {
+				fullMask.append(separator);
+			}
+			fullMask.append(key.toString());
 		}
-		fullMask.append(this.getKey().toString());
-		
 		return fullMask.toString();
 	}
 	
+	public String toString() {
+		return this.toString(MASK_SEPARATOR);
+	}
+	
 	public Object clone(){
-		return new UIKeyConvination(getKey(), getMask());
+		return new UIKeyConvination(this.getKeys());
 	}
 }
