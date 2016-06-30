@@ -88,6 +88,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		
