@@ -9,12 +9,12 @@ import org.herac.tuxguitar.ui.UIFactory;
 
 public class SWTApplication extends SWTComponent<Display> implements UIApplication {
 	
-	private UIFactory uiFactory;
+	private UIFactory factory;
 	
 	public SWTApplication() {
 		super(new Display());
 		
-		this.uiFactory = new SWTFactory(this.getControl());
+		this.factory = new SWTFactory(this.getControl());
 	}
 	
 	public void dispose() {
@@ -26,7 +26,7 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 	}
 	
 	public UIFactory getFactory() {
-		return this.uiFactory;
+		return this.factory;
 	}
 
 	public Display getDisplay() {
@@ -52,6 +52,8 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 	}
 	
 	public void start(Runnable runnable) {
+		SWTEnvironment.getInstance().start(this.getDisplay());
+		
 		this.runInUiThread(runnable);
 		
 		while(!this.isDisposed()) {

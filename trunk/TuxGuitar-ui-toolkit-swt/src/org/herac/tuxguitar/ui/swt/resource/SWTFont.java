@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.SWTEnvironment;
 
 public class SWTFont extends SWTComponent<Font> implements UIFont {
 	
@@ -58,14 +59,6 @@ public class SWTFont extends SWTComponent<Font> implements UIFont {
 		if( name != null && name.length() > 0 ) {
 			return name;
 		}
-//		
-//		Font systemFont = device.getSystemFont();
-//		if( systemFont != null ) {
-//			FontData[] fd = systemFont.getFontData();
-//			if( fd != null && fd.length > 0 ) {
-//				return fd[0].getName();
-//			}
-//		}
-		return "";
+		return SWTEnvironment.getInstance().getDefaultFontName();
 	}
 }
