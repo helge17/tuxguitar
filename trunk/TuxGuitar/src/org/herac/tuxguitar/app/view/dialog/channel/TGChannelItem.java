@@ -334,13 +334,13 @@ public class TGChannelItem {
 			}else{
 				if(!percussionChannel ){
 					Short bankSelection = this.bankCombo.getSelectedValue();
-					if( bankSelection >= 0 ){
+					if( bankSelection != null ){
 						bank = bankSelection;
 					}
 				}
 				
 				Short programSelection = this.programCombo.getSelectedValue();
-				if( programSelection >= 0 ){
+				if( programSelection != null ){
 					program = programSelection;
 				}
 			}

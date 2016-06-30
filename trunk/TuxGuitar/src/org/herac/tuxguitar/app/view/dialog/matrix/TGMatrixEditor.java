@@ -19,8 +19,8 @@ import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
@@ -58,7 +58,6 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResource;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIControl;
@@ -82,7 +81,7 @@ public class TGMatrixEditor implements TGEventListener {
 	private static final int SCROLL_INCREMENT = 50;
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_MATRIX);
 	private static final MidiPercussionKey[] PERCUSSIONS = TuxGuitar.getInstance().getPlayer().getPercussionKeys();
-	protected static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
+	private static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
 	private TGContext context;
 	private TGMatrixConfig config;
@@ -307,7 +306,7 @@ public class TGMatrixEditor implements TGEventListener {
 		uiLayout.set(this.editor, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f); 
 	}
 	
-	protected void updateScroll(){
+	private void updateScroll(){
 		if( this.clientArea != null ){
 			UIScrollBar vBar = this.canvasPanel.getVScroll();
 			UIScrollBar hBar = this.canvasPanel.getHScroll();
@@ -318,7 +317,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected int getValueAt(float y){
+	private int getValueAt(float y){
 		if(this.clientArea == null || (y - BORDER_HEIGHT) < 0 || y + BORDER_HEIGHT > this.clientArea.getHeight()){
 			return -1;
 		}
@@ -327,14 +326,14 @@ public class TGMatrixEditor implements TGEventListener {
 		return value;
 	}
 	
-	protected long getStartAt(float x){
+	private long getStartAt(float x){
 		TGMeasure measure = getMeasure();
 		float posX = (x + this.canvasPanel.getHScroll().getValue());
 		long start =(long) (measure.getStart() + (((posX - this.leftSpacing) * measure.getLength()) / (this.timeWidth * measure.getTimeSignature().getNumerator())));
 		return start;
 	}
 	
-	protected void paintEditor(TGPainter painter) {
+	private void paintEditor(TGPainter painter) {
 		this.clientArea = this.editor.getBounds();
 		
 		if( this.clientArea != null ){
@@ -355,7 +354,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected TGImage getBuffer(){
+	private TGImage getBuffer(){
 		if( this.clientArea != null ){
 			this.bufferDisposer.update(this.clientArea.getWidth(), this.clientArea.getHeight());
 			if(this.buffer == null || this.buffer.isDisposed()){
@@ -446,7 +445,7 @@ public class TGMatrixEditor implements TGEventListener {
 		return this.buffer;
 	}
 	
-	protected void paintMeasure(TGPainter painter,float fromX, float fromY){
+	private void paintMeasure(TGPainter painter,float fromX, float fromY){
 		if( this.clientArea != null ){
 			TGMeasure measure = getMeasure();
 			if(measure != null){
@@ -459,7 +458,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void paintBeat(TGPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
+	private void paintBeat(TGPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
 		if( this.clientArea != null ){
 			float minimumY = BORDER_HEIGHT;
 			float maximumY = (this.clientArea.getHeight() - BORDER_HEIGHT);
@@ -492,7 +491,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void paintBorders(TGPainter painter,float fromX, float fromY){
+	private void paintBorders(TGPainter painter,float fromX, float fromY){
 		if( this.clientArea != null ){
 			painter.setBackground(new TGColorImpl(this.config.getColorBorder()));
 			painter.initPath(TGPainter.PATH_FILL);
@@ -508,7 +507,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void paintPosition(TGPainter painter,float fromX, float fromY){
+	private void paintPosition(TGPainter painter,float fromX, float fromY){
 		if( this.clientArea != null && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			Caret caret = getCaret();
 			TGMeasure measure = getMeasure();
@@ -530,7 +529,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void paintSelection(TGPainter painter, float fromX, float fromY){
+	private void paintSelection(TGPainter painter, float fromX, float fromY){
 		if( this.clientArea != null && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			if( this.selection >= 0 ){
 				int x = Math.round( fromX );
@@ -548,7 +547,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void updateSelection(float y){
+	private void updateSelection(float y){
 		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			int previousSelection = this.selection;
 			this.selection = getValueAt(y);
@@ -559,7 +558,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void hit(float x, float y){
+	private void hit(float x, float y){
 		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			int value = getValueAt(y);
 			long start = getStartAt(x);
@@ -658,7 +657,7 @@ public class TGMatrixEditor implements TGEventListener {
 		tgActionProcessor.process();
 	}
 	
-	protected void play(final int value){
+	private void play(final int value){
 		new Thread(new Runnable() {
 			public void run() {
 				TGTrack tgTrack = getMeasure().getTrack();
@@ -680,7 +679,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}).start();
 	}
 	
-	protected int loadGrids(){
+	private int loadGrids(){
 		int grids = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MATRIX_GRIDS);
 		// check if is valid value
 		for(int i = 0 ; i < DIVISIONS.length ; i ++ ){
@@ -691,7 +690,7 @@ public class TGMatrixEditor implements TGEventListener {
 		return DIVISIONS[1];
 	}
 	
-	protected void setGrids(int grids){
+	private void setGrids(int grids){
 		this.grids = grids;
 		this.disposeBuffer();
 		this.redraw();
@@ -701,7 +700,7 @@ public class TGMatrixEditor implements TGEventListener {
 		return this.grids;
 	}
 	
-	protected TGMeasure getMeasure(){
+	private TGMeasure getMeasure(){
 		if(TuxGuitar.getInstance().getPlayer().isRunning()){
 			TGMeasure measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
 			if(measure != null){
@@ -711,7 +710,7 @@ public class TGMatrixEditor implements TGEventListener {
 		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
 	}
 	
-	protected Caret getCaret(){
+	private Caret getCaret(){
 		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 	}
 	
@@ -730,7 +729,7 @@ public class TGMatrixEditor implements TGEventListener {
 		this.redraw();
 	}
 	
-	protected void configure(){
+	private void configure(){
 		this.config.configure(this.dialog);
 	}
 	
@@ -776,37 +775,60 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected void disposeBuffer(){
+	private void disposeBuffer(){
 		if( this.buffer != null && !this.buffer.isDisposed()){
 			this.buffer.dispose();
 			this.buffer = null;
 		}
 	}
 	
-	protected void dispose(UIResource[] resources){
-		if(resources != null){
-			for(int i = 0; i < resources.length; i ++){
-				dispose(resources[i]);
-			}
-		}
-	}
-	
-	protected void dispose(UIResource resource){
-		if(resource != null){
-			resource.dispose();
-		}
-	}
-	
-	protected void disposeAll(){
+	private void disposeAll() {
 		this.disposeBuffer();
 		this.config.dispose();
 	}
 	
-	protected UICanvas getEditor(){
+	private UICanvas getEditor() {
 		return this.editor;
 	}
 	
-	protected class BufferDisposer{
+	public void processRedrawEvent(TGEvent event) {
+		int type = ((Integer)event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
+		if( type == TGRedrawEvent.NORMAL ){
+			this.redraw();
+		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
+			this.redrawPlayingMode();
+		}
+	}
+
+	public void processEvent(final TGEvent event) {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() {
+				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+					loadIcons();
+				}
+				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+					loadProperties();
+				}
+				else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+					processRedrawEvent(event);
+				}
+			}
+		});
+	}
+	
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context).getFactory();
+	}
+	
+	public static TGMatrixEditor getInstance(TGContext context) {
+		return TGSingletonUtil.getInstance(context, TGMatrixEditor.class.getName(), new TGSingletonFactory<TGMatrixEditor>() {
+			public TGMatrixEditor createInstance(TGContext context) {
+				return new TGMatrixEditor(context);
+			}
+		});
+	}
+	
+	private class BufferDisposer {
 		private int numerator;
 		private int denominator;
 		private int track;
@@ -833,15 +855,16 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	protected class DisposeListenerImpl implements UIDisposeListener {
+	private class DisposeListenerImpl implements UIDisposeListener {
 		
 		public void onDispose(UIDisposeEvent event) {
 			TGMatrixEditor.this.disposeAll();
 			TGMatrixEditor.this.removeListeners();
+			TuxGuitar.getInstance().updateCache(true);
 		}
 	}
 	
-	protected class TGMatrixMouseListener implements UIMouseUpListener, UIMouseEnterListener, UIMouseExitListener, UIMouseMoveListener {
+	private class TGMatrixMouseListener implements UIMouseUpListener, UIMouseEnterListener, UIMouseExitListener, UIMouseMoveListener {
 		
 		public TGMatrixMouseListener(){
 			super();
@@ -888,42 +911,5 @@ public class TGMatrixEditor implements TGEventListener {
 		public UICanvas getPaintableControl() {
 			return TGMatrixEditor.this.editor;
 		}
-	}
-	
-	public void processRedrawEvent(TGEvent event) {
-		int type = ((Integer)event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
-		if( type == TGRedrawEvent.NORMAL ){
-			this.redraw();
-		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
-			this.redrawPlayingMode();
-		}
-	}
-
-	public void processEvent(final TGEvent event) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadIcons();
-				}
-				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					loadProperties();
-				}
-				else if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-					processRedrawEvent(event);
-				}
-			}
-		});
-	}
-	
-	public UIFactory getUIFactory() {
-		return TGApplication.getInstance(this.context).getFactory();
-	}
-	
-	public static TGMatrixEditor getInstance(TGContext context) {
-		return TGSingletonUtil.getInstance(context, TGMatrixEditor.class.getName(), new TGSingletonFactory<TGMatrixEditor>() {
-			public TGMatrixEditor createInstance(TGContext context) {
-				return new TGMatrixEditor(context);
-			}
-		});
 	}
 }

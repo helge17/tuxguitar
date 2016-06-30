@@ -180,17 +180,21 @@ public class TGTabFolder implements TGEventListener {
 	}
 	
 	public TGControl findControl(int index) {
-		UITabItem tabItem = this.findTabItem(index);
-		if( tabItem != null ) {
-			return tabItem.getData(TGControl.class.getName());
+		if(!this.isDisposed()) {
+			UITabItem tabItem = this.findTabItem(index);
+			if( tabItem != null ) {
+				return tabItem.getData(TGControl.class.getName());
+			}
 		}
 		return null;
 	}
 	
 	public TGControl findSelectedControl() {
-		int index = this.tabFolder.getSelectedIndex();
-		if( index >= 0 ) {
-			return this.findControl(index);
+		if(!this.isDisposed()) {
+			int index = this.tabFolder.getSelectedIndex();
+			if( index >= 0 ) {
+				return this.findControl(index);
+			}
 		}
 		return null;
 	}

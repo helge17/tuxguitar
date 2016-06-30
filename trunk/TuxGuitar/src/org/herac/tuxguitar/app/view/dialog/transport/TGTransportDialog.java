@@ -232,7 +232,7 @@ public class TGTransportDialog implements TGEventListener {
 	}
 	
 	private void initToolBar(){
-		if( this.toolBar != null){
+		if( this.toolBar != null && !this.toolBar.isDisposed() ){
 			this.toolBar.dispose();
 		}
 		this.toolBar = getUIFactory().createHorizontalToolBar(this.dialog);

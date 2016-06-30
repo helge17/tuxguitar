@@ -53,6 +53,7 @@ public class TGPianoEditor implements TGEventListener{
 		dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
+				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		
