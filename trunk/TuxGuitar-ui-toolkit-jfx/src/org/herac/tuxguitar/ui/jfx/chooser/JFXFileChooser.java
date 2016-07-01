@@ -57,7 +57,7 @@ public class JFXFileChooser implements UIFileChooser {
 	public File createInitialDirectory() {
 		if( this.defaultPath != null ) {
 			File directory = (this.defaultPath.isDirectory() ? this.defaultPath : this.defaultPath.getParentFile());
-			if( directory != null ) {
+			if( directory != null && directory.exists() ) {
 				return directory;
 			}
 		}

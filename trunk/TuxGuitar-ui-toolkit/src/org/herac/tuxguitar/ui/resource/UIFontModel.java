@@ -2,6 +2,8 @@ package org.herac.tuxguitar.ui.resource;
 
 public class UIFontModel {
 	
+	public static final String DEFAULT_NAME = "Default";
+	
 	private String name;
 	private float height;
 	private boolean bold;

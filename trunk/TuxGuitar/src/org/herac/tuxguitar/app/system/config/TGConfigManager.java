@@ -17,7 +17,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	}
 	
 	public void setValue(String key, TGColorModel model){
-		this.setValue(key,(model.getRed() + "," + model.getGreen() + "," + model.getBlue()));
+		this.setValue(key, (model.getRed() + "," + model.getGreen() + "," + model.getBlue()));
 	}
 	
 	public void setValue(String key, UIColorModel model){
@@ -25,7 +25,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	}
 	
 	public void setValue(String key, TGFontModel fm){
-		this.setValue(key, (fm.getName() + "," + fm.getHeight() + "," + fm.isBold() + fm.isItalic()));
+		this.setValue(key, (fm.getName() + "," + fm.getHeight() + "," + fm.isBold() + "," + fm.isItalic()));
 	}
 	
 	public void setValue(String key, UIFontModel fm){
@@ -44,7 +44,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 						boolean bold = Boolean.valueOf(values[2].trim());
 						boolean italic = Boolean.valueOf(values[3].trim());
 						
-						return new TGFontModel((name == null ? "" : name), size, bold, italic);
+						return new TGFontModel((name == null ? UIFontModel.DEFAULT_NAME : name), size, bold, italic);
 					}catch(NumberFormatException e){
 						e.printStackTrace();
 					}

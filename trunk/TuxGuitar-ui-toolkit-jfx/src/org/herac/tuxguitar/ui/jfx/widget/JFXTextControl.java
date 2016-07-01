@@ -15,6 +15,7 @@ public class JFXTextControl<T extends TextInputControl> extends JFXControl<T> {
 		super(control, parent);
 		
 		this.fontProperty = new JFXFontProperty(this.getControl().fontProperty());
+		this.computePackedSize();
 	}
 	
 	public UIFont getFont() {

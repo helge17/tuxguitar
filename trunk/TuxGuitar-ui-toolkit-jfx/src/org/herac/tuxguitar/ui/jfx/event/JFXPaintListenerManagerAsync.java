@@ -13,7 +13,9 @@ public class JFXPaintListenerManagerAsync extends JFXPaintListenerManager {
 	public void fireEvent() {
 		Platform.runLater(new Runnable() {
 			public void run() {
-				JFXPaintListenerManagerAsync.super.fireEvent();
+				if(!JFXPaintListenerManagerAsync.this.getControl().isDisposed()) {
+					JFXPaintListenerManagerAsync.super.fireEvent();
+				}
 			}
 		});
 	}

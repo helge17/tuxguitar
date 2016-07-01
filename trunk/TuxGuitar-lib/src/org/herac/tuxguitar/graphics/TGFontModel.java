@@ -8,7 +8,7 @@ public class TGFontModel {
 	private boolean italic;
 	
 	public TGFontModel(){
-		this(null,0,false,false);
+		this(null, 0, false, false);
 	}
 	
 	public TGFontModel(String name, float height, boolean bold, boolean italic){

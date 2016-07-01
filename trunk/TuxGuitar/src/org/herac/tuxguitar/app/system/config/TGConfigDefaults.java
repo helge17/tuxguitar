@@ -4,6 +4,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardConfig;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 
@@ -12,7 +13,7 @@ public class TGConfigDefaults{
 	public static final String RESOURCE = "config-defaults";
 	public static final String MODULE = "tuxguitar";
 	
-	private static final String DEFAULT_FONT_NAME = "";
+	private static final String DEFAULT_FONT_NAME = UIFontModel.DEFAULT_NAME;
 	
 	public static TGProperties createDefaults(){
 		TGPropertiesManager propertiesManager = TuxGuitar.getInstance().getPropertiesManager();

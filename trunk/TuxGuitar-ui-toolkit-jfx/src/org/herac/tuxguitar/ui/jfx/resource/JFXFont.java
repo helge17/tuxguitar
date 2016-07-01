@@ -43,9 +43,9 @@ public class JFXFont extends JFXComponent<UIFontModel> implements UIFont {
 	}
 	
 	public static String checkName(String name) {
-		if( name != null && name.length() > 0 ) {
+		if( name != null && name.length() > 0 && !UIFontModel.DEFAULT_NAME.equals(name)) {
 			return name;
 		}
-		return Font.getDefault().getFamily();
+		return Font.getDefault().getName();
 	}
 }

@@ -196,8 +196,8 @@ public abstract class JFXNode<T extends Node> extends JFXComponent<T> implements
 		
 		area.getPosition().setX(childArea.getX() - bounds.getX());
 		area.getPosition().setY(childArea.getY() - bounds.getY());
-		area.getSize().setWidth(Math.min(bounds.getWidth(), childArea.getWidth()));
-		area.getSize().setHeight(Math.min(bounds.getHeight(), childArea.getHeight()));
+		area.getSize().setWidth(childArea.getWidth());
+		area.getSize().setHeight(childArea.getHeight());
 		
 		this.getControl().setClip(new Rectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight()));
 	}
