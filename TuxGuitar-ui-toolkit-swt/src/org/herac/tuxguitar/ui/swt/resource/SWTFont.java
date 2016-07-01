@@ -56,7 +56,7 @@ public class SWTFont extends SWTComponent<Font> implements UIFont {
 	}
 	
 	public static String checkName(Device device, String name) {
-		if( name != null && name.length() > 0 ) {
+		if( name != null && name.length() > 0 && !UIFontModel.DEFAULT_NAME.equals(name)) {
 			return name;
 		}
 		return SWTEnvironment.getInstance().getDefaultFontName();

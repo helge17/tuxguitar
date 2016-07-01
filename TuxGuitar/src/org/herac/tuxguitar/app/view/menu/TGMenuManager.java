@@ -63,6 +63,8 @@ public class TGMenuManager implements TGEventListener {
 		if(!window.isDisposed()) {
 			if( this.menu == null || this.menu.isDisposed() ) {
 				this.menu = TGApplication.getInstance(this.context).getFactory().createMenuBar(window);
+				
+				window.setMenuBar(this.menu);
 			}
 			List<UIMenuItem> items = this.menu.getItems();
 			for(UIMenuItem uiMenuItem : items){
@@ -82,8 +84,6 @@ public class TGMenuManager implements TGEventListener {
 			this.loadedMenuItems.add(new ToolMenuItem(this.menu));
 			this.loadedMenuItems.add(new HelpMenuItem(this.menu));
 			this.showMenuItems(this.loadedMenuItems);
-			
-			window.setMenuBar(this.menu);
 		}
 	}
 	

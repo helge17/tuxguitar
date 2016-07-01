@@ -46,7 +46,7 @@ public class JFXColorChooser implements UIColorChooser {
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = this.uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, true, false);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, true, false);
 		
 		final UIButton buttonOK = this.uiFactory.createButton(buttons);
 		buttonOK.setText("Ok");
@@ -78,7 +78,7 @@ public class JFXColorChooser implements UIColorChooser {
 		dialogBounds.getPosition().setY(Math.max(0, parentBounds.getY() + (parentBounds.getHeight() - dialogBounds.getHeight()) / 2f));
 		dialog.setBounds(dialogBounds);
 		
-		dialog.open(); 
+		dialog.open();
 	}
 	
 	public void handleSelection(UIColorChooserHandler selectionHandler, UIColor value) {

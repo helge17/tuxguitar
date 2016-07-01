@@ -263,7 +263,7 @@ public class JFXFactory implements UIFactory {
 	}
 	
 	public UIFontChooser createFontChooser(UIWindow parent) {
-		return new JFXFontChooser((JFXWindow) parent);
+		return new JFXFontChooser(this, (JFXWindow) parent);
 	}
 	
 	public UIColorChooser createColorChooser(UIWindow parent) {

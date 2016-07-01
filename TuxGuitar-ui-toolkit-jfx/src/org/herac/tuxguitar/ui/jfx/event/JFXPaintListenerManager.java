@@ -15,4 +15,8 @@ public class JFXPaintListenerManager extends UIPaintListenerManager {
 	public void fireEvent() {
 		this.onPaint(new UIPaintEvent(this.control, this.control.createPainter()));
 	}
+
+	public JFXCanvas getControl() {
+		return this.control;
+	}
 }
