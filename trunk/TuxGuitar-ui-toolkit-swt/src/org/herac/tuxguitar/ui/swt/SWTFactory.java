@@ -43,6 +43,7 @@ import org.herac.tuxguitar.ui.swt.widget.SWTLegendPanel;
 import org.herac.tuxguitar.ui.swt.widget.SWTLinkLabel;
 import org.herac.tuxguitar.ui.swt.widget.SWTListBoxSelect;
 import org.herac.tuxguitar.ui.swt.widget.SWTPanel;
+import org.herac.tuxguitar.ui.swt.widget.SWTPasswordField;
 import org.herac.tuxguitar.ui.swt.widget.SWTProgressBar;
 import org.herac.tuxguitar.ui.swt.widget.SWTRadioButton;
 import org.herac.tuxguitar.ui.swt.widget.SWTReadOnlyTextBox;
@@ -76,6 +77,7 @@ import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UILinkLabel;
 import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIPasswordField;
 import org.herac.tuxguitar.ui.widget.UIProgressBar;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
@@ -189,6 +191,11 @@ public class SWTFactory implements UIFactory {
 	@SuppressWarnings("unchecked")
 	public UITextField createTextField(UIContainer parent) {
 		return new SWTTextField((SWTContainer<Composite>) parent);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public UIPasswordField createPasswordField(UIContainer parent) {
+		return new SWTPasswordField((SWTContainer<Composite>) parent);
 	}
 	
 	@SuppressWarnings("unchecked")

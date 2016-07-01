@@ -10,10 +10,14 @@ public class SWTTextField extends SWTText implements UITextField {
 	
 	private SWTModifyListenerManager modifyListener;
 	
-	public SWTTextField(SWTContainer<? extends Composite> parent) {
-		super(parent, SWT.NONE);
+	public SWTTextField(SWTContainer<? extends Composite> parent, int style) {
+		super(parent, style);
 		
 		this.modifyListener = new SWTModifyListenerManager(this);
+	}
+	
+	public SWTTextField(SWTContainer<? extends Composite> parent) {
+		this(parent, SWT.NONE);
 	}
 	
 	public void addModifyListener(UIModifyListener listener) {

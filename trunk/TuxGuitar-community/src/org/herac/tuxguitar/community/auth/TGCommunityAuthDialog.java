@@ -17,6 +17,7 @@ import org.herac.tuxguitar.ui.widget.UILabel;
 import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UILinkLabel;
 import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIPasswordField;
 import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
@@ -69,7 +70,7 @@ public class TGCommunityAuthDialog {
 		passwordLabel.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signin.password") + ":");
 		groupLayout.set(passwordLabel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 		
-		final UITextField passwordText = uiFactory.createTextField(group);
+		final UIPasswordField passwordText = uiFactory.createPasswordField(group);
 		passwordText.setText( this.auth.getPassword() );
 		groupLayout.set(passwordText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		

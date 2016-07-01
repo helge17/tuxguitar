@@ -33,6 +33,7 @@ import org.herac.tuxguitar.ui.jfx.widget.JFXLegendPanel;
 import org.herac.tuxguitar.ui.jfx.widget.JFXLinkLabel;
 import org.herac.tuxguitar.ui.jfx.widget.JFXListBoxSelect;
 import org.herac.tuxguitar.ui.jfx.widget.JFXPanel;
+import org.herac.tuxguitar.ui.jfx.widget.JFXPasswordField;
 import org.herac.tuxguitar.ui.jfx.widget.JFXProgressBar;
 import org.herac.tuxguitar.ui.jfx.widget.JFXRadioButton;
 import org.herac.tuxguitar.ui.jfx.widget.JFXReadOnlyTextBox;
@@ -74,6 +75,7 @@ import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UILinkLabel;
 import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIPasswordField;
 import org.herac.tuxguitar.ui.widget.UIProgressBar;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
@@ -172,6 +174,10 @@ public class JFXFactory implements UIFactory {
 	
 	public UITextField createTextField(UIContainer parent) {
 		return new JFXTextField((JFXContainer<?>) parent);
+	}
+	
+	public UIPasswordField createPasswordField(UIContainer parent) {
+		return new JFXPasswordField((JFXContainer<?>) parent);
 	}
 	
 	public UIReadOnlyTextField createReadOnlyTextField(UIContainer parent) {

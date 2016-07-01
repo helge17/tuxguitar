@@ -24,6 +24,7 @@ import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UILinkLabel;
 import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UIPanel;
+import org.herac.tuxguitar.ui.widget.UIPasswordField;
 import org.herac.tuxguitar.ui.widget.UIProgressBar;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
@@ -87,6 +88,8 @@ public interface UIFactory extends UIResourceFactory {
 	UIRadioButton createRadioButton(UIContainer parent);
 	
 	UITextField createTextField(UIContainer parent);
+	
+	UIPasswordField createPasswordField(UIContainer parent);
 	
 	UIReadOnlyTextField createReadOnlyTextField(UIContainer parent);
 	
