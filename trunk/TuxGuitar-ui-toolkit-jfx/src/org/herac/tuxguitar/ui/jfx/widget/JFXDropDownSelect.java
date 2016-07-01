@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Region;
 
 import org.herac.tuxguitar.ui.event.UISelectionListener;
@@ -8,12 +8,12 @@ import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 
-public class JFXDropDownSelect<T> extends JFXControl<ChoiceBox<JFXDropDownSelectItem<T>>> implements UIDropDownSelect<T> {
+public class JFXDropDownSelect<T> extends JFXControl<ComboBox<JFXDropDownSelectItem<T>>> implements UIDropDownSelect<T> {
 	
 	private JFXSelectionListenerChangeManager<JFXDropDownSelectItem<T>> selectionListener;
 	
 	public JFXDropDownSelect(JFXContainer<? extends Region> parent) {
-		super(new ChoiceBox<JFXDropDownSelectItem<T>>(), parent);
+		super(new ComboBox<JFXDropDownSelectItem<T>>(), parent);
 		
 		this.selectionListener = new JFXSelectionListenerChangeManager<JFXDropDownSelectItem<T>>(this);
 	}

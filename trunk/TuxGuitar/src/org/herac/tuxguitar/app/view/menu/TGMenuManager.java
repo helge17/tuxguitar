@@ -119,9 +119,9 @@ public class TGMenuManager implements TGEventListener {
 	}
 	
 	public void updateItems(){
-		if(!isDisposed()){
-			updateItems(this.loadedMenuItems);
-			updateItems(this.loadedPopupMenuItems);
+		if(!this.isDisposed()){
+			this.updateItems(this.loadedMenuItems);
+			this.updateItems(this.loadedPopupMenuItems);
 		}
 	}
 	
@@ -132,9 +132,9 @@ public class TGMenuManager implements TGEventListener {
 	}
 	
 	public void loadProperties(){
-		if(!isDisposed()){
-			loadProperties(this.loadedMenuItems);
-			loadProperties(this.loadedPopupMenuItems);
+		if(!this.isDisposed()){
+			this.loadProperties(this.loadedMenuItems);
+			this.loadProperties(this.loadedPopupMenuItems);
 		}
 	}
 	
@@ -145,7 +145,9 @@ public class TGMenuManager implements TGEventListener {
 	}
 	
 	public void loadIcons(){
-		this.loadItems();
+		if(!this.isDisposed()){
+			this.loadItems();
+		}
 	}
 	
 	public UIPopupMenu getPopupMenu() {
