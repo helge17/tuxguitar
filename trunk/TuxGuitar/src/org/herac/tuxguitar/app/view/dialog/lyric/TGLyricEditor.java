@@ -196,6 +196,8 @@ public class TGLyricEditor implements TGEventListener {
 			}
 		});
 		panelLayout.set(this.text, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		panelLayout.set(this.text, UITableLayout.PACKED_WIDTH, 0f);
+		panelLayout.set(this.text, UITableLayout.PACKED_HEIGHT, 0f);
 	}
 	
 	public void updateItems(){
