@@ -213,11 +213,6 @@ public class JFXWindow extends JFXLayoutContainer<Pane> implements UIWindow {
 		this.setPackedSize(packedSize);
 	}
 	
-	@Override
-	public void pack() {
-		super.pack();
-	}
-	
 	public void join() {
 		this.joined = true;
 		Toolkit.getToolkit().enterNestedEventLoop(this.getStage());

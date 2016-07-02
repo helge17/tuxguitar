@@ -18,15 +18,18 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 	
 	private static final float DEFAULT_CELL_LEFT = 8f;
 	private static final float DEFAULT_CELL_RIGHT = 8f;
-	private static final float DEFAULT_CELL_HEIGHT = 24f;
+	private static final float DEFAULT_CELL_TOP = 3f;
+	private static final float DEFAULT_CELL_BOTTOM = 4f;
 	
+	private Insets cellPadding;
+	private FontMetrics cellFontMetrics;
 	private JFXSelectionListenerChangeManager<JFXListBoxSelectItem<T>> selectionListener;
 	
 	public JFXListBoxSelect(JFXContainer<? extends Region> parent) {
 		super(new ListView<JFXListBoxSelectItem<T>>(), parent);
 		
 		this.selectionListener = new JFXSelectionListenerChangeManager<JFXListBoxSelectItem<T>>(this);
-		this.getControl().setCellFactory(new JFXListBoxSelectCellFactory<T>());
+		this.getControl().setCellFactory(new JFXListBoxSelectCellFactory<T>(this));
 	}
 
 	public JFXListBoxSelectItem<T> findItem(UISelectItem<T> item) {
@@ -93,27 +96,36 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 	}
 	
 	public float computeCellWidth(JFXListBoxSelectItem<T> item) {
-		float prefWidth = (item.getCell() != null ? (float) item.getCell().prefWidth(Region.USE_COMPUTED_SIZE) : 0f);
-		if( prefWidth <= 0 ) {
-			// try a default value
-			FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
-			prefWidth = (float)(fontMetrics.computeStringWidth(item.toString()) + DEFAULT_CELL_LEFT + DEFAULT_CELL_RIGHT);
-		}
-		return prefWidth;
+		Insets insets = this.computeCellPadding();
+		FontMetrics fontMetrics = this.computeCellFontMetrics();
+		
+		return (float)(fontMetrics.computeStringWidth(item.toString()) + insets.getLeft() + insets.getRight());
 	}
 	
 	public float computeCellHeight(JFXListBoxSelectItem<T> item) {
-		float prefHeight = (item.getCell() != null ? (float) item.getCell().prefHeight(Region.USE_COMPUTED_SIZE) : 0f);
-		if( prefHeight <= 0 ) {
-			prefHeight = DEFAULT_CELL_HEIGHT;
+		Insets insets = this.computeCellPadding();
+		FontMetrics fontMetrics = this.computeCellFontMetrics();
+		
+		return (float)(fontMetrics.getLineHeight() + insets.getTop() + insets.getBottom() + 2);
+	}
+	
+	public Insets computeCellPadding() {
+		if( this.cellPadding == null ) {
+			this.cellPadding = new Insets(DEFAULT_CELL_TOP, DEFAULT_CELL_RIGHT, DEFAULT_CELL_BOTTOM, DEFAULT_CELL_LEFT);
 		}
-		return prefHeight;
+		return this.cellPadding;
+	}
+	
+	public FontMetrics computeCellFontMetrics() {
+		if( this.cellFontMetrics == null ) {
+			this.cellFontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
+		}
+		return this.cellFontMetrics;
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().getSelectionModel().selectedItemProperty().addListener(this.selectionListener);
-			
 		}
 		this.selectionListener.addListener(listener);
 	}
