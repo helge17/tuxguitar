@@ -87,6 +87,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		//---Collections-------------------------------------------------------------
 		this.collectionsItem = this.toolBar.createCustomItem();
 		this.collectionsItem.setLayoutAttribute(UIToolCustomItem.FILL, true);
+		this.collectionsItem.setLayoutAttribute(UIToolCustomItem.PACKED_WIDTH, 0f);
 		
 		this.collections = this.getBrowser().getUIFactory().createDropDownSelect(this.collectionsItem);
 		this.collections.addSelectionListener(new UISelectionListener() {
