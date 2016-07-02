@@ -18,12 +18,10 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 		super(parent, bordered);
 		
 		if( vScroll ) {
-			this.vScrollBar = new JFXScrollBar(null, Orientation.VERTICAL);
-			this.getControl().getChildren().add(this.vScrollBar.getControl());
+			this.vScrollBar = this.createScrollBar(Orientation.VERTICAL);
 		}
 		if( hScroll ) {
-			this.hScrollBar = new JFXScrollBar(null, Orientation.HORIZONTAL);
-			this.getControl().getChildren().add(this.hScrollBar.getControl());
+			this.hScrollBar = this.createScrollBar(Orientation.HORIZONTAL);
 		}
 	}
 	
@@ -33,6 +31,14 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 	
 	public UIScrollBar getHScroll() {
 		return this.hScrollBar;
+	}
+	
+	public JFXScrollBar createScrollBar(Orientation orientation) {
+		JFXScrollBar jfxScrollBar = new JFXScrollBar(null, orientation);
+		this.getControl().getChildren().add(jfxScrollBar.getControl());
+		jfxScrollBar.getControl().applyCss();
+		
+		return jfxScrollBar;
 	}
 	
 	public Insets getPadding() {
