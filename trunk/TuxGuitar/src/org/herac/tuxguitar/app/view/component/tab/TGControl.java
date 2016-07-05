@@ -12,6 +12,8 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIFocusEvent;
+import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
@@ -56,6 +58,11 @@ public class TGControl {
 		
 		this.container = factory.createScrollBarPanel(parent, true, true, false);
 		this.container.setLayout(layout);
+		this.container.addFocusGainedListener(new UIFocusGainedListener() {
+			public void onFocusGained(UIFocusEvent event) {
+				TGControl.this.setFocus();
+			}
+		});
 		
 		this.canvas = factory.createCanvas(this.container, false);
 		this.hScroll = this.container.getHScroll();
@@ -210,7 +217,9 @@ public class TGControl {
 	}
 	
 	public void setFocus() {
-		this.container.setFocus();
+		if(!this.isDisposed() ){
+			this.canvas.setFocus();
+		}
 	}
 	
 	public void redraw(){

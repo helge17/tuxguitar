@@ -23,8 +23,6 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 		
 		this.paintListener = new JFXPaintListenerManagerAsync(this);
 		this.resizeListener = new JFXResizeListenerManager(this);
-		this.getControl().setManaged(true);
-		this.getControl().setFocusTraversable(true);
 	}
 	
 	public UIPainter createPainter() {
