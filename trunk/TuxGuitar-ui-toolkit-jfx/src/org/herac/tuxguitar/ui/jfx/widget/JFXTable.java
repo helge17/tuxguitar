@@ -97,12 +97,14 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		if( this.getControl().getItems().contains(item) ) {
 			this.getControl().getItems().remove(item);
 			this.getControl().getSelectionModel().clearSelection();
+			this.cellValueFactory.removeCells(item);
 		}
 	}
 	
 	public void removeItems() {
 		this.getControl().getItems().clear();
 		this.getControl().getSelectionModel().clearSelection();
+		this.cellValueFactory.removeCells();
 	}
 	
 	public UITableItem<T> getItem(int index) {

@@ -14,8 +14,6 @@ import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIKeyEvent;
 import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
@@ -97,11 +95,6 @@ public class TGKeyBindingSelector {
 		
 		final UIButton buttonClean = uiFactory.createButton(buttons);
 		buttonClean.setText(TuxGuitar.getProperty("clean"));
-		buttonClean.addMouseUpListener(new UIMouseUpListener() {
-			public void onMouseUp(UIMouseEvent event) {
-				panel.setFocus();
-			}
-		});
 		buttonClean.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGKeyBindingSelector.this.handleSelection(null);
@@ -111,11 +104,6 @@ public class TGKeyBindingSelector {
 		
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
-		buttonCancel.addMouseUpListener(new UIMouseUpListener() {
-			public void onMouseUp(UIMouseEvent event) {
-				panel.setFocus();
-			}
-		});
 		buttonCancel.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();

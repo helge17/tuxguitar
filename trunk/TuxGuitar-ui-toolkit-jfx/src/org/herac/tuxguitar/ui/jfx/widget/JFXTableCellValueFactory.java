@@ -35,4 +35,17 @@ public class JFXTableCellValueFactory<T> implements Callback<CellDataFeatures<UI
 		
 		return this.findOrCreateCell(item, column);
 	}
+	
+	public void removeCells(UITableItem<T> item) {
+		List<JFXTableCellValue<T>> cells = new ArrayList<JFXTableCellValue<T>>(this.cells);
+		for(JFXTableCellValue<T> cell : cells) {
+			if( cell.getControl().equals(item) ) {
+				this.cells.remove(cell);
+			}
+		}
+	}
+	
+	public void removeCells() {
+		this.cells.clear();
+	}
 }

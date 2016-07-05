@@ -41,18 +41,8 @@ public class UIKey {
 	public UIKey(String code) {
 		this.code = code;
 	}
-//	
-//	public String getCode() {
-//		return this.code;
-//	}
-//	
+	
 	public boolean equals(Object o) {
-//		if( this.getCode() == null ) {
-//			return super.equals(o);
-//		}
-//		if( o instanceof UIKey ) {
-//			return this.getCode().equals(((UIKey) o).getCode());
-//		}
 		if( o instanceof UIKey ) {
 			return this.toString().equals(o.toString());
 		}
@@ -61,11 +51,5 @@ public class UIKey {
 	
 	public String toString() {
 		return this.code;
-//		for(int i = 0; i < UIKeyLabel.LABELS.length; i++){
-//			if( this.equals(UIKeyLabel.LABELS[i].getKey())){
-//				return UIKeyLabel.LABELS[i].getLabel();
-//			}
-//		}
-//		return Character.toString((char)(this.getCode() & 0xffff));
 	}
 }

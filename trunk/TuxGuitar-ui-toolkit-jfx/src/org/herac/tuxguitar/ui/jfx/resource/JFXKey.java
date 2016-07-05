@@ -41,7 +41,32 @@ public class JFXKey {
 		new JFXKeyMap(KeyCode.UP, UIKey.UP),
 		new JFXKeyMap(KeyCode.DOWN, UIKey.DOWN),
 		new JFXKeyMap(KeyCode.LEFT, UIKey.LEFT),
-		new JFXKeyMap(KeyCode.RIGHT, UIKey.RIGHT)
+		new JFXKeyMap(KeyCode.RIGHT, UIKey.RIGHT),
+		new JFXKeyMap(KeyCode.PLUS, new UIKey("+")),
+		new JFXKeyMap(KeyCode.MINUS, new UIKey("-")),
+		new JFXKeyMap(KeyCode.COMMA, new UIKey(",")),
+		new JFXKeyMap(KeyCode.PERIOD, new UIKey(".")),
+		new JFXKeyMap(KeyCode.SLASH, new UIKey("/")),
+		new JFXKeyMap(KeyCode.DIGIT0, new UIKey("0")),
+		new JFXKeyMap(KeyCode.DIGIT1, new UIKey("1")),
+		new JFXKeyMap(KeyCode.DIGIT2, new UIKey("2")),
+		new JFXKeyMap(KeyCode.DIGIT3, new UIKey("3")),
+		new JFXKeyMap(KeyCode.DIGIT4, new UIKey("4")),
+		new JFXKeyMap(KeyCode.DIGIT5, new UIKey("5")),
+		new JFXKeyMap(KeyCode.DIGIT6, new UIKey("6")),
+		new JFXKeyMap(KeyCode.DIGIT7, new UIKey("7")),
+		new JFXKeyMap(KeyCode.DIGIT8, new UIKey("8")),
+		new JFXKeyMap(KeyCode.DIGIT9, new UIKey("9")),
+		new JFXKeyMap(KeyCode.NUMPAD0, new UIKey("0")),
+		new JFXKeyMap(KeyCode.NUMPAD1, new UIKey("1")),
+		new JFXKeyMap(KeyCode.NUMPAD2, new UIKey("2")),
+		new JFXKeyMap(KeyCode.NUMPAD3, new UIKey("3")),
+		new JFXKeyMap(KeyCode.NUMPAD4, new UIKey("4")),
+		new JFXKeyMap(KeyCode.NUMPAD5, new UIKey("5")),
+		new JFXKeyMap(KeyCode.NUMPAD6, new UIKey("6")),
+		new JFXKeyMap(KeyCode.NUMPAD7, new UIKey("7")),
+		new JFXKeyMap(KeyCode.NUMPAD8, new UIKey("8")),
+		new JFXKeyMap(KeyCode.NUMPAD9, new UIKey("9"))
 	};
 	
 	public static UIKey getKey(KeyEvent keyEvent) {
@@ -51,8 +76,7 @@ public class JFXKey {
 				return keyMap.getKey();
 			}
 		}
-		
-		return new UIKey(keyEvent.getText());
+		return new UIKey(keyCode.toString().toLowerCase());
 	}
 	
 	public static UIKeyConvination getConvination(KeyEvent keyEvent) {
