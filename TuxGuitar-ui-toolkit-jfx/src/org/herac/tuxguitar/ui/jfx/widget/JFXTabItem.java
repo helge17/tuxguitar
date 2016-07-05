@@ -173,7 +173,13 @@ public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, U
 			this.control.redraw();
 		}
 	}
-
+	
+	public void setFocus() {
+		if( this.control != null ) {
+			this.control.setFocus();
+		}
+	}
+	
 	public UIPopupMenu getPopupMenu() {
 		if( this.control != null ) {
 			return this.control.getPopupMenu();

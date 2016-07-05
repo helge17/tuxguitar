@@ -21,6 +21,8 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UICloseEvent;
 import org.herac.tuxguitar.ui.event.UICloseListener;
+import org.herac.tuxguitar.ui.event.UIFocusEvent;
+import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.widget.UIContainer;
@@ -77,6 +79,11 @@ public class TGTabFolder implements TGEventListener {
 				if( document != null ) {
 					closeDocument(document);
 				}
+			}
+		});
+		this.tabFolder.addFocusGainedListener(new UIFocusGainedListener() {
+			public void onFocusGained(UIFocusEvent event) {
+				TGTabFolder.this.updateFocus();
 			}
 		});
 		

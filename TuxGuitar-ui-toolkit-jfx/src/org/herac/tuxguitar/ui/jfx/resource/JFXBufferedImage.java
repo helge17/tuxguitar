@@ -35,10 +35,10 @@ public class JFXBufferedImage extends JFXAbstractImage<JFXBufferedImageHandle> {
 
 	@Override
 	public void paint(JFXAbstractPainter<?> painter, float x, float y) {
-		painter.clearArea(x, y, this.getWidth(), this.getHeight());
-		
-		for(JFXBufferedPainterCommand command : this.getControl().getCommands()) {
-			command.paint(painter, x, y);
+		if(!this.isDisposed()) {
+			for(JFXBufferedPainterCommand command : this.getControl().getCommands()) {
+				command.paint(painter, x, y);
+			}
 		}
 	}
 	
