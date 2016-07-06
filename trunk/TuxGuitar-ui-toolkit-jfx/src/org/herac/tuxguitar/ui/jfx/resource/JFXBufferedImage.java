@@ -7,8 +7,12 @@ import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class JFXBufferedImage extends JFXAbstractImage<JFXBufferedImageHandle> {
 	
+	public JFXBufferedImage(JFXBufferedImageHandle component) {
+		super(component);
+	}
+	
 	public JFXBufferedImage(float width, float height) {
-		super(new JFXBufferedImageHandle(width, height));
+		this(new JFXBufferedImageHandle(width, height));
 	}
 
 	@Override
@@ -35,10 +39,8 @@ public class JFXBufferedImage extends JFXAbstractImage<JFXBufferedImageHandle> {
 
 	@Override
 	public void paint(JFXAbstractPainter<?> painter, float x, float y) {
-		if(!this.isDisposed()) {
-			for(JFXBufferedPainterCommand command : this.getControl().getCommands()) {
-				command.paint(painter, x, y);
-			}
+		for(JFXBufferedPainterCommand command : this.getControl().getCommands()) {
+			command.paint(painter, x, y);
 		}
 	}
 	
@@ -51,5 +53,10 @@ public class JFXBufferedImage extends JFXAbstractImage<JFXBufferedImageHandle> {
 		jfxPainter.dispose();
 		
 		return canvas.snapshot(null, null);
+	}
+	
+	@Override
+	public JFXBufferedImage clone() {
+		return new JFXBufferedImage(this.getControl());
 	}
 }

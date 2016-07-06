@@ -12,10 +12,14 @@ public class JFXAWTImage extends JFXAbstractImage<BufferedImage> {
 	
 	private WritableImage jfxHandle;
 	
-	public JFXAWTImage(float width, float height) {
-		super(new BufferedImage(Math.max(1, Math.round(width)), Math.max(1, Math.round(height)), BufferedImage.TYPE_INT_RGB));
+	public JFXAWTImage(BufferedImage component) {
+		super(component);
 		
 		this.jfxHandle = new WritableImage(this.getControl().getWidth(), this.getControl().getHeight());
+	}
+	
+	public JFXAWTImage(float width, float height) {
+		this(new BufferedImage(Math.max(1, Math.round(width)), Math.max(1, Math.round(height)), BufferedImage.TYPE_INT_RGB));
 	}
 
 	@Override
@@ -46,6 +50,14 @@ public class JFXAWTImage extends JFXAbstractImage<BufferedImage> {
 	@Override
 	public Image getHandle() {
 		return this.jfxHandle;
+	}
+	
+	@Override
+	public JFXAWTImage clone() {
+		JFXAWTImage jfxAWTImage = new JFXAWTImage(this.getControl());
+		jfxAWTImage.refreshHandle();
+		
+		return jfxAWTImage;
 	}
 	
 	public void refreshHandle() {

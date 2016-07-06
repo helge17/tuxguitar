@@ -71,19 +71,21 @@ public class JFXBufferedPainter extends JFXAbstractPainter<JFXBufferedImageHandl
 	}
 
 	@Override
-	public void drawImage(final UIImage image, final float srcX, final float srcY, final float srcWidth, final float srcHeight, final float destX, final float destY, final float destWidth, final float destHeight) {
+	public void drawImage(UIImage image, final float srcX, final float srcY, final float srcWidth, final float srcHeight, final float destX, final float destY, final float destWidth, final float destHeight) {
+		final UIImage imageCopy = this.toAbstractImage(image).clone();
 		this.addCommand(new JFXBufferedPainterCommand() {
 			public void paint(JFXAbstractPainter<?> painter, float tx, float ty) {
-				painter.drawImage(image, srcX, srcY, srcWidth, srcHeight, tx + destX, ty + destY, destWidth, destHeight);
+				painter.drawImage(imageCopy, srcX, srcY, srcWidth, srcHeight, tx + destX, ty + destY, destWidth, destHeight);
 			}
 		});
 	}
 
 	@Override
-	public void drawImage(final UIImage image, final float x, final float y) {
+	public void drawImage(UIImage image, final float x, final float y) {
+		final UIImage imageCopy = this.toAbstractImage(image).clone();
 		this.addCommand(new JFXBufferedPainterCommand() {
 			public void paint(JFXAbstractPainter<?> painter, float tx, float ty) {
-				painter.drawImage(image, tx + x, ty + y);
+				painter.drawImage(imageCopy, tx + x, ty + y);
 			}
 		});
 	}
