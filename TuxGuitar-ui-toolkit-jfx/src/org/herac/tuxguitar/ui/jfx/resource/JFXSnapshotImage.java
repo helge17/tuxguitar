@@ -9,8 +9,12 @@ import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class JFXSnapshotImage extends JFXAbstractImage<JFXSnapshotImageHandle> implements UIImage {
 	
+	public JFXSnapshotImage(JFXSnapshotImageHandle component){
+		super(component);
+	}
+	
 	public JFXSnapshotImage(float width, float height){
-		super(new JFXSnapshotImageHandle(width, height));
+		this(new JFXSnapshotImageHandle(width, height));
 	}
 	
 	public JFXSnapshotImage(Image handle){
@@ -46,6 +50,10 @@ public class JFXSnapshotImage extends JFXAbstractImage<JFXSnapshotImageHandle> i
 	@Override
 	public void paint(JFXAbstractPainter<?> painter, float x, float y) {
 		painter.drawNativeImage(this.getHandle(), x, y);
+	}
+	
+	public JFXSnapshotImage clone() {
+		return new JFXSnapshotImage(this.getControl());
 	}
 	
 	public UIPainter createPainter() {

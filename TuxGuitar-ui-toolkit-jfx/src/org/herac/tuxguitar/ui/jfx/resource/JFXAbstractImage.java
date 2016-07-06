@@ -15,5 +15,7 @@ public abstract class JFXAbstractImage<T> extends JFXComponent<T> implements UII
 	
 	public abstract void paint(JFXAbstractPainter<?> painter, float x, float y);
 	
+	public abstract JFXAbstractImage<T> clone();
+	
 	public abstract Image getHandle();
 }

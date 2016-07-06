@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -17,12 +18,16 @@ import org.herac.tuxguitar.ui.event.UILinkListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXLinkListenerManager;
 import org.herac.tuxguitar.ui.widget.UILinkLabel;
 
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
+
 public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 	
 	private static final String LINK_PATTERN = ("<a[^>]+href=[\"|'](.*?)[\"|']+[^>]*>(.+?)<\\/a>");
 	
 	private JFXLinkListenerManager linkListener;
 	private String text;
+	private String wrappedText;
 	private Float wrapWidth;
 	
 	public JFXLinkLabel(JFXContainer<? extends Region> parent) {
@@ -61,30 +66,35 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 	}
 	
 	public void updateTextFlow() {
-		if(!this.getControl().getChildren().isEmpty() ) {
-			this.getControl().getChildren().clear();
-		}
-		if( this.text != null ) {
-			int sIndex = 0;
-			int eIndex = 0;
-			
-			List<Node> nodes = new ArrayList<Node>();
-			Pattern p = Pattern.compile(LINK_PATTERN,  Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
-			Matcher m = p.matcher(this.text);
-			while(m.find()) {
-				sIndex = m.start();
-				if( sIndex > eIndex ) {
-					nodes.add(new Text(this.text.substring(eIndex, sIndex).trim()));
-				}
-				eIndex = m.end();
+		String wrappedText = this.wrappedText;
+		
+		this.computeWrappedText();
+		if( wrappedText == null || !wrappedText.equals(this.wrappedText)) {
+			if(!this.getControl().getChildren().isEmpty() ) {
+				this.getControl().getChildren().clear();
+			}
+			if( this.wrappedText != null ) {
+				int sIndex = 0;
+				int eIndex = 0;
 				
-				nodes.add(this.createHyperlink(m.group(2), m.group(1)));
+				List<Node> nodes = new ArrayList<Node>();
+				Pattern p = Pattern.compile(LINK_PATTERN,  Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
+				Matcher m = p.matcher(this.wrappedText);
+				while(m.find()) {
+					sIndex = m.start();
+					if( sIndex > eIndex ) {
+						nodes.add(new Text(this.wrappedText.substring(eIndex, sIndex).trim()));
+					}
+					eIndex = m.end();
+					
+					nodes.add(this.createHyperlink(m.group(2), m.group(1)));
+				}
+				
+				if( this.wrappedText.length() > eIndex ) {
+					nodes.add(new Text(this.wrappedText.substring(eIndex, this.wrappedText.length()).trim()));
+				}
+				this.getControl().getChildren().addAll(nodes);
 			}
-			
-			if( this.text.length() > eIndex ) {
-				nodes.add(new Text(this.text.substring(eIndex, this.text.length()).trim()));
-			}
-			this.getControl().getChildren().addAll(nodes);
 		}
 	}
 	
@@ -96,5 +106,41 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			}
 		});
 		return hyperLink;
+	}
+	
+	public void computeWrappedText() {
+		if( this.getWrapWidth() == null ) {
+			this.wrappedText = this.text;
+		} else {
+			FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
+			
+			StringBuffer text = new StringBuffer();
+			StringBuffer line = new StringBuffer();
+			String space = (" ");
+			String[] words = this.text.split(space);
+			for(String word : words) {
+				if( line.length() > 0 ) {
+					if( fontMetrics.computeStringWidth(line.toString() + space + word) > this.getWrapWidth() ) {
+						text.append(line);
+						text.append("\n");
+						line = new StringBuffer();
+					} else {
+						line.append(space);
+					}
+				}
+				line.append(word);
+			}
+			if( line.length() > 0 ) {
+				text.append(line);
+			}
+			
+			this.wrappedText = text.toString();
+		}
+	}
+	
+	public void computePackedSize() {
+		this.updateTextFlow();
+		
+		super.computePackedSize();
 	}
 }
