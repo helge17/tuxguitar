@@ -98,6 +98,7 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 	public void lineTo(float x, float y) {
 		if(!this.antialias && this.style == PATH_DRAW) {
 			this.drawPixelLine(this.position.getX(), this.position.getY(), x, y);
+			this.moveTo(x, y);
 		} else {
 			this.getControl().lineTo(x, y);
 			this.pathEmpty = false;

@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
@@ -20,6 +21,7 @@ public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioBu
 		super(new RadioButton(), parent);
 		
 		this.selectionListener = new JFXSelectionListenerChangeManager<Boolean>(this);
+		this.getControl().setToggleGroup(this.findToggleGroup());
 	}
 
 	public String getText() {
@@ -47,6 +49,19 @@ public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioBu
 		this.getControl().setSelected(selected);
 	}
 
+	public ToggleGroup findToggleGroup() {
+		if( this.getParent() != null ) {
+			ToggleGroup toggleGroup = this.getParent().getData(ToggleGroup.class.getName());
+			if( toggleGroup != null ) {
+				return toggleGroup;
+			}
+			this.getParent().setData(ToggleGroup.class.getName(), new ToggleGroup());
+			
+			return this.findToggleGroup();
+		}
+		return null;
+	}
+	
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().selectedProperty().addListener(this.selectionListener);
