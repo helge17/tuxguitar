@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Region;
@@ -27,7 +28,6 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 	
 	private JFXLinkListenerManager linkListener;
 	private String text;
-	private String wrappedText;
 	private Float wrapWidth;
 	
 	public JFXLinkLabel(JFXContainer<? extends Region> parent) {
@@ -51,6 +51,7 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 
 	public void setWrapWidth(Float wrapWidth) {
 		this.wrapWidth = wrapWidth;
+		this.updateTextFlow();
 	}
 	
 	public void fireEvent(String link) {
@@ -66,40 +67,41 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 	}
 	
 	public void updateTextFlow() {
-		String wrappedText = this.wrappedText;
-		
-		this.computeWrappedText();
-		if( wrappedText == null || !wrappedText.equals(this.wrappedText)) {
-			if(!this.getControl().getChildren().isEmpty() ) {
-				this.getControl().getChildren().clear();
-			}
-			if( this.wrappedText != null ) {
-				int sIndex = 0;
-				int eIndex = 0;
-				
-				List<Node> nodes = new ArrayList<Node>();
-				Pattern p = Pattern.compile(LINK_PATTERN,  Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
-				Matcher m = p.matcher(this.wrappedText);
-				while(m.find()) {
-					sIndex = m.start();
-					if( sIndex > eIndex ) {
-						nodes.add(new Text(this.wrappedText.substring(eIndex, sIndex).trim()));
-					}
-					eIndex = m.end();
-					
-					nodes.add(this.createHyperlink(m.group(2), m.group(1)));
+		if(!this.getControl().getChildren().isEmpty() ) {
+			this.getControl().getChildren().clear();
+		}
+		if( this.text != null ) {
+			int sIndex = 0;
+			int eIndex = 0;
+			
+			FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
+			StringBuilder text = new StringBuilder();
+			StringBuilder line = new StringBuilder();
+			
+			List<Node> nodes = new ArrayList<Node>();
+			Pattern p = Pattern.compile(LINK_PATTERN,  Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+			Matcher m = p.matcher(this.text);
+			while(m.find()) {
+				sIndex = m.start();
+				if( sIndex > eIndex ) {
+					nodes.add(new Text(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, sIndex))));
 				}
+				eIndex = m.end();
 				
-				if( this.wrappedText.length() > eIndex ) {
-					nodes.add(new Text(this.wrappedText.substring(eIndex, this.wrappedText.length()).trim()));
-				}
-				this.getControl().getChildren().addAll(nodes);
+				nodes.add(this.createHyperlink(this.computeWrappedText(fontMetrics, text, line, m.group(2)), m.group(1)));
 			}
+			
+			if( this.text.length() > eIndex ) {
+				nodes.add(new Text(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, this.text.length()))));
+			}
+			this.getControl().getChildren().addAll(nodes);
+			this.getControl().applyCss();
 		}
 	}
 	
 	public Hyperlink createHyperlink(final String text, final String value) {
 		Hyperlink hyperLink = new Hyperlink(text);
+		hyperLink.setPadding(new Insets(0));
 		hyperLink.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				JFXLinkLabel.this.fireEvent(value);
@@ -108,39 +110,29 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 		return hyperLink;
 	}
 	
-	public void computeWrappedText() {
-		if( this.getWrapWidth() == null ) {
-			this.wrappedText = this.text;
-		} else {
-			FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
+	public String computeWrappedText(FontMetrics fontMetrics, StringBuilder textBuffer, StringBuilder lineBuffer, String text) {
+		if( this.getWrapWidth() != null && text != null && !text.isEmpty() ) {
+			int start = (textBuffer.length() + lineBuffer.length());
 			
-			StringBuffer text = new StringBuffer();
-			StringBuffer line = new StringBuffer();
 			String space = (" ");
-			String[] words = this.text.split(space);
+			String[] words = text.split(space);
 			for(String word : words) {
-				if( line.length() > 0 ) {
-					if( fontMetrics.computeStringWidth(line.toString() + space + word) > this.getWrapWidth() ) {
-						text.append(line);
-						text.append("\n");
-						line = new StringBuffer();
+				if( lineBuffer.length() > 0 ) {
+					if( fontMetrics.computeStringWidth(lineBuffer.toString() + space + word) > this.getWrapWidth() ) {
+						textBuffer.append(lineBuffer);
+						textBuffer.append("\r\n");
+						lineBuffer.setLength(0);
 					} else {
-						line.append(space);
+						lineBuffer.append(space);
 					}
 				}
-				line.append(word);
+				lineBuffer.append(word);
 			}
-			if( line.length() > 0 ) {
-				text.append(line);
-			}
+			String fullText = (textBuffer.toString() + lineBuffer.toString());
+			String wrappedText = fullText.substring(start, fullText.length());
 			
-			this.wrappedText = text.toString();
+			return wrappedText;
 		}
-	}
-	
-	public void computePackedSize() {
-		this.updateTextFlow();
-		
-		super.computePackedSize();
+		return text;
 	}
 }
