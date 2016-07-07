@@ -56,6 +56,7 @@ public class JFXWindow extends JFXLayoutContainer<Pane> implements UIWindow {
 		
 		this.setDecorationSize(parent.getDecorationSize());
 		this.stage.initOwner(parent.getStage());
+		this.stage.setResizable(resizable);
 		if( modal ) {
 			this.stage.initModality(Modality.APPLICATION_MODAL);
 		}
