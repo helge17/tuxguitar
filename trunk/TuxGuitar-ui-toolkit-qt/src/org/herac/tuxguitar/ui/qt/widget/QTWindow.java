@@ -12,6 +12,7 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
 import com.trolltech.qt.core.QEvent.Type;
+import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QContentsMargins;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QWidget;
@@ -88,7 +89,15 @@ public class QTWindow extends QTLayoutContainer<QMainWindow> implements UIWindow
 	}
 	
 	public void join() {
-		// TODO
+		while(!this.isDisposed()) {
+			if (QApplication.hasPendingEvents()) {
+				QApplication.processEvents();
+				if(!this.isDisposed()) {
+					QApplication.sendPostedEvents();
+				}
+			}
+			Thread.yield();
+		}
 	}
 
 	public void minimize() {
