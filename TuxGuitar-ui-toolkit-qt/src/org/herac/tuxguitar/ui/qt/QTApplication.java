@@ -18,6 +18,8 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	
 	public void dispose() {
 		this.getControl().getHandle().dispose();
+		
+		super.dispose();
 	}
 	
 	public UIFactory getFactory() {

@@ -8,11 +8,14 @@ import com.trolltech.qt.gui.QAbstractSlider;
 public class QTAbstractSlider<T extends QAbstractSlider> extends QTWidget<T> {
 	
 	private int thumb;
+	private int maximum;
 	private QTSelectionListenerManager selectionListener;
 	
 	public QTAbstractSlider(T control, QTContainer parent) {
 		super(control, parent);
 		
+		this.thumb = 0;
+		this.maximum = 0;
 		this.selectionListener = new QTSelectionListenerManager(this);
 	}
 	
@@ -25,15 +28,17 @@ public class QTAbstractSlider<T extends QAbstractSlider> extends QTWidget<T> {
 	}
 
 	public void setMaximum(int maximum) {
-		this.getControl().setMaximum(maximum);
+		this.maximum = maximum;
+		this.updateMaximum();
 	}
 
 	public int getMaximum() {
-		return this.getControl().maximum();
+		return this.maximum;
 	}
 
 	public void setMinimum(int minimum) {
 		this.getControl().setMinimum(minimum);
+		this.updateMaximum();
 	}
 
 	public int getMinimum() {
@@ -50,10 +55,18 @@ public class QTAbstractSlider<T extends QAbstractSlider> extends QTWidget<T> {
 	
 	public void setThumb(int thumb) {
 		this.thumb = thumb;
+		this.updateMaximum();
 	}
 	
 	public int getThumb() {
 		return this.thumb;
+	}
+	
+	public void updateMaximum() {
+		int range = ((this.getControl().maximum() - this.getControl().minimum()) + this.getControl().pageStep());
+		
+		this.getControl().setPageStep(this.thumb > range? range : this.thumb);
+		this.getControl().setMaximum(Math.max(this.maximum - this.thumb, 0));
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {
