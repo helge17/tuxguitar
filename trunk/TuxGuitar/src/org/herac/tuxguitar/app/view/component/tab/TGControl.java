@@ -169,8 +169,8 @@ public class TGControl {
 	public void updateScroll(){
 		UIRectangle bounds = this.canvas.getBounds();
 		
-		this.hScroll.setMaximum(this.width);
-		this.vScroll.setMaximum(this.height);
+		this.hScroll.setMaximum(Math.max(Math.round(this.width - bounds.getWidth()), 0));
+		this.vScroll.setMaximum(Math.max(Math.round(this.height - bounds.getHeight()), 0));
 		this.hScroll.setThumb(Math.round(bounds.getWidth()));
 		this.vScroll.setThumb(Math.round(bounds.getHeight()));
 	}

@@ -193,8 +193,8 @@ public class TGPrintPreviewDialog{
 		UIScrollBar vBar = this.previewComposite.getVScroll();
 		UIRectangle client = this.previewComposite.getChildArea();
 		
-		vBar.setMaximum(Math.round(this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
-		vBar.setThumb(Math.round(Math.min((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM), client.getHeight())));
+		vBar.setMaximum(Math.max(Math.round(((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM)) - client.getHeight()), 0));
+		vBar.setThumb(Math.round(client.getHeight()));
 	}
 	
 	protected void changePage(int index){

@@ -176,7 +176,7 @@ public class TGChordList {
 		UIRectangle bounds = this.canvas.getBounds();
 		
 		UIScrollBar uiScrollBar = this.control.getVScroll();
-		uiScrollBar.setMaximum(Math.round(this.height));
+		uiScrollBar.setMaximum(Math.max(Math.round(this.height - bounds.getHeight()), 0));
 		uiScrollBar.setThumb(Math.round(bounds.getHeight()));
 	}
 	

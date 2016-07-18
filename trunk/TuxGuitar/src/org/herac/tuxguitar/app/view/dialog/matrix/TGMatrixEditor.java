@@ -310,10 +310,11 @@ public class TGMatrixEditor implements TGEventListener {
 		if( this.clientArea != null ){
 			UIScrollBar vBar = this.canvasPanel.getVScroll();
 			UIScrollBar hBar = this.canvasPanel.getHScroll();
-			vBar.setMaximum(Math.round(this.height));
-			vBar.setThumb(Math.round(Math.min(this.height, this.clientArea.getHeight())));
-			hBar.setMaximum(Math.round(this.width));
-			hBar.setThumb(Math.round(Math.min(this.width , this.clientArea.getWidth())));
+			vBar.setMaximum(Math.max(Math.round(this.height - this.clientArea.getHeight()), 0));
+			vBar.setThumb(Math.round(this.clientArea.getHeight()));
+			
+			hBar.setMaximum(Math.max(Math.round(this.width - this.clientArea.getWidth()), 0));
+			hBar.setThumb(Math.round(this.clientArea.getWidth()));
 		}
 	}
 	

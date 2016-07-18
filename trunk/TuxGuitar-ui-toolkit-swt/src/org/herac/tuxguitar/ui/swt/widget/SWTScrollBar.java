@@ -8,6 +8,11 @@ import org.herac.tuxguitar.ui.widget.UIScrollBar;
 
 public class SWTScrollBar extends SWTComponent<ScrollBar> implements UIScrollBar {
 	
+	private Integer thumb;
+	private Integer maximum;
+	private Integer minimum;
+	private Integer increment;
+	
 	private SWTSelectionListenerManager selectionListener;
 	
 	public SWTScrollBar(ScrollBar control) {
@@ -31,38 +36,6 @@ public class SWTScrollBar extends SWTComponent<ScrollBar> implements UIScrollBar
 	public int getValue() {
 		return this.getControl().getSelection();
 	}
-
-	public void setMaximum(int maximum) {
-		this.getControl().setMaximum(maximum);
-	}
-
-	public int getMaximum() {
-		return this.getControl().getMaximum();
-	}
-
-	public void setMinimum(int minimum) {
-		this.getControl().setMinimum(minimum);
-	}
-
-	public int getMinimum() {
-		return this.getControl().getMinimum();
-	}
-
-	public void setIncrement(int increment) {
-		this.getControl().setIncrement(increment);
-	}
-
-	public int getIncrement() {
-		return this.getControl().getIncrement();
-	}
-	
-	public void setThumb(int thumb) {
-		this.getControl().setThumb(thumb);
-	}
-	
-	public int getThumb() {
-		return this.getControl().getThumb();
-	}
 	
 	public boolean isEnabled() {
 		return this.getControl().isEnabled();
@@ -78,6 +51,57 @@ public class SWTScrollBar extends SWTComponent<ScrollBar> implements UIScrollBar
 
 	public void setVisible(boolean visible) {
 		this.getControl().setVisible(visible);
+	}
+	
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
+		this.updateRangeValues();
+	}
+
+	public int getMaximum() {
+		return (this.maximum != null ? this.maximum : -1);
+	}
+
+	public void setMinimum(int minimum) {
+		this.minimum = minimum;
+		this.updateRangeValues();
+	}
+
+	public int getMinimum() {
+		return (this.minimum != null ? this.minimum : -1);
+	}
+
+	public void setIncrement(int increment) {
+		this.increment = increment;
+		this.updateRangeValues();
+	}
+
+	public int getIncrement() {
+		return (this.increment != null ? this.increment : -1);
+	}
+	
+	public void setThumb(int thumb) {
+		this.thumb = thumb;
+		this.updateRangeValues();
+	}
+	
+	public int getThumb() {
+		return (this.thumb != null ? this.thumb : -1);
+	}
+	
+	public void updateRangeValues() {
+		if( this.increment != null ) {
+			this.getControl().setIncrement(this.increment);
+		}
+		if( this.minimum != null ) {
+			this.getControl().setMinimum(this.minimum);
+		}
+		if( this.maximum != null ) {
+			this.getControl().setMaximum(this.maximum + (this.thumb != null ? this.thumb : 0));
+		}
+		if( this.thumb != null ) {
+			this.getControl().setThumb(this.thumb);
+		}
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {

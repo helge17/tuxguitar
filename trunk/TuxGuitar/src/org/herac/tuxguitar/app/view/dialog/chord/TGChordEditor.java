@@ -144,7 +144,7 @@ public class TGChordEditor {
 		
 		final UIScrollBar uiScrollBar = this.scrollBarPanel.getVScroll();
 		uiScrollBar.setIncrement(1);
-		uiScrollBar.setMaximum( ((MAX_FRET + MIN_FRET) - (TGChordImpl.MAX_FRETS - 1) + 1));
+		uiScrollBar.setMaximum(((MAX_FRET + MIN_FRET) - (TGChordImpl.MAX_FRETS - 1) + 1));
 		uiScrollBar.setMinimum(MIN_FRET);
 		uiScrollBar.setThumb(1);
 		uiScrollBar.addSelectionListener(new UISelectionListener() {
