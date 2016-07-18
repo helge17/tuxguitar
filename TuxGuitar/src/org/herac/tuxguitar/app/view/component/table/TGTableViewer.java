@@ -177,9 +177,10 @@ public class TGTableViewer implements TGEventListener {
 	
 	public void updateHScroll(){
 		int width = Math.round(getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());
+		int canvasWidth = Math.round(this.table.getColumnCanvas().getControl().getBounds().getWidth());
 		this.hScroll.setIncrement(Math.round(this.table.getRowHeight()));
-		this.hScroll.setMaximum(width);
-		this.hScroll.setThumb(Math.min(width, Math.round(this.table.getColumnCanvas().getControl().getBounds().getWidth())));
+		this.hScroll.setMaximum(Math.max((width - canvasWidth), 0));
+		this.hScroll.setThumb(canvasWidth);
 	}
 	
 	public void updateVScroll(){

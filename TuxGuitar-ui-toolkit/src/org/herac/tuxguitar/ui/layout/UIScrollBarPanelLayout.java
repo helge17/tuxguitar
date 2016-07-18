@@ -44,13 +44,13 @@ public class UIScrollBarPanelLayout extends UIAbstractLayout {
 		UISize packedContentSize = this.getPackedContentSize(container);
 		if( Boolean.TRUE.equals(this.get(H_SCROLL))) {
 			UIScrollBar uiScrollBar = ((UIScrollBarPanel) container).getHScroll();
-			uiScrollBar.setMaximum(Math.round(packedContentSize.getWidth()));
+			uiScrollBar.setMaximum(Math.max(Math.round(packedContentSize.getWidth() - bounds.getWidth()), 0));
 			uiScrollBar.setThumb(Math.round(Math.min(packedContentSize.getWidth(), bounds.getWidth())));
 			hValue = uiScrollBar.getValue();
 		}
 		if( Boolean.TRUE.equals(this.get(V_SCROLL))) {
 			UIScrollBar uiScrollBar = ((UIScrollBarPanel) container).getVScroll();
-			uiScrollBar.setMaximum(Math.round(packedContentSize.getHeight()));
+			uiScrollBar.setMaximum(Math.max(Math.round(packedContentSize.getHeight() - bounds.getHeight()), 0));
 			uiScrollBar.setThumb(Math.round(Math.min(packedContentSize.getHeight(), bounds.getHeight())));
 			vValue = uiScrollBar.getValue();
 		}
