@@ -11,10 +11,14 @@ public abstract class QTAbstractContainer<T extends QWidget> extends QTWidget<T>
 	
 	private List<QTWidget<? extends QWidget>> children;
 	
-	public QTAbstractContainer(T control, QTContainer parent) {
-		super(control, parent);
+	public QTAbstractContainer(T control, QTContainer parent, boolean immediatelyShow) {
+		super(control, parent, immediatelyShow);
 		
 		this.children = new ArrayList<QTWidget<? extends QWidget>>();
+	}
+	
+	public QTAbstractContainer(T control, QTContainer parent) {
+		this(control, parent, true);
 	}
 	
 	public List<UIControl> getChildren() {

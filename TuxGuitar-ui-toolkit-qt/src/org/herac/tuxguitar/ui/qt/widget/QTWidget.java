@@ -31,7 +31,9 @@ import org.herac.tuxguitar.ui.qt.event.QTMouseMoveListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseUpListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseWheelListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTResizeListenerManager;
+import org.herac.tuxguitar.ui.qt.resource.QTColor;
 import org.herac.tuxguitar.ui.qt.resource.QTCursor;
+import org.herac.tuxguitar.ui.qt.resource.QTFont;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.resource.UIFont;
@@ -42,6 +44,11 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import com.trolltech.qt.core.QEvent.Type;
 import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QSize;
+import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QColor;
+import com.trolltech.qt.gui.QFont;
+import com.trolltech.qt.gui.QPalette;
+import com.trolltech.qt.gui.QPalette.ColorRole;
 import com.trolltech.qt.gui.QWidget;
 
 public abstract class QTWidget<T extends QWidget> extends QTComponent<T> implements UIControl {
@@ -71,7 +78,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
 	
-	public QTWidget(T control, QTContainer parent) {
+	public QTWidget(T control, QTContainer parent, boolean immediatelyShow) {
 		super(control);
 		
 		this.parent = parent;
@@ -97,6 +104,14 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		this.resizeListener = new QTResizeListenerManager(this);
 		
 		this.getControl().installEventFilter(this.eventFilter);
+		
+		if( immediatelyShow && parent != null && parent.getContainerControl().isVisible() ) {
+			this.showLater();
+		}
+	}
+	
+	public QTWidget(T control, QTContainer parent) {
+		this(control, parent, true);
 	}
 	
 	public UIControl getParent() {
@@ -161,28 +176,56 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		this.getControl().setToolTip(toolTipText);
 	}
 	
+	public UIColor getColor(QColor handle) {
+		return (handle != null ? new QTColor(handle) : null);
+	}
+	
+	public void setColor(ColorRole colorRole, UIColor color) {
+		QPalette qPalette = this.getControl().palette();
+		qPalette.setColor(colorRole, color != null ? ((QTColor) color).getControl() : null);
+		
+		this.getControl().setPalette(qPalette);
+	}
+	
 	public UIColor getBgColor() {
+		if( this.bgColor == null ) {
+			this.bgColor = this.getColor(this.getControl().palette().color(this.getControl().backgroundRole()));
+		}
 		return this.bgColor;
 	}
 	
-	public void setBgColor(final UIColor color) {
+	public void setBgColor(UIColor color) {
 		this.bgColor = color;
+		this.setColor(this.getControl().backgroundRole(), this.bgColor);
 	}
 
 	public UIColor getFgColor() {
+		if( this.fgColor == null ) {
+			this.fgColor = this.getColor(this.getControl().palette().color(this.getControl().foregroundRole()));
+		}
 		return this.fgColor;
 	}
 	
 	public void setFgColor(UIColor color) {
 		this.fgColor = color;
+		this.getControl().setAutoFillBackground(this.fgColor != null);
+		this.setColor(this.getControl().foregroundRole(), this.fgColor);
+	}
+	
+	public UIFont getFont(QFont handle) {
+		return (handle != null ? new QTFont(handle) : null);
 	}
 	
 	public UIFont getFont() {
+		if( this.font == null ) {
+			this.font = this.getFont(this.getControl().font());
+		}
 		return this.font;
 	}
 	
 	public void setFont(UIFont font) {
 		this.font = font;
+		this.getControl().setFont(this.font != null ? ((QTFont) this.font).getControl() : null);
 	}
 	
 	public UICursor getCursor() {
@@ -213,7 +256,21 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	public QTEventFilter getEventFilter() {
 		return this.eventFilter;
 	}
-
+	
+	public void show() {
+		if(!this.getControl().isVisible()) {
+			this.getControl().show();
+		}
+	}
+	
+	public void showLater() {
+		QApplication.invokeLater(new Runnable() {
+			public void run() {
+				QTWidget.this.show();
+			}
+		});
+	}
+	
 	public void addDisposeListener(UIDisposeListener listener) {
 		if( this.disposeListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.Destroy, this.disposeListener);

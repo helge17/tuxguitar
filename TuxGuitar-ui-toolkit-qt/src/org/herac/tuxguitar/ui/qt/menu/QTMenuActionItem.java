@@ -3,6 +3,8 @@ package org.herac.tuxguitar.ui.qt.menu;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import org.herac.tuxguitar.ui.qt.resource.QTImage;
+import org.herac.tuxguitar.ui.resource.UIImage;
 
 import com.trolltech.qt.gui.QAction;
 
@@ -44,5 +46,12 @@ public class QTMenuActionItem extends QTMenuItem<QAction> implements UIMenuActio
 
 	public void setEnabled(boolean enabled) {
 		this.getControl().setEnabled(enabled);
+	}
+	
+	@Override
+	public void setImage(UIImage image) {
+		super.setImage(image);
+		
+		this.getControl().setIcon(image != null ? ((QTImage) image).createIcon() : null);
 	}
 }
