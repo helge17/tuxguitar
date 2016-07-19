@@ -25,7 +25,7 @@ public class QTWindow extends QTLayoutContainer<QMainWindow> implements UIWindow
 	private QTWindowResizeListener resizeListener;
 	
 	public QTWindow(QMainWindow widget, QTContainer parent) {
-		super(widget, parent);
+		super(widget, parent, false);
 		
 		this.closeListener = new QTCloseListenerManager(this);
 		this.resizeListener = new QTWindowResizeListener(this);
@@ -74,13 +74,16 @@ public class QTWindow extends QTLayoutContainer<QMainWindow> implements UIWindow
 		this.getControl().close();
 	}
 	
-	public QContentsMargins getContainerMargins() {
-		QContentsMargins margins = super.getContainerMargins();
+	public void computeMargins() {
+		super.computeMargins();
+		
+		QContentsMargins margins = this.getContainerChildMargins();
 		QWidget menuWidget = this.getControl().menuWidget();
 		if( menuWidget != null ) {
 			margins.top += menuWidget.sizeHint().height();
+			
+			this.setContainerChildMargins(margins);
 		}
-		return margins;
 	}
 	
 	public void setBounds(UIRectangle bounds) {

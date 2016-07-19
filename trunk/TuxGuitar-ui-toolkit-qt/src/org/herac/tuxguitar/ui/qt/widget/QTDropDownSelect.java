@@ -55,6 +55,8 @@ public class QTDropDownSelect<T> extends QTWidget<QComboBox> implements UIDropDo
 	}
 	
 	public void removeItems() {
+		this.getControl().setCurrentIndex(-1);
+		
 		List<UISelectItem<T>> uiItems = new ArrayList<UISelectItem<T>>(this.items);
 		for(UISelectItem<T> uiItem : uiItems) {
 			this.removeItem(uiItem);
