@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 
+import com.trolltech.qt.gui.QContentsMargins;
 import com.trolltech.qt.gui.QListWidget;
 import com.trolltech.qt.gui.QListWidgetItem;
+import com.trolltech.qt.gui.QScrollBar;
 
 public class QTListBoxSelect<T> extends QTWidget<QListWidget> implements UIListBoxSelect<T> {
 	
@@ -67,6 +70,27 @@ public class QTListBoxSelect<T> extends QTWidget<QListWidget> implements UIListB
 	
 	public int getItemCount() {
 		return this.items.size();
+	}
+	
+	@Override
+	public void computePackedSize() {
+		QContentsMargins margins = this.getControl().getContentsMargins();
+		
+		float width = (margins.left + margins.right);
+		float height = (margins.top + margins.bottom);
+		
+		if(!this.items.isEmpty() ) {
+			width += (this.getControl().sizeHintForColumn(0));
+			for(int i = 0; i < this.items.size(); i ++) {
+				height += this.getControl().sizeHintForRow(i);
+			}
+		}
+		
+		QScrollBar vScroll = this.getControl().verticalScrollBar();
+		if( vScroll != null && vScroll.isEnabled()) {
+			width += vScroll.sizeHint().width();
+		}
+		this.setPackedSize(new UISize(width, height));
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {

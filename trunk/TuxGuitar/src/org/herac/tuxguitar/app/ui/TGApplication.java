@@ -46,6 +46,10 @@ public class TGApplication {
 		return this.application.isDisposed();
 	}
 	
+	public void dispose() {
+		this.application.dispose();
+	}
+	
 	public static TGApplication getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGApplication.class.getName(), new TGSingletonFactory<TGApplication>() {
 			public TGApplication createInstance(TGContext context) {

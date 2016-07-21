@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
@@ -64,5 +65,6 @@ public class TGDisposeAction extends TGActionBase {
 		TGIconManager.getInstance(getContext()).disposeIcons();
 		TGColorManager.getInstance(getContext()).dispose();
 		TGWindow.getInstance(getContext()).getWindow().dispose();
+		TGApplication.getInstance(getContext()).dispose();
 	}
 }

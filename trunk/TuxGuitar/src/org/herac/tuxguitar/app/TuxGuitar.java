@@ -142,9 +142,6 @@ public class TuxGuitar {
 		
 		this.startSong(url);
 		this.setInitialized(true);
-		
-		TGWindow.getInstance(TuxGuitar.this.context).getWindow().join();
-		TGApplication.getInstance(TuxGuitar.this.context).getApplication().dispose();
 	}
 	
 	private void startSong(URL url){

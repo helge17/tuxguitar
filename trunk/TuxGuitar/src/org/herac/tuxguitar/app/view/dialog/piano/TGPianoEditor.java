@@ -26,6 +26,7 @@ public class TGPianoEditor implements TGEventListener{
 	
 	private TGContext context;
 	private TGPiano piano;
+	private UIWindow window;
 	
 	public TGPianoEditor(TGContext context){
 		this.context = context;
@@ -36,32 +37,30 @@ public class TGPianoEditor implements TGEventListener{
 	}
 	
 	private UIWindow getPianoWindow() {
-		if(!this.isDisposed()) {
-			return (UIWindow)this.getPiano().getControl().getParent();
-		}
-		return null;
+		return this.window;
 	}
 	
 	public void show() {
 		UIWindow parent = TGWindow.getInstance(this.context).getWindow();
-		UIWindow dialog = TGApplication.getInstance(this.context).getFactory().createWindow(parent, false, false);
-		dialog.setText(TuxGuitar.getProperty("piano.editor"));
+		UITableLayout dialogLayout = new UITableLayout();
 		
-		this.piano = new TGPiano(this.context, dialog);
+		this.window = TGApplication.getInstance(this.context).getFactory().createWindow(parent, false, false);
+		this.window.setText(TuxGuitar.getProperty("piano.editor"));
+		this.window.setLayout(dialogLayout);
+		
+		this.piano = new TGPiano(this.context, this.window);
+		dialogLayout.set(this.piano.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		this.addListeners();
-		dialog.addDisposeListener(new UIDisposeListener() {
+		
+		this.window.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
 				TuxGuitar.getInstance().updateCache(true);
 			}
 		});
 		
-		UITableLayout dialogLayout = new UITableLayout();
-		dialogLayout.set(this.piano.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		dialog.setLayout(dialogLayout);
-		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.window, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void addListeners(){
@@ -80,10 +79,21 @@ public class TGPianoEditor implements TGEventListener{
 		TGExternalBeatViewerManager.getInstance(this.context).removeBeatViewerListener(this);
 	}
 	
+	public boolean isDisposed() {
+		return (this.isWindowDisposed() || this.isPianoDisposed());
+	}
+	
+	public boolean isWindowDisposed() {
+		return (this.window == null || this.window.isDisposed());
+	}
+	
+	public boolean isPianoDisposed() {
+		return (this.piano == null || this.piano.isDisposed());
+	}
+	
 	public void dispose(){
 		if(!isDisposed()){
 			getPianoWindow().dispose();
-			getPiano().dispose();
 		}
 	}
 	
@@ -97,10 +107,6 @@ public class TGPianoEditor implements TGEventListener{
 		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			getPiano().redrawPlayingMode();
 		}
-	}
-	
-	public boolean isDisposed() {
-		return (this.getPiano() == null || getPiano().isDisposed());
 	}
 	
 	public void loadProperties(){

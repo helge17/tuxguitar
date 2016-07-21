@@ -147,7 +147,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		if( this.parent != null ) {
 			this.parent.removeChild(this);
 		}
-		this.getControl().dispose();
+		this.getControl().disposeLater();
 		
 		super.dispose();
 	}
