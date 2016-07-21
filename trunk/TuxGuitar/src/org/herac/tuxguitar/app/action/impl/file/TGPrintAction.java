@@ -18,6 +18,8 @@ import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserDialogControl
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
@@ -57,12 +59,15 @@ public class TGPrintAction extends TGActionBase{
 		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
+		TGRectangle printerArea = this.getPrinterArea(printer, 10f);
+		TGDimension pageSize = new TGDimension(printerArea.getWidth(), printerArea.getHeight());
+		TGMargins pageMargins = new TGMargins(printerArea.getY(), printerArea.getX(), 0, 0);
 		
 		PrintController controller = new PrintController(targetSong, manager, new TGResourceFactoryImpl(printer.getResourceFactory()));
 		PrintLayout printLayout = new PrintLayout(controller, styles);
 		printLayout.loadStyles(printer.getDpiScale(), 1f);
 		printLayout.updateSong();
-		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, getPrinterArea(printer, 10f)));
+		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, pageSize, pageMargins));
 		printLayout.getResourceBuffer().disposeAllResources();
 	}
 	
@@ -112,12 +117,14 @@ public class TGPrintAction extends TGActionBase{
 		private UIPrinterPage printerPage;
 		
 		private TGPainterImpl painter;
-		private TGRectangle bounds;
+		private TGDimension size;
+		private TGMargins margins;
 		
-		public PrintDocumentImpl(PrintLayout layout, UIPrinter printer, TGRectangle bounds){
+		public PrintDocumentImpl(PrintLayout layout, UIPrinter printer, TGDimension size, TGMargins margins){
 			this.layout = layout;
 			this.printer = printer;
-			this.bounds = bounds;
+			this.size = size;
+			this.margins = margins;
 			this.painter = new TGPainterImpl(printer.getResourceFactory());
 		}
 		
@@ -125,8 +132,12 @@ public class TGPrintAction extends TGActionBase{
 			return this.painter;
 		}
 		
-		public TGRectangle getBounds(){
-			return this.bounds;
+		public TGDimension getSize() {
+			return this.size;
+		}
+
+		public TGMargins getMargins() {
+			return this.margins;
 		}
 		
 		public void pageStart() {
@@ -156,6 +167,10 @@ public class TGPrintAction extends TGActionBase{
 					}
 				});
 			}
+		}
+		
+		public boolean isTransparentBackground() {
+			return true;
 		}
 		
 		public boolean isPaintable(int page){

@@ -1,22 +1,26 @@
 package org.herac.tuxguitar.app.printer;
 
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 
 public interface PrintDocument{
 	
-	public void start();
+	void start();
 	
-	public void finish();
+	void finish();
 	
-	public void pageStart();
+	void pageStart();
 	
-	public void pageFinish();
+	void pageFinish();
 	
-	public boolean isPaintable(int page);
+	boolean isPaintable(int page);
 	
-	public TGPainter getPainter();
+	boolean isTransparentBackground();
 	
-	public TGRectangle getBounds();
+	TGPainter getPainter();
 	
+	TGDimension getSize();
+	
+	TGMargins getMargins();
 }

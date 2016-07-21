@@ -10,9 +10,9 @@ import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGImage;
 import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIKeyEvent;
@@ -38,13 +38,9 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 public class TGPrintPreviewDialog{
 	
 	private static final int SCROLL_INCREMENT = 50;
-	private static final int MARGIN_TOP = 20;
-	private static final int MARGIN_BOTTOM = 40;
-	private static final int MARGIN_LEFT = 50;
-	private static final int MARGIN_RIGHT = 20;
 	
 	public static final String ATTRIBUTE_PAGES = (TGPrintPreviewDialog.class.getName() + "-pages");
-	public static final String ATTRIBUTE_BOUNDS = (TGPrintPreviewDialog.class.getName() + "-bounds");
+	public static final String ATTRIBUTE_SIZE = (TGPrintPreviewDialog.class.getName() + "-size");
 	
 	public static final UIKeyConvination ENTER_KEY_CONVINATION = new UIKeyConvination(Arrays.asList(UIKey.ENTER));
 	
@@ -55,14 +51,14 @@ public class TGPrintPreviewDialog{
 	private UITextField currentText;
 	private UIButton previous;
 	private UIButton next;
-	private TGRectangle bounds;
+	private TGDimension size;
 	private List<UIImage> pages;
 	private int currentPage;
 	
 	public TGPrintPreviewDialog(TGViewContext context) {
 		this.context = context;
 		this.pages = context.getAttribute(ATTRIBUTE_PAGES);
-		this.bounds = context.getAttribute(ATTRIBUTE_BOUNDS);
+		this.size = context.getAttribute(ATTRIBUTE_SIZE);
 	}
 	
 	public void show() {
@@ -172,14 +168,14 @@ public class TGPrintPreviewDialog{
 					
 					TGImage page = new TGImageImpl(factory, TGPrintPreviewDialog.this.pages.get(TGPrintPreviewDialog.this.currentPage));
 					TGPainter painter = new TGPainterImpl(factory, event.getPainter());
-					painter.drawImage(page, MARGIN_LEFT, MARGIN_TOP - vScroll);
+					painter.drawImage(page, 0, -vScroll);
 				}
 			}
 		});
 		
 		previewLayout.set(this.pageComposite, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, true, true);
-		previewLayout.set(this.pageComposite, UITableLayout.PACKED_WIDTH, (this.bounds.getWidth() - this.bounds.getX()) + (MARGIN_LEFT + MARGIN_RIGHT));
-		previewLayout.set(this.pageComposite, UITableLayout.PACKED_HEIGHT, (this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM));
+		previewLayout.set(this.pageComposite, UITableLayout.PACKED_WIDTH, this.size.getWidth());
+		previewLayout.set(this.pageComposite, UITableLayout.PACKED_HEIGHT, this.size.getHeight());
 		
 		this.previewComposite.getVScroll().setIncrement(SCROLL_INCREMENT);
 		this.previewComposite.getVScroll().addSelectionListener(new UISelectionListener() {
@@ -193,7 +189,7 @@ public class TGPrintPreviewDialog{
 		UIScrollBar vBar = this.previewComposite.getVScroll();
 		UIRectangle client = this.previewComposite.getChildArea();
 		
-		vBar.setMaximum(Math.max(Math.round(((this.bounds.getHeight() - this.bounds.getY()) + (MARGIN_TOP + MARGIN_BOTTOM)) - client.getHeight()), 0));
+		vBar.setMaximum(Math.max(Math.round(this.size.getHeight() - client.getHeight()), 0));
 		vBar.setThumb(Math.round(client.getHeight()));
 	}
 	

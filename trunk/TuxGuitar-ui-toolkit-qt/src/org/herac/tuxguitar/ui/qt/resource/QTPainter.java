@@ -6,14 +6,15 @@ import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
+import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.Qt.PenStyle;
 import com.trolltech.qt.gui.QBrush;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QFont;
+import com.trolltech.qt.gui.QImage;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPainterPath;
 import com.trolltech.qt.gui.QPen;
-import com.trolltech.qt.gui.QPixmap;
 
 public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	
@@ -24,7 +25,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	public QTPainter(QPainter handle){
 		super(handle);
 		
-		this.getControl().setBackground(new QBrush(QColor.black));
+		this.getControl().setBackground(new QBrush(QColor.transparent));
 	}
 	
 	public void initPath(int style){
@@ -70,12 +71,12 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	
 	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.setAdvanced(false);
-		this.getControl().drawPixmap(toInt(destX), toInt(destY), toInt(destWidth), toInt(destHeight), getPixmap(image), toInt(srcX), toInt(srcY), toInt(srcWidth), toInt(srcHeight));
+		this.getControl().drawImage(toRect(destX, destY, destWidth, destHeight), getImage(image), toRect(srcX, srcY, srcWidth, srcHeight));
 	}
 	
 	public void drawImage(UIImage image, float x, float y) {
 		this.setAdvanced(false);
-		this.getControl().drawPixmap(toInt(x), toInt(y), getPixmap(image));
+		this.getControl().drawImage(toInt(x), toInt(y), getImage(image));
 	}
 	
 	public void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
@@ -207,7 +208,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 		return this.getControl().fontMetrics().width(text);
 	}
 	
-	public QPixmap getPixmap(UIImage image){
+	public QImage getImage(UIImage image){
 		if( image instanceof QTImage ){
 			return ((QTImage)image).getControl();
 		}
@@ -226,6 +227,10 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 			return ((QTFont)font).getControl();
 		}
 		return null;
+	}
+	
+	public QRect toRect(float x, float y, float width, float height) {
+		return new QRect(toInt(x), toInt(y), toInt(width), toInt(height));
 	}
 	
 	public int toInt(float value) {
