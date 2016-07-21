@@ -10,6 +10,8 @@ import com.trolltech.qt.core.Qt.ArrowType;
 
 public class QTToolActionMenuItem extends QTComponent<Void> implements UIToolActionMenuItem {
 	
+	private static final int ARROW_WIDTH = 16;
+	
 	private QTToolActionItem actionItem;
 	private QTToolMenuItem menuItem;
 	
@@ -19,6 +21,11 @@ public class QTToolActionMenuItem extends QTComponent<Void> implements UIToolAct
 		this.actionItem = new QTToolActionItem(parent);
 		this.menuItem = new QTToolMenuItem(parent);
 		this.menuItem.getControl().setArrowType(ArrowType.DownArrow);
+		if( parent.isHorizontal() ) {
+			this.menuItem.getControl().setFixedWidth(ARROW_WIDTH);
+		} else {
+			this.menuItem.getControl().setFixedHeight(ARROW_WIDTH);
+		}
 	}
 
 	public UIMenu getMenu() {
