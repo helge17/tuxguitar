@@ -11,6 +11,7 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
+import com.trolltech.qt.core.QEvent;
 import com.trolltech.qt.core.QEvent.Type;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QContentsMargins;
@@ -21,15 +22,16 @@ public class QTWindow extends QTLayoutContainer<QMainWindow> implements UIWindow
 	
 	private UIImage image;
 	private UIMenuBar menuBar;
-	private QTCloseListenerManager closeListener;
+	private QTWindowCloseListener closeListener;
 	private QTWindowResizeListener resizeListener;
 	
 	public QTWindow(QMainWindow widget, QTContainer parent) {
 		super(widget, parent, false);
 		
-		this.closeListener = new QTCloseListenerManager(this);
+		this.closeListener = new QTWindowCloseListener(this);
 		this.resizeListener = new QTWindowResizeListener(this);
 		this.addResizeListener(this.resizeListener);
+		this.connectCloseListener();
 	}
 	
 	public QTWindow() {
@@ -119,18 +121,16 @@ public class QTWindow extends QTLayoutContainer<QMainWindow> implements UIWindow
 		// 
 	}
 	
+	public void connectCloseListener() {
+		this.getEventFilter().connect(Type.Close, this.closeListener);
+	}
+	
 	public void addCloseListener(UICloseListener listener) {
-		if( this.closeListener.isEmpty() ) {
-			this.getEventFilter().connect(Type.Close, this.closeListener);
-		}
 		this.closeListener.addListener(listener);
 	}
 
 	public void removeCloseListener(UICloseListener listener) {
 		this.closeListener.removeListener(listener);
-		if( this.closeListener.isEmpty() ) {
-			this.getEventFilter().disconnect(Type.Close, this.closeListener);
-		}
 	}
 	
 	private class QTWindowResizeListener implements UIResizeListener {
@@ -152,6 +152,21 @@ public class QTWindow extends QTLayoutContainer<QMainWindow> implements UIWindow
 		
 		public void setBounds(UIRectangle bounds) {
 			this.bounds = bounds;
+		}
+	}
+	
+	private class QTWindowCloseListener extends QTCloseListenerManager {
+		
+		public QTWindowCloseListener(QTWindow window) {
+			super(window);
+		}
+		
+		public void handle(QEvent event) {
+			if(!this.isEmpty()) {
+				super.handle(event);
+			} else {
+				this.getControl().dispose();
+			}
 		}
 	}
 }
