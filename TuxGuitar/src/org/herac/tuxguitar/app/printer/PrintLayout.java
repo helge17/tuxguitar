@@ -27,7 +27,7 @@ public class PrintLayout extends TGLayout{
 	private TGFont trackNameFont;
 	private TGFont songAuthorFont;
 	
-	public PrintLayout(TGController controller,PrintStyles styles){
+	public PrintLayout(TGController controller, PrintStyles styles){
 		super(controller,( styles.getStyle() | DISPLAY_COMPACT ) );
 		this.styles = styles;
 	}
@@ -47,7 +47,7 @@ public class PrintLayout extends TGLayout{
 		
 		this.openPage();
 		this.paintHeader(this.document.getPainter());
-		this.paintSong(this.document.getPainter(), null, this.document.getBounds().getX(), ( this.document.getBounds().getY() + (80.0f * getScale() ) ) );
+		this.paintSong(this.document.getPainter(), null, this.document.getMargins().getLeft(), (this.document.getMargins().getTop() + (80.0f * getScale())));
 		this.paintFooter(this.document.getPainter());
 		this.closePage();
 		
@@ -86,11 +86,11 @@ public class PrintLayout extends TGLayout{
 			
 			lineHeight = ts.getSize();
 			//Verifico si entra en la pagina actual
-			if((posY + lineHeight + getTrackSpacing()) > (this.document.getBounds().getY() + getMaxHeight())){
+			if((posY + lineHeight + getTrackSpacing()) > (this.document.getMargins().getTop() + getMaxHeight())){
 				this.paintFooter(painter);
 				this.closePage();
 				this.openPage();
-				posY = Math.round(this.document.getBounds().getY() + getFirstTrackSpacing());
+				posY = Math.round(this.document.getMargins().getTop() + getFirstTrackSpacing());
 			}
 			
 			//pinto la linea
@@ -109,8 +109,8 @@ public class PrintLayout extends TGLayout{
 	
 	public void paintHeader(TGPainter painter){
 		if(this.document.isPaintable(this.page) ){
-			float x = this.document.getBounds().getX();
-			float y = this.document.getBounds().getY();
+			float x = this.document.getMargins().getLeft();
+			float y = this.document.getMargins().getTop();
 			String songName = getSong().getName();
 			String songAuthor = getSong().getAuthor();
 			String trackName = "(" + getSongManager().getTrack(getSong(), this.styles.getTrackNumber()).getName() + ")";
@@ -132,8 +132,8 @@ public class PrintLayout extends TGLayout{
 	
 	private void paintFooter(TGPainter painter){
 		if(this.document.isPaintable(this.page) ){
-			float x = this.document.getBounds().getX();
-			float y = this.document.getBounds().getY();
+			float x = this.document.getMargins().getLeft();
+			float y = this.document.getMargins().getTop();
 			String pageNumber = Integer.toString(this.page);
 			
 			painter.setBackground(getResources().getColorWhite());
@@ -186,10 +186,21 @@ public class PrintLayout extends TGLayout{
 		}
 	}
 	
+	public void fillBackground(TGPainter painter) {
+		if(!this.document.isTransparentBackground()) {
+			painter.setBackground(this.getResources().getBackgroundColor());
+			painter.initPath(TGPainter.PATH_FILL);
+			painter.addRectangle(0, 0, this.document.getSize().getWidth(), this.document.getSize().getHeight());
+			painter.closePath();
+		}
+	}
+	
 	private void openPage(){
 		this.page ++;
 		if( this.document.isPaintable(this.page) ){
 			this.document.pageStart();
+			
+			this.fillBackground(this.document.getPainter());
 		}
 	}
 	
@@ -258,11 +269,11 @@ public class PrintLayout extends TGLayout{
 	}
 	
 	public float getMaxWidth(){
-		return (this.document.getBounds().getWidth() - getScale());
+		return (this.document.getSize().getWidth() - this.document.getMargins().getLeft() - this.document.getMargins().getRight() - getScale());
 	}
 	
 	public float getMaxHeight(){
-		return (this.document.getBounds().getHeight() - getScale());
+		return (this.document.getSize().getHeight() - this.document.getMargins().getTop() - this.document.getMargins().getBottom() - getScale());
 	}
 	
 	public boolean isFirstMeasure(TGMeasureHeader mh){

@@ -20,6 +20,6 @@ public class QTImageView extends QTWidget<QLabel> implements UIImageView {
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		this.getControl().setPixmap(this.image != null ? ((QTImage) this.image).getControl() : null);
+		this.getControl().setPixmap(this.image != null ? ((QTImage) this.image).createPixmap() : null);
 	}
 }

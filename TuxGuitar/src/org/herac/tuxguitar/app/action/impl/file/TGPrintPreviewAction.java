@@ -22,8 +22,9 @@ import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -40,6 +41,13 @@ public class TGPrintPreviewAction extends TGActionBase{
 	
 	public static final String ATTRIBUTE_STYLES = PrintStyles.class.getName();
 	
+	private static final int PAGE_WIDTH = 850;
+	private static final int PAGE_HEIGHT = 1050;
+	private static final int MARGIN_TOP = 20;
+	private static final int MARGIN_BOTTOM = 40;
+	private static final int MARGIN_LEFT = 50;
+	private static final int MARGIN_RIGHT = 20;
+	
 	public TGPrintPreviewAction(TGContext context) {
 		super(context, NAME);
 	}
@@ -55,13 +63,15 @@ public class TGPrintPreviewAction extends TGActionBase{
 		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
-		
+		TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
+		TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+				
 		TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
 		PrintController controller = new PrintController(targetSong, manager, factory);
 		PrintLayout printLayout = new PrintLayout(controller, styles);
 		printLayout.loadStyles(1f);
 		printLayout.updateSong();
-		printLayout.makeDocument(new PrintDocumentImpl(new TGRectangle(0, 0, 850, 1050)));
+		printLayout.makeDocument(new PrintDocumentImpl(pageSize, pageMargins));
 		printLayout.getResourceBuffer().disposeAllResources();
 	}
 	
@@ -91,11 +101,13 @@ public class TGPrintPreviewAction extends TGActionBase{
 	private class PrintDocumentImpl implements PrintDocument{
 		
 		private TGPainterImpl painter;
-		private TGRectangle bounds;
+		private TGDimension size;
+		private TGMargins margins;
 		private List<UIImage> pages;
 		
-		public PrintDocumentImpl(TGRectangle bounds){
-			this.bounds = bounds;
+		public PrintDocumentImpl(TGDimension size, TGMargins margins){
+			this.size = size;
+			this.margins = margins;
 			this.painter = new TGPainterImpl(getUIFactory());
 			this.pages = new ArrayList<UIImage>();
 		}
@@ -104,16 +116,17 @@ public class TGPrintPreviewAction extends TGActionBase{
 			return this.painter;
 		}
 		
-		public TGRectangle getBounds(){
-			return this.bounds;
+		public TGDimension getSize() {
+			return this.size;
+		}
+
+		public TGMargins getMargins() {
+			return this.margins;
 		}
 		
 		public void pageStart() {
-			int width = Math.round(this.bounds.getWidth() - this.bounds.getX());
-			int height = Math.round(this.bounds.getHeight() - this.bounds.getY());
-			
 			UIFactory factory = getUIFactory();
-			UIImage page = factory.createImage(width, height);
+			UIImage page = factory.createImage(this.size.getWidth(), this.size.getHeight());
 			this.painter.setHandle(page.createPainter());
 			this.pages.add( page );
 		}
@@ -127,13 +140,13 @@ public class TGPrintPreviewAction extends TGActionBase{
 		}
 		
 		public void finish() {
-			final TGRectangle bounds = this.bounds;
+			final TGDimension size = this.size;
 			final List<UIImage> pages = this.pages;
 			
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGOpenViewAction.NAME);
 			tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintPreviewDialogController());
 			tgActionProcessor.setAttribute(TGPrintPreviewDialog.ATTRIBUTE_PAGES, pages);
-			tgActionProcessor.setAttribute(TGPrintPreviewDialog.ATTRIBUTE_BOUNDS, bounds);
+			tgActionProcessor.setAttribute(TGPrintPreviewDialog.ATTRIBUTE_SIZE, size);
 			tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_DISPOSE_LISTENER, new UIDisposeListener() {
 				public void onDispose(UIDisposeEvent event) {
 					for(UIImage uiImage : pages) {
@@ -143,6 +156,10 @@ public class TGPrintPreviewAction extends TGActionBase{
 			});
 			
 			tgActionProcessor.process();
+		}
+		
+		public boolean isTransparentBackground() {
+			return false;
 		}
 		
 		public boolean isPaintable(int page) {

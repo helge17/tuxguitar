@@ -12,18 +12,18 @@ import com.trolltech.qt.gui.QImageReader;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPixmap;
 
-public class QTImage extends QTComponent<QPixmap> implements UIImage {
+public class QTImage extends QTComponent<QImage> implements UIImage {
 	
-	public QTImage(QPixmap pixmap){
+	public QTImage(QImage pixmap){
 		super(pixmap);
 	}
 	
 	public QTImage(float width, float height){
-		this(new QPixmap(Math.round(width), Math.round(height)));
+		this(new QImage(Math.round(width), Math.round(height), QImage.Format.Format_RGB32));
 	}
 	
 	public QTImage(InputStream inputStream){
-		this(QPixmap.fromImage(new QImageReader(new QTInputStreamDevice(inputStream)).read()));
+		this(new QImageReader(new QTInputStreamDevice(inputStream)).read());
 	}
 	
 	public float getWidth() {
@@ -39,10 +39,10 @@ public class QTImage extends QTComponent<QPixmap> implements UIImage {
 	}
 	
 	public QIcon createIcon() {
-		return new QIcon(this.getControl());
+		return new QIcon(this.createPixmap());
 	}
 	
-	public QImage createImage() {
-		return this.getControl().toImage();
+	public QPixmap createPixmap() {
+		return QPixmap.fromImage(this.getControl());
 	}
 }
