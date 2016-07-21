@@ -20,6 +20,10 @@ public class QTApplicationHandle {
 		QApplication.exec();
 	}
 	
+	public void quit() {
+		QApplication.quit();
+	}
+	
 	public void invokeLater(Runnable runnable) {
 		QApplication.invokeLater(runnable);
 	}

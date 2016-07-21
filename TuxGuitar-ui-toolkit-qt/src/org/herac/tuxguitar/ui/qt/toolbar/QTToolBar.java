@@ -164,7 +164,7 @@ public class QTToolBar extends QTAbstractContainer<QToolBar> implements QTContai
 		}
 	}
 	
-	private boolean isHorizontal() {
+	public boolean isHorizontal() {
 		return Orientation.Horizontal.equals(this.getControl().orientation());
 	}
 	

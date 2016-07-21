@@ -100,7 +100,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	}
 	
 	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle) {
-		this.path.moveTo(x, y);
+		this.path.arcMoveTo(x, y, width, height, startAngle);
 		this.path.arcTo(x, y, width, height, startAngle, arcAngle);
 		this.pathEmpty = false;
 	}

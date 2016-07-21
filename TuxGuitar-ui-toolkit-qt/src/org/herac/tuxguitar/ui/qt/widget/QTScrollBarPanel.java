@@ -7,7 +7,6 @@ import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QAbstractScrollArea;
 import com.trolltech.qt.gui.QContentsMargins;
-import com.trolltech.qt.gui.QScrollArea;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> implements UIScrollBarPanel {
@@ -16,7 +15,9 @@ public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> imple
 	private QTScrollBar hScrollBar;
 	
 	public QTScrollBarPanel(QTContainer parent, boolean vScroll, boolean hScroll, boolean bordered) {
-		super(new QScrollArea(parent.getContainerControl()), parent, bordered);
+		super(new QAbstractScrollArea(parent.getContainerControl()), parent, bordered);
+		
+		this.getControl().setViewport(new QWidget());
 		
 		if( vScroll ) {
 			this.getControl().setVerticalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOn);
