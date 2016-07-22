@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.qt.event.QTCheckTableSelectionListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import org.herac.tuxguitar.ui.qt.event.QTTableDoubleClickListenerManager;
 import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
 import com.trolltech.qt.core.Qt.CheckState;
+import com.trolltech.qt.core.Qt.FocusPolicy;
+import com.trolltech.qt.core.Qt.ItemFlag;
 import com.trolltech.qt.gui.QAbstractItemView.SelectionBehavior;
 import com.trolltech.qt.gui.QAbstractItemView.SelectionMode;
+import com.trolltech.qt.gui.QHeaderView.ResizeMode;
 import com.trolltech.qt.gui.QTableWidget;
 import com.trolltech.qt.gui.QTableWidgetItem;
 
@@ -24,6 +29,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 	private List<QTColumnName> columnNames;
 	private QTSelectionListenerManager selectionListener;
 	private QTCheckTableSelectionListenerManager<T> checkSelectionListener;
+	private QTTableDoubleClickListenerManager doubleClickListenerManager;
 	
 	public QTTable(QTContainer parent, boolean headerVisible, boolean checkable) {
 		super(new QTableWidget(parent.getContainerControl()), parent);
@@ -33,7 +39,10 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		this.columnNames = new ArrayList<QTColumnName>();
 		this.selectionListener = new QTSelectionListenerManager(this);
 		this.checkSelectionListener = new QTCheckTableSelectionListenerManager<T>(this);
+		this.doubleClickListenerManager = new QTTableDoubleClickListenerManager(this);
 		
+		this.getControl().setShowGrid(false);
+		this.getControl().setFocusPolicy(FocusPolicy.NoFocus);
 		this.getControl().setSelectionMode(SelectionMode.SingleSelection);
 		this.getControl().setSelectionBehavior(SelectionBehavior.SelectRows);
 		this.getControl().horizontalHeader().setVisible(headerVisible);
@@ -54,6 +63,10 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		if( count >= 0 ) {
 			this.getControl().setColumnCount(count);
 			this.updateColumnNames();
+			
+			for(int i = 0; i < count; i ++) {
+				this.getControl().horizontalHeader().setResizeMode(i, (i == (count - 1) ? ResizeMode.Stretch : ResizeMode.Interactive));
+			}
 		}
 	}
 	
@@ -120,6 +133,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			int columns = this.getColumns();
 			for(int column = 0 ; column < columns; column ++) {
 				QTableWidgetItem qTableWidgetItem = new QTableWidgetItem();
+				qTableWidgetItem.setFlags(ItemFlag.ItemIsEnabled, ItemFlag.ItemIsSelectable, ItemFlag.ItemIsUserCheckable);
 				
 				String text = item.getText(column);
 				if( text != null ) {
@@ -224,6 +238,20 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		this.checkSelectionListener.removeListener(listener);
 		if( this.checkSelectionListener.isEmpty() ) {
 			this.getControl().cellChanged.disconnect();
+		}
+	}
+	
+	public void addMouseDoubleClickListener(UIMouseDoubleClickListener listener) {
+		if( this.doubleClickListenerManager.isEmpty() ) {
+			this.getControl().itemDoubleClicked.connect(this.doubleClickListenerManager, QTTableDoubleClickListenerManager.SIGNAL_METHOD);
+		}
+		this.doubleClickListenerManager.addListener(listener);
+	}
+
+	public void removeMouseDoubleClickListener(UIMouseDoubleClickListener listener) {
+		this.doubleClickListenerManager.removeListener(listener);
+		if( this.doubleClickListenerManager.isEmpty() ) {
+			this.getControl().itemDoubleClicked.disconnect();
 		}
 	}
 	

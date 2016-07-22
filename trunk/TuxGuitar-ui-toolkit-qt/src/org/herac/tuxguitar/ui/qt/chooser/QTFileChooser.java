@@ -6,7 +6,7 @@ import java.util.List;
 import org.herac.tuxguitar.ui.chooser.UIFileChooser;
 import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
 import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
-import org.herac.tuxguitar.ui.qt.widget.QTWindow;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QFileDialog;
@@ -18,12 +18,12 @@ public class QTFileChooser implements UIFileChooser {
 	public static final int STYLE_SAVE = 2;
 	
 	private int style;
-	private QTWindow window;
+	private QTAbstractWindow<?> window;
 	private String text;
 	private File defaultPath;
 	private List<UIFileChooserFormat> supportedFormats;
 	
-	public QTFileChooser(QTWindow window, int style) {
+	public QTFileChooser(QTAbstractWindow<?> window, int style) {
 		this.window = window;
 		this.style = style;
 	}

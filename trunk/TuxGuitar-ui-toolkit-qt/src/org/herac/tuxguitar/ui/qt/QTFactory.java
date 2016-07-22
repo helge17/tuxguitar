@@ -19,10 +19,12 @@ import org.herac.tuxguitar.ui.qt.menu.QTMenuBar;
 import org.herac.tuxguitar.ui.qt.menu.QTPopupMenu;
 import org.herac.tuxguitar.ui.qt.resource.QTResourceFactory;
 import org.herac.tuxguitar.ui.qt.toolbar.QTToolBar;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.herac.tuxguitar.ui.qt.widget.QTButton;
 import org.herac.tuxguitar.ui.qt.widget.QTCanvas;
 import org.herac.tuxguitar.ui.qt.widget.QTCheckBox;
 import org.herac.tuxguitar.ui.qt.widget.QTContainer;
+import org.herac.tuxguitar.ui.qt.widget.QTDialog;
 import org.herac.tuxguitar.ui.qt.widget.QTDivider;
 import org.herac.tuxguitar.ui.qt.widget.QTDropDownSelect;
 import org.herac.tuxguitar.ui.qt.widget.QTImageView;
@@ -111,7 +113,7 @@ public class QTFactory implements UIFactory {
 	}
 	
 	public UIWindow createWindow(UIWindow parent, boolean modal, boolean resizable) {
-		return new QTWindow((QTWindow) parent, modal, resizable);
+		return new QTDialog((QTAbstractWindow<?>) parent, modal, resizable);
 	}
 	
 	public UIPanel createPanel(UIContainer parent, boolean bordered) {
@@ -267,27 +269,27 @@ public class QTFactory implements UIFactory {
 	}
 	
 	public UIFontChooser createFontChooser(UIWindow parent) {
-		return new QTFontChooser((QTWindow) parent);
+		return new QTFontChooser((QTAbstractWindow<?>) parent);
 	}
 	
 	public UIColorChooser createColorChooser(UIWindow parent) {
-		return new QTColorChooser((QTWindow) parent);
+		return new QTColorChooser((QTAbstractWindow<?>) parent);
 	}
 	
 	public UIFileChooser createOpenFileChooser(UIWindow parent) {
-		return new QTFileChooser((QTWindow) parent, QTFileChooser.STYLE_OPEN);
+		return new QTFileChooser((QTAbstractWindow<?>) parent, QTFileChooser.STYLE_OPEN);
 	}
 	
 	public UIFileChooser createSaveFileChooser(UIWindow parent) {
-		return new QTFileChooser((QTWindow) parent, QTFileChooser.STYLE_SAVE);
+		return new QTFileChooser((QTAbstractWindow<?>) parent, QTFileChooser.STYLE_SAVE);
 	}
 	
 	public UIDirectoryChooser createDirectoryChooser(UIWindow parent) {
-		return new QTDirectoryChooser((QTWindow) parent);
+		return new QTDirectoryChooser((QTAbstractWindow<?>) parent);
 	}
 	
 	public UIPrinterChooser createPrinterChooser(UIWindow parent) {
-		return new QTPrinterChooser((QTWindow) parent);
+		return new QTPrinterChooser((QTAbstractWindow<?>) parent);
 	}
 	
 	public UIColor createColor(int red, int green, int blue) {

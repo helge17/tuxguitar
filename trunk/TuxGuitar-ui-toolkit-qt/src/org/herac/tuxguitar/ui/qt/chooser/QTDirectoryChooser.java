@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
-import org.herac.tuxguitar.ui.qt.widget.QTWindow;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QFileDialog;
@@ -13,11 +13,11 @@ import com.trolltech.qt.gui.QFileDialog.FileMode;
 
 public class QTDirectoryChooser implements UIDirectoryChooser {
 
-	private QTWindow window;
+	private QTAbstractWindow<?> window;
 	private String text;
 	private File defaultPath;
 	
-	public QTDirectoryChooser(QTWindow window) {
+	public QTDirectoryChooser(QTAbstractWindow<?> window) {
 		this.window = window;
 	}
 	
