@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.chooser;
 import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
 import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
 import org.herac.tuxguitar.ui.qt.printer.QTPrinter;
-import org.herac.tuxguitar.ui.qt.widget.QTWindow;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QPrintDialog;
@@ -11,9 +11,9 @@ import com.trolltech.qt.gui.QPrinter;
 
 public class QTPrinterChooser implements UIPrinterChooser {
 
-	private QTWindow window;
+	private QTAbstractWindow<?> window;
 	
-	public QTPrinterChooser(QTWindow window) {
+	public QTPrinterChooser(QTAbstractWindow<?> window) {
 		this.window = window;
 	}
 	

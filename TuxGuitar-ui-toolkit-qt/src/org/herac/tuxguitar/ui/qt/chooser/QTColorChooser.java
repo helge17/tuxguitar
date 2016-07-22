@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.chooser;
 import org.herac.tuxguitar.ui.chooser.UIColorChooser;
 import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
 import org.herac.tuxguitar.ui.qt.resource.QTColor;
-import org.herac.tuxguitar.ui.qt.widget.QTWindow;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 
 import com.trolltech.qt.gui.QColor;
@@ -12,11 +12,11 @@ import com.trolltech.qt.gui.QDialog;
 
 public class QTColorChooser implements UIColorChooser {
 	
-	private QTWindow window;
+	private QTAbstractWindow<?> window;
 	private String text;
 	private UIColorModel defaultModel;
 	
-	public QTColorChooser(QTWindow window) {
+	public QTColorChooser(QTAbstractWindow<?> window) {
 		this.window = window;
 	}
 	

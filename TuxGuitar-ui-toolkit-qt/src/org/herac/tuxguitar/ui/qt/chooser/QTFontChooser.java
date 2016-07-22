@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.chooser;
 import org.herac.tuxguitar.ui.chooser.UIFontChooser;
 import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
 import org.herac.tuxguitar.ui.qt.resource.QTFont;
-import org.herac.tuxguitar.ui.qt.widget.QTWindow;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 
 import com.trolltech.qt.gui.QDialog;
@@ -12,11 +12,11 @@ import com.trolltech.qt.gui.QFontDialog;
 
 public class QTFontChooser implements UIFontChooser {
 	
-	private QTWindow window;
+	private QTAbstractWindow<?> window;
 	private String text;
 	private UIFontModel defaultModel;
 	
-	public QTFontChooser(QTWindow window) {
+	public QTFontChooser(QTAbstractWindow<?> window) {
 		this.window = window;
 	}
 	

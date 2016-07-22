@@ -138,7 +138,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	}
 	
 	private void initTable(UIContainer parent){
-		this.table = getUIFactory().createTable(parent, true);
+		this.table = getUIFactory().createTable(parent, false);
 		this.table.setColumns(1);
 		this.table.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
 			public void onMouseDoubleClick(UIMouseEvent event) {
