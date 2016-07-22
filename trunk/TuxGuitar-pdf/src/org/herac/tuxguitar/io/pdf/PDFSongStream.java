@@ -6,7 +6,8 @@ import org.herac.tuxguitar.app.printer.PrintLayout;
 import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.awt.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
@@ -20,10 +21,12 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class PDFSongStream implements TGSongStream {
 	
-	private static final int PAGE_X = 20;
-	private static final int PAGE_Y = 20;
 	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
+	private static final int MARGIN_TOP = 20;
+	private static final int MARGIN_BOTTOM = 20;
+	private static final int MARGIN_LEFT = 20;
+	private static final int MARGIN_RIGHT = 20;
 	
 	private TGContext context;
 	private TGSongStreamContext streamContext;
@@ -57,11 +60,14 @@ public class PDFSongStream implements TGSongStream {
 			TGResourceFactory factory = new TGResourceFactoryImpl();
 			TGController controller = new PDFController(clonedSong, manager, factory);
 			
+			TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
+			TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+			
 			PrintLayout layout = new PrintLayout(controller, styles);
 			
 			layout.loadStyles(1f);
 			layout.updateSong();
-			layout.makeDocument(new PDFDocument(this.context, new TGRectangle(PAGE_X, PAGE_Y, PAGE_WIDTH, PAGE_HEIGHT), stream));
+			layout.makeDocument(new PDFDocument(this.context, pageSize, pageMargins, stream));
 			
 			controller.getResourceBuffer().disposeAllResources();
 		}catch(Throwable throwable){

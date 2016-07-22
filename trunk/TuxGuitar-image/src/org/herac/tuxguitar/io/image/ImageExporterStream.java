@@ -10,8 +10,9 @@ import org.herac.tuxguitar.app.printer.PrintDocument;
 import org.herac.tuxguitar.app.printer.PrintLayout;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.graphics.TGDimension;
+import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
@@ -28,6 +29,10 @@ public class ImageExporterStream implements TGSongStream{
 	
 	private static final int PAGE_WIDTH = 550;
 	private static final int PAGE_HEIGHT = 800;
+	private static final int MARGIN_TOP = 20;
+	private static final int MARGIN_BOTTOM = 20;
+	private static final int MARGIN_LEFT = 20;
+	private static final int MARGIN_RIGHT = 20;
 	
 	private TGContext context;
 	private TGSongStreamContext streamContext;
@@ -43,6 +48,8 @@ public class ImageExporterStream implements TGSongStream{
 			TGSong song = this.streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = song.clone(manager.getFactory());
+			TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
+			TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 			
 			TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
 			
@@ -51,7 +58,7 @@ public class ImageExporterStream implements TGSongStream{
 			
 			layout.loadStyles(1f);
 			layout.updateSong();
-			layout.makeDocument(new PrintDocumentImpl(new TGRectangle(25 , 25, PAGE_WIDTH, PAGE_HEIGHT), settings.getFormat(), settings.getPath() ));
+			layout.makeDocument(new PrintDocumentImpl(pageSize, pageMargins, settings.getFormat(), settings.getPath() ));
 		}
 	}
 	
@@ -62,13 +69,15 @@ public class ImageExporterStream implements TGSongStream{
 	private class PrintDocumentImpl implements PrintDocument{
 		
 		private TGPainterImpl painter;
-		private TGRectangle bounds;
+		private TGDimension size;
+		private TGMargins margins;
 		private String path;
 		private List<UIImage> pages;
 		private ImageFormat format;
 		
-		public PrintDocumentImpl(TGRectangle bounds, ImageFormat format, String path){
-			this.bounds = bounds;
+		public PrintDocumentImpl(TGDimension size, TGMargins margins, ImageFormat format, String path){
+			this.size = size;
+			this.margins = margins;
 			this.path = path;
 			this.painter = new TGPainterImpl(getUIFactory());
 			this.pages = new ArrayList<UIImage>();
@@ -79,13 +88,17 @@ public class ImageExporterStream implements TGSongStream{
 			return this.painter;
 		}
 		
-		public TGRectangle getBounds(){
-			return this.bounds;
+		public TGDimension getSize() {
+			return this.size;
+		}
+
+		public TGMargins getMargins() {
+			return this.margins;
 		}
 		
 		public void pageStart() {
-			int width = Math.round(this.bounds.getWidth() + (this.bounds.getX() * 2));
-			int height = Math.round(this.bounds.getHeight() + (this.bounds.getY() * 2));
+			int width = Math.round(this.size.getWidth());
+			int height = Math.round(this.size.getHeight());
 			
 			UIFactory factory = getUIFactory();
 			UIImage page = factory.createImage(width, height);
@@ -111,6 +124,10 @@ public class ImageExporterStream implements TGSongStream{
 			} catch (Throwable throwable) {
 				TGErrorManager.getInstance(ImageExporterStream.this.context).handleError(throwable);
 			}
+		}
+		
+		public boolean isTransparentBackground() {
+			return true;
 		}
 		
 		public boolean isPaintable(int page) {
