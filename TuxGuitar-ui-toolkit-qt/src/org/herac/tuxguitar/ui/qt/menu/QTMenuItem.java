@@ -26,6 +26,7 @@ public abstract class QTMenuItem<T extends QObject> extends QTComponent<T> imple
 	
 	public void dispose() {
 		this.getParent().removeItem(this);
+		this.getControl().disposeLater();
 		
 		super.dispose();
 	}

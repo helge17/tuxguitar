@@ -56,16 +56,14 @@ public class QTListBoxSelect<T> extends QTWidget<QListWidget> implements UIListB
 			this.items.remove(item);
 			QListWidgetItem widgetItem = this.getControl().item(index);
 			if( widgetItem != null ) {
-				this.getControl().removeItemWidget(widgetItem);
+				widgetItem.dispose();
 			}
 		}
 	}
 	
 	public void removeItems() {
-		List<UISelectItem<T>> uiItems = new ArrayList<UISelectItem<T>>(this.items);
-		for(UISelectItem<T> uiItem : uiItems) {
-			this.removeItem(uiItem);
-		}
+		this.items.clear();
+		this.getControl().clear();
 	}
 	
 	public int getItemCount() {

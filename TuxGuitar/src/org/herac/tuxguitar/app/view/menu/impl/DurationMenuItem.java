@@ -1,7 +1,10 @@
 package org.herac.tuxguitar.app.view.menu.impl;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.TGActionProcessorListener;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -12,7 +15,11 @@ import org.herac.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
+import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.ui.event.UISelectionEvent;
+import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
@@ -80,7 +87,11 @@ public class DurationMenuItem  extends TGMenuItem {
 		
 		//--division---
 		this.division = this.durationMenuItem.getMenu().createActionItem();
-		this.division.addSelectionListener(this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME));
+		this.division.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				DurationMenuItem.this.toggleDivisionType();
+			}
+		});
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -125,5 +136,25 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
 		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType());
+	}
+	
+	private void toggleDivisionType() {
+		TGDuration duration = TablatureEditor.getInstance(this.findContext()).getTablature().getCaret().getDuration();
+		TGDivisionType divisionType = (duration.getDivision().isEqual(TGDivisionType.NORMAL) ? TGDivisionType.TRIPLET : TGDivisionType.NORMAL);
+		
+		this.createDivisionTypeAction(this.createDivisionType(divisionType)).process();
+	}
+	
+	private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc) {
+		TGFactory tgFactory = TGDocumentManager.getInstance(this.findContext()).getSongManager().getFactory();
+		TGDivisionType tgDivisionTypeDst = tgFactory.newDivisionType();
+		tgDivisionTypeDst.copyFrom(tgDivisionTypeSrc);
+		return tgDivisionTypeDst;
+	}
+	
+	private TGActionProcessorListener createDivisionTypeAction(TGDivisionType tgDivisionType){
+		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);
+		tgActionProcessor.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, tgDivisionType);
+		return tgActionProcessor;
 	}
 }

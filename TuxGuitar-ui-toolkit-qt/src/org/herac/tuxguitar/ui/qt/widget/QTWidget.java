@@ -152,6 +152,10 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		super.dispose();
 	}
 	
+	public boolean isDisposed() {
+		return (super.isDisposed() || this.getControl().nativeId() == 0);
+	}
+	
 	public boolean isEnabled() {
 		return this.getControl().isEnabled();
 	}
