@@ -5,6 +5,9 @@ import java.net.URL;
 import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.ui.UIFactory;
 
+import com.trolltech.qt.core.QUrl;
+import com.trolltech.qt.gui.QDesktopServices;
+
 public class QTApplication extends QTComponent<QTApplicationHandle> implements UIApplication {
 	
 	private Thread uiThread;
@@ -31,7 +34,7 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	}
 	
 	public void openUrl(URL url) {
-		//TODO
+		QDesktopServices.openUrl(new QUrl(url.toExternalForm()));
 	}
 	
 	public void runInUiThread(Runnable runnable) {
