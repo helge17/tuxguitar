@@ -65,7 +65,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
 		TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
-				
+		
 		TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
 		PrintController controller = new PrintController(targetSong, manager, factory);
 		PrintLayout printLayout = new PrintLayout(controller, styles);
