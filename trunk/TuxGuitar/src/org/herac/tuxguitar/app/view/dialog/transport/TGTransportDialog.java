@@ -347,8 +347,6 @@ public class TGTransportDialog implements TGEventListener {
 			this.loadOptionIcons();
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			this.dialog.layout();
-//			this.dialog.layout(true);
-//			this.dialog.pack(true);
 		}
 	}
 	
@@ -391,15 +389,26 @@ public class TGTransportDialog implements TGEventListener {
 		TGTransport.getInstance(this.context).gotoMeasure(header, moveCaret);
 	}
 	
+	public void updateTickLabel(String value) {
+		String oldValue = this.label.getText();
+		
+		this.label.setText(value);
+		
+		if( oldValue == null || oldValue.length() != value.length() ) {
+			UIPanel uiPanel = (UIPanel) this.label.getParent();
+			uiPanel.layout();
+		}
+	}
+	
 	public void redrawProgress(){
 		if(!isDisposed() && !TuxGuitar.getInstance().isLocked()){
 			if( isEditingTickScale() ){
-				TGTransportDialog.this.label.setText(Long.toString(TGTransportDialog.this.tickProgress.getValue()));
+				TGTransportDialog.this.updateTickLabel(Long.toString(TGTransportDialog.this.tickProgress.getValue()));
 			}
 			else if(!MidiPlayer.getInstance(this.context).isRunning()){
 				long tickPosition = TablatureEditor.getInstance(this.context).getTablature().getCaret().getPosition();
 				
-				TGTransportDialog.this.label.setText(Long.toString(tickPosition));
+				TGTransportDialog.this.updateTickLabel(Long.toString(tickPosition));
 				TGTransportDialog.this.tickProgress.setValue((int)tickPosition);
 			}
 		}
@@ -414,7 +423,7 @@ public class TGTransportDialog implements TGEventListener {
 				long time = System.currentTimeMillis();
 				if( time > this.redrawTime + PLAY_MODE_DELAY ){
 					long position = (editorCache.getPlayStart() + (player.getTickPosition() - editorCache.getPlayTick()));
-					this.label.setText(Long.toString(position));
+					this.updateTickLabel(Long.toString(position));
 					this.tickProgress.setValue((int)position);
 					this.redrawTime = time;
 				}
