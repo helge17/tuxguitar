@@ -12,6 +12,10 @@ public class QTApplicationHandle {
 		QApplication.initialize(new String[0]);
 	}
 	
+	public void setStyle(String style) {
+		QApplication.setStyle(style);
+	}
+	
 	public void setApplicationName(String name) {
 		QApplication.setApplicationName(name);
 	}

@@ -12,10 +12,12 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	
 	private Thread uiThread;
 	private UIFactory uiFactory;
+	private QTEnvironment environment;
 	
 	public QTApplication() {
 		super(new QTApplicationHandle());
 		
+		this.environment = new QTEnvironment();
 		this.uiFactory = new QTFactory();
 	}
 	
@@ -48,6 +50,11 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	public void start(Runnable runnable) {
 		this.uiThread = Thread.currentThread();
 		this.getControl().initialize();
+		
+		String qtStyle = this.environment.findStyle();
+		if( qtStyle != null && qtStyle.length() > 0 ) {
+			this.getControl().setStyle(qtStyle);
+		}
 		
 		this.runInUiThread(runnable);
 		
