@@ -111,6 +111,7 @@ public class PrintLayout extends TGLayout{
 		if(this.document.isPaintable(this.page) ){
 			float x = this.document.getMargins().getLeft();
 			float y = this.document.getMargins().getTop();
+			float fmTopLine = painter.getFMTopLine();
 			String songName = getSong().getName();
 			String songAuthor = getSong().getAuthor();
 			String trackName = "(" + getSongManager().getTrack(getSong(), this.styles.getTrackNumber()).getName() + ")";
@@ -122,11 +123,11 @@ public class PrintLayout extends TGLayout{
 				songAuthor = TuxGuitar.getProperty("print-header.default-song-author");
 			}
 			painter.setFont(getSongNameFont(painter));
-			painter.drawString(songName,(x + getCenter(painter,songName)),y);
+			painter.drawString(songName,(x + getCenter(painter,songName)), (fmTopLine + y));
 			painter.setFont(getTrackNameFont(painter));
-			painter.drawString(trackName,(x + getCenter(painter,trackName)),(y + Math.round(30.0f * getScale())));
+			painter.drawString(trackName,(x + getCenter(painter,trackName)),(fmTopLine + y + Math.round(30.0f * getScale())));
 			painter.setFont(getSongAuthorFont(painter));
-			painter.drawString(songAuthor,(x + getRight(painter,songAuthor)),(y + Math.round(50.0f * getScale())));
+			painter.drawString(songAuthor,(x + getRight(painter,songAuthor)),(fmTopLine + y + Math.round(50.0f * getScale())));
 		}
 	}
 	
@@ -134,11 +135,12 @@ public class PrintLayout extends TGLayout{
 		if(this.document.isPaintable(this.page) ){
 			float x = this.document.getMargins().getLeft();
 			float y = this.document.getMargins().getTop();
+			float fmTopLine = painter.getFMTopLine();
 			String pageNumber = Integer.toString(this.page);
 			
 			painter.setBackground(getResources().getColorWhite());
 			painter.setForeground(getResources().getColorBlack());
-			painter.drawString(pageNumber, (x + getRight(painter, pageNumber)),(y + getBottom(painter, pageNumber)));
+			painter.drawString(pageNumber, (x + getRight(painter, pageNumber)),(fmTopLine + y + getBottom(painter, pageNumber)));
 		}
 	}
 	
