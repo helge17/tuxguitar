@@ -176,12 +176,12 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 		this.setAntialias(advanced);
 	}
 	
-	public float getFontSize(){
+	public float getFontSize() {
 		return this.getControl().font().pointSize();
 	}
 	
 	public float getFMTopLine() {
-		return (((this.getFMAscent() + 1f) / 10f) * 8f);
+		return this.getFontSize();
 	}
 	
 	public float getFMMiddleLine(){
@@ -189,7 +189,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	}
 	
 	public float getFMBaseLine() {
-		return this.getControl().fontMetrics().underlinePos();
+		return 0;
 	}
 	
 	public float getFMAscent() {

@@ -13,6 +13,8 @@ import org.herac.tuxguitar.app.tools.browser.TGBrowserConnection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnectionHandler;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.ui.TGApplication;
@@ -47,13 +49,6 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	private static final int SHELL_WIDTH = 500;
 	private static final int SHELL_HEIGHT = 350;
-	
-	public static final int CALL_OPEN = 1;
-	public static final int CALL_CLOSE = 2;
-	public static final int CALL_CD_ROOT = 3;
-	public static final int CALL_CD_UP = 4;
-	public static final int CALL_LIST = 5;
-	public static final int CALL_ELEMENT = 6;
 	
 	private TGContext context;
 	private TGBrowserCollection collection;
@@ -93,8 +88,8 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	}
 	
 	public void exit(){
-		this.getConnection().release();
-		this.getConnection().close(CALL_CLOSE);
+		this.closeCollection(true);
+		
 		TGBrowserManager.getInstance(this.context).writeCollections();
 		TuxGuitar.getInstance().getIconManager().removeLoader(this);
 	}
@@ -137,7 +132,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		this.dialog.setLayout(uiLayout);
 	}
 	
-	private void initTable(UIContainer parent){
+	public void initTable(UIContainer parent){
 		this.table = getUIFactory().createTable(parent, false);
 		this.table.setColumns(1);
 		this.table.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
@@ -157,7 +152,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		}
 	}
 	
-	private void updateTable(){
+	public void updateTable(){
 		if(!isDisposed()){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
@@ -188,6 +183,16 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		}
 	}
 	
+	public void updateBarsLater(){
+		if(!this.isDisposed()){
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+				public void run() {
+					TGBrowserDialog.this.updateBarsLater();
+				}
+			});
+		}
+	}
+	
 	public void updateCollections(final TGBrowserCollection selection){
 		if(!isDisposed()){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -201,115 +206,159 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		}
 	}
 	
-	protected void removeElements(){
+	public void removeElements(){
 		this.elements = null;
 	}
 	
-	protected void addElements(List<TGBrowserElement> elements){
+	public void addElements(List<TGBrowserElement> elements){
 		this.elements = elements;
 	}
 	
-	protected void openCollection(){
-		if(!isDisposed() && getCollection() != null){
-			TGBrowserFactory factory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
-			getConnection().open(CALL_OPEN,factory.newTGBrowser(getCollection().getData()));
-		}
-	}
-	
-	protected void closeCollection(){
-		if(!isDisposed() && getCollection() != null){
-			this.getConnection().close(CALL_CLOSE);
-		}
-	}
-	
-	protected void removeCollection(TGBrowserCollection collection){
+	public void removeCollection(TGBrowserCollection collection){
 		if(collection != null){
 			TGBrowserManager.getInstance(this.context).removeCollection(collection);
-			if( getCollection() != null && getCollection().equals( collection ) ){
-				this.getConnection().close(CALL_CLOSE);
+			if( getCollection() != null && getCollection().equals(collection)){
+				this.closeCollection();
 			}else{
 				this.updateCollections( getCollection() );
 			}
 		}
 	}
 	
+	public void openCollection(){
+		if(!isDisposed() && getCollection() != null){
+			TGBrowserFactory factory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
+			TGBrowser browser = factory.newTGBrowser(getCollection().getData());
+			
+			getConnection().open(new TGAbstractBrowserCallBack<Object>() {
+				public void onSuccess(Object data) {
+					onOpenCollection();
+				}
+			}, browser);
+		}
+	}
+	
+	public void closeCollection() {
+		this.closeCollection(false);
+	}
+	
+	public void closeCollection(boolean force) {
+		if(!this.isDisposed() && getCollection() != null) {
+			this.getConnection().close(new TGAbstractBrowserCallBack<Object>() {
+				public void onSuccess(Object data) {
+					onCloseCollection();
+				}
+			}, force);
+		}
+	}
+	
+	public void cdRoot() {
+		if(!this.isDisposed()) {
+			this.getConnection().cdRoot(new TGAbstractBrowserCallBack<Object>() {
+				public void onSuccess(Object data) {
+					onCd();
+				}
+			});
+		}
+	}
+	
+	public void cdUp() {
+		if(!this.isDisposed()) {
+			this.getConnection().cdUp(new TGAbstractBrowserCallBack<Object>() {
+				public void onSuccess(Object data) {
+					onCd();
+				}
+			});
+		}
+	}
+	
+	public void cdElement(final TGBrowserElement element) {
+		if(!this.isDisposed()) {
+			this.getConnection().cdElement(new TGAbstractBrowserCallBack<Object>() {
+				public void onSuccess(Object data) {
+					onCd();
+				}
+			}, element);
+		}
+	}
+	
+	public void listElements() {
+		if(!this.isDisposed()) {
+			this.getConnection().listElements(new TGAbstractBrowserCallBack<List<TGBrowserElement>>() {
+				public void onSuccess(List<TGBrowserElement> elements) {
+					notifyElements(elements);
+				}
+			});
+		}
+	}
+	
+	public void openStream(final TGBrowserElement element) {
+		if(!this.isDisposed()) {
+			this.getConnection().openStream(new TGAbstractBrowserCallBack<InputStream>() {
+				public void onSuccess(InputStream stream) {
+					onOpenStream(stream, element);
+				}
+			}, element);
+		}
+	}
+	
 	public void openElement() {
-		if(!isDisposed() && getConnection().isOpen()) {
+		if(!this.isDisposed() && this.getConnection().isOpen()) {
 			TGBrowserElement element = this.table.getSelectedValue();
-			if( element != null ){
-				this.getConnection().openStream(CALL_ELEMENT,element);
+			if( element != null ) {
+				if( element.isFolder() ) {
+					this.cdElement(element);
+				} else {
+					this.openStream(element);
+				}
 			}
 		}
 	}
 	
-	public void notifyLockStatusChanged(){
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				if(!isDisposed()){
-					updateBars();
-					loadCursor(getConnection().isLocked() ? UICursor.WAIT : UICursor.NORMAL);
-				}
-			}
-		});
-	}
-	
-	public void notifyOpened(int callId) {
-		if(!isDisposed()){
+	public void onOpenCollection() {
+		if(!this.isDisposed()) {
 			this.removeElements();
 			this.updateTable();
 			this.updateCollections(getCollection());
-			this.getConnection().release();
-			this.getConnection().listElements(CALL_LIST);
+			this.listElements();
 		}
 	}
 	
-	public void notifyClosed(int callId) {
-		if(callId != CALL_OPEN){
+	public void onCloseCollection() {
+		if(!this.isDisposed()) {
 			this.setCollection(null);
-		}
-		this.removeElements();
-		this.updateCollections(getCollection());
-		this.updateTable();
-		if(callId != CALL_OPEN){
-			this.getConnection().release();
-		}
-	}
-	
-	public void notifyError(int callId,Throwable throwable){
-		if(!isDisposed()){
+			this.removeElements();
+			this.updateCollections(getCollection());
 			this.updateTable();
-			this.getConnection().release();
-			
-			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
 	
-	public void notifyCd(int callId) {
-		if(!isDisposed()){
-			this.getConnection().release();
-			this.getConnection().listElements(CALL_LIST);
+	public void onCd() {
+		if(!this.isDisposed()) {
+			this.listElements();
 		}
 	}
 	
-	public void notifyElements(int callId, List<TGBrowserElement> elements) {
-		if(!isDisposed()){
+	public void notifyElements(List<TGBrowserElement> elements) {
+		if(!this.isDisposed()) {
 			this.addElements(elements);
 			this.updateTable();
-			this.getConnection().release();
 		}
 	}
 	
-	public void notifyStream(int callId,final InputStream stream,final TGBrowserElement element) {
+	public void onOpenStream(final InputStream stream, final TGBrowserElement element) {
+		loadCursor(UICursor.WAIT);
+		
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadSongAction.NAME);
 		tgActionProcessor.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 		tgActionProcessor.setOnFinish(new Runnable() {
 			public void run() {
-				getConnection().release();
+				loadCursor(UICursor.NORMAL);
 			}
 		});
 		tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
 			public void handleError(Throwable throwable) {
-				getConnection().release();
+				loadCursor(UICursor.NORMAL);
 				
 				TGMessageDialogUtil.errorMessage(getContext(), getWindow(), TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}));
 			}
@@ -342,17 +391,36 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	}
 	
 	public void notifyAdded() {
-		reload();
+		if(!this.isDisposed()){
+			this.reload();
+		}
 	}
 	
 	public void notifyRemoved() {
-		if(getCollection() != null){
-			closeCollection();
+		if(!this.isDisposed()){
+			if( this.getCollection() != null){
+				this.closeCollection();
+			}
+			this.reload();
 		}
-		reload();
 	}
 	
-	protected void reload(){
+	public void notifyLockStatusChanged() {
+		if(!this.isDisposed()){
+			this.updateBarsLater();
+			this.loadCursor(getConnection().isLocked() ? UICursor.WAIT : UICursor.NORMAL);
+		}
+	}
+	
+	public void notifyError(Throwable throwable){
+		if(!this.isDisposed()){
+			this.updateTable();
+			
+			TGErrorManager.getInstance(this.context).handleError(throwable);
+		}
+	}
+	
+	public void reload(){
 		if(!isDisposed()){
 			this.menu.reload(getWindow());
 			this.toolBar.reload();
@@ -382,5 +450,12 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 				return new TGBrowserDialog(context);
 			}
 		});
+	}
+	
+	private abstract class TGAbstractBrowserCallBack<T> implements TGBrowserCallBack<T> {
+		
+		public void handleError(Throwable throwable) {
+			TGBrowserDialog.this.notifyError(throwable);
+		}
 	}
 }

@@ -6,255 +6,223 @@ import java.util.List;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.util.TGLock;
 
 public class TGBrowserConnection {
 	
 	private boolean locked;
+	private TGLock lock;
 	private TGBrowser browser;
 	private TGBrowserConnectionHandler handler;
 	
 	public TGBrowserConnection(TGBrowserConnectionHandler handler){
 		this.handler = handler;
-	}
-	
-	protected void lock(){
-		this.locked = true;
-		this.handler.notifyLockStatusChanged();
-	}
-	
-	protected void unlock(){
-		this.locked = false;
-		this.handler.notifyLockStatusChanged();
-	}
-	
-	public boolean isLocked(){
-		return this.locked;
-	}
-	
-	public TGBrowser getBrowser(){
-		return this.browser;
+		this.lock = new TGLock();
 	}
 	
 	public boolean isOpen(){
 		return (getBrowser() != null);
 	}
 	
-	public void open(final int callId, final TGBrowser browser){
-		if(!isLocked()){
-			this.close(callId);
-			this.lock();
-			this.browser = browser;
+	public void open(final TGBrowserCallBack<Object> callback, final TGBrowser browser){
+		if( tryLock()) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( getBrowser() != null ){
-						getBrowser().open(new TGBrowserOpenHandlerImpl(callId));
-					}else{
-						notifyClosed(callId);
-					}
+					internalClose(new TGBrowserCallBackWrapper<Object>(callback) {
+						public void onSuccess(Object data) {
+							internalOpen(new TGBrowserCallBackUnlockWrapper<Object>(callback), browser);
+						}
+					});
 				}
 			}).start();
 		}
 	}
 	
-	public void close(final int callId){
-		if(!isLocked()){
-			this.lock();
-			final TGBrowser browser = getBrowser();
-			this.browser = null;
+	public void close(final TGBrowserCallBack<Object> callback, boolean force){
+		if( tryLock() || force ) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( browser != null ){
-						browser.close(new TGBrowserCloseHandlerImpl(callId));
-					}else{
-						notifyClosed(callId);
-					}
+					internalClose(new TGBrowserCallBackUnlockWrapper<Object>(callback));
 				}
 			}).start();
 		}
 	}
 	
-	public void cdRoot(final int callId){
-		if(!isLocked()){
-			this.lock();
+	public void cdRoot(final TGBrowserCallBack<Object> callback){
+		if( tryLock()) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( isOpen() ){
-						getBrowser().cdRoot(new TGBrowserCdHandlerImpl(callId));
-					}else{
-						notifyClosed(callId);
-					}
+					internalCdRoot(new TGBrowserCallBackUnlockWrapper<Object>(callback));
 				}
 			}).start();
 		}
 	}
 	
-	public void cdUp(final int callId){
-		if(!isLocked()){
-			this.lock();
+	public void cdUp(final TGBrowserCallBack<Object> callback){
+		if( tryLock()) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( isOpen() ){
-						getBrowser().cdUp(new TGBrowserCdHandlerImpl(callId));
-					}else{
-						notifyClosed(callId);
-					}
+					internalCdUp(new TGBrowserCallBackUnlockWrapper<Object>(callback));
 				}
 			}).start();
 		}
 	}
 	
-	public void cd(final int callId,final TGBrowserElement element){
-		if(!isLocked()){
-			this.lock();
+	public void cdElement(final TGBrowserCallBack<Object> callback, final TGBrowserElement element){
+		if( tryLock()) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( isOpen() ){
-						getBrowser().cdElement(new TGBrowserCdHandlerImpl(callId), element);
-					}else{
-						notifyClosed(callId);
-					}
+					internalCdElement(new TGBrowserCallBackUnlockWrapper<Object>(callback), element);
 				}
 			}).start();
 		}
 	}
 	
-	public void listElements(final int callId){
-		if(!isLocked()){
-			this.lock();
+	public void listElements(final TGBrowserCallBack<List<TGBrowserElement>> callback){
+		if( tryLock()) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( isOpen() ){
-						getBrowser().listElements(new TGBrowserListElementsHandlerImpl(callId));
-					}else{
-						notifyClosed(callId);
-					}
+					internalListElements(new TGBrowserCallBackUnlockWrapper<List<TGBrowserElement>>(callback));
 				}
 			}).start();
 		}
 	}
 	
-	public void openStream(final int callId, final TGBrowserElement element){
-		if(!isLocked()){
-			this.lock();
+	public void openStream(final TGBrowserCallBack<InputStream> callback, final TGBrowserElement element) {
+		if( tryLock()) {
 			new Thread(new Runnable() {
 				public void run() {
-					if( element == null ){
-						release();
-						return;
-					}
-					if( element.isFolder() ){
-						release();
-						cd(callId,element);
-					}
-					else{
-						getBrowser().getInputStream(new TGBrowserInputStreamHandlerImpl(callId, element), element);
-					}
+					internalOpenStream(new TGBrowserCallBackUnlockWrapper<InputStream>(callback), element);
 				}
 			}).start();
 		}
 	}
 	
-	public void release(){
-		this.unlock();
+	private void internalOpen(TGBrowserCallBack<Object> callback, final TGBrowser browser){
+		if( browser != null ){
+			browser.open(new TGBrowserCallBackWrapper<Object>(callback) {
+				public void onSuccess(Object data) {
+					setBrowser(browser);
+					
+					super.onSuccess(data);
+				}
+			});
+		}
 	}
 	
-	public void notifyCd(final int callId) {
-		this.handler.notifyCd(callId);
+	private void internalClose(TGBrowserCallBack<Object> callback){
+		if( this.browser != null ){
+			this.browser.close(new TGBrowserCallBackWrapper<Object>(callback) {
+				public void onSuccess(Object data) {
+					setBrowser(null);
+					
+					super.onSuccess(data);
+				}
+			});
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 	
-	public void notifyClosed(final int callId) {
-		this.handler.notifyClosed(callId);
+	private void internalCdRoot(final TGBrowserCallBack<Object> callback){
+		if( this.isOpen() ){
+			this.getBrowser().cdRoot(callback);
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 	
-	public void notifyElements(final int callId, List<TGBrowserElement> elements) {
-		this.handler.notifyElements(callId, elements);
+	private void internalCdUp(final TGBrowserCallBack<Object> callback){
+		if( this.isOpen() ){
+			this.getBrowser().cdUp(callback);
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 	
-	public void notifyError(final int callId,Throwable throwable) {
-		this.handler.notifyError(callId, throwable);
+	private void internalCdElement(final TGBrowserCallBack<Object> callback, TGBrowserElement element){
+		if( this.isOpen() ){
+			this.getBrowser().cdElement(callback, element);
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 	
-	public void notifyOpened(final int callId) {
-		this.handler.notifyOpened(callId);
+	private void internalListElements(final TGBrowserCallBack<List<TGBrowserElement>> callback){
+		if( this.isOpen() ){
+			this.getBrowser().listElements(callback);
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 	
-	public void notifyStream(final int callId,InputStream stream, TGBrowserElement element) {
-		this.handler.notifyStream(callId,stream,element);
+	private void internalOpenStream(TGBrowserCallBack<InputStream> callback, TGBrowserElement element){
+		if( this.isOpen() && element != null && !element.isFolder() ){
+			this.getBrowser().getInputStream(callback, element);
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 	
-	private abstract class TGBrowserErrorHandlerImpl<T> implements TGBrowserCallBack<T> {
+	private boolean tryLock() {
+		boolean lockAccess = false;
+		if( this.lock.tryLock() ) {
+			lockAccess = (!this.locked);
+			if( lockAccess ) {
+				this.locked = true;
+				this.handler.notifyLockStatusChanged();
+			}
+			this.lock.unlock();
+		}
+		return lockAccess;
+	}
+	
+	private void unlock() {
+		this.lock.lock();
+		this.locked = false;
+		this.handler.notifyLockStatusChanged();
+		this.lock.unlock();
+	}
+	
+	public boolean isLocked() {
+		return this.locked;
+	}
+	
+	private TGBrowser getBrowser(){
+		return this.browser;
+	}
+	
+	private void setBrowser(TGBrowser browser) {
+		this.browser = browser;
+	}
+	
+	private class TGBrowserCallBackWrapper<T> implements TGBrowserCallBack<T> {
 		
-		private int callId;
+		private TGBrowserCallBack<T> callback;
 		
-		public TGBrowserErrorHandlerImpl(int callId) {
-			this.callId = callId;
+		public TGBrowserCallBackWrapper(TGBrowserCallBack<T> callback) {
+			this.callback = callback;
 		}
 		
 		public void handleError(Throwable throwable) {
-			TGBrowserConnection.this.notifyError(this.callId, throwable);
+			this.callback.handleError(throwable);
 		}
-
-		public int getCallId() {
-			return callId;
+		
+		public void onSuccess(T data) {
+			this.callback.onSuccess(data);
 		}
 	}
 	
-	private class TGBrowserOpenHandlerImpl extends TGBrowserErrorHandlerImpl<Object> {
+	private class TGBrowserCallBackUnlockWrapper<T> extends TGBrowserCallBackWrapper<T> {
 		
-		public TGBrowserOpenHandlerImpl(int callId) {
-			super(callId);
+		public TGBrowserCallBackUnlockWrapper(TGBrowserCallBack<T> callback) {
+			super(callback);
 		}
 		
-		public void onSuccess(Object successData) {
-			TGBrowserConnection.this.notifyOpened(this.getCallId());
-		}
-	}
-	
-	private class TGBrowserCloseHandlerImpl extends TGBrowserErrorHandlerImpl<Object> {
-		
-		public TGBrowserCloseHandlerImpl(int callId) {
-			super(callId);
-		}
-		
-		public void onSuccess(Object successData) {
-			TGBrowserConnection.this.notifyClosed(this.getCallId());
-		}
-	}
-	
-	private class TGBrowserCdHandlerImpl extends TGBrowserErrorHandlerImpl<Object> {
-		
-		public TGBrowserCdHandlerImpl(int callId) {
-			super(callId);
-		}
-		
-		public void onSuccess(Object successData) {
-			TGBrowserConnection.this.notifyCd(this.getCallId());
-		}
-	}
-	
-	private class TGBrowserListElementsHandlerImpl extends TGBrowserErrorHandlerImpl<List<TGBrowserElement>> {
-
-		public TGBrowserListElementsHandlerImpl(int callId) {
-			super(callId);
-		}
-		
-		public void onSuccess(List<TGBrowserElement> elements) {
-			TGBrowserConnection.this.notifyElements(this.getCallId(), elements);
-		}
-	}
-	
-	private class TGBrowserInputStreamHandlerImpl extends TGBrowserErrorHandlerImpl<InputStream> {
-		
-		private TGBrowserElement element;
-		
-		public TGBrowserInputStreamHandlerImpl(int callId, TGBrowserElement element) {
-			super(callId);
+		public void onSuccess(T data) {
+			TGBrowserConnection.this.unlock();
 			
-			this.element = element;
-		}
-		
-		public void onSuccess(InputStream stream) {
-			TGBrowserConnection.this.notifyStream(this.getCallId(), stream, this.element);
+			super.onSuccess(data);
 		}
 	}
 }

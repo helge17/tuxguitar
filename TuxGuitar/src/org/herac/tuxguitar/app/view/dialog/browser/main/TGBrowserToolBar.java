@@ -26,6 +26,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	private UIToolMenuItem newBrowser;
 	private UIToolCustomItem collectionsItem;
 	private UIDropDownSelect<TGBrowserCollection> collections;
+	private TGBrowserCollection currentCollection;
 	
 	public TGBrowserToolBar(TGBrowserDialog browser){
 		super(browser);
@@ -59,7 +60,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
 		this.root.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				getBrowser().getConnection().cdRoot(TGBrowserDialog.CALL_CD_ROOT);
+				getBrowser().cdRoot();
 			}
 		});
 		
@@ -68,7 +69,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
 		this.back.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				getBrowser().getConnection().cdUp(TGBrowserDialog.CALL_CD_UP);
+				getBrowser().cdUp();
 			}
 		});
 		
@@ -77,7 +78,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		this.refresh.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRefresh());
 		this.refresh.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				getBrowser().getConnection().listElements(TGBrowserDialog.CALL_LIST);
+				getBrowser().listElements();
 			}
 		});
 		
@@ -106,6 +107,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	}
 	
 	public void updateCollections(TGBrowserCollection selection){
+		this.currentCollection = null;
 		this.collections.removeItems();
 		this.collections.addItem(new UISelectItem<TGBrowserCollection>(TuxGuitar.getProperty("browser.collection.select"), null));
 		
@@ -139,12 +141,16 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		this.updateCollections(getBrowser().getCollection());
 	}
 	
-	protected void updateCollection(){
+	public void updateCollection() {
 		TGBrowserCollection collection = this.collections.getSelectedValue();
-		if(collection == null){
-			closeCollection();
-		}else{
-			openCollection(collection);
+		if( this.currentCollection != collection ) {
+			this.currentCollection = collection;
+			
+			if( this.currentCollection == null ){
+				this.closeCollection();
+			} else {
+				this.openCollection(this.currentCollection);
+			}
 		}
 	}
 	
