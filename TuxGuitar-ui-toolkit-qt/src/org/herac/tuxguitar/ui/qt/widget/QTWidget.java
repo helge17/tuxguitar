@@ -254,6 +254,14 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	}
 
 	public void redraw() {
+		QApplication.invokeLater(new Runnable() {
+			public void run() {
+				QTWidget.this.repaint();
+			}
+		});
+	}
+	
+	public void repaint() {
 		this.getControl().repaint();
 	}
 	
