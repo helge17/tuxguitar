@@ -89,7 +89,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
 		this.root.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				getBrowser().getConnection().cdRoot(TGBrowserDialog.CALL_CD_ROOT);
+				getBrowser().cdRoot();
 			}
 		});
 		
@@ -98,7 +98,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
 		this.back.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				getBrowser().getConnection().cdUp(TGBrowserDialog.CALL_CD_UP);
+				getBrowser().cdUp();
 			}
 		});
 		
@@ -107,7 +107,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.refresh.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRefresh());
 		this.refresh.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				getBrowser().getConnection().listElements(TGBrowserDialog.CALL_LIST);
+				getBrowser().listElements();
 			}
 		});
 		
