@@ -117,14 +117,22 @@ public class TuxGuitar {
 		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context));
 		TGApplication.getInstance(TuxGuitar.this.context).getApplication().start(new Runnable() {
 			public void run() {
-				TuxGuitar.this.startUIContext(url);
+				// display splash screen
+				TGSplash.getInstance(TuxGuitar.this.context).init();
+				
+				TGSynchronizer.getInstance(TuxGuitar.this.context).executeLater(new Runnable() {
+					public void run() {
+						TuxGuitar.this.startUIContext(url);
+						
+						// close splash screen
+						TGSplash.getInstance(TuxGuitar.this.context).finish();
+					}
+				});
 			}
 		});
 	}
 	
-	private void startUIContext(URL url) {
-		TGSplash.getInstance(TuxGuitar.this.context).init();
-		
+	private void startUIContext(URL url) {		
 		TGWindow.getInstance(TuxGuitar.this.context).createWindow();
 		
 		// Priority 3 ----------------------------------------------//
@@ -134,8 +142,6 @@ public class TuxGuitar {
 		this.getPluginManager().connectEnabled();
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
-		
-		TGSplash.getInstance(TuxGuitar.this.context).finish();
 		
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(TuxGuitar.this.context).open();

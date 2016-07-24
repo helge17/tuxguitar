@@ -1,0 +1,5 @@
+- Download qtjambi 4.8.7 from http://qtjambi.org/downloads
+
+- Uncompress and install jars as maven artifacts
+mvn install:install-file -Dfile=qtjambi-4.8.7.jar -DgroupId=com.trolltech.qt -DartifactId=qtjambi -Dversion=4.8.7 -Dpackaging=jar
+mvn install:install-file -Dfile=qtjambi-native-linux32-gcc-4.8.7.jar -DgroupId=com.trolltech.qt -DartifactId=qtjambi-native-linux32-gcc -Dversion=4.8.7 -Dpackaging=jar

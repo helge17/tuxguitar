@@ -21,7 +21,7 @@ public class QTApplicationHandle {
 	}
 	
 	public void exec() {
-		QApplication.exec();
+		this.getHandle().exec();
 	}
 	
 	public void quit() {

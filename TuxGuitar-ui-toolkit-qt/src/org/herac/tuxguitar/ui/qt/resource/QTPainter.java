@@ -25,7 +25,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	public QTPainter(QPainter handle){
 		super(handle);
 		
-		this.getControl().setBackground(new QBrush(QColor.transparent));
+		this.getControl().setBackground(new QBrush(new QColor(0, 0, 0, 0)));
 	}
 	
 	public void initPath(int style){
