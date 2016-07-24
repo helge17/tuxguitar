@@ -23,7 +23,7 @@ public class QTImage extends QTComponent<QImage> implements UIImage {
 	}
 	
 	public QTImage(InputStream inputStream){
-		this(new QImageReader(new QTInputStreamDevice(inputStream)).read());
+		this(new QImageReader(new QTInputStream(inputStream)).read());
 	}
 	
 	public float getWidth() {

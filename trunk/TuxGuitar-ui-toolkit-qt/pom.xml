@@ -28,24 +28,9 @@
 			<scope>provided</scope>
 		</dependency>
         <dependency>
-            <groupId>net.sf.qtjambi</groupId>
+            <groupId>com.trolltech.qt</groupId>
             <artifactId>qtjambi</artifactId>
-            <version>4.5.2_01</version>
+            <version>4.8.7</version>
         </dependency>
 	</dependencies>
-	
-	<repositories>
-		<repository>
-			<id>qtjambi</id>
-			<name>qtjambi</name>
-			<url>http://repository.qt-jambi.org/nexus/content/repositories/public/</url>
-			<releases>
-				<checksumPolicy>ignore</checksumPolicy>
-			</releases>
-			<snapshots>
-				<checksumPolicy>ignore</checksumPolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
 </project>

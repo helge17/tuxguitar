@@ -8,8 +8,6 @@ import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIFocusEvent;
 import org.herac.tuxguitar.ui.event.UIFocusLostListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -67,11 +65,6 @@ public class TGChannelItem {
 		this.nameText = uiFactory.createTextField(col1Panel);
 		this.nameText.addFocusLostListener(new UIFocusLostListener() {
 			public void onFocusLost(UIFocusEvent event) {
-				checkForNameModified();
-			}
-		});
-		this.nameText.addDisposeListener(new UIDisposeListener() {
-			public void onDispose(UIDisposeEvent event) {
 				checkForNameModified();
 			}
 		});
