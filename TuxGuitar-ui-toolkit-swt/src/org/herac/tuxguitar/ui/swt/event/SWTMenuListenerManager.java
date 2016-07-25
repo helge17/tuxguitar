@@ -7,15 +7,15 @@ import org.herac.tuxguitar.ui.event.UIMenuHideListener;
 import org.herac.tuxguitar.ui.event.UIMenuHideListenerManager;
 import org.herac.tuxguitar.ui.event.UIMenuShowListener;
 import org.herac.tuxguitar.ui.event.UIMenuShowListenerManager;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMenuListenerManager implements MenuListener {
 	
-	private SWTComponent<?> control;
+	private SWTEventReceiver<?> control;
 	private UIMenuShowListenerManager menuShowListener;
 	private UIMenuHideListenerManager menuHideListener;
 	
-	public SWTMenuListenerManager(SWTComponent<?> control) {
+	public SWTMenuListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 		this.menuShowListener = new UIMenuShowListenerManager();
 		this.menuHideListener = new UIMenuHideListenerManager();
@@ -42,10 +42,14 @@ public class SWTMenuListenerManager implements MenuListener {
 	}
 	
 	public void menuShown(MenuEvent e) {
-		this.menuShowListener.onMenuShow(new UIMenuEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.menuShowListener.onMenuShow(new UIMenuEvent(this.control));
+		}
 	}
 	
 	public void menuHidden(MenuEvent e) {
-		this.menuHideListener.onMenuHide(new UIMenuEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.menuHideListener.onMenuHide(new UIMenuEvent(this.control));
+		}
 	}
 }

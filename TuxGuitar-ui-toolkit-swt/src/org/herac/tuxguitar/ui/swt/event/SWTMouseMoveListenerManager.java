@@ -5,17 +5,19 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseMoveListenerManager;
 import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMouseMoveListenerManager extends UIMouseMoveListenerManager implements MouseMoveListener {
 	
-	private SWTComponent<?> control;
+	private SWTEventReceiver<?> control;
 	
-	public SWTMouseMoveListenerManager(SWTComponent<?> control) {
+	public SWTMouseMoveListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	public void mouseMove(MouseEvent e) {
-		this.onMouseMove(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		if(!this.control.isIgnoreEvents()) {
+			this.onMouseMove(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		}
 	}
 }

@@ -10,16 +10,16 @@ import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListenerManager;
 import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMouseListenerManager implements MouseListener {
 	
-	private SWTComponent<?> control;
+	private SWTEventReceiver<?> control;
 	private UIMouseUpListenerManager mouseUpListener;
 	private UIMouseDownListenerManager mouseDownListener;
 	private UIMouseDoubleClickListenerManager mouseDoubleClickListener;
 	
-	public SWTMouseListenerManager(SWTComponent<?> control) {
+	public SWTMouseListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 		this.mouseUpListener = new UIMouseUpListenerManager();
 		this.mouseDownListener = new UIMouseDownListenerManager();
@@ -55,14 +55,20 @@ public class SWTMouseListenerManager implements MouseListener {
 	}
 
 	public void mouseDoubleClick(MouseEvent e) {
-		this.mouseDoubleClickListener.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		if(!this.control.isIgnoreEvents()) {
+			this.mouseDoubleClickListener.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		}
 	}
 
 	public void mouseDown(MouseEvent e) {
-		this.mouseDownListener.onMouseDown(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		if(!this.control.isIgnoreEvents()) {
+			this.mouseDownListener.onMouseDown(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		}
 	}
 
 	public void mouseUp(MouseEvent e) {
-		this.mouseUpListener.onMouseUp(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		if(!this.control.isIgnoreEvents()) {
+			this.mouseUpListener.onMouseUp(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		}
 	}
 }

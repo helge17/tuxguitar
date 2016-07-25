@@ -5,21 +5,23 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
 import org.herac.tuxguitar.ui.event.UICheckTableSelectionListenerManager;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
 public class SWTCheckTableSelectionListenerManager<T> extends UICheckTableSelectionListenerManager<T> implements SelectionListener {
 	
-	private SWTComponent<?> control;
+	private SWTEventReceiver<?> control;
 	
-	public SWTCheckTableSelectionListenerManager(SWTComponent<?> control) {
+	public SWTCheckTableSelectionListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void widgetSelected(SelectionEvent event) {
-		if( event.detail == SWT.CHECK && event.item != null && event.item.getData() instanceof UITableItem<?> ){
-			this.onSelect(new UICheckTableSelectionEvent<T>(this.control, (UITableItem<T>) event.item.getData()));
+		if(!this.control.isIgnoreEvents()) {
+			if( event.detail == SWT.CHECK && event.item != null && event.item.getData() instanceof UITableItem<?> ){
+				this.onSelect(new UICheckTableSelectionEvent<T>(this.control, (UITableItem<T>) event.item.getData()));
+			}
 		}
 	}
 	

@@ -16,6 +16,8 @@ public class SWTPaintListenerManager extends UIPaintListenerManager implements P
 	}
 	
 	public void paintControl(PaintEvent e) {
-		this.onPaint(new UIPaintEvent(this.control, new SWTPainter(e.gc)));
+		if(!this.control.isIgnoreEvents()) {
+			this.onPaint(new UIPaintEvent(this.control, new SWTPainter(e.gc)));
+		}
 	}
 }
