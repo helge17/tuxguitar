@@ -62,6 +62,7 @@ public abstract class SWTControl<T extends Control> extends SWTComponent<T> impl
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
+	private boolean ignoreEvents;
 	
 	public SWTControl(T control, SWTContainer<? extends Composite> parent) {
 		super(control);
@@ -215,7 +216,15 @@ public abstract class SWTControl<T extends Control> extends SWTComponent<T> impl
 	public void redraw() {
 		this.getControl().redraw();
 	}
+	
+	public boolean isIgnoreEvents() {
+		return this.ignoreEvents;
+	}
 
+	public void setIgnoreEvents(boolean ignoreEvents) {
+		this.ignoreEvents = ignoreEvents;
+	}
+	
 	public void addDisposeListener(UIDisposeListener listener) {
 		if( this.disposeListener.isEmpty() ) {
 			this.getControl().addDisposeListener(this.disposeListener);

@@ -188,6 +188,8 @@ public class TGChannelItem {
 	
 	public void updateItems(){
 		if(!isDisposed() && getChannel() != null){
+			this.updateIgnoreEvents(true);
+			
 			boolean playerRunning = this.getHandle().isPlayerRunning();
 			boolean anyPercussionChannel = this.getHandle().isAnyPercussionChannel();
 			boolean anyTrackConnectedToChannel = this.getHandle().isAnyTrackConnectedToChannel(getChannel());
@@ -207,7 +209,24 @@ public class TGChannelItem {
 			
 			this.updateBankCombo(playerRunning);
 			this.updateProgramCombo(playerRunning);
+			
+			this.updateIgnoreEvents(false);
 		}
+	}
+	
+	private void updateIgnoreEvents(boolean ignoreEvents) {
+		this.nameText.setIgnoreEvents(ignoreEvents);
+		this.percussionButton.setIgnoreEvents(ignoreEvents);
+		this.removeChannelButton.setIgnoreEvents(ignoreEvents);
+		this.setupChannelButton.setIgnoreEvents(ignoreEvents);
+		this.volumeScale.setIgnoreEvents(ignoreEvents);
+		this.balanceScale.setIgnoreEvents(ignoreEvents);
+		this.reverbScale.setIgnoreEvents(ignoreEvents);
+		this.chorusScale.setIgnoreEvents(ignoreEvents);
+		this.tremoloScale.setIgnoreEvents(ignoreEvents);
+		this.phaserScale.setIgnoreEvents(ignoreEvents);
+		this.bankCombo.setIgnoreEvents(ignoreEvents);
+		this.programCombo.setIgnoreEvents(ignoreEvents);
 	}
 	
 	private void updateBankCombo(boolean playerRunning){

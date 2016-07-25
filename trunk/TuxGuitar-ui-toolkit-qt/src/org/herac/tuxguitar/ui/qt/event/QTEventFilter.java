@@ -9,12 +9,17 @@ import com.trolltech.qt.core.QObject;
 
 public class QTEventFilter extends QObject {
 	
+	private boolean ignoreEvents;
 	private List<QTEventMap> eventsMap;
 	
 	public QTEventFilter() {
 		this.eventsMap = new ArrayList<QTEventMap>();
 	}
 	
+	public void setIgnoreEvents(boolean ignoreEvents) {
+		this.ignoreEvents = ignoreEvents;
+	}
+
 	public void connect(Type eventType, QTEventHandler eventHandler) {
 		this.eventsMap.add(new QTEventMap(eventType, eventHandler));
 	}
@@ -37,10 +42,12 @@ public class QTEventFilter extends QObject {
 	
 	public boolean eventFilter(QObject obj, QEvent event) {
 		boolean success = false;
-		for(QTEventMap map : this.eventsMap) {
-			if( map.getEventType().equals(event.type()) ) {
-				map.getEventHandler().handle(event);
-				success = true;
+		if(!this.ignoreEvents) {
+			for(QTEventMap map : this.eventsMap) {
+				if( map.getEventType().equals(event.type()) ) {
+					map.getEventHandler().handle(event);
+					success = true;
+				}
 			}
 		}
 		return (success || super.eventFilter(obj, event));
