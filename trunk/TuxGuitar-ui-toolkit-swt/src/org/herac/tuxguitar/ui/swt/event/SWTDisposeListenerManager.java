@@ -4,17 +4,19 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListenerManager;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTDisposeListenerManager extends UIDisposeListenerManager implements DisposeListener {
 	
-	private SWTComponent<?> control;
+	private SWTEventReceiver<?> control;
 	
-	public SWTDisposeListenerManager(SWTComponent<?> control) {
+	public SWTDisposeListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
 
 	public void widgetDisposed(DisposeEvent e) {
-		this.onDispose(new UIDisposeEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.onDispose(new UIDisposeEvent(this.control));
+		}
 	}
 }

@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.ui.swt.toolbar;
 
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
-public abstract class SWTToolControl<T> extends SWTComponent<T> {
+public abstract class SWTToolControl<T> extends SWTEventReceiver<T> {
 	
 	private SWTToolBar parent;
 	

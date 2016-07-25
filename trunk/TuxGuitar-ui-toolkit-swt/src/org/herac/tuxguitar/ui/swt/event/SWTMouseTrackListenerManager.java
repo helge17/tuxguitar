@@ -8,15 +8,15 @@ import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseExitListener;
 import org.herac.tuxguitar.ui.event.UIMouseExitListenerManager;
 import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMouseTrackListenerManager implements MouseTrackListener {
 	
-	private SWTComponent<?> control;
+	private SWTEventReceiver<?> control;
 	private UIMouseEnterListenerManager mouseEnterListener;
 	private UIMouseExitListenerManager mouseExitListener;
 	
-	public SWTMouseTrackListenerManager(SWTComponent<?> control) {
+	public SWTMouseTrackListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 		this.mouseEnterListener = new UIMouseEnterListenerManager();
 		this.mouseExitListener = new UIMouseExitListenerManager();
@@ -43,11 +43,15 @@ public class SWTMouseTrackListenerManager implements MouseTrackListener {
 	}
 	
 	public void mouseEnter(MouseEvent e) {
-		this.mouseEnterListener.onMouseEnter(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		if(!this.control.isIgnoreEvents()) {
+			this.mouseEnterListener.onMouseEnter(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		}
 	}
 
 	public void mouseExit(MouseEvent e) {
-		this.mouseExitListener.onMouseExit(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		if(!this.control.isIgnoreEvents()) {
+			this.mouseExitListener.onMouseExit(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+		}
 	}
 
 	public void mouseHover(MouseEvent e) {

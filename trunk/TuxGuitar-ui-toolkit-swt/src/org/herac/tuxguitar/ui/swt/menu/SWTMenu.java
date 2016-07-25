@@ -13,9 +13,9 @@ import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
-public class SWTMenu extends SWTComponent<Menu> implements UIMenu {
+public class SWTMenu extends SWTEventReceiver<Menu> implements UIMenu {
 	
 	private List<UIMenuItem>  menuItems;
 	

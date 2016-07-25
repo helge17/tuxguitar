@@ -27,7 +27,6 @@ import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
 import org.herac.tuxguitar.ui.swt.event.SWTDisposeListenerManager;
 import org.herac.tuxguitar.ui.swt.event.SWTFocusListenerManager;
 import org.herac.tuxguitar.ui.swt.event.SWTKeyListenerManager;
@@ -43,7 +42,7 @@ import org.herac.tuxguitar.ui.swt.resource.SWTCursor;
 import org.herac.tuxguitar.ui.swt.resource.SWTFont;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
-public abstract class SWTControl<T extends Control> extends SWTComponent<T> implements UIControl {
+public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> implements UIControl {
 	
 	private SWTContainer<? extends Composite> parent;
 	private SWTDisposeListenerManager disposeListener;
@@ -62,7 +61,6 @@ public abstract class SWTControl<T extends Control> extends SWTComponent<T> impl
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
-	private boolean ignoreEvents;
 	
 	public SWTControl(T control, SWTContainer<? extends Composite> parent) {
 		super(control);
@@ -215,14 +213,6 @@ public abstract class SWTControl<T extends Control> extends SWTComponent<T> impl
 	
 	public void redraw() {
 		this.getControl().redraw();
-	}
-	
-	public boolean isIgnoreEvents() {
-		return this.ignoreEvents;
-	}
-
-	public void setIgnoreEvents(boolean ignoreEvents) {
-		this.ignoreEvents = ignoreEvents;
 	}
 	
 	public void addDisposeListener(UIDisposeListener listener) {

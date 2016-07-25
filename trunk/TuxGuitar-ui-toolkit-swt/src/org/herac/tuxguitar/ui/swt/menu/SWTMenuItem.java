@@ -4,10 +4,10 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKeyConvination;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
 import org.herac.tuxguitar.ui.swt.resource.SWTImage;
+import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
-public class SWTMenuItem extends SWTComponent<MenuItem> implements UIMenuItem {
+public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuItem {
 	
 	private UIKeyConvination keyConvination;
 	private UIImage image;

@@ -2,11 +2,10 @@ package org.herac.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.widgets.ScrollBar;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
 import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 
-public class SWTScrollBar extends SWTComponent<ScrollBar> implements UIScrollBar {
+public class SWTScrollBar extends SWTEventReceiver<ScrollBar> implements UIScrollBar {
 	
 	private Integer thumb;
 	private Integer maximum;
