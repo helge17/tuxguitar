@@ -237,7 +237,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 	
 	public <Data> Data getData(String key) {
 		if( this.control != null ) {
-			this.control.getData(key);
+			return this.control.getData(key);
 		}
 		return null;
 	}
@@ -246,6 +246,19 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 		if( this.control != null ) {
 			this.control.setData(key, data);
 		}
+	}
+	
+	public void setIgnoreEvents(boolean ignoreEvents) {
+		if( this.control != null ) {
+			this.control.setIgnoreEvents(ignoreEvents);
+		}
+	}
+	
+	public boolean isIgnoreEvents() {
+		if( this.control != null ) {
+			return this.control.isIgnoreEvents();
+		}
+		return false;
 	}
 	
 	public void addDisposeListener(UIDisposeListener listener) {

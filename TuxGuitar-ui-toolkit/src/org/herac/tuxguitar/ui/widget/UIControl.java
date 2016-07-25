@@ -66,6 +66,10 @@ public interface UIControl extends UIComponent {
 	
 	UIPopupMenu getPopupMenu();
 	
+	boolean isIgnoreEvents();
+	
+	void setIgnoreEvents(boolean ignoreEvents);
+	
 	void setPopupMenu(UIPopupMenu menu);
 	
 	void addDisposeListener(UIDisposeListener listener);

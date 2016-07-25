@@ -77,6 +77,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
+	private boolean ignoreEvents;
 	
 	public QTWidget(T control, QTContainer parent, boolean immediatelyShow) {
 		super(control);
@@ -283,6 +284,16 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		});
 	}
 	
+	public boolean isIgnoreEvents() {
+		return this.ignoreEvents;
+	}
+
+	public void setIgnoreEvents(boolean ignoreEvents) {
+		this.ignoreEvents = ignoreEvents;
+		this.eventFilter.setIgnoreEvents(this.ignoreEvents);
+		this.getControl().blockSignals(ignoreEvents);
+	}
+
 	public void addDisposeListener(UIDisposeListener listener) {
 		if( this.disposeListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.Destroy, this.disposeListener);

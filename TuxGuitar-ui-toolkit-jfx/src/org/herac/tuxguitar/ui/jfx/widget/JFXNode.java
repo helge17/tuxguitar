@@ -63,6 +63,7 @@ public abstract class JFXNode<T extends Node> extends JFXComponent<T> implements
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
+	private boolean ignoreEvents;
 	
 	public JFXNode(T control, JFXContainer<? extends Region> parent) {
 		super(control);
@@ -200,6 +201,14 @@ public abstract class JFXNode<T extends Node> extends JFXComponent<T> implements
 		area.getSize().setHeight(childArea.getHeight());
 		
 		this.getControl().setClip(new Rectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight()));
+	}
+	
+	public boolean isIgnoreEvents() {
+		return this.ignoreEvents;
+	}
+
+	public void setIgnoreEvents(boolean ignoreEvents) {
+		this.ignoreEvents = ignoreEvents;
 	}
 	
 	public void addDisposeListener(UIDisposeListener listener) {
