@@ -11,5 +11,6 @@ public class QTScale extends QTAbstractSlider<QSlider> implements UIScale {
 		super(new QSlider(parent.getContainerControl()), parent);
 		
 		this.getControl().setOrientation(orientation);
+		this.getControl().setInvertedAppearance(true);
 	}
 }
