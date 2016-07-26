@@ -29,6 +29,7 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIPosition;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.ui.widget.UILabel;
@@ -157,6 +158,13 @@ public class TGChordEditor {
 	
 	private void paintEditor(TGPainter painter) {
 		int noteSize = (FRET_SPACING / 2);
+		
+		// fill background
+		UIRectangle bounds = this.canvas.getBounds();
+		painter.setBackground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_WHITE)));
+		painter.initPath(TGPainter.PATH_FILL);
+		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
+		painter.closePath();
 		
 		painter.setForeground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_BLACK)));
 		

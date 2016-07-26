@@ -93,6 +93,8 @@ public class TGChordCustomList {
 	}
 	
 	public void loadChords(){
+		this.chords.setIgnoreEvents(true);
+		
 		Integer selectionIndex = this.chords.getSelectedValue();
 		if( selectionIndex == null ) {
 			selectionIndex = 0;
@@ -110,6 +112,7 @@ public class TGChordCustomList {
 		}else if(selectionIndex > 0 && (selectionIndex - 1) < this.chords.getItemCount()){
 			this.chords.setSelectedValue((selectionIndex - 1));
 		}
+		this.chords.setIgnoreEvents(false);
 	}
 	
 	public void showChord(int index) {
