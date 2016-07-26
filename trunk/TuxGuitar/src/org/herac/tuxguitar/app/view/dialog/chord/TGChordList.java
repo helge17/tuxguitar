@@ -126,7 +126,17 @@ public class TGChordList {
 		this.canvas.redraw();
 	}
 	
+	private void fillBackground(TGPainter painter) {
+		UIRectangle bounds = this.canvas.getBounds();
+		painter.setBackground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_WHITE)));
+		painter.initPath(TGPainter.PATH_FILL);
+		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
+		painter.closePath();
+	}
+	
 	private void paintChords(TGPainter painter) {
+		this.fillBackground(painter);
+		
 		float maxHeight = 0;
 		float fromX = 15;
 		float fromY = 10;

@@ -52,7 +52,7 @@ public class TGChordDialog {
 		final TGTrack track = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		final TGBeat beat = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGVoice voice= this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
+		final TGVoice voice = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		
 		final UIFactory uiFactory = this.getUIFactory();
 		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
