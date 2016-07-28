@@ -5,19 +5,21 @@ import javafx.scene.input.MouseEvent;
 
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseUpListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.jfx.resource.JFXMouseButton;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 
 public class JFXMouseUpListenerManager extends UIMouseUpListenerManager implements EventHandler<MouseEvent> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	
-	public JFXMouseUpListenerManager(JFXComponent<?> control) {
+	public JFXMouseUpListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	public void handle(MouseEvent event) {
-		this.onMouseUp(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton())));
+		if(!this.control.isIgnoreEvents()) {
+			this.onMouseUp(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton())));
+		}
 	}
 }

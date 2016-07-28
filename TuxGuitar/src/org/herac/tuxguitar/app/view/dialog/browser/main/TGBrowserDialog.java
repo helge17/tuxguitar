@@ -95,6 +95,9 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	}
 	
 	public void show() {
+		this.collection = null;
+		this.elements = null;
+		
 		this.dialog = getUIFactory().createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		
@@ -187,7 +190,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 		if(!this.isDisposed()){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
-					TGBrowserDialog.this.updateBarsLater();
+					TGBrowserDialog.this.updateBars();
 				}
 			});
 		}
@@ -243,7 +246,7 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	}
 	
 	public void closeCollection(boolean force) {
-		if(!this.isDisposed() && getCollection() != null) {
+		if((!this.isDisposed() || force) && getCollection() != null) {
 			this.getConnection().close(new TGAbstractBrowserCallBack<Object>() {
 				public void onSuccess(Object data) {
 					onCloseCollection();

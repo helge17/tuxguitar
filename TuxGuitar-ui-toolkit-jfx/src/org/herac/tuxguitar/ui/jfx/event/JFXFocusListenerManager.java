@@ -8,15 +8,15 @@ import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
 import org.herac.tuxguitar.ui.event.UIFocusGainedListenerManager;
 import org.herac.tuxguitar.ui.event.UIFocusLostListener;
 import org.herac.tuxguitar.ui.event.UIFocusLostListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXFocusListenerManager implements ChangeListener<Boolean> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	private UIFocusGainedListenerManager focusGainedListener;
 	private UIFocusLostListenerManager focusLostListener;
 	
-	public JFXFocusListenerManager(JFXComponent<?> control) {
+	public JFXFocusListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 		this.focusGainedListener = new UIFocusGainedListenerManager();
 		this.focusLostListener = new UIFocusLostListenerManager();
@@ -43,11 +43,13 @@ public class JFXFocusListenerManager implements ChangeListener<Boolean> {
 	}
 	
 	public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-		UIFocusEvent uiFocusEvent = new UIFocusEvent(this.control);
-		if( Boolean.TRUE.equals(newValue)) {
-			this.focusGainedListener.onFocusGained(uiFocusEvent);
-		} else {
-			this.focusLostListener.onFocusLost(uiFocusEvent);
+		if(!this.control.isIgnoreEvents()) {
+			UIFocusEvent uiFocusEvent = new UIFocusEvent(this.control);
+			if( Boolean.TRUE.equals(newValue)) {
+				this.focusGainedListener.onFocusGained(uiFocusEvent);
+			} else {
+				this.focusLostListener.onFocusLost(uiFocusEvent);
+			}
 		}
 	}
 }

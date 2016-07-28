@@ -5,17 +5,19 @@ import javafx.stage.WindowEvent;
 
 import org.herac.tuxguitar.ui.event.UIMenuEvent;
 import org.herac.tuxguitar.ui.event.UIMenuShowListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXMenuShowListenerManager extends UIMenuShowListenerManager implements EventHandler<WindowEvent> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	
-	public JFXMenuShowListenerManager(JFXComponent<?> control) {
+	public JFXMenuShowListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	public void handle(WindowEvent event) {
-		this.onMenuShow(new UIMenuEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.onMenuShow(new UIMenuEvent(this.control));
+		}
 	}
 }

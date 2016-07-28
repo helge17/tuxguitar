@@ -3,13 +3,13 @@ package org.herac.tuxguitar.ui.jfx.menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.jfx.resource.JFXSnapshotImage;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKeyConvination;
 
-public class JFXMenuItem<T extends MenuItem> extends JFXComponent<T> implements UIMenuItem {
+public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> implements UIMenuItem {
 	
 	private UIKeyConvination keyConvination;
 	private UIImage image;

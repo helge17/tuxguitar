@@ -10,6 +10,7 @@ import org.herac.tuxguitar.ui.widget.UIScrollBar;
 
 public class JFXScrollBar extends JFXControl<ScrollBar> implements UIScrollBar {
 	
+	private Integer thumb;
 	private JFXSelectionListenerChangeManager<Number> selectionListener;
 	
 	public JFXScrollBar(JFXContainer<? extends Region> parent, Orientation orientation) {
@@ -29,6 +30,7 @@ public class JFXScrollBar extends JFXControl<ScrollBar> implements UIScrollBar {
 
 	public void setMaximum(int maximum) {
 		this.getControl().setMax(maximum);
+		this.updateVisibleAmount();
 	}
 
 	public int getMaximum() {
@@ -37,6 +39,7 @@ public class JFXScrollBar extends JFXControl<ScrollBar> implements UIScrollBar {
 
 	public void setMinimum(int minimum) {
 		this.getControl().setMin(minimum);
+		this.updateVisibleAmount();
 	}
 
 	public int getMinimum() {
@@ -52,11 +55,25 @@ public class JFXScrollBar extends JFXControl<ScrollBar> implements UIScrollBar {
 	}
 	
 	public void setThumb(int thumb) {
-		this.getControl().setVisibleAmount(thumb);
+		this.thumb = thumb;
+		this.updateVisibleAmount();
 	}
 	
 	public int getThumb() {
-		return (int) Math.round(this.getControl().getVisibleAmount());
+		return (this.thumb != null ? this.thumb : -1);
+	}
+	
+	public void updateVisibleAmount() {
+		double amount = 0;
+		if( this.thumb != null ) {
+			double size = (Orientation.HORIZONTAL.equals(this.getControl().getOrientation()) ? this.getControl().getWidth() : this.getControl().getHeight());
+			double maximumValue = this.getControl().getMax();
+			double maximumSize = (size + maximumValue);
+			if( maximumSize > 0 ) {
+				amount = (this.thumb * maximumValue / maximumSize);
+			}
+		}
+		this.getControl().setVisibleAmount(amount);
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {

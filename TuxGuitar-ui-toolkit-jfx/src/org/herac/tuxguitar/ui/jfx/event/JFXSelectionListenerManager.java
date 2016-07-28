@@ -5,17 +5,19 @@ import javafx.event.EventHandler;
 
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXSelectionListenerManager<T extends Event> extends UISelectionListenerManager implements EventHandler<T> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	
-	public JFXSelectionListenerManager(JFXComponent<?> control) {
+	public JFXSelectionListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	public void handle(T event) {
-		this.onSelect(new UISelectionEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.onSelect(new UISelectionEvent(this.control));
+		}
 	}
 }

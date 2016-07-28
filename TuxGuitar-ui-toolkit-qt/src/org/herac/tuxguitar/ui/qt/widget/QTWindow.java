@@ -13,9 +13,9 @@ public class QTWindow extends QTAbstractWindow<QMainWindow> {
 	}
 	
 	public void setMenuBar(UIMenuBar menuBar) {
-		super.setMenuBar(menuBar);
-		
 		this.getControl().setMenuBar(menuBar != null ? ((QTMenuBar) menuBar).getControl() : null);
+		
+		super.setMenuBar(menuBar);
 	}
 	
 	public void join() {

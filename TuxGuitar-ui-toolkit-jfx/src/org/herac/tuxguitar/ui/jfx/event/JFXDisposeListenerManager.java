@@ -2,17 +2,19 @@ package org.herac.tuxguitar.ui.jfx.event;
 
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXDisposeListenerManager extends UIDisposeListenerManager {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	
-	public JFXDisposeListenerManager(JFXComponent<?> control) {
+	public JFXDisposeListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 
 	public void fireEvent() {
-		this.onDispose(new UIDisposeEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.onDispose(new UIDisposeEvent(this.control));
+		}
 	}
 }

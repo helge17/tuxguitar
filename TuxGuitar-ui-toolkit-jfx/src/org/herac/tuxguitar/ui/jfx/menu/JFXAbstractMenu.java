@@ -6,13 +6,13 @@ import java.util.List;
 import javafx.scene.control.MenuItem;
 
 import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
-public class JFXAbstractMenu<T> extends JFXComponent<T> implements JFXMenuItemContainer {
+public class JFXAbstractMenu<T> extends JFXEventReceiver<T> implements JFXMenuItemContainer {
 	
 	private List<UIMenuItem>  menuItems;
 	

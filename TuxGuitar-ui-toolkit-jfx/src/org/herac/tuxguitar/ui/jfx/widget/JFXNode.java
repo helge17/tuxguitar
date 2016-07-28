@@ -17,7 +17,6 @@ import org.herac.tuxguitar.ui.event.UIMouseExitListener;
 import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.jfx.event.JFXDisposeListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXFocusListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXKeyPressedListenerManager;
@@ -39,7 +38,7 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
-public abstract class JFXNode<T extends Node> extends JFXComponent<T> implements UIControl {
+public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implements UIControl {
 	
 	private JFXContainer<? extends Region> parent;
 	
@@ -63,7 +62,6 @@ public abstract class JFXNode<T extends Node> extends JFXComponent<T> implements
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
-	private boolean ignoreEvents;
 	
 	public JFXNode(T control, JFXContainer<? extends Region> parent) {
 		super(control);
@@ -201,14 +199,6 @@ public abstract class JFXNode<T extends Node> extends JFXComponent<T> implements
 		area.getSize().setHeight(childArea.getHeight());
 		
 		this.getControl().setClip(new Rectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight()));
-	}
-	
-	public boolean isIgnoreEvents() {
-		return this.ignoreEvents;
-	}
-
-	public void setIgnoreEvents(boolean ignoreEvents) {
-		this.ignoreEvents = ignoreEvents;
 	}
 	
 	public void addDisposeListener(UIDisposeListener listener) {
