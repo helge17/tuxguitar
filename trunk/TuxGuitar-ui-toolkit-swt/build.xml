@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<project name="TuxGuitar-ui-toolkit" basedir="." default="all">
+<project name="TuxGuitar-ui-toolkit-swt" basedir="." default="all">
 	<description>
-		TuxGuitar-ui-toolkit
+		TuxGuitar-ui-toolkit-swt
 	</description>
 	
 	<property file="build.properties" />
 	<property name="build.src.path" value="src" />
-	<property name="build.share.path" value="share" />
+	<property name="build.resource.path" value="resources" />
 	<property name="build.path" value="build" />
-	<property name="build.jar" value="tuxguitar-ui-toolkit.jar" />
+	<property name="build.jar" value="tuxguitar-ui-toolkit-swt.jar" />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar-ui-toolkit}"/>
+		<pathelement location="${path.swt}"/>
+	</path>
 	
 	<target name="init" depends="clean">
 		<mkdir dir="${build.path}" />
@@ -21,11 +26,12 @@
 		<echo>+-------------------------------------------------+</echo>
 		
 		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<classpath refid="class.path"/>
 			<include name="**/*.java"/>
 		</javac>
 		
 		<copy todir="${build.path}">
-			<fileset dir="${build.share.path}"/>
+			<fileset dir="${build.resource.path}"/>
 		</copy>
 		
 		<echo>+-----------------------------------------------+</echo>
