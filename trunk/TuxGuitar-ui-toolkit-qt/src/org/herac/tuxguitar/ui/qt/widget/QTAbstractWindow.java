@@ -55,6 +55,9 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 
 	public void setMenuBar(UIMenuBar menuBar) {
 		this.menuBar = menuBar;
+		if( this.isVisible() ) {
+			this.layout();
+		}
 	}
 	
 	public void open() {

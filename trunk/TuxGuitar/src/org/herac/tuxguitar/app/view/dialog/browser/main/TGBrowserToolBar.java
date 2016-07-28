@@ -107,7 +107,8 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	}
 	
 	public void updateCollections(TGBrowserCollection selection){
-		this.currentCollection = null;
+		this.currentCollection = selection;
+		this.collections.setIgnoreEvents(true);
 		this.collections.removeItems();
 		this.collections.addItem(new UISelectItem<TGBrowserCollection>(TuxGuitar.getProperty("browser.collection.select"), null));
 		
@@ -119,7 +120,8 @@ public class TGBrowserToolBar extends TGBrowserBar{
 			}
 		}
 		
-		this.collections.setSelectedValue(selection);
+		this.collections.setSelectedValue(this.currentCollection);
+		this.collections.setIgnoreEvents(false);
 	}
 	
 	public void reload(){

@@ -257,7 +257,9 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	public void redraw() {
 		QApplication.invokeLater(new Runnable() {
 			public void run() {
-				QTWidget.this.repaint();
+				if(!QTWidget.this.isDisposed()) {
+					QTWidget.this.repaint();
+				}
 			}
 		});
 	}
@@ -279,7 +281,9 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	public void showLater() {
 		QApplication.invokeLater(new Runnable() {
 			public void run() {
-				QTWidget.this.show();
+				if(!QTWidget.this.isDisposed()) {
+					QTWidget.this.show();
+				}
 			}
 		});
 	}

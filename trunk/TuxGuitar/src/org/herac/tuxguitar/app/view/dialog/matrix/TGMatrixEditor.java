@@ -58,6 +58,7 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIControl;
@@ -76,6 +77,9 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGMatrixEditor implements TGEventListener {
+	
+	private static final float DEFAULT_WIDTH = 640f;
+	private static final float DEFAULT_HEIGHT = 480f;
 	
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
@@ -125,6 +129,7 @@ public class TGMatrixEditor implements TGEventListener {
 		this.dialog = getUIFactory().createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setText(TuxGuitar.getProperty("matrix.editor"));
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
+		this.dialog.setBounds(new UIRectangle(new UISize(DEFAULT_WIDTH, DEFAULT_HEIGHT)));
 		this.dialog.addDisposeListener(new DisposeListenerImpl());
 		this.bufferDisposer = new BufferDisposer();
 		

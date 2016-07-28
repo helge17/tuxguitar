@@ -7,21 +7,21 @@ import org.herac.tuxguitar.ui.event.UIMouseDownListener;
 import org.herac.tuxguitar.ui.event.UIMouseDragListenerManager;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.jfx.resource.JFXMouseButton;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 
 public class JFXMouseDragListenerManager extends UIMouseDragListenerManager implements UIMouseDownListener, UIMouseUpListener, EventHandler<MouseEvent> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	private UIPosition startPosition;
 	
-	public JFXMouseDragListenerManager(JFXComponent<?> control) {
+	public JFXMouseDragListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	public void handle(MouseEvent event) {
-		if( this.startPosition != null ) {
+		if(!this.control.isIgnoreEvents() && this.startPosition != null ) {
 			float dragX = (float)(event.getX()  - this.startPosition.getX());
 			float dragY = (float)(event.getY()  - this.startPosition.getY());
 			

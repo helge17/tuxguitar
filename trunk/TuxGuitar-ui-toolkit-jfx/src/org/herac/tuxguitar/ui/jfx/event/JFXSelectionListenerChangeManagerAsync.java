@@ -2,11 +2,11 @@ package org.herac.tuxguitar.ui.jfx.event;
 
 import javafx.application.Platform;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXSelectionListenerChangeManagerAsync<T> extends JFXSelectionListenerChangeManager<T> {
 	
-	public JFXSelectionListenerChangeManagerAsync(JFXComponent<?> control) {
+	public JFXSelectionListenerChangeManagerAsync(JFXEventReceiver<?> control) {
 		super(control);
 	}
 	

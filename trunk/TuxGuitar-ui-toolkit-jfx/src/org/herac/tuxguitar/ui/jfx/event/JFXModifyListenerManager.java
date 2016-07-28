@@ -5,13 +5,13 @@ import javafx.beans.value.ObservableValue;
 
 import org.herac.tuxguitar.ui.event.UIModifyEvent;
 import org.herac.tuxguitar.ui.event.UIModifyListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXModifyListenerManager<T> extends UIModifyListenerManager implements ChangeListener<T> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	
-	public JFXModifyListenerManager(JFXComponent<?> control) {
+	public JFXModifyListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 	
@@ -20,6 +20,8 @@ public class JFXModifyListenerManager<T> extends UIModifyListenerManager impleme
 	}
 	
 	public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-		this.fireEvent();
+		if(!this.control.isIgnoreEvents()) {
+			this.fireEvent();
+		}
 	}
 }

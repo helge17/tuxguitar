@@ -5,17 +5,19 @@ import javafx.beans.value.ObservableValue;
 
 import org.herac.tuxguitar.ui.event.UIResizeEvent;
 import org.herac.tuxguitar.ui.event.UIResizeListenerManager;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXResizeListenerManager extends UIResizeListenerManager implements ChangeListener<Number> {
 	
-	private JFXComponent<?> control;
+	private JFXEventReceiver<?> control;
 	
-	public JFXResizeListenerManager(JFXComponent<?> control) {
+	public JFXResizeListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
 	
 	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-		this.onResize(new UIResizeEvent(this.control));
+		if(!this.control.isIgnoreEvents()) {
+			this.onResize(new UIResizeEvent(this.control));
+		}
 	}
 }
