@@ -7,9 +7,13 @@
 	
 	<property file="build.properties" />
 	<property name="build.src.path" value="src" />
-	<property name="build.share.path" value="share" />
+	<property name="build.resource.path" value="resources" />
 	<property name="build.path" value="build" />
 	<property name="build.jar" value="tuxguitar-ui-toolkit-jfx.jar" />
+	
+	<path id="class.path">
+		<pathelement location="${path.tuxguitar-ui-toolkit}"/>
+	</path>
 	
 	<target name="init" depends="clean">
 		<mkdir dir="${build.path}" />
@@ -21,11 +25,12 @@
 		<echo>+-------------------------------------------------+</echo>
 		
 		<javac srcdir="${build.src.path}" destdir="${build.path}" debug="false" >
+			<classpath refid="class.path"/>
 			<include name="**/*.java"/>
 		</javac>
 		
 		<copy todir="${build.path}">
-			<fileset dir="${build.share.path}"/>
+			<fileset dir="${build.resource.path}"/>
 		</copy>
 		
 		<echo>+-----------------------------------------------+</echo>
