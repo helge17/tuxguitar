@@ -18,6 +18,8 @@ public class JFXMenuShowListenerManager extends UIMenuShowListenerManager implem
 	public void handle(WindowEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onMenuShow(new UIMenuEvent(this.control));
+			
+			event.consume();
 		}
 	}
 }

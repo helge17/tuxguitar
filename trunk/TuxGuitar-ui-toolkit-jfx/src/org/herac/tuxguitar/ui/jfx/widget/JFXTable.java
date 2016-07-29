@@ -2,6 +2,9 @@ package org.herac.tuxguitar.ui.jfx.widget;
 
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,6 +19,8 @@ import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
 public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implements UICheckTable<T> {
+	
+	private static final Integer VERTICAL_SCROLL_SIZE = 18;
 	
 	private JFXTableCellFactory<T> cellFactory;
 	private JFXTableCellValueFactory<T> cellValueFactory;
@@ -32,6 +37,12 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		
 		this.getControl().setEditable(true);
 		this.getControl().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		
+		this.getControl().widthProperty().addListener(new ChangeListener<Number>() {
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				JFXTable.this.fillAvailableWidth();
+			}
+		});
 	}
 	
 	public void setColumns(int count) {
@@ -154,6 +165,23 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		JFXTableCellValue<T> cellValue = this.findFirstCell(item);
 		if( cellValue != null ) {
 			cellValue.setChecked(checked);
+		}
+	}
+	
+	public void fillAvailableWidth() {
+		List<TableColumn<UITableItem<T>, ?>> columns = this.getControl().getColumns();
+		if(!columns.isEmpty()) {
+			Insets padding = getControl().getPadding();
+			
+			double availableWidth = (this.getControl().getWidth() - (padding.getLeft() + padding.getRight() + VERTICAL_SCROLL_SIZE));
+			for(TableColumn<UITableItem<T>, ?> column : columns) {
+				availableWidth -= column.getWidth();
+			}
+			if( availableWidth > 0 ) {
+				TableColumn<UITableItem<T>, ?> lastColumn = columns.get(columns.size() - 1);
+				
+				lastColumn.prefWidthProperty().set(lastColumn.getWidth() + availableWidth);
+			}
 		}
 	}
 	

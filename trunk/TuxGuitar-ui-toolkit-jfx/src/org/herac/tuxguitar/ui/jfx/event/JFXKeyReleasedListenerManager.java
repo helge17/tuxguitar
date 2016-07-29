@@ -19,6 +19,8 @@ public class JFXKeyReleasedListenerManager extends UIKeyReleasedListenerManager 
 	public void handle(KeyEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onKeyReleased(new UIKeyEvent(this.control, JFXKey.getConvination(event)));
+			
+			event.consume();
 		}
 	}
 }
