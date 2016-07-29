@@ -434,10 +434,13 @@ public class TGTableViewer implements TGEventListener {
 		int hScrollThumb = this.hScroll.getThumb();
 		
 		float measureSize = this.table.getRowHeight();
-		int measurePosition = Math.round((selectedMeasure * measureSize) - measureSize );
+		float measurePosition = ((selectedMeasure * measureSize) - measureSize);
 		
-		if( (measurePosition - hScrollSelection) < 0 || (measurePosition + measureSize - hScrollSelection ) > hScrollThumb){
-			this.hScroll.setValue(measurePosition);
+		if((measurePosition - hScrollSelection) < 0 ){
+			this.hScroll.setValue(Math.max(Math.round(measurePosition), 0));
+		}
+		else if((measurePosition + measureSize - hScrollSelection ) > hScrollThumb){
+			this.hScroll.setValue(Math.max(Math.round(measurePosition + measureSize - hScrollThumb), 0));
 		}
 	}
 	

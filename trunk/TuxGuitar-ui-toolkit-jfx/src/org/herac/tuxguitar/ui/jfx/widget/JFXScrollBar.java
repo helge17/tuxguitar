@@ -66,9 +66,8 @@ public class JFXScrollBar extends JFXControl<ScrollBar> implements UIScrollBar {
 	public void updateVisibleAmount() {
 		double amount = 0;
 		if( this.thumb != null ) {
-			double size = (Orientation.HORIZONTAL.equals(this.getControl().getOrientation()) ? this.getControl().getWidth() : this.getControl().getHeight());
 			double maximumValue = this.getControl().getMax();
-			double maximumSize = (size + maximumValue);
+			double maximumSize = (this.thumb + maximumValue);
 			if( maximumSize > 0 ) {
 				amount = (this.thumb * maximumValue / maximumSize);
 			}

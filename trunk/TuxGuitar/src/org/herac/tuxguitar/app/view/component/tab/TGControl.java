@@ -175,12 +175,11 @@ public class TGControl {
 		this.vScroll.setThumb(Math.round(bounds.getHeight()));
 	}
 	
-	public boolean moveScrollTo(TGMeasureImpl measure){
-		return moveScrollTo(measure, createRectangle(this.canvas.getBounds()));
+	public void moveScrollTo(TGMeasureImpl measure){
+		this.moveScrollTo(measure, createRectangle(this.canvas.getBounds()));
 	}
 	
-	public boolean moveScrollTo(TGMeasureImpl measure, TGRectangle area){
-		boolean success = false;
+	public void moveScrollTo(TGMeasureImpl measure, TGRectangle area) {
 		if( measure != null && measure.getTs() != null ){
 			int mX = Math.round(measure.getPosX());
 			int mY = Math.round(measure.getPosY());
@@ -188,32 +187,44 @@ public class TGControl {
 			int mHeight = Math.round(measure.getTs().getSize());
 			int marginWidth = Math.round(this.tablature.getViewLayout().getFirstMeasureSpacing());
 			int marginHeight = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
-			boolean forceRedraw = false;
+			boolean playMode = MidiPlayer.getInstance(this.context).isRunning();
 			
 			//Solo se ajusta si es necesario
-			//si el largo del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
-			if( mX < 0 || ( (mX + mWidth ) > area.getWidth() && (area.getWidth() >= mWidth + marginWidth || mX > marginWidth) ) ){
-				this.hScroll.setValue((this.scrollX + mX) - marginWidth );
-				success = true;
+			Integer hScrollValue = this.computeScrollValue(this.scrollX, mX, mWidth, marginWidth, Math.round(area.getWidth()), this.width, playMode);
+			if( hScrollValue != null ) {
+				this.hScroll.setValue(hScrollValue);
 			}
 			
 			//Solo se ajusta si es necesario
-			//si el alto del compas es mayor al de la pantalla. nunca se puede ajustar a la medida.
-			if( mY < 0 || ( (mY + mHeight ) > area.getHeight() && (area.getHeight() >= mHeight + marginHeight || mY > marginHeight) ) ){
-				this.vScroll.setValue( (this.scrollY + mY)  - marginHeight );
-				success = true;
+			Integer vScrollValue = this.computeScrollValue(this.scrollY, mY, mHeight, marginHeight, Math.round(area.getHeight()), this.height, playMode);
+			if( vScrollValue != null ) {
+				this.vScroll.setValue(vScrollValue);
 			}
 			
-			if(!success){
-				// Si la seleccion "real" del scroll es distinta a la anterior, se fuerza el redraw
-				forceRedraw = (this.scrollX != this.hScroll.getValue() || this.scrollY != this.vScroll.getValue());
-			}
-			
-			if(forceRedraw || success){
+			// Si cambio el valor de algun scroll redibuja la pantalla
+			if( this.scrollX != this.hScroll.getValue() || this.scrollY != this.vScroll.getValue() ){
 				redraw();
 			}
 		}
-		return success;
+	}
+	
+	public Integer computeScrollValue(int scrollPos, int mPos, int mSize, int mMargin, int areaSize, int fullSize, boolean playMode) {
+		Integer value = null;
+		
+		// when position is less than scroll
+		if( mPos < 0 && (areaSize >= (mSize + mMargin) || ((mPos + mSize - mMargin) <= 0))) {
+			value = ((scrollPos + mPos) - mMargin);
+		}
+		
+		// when position is greater than scroll
+		else if((mPos + mSize) > areaSize && (areaSize >= (mSize + mMargin) || mPos > areaSize)){			
+			value = (scrollPos + mPos + mSize + mMargin - areaSize);
+			
+			if( playMode ) {
+				value += Math.min((fullSize - (scrollPos + mPos + mSize + mMargin)), (areaSize - mSize - (mMargin * 2)));
+			}
+		}
+		return (value != null ? Math.max(value, 0) : null);
 	}
 	
 	public void setFocus() {
