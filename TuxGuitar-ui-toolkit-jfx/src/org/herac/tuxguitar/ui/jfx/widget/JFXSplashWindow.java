@@ -1,13 +1,19 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.resource.JFXAbstractImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UISplashWindow;
+
+import com.sun.javafx.tk.Toolkit;
 
 public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWindow {
 	
@@ -19,6 +25,7 @@ public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWind
 		
 		this.getControl().setScene(new Scene(new Pane()));
 		this.getControl().initOwner(parent);
+		this.getControl().initStyle(StageStyle.UNDECORATED);
 		this.getControl().initModality(Modality.APPLICATION_MODAL);
 	}
 	
@@ -53,11 +60,23 @@ public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWind
 	}
 	
 	public void open() {
-//		ImageView imageView = new ImageView(((JFXAbstractImage<?>)this.getSplashImage()).getHandle());
-//		
-//		Pane pane = (Pane) this.getControl().getScene().getRoot();
-//		pane.getChildren().add(imageView);
-//		
-//		this.getControl().show();
+		ImageView imageView = new ImageView(((JFXAbstractImage<?>)this.getSplashImage()).getHandle());
+		
+		Pane pane = (Pane) this.getControl().getScene().getRoot();
+		pane.getChildren().add(imageView);
+		
+		this.getControl().show();
+		this.waitUntilShow();
+	}
+	
+	public void waitUntilShow() {
+		final Object key = this;
+		
+		Platform.runLater(new Runnable() {
+			public void run() {
+				Toolkit.getToolkit().exitNestedEventLoop(key, null);
+			}
+		});
+		Toolkit.getToolkit().enterNestedEventLoop(key);
 	}
 }
