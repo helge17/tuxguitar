@@ -20,6 +20,8 @@ public class JFXMouseExitListenerManager extends UIMouseExitListenerManager impl
 	public void handle(MouseEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onMouseExit(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton())));
+			
+			event.consume();
 		}
 	}
 }

@@ -18,6 +18,8 @@ public class JFXSelectionListenerManager<T extends Event> extends UISelectionLis
 	public void handle(T event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onSelect(new UISelectionEvent(this.control));
+			
+			event.consume();
 		}
 	}
 }

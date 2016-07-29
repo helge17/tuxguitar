@@ -20,6 +20,8 @@ public class JFXMouseEnterListenerManager extends UIMouseEnterListenerManager im
 	public void handle(MouseEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onMouseEnter(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton())));
+			
+			event.consume();
 		}
 	}
 }

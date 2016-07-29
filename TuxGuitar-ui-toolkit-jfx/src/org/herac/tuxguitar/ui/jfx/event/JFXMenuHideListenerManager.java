@@ -18,6 +18,8 @@ public class JFXMenuHideListenerManager extends UIMenuHideListenerManager implem
 	public void handle(WindowEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onMenuHide(new UIMenuEvent(this.control));
+			
+			event.consume();
 		}
 	}
 }

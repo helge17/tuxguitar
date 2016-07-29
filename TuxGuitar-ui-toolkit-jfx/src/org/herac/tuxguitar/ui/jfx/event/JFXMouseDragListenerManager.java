@@ -26,6 +26,8 @@ public class JFXMouseDragListenerManager extends UIMouseDragListenerManager impl
 			float dragY = (float)(event.getY()  - this.startPosition.getY());
 			
 			this.onMouseDrag(new UIMouseEvent(this.control, new UIPosition(dragX, dragY), JFXMouseButton.getMouseButton(event.getButton())));
+			
+			event.consume();
 		}
 	}
 	
