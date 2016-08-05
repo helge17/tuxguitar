@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.action.listener.undoable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
 import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
 import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
@@ -27,23 +28,23 @@ public class TGUndoableJoined extends TGUndoableEditBase{
 		this.undoables.add(undoable);
 	}
 	
-	public void redo() throws TGCannotRedoException {
+	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		int count = this.undoables.size();
 		for(int i = 0;i < count;i++){
 			TGUndoableEdit undoable = (TGUndoableEdit)this.undoables.get(i);
-			undoable.redo();
+			undoable.redo(actionContext);
 		}
-		this.undoableState.redo();
+		this.undoableState.redo(actionContext);
 		this.doAction = UNDO_ACTION;
 	}
 	
-	public void undo() throws TGCannotUndoException {
+	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		int count = this.undoables.size();
 		for(int i = (count - 1);i >= 0;i--){
 			TGUndoableEdit undoable = (TGUndoableEdit)this.undoables.get(i);
-			undoable.undo();
+			undoable.undo(actionContext);
 		}
-		this.undoableState.undo();
+		this.undoableState.undo(actionContext);
 		this.doAction = REDO_ACTION;
 	}
 	
