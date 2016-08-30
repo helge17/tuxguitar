@@ -34,6 +34,7 @@
 				<include name="build-scripts/tuxguitar-linux-x86-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86-installer/**"/>
+				<include name="build-scripts/tuxguitar-linux-qt-x86/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-32/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-64/**"/>
 				<include name="build-scripts/tuxguitar-windows-x86/**"/>
@@ -80,6 +81,8 @@
 				
 				<include name="TuxGuitar-ui-toolkit/**"/>
 				<include name="TuxGuitar-ui-toolkit-swt/**"/>
+				<include name="TuxGuitar-ui-toolkit-qt/**"/>
+				<include name="TuxGuitar-ui-toolkit-jfx/**"/>
 				
 				<include name="TuxGuitar-android/**"/>
 				<include name="TuxGuitar-android-gervill/**"/>
