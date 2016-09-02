@@ -105,7 +105,7 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 	
 	protected GMChannelRoute getChannelRoute( int channelId ){
 		GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(channelId);
-		if( gmChannelRoute == null ){
+		if( gmChannelRoute == null || gmChannelRoute.getChannel1() < 0  || gmChannelRoute.getChannel2() < 0 ){
 			gmChannelRoute = new GMChannelRoute(GMChannelRoute.NULL_VALUE);
 			gmChannelRoute.setChannel1(15);
 			gmChannelRoute.setChannel2(15);
