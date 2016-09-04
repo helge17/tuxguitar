@@ -103,12 +103,14 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 		gmChannelRouterConfigurator.configureRouter(song.getChannels());
 	}
 	
-	protected GMChannelRoute getChannelRoute( int channelId ){
+	protected GMChannelRoute getChannelRoute(int channelId){
 		GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(channelId);
 		if( gmChannelRoute == null || gmChannelRoute.getChannel1() < 0  || gmChannelRoute.getChannel2() < 0 ){
-			gmChannelRoute = new GMChannelRoute(GMChannelRoute.NULL_VALUE);
-			gmChannelRoute.setChannel1(15);
-			gmChannelRoute.setChannel2(15);
+			Integer defaultChannel = (gmChannelRoute != null && gmChannelRoute.getChannel1() >= 0 ? gmChannelRoute.getChannel1() : 15);
+			
+			gmChannelRoute = new GMChannelRoute(channelId);
+			gmChannelRoute.setChannel1(defaultChannel);
+			gmChannelRoute.setChannel2(defaultChannel);
 		}
 		
 		return gmChannelRoute;
