@@ -25,7 +25,6 @@ public class TGTable {
 	private TGTableColumn columnInstrument;
 	private TGTableColumn columnCanvas;
 	private List<TGTableRow> rows;
-	private float rowHeight;
 	
 	public TGTable(TGContext context, UILayoutContainer parent){
 		this.context = context;
@@ -47,7 +46,7 @@ public class TGTable {
 		this.columnCanvas = new TGTableColumn(this);
 		
 		this.rowControl = uiFactory.createPanel(this.table, false);
-		this.rowControl.setLayout(new UITableLayout(0f));
+		this.rowControl.setLayout(new TGTableBodyLayout());
 		
 		this.createTableLayout();
 		this.createColumnLayout();
@@ -96,20 +95,11 @@ public class TGTable {
 	}
 	
 	public void createRow(){
-		TGTableRow row = new TGTableRow(this);
-		row.getControl().computePackedSize();
-		
-		this.rows.add(row);
-		this.rowHeight = Math.max(this.rowHeight, row.getControl().getPackedSize().getHeight());
-		
-		this.createRowLayout(row);
+		this.rows.add(new TGTableRow(this));
 	}
 	
-	public void createRowLayout(TGTableRow row) {
-		UITableLayout uiTableLayout = (UITableLayout) this.rowControl.getLayout();
-		uiTableLayout.set(row.getControl(), this.rows.size(), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		uiTableLayout.set(row.getControl(), UITableLayout.MARGIN, 0f);
-		uiTableLayout.set(row.getControl(), UITableLayout.MARGIN_TOP, 1f);
+	public float getRowHeight(){
+		return ((TGTableBodyLayout) this.rowControl.getLayout()).getRowHeight();
 	}
 	
 	public float getMinHeight(){
@@ -122,10 +112,6 @@ public class TGTable {
 	
 	public UIPanel getRowControl(){
 		return this.rowControl;
-	}
-	
-	public float getRowHeight(){
-		return this.rowHeight;
 	}
 	
 	public TGTableColumn getColumnInstrument() {
