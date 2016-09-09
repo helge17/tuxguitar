@@ -24,8 +24,8 @@
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
 		<tuxguitar-jack.jni.rm>${tuxguitar.jni.rm}</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>${tuxguitar.jni.cc}</tuxguitar-jack.jni.cc>
-		<tuxguitar-jack.jni.cflags>-mno-cygwin -I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-jack.jni.cflags>
-		<tuxguitar-jack.jni.ldflags>-mno-cygwin -Wl,--kill-at</tuxguitar-jack.jni.ldflags>
+		<tuxguitar-jack.jni.cflags>-I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-jack.jni.cflags>
+		<tuxguitar-jack.jni.ldflags>-Wl,--kill-at</tuxguitar-jack.jni.ldflags>
 		<tuxguitar-jack.jni.ldlibs>-ljack -lpthreadVC2</tuxguitar-jack.jni.ldlibs>
 		<tuxguitar-jack.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-jack.jni.ldpath>
 		<tuxguitar-jack.jni.library.name>tuxguitar-jack-jni</tuxguitar-jack.jni.library.name>

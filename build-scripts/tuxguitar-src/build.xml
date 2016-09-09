@@ -35,6 +35,7 @@
 				<include name="build-scripts/tuxguitar-linux-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86-installer/**"/>
 				<include name="build-scripts/tuxguitar-linux-qt-x86/**"/>
+				<include name="build-scripts/tuxguitar-linux-qt-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-32/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-64/**"/>
 				<include name="build-scripts/tuxguitar-windows-x86/**"/>
