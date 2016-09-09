@@ -24,8 +24,8 @@
 		<tuxguitar-fluidsynth.jni.path>${parent.relativePath}/TuxGuitar-fluidsynth/jni/</tuxguitar-fluidsynth.jni.path>
 		<tuxguitar-fluidsynth.jni.rm>${tuxguitar.jni.rm}</tuxguitar-fluidsynth.jni.rm>
 		<tuxguitar-fluidsynth.jni.cc>${tuxguitar.jni.cc}</tuxguitar-fluidsynth.jni.cc>
-		<tuxguitar-fluidsynth.jni.cflags>-mno-cygwin -I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-fluidsynth.jni.cflags>
-		<tuxguitar-fluidsynth.jni.ldflags>-mno-cygwin -Wl,--kill-at</tuxguitar-fluidsynth.jni.ldflags>
+		<tuxguitar-fluidsynth.jni.cflags>-I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-fluidsynth.jni.cflags>
+		<tuxguitar-fluidsynth.jni.ldflags>-Wl,--kill-at</tuxguitar-fluidsynth.jni.ldflags>
 		<tuxguitar-fluidsynth.jni.ldlibs>-lfluidsynth</tuxguitar-fluidsynth.jni.ldlibs>
 		<tuxguitar-fluidsynth.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-fluidsynth.jni.ldpath>
 		<tuxguitar-fluidsynth.jni.library.name>tuxguitar-fluidsynth-jni</tuxguitar-fluidsynth.jni.library.name>

@@ -9,13 +9,13 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-qt-x86</artifactId>
+	<artifactId>tuxguitar-linux-qt-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-qt-x86</project.finalName>
+		<project.finalName>tuxguitar-${project.version}-linux-qt-x86_64</project.finalName>
 		<com.trolltech.qt.qtjambi.version>4.8.7</com.trolltech.qt.qtjambi.version>
 	</properties>
 
@@ -120,7 +120,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>com.trolltech.qt</groupId>
-									<artifactId>qtjambi-native-linux32-gcc</artifactId>
+									<artifactId>qtjambi-native-linux64-gcc</artifactId>
 									<version>${com.trolltech.qt.qtjambi.version}</version>
 									<destFileName>qtjambi-native.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
@@ -318,10 +318,10 @@
 				</property>
 			</activation>
 			<modules>
-				<module>../native-modules/tuxguitar-alsa-linux-x86</module>
-				<module>../native-modules/tuxguitar-jack-linux-x86</module>
-				<module>../native-modules/tuxguitar-oss-linux-x86</module>
-				<module>../native-modules/tuxguitar-fluidsynth-linux-x86</module>
+				<module>../native-modules/tuxguitar-alsa-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-jack-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-oss-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-fluidsynth-linux-x86_64</module>
 			</modules>
 
 			<build>
@@ -338,16 +338,16 @@
 									<target name="copy-files">
 										<!-- PLUGIN FILES -->
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-alsa-linux-x86/target/build" />
+											<fileset dir="../native-modules/tuxguitar-alsa-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-jack-linux-x86/target/build" />
+											<fileset dir="../native-modules/tuxguitar-jack-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-oss-linux-x86/target/build" />
+											<fileset dir="../native-modules/tuxguitar-oss-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86/target/build" />
+											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86_64/target/build" />
 										</copy>
 										
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
