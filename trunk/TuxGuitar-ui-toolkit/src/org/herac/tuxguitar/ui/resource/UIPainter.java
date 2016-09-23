@@ -68,9 +68,5 @@ public interface UIPainter extends UIResource {
 	
 	float getFMHeight();
 	
-	float getFMAscent();
-	
-	float getFMDescent();
-	
 	float getFMWidth( String text );
 }

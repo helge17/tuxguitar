@@ -348,10 +348,10 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//caret actions
 		this.map(TGMoveToAction.NAME, LOCKABLE, new TGUpdateTransportPositionController());
-		this.map(TGGoRightAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGGoLeftAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGGoUpAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGGoDownAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoRightAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		
 		//song actions
 		this.map(TGCopySongFromAction.NAME, LOCKABLE, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
@@ -383,18 +383,18 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//measure actions
 		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
-		this.map(TGAddMeasureListAction.NAME, DISABLE_ON_PLAY);
+		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
-		this.map(TGCleanMeasureListAction.NAME, DISABLE_ON_PLAY);
-		this.map(TGGoFirstMeasureAction.NAME, SHORTCUT);
-		this.map(TGGoLastMeasureAction.NAME, SHORTCUT);
-		this.map(TGGoNextMeasureAction.NAME, SHORTCUT);
-		this.map(TGGoPreviousMeasureAction.NAME, SHORTCUT);
+		this.map(TGCleanMeasureListAction.NAME, LOCKABLE |DISABLE_ON_PLAY);
+		this.map(TGGoFirstMeasureAction.NAME, LOCKABLE |SHORTCUT);
+		this.map(TGGoLastMeasureAction.NAME, LOCKABLE |SHORTCUT);
+		this.map(TGGoNextMeasureAction.NAME, LOCKABLE |SHORTCUT);
+		this.map(TGGoPreviousMeasureAction.NAME, LOCKABLE |SHORTCUT);
 		this.map(TGRemoveMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateRemovedMeasureController(), new TGUndoableRemoveMeasureController());
-		this.map(TGRemoveMeasureRangeAction.NAME, DISABLE_ON_PLAY);
+		this.map(TGRemoveMeasureRangeAction.NAME, LOCKABLE |DISABLE_ON_PLAY);
 		this.map(TGCopyMeasureFromAction.NAME, LOCKABLE, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGInsertMeasuresAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
-		this.map(TGCopyMeasureAction.NAME, DISABLE_ON_PLAY);
+		this.map(TGCopyMeasureAction.NAME, LOCKABLE |DISABLE_ON_PLAY);
 		this.map(TGPasteMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		
 		//beat actions

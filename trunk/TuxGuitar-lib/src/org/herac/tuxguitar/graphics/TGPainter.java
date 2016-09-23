@@ -68,10 +68,6 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	public float getFMHeight();
 	
-	public float getFMAscent();
-	
-	public float getFMDescent();
-	
 	public float getFMWidth( String text );
 	
 }

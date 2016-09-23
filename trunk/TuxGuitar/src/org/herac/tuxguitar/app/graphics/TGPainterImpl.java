@@ -151,15 +151,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 	public float getFMHeight() {
 		return this.handle.getFMHeight();
 	}
-
-	public float getFMAscent() {
-		return this.handle.getFMAscent();
-	}
-
-	public float getFMDescent() {
-		return this.handle.getFMDescent();
-	}
-
+	
 	public float getFMWidth(String text) {
 		return this.handle.getFMWidth(text);
 	}

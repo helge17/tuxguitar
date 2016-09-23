@@ -51,17 +51,20 @@ public class TGActionProcessingListener implements TGEventListener {
 			this.finish();
 		}
 		else if(!this.controller.isFinished()) {
-			if( TGActionPreExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-				this.processEvent(true);
-				this.increaseLevel();
-			}
-			else if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-				this.decreaseLevel();
-				this.processEvent(false);
-			}
-			else if( TGActionErrorEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-				this.decreaseLevel();
-				this.processEvent(false);
+			
+			synchronized (TGActionProcessingListener.class) {
+				if( TGActionPreExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+					this.processEvent(true);
+					this.increaseLevel();
+				}
+				else if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+					this.decreaseLevel();
+					this.processEvent(false);
+				}
+				else if( TGActionErrorEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+					this.decreaseLevel();
+					this.processEvent(false);
+				}
 			}
 		}
 	}
