@@ -212,11 +212,6 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 		return (fm.getAscent() + fm.getLeading());
 	}
 	
-	public float getFMDescent(){
-		this.setAdvanced(false);
-		return this.getControl().getFontMetrics().getDescent();
-	}
-	
 	public float getFMHeight(){
 		this.setAdvanced(false);
 		return this.getControl().getFontMetrics().getHeight();

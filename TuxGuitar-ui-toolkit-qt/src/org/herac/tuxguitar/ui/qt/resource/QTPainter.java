@@ -192,14 +192,6 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 		return 0;
 	}
 	
-	public float getFMAscent() {
-		return this.getControl().fontMetrics().ascent();
-	}
-	
-	public float getFMDescent() {
-		return this.getControl().fontMetrics().descent();
-	}
-	
 	public float getFMHeight() {
 		return this.getControl().fontMetrics().height();
 	}
