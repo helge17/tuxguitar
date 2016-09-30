@@ -79,7 +79,7 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 		if(!fileNames.isEmpty()) {
 			return new DexClassLoader(this.createPath(fileNames), optimizedDirectory, this.createLibraryPath(), context.getClassLoader());
 		}
-		return null;
+		return context.getClassLoader();
 	}
 	
 	public List<String> unpackPlugins(String path) {
