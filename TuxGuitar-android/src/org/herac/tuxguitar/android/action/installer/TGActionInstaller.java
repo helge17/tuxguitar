@@ -6,6 +6,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAct
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
@@ -320,6 +321,7 @@ public class TGActionInstaller {
 		installAction(new TGToggleTabKeyboardAction(context));
 		
 		//browser actions
+		installAction(new TGBrowserCloseAction(context));
 		installAction(new TGBrowserCdRootAction(context));
 		installAction(new TGBrowserCdUpAction(context));
 		installAction(new TGBrowserCdElementAction(context));

@@ -2,6 +2,7 @@ package org.herac.tuxguitar.android.action.impl.browser;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
+import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
@@ -21,8 +22,14 @@ public class TGBrowserOpenSessionAction extends TGActionBase{
 	protected void processAction(final TGActionContext context) {
 		try {
 			TGBrowserCollection collection = (TGBrowserCollection) context.getAttribute(ATTRIBUTE_COLLECTION);
-			
 			TGBrowserManager tgBrowserManager = TGBrowserManager.getInstance(getContext());
+			
+			if( tgBrowserManager.getSession().getBrowser() != null ) {
+				context.setAttribute(TGBrowserCloseAction.ATTRIBUTE_SESSION, tgBrowserManager.getSession());
+				
+				TGActionManager.getInstance(getContext()).execute(TGBrowserCloseAction.NAME, context);
+			}
+			
 			tgBrowserManager.closeSession();
 			if( collection != null ) {
 				tgBrowserManager.openSession(collection);

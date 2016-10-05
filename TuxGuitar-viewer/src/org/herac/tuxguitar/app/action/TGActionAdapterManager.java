@@ -33,7 +33,7 @@ public class TGActionAdapterManager {
 		this.keyBindingActionIds = new ArrayList<String>();
 		this.disableOnPlayInterceptor = new TGDisableOnPlayInterceptor(context);
 		this.syncThreadInterceptor = new TGSyncThreadInterceptor(context);
-		this.lockableActionListener = new TGLockableActionListener();
+		this.lockableActionListener = new TGLockableActionListener(context);
 		this.updatableActionListener = new TGUpdateListener(this);
 		this.errorHandler = new TGActionErrorHandler(context);
 	}
@@ -48,6 +48,7 @@ public class TGActionAdapterManager {
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
 		tgActionManager.addInterceptor(this.disableOnPlayInterceptor);
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
+		tgActionManager.addInterceptor(this.lockableActionListener);
 		
 		tgActionManager.addPreExecutionListener(this.errorHandler);
 		tgActionManager.addPreExecutionListener(this.lockableActionListener);
