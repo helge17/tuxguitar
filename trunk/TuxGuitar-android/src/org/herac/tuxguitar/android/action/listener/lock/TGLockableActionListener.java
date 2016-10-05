@@ -3,22 +3,26 @@ package org.herac.tuxguitar.android.action.listener.lock;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionErrorEvent;
 import org.herac.tuxguitar.action.TGActionEvent;
+import org.herac.tuxguitar.action.TGActionException;
+import org.herac.tuxguitar.action.TGActionInterceptor;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
+import org.herac.tuxguitar.android.action.listener.thread.TGSyncThreadAction;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGLockableActionListener implements TGEventListener {
+public class TGLockableActionListener extends TGSyncThreadAction implements TGActionInterceptor, TGEventListener {
 	
-	private TGContext context;
 	private List<String> actionIds;
 	
 	public TGLockableActionListener(TGContext context){
-		this.context = context;
+		super(context);
+		
 		this.actionIds = new ArrayList<String>();
 	}
 	
@@ -34,15 +38,22 @@ public class TGLockableActionListener implements TGEventListener {
 		this.actionIds.remove(id);
 	}
 	
+	public boolean checkForTryLock(String actionId) {
+		if( this.containsActionId(actionId) && this.isUiThread()) {
+			return TGEditorManager.getInstance(this.getContext()).tryLock();
+		}
+		return true;
+	}
+	
 	public void checkForLock(String actionId) {
-		if( this.containsActionId(actionId) ) {
-			TGEditorManager.getInstance(this.context).lock();
+		if( this.containsActionId(actionId) && !this.isUiThread()) {
+			TGEditorManager.getInstance(this.getContext()).lock();
 		}
 	}
 	
 	public void checkForUnlock(String actionId) {
 		if( this.containsActionId(actionId) ) {
-			TGEditorManager.getInstance(this.context).unlock();
+			TGEditorManager.getInstance(this.getContext()).unlock();
 		}
 	}
 	
@@ -56,5 +67,14 @@ public class TGLockableActionListener implements TGEventListener {
 		else if( TGActionErrorEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.checkForUnlock((String) event.getAttribute(TGActionEvent.ATTRIBUTE_ACTION_ID));
 		}
+	}
+
+	public boolean intercept(String id, TGActionContext context) throws TGActionException {
+		if(!this.checkForTryLock(id)) {
+			this.runInUiThread(id, context);
+			
+			return true;
+		}
+		return false;
 	}
 }

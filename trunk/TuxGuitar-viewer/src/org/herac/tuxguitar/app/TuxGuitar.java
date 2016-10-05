@@ -215,6 +215,10 @@ public class TuxGuitar {
 		this.lock.unlock();
 	}
 	
+	public boolean tryLock(){
+		return this.lock.tryLock();
+	}
+	
 	public boolean isLocked(){
 		return this.lock.isLocked();
 	}

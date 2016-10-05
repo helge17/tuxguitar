@@ -60,6 +60,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addInterceptor(this.disableOnPlayInterceptor);
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		tgActionManager.addInterceptor(this.unsavedDocumentInterceptor);
+		tgActionManager.addInterceptor(this.lockableActionListener);
 		
 		TGActionProcessingListener processingListener = new TGActionProcessingListener(this.context);
 		tgActionManager.addPreExecutionListener(processingListener);

@@ -28,6 +28,7 @@ public class TGActivity extends ActionBarActivity {
 	private TGContextMenuController contextMenu;
 	private TGNavigationManager navigationManager;
 	private TGDrawerManager drawerManager;
+	private TGActivityResultManager resultManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class TGActivity extends ActionBarActivity {
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);
 		this.getActionBar().setHomeButtonEnabled(true);
 		
+		this.resultManager = new TGActivityResultManager();
 		this.navigationManager = new TGNavigationManager(this);
 		this.drawerManager = new TGDrawerManager(this);
 		this.loadDefaultFragment();
@@ -106,6 +108,13 @@ public class TGActivity extends ActionBarActivity {
 		this.openContextMenu(this.findViewById(R.id.root_layout));
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		this.resultManager.onActivityResult(requestCode, resultCode, data);
+	}
+	
 	public void attachInstance() {
 		TGActivityController.getInstance(findContext()).setActivity(this);
 	}
@@ -132,6 +141,10 @@ public class TGActivity extends ActionBarActivity {
 
 	public TGNavigationManager getNavigationManager() {
 		return navigationManager;
+	}
+
+	public TGActivityResultManager getResultManager() {
+		return resultManager;
 	}
 
 	public TGContext findContext() {

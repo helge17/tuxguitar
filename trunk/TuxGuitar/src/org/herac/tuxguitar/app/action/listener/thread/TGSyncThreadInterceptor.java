@@ -6,18 +6,15 @@ import java.util.List;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class TGSyncThreadInterceptor implements TGActionInterceptor {
+public class TGSyncThreadInterceptor extends TGSyncThreadAction implements TGActionInterceptor {
 	
-	private TGContext context;
 	private List<String> actionIds;
 	
 	public TGSyncThreadInterceptor(TGContext context) {
-		this.context = context;
+		super(context);
+		
 		this.actionIds = new ArrayList<String>();
 	}
 	
@@ -40,18 +37,5 @@ public class TGSyncThreadInterceptor implements TGActionInterceptor {
 			return true;
 		}
 		return false;
-	}
-	
-	private boolean isUiThread() {
-		return TGApplication.getInstance(this.context).getApplication().isInUiThread();
-	}
-	
-	public void runInUiThread(final String id, final TGActionContext context) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				TGActionManager tgActionManager = TGActionManager.getInstance(TGSyncThreadInterceptor.this.context);
-				tgActionManager.execute(id, context);
-			}
-		});
 	}
 }
