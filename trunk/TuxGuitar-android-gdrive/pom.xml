@@ -64,6 +64,7 @@
 						<platform>15</platform>
 					</sdk>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
