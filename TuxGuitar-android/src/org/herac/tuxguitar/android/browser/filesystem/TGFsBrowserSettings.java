@@ -7,7 +7,7 @@ public class TGFsBrowserSettings {
 	private String title;
 	private String path;
 	
-	public TGFsBrowserSettings(String title,String path){
+	public TGFsBrowserSettings(String title, String path){
 		this.title = title;
 		this.path = path;
 	}
