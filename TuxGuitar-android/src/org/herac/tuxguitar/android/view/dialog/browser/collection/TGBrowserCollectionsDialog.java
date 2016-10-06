@@ -79,8 +79,11 @@ public class TGBrowserCollectionsDialog extends TGDialog {
 	}
 	
 	public void fillFactories() {
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFactoryValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		Spinner spinner = (Spinner) this.view.findViewById(R.id.browser_collections_dlg_add_type);
-		spinner.setAdapter(new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFactoryValues()));
+		spinner.setAdapter(arrayAdapter);
 	}
 	
 	public void fillAddButton() {
