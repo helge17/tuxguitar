@@ -34,6 +34,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-resources</artifactId>
+			<version>SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-gervill-soundbank</artifactId>
 			<version>SNAPSHOT</version>
 			<scope>compile</scope>
