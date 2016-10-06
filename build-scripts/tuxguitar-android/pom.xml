@@ -28,6 +28,7 @@
 		<module>../../TuxGuitar-gpx</module>
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-android</module>
+		<module>../../TuxGuitar-android-resources</module>
 		<module>../../TuxGuitar-android-gervill</module>
 		<module>../../TuxGuitar-android-gervill-soundbank</module>
 		<module>../../TuxGuitar-android-gdrive</module>
