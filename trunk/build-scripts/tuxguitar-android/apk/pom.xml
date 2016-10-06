@@ -40,6 +40,21 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-gdrive</artifactId>
+			<version>${project.version}</version>
+			<type>aar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android.gms</groupId>
+			<artifactId>play-services-drive</artifactId>
+			<version>8.1.0</version>
+			<type>aar</type>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-build-apk-resources</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>

@@ -53,6 +53,13 @@
 			<scope>provided</scope>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-gdrive-plugin</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -98,6 +105,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-android-gervill</artifactId>
 									<destFileName>tuxguitar-android-gervill.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-android-gdrive-plugin</artifactId>
+									<destFileName>tuxguitar-android-gdrive-plugin.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 							</artifactItems>

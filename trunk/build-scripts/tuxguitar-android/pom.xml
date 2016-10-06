@@ -30,12 +30,18 @@
 		<module>../../TuxGuitar-android</module>
 		<module>../../TuxGuitar-android-gervill</module>
 		<module>../../TuxGuitar-android-gervill-soundbank</module>
+		<module>../../TuxGuitar-android-gdrive</module>
+		<module>../../TuxGuitar-android-gdrive-plugin</module>
 	</modules>
 	
 	<repositories>
 		<repository>
 			<id>android-support</id>
 			<url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+		</repository>
+		<repository>
+			<id>google-support</id>
+			<url>file://${env.ANDROID_HOME}/extras/google/m2repository</url>
 		</repository>
 	</repositories>
 </project>
