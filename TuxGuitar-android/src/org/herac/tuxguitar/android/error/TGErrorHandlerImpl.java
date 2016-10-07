@@ -18,7 +18,7 @@ import android.os.Environment;
 
 public class TGErrorHandlerImpl implements TGErrorHandler{
 	
-	private static final String LOG_FILE = (Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "tuxguitar/log/tuxguitar.log");
+	private static final String LOG_FILE = (Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TuxGuitar/log/tuxguitar.log");
 	
 	private static final String MSG_TITLE = "Error";
 	private static final String EOL = "\r\n";
