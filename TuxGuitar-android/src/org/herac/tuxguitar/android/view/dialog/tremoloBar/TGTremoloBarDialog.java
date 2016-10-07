@@ -153,10 +153,11 @@ public class TGTremoloBarDialog extends TGDialog {
 	}
 	
 	public void fillSelectablePresets(final View dlgView, List<TGTremoloBarPreset> presets, TGTremoloBarPreset selection) {
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets(presets));
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets(presets));
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		final Spinner spinner = (Spinner) dlgView.findViewById(R.id.tremolo_bar_dlg_preset_value);
-		spinner.setAdapter(adapter);
+		spinner.setAdapter(arrayAdapter);
 		
 		this.updateSelectedPreset(spinner, selection);
 		this.appendListeners(dlgView, spinner);

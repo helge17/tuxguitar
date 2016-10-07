@@ -37,12 +37,15 @@ public class TGTimeSignatureDialog extends TGDialog {
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		ArrayAdapter<TGSelectableItem> numeratorAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createNumeratorValues());
+		numeratorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		final Spinner numerator = (Spinner) view.findViewById(R.id.time_signature_dlg_ts_numerator_value);
 		numerator.setAdapter(numeratorAdapter);
 		numerator.setSelection(numeratorAdapter.getPosition(new TGSelectableItem(header.getTimeSignature().getNumerator(), null)));
 		
 		ArrayAdapter<TGSelectableItem> denominatorAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDenominatorValues());
+		denominatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		final Spinner denominator = (Spinner) view.findViewById(R.id.time_signature_dlg_ts_denominator_value);
 		denominator.setAdapter(denominatorAdapter);
 		denominator.setSelection(denominatorAdapter.getPosition(new TGSelectableItem(header.getTimeSignature().getDenominator().getValue(), null)));

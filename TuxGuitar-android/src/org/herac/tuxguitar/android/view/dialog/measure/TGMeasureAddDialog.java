@@ -66,11 +66,12 @@ public class TGMeasureAddDialog extends TGDialog {
 	}
 	
 	public void fillCount(View view) {
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createCountValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createCountValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.measure_add_dlg_count_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(1), null)));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(1), null)));
 	}
 	
 	public int findSelectedCount(View view) {

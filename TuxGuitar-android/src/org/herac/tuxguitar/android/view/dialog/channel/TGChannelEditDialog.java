@@ -163,7 +163,10 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	public void fillProgramAdapters() {
 		this.instrumentPrograms = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createInstrumentPrograms());
+		this.instrumentPrograms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		this.percussionPrograms = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createUnamedPrograms());
+		this.percussionPrograms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	}
 	
 	public void fillPrograms() {
@@ -189,7 +192,10 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillBanks() {
-		updateSpinnerAdapter(R.id.channel_edit_dlg_bank_value, new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createBankValues()));
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createBankValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
+		updateSpinnerAdapter(R.id.channel_edit_dlg_bank_value, arrayAdapter);
 	}
 	
 	public void fillBankValue() {

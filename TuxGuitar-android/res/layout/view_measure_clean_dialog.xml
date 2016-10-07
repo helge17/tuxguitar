@@ -6,13 +6,13 @@
 	<android.support.v7.widget.GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		app:columnCount="2" style="@style/Dialog">
+		app:columnCount="2" style="?attr/dialogStyle">
 	
 		<TextView 
 			android:id="@+id/measure_clean_dlg_from_label"
 			android:text="@string/measure_clean_dlg_from_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<Spinner 
 			android:id="@+id/measure_clean_dlg_from_value"
@@ -22,7 +22,7 @@
 			android:id="@+id/measure_clean_dlg_to_label"
 			android:text="@string/measure_clean_dlg_to_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<Spinner 
 			android:id="@+id/measure_clean_dlg_to_value"

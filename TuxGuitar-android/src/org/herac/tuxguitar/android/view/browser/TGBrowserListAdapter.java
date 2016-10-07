@@ -80,7 +80,7 @@ public class TGBrowserListAdapter extends BaseAdapter {
 	}
 	
 	public Drawable findElementIcon(TGBrowserElement element) throws TGBrowserException {
-		Integer style = (element.isFolder() ? R.style.BrowserElementIconFolder : R.style.BrowserElementIconFile);
+		Integer style = (element.isFolder() ? R.style.browserElementIconFolderStyle : R.style.browserElementIconFileStyle);
 		TypedArray typedArray = this.context.obtainStyledAttributes(style, new int[] {android.R.attr.src});
 		if( typedArray != null ) {
 			return typedArray.getDrawable(0);

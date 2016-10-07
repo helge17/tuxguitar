@@ -7,13 +7,13 @@
 
     <RelativeLayout
         android:id="@+id/browser_toolbar"
-        style="@style/BrowserCollectionsPanel"
+        style="?attr/browserCollectionsPanelStyle"
         android:layout_alignParentTop="true"
         android:gravity="fill_horizontal|center_vertical" >
 
         <Spinner
             android:id="@+id/browser_collections"
-            style="@style/BrowserCollectionsSpinner"
+            style="?attr/browserCollectionsSpinnerStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -27,13 +27,13 @@
 
     <RelativeLayout
         android:id="@+id/browser_save_panel"
-        style="@style/BrowserSavePanel"
+        style="?attr/browserSavePanelStyle"
         android:layout_alignParentBottom="true"
         android:gravity="center" >
 
         <EditText
             android:id="@+id/browser_save_element_name"
-            style="@style/BrowserSaveEditText"
+            style="?attr/browserSaveEditTextStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -46,7 +46,7 @@
 
         <Spinner
             android:id="@+id/browser_save_format"
-            style="@style/BrowserSaveSpinner"
+            style="?attr/browserSaveSpinnerStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -56,7 +56,7 @@
 
         <ImageView
             android:id="@+id/browser_save_button"
-            style="@style/BrowserSaveImageButton"
+            style="?attr/browserSaveImageButtonStyle"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"

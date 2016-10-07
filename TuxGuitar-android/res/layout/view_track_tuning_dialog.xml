@@ -7,13 +7,13 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		app:columnCount="2" 
-		style="@style/Dialog">
+		style="?attr/dialogStyle">
 		
 		<TextView 
 			android:id="@+id/track_tuning_dlg_strings_label"
 			android:text="@string/track_tuning_dlg_strings_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 		
 		<Spinner 
 			android:id="@+id/track_tuning_dlg_strings_value"
@@ -22,7 +22,7 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		
 		<android.support.v7.widget.Space app:layout_gravity="fill" />
@@ -71,13 +71,13 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/track_tuning_dlg_offset_label"
 			android:text="@string/track_tuning_dlg_offset_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 		
 		<Spinner 
 			android:id="@+id/track_tuning_dlg_offset_value"
@@ -86,7 +86,7 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 	
 		<CheckBox 
 			android:id="@+id/track_tuning_dlg_options_transpose" 

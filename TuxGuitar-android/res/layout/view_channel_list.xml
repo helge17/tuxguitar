@@ -5,7 +5,7 @@
 
     <!-- Main -->
     <RelativeLayout
-        style="@style/ChannelList"
+        style="?attr/channelListStyle"
         android:id="@+id/channel_list_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -130,14 +130,15 @@ public class TGHarmonicDialog extends TGDialog {
 	
 	public void fillData(View view, int type, int selection) {
 		TGSelectableItem[] selectableItems = createDataValues(type);
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, selectableItems);
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, selectableItems);
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.harmonic_dlg_data_value);
-		spinner.setAdapter(adapter);
+		spinner.setAdapter(arrayAdapter);
 		spinner.setEnabled(selectableItems.length > 0);
 		spinner.setVisibility(selectableItems.length > 0 ? View.VISIBLE : View.GONE);
 		if( selectableItems.length > 0 ) {
-			spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
+			spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 		}
 	}
 	

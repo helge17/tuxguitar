@@ -30,11 +30,12 @@ public class TGKeySignatureDialog extends TGDialog {
 		
 		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createKeyValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createKeyValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		final Spinner spinner = (Spinner) view.findViewById(R.id.key_signature_dlg_ks_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(measure.getKeySignature(), null)));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(measure.getKeySignature(), null)));
 		
 		final CheckBox applyToEnd = (CheckBox) view.findViewById(R.id.key_signature_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);

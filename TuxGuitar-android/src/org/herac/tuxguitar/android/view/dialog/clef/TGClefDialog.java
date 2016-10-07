@@ -32,11 +32,12 @@ public class TGClefDialog extends TGDialog {
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createClefValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createClefValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		final Spinner spinner = (Spinner) view.findViewById(R.id.clef_dlg_clef_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(measure.getClef(), null)));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(measure.getClef(), null)));
 		
 		final CheckBox applyToEnd = (CheckBox) view.findViewById(R.id.clef_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);

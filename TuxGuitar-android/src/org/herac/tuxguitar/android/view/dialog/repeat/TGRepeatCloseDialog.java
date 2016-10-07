@@ -36,11 +36,12 @@ public class TGRepeatCloseDialog extends TGDialog {
 			repeatCloseDefault = 1;
 		}
 		
-		ArrayAdapter<Integer> repeatValues = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createRepeatValues());
+		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createRepeatValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		final Spinner spinner = (Spinner) view.findViewById(R.id.repeat_close_dlg_count_value);
-		spinner.setAdapter(repeatValues);
-		spinner.setSelection(repeatValues.getPosition(Integer.valueOf(repeatCloseDefault)));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(repeatCloseDefault)));
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.repeat_close_dlg_title);

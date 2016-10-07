@@ -173,11 +173,12 @@ public class TGTrackTuningDialog extends TGDialog {
 	}
 	
 	public void fillStrings(final View view, final TGSongManager songManager, final TGSong song, final TGTrack track, final List<TGString> strings) {
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableStrings());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableStrings());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_strings_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(track.stringCount()), null)), false);
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(track.stringCount()), null)), false);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				onStringCountChange(view, songManager, song, track, strings);
@@ -190,17 +191,21 @@ public class TGTrackTuningDialog extends TGDialog {
 	}
 	
 	public void fillOffset(View view, TGTrack track) {
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.track_tuning_dlg_offset_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(track.getOffset()), null)), false);
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(track.getOffset()), null)), false);
 	}
 	
 	public void fillTunings(View view) {
 		for(int i = 0 ; i < TUNING_SPINNER_IDS.length ; i ++ ) {
+			ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings());
+			arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			
 			Spinner spinner = (Spinner) view.findViewById(TUNING_SPINNER_IDS[i]);
-			spinner.setAdapter(new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings()));
+			spinner.setAdapter(arrayAdapter);
 		}
 	}
 	

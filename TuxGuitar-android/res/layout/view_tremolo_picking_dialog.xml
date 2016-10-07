@@ -6,7 +6,7 @@
 	<android.support.v7.widget.GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		app:columnCount="1" style="@style/Dialog">
+		app:columnCount="1" style="?attr/dialogStyle">
 		
 		<RadioGroup 
 			android:id="@+id/tremolo_picking_dlg_duration_group"

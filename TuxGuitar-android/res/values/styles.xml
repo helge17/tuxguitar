@@ -14,31 +14,102 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+		<!-- ========================================================= -->
+		<!-- ==== COLOR ============================================== -->
+		<!-- ========================================================= -->
+		<item name="darkestColor">@color/darkestColor</item>
+		<item name="darkColor">@color/darkColor</item>
+		<item name="mediumColor">@color/mediumColor</item>
+		<item name="lightColor">@color/lightColor</item>
+		<item name="lightestColor">@color/lightestColor</item>
+		
+		<!-- ========================================================= -->
+		<!-- ==== COLOR SELECTOR ===================================== -->
+		<!-- ========================================================= -->
+		<item name="textLightColorSelector">@color/color_text_light</item>
+		
+		<!-- ========================================================= -->
+		<!-- ==== STYLE ============================================== -->
+		<!-- ========================================================= -->
+        <item name="textViewStyle">@style/textViewStyle</item>
+        
+		<item name="dialogStyle">@style/dialogStyle</item>
+		<item name="dialogSectionSpacerStyle">@style/dialogSectionSpacerStyle</item>
+		<item name="dialogImageButtonStyle">@style/dialogImageButtonStyle</item>
+		<item name="dialogImageButtonSettingsStyle">@style/dialogImageButtonSettingsStyle</item>
+		
+		<item name="mainImageButtonStyle">@style/mainImageButtonStyle</item>
+		<item name="mainImageButtonPlayStyle">@style/mainImageButtonPlayStyle</item>
+		<item name="mainImageButtonStopStyle">@style/mainImageButtonStopStyle</item>
+		
+		<item name="tabKeyBoardStyle">@style/tabKeyBoardStyle</item>
+		<item name="tabKeyBoardButtonStyle">@style/tabKeyBoardButtonStyle</item>
+		<item name="tabKeyBoardImageButtonStyle">@style/tabKeyBoardImageButtonStyle</item>
+		<item name="tabKeyBoardImageButtonInsertStyle">@style/tabKeyBoardImageButtonInsertStyle</item>
+		<item name="tabKeyBoardImageButtonDeleteStyle">@style/tabKeyBoardImageButtonDeleteStyle</item>
+		<item name="tabKeyBoardImageButtonDurationStyle">@style/tabKeyBoardImageButtonDurationStyle</item>
+		<item name="tabKeyBoardImageButtonDurationIncrementStyle">@style/tabKeyBoardImageButtonDurationIncrementStyle</item>
+		<item name="tabKeyBoardImageButtonDurationDecrementStyle">@style/tabKeyBoardImageButtonDurationDecrementStyle</item>
+		<item name="tabKeyBoardImageButtonRightStyle">@style/tabKeyBoardImageButtonRightStyle</item>
+		<item name="tabKeyBoardImageButtonLeftStyle">@style/tabKeyBoardImageButtonLeftStyle</item>
+		<item name="tabKeyBoardImageButtonUpStyle">@style/tabKeyBoardImageButtonUpStyle</item>
+		<item name="tabKeyBoardImageButtonDownStyle">@style/tabKeyBoardImageButtonDownStyle</item>
+		
+		<item name="mainDrawerListItemStyle">@style/mainDrawerListItemStyle</item>
+		<item name="mainDrawerImageButtonStyle">@style/mainDrawerImageButtonStyle</item>
+		<item name="mainDrawerImageButtonMixerStyle">@style/mainDrawerImageButtonMixerStyle</item>
+		<item name="mainDrawerImageButtonInfoStyle">@style/mainDrawerImageButtonInfoStyle</item>
+		<item name="mainDrawerToolbarStyle">@style/mainDrawerToolbarStyle</item>
+		<item name="mainDrawerTransportPanelStyle">@style/mainDrawerTransportPanelStyle</item>
+		
+		<item name="browserPanelStyle">@style/browserPanelStyle</item>
+		<item name="browserImageButtonStyle">@style/browserImageButtonStyle</item>
+		<item name="browserInputControlStyle">@style/browserInputControlStyle</item>
+		<item name="browserSpinnerItemStyle">@style/browserSpinnerItemStyle</item>
+		    
+		<item name="browserCollectionsPanelStyle">@style/browserCollectionsPanelStyle</item>
+		<item name="browserCollectionsSpinnerStyle">@style/browserCollectionsSpinnerStyle</item>
+		<item name="browserSavePanelStyle">@style/browserSavePanelStyle</item>
+		<item name="browserSaveEditTextStyle">@style/browserSaveEditTextStyle</item>
+		<item name="browserSaveSpinnerStyle">@style/browserSaveSpinnerStyle</item>
+		<item name="browserSaveImageButtonStyle">@style/browserSaveImageButtonStyle</item>
+	
+		<item name="browserElementIconStyle">@style/browserElementIconStyle</item>
+		<item name="browserElementIconFileStyle">@style/browserElementIconFileStyle</item>
+		<item name="browserElementIconFolderStyle">@style/browserElementIconFolderStyle</item>
+		<item name="browserElementNameStyle">@style/browserElementNameStyle</item>
+		<item name="browserCollectionsDlgImageButtonSubmitStyle">@style/browserCollectionsDlgImageButtonSubmitStyle</item>
+		<item name="browserCollectionsDlgImageButtonDeleteStyle">@style/browserCollectionsDlgImageButtonDeleteStyle</item>
+		
+		<item name="channelListStyle">@style/channelListStyle</item>
+		<item name="channelListItemStyle">@style/channelListItemStyle</item>
+		<item name="channelListItemTextViewStyle">@style/channelListItemTextViewStyle</item>
+		<item name="channelListItemImageButtonStyle">@style/channelListItemImageButtonStyle</item>
+		<item name="channelListItemDividerStyle">@style/channelListItemDividerStyle</item>
     </style>
 	
-    <style name="TextViewLabel" >
+    <style name="textViewStyle" >
         <item name="android:typeface">normal</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">18sp</item>
 	</style>
 	
-    <style name="Dialog" >
+    <style name="dialogStyle" >
         <item name="android:padding">10dp</item>
 	</style>
     
-    <style name="DialogSectionSpacer" >
+    <style name="dialogSectionSpacerStyle" >
         <item name="android:layout_height">20dp</item>
 	</style>
 	
-	<style name="DialogImageButton" >
+	<style name="dialogImageButtonStyle" >
 	    <item name="android:layout_width">36dp</item>
 	    <item name="android:layout_height">36dp</item>
 	    <item name="android:padding">6dip</item>
 	    <item name="android:background">?android:selectableItemBackground</item>
 	</style>
 	
-	<style name="DialogImageButtonSettings" parent="DialogImageButton">
+	<style name="dialogImageButtonSettingsStyle" parent="dialogImageButtonStyle">
 	    <item name="android:src">@drawable/ic_settings_gray_24dp</item>
 	</style>
 	
@@ -46,18 +117,18 @@
 	<!-- ==== MAIN =============================================== -->
 	<!-- ========================================================= -->
 	
-	<style name="MainImageButton" >
+	<style name="mainImageButtonStyle" >
 	    <item name="android:layout_width">36dp</item>
 	    <item name="android:layout_height">36dp</item>
 	    <item name="android:padding">6dip</item>
 	    <item name="android:background">?android:selectableItemBackground</item>
 	</style>
 	
-	<style name="MainImageButtonPlay" parent="MainImageButton">
+	<style name="mainImageButtonPlayStyle" parent="mainImageButtonStyle">
 	    <item name="android:src">@drawable/ic_play_circle_outline_white_24dp</item>
 	</style>
 	
-	<style name="MainImageButtonStop" parent="MainImageButton">
+	<style name="mainImageButtonStopStyle" parent="mainImageButtonStyle">
 	    <item name="android:src">@drawable/ic_pause_circle_outline_white_24dp</item>
 	</style>
 	
@@ -65,60 +136,60 @@
 	<!-- ==== TAB KEYBOARD ======================================= -->
 	<!-- ========================================================= -->
 	
-	<style name="TabKeyBoard" >
-		<item name="android:background">@color/dark</item>
+	<style name="tabKeyBoardStyle" >
+		<item name="android:background">?attr/darkColor</item>
 	</style>
 	
-	<style name="TabKeyBoardButton" >
+	<style name="tabKeyBoardButtonStyle" >
 		<item name="android:typeface">normal</item>
 		<item name="android:textStyle">normal</item>
 		<item name="android:textSize">18sp</item>
-		<item name="android:textColor">@color/color_text_light</item>
+		<item name="android:textColor">?attr/textLightColorSelector</item>
 		
 		<item name="android:layout_width">36dp</item>
 		<item name="android:layout_height">36dp</item>
 		<item name="android:padding">0sp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonStyle" >
 		<item name="android:layout_width">36dp</item>
 		<item name="android:layout_height">36dp</item>
 		<item name="android:padding">0sp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonInsert" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonInsertStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonDelete" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonDeleteStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_left_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonDuration" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonDurationStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_music_note_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonDurationIncrement" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonDurationIncrementStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_up_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonDurationDecrement" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonDurationDecrementStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonRight" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonRightStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonLeft" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonLeftStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_left_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonUp" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonUpStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_up_white_24dp</item>
 	</style>
 	
-	<style name="TabKeyBoardImageButtonDown" parent="TabKeyBoardImageButton" >
+	<style name="tabKeyBoardImageButtonDownStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
 	</style>
 	
@@ -126,62 +197,62 @@
 	<!-- ==== DRAWER ============================================= -->
 	<!-- ========================================================= -->
 	
-	<style name="MainDrawerListItem" >
+	<style name="mainDrawerListItemStyle" >
 	    <item name="android:layout_width">fill_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 		<item name="android:textSize">16sp</item>
 		<item name="android:padding">8sp</item>
-		<item name="android:textColor">@color/color_text_light</item>
+		<item name="android:textColor">?attr/textLightColorSelector</item>
 	</style>
 	
-	<style name="MainDrawerImageButton" >
+	<style name="mainDrawerImageButtonStyle" >
 	    <item name="android:layout_width">36dp</item>
 	    <item name="android:layout_height">36dp</item>
 	    <item name="android:padding">6dip</item>
 	    <item name="android:background">?android:selectableItemBackground</item>
 	</style>
 	
-	<style name="MainDrawerImageButtonMixer" parent="BrowserImageButton">
+	<style name="mainDrawerImageButtonMixerStyle" parent="browserImageButtonStyle">
 	    <item name="android:src">@drawable/ic_volume_up_white_24dp</item>
 	</style>
 	
-	<style name="MainDrawerImageButtonInfo" parent="BrowserImageButton">
+	<style name="mainDrawerImageButtonInfoStyle" parent="browserImageButtonStyle">
 	    <item name="android:src">@drawable/ic_info_outline_white_24dp</item>
 	</style>
 	
-	<style name="MainDrawerToolbar" >
-	    <item name="android:background">@color/medium</item>
-	    <item name="android:textColor">@color/color_text_light</item>
+	<style name="mainDrawerToolbarStyle" >
+	    <item name="android:background">?attr/mediumColor</item>
+	    <item name="android:textColor">?attr/textLightColorSelector</item>
 	    <item name="android:padding">0dp</item>
 	</style>
 	
-	<style name="MainDrawerTransportPanel" >
-	    <item name="android:background">@color/medium</item>
+	<style name="mainDrawerTransportPanelStyle" >
+	    <item name="android:background">?attr/mediumColor</item>
 	</style>
 	
 	<!-- ========================================================= -->
 	<!-- ==== BROWSER ============================================ -->
 	<!-- ========================================================= -->
 	
-	<style name="BrowserPanel" >
-	    <item name="android:background">@color/dark</item>
+	<style name="browserPanelStyle" >
+	    <item name="android:background">?attr/darkColor</item>
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">48dp</item>
 	</style>
 	
-	<style name="BrowserImageButton" >
+	<style name="browserImageButtonStyle" >
 	    <item name="android:layout_width">36dp</item>
 	    <item name="android:layout_height">36dp</item>
 	    <item name="android:padding">6dip</item>
 	    <item name="android:background">?android:selectableItemBackground</item>
 	</style>
 	
-	<style name="BrowserInputControl" >
-	    <item name="android:textColor">@color/color_text_light</item>
+	<style name="browserInputControlStyle" >
+	    <item name="android:textColor">?attr/textLightColorSelector</item>
 	    <item name="android:textSize">18sp</item>
 	</style>
 	
-	<style name="BrowserSpinnerItem" parent="BrowserInputControl" >
+	<style name="browserSpinnerItemStyle" parent="browserInputControlStyle" >
     	<item name="android:singleLine">true</item>
     	<item name="android:layout_width">match_parent</item>
     	<item name="android:layout_height">wrap_content</item>
@@ -189,79 +260,79 @@
 	</style>
 	
 	
-	<style name="BrowserCollectionsPanel" parent="BrowserPanel" />
+	<style name="browserCollectionsPanelStyle" parent="browserPanelStyle" />
 	
-	<style name="BrowserCollectionsSpinner" parent="BrowserInputControl" >
+	<style name="browserCollectionsSpinnerStyle" parent="browserInputControlStyle" >
 	    <item name="android:padding">12dip</item>
 	</style>
 	
-	<style name="BrowserSavePanel" parent="BrowserPanel" />
+	<style name="browserSavePanelStyle" parent="browserPanelStyle" />
 	
-	<style name="BrowserSaveEditText" parent="BrowserInputControl" />
+	<style name="browserSaveEditTextStyle" parent="browserInputControlStyle" />
 	
-	<style name="BrowserSaveSpinner" parent="BrowserInputControl" />
+	<style name="browserSaveSpinnerStyle" parent="browserInputControlStyle" />
 	
-	<style name="BrowserSaveImageButton" parent="BrowserImageButton">
+	<style name="browserSaveImageButtonStyle" parent="browserImageButtonStyle">
 	    <item name="android:src">@drawable/ic_save_white_24dp</item>
 	</style>
 	
-	<style name="BrowserElementIcon" >
+	<style name="browserElementIconStyle" >
 	    <item name="android:layout_width">24dp</item>
 	    <item name="android:layout_height">24dp</item>
 	    <item name="android:scaleType">fitCenter</item>
 	</style>
 	
-	<style name="BrowserElementIconFile" >
+	<style name="browserElementIconFileStyle" >
 	    <item name="android:src">@drawable/browser_file</item>
 	</style>
 	
-	<style name="BrowserElementIconFolder" >
+	<style name="browserElementIconFolderStyle" >
 	    <item name="android:src">@drawable/browser_folder</item>
 	</style>
 	
-	<style name="BrowserElementName" >
+	<style name="browserElementNameStyle" >
 	    <item name="android:layout_width">fill_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 		<item name="android:textSize">16sp</item>
 		<item name="android:padding">8sp</item>
 	</style>
 	
-	<style name="BrowserCollectionsDlgImageButtonSubmit" parent="BrowserImageButton">
+	<style name="browserCollectionsDlgImageButtonSubmitStyle" parent="browserImageButtonStyle">
 	    <item name="android:src">@drawable/ic_send_gray_24dp</item>
 	</style>
 	
-	<style name="BrowserCollectionsDlgImageButtonDelete" parent="BrowserImageButton">
+	<style name="browserCollectionsDlgImageButtonDeleteStyle" parent="browserImageButtonStyle">
 	    <item name="android:src">@drawable/ic_delete_gray_24dp</item>
 	</style>
 	<!-- ========================================================= -->
 	<!-- ==== CHANNEL LIST ======================================= -->
 	<!-- ========================================================= -->
 	
-	<style name="ChannelList" >
-	    <item name="android:background">@color/darkest</item>
+	<style name="channelListStyle" >
+	    <item name="android:background">?attr/darkestColor</item>
 	</style>
 	
-	<style name="ChannelListItem" >
-	    <item name="android:background">@color/darkest</item>
+	<style name="channelListItemStyle" >
+	    <item name="android:background">?attr/darkestColor</item>
 	    <item name="android:paddingTop">12dp</item>
 	</style>
 	
-	<style name="ChannelListItemTextView" >
+	<style name="channelListItemTextViewStyle" >
 		<item name="android:typeface">normal</item>
 		<item name="android:textStyle">normal</item>
 		<item name="android:textSize">18sp</item>
-		<item name="android:textColor">@color/color_text_light</item>
+		<item name="android:textColor">?attr/textLightColorSelector</item>
 	</style>
 	
-	<style name="ChannelListItemImageButton" >
+	<style name="channelListItemImageButtonStyle" >
 	    <item name="android:layout_width">42dp</item>
 	    <item name="android:layout_height">42dp</item>
 	    <item name="android:scaleType">fitCenter</item>
 	</style>
 	
-	<style name="ChannelListItemDivider">
+	<style name="channelListItemDividerStyle">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">1dp</item>
-		<item name="android:background">@color/light</item>
+		<item name="android:background">?attr/lightColor</item>
 	</style>
 </resources>

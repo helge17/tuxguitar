@@ -4,6 +4,9 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 import android.content.Context;
 import android.view.View;
@@ -14,9 +17,11 @@ public class TGHideSoftInputListener implements TGEventListener {
 	public static final String ATTRIBUTE_BY_PASS = (TGHideSoftInputListener.class.getName() + "-byPass");
 	public static final String ATTRIBUTE_DONE = (TGHideSoftInputListener.class.getName() + "-done");
 	
+	private TGContext context;
 	private TGActivity activity;
 	
-	public TGHideSoftInputListener(TGActivity activity){
+	public TGHideSoftInputListener(TGContext context, TGActivity activity){
+		this.context = context;
 		this.activity = activity;
 	}
 	
@@ -28,10 +33,18 @@ public class TGHideSoftInputListener implements TGEventListener {
 		}
 	}
 	
+	public void hideSoftInputFromWindowInUiThread() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() throws TGException {
+				hideSoftInputFromWindow();
+			}
+		});
+	}
+	
 	public void checkForHideSoftInputFromWindow(TGEvent event) {
 		TGActionContext actionContext = this.getActionContext(event);
 		if(!Boolean.TRUE.equals(actionContext.getAttribute(ATTRIBUTE_DONE))) {
-			hideSoftInputFromWindow();
+			hideSoftInputFromWindowInUiThread();
 			actionContext.setAttribute(ATTRIBUTE_DONE, Boolean.TRUE);
 		}
 	}

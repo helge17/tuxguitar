@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="TuxGuitar">
+		<!-- ========================================================= -->
+		<!-- ==== COLOR ============================================== -->
+		<!-- ========================================================= -->
+	    <attr name="darkestColor" format="reference|color"/>
+	    <attr name="darkColor" format="reference|color"/>
+	    <attr name="mediumColor" format="reference|color"/>
+	    <attr name="lightColor" format="reference|color"/>
+	    <attr name="lightestColor" format="reference|color"/>
+	    
+		<!-- ========================================================= -->
+		<!-- ==== COLOR SELECTOR ===================================== -->
+		<!-- ========================================================= -->
+	    <attr name="textLightColorSelector" format="reference|color"/>
+	    
+		<!-- ========================================================= -->
+		<!-- ==== STYLE ============================================== -->
+		<!-- ========================================================= -->
+		<attr name="textViewStyle" format="reference"/>
+		
+		<attr name="dialogStyle" format="reference"/>
+		<attr name="dialogSectionSpacerStyle" format="reference"/>
+		<attr name="dialogImageButtonStyle" format="reference"/>
+		<attr name="dialogImageButtonSettingsStyle" format="reference"/>
+		
+		<attr name="mainImageButtonStyle" format="reference"/>
+		<attr name="mainImageButtonPlayStyle" format="reference"/>
+		<attr name="mainImageButtonStopStyle" format="reference"/>
+		
+		<attr name="tabKeyBoardStyle" format="reference"/>
+		<attr name="tabKeyBoardButtonStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonInsertStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonDeleteStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonDurationStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonDurationIncrementStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonDurationDecrementStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonRightStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonLeftStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonUpStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonDownStyle" format="reference"/>
+		
+		<attr name="mainDrawerListItemStyle" format="reference"/>
+		<attr name="mainDrawerImageButtonStyle" format="reference"/>
+		<attr name="mainDrawerImageButtonMixerStyle" format="reference"/>
+		<attr name="mainDrawerImageButtonInfoStyle" format="reference"/>
+		<attr name="mainDrawerToolbarStyle" format="reference"/>
+		<attr name="mainDrawerTransportPanelStyle" format="reference"/>
+		
+		<attr name="browserPanelStyle" format="reference"/>
+		<attr name="browserImageButtonStyle" format="reference"/>
+		<attr name="browserInputControlStyle" format="reference"/>
+		<attr name="browserSpinnerItemStyle" format="reference"/>
+		    
+		<attr name="browserCollectionsPanelStyle" format="reference"/>
+		<attr name="browserCollectionsSpinnerStyle" format="reference"/>
+		<attr name="browserSavePanelStyle" format="reference"/>
+		<attr name="browserSaveEditTextStyle" format="reference"/>
+		<attr name="browserSaveSpinnerStyle" format="reference"/>
+		<attr name="browserSaveImageButtonStyle" format="reference"/>
+	
+		<attr name="browserElementIconStyle" format="reference"/>
+		<attr name="browserElementIconFileStyle" format="reference"/>
+		<attr name="browserElementIconFolderStyle" format="reference"/>
+		<attr name="browserElementNameStyle" format="reference"/>
+		<attr name="browserCollectionsDlgImageButtonSubmitStyle" format="reference"/>
+		<attr name="browserCollectionsDlgImageButtonDeleteStyle" format="reference"/>
+		
+		<attr name="channelListStyle" format="reference"/>
+		<attr name="channelListItemStyle" format="reference"/>
+		<attr name="channelListItemTextViewStyle" format="reference"/>
+		<attr name="channelListItemImageButtonStyle" format="reference"/>
+		<attr name="channelListItemDividerStyle" format="reference"/>
+	</declare-styleable>
+</resources>

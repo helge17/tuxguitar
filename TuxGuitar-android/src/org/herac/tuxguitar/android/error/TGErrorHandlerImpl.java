@@ -14,12 +14,11 @@ import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
 
-
 import android.os.Environment;
 
 public class TGErrorHandlerImpl implements TGErrorHandler{
 	
-	private static final String LOG_FILE = (Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "tuxguitar.log");
+	private static final String LOG_FILE = (Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "tuxguitar/log/tuxguitar.log");
 	
 	private static final String MSG_TITLE = "Error";
 	private static final String EOL = "\r\n";
@@ -84,6 +83,7 @@ public class TGErrorHandlerImpl implements TGErrorHandler{
 		File logFile = new File(LOG_FILE);
 		if (!logFile.exists()) {
 			try {
+				logFile.getParentFile().mkdirs();
 				logFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();

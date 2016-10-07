@@ -88,7 +88,7 @@ public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 	}
 	
 	public Drawable findStyledFolderIcon() {
-		TypedArray typedArray = this.context.obtainStyledAttributes(R.style.BrowserElementIconFolder, new int[] {android.R.attr.src});
+		TypedArray typedArray = this.context.obtainStyledAttributes(R.style.browserElementIconFolderStyle, new int[] {android.R.attr.src});
 		if( typedArray != null ) {
 			return typedArray.getDrawable(0);
 		}
