@@ -86,7 +86,7 @@ public class TGMainMenu {
 			
 			public Integer resolveStyle() {
 				boolean running = MidiPlayer.getInstance(getContext()).isRunning();
-				return (running ? R.style.MainImageButtonStop : R.style.MainImageButtonPlay);
+				return (running ? R.style.mainImageButtonStopStyle : R.style.mainImageButtonPlayStyle);
 			}
 		};
 	}

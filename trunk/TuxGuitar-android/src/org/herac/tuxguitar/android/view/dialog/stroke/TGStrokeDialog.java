@@ -69,11 +69,12 @@ public class TGStrokeDialog extends TGDialog {
 	public void fillDirection(final View dlgView, TGBeat beat) {
 		int selection = (beat != null ? beat.getStroke().getDirection() : TGStroke.STROKE_NONE);
 		
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDirectionValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDirectionValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) dlgView.findViewById(R.id.stroke_dlg_direction_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
 		
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

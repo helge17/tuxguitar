@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MainDrawerListItem"
+    style="?attr/mainDrawerListItemStyle"
     android:id="@+id/main_drawer_text_item"
     android:gravity="center_vertical"
     android:singleLine="true" 

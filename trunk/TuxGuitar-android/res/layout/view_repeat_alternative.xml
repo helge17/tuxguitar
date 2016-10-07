@@ -7,7 +7,7 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		app:columnCount="4" 
-		style="@style/Dialog">
+		style="?attr/dialogStyle">
 	
 		<CheckBox 
 			android:id="@+id/repeat_alternative_dlg_alt_1"

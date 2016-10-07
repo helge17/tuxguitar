@@ -80,11 +80,12 @@ public class TGTrillDialog extends TGDialog {
 			selection = (note.getEffect().isTrill() ? note.getEffect().getTrill().getFret() : note.getValue());
 		}
 		
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.trill_dlg_fret_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 	}
 	
 	public int findSelectedFret(View view) {

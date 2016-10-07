@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/browser_collections_item_name"
-        style="@style/TextViewLabel"
+        style="?attr/textViewStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/browser_collections_item_icon"
@@ -18,7 +18,7 @@
 
     <ImageButton
         android:id="@+id/browser_collections_item_icon"
-        style="@style/BrowserCollectionsDlgImageButtonDelete"
+        style="?attr/browserCollectionsDlgImageButtonDeleteStyle"
         android:layout_alignParentRight="true"
         android:contentDescription="@string/browser_remove_collection"
         android:gravity="center" />

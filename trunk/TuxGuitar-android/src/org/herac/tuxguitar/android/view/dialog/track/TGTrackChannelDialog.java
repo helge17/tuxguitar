@@ -127,11 +127,12 @@ public class TGTrackChannelDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void fillTrackInstrument() {
-		ArrayAdapter<TGSelectableItem> adapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableChannels());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableChannels());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) this.dialogView.findViewById(R.id.track_channel_dlg_channel_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(new TGSelectableItem(this.songManager.getChannel(this.song, this.track.getChannelId()), null)));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(this.songManager.getChannel(this.song, this.track.getChannelId()), null)));
 	}
 	
 	public TGActionProcessor createActionProcessor(String actionId) {

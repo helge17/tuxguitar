@@ -51,9 +51,9 @@ public class TGActionAdapterManager {
 	
 	private void initializeHandlers(TGActivity activity){
 		TGActionProcessingListener processingListener = new TGActionProcessingListener(activity);
-		TGHideSoftInputListener hideSoftInputListener = new TGHideSoftInputListener(activity);
+		TGHideSoftInputListener hideSoftInputListener = new TGHideSoftInputListener(this.getContext(), activity);
 		
-		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
+		TGActionManager tgActionManager = TGActionManager.getInstance(this.getContext());
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
 		
 		tgActionManager.addInterceptor(new TGFinishConfirmInterceptor(this.getContext(), activity));

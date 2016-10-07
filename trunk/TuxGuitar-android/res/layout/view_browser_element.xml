@@ -8,13 +8,13 @@
     <TableRow android:gravity="center_vertical" tools:ignore="UselessParent" >
         <ImageView
             android:id="@+id/tg_browser_element_icon"
-            style="@style/BrowserElementIcon"
+            style="?attr/browserElementIconStyle"
             android:contentDescription="@string/browser_element_icon_description"
             android:gravity="left" />
 
         <TextView
             android:id="@+id/tg_browser_element_name"
-            style="@style/BrowserElementName"
+            style="?attr/browserElementNameStyle"
             android:gravity="fill"
             android:singleLine="true" />
     </TableRow>

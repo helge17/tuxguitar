@@ -6,7 +6,7 @@
     <!-- Footer -->
     <RelativeLayout
         android:id="@+id/main_drawer_bottom"
-        style="@style/MainDrawerTransportPanel"
+        style="?attr/mainDrawerTransportPanelStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,14 +15,14 @@
 
         <ImageButton
             android:id="@+id/main_drawer_transport_mixer"
-            style="@style/MainDrawerImageButtonMixer"
+            style="?attr/mainDrawerImageButtonMixerStyle"
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/menu_view_channel_list"
             android:gravity="left"/>
 
         <ImageButton
             android:id="@+id/main_drawer_song_info"
-            style="@style/MainDrawerImageButtonInfo"
+            style="?attr/mainDrawerImageButtonInfoStyle"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/menu_composition_change_info"
             android:gravity="right"/>
@@ -54,7 +54,7 @@
 
                 <TabWidget
                     android:id="@android:id/tabs"
-                    style="@style/MainDrawerToolbar"
+                    style="?attr/mainDrawerToolbarStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
                 </TabWidget>

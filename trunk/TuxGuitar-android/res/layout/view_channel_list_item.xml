@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    style="@style/ChannelListItem">
+    style="?attr/channelListItemStyle">
 
     <TextView
-        style="@style/ChannelListItemTextView"
+        style="?attr/channelListItemTextViewStyle"
         android:id="@+id/channel_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:max="127" />
 
     <View
-        style="@style/ChannelListItemDivider"
+        style="?attr/channelListItemDividerStyle"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/channel_item_volume_value" />

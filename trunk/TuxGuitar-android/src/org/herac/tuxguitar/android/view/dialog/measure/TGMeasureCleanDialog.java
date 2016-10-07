@@ -65,7 +65,10 @@ public class TGMeasureCleanDialog extends TGDialog {
 	}
 	
 	public void fillSpinner(Spinner spinner, int minimum, int maximum) {
-		spinner.setAdapter(new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createRangeValues(minimum, maximum)));
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createRangeValues(minimum, maximum));
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
+		spinner.setAdapter(arrayAdapter);
 	}
 	
 	public void fillRanges(View view, TGTrack track, TGMeasure measure) {

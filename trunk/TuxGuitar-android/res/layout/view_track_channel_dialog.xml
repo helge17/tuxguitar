@@ -5,13 +5,13 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        style="@style/Dialog"
+        style="?attr/dialogStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/track_channel_dlg_channel_label"
-            style="@style/TextViewLabel"
+            style="?attr/textViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
@@ -31,7 +31,7 @@
 
         <ImageView
             android:id="@+id/track_channel_dlg_settings_button"
-            style="@style/DialogImageButtonSettings"
+            style="?attr/dialogImageButtonSettingsStyle"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/track_channel_dlg_settings_label" />
     </RelativeLayout>

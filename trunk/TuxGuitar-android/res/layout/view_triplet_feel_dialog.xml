@@ -7,7 +7,7 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		app:columnCount="1" 
-		style="@style/Dialog">
+		style="?attr/dialogStyle">
 		
 		<RadioGroup 
 			android:id="@+id/triplet_feel_dlg_value"
@@ -34,7 +34,7 @@
 		
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 	
 		<CheckBox 
 			android:id="@+id/triplet_feel_dlg_options_apply_to_end"

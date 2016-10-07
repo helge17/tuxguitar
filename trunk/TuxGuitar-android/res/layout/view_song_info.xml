@@ -7,13 +7,13 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		app:columnCount="2" 
-		style="@style/Dialog">
+		style="?attr/dialogStyle">
 		
 		<TextView 
 			android:id="@+id/song_info_dlg_name_label"
 			android:text="@string/song_info_dlg_name_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_name_value"
@@ -24,7 +24,7 @@
 			android:id="@+id/song_info_dlg_artist_label"
 			android:text="@string/song_info_dlg_artist_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_artist_value"
@@ -35,7 +35,7 @@
 			android:id="@+id/song_info_dlg_album_label"
 			android:text="@string/song_info_dlg_album_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_album_value"
@@ -46,7 +46,7 @@
 			android:id="@+id/song_info_dlg_author_label"
 			android:text="@string/song_info_dlg_author_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_author_value"
@@ -57,7 +57,7 @@
 			android:id="@+id/song_info_dlg_date_label"
 			android:text="@string/song_info_dlg_date_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_date_value"
@@ -68,7 +68,7 @@
 			android:id="@+id/song_info_dlg_copyright_label"
 			android:text="@string/song_info_dlg_copyright_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_copyright_value"
@@ -79,7 +79,7 @@
 			android:id="@+id/song_info_dlg_writer_label"
 			android:text="@string/song_info_dlg_writer_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_writer_value"
@@ -90,7 +90,7 @@
 			android:id="@+id/song_info_dlg_transcriber_label"
 			android:text="@string/song_info_dlg_transcriber_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_transcriber_value"
@@ -101,7 +101,7 @@
 			android:id="@+id/song_info_dlg_comments_label"
 			android:text="@string/song_info_dlg_comments_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_comments_value"

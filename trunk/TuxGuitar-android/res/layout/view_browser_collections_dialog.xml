@@ -15,7 +15,7 @@
 
     <ImageButton
         android:id="@+id/browser_collections_dlg_add_button"
-        style="@style/BrowserCollectionsDlgImageButtonSubmit"
+        style="?attr/browserCollectionsDlgImageButtonSubmitStyle"
         android:layout_alignParentRight="true"
         android:contentDescription="@string/browser_add_collection" />
 

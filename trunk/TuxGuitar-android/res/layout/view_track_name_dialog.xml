@@ -7,13 +7,13 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		app:columnCount="2" 
-		style="@style/Dialog">
+		style="?attr/dialogStyle">
 		
 		<TextView 
 			android:id="@+id/track_name_dlg_name_label"
 			android:text="@string/track_name_dlg_name_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<EditText
 			android:id="@+id/track_name_dlg_name_value"

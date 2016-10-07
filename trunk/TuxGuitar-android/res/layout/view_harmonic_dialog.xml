@@ -6,7 +6,7 @@
 	<android.support.v7.widget.GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		app:columnCount="1" style="@style/Dialog">
+		app:columnCount="1" style="?attr/dialogStyle">
 		
 		<RadioGroup 
 			android:id="@+id/harmonic_dlg_type_group"
@@ -46,7 +46,7 @@
 		
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		<Spinner 
 			android:id="@+id/harmonic_dlg_data_value"

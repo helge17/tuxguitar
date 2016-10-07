@@ -6,13 +6,13 @@
 	<android.support.v7.widget.GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		app:columnCount="2" style="@style/Dialog">
+		app:columnCount="2" style="?attr/dialogStyle">
 		
 		<TextView 
 			android:id="@+id/grace_dlg_fret_label"
 			android:text="@string/grace_dlg_fret_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 	
 		<Spinner 
 			android:id="@+id/grace_dlg_fret_value"
@@ -21,7 +21,7 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 			
 		<CheckBox 
 			android:id="@+id/grace_dlg_dead_note_option" 
@@ -32,14 +32,14 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_position_label"
 			android:text="@string/grace_dlg_position_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
 			app:layout_columnSpan="2"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_position_group"
@@ -63,14 +63,14 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_duration_label"
 			android:text="@string/grace_dlg_duration_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
 			app:layout_columnSpan="2"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_duration_group"
@@ -102,14 +102,14 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_dynamic_label"
 			android:text="@string/grace_dlg_dynamic_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
 			app:layout_columnSpan="2"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_dynamic_group"
@@ -177,14 +177,14 @@
 		<android.support.v7.widget.Space
 			app:layout_gravity="fill"
 			app:layout_columnSpan="2"
-			style="@style/DialogSectionSpacer" />
+			style="?attr/dialogSectionSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_transition_label"
 			android:text="@string/grace_dlg_transition_label" 
 			app:layout_gravity="fill_horizontal|center_vertical"
 			app:layout_columnSpan="2"
-			style="@style/TextViewLabel" />
+			style="?attr/textViewStyle" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_transition_group"

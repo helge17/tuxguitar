@@ -32,11 +32,12 @@ public class TGTempoDialog extends TGDialog {
 		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		final TGTempo tempo = header.getTempo();
-		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createTempoValues());
+		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createTempoValues());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		final Spinner spinner = (Spinner) view.findViewById(R.id.tempo_dlg_tempo_value);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(Integer.valueOf(tempo.getValue())));
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(tempo.getValue())));
 		
 		final RadioGroup applyToGroup = (RadioGroup) view.findViewById(R.id.tempo_dlg_options_group);
 		
