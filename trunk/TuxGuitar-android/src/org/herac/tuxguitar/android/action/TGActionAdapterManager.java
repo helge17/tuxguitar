@@ -77,12 +77,12 @@ public class TGActionAdapterManager {
 		tgActionManager.addPostExecutionListener(new TGActionUpdateBrowserListener(activity));
 		tgActionManager.addPostExecutionListener(new TGActionUpdateFragmentListener(activity));
 		
-		tgActionManager.addErrorListener(processingListener);
-		tgActionManager.addErrorListener(hideSoftInputListener);
-		tgActionManager.addErrorListener(this.lockableActionListener);
 		tgActionManager.addErrorListener(this.updatableActionListener);
 		tgActionManager.addErrorListener(this.undoableActionListener);
+		tgActionManager.addErrorListener(this.lockableActionListener);
 		tgActionManager.addErrorListener(this.errorHandler);
+		tgActionManager.addErrorListener(hideSoftInputListener);
+		tgActionManager.addErrorListener(processingListener);
 	}
 	
 	private void initializeDefaultActions(){
