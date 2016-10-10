@@ -10,6 +10,7 @@ import java.util.List;
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
+import org.herac.tuxguitar.android.browser.model.TGBrowserElementComparator;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
@@ -92,7 +93,7 @@ public class TGFsBrowser implements TGBrowser{
 					}
 				}
 				if( !elements.isEmpty() ){
-					Collections.sort(elements, new TGFsBrowserElementComparator());
+					Collections.sort(elements, new TGBrowserElementComparator());
 				}
 			}
 			

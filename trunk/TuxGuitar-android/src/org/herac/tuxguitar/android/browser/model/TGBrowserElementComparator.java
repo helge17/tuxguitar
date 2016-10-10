@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.browser.filesystem;
+package org.herac.tuxguitar.android.browser.model;
 
 import java.util.Comparator;
 
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 
-public class TGFsBrowserElementComparator implements Comparator<TGBrowserElement> {
+public class TGBrowserElementComparator implements Comparator<TGBrowserElement> {
 	
 	private static final int RESULT_LESS = -1;
 	
