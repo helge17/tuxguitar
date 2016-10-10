@@ -1,10 +1,9 @@
 package org.herac.tuxguitar.android.browser.gdrive;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
+import org.herac.tuxguitar.android.browser.model.TGBrowserElementComparator;
 import org.herac.tuxguitar.android.gdrive.R;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -174,6 +174,10 @@ public class TGDriveBrowser implements TGBrowser{
 			            		}
 			            	}
 			            	
+							if( !elements.isEmpty() ){
+								Collections.sort(elements, new TGBrowserElementComparator());
+							}
+							
 			            	cb.onSuccess(elements);
 			            } else {
 			            	cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_list_children_error)));
@@ -211,10 +215,14 @@ public class TGDriveBrowser implements TGBrowser{
 			DriveFile driveFile = ((TGDriveBrowserFile) element).getFile();
 			driveFile.open(this.client, DriveFile.MODE_READ_ONLY, null).setResultCallback(new ResultCallback<DriveContentsResult>() {
 				public void onResult(DriveContentsResult result) {
-					if( result.getStatus().isSuccess() ) {
-						cb.onSuccess(result.getDriveContents().getInputStream());
-					} else {
-						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_read_file_error)));
+					try {
+						if( result.getStatus().isSuccess() ) {
+							cb.onSuccess(TGDriveBrowserUtil.getInputStream(result.getDriveContents().getInputStream()));
+						} else {
+							cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_read_file_error)));
+						}
+					} catch (Throwable e) {
+						cb.handleError(e);
 					}
 				}
 			});
@@ -229,19 +237,11 @@ public class TGDriveBrowser implements TGBrowser{
 			driveFile.open(TGDriveBrowser.this.client, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(new ResultCallback<DriveContentsResult>() {
 				public void onResult(final DriveContentsResult result) {
 					if( result.getStatus().isSuccess() ) {
-						cb.onSuccess(new BufferedOutputStream(result.getDriveContents().getOutputStream()) {
-							private boolean closed;
-							
-							public void close() throws IOException {
-								if(!this.closed) {
-									this.closed = true;
-									
-									super.close();
-									
-									result.getDriveContents().commit(TGDriveBrowser.this.client, null);
-								}
+						cb.onSuccess(new TGDriveBrowserOutputStream(result.getDriveContents().getOutputStream(), new Runnable() {
+							public void run() {
+								result.getDriveContents().commit(TGDriveBrowser.this.client, null);
 							}
-						});
+						}));
 					} else {
 						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_write_file_error)));
 					}
