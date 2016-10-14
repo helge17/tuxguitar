@@ -66,6 +66,7 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		<!-- 3RD PARTY LIBRARIES -->
 		<dependency>
 			<groupId>com.google.android.gms</groupId>
 			<artifactId>play-services-auth</artifactId>
@@ -121,6 +122,7 @@
 		    <version>2.7</version>
 		    <scope>compile</scope>
 		</dependency>
+		<!-- /3RD PARTY LIBRARIES -->
 	</dependencies>
 
 	<build>
