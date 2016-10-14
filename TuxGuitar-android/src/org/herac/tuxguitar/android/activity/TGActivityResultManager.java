@@ -9,10 +9,18 @@ import android.content.Intent;
 
 public class TGActivityResultManager {
 	
+	private int requestCode;
 	private Map<Object, List<TGActivityResultHandler>> handlers;
 	
 	public TGActivityResultManager() {
+		this.requestCode = 1;
 		this.handlers = new HashMap<Object, List<TGActivityResultHandler>>();
+	}
+	
+	public int createRequestCode() {
+		synchronized (TGActivityResultManager.this) {
+			return (this.requestCode ++);
+		}
 	}
 	
 	public List<TGActivityResultHandler> getHandlers(Integer requestCode) {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="gdrive_application_name">TuxGuitar</string>
     <string name="gdrive_unexpected_error">An unexpected error has occurred</string>
     <string name="gdrive_connection_failed">Cannot connect to Google Drive: Error Code %1$d</string>
     <string name="gdrive_connection_suspended">Google Drive connection was suspended</string>
@@ -9,8 +8,4 @@
     <string name="gdrive_create_file_error">Error occurred while creating the file</string>
     <string name="gdrive_read_file_error">Error occurred while reading the file</string>
     <string name="gdrive_write_file_error">Error occurred while writing the file</string>
-    
-    <string name="gdrive_settings_title">Google Drive (%1$s)</string>
-    <string name="gdrive_settings_error_title">Error</string>
-    <string name="gdrive_settings_error_msg_exists">%1$s already exists.</string>
 </resources>

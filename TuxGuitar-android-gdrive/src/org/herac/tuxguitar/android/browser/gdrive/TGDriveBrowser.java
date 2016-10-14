@@ -1,108 +1,75 @@
 package org.herac.tuxguitar.android.browser.gdrive;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElementComparator;
+import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.gdrive.R;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
-import android.os.Bundle;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.media.MediaHttpDownloader;
+import com.google.api.client.http.AbstractInputStreamContent;
+import com.google.api.client.http.ByteArrayContent;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Files;
+import com.google.api.services.drive.DriveRequest;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.ParentReference;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi.DriveContentsResult;
-import com.google.android.gms.drive.DriveApi.MetadataBufferResult;
-import com.google.android.gms.drive.DriveFile;
-import com.google.android.gms.drive.DriveFolder.DriveFileResult;
-import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataChangeSet;
-
-public class TGDriveBrowser implements TGBrowser{
+public class TGDriveBrowser implements TGBrowser {
 	
-	private static final Integer LOGIN_REQUEST = 100;
+	private static final String ROOT_FOLDER = "root";
 	
 	private TGContext context;
 	private TGDriveBrowserSettings settings;
-	private TGDriveBrowserFolder folder;
 	
-	private GoogleApiClient client;
+	private TGDriveBrowserFile folder;
+	private HttpTransport httpTransport;
+	private Drive drive;
 	
 	public TGDriveBrowser(TGContext context, TGDriveBrowserSettings settings){
 		this.context = context;
 		this.settings = settings;
+		this.httpTransport = AndroidHttp.newCompatibleTransport();
 	}
 	
 	public void open(final TGBrowserCallBack<Object> cb){
 		try {
-			GoogleApiClient.Builder builder = new GoogleApiClient.Builder(findActivity());
-			builder.addApi(Drive.API);
-		    builder.addScope(Drive.SCOPE_FILE);
-		    builder.addScope(Drive.SCOPE_APPFOLDER);
-		    builder.addConnectionCallbacks(
-		    	new GoogleApiClient.ConnectionCallbacks() {
-					@Override
-					public void onConnected(Bundle bundle) {
-						cb.onSuccess(null);
-					}
+			this.folder = null;
+			
+			TGDriveBrowserLogin login = new TGDriveBrowserLogin(this.findActivity(), this.settings, new TGBrowserCallBack<GoogleAccountCredential>() {
+				public void onSuccess(GoogleAccountCredential credential) {
+					Drive.Builder builder = new Drive.Builder(TGDriveBrowser.this.httpTransport, GsonFactory.getDefaultInstance(), credential);
+					builder.setApplicationName(findActivity().getString(R.string.gdrive_application_name));
+					TGDriveBrowser.this.drive = builder.build();
 					
-					@Override
-					public void onConnectionSuspended(int cause) {
-						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_connection_suspended)));
-					}
+					cb.onSuccess(null);
 				}
-		    );
-		    builder.addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-				public void onConnectionFailed(ConnectionResult result) {
-					if(!result.hasResolution()) {
-						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_connection_failed, result.getErrorCode())));
-					} else {
-					    try {
-					    	final TGActivity tgActivity = findActivity();
-					    	tgActivity.getResultManager().addHandler(LOGIN_REQUEST, new TGActivityResultHandler() {
-								public void onActivityResult(int resultCode, Intent data) {
-									tgActivity.getResultManager().removeHandler(LOGIN_REQUEST, this);
-									
-									if( Activity.RESULT_OK == resultCode ) {
-										TGDriveBrowser.this.client.connect();
-									} else {
-										cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_login_failed)));
-									}
-								}
-							});
-					        
-					    	result.startResolutionForResult(tgActivity, LOGIN_REQUEST);
-					    } catch (SendIntentException e) {
-					    	cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_unexpected_error), e));
-					    }
-					}
+				
+				public void handleError(Throwable throwable) {
+					cb.handleError(throwable);
 				}
 			});
-			if(!this.settings.isDefaultAccount()) {
-				builder.setAccountName(this.settings.getAccount());
-			}
-			
-			this.folder = null;
-			this.client = builder.build();
-			this.client.connect();
-		} catch (RuntimeException e) {
+			login.process();
+		} catch (Throwable e) {
 			cb.handleError(e);
 		}
 	}
@@ -110,9 +77,8 @@ public class TGDriveBrowser implements TGBrowser{
 	public void close(TGBrowserCallBack<Object> cb){
 		try{
 			this.folder = null;
-			this.client.disconnect();
 			
-			cb.onSuccess(null);
+			cb.onSuccess(this.folder);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
@@ -121,7 +87,7 @@ public class TGDriveBrowser implements TGBrowser{
 	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try{
 			if( element.isFolder() ) {
-				this.folder = (TGDriveBrowserFolder) element;
+				this.folder = (TGDriveBrowserFile) element;
 			}
 			cb.onSuccess(this.folder);
 		} catch (RuntimeException e) {
@@ -130,8 +96,11 @@ public class TGDriveBrowser implements TGBrowser{
 	}
 	
 	public void cdRoot(TGBrowserCallBack<Object> cb) {
-		try{
-			this.folder = new TGDriveBrowserFolder(null, Drive.DriveApi.getRootFolder(this.client), "/");
+		try {
+			File file = new File();
+			file.setId(ROOT_FOLDER);
+			
+			this.folder = new TGDriveBrowserFile(file, null);
 			
 			cb.onSuccess(this.folder);
 		} catch (RuntimeException e) {
@@ -154,57 +123,43 @@ public class TGDriveBrowser implements TGBrowser{
 	public void listElements(final TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try {
 			if( this.folder != null ) {
-				this.folder.getFolder().listChildren(this.client).setResultCallback(new ResultCallback<MetadataBufferResult>() {
-					public void onResult(MetadataBufferResult result) {
-			            if( result.getStatus().isSuccess() ) {
-			            	List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
-			            	
-			            	Iterator<Metadata> it = result.getMetadataBuffer().iterator();
-			            	while(it.hasNext()) {
-			            		Metadata metadata = it.next();
-			            		DriveId driveId = metadata.getDriveId();
-			            		String name = metadata.getTitle();
-			            		
-			            		if(!metadata.isTrashed() && !metadata.isExplicitlyTrashed()) {
-				            		if( metadata.isFolder() ) {
-				            			elements.add(new TGDriveBrowserFolder(TGDriveBrowser.this.folder, Drive.DriveApi.getFolder(TGDriveBrowser.this.client, driveId), name));
-				            		} else {
-				            			elements.add(new TGDriveBrowserFile(TGDriveBrowser.this.folder, Drive.DriveApi.getFile(TGDriveBrowser.this.client, driveId), name));
-				            		}
-			            		}
-			            	}
-			            	
-							if( !elements.isEmpty() ){
-								Collections.sort(elements, new TGBrowserElementComparator());
-							}
-							
-			            	cb.onSuccess(elements);
-			            } else {
-			            	cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_list_children_error)));
-			            }
-					};
-				});
+				List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
+				
+				Files.List request = this.drive.files().list();
+				request.setQ("'" + this.folder.getFile().getId() + "' in parents");
+				request.setOrderBy("title");
+				
+				do {
+					FileList files = request.execute();
+					for(File file : files.getItems()) {
+						if(!file.getExplicitlyTrashed() ) {
+							elements.add(new TGDriveBrowserFile(file, this.folder));
+						}
+					}
+					
+					request.setPageToken(files.getNextPageToken());
+				} while (request.getPageToken() != null && request.getPageToken().length() > 0);
+			    
+				if( !elements.isEmpty() ){
+					Collections.sort(elements, new TGBrowserElementComparator());
+				}
+				
+				cb.onSuccess(elements);
 			} else {
 				cb.onSuccess(new ArrayList<TGBrowserElement>());
 			}
 		} catch (Throwable e) {
-			cb.handleError(e);
+			cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_list_children_error), e));
 		}
 	}
 
 	public void createElement(final TGBrowserCallBack<TGBrowserElement> cb, final String name) {
 		try {
-			MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(name).build();
+			File file = new File();
+			file.setTitle(name);
+			file.setParents(Arrays.asList(new ParentReference().setId(this.folder.getFile().getId())));
 			
-			this.folder.getFolder().createFile(this.client, changeSet, null).setResultCallback(new ResultCallback<DriveFileResult>() {
-				public void onResult(DriveFileResult result) {
-					if( result.getStatus().isSuccess() ) {
-						cb.onSuccess(new TGDriveBrowserFile(TGDriveBrowser.this.folder, result.getDriveFile(), name));
-					} else {
-						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_create_file_error)));
-					}
-				}
-			});
+			cb.onSuccess(new TGDriveBrowserFile(file, this.folder));
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
@@ -212,41 +167,45 @@ public class TGDriveBrowser implements TGBrowser{
 
 	public void getInputStream(final TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
 		try {
-			DriveFile driveFile = ((TGDriveBrowserFile) element).getFile();
-			driveFile.open(this.client, DriveFile.MODE_READ_ONLY, null).setResultCallback(new ResultCallback<DriveContentsResult>() {
-				public void onResult(DriveContentsResult result) {
-					try {
-						if( result.getStatus().isSuccess() ) {
-							cb.onSuccess(TGDriveBrowserUtil.getInputStream(result.getDriveContents().getInputStream()));
-						} else {
-							cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_read_file_error)));
-						}
-					} catch (Throwable e) {
-						cb.handleError(e);
-					}
-				}
-			});
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			
+		    MediaHttpDownloader downloader = new MediaHttpDownloader(this.httpTransport, this.drive.getRequestFactory().getInitializer());
+		    downloader.setDirectDownloadEnabled(true);
+		    downloader.download(new GenericUrl(((TGDriveBrowserFile) element).getFile().getDownloadUrl()), outputStream);
+		    
+			outputStream.flush();
+			outputStream.close();
+			
+			cb.onSuccess(new ByteArrayInputStream(outputStream.toByteArray()));
 		} catch (Throwable e) {
-			cb.handleError(e);
+			cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_read_file_error), e));
 		}
 	}
 	
 	public void getOutputStream(final TGBrowserCallBack<OutputStream> cb, final TGBrowserElement element) {
 		try {
-			DriveFile driveFile = ((TGDriveBrowserFile) element).getFile();
-			driveFile.open(TGDriveBrowser.this.client, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(new ResultCallback<DriveContentsResult>() {
-				public void onResult(final DriveContentsResult result) {
-					if( result.getStatus().isSuccess() ) {
-						cb.onSuccess(new TGDriveBrowserOutputStream(result.getDriveContents().getOutputStream(), new Runnable() {
-							public void run() {
-								result.getDriveContents().commit(TGDriveBrowser.this.client, null);
-							}
-						}));
-					} else {
-						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_write_file_error)));
+			final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			
+			cb.onSuccess(new TGDriveBrowserOutputStream(byteStream, new Runnable() {
+				public void run() {
+					try {
+						AbstractInputStreamContent mediaContent = new ByteArrayContent("*/*", byteStream.toByteArray());
+						File file = ((TGDriveBrowserFile) element).getFile();
+						
+						DriveRequest<?> request = null;
+						
+						if( file.getId() != null ) {
+							request = TGDriveBrowser.this.drive.files().update(file.getId(), file, mediaContent);
+						} else {
+							request = TGDriveBrowser.this.drive.files().insert(file, mediaContent);
+						}
+						request.getMediaHttpUploader().setDirectUploadEnabled(true);
+						request.execute();
+					} catch (Throwable e) {
+						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_write_file_error), e));
 					}
 				}
-			});
+			}));
 		} catch (Throwable e) {
 			cb.handleError(e);
 		}
