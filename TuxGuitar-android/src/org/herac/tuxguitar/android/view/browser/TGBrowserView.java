@@ -40,11 +40,13 @@ import android.widget.Spinner;
 public class TGBrowserView extends RelativeLayout {
 	
 	private TGBrowserActionHandler actionHandler;
+	private TGBrowserEventListener eventListener;
 	
 	public TGBrowserView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		this.actionHandler = new TGBrowserActionHandler(this);
+		this.eventListener = new TGBrowserEventListener(this);
 	}
 
 	public void onFinishInflate() {
@@ -192,7 +194,8 @@ public class TGBrowserView extends RelativeLayout {
 		
 		((Spinner) this.findViewById(R.id.browser_collections)).setOnItemSelectedListener(createCollectionsSpinnerListener());
 		
-		TGActionManager.getInstance(this.findContext()).addPostExecutionListener(new TGBrowserEventListener(this));
+		TGActionManager.getInstance(this.findContext()).addPostExecutionListener(this.eventListener);
+		TGActionManager.getInstance(this.findContext()).addErrorListener(this.eventListener);
 	}
 	
 	public void updateItems() throws TGBrowserException{
