@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.android.view.browser;
 
+import org.herac.tuxguitar.action.TGActionErrorEvent;
+import org.herac.tuxguitar.action.TGActionEvent;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
@@ -48,23 +50,31 @@ public class TGBrowserEventListener implements TGEventListener {
 		if( TGBrowserRefreshAction.NAME.equals(id) ) {
 			this.browser.refresh();
 		} 
-		else if(isRefreshableAction(id)){
+		else if(this.isRefreshableAction(id)){
 			this.browser.requestRefresh();
 		}
 	}
 	
-	public void processEvent(TGEvent event) {
-		if (TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType())) {
-			final String id = (String) event.getAttribute(TGActionPostExecutionEvent.ATTRIBUTE_ACTION_ID);
-			TGSynchronizer.getInstance(this.browser.findContext()).executeLater(new Runnable() {
-				public void run() throws TGException {
-					try {
-						processPostExecution(id);
-					} catch (TGBrowserException e) {
-						throw new TGException(e);
-					}
-				}
-			});
+	public void processError(String id) throws TGBrowserException {
+		if( TGBrowserRefreshAction.NAME.equals(id) || this.isRefreshableAction(id)){
+			this.browser.refresh();
 		}
+	}
+	
+	public void processEvent(final TGEvent event) {
+		TGSynchronizer.getInstance(this.browser.findContext()).executeLater(new Runnable() {
+			public void run() throws TGException {
+				try {
+					String actionId = (String) event.getAttribute(TGActionEvent.ATTRIBUTE_ACTION_ID);
+					if (TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType())) {
+						processPostExecution(actionId);
+					} else if (TGActionErrorEvent.EVENT_TYPE.equals(event.getEventType())) {
+						processError(actionId);
+					}
+				} catch (TGBrowserException e) {
+					throw new TGException(e);
+				}
+			}
+		});
 	}
 }

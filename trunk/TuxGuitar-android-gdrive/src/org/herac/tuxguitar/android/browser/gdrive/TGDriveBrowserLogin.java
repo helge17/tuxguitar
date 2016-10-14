@@ -57,7 +57,7 @@ public class TGDriveBrowserLogin {
 				this.credential.setSelectedAccountName(defaultAccount);
 			}
 		}
-		this.createAsyncTask().execute((Void) null);
+		this.createTokenAsyncTask().execute((Void) null);
 	}
 	
 	private void onSuccess() {
@@ -90,6 +90,10 @@ public class TGDriveBrowserLogin {
 	private void createToken() {
 		try {
 			if( this.credential.getToken() != null ) {
+				this.credential.getGoogleAccountManager().invalidateAuthToken(this.credential.getToken());
+			}
+			
+			if( this.credential.getToken() != null ) {
 				this.onSuccess();
 			} else {
 				this.handleError(new TGBrowserException(this.activity.getString(R.string.gdrive_login_failed)));
@@ -108,7 +112,7 @@ public class TGDriveBrowserLogin {
 			String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
 			if (accountName != null) {
 				this.credential.setSelectedAccountName(accountName);
-				this.createAsyncTask().execute((Void) null);
+				this.createTokenAsyncTask().execute((Void) null);
 			} else {
 				this.handleError(new TGBrowserException(this.activity.getString(R.string.gdrive_login_failed)));
 			}
@@ -119,13 +123,13 @@ public class TGDriveBrowserLogin {
 	
 	private void processAuthRequestResult(int resultCode, Intent data) {
 		if( Activity.RESULT_OK == resultCode ) {
-			this.createAsyncTask().execute((Void) null);
+			this.createTokenAsyncTask().execute((Void) null);
 		} else {
 			this.handleError(new TGBrowserException(TGDriveBrowserLogin.this.activity.getString(R.string.gdrive_login_failed)));
 		}
 	}
 	
-	private AsyncTask<Void, Void, Void> createAsyncTask() {
+	private AsyncTask<Void, Void, Void> createTokenAsyncTask() {
 		return new AsyncTask<Void, Void, Void>() {
 			protected Void doInBackground(Void... params) {
 				createToken();
