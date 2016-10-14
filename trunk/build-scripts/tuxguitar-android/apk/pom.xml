@@ -58,13 +58,6 @@
 			<type>aar</type>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.herac.tuxguitar</groupId>
-			<artifactId>tuxguitar-android-gdrive-gdaa</artifactId>
-			<version>${project.version}</version>
-			<type>aar</type>
-			<scope>compile</scope>
-		</dependency>
 		
 		<!-- 3RD PARTY LIBRARIES -->
 		<dependency>

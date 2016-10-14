@@ -86,9 +86,13 @@
 				<include name="TuxGuitar-ui-toolkit-jfx/**"/>
 				
 				<include name="TuxGuitar-android/**"/>
+				<include name="TuxGuitar-android-resources/**"/>
 				<include name="TuxGuitar-android-gervill/**"/>
 				<include name="TuxGuitar-android-gervill-soundbank/**"/>
 				<include name="TuxGuitar-android-midi/**"/>
+				<include name="TuxGuitar-android-gdrive/**"/>
+				<include name="TuxGuitar-android-gdrive-gdaa/**"/>
+				<include name="TuxGuitar-android-gdrive-plugin/**"/>
 				
 				<include name="misc/**"/>
 				<include name="README"/>
