@@ -21,6 +21,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-build-apk-resources</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-lib</artifactId>
 			<version>${project.version}</version>
 			<type>aar</type>
@@ -51,20 +58,68 @@
 			<type>aar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.google.android.gms</groupId> -->
+<!-- 			<artifactId>play-services-drive</artifactId> -->
+<!-- 			<version>8.1.0</version> -->
+<!-- 			<type>aar</type> -->
+<!-- 			<scope>compile</scope> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>com.google.android.gms</groupId>
-			<artifactId>play-services-drive</artifactId>
-			<version>8.1.0</version>
+			<artifactId>play-services-auth</artifactId>
+			<version>8.3.0</version>
 			<type>aar</type>
 			<scope>compile</scope>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.herac.tuxguitar</groupId>
-			<artifactId>tuxguitar-android-build-apk-resources</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-			<scope>provided</scope>
+		    <groupId>com.google.apis</groupId>
+		    <artifactId>google-api-services-drive</artifactId>
+		    <version>v2-rev240-1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.api-client</groupId>
+		    <artifactId>google-api-client</artifactId>
+		    <version>1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.api-client</groupId>
+		    <artifactId>google-api-client-android</artifactId>
+		    <version>1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.http-client</groupId>
+		    <artifactId>google-http-client</artifactId>
+		    <version>1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.http-client</groupId>
+		    <artifactId>google-http-client-android</artifactId>
+		    <version>1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.http-client</groupId>
+		    <artifactId>google-http-client-gson</artifactId>
+		    <version>1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.oauth-client</groupId>
+		    <artifactId>google-oauth-client</artifactId>
+		    <version>1.22.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.7</version>
+		    <scope>compile</scope>
 		</dependency>
 	</dependencies>
 

@@ -1,5 +1,6 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package org.herac.tuxguitar.android.browser.gdrive.gdaa;
 
+import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
@@ -9,7 +10,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGDriveBrowserFactory implements TGBrowserFactory{
 	
-	public static final String BROWSER_TYPE = "google-drive";
+	public static final String BROWSER_TYPE = "google-drive-gdaa";
 	public static final String BROWSER_NAME = "Google Drive";
 	
 	private TGContext context;
@@ -30,7 +31,13 @@ public class TGDriveBrowserFactory implements TGBrowserFactory{
 		handler.onCreateBrowser(new TGDriveBrowser(this.context, TGDriveBrowserSettings.createInstance(data)));
 	}
 
-	public void createSettings(final TGBrowserFactorySettingsHandler handler) throws TGBrowserException {
-		new TGDriveBrowserSettingsFactory(this.context, handler).createSettings();
+	public void createSettings(TGBrowserFactorySettingsHandler handler) throws TGBrowserException {
+		TGDriveBrowserSettings defaultSettings = new TGDriveBrowserSettings();
+		TGBrowserSettings settings = defaultSettings.toBrowserSettings();
+		if( TGBrowserManager.getInstance(this.context).getCollection(this.getType(), settings) != null ) {
+			throw new TGBrowserException(settings.getTitle() + " already exists.");
+		}
+		
+		handler.onCreateSettings(settings);
 	}
 }

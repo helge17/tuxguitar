@@ -2,34 +2,34 @@ package org.herac.tuxguitar.android.browser.gdrive;
 
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 
-import com.google.android.gms.drive.DriveFile;
+import com.google.api.services.drive.model.File;
 
 public class TGDriveBrowserFile implements TGBrowserElement{
 	
-	private TGDriveBrowserFolder parent;
-	private DriveFile file;
-	private String name;
+	private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
 	
-	public TGDriveBrowserFile(TGDriveBrowserFolder parent, DriveFile file, String name) {
-		this.parent = parent;
-		this.name = name;
+	private File file;
+	private TGDriveBrowserFile parent;
+	
+	public TGDriveBrowserFile(File file, TGDriveBrowserFile parent) {
 		this.file = file;
+		this.parent = parent;
 	}
 	
-	public TGDriveBrowserFolder getParent() {
+	public TGDriveBrowserFile getParent() {
 		return this.parent;
 	}
 	
-	public DriveFile getFile() {
+	public File getFile() {
 		return file;
 	}
 
 	public String getName() {
-		return this.name;
+		return this.file.getTitle();
 	}
 	
 	public boolean isFolder() {
-		return false;
+		return (FOLDER_MIME_TYPE.equals(this.file.getMimeType()));
 	}
 	
 	public boolean isWritable() {

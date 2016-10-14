@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package org.herac.tuxguitar.android.browser.gdrive.gdaa;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
