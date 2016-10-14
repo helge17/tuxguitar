@@ -31,6 +31,8 @@
 			<type>aar</type>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- 3RD PARTY LIBRARIES -->
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
@@ -92,6 +94,7 @@
 		    <version>2.7</version>
 		    <scope>provided</scope>
 		</dependency>
+		<!-- /3RD PARTY LIBRARIES -->
 	</dependencies>
 	
 	<build>
