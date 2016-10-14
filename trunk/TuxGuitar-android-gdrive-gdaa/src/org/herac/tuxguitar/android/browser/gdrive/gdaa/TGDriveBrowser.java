@@ -37,17 +37,16 @@ import com.google.android.gms.drive.MetadataChangeSet;
 
 public class TGDriveBrowser implements TGBrowser{
 	
-	private static final Integer LOGIN_REQUEST = 100;
-	
 	private TGContext context;
 	private TGDriveBrowserSettings settings;
 	private TGDriveBrowserFolder folder;
-	
 	private GoogleApiClient client;
+	private int loginRequest;
 	
 	public TGDriveBrowser(TGContext context, TGDriveBrowserSettings settings){
 		this.context = context;
 		this.settings = settings;
+		this.loginRequest = this.findActivity().getResultManager().createRequestCode();
 	}
 	
 	public void open(final TGBrowserCallBack<Object> cb){
@@ -76,9 +75,9 @@ public class TGDriveBrowser implements TGBrowser{
 					} else {
 					    try {
 					    	final TGActivity tgActivity = findActivity();
-					    	tgActivity.getResultManager().addHandler(LOGIN_REQUEST, new TGActivityResultHandler() {
+					    	tgActivity.getResultManager().addHandler(TGDriveBrowser.this.loginRequest, new TGActivityResultHandler() {
 								public void onActivityResult(int resultCode, Intent data) {
-									tgActivity.getResultManager().removeHandler(LOGIN_REQUEST, this);
+									tgActivity.getResultManager().removeHandler(TGDriveBrowser.this.loginRequest, this);
 									
 									if( Activity.RESULT_OK == resultCode ) {
 										TGDriveBrowser.this.client.connect();
@@ -88,7 +87,7 @@ public class TGDriveBrowser implements TGBrowser{
 								}
 							});
 					        
-					    	result.startResolutionForResult(tgActivity, LOGIN_REQUEST);
+					    	result.startResolutionForResult(tgActivity, TGDriveBrowser.this.loginRequest);
 					    } catch (SendIntentException e) {
 					    	cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_unexpected_error), e));
 					    }
