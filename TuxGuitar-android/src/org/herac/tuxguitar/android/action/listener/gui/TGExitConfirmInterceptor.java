@@ -5,35 +5,35 @@ import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionInterceptor;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGExitAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGFinishConfirmInterceptor implements TGActionInterceptor {
+public class TGExitConfirmInterceptor implements TGActionInterceptor {
 	
-	private static final String FINISH_ACTION_CONFIRMED = "finishConfirmInterceptor_confirmed";
+	private static final String EXIT_ACTION_CONFIRMED = "exitConfirmInterceptor_confirmed";
 	
 	private TGActivity activity;
 	private TGContext context;
 	
-	public TGFinishConfirmInterceptor(TGContext context, TGActivity activity) {
+	public TGExitConfirmInterceptor(TGContext context, TGActivity activity) {
 		this.context = context;
 		this.activity = activity;
 	}
 	
-	public boolean isFinishAction(String id) {
-		return (TGFinishAction.NAME.equals(id));
+	public boolean isExitAction(String id) {
+		return (TGExitAction.NAME.equals(id));
 	}
 	
 	private boolean isActionConfirmed(TGActionContext context) {
-		return Boolean.TRUE.equals(context.getAttribute(FINISH_ACTION_CONFIRMED));
+		return Boolean.TRUE.equals(context.getAttribute(EXIT_ACTION_CONFIRMED));
 	}
 	
 	public boolean intercept(final String id, final TGActionContext context) throws TGActionException {
-		if( this.isFinishAction(id) && !this.isActionConfirmed(context)) {
+		if( this.isExitAction(id) && !this.isActionConfirmed(context)) {
 			this.processConfirmation(id, context);
 			
 			return true;
@@ -67,7 +67,7 @@ public class TGFinishConfirmInterceptor implements TGActionInterceptor {
 	}
 	
 	public void executeConfirmedAction(String actionId, TGActionContext context) {
-		context.setAttribute(FINISH_ACTION_CONFIRMED, true);
+		context.setAttribute(EXIT_ACTION_CONFIRMED, true);
 		
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.execute(actionId, context);

@@ -172,22 +172,24 @@ public class TGSongView extends View {
 
 	public void onDraw(Canvas canvas) {
 		try {
-			TGEditorManager editor = TGEditorManager.getInstance(this.context);
-			if (editor.tryLock()) {
-				try {
-					this.setPainting(true);
-	
-					this.paintBuffer(canvas);
-	
-					this.setPainting(false);
-				} finally {
-					editor.unlock();
+			if(!this.controller.isDisposed()) {
+				TGEditorManager editor = TGEditorManager.getInstance(this.context);
+				if (editor.tryLock()) {
+					try {
+						this.setPainting(true);
+		
+						this.paintBuffer(canvas);
+		
+						this.setPainting(false);
+					} finally {
+						editor.unlock();
+					}
+				} else {
+					// try later
+					this.postInvalidate();
 				}
-			} else {
-				// try later
-				this.postInvalidate();
 			}
-	
+			
 			if (this.bufferedBitmap != null) {
 				canvas.drawBitmap(this.bufferedBitmap, 0, 0, null);
 			}

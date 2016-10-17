@@ -26,6 +26,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAxisPositionAction;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGExitAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
@@ -391,6 +392,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFragmentAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGBackAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGExitAction.NAME, LOCKABLE, null);
 		this.map(TGFinishAction.NAME, LOCKABLE | SYNC_THREAD, null);
 	}
 	
