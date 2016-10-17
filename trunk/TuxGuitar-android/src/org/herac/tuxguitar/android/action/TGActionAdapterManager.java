@@ -7,7 +7,7 @@ import org.herac.tuxguitar.android.action.listener.browser.TGActionUpdateBrowser
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateListener;
 import org.herac.tuxguitar.android.action.listener.error.TGActionErrorHandler;
 import org.herac.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
-import org.herac.tuxguitar.android.action.listener.gui.TGFinishConfirmInterceptor;
+import org.herac.tuxguitar.android.action.listener.gui.TGExitConfirmInterceptor;
 import org.herac.tuxguitar.android.action.listener.gui.TGHideSoftInputListener;
 import org.herac.tuxguitar.android.action.listener.lock.TGLockableActionListener;
 import org.herac.tuxguitar.android.action.listener.navigation.TGActionUpdateFragmentListener;
@@ -56,7 +56,7 @@ public class TGActionAdapterManager {
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.getContext());
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
 		
-		tgActionManager.addInterceptor(new TGFinishConfirmInterceptor(this.getContext(), activity));
+		tgActionManager.addInterceptor(new TGExitConfirmInterceptor(this.getContext(), activity));
 		tgActionManager.addInterceptor(this.stopTransportInterceptor);
 		tgActionManager.addInterceptor(this.disableOnPlayInterceptor);
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);

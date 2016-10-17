@@ -27,6 +27,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAxisPositionAction;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGExitAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
@@ -343,6 +344,7 @@ public class TGActionInstaller {
 		
 		//gui actions
 		installAction(new TGBackAction(context));
+		installAction(new TGExitAction(context));
 		installAction(new TGFinishAction(context));
 		installAction(new TGOpenDialogAction(context));
 		installAction(new TGOpenMenuAction(context));

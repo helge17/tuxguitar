@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.activity;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
 import org.herac.tuxguitar.android.error.TGErrorHandlerImpl;
@@ -67,8 +68,6 @@ public class TGActivity extends ActionBarActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		
-		this.disconnectPlugins();
-		this.destroyEditor();
 		this.detachInstance();
 		this.clearContext();
 		this.destroyed = true;
@@ -163,6 +162,12 @@ public class TGActivity extends ActionBarActivity {
 		TGEditorManager.getInstance(this.context).destroy(null);
 	}
 	
+	public void destroy() {
+		this.disconnectPlugins();
+		this.destroyEditor();
+		this.callFinishAction();
+	}
+	
 	public void updateCache(boolean updateItems){
 		this.updateCache(updateItems, null);
 	}
@@ -225,6 +230,12 @@ public class TGActivity extends ActionBarActivity {
 	public void callBackAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGBackAction.NAME);
 		tgActionProcessor.setAttribute(TGBackAction.ATTRIBUTE_ACTIVITY, this);
+		tgActionProcessor.process();
+	}
+	
+	public void callFinishAction() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGFinishAction.NAME);
+		tgActionProcessor.setAttribute(TGFinishAction.ATTRIBUTE_ACTIVITY, this);
 		tgActionProcessor.process();
 	}
 	

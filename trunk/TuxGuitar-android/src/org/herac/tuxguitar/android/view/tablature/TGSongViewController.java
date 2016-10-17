@@ -28,6 +28,7 @@ public class TGSongViewController implements TGController {
 
 	public static final float EMPTY_SCALE = 0f;
 	
+	private boolean disposed;
 	private TGContext context;
 	private TGResourceFactory resourceFactory;
 	private TGLayout layout;
@@ -213,10 +214,15 @@ public class TGSongViewController implements TGController {
 		return (!TGEditorManager.getInstance(getContext()).isLocked());
 	}
 	
+	public boolean isDisposed() {
+		return this.disposed;
+	}
+	
 	public void dispose() {
 		this.getCaret().dispose();
 		this.getLayout().disposeLayout();
 		this.getResourceBuffer().disposeAllResources();
+		this.disposed = true;
 	}
 	
 	public static TGSongViewController getInstance(TGContext context) {
