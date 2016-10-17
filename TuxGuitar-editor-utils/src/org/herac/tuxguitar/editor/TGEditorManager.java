@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor;
 
+import org.herac.tuxguitar.editor.event.TGDestroyEvent;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
@@ -125,6 +126,14 @@ public class TGEditorManager {
 		});
 	}
 	
+	public void destroy(final TGAbstractContext context) {
+		this.runLocked(new Runnable() {
+			public void run() {
+				doDestroy(context);
+			}
+		});
+	}
+	
 	public void addRedrawListener(TGEventListener listener){
 		TGEventManager.getInstance(this.context).addListener(TGRedrawEvent.EVENT_TYPE, listener);
 	}
@@ -141,6 +150,14 @@ public class TGEditorManager {
 		TGEventManager.getInstance(this.context).removeListener(TGUpdateEvent.EVENT_TYPE, listener);
 	}
 	
+	public void addDestroyListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).addListener(TGDestroyEvent.EVENT_TYPE, listener);
+	}
+	
+	public void removeDestroyListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).removeListener(TGDestroyEvent.EVENT_TYPE, listener);
+	}
+	
 	private void doRedraw(int type, TGAbstractContext context){
 		TGEventManager.getInstance(this.context).fireEvent(new TGRedrawEvent(type, context));
 	}
@@ -151,6 +168,10 @@ public class TGEditorManager {
 	
 	private void doUpdateMeasure(int number, TGAbstractContext context){
 		TGEventManager.getInstance(this.context).fireEvent(new TGUpdateMeasureEvent(number, context));
+	}
+	
+	private void doDestroy(TGAbstractContext context){
+		TGEventManager.getInstance(this.context).fireEvent(new TGDestroyEvent(context));
 	}
 	
 	public void lock(){

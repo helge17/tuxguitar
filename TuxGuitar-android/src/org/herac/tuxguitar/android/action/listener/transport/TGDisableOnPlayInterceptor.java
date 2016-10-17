@@ -6,7 +6,8 @@ import java.util.List;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.android.TuxGuitar;
+import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.activity.TGActivityController;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -40,7 +41,10 @@ public class TGDisableOnPlayInterceptor implements TGActionInterceptor {
 		}
 		
 		if( intercepted ){
-			TuxGuitar.getInstance(this.context).updateCache(true);
+			TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
+			if( activity != null ) {
+				activity.updateCache(true);
+			}
 		}
 		
 		return intercepted;

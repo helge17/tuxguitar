@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.android.transport;
 
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.util.MidiTickUtil;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -52,14 +52,13 @@ public class TGTransportCache {
 		if( this.playUpdate ){
 			this.playChanges = false;
 			
-			TuxGuitar tuxguitar = TuxGuitar.getInstance(this.context);
-			
-			TGSongManager manager = tuxguitar.getSongManager();
+			MidiPlayer player = MidiPlayer.getInstance(this.context);
+			TGSongManager manager = TGDocumentManager.getInstance(this.context).getSongManager();
 			if( this.isPlaying() ){
 				TGCaret caret = TGSongViewController.getInstance(this.context).getCaret();
 				TGTrack track = caret.getTrack();
 				
-				long tick = tuxguitar.getPlayer().getTickPosition();
+				long tick = player.getTickPosition();
 				long start = this.playStart + (tick - this.playTick);
 				if(this.playMeasure == null || start < this.playMeasure.getStart() || start > (this.playMeasure.getStart() + this.playMeasure.getLength())){
 					this.playMeasure = null;

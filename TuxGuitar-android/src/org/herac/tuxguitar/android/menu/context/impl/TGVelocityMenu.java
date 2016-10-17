@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
@@ -9,6 +8,7 @@ import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.util.TGContext;
@@ -33,7 +33,7 @@ public class TGVelocityMenu extends TGContextMenuBase {
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();
 		int selection = ((note != null) ? note.getVelocity() : caret.getVelocity());
-		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
+		boolean running = MidiPlayer.getInstance(context).isRunning();
 		
 		this.initializeVelocityItem(menu, R.id.menu_velocity_ppp, TGVelocities.PIANO_PIANISSIMO, selection, running);
 		this.initializeVelocityItem(menu, R.id.menu_velocity_pp, TGVelocities.PIANISSIMO, selection, running);

@@ -2,7 +2,6 @@ package org.herac.tuxguitar.android.drawer;
 
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGFragment;
 import org.herac.tuxguitar.util.TGContext;
@@ -88,7 +87,7 @@ public class TGDrawerManager {
 		this.open = this.drawerLayout.isDrawerOpen(this.drawerView);
 		
 		if( this.open ) {
-			TuxGuitar.getInstance(findContext()).updateCache(true);
+			this.activity.updateCache(true);
 		}
 	}
 	

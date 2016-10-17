@@ -7,10 +7,10 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionErrorEvent;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.TGActionMap;
 import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
 import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
+import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -89,7 +89,7 @@ public class TGUndoableActionListener implements TGEventListener {
 		}
 		
 		if( this.level == 0 && this.undoable != null && !this.undoable.isEmpty() ) {
-			TuxGuitar.getInstance(this.context).getUndoableManager().addEdit(this.undoable.endUndo());
+			TGUndoableManager.getInstance(this.context).addEdit(this.undoable.endUndo());
 			
 			this.reset();
 		}

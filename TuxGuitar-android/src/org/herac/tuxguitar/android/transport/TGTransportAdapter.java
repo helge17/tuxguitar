@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.android.transport;
 
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
@@ -26,9 +27,15 @@ public class TGTransportAdapter {
 			midiPlayer.addListener(new TGTransportListener(this.context));
 			midiPlayer.setTryOpenFistDevice(true);
 			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(), true);
+			
+			this.appendListeners();
 		} catch (MidiPlayerException e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}
+	}
+	
+	public void appendListeners() {
+		TGEditorManager.getInstance(this.context).addDestroyListener(new TGTransportDestroyListener(this));
 	}
 	
 	public void destroy() {

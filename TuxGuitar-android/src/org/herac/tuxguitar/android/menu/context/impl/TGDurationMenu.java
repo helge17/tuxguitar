@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -17,6 +17,7 @@ import org.herac.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -41,8 +42,8 @@ public class TGDurationMenu extends TGContextMenuBase {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGDuration duration = caret.getDuration();
-		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
-
+		boolean running = MidiPlayer.getInstance(context).isRunning();
+		
 		this.initializeItem(menu, R.id.menu_duration_whole, this.createActionProcessor(TGSetWholeDurationAction.NAME), !running, duration.getValue() == TGDuration.WHOLE);
 		this.initializeItem(menu, R.id.menu_duration_half, this.createActionProcessor(TGSetHalfDurationAction.NAME), !running, duration.getValue() == TGDuration.HALF);
 		this.initializeItem(menu, R.id.menu_duration_quarter, this.createActionProcessor(TGSetQuarterDurationAction.NAME), !running, duration.getValue() == TGDuration.QUARTER);
@@ -70,7 +71,7 @@ public class TGDurationMenu extends TGContextMenuBase {
 	}
 	
 	public TGActionProcessorListener createDivisionTypeActionProcessor(TGDivisionType divisionType) {
-		TGSongManager tgSongManager = TuxGuitar.getInstance(findContext()).getSongManager();
+		TGSongManager tgSongManager = TGDocumentManager.getInstance(this.findContext()).getSongManager();
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);
 		tgActionProcessor.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, divisionType.clone(tgSongManager.getFactory()));
 		return tgActionProcessor;

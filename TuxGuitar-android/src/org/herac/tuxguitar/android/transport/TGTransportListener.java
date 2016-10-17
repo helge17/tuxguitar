@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.android.transport;
 
-import org.herac.tuxguitar.android.TuxGuitar;
+import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.activity.TGActivityController;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -30,8 +31,10 @@ public class TGTransportListener implements TGEventListener{
 					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 					tgTransport.getCache().reset();
 					
-					TuxGuitar tuxguitar = TuxGuitar.getInstance(TGTransportListener.this.context);
-					tuxguitar.updateCache(true);
+					TGActivity activity = TGActivityController.getInstance(TGTransportListener.this.context).getActivity();
+					if( activity != null ) {
+						activity.updateCache(true);
+					}
 					
 					MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
 					while( midiPlayer.isRunning() ) {
