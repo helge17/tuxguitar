@@ -118,11 +118,11 @@ public class TGBrowserManager {
 	}
 	
 	public void closeSession() throws TGBrowserException {
+		this.storeDefaultCollection();
 		this.getSession().setBrowser(null);
 		this.getSession().setCollection(null);
 		this.getSession().setCurrentElement(null);
 		this.getSession().setCurrentElements(null);
-		this.storeDefaultCollection();
 	}
 	
 	public void openSession(TGBrowserCollection collection) throws TGBrowserException {

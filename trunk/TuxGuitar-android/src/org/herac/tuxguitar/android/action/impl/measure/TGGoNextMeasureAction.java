@@ -1,9 +1,10 @@
 package org.herac.tuxguitar.android.action.impl.measure;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.TGActionBase;
+import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
@@ -17,9 +18,9 @@ public class TGGoNextMeasureAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		TuxGuitar tuxguitar = TuxGuitar.getInstance(getContext());
-		if( tuxguitar.getPlayer().isRunning()){
-			tuxguitar.getTransport().gotoNext();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
+		if( midiPlayer.isRunning() ){
+			TGTransport.getInstance(getContext()).gotoNext();
 		}
 		else{
 			TGCaret caret = getEditor().getCaret();

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.graphics.TGResourceFactoryImpl;
+import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.graphics.TGRectangle;
@@ -59,8 +59,9 @@ public class TGSongViewController implements TGController {
 	
 	public void appendListeners() {
 		TGSongViewEventListener listener = new TGSongViewEventListener(this);
-		TuxGuitar.getInstance(this.context).getEditorManager().addRedrawListener(listener);
-		TuxGuitar.getInstance(this.context).getEditorManager().addUpdateListener(listener);
+		TGEditorManager.getInstance(this.context).addRedrawListener(listener);
+		TGEditorManager.getInstance(this.context).addUpdateListener(listener);
+		TGEditorManager.getInstance(this.context).addDestroyListener(listener);
 	}
 	
 	public void resetCaret() {
@@ -187,20 +188,20 @@ public class TGSongViewController implements TGController {
 	}
 
 	public boolean isRunning(TGBeat beat) {
-		return (isRunning(beat.getMeasure()) && TuxGuitar.getInstance(this.context).getTransport().getCache().isPlaying(beat.getMeasure(), beat));
+		return (isRunning(beat.getMeasure()) && TGTransport.getInstance(this.context).getCache().isPlaying(beat.getMeasure(), beat));
 	}
 
 	public boolean isRunning(TGMeasure measure) {
-		return (measure.getTrack().equals(getCaret().getTrack()) && TuxGuitar.getInstance(this.context).getTransport().getCache().isPlaying(measure));
+		return (measure.getTrack().equals(getCaret().getTrack()) && TGTransport.getInstance(this.context).getCache().isPlaying(measure));
 	}
 
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader) {
-		MidiPlayerMode pm = TuxGuitar.getInstance(this.context).getPlayer().getMode();
+		MidiPlayerMode pm = MidiPlayer.getInstance(this.context).getMode();
 		return (pm.isLoop() && pm.getLoopSHeader() == measureHeader.getNumber());
 	}
 
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader) {
-		MidiPlayerMode pm = TuxGuitar.getInstance(this.context).getPlayer().getMode();
+		MidiPlayerMode pm = MidiPlayer.getInstance(this.context).getMode();
 		return (pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber());
 	}
 	
@@ -212,7 +213,7 @@ public class TGSongViewController implements TGController {
 		return (!TGEditorManager.getInstance(getContext()).isLocked());
 	}
 	
-	public void dispose(){
+	public void dispose() {
 		this.getCaret().dispose();
 		this.getLayout().disposeLayout();
 		this.getResourceBuffer().disposeAllResources();

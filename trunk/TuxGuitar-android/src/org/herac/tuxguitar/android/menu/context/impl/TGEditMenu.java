@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
 import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -25,7 +25,7 @@ public class TGEditMenu extends TGContextMenuBase {
 	}
 	
 	public void initializeItems(ContextMenu menu) {
-		boolean running = TuxGuitar.getInstance(this.findContext()).getPlayer().isRunning();
+		boolean running = MidiPlayer.getInstance(this.findContext()).isRunning();
 		
 		this.initializeItem(menu, R.id.menu_edit_undo, this.createActionProcessor(TGUndoAction.NAME), !running);
 		this.initializeItem(menu, R.id.menu_edit_redo, this.createActionProcessor(TGRedoAction.NAME), !running);

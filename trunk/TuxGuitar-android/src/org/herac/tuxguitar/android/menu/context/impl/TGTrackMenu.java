@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackChannelDialogController;
@@ -16,6 +15,7 @@ import org.herac.tuxguitar.editor.action.track.TGCloneTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGMoveTrackDownAction;
 import org.herac.tuxguitar.editor.action.track.TGMoveTrackUpAction;
 import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -38,7 +38,7 @@ public class TGTrackMenu extends TGContextMenuBase {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGTrack track = caret.getTrack();
-		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
+		boolean running = MidiPlayer.getInstance(context).isRunning();
 		
 		this.initializeItem(menu, R.id.menu_track_add, this.createActionProcessor(TGAddNewTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.menu_track_remove, this.createActionProcessor(TGRemoveTrackAction.NAME), !running);

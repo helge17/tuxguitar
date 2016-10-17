@@ -1,16 +1,29 @@
 package org.herac.tuxguitar.android.activity;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
+import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
 import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
+import org.herac.tuxguitar.android.error.TGErrorHandlerImpl;
 import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.navigation.TGNavigationManager;
+import org.herac.tuxguitar.android.properties.TGPropertiesAdapter;
+import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;
+import org.herac.tuxguitar.android.synchronizer.TGSynchronizerControllerImpl;
+import org.herac.tuxguitar.android.transport.TGTransportAdapter;
+import org.herac.tuxguitar.android.variables.TGVarAdapter;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.error.TGErrorManager;
+import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -35,8 +48,9 @@ public class TGActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		
 		this.destroyed = false;
+		this.clearContext();
 		this.attachInstance();
-		this.initializeTuxGuitar();
+		this.createModules();
 		this.setContentView(R.layout.activity_tg);
 		
 		this.registerForContextMenu(findViewById(R.id.root_layout));
@@ -53,8 +67,10 @@ public class TGActivity extends ActionBarActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		
-		this.destroyTuxGuitar();
+		this.disconnectPlugins();
+		this.destroyEditor();
 		this.detachInstance();
+		this.clearContext();
 		this.destroyed = true;
 	}
 	
@@ -123,16 +139,40 @@ public class TGActivity extends ActionBarActivity {
 		TGActivityController.getInstance(findContext()).setActivity(null);
 	}
 	
-	public void initializeTuxGuitar() {
-		TuxGuitar.getInstance(findContext()).initialize(this);
-	}
-	
-	public void destroyTuxGuitar() {
-		TuxGuitar.getInstance(findContext()).destroy();
+	public void createModules() {
+		TGContext context = this.findContext();
+		TGSynchronizer.getInstance(context).setController(new TGSynchronizerControllerImpl(context));
+		TGErrorManager.getInstance(context).addErrorHandler(new TGErrorHandlerImpl(this));
+		TGResourceManager.getInstance(context).setResourceLoader(new TGResourceLoaderImpl(this));
+		TGActionAdapterManager.getInstance(context).initialize(this);
+		TGEditorManager.getInstance(context).setLockControl(new TGLock());
+		TGVarAdapter.initialize(context);
+		TGPropertiesAdapter.initialize(context, this);
+		TGTransportAdapter.getInstance(context).initialize();
 	}
 	
 	public void connectPlugins() {
-		TuxGuitar.getInstance(findContext()).connectPlugins();
+		TGPluginManager.getInstance(this.context).connectEnabled();
+	}
+	
+	public void disconnectPlugins() {
+		TGPluginManager.getInstance(this.context).disconnectAll();
+	}
+	
+	public void destroyEditor() {
+		TGEditorManager.getInstance(this.context).destroy(null);
+	}
+	
+	public void updateCache(boolean updateItems){
+		this.updateCache(updateItems, null);
+	}
+	
+	public void updateCache(boolean updateItems, TGAbstractContext sourceContext){
+		TGEditorManager editorManager = TGEditorManager.getInstance(this.context);
+		if( updateItems ){
+			editorManager.updateSelection(sourceContext);
+		}
+		editorManager.redraw(sourceContext);
 	}
 	
 	public TGDrawerManager getDrawerManager() {
@@ -154,6 +194,10 @@ public class TGActivity extends ActionBarActivity {
 		return context;
 	}
 	
+	public void clearContext() {
+		this.findContext().clear();
+	}
+	
 	public void loadDefaultFragment() {
 		this.getNavigationManager().callOpenFragment(TGMainFragmentController.getInstance(findContext()));
 	}
@@ -169,13 +213,12 @@ public class TGActivity extends ActionBarActivity {
 	
 	public void callLoadDefaultSong() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGLoadTemplateAction.NAME);
-		tgActionProcessor.setAttribute(TGBackAction.ATTRIBUTE_ACTIVITY, this);
 		tgActionProcessor.process();
 	}
 	
 	public void callProcessIntent() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGProcessIntentAction.NAME);
-		tgActionProcessor.setAttribute(TGBackAction.ATTRIBUTE_ACTIVITY, this);
+		tgActionProcessor.setAttribute(TGProcessIntentAction.ATTRIBUTE_ACTIVITY, this);
 		tgActionProcessor.process();
 	}
 	

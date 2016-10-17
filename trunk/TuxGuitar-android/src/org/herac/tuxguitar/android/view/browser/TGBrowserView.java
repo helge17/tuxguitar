@@ -10,6 +10,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
+import org.herac.tuxguitar.android.browser.TGBrowserEmptyCallBack;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.assets.TGAssetBrowserFactory;
 import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserFactory;
@@ -19,6 +20,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.android.view.browser.filesystem.TGBrowserSettingsFactoryImpl;
 import org.herac.tuxguitar.android.view.util.TGSelectableAdapter;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
@@ -41,12 +43,14 @@ public class TGBrowserView extends RelativeLayout {
 	
 	private TGBrowserActionHandler actionHandler;
 	private TGBrowserEventListener eventListener;
+	private TGBrowserDestroyListener destroyListener;
 	
 	public TGBrowserView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		this.actionHandler = new TGBrowserActionHandler(this);
 		this.eventListener = new TGBrowserEventListener(this);
+		this.destroyListener = new TGBrowserDestroyListener(this);
 	}
 
 	public void onFinishInflate() {
@@ -60,13 +64,22 @@ public class TGBrowserView extends RelativeLayout {
 		}
 	}
 
-	protected void onAttachedToWindow() {
+	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		this.post(new Runnable() {
 			public void run() {
 				TGBrowserView.this.updateSavePanel();
 			}
 		});
+	}
+	
+	public void onDestroy() throws TGBrowserException {
+		TGBrowserManager browserManager = TGBrowserManager.getInstance(this.findContext());
+		TGBrowserSession session = browserManager.getSession();
+		if( session != null && session.getBrowser() != null ) {
+			session.getBrowser().close(new TGBrowserEmptyCallBack<Object>());
+		}
+		browserManager.closeSession();
 	}
 	
 	public TGSelectableItem[] createCollectionValues() {
@@ -196,6 +209,7 @@ public class TGBrowserView extends RelativeLayout {
 		
 		TGActionManager.getInstance(this.findContext()).addPostExecutionListener(this.eventListener);
 		TGActionManager.getInstance(this.findContext()).addErrorListener(this.eventListener);
+		TGEditorManager.getInstance(this.findContext()).addDestroyListener(this.destroyListener);
 	}
 	
 	public void updateItems() throws TGBrowserException{

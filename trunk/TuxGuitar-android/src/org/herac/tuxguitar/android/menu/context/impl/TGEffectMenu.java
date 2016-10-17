@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.dialog.bend.TGBendDialogController;
@@ -25,6 +24,7 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -46,7 +46,7 @@ public class TGEffectMenu extends TGContextMenuBase {
 	public void initializeItems(ContextMenu menu) {
 		TGContext context = findContext();
 		TGNote note = TGSongViewController.getInstance(context).getCaret().getSelectedNote();
-		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
+		boolean running = MidiPlayer.getInstance(context).isRunning();
 		
 		this.initializeItem(menu, R.id.menu_effect_vibrato, this.createActionProcessor(TGChangeVibratoNoteAction.NAME), !running && note != null);
 		this.initializeItem(menu, R.id.menu_effect_dead_note, this.createActionProcessor(TGChangeDeadNoteAction.NAME), !running && note != null);

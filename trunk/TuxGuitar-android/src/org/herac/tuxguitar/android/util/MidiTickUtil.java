@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.android.util;
 
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiRepeatController;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -58,16 +58,16 @@ public class MidiTickUtil {
 	}
 	
 	private static long getStartPoint(TGContext context){
-		TuxGuitar tuxguitar = TuxGuitar.getInstance(context);
-		tuxguitar.getPlayer().updateLoop( false );
-		return tuxguitar.getPlayer().getLoopSPosition();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
+		midiPlayer.updateLoop( false );
+		return midiPlayer.getLoopSPosition();
 	}
 	
 	public static int getSHeader(TGContext context) {
-		return TuxGuitar.getInstance(context).getPlayer().getLoopSHeader();
+		return MidiPlayer.getInstance(context).getLoopSHeader();
 	}
 	
 	public static int getEHeader(TGContext context) {
-		return TuxGuitar.getInstance(context).getPlayer().getLoopEHeader();
+		return MidiPlayer.getInstance(context).getLoopEHeader();
 	}
 }

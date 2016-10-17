@@ -48,12 +48,13 @@ public class TGDriveBrowser implements TGBrowser {
 	public TGDriveBrowser(TGContext context, TGDriveBrowserSettings settings){
 		this.context = context;
 		this.settings = settings;
-		this.httpTransport = AndroidHttp.newCompatibleTransport();
 	}
 	
 	public void open(final TGBrowserCallBack<Object> cb){
 		try {
+			this.drive = null;
 			this.folder = null;
+			this.httpTransport = AndroidHttp.newCompatibleTransport();
 			
 			TGDriveBrowserLogin login = new TGDriveBrowserLogin(this.findActivity(), this.settings, new TGBrowserCallBack<GoogleAccountCredential>() {
 				public void onSuccess(GoogleAccountCredential credential) {
@@ -76,10 +77,16 @@ public class TGDriveBrowser implements TGBrowser {
 	
 	public void close(TGBrowserCallBack<Object> cb){
 		try{
+			this.drive = null;
 			this.folder = null;
 			
+			if( this.httpTransport != null ) {
+				this.httpTransport.shutdown();
+				this.httpTransport = null;
+			}
+			
 			cb.onSuccess(this.folder);
-		} catch (RuntimeException e) {
+		} catch (Throwable e) {
 			cb.handleError(e);
 		}
 	}
@@ -90,7 +97,7 @@ public class TGDriveBrowser implements TGBrowser {
 				this.folder = (TGDriveBrowserFile) element;
 			}
 			cb.onSuccess(this.folder);
-		} catch (RuntimeException e) {
+		} catch (Throwable e) {
 			cb.handleError(e);
 		}
 	}
@@ -103,7 +110,7 @@ public class TGDriveBrowser implements TGBrowser {
 			this.folder = new TGDriveBrowserFile(file, null);
 			
 			cb.onSuccess(this.folder);
-		} catch (RuntimeException e) {
+		} catch (Throwable e) {
 			cb.handleError(e);
 		}
 	}
@@ -115,7 +122,7 @@ public class TGDriveBrowser implements TGBrowser {
 			}
 			
 			cb.onSuccess(this.folder);
-		} catch (RuntimeException e) {
+		} catch (Throwable e) {
 			cb.handleError(e);
 		}
 	}

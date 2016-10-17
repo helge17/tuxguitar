@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.herac.tuxguitar.android.TuxGuitar;
+import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.activity.TGActivityController;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
@@ -81,8 +82,10 @@ public class TGUpdateBuffer {
 	
 	public void applyUpdateCache(TGAbstractContext sourceContext) {
 		if( this.updateCache != null && this.updateCache.intValue() >= UPDATE_CACHE ) {
-			TuxGuitar tuxguitar = TuxGuitar.getInstance(context);
-			tuxguitar.updateCache(this.updateCache.equals(UPDATE_ITEMS), sourceContext);
+			TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
+			if( activity != null ) {
+				activity.updateCache(this.updateCache.equals(UPDATE_ITEMS), sourceContext);
+			}
 		}
 	}
 	

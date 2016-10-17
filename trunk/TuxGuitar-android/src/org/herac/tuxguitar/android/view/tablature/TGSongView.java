@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.graphics.TGPainterImpl;
+import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.android.transport.TGTransportCache;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.graphics.TGPainter;
@@ -122,9 +122,7 @@ public class TGSongView extends View {
 	}
 
 	public void paintTablaturePlayMode(TGPainter painter, TGRectangle area) {
-		TuxGuitar tuxguitar = TuxGuitar.getInstance(this.context);
-
-		TGTransportCache transportCache = tuxguitar.getTransport().getCache();
+		TGTransportCache transportCache = TGTransport.getInstance(this.context).getCache();
 		TGMeasureImpl measure = transportCache.getPlayMeasure();
 		TGBeatImpl beat = transportCache.getPlayBeat();
 		if (measure != null && measure.hasTrack(this.controller.getCaret().getTrack().getNumber())) {

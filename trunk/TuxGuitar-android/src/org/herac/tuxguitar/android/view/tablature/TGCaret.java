@@ -3,7 +3,6 @@ package org.herac.tuxguitar.android.view.tablature;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.util.MidiTickUtil;
 import org.herac.tuxguitar.graphics.TGColor;
 import org.herac.tuxguitar.graphics.TGColorModel;
@@ -67,7 +66,7 @@ public class TGCaret {
 	
 	public synchronized void update(int trackNumber, long position, int string, int velocity) {
 		TGContext context = this.tablature.getContext();
-		MidiPlayer midiPlayer = TuxGuitar.getInstance(context).getPlayer();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
 		
 		long realPosition = ((midiPlayer.isRunning()) ? MidiTickUtil.getStart(context, midiPlayer.getTickPosition()):position);
 		TGTrackImpl track = findTrack(trackNumber); 
@@ -128,7 +127,7 @@ public class TGCaret {
 	
 	public synchronized void goToTickPosition(){
 		TGContext context = this.tablature.getContext();
-		MidiPlayer midiPlayer = TuxGuitar.getInstance(context).getPlayer();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
 		
 		long start = MidiTickUtil.getStart(context, midiPlayer.getTickPosition());
 		this.update(this.selectedTrack.getNumber(),start,this.string);
@@ -136,7 +135,7 @@ public class TGCaret {
 	}
 	
 	public void paintCaret(TGLayout layout, TGPainter painter) {
-		if(!TuxGuitar.getInstance(this.tablature.getContext()).getPlayer().isRunning()){
+		if(!MidiPlayer.getInstance(this.tablature.getContext()).isRunning()){
 			if (this.selectedMeasure != null && !this.selectedMeasure.isOutOfBounds() && this.selectedBeat instanceof TGBeatImpl) {
 				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){

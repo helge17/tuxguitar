@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.TuxGuitar;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
 import org.herac.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
@@ -22,6 +21,7 @@ import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -45,7 +45,7 @@ public class TGBeatMenu extends TGContextMenuBase {
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();
 		boolean restBeat = caret.isRestBeatSelected();
-		boolean running = TuxGuitar.getInstance(context).getPlayer().isRunning();
+		boolean running = MidiPlayer.getInstance(context).isRunning();
 		
 		this.initializeItem(menu, R.id.menu_beat_change_tied_note, this.createActionProcessor(TGChangeTiedNoteAction.NAME), !running, note != null && note.isTiedNote());
 		this.initializeItem(menu, R.id.menu_beat_clean_beat, this.createActionProcessor(TGCleanBeatAction.NAME), !running);
