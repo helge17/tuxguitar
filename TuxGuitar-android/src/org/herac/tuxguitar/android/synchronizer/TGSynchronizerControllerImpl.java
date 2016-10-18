@@ -17,12 +17,6 @@ public class TGSynchronizerControllerImpl implements TGSynchronizerController {
 	
 	@Override
 	public void executeLater(Runnable target) {
-		final TGRunnable runnable = new TGRunnable(this.context, target);
-		Thread thread = new Thread( new Runnable() {
-			public void run() {
-				TGSynchronizerControllerImpl.this.handler.post(runnable);
-			}
-		});
-		thread.start();
+		this.handler.post(new TGRunnable(this.context, target));
 	}
 }
