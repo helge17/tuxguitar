@@ -21,17 +21,32 @@ public class TGConfirmDialog extends TGDialog {
 		builder.setMessage(this.getMessage());
 		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				getRunnable().run();
+				onSuccess();
 				dialog.dismiss();
 			}
 		});
 		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
+				onCancel();
 				dialog.dismiss();
 			}
 		});
 		
 		return builder.create();
+	}
+
+	public void onSuccess() {
+		Runnable runnable = this.getRunnable();
+		if( runnable != null ) {
+			runnable.run();
+		}
+	}
+
+	public void onCancel() {
+		Runnable runnable = this.getCancelRunnable();
+		if( runnable != null ) {
+			runnable.run();
+		}
 	}
 
 	public String getMessage() {
@@ -40,5 +55,9 @@ public class TGConfirmDialog extends TGDialog {
 
 	public Runnable getRunnable() {
 		return this.getAttribute(TGConfirmDialogController.ATTRIBUTE_RUNNABLE);
+	}
+
+	public Runnable getCancelRunnable() {
+		return this.getAttribute(TGConfirmDialogController.ATTRIBUTE_CANCEL_RUNNABLE);
 	}
 }

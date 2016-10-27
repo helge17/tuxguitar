@@ -1,0 +1,6 @@
+<resources>
+	
+    <style name="AppBaseTheme" parent="android:Theme.Material.Light.DarkActionBar">
+        <!-- API 21 theme customizations can go here. -->
+    </style>
+</resources>
