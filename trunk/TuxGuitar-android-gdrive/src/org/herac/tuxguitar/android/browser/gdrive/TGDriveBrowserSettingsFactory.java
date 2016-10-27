@@ -10,7 +10,6 @@ import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccoun
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.activity.TGActivityPermissionRequest;
 import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
@@ -35,15 +34,6 @@ public class TGDriveBrowserSettingsFactory implements TGActivityResultHandler {
 	}
 
 	public void createSettings() {
-		new TGActivityPermissionRequest(this.activity, TGDriveBrowserLogin.PERMISSIONS, new Runnable() {
-			@Override
-			public void run() {
-				TGDriveBrowserSettingsFactory.this.createSettingsPermissions();
-			}
-		}, null).process();
-	}
-
-	public void createSettingsPermissions() {
 		Intent chooseAccountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] {GoogleAccountManager.ACCOUNT_TYPE}, true, null, null, null, null);
 		
 		this.activity.getResultManager().addHandler(this.requestCode, this);

@@ -55,6 +55,8 @@ public class TGBrowserView extends RelativeLayout {
 
 	public void onFinishInflate() {
 		try {
+			super.onFinishInflate();
+
 			this.fillFormats();
 			this.fillListView();
 			this.addListeners();
@@ -184,7 +186,8 @@ public class TGBrowserView extends RelativeLayout {
 		browserManager.addFactory(new TGAssetBrowserFactory(context));
 		browserManager.addFactory(new TGFsBrowserFactory(context, new TGBrowserSettingsFactoryImpl(context, findActivity())));
 		browserManager.restoreCollections();
-		
+
+		this.refresh();
 		this.processOpenCloseSession(browserManager.getDefaultCollection());
 	}
 	

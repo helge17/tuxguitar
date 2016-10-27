@@ -5,6 +5,11 @@ import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +18,15 @@ public class TGActivityPermissionRequest {
 	private TGActivity activity;
 	private TGActivityPermissionResultHandler resultHandler;
 	private String[] permissions;
+	private String permissionRationale;
 	private Runnable onPermissionGranted;
 	private Runnable onPermissionDenied;
 	private int requestCode;
 
-	public TGActivityPermissionRequest(TGActivity activity, String[] permissions, Runnable onPermissionGranted, Runnable onPermissionDenied) {
+	public TGActivityPermissionRequest(TGActivity activity, String[] permissions, String permissionRationale, Runnable onPermissionGranted, Runnable onPermissionDenied) {
 		this.activity = activity;
 		this.permissions = permissions;
+		this.permissionRationale = permissionRationale;
 		this.onPermissionGranted = onPermissionGranted;
 		this.onPermissionDenied = onPermissionDenied;
 		this.requestCode = this.activity.getPermissionResultManager().createRequestCode();
@@ -36,24 +43,24 @@ public class TGActivityPermissionRequest {
 
 	public void process() {
 		this.addResultHandlers();
-		this.checkPermissionsAsyncTask().execute((Void) null);
+		this.checkPermissionsAsyncTask(false).execute((Void) null);
 	}
 	
 	private void onPermissionGranted() {
 		this.removeResultHandlers();
 		if( this.onPermissionGranted != null ) {
-			this.onPermissionGranted.run();
+			this.createThreadRunnable(this.onPermissionGranted).run();
 		}
 	}
 	
 	private void onPermissionDenied() {
 		this.removeResultHandlers();
 		if( this.onPermissionDenied != null ) {
-			this.onPermissionDenied.run();
+			this.createThreadRunnable(this.onPermissionDenied).run();
 		}
 	}
 
-	private void checkPermissions() {
+	private void checkPermissions(boolean ignoreRationale) {
 		List<String> missingPermissions = new ArrayList<String>();
 		for(String permission : this.permissions) {
 			if (ContextCompat.checkSelfPermission(this.activity, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -63,33 +70,72 @@ public class TGActivityPermissionRequest {
 
 		if( missingPermissions.isEmpty()) {
 			this.onPermissionGranted();
-
 		} else {
-			System.out.println("************** missingPermissions " + missingPermissions.size());
-
-			ActivityCompat.requestPermissions(this.activity, missingPermissions.toArray(new String[missingPermissions.size()]), this.requestCode);
+			String[] requiredPermissions = missingPermissions.toArray(new String[missingPermissions.size()]);
+			if( ignoreRationale || !this.isShowingRequestPermissionRationale(requiredPermissions) ) {
+				ActivityCompat.requestPermissions(this.activity, requiredPermissions, this.requestCode);
+			}
 		}
 	}
 
-	private void processPermissionRequestResult(int[] grantResults) {
+	private void processPermissionRequestResult(String[] permissions, int[] grantResults) {
 		boolean permissionsGranted = true;
 		for(int grantResult : grantResults) {
 			if( grantResult != PackageManager.PERMISSION_GRANTED ) {
 				permissionsGranted = false;
 			}
 		}
-		
+
 		if( permissionsGranted ) {
 			this.onPermissionGranted();
-		} else {
+		} else if(!this.isShowingRequestPermissionRationale(permissions)){
 			this.onPermissionDenied();
 		}
 	}
-	
-	private AsyncTask<Void, Void, Void> checkPermissionsAsyncTask() {
+
+	private boolean isShowingRequestPermissionRationale(String[] permissions) {
+		if( this.permissionRationale != null ) {
+			for (String permission : permissions) {
+				if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity, permission)) {
+					showRequestPermissionRationale();
+
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void showRequestPermissionRationale() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.activity.findContext(), TGOpenDialogAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGConfirmDialogController());
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.activity);
+		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_MESSAGE, this.permissionRationale);
+		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_RUNNABLE, new Runnable() {
+			public void run() {
+				checkPermissionsAsyncTask(true).execute((Void) null);
+			}
+		});
+		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_CANCEL_RUNNABLE, new Runnable() {
+			public void run() {
+				onPermissionDenied();
+			}
+		});
+		tgActionProcessor.process();
+	}
+
+	public Runnable createThreadRunnable(final Runnable target) {
+		return new Runnable() {
+			public void run() {
+				new Thread(target).start();
+			}
+		};
+	}
+
+	private AsyncTask<Void, Void, Void> checkPermissionsAsyncTask(final boolean ignoreRationale) {
 		return new AsyncTask<Void, Void, Void>() {
 			protected Void doInBackground(Void... params) {
-				checkPermissions();
+				checkPermissions(ignoreRationale);
 				
 				return null;
 			}
@@ -99,7 +145,7 @@ public class TGActivityPermissionRequest {
 	private TGActivityPermissionResultHandler createPermissionRequestResultHandler() {
 		return new TGActivityPermissionResultHandler() {
 			public void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
-				processPermissionRequestResult(grantResults);
+				processPermissionRequestResult(permissions, grantResults);
 			}
 		};
 	}

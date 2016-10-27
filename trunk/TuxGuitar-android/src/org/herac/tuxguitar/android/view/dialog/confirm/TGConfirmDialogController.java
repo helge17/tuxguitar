@@ -10,6 +10,7 @@ public class TGConfirmDialogController implements TGDialogController {
 	
 	public static final String ATTRIBUTE_MESSAGE = "message";
 	public static final String ATTRIBUTE_RUNNABLE = "runnable";
+	public static final String ATTRIBUTE_CANCEL_RUNNABLE = "cancelRunnable";
 	
 	public TGConfirmDialogController() {
 		super();
