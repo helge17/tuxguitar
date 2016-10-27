@@ -14,62 +14,53 @@
 		<TableRow android:gravity="center_vertical" >
 		    <RelativeLayout android:gravity="left">
 		        
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_7"
-		            android:text="7"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey7Style"/>
 		
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_8"
 					android:layout_toRightOf="@+id/tab_kb_button_number_7"
-		            android:text="8"
-		            style="?attr/tabKeyBoardButtonStyle" />
+		            style="?attr/tabKeyBoardImageButtonKey8Style" />
 		
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_9"
 		            android:layout_toRightOf="@+id/tab_kb_button_number_8"
-		            android:text="9"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey9Style"/>
 		        
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_4"
 		            android:layout_below="@+id/tab_kb_button_number_7"
-		            android:text="4"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey4Style"/>
 		
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_5"
 		            android:layout_below="@+id/tab_kb_button_number_8"
 		            android:layout_toRightOf="@+id/tab_kb_button_number_4"
-		            android:text="5"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey5Style"/>
 		        
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_6"
 		            android:layout_below="@+id/tab_kb_button_number_9"
 		            android:layout_toRightOf="@+id/tab_kb_button_number_5"
-		            android:text="6"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey6Style"/>
 		        
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_1"
 		            android:layout_below="@+id/tab_kb_button_number_4"
-		            android:text="1"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey1Style"/>
 		
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_2"
 		            android:layout_below="@+id/tab_kb_button_number_5"
 		            android:layout_toRightOf="@+id/tab_kb_button_number_1"
-		            android:text="2"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey2Style"/>
 		        
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_3"
 		            android:layout_below="@+id/tab_kb_button_number_6"
 		            android:layout_toRightOf="@+id/tab_kb_button_number_2"
-		            android:text="3"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey3Style"/>
 		        
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_insert"
@@ -82,12 +73,11 @@
 		            android:layout_toRightOf="@+id/tab_kb_button_number_6"
 		            style="?attr/tabKeyBoardImageButtonDeleteStyle"/>
 		            
-		        <Button
+		        <ImageButton
 		            android:id="@+id/tab_kb_button_number_0"
 		            android:layout_below="@+id/tab_kb_button_delete"
 		            android:layout_toRightOf="@+id/tab_kb_button_number_3"
-		            android:text="0"
-		            style="?attr/tabKeyBoardButtonStyle"/>
+		            style="?attr/tabKeyBoardImageButtonKey0Style"/>
 		    </RelativeLayout>
 	
 			<LinearLayout

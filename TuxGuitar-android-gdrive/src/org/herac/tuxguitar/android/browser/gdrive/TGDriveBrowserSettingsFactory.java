@@ -1,24 +1,24 @@
 package org.herac.tuxguitar.android.browser.gdrive;
 
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
-import org.herac.tuxguitar.android.gdrive.R;
-import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
-
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 
 import com.google.android.gms.common.AccountPicker;
 import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccountManager;
+
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.activity.TGActivityController;
+import org.herac.tuxguitar.android.activity.TGActivityPermissionRequest;
+import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
+import org.herac.tuxguitar.android.browser.TGBrowserManager;
+import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
+import org.herac.tuxguitar.android.gdrive.R;
+import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGDriveBrowserSettingsFactory implements TGActivityResultHandler {
 
@@ -33,8 +33,17 @@ public class TGDriveBrowserSettingsFactory implements TGActivityResultHandler {
 		this.activity = TGActivityController.getInstance(this.context).getActivity();
 		this.requestCode = this.activity.getResultManager().createRequestCode();
 	}
-	
-	public void createSettings() throws TGBrowserException {
+
+	public void createSettings() {
+		new TGActivityPermissionRequest(this.activity, TGDriveBrowserLogin.PERMISSIONS, new Runnable() {
+			@Override
+			public void run() {
+				TGDriveBrowserSettingsFactory.this.createSettingsPermissions();
+			}
+		}, null).process();
+	}
+
+	public void createSettingsPermissions() {
 		Intent chooseAccountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] {GoogleAccountManager.ACCOUNT_TYPE}, true, null, null, null, null);
 		
 		this.activity.getResultManager().addHandler(this.requestCode, this);

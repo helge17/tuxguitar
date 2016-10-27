@@ -26,16 +26,17 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.ActivityCompat;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 
-public class TGActivity extends ActionBarActivity {
+public class TGActivity extends Activity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 	private boolean destroyed;
 	private TGContext context;
@@ -43,6 +44,7 @@ public class TGActivity extends ActionBarActivity {
 	private TGNavigationManager navigationManager;
 	private TGDrawerManager drawerManager;
 	private TGActivityResultManager resultManager;
+	private TGActivityPermissionResultManager permissionResultManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +57,14 @@ public class TGActivity extends ActionBarActivity {
 		this.setContentView(R.layout.activity_tg);
 		
 		this.registerForContextMenu(findViewById(R.id.root_layout));
+		this.getActionBar().setLogo(R.drawable.ic_launcher);
+		this.getActionBar().setDisplayUseLogoEnabled(true);
+		this.getActionBar().setDisplayShowHomeEnabled(true);
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);
 		this.getActionBar().setHomeButtonEnabled(true);
-		
+
 		this.resultManager = new TGActivityResultManager();
+		this.permissionResultManager = new TGActivityPermissionResultManager();
 		this.navigationManager = new TGNavigationManager(this);
 		this.drawerManager = new TGDrawerManager(this);
 		this.loadDefaultFragment();
@@ -124,10 +130,15 @@ public class TGActivity extends ActionBarActivity {
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		this.resultManager.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		this.permissionResultManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
 	}
 	
 	public void attachInstance() {
@@ -192,6 +203,10 @@ public class TGActivity extends ActionBarActivity {
 		return resultManager;
 	}
 
+	public TGActivityPermissionResultManager getPermissionResultManager() {
+		return permissionResultManager;
+	}
+	
 	public TGContext findContext() {
 		if( this.context == null ) {
 			this.context = new TGContext();
