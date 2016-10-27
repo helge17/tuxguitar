@@ -112,7 +112,8 @@
 				<extensions>true</extensions>
 				<configuration>
 					<sdk>
-						<platform>15</platform>
+						<platform>23</platform>
+						<buildTools>23.0.0</buildTools>
 					</sdk>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
 					<resourceDirectory>${project.basedir}/res</resourceDirectory>

@@ -7,8 +7,8 @@ import org.herac.tuxguitar.android.fragment.TGFragment;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.content.res.Configuration;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +28,9 @@ public class TGDrawerManager {
 
 	public void initialize() {
 		this.drawerView = (ViewGroup) this.activity.findViewById(R.id.left_drawer);
-		
+
 		this.drawerLayout = (DrawerLayout) this.activity.findViewById(R.id.root_layout);
-		this.drawerToggle = new ActionBarDrawerToggle(this.activity, this.drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
+		this.drawerToggle = new ActionBarDrawerToggle(this.activity, this.drawerLayout, R.string.app_name, R.string.app_name) {
 			public void onDrawerClosed(View view) {
 				TGDrawerManager.this.onVisibilityChanged();
 			}
@@ -71,7 +71,7 @@ public class TGDrawerManager {
 		if( this.drawerToggle.isDrawerIndicatorEnabled() ) {
 			return this.drawerToggle.onOptionsItemSelected(item);
 		}
-		
+
 		return this.activity.getNavigationManager().callOpenPreviousFragment();
 	}
 	

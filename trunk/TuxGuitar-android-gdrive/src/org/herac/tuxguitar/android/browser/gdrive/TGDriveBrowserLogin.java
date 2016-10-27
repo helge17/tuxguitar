@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.browser.gdrive;
 import java.util.Collections;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.activity.TGActivityPermissionRequest;
 import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
@@ -21,7 +22,13 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.services.drive.DriveScopes;
 
 public class TGDriveBrowserLogin {
-	
+
+	public static final String[] PERMISSIONS = {
+		"android.permission.MANAGE_ACCOUNTS",
+		"android.permission.GET_ACCOUNTS",
+		"android.permission.USE_CREDENTIALS"
+	};
+
 	private int authRequestCode;
 	private int accountRequestCode;
 	
@@ -40,8 +47,22 @@ public class TGDriveBrowserLogin {
 		this.authRequestCode = this.activity.getResultManager().createRequestCode();
 		this.accountRequestCode = this.activity.getResultManager().createRequestCode();
 	}
-	
+
 	public void process() {
+		new TGActivityPermissionRequest(this.activity, PERMISSIONS, new Runnable() {
+			@Override
+			public void run() {
+				TGDriveBrowserLogin.this.processWithPermissions();
+			}
+		}, new Runnable() {
+			@Override
+			public void run() {
+				TGDriveBrowserLogin.this.callback.handleError(new TGBrowserException(TGDriveBrowserLogin.this.activity.getString(R.string.gdrive_login_failed)));
+			}
+		}).process();
+	}
+
+	private void processWithPermissions() {
 		this.authRequestResultHandler = this.createAuthRequestResultHandler();
 		this.accountRequestResultHandler = this.createAccountRequestResultHandler();
 		

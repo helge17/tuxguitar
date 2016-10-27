@@ -32,6 +32,16 @@
 		<attr name="tabKeyBoardStyle" format="reference"/>
 		<attr name="tabKeyBoardButtonStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonStyle" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey0Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey1Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey2Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey3Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey4Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey5Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey6Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey7Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey8Style" format="reference"/>
+		<attr name="tabKeyBoardImageButtonKey9Style" format="reference"/>
 		<attr name="tabKeyBoardImageButtonInsertStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonDeleteStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonDurationStyle" format="reference"/>

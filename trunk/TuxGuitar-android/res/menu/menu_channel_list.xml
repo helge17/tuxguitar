@@ -7,6 +7,6 @@
         android:id="@+id/menu_channel_list_add"
         android:icon="@drawable/ic_add_circle_outline_white_24dp"
         android:title="@string/menu_channel_list_add"
-        app:showAsAction="always"/>
+        android:showAsAction="always"/>
 
 </menu>

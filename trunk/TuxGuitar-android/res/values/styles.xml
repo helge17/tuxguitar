@@ -1,19 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+	<!-- Application theme. -->
+	<style name="AppTheme" parent="AppBaseTheme">
 		<!-- ========================================================= -->
 		<!-- ==== COLOR ============================================== -->
 		<!-- ========================================================= -->
@@ -45,6 +33,16 @@
 		<item name="tabKeyBoardStyle">@style/tabKeyBoardStyle</item>
 		<item name="tabKeyBoardButtonStyle">@style/tabKeyBoardButtonStyle</item>
 		<item name="tabKeyBoardImageButtonStyle">@style/tabKeyBoardImageButtonStyle</item>
+		<item name="tabKeyBoardImageButtonKey0Style">@style/tabKeyBoardImageButtonKey0Style</item>
+		<item name="tabKeyBoardImageButtonKey1Style">@style/tabKeyBoardImageButtonKey1Style</item>
+		<item name="tabKeyBoardImageButtonKey2Style">@style/tabKeyBoardImageButtonKey2Style</item>
+		<item name="tabKeyBoardImageButtonKey3Style">@style/tabKeyBoardImageButtonKey3Style</item>
+		<item name="tabKeyBoardImageButtonKey4Style">@style/tabKeyBoardImageButtonKey4Style</item>
+		<item name="tabKeyBoardImageButtonKey5Style">@style/tabKeyBoardImageButtonKey5Style</item>
+		<item name="tabKeyBoardImageButtonKey6Style">@style/tabKeyBoardImageButtonKey6Style</item>
+		<item name="tabKeyBoardImageButtonKey7Style">@style/tabKeyBoardImageButtonKey7Style</item>
+		<item name="tabKeyBoardImageButtonKey8Style">@style/tabKeyBoardImageButtonKey8Style</item>
+		<item name="tabKeyBoardImageButtonKey9Style">@style/tabKeyBoardImageButtonKey9Style</item>
 		<item name="tabKeyBoardImageButtonInsertStyle">@style/tabKeyBoardImageButtonInsertStyle</item>
 		<item name="tabKeyBoardImageButtonDeleteStyle">@style/tabKeyBoardImageButtonDeleteStyle</item>
 		<item name="tabKeyBoardImageButtonDurationStyle">@style/tabKeyBoardImageButtonDurationStyle</item>
@@ -145,7 +143,7 @@
 		<item name="android:textStyle">normal</item>
 		<item name="android:textSize">18sp</item>
 		<item name="android:textColor">?attr/textLightColorSelector</item>
-		
+
 		<item name="android:layout_width">36dp</item>
 		<item name="android:layout_height">36dp</item>
 		<item name="android:padding">0sp</item>
@@ -156,7 +154,47 @@
 		<item name="android:layout_height">36dp</item>
 		<item name="android:padding">0sp</item>
 	</style>
-	
+
+	<style name="tabKeyBoardImageButtonKey0Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_0_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey1Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_1_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey2Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_2_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey3Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_3_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey4Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_4_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey5Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_5_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey6Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_6_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey7Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_7_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey8Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_8_white_24dp</item>
+	</style>
+
+	<style name="tabKeyBoardImageButtonKey9Style" parent="tabKeyBoardImageButtonStyle" >
+		<item name="android:src">@drawable/ic_keyboard_key_9_white_24dp</item>
+	</style>
+
 	<style name="tabKeyBoardImageButtonInsertStyle" parent="tabKeyBoardImageButtonStyle" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
 	</style>
