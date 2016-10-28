@@ -48,7 +48,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
-			<artifactId>tuxguitar-android-gervill</artifactId>
+			<artifactId>tuxguitar-android-gervill-plugin</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 			<type>jar</type>
@@ -103,8 +103,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-android-gervill</artifactId>
-									<destFileName>tuxguitar-android-gervill.jar</destFileName>
+									<artifactId>tuxguitar-android-gervill-plugin</artifactId>
+									<destFileName>tuxguitar-android-gervill-plugin.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

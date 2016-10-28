@@ -47,6 +47,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-gervill</artifactId>
+			<version>${project.version}</version>
+			<type>aar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-gervill-soundbank</artifactId>
 			<version>SNAPSHOT</version>
 			<scope>compile</scope>
@@ -131,6 +138,7 @@
 						<buildTools>23.0.0</buildTools>
 					</sdk>
 					<assetsDirectory>${project.assets.directory}</assetsDirectory>
+					<dexCoreLibrary>true</dexCoreLibrary>
 				</configuration>
 				<executions>
 					<execution>
