@@ -61,7 +61,6 @@
 						<buildTools>23.0.0</buildTools>
 					</sdk>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
-					<resourceDirectory>${project.basedir}/res</resourceDirectory>
 					<nativeLibrariesDirectory>${project.basedir}/libs</nativeLibrariesDirectory>
 				</configuration>
 			</plugin>
