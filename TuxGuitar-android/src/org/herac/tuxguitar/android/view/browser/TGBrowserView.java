@@ -1,8 +1,15 @@
 package org.herac.tuxguitar.android.view.browser;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.R;
@@ -28,16 +35,9 @@ import org.herac.tuxguitar.io.base.TGOutputStreamBase;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TGBrowserView extends RelativeLayout {
 	
@@ -61,6 +61,7 @@ public class TGBrowserView extends RelativeLayout {
 			this.fillListView();
 			this.addListeners();
 			this.addBrowserDefaults();
+			this.refresh(true);
 		} catch (TGBrowserException e) {
 			TGErrorManager.getInstance(findContext()).handleError(e);
 		}
@@ -101,13 +102,15 @@ public class TGBrowserView extends RelativeLayout {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void refreshCollections() {
+	public void refreshCollections(boolean forceDefaults) {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(findActivity(), R.layout.view_browser_spinner_item, createCollectionValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
-		TGSelectableItem selectedItem = new TGSelectableItem(findCurrentCollection(), null);
+
+		TGBrowserCollection selectedCollection = (forceDefaults ? TGBrowserManager.getInstance(this.findContext()).getDefaultCollection() : this.findCurrentCollection());
+
+		TGSelectableItem selectedItem = new TGSelectableItem(selectedCollection, null);
 		Integer selectedItemPosition = arrayAdapter.getPosition(selectedItem);
 		
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
@@ -116,18 +119,12 @@ public class TGBrowserView extends RelativeLayout {
 		if(!this.isSameCollection(arrayAdapter, (ArrayAdapter<TGSelectableItem>) spinner.getAdapter())) {
 			spinner.setAdapter(arrayAdapter);
 		}
+		spinner.setOnItemSelectedListener(listener);
 		if( spinner.getSelectedItemPosition() != selectedItemPosition ) {
 			spinner.setSelection(selectedItemPosition, false);
 		}
-		spinner.setOnItemSelectedListener(listener);
 	}
-	
-	public TGBrowserCollection selectCollection() {
-		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
-		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
-		return (selectableItem != null ? (TGBrowserCollection) selectableItem.getItem() : null);
-	}
-	
+
 	public TGBrowserCollection findSelectedCollection() {
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
 		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
@@ -186,9 +183,6 @@ public class TGBrowserView extends RelativeLayout {
 		browserManager.addFactory(new TGAssetBrowserFactory(context));
 		browserManager.addFactory(new TGFsBrowserFactory(context, new TGBrowserSettingsFactoryImpl(context, findActivity())));
 		browserManager.restoreCollections();
-
-		this.refresh();
-		this.processOpenCloseSession(browserManager.getDefaultCollection());
 	}
 	
 	public void requestRefresh() {
@@ -360,10 +354,14 @@ public class TGBrowserView extends RelativeLayout {
 		
 		tgBrowserElementAdapter.notifyDataSetChanged();
 	}
-	
+
 	public void refresh() throws TGBrowserException {
+		this.refresh(false);
+	}
+
+	public void refresh(boolean forceDefaults) throws TGBrowserException {
 		this.refreshListView();
-		this.refreshCollections();
+		this.refreshCollections(forceDefaults);
 		this.updateItems();
 	}
 	
@@ -384,13 +382,7 @@ public class TGBrowserView extends RelativeLayout {
 	}
 	
 	public boolean isSameObject(Object c1, Object c2) {
-		if( c1 == c2 ) {
-			return true;
-		}
-		if( c1 != null && c2 != null && c1.equals(c2)) {
-			return true;
-		}
-		return false;
+		return ((c1 == c2) || (c1 != null && c2 != null && c1.equals(c2)));
 	}
 	
 	public TGContext findContext() {
