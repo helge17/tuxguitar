@@ -165,8 +165,9 @@
     <string name="menu_channel_list_item_edit">Edit Instrument</string>
     <string name="menu_channel_list_item_remove">Remove Instrument</string>
     <string name="menu_channel_list_item_remove_confirm_question">Are you sure you want to remove this instrument?</string>
-    
-    
+
+	<string name="menu_settings">Settings</string>
+
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
 	<!-- =================================================================== -->
