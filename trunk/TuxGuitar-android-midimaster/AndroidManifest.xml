@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.herac.tuxguitar.android.midi"
+    package="org.herac.tuxguitar.android.midimaster"
     android:installLocation="auto"
     android:versionCode="1"
     android:versionName="SNAPSHOT" >

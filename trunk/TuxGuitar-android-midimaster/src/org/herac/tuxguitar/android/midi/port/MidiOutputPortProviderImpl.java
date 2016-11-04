@@ -1,18 +1,20 @@
 package org.herac.tuxguitar.android.midi.port;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
+import org.herac.tuxguitar.util.TGContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
+	private TGContext context;
 	private List<MidiOutputPort> ports;
 	
-	public MidiOutputPortProviderImpl(){
-		super();
+	public MidiOutputPortProviderImpl(TGContext context){
+		this.context = context;
 	}
 	
 	public List<MidiOutputPort> listPorts() {

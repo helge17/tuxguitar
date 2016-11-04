@@ -31,7 +31,7 @@ public class MidiOutputPortImpl extends GMOutputPort{
 	}
 	
 	public String getKey(){
-		return ("fake-port");
+		return ("Sonivox EAS Midi Driver");
 	}
 	
 	public String getName(){
