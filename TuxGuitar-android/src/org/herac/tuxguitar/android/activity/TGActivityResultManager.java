@@ -13,10 +13,14 @@ public class TGActivityResultManager {
 	private Map<Object, List<TGActivityResultHandler>> handlers;
 	
 	public TGActivityResultManager() {
-		this.requestCode = 1;
 		this.handlers = new HashMap<Object, List<TGActivityResultHandler>>();
 	}
-	
+
+	public void initialize() {
+		this.requestCode = 1;
+		this.handlers.clear();
+	}
+
 	public int createRequestCode() {
 		synchronized (TGActivityResultManager.this) {
 			return (this.requestCode ++);

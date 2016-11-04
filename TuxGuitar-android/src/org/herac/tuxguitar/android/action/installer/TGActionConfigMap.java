@@ -45,6 +45,7 @@ import org.herac.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
+import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
@@ -356,6 +357,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//transport actions
 		this.map(TGTransportPlayAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGTransportStopAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGTransportLoadSettingsAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		
 		//layout actions
 		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL);

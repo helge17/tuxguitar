@@ -46,6 +46,7 @@ import org.herac.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
+import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
@@ -311,6 +312,7 @@ public class TGActionInstaller {
 		//transport actions
 		installAction(new TGTransportPlayAction(context));
 		installAction(new TGTransportStopAction(context));
+		installAction(new TGTransportLoadSettingsAction(context));
 		
 		//layout actions
 		installAction(new TGSetLayoutScaleAction(context));

@@ -40,4 +40,8 @@
     <item
         android:id="@+id/menu_velocity"
         android:title="@string/menu_velocity"/>
+
+    <item
+        android:id="@+id/menu_settings"
+        android:title="@string/menu_settings"/>
 </menu>

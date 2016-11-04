@@ -24,7 +24,11 @@ public class TGNavigationManager {
 		this.activity = activity;
 		this.navigationFragments = new ArrayList<TGNavigationFragment>();
 	}
-	
+
+	public void initialize() {
+		this.navigationFragments.clear();
+	}
+
 	public void processLoadFragment(TGFragmentController<?> controller, String tagId) {
 		TGNavigationFragment tgNavigationFragment = new TGNavigationFragment();
 		tgNavigationFragment.setController(controller);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="midi.settings"
+        android:title="Midi Settings">
+
+        <ListPreference
+            android:key="midi.output.port"
+            android:title="Midi Output Port" />
+    </PreferenceCategory>
+</PreferenceScreen>

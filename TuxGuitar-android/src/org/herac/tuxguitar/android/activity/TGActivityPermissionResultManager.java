@@ -11,10 +11,14 @@ public class TGActivityPermissionResultManager {
 	private Map<Object, List<TGActivityPermissionResultHandler>> handlers;
 	
 	public TGActivityPermissionResultManager() {
-		this.requestCode = 1;
 		this.handlers = new HashMap<Object, List<TGActivityPermissionResultHandler>>();
 	}
-	
+
+	public void initialize() {
+		this.requestCode = 1;
+		this.handlers.clear();
+	}
+
 	public int createRequestCode() {
 		synchronized (TGActivityPermissionResultManager.this) {
 			return (this.requestCode ++);

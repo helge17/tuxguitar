@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class TGCachedFragment extends TGFragment {
+public abstract class TGCachedFragment extends TGBaseFragment {
 	
 	private int layout;
 	private View view;

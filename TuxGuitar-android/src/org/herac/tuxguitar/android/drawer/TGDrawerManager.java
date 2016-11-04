@@ -1,11 +1,5 @@
 package org.herac.tuxguitar.android.drawer;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGFragment;
-import org.herac.tuxguitar.util.TGContext;
-
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,17 +7,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.fragment.TGFragmentController;
+import org.herac.tuxguitar.util.TGContext;
+
 public class TGDrawerManager {
 	
 	private TGActivity activity;
-	private DrawerLayout drawerLayout;
+	private TGDrawerViewBuilder drawerBuilder;
 	private ViewGroup drawerView;
+	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
 	private boolean open;
 	
 	public TGDrawerManager(TGActivity activity) {
 		this.activity = activity;
-		this.initialize();
 	}
 
 	public void initialize() {
@@ -75,9 +75,14 @@ public class TGDrawerManager {
 		return this.activity.getNavigationManager().callOpenPreviousFragment();
 	}
 	
-	public void onOpenFragment(TGFragment fragment) {
-		fragment.onCreateDrawer(this.drawerView);
-		
+	public void onOpenFragment(TGFragmentController<?> controller) {
+		if( this.drawerView.getChildCount() > 0 ) {
+			this.drawerView.removeAllViews();
+		}
+		if( this.drawerBuilder != null ) {
+			this.drawerBuilder.onOpenFragment(controller, this.drawerView);
+		}
+
 		boolean available = (this.drawerView.getChildCount() > 0);
 		this.drawerToggle.setDrawerIndicatorEnabled(available);
 		this.drawerLayout.setDrawerLockMode(available ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -90,7 +95,11 @@ public class TGDrawerManager {
 			this.activity.updateCache(true);
 		}
 	}
-	
+
+	public void setDrawerBuilder(TGDrawerViewBuilder drawerBuilder) {
+		this.drawerBuilder = drawerBuilder;
+	}
+
 	public TGContext findContext() {
 		return this.activity.findContext();
 	}

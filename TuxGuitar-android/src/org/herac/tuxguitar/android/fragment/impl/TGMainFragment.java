@@ -1,15 +1,14 @@
 package org.herac.tuxguitar.android.fragment.impl;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGCachedFragment;
-import org.herac.tuxguitar.android.menu.options.TGMainMenu;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.fragment.TGCachedFragment;
+import org.herac.tuxguitar.android.menu.options.TGMainMenu;
 
 public class TGMainFragment extends TGCachedFragment {
 	
@@ -30,12 +29,7 @@ public class TGMainFragment extends TGCachedFragment {
 		TGActivity activity = (TGActivity) getActivity();
 		TGMainMenu.getInstance(this.findContext()).initialize(activity, menu);
 	}
-	
-	@Override
-	public void onPostCreateDrawer(ViewGroup drawerView) {
-		this.getActivity().getLayoutInflater().inflate(R.layout.view_main_drawer, drawerView);
-	}
-	
+
 	public View findChildViewById(int id) {
 		if( this.getView() != null ) {
 			return this.getView().findViewById(id);
