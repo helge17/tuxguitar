@@ -9,7 +9,7 @@ public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin
 	private static final String MODULE_ID = "tuxguitar-android-midi";
 	
 	protected MidiOutputPortProvider createProvider(TGContext context) {
-		return new MidiOutputPortProviderImpl();
+		return new MidiOutputPortProviderImpl(context);
 	}
 	
 	public String getModuleId() {
