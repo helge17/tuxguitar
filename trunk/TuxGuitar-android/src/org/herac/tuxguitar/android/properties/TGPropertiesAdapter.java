@@ -1,19 +1,22 @@
 package org.herac.tuxguitar.android.properties;
 
+import android.app.Activity;
+
 import org.herac.tuxguitar.android.browser.config.TGBrowserProperties;
+import org.herac.tuxguitar.android.transport.TGTransportProperties;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
 
-import android.app.Activity;
-
 public class TGPropertiesAdapter {
 	
 	public static void initialize(TGContext context, Activity activity) {
 		addFactory(context);
-		addReader(context, TGBrowserProperties.RESOURCE, createBrowserPropertiesReader(context, activity));
-		addWriter(context, TGBrowserProperties.RESOURCE, createBrowserPropertiesWriter(context, activity));
+		addReader(context, TGBrowserProperties.RESOURCE, createSharedPreferencesReader(context, activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE));
+		addWriter(context, TGBrowserProperties.RESOURCE, createSharedPreferencesWriter(activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE));
+		addReader(context, TGTransportProperties.RESOURCE, createSharedPreferencesReader(context, activity, TGTransportProperties.MODULE, TGTransportProperties.RESOURCE));
+		addWriter(context, TGTransportProperties.RESOURCE, createSharedPreferencesWriter(activity, TGTransportProperties.MODULE, TGTransportProperties.RESOURCE));
 	}
 	
 	public static void addFactory(TGContext context) {
@@ -27,12 +30,12 @@ public class TGPropertiesAdapter {
 	public static void addWriter(TGContext context, String resource, TGPropertiesWriter writer) {
 		TGPropertiesManager.getInstance(context).addPropertiesWriter(resource, writer);
 	}
-	
-	public static TGPropertiesReader createBrowserPropertiesReader(TGContext context, Activity activity) {
-		return new TGSharedPreferencesReader(activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE, new TGResourcePropertiesReader(context, TGBrowserProperties.RESOURCE));
+
+	public static TGPropertiesReader createSharedPreferencesReader(TGContext context, Activity activity, String module, String resource) {
+		return new TGSharedPreferencesReader(activity, module, resource, new TGResourcePropertiesReader(context, resource));
 	}
-	
-	public static TGPropertiesWriter createBrowserPropertiesWriter(TGContext context, Activity activity) {
-		return new TGSharedPreferencesWriter(activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE);
+
+	public static TGPropertiesWriter createSharedPreferencesWriter(Activity activity, String module, String resource) {
+		return new TGSharedPreferencesWriter(activity, module, resource);
 	}
 }

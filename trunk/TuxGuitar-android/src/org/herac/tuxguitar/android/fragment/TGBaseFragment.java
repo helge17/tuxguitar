@@ -13,9 +13,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class TGFragment extends Fragment {
+public abstract class TGBaseFragment extends Fragment {
 	
-	public TGFragment() {
+	public TGBaseFragment() {
 		super();
 	}
 	
@@ -44,16 +44,7 @@ public abstract class TGFragment extends Fragment {
 		
 		return view;
 	}
-	
-	public void onCreateDrawer(ViewGroup drawerView) {
-		if( drawerView.getChildCount() > 0 ) {
-			drawerView.removeAllViews();
-		}
-		
-		this.onPostCreateDrawer(drawerView);
-		this.fireEvent(TGFragmentEvent.ACTION_DRAWER_CREATED);
-	}
-	
+
 	public void onPostCreate(Bundle savedInstanceState) {
 		// override me
 	}
@@ -61,11 +52,7 @@ public abstract class TGFragment extends Fragment {
 	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		// override me
 	}
-	
-	public void onPostCreateDrawer(ViewGroup drawerView) {
-		// override me
-	}
-	
+
 	public View onPostCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View createdView) {
 		return createdView;
 	}

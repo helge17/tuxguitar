@@ -8,6 +8,7 @@ import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGFragmentController;
+import org.herac.tuxguitar.android.fragment.impl.TGTransportPreferencesFragmentController;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGBeatMenu;
 import org.herac.tuxguitar.android.menu.context.impl.TGCompositionMenu;
@@ -71,6 +72,7 @@ public class TGMainMenu {
 		this.getMenu().findItem(R.id.menu_duration).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGDurationMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_effect).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
 		this.getMenu().findItem(R.id.menu_velocity).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGVelocityMenu(getActivity())));
+		this.getMenu().findItem(R.id.menu_settings).setOnMenuItemClickListener(createFragmentActionProcessor(new TGTransportPreferencesFragmentController()));
 	}
 	
 	public void fillStyledIconHandlers() {

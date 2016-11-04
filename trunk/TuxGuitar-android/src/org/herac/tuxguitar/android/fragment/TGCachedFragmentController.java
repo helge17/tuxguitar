@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.fragment;
 
-public abstract class TGCachedFragmentController<T extends TGFragment> implements TGFragmentController<T> {
+public abstract class TGCachedFragmentController<T extends TGCachedFragment> implements TGFragmentController<T> {
 	
 	private T instance;
 	

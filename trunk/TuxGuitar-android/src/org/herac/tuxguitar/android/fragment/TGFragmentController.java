@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.android.fragment;
 
-public interface TGFragmentController<T extends TGFragment> {
+import android.app.Fragment;
+
+public interface TGFragmentController<T extends Fragment> {
 	
 	T getFragment();
 }

@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.android.fragment;
 
+import android.app.Fragment;
+
 import org.herac.tuxguitar.event.TGEvent;
 
 public class TGFragmentEvent extends TGEvent {
@@ -10,10 +12,9 @@ public class TGFragmentEvent extends TGEvent {
 	
 	public static final String ACTION_CREATED = "onCreate";
 	public static final String ACTION_VIEW_CREATED = "onCreateView";
-	public static final String ACTION_DRAWER_CREATED = "onCreateDrawer";
 	public static final String ACTION_OPTIONS_MENU_CREATED = "onCreateOptionsMenu";
 	
-	public TGFragmentEvent(TGFragment fragment, String action) {
+	public TGFragmentEvent(Fragment fragment, String action) {
 		super(EVENT_TYPE);
 		
 		this.setAttribute(ATTRIBUTE_FRAGMENT, fragment);

@@ -1,5 +1,15 @@
 package org.herac.tuxguitar.android.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
+import android.view.View;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
@@ -26,16 +36,6 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuItem;
-import android.view.View;
-
 public class TGActivity extends Activity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 	private boolean destroyed;
@@ -45,7 +45,14 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 	private TGDrawerManager drawerManager;
 	private TGActivityResultManager resultManager;
 	private TGActivityPermissionResultManager permissionResultManager;
-	
+
+	public TGActivity() {
+		this.resultManager = new TGActivityResultManager();
+		this.permissionResultManager = new TGActivityPermissionResultManager();
+		this.navigationManager = new TGNavigationManager(this);
+		this.drawerManager = new TGDrawerManager(this);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,17 +70,17 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);
 		this.getActionBar().setHomeButtonEnabled(true);
 
-		this.resultManager = new TGActivityResultManager();
-		this.permissionResultManager = new TGActivityPermissionResultManager();
-		this.navigationManager = new TGNavigationManager(this);
-		this.drawerManager = new TGDrawerManager(this);
+		this.resultManager.initialize();
+		this.permissionResultManager.initialize();
+		this.navigationManager.initialize();
+		this.drawerManager.initialize();
 		this.loadDefaultFragment();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
+
 		this.detachInstance();
 		this.clearContext();
 		this.destroyed = true;
