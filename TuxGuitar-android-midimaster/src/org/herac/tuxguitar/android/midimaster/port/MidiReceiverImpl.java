@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.midi.port;
+package org.herac.tuxguitar.android.midimaster.port;
 
 import org.billthefarmer.mididriver.MidiDriver;
 import org.herac.tuxguitar.gm.port.GMReceiver;

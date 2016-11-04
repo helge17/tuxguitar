@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.midi.port;
+package org.herac.tuxguitar.android.midimaster.port;
 
 import org.herac.tuxguitar.gm.port.GMOutputPort;
 import org.herac.tuxguitar.gm.port.GMReceiver;
