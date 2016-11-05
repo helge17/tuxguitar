@@ -1,4 +1,4 @@
-<org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/tgTabKeyboard"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
@@ -97,30 +97,30 @@
 		            style="?attr/tabKeyBoardImageButtonDurationDecrementStyle"/>
 			</LinearLayout>
 	
-		    <android.support.v7.widget.GridLayout
+		    <GridLayout
 				android:gravity="right"
-				app:columnCount="3" >
+				android:columnCount="3" >
 				
-				<android.support.v7.widget.Space app:layout_gravity="fill" />
+				<Space android:layout_gravity="fill" />
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_up"
 		            style="?attr/tabKeyBoardImageButtonUpStyle"/>
-				<android.support.v7.widget.Space app:layout_gravity="fill" />
+				<Space android:layout_gravity="fill" />
 				
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_left"
 		            style="?attr/tabKeyBoardImageButtonLeftStyle"/>
-				<android.support.v7.widget.Space app:layout_gravity="fill" />
+				<Space android:layout_gravity="fill" />
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_right"
 		            style="?attr/tabKeyBoardImageButtonRightStyle"/>
 				
-				<android.support.v7.widget.Space app:layout_gravity="fill" />
+				<Space android:layout_gravity="fill" />
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_down"
 		            style="?attr/tabKeyBoardImageButtonDownStyle"/>
-				<android.support.v7.widget.Space app:layout_gravity="fill" />
-			</android.support.v7.widget.GridLayout>
+				<Space android:layout_gravity="fill" />
+			</GridLayout>
 			
 		</TableRow>
 		

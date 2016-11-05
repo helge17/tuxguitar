@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="?attr/dialogStyle"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    app:columnCount="2" >
+    android:columnCount="2" >
 
     <TextView
         android:id="@+id/browser_settings_fs_name_label"
         style="?attr/textViewStyle"
-        app:layout_gravity="fill_horizontal|center_vertical"
+        android:layout_gravity="fill_horizontal|center_vertical"
         android:text="@string/browser_settings_fs_name_label" />
 
     <EditText
         android:id="@+id/browser_settings_fs_name_value"
-        app:layout_gravity="fill_horizontal|center_vertical"
+        android:layout_gravity="fill_horizontal|center_vertical"
         android:inputType="text"
         android:imeOptions="actionDone" />
 
-    <android.support.v7.widget.Space
+    <Space
         style="?attr/dialogSectionSpacerStyle"
-        app:layout_columnSpan="2"
-        app:layout_gravity="fill" />
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill" />
 
     <TextView
         android:id="@+id/browser_settings_fs_path_label"
         style="?attr/textViewStyle"
-        app:layout_gravity="fill_horizontal|center_vertical"
+        android:layout_gravity="fill_horizontal|center_vertical"
         android:text="@string/browser_settings_fs_path_label" />
 
     <TextView
@@ -34,18 +33,18 @@
         style="?attr/textViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_gravity="fill_horizontal|center_vertical" />
+        android:layout_gravity="fill_horizontal|center_vertical" />
 
-    <android.support.v7.widget.Space
+    <Space
         style="?attr/dialogSectionSpacerStyle"
-        app:layout_columnSpan="2"
-        app:layout_gravity="fill" />
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill" />
 
     <ListView
         android:id="@+id/browser_settings_fs_path_value_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_columnSpan="2"
-        app:layout_gravity="fill_horizontal|center_vertical" />
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_horizontal|center_vertical" />
 
-</android.support.v7.widget.GridLayout>
+</GridLayout>

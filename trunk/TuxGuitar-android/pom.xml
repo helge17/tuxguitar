@@ -26,14 +26,14 @@
 		<dependency>
 			<groupId>com.android.support</groupId>
 			<artifactId>appcompat-v7</artifactId>
-			<version>23.0.1</version>
+			<version>25.0.0</version>
 			<type>aar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.android.support</groupId>
 			<artifactId>gridlayout-v7</artifactId>
-			<version>23.0.1</version>
+			<version>25.0.0</version>
 			<type>aar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -69,8 +69,8 @@
 				<extensions>true</extensions>
 				<configuration>
 					<sdk>
-						<platform>23</platform>
-						<buildTools>23.0.0</buildTools>
+						<platform>25</platform>
+						<buildTools>25.0.0</buildTools>
 					</sdk>
 					<release>true</release>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>

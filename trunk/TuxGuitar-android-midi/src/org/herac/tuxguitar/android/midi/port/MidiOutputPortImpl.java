@@ -6,6 +6,7 @@ import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiInputPort;
 import android.media.midi.MidiManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -24,7 +25,8 @@ public class MidiOutputPortImpl extends GMOutputPort{
 	private MidiDeviceInfo.PortInfo portInfo;
 	private MidiOutputPortConection connection;
 	private MidiReceiverImpl receiver;
-	
+	private String key;
+
 	public MidiOutputPortImpl(TGContext context, MidiDeviceInfo info, MidiDeviceInfo.PortInfo portInfo){
 		this.context = context;
 		this.info = info;
@@ -32,7 +34,7 @@ public class MidiOutputPortImpl extends GMOutputPort{
 		this.connection = new MidiOutputPortConection();
 		this.receiver = new MidiReceiverImpl(this.connection);
 	}
-	
+
 	public void open() {
 		if(!this.connection.isConnected()) {
 			TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
@@ -66,10 +68,34 @@ public class MidiOutputPortImpl extends GMOutputPort{
 	}
 
 	public String getKey(){
-		return this.portInfo.getName();
+		if( this.key == null ) {
+			Bundle properties = this.info.getProperties();
+			String deviceName = properties.getString(MidiDeviceInfo.PROPERTY_PRODUCT);
+			if( deviceName == null ) {
+				deviceName = properties.getString(MidiDeviceInfo.PROPERTY_NAME);
+			}
+
+			String portName = this.portInfo.getName();
+			if( portName == null ) {
+				portName = ("#" + this.portInfo.getPortNumber());
+			}
+
+			StringBuffer sb = new StringBuffer();
+			if( deviceName != null ) {
+				sb.append(deviceName);
+			}
+
+			if( sb.length() > 0 ) {
+				sb.append(": ");
+			}
+			sb.append(portName);
+
+			this.key = sb.toString();
+		}
+		return this.key;
 	}
-	
+
 	public String getName(){
-		return this.portInfo.getName();
+		return this.getKey();
 	}
 }
