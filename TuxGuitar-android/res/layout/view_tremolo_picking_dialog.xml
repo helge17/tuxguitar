@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-	<android.support.v7.widget.GridLayout
+	<GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		app:columnCount="1" style="?attr/dialogStyle">
+		android:columnCount="1" style="?attr/dialogStyle">
 		
 		<RadioGroup 
 			android:id="@+id/tremolo_picking_dlg_duration_group"
-			app:layout_gravity="fill_horizontal|center_vertical" >
+			android:layout_gravity="fill_horizontal|center_vertical" >
 			
 			<RadioButton 
 				android:id="@+id/tremolo_picking_dlg_duration_8"
@@ -34,6 +34,6 @@
 				android:drawableRight="@drawable/duration_32" />
 		</RadioGroup>
 	
-	</android.support.v7.widget.GridLayout>
+	</GridLayout>
 
 </ScrollView>

@@ -53,8 +53,8 @@
 				<extensions>true</extensions>
 				<configuration>
 					<sdk>
-						<platform>23</platform>
-						<buildTools>23.0.0</buildTools>
+						<platform>25</platform>
+						<buildTools>25.0.0</buildTools>
 					</sdk>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
 				</configuration>
