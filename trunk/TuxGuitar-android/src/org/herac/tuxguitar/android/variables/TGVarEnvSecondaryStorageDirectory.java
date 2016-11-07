@@ -4,7 +4,7 @@ import java.io.File;
 
 public class TGVarEnvSecondaryStorageDirectory {
 	
-	private static final String ENVIRONMENT_VARIABLE = "SECONDARY_STORAGE";
+	private static final String[] ENVIRONMENT_VARIABLES = {"SECONDARY_STORAGE", "EXTERNAL_SDCARD_STORAGE"};
 	
 	public static final String NAME = "secondaryStorageDirectory";
 	
@@ -17,11 +17,18 @@ public class TGVarEnvSecondaryStorageDirectory {
 	}
 	
 	public String findSecondaryStorage() {
-		String path = System.getenv(ENVIRONMENT_VARIABLE);
-		if( path != null ) {
-			File file = new File(path);
-			if( file.exists() ) {
-				return file.getAbsolutePath();
+		for(String environmentVariable : ENVIRONMENT_VARIABLES) {
+			String storagePath = System.getenv(environmentVariable);
+			if (storagePath != null) {
+				String[] storagePaths = storagePath.split(File.pathSeparator);
+				if( storagePaths != null ) {
+					for(String currentStoragePath : storagePaths) {
+						File file = new File(currentStoragePath);
+						if( file.exists() && file.canRead() ) {
+							return file.getAbsolutePath();
+						}
+					}
+				}
 			}
 		}
 		return null;
