@@ -1,15 +1,5 @@
 package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
 
-import java.io.File;
-
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserSettings;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,6 +9,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserSettings;
+import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+
+import java.io.File;
 
 public class TGBrowserSettingsDialog extends TGDialog {
 
@@ -31,7 +31,8 @@ public class TGBrowserSettingsDialog extends TGDialog {
 		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_browser_settings_fs_dialog, null);
 
 		this.fillListView(view);
-		
+		this.fillDefaultNameValue(view);
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.browser_settings_fs_dlg_title);
 		builder.setView(view);
@@ -56,7 +57,8 @@ public class TGBrowserSettingsDialog extends TGDialog {
 	}
 
 	public void fillListView(final View view) {
-		TGBrowserSettingsFolderAdapter tgAdapter = new TGBrowserSettingsFolderAdapter(view.getContext());
+		TGBrowserSettingsMountPoint mountPoint = this.getAttribute(TGBrowserSettingsDialogController.ATTRIBUTE_MOUNT_POINT);
+		TGBrowserSettingsFolderAdapter tgAdapter = new TGBrowserSettingsFolderAdapter(view.getContext(), mountPoint);
 		tgAdapter.setListener(new TGBrowserSettingsFolderAdapterListener() {
 			public void onPathChanged(File path) {
 				fillPathPreview(view, path != null ? path.getAbsolutePath() : "");
@@ -66,7 +68,13 @@ public class TGBrowserSettingsDialog extends TGDialog {
 		ListView listView = (ListView) view.findViewById(R.id.browser_settings_fs_path_value_selector);
 		listView.setAdapter(tgAdapter);
 	}
-	
+
+	public void fillDefaultNameValue(View view) {
+		TGBrowserSettingsMountPoint mountPoint = this.getAttribute(TGBrowserSettingsDialogController.ATTRIBUTE_MOUNT_POINT);
+
+		this.setTextFieldValue(view, R.id.browser_settings_fs_name_value, mountPoint.getLabel());
+	}
+
 	public void setTextFieldValue(View view, int textFieldId, String value) {
 		((EditText) view.findViewById(textFieldId)).getText().append(value);
 	}

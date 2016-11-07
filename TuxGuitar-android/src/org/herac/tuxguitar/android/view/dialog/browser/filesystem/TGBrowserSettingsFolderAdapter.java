@@ -1,13 +1,5 @@
 package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.herac.tuxguitar.android.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -18,21 +10,27 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.herac.tuxguitar.android.R;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 
 	private Context context;
 	private File path;
+	private TGBrowserSettingsMountPoint mountPoint;
 	private List<TGBrowserSettingsFolderAdapterItem> items;
 	private TGBrowserSettingsFolderAdapterListener listener;
 	
-	public TGBrowserSettingsFolderAdapter(Context context, File path) {
+	public TGBrowserSettingsFolderAdapter(Context context, TGBrowserSettingsMountPoint mountPoint) {
 		this.context = context;
+		this.mountPoint = mountPoint;
 		this.items = new ArrayList<TGBrowserSettingsFolderAdapterItem>();
-		this.updatePath(path);
-	}
-
-	public TGBrowserSettingsFolderAdapter(Context context) {
-		this(context, new File("/"));
+		this.updatePath(this.mountPoint.getPath());
 	}
 	
 	public File getPath() {
@@ -100,7 +98,7 @@ public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 		this.items.clear();
 		if( this.path != null && this.path.exists() && this.path.isDirectory() ) {
 			
-			if( this.path.getParentFile() != null ) {
+			if( this.path.getParentFile() != null && !this.path.equals(this.mountPoint.getPath())) {
 				this.items.add(new TGBrowserSettingsFolderAdapterItem("../", this.path.getParentFile()));
 			}
 			
