@@ -197,19 +197,23 @@
 	<string name="browser_collections_dlg_remove_confirm_question">Are you sure you want to remove this collection?</string>
 	
 	<!-- filesystem -->
+	<string name="browser_settings_fs_mount_point_dlg_title">Select a storage mount point</string>
+
 	<string name="browser_settings_fs_dlg_title">File System Collection</string>
 	<string name="browser_settings_fs_name_label">Name:</string>
 	<string name="browser_settings_fs_path_label">Folder:</string>
 	
 	<string name="browser_settings_fs_error_title">Error</string>
 	<string name="browser_settings_fs_error_empty_name">Name must not be empty</string>
-	<string name="browser_settings_fs_error_empty_path">Path must not be empty</string>
+	<string name="browser_settings_fs_error_empty_path">Select one folder please</string>
 	<string name="browser_settings_fs_error_nonexistent_path">Nonexistent Path</string>
 	<string name="browser_settings_fs_error_nonfolder_path">Path must be a folder</string>
-	
+
 	<!-- default filesystem location -->
-	<string name="browser_default_external_storage_title">Device Storage</string>
-	
+	<string name="browser_settings_fs_root_folder_title">Root Folder</string>
+	<string name="browser_settings_fs_external_storage_title">Device Storage</string>
+	<string name="browser_settings_fs_secondary_storage_title">SD memory card</string>
+
 	<!-- =================================================================== -->
 	<!-- ========================= DIALOGS ================================= -->
 	<!-- =================================================================== -->
