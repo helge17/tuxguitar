@@ -21,7 +21,7 @@ public class GMSynthesizer implements MidiSynthesizer{
 		}
 	}
 	
-	public MidiChannel openChannel(int channelId){
+	public MidiChannel openChannel(int channelId) throws MidiPlayerException {
 		return new GMChannel(channelId, this.gmChannelRouter, this.midiOutputPort.getReceiver());
 	}
 
