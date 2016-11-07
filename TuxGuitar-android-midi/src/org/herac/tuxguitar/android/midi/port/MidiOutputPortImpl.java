@@ -18,7 +18,9 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
 
 @SuppressLint("NewApi")
-public class MidiOutputPortImpl extends GMOutputPort{
+public class MidiOutputPortImpl extends GMOutputPort {
+
+	private final static long CONNECTION_TIMEOUT = 15000;
 
 	private TGContext context;
 	private MidiDeviceInfo info;
@@ -26,6 +28,7 @@ public class MidiOutputPortImpl extends GMOutputPort{
 	private MidiOutputPortConection connection;
 	private MidiReceiverImpl receiver;
 	private String key;
+	private boolean connecting;
 
 	public MidiOutputPortImpl(TGContext context, MidiDeviceInfo info, MidiDeviceInfo.PortInfo portInfo){
 		this.context = context;
@@ -33,38 +36,6 @@ public class MidiOutputPortImpl extends GMOutputPort{
 		this.portInfo = portInfo;
 		this.connection = new MidiOutputPortConection();
 		this.receiver = new MidiReceiverImpl(this.connection);
-	}
-
-	public void open() {
-		if(!this.connection.isConnected()) {
-			TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
-
-			MidiManager midiManager = (MidiManager) activity.getSystemService(Context.MIDI_SERVICE);
-			midiManager.openDevice(this.info, new MidiManager.OnDeviceOpenedListener() {
-				public void onDeviceOpened(MidiDevice device) {
-					if (device != null) {
-						MidiInputPort port = device.openInputPort(portInfo.getPortNumber());
-						MidiOutputPortImpl.this.connection.connect(device, port);
-					}
-				}
-			}, new Handler(Looper.getMainLooper()));
-		}
-	}
-
-	public void close() throws MidiPlayerException {
-		if( this.connection.isConnected() ) {
-			this.connection.disconnect();
-		}
-	}
-	
-	public GMReceiver getReceiver(){
-		this.open();
-
-		return this.receiver;
-	}
-	
-	public void check(){
-		// Not implemented
 	}
 
 	public String getKey(){
@@ -80,7 +51,7 @@ public class MidiOutputPortImpl extends GMOutputPort{
 				portName = ("#" + this.portInfo.getPortNumber());
 			}
 
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			if( deviceName != null ) {
 				sb.append(deviceName);
 			}
@@ -97,5 +68,86 @@ public class MidiOutputPortImpl extends GMOutputPort{
 
 	public String getName(){
 		return this.getKey();
+	}
+
+	public GMReceiver getReceiver() throws MidiPlayerException {
+		this.open();
+		this.tryWaitForConnection();
+
+		return this.receiver;
+	}
+
+	public void check() throws MidiPlayerException {
+		this.tryWaitForConnection();
+	}
+
+	public void open() throws MidiPlayerException {
+		if(!this.connection.isConnected() && !this.connecting) {
+			this.updateConnectingStatus(true);
+			this.openInNewThread();
+			this.tryWaitForConnection();
+		}
+	}
+
+	public void close() throws MidiPlayerException {
+		if( this.connection.isConnected() ) {
+			this.connection.disconnect();
+		}
+	}
+
+	private void tryWaitForConnection() throws MidiPlayerException {
+		// never lock the ui-thread
+		if( Looper.myLooper() != Looper.getMainLooper() ) {
+			long time = System.currentTimeMillis();
+			while( this.connecting ) {
+				Thread.yield();
+
+				if( System.currentTimeMillis() > (time + CONNECTION_TIMEOUT)) {
+					updateConnectingStatus(false);
+
+					throw new MidiPlayerException("Connection timeout");
+				}
+			}
+		}
+	}
+
+	private void updateConnectingStatus(boolean connecting) {
+		this.connecting = connecting;
+	}
+
+	private void openInNewThread() {
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					openInCurrentThread();
+				} catch(Throwable throwable) {
+					updateConnectingStatus(false);
+				}
+			}
+		}).start();
+	}
+
+	private void openInCurrentThread() {
+		TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
+
+		MidiManager midiManager = (MidiManager) activity.getSystemService(Context.MIDI_SERVICE);
+		midiManager.openDevice(this.info, new MidiManager.OnDeviceOpenedListener() {
+			public void onDeviceOpened(MidiDevice device) {
+				try {
+					if (device != null) {
+						openInputPort(device);
+					}
+				} finally {
+					updateConnectingStatus(false);
+				}
+			}
+		}, new Handler(Looper.getMainLooper()));
+	}
+
+	private void openInputPort(MidiDevice device) {
+		MidiInputPort port = device.openInputPort(this.portInfo.getPortNumber());
+		if( port != null ) {
+			this.connection.connect(device, port);
+		}
 	}
 }

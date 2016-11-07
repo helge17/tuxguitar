@@ -12,7 +12,7 @@ public abstract class GMOutputPort implements MidiOutputPort{
 		this.midiSynthesizer = new GMSynthesizer(this);
 	}
 	
-	public abstract GMReceiver getReceiver();
+	public abstract GMReceiver getReceiver() throws MidiPlayerException;
 	
 	public MidiSynthesizer getSynthesizer() throws MidiPlayerException{
 		return this.midiSynthesizer;
