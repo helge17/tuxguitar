@@ -5,7 +5,7 @@ import android.net.Uri;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 
 public class TGSafBrowserSettings {
-	
+
 	private String title;
 	private Uri uri;
 	
@@ -13,15 +13,15 @@ public class TGSafBrowserSettings {
 		this.title = title;
 		this.uri = uri;
 	}
-	
+
 	public String getTitle(){
 		return this.title;
 	}
-	
+
 	public Uri getUri(){
 		return this.uri;
 	}
-	
+
 	public TGBrowserSettings toBrowserSettings() {
 		TGBrowserSettings settings = new TGBrowserSettings();
 		settings.setTitle(this.getTitle());
