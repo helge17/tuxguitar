@@ -27,6 +27,13 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-android-lib</artifactId>
+			<version>${project.version}</version>
+			<type>aar</type>
+			<scope>provided</scope>
+		</dependency>
 		
 		<!-- 3RD PARTY LIBRARIES -->
 		<dependency>
