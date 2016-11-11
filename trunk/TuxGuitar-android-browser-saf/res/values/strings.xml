@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="browser_settings_title_format">Storage Folder (%1$s)</string>
 	<string name="browser_settings_saf_error_uri_access">Couldn\'t get access to uri</string>
 	<string name="browser_settings_saf_uri_request_msg">Please select pick a storage folder</string>
 </resources>
