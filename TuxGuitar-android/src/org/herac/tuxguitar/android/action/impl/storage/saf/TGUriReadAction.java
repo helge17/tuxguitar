@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.action.impl.storage;
+package org.herac.tuxguitar.android.action.impl.storage.saf;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 public class TGUriReadAction extends TGActionBase {
 
-	public static final String NAME = "action.storage.read-uri";
+	public static final String NAME = "action.storage.saf.read-uri";
 
 	public static final String ATTRIBUTE_ACTIVITY = TGActivity.class.getName();
 	public static final String ATTRIBUTE_URI = Uri.class.getName();

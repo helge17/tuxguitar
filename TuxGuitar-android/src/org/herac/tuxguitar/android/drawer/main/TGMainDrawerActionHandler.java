@@ -7,8 +7,6 @@ import org.herac.tuxguitar.android.action.impl.storage.TGOpenDocumentAction;
 import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAction;
 import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAsAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.android.fragment.TGFragmentController;
 import org.herac.tuxguitar.android.fragment.impl.TGChannelListFragmentController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
@@ -34,13 +32,7 @@ public class TGMainDrawerActionHandler {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		return tgActionProcessor;
 	}
-	
-	public TGActionProcessorListener createBrowserAction(String actionId) {
-		TGActionProcessorListener tgActionProcessor = this.createAction(actionId);
-		tgActionProcessor.setAttribute(TGBrowserSession.class.getName(), this.findBrowserSession());
-		return tgActionProcessor;
-	}
-	
+
 	public TGActionProcessorListener createNewFileAction() {
 		return this.createAction(TGLoadTemplateAction.NAME);
 	}
@@ -77,9 +69,5 @@ public class TGMainDrawerActionHandler {
 	
 	public TGActionProcessorListener createOpenInfoAction() {
 		return this.createDialogAction(new TGSongInfoDialogController());
-	}
-	
-	public TGBrowserSession findBrowserSession() {
-		return TGBrowserManager.getInstance(this.mainDrawer.findContext()).getSession();
 	}
 }
