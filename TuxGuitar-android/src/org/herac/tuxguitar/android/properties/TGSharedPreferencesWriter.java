@@ -19,7 +19,7 @@ public class TGSharedPreferencesWriter extends TGSharedPreferencesHandler implem
 	
 	public void writeProperties(TGProperties properties, String module) throws TGPropertiesException {
 		Map<String, String> map = ((TGPropertiesImpl) properties).getMap();
-		
+
 		SharedPreferences sharedPreferences = getSharedPreferences();
 		Editor editor = sharedPreferences.edit();
 		

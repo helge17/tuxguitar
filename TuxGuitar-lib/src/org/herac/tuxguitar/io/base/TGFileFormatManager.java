@@ -1,9 +1,5 @@
 package org.herac.tuxguitar.io.base;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.io.tg.TGInputStream;
@@ -12,6 +8,10 @@ import org.herac.tuxguitar.io.tg.TGStream;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TGFileFormatManager {
 	
@@ -168,7 +168,19 @@ public class TGFileFormatManager {
 		}
 		return false;
 	}
-	
+
+	public String getDefaultExtension(TGFileFormat format, String defaultValue) {
+		String[] supportedFormats = format.getSupportedFormats();
+		if( supportedFormats != null && supportedFormats.length > 0 ) {
+			return ("." + supportedFormats[0]);
+		}
+		return defaultValue;
+	}
+
+	public String getDefaultExtension(TGFileFormat format) {
+		return this.getDefaultExtension(format, DEFAULT_EXTENSION);
+	}
+
 	private void addDefaultStreams(){
 		this.addInputStream(new TGInputStream());
 		this.addOutputStream(new TGOutputStream());

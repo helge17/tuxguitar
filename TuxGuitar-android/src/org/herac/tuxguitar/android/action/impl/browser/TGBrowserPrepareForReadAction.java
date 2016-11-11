@@ -15,8 +15,8 @@ public class TGBrowserPrepareForReadAction extends TGActionBase{
 		super(context, NAME);
 	}
 	
-	protected void processAction(final TGActionContext context) {
-		TGBrowserSession tgBrowserSession = (TGBrowserSession) context.getAttribute(ATTRIBUTE_SESSION);
+	protected void processAction(final TGActionContext tgActionContext) {
+		TGBrowserSession tgBrowserSession = tgActionContext.getAttribute(ATTRIBUTE_SESSION);
 		tgBrowserSession.setSessionType(TGBrowserSession.READ_MODE);
 	}
 }

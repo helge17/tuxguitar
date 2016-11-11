@@ -31,6 +31,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
 import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
@@ -40,6 +41,12 @@ import org.herac.tuxguitar.android.action.impl.measure.TGGoFirstMeasureAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoLastMeasureAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoNextMeasureAction;
 import org.herac.tuxguitar.android.action.impl.measure.TGGoPreviousMeasureAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGOpenDocumentAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAsAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGStorageLoadSettingsAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGUriReadAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGUriWriteAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoFirstTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
@@ -385,7 +392,15 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGBrowserCloseSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserAddCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
-		
+
+		//storage actions
+		this.map(TGUriReadAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGUriWriteAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGOpenDocumentAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGSaveDocumentAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGSaveDocumentAsAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGStorageLoadSettingsAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+
 		//intent actions
 		this.map(TGProcessIntentAction.NAME, LOCKABLE | STOP_TRANSPORT | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		
@@ -393,6 +408,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenDialogAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGOpenMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFragmentAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGStartActivityForResultAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGBackAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGExitAction.NAME, LOCKABLE, null);
 		this.map(TGFinishAction.NAME, LOCKABLE | SYNC_THREAD, null);

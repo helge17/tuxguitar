@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="midi.settings"
+        android:title="Midi Settings">
+
+        <ListPreference
+            android:key="midi.output.port"
+            android:title="Midi Output Port" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="storage.settings"
+        android:title="Storage Settings">
+
+        <SwitchPreference
+            android:key="storage.use.saf.provider"
+            android:title="Use SAF provider"
+            android:summary="Use Storage Access Framework to browse files"
+            android:enabled="@bool/storage_saf_available" />
+    </PreferenceCategory>
+</PreferenceScreen>

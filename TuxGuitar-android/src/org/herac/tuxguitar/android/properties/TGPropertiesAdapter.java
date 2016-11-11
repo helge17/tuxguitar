@@ -10,7 +10,7 @@ import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGPropertiesAdapter {
-	
+
 	public static void initialize(TGContext context, Activity activity) {
 		addFactory(context);
 		addReader(context, TGBrowserProperties.RESOURCE, createSharedPreferencesReader(context, activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE));

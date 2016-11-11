@@ -3,14 +3,12 @@ package org.herac.tuxguitar.android.action;
 import org.herac.tuxguitar.action.TGActionContextFactory;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.installer.TGActionInstaller;
-import org.herac.tuxguitar.android.action.listener.browser.TGActionUpdateBrowserListener;
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateListener;
 import org.herac.tuxguitar.android.action.listener.error.TGActionErrorHandler;
 import org.herac.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.android.action.listener.gui.TGExitConfirmInterceptor;
 import org.herac.tuxguitar.android.action.listener.gui.TGHideSoftInputListener;
 import org.herac.tuxguitar.android.action.listener.lock.TGLockableActionListener;
-import org.herac.tuxguitar.android.action.listener.navigation.TGActionUpdateFragmentListener;
 import org.herac.tuxguitar.android.action.listener.thread.TGSyncThreadInterceptor;
 import org.herac.tuxguitar.android.action.listener.transport.TGDisableOnPlayInterceptor;
 import org.herac.tuxguitar.android.action.listener.transport.TGStopTransportInterceptor;
@@ -74,9 +72,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addPostExecutionListener(this.errorHandler);
 		tgActionManager.addPostExecutionListener(hideSoftInputListener);
 		tgActionManager.addPostExecutionListener(processingListener);
-		tgActionManager.addPostExecutionListener(new TGActionUpdateBrowserListener(activity));
-		tgActionManager.addPostExecutionListener(new TGActionUpdateFragmentListener(activity));
-		
+
 		tgActionManager.addErrorListener(this.updatableActionListener);
 		tgActionManager.addErrorListener(this.undoableActionListener);
 		tgActionManager.addErrorListener(this.lockableActionListener);

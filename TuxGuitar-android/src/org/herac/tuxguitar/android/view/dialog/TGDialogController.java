@@ -4,5 +4,5 @@ import android.app.Activity;
 
 public interface TGDialogController {
 	
-	public void showDialog(Activity activity, TGDialogContext dialogContext);
+	void showDialog(Activity activity, TGDialogContext dialogContext);
 }

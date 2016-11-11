@@ -69,7 +69,7 @@ public class TGBrowserActionHandler {
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, controller);
 		return tgActionProcessor;
 	}
-	
+
 	public void processConfirmableAction(final TGActionProcessor actionProcessor, final String confirmMessage) {
 		TGActionProcessor tgActionProcessor = this.createOpenDialogAction(new TGConfirmDialogController());
 		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_MESSAGE, confirmMessage);
