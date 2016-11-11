@@ -88,8 +88,14 @@
 				<include name="TuxGuitar-android/**"/>
 				<include name="TuxGuitar-android-resources/**"/>
 				<include name="TuxGuitar-android-gervill/**"/>
+				<include name="TuxGuitar-android-gervill-plugin/**"/>
 				<include name="TuxGuitar-android-gervill-soundbank/**"/>
 				<include name="TuxGuitar-android-midi/**"/>
+				<include name="TuxGuitar-android-midi-plugin/**"/>
+				<include name="TuxGuitar-android-midimaster/**"/>
+				<include name="TuxGuitar-android-midimaster-plugin/**"/>
+				<include name="TuxGuitar-android-browser-saf/**"/>
+				<include name="TuxGuitar-android-browser-saf-plugin/**"/>
 				<include name="TuxGuitar-android-gdrive/**"/>
 				<include name="TuxGuitar-android-gdrive-gdaa/**"/>
 				<include name="TuxGuitar-android-gdrive-plugin/**"/>
