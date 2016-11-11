@@ -14,6 +14,8 @@ import org.herac.tuxguitar.android.action.listener.transport.TGDisableOnPlayInte
 import org.herac.tuxguitar.android.action.listener.transport.TGStopTransportInterceptor;
 import org.herac.tuxguitar.android.action.listener.undoable.TGUndoableActionListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -79,6 +81,11 @@ public class TGActionAdapterManager {
 		tgActionManager.addErrorListener(this.errorHandler);
 		tgActionManager.addErrorListener(hideSoftInputListener);
 		tgActionManager.addErrorListener(processingListener);
+
+		this.addAsyncProcessStartListener(processingListener);
+		this.addAsyncProcessEndListener(processingListener);
+		this.addAsyncProcessErrorListener(processingListener);
+		this.addAsyncProcessErrorListener(this.errorHandler);
 	}
 	
 	private void initializeDefaultActions(){
@@ -112,6 +119,30 @@ public class TGActionAdapterManager {
 
 	public TGUpdateListener getUpdatableActionListener() {
 		return updatableActionListener;
+	}
+
+	public void addAsyncProcessStartListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).addListener(TGActionAsyncProcessStartEvent.EVENT_TYPE, listener);
+	}
+
+	public void removeAsyncProcessStartListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).removeListener(TGActionAsyncProcessStartEvent.EVENT_TYPE, listener);
+	}
+
+	public void addAsyncProcessEndListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).addListener(TGActionAsyncProcessEndEvent.EVENT_TYPE, listener);
+	}
+
+	public void removeAsyncProcessEndListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).removeListener(TGActionAsyncProcessEndEvent.EVENT_TYPE, listener);
+	}
+
+	public void addAsyncProcessErrorListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).addListener(TGActionAsyncProcessErrorEvent.EVENT_TYPE, listener);
+	}
+
+	public void removeAsyncProcessErrorListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).removeListener(TGActionAsyncProcessErrorEvent.EVENT_TYPE, listener);
 	}
 
 	public static TGActionAdapterManager getInstance(TGContext context) {

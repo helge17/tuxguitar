@@ -21,7 +21,7 @@ public class TGBrowserOpenSessionAction extends TGActionBase{
 	
 	protected void processAction(final TGActionContext context) {
 		try {
-			TGBrowserCollection collection = (TGBrowserCollection) context.getAttribute(ATTRIBUTE_COLLECTION);
+			TGBrowserCollection collection = context.getAttribute(ATTRIBUTE_COLLECTION);
 			TGBrowserManager tgBrowserManager = TGBrowserManager.getInstance(getContext());
 			
 			if( tgBrowserManager.getSession().getBrowser() != null ) {

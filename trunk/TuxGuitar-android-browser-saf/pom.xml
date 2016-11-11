@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-android-browser-saf</artifactId>
+	<packaging>aar</packaging>
+	<name>${project.artifactId}</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-lib</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-android-lib</artifactId>
+			<version>${project.version}</version>
+			<type>aar</type>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.android</groupId>
+			<artifactId>android</artifactId>
+		    <version>25.0.0</version>
+		    <scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>share</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>com.simpligility.maven.plugins</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>4.3.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<sdk>
+						<platform>25</platform>
+						<buildTools>25.0.0</buildTools>
+					</sdk>
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>android-support</id>
+			<url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+		</repository>
+		<repository>
+			<id>google-support</id>
+			<url>file://${env.ANDROID_HOME}/extras/google/m2repository</url>
+		</repository>
+	</repositories>
+</project>

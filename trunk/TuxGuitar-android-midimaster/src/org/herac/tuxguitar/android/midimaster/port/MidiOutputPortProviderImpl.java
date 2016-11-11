@@ -14,7 +14,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	public MidiOutputPortProviderImpl(){
 		super();
 	}
-	
+
 	public List<MidiOutputPort> listPorts() {
 		if( this.ports == null ) {
 			this.ports = new ArrayList<MidiOutputPort>();

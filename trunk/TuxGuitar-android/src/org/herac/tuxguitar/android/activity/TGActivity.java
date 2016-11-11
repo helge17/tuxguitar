@@ -64,7 +64,6 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		this.setContentView(R.layout.activity_tg);
 		
 		this.registerForContextMenu(findViewById(R.id.root_layout));
-		this.getActionBar().setLogo(R.drawable.ic_launcher);
 		this.getActionBar().setDisplayUseLogoEnabled(true);
 		this.getActionBar().setDisplayShowHomeEnabled(true);
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);

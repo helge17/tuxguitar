@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
@@ -206,6 +207,8 @@ public class TGBrowserView extends RelativeLayout {
 		
 		TGActionManager.getInstance(this.findContext()).addPostExecutionListener(this.eventListener);
 		TGActionManager.getInstance(this.findContext()).addErrorListener(this.eventListener);
+		TGActionAdapterManager.getInstance(this.findContext()).addAsyncProcessEndListener(this.eventListener);
+		TGActionAdapterManager.getInstance(this.findContext()).addAsyncProcessErrorListener(this.eventListener);
 		TGEditorManager.getInstance(this.findContext()).addDestroyListener(this.destroyListener);
 	}
 	

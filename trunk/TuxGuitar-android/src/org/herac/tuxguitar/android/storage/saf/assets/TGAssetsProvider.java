@@ -10,7 +10,7 @@ import android.provider.DocumentsContract;
 import android.provider.DocumentsProvider;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.storage.saf.TGSafStreamUtil;
+import org.herac.tuxguitar.android.util.TGStreamUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -87,7 +87,7 @@ public class TGAssetsProvider extends DocumentsProvider {
 		try {
 			ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
 			if( this.assets != null ) {
-				TGSafStreamUtil.write(this.assets.open(documentId), new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1]));
+				TGStreamUtil.write(this.assets.open(documentId), new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1]));
 			}
 			return pipe[0];
 		} catch(IOException e) {

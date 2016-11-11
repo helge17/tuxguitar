@@ -1,16 +1,16 @@
 package org.herac.tuxguitar.android.browser.assets;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.util.TGContext;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TGAssetBrowser implements TGBrowser{
 	
@@ -84,7 +84,7 @@ public class TGAssetBrowser implements TGBrowser{
 					Collections.sort(elements, new TGAssetBrowserElementComparator());
 				}
 			}
-			
+
 			cb.onSuccess(elements);
 		} catch (Throwable e) {
 			cb.handleError(e);

@@ -32,6 +32,8 @@
 		<module>../../TuxGuitar-android-gervill</module>
 		<module>../../TuxGuitar-android-gervill-plugin</module>
 		<module>../../TuxGuitar-android-gervill-soundbank</module>
+		<module>../../TuxGuitar-android-browser-saf</module>
+		<module>../../TuxGuitar-android-browser-saf-plugin</module>
 		<module>../../TuxGuitar-android-gdrive</module>
 		<module>../../TuxGuitar-android-gdrive-plugin</module>
 	</modules>
