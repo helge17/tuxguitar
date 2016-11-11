@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.android.browser.model;
 
-import java.util.List;
-
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.io.base.TGFileFormat;
+
+import java.util.List;
 
 
 public class TGBrowserSession {

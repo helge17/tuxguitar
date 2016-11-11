@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.android.drawer.main;
 
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGOpenDocumentAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAction;
+import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAsAction;
 import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
@@ -46,15 +46,15 @@ public class TGMainDrawerActionHandler {
 	}
 	
 	public TGActionProcessorListener createOpenFileAction() {
-		return this.createBrowserAction(TGBrowserPrepareForReadAction.NAME);
+		return this.createAction(TGOpenDocumentAction.NAME);
 	}
 	
 	public TGActionProcessorListener createSaveFileAsAction() {
-		return this.createBrowserAction(TGBrowserPrepareForWriteAction.NAME);
+		return this.createAction(TGSaveDocumentAsAction.NAME);
 	}
 	
 	public TGActionProcessorListener createSaveFileAction() {
-		return this.createBrowserAction(TGBrowserSaveCurrentElementAction.NAME);
+		return this.createAction(TGSaveDocumentAction.NAME);
 	}
 	
 	public TGActionProcessorListener createFragmentAction(TGFragmentController<?> controller) {

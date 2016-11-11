@@ -41,7 +41,6 @@ public class TGBrowserOpenElementAction extends TGActionBase{
 				
 				session.setCurrentElement(element);
 				session.setCurrentFormat((TGFileFormat) context.getAttribute(TGReadSongAction.ATTRIBUTE_FORMAT));
-				
 			} finally {
 				stream.close();
 			}

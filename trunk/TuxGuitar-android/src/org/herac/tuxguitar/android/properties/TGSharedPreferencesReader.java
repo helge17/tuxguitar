@@ -34,7 +34,7 @@ public class TGSharedPreferencesReader extends TGSharedPreferencesHandler implem
 	@SuppressWarnings("unchecked")
 	public void readStoredProperties(TGProperties properties, String module) throws TGPropertiesException {
 		Map<String, String> map = ((TGPropertiesImpl) properties).getMap();
-		
+
 		SharedPreferences sharedPreferences = getSharedPreferences();
 		Iterator<?> it = sharedPreferences.getAll().entrySet().iterator();
 		while( it.hasNext() ) {

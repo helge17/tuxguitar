@@ -173,7 +173,21 @@
 	<!-- =================================================================== -->
 	<string name="main_drawer_file">File</string>
 	<string name="main_drawer_tracks">Tracks</string>
-	
+
+
+	<!-- =================================================================== -->
+	<!-- ========================= Storage ================================= -->
+	<!-- =================================================================== -->
+
+	<string name="storage_default_filename">Untitled</string>
+
+	<!-- =================================================================== -->
+	<!-- ======================= SAF Storage =============================== -->
+	<!-- =================================================================== -->
+
+	<string name="storage_saf_file_format_chooser_title">Select a File Format</string>
+	<string name="storage_saf_assets_provider_title">Demo Songs</string>
+
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
 	<!-- =================================================================== -->
@@ -185,7 +199,6 @@
 	<string name="browser_save_label">Save</string>
 	<string name="browser_add_collection">Add Collection</string>
 	<string name="browser_remove_collection">Remove Collection</string>
-	<string name="browser_file_default_name">Untitled</string>
 	<string name="browser_file_overwrite_question">This file already exists. Do you want to overwrite it?</string>
 	<string name="browser_file_overwrite_readonly_error">This file already exists and cannot be modified</string>
 	<string name="browser_element_icon_description">Browser Element</string>

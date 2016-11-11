@@ -196,7 +196,7 @@ public class TGBrowserView extends RelativeLayout {
 		view.setVisibility(session.getSessionType() == TGBrowserSession.WRITE_MODE ? View.VISIBLE : View.GONE);
 		
 		EditText editText = (EditText) findViewById(R.id.browser_save_element_name);
-		editText.setText(findActivity().getString(R.string.browser_file_default_name));
+		editText.setText(findActivity().getString(R.string.storage_default_filename));
 	}
 	
 	public void addListeners() {

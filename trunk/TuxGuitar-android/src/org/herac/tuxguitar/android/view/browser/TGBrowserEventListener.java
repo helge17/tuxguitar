@@ -30,13 +30,13 @@ public class TGBrowserEventListener implements TGEventListener {
 		TGBrowserAddCollectionAction.NAME, 
 		TGBrowserRemoveCollectionAction.NAME
 	};
-	
+
 	private TGBrowserView browser;
 	
 	public TGBrowserEventListener(TGBrowserView browser) {
 		this.browser = browser;
 	}
-	
+
 	public boolean isRefreshableAction(String actionId) {
 		for(String refreshableActionId : REFRESHABLE_ACTIONS) {
 			if( refreshableActionId.equals(actionId) ) {
@@ -45,7 +45,7 @@ public class TGBrowserEventListener implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	public void processPostExecution(String id) throws TGBrowserException {
 		if( TGBrowserRefreshAction.NAME.equals(id) ) {
 			this.browser.refresh();
