@@ -32,10 +32,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.android</groupId>
+			<groupId>com.android</groupId>
 			<artifactId>android</artifactId>
-			<version>4.1.1.4</version>
-			<scope>provided</scope>
+		    <version>25.0.0</version>
+		    <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android.gms</groupId>

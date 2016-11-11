@@ -55,6 +55,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-android-browser-saf-plugin</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-gdrive-plugin</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
@@ -105,6 +112,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-android-gervill-plugin</artifactId>
 									<destFileName>tuxguitar-android-gervill-plugin.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-android-browser-saf-plugin</artifactId>
+									<destFileName>tuxguitar-android-browser-saf-plugin.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

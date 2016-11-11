@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.storage.saf;
+package org.herac.tuxguitar.android.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class TGSafStreamUtil {
+public class TGStreamUtil {
 
 	public static InputStream getInputStream(InputStream in) throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-		TGSafStreamUtil.write(in, out);
+		TGStreamUtil.write(in, out);
 
 		return new ByteArrayInputStream(out.toByteArray());
 	}

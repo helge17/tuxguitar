@@ -19,7 +19,7 @@ public class TGBrowserSaveCurrentElementAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		TGBrowserSession session = (TGBrowserSession) context.getAttribute(ATTRIBUTE_SESSION);
+		TGBrowserSession session = context.getAttribute(ATTRIBUTE_SESSION);
 		TGBrowserElement element = session.getCurrentElement();
 		TGFileFormat fileFormat = session.getCurrentFormat();
 		if( element != null && element.isWritable() && fileFormat != null ) {

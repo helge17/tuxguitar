@@ -6,7 +6,6 @@ import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.TGBrowserSyncCallBack;
 import org.herac.tuxguitar.android.browser.model.TGBrowser;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
@@ -24,30 +23,29 @@ public class TGBrowserLoadSessionAction extends TGActionBase{
 		super(context, NAME);
 	}
 	
-	protected void processAction(final TGActionContext context) {
-		try {
-			TGBrowser tgBrowser = context.getAttribute(ATTRIBUTE_BROWSER);
-			TGBrowserCollection tgBrowserCollection = context.getAttribute(ATTRIBUTE_COLLECTION);
-			TGBrowserSession tgBrowserSession = context.getAttribute(ATTRIBUTE_SESSION);
-			
-			tgBrowserSession.setBrowser(tgBrowser);
-			if( tgBrowserSession.getBrowser() != null ) {
-				TGBrowserSyncCallBack<Object> tgBrowserOpenCallBack = new TGBrowserSyncCallBack<Object>();
-				tgBrowserSession.getBrowser().open(tgBrowserOpenCallBack);
-				tgBrowserOpenCallBack.syncCallBack();
-				
-				TGBrowserSyncCallBack<Object> tgBrowserCdRootCallBack = new TGBrowserSyncCallBack<Object>();
-				tgBrowserSession.getBrowser().cdRoot(tgBrowserCdRootCallBack);
-				tgBrowserCdRootCallBack.syncCallBack();
-				
-				tgBrowserSession.setCollection(tgBrowserCollection);
-				
-				TGBrowserManager.getInstance(getContext()).storeDefaultCollection();
-				TGActionManager.getInstance(getContext()).execute(TGBrowserRefreshAction.NAME, context);
-			}
-			
-		} catch (TGBrowserException e)  {
-			throw new TGActionException(e);
+	protected void processAction(TGActionContext context) {
+		final TGBrowser tgBrowser = context.getAttribute(ATTRIBUTE_BROWSER);
+		final TGBrowserCollection tgBrowserCollection = context.getAttribute(ATTRIBUTE_COLLECTION);
+		final TGBrowserSession tgBrowserSession = context.getAttribute(ATTRIBUTE_SESSION);
+
+		tgBrowserSession.setBrowser(tgBrowser);
+		if( tgBrowserSession.getBrowser() != null ) {
+			tgBrowserSession.getBrowser().open(new TGBrowserActionCallBack<Object>(this, context) {
+				public void onActionSuccess(TGActionContext context, Object successData) {
+					tgBrowserSession.getBrowser().cdRoot(new TGBrowserActionCallBack<Object>(TGBrowserLoadSessionAction.this, context) {
+						public void onActionSuccess(TGActionContext context, Object successData) {
+							try {
+								tgBrowserSession.setCollection(tgBrowserCollection);
+
+								TGBrowserManager.getInstance(getContext()).storeDefaultCollection();
+								TGActionManager.getInstance(getContext()).execute(TGBrowserRefreshAction.NAME, context);
+							} catch (TGBrowserException e)  {
+								throw new TGActionException(e);
+							}
+						}
+					});
+				}
+			});
 		}
 	}
 }
