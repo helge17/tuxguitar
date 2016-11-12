@@ -78,7 +78,9 @@ public class TGTransportPreferencesFragment extends PreferenceFragment implement
 		ListPreference listPreference = (ListPreference) this.findPreference(TGTransportProperties.PROPERTY_MIDI_OUTPUT_PORT);
 		listPreference.setEntries(entryNames.toArray(new CharSequence[entryNames.size()]));
 		listPreference.setEntryValues(entryValues.toArray(new CharSequence[entryValues.size()]));
-		listPreference.setDefaultValue(defaultValue);
+		if( defaultValue != null ) {
+			listPreference.setValue(defaultValue);
+		}
 		listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference, Object o) {
 				updatePreferenceSummary(preference, o.toString(), R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
