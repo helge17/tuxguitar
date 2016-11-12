@@ -45,7 +45,7 @@ public class TGFsBrowserElement implements TGBrowserElement{
 			try {
 				return new FileInputStream(getFile());
 			} catch (FileNotFoundException e) {
-				throw new TGBrowserException(e);
+				throw new TGBrowserException(e.getMessage(), e);
 			}
 		}
 		return null;
@@ -56,7 +56,7 @@ public class TGFsBrowserElement implements TGBrowserElement{
 			try {
 				return new FileOutputStream(getFile());
 			} catch (FileNotFoundException e) {
-				throw new TGBrowserException(e);
+				throw new TGBrowserException(e.getMessage(), e);
 			}
 		}
 		return null;

@@ -2,21 +2,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:key="midi.settings"
-        android:title="Midi Settings">
+        android:title="@string/preferences_midi_category_title">
 
         <ListPreference
             android:key="midi.output.port"
-            android:title="Midi Output Port" />
+            android:title="@string/preferences_midi_output_port_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="storage.settings"
-        android:title="Storage Settings">
+        android:title="@string/preferences_storage_category_title">
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="storage.use.saf.provider"
-            android:title="Use SAF provider"
-            android:summary="Use Storage Access Framework to browse files"
+            android:title="@string/preferences_storage_storage_use_saf_provider_title"
+            android:summary="@string/preferences_storage_storage_use_saf_provider_summary"
             android:enabled="@bool/storage_saf_available" />
     </PreferenceCategory>
 </PreferenceScreen>
