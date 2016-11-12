@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.fragment.impl;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import org.herac.tuxguitar.android.R;
@@ -78,6 +79,22 @@ public class TGTransportPreferencesFragment extends PreferenceFragment implement
 		listPreference.setEntries(entryNames.toArray(new CharSequence[entryNames.size()]));
 		listPreference.setEntryValues(entryValues.toArray(new CharSequence[entryValues.size()]));
 		listPreference.setDefaultValue(defaultValue);
+		listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(Preference preference, Object o) {
+				updatePreferenceSummary(preference, o.toString(), R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
+
+				return true;
+			}
+		});
+		updatePreferenceSummary(listPreference, defaultValue, R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
+	}
+
+	public void updatePreferenceSummary(Preference preference, String value, Integer summaryId, Integer emptySummaryId) {
+		if((value == null || value.isEmpty()) && emptySummaryId != null ) {
+			preference.setSummary(this.getActivity().getString(emptySummaryId));
+		} else {
+			preference.setSummary(this.getActivity().getString(summaryId, value));
+		}
 	}
 
 	public TGContext findContext() {

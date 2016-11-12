@@ -228,6 +228,19 @@
 	<string name="browser_settings_fs_secondary_storage_title">SD memory card</string>
 
 	<!-- =================================================================== -->
+	<!-- ======================= PREFERENCES =============================== -->
+	<!-- =================================================================== -->
+
+	<string name="preferences_midi_category_title">MIDI Settings</string>
+	<string name="preferences_midi_output_port_title">MIDI Output Port</string>
+	<string name="preferences_midi_output_port_summary">Selected Port: %1$s</string>
+	<string name="preferences_midi_output_port_summary_empty">No MIDI port selected</string>
+
+	<string name="preferences_storage_category_title">Storage Settings</string>
+	<string name="preferences_storage_storage_use_saf_provider_title">Use SAF provider</string>
+	<string name="preferences_storage_storage_use_saf_provider_summary">Use Storage Access Framework to browse files</string>
+
+	<!-- =================================================================== -->
 	<!-- ========================= DIALOGS ================================= -->
 	<!-- =================================================================== -->
 	
