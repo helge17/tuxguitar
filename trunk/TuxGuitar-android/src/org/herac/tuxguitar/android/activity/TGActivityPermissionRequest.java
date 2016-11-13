@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGRequestPermissionsAction;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
@@ -73,7 +73,7 @@ public class TGActivityPermissionRequest {
 		} else {
 			String[] requiredPermissions = missingPermissions.toArray(new String[missingPermissions.size()]);
 			if( ignoreRationale || !this.isShowingRequestPermissionRationale(requiredPermissions) ) {
-				ActivityCompat.requestPermissions(this.activity, requiredPermissions, this.requestCode);
+				this.callRequestPermissions(requiredPermissions);
 			}
 		}
 	}
@@ -106,6 +106,14 @@ public class TGActivityPermissionRequest {
 		return false;
 	}
 
+	private void callRequestPermissions(String[] requiredPermissions) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.activity.findContext(), TGRequestPermissionsAction.NAME);
+		tgActionProcessor.setAttribute(TGRequestPermissionsAction.ATTRIBUTE_ACTIVITY, this.activity);
+		tgActionProcessor.setAttribute(TGRequestPermissionsAction.ATTRIBUTE_PERMISSIONS, requiredPermissions);
+		tgActionProcessor.setAttribute(TGRequestPermissionsAction.ATTRIBUTE_REQUEST_CODE, this.requestCode);
+		tgActionProcessor.process();
+	}
+
 	private void showRequestPermissionRationale() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.activity.findContext(), TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGConfirmDialogController());
@@ -136,7 +144,7 @@ public class TGActivityPermissionRequest {
 		return new AsyncTask<Void, Void, Void>() {
 			protected Void doInBackground(Void... params) {
 				checkPermissions(ignoreRationale);
-				
+
 				return null;
 			}
 		};

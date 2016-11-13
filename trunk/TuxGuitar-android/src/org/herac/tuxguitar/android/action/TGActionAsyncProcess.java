@@ -2,8 +2,9 @@ package org.herac.tuxguitar.android.action;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.util.error.TGErrorHandler;
 
-public class TGActionAsyncProcess {
+public class TGActionAsyncProcess implements TGErrorHandler {
 
 	private TGActionBase action;
 	private TGActionContext actionContext;
@@ -29,11 +30,11 @@ public class TGActionAsyncProcess {
 		getEventManager().fireEvent(new TGActionAsyncProcessStartEvent(this.getAction().getName(), this.actionContext));
 	}
 
-	public void onEnd() {
-		getEventManager().fireEvent(new TGActionAsyncProcessEndEvent(this.getAction().getName(), this.actionContext));
+	public void onFinish() {
+		getEventManager().fireEvent(new TGActionAsyncProcessFinishEvent(this.getAction().getName(), this.actionContext));
 	}
 
-	public void onError(Throwable throwable) {
+	public void handleError(Throwable throwable) {
 		getEventManager().fireEvent(new TGActionAsyncProcessErrorEvent(this.getAction().getName(), this.actionContext, throwable));
 	}
 }

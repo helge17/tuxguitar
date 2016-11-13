@@ -15,6 +15,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAc
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRunnableAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
@@ -32,6 +33,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGRequestPermissionsAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
 import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
@@ -355,7 +357,8 @@ public class TGActionInstaller {
 		installAction(new TGBrowserCloseSessionAction(context));
 		installAction(new TGBrowserAddCollectionAction(context));
 		installAction(new TGBrowserRemoveCollectionAction(context));
-		
+		installAction(new TGBrowserRunnableAction(context));
+
 		//intent actions
 		installAction(new TGProcessIntentAction(context));
 		
@@ -367,6 +370,7 @@ public class TGActionInstaller {
 		installAction(new TGOpenMenuAction(context));
 		installAction(new TGOpenFragmentAction(context));
 		installAction(new TGStartActivityForResultAction(context));
+		installAction(new TGRequestPermissionsAction(context));
 	}
 	
 	public void installAction(TGActionBase action) {
@@ -387,7 +391,7 @@ public class TGActionInstaller {
 			if( config.isLockableAction() ) {
 				this.manager.getLockableActionListener().addActionId(actionId);
 			}
-			
+
 			this.manager.getUpdatableActionListener().getControllers().set(actionId, config.getUpdateController());
 			this.manager.getUndoableActionListener().getControllers().set(actionId, config.getUndoableController());
 		}

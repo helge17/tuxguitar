@@ -85,6 +85,9 @@ public class TGActionAdapterManager {
 		this.addAsyncProcessStartListener(processingListener);
 		this.addAsyncProcessEndListener(processingListener);
 		this.addAsyncProcessErrorListener(processingListener);
+
+		this.addAsyncProcessStartListener(this.errorHandler);
+		this.addAsyncProcessEndListener(this.errorHandler);
 		this.addAsyncProcessErrorListener(this.errorHandler);
 	}
 	
@@ -130,11 +133,11 @@ public class TGActionAdapterManager {
 	}
 
 	public void addAsyncProcessEndListener(TGEventListener listener){
-		TGEventManager.getInstance(this.context).addListener(TGActionAsyncProcessEndEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).addListener(TGActionAsyncProcessFinishEvent.EVENT_TYPE, listener);
 	}
 
 	public void removeAsyncProcessEndListener(TGEventListener listener){
-		TGEventManager.getInstance(this.context).removeListener(TGActionAsyncProcessEndEvent.EVENT_TYPE, listener);
+		TGEventManager.getInstance(this.context).removeListener(TGActionAsyncProcessFinishEvent.EVENT_TYPE, listener);
 	}
 
 	public void addAsyncProcessErrorListener(TGEventListener listener){
