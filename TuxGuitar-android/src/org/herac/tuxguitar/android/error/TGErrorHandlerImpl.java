@@ -1,12 +1,6 @@
 package org.herac.tuxguitar.android.error;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Date;
+import android.os.Environment;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
@@ -14,7 +8,12 @@ import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
 
-import android.os.Environment;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Date;
 
 public class TGErrorHandlerImpl implements TGErrorHandler{
 	
@@ -79,23 +78,23 @@ public class TGErrorHandlerImpl implements TGErrorHandler{
 		return stringWriter.toString();
 	}
 	
-	public void logError(Throwable throwable) {       
-		File logFile = new File(LOG_FILE);
-		if (!logFile.exists()) {
-			try {
+	public void logError(Throwable throwable) {
+		try {
+			File logFile = new File(LOG_FILE);
+			if(!logFile.exists() ) {
 				logFile.getParentFile().mkdirs();
 				logFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-		} try {
-			BufferedWriter buffer = new BufferedWriter(new FileWriter(logFile, true));
-			buffer.append(new Date().toString());
-			buffer.newLine();
-			buffer.append(this.createFullErrorMessage(throwable));
-			buffer.newLine();
-			buffer.close();
-		} catch (IOException e) {
+
+			if( logFile.exists() && logFile.canWrite() ) {
+				BufferedWriter buffer = new BufferedWriter(new FileWriter(logFile, true));
+				buffer.append(new Date().toString());
+				buffer.newLine();
+				buffer.append(this.createFullErrorMessage(throwable));
+				buffer.newLine();
+				buffer.close();
+			}
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}

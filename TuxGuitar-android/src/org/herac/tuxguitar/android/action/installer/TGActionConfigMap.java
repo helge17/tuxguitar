@@ -14,6 +14,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAc
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRunnableAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
@@ -31,6 +32,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGRequestPermissionsAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
 import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
@@ -204,6 +206,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	public static final int SYNC_THREAD = 0x02;
 	public static final int DISABLE_ON_PLAY = 0x04;
 	public static final int STOP_TRANSPORT = 0x08;
+	public static final int DISABLE_PROCESSING = 0x10;
 	
 	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
@@ -392,6 +395,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGBrowserCloseSessionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserAddCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGBrowserRemoveCollectionAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGBrowserRunnableAction.NAME, LOCKABLE, null);
 
 		//storage actions
 		this.map(TGUriReadAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
@@ -409,6 +413,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFragmentAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGStartActivityForResultAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGRequestPermissionsAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGBackAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGExitAction.NAME, LOCKABLE, null);
 		this.map(TGFinishAction.NAME, LOCKABLE | SYNC_THREAD, null);

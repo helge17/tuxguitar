@@ -27,23 +27,25 @@ public class TGBrowserOpenElementAction extends TGActionBase{
 		final TGBrowserSession session = context.getAttribute(ATTRIBUTE_SESSION);
 		final TGBrowserElement element = context.getAttribute(ATTRIBUTE_ELEMENT);
 
-		session.getBrowser().getInputStream(new TGBrowserActionCallBack<InputStream>(this, context) {
-			public void onActionSuccess(TGActionContext context, InputStream stream) {
-				try {
+		if( session.getBrowser() != null ) {
+			session.getBrowser().getInputStream(new TGBrowserActionCallBack<InputStream>(this, context) {
+				public void onActionSuccess(TGActionContext context, InputStream stream) {
 					try {
-						context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
+						try {
+							context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 
-						TGActionManager.getInstance(getContext()).execute(TGReadSongAction.NAME, context);
+							TGActionManager.getInstance(getContext()).execute(TGReadSongAction.NAME, context);
 
-						session.setCurrentElement(element);
-						session.setCurrentFormat((TGFileFormat) context.getAttribute(TGReadSongAction.ATTRIBUTE_FORMAT));
-					} finally {
-						stream.close();
+							session.setCurrentElement(element);
+							session.setCurrentFormat((TGFileFormat) context.getAttribute(TGReadSongAction.ATTRIBUTE_FORMAT));
+						} finally {
+							stream.close();
+						}
+					} catch (Throwable throwable) {
+						throw new TGActionException(throwable);
 					}
-				} catch(Throwable throwable){
-					throw new TGActionException(throwable);
 				}
-			}
-		}, element);
+			}, element);
+		}
 	}
 }

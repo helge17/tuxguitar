@@ -12,7 +12,7 @@ public class TGActionConfig {
 	private boolean stopTransport;
 	private boolean documentModifier;
 	private boolean syncThread;
-	
+
 	public TGActionConfig() {
 		super();
 	}

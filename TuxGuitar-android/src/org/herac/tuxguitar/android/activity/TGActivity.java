@@ -136,14 +136,14 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		this.contextMenu = contextMenu;
 		this.openContextMenu(this.findViewById(R.id.root_layout));
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		this.resultManager.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		this.permissionResultManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -261,7 +261,7 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		tgActionProcessor.setAttribute(TGFinishAction.ATTRIBUTE_ACTIVITY, this);
 		tgActionProcessor.process();
 	}
-	
+
 	public boolean isDestroyed() {
 		return this.destroyed;
 	}

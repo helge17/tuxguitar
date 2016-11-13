@@ -1,46 +1,45 @@
 package org.herac.tuxguitar.android.view.processing;
 
+import android.app.ProgressDialog;
+
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-import android.app.ProgressDialog;
-
 public class TGActionProcessingView {
-	
+
 	private TGActivity activity;
 	private ProgressDialog dialog;
-	
-	private boolean visible;
+
 	private boolean updating;
+	private boolean destroyed;
 	
 	public TGActionProcessingView(TGActivity activity){
 		this.activity = activity;
-		this.createProgressDialog();
 	}
 	
 	private void createProgressDialog() {
-		this.dialog = new ProgressDialog(this.activity);
-		this.dialog.setMessage("Processing");
-		this.dialog.setIndeterminate(true);
-		this.dialog.setCancelable(false);
+		if(!this.isDestroyed() && !this.isVisible()) {
+			this.dialog = new ProgressDialog(this.activity);
+			this.dialog.setMessage("Processing");
+			this.dialog.setIndeterminate(true);
+			this.dialog.setCancelable(false);
+			this.dialog.show();
+		}
 	}
 	
 	private void dismissProgressDialog() {
-		if(!this.isDestroyed()) {
+		if(!this.isDestroyed() && this.isVisible()) {
 			this.dialog.dismiss();
 			this.dialog = null;
 		}
 	}
 	
 	private void updateProgressDialog(boolean visible) {
-		if(!this.isDestroyed()) {
-			if( visible ) {
-				this.dialog.show();
-			} else {
-				this.dialog.hide();
-			}
-			this.visible = visible;
+		if( visible ) {
+			this.createProgressDialog();
+		} else {
+			this.dismissProgressDialog();
 		}
 	}
 	
@@ -59,10 +58,11 @@ public class TGActionProcessingView {
 
 	public void destroy() {
 		this.dismissProgressDialog();
+		this.destroyed = true;
 	}
 	
 	public boolean isVisible() {
-		return visible;
+		return (this.dialog != null);
 	}
 
 	public boolean isUpdating() {
@@ -70,6 +70,6 @@ public class TGActionProcessingView {
 	}
 	
 	public boolean isDestroyed() {
-		return (this.dialog == null || this.activity.isDestroyed());
+		return (this.destroyed || this.activity.isDestroyed());
 	}
 }
