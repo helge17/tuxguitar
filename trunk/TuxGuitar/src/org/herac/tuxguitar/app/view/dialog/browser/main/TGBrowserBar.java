@@ -4,6 +4,7 @@ import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -26,13 +27,20 @@ public abstract class TGBrowserBar implements TGEventListener{
 		return this.browser;
 	}
 	
-	protected void newCollection(String type){
-		TGBrowserFactory factory = TGBrowserManager.getInstance(getBrowser().getContext()).getFactory(type);
+	protected void newCollection(String type) {
+		final TGBrowserFactory factory = TGBrowserManager.getInstance(getBrowser().getContext()).getFactory(type);
 		if( factory != null ){
-			TGBrowserSettings data = factory.dataDialog(getBrowser().getWindow());
-			if( data != null ){
-				openCollection(addCollection(factory, data, true));
-			}
+			factory.createSettings(new TGBrowserFactorySettingsHandler() {
+				public void onCreateSettings(TGBrowserSettings settings) {
+					if( settings != null ){
+						openCollection(addCollection(factory, settings, true));
+					}
+				}
+				
+				public void handleError(Throwable throwable) {
+					TGBrowserBar.this.browser.notifyError(throwable);
+				}
+			});
 		}
 	}
 	

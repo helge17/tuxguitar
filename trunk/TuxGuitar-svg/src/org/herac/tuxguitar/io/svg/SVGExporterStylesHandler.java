@@ -16,12 +16,14 @@ public class SVGExporterStylesHandler implements TGSongStreamSettingsHandler {
 		return SVGExporter.PROVIDER_ID;
 	}
 
-	public void handleSettings(TGSongStreamContext context, Runnable callback) {
-		SVGExporterStyles styles = new SVGExporterStylesDialog(this.context);
-		styles.configure();
-		if( styles.isConfigured() ) {
-			context.setAttribute(SVGExporterStyles.class.getName(), styles);
-			callback.run();
-		}
+	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
+		final SVGExporterStylesDialog styles = new SVGExporterStylesDialog(this.context);
+		
+		styles.configure(new Runnable() {
+			public void run() {
+				context.setAttribute(SVGExporterStyles.class.getName(), styles);
+				callback.run();
+			}
+		});
 	}	
 }

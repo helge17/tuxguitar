@@ -4,6 +4,7 @@ import org.herac.tuxguitar.android.browser.TGBrowserCollection;
 import org.herac.tuxguitar.android.browser.TGBrowserManager;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
+import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGBrowserCollectionsSettingsHandler implements TGBrowserFactorySettingsHandler {
 	
@@ -20,5 +21,10 @@ public class TGBrowserCollectionsSettingsHandler implements TGBrowserFactorySett
 		TGBrowserCollection collection = browserManager.createCollection(this.type, settings);
 		
 		this.dialog.addCollection(collection);
+	}
+
+	@Override
+	public void handleError(Throwable throwable) {
+		TGErrorManager.getInstance(this.dialog.findContext()).handleError(throwable);
 	}
 }

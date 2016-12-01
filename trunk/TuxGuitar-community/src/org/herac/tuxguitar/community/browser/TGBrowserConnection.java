@@ -6,6 +6,7 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuth;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
@@ -41,14 +42,16 @@ public class TGBrowserConnection {
 				TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 					public void run() throws TGException {
 						if(!TuxGuitar.getInstance().getBrowser().isDisposed()){
-							TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(TGBrowserConnection.this.context);
-							authDialog.open( TuxGuitar.getInstance().getBrowser().getWindow() );
-							if( authDialog.isAccepted() ){
-								TGBrowserConnection.this.auth.update();
-								TGBrowserConnection.this.fillElements(cb, element);
-							} else {
-								cb.onSuccess(null);
-							}
+							new TGCommunityAuthDialog(TGBrowserConnection.this.context, new Runnable() {
+								public void run() {
+									TGBrowserConnection.this.auth.update();
+									TGBrowserConnection.this.fillElements(cb, element);
+								}
+							}, new Runnable() {
+								public void run() {
+									cb.onSuccess(null);
+								}
+							}).open(TGBrowserDialog.getInstance(TGBrowserConnection.this.context).getWindow());
 						}
 					}
 				});

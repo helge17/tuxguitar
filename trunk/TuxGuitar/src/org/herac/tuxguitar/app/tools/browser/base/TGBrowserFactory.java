@@ -1,14 +1,12 @@
 package org.herac.tuxguitar.app.tools.browser.base;
 
-import org.herac.tuxguitar.ui.widget.UIWindow;
-
 public interface TGBrowserFactory {
 	
 	String getName();
 	
 	String getType();
 	
-	TGBrowserSettings dataDialog(UIWindow parent);
+	void createSettings(TGBrowserFactorySettingsHandler handler);
 	
-	TGBrowser newTGBrowser(TGBrowserSettings data);
+	void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings);
 }

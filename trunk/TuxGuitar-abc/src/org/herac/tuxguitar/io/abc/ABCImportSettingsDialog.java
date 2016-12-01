@@ -19,24 +19,13 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class ABCImportSettingsDialog {
 	
-	private static final int STATUS_NONE = 0;
-	
-	private static final int STATUS_CANCELLED = 1;
-	
-	private static final int STATUS_ACCEPTED = 2;
-	
 	private TGContext context;
-	
-	protected int status;
 	
 	public ABCImportSettingsDialog(TGContext context){
 		this.context = context;
 	}
 	
-	public ABCSettings open() {
-		this.status = STATUS_NONE;
-		final ABCSettings settings = ABCSettings.getDefaults();
-		
+	public void open(final ABCSettings settings, final Runnable onSuccess) {
 		final Shell parent = ((SWTWindow) TGWindow.getInstance(this.context).getWindow()).getControl();
 		final Shell dialog = SWTDialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout(2, false));
@@ -132,8 +121,6 @@ public class ABCImportSettingsDialog {
 		buttonOK.setLayoutData(getButtonData());
 		buttonOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				ABCImportSettingsDialog.this.status = STATUS_ACCEPTED;
-				
 				settings.setX(xNumSpinner.getSelection());
 				settings.setTrackNameEnabled( trackNameCheck.getSelection() );
 				settings.setChordDiagramEnabled(chordDiagramsCheck.getSelection());
@@ -145,6 +132,7 @@ public class ABCImportSettingsDialog {
 				settings.check();
 				
 				dialog.dispose();
+				onSuccess.run();
 			}
 		});
 		
@@ -153,16 +141,13 @@ public class ABCImportSettingsDialog {
 		buttonCancel.setLayoutData(getButtonData());
 		buttonCancel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent arg0) {
-				ABCImportSettingsDialog.this.status = STATUS_CANCELLED;
 				dialog.dispose();
 			}
 		});
 		
 		dialog.setDefaultButton( buttonOK );
 		
-		SWTDialogUtils.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-		
-		return ( ( this.status == STATUS_ACCEPTED )? settings : null );
+		SWTDialogUtils.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	private GridLayout getColumnLayout(){

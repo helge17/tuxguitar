@@ -57,7 +57,7 @@ class MiPanel
 
 	void	showDialog(final TGContext context, UIWindow parent)
 	{
-	if( f_Dialog != null)
+	if( f_Dialog != null && !f_Dialog.isDisposed() )
 		f_Dialog.moveToTop();
 	else
 		{
@@ -146,8 +146,7 @@ class MiPanel
 		//*/
 
 			updateControls();
-			TGDialogUtil.openDialog(f_Dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-			f_Dialog = null;
+			TGDialogUtil.openDialog(f_Dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 			}
 		catch(Exception e)
 			{

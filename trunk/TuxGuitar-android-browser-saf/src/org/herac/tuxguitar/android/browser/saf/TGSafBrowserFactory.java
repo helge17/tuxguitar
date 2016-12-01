@@ -5,7 +5,6 @@ import android.support.v4.provider.DocumentFile;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
@@ -31,11 +30,11 @@ public class TGSafBrowserFactory implements TGBrowserFactory{
 		return BROWSER_NAME;
 	}
 	
-	public void createBrowser(final TGBrowserFactoryHandler handler, final TGBrowserSettings settings) throws TGBrowserException {
+	public void createBrowser(final TGBrowserFactoryHandler handler, final TGBrowserSettings settings) {
 		handler.onCreateBrowser(new TGSafBrowser(this.context, TGSafBrowserSettings.createInstance(settings)));
 	}
 
-	public void createSettings(final TGBrowserFactorySettingsHandler handler) throws TGBrowserException {
+	public void createSettings(final TGBrowserFactorySettingsHandler handler) {
 		TGSafBrowserUriRequest request = new TGSafBrowserUriRequest(this.context, new TGSafBrowserUriHandler() {
 			public void onUriAccessGranted(Uri uri) {
 				if( uri != null ) {

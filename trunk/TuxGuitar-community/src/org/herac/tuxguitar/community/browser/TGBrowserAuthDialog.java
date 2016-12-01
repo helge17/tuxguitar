@@ -2,6 +2,8 @@ package org.herac.tuxguitar.community.browser;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.community.TGCommunitySingleton;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
@@ -20,16 +22,19 @@ import org.herac.tuxguitar.util.TGContext;
 public class TGBrowserAuthDialog {
 	
 	private TGContext context;
-	private boolean accepted;
+	private Runnable onSuccess;
 	
-	public TGBrowserAuthDialog(TGContext context){
+	public TGBrowserAuthDialog(TGContext context, Runnable onSuccess) {
 		this.context = context;
-		this.accepted = false;
+		this.onSuccess = onSuccess;
+	}
+	
+	public void open() {
+		TGBrowserDialog browser = TGBrowserDialog.getInstance(this.context);
+		this.open(!browser.isDisposed() ? browser.getWindow() : TGWindow.getInstance(this.context).getWindow());
 	}
 	
 	public void open(final UIWindow parent) {
-		this.accepted = false;
-		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
@@ -57,12 +62,12 @@ public class TGBrowserAuthDialog {
 		usernameChooser.setText("...");
 		usernameChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(getContext());
-				authDialog.open( dialog );
-				if( authDialog.isAccepted() ){
-					TGCommunitySingleton.getInstance(getContext()).getAuth().update();
-					usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
-				}
+				new TGCommunityAuthDialog(getContext(), new Runnable() {
+					public void run() {
+						TGCommunitySingleton.getInstance(getContext()).getAuth().update();
+						usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
+					}
+				}, null).open(dialog);
 			}
 		});
 		groupLayout.set(usernameChooser, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
@@ -78,8 +83,7 @@ public class TGBrowserAuthDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGBrowserAuthDialog.this.setAccepted();
-				dialog.dispose();
+				onFinish(dialog, TGBrowserAuthDialog.this.onSuccess);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -88,21 +92,20 @@ public class TGBrowserAuthDialog {
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				dialog.dispose();
+				onFinish(dialog, null);
 			}
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	private void setAccepted(){
-		this.accepted = true;
-	}
-	
-	public boolean isAccepted(){
-		return this.accepted;
+	public void onFinish(UIWindow dialog, Runnable runnable) {
+		dialog.dispose();
+		if( runnable != null ) {
+			runnable.run();
+		}
 	}
 	
 	public TGContext getContext() {

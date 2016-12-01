@@ -3,9 +3,11 @@ package org.herac.tuxguitar.app.tools.browser.filesystem;
 import java.io.File;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
@@ -24,22 +26,19 @@ import org.herac.tuxguitar.util.TGContext;
 public class TGBrowserDataDialog {
 	
 	private TGContext context;
-	private TGBrowserSettings data;
+	private TGBrowserFactorySettingsHandler handler;
 	
-	public TGBrowserDataDialog(TGContext context) {
+	public TGBrowserDataDialog(TGContext context, TGBrowserFactorySettingsHandler handler) {
 		this.context = context;
+		this.handler = handler;
 	}
 	
-	public TGBrowserSettings getData() {
-		return this.data;
+	public void open() {
+		TGBrowserDialog browser = TGBrowserDialog.getInstance(this.context);
+		this.open(!browser.isDisposed() ? browser.getWindow() : TGWindow.getInstance(this.context).getWindow());
 	}
 	
-	public void setData(TGBrowserSettings data) {
-		this.data = data;
-	}
-	
-	
-	public TGBrowserSettings open(UIWindow parent) {
+	public void open(UIWindow parent) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
@@ -106,8 +105,9 @@ public class TGBrowserDataDialog {
 					selectedTitle = selectedPath;
 				}
 				
-				setData(new TGBrowserSettingsModel(selectedTitle, selectedPath).toBrowserSettings());
 				dialog.dispose();
+				
+				TGBrowserDataDialog.this.handler.onCreateSettings(new TGBrowserSettingsModel(selectedTitle, selectedPath).toBrowserSettings());
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -122,9 +122,7 @@ public class TGBrowserDataDialog {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-		
-		return getData();
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public boolean isBlank(String s){

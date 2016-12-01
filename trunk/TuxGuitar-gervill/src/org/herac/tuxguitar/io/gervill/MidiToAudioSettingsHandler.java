@@ -17,13 +17,16 @@ public class MidiToAudioSettingsHandler implements TGSongStreamSettingsHandler {
 		return MidiToAudioExporter.PROVIDER_ID;
 	}
 
-	public void handleSettings(TGSongStreamContext context, Runnable callback) {
-		MidiToAudioExporter exporter = context.getAttribute(TGSongStreamProvider.class.getName());
+	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
+		final MidiToAudioExporter exporter = context.getAttribute(TGSongStreamProvider.class.getName());
+		
 		exporter.getSettings().setDefaults();
 		
-		if( new MidiToAudioSettingsDialog(this.context).open( exporter.getSettings() ) ) {
-			context.setAttribute(MidiToAudioSettings.class.getName(), exporter.getSettings());
-			callback.run();
-		}
+		new MidiToAudioSettingsDialog(this.context).open(exporter.getSettings(), new Runnable() {
+			public void run() {
+				context.setAttribute(MidiToAudioSettings.class.getName(), exporter.getSettings());
+				callback.run();
+			}
+		});
 	}
 }

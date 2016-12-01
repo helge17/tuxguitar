@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.tools.browser.filesystem;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
@@ -22,13 +22,12 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	public String getName(){
 		return TuxGuitar.getProperty("browser.factory.fs.name");
 	}
-	
-	public TGBrowser newTGBrowser(TGBrowserSettings data) {
-		return new TGBrowserImpl(TGBrowserSettingsModel.createInstance(data));
+
+	public void createSettings(TGBrowserFactorySettingsHandler handler) {
+		new TGBrowserDataDialog(this.context, handler).open();
 	}
-	
-	public TGBrowserSettings dataDialog(UIWindow parent) {
-		TGBrowserDataDialog dialog = new TGBrowserDataDialog(this.context);
-		return dialog.open(parent);
+
+	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings) {
+		handler.onCreateBrowser(new TGBrowserImpl(TGBrowserSettingsModel.createInstance(settings)));
 	}
 }

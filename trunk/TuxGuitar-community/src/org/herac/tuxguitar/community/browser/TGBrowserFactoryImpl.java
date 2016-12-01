@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.community.browser;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory {
@@ -24,21 +24,15 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory {
 		return "community";
 	}
 	
-	public TGBrowser newTGBrowser(TGBrowserSettings data) {
-		return new TGBrowserImpl(this.context);
+	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings) {
+		handler.onCreateBrowser(new TGBrowserImpl(this.context));
 	}
 	
-	public TGBrowserSettings parseData(String string) {
-		return this.data;
+	public void createSettings(final TGBrowserFactorySettingsHandler handler) {
+		new TGBrowserAuthDialog(this.context, new Runnable() {
+			public void run() {
+				handler.onCreateSettings(TGBrowserFactoryImpl.this.data);
+			}
+		}).open();
 	}
-	
-	public TGBrowserSettings dataDialog(UIWindow parent) {
-		TGBrowserAuthDialog authDialog = new TGBrowserAuthDialog(this.context);
-		authDialog.open( parent );
-		if( authDialog.isAccepted() ){
-			return this.data;
-		}
-		return null;
-	}
-
 }

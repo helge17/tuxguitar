@@ -11,21 +11,10 @@ public class SVGExporterStyles {
 	private int flags;
 	private TGLayoutStyles styles;
 	
-	private boolean configured;
-	
 	public SVGExporterStyles(){
 		this.track = -1;
 		this.flags = 0;
 		this.styles = new TGLayoutStyles();
-		this.configured = false;
-	}
-	
-	public boolean isConfigured() {
-		return this.configured;
-	}
-	
-	public void setConfigured(boolean configured) {
-		this.configured = configured;
 	}
 	
 	public int getTrack() {
@@ -101,7 +90,5 @@ public class SVGExporterStyles {
 		this.getStyles().setPlayNoteColor(new TGColorModel(64,64,64));
 		this.getStyles().setLoopSMarkerColor(new TGColorModel(0,0,0));
 		this.getStyles().setLoopEMarkerColor(new TGColorModel(0,0,0));
-		
-		this.setConfigured( true );
 	}
 }

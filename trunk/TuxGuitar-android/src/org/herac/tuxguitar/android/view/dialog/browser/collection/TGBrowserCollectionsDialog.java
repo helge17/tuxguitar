@@ -109,12 +109,8 @@ public class TGBrowserCollectionsDialog extends TGDialog {
 	}
 	
 	public void createCollection(TGBrowserFactory factory) {
-		try {
-			if( factory != null ) {
-				factory.createSettings(new TGBrowserCollectionsSettingsHandler(this, factory.getType()));
-			}
-		} catch (TGBrowserException e) {
-			TGErrorManager.getInstance(findContext()).handleError(e);
+		if( factory != null ) {
+			factory.createSettings(new TGBrowserCollectionsSettingsHandler(this, factory.getType()));
 		}
 	}
 	

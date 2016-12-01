@@ -11,12 +11,13 @@ import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnectionHandler;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserFactoryHandler;
+import org.herac.tuxguitar.app.tools.browser.TGBrowserFactoryListener;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.app.view.main.TGWindow;
@@ -45,7 +46,7 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
-public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnectionHandler,TGEventListener{
+public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConnectionHandler,TGEventListener{
 	
 	private static final int SHELL_WIDTH = 500;
 	private static final int SHELL_HEIGHT = 350;
@@ -230,14 +231,20 @@ public class TGBrowserDialog implements TGBrowserFactoryHandler, TGBrowserConnec
 	
 	public void openCollection(){
 		if(!isDisposed() && getCollection() != null){
-			TGBrowserFactory factory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
-			TGBrowser browser = factory.newTGBrowser(getCollection().getData());
-			
-			getConnection().open(new TGAbstractBrowserCallBack<Object>() {
-				public void onSuccess(Object data) {
-					onOpenCollection();
+			TGBrowserFactory tgBrowserFactory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
+			tgBrowserFactory.createBrowser(new TGBrowserFactoryHandler() {
+				public void onCreateBrowser(TGBrowser browser) {
+					getConnection().open(new TGAbstractBrowserCallBack<Object>() {
+						public void onSuccess(Object data) {
+							onOpenCollection();
+						}
+					}, browser);
 				}
-			}, browser);
+				
+				public void handleError(Throwable throwable) {
+					TGBrowserDialog.this.notifyError(throwable);
+				}
+			}, getCollection().getData());
 		}
 	}
 	

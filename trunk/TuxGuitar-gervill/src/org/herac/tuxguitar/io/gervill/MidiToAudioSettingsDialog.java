@@ -34,15 +34,12 @@ import org.herac.tuxguitar.util.TGContext;
 public class MidiToAudioSettingsDialog {
 	
 	private TGContext context;
-	protected boolean success;
 	
 	public MidiToAudioSettingsDialog(TGContext context){
 		this.context = context;
 	}
 	
-	public boolean open(final MidiToAudioSettings settings) {
-		this.success = false;
-		
+	public void open(final MidiToAudioSettings settings, final Runnable onSuccess) {		
 		final List<MidiToAudioFormat> formats = getAvailableFormats();
 		final List<TGFileFormat> soundbankFormats = getSupportedSoundbankFormats();
 		
@@ -155,13 +152,15 @@ public class MidiToAudioSettingsDialog {
 				String soundbankPath = (sbCustom.isSelected() ? sbCustomPath.getText() : null);
 				AudioFileFormat.Type type = tCombo.getSelectedValue();
 				MidiToAudioFormat format = eCombo.getSelectedValue();
-				if( format != null && type != null ){
+				
+				dialog.dispose();
+				
+				if( format != null && type != null ) {
 					settings.setType(type);
 					settings.setFormat(format.getFormat());
 					settings.setSoundbankPath( soundbankPath );
-					MidiToAudioSettingsDialog.this.success = true;
+					onSuccess.run();
 				}
-				dialog.dispose();
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -176,9 +175,7 @@ public class MidiToAudioSettingsDialog {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-		
-		return this.success;
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	private void updateTypesCombo(MidiToAudioSettings settings, List<MidiToAudioFormat> encodings, UIDropDownSelect<MidiToAudioFormat> eCombo, UIDropDownSelect<AudioFileFormat.Type> tCombo){

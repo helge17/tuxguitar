@@ -22,22 +22,13 @@ public class MidiSettingsDialog {
 	public static final int MAX_TRANSPOSE = 24;
 	public static final int MIN_TRANSPOSE = -24;
 	
-	private static final int STATUS_NONE = 0;
-	private static final int STATUS_CANCELLED = 1;
-	private static final int STATUS_ACCEPTED = 2;
-	
 	private TGContext context;
-	private MidiSettings settings;
-	private int status;
 	
 	public MidiSettingsDialog(TGContext context){
 		this.context = context;
-		this.settings = new MidiSettings();
 	}
 	
-	public MidiSettings open() {
-		this.status = STATUS_NONE;
-		
+	public void open(final MidiSettings settings, final Runnable onSuccess) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow parent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
@@ -76,9 +67,9 @@ public class MidiSettingsDialog {
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				Integer transposition = transposeCombo.getSelectedValue();
-				MidiSettingsDialog.this.status = STATUS_ACCEPTED;
-				MidiSettingsDialog.this.settings.setTranspose(transposition != null ? transposition : 0);
+				settings.setTranspose(transposition != null ? transposition : 0);
 				dialog.dispose();
+				onSuccess.run();
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -87,15 +78,12 @@ public class MidiSettingsDialog {
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				MidiSettingsDialog.this.status = STATUS_CANCELLED;
 				dialog.dispose();
 			}
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-		
-		return ((this.status == STATUS_ACCEPTED)?MidiSettingsDialog.this.settings:null);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 }

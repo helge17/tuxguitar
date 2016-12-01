@@ -23,27 +23,16 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class LilypondSettingsDialog {
 	
-	private static final int STATUS_NONE = 0;
-	
-	private static final int STATUS_CANCELLED = 1;
-	
-	private static final int STATUS_ACCEPTED = 2;
-	
 	private TGContext context;
 	
 	private TGSong song;
-	
-	protected int status;
 	
 	public LilypondSettingsDialog(TGContext context, TGSong song){
 		this.context = context;
 		this.song = song;
 	}
 	
-	public LilypondSettings open() {
-		this.status = STATUS_NONE;
-		final LilypondSettings settings = LilypondSettings.getDefaults();
-		
+	public void open(final LilypondSettings settings, final Runnable onSuccess) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
@@ -228,7 +217,6 @@ public class LilypondSettingsDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				LilypondSettingsDialog.this.status = STATUS_ACCEPTED;
 				Integer selectedTrack = trackCombo.getSelectedValue();
 				
 				settings.setTrack(trackAllCheck.isSelected() || selectedTrack == null ? LilypondSettings.ALL_TRACKS : selectedTrack);
@@ -245,6 +233,7 @@ public class LilypondSettingsDialog {
 				settings.check();
 				
 				dialog.dispose();
+				onSuccess.run();
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -253,15 +242,12 @@ public class LilypondSettingsDialog {
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				LilypondSettingsDialog.this.status = STATUS_CANCELLED;
 				dialog.dispose();
 			}
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-		
-		return ((this.status == STATUS_ACCEPTED )? settings : null);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 }

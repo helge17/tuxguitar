@@ -22,7 +22,7 @@ public class TGBrowserManager {
 	private List<TGBrowserCollection> collections;
 	private boolean changes;
 	
-	private TGBrowserFactoryHandler handler;
+	private TGBrowserFactoryListener handler;
 	
 	private TGBrowserManager(TGContext context){
 		this.context = context;
@@ -32,7 +32,7 @@ public class TGBrowserManager {
 		this.addDefaultFactory();
 	}
 	
-	public void setFactoryHandler(TGBrowserFactoryHandler handler){
+	public void setFactoryHandler(TGBrowserFactoryListener handler){
 		this.handler = handler;
 	}
 	

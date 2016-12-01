@@ -5,15 +5,13 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGDialogUtil {
 	
-	public static final int OPEN_STYLE_WAIT = 0x01;
+	public static final int OPEN_STYLE_PACK = 0x01;
 	
-	public static final int OPEN_STYLE_PACK = 0x02;
+	public static final int OPEN_STYLE_LAYOUT = 0x02;
 	
-	public static final int OPEN_STYLE_LAYOUT = 0x04;
+	public static final int OPEN_STYLE_CENTER = 0x04;
 	
-	public static final int OPEN_STYLE_CENTER = 0x08;
-	
-	public static final int OPEN_STYLE_MAXIMIZED = 0x10;
+	public static final int OPEN_STYLE_MAXIMIZED = 0x8;
 	
 	public static final void openDialog(UIWindow dialog, int style){
 		TGDialogUtil.openDialog(dialog, (UIWindow) dialog.getParent(), style);
@@ -37,9 +35,5 @@ public class TGDialogUtil {
 			dialog.setBounds(dialogBounds);
 		}
 		dialog.open();
-		
-		if((style & OPEN_STYLE_WAIT) != 0) {
-			dialog.join();
-		}
 	}
 }
