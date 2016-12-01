@@ -27,12 +27,14 @@ public class TGCommunityAuthDialog {
 	
 	private TGContext context;
 	private TGCommunityAuth auth;
-	private boolean accepted;
+	private Runnable onSuccess;
+	private Runnable onCancel;
 	
-	public TGCommunityAuthDialog(TGContext context){
+	public TGCommunityAuthDialog(TGContext context, Runnable onSuccess, Runnable onCancel){
 		this.context = context;
+		this.onSuccess = onSuccess;
+		this.onCancel = onCancel;
 		this.auth = TGCommunitySingleton.getInstance(this.context).getAuth();
-		this.accepted = false;
 	}
 	
 	public void open() {
@@ -40,8 +42,6 @@ public class TGCommunityAuthDialog {
 	}
 	
 	public void open(UIWindow parent) {
-		this.accepted = false;
-		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
@@ -108,7 +108,7 @@ public class TGCommunityAuthDialog {
 			public void onSelect(UISelectionEvent event) {
 				update(usernameText.getText(), passwordText.getText());
 				
-				dialog.dispose();
+				onFinish(dialog, TGCommunityAuthDialog.this.onSuccess);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -117,25 +117,27 @@ public class TGCommunityAuthDialog {
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				dialog.dispose();
+				onFinish(dialog, TGCommunityAuthDialog.this.onCancel);
 			}
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+	
+	public void onFinish(UIWindow dialog, Runnable runnable) {
+		dialog.dispose();
+		if( runnable != null ) {
+			runnable.run();
+		}
 	}
 	
 	public void update( String username, String password){
 		this.auth.setUsername(username);
 		this.auth.setPassword(password);
-		this.accepted = true;
 	}
 	
-	public boolean isAccepted(){
-		return this.accepted;
-	}
-
 	public TGContext getContext() {
 		return context;
 	}

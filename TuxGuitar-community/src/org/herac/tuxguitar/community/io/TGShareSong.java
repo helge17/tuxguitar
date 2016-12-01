@@ -38,11 +38,11 @@ public class TGShareSong {
 	public void processDialog( final TGShareFile file , final String errors ) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				TGShareFileDialog fileDialog = new TGShareFileDialog(getContext(), file , errors);
-				fileDialog.open();
-				if( fileDialog.isAccepted() ){
-					processUpload( file );
-				}
+				new TGShareFileDialog(getContext(), file, errors, new Runnable() {
+					public void run() {
+						processUpload(file);
+					}
+				}).open();
 			}
 		});
 	}
@@ -50,11 +50,11 @@ public class TGShareSong {
 	public void processAuthDialog( final TGShareFile file ) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
-				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(getContext());
-				authDialog.open();
-				if( authDialog.isAccepted() ){
-					processUpload( file );
-				}
+				new TGCommunityAuthDialog(getContext(), new Runnable() {
+					public void run() {
+						processUpload(file);
+					}
+				}, null).open();
 			}
 		});
 	}

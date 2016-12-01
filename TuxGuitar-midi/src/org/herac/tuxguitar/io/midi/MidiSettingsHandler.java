@@ -20,11 +20,16 @@ public class MidiSettingsHandler implements TGSongStreamSettingsHandler {
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				MidiSettings settings = new MidiSettingsDialog(MidiSettingsHandler.this.context).open();
-				if( settings != null ) {
-					context.setAttribute(MidiSettings.class.getName(), settings);
-					callback.run();
-				}
+				final MidiSettings settings = new MidiSettings();
+				
+				new MidiSettingsDialog(MidiSettingsHandler.this.context).open(settings, new Runnable() {
+					public void run() {
+						if( settings != null ) {
+							context.setAttribute(MidiSettings.class.getName(), settings);
+							callback.run();
+						}
+					}
+				});
 			}
 		});
 	}

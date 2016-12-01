@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserSettingsFactory;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.android.view.dialog.browser.filesystem.TGBrowserSettingsDialogController;
 import org.herac.tuxguitar.android.view.dialog.browser.filesystem.TGBrowserSettingsMountPointDialogController;
@@ -22,7 +21,7 @@ public class TGBrowserSettingsFactoryImpl implements TGFsBrowserSettingsFactory 
 	}
 	
 	@Override
-	public void createSettings(TGBrowserFactorySettingsHandler handler) throws TGBrowserException {
+	public void createSettings(TGBrowserFactorySettingsHandler handler) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.activity);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGBrowserSettingsMountPointDialogController());

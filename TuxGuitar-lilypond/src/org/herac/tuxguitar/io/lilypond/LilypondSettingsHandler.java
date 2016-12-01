@@ -18,12 +18,17 @@ public class LilypondSettingsHandler implements TGSongStreamSettingsHandler {
 		return LilypondSongExporter.PROVIDER_ID;
 	}
 
-	public void handleSettings(TGSongStreamContext context, Runnable callback) {
-		TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-		LilypondSettings settings = new LilypondSettingsDialog(this.context, song).open();
-		if( settings != null ) {
-			context.setAttribute(LilypondSettings.class.getName(), settings);
-			callback.run();
-		}
+	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
+		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		final LilypondSettings settings = LilypondSettings.getDefaults();
+		
+		new LilypondSettingsDialog(this.context, song).open(settings, new Runnable() {
+			public void run() {
+				if( settings != null ) {
+					context.setAttribute(LilypondSettings.class.getName(), settings);
+					callback.run();
+				}
+			}
+		});
 	}	
 }

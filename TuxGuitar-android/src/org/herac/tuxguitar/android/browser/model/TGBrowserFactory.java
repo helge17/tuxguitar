@@ -6,8 +6,8 @@ public interface TGBrowserFactory {
 	
 	String getType();
 	
-	void createSettings(TGBrowserFactorySettingsHandler handler) throws TGBrowserException;
+	void createSettings(TGBrowserFactorySettingsHandler handler);
 	
-	void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings) throws TGBrowserException;
+	void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings);
 	
 }

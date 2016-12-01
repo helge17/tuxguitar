@@ -25,23 +25,21 @@ public class TGShareFileDialog {
 	
 	private TGContext context;
 	private TGShareFile file;
+	private Runnable onSuccess;
 	private String errors;
-	private boolean accepted;
 	
-	public TGShareFileDialog(TGContext context, TGShareFile file , String errors ){
+	public TGShareFileDialog(TGContext context, TGShareFile file, String errors, Runnable onSuccess){
 		this.context = context;
 		this.file = file;
 		this.errors = errors;
-		this.accepted = false;
+		this.onSuccess = onSuccess;
 	}
 	
 	public void open() {
 		this.open(TGWindow.getInstance(this.context).getWindow());
 	}
 	
-	protected void open(UIWindow parent) {
-		this.accepted = false;
-		
+	public void open(UIWindow parent) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
@@ -70,12 +68,12 @@ public class TGShareFileDialog {
 		usernameChooser.setText("...");
 		usernameChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGCommunityAuthDialog authDialog = new TGCommunityAuthDialog(getContext());
-				authDialog.open( dialog );
-				if( authDialog.isAccepted() ){
-					TGCommunitySingleton.getInstance(getContext()).getAuth().update();
-					usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
-				}
+				new TGCommunityAuthDialog(getContext(), new Runnable() {
+					public void run() {
+						TGCommunitySingleton.getInstance(getContext()).getAuth().update();
+						usernameText.setText( TGCommunitySingleton.getInstance(getContext()).getAuth().getUsername() );
+					}
+				}, null).open(dialog);
 			}
 		});
 		groupLayout.set(usernameChooser, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
@@ -123,7 +121,7 @@ public class TGShareFileDialog {
 			public void onSelect(UISelectionEvent event) {
 				update(titleText.getText(), tagkeysText.getText() , descriptionText.getText() );
 				
-				dialog.dispose();
+				onFinish(dialog, TGShareFileDialog.this.onSuccess);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -132,7 +130,7 @@ public class TGShareFileDialog {
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				dialog.dispose();
+				onFinish(dialog, null);
 			}
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -141,18 +139,20 @@ public class TGShareFileDialog {
 		if( this.errors != null ){
 			TGMessageDialogUtil.errorMessage(this.context, dialog, this.errors);
 		}
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+	
+	public void onFinish(UIWindow dialog, Runnable runnable) {
+		dialog.dispose();
+		if( runnable != null ) {
+			runnable.run();
+		}
 	}
 	
 	public void update( String title, String tagkeys, String description ){
 		this.file.setTitle( title );
 		this.file.setTagkeys( tagkeys );
 		this.file.setDescription( description );
-		this.accepted = true;
-	}
-	
-	public boolean isAccepted(){
-		return this.accepted;
 	}
 	
 	public TGContext getContext() {

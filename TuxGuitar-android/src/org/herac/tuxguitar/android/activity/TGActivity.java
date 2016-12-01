@@ -95,7 +95,14 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		this.loadDefaultSong();
 		this.drawerManager.syncState();
 	}
-	
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+
+		savedInstanceState.clear();
+	}
+
 	@Override
 	public void onBackPressed() {
 		this.callBackAction();

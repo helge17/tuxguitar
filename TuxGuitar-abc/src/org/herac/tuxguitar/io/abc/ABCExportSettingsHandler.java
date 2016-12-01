@@ -22,12 +22,17 @@ public class ABCExportSettingsHandler implements TGSongStreamSettingsHandler {
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-				ABCSettings settings = new ABCExportSettingsDialog(ABCExportSettingsHandler.this.context, song).open();
-				if( settings != null ) {
-					context.setAttribute(ABCSettings.class.getName(), settings);
-					callback.run();
-				}
+				final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+				final ABCSettings settings = ABCSettings.getDefaults();
+				
+				new ABCExportSettingsDialog(ABCExportSettingsHandler.this.context, song).open(settings, new Runnable() {
+					public void run() {
+						if( settings != null ) {
+							context.setAttribute(ABCSettings.class.getName(), settings);
+							callback.run();
+						}
+					}
+				});
 			}
 		});
 	}	

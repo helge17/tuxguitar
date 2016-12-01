@@ -219,6 +219,12 @@ public class TGBrowserConnection {
 			super(callback);
 		}
 		
+		public void handleError(Throwable throwable) {
+			TGBrowserConnection.this.unlock();
+			
+			super.handleError(throwable);
+		}
+		
 		public void onSuccess(T data) {
 			TGBrowserConnection.this.unlock();
 			

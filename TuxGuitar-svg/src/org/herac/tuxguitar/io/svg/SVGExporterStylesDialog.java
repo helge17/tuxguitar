@@ -28,7 +28,7 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 		this.context = context;
 	}
 	
-	public void configure() {
+	public void configure(final Runnable onSuccess) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
@@ -132,6 +132,7 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 				configure(track, showScore, showTablature, showChordName, showChordDiagram);
 				
 				dialog.dispose();
+				onSuccess.run();
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -146,7 +147,7 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public void configure(int track, boolean showScore,boolean showTablature,boolean showChordName,boolean showChordDiagram) {
@@ -168,6 +169,5 @@ public class SVGExporterStylesDialog extends SVGExporterStyles {
 		if( track < 0 ){
 			this.setFlags( this.getFlags() | TGLayout.DISPLAY_MULTITRACK );
 		}
-		this.setConfigured(true);
 	}
 }

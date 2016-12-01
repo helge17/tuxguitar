@@ -9,11 +9,14 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
+import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
+import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -44,13 +47,14 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 		return "FTP";
 	}
 	
-	public TGBrowser newTGBrowser(TGBrowserSettings data) {
-		return new TGBrowserImpl(TGBrowserSettingsModel.createInstance(data));
+	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings) {
+		handler.onCreateBrowser(new TGBrowserImpl(TGBrowserSettingsModel.createInstance(settings)));
 	}
 	
-	public TGBrowserSettings dataDialog(UIWindow parent) {
-		return new TGBrowserDataDialog(this.context).show(parent);
+	public void createSettings(TGBrowserFactorySettingsHandler handler) {
+		new TGBrowserDataDialog(this.context, handler).show();
 	}
+
 }
 
 class TGBrowserDataDialog{
@@ -58,13 +62,19 @@ class TGBrowserDataDialog{
 	private static final Float MINIMUM_LEGEND_WIDTH = 350f;
 	
 	private TGContext context;
-	private TGBrowserSettings data;
+	private TGBrowserFactorySettingsHandler handler;
 	
-	public TGBrowserDataDialog(TGContext context) {
+	public TGBrowserDataDialog(TGContext context, TGBrowserFactorySettingsHandler handler) {
 		this.context = context;
+		this.handler = handler;
 	}
 	
-	public TGBrowserSettings show(final UIWindow parent){
+	public void show() {
+		TGBrowserDialog browser = TGBrowserDialog.getInstance(this.context);
+		this.show(!browser.isDisposed() ? browser.getWindow() : TGWindow.getInstance(this.context).getWindow());
+	}
+	
+	public void show(final UIWindow parent){
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
@@ -210,9 +220,11 @@ class TGBrowserDataDialog{
 					TGMessageDialogUtil.errorMessage(getContext(), parent, buffer.getBuffer().toString() );
 				}else{
 					int proxyPort = Integer.parseInt( proxyPortStr );
-					TGBrowserDataDialog.this.data = new TGBrowserSettingsModel(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort).toBrowserSettings();
-				
+					
 					dialog.dispose();
+					
+					TGBrowserSettings settings = new TGBrowserSettingsModel(name, host, path, user, password, proxyUser, proxyPwd, proxyHost, proxyPort).toBrowserSettings();
+					TGBrowserDataDialog.this.handler.onCreateSettings(settings);
 				}
 			}
 		});
@@ -228,9 +240,7 @@ class TGBrowserDataDialog{
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
-		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK | TGDialogUtil.OPEN_STYLE_WAIT);
-		
-		return this.data;
+		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
 	public List<String> validate(String name, String host, String pHost, String pPort, boolean pEnabled){
