@@ -117,6 +117,7 @@
 				<exclude name="TuxGuitar*/**/*.dll"/>
 				<exclude name="TuxGuitar*/**/*.jnilib"/>
 				<exclude name="TuxGuitar*/**/*.jar"/>
+				<exclude name="TuxGuitar*/**/*.zip"/>
 			</fileset>
 		</copy>
 		

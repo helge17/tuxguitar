@@ -8,9 +8,6 @@ LIBRARY?=lib$(PACKAGE).so
 
 PREFIX?=/usr
 
-# dependencies
-SWT_PATH?=/usr/share/java/swt.jar
-
 # tuxguitar paths
 TG_PREFIX?=$(PREFIX)
 TG_SOURCE_PATH?=$(TG_PREFIX)/src
@@ -38,7 +35,7 @@ SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 OBJECTS?=$(PACKAGE).o
 
 GCJ?=gcj
-GCJFLAGS?=-I$(TG_LIB_SOURCE_PATH) -I$(TG_GM_UTILS_SOURCE_PATH) -I$(TG_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.5
+GCJFLAGS?=-m$(TG_BUILD_ARCH) -fPIC -fsource=$(TG_BUILD_JAVA_VERSION) -I$(TG_LIB_SOURCE_PATH) -I$(TG_GM_UTILS_SOURCE_PATH) -I$(TG_SOURCE_PATH)
 LDFLAGS?=
 
 default: all
