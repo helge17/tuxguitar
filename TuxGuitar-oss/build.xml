@@ -12,7 +12,7 @@
 	<property name="build.jar" value="tuxguitar-oss.jar" />
 	
 	<path id="class.path">
-		<pathelement location="${path.swt}"/>
+		<pathelement location="${path.tuxguitar-ui-toolkit}"/>
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar-gm-utils}"/>

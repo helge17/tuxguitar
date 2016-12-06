@@ -17,7 +17,7 @@
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar}"/>
-		<pathelement location="${path.swt}"/>
+		<pathelement location="${path.tuxguitar-ui-toolkit}"/>
 	</path >
 	
 	<target name="init" depends="clean">

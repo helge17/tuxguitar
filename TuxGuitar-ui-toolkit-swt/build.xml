@@ -13,6 +13,7 @@
 	
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar-ui-toolkit}"/>
+		<pathelement location="${path.tuxguitar-ui-toolkit-swt}"/>
 		<pathelement location="${path.swt}"/>
 	</path>
 	

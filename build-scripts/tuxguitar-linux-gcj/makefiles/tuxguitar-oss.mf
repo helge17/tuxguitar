@@ -9,9 +9,6 @@ LIBRARY_JNI?=lib$(PACKAGE)-jni.so
 
 PREFIX?=/usr
 
-# dependencies
-SWT_PATH?=/usr/share/java/swt.jar
-
 # tuxguitar paths
 TG_PREFIX?=$(PREFIX)
 TG_SOURCE_PATH?=$(TG_PREFIX)/src
@@ -22,6 +19,10 @@ TG_NATIVE_PLUGINS_PATH?=$(TG_PREFIX)/share/tuxguitar/plugins
 # tuxguitar lib paths
 TG_LIB_PREFIX?=$(PREFIX)
 TG_LIB_SOURCE_PATH?=$(TG_LIB_PREFIX)/src
+
+# tuxguitar ui-toolkit paths
+TG_UI_TOOLKIT_PREFIX?=$(PREFIX)
+TG_UI_TOOLKIT_SOURCE_PATH?=$(TG_UI_TOOLKIT_PREFIX)/src
 
 # tuxguitar editor-utils paths
 TG_EDITOR_UTILS_PREFIX?=$(PREFIX)
@@ -48,11 +49,11 @@ JNI_SOURCES?=$(shell find $(JNI_SOURCE_PATH) -name "*.c")
 JNI_OBJECTS?=$(PACKAGE)-jni.o
 
 GCJ?=gcj
-GCJFLAGS?=-fjni -I$(TG_LIB_SOURCE_PATH) -I$(TG_EDITOR_UTILS_SOURCE_PATH) -I$(TG_GM_UTILS_SOURCE_PATH) -I$(TG_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.5
+GCJFLAGS?=-m$(TG_BUILD_ARCH) -fPIC -fsource=$(TG_BUILD_JAVA_VERSION) -fjni -I$(TG_LIB_SOURCE_PATH) -I$(TG_UI_TOOLKIT_SOURCE_PATH) -I$(TG_EDITOR_UTILS_SOURCE_PATH) -I$(TG_GM_UTILS_SOURCE_PATH) -I$(TG_SOURCE_PATH)
 GCJLDFLAGS?=
 
 CC?=gcc
-CFLAGS?=-I$(shell $(GCJ) -print-file-name=include/) -fPIC
+CFLAGS?=-m$(TG_BUILD_ARCH) -fPIC -I$(shell $(GCJ) -print-file-name=include/)
 CLDFLAGS?=
 
 default: all

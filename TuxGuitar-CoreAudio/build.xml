@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<project name="tuxguitar-coreaudio" basedir="." default="all">
+<project name="TuxGuitar-coreaudio" basedir="." default="all">
 	<description>
 		TuxGuitar coreaudio
 	</description>
@@ -17,7 +17,7 @@
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar}"/>
-		<pathelement location="${path.swt}"/>
+		<pathelement location="${path.tuxguitar-gm-utils}"/>
 	</path >
 	
 	<target name="init" depends="clean">

@@ -18,7 +18,8 @@ SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 OBJECTS?=$(PACKAGE).o
 
 GCJ?=gcj
-GCJFLAGS?=-fbootstrap-classes -fsource=1.5
+GCJFLAGS?=-m$(TG_BUILD_ARCH) -fPIC -fbootstrap-classes -fsource=$(TG_BUILD_JAVA_VERSION)
+GCJLDFLAGS?=-m$(TG_BUILD_ARCH) -fPIC
 
 default: all
 
@@ -41,4 +42,4 @@ $(PACKAGE).o: $(SOURCES)
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
 
 $(LIBRARY): $(OBJECTS)
-	$(GCJ) -shared -o $@ $(^F)
+	$(GCJ) $(GCJLDFLAGS) -shared -o $@ $(^F)

@@ -14,8 +14,10 @@
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar-lib}"/>
 		<pathelement location="${path.tuxguitar}"/>
+		<pathelement location="${path.tuxguitar-ui-toolkit}"/>
+		<pathelement location="${path.tuxguitar-ui-toolkit-swt}"/>
 		<pathelement location="${path.swt}"/>
-	</path >
+	</path>
 	
 	<target name="init" depends="clean">
 		<mkdir dir="${build.path}" />

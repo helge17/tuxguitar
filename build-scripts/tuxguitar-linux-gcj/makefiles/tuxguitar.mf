@@ -22,6 +22,15 @@ TG_LIB_PREFIX?=$(PREFIX)
 TG_LIB_SOURCE_PATH?=$(TG_LIB_PREFIX)/src
 TG_LIB_LIBRARY_PATH?=$(TG_LIB_PREFIX)/lib
 
+# tuxguitar ui-toolkit paths
+TG_UI_TOOLKIT_PREFIX?=$(PREFIX)
+TG_UI_TOOLKIT_SOURCE_PATH?=$(TG_UI_TOOLKIT_PREFIX)/src
+
+# tuxguitar ui-toolkit swt paths
+TG_UI_TOOLKIT_SWT_PREFIX?=$(PREFIX)
+TG_UI_TOOLKIT_SWT_SOURCE_PATH?=$(TG_UI_TOOLKIT_SWT_PREFIX)/src
+TG_UI_TOOLKIT_SWT_RESOURCE_PATH?=$(TG_UI_TOOLKIT_SWT_PREFIX)/resources
+
 # tuxguitar editor-utils paths
 TG_EDITOR_UTILS_PREFIX?=$(PREFIX)
 TG_EDITOR_UTILS_SOURCE_PATH?=$(TG_EDITOR_UTILS_PREFIX)/src
@@ -46,14 +55,23 @@ SWT_JAR?=$(SWT_PATH)
 SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
 SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
 SOURCES+=$(shell find $(TG_EDITOR_UTILS_SOURCE_PATH) -name "*.java")
+SOURCES+=$(shell find $(TG_UI_TOOLKIT_SOURCE_PATH) -name "*.java")
+SOURCES+=$(shell find $(TG_UI_TOOLKIT_SWT_SOURCE_PATH) -name "*.java")
+
+UI_TOOLKIT_RESOURCE_NAME=META-INF/services/org.herac.tuxguitar.ui.UIApplication
+UI_TOOLKIT_RESOURCE_PATH?=$(TG_UI_TOOLKIT_SWT_RESOURCE_PATH)/$(UI_TOOLKIT_RESOURCE_NAME)
+
 RESOURCE_PATH?=$(TG_BUILD_RESOURCES)
 RESOURCES_DIST?=$(shell find $(RESOURCE_PATH) -name "*.dist")
 RESOURCES_CFG?=$(shell find $(RESOURCE_PATH) -name "*.cfg")
 RESOURCES_XML?=$(shell find $(RESOURCE_PATH) -name "*.xml")
+
 DEPENDENCIES?=$(SWT_JAR)
+
 OBJECTS?=\
- $(PACKAGE).o\
  $(DEPENDENCIES:%.jar=%.jar.o)\
+ $(PACKAGE).o\
+ $(PACKAGE)-ui-toolkit-impl.o\
  $(RESOURCES_DIST:%.dist=%.dist.o)\
  $(RESOURCES_CFG:%.cfg=%.cfg.o)\
  $(RESOURCES_XML:%.xml=%.xml.o)\
@@ -69,9 +87,9 @@ PROPERTIES?=\
  -Dtuxguitar.library.extension=$(OS_LIBRARY_EXTENSION) \
 
 GCJ?=gcj
-GCJFLAGS+=-fbootstrap-classes -fjni -I$(TG_LIB_SOURCE_PATH) -I$(SWT_PATH) -fsource=1.5
-LDFLAGS?=
-BINFLAGS?=-l$(PACKAGE) -ltuxguitar-lib -L$(TG_LIBRARY_PATH) -L$(TG_LIB_LIBRARY_PATH)  -L./
+GCJFLAGS+=-m$(TG_BUILD_ARCH) -fPIC -fbootstrap-classes -fjni -fsource=$(TG_BUILD_JAVA_VERSION) -I$(TG_LIB_SOURCE_PATH) -I$(SWT_PATH) 
+GCJLDFLAGS?=-m$(TG_BUILD_ARCH) -fPIC 
+GCJBINFLAGS?=-l$(PACKAGE) -ltuxguitar-lib -L$(TG_LIBRARY_PATH) -L$(TG_LIB_LIBRARY_PATH) -L./ 
 
 default: all
 
@@ -115,11 +133,14 @@ clean:
 %.xml.o: %.xml
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(<F) $<
 
+$(PACKAGE)-ui-toolkit-impl.o:
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) --resource $(UI_TOOLKIT_RESOURCE_NAME) $(UI_TOOLKIT_RESOURCE_PATH)
+
 $(PACKAGE).o: $(SOURCES)
 	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
 
 $(LIBRARY): $(OBJECTS)
-	$(GCJ) -shared -o $@ $(^F) $(LDFLAGS)
+	$(GCJ) $(GCJLDFLAGS) -shared -o $@ $(^F)
 
 $(BINARY):
-	$(GCJ) -o $@ --main=$(MAINCLASS) $(PROPERTIES) $(BINFLAGS)
+	$(GCJ) $(GCJBINFLAGS) -o $@ --main=$(MAINCLASS) $(PROPERTIES)
