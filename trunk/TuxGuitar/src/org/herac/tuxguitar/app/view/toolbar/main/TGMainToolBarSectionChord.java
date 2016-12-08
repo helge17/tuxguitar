@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.toolbar;
+package org.herac.tuxguitar.app.view.toolbar.main;
 
 import java.util.List;
 
@@ -17,34 +17,38 @@ import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
 
-public class TGToolBarSectionChord implements TGToolBarSection {
+public class TGMainToolBarSectionChord extends TGMainToolBarSection {
 	
 	private UIToolActionMenuItem menuItem;
 	
-	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = toolBar.getControl().createActionMenuItem();
-		this.menuItem.addSelectionListener(toolBar.createActionProcessor(TGOpenChordDialogAction.NAME));
+	public TGMainToolBarSectionChord(TGMainToolBar toolBar) {
+		super(toolBar);
+	}
+	
+	public void createSection() {
+		this.menuItem = this.getToolBar().getControl().createActionMenuItem();
+		this.menuItem.addSelectionListener(this.createActionProcessor(TGOpenChordDialogAction.NAME));
 		
-		this.loadIcons(toolBar);
-		this.loadProperties(toolBar);
-		this.updateItems(toolBar);
+		this.loadIcons();
+		this.loadProperties();
+		this.updateItems();
 	}
 	
-	public void loadProperties(TGToolBar toolBar){
-		this.menuItem.setToolTipText(toolBar.getText("insert.chord"));
+	public void loadProperties(){
+		this.menuItem.setToolTipText(this.getText("insert.chord"));
 	}
 	
-	public void loadIcons(TGToolBar toolBar){
-		this.menuItem.setImage(toolBar.getIconManager().getChord());
+	public void loadIcons(){
+		this.menuItem.setImage(this.getIconManager().getChord());
 	}
 	
-	public void updateItems(TGToolBar toolBar){
-		boolean running = MidiPlayer.getInstance(toolBar.getContext()).isRunning();
+	public void updateItems(){
+		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
 		this.menuItem.setEnabled(!running);
-		this.updateMenuItems(toolBar);
+		this.updateMenuItems();
 	}
 	
-	public void updateMenuItems(final TGToolBar toolBar) {
+	public void updateMenuItems() {
 		TGCustomChordManager customChordManager = TuxGuitar.getInstance().getCustomChordManager();
 		UIMenu uiMenu = this.menuItem.getMenu(); 
 		List<UIMenuItem> uiMenuItems = this.menuItem.getMenu().getItems();
@@ -60,7 +64,7 @@ public class TGToolBarSectionChord implements TGToolBarSection {
 				UIMenuActionItem uiMenuActionItem = uiMenu.createActionItem();
 				uiMenuActionItem.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
-						processInsertChordAction(toolBar, (TGChord) event.getComponent().getData(TGChord.class.getName()));
+						processInsertChordAction((TGChord) event.getComponent().getData(TGChord.class.getName()));
 					}
 				});
 				uiMenuItem = uiMenuActionItem;
@@ -70,8 +74,8 @@ public class TGToolBarSectionChord implements TGToolBarSection {
 		}
 	}
 	
-	public void processInsertChordAction(TGToolBar toolBar, TGChord chord) {
-		TGActionProcessor tgActionProcessor = toolBar.createActionProcessor(TGInsertChordAction.NAME);
+	public void processInsertChordAction(TGChord chord) {
+		TGActionProcessor tgActionProcessor = this.createActionProcessor(TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
 		tgActionProcessor.process();
 	}

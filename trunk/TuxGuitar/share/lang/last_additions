@@ -46,14 +46,14 @@ track.instrument.default-select-option=--- Select ---
 
 export.all-tracks=Export all tracks
 
-view.show-toolbars=Show Toolbars
+view.show-main-toolbar=Show Toolbars
 view.show-instruments=Show Instruments
 
 
 
 effects.let-ring=Let Ring
 
-action.view.show-toolbars=Show Toolbars
+action.view.show-main-toolbar=Show Toolbars
 action.view.show-instruments=Show Instruments
 action.note.effect.change-let-ring=Add/Remove let ring
 

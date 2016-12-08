@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.toolbar;
+package org.herac.tuxguitar.app.view.toolbar.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
-public class TGToolBarSectionDuration implements TGToolBarSection {
+public class TGMainToolBarSectionDuration extends TGMainToolBarSection {
 	
 	private static final String DURATION_VALUE = "duration";
 	
@@ -49,74 +49,76 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 	
 	private Integer durationValue;
 	
-	public TGToolBarSectionDuration() {
+	public TGMainToolBarSectionDuration(TGMainToolBar toolBar) {
+		super(toolBar);
+		
 		this.createDurationNames();
 		this.createDurationActions();
 	}
 	
-	public void createSection(final TGToolBar toolBar) {
-		this.durationItem = toolBar.getControl().createMenuItem();
+	public void createSection() {
+		this.durationItem = this.getToolBar().getControl().createMenuItem();
 		
 		this.durationMenuItems = new ArrayList<UIMenuActionItem>();
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.WHOLE));
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.HALF));
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.QUARTER));
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.EIGHTH));
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.SIXTEENTH));
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.THIRTY_SECOND));
-		this.durationMenuItems.add(this.createDurationMenuItem(toolBar, TGDuration.SIXTY_FOURTH));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.WHOLE));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.HALF));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.QUARTER));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.EIGHTH));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.SIXTEENTH));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.THIRTY_SECOND));
+		this.durationMenuItems.add(this.createDurationMenuItem(TGDuration.SIXTY_FOURTH));
 		
-		this.dotted = toolBar.getControl().createCheckItem();
-		this.dotted.addSelectionListener(toolBar.createActionProcessor(TGChangeDottedDurationAction.NAME));
+		this.dotted = this.getToolBar().getControl().createCheckItem();
+		this.dotted.addSelectionListener(this.createActionProcessor(TGChangeDottedDurationAction.NAME));
 		
-		this.doubleDotted = toolBar.getControl().createCheckItem();
-		this.doubleDotted.addSelectionListener(toolBar.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
+		this.doubleDotted = this.getToolBar().getControl().createCheckItem();
+		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
 		
-		this.divisionTypeItem = toolBar.getControl().createActionMenuItem();
+		this.divisionTypeItem = this.getToolBar().getControl().createActionMenuItem();
 		this.divisionTypeItem.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				toggleDivisionType(toolBar);
+				toggleDivisionType();
 			}
 		});
 		
 		this.divisionTypeMenuItems = new ArrayList<UIMenuCheckableItem>();
 		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
-			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(toolBar, TGDivisionType.ALTERED_DIVISION_TYPES[i]));
+			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
 		}
 		
-		this.loadIcons(toolBar);
-		this.loadProperties(toolBar);
+		this.loadIcons();
+		this.loadProperties();
 	}
 	
-	public void loadProperties(TGToolBar toolBar){
-		TGDuration duration = toolBar.getTablature().getCaret().getDuration();
+	public void loadProperties(){
+		TGDuration duration = this.getTablature().getCaret().getDuration();
 		
-		this.durationItem.setToolTipText(toolBar.getText("duration"));
-		this.dotted.setToolTipText(toolBar.getText("duration.dotted"));
-		this.doubleDotted.setToolTipText(toolBar.getText("duration.doubledotted"));
-		this.divisionTypeItem.setToolTipText(toolBar.getText("duration.division-type"));
-		this.loadDurationMenuProperties(toolBar, duration.getValue());
-		this.loadDivisionTypeMenuProperties(toolBar);
+		this.durationItem.setToolTipText(this.getText("duration"));
+		this.dotted.setToolTipText(this.getText("duration.dotted"));
+		this.doubleDotted.setToolTipText(this.getText("duration.doubledotted"));
+		this.divisionTypeItem.setToolTipText(this.getText("duration.division-type"));
+		this.loadDurationMenuProperties(duration.getValue());
+		this.loadDivisionTypeMenuProperties();
 	}
 	
-	public void loadIcons(TGToolBar toolBar){
-		this.dotted.setImage(toolBar.getIconManager().getDurationDotted());
-		this.doubleDotted.setImage(toolBar.getIconManager().getDurationDoubleDotted());
-		this.divisionTypeItem.setImage(toolBar.getIconManager().getDivisionType());
-		this.loadDurationIcon(toolBar, true);
-		this.loadDurationMenuIcons(toolBar);
+	public void loadIcons(){
+		this.dotted.setImage(this.getIconManager().getDurationDotted());
+		this.doubleDotted.setImage(this.getIconManager().getDurationDoubleDotted());
+		this.divisionTypeItem.setImage(this.getIconManager().getDivisionType());
+		this.loadDurationIcon(true);
+		this.loadDurationMenuIcons();
 	}
 	
-	public void loadDurationIcon(TGToolBar toolBar, boolean force) {
+	public void loadDurationIcon(boolean force) {
 		int durationValue = TGDuration.QUARTER;
 		
-		Tablature tablature = toolBar.getTablature();
+		Tablature tablature = this.getTablature();
 		if( tablature != null ) {
 			durationValue = tablature.getCaret().getDuration().getValue();
 		}
 		
 		if( force || (this.durationValue == null || !this.durationValue.equals(durationValue))) {
-			UIImage icon = this.findDurationIcon(toolBar, durationValue);
+			UIImage icon = this.findDurationIcon(durationValue);
 			if( icon != null ) { 
 				this.durationItem.setImage(icon);
 				this.durationValue = durationValue;
@@ -124,59 +126,59 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 		}
 	}
 	
-	public void updateItems(TGToolBar toolBar) {
-		TGDuration duration = toolBar.getTablature().getCaret().getDuration();
+	public void updateItems() {
+		TGDuration duration = this.getTablature().getCaret().getDuration();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		
-		this.loadDurationIcon(toolBar, false);
+		this.loadDurationIcon(false);
 		this.durationItem.setEnabled( !running );
 		this.dotted.setChecked(duration.isDotted());
 		this.dotted.setEnabled(!running);
 		this.doubleDotted.setChecked(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled(!running);
 		this.divisionTypeItem.setEnabled(!running);
-		this.updateDurationMenuItems(toolBar, duration.getValue(), running);
-		this.updateDivisionTypeMenuItems(toolBar, duration.getDivision(), running);
+		this.updateDurationMenuItems(duration.getValue(), running);
+		this.updateDivisionTypeMenuItems(duration.getDivision(), running);
 	}
 	
-	private UIMenuActionItem createDurationMenuItem(TGToolBar toolBar, int value) {
+	private UIMenuActionItem createDurationMenuItem(int value) {
 		UIMenuActionItem menuItem = this.durationItem.getMenu().createActionItem();
 		menuItem.setData(DURATION_VALUE, value);
 		
 		String action = this.findDurationAction(value);
 		if( action != null ) {
-			menuItem.addSelectionListener(toolBar.createActionProcessor(action));
+			menuItem.addSelectionListener(this.createActionProcessor(action));
 		}
 		return menuItem;
 	}
 	
-	private void updateDurationMenuItems(TGToolBar toolBar, int selection, boolean running) {
+	private void updateDurationMenuItems(int selection, boolean running) {
 		for(UIMenuActionItem uiMenuItem : this.durationMenuItems) {
 			Integer value = uiMenuItem.getData(DURATION_VALUE);
 			String nameKey = this.findDurationNameKey(value);
 			if( nameKey != null ) {
 				uiMenuItem.setEnabled(!running);
-				uiMenuItem.setText(toolBar.getText(nameKey, (value == selection)));
+				uiMenuItem.setText(this.getText(nameKey, (value == selection)));
 			}
 		}
 	}
 	
-	private void loadDurationMenuIcons(TGToolBar toolBar) {
+	private void loadDurationMenuIcons() {
 		for(UIMenuActionItem uiMenuItem : this.durationMenuItems) {
 			Integer value = uiMenuItem.getData(DURATION_VALUE);
-			UIImage icon = this.findDurationIcon(toolBar, value);
+			UIImage icon = this.findDurationIcon(value);
 			if( icon != null ) {
 				uiMenuItem.setImage(icon);
 			}
 		}
 	}
 	
-	private void loadDurationMenuProperties(TGToolBar toolBar, int selection) {
+	private void loadDurationMenuProperties(int selection) {
 		for(UIMenuActionItem uiMenuItem : this.durationMenuItems) {
 			Integer value = (Integer) uiMenuItem.getData(DURATION_VALUE);
 			String nameKey = this.findDurationNameKey(value);
 			if( nameKey != null ) {
-				uiMenuItem.setText(toolBar.getText(nameKey, (value == selection)));
+				uiMenuItem.setText(this.getText(nameKey, (value == selection)));
 			}
 		}
 	}
@@ -217,54 +219,54 @@ public class TGToolBarSectionDuration implements TGToolBarSection {
 		return null;
 	}
 	
-	private UIImage findDurationIcon(TGToolBar toolBar, int value) {
-		return toolBar.getIconManager().getDuration(value);
+	private UIImage findDurationIcon(int value) {
+		return this.getIconManager().getDuration(value);
 	}
 	
-	private void toggleDivisionType(TGToolBar toolBar) {
-		TGDuration duration = TablatureEditor.getInstance(toolBar.getContext()).getTablature().getCaret().getDuration();
+	private void toggleDivisionType() {
+		TGDuration duration = TablatureEditor.getInstance(this.getToolBar().getContext()).getTablature().getCaret().getDuration();
 		TGDivisionType divisionType = null;
 		if( duration.getDivision().isEqual(TGDivisionType.NORMAL)){
-			divisionType = this.createDivisionType(toolBar, TGDivisionType.TRIPLET);
+			divisionType = this.createDivisionType(TGDivisionType.TRIPLET);
 		}else{
-			divisionType = this.createDivisionType(toolBar, TGDivisionType.NORMAL);
+			divisionType = this.createDivisionType(TGDivisionType.NORMAL);
 		}
 		
-		this.createDivisionTypeAction(toolBar, divisionType).process();
+		this.createDivisionTypeAction(divisionType).process();
 	}
 	
-	private UIMenuCheckableItem createDivisionTypeMenuItem(TGToolBar toolBar, TGDivisionType divisionType) {
+	private UIMenuCheckableItem createDivisionTypeMenuItem(TGDivisionType divisionType) {
 		UIMenuCheckableItem uiMenuItem = this.divisionTypeItem.getMenu().createCheckItem();
 		uiMenuItem.setData(TGDivisionType.class.getName(), divisionType);
-		uiMenuItem.addSelectionListener(this.createDivisionTypeAction(toolBar, divisionType));
+		uiMenuItem.addSelectionListener(this.createDivisionTypeAction(divisionType));
 		
 		return uiMenuItem;
 	}
 	
-	private void updateDivisionTypeMenuItems(TGToolBar toolBar, TGDivisionType selection, boolean running) {
+	private void updateDivisionTypeMenuItems(TGDivisionType selection, boolean running) {
 		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
 			uiMenuItem.setChecked(divisionType.isEqual(selection));
 		}
 	}
 	
-	private void loadDivisionTypeMenuProperties(TGToolBar toolBar) {
+	private void loadDivisionTypeMenuProperties() {
 		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
 			uiMenuItem.setText(Integer.toString(divisionType.getEnters()));
 		}
 	}
 	
-	private TGDivisionType createDivisionType(TGToolBar toolBar, TGDivisionType tgDivisionTypeSrc) {
-		TGFactory tgFactory = TGDocumentManager.getInstance(toolBar.getContext()).getSongManager().getFactory();
+	private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc) {
+		TGFactory tgFactory = TGDocumentManager.getInstance(this.getToolBar().getContext()).getSongManager().getFactory();
 		TGDivisionType tgDivisionTypeDst = tgFactory.newDivisionType();
 		tgDivisionTypeDst.copyFrom(tgDivisionTypeSrc);
 		return tgDivisionTypeDst;
 	}
 	
-	private TGActionProcessorListener createDivisionTypeAction(TGToolBar toolBar, TGDivisionType tgDivisionType){
-		TGActionProcessorListener tgActionProcessor = toolBar.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);
-		tgActionProcessor.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, createDivisionType(toolBar, tgDivisionType));
+	private TGActionProcessorListener createDivisionTypeAction(TGDivisionType tgDivisionType){
+		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);
+		tgActionProcessor.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, createDivisionType(tgDivisionType));
 		return tgActionProcessor;
 	}
 }

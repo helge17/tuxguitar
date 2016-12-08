@@ -10,7 +10,8 @@ import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
-import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
+import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
+import org.herac.tuxguitar.app.view.toolbar.main.TGMainToolBar;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.event.TGEvent;
@@ -58,11 +59,23 @@ public class TGWindow implements TGEventListener {
 	}
 	
 	private void createShellComposites(UIFactory uiFactory) {
-		TGToolBar tgToolBar = TGToolBar.getInstance(this.context);
+		TGMainToolBar tgToolBar = TGMainToolBar.getInstance(this.context);
 		tgToolBar.createToolBar(this.window);
 		
+		UITableLayout topContainerLayout = new UITableLayout(0f);
+		UIPanel topContainer = uiFactory.createPanel(this.window, false);
+		topContainer.setLayout(topContainerLayout);
+		topContainerLayout.set(UITableLayout.IGNORE_INVISIBLE, true);
+		
+		TGEditToolBar tgEditToolBar = TGEditToolBar.getInstance(this.context);
+		tgEditToolBar.createToolBar(topContainer);
+		topContainerLayout.set(tgEditToolBar.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true, 1, 1, null, null, 0f);
+		topContainerLayout.set(tgEditToolBar.getControl(), UITableLayout.PACKED_HEIGHT, 0f);
+		
 		TGTabFolder tgTabFolder = TGTabFolder.getInstance(this.context);
-		tgTabFolder.init(this.window);
+		tgTabFolder.init(topContainer);
+		topContainerLayout.set(tgTabFolder.getControl(), 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		topContainerLayout.set(tgTabFolder.getControl(), UITableLayout.PACKED_HEIGHT, 0f);
 		
 		TGWindowDivider tgWindowDivider = new TGWindowDivider(this.context);
 		tgWindowDivider.createDivider(this.window);
@@ -70,15 +83,15 @@ public class TGWindow implements TGEventListener {
 		TGTableViewer tgTableViewer = TGTableViewer.getInstance(this.context);
 		tgTableViewer.init(this.window);
 		
-		UIPanel footer = uiFactory.createPanel(this.window, false);
-		footer.setLayout(new UITableLayout(0f));
-		footer.getLayout().set(UITableLayout.IGNORE_INVISIBLE, true);
+		UIPanel bottom = uiFactory.createPanel(this.window, false);
+		bottom.setLayout(new UITableLayout(0f));
+		bottom.getLayout().set(UITableLayout.IGNORE_INVISIBLE, true);
 		
 		TGFretBoardEditor tgFretBoardEditor = TGFretBoardEditor.getInstance(this.context);
-		tgFretBoardEditor.showFretBoard(footer);
+		tgFretBoardEditor.showFretBoard(bottom);
 		
 		// Layout
-		this.window.setLayout(new TGWindowLayout(tgToolBar.getControl(), tgTabFolder.getControl(), tgWindowDivider.getControl(), tgTableViewer.getControl(), footer));
+		this.window.setLayout(new TGWindowLayout(tgToolBar.getControl(), topContainer, tgWindowDivider.getControl(), tgTableViewer.getControl(), bottom));
 	}
 	
 	private void createShellListeners() {

@@ -10,14 +10,16 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleMainToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleToolbarsAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.app.view.toolbar.TGToolBar;
+import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
+import org.herac.tuxguitar.app.view.toolbar.main.TGMainToolBar;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
@@ -28,7 +30,8 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 public class ViewMenuItem extends TGMenuItem {
 	
 	private UIMenuSubMenuItem layoutMenuItem;
-	private UIMenuCheckableItem showToolbars;
+	private UIMenuCheckableItem showMainToolbar;
+	private UIMenuCheckableItem showEditToolbar;
 	private UIMenuCheckableItem showInstruments;
 	private UIMenuCheckableItem showTransport;
 	private UIMenuCheckableItem showFretBoard;
@@ -51,8 +54,12 @@ public class ViewMenuItem extends TGMenuItem {
 	
 	public void showItems(){
 		//--TOOLBARS--
-		this.showToolbars = this.layoutMenuItem.getMenu().createCheckItem();
-		this.showToolbars.addSelectionListener(this.createActionProcessor(TGToggleToolbarsAction.NAME));
+		this.showMainToolbar = this.layoutMenuItem.getMenu().createCheckItem();
+		this.showMainToolbar.addSelectionListener(this.createActionProcessor(TGToggleMainToolbarAction.NAME));
+		
+		//--EDIT TOOLBAR--
+		this.showEditToolbar = this.layoutMenuItem.getMenu().createCheckItem();
+		this.showEditToolbar.addSelectionListener(this.createActionProcessor(TGToggleEditToolbarAction.NAME));
 		
 		//--INSTRUMENTS--
 		this.showInstruments = this.layoutMenuItem.getMenu().createCheckItem();
@@ -118,7 +125,8 @@ public class ViewMenuItem extends TGMenuItem {
 	public void update(){
 		TGLayout layout = TuxGuitar.getInstance().getTablatureEditor().getTablature().getViewLayout();
 		int style = layout.getStyle();
-		this.showToolbars.setChecked(TGToolBar.getInstance(this.findContext()).isVisible());
+		this.showMainToolbar.setChecked(TGMainToolBar.getInstance(this.findContext()).isVisible());
+		this.showEditToolbar.setChecked(TGEditToolBar.getInstance(this.findContext()).isVisible());
 		this.showInstruments.setChecked(!TuxGuitar.getInstance().getChannelManager().isDisposed());
 		this.showTransport.setChecked(!TGTransportDialog.getInstance(this.findContext()).isDisposed());
 		this.showFretBoard.setChecked(TuxGuitar.getInstance().getFretBoardEditor().isVisible());
@@ -137,7 +145,8 @@ public class ViewMenuItem extends TGMenuItem {
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.layoutMenuItem, "view", null);
-		setMenuItemTextAndAccelerator(this.showToolbars, "view.show-toolbars", TGToggleToolbarsAction.NAME);
+		setMenuItemTextAndAccelerator(this.showMainToolbar, "view.show-main-toolbar", TGToggleMainToolbarAction.NAME);
+		setMenuItemTextAndAccelerator(this.showEditToolbar, "view.show-edit-toolbar", TGToggleMainToolbarAction.NAME);
 		setMenuItemTextAndAccelerator(this.showInstruments, "view.show-instruments", TGToggleChannelsDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.showTransport, "view.show-transport", TGToggleTransportDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.showFretBoard, "view.show-fretboard", TGToggleFretBoardEditorAction.NAME);
