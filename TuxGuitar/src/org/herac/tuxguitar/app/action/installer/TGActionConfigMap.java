@@ -118,10 +118,11 @@ import org.herac.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleMainToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleToolbarsAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleViewAction;
 import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
@@ -569,7 +570,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGToggleBrowserAction.NAME, SHORTCUT);
 		this.map(TGToggleTransportDialogAction.NAME, SHORTCUT);
 		this.map(TGToggleMarkerListAction.NAME, SHORTCUT);
-		this.map(TGToggleToolbarsAction.NAME, SHORTCUT);
+		this.map(TGToggleMainToolbarAction.NAME, SHORTCUT);
+		this.map(TGToggleEditToolbarAction.NAME, SHORTCUT);
 		this.map(TGOpenDocumentationDialogAction.NAME, SHORTCUT);
 		this.map(TGOpenAboutDialogAction.NAME, SHORTCUT);
 	}

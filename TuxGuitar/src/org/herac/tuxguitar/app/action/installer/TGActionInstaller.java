@@ -119,10 +119,11 @@ import org.herac.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleMainToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleToolbarsAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleViewAction;
 import org.herac.tuxguitar.editor.action.TGActionBase;
@@ -513,7 +514,8 @@ public class TGActionInstaller {
 		installAction(new TGToggleBrowserAction(context));
 		installAction(new TGToggleTransportDialogAction(context));
 		installAction(new TGToggleMarkerListAction(context));
-		installAction(new TGToggleToolbarsAction(context));
+		installAction(new TGToggleMainToolbarAction(context));
+		installAction(new TGToggleEditToolbarAction(context));
 		
 		installAction(new TGOpenDocumentationDialogAction(context));
 		installAction(new TGOpenAboutDialogAction(context));

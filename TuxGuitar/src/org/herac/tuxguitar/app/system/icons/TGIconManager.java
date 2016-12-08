@@ -111,6 +111,7 @@ public class TGIconManager {
 	private UIImage filePrint;
 	private UIImage filePrintPreview;
 	private UIImage chord;
+	private UIImage text;
 	private UIImage noteTied;
 	private UIImage instruments;
 	private UIImage dynamicPPP;
@@ -154,7 +155,10 @@ public class TGIconManager {
 	private UIImage statusError;
 	private UIImage statusWarning;
 	private UIImage statusInfo;
+	private UIImage strokeUp;
+	private UIImage strokeDown;
 	private UIImage settings;
+	private UIImage toolbarEdit;
 	
 	private TGIconManager(TGContext context){
 		this.context = context;
@@ -258,6 +262,7 @@ public class TGIconManager {
 		this.fretboardFirstFret = loadIcon("firstfret.png");
 		this.fretboardFret = loadIcon("fret.png");
 		this.chord = loadIcon("chord.png");
+		this.text = loadIcon("text.png");
 		this.noteTied = loadIcon("tiednote.png");
 		this.transport = loadIcon("transport.png");
 		this.transportFirst1 = loadIcon("transport_first_1.png");
@@ -337,7 +342,10 @@ public class TGIconManager {
 		this.statusError = loadIcon("status_error.png");
 		this.statusWarning = loadIcon("status_warning.png");
 		this.statusInfo = loadIcon("status_info.png");
+		this.strokeUp = loadIcon("stroke_up.png");
+		this.strokeDown = loadIcon("stroke_down.png");
 		this.settings = loadIcon("settings.png");
+		this.toolbarEdit = loadIcon("toolbar_edit.png");
 	}
 	
 	private UIImage loadIcon(String name) {
@@ -434,6 +442,10 @@ public class TGIconManager {
 	
 	public UIImage getChord() {
 		return this.chord;
+	}
+	
+	public UIImage getText() {
+		return this.text;
 	}
 	
 	public UIImage getCompositionRepeatClose() {
@@ -872,8 +884,20 @@ public class TGIconManager {
 		return this.browserNew;
 	}
 	
+	public UIImage getStrokeUp() {
+		return this.strokeUp;
+	}
+
+	public UIImage getStrokeDown() {
+		return this.strokeDown;
+	}
+
 	public UIImage getSettings() {
 		return this.settings;
+	}
+	
+	public UIImage getToolbarEdit() {
+		return this.toolbarEdit;
 	}
 	
 	public UIImage getArrowUp() {

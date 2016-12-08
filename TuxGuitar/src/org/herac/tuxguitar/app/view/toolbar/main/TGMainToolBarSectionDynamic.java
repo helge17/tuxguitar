@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.toolbar;
+package org.herac.tuxguitar.app.view.toolbar.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
-public class TGToolBarSectionDynamic implements TGToolBarSection {
+public class TGMainToolBarSectionDynamic extends TGMainToolBarSection {
 	
 	private static final String VELOCITY_VALUE = "velocity";
 	
@@ -29,7 +29,9 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 	
 	private Integer dynamicValue;
 	
-	public TGToolBarSectionDynamic() {
+	public TGMainToolBarSectionDynamic(TGMainToolBar toolBar) {
+		super(toolBar);
+		
 		this.dynamicNameKeys = new HashMap<Integer, String>();
 		this.dynamicNameKeys.put(TGVelocities.PIANO_PIANISSIMO, "dynamic.piano-pianissimo");
 		this.dynamicNameKeys.put(TGVelocities.PIANISSIMO, "dynamic.pianissimo");
@@ -41,40 +43,40 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		this.dynamicNameKeys.put(TGVelocities.FORTE_FORTISSIMO, "dynamic.forte-fortissimo");
 	}
 	
-	public void createSection(final TGToolBar toolBar) {
-		this.menuItem = toolBar.getControl().createMenuItem();
+	public void createSection() {
+		this.menuItem = this.getToolBar().getControl().createMenuItem();
 		
 		this.menuItems = new ArrayList<UIMenuActionItem>();
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.PIANO_PIANISSIMO));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.PIANISSIMO));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.PIANO));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.MEZZO_PIANO));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.MEZZO_FORTE));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.FORTE));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.FORTISSIMO));
-		this.menuItems.add(this.createMenuItem(toolBar, TGVelocities.FORTE_FORTISSIMO));
+		this.menuItems.add(this.createMenuItem(TGVelocities.PIANO_PIANISSIMO));
+		this.menuItems.add(this.createMenuItem(TGVelocities.PIANISSIMO));
+		this.menuItems.add(this.createMenuItem(TGVelocities.PIANO));
+		this.menuItems.add(this.createMenuItem(TGVelocities.MEZZO_PIANO));
+		this.menuItems.add(this.createMenuItem(TGVelocities.MEZZO_FORTE));
+		this.menuItems.add(this.createMenuItem(TGVelocities.FORTE));
+		this.menuItems.add(this.createMenuItem(TGVelocities.FORTISSIMO));
+		this.menuItems.add(this.createMenuItem(TGVelocities.FORTE_FORTISSIMO));
 		
-		this.loadIcons(toolBar);
-		this.loadProperties(toolBar);
+		this.loadIcons();
+		this.loadProperties();
 	}
 	
-	public void loadProperties(TGToolBar toolBar){
+	public void loadProperties(){
 		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		int selection = ((caret.getSelectedNote() != null) ? caret.getSelectedNote().getVelocity() : caret.getVelocity());
 		
-		this.menuItem.setToolTipText(toolBar.getText("dynamic"));
-		this.loadMenuProperties(toolBar, selection);
+		this.menuItem.setToolTipText(this.getText("dynamic"));
+		this.loadMenuProperties(selection);
 	}
 	
-	public void loadIcons(TGToolBar toolBar){
-		this.loadDynamicIcon(toolBar, true);
-		this.loadMenuIcons(toolBar);
+	public void loadIcons(){
+		this.loadDynamicIcon(true);
+		this.loadMenuIcons();
 	}
 	
-	public void loadDynamicIcon(TGToolBar toolBar, boolean force){
+	public void loadDynamicIcon(boolean force){
 		int dynamicValue = TGVelocities.DEFAULT;
 		
-		Tablature tablature = toolBar.getTablature();
+		Tablature tablature = this.getTablature();
 		if( tablature != null ) {
 			Caret caret = tablature.getCaret();
 			TGNote selectedNote = caret.getSelectedNote();
@@ -82,7 +84,7 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		}
 		
 		if( force || (this.dynamicValue == null || !this.dynamicValue.equals(dynamicValue))) {
-			UIImage icon = this.getDynamicIcon(toolBar, dynamicValue);
+			UIImage icon = this.getDynamicIcon(dynamicValue);
 			if( icon != null ) { 
 				this.menuItem.setImage(icon);
 				this.dynamicValue = dynamicValue;
@@ -90,48 +92,48 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		}
 	}
 	
-	public void updateItems(TGToolBar toolBar){
+	public void updateItems(){
 		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		int selection = ((caret.getSelectedNote() != null) ? caret.getSelectedNote().getVelocity() : caret.getVelocity());
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		
-		this.loadDynamicIcon(toolBar, false);
-		this.updateMenuItems(toolBar, selection, running);
+		this.loadDynamicIcon(false);
+		this.updateMenuItems(selection, running);
 	}
 	
-	private UIMenuActionItem createMenuItem(TGToolBar toolBar, int velocity) {
+	private UIMenuActionItem createMenuItem(int velocity) {
 		UIMenuActionItem menuItem = this.menuItem.getMenu().createActionItem();
 		menuItem.setData(VELOCITY_VALUE, velocity);
-		menuItem.addSelectionListener(this.createChangeVelocityAction(toolBar, velocity));
+		menuItem.addSelectionListener(this.createChangeVelocityAction(velocity));
 		return menuItem;
 	}
 	
-	private void updateMenuItems(TGToolBar toolBar, int selection, boolean running) {
+	private void updateMenuItems(int selection, boolean running) {
 		for(UIMenuActionItem menuItem : this.menuItems) {
 			menuItem.setEnabled(!running);
 			
 			Integer velocity = menuItem.getData(VELOCITY_VALUE);
 			String nameKey = getNameKey(velocity);
 			if( nameKey != null ) {
-				menuItem.setText(toolBar.getText(nameKey, (velocity == selection)));
+				menuItem.setText(this.getText(nameKey, (velocity == selection)));
 			}
 		}
 	}
 	
-	private void loadMenuProperties(TGToolBar toolBar, int selection) {
+	private void loadMenuProperties(int selection) {
 		for(UIMenuActionItem menuItem : this.menuItems) {
 			Integer velocity = menuItem.getData(VELOCITY_VALUE);
 			String nameKey = getNameKey(velocity);
 			if( nameKey != null ) {
-				menuItem.setText(toolBar.getText(nameKey, (velocity == selection)));
+				menuItem.setText(this.getText(nameKey, (velocity == selection)));
 			}
 		}
 	}
 	
-	private void loadMenuIcons(TGToolBar toolBar) {
+	private void loadMenuIcons() {
 		for(UIMenuActionItem menuItem : this.menuItems) {
 			Integer velocity = menuItem.getData(VELOCITY_VALUE);
-			UIImage icon = this.getDynamicIcon(toolBar, velocity);
+			UIImage icon = this.getDynamicIcon(velocity);
 			if( icon != null ) {
 				menuItem.setImage(icon);
 			}
@@ -146,8 +148,8 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		return null;
 	}
 	
-	private UIImage getDynamicIcon(TGToolBar toolBar, int velocity) {
-		TGIconManager iconManager = toolBar.getIconManager();
+	private UIImage getDynamicIcon(int velocity) {
+		TGIconManager iconManager = this.getIconManager();
 		if( velocity == TGVelocities.PIANO_PIANISSIMO ) {
 			return iconManager.getDynamicPPP();
 		}
@@ -175,8 +177,8 @@ public class TGToolBarSectionDynamic implements TGToolBarSection {
 		return null;
 	}
 	
-	public TGActionProcessorListener createChangeVelocityAction(TGToolBar toolBar, Integer velocity) {
-		TGActionProcessorListener tgActionProcessor = toolBar.createActionProcessor(TGChangeVelocityAction.NAME);
+	public TGActionProcessorListener createChangeVelocityAction(Integer velocity) {
+		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGChangeVelocityAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, velocity);
 		return tgActionProcessor;
 	}
