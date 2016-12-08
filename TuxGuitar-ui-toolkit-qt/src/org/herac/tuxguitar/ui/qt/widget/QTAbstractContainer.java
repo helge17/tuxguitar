@@ -43,4 +43,14 @@ public abstract class QTAbstractContainer<T extends QWidget> extends QTWidget<T>
 			this.children.remove(uiControl);
 		}
 	}
+	
+	public void dispose() {
+		List<QTWidget<? extends QWidget>> children = new ArrayList<QTWidget<? extends QWidget>>(this.children);
+		for(QTWidget<? extends QWidget> child : children) {
+			if(!child.isDisposed()) {
+				child.dispose();
+			}
+		}
+		super.dispose();
+	}
 }
