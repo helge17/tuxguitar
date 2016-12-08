@@ -40,6 +40,18 @@ public class TGFretBoardEditor implements TGEventListener{
 		return this.fretBoard;
 	}
 	
+	public void createFretBoard(UIPanel parent, boolean visible) {
+		this.fretBoard = new TGFretBoard(this.context, parent);
+		this.fretBoard.setVisible(visible);
+		
+		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
+		uiLayout.set(this.fretBoard.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		
+		if( visible ) {
+			this.showFretBoard();
+		}
+	}
+	
 	public void hideFretBoard(){
 		this.visible = false;
 		getFretBoard().setVisible(this.visible);
@@ -61,13 +73,6 @@ public class TGFretBoardEditor implements TGEventListener{
 		
 		TGWindow tgWindow = TGWindow.getInstance(this.context);
 		tgWindow.getWindow().layout();
-	}
-	
-	public void showFretBoard(UIPanel parent) {
-		this.fretBoard = new TGFretBoard(this.context, parent);
-		
-		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
-		uiLayout.set(this.fretBoard.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 	}
 	
 	public void dispose(){

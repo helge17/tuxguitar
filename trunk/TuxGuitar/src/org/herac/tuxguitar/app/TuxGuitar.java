@@ -52,10 +52,6 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -175,35 +171,8 @@ public class TuxGuitar {
 	}
 	
 	public void restoreControlsConfig(){
-		final TGConfigManager config = getConfig();
+		TGConfigManager config = getConfig();
 		
-		//---Main Shell---
-		boolean maximized = config.getBooleanValue(TGConfigKeys.MAXIMIZED);
-		
-		UIWindow uiWindow = TGWindow.getInstance(this.context).getWindow();
-		if( maximized ) {
-			uiWindow.maximize();
-		}
-		else {
-			float width = config.getFloatValue(TGConfigKeys.WIDTH);
-			float height = config.getFloatValue(TGConfigKeys.HEIGHT);
-			if( width > 0 && height > 0 ){
-				UIPosition uiPosition = uiWindow.getBounds().getPosition();
-				UIRectangle uiRectangle = new UIRectangle();
-				uiRectangle.setSize(new UISize(width, height));
-				uiRectangle.getPosition().setX(Math.max(uiPosition.getX(), 0f));
-				uiRectangle.getPosition().setY(Math.max(uiPosition.getY(), 0f));
-				
-				uiWindow.setBounds(uiRectangle);
-			}
-		}
-		
-		//---Fretboard---
-		if( config.getBooleanValue(TGConfigKeys.SHOW_FRETBOARD)){
-			getFretBoardEditor().showFretBoard();
-		}else{
-			getFretBoardEditor().hideFretBoard();
-		}
 		//---Instruments---
 		if( config.getBooleanValue(TGConfigKeys.SHOW_INSTRUMENTS) ){
 			new TGActionProcessor(this.context, TGToggleChannelsDialogAction.NAME).process();

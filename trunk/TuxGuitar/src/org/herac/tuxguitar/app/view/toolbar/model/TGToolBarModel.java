@@ -81,7 +81,7 @@ public abstract class TGToolBarModel implements TGEventListener {
 	}
 	
 	public void updateVisibility(boolean visible) {
-		if(!this.isDisposed()) {
+		if(!this.isDisposed() && (this.isVisible() != visible)) {
 			this.getControl().setVisible(visible);
 			
 			TGWindow.getInstance(this.context).getWindow().layout();
@@ -93,7 +93,7 @@ public abstract class TGToolBarModel implements TGEventListener {
 	}
 	
 	public boolean isVisible() {
-		return (!this.isDisposed() ? this.getControl().isVisible() : false);
+		return (!this.isDisposed() && this.getControl().isVisible());
 	}
 	
 	public boolean isDisposed() {
