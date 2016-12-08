@@ -1,18 +1,7 @@
-/*
- * Created on 27-ene-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.app.system.config;
 
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class TGConfigKeys {
+	
 	public static final String SKIN = "skin";
 	public static final String WINDOW_TITLE = "window.title";
 	public static final String SHOW_SPLASH = "show.splash";
@@ -25,6 +14,8 @@ public class TGConfigKeys {
 	public static final String SHOW_MATRIX = "show.matrix";
 	public static final String SHOW_PIANO = "show.piano";
 	public static final String SHOW_MARKERS = "show.markers";
+	public static final String SHOW_MAIN_TOOLBAR = "show.main-toolbar";
+	public static final String SHOW_EDIT_TOOLBAR = "show.edit-toolbar";
 	public static final String LAYOUT_MODE = "layout.mode";
 	public static final String LAYOUT_STYLE = "layout.style";
 	public static final String LANGUAGE = "language";

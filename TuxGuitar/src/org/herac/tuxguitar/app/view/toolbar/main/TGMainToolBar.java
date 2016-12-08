@@ -17,10 +17,10 @@ public class TGMainToolBar extends TGToolBarModel {
 		super(context);
 	}
 	
-	public void createToolBar(UIContainer parent){
+	public void createToolBar(UIContainer parent, boolean visible){
 		UIFactory uiFactory = TGApplication.getInstance(this.getContext()).getFactory();
 		this.control = uiFactory.createHorizontalToolBar(parent);
-		
+		this.control.setVisible(visible);
 		this.createSections();
 	}
 	

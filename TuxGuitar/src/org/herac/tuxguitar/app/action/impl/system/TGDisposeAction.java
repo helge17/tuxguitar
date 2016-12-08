@@ -12,6 +12,8 @@ import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.dialog.marker.TGMarkerList;
 import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
 import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
+import org.herac.tuxguitar.app.view.toolbar.main.TGMainToolBar;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
@@ -44,6 +46,8 @@ public class TGDisposeAction extends TGActionBase {
 		config.setValue(TGConfigKeys.SHOW_INSTRUMENTS,!TuxGuitar.getInstance().getChannelManager().isDisposed());
 		config.setValue(TGConfigKeys.SHOW_TRANSPORT,!TGTransportDialog.getInstance(getContext()).isDisposed());
 		config.setValue(TGConfigKeys.SHOW_MARKERS,!TGMarkerList.getInstance(getContext()).isDisposed());
+		config.setValue(TGConfigKeys.SHOW_MAIN_TOOLBAR, TGMainToolBar.getInstance(getContext()).isVisible());
+		config.setValue(TGConfigKeys.SHOW_EDIT_TOOLBAR, TGEditToolBar.getInstance(getContext()).isVisible());
 		config.setValue(TGConfigKeys.MAXIMIZED, tgWindow.getWindow().isMaximized());
 		config.setValue(TGConfigKeys.WIDTH, tgWindow.getWindow().getBounds().getWidth());
 		config.setValue(TGConfigKeys.HEIGHT, tgWindow.getWindow().getBounds().getHeight());

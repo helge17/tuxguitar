@@ -19,6 +19,9 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.resource.UIPosition;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
@@ -56,11 +59,14 @@ public class TGWindow implements TGEventListener {
 		this.createShellComposites(uiFactory);
 		this.createShellListeners();
 		this.loadIcons();
+		this.loadInitialBounds();
 	}
 	
 	private void createShellComposites(UIFactory uiFactory) {
+		TGConfigManager tgConfig = TGConfigManager.getInstance(this.context);
+		
 		TGMainToolBar tgToolBar = TGMainToolBar.getInstance(this.context);
-		tgToolBar.createToolBar(this.window);
+		tgToolBar.createToolBar(this.window, tgConfig.getBooleanValue(TGConfigKeys.SHOW_MAIN_TOOLBAR));
 		
 		UITableLayout topContainerLayout = new UITableLayout(0f);
 		UIPanel topContainer = uiFactory.createPanel(this.window, false);
@@ -68,7 +74,7 @@ public class TGWindow implements TGEventListener {
 		topContainerLayout.set(UITableLayout.IGNORE_INVISIBLE, true);
 		
 		TGEditToolBar tgEditToolBar = TGEditToolBar.getInstance(this.context);
-		tgEditToolBar.createToolBar(topContainer);
+		tgEditToolBar.createToolBar(topContainer, tgConfig.getBooleanValue(TGConfigKeys.SHOW_EDIT_TOOLBAR));
 		topContainerLayout.set(tgEditToolBar.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true, 1, 1, null, null, 0f);
 		topContainerLayout.set(tgEditToolBar.getControl(), UITableLayout.PACKED_HEIGHT, 0f);
 		
@@ -88,10 +94,32 @@ public class TGWindow implements TGEventListener {
 		bottom.getLayout().set(UITableLayout.IGNORE_INVISIBLE, true);
 		
 		TGFretBoardEditor tgFretBoardEditor = TGFretBoardEditor.getInstance(this.context);
-		tgFretBoardEditor.showFretBoard(bottom);
+		tgFretBoardEditor.createFretBoard(bottom, tgConfig.getBooleanValue(TGConfigKeys.SHOW_FRETBOARD));
 		
 		// Layout
 		this.window.setLayout(new TGWindowLayout(tgToolBar.getControl(), topContainer, tgWindowDivider.getControl(), tgTableViewer.getControl(), bottom));
+	}
+	
+	private void loadInitialBounds() {
+		TGConfigManager config = TGConfigManager.getInstance(this.context);
+		
+		boolean maximized = config.getBooleanValue(TGConfigKeys.MAXIMIZED);
+		if( maximized ) {
+			this.window.maximize();
+		}
+		else {
+			float width = config.getFloatValue(TGConfigKeys.WIDTH);
+			float height = config.getFloatValue(TGConfigKeys.HEIGHT);
+			if( width > 0 && height > 0 ){
+				UIPosition uiPosition = this.window.getBounds().getPosition();
+				UIRectangle uiRectangle = new UIRectangle();
+				uiRectangle.setSize(new UISize(width, height));
+				uiRectangle.getPosition().setX(Math.max(uiPosition.getX(), 0f));
+				uiRectangle.getPosition().setY(Math.max(uiPosition.getY(), 0f));
+				
+				this.window.setBounds(uiRectangle);
+			}
+		}
 	}
 	
 	private void createShellListeners() {
