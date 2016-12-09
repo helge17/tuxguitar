@@ -36,16 +36,10 @@ public class TGMainToolBar extends TGToolBarModel {
 		this.createSection(new TGMainToolBarSectionDivider(this));
 		this.createSection(new TGMainToolBarSectionEdit(this));
 		this.createSection(new TGMainToolBarSectionDivider(this));
+		this.createSection(new TGMainToolBarSectionComposition(this));
+		this.createSection(new TGMainToolBarSectionDivider(this));
 		this.createSection(new TGMainToolBarSectionTrack(this));
 		this.createSection(new TGMainToolBarSectionDivider(this));
-//		this.createSection(new TGMainToolBarSectionComposition(this));
-//		this.createSection(new TGMainToolBarSectionDivider(this));
-//		this.createSection(new TGMainToolBarSectionDuration(this));
-//		this.createSection(new TGMainToolBarSectionDynamic(this));
-//		this.createSection(new TGMainToolBarSectionEffect(this));
-//		this.createSection(new TGMainToolBarSectionBeat(this));
-//		this.createSection(new TGMainToolBarSectionChord(this));
-//		this.createSection(new TGMainToolBarSectionDivider(this));
 		this.createSection(new TGMainToolBarSectionLayout(this));
 		this.createSection(new TGMainToolBarSectionView(this));
 		this.createSection(new TGMainToolBarSectionMarker(this));
