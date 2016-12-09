@@ -27,10 +27,10 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 	private List<SWTToolItem>  toolItems;
 	private List<SWTToolCustomItem>  toolCustomItems;
 	
-	public SWTToolBar(SWTContainer<? extends Composite> container, int style) {
-		super(new ToolBar(container.getControl(), style), container);
+	public SWTToolBar(SWTContainer<? extends Composite> container, int orientation) {
+		super(new ToolBar(container.getControl(), (SWT.FLAT | SWT.WRAP | orientation)), container);
 		
-		this.horizontal = ((style & SWT.HORIZONTAL) != 0);
+		this.horizontal = ((orientation & SWT.HORIZONTAL) != 0);
 		this.toolItems = new ArrayList<SWTToolItem>();
 		this.toolCustomItems = new ArrayList<SWTToolCustomItem>();
 	}

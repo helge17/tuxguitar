@@ -275,12 +275,12 @@ public class SWTFactory implements UIFactory {
 	
 	@SuppressWarnings("unchecked")
 	public UIToolBar createHorizontalToolBar(UIContainer parent) {
-		return new SWTToolBar((SWTContainer<Composite>) parent, SWT.HORIZONTAL | SWT.FLAT | SWT.WRAP);
+		return new SWTToolBar((SWTContainer<Composite>) parent, SWT.HORIZONTAL);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public UIToolBar createVerticalToolBar(UIContainer parent) {
-		return new SWTToolBar((SWTContainer<Composite>) parent, SWT.VERTICAL | SWT.FLAT | SWT.WRAP);
+		return new SWTToolBar((SWTContainer<Composite>) parent, SWT.VERTICAL);
 	}
 	
 	public UIMenuBar createMenuBar(UIWindow parent) {
