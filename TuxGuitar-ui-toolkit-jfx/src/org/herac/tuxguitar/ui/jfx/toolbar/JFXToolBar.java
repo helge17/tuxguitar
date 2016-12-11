@@ -3,12 +3,6 @@ package org.herac.tuxguitar.ui.jfx.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.control.ToolBar;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.UIComponent;
 import org.herac.tuxguitar.ui.jfx.widget.JFXContainer;
 import org.herac.tuxguitar.ui.jfx.widget.JFXControl;
@@ -25,6 +19,12 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.Region;
 
 public class JFXToolBar extends JFXControl<ToolBar> implements JFXContainer<ToolBar>, UILayoutContainer, UIToolBar {
 	
