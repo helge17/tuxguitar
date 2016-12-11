@@ -7,5 +7,7 @@ public class JFXToolActionItem extends JFXButton implements UIToolActionItem {
 	
 	public JFXToolActionItem(JFXToolBar parent) {
 		super(parent);
+		
+		this.getControl().setFocusTraversable(false);
 	}
 }

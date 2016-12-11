@@ -51,6 +51,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 		
 		this.setLayoutAttribute(UITableLayout.ALIGN_X, UITableLayout.ALIGN_FILL);
 		this.setLayoutAttribute(UITableLayout.ALIGN_Y, UITableLayout.ALIGN_FILL);
+		this.getControl().setFocusTraversable(false);
 	}
 	
 	public <T extends Object> void setLayoutAttribute(String key, T value) {

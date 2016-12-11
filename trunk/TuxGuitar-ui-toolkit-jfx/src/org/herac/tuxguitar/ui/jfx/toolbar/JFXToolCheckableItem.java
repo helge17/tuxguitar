@@ -7,6 +7,8 @@ public class JFXToolCheckableItem extends JFXToggleButton implements UIToolCheck
 	
 	public JFXToolCheckableItem(JFXToolBar parent) {
 		super(parent);
+		
+		this.getControl().setFocusTraversable(false);
 	}
 
 	public boolean isChecked() {

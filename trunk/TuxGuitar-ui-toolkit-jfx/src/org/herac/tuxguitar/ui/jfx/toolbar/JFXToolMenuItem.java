@@ -19,6 +19,7 @@ public class JFXToolMenuItem extends JFXButton implements UIToolMenuItem {
 		super(parent);
 		
 		this.menu = new JFXPopupMenu(parent.getControl().getScene().getWindow());
+		this.getControl().setFocusTraversable(false);
 		this.getControl().setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				JFXToolMenuItem.this.openMenu();
