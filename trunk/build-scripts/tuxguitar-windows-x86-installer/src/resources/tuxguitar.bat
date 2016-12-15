@@ -8,6 +8,8 @@ SET "JAVA=jre\bin\java"
 SET "JAVA_LIBRARY_PATH=%JAVA_LIBRARY_PATH%;lib\"
 
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar.jar"
+SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-ui-toolkit.jar"
+SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-ui-toolkit-swt.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-lib.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-editor-utils.jar"
 SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;lib\tuxguitar-gm-utils.jar"
