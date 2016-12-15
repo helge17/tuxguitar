@@ -443,12 +443,12 @@ public abstract class TGLayout {
 	}
 	
 	public void setDotStyle(TGPainter painter){
-		painter.setForeground(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor()));
-		painter.setBackground(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor()));
+		painter.setForeground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
+		painter.setBackground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
 	}
 	
 	public void setDivisionTypeStyle(TGPainter painter){
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setFont(getResources().getDefaultFont());
 	}

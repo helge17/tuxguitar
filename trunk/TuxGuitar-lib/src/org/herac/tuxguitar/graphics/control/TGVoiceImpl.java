@@ -6,7 +6,6 @@ import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.painters.TGNotePainter;
 import org.herac.tuxguitar.graphics.control.painters.TGSilencePainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -418,14 +417,6 @@ public class TGVoiceImpl extends TGVoice{
 			}
 			painter.closePath();
 		}
-		if(!getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
-			layout.setDivisionTypeStyle(painter);
-			if((style & TGLayout.DISPLAY_SCORE) != 0 ){
-				painter.drawString(Integer.toString(getDuration().getDivision().getEnters()), x,(fromY + getPaintPosition(TGTrackSpacing.POSITION_DIVISION_TYPE)));
-			}else{
-				painter.drawString(Integer.toString(getDuration().getDivision().getEnters()),x,(fromY + getPaintPosition(TGTrackSpacing.POSITION_DIVISION_TYPE)));
-			}
-		}
 	}
 	
 	public void setStyle(TGLayout layout, TGPainter painter, boolean playMode){
@@ -520,23 +511,12 @@ public class TGVoiceImpl extends TGVoice{
 				float posY = (y2 - ((getDuration().getValue() >= TGDuration.EIGHTH)? ((stringSpacing / 2) * (getDuration().getIndex() - 2)):(1.0f * scale)));
 				paintDot(layout, painter, posX, posY,scale);
 			}
-			
-			//-------------tresillo--------------------------------------
-			if (!getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
-				layout.setDivisionTypeStyle(painter);
-				painter.drawString(Integer.toString(getDuration().getDivision().getEnters()), (x - 3f),((fromY - getPaintPosition(TGTrackSpacing.POSITION_TABLATURE)) + getPaintPosition(TGTrackSpacing.POSITION_DIVISION_TYPE)));
-			}
 		}
 	}
 	
 	public void paintScoreBeat(TGLayout layout,TGPainter painter, float fromX, float fromY, float spacing){
 		float vX = ( fromX + getPosX() + spacing );
 		
-		//division type
-		if (!getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
-			layout.setDivisionTypeStyle(painter);
-			painter.drawString(Integer.toString(getDuration().getDivision().getEnters()),vX ,((fromY - getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES)) + getPaintPosition(TGTrackSpacing.POSITION_DIVISION_TYPE)));
-		}
 		//dibujo el pie
 		if( getDuration().getValue() >= TGDuration.HALF ){
 			layout.setScoreNoteFooterStyle(painter);
