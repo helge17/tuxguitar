@@ -144,6 +144,7 @@ import org.herac.tuxguitar.editor.action.composition.TGRepeatCloseAction;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
+import org.herac.tuxguitar.editor.action.duration.TGChangeDivisionTypeDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -400,6 +401,7 @@ public class TGActionInstaller {
 		installAction(new TGSetThirtySecondDurationAction(context));
 		installAction(new TGSetSixtyFourthDurationAction(context));
 		installAction(new TGSetDivisionTypeDurationAction(context));
+		installAction(new TGChangeDivisionTypeDurationAction(context));
 		installAction(new TGChangeDottedDurationAction(context));
 		installAction(new TGChangeDoubleDottedDurationAction(context));
 		installAction(new TGIncrementDurationAction(context));
