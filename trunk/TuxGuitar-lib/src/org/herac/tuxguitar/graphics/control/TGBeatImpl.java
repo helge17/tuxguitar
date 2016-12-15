@@ -373,21 +373,21 @@ public class TGBeatImpl extends TGBeat{
 		}
 		if( getStroke().getDirection() == TGStroke.STROKE_UP ){
 			painter.initPath();
-			painter.setAntialias(false);
 			painter.moveTo( x, y1 );
 			painter.lineTo( x, y2 );
-			painter.lineTo( x - (2.0f * scale), y2 - (5.0f * scale));
-			painter.moveTo( x , y2 );
-			painter.lineTo( x + (2.0f * scale), y2 - (5.0f * scale));
+			painter.moveTo( x - (2.0f * scale), y2 - (5.0f * scale));
+			painter.lineTo( x, y2 );
+			painter.moveTo( x + (2.0f * scale), y2 - (5.0f * scale));
+			painter.lineTo( x, y2 );
 			painter.closePath();
 		}else if( getStroke().getDirection() == TGStroke.STROKE_DOWN ){
 			painter.initPath();
-			painter.setAntialias(false);
 			painter.moveTo( x, y2 );
 			painter.lineTo( x, y1 );
-			painter.lineTo( x - (2.0f * scale), y1 + (3.0f * scale));
-			painter.moveTo( x , y1 );
-			painter.lineTo( x + (2.0f * scale), y1 + (3.0f * scale));
+			painter.moveTo( x - (2.0f * scale), y1 + (5.0f * scale));
+			painter.lineTo( x, y1 );
+			painter.moveTo( x + (2.0f * scale), y1 + (5.0f * scale));
+			painter.lineTo( x, y1 );
 			painter.closePath();
 		}
 	}

@@ -643,7 +643,6 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 			if( bufferEnabled ){
 				painter.setBackground(layout.getResources().getBackgroundColor());
-//				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY(), getTs().getPosition(TGTrackSpacing.POSITION_BUFFER_SEPARATOR));
 				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY());
 			}
 			
@@ -703,60 +702,73 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	public void paintDivisionTypes(TGLayout layout, TGPainter painter, float fromX, float fromY){
-		float x1 = 0;
-		float x2 = 0;
-		
 		for(int v = 0; v < TGBeat.MAX_VOICES; v ++) {
-			TGDivisionType divisionType = null;
-			
-			Iterator<TGBeat> it = getBeats().iterator();
-			while(it.hasNext()) {
-				TGBeatImpl beat = (TGBeatImpl)it.next();
-				TGVoiceImpl voice = beat.getVoiceImpl(v);				
-				if( !voice.isEmpty() ) {
-					if( divisionType != null && !voice.getDuration().getDivision().isEqual(divisionType) ) {
-						this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, v);
-						
-						divisionType = null;
-					}
-					
-					if(!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
-						x2 = (fromX + beat.getPosX() + beat.getSpacing(layout));
-						if( divisionType == null ) {
-							divisionType = voice.getDuration().getDivision();
-							x1 = x2;
-						}
-					}
-				}
-			}
-			if( divisionType != null ) {
-				this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, v);
+			if((this.division1 && v % 2 == 0) || (this.division2 && v % 2 == 1)) {
+				this.paintDivisionTypes(layout, painter, fromX, fromY, v);
 			}
 		}
 	}
 	
+	public void paintDivisionTypes(TGLayout layout, TGPainter painter, float fromX, float fromY, int voiceIndex){
+		float x1 = 0;
+		float x2 = 0;
+		
+		TGDivisionType divisionType = null;
+		Iterator<TGBeat> it = getBeats().iterator();
+		while(it.hasNext()) {
+			TGBeatImpl beat = (TGBeatImpl)it.next();
+			TGVoiceImpl voice = beat.getVoiceImpl(voiceIndex);				
+			if( !voice.isEmpty() ) {
+				if( divisionType != null && !voice.getDuration().getDivision().isEqual(divisionType) ) {
+					this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
+					
+					divisionType = null;
+				}
+				
+				if(!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
+					x2 = (fromX + beat.getPosX() + beat.getSpacing(layout));
+					if( divisionType == null ) {
+						divisionType = voice.getDuration().getDivision();
+						x1 = x2;
+					}
+				}
+			}
+		}
+		if( divisionType != null ) {
+			this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
+		}
+	}
+	
 	public void paintDivisionType(TGLayout layout, TGPainter painter, TGDivisionType divisionType, float beatX1, float beatX2, float fromY, int voice) {
+		layout.setDivisionTypeStyle(painter);
+		
+		String label = Integer.toString(divisionType.getEnters());
+		float scale = layout.getScale();
+		float labelWidth = painter.getFMWidth(label);
 		float y = (fromY + getTs().getPosition(voice % 2 == 0 ? TGTrackSpacing.POSITION_DIVISION_TYPE_1 : TGTrackSpacing.POSITION_DIVISION_TYPE_2));
-		float yMove = (layout.getDivisionTypeSpacing() / 2f);
-		float xMove = ((((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? layout.getScoreNoteWidth() : layout.getStringSpacing()) / 2f) + layout.getScale());
-		float x1 = (beatX1 - xMove);
-		float x2 = (beatX2 + (xMove * 2f));
+		float yMove = ((layout.getDivisionTypeSpacing() / 2f) - scale);
+		float xMove = ((((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? layout.getScoreNoteWidth() : layout.getStringSpacing()) / 2f) + scale);
 		float y1 = (y + yMove + (yMove * (voice % 2 == 0 ? 1 : -1)));
 		float y2 = (y + yMove);
+		float x1 = (beatX1 - xMove);
+		float x2 = (beatX2 + (xMove * 2f));
+		float xCenter = (x1 + ((x2 - x1) / 2f));
 		
-		layout.setDivisionTypeStyle(painter);
-		if( x2 > x1 ) {
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+		if( beatX2 > beatX1 ) {
+			painter.setLineWidth(scale);
 			painter.initPath(TGPainter.PATH_DRAW);
 			painter.moveTo(x1, y1);
 			painter.lineTo(x1, y2);
+			painter.lineTo(xCenter - (labelWidth / 2f) - scale, y2);
+			
+			painter.moveTo(x2, y1);
 			painter.lineTo(x2, y2);
-			painter.lineTo(x2, y1);
+			painter.lineTo(xCenter + (labelWidth / 2f) + scale, y2);
+			
 			painter.closePath();
 		}
 		
-		String label = Integer.toString(divisionType.getEnters());
-		painter.drawString(label, (x1 + ((x2 - x1) / 2f) - (painter.getFMWidth(label) / 2f)), (y2 + painter.getFMMiddleLine()));
+		painter.drawString(label, (xCenter - (labelWidth / 2f)), (y2 + painter.getFMMiddleLine()));
 	}
 	
 	/**
