@@ -158,6 +158,7 @@ public class TGNoteImpl extends TGNote {
 					tY = (fromY + getTabPosY() + stringSpacing);
 					tWidth = (stringSpacing * 2);
 				}
+				painter.setLineWidth(1f * scale);
 				painter.initPath();
 				painter.addArc(tX, (tY - tHeight ), tWidth, tHeight, 225, 90);
 				painter.closePath();
@@ -239,6 +240,7 @@ public class TGNoteImpl extends TGNote {
 					tWidth = (x - tNoteX) - (3.0f * layoutScale);
 					tHeight = (35.0f * layoutScale);
 				}
+				painter.setLineWidth(1f * layoutScale);
 				painter.initPath();
 				painter.addArc(tX,tY, tWidth, tHeight, 45, 90);
 				painter.closePath();
