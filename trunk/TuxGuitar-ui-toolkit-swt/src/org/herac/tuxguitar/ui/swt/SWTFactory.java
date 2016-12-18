@@ -34,7 +34,7 @@ import org.herac.tuxguitar.ui.swt.widget.SWTCheckBox;
 import org.herac.tuxguitar.ui.swt.widget.SWTCheckTable;
 import org.herac.tuxguitar.ui.swt.widget.SWTContainer;
 import org.herac.tuxguitar.ui.swt.widget.SWTDivider;
-import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
 import org.herac.tuxguitar.ui.swt.widget.SWTImageView;
 import org.herac.tuxguitar.ui.swt.widget.SWTIndeterminateProgressBar;
 import org.herac.tuxguitar.ui.swt.widget.SWTKnob;
@@ -46,6 +46,8 @@ import org.herac.tuxguitar.ui.swt.widget.SWTPanel;
 import org.herac.tuxguitar.ui.swt.widget.SWTPasswordField;
 import org.herac.tuxguitar.ui.swt.widget.SWTProgressBar;
 import org.herac.tuxguitar.ui.swt.widget.SWTRadioButton;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectCCombo;
 import org.herac.tuxguitar.ui.swt.widget.SWTReadOnlyTextBox;
 import org.herac.tuxguitar.ui.swt.widget.SWTReadOnlyTextField;
 import org.herac.tuxguitar.ui.swt.widget.SWTScale;
@@ -265,6 +267,13 @@ public class SWTFactory implements UIFactory {
 	
 	@SuppressWarnings("unchecked")
 	public <T> UIDropDownSelect<T> createDropDownSelect(UIContainer parent) {
+		String alternative = SWTEnvironment.getInstance().getDropDownSelectAlternative();
+		if( SWTDropDownSelectLight.class.getName().equals(alternative) ) {
+			return new SWTDropDownSelectLight<T>((SWTContainer<Composite>) parent);
+		}
+		if( SWTDropDownSelectCCombo.class.getName().equals(alternative) ) {
+			return new SWTDropDownSelectCCombo<T>((SWTContainer<Composite>) parent);
+		}
 		return new SWTDropDownSelect<T>((SWTContainer<Composite>) parent);
 	}
 	
