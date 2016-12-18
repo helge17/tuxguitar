@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.scene.layout.Region;
 
 public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 	
@@ -73,9 +73,11 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 		UIRectangle childArea = this.getChildArea(bounds.getSize());
 		if( this.vScrollBar != null ) {
 			this.vScrollBar.setBounds(new UIRectangle((childArea.getX() + childArea.getWidth()), childArea.getY(), this.vScrollBar.getPackedSize().getWidth(), childArea.getHeight()));
+			this.vScrollBar.updateClippingArea(new UIRectangle(bounds.getSize()));
 		}
 		if( this.hScrollBar != null ) {
 			this.hScrollBar.setBounds(new UIRectangle(childArea.getX(), (childArea.getY() + childArea.getHeight()), childArea.getWidth(), this.hScrollBar.getPackedSize().getHeight()));
+			this.hScrollBar.updateClippingArea(new UIRectangle(bounds.getSize()));
 		}
 		
 		super.setBounds(bounds);
