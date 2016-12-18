@@ -293,7 +293,7 @@
 									<fileset dir="../common-resources/common-linux"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux-qt"/>
+									<fileset dir="../common-resources/common-linux-qtjambi"/>
 								</copy>
 								
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
