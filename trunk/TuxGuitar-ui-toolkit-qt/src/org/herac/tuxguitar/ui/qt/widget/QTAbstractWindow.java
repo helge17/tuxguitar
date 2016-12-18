@@ -71,9 +71,8 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 	public void computeMargins() {
 		super.computeMargins();
 		
-		QContentsMargins margins = this.getContainerChildMargins();
-		
 		if( this.menuBar != null ) {
+			QContentsMargins margins = this.getContainerChildMargins();
 			margins.top += ((QTMenuBar)this.menuBar).getControl().sizeHint().height();
 			
 			this.setContainerChildMargins(margins);
