@@ -20,6 +20,8 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGEditToolBar extends TGToolBarModel implements UIFocusGainedListener {
 	
+	private static final int SCROLL_INCREMENT = 10;
+	
 	private UIScrollBarPanel control;
 	private UIPanel sectionContainer;
 	
@@ -34,6 +36,7 @@ public class TGEditToolBar extends TGToolBarModel implements UIFocusGainedListen
 		this.control.setVisible(visible);
 		this.control.setLayout(new UIScrollBarPanelLayout(false, true, false, false, false, false));
 		this.control.addFocusGainedListener(this);
+		this.control.getVScroll().setIncrement(SCROLL_INCREMENT);
 		this.control.getVScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGEditToolBar.this.getControl().layout();

@@ -16,6 +16,8 @@ import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 
 public class TGChannelList {
 	
+	private static final int SCROLL_INCREMENT = 10;
+	
 	private List<TGChannelItem> channelItems;
 	private TGChannelManagerDialog dialog;
 	
@@ -33,6 +35,7 @@ public class TGChannelList {
 		this.channelItemAreaSC = uiFactory.createScrollBarPanel(parent, true, false, true);
 		this.channelItemAreaSC.setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, true));
 		
+		this.channelItemAreaSC.getVScroll().setIncrement(SCROLL_INCREMENT);
 		this.channelItemAreaSC.getVScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGChannelList.this.channelItemAreaSC.layout();
