@@ -120,7 +120,9 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	}
 	
 	public void setBounds(UIRectangle bounds) {
-		this.getControl().setGeometry(Math.round(bounds.getX()), Math.round(bounds.getY()), Math.round(bounds.getWidth()), Math.round(bounds.getHeight()));
+		if(!this.getBounds().equals(bounds)) {
+			this.getControl().setGeometry(Math.round(bounds.getX()), Math.round(bounds.getY()), Math.round(bounds.getWidth()), Math.round(bounds.getHeight()));
+		}
 	}
 	
 	public UIRectangle getBounds() {
