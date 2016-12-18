@@ -290,6 +290,9 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-linux"/>
 								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-linux-swt"/>
+								</copy>
 								
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
 							</target>
