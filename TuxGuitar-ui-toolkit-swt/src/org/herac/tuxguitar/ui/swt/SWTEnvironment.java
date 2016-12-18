@@ -1,14 +1,26 @@
 package org.herac.tuxguitar.ui.swt;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 
 public class SWTEnvironment {
 	
+	private static final String PLATFORM_GTK = "gtk";
+	
+	private static final String SWT_GTK3 = "SWT_GTK3";
+	private static final String SWT_GTK3_FALSE = "0";
+	
 	private static SWTEnvironment instance;
 	
+	private Display display;
+	
 	private String defaultFontName;
+	private String dropDownSelectAlternative;
 	
 	private SWTEnvironment() {
 		super();
@@ -24,21 +36,51 @@ public class SWTEnvironment {
 	}
 	
 	public void start(Display display) {
-		this.defaultFontName = this.findDefaultFontName(display);
+		this.display = display;
 	}
 	
-	public String findDefaultFontName(Display display) {
-		Font systemFont = display.getSystemFont();
-		if( systemFont != null ) {
-			FontData[] fd = systemFont.getFontData();
-			if( fd != null && fd.length > 0 ) {
-				return fd[0].getName();
+	public String getDefaultFontName() {
+		if( this.defaultFontName == null ) {
+			Font systemFont = this.display.getSystemFont();
+			if( systemFont != null ) {
+				FontData[] fd = systemFont.getFontData();
+				if( fd != null && fd.length > 0 ) {
+					this.defaultFontName = fd[0].getName();
+				}
+			}
+			if( this.defaultFontName == null ) {
+				this.defaultFontName = "";
 			}
 		}
-		return "";
+		return this.defaultFontName;
 	}
-
-	public String getDefaultFontName() {
-		return defaultFontName;
+	
+	public String getDropDownSelectAlternative() {
+		if( this.dropDownSelectAlternative == null ) {
+			this.dropDownSelectAlternative = this.getEnvValue(UIDropDownSelect.class.getName());
+		}
+		if( this.dropDownSelectAlternative == null ) {
+			// ---------------------------------------------------- //
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=487271 //
+			// ---------------------------------------------------- //
+			if( PLATFORM_GTK.equals(SWT.getPlatform()) && !SWT_GTK3_FALSE.equals(getEnvValue(SWT_GTK3)) ) {
+				this.dropDownSelectAlternative = SWTDropDownSelectLight.class.getName();
+			}
+		}
+		
+		// Default value
+		if( this.dropDownSelectAlternative == null ) {
+			this.dropDownSelectAlternative = SWTDropDownSelect.class.getName();
+		}
+		
+		return this.dropDownSelectAlternative;
+	}
+	
+	public String getEnvValue(String property) {
+		String value = System.getProperty(property);
+		if( value == null ) {
+			value = System.getenv(property);
+		}
+		return value;
 	}
 }

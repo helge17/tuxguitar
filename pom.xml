@@ -278,42 +278,42 @@
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux.ppc</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux.armv7hl</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-				<version>4.4</version>
-			</dependency>
-			<dependency>
-				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-				<version>4.4</version>
+				<version>4.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>${org.eclipse.swt.groupId}</groupId>
+				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
+				<version>4.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>

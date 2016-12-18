@@ -14,6 +14,10 @@ public class SWTSelectionListenerManager extends UISelectionListenerManager impl
 		this.control = control;
 	}
 	
+	public SWTEventReceiver<?> getControl() {
+		return this.control;
+	}
+	
 	public void widgetSelected(SelectionEvent e) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onSelect(new UISelectionEvent(this.control));
