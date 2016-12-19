@@ -81,6 +81,7 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 	
 	public void setBounds(UIRectangle bounds) {
 		this.resizeListener.setBounds(bounds);
+		
 		super.setBounds(bounds);
 	}
 	
@@ -124,9 +125,17 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 		
 		public void onResize(UIResizeEvent event) {
 			UIRectangle bounds = this.window.getBounds();
+			
+			int frameY = this.window.getControl().frameGeometry().y();
+			if( frameY < 0 ) {
+				bounds.getPosition().setY(bounds.getPosition().getY() - frameY);
+				
+				this.bounds = null;
+			}
+			
 			if( this.bounds == null || !this.bounds.equals(bounds)) {
 				this.bounds = bounds;
-				this.window.layout();
+				this.window.layout(bounds);
 			}
 		}
 		
