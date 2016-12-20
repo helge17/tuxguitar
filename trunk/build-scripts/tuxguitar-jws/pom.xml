@@ -313,23 +313,18 @@
 								
 								<copy todir="${project.build.directory}/tmp/dist/windows-x86">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
-									<fileset dir="../common-resources/common/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/tmp/dist/gnu-linux-x86">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
-									<fileset dir="../common-resources/common/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/tmp/dist/gnu-linux-x86-64">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
-									<fileset dir="../common-resources/common/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/tmp/dist/macosx-x86">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
-									<fileset dir="../common-resources/common/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/tmp/dist/macosx-x86-64">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
-									<fileset dir="../common-resources/common/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/tmp/dist/" overwrite="true">
 									<fileset dir="./src/resources/dist/"/>

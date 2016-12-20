@@ -1,14 +1,5 @@
-TuxGuitar 1.3 changes:
+TuxGuitar 1.4 changes:
 
-* Add show/hide toolbars feature.
-* Add let ring support
-* Add song templates support
-* Add count down support
-* Add bank selection support
-* Soundfont selection support in gervill plugin
-* Better support in jack plugin
-* New oxygen skin
-* New gpx importer plugin
-* New svg exporter plugin
-* New image exporter plugin
-* Magic Sound Font v2.0 Contributed by Dennis Deutschmann
+* Qt4 port through qtjambi project (http://qtjambi.org/).
+* New edit Toolbar
+* Several bugs fixed
