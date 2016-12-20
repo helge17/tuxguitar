@@ -4,8 +4,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
-import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 
 public class SWTEnvironment {
