@@ -19,12 +19,6 @@ public class QTPrinter extends QTComponent<QPrinter> implements UIPrinter {
 		
 		this.resourceFactory = new QTResourceFactory();
 	}
-	
-	public void dispose() {
-		this.getControl().dispose();
-		
-		super.dispose();
-	}
 
 	public UIResourceFactory getResourceFactory() {
 		return resourceFactory;
