@@ -11,6 +11,7 @@ import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 public class SWTEnvironment {
 	
 	private static final String PLATFORM_GTK = "gtk";
+	private static final String PLATFORM_WIN32 = "win32";
 	
 	private static final String SWT_GTK3 = "SWT_GTK3";
 	private static final String SWT_GTK3_FALSE = "0";
@@ -21,6 +22,7 @@ public class SWTEnvironment {
 	
 	private String defaultFontName;
 	private String dropDownSelectAlternative;
+	private Boolean toolItemResizeAvailable;
 	
 	private SWTEnvironment() {
 		super();
@@ -53,6 +55,13 @@ public class SWTEnvironment {
 			}
 		}
 		return this.defaultFontName;
+	}
+	
+	public boolean isToolItemResizeAvailable() {
+		if( this.toolItemResizeAvailable == null ) {
+			this.toolItemResizeAvailable = (PLATFORM_WIN32.equals(SWT.getPlatform()));
+		}
+		return this.toolItemResizeAvailable;
 	}
 	
 	public String getDropDownSelectAlternative() {
