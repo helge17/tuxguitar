@@ -232,19 +232,23 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 	public void openCollection(){
 		if(!isDisposed() && getCollection() != null){
 			TGBrowserFactory tgBrowserFactory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
-			tgBrowserFactory.createBrowser(new TGBrowserFactoryHandler() {
-				public void onCreateBrowser(TGBrowser browser) {
-					getConnection().open(new TGAbstractBrowserCallBack<Object>() {
-						public void onSuccess(Object data) {
-							onOpenCollection();
-						}
-					}, browser);
-				}
-				
-				public void handleError(Throwable throwable) {
-					TGBrowserDialog.this.notifyError(throwable);
-				}
-			}, getCollection().getData());
+			if( tgBrowserFactory != null ) {
+				tgBrowserFactory.createBrowser(new TGBrowserFactoryHandler() {
+					public void onCreateBrowser(TGBrowser browser) {
+						getConnection().open(new TGAbstractBrowserCallBack<Object>() {
+							public void onSuccess(Object data) {
+								onOpenCollection();
+							}
+						}, browser);
+					}
+					
+					public void handleError(Throwable throwable) {
+						TGBrowserDialog.this.notifyError(throwable);
+					}
+				}, getCollection().getData());
+			} else {
+				this.closeCollection();
+			}
 		}
 	}
 	
