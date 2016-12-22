@@ -28,6 +28,7 @@ import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
+import org.herac.tuxguitar.ui.swt.SWTEnvironment;
 import org.herac.tuxguitar.ui.swt.widget.SWTContainer;
 import org.herac.tuxguitar.ui.swt.widget.SWTControl;
 import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
@@ -108,7 +109,9 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 	
 	public void setSize(int width, int height) {
 		if( this.control != null ) {
-			this.getItem().setWidth(width);
+			if( SWTEnvironment.getInstance().isToolItemResizeAvailable() ) {
+				this.getItem().setWidth(width);
+			}
 			this.getItemControl().setSize(width, height);
 		}
 	}
