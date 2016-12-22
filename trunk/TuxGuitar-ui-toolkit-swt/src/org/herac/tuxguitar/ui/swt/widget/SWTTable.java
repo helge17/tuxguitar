@@ -3,6 +3,8 @@ package org.herac.tuxguitar.ui.swt.widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -18,13 +20,16 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 	public static final int TABLE_COLUMN_MARGIN = 4;
 	
 	private SWTSelectionListenerManager selectionListener;
+	private SWTTableUpdateManager updateManager;
 	
 	public SWTTable(SWTContainer<? extends Composite> parent, boolean headerVisible, int style) {
 		super(new Table(parent.getControl(), style), parent);
 		
-		this.getControl().setHeaderVisible(false);
-		
 		this.selectionListener = new SWTSelectionListenerManager(this);
+		this.updateManager = new SWTTableUpdateManager(this);
+		
+		this.getControl().setHeaderVisible(false);
+		this.getControl().addListener(SWT.Paint, this.updateManager);
 	}
 
 	public SWTTable(SWTContainer<? extends Composite> parent, boolean headerVisible) {
@@ -52,7 +57,9 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 			TableColumn tableColumn = this.getControl().getColumn(column);
 			tableColumn.setText(name);
 			
-			this.adjustColumnWidth(tableColumn);
+			if( this.isVisible() ) {
+				this.updateManager.setUpdateRequired();
+			}
 		}
 	}
 
@@ -103,11 +110,8 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 		}
 		
 		// fix column size
-		TableColumn[] tableColumns = this.getControl().getColumns();
-		for(TableColumn tableColumn : tableColumns) {
-			if( tableColumn.getWidth() <= 0 ) {
-				this.adjustColumnWidth(tableColumn);
-			}
+		if( this.isVisible() ) {
+			this.updateManager.setUpdateRequired();
 		}
 	}
 	
@@ -158,12 +162,16 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 	}
 	
 	public void computePackedSize() {
+		this.adjustColumnsWidth();
+		
+		super.computePackedSize();
+	}
+	
+	public void adjustColumnsWidth() {
 		TableColumn[] tableColumns = this.getControl().getColumns();
 		for(TableColumn tableColumn : tableColumns) {
 			this.adjustColumnWidth(tableColumn);
 		}
-		
-		super.computePackedSize();
 	}
 	
 	public void adjustColumnWidth(TableColumn column) {
@@ -194,6 +202,27 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 		this.selectionListener.removeListener(listener);
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().removeSelectionListener(this.selectionListener);
+		}
+	}
+	
+	private class SWTTableUpdateManager implements Listener {
+		
+		private SWTTable<?> table;
+		private boolean updateRequired;
+		
+		public SWTTableUpdateManager(SWTTable<?> table) {
+			this.table = table;
+		}
+		
+		public void handleEvent (Event e) {
+			if( this.updateRequired ) {
+				this.updateRequired = false;
+				this.table.adjustColumnsWidth();
+			}
+		}
+
+		public void setUpdateRequired() {
+			this.updateRequired = true;
 		}
 	}
 }
