@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.ui.UIComponent;
@@ -154,19 +153,16 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 			
 			float widthToFill = (itemsToFill > 0 && clientWidth > itemsWidth ? ((clientWidth - itemsWidth) / itemsToFill) : 0);
 			for(SWTToolCustomItem control : this.toolCustomItems) {
-				Control handle = control.getItem().getControl();
-				if( handle  != null ) {
-					float controlWidth = this.findSize(control.getPackedSize());
-					
-					if( Boolean.TRUE.equals(control.getLayoutAttribute(UIToolCustomItem.FILL))) {
-						controlWidth += widthToFill;
-					}
-					
-					int width = (this.horizontal ? Math.round(controlWidth) : itemsHeight);
-					int height = (this.horizontal ? itemsHeight : Math.round(controlWidth));
-					
-					handle .setSize(width, height);
+				float controlWidth = this.findSize(control.getPackedSize());
+				
+				if( Boolean.TRUE.equals(control.getLayoutAttribute(UIToolCustomItem.FILL))) {
+					controlWidth += widthToFill;
 				}
+				
+				int width = (this.horizontal ? Math.round(controlWidth) : itemsHeight);
+				int height = (this.horizontal ? itemsHeight : Math.round(controlWidth));
+				
+				control.setSize(width, height);
 			}
 		}
 	}
@@ -197,7 +193,7 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 			Rectangle previousBounds = previousItem.getBounds();
 			
 			// left + right margins
-			return (findPosition(itemBounds) - (findPosition(previousBounds) + findSize(previousBounds)));
+			return Math.max(0, (findPosition(itemBounds) - (findPosition(previousBounds) + findSize(previousBounds))));
 		}
 		return 0;
 	}
