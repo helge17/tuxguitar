@@ -462,7 +462,7 @@ public abstract class TGLayout {
 	public void setChordStyle(TGChordImpl chord){
 		chord.setFont(getResources().getChordFont());
 		chord.setForegroundColor(getResources().getColorBlack());
-		chord.setBackgroundColor(getResources().getBackgroundColor());
+		chord.setBackgroundColor(getLightColor(getResources().getBackgroundColor()));
 		chord.setColor(getDarkColor(getResources().getLineColor()));
 		chord.setNoteColor(getDarkColor(getResources().getTabNoteColor()));
 		chord.setTonicColor(getDarkColor(getResources().getTabNoteColor()));
