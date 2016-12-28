@@ -190,7 +190,7 @@ public class PrintLayout extends TGLayout{
 	
 	public void fillBackground(TGPainter painter) {
 		if(!this.document.isTransparentBackground()) {
-			painter.setBackground(this.getResources().getBackgroundColor());
+			painter.setBackground(this.getLightColor(this.getResources().getBackgroundColor()));
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.addRectangle(0, 0, this.document.getSize().getWidth(), this.document.getSize().getHeight());
 			painter.closePath();

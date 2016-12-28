@@ -3,6 +3,7 @@ package org.herac.tuxguitar.io.pdf;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.graphics.TGColorModel;
 import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
@@ -109,7 +110,7 @@ public class PDFController implements TGController {
 		styles.setChordFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
 		styles.setChordFretFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
 		styles.setMarkerFont(new TGFontModel(FontFactory.TIMES_ROMAN, 8, false, false));
-		styles.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
+		styles.setBackgroundColor(new TGColorModel(0xff,0xff,0xff));
 		styles.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
 		styles.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
