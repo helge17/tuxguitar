@@ -68,6 +68,18 @@ public abstract class QTAbstractMenu<T extends QWidget> extends QTComponent<T> i
 		}
 	}
 	
+	public void dispose() {
+		List<UIMenuItem> menuItems = new ArrayList<UIMenuItem>(this.menuItems);
+		for(UIMenuItem menuItem : menuItems) {
+			if(!menuItem.isDisposed()) {
+				menuItem.dispose();
+			}
+		}
+		this.getControl().dispose();
+		
+		super.dispose();
+	}
+	
 	public abstract QMenu createNativeMenu();
 	
 	public abstract QAction createNativeAction();

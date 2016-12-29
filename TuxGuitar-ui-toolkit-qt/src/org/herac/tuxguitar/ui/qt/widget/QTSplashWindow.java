@@ -4,6 +4,7 @@ import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UISplashWindow;
 
+import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QSplashScreen;
 
 public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashWindow {
@@ -40,8 +41,15 @@ public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashW
 		this.splashImage = splashImage;
 		this.getControl().setPixmap(this.splashImage != null ? ((QTImage) this.splashImage).createPixmap() : null);
 	}
-	
+
 	public void open() {
 		this.getControl().show();
+		this.processPendingEvents();
+	}
+	
+	public void processPendingEvents() {
+		if (QApplication.hasPendingEvents()) {
+			QApplication.processEvents();
+		}
 	}
 }
