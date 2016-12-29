@@ -14,6 +14,10 @@ public class QTSelectionListenerManager extends UISelectionListenerManager imple
 		this.control = control;
 	}
 	
+	public QTComponent<?> getControl() {
+		return this.control;
+	}
+	
 	public void handle() {
 		this.onSelect(new UISelectionEvent(this.control));
 	}
