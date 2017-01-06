@@ -1,19 +1,5 @@
 package org.herac.tuxguitar.android.view.dialog.track;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,6 +12,22 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
+
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackPropertiesAction;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackInfoAction;
+import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTrack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TGTrackTuningDialog extends TGDialog {
 	
@@ -73,7 +75,7 @@ public class TGTrackTuningDialog extends TGDialog {
 		builder.setView(view);
 		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				updateTrackTuning(view, songManager, track);
+				updateTrackProperties(view, songManager, track);
 				dialog.dismiss();
 			}
 		});
@@ -282,9 +284,16 @@ public class TGTrackTuningDialog extends TGDialog {
 		this.updateOptions(view, !percussionChannel);
 	}
 	
-	public void updateTrackTuning(View view, TGSongManager songManager, TGTrack track) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTrackTuningAction.NAME);
+	public void updateTrackProperties(View view, TGSongManager songManager, TGTrack track) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTrackPropertiesAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+
+		tgActionProcessor.setAttribute(TGChangeTrackPropertiesAction.ATTRIBUTE_UPDATE_INFO, Boolean.TRUE);
+		tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_NAME, track.getName());
+		tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_COLOR, track.getColor());
+		tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_OFFSET, findSelectedOffset(view));
+
+		tgActionProcessor.setAttribute(TGChangeTrackPropertiesAction.ATTRIBUTE_UPDATE_TUNING, Boolean.TRUE);
 		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, findSelectedTunings(view, songManager));
 		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_STRINGS, findOptionValue(view, R.id.track_tuning_dlg_options_transpose));
 		tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_APPLY_TO_CHORDS, findOptionValue(view, R.id.track_tuning_dlg_options_transpose_apply_to_chords));
