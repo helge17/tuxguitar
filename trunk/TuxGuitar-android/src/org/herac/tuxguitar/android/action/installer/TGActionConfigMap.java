@@ -163,6 +163,7 @@ import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
 import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGAddTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
+import org.herac.tuxguitar.editor.action.track.TGChangeTrackPropertiesAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
 import org.herac.tuxguitar.editor.action.track.TGCloneTrackAction;
@@ -270,6 +271,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetTrackNameAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGSetTrackChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGChangeTrackTuningAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
+		this.map(TGChangeTrackPropertiesAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGCopyTrackFromAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		
 		//measure actions
