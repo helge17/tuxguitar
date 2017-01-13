@@ -8,7 +8,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-midi</artifactId>
+	<artifactId>tuxguitar-midi-ui</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
@@ -29,7 +29,17 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>tuxguitar-gm-utils</artifactId>
+			<artifactId>tuxguitar-midi</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-ui-toolkit</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
