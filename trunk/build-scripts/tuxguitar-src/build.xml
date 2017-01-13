@@ -68,6 +68,7 @@
 				<include name="TuxGuitar-lib/**"/>
 				<include name="TuxGuitar-lilypond/**"/>
 				<include name="TuxGuitar-midi/**"/>
+				<include name="TuxGuitar-midi-ui/**"/>
 				<include name="TuxGuitar-musicxml/**"/>
 				<include name="TuxGuitar-oss/**"/>
 				<include name="TuxGuitar-pdf/**"/>
