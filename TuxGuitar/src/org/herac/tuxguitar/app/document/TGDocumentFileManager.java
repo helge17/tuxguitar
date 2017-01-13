@@ -10,12 +10,12 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.util.TGFileChooser;
-import org.herac.tuxguitar.app.util.TGFileFormatUtils;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;

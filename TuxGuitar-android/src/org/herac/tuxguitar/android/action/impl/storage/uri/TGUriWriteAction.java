@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.action.impl.storage.saf;
+package org.herac.tuxguitar.android.action.impl.storage.uri;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import java.io.OutputStream;
 
 public class TGUriWriteAction extends TGActionBase {
 
-	public static final String NAME = "action.storage.saf.write-uri";
+	public static final String NAME = "action.storage.uri.write-uri";
 
 	public static final String ATTRIBUTE_ACTIVITY = TGActivity.class.getName();
 	public static final String ATTRIBUTE_URI = Uri.class.getName();

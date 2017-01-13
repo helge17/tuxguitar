@@ -5,8 +5,8 @@ import android.net.Uri;
 
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
-import org.herac.tuxguitar.android.action.impl.storage.saf.TGUriReadAction;
-import org.herac.tuxguitar.android.action.impl.storage.saf.TGUriWriteAction;
+import org.herac.tuxguitar.android.action.impl.storage.uri.TGUriReadAction;
+import org.herac.tuxguitar.android.action.impl.storage.uri.TGUriWriteAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityController;
 import org.herac.tuxguitar.android.view.dialog.chooser.TGChooserDialogController;

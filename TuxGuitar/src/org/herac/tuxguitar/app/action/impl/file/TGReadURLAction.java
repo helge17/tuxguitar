@@ -6,10 +6,10 @@ import java.net.URL;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.util.TGFileFormatUtils;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGReadURLAction extends TGActionBase {
@@ -26,6 +26,7 @@ public class TGReadURLAction extends TGActionBase {
 		try {
 			URL url = context.getAttribute(ATTRIBUTE_URL);
 			InputStream stream = (TGFileUtils.isLocalFile(url) ? url.openStream() : TGFileFormatUtils.getInputStream(url.openStream()));
+			context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, TGFileFormatUtils.getImporterFileFormat(getContext(), url.getFile()));
 			context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 			
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());

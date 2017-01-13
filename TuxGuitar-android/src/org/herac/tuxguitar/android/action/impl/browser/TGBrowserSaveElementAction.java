@@ -17,7 +17,7 @@ public class TGBrowserSaveElementAction extends TGActionBase{
 	
 	public static final String NAME = "action.browser.save-element";
 	
-	public static final String ATTRIBUTE_FORMAT = TGFileFormat.class.getName();
+	public static final String ATTRIBUTE_FORMAT = TGWriteSongAction.ATTRIBUTE_FORMAT;
 	public static final String ATTRIBUTE_ELEMENT = TGBrowserElement.class.getName();
 	public static final String ATTRIBUTE_SESSION = TGBrowserSession.class.getName();
 	

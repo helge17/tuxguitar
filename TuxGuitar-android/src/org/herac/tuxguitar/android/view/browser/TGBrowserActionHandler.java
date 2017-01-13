@@ -2,6 +2,7 @@ package org.herac.tuxguitar.android.view.browser;
 
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
+import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
 import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
@@ -39,7 +40,13 @@ public class TGBrowserActionHandler {
 		tgActionProcessor.setAttribute(TGBrowserElement.class.getName(), element);
 		return tgActionProcessor;
 	}
-	
+
+	public TGActionProcessorListener createBrowserOpenElementAction(TGBrowserElement element, TGFileFormat format) {
+		TGActionProcessorListener tgActionProcessor = this.createBrowserElementAction(TGBrowserOpenElementAction.NAME, element);
+		tgActionProcessor.setAttribute(TGBrowserOpenElementAction.ATTRIBUTE_FORMAT, format);
+		return tgActionProcessor;
+	}
+
 	public TGActionProcessorListener createBrowserSaveElementAction(TGBrowserElement element, TGFileFormat format) {
 		TGActionProcessorListener tgActionProcessor = this.createBrowserElementAction(TGBrowserSaveElementAction.NAME, element);
 		tgActionProcessor.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, format);

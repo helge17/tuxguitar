@@ -32,7 +32,11 @@ import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
 import org.herac.tuxguitar.io.base.TGOutputStreamBase;
+import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.tg.TGStream;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -144,17 +148,30 @@ public class TGBrowserView extends RelativeLayout {
 	public String createFormatDropDownLabel(TGFileFormat format) {
 		return format.getName();
 	}
-	
+
+	public String createFormatExportDropDownLabel(TGFileFormat format) {
+		return findActivity().getString(R.string.storage_export_to, format.getName());
+	}
+
 	public List<TGSelectableItem> createFormatValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
-		
-		Iterator<?> outputStreams = TGFileFormatManager.getInstance(findContext()).getOutputStreams();
+		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(findContext());
+		Iterator<?> outputStreams = fileFormatManager.getOutputStreams();
 		while( outputStreams.hasNext() ) {
 			TGOutputStreamBase outputStream = (TGOutputStreamBase) outputStreams.next();
 			TGFileFormat format = outputStream.getFileFormat();
 			selectableItems.add(new TGSelectableItem(format, createFormatLabel(format), createFormatDropDownLabel(format)));
 		}
-		
+
+		Iterator<TGRawExporter> exporters = fileFormatManager.getExporters();
+		while (exporters.hasNext() ) {
+			TGRawExporter rawExporter = exporters.next();
+			if( rawExporter instanceof TGLocalFileExporter) {
+				TGFileFormat format = ((TGLocalFileExporter) rawExporter).getFileFormat();
+				selectableItems.add(new TGSelectableItem(format, createFormatLabel(format), createFormatExportDropDownLabel(format)));
+			}
+		}
+
 		return selectableItems;
 	}
 	
@@ -298,40 +315,23 @@ public class TGBrowserView extends RelativeLayout {
 	public String createExtension(String supportedFormat) {
 		return ("." + supportedFormat);
 	}
-	
-	public String findExtension(String text, String defaultValue) {
-		int index = text.lastIndexOf(".");
-		if( index >= 0 ) {
-			return text.substring(index);
-		}
-		return defaultValue;
-	}
-	
-	public TGFileFormat findFormatByElementName(TGBrowserElement element) throws TGBrowserException {
-		TGFileFormat defaultFormat = null;
-		String extension = findExtension(element.getName(), null);
-		
-		Iterator<?> outputStreams = TGFileFormatManager.getInstance(findContext()).getOutputStreams();
-		while( outputStreams.hasNext() ) {
-			TGOutputStreamBase outputStream = (TGOutputStreamBase) outputStreams.next();
-			TGFileFormat format = outputStream.getFileFormat();
-			
-			if( extension != null ) {
-				for(String supportedFormat : format.getSupportedFormats()) {
-					if( extension.toLowerCase().equals(this.createExtension(supportedFormat).toLowerCase())) {
-						return format;
-					}
-				}
-			}
-			
-			if( defaultFormat == null ) {
-				defaultFormat = format;
+
+	public TGFileFormat findOutputFormatByElementName(TGBrowserElement element) throws TGBrowserException {
+		TGFileFormat fileFormat = TGFileFormatUtils.getOutputFileFormat(this.findContext(), element.getName());
+		if( fileFormat == null ) {
+			fileFormat = TGFileFormatUtils.getExporterFileFormat(this.findContext(), element.getName());
+
+			if( fileFormat == null ) {
+				fileFormat = TGStream.TG_FORMAT;
 			}
 		}
-		
-		return defaultFormat;
+		return fileFormat;
 	}
-	
+
+	public TGFileFormat findInputFormatByElementName(TGBrowserElement element) {
+		return TGFileFormatUtils.getImporterFileFormat(this.findContext(), element.getName());
+	}
+
 	public TGBrowserElement findElement(String name) throws TGBrowserException {
 		TGBrowserSession tgBrowserSession = TGBrowserManager.getInstance(this.findContext()).getSession();
 		if( tgBrowserSession.getCurrentElements() != null ) {
