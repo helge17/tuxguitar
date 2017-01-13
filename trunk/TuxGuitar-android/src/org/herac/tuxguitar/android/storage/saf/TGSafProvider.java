@@ -11,10 +11,13 @@ import org.herac.tuxguitar.android.view.dialog.chooser.TGChooserDialogHandler;
 import org.herac.tuxguitar.android.view.dialog.chooser.TGChooserDialogOption;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGLocalFileExporter;
+import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class TGSafProvider implements TGStorageProvider {
@@ -57,16 +60,28 @@ public class TGSafProvider implements TGStorageProvider {
 	}
 
 	public void saveDocumentAs() {
-		List<TGFileFormat> fileFormats = TGFileFormatManager.getInstance(this.context).getOutputFormats();
-		if( fileFormats.size() == 1 ) {
-			this.saveDocumentAs(fileFormats.get(0));
+		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.context);
+		List<TGFileFormat> fileFormats = fileFormatManager.getOutputFormats();
+		List<TGChooserDialogOption<TGFileFormat>> options = new ArrayList<TGChooserDialogOption<TGFileFormat>>();
+		for (TGFileFormat fileFormat : fileFormats) {
+			options.add(new TGChooserDialogOption<TGFileFormat>(fileFormat.getName(), fileFormat));
+		}
+
+		Iterator<TGRawExporter> exporters = fileFormatManager.getExporters();
+		while (exporters.hasNext() ) {
+			TGRawExporter rawExporter = exporters.next();
+			if( rawExporter instanceof TGLocalFileExporter) {
+				TGFileFormat format = ((TGLocalFileExporter) rawExporter).getFileFormat();
+
+				options.add(new TGChooserDialogOption<TGFileFormat>(this.getActivity().getString(R.string.storage_export_to, format.getName()), format));
+			}
+		}
+
+		if( options.size() == 1 ) {
+			this.saveDocumentAs(options.get(0).getValue());
 		}
 		else {
 			String title = this.getActivity().getString(R.string.storage_saf_file_format_chooser_title);
-			List<TGChooserDialogOption<TGFileFormat>> options = new ArrayList<TGChooserDialogOption<TGFileFormat>>();
-			for (TGFileFormat fileFormat : fileFormats) {
-				options.add(new TGChooserDialogOption<TGFileFormat>(fileFormat.getName(), fileFormat));
-			}
 			this.getActionHandler().callChooserDialog(title, options, new TGChooserDialogHandler<TGFileFormat>() {
 				public void onChoose(TGFileFormat value) {
 					if( value != null ) {

@@ -28,10 +28,12 @@ public class TGReadSongAction extends TGActionBase{
 	protected void processAction(final TGActionContext context) {
 		try{
 			InputStream stream = (InputStream) context.getAttribute(ATTRIBUTE_INPUT_STREAM);
+			TGFileFormat fileFormat = (TGFileFormat) context.getAttribute(ATTRIBUTE_FORMAT);
 			TGSongManager tgSongManager = getSongManager(context);
 			
 			TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
 			tgSongLoaderHandle.setFactory(tgSongManager.getFactory());
+			tgSongLoaderHandle.setFormat(fileFormat);
 			tgSongLoaderHandle.setInputStream(stream);
 			
 			TGFileFormatManager.getInstance(getContext()).getLoader().load(tgSongLoaderHandle);

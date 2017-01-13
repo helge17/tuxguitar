@@ -7,9 +7,9 @@ import java.io.FileOutputStream;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.util.TGFileFormatUtils;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGWriteFileAction extends TGActionBase {
@@ -27,7 +27,7 @@ public class TGWriteFileAction extends TGActionBase {
 			String fileName = context.getAttribute(ATTRIBUTE_FILE_NAME);
 			
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, new FileOutputStream(new File(fileName)));
-			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT, TGFileFormatUtils.getFileFormat(fileName));
+			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT, TGFileFormatUtils.getOutputFileFormat(getContext(), fileName));
 			
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGWriteSongAction.NAME, context);
