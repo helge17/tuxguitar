@@ -45,6 +45,7 @@
 		<module>../../TuxGuitar-jsa</module>
 		<module>../../TuxGuitar-lilypond</module>
 		<module>../../TuxGuitar-midi</module>
+		<module>../../TuxGuitar-midi-ui</module>
 		<module>../../TuxGuitar-musicxml</module>
 		<module>../../TuxGuitar-awt-graphics</module>
 		<module>../../TuxGuitar-pdf</module>
@@ -194,6 +195,12 @@
 									<artifactId>tuxguitar-midi</artifactId>
 									<destFileName>tuxguitar-midi.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-midi-ui</artifactId>
+									<destFileName>tuxguitar-midi-ui.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
