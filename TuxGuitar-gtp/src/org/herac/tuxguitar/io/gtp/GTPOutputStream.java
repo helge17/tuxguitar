@@ -7,12 +7,13 @@ import java.util.Iterator;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.io.base.TGOutputStreamBase;
-import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
+import org.herac.tuxguitar.io.base.TGSongWriter;
+import org.herac.tuxguitar.io.base.TGSongWriterHandle;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
 
-public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputStreamBase{
+public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWriter{
 	
 	private GMChannelRouter channelRouter;
 	private OutputStream outputStream;
@@ -21,9 +22,18 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGOutputS
 		super(settings);
 	}
 	
-	public void init(TGFactory factory,OutputStream stream) {
-		super.init(factory);
-		this.outputStream = stream;
+	public abstract void writeSong(TGSong song) throws TGFileFormatException;
+	
+	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
+		try {
+			this.outputStream = handle.getOutputStream();
+			this.init(handle.getFactory());
+			this.writeSong(handle.getSong());
+		} catch (TGFileFormatException tgFormatException) {
+			throw tgFormatException;
+		} catch (Throwable throwable) {
+			throw new TGFileFormatException(throwable);
+		}
 	}
 	
 	protected void skipBytes(int count) throws IOException {

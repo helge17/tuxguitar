@@ -38,7 +38,15 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GP4InputStream extends GTPInputStream {
-	private static final String SUPPORTED_VERSIONS[] = { "FICHIER GUITAR PRO v4.00", "FICHIER GUITAR PRO v4.06", "FICHIER GUITAR PRO L4.06" };
+	
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 4", "audio/x-gtp", new String[]{"gp4"});
+	
+	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v4.00", 0),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v4.06", 1),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO L4.06", 2)
+	};
+	
 	private static final float GP_BEND_SEMITONE = 25f;
 	private static final float GP_BEND_POSITION = 60f;
 	
@@ -50,16 +58,13 @@ public class GP4InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 4", new String[]{"gp4"});
+		return FILE_FORMAT;
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {
 		try{
 			readVersion();
-			if (!isSupportedVersion(getVersion())) {
-				this.close();
-				throw new GTPFormatException("Unsupported Version");
-			}
+			
 			TGSong song = getFactory().newSong();
 			
 			readInfo(song);

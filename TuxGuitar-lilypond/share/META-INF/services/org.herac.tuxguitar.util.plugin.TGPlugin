@@ -1,2 +1,2 @@
-org.herac.tuxguitar.io.lilypond.LilypondPluginExporter
-org.herac.tuxguitar.io.lilypond.LilypondPluginSettingsHandler
+org.herac.tuxguitar.io.lilypond.LilypondSongWriterPlugin
+org.herac.tuxguitar.io.lilypond.LilypondSettingsHandlerPlugin

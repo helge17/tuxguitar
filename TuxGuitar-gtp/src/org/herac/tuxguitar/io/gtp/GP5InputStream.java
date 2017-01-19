@@ -38,27 +38,31 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GP5InputStream extends GTPInputStream {
-	private static final String supportedVersions[] = { "FICHIER GUITAR PRO v5.00","FICHIER GUITAR PRO v5.10"};
+	
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 5", "audio/x-gtp", new String[]{"gp5"});
+	
+	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v5.00", 0),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v5.10", 1),
+	};
+	
 	private static final float GP_BEND_SEMITONE = 25f;
 	private static final float GP_BEND_POSITION = 60f;
 
 	private int keySignature;
 	
 	public GP5InputStream(GTPSettings settings) {
-		super(settings, supportedVersions);
+		super(settings, SUPPORTED_VERSIONS);
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 5", new String[]{"gp5"});
+		return FILE_FORMAT;
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {
 		try{
 			readVersion();
-			if (!isSupportedVersion(getVersion())) {
-				this.close();
-				throw new GTPFormatException("Unsupported Version");
-			}
+			
 			TGSong song = getFactory().newSong();
 			
 			readInfo(song);
@@ -71,7 +75,7 @@ public class GP5InputStream extends GTPInputStream {
 			
 			int tempoValue = readInt();
 			
-			if(getVersionIndex() > 0){
+			if(getVersion().getVersionCode() > 0){
 				skip(1);
 			}
 			
@@ -118,7 +122,7 @@ public class GP5InputStream extends GTPInputStream {
 	}
 	
 	private void readPageSetup() throws IOException{
-		skip( (getVersionIndex() > 0 ?49 : 30 ) );
+		skip( (getVersion().getVersionCode() > 0 ?49 : 30 ) );
 		for (int i = 0; i < 11; i++) {
 			skip(4);
 			readStringByte(0);
@@ -139,7 +143,7 @@ public class GP5InputStream extends GTPInputStream {
 		for (int number = 1; number <= count; number++) {
 			song.addTrack(readTrack(song,number, channels,(number == lyricTrack)?lyric:getFactory().newLyric()));
 		}
-		skip( (getVersionIndex() == 0 ? 2 : 1) );
+		skip( (getVersion().getVersionCode() == 0 ? 2 : 1) );
 	}
 	
 	private void readMeasures(TGSong song, int measures, int tracks, int tempoValue) throws IOException{
@@ -441,7 +445,7 @@ public class GP5InputStream extends GTPInputStream {
 	
 	private TGTrack readTrack(TGSong song, int number, List<TGChannel> channels,TGLyric lyrics) throws IOException {
 		readUnsignedByte();
-		if(number ==  1 || getVersionIndex() == 0){
+		if(number ==  1 || getVersion().getVersionCode() == 0){
 			skip(1);
 		}
 		TGTrack track = getFactory().newTrack();
@@ -463,8 +467,8 @@ public class GP5InputStream extends GTPInputStream {
 		readInt();
 		track.setOffset(readInt());
 		readColor(track.getColor());
-		skip( (getVersionIndex() > 0)? 49 : 44);
-		if(getVersionIndex() > 0){
+		skip( (getVersion().getVersionCode() > 0)? 49 : 44);
+		if(getVersion().getVersionCode() > 0){
 			readStringByteSizeOfInteger();
 			readStringByteSizeOfInteger();
 		}
@@ -738,13 +742,13 @@ public class GP5InputStream extends GTPInputStream {
 		if(tempoValue >= 0){
 			tempo.setValue(tempoValue);
 			skip(1);
-			if(getVersionIndex() > 0){
+			if(getVersion().getVersionCode() > 0){
 				skip(1);
 			}
 		}
 		readByte();
 		skip(1);
-		if(getVersionIndex() > 0){
+		if(getVersion().getVersionCode() > 0){
 			readStringByteSizeOfInteger();
 			readStringByteSizeOfInteger();
 		}

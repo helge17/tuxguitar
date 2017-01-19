@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.image;
 
-import org.herac.tuxguitar.io.base.TGRawExporter;
-import org.herac.tuxguitar.io.plugin.TGExporterPlugin;
+import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.plugin.TGSongExporterPlugin;
 import org.herac.tuxguitar.util.TGContext;
 
-public class ImageExporterPlugin extends TGExporterPlugin{
+public class ImageExporterPlugin extends TGSongExporterPlugin{
 	
 	public static final String MODULE_ID = "tuxguitar-image";
 	
-	protected TGRawExporter createExporter(TGContext context) {
+	protected TGSongExporter createExporter(TGContext context) {
 		return new ImageExporter(context);
 	}
 	

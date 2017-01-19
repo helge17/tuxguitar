@@ -11,13 +11,11 @@ import org.herac.tuxguitar.android.view.dialog.chooser.TGChooserDialogHandler;
 import org.herac.tuxguitar.android.view.dialog.chooser.TGChooserDialogOption;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGLocalFileExporter;
-import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TGSafProvider implements TGStorageProvider {
@@ -61,20 +59,16 @@ public class TGSafProvider implements TGStorageProvider {
 
 	public void saveDocumentAs() {
 		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.context);
-		List<TGFileFormat> fileFormats = fileFormatManager.getOutputFormats();
 		List<TGChooserDialogOption<TGFileFormat>> options = new ArrayList<TGChooserDialogOption<TGFileFormat>>();
-		for (TGFileFormat fileFormat : fileFormats) {
-			options.add(new TGChooserDialogOption<TGFileFormat>(fileFormat.getName(), fileFormat));
+
+		List<TGFileFormat> commonFormats = fileFormatManager.findWriteFileFormats(true);
+		for(TGFileFormat format : commonFormats) {
+			options.add(new TGChooserDialogOption<TGFileFormat>(format.getName(), format));
 		}
 
-		Iterator<TGRawExporter> exporters = fileFormatManager.getExporters();
-		while (exporters.hasNext() ) {
-			TGRawExporter rawExporter = exporters.next();
-			if( rawExporter instanceof TGLocalFileExporter) {
-				TGFileFormat format = ((TGLocalFileExporter) rawExporter).getFileFormat();
-
-				options.add(new TGChooserDialogOption<TGFileFormat>(this.getActivity().getString(R.string.storage_export_to, format.getName()), format));
-			}
+		List<TGFileFormat> nonCommonFormats = fileFormatManager.findWriteFileFormats(false);
+		for(TGFileFormat format : nonCommonFormats) {
+			options.add(new TGChooserDialogOption<TGFileFormat>(this.getActivity().getString(R.string.storage_export_to, format.getName()), format));
 		}
 
 		if( options.size() == 1 ) {
@@ -102,7 +96,7 @@ public class TGSafProvider implements TGStorageProvider {
 
 	public String createDefaultFileName(TGFileFormat format) {
 		String prefix = this.getActivity().getString(R.string.storage_default_filename);
-		String suffix = TGFileFormatManager.getInstance(this.context).getDefaultExtension(format);
+		String suffix = TGFileFormatUtils.getDefaultExtension(format);
 
 		return (prefix + suffix);
 	}

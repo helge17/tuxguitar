@@ -9,7 +9,6 @@ import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
-import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.util.TGContext;
 
 import java.io.OutputStream;
@@ -29,7 +28,6 @@ public class TGUriWriteAction extends TGActionBase {
 		try{
 			Uri uri = context.getAttribute(ATTRIBUTE_URI);
 			Activity activity = context.getAttribute(ATTRIBUTE_ACTIVITY);
-			TGFileFormat fileFormat = context.getAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT);
 
 			OutputStream outputStream = activity.getContentResolver().openOutputStream(uri);
 			try {

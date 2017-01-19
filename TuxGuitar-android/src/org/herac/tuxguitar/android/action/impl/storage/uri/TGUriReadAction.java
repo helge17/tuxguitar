@@ -40,7 +40,7 @@ public class TGUriReadAction extends TGActionBase {
 			}
 			if( bufferedStream != null ) {
 				context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, bufferedStream);
-				context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, TGFileFormatUtils.getImporterFileFormat(getContext(), uri.getLastPathSegment()));
+				context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(uri.getLastPathSegment()));
 
 				TGActionManager.getInstance(getContext()).execute(TGReadSongAction.NAME, context);
 			}

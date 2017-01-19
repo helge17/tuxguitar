@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.image;
 
-import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandler;
+import org.herac.tuxguitar.app.io.stream.TGSongStreamSettingsHandler;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;

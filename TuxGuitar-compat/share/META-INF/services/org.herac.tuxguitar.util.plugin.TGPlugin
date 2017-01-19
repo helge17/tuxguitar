@@ -1,11 +1,12 @@
-org.herac.tuxguitar.io.tg.v12.TGInputStreamPlugin
-org.herac.tuxguitar.io.tg.v11.TGInputStreamPlugin
-org.herac.tuxguitar.io.tg.v10.TGInputStreamPlugin
-org.herac.tuxguitar.io.tg.v09.TGInputStreamPlugin
-org.herac.tuxguitar.io.tg.v08.TGInputStreamPlugin
-org.herac.tuxguitar.io.tg.v07.TGInputStreamPlugin
-org.herac.tuxguitar.io.tg.v12.TGExporterPlugin
-org.herac.tuxguitar.io.tg.v11.TGExporterPlugin
-org.herac.tuxguitar.io.tg.v10.TGExporterPlugin
+org.herac.tuxguitar.io.tg.v12.TGSongReaderPluginImpl
+org.herac.tuxguitar.io.tg.v11.TGSongReaderPluginImpl
+org.herac.tuxguitar.io.tg.v10.TGSongReaderPluginImpl
+org.herac.tuxguitar.io.tg.v09.TGSongReaderPluginImpl
+org.herac.tuxguitar.io.tg.v08.TGSongReaderPluginImpl
+org.herac.tuxguitar.io.tg.v07.TGSongReaderPluginImpl
 
-org.herac.tuxguitar.io.tg.dev.TGInputStreamPlugin
+org.herac.tuxguitar.io.tg.v12.TGSongWriterPluginImpl
+org.herac.tuxguitar.io.tg.v11.TGSongWriterPluginImpl
+org.herac.tuxguitar.io.tg.v10.TGSongWriterPluginImpl
+
+org.herac.tuxguitar.io.tg.dev.TGSongReaderPluginImpl

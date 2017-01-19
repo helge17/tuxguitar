@@ -1,9 +1,3 @@
-/*
- * Created on 09-ene-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.herac.tuxguitar.io.gtp;
 
 import java.io.IOException;
@@ -37,12 +31,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
-public class GP3OutputStream extends GTPOutputStream{
+public class GP3OutputStream extends GTPOutputStream {
 	
 	private static final String GP3_VERSION = "FICHIER GUITAR PRO v3.00";
 	private static final int GP_BEND_SEMITONE = 25;
@@ -53,10 +42,10 @@ public class GP3OutputStream extends GTPOutputStream{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 3", new String[]{"gp3"});
+		return new TGFileFormat("Guitar Pro 3", "audio/x-gtp", new String[]{"gp3"});
 	}
 	
-	public void writeSong(TGSong song){
+	public void writeSong(TGSong song) {
 		try {
 			if(song.isEmpty()){
 				throw new TGFileFormatException("Empty Song!!!");

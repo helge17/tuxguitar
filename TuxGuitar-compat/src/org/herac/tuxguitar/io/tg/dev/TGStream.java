@@ -16,7 +16,7 @@ public class TGStream {
 	
 	public static final String TG_FORMAT_CODE = ("tg");
 	
-	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar", new String[]{ TG_FORMAT_CODE });
+	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar", "audio/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
 	
 	protected static final int TRACK_SOLO = 0x01;
 	

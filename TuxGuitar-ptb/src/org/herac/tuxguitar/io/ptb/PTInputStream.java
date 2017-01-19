@@ -5,7 +5,8 @@ import java.io.InputStream;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGInputStreamBase;
+import org.herac.tuxguitar.io.base.TGSongReader;
+import org.herac.tuxguitar.io.base.TGSongReaderHandle;
 import org.herac.tuxguitar.io.ptb.base.PTBar;
 import org.herac.tuxguitar.io.ptb.base.PTBeat;
 import org.herac.tuxguitar.io.ptb.base.PTDirection;
@@ -17,16 +18,13 @@ import org.herac.tuxguitar.io.ptb.base.PTSymbol;
 import org.herac.tuxguitar.io.ptb.base.PTTempo;
 import org.herac.tuxguitar.io.ptb.base.PTTrack;
 import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
-import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
 
-public class PTInputStream implements TGInputStreamBase{
+public class PTInputStream implements TGSongReader{
 	
-	private static final String PTB_VERSION = "ptab-4";
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("PowerTab", "audio/x-ptb", new String[]{"ptb"});
 	
 	private InputStream stream;
-	private String version;
 	private PTSong song;
 	private PTSongParser parser;
 	
@@ -34,41 +32,17 @@ public class PTInputStream implements TGInputStreamBase{
 		super();
 	}
 	
-	public void init(TGFactory factory,InputStream stream){
-		this.version = null;
-		this.stream = stream;
-		this.parser = new PTSongParser(factory);
-	}
-	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("PowerTab", new String[]{"ptb"});
+		return FILE_FORMAT;
 	}
 	
-	public boolean isSupportedVersion(String version){
-		return (version.equals(PTB_VERSION));
-	}
-	
-	public boolean isSupportedVersion(){
-		try{
-			readVersion();
-			return isSupportedVersion(this.version);
-		}catch(Exception e){
-			return false;
-		}catch(Error e){
-			return false;
-		}
-	}
-	
-	private void readVersion(){
-		if(this.version == null){
-			this.version = (readString(4) + "-" + readShort());
-		}
-	}
-	
-	public TGSong readSong() throws TGFileFormatException{
-		try{
-			this.readVersion();
-			if (!isSupportedVersion(this.version)) {
+	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
+		try {
+			this.stream = handle.getInputStream();
+			this.parser = new PTSongParser(handle.getFactory());
+			
+			TGFileFormat fileFormat = new PTFileFormatDetector().getFileFormat(this.stream);
+			if( fileFormat == null || !fileFormat.equals(this.getFileFormat())) {
 				throw new IOException("Unsupported Version");
 			}
 			this.song = new PTSong();
@@ -77,7 +51,7 @@ public class PTInputStream implements TGInputStreamBase{
 			this.readDataInstruments(this.song.getTrack2());
 			this.close();
 			
-			return this.parser.parseSong(this.song);
+			handle.setSong(this.parser.parseSong(this.song));
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}

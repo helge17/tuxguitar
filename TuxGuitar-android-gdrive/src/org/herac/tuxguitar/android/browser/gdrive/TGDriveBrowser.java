@@ -196,7 +196,7 @@ public class TGDriveBrowser implements TGBrowser {
 			cb.onSuccess(new TGDriveBrowserOutputStream(byteStream, new Runnable() {
 				public void run() {
 					try {
-						AbstractInputStreamContent mediaContent = new ByteArrayContent("*/*", byteStream.toByteArray());
+						AbstractInputStreamContent mediaContent = new ByteArrayContent(TGDriveBrowserFile.FILE_MIME_TYPE, byteStream.toByteArray());
 						File file = ((TGDriveBrowserFile) element).getFile();
 						
 						DriveRequest<?> request = null;

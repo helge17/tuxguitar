@@ -35,7 +35,12 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
  */
 public class GP2InputStream extends GTPInputStream {
 	
-	private static final String SUPPORTED_VERSIONS[] = new String[]{ "FICHIER GUITAR PRO v2.20", "FICHIER GUITAR PRO v2.21" };
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 2", "audio/x-gtp", new String[]{"gtp"});
+	
+	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v2.20", 0),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v2.21", 1)
+	};
 	
 	private static final int TRACK_COUNT = 8;
 	
@@ -55,16 +60,13 @@ public class GP2InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 2", new String[]{"gtp"});
+		return FILE_FORMAT;
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {
 		try{
 			readVersion();
-			if (!isSupportedVersion(getVersion())) {
-				this.close();
-				throw new GTPFormatException("Unsupported Version");
-			}
+			
 			TGSong song = getFactory().newSong();
 			
 			readInfo(song);

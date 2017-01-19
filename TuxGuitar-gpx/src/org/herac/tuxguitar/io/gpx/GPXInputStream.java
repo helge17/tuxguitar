@@ -1,49 +1,27 @@
 package org.herac.tuxguitar.io.gpx;
 
-import java.io.InputStream;
-
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGInputStreamBase;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.io.base.TGSongReader;
+import org.herac.tuxguitar.io.base.TGSongReaderHandle;
 
-public class GPXInputStream implements TGInputStreamBase{
+public class GPXInputStream implements TGSongReader{
 	
-	private int gpxHeader;
-	private InputStream gpxStream;
-	private GPXFileSystem gpxFileSystem;
-	private TGFactory factory;
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 6", "audio/x-gtp", new String[]{"gpx"});
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("Guitar Pro 6", new String[]{"gpx"});
+		return FILE_FORMAT;
 	}
 	
-	public void init(TGFactory factory, InputStream stream) {
-		this.factory = factory;
-		this.gpxStream = stream;
-		this.gpxHeader = 0;
-		this.gpxFileSystem = new GPXFileSystem();
-	}
-	
-	public boolean isSupportedVersion() {
+	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
 		try {
-			this.gpxHeader = this.gpxFileSystem.getHeader( this.gpxStream );
+			GPXFileSystem gpxFileSystem = new GPXFileSystem();
+			gpxFileSystem.load(handle.getInputStream());
 			
-			return this.gpxFileSystem.isSupportedHeader(this.gpxHeader);
-		} catch (Throwable throwable) {
-			return false;
-		}
-	}
-	
-	public TGSong readSong() throws TGFileFormatException {
-		try {
-			this.gpxFileSystem.load(this.gpxHeader, this.gpxStream);
+			GPXDocumentReader gpxReader = new GPXDocumentReader( gpxFileSystem.getFileContentsAsStream("score.gpif"));
+			GPXDocumentParser gpxParser = new GPXDocumentParser( handle.getFactory() , gpxReader.read() );
 			
-			GPXDocumentReader gpxReader = new GPXDocumentReader( this.gpxFileSystem.getFileContentsAsStream("score.gpif"));
-			GPXDocumentParser gpxParser = new GPXDocumentParser( this.factory , gpxReader.read() );
-			
-			return gpxParser.parse();
+			handle.setSong(gpxParser.parse());
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException( throwable );
 		}

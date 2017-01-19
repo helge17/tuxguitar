@@ -1,2 +1,2 @@
-org.herac.tuxguitar.io.gervill.MidiToAudioPlugin
-org.herac.tuxguitar.io.gervill.MidiToAudioSettingsPlugin
+org.herac.tuxguitar.io.gervill.MidiToAudioSongWriterPlugin
+org.herac.tuxguitar.io.gervill.MidiToAudioSettingsHandlerPlugin

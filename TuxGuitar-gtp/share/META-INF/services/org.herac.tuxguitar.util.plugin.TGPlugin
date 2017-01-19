@@ -1,8 +1,9 @@
 org.herac.tuxguitar.io.gtp.GP1InputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP2InputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP3InputStreamPlugin
-org.herac.tuxguitar.io.gtp.GP3OutputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP4InputStreamPlugin
-org.herac.tuxguitar.io.gtp.GP4OutputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP5InputStreamPlugin
+
+org.herac.tuxguitar.io.gtp.GP3OutputStreamPlugin
+org.herac.tuxguitar.io.gtp.GP4OutputStreamPlugin
 org.herac.tuxguitar.io.gtp.GP5OutputStreamPlugin

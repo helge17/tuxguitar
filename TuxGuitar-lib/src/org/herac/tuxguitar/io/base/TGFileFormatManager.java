@@ -1,189 +1,315 @@
 package org.herac.tuxguitar.io.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.io.tg.TGInputStream;
-import org.herac.tuxguitar.io.tg.TGOutputStream;
-import org.herac.tuxguitar.io.tg.TGStream;
+import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
+import org.herac.tuxguitar.io.tg.TGSongReaderImpl;
+import org.herac.tuxguitar.io.tg.TGSongWriterImpl;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 public class TGFileFormatManager {
 	
-	public static final String DEFAULT_EXTENSION = ("." + TGStream.TG_FORMAT_CODE);
-	
 	private TGContext context;
-	private TGSongLoaderHelper loader;
-	private TGSongWriterHelper writer;
-	private List<TGInputStreamBase> inputStreams;
-	private List<TGOutputStreamBase> outputStreams;
-	private List<TGRawExporter> exporters;
-	private List<TGRawImporter> importers;
+	private List<TGSongReader> readers;
+	private List<TGSongWriter> writers;
+	private List<TGSongExporter> exporters;
+	private List<TGSongImporter> importers;
+	
+	private List<TGFileFormatDetector> fileFormatDetectors;
+	private List<TGFileFormat> commonReadFileFormats;
+	private List<TGFileFormat> commonWriteFileFormats;
 	
 	private TGFileFormatManager(TGContext context){
 		this.context = context;
-		this.loader = new TGSongLoaderHelper(this.context);
-		this.writer = new TGSongWriterHelper(this.context);
-		this.inputStreams = new ArrayList<TGInputStreamBase>();
-		this.outputStreams = new ArrayList<TGOutputStreamBase>();
-		this.exporters = new ArrayList<TGRawExporter>();
-		this.importers = new ArrayList<TGRawImporter>();
-		this.addDefaultStreams();
-	}
-
-	public TGSongLoaderHelper getLoader(){
-		return this.loader;
+		this.readers = new ArrayList<TGSongReader>();
+		this.writers = new ArrayList<TGSongWriter>();
+		this.exporters = new ArrayList<TGSongExporter>();
+		this.importers = new ArrayList<TGSongImporter>();
+		this.fileFormatDetectors = new ArrayList<TGFileFormatDetector>();
+		this.commonReadFileFormats = new ArrayList<TGFileFormat>();
+		this.commonWriteFileFormats = new ArrayList<TGFileFormat>();
+		this.addDefaults();
 	}
 	
-	public TGSongWriterHelper getWriter(){
-		return this.writer;
+	private void addDefaults(){
+		this.addReader(new TGSongReaderImpl());
+		this.addWriter(new TGSongWriterImpl());
+		this.addFileFormatDetector(new TGFileFormatDetectorImpl(TGSongReaderImpl.SUPPORTED_FORMAT));
+		this.addCommonReadFileFormat(TGSongReaderImpl.TG_FORMAT);
+		this.addCommonWriteFileFormat(TGSongWriterImpl.TG_FORMAT);
 	}
 	
-	public void addInputStream(TGInputStreamBase stream){
-		if(!this.inputStreams.contains(stream)){
-			this.inputStreams.add(stream);
+	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
+		TGSongReaderHelper tgSongReaderHelper = new TGSongReaderHelper(this.context);
+		tgSongReaderHelper.read(handle);
+	}
+	
+	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
+		TGSongWriterHelper tgSongWriterHelper = new TGSongWriterHelper(this.context);
+		tgSongWriterHelper.write(handle);
+	}
+	
+	public List<TGSongReader> findSongReaders(Boolean commonFileFormats) {
+		List<TGSongReader> readers = new ArrayList<TGSongReader>();
+		for(TGSongReader reader : this.readers) {
+			if( commonFileFormats == null || commonFileFormats.equals(this.isCommonReadFileFormat(reader.getFileFormat()))){
+				readers.add(reader);
+			}
+		}
+		return readers;
+	}
+	
+	public List<TGSongWriter> findSongWriters(Boolean commonFileFormats) {
+		List<TGSongWriter> writers = new ArrayList<TGSongWriter>();
+		for(TGSongWriter writer : this.writers) {
+			if( commonFileFormats == null || commonFileFormats.equals(this.isCommonWriteFileFormat(writer.getFileFormat()))){
+				writers.add(writer);
+			}
+		}
+		return writers;
+	}
+	
+	public TGSongReader findSongReader(TGFileFormat fileFormat) {
+		if( fileFormat != null ) {
+			for(TGSongReader reader : this.readers) {
+				if( reader.getFileFormat().equals(fileFormat) ){
+					return reader;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public TGSongWriter findSongWriter(TGFileFormat fileFormat) {
+		if( fileFormat != null ) {
+			for(TGSongWriter writer : this.writers) {
+				if( writer.getFileFormat().equals(fileFormat) ){
+					return writer;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public List<TGFileFormat> findReadFileFormats(Boolean commonFileFormats) {
+		List<TGFileFormat> formats = new ArrayList<TGFileFormat>();
+		List<TGSongReader> readers = this.findSongReaders(commonFileFormats);
+		for(TGSongReader reader : readers) {
+			TGFileFormat format = reader.getFileFormat();
+			if(!formats.contains(format)){
+				formats.add(format);
+			}
+		}
+		return formats;
+	}
+	
+	public List<TGFileFormat> findWriteFileFormats(Boolean commonFileFormats) {
+		List<TGFileFormat> formats = new ArrayList<TGFileFormat>();
+		List<TGSongWriter> writers = this.findSongWriters(commonFileFormats);
+		for(TGSongWriter writer : writers) {
+			TGFileFormat format = writer.getFileFormat();
+			if(!formats.contains(format)){
+				formats.add(format);
+			}
+		}
+		return formats;
+	}
+	
+	public TGFileFormat findReaderFileFormatByCode(String formatCode, Boolean commonFileFormats){
+		if( formatCode != null ) {
+			List<TGFileFormat> fileFormats = this.findReadFileFormats(commonFileFormats);
+			for(TGFileFormat fileFormat : fileFormats) {
+				if( fileFormat.isSupportedCode(formatCode)){
+					return fileFormat;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public TGFileFormat findReaderFileFormatByCode(String formatCode){
+		TGFileFormat fileFormat = findReaderFileFormatByCode(formatCode, true);
+		if( fileFormat == null ) {
+			fileFormat = findReaderFileFormatByCode(formatCode, false);
+		}
+		return fileFormat;
+	}
+	
+	public TGFileFormat findReaderFileFormatByMimeType(String mimeType, Boolean commonFileFormats){
+		if( mimeType != null ) {
+			List<TGFileFormat> fileFormats = this.findReadFileFormats(commonFileFormats);
+			for(TGFileFormat fileFormat : fileFormats) {
+				if( fileFormat.isSupportedMimeType(mimeType)){
+					return fileFormat;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public TGFileFormat findReaderFileFormatByMimeType(String mimeType){
+		TGFileFormat fileFormat = findReaderFileFormatByMimeType(mimeType, true);
+		if( fileFormat == null ) {
+			fileFormat = findReaderFileFormatByMimeType(mimeType, false);
+		}
+		return fileFormat;
+	}
+	
+	public TGFileFormat findWriterFileFormatByCode(String formatCode, Boolean commonFileFormats){
+		if( formatCode != null ) {
+			List<TGFileFormat> fileFormats = this.findReadFileFormats(commonFileFormats);
+			for(TGFileFormat fileFormat : fileFormats) {
+				if( fileFormat.isSupportedCode(formatCode) ){
+					return fileFormat;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public TGFileFormat findWriterFileFormatByCode(String formatCode){
+		TGFileFormat fileFormat = findWriterFileFormatByCode(formatCode, true);
+		if( fileFormat == null ) {
+			fileFormat = findWriterFileFormatByCode(formatCode, false);
+		}
+		return fileFormat;
+	}
+	
+	public TGFileFormat findWriterFileFormatByMimeType(String mimeType, Boolean commonFileFormats){
+		if( mimeType != null ) {
+			List<TGFileFormat> fileFormats = this.findReadFileFormats(commonFileFormats);
+			for(TGFileFormat fileFormat : fileFormats) {
+				if( fileFormat.isSupportedMimeType(mimeType)){
+					return fileFormat;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public TGFileFormat findWriterFileFormatByMimeType(String mimeType){
+		TGFileFormat fileFormat = findWriterFileFormatByMimeType(mimeType, true);
+		if( fileFormat == null ) {
+			fileFormat = findWriterFileFormatByMimeType(mimeType, false);
+		}
+		return fileFormat;
+	}
+	
+	public void addReader(TGSongReader stream){
+		if(!this.readers.contains(stream)){
+			this.readers.add(stream);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public void removeInputStream(TGInputStreamBase stream){
-		if( this.inputStreams.contains(stream)){
-			this.inputStreams.remove(stream);
+	public void removeReader(TGSongReader stream){
+		if( this.readers.contains(stream)){
+			this.readers.remove(stream);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public int countInputStreams(){
-		return this.inputStreams.size();
-	}
-	
-	public void addOutputStream(TGOutputStreamBase stream){
-		if(!this.outputStreams.contains(stream)){
-			this.outputStreams.add(stream);
+	public void addWriter(TGSongWriter stream){
+		if(!this.writers.contains(stream)){
+			this.writers.add(stream);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public void removeOutputStream(TGOutputStreamBase stream){
-		if( this.outputStreams.contains(stream)){
-			this.outputStreams.remove(stream);
+	public void removeWriter(TGSongWriter stream){
+		if( this.writers.contains(stream)){
+			this.writers.remove(stream);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public int countOutputStreams(){
-		return this.outputStreams.size();
-	}
-	
-	public void addImporter(TGRawImporter importer){
+	public void addImporter(TGSongImporter importer){
 		if(!this.importers.contains(importer)){
 			this.importers.add(importer);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public void removeImporter(TGRawImporter importer){
+	public void removeImporter(TGSongImporter importer){
 		if( this.importers.contains(importer)){
 			this.importers.remove(importer);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public int countImporters(){
-		return this.importers.size();
+	public List<TGSongImporter> getImporters(){
+		return new ArrayList<TGSongImporter>(this.importers);
 	}
 	
-	public void addExporter(TGRawExporter exporter){
+	public void addExporter(TGSongExporter exporter){
 		if(!this.exporters.contains(exporter)){
 			this.exporters.add(exporter);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public void removeExporter(TGRawExporter exporter){
+	public void removeExporter(TGSongExporter exporter){
 		if( this.exporters.contains(exporter)){
 			this.exporters.remove(exporter);
 			this.fireFileFormatAvailabilityEvent();
 		}
 	}
 	
-	public int countExporters(){
-		return this.exporters.size();
+	public List<TGSongExporter> getExporters(){
+		return new ArrayList<TGSongExporter>(this.exporters);
 	}
 	
-	public Iterator<TGInputStreamBase> getInputStreams(){
-		return this.inputStreams.iterator();
-	}
-	
-	public Iterator<TGOutputStreamBase> getOutputStreams(){
-		return this.outputStreams.iterator();
-	}
-	
-	public Iterator<TGRawImporter> getImporters(){
-		return this.importers.iterator();
-	}
-	
-	public Iterator<TGRawExporter> getExporters(){
-		return this.exporters.iterator();
-	}
-	
-	public List<TGFileFormat> getInputFormats(){
-		List<TGFileFormat> formats = new ArrayList<TGFileFormat>();
-		Iterator<TGInputStreamBase> it = getInputStreams();
-		while(it.hasNext()){
-			TGInputStreamBase stream = (TGInputStreamBase)it.next();
-			TGFileFormat format = stream.getFileFormat();
-			if(!existsFormat(format, formats)){
-				formats.add(format);
-			}
+	public void addFileFormatDetector(TGFileFormatDetector detector){
+		if(!this.fileFormatDetectors.contains(detector)){
+			this.fileFormatDetectors.add(detector);
 		}
-		return formats;
 	}
 	
-	public List<TGFileFormat> getOutputFormats(){
-		List<TGFileFormat> formats = new ArrayList<TGFileFormat>();
-		Iterator<TGOutputStreamBase> it = getOutputStreams();
-		while(it.hasNext()){
-			TGOutputStreamBase stream = (TGOutputStreamBase)it.next();
-			TGFileFormat format = stream.getFileFormat();
-			if(!existsFormat(format, formats)){
-				formats.add(format);
-			}
+	public void removeFileFormatDetector(TGFileFormatDetector detector){
+		if( this.fileFormatDetectors.contains(detector)){
+			this.fileFormatDetectors.remove(detector);
 		}
-		return formats;
 	}
 	
-	private boolean existsFormat(TGFileFormat format, List<TGFileFormat> formats){
-		Iterator<TGFileFormat> it = formats.iterator();
-		while(it.hasNext()){
-			TGFileFormat comparator = (TGFileFormat)it.next();
-			if(comparator.getName().equals(format.getName()) || comparator.getSupportedFormats().equals(format.getSupportedFormats())){
-				return true;
-			}
+	public List<TGFileFormatDetector> getFileFormatDetectors(){
+		return new ArrayList<TGFileFormatDetector>(this.fileFormatDetectors);
+	}
+	
+	public void addCommonReadFileFormat(TGFileFormat fileFormat){
+		if(!this.commonReadFileFormats.contains(fileFormat)){
+			this.commonReadFileFormats.add(fileFormat);
 		}
-		return false;
 	}
-
-	public String getDefaultExtension(TGFileFormat format, String defaultValue) {
-		String[] supportedFormats = format.getSupportedFormats();
-		if( supportedFormats != null && supportedFormats.length > 0 ) {
-			return ("." + supportedFormats[0]);
+	
+	public void removeCommonReadFileFormat(TGFileFormat fileFormat){
+		if( this.commonReadFileFormats.contains(fileFormat)){
+			this.commonReadFileFormats.remove(fileFormat);
 		}
-		return defaultValue;
 	}
-
-	public String getDefaultExtension(TGFileFormat format) {
-		return this.getDefaultExtension(format, DEFAULT_EXTENSION);
+	
+	public boolean isCommonReadFileFormat(TGFileFormat fileFormat){
+		return this.commonReadFileFormats.contains(fileFormat);
 	}
-
-	private void addDefaultStreams(){
-		this.addInputStream(new TGInputStream());
-		this.addOutputStream(new TGOutputStream());
+	
+	public void addCommonWriteFileFormat(TGFileFormat fileFormat){
+		if(!this.commonWriteFileFormats.contains(fileFormat)){
+			this.commonWriteFileFormats.add(fileFormat);
+		}
+	}
+	
+	public void removeCommonWriteFileFormat(TGFileFormat fileFormat){
+		if( this.commonWriteFileFormats.contains(fileFormat)){
+			this.commonWriteFileFormats.remove(fileFormat);
+		}
+	}
+	
+	public boolean isCommonWriteFileFormat(TGFileFormat fileFormat){
+		return this.commonWriteFileFormats.contains(fileFormat);
 	}
 	
 	public void fireFileFormatAvailabilityEvent(){

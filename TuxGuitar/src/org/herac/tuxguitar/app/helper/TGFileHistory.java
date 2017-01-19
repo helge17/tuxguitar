@@ -14,6 +14,8 @@ import java.util.Properties;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -22,11 +24,13 @@ public class TGFileHistory {
 	
 	private static final int URL_LIMIT = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
 	
-	private boolean changed;
+	private TGContext context;
 	private List<URL> urls;
 	private String chooserPath;
+	private boolean changed;
 	
-	private TGFileHistory() {
+	private TGFileHistory(TGContext context) {
+		this.context = context;
 		this.urls = new ArrayList<URL>();
 		this.loadHistory();
 		this.reset(null);
@@ -43,8 +47,18 @@ public class TGFileHistory {
 		return null;
 	}
 	
+	public boolean isReadable(URL url) {
+		if( url != null ) {
+			String formatCode = TGFileFormatUtils.getFileFormatCode(url.getFile());
+			if( formatCode != null ) {
+				return (TGFileFormatManager.getInstance(this.context).findReaderFileFormatByCode(formatCode) != null);
+			}
+		}
+		return false;
+	}
+	
 	public void addURL(URL url){
-		if( url != null ){
+		if( this.isReadable(url) ) {
 			this.removeURL(url);
 			this.urls.add(0, url);
 			this.checkLimit();
@@ -147,7 +161,7 @@ public class TGFileHistory {
 	public static TGFileHistory getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGFileHistory.class.getName(), new TGSingletonFactory<TGFileHistory>() {
 			public TGFileHistory createInstance(TGContext context) {
-				return new TGFileHistory();
+				return new TGFileHistory(context);
 			}
 		});
 	}

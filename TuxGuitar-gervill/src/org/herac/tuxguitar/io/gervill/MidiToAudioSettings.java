@@ -13,6 +13,12 @@ public class MidiToAudioSettings {
 	private AudioFormat format;
 	private String soundbankPath;
 	
+	public MidiToAudioSettings() {
+		this.setType(DEFAULT_TYPE);
+		this.setFormat(DEFAULT_FORMAT);
+		this.setSoundbankPath(DEFAULT_SOUNDBANK_PATH);
+	}
+	
 	public AudioFileFormat.Type getType() {
 		return this.type;
 	}
@@ -36,10 +42,10 @@ public class MidiToAudioSettings {
 	public void setSoundbankPath(String soundbankPath) {
 		this.soundbankPath = soundbankPath;
 	}
-	
-	public void setDefaults(){
-		this.setType(DEFAULT_TYPE);
-		this.setFormat(DEFAULT_FORMAT);
-		this.setSoundbankPath(DEFAULT_SOUNDBANK_PATH);
-	}
+//	
+//	public void setDefaults(){
+//		this.setType(DEFAULT_TYPE);
+//		this.setFormat(DEFAULT_FORMAT);
+//		this.setSoundbankPath(DEFAULT_SOUNDBANK_PATH);
+//	}
 }

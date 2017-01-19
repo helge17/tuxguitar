@@ -1,12 +1,14 @@
 package org.herac.tuxguitar.io.lilypond;
 
-import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandler;
+import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
+import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
-public class LilypondSettingsHandler implements TGSongStreamSettingsHandler {
+public class LilypondSettingsHandler implements TGPersistenceSettingsHandler {
 
 	private TGContext context;
 	
@@ -14,10 +16,14 @@ public class LilypondSettingsHandler implements TGSongStreamSettingsHandler {
 		this.context = context;
 	}
 	
-	public String getProviderId() {
-		return LilypondSongExporter.PROVIDER_ID;
+	public TGFileFormat getFileFormat() {
+		return LilypondSongWriter.FILE_FORMAT;
 	}
 
+	public TGPersistenceSettingsMode getMode() {
+		return TGPersistenceSettingsMode.WRITE;
+	}
+	
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final LilypondSettings settings = LilypondSettings.getDefaults();
@@ -30,5 +36,5 @@ public class LilypondSettingsHandler implements TGSongStreamSettingsHandler {
 				}
 			}
 		});
-	}	
+	}
 }

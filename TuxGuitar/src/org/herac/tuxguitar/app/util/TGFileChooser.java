@@ -10,7 +10,7 @@ import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialogController;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -19,9 +19,9 @@ public class TGFileChooser {
 	
 	public static final String DEFAULT_OPEN_FILENAME = null;
 	
-	public static final String DEFAULT_SAVE_FILENAME = ("Untitled" + TGFileFormatManager.DEFAULT_EXTENSION);
+	public static final String DEFAULT_SAVE_FILENAME = ("Untitled" + TGFileFormatUtils.DEFAULT_EXTENSION);
 	
-	public static TGFileFormat ALL_FORMATS = new TGFileFormat("All Files", new String[]{"*"});
+	public static TGFileFormat ALL_FORMATS = new TGFileFormat("All Files", "*/*", new String[]{"*"});
 	
 	private TGContext context;
 	
