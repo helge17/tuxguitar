@@ -27,15 +27,16 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
 public class GP1InputStream extends GTPInputStream {
 	
-	private static final String SUPPORTED_VERSIONS[] = new String[]{
-		"FICHIER GUITARE PRO v1", "FICHIER GUITARE PRO v1.01","FICHIER GUITARE PRO v1.02", "FICHIER GUITARE PRO v1.03","FICHIER GUITARE PRO v1.04"
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro", "audio/x-gtp", new String[]{"gtp"});
+	
+	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITARE PRO v1", 0),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITARE PRO v1.01", 1),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITARE PRO v1.02", 2),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITARE PRO v1.03", 3),
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITARE PRO v1.04", 4)
 	};
 	
 	private static final short TRACK_CHANNELS[][] = new short[][]{
@@ -56,17 +57,14 @@ public class GP1InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro", new String[]{"gtp"});
+		return FILE_FORMAT;
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {
 		try{
 			readVersion();
-			if (!isSupportedVersion(getVersion())) {
-				this.close();
-				throw new GTPFormatException("Unsupported Version");
-			}
-			this.trackCount = ((getVersionIndex() > 2)?8:1);
+			
+			this.trackCount = ((getVersion().getVersionCode() > 2)?8:1);
 			
 			TGSong song = getFactory().newSong();
 			
@@ -75,7 +73,7 @@ public class GP1InputStream extends GTPInputStream {
 			int tempo = readInt();
 			int tripletFeel = ((readInt() == 1)?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
 			
-			if(getVersionIndex() > 2){
+			if(getVersion().getVersionCode() > 2){
 				readInt(); //key
 			}
 			
@@ -100,7 +98,7 @@ public class GP1InputStream extends GTPInputStream {
 				track.setChannelId(TRACK_CHANNELS[ i ][0]);
 				track.getColor().copyFrom(TGColor.RED);
 				
-				int strings = ((getVersionIndex() > 1)?readInt():6);
+				int strings = ((getVersion().getVersionCode() > 1)?readInt():6);
 				for (int j = 0; j < strings; j++) {
 					TGString string = getFactory().newString();
 					string.setNumber( j + 1 );
@@ -116,7 +114,7 @@ public class GP1InputStream extends GTPInputStream {
 				readTrack(song.getTrack(i), song.getChannel(i));
 			}
 			
-			if(getVersionIndex() > 2){
+			if(getVersion().getVersionCode() > 2){
 				skip(10);
 			}
 			
@@ -337,7 +335,7 @@ public class GP1InputStream extends GTPInputStream {
 	private void readTrack(TGTrack track, TGChannel channel) throws IOException {
 		track.setName("Track 1");
 		channel.setProgram((short)readInt());
-		if (getVersionIndex() > 2) {
+		if (getVersion().getVersionCode() > 2) {
 			readInt(); // Number of frets
 			track.setName(readStringByteSizeOfByte());
 			track.setSolo(readBoolean());
@@ -350,7 +348,7 @@ public class GP1InputStream extends GTPInputStream {
 	}
 	
 	private void readChord(int strings, TGBeat beat) throws IOException {
-		if(getVersionIndex() > 3){
+		if(getVersion().getVersionCode() > 3){
 			TGChord chord = getFactory().newChord(strings);
 			chord.setName(readStringByte(0));
 			

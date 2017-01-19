@@ -55,7 +55,7 @@ public class GP4OutputStream extends GTPOutputStream{
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 4", new String[]{"gp4"});
+		return new TGFileFormat("Guitar Pro 4", "audio/x-gtp", new String[]{"gp4"});
 	}
 	
 	public void writeSong(TGSong song) {

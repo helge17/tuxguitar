@@ -1,4 +1,4 @@
-org.herac.tuxguitar.io.abc.ABCPluginImporter
-org.herac.tuxguitar.io.abc.ABCPluginExporter
-org.herac.tuxguitar.io.abc.ABCPluginImportSettingsHandler
-org.herac.tuxguitar.io.abc.ABCPluginExportSettingsHandler
+org.herac.tuxguitar.io.abc.ABCSongWriterPlugin
+org.herac.tuxguitar.io.abc.ABCSongReaderPlugin
+org.herac.tuxguitar.io.abc.ABCSongReaderSettingsHandlerPlugin
+org.herac.tuxguitar.io.abc.ABCSongWriterSettingsHandlerPlugin

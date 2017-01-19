@@ -8,8 +8,10 @@ import java.util.List;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
-import org.herac.tuxguitar.io.base.TGOutputStreamBase;
-import org.herac.tuxguitar.io.tg.TGOutputStream;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
+import org.herac.tuxguitar.io.base.TGSongWriter;
+import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import org.herac.tuxguitar.io.tg.TGSongWriterImpl;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
@@ -105,9 +107,13 @@ public class TGShareSong {
 	
 	private byte[] getSongBytes( TGSong song ) throws Throwable {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		TGOutputStreamBase tgStream = new TGOutputStream();
-		tgStream.init( new TGFactory() , out );
-		tgStream.writeSong(song);
+		TGSongWriterHandle tgHandle = new TGSongWriterHandle();
+		tgHandle.setContext(new TGSongStreamContext());
+		tgHandle.setFactory(new TGFactory());
+		tgHandle.setSong(song);
+		tgHandle.setOutputStream(out);
+		TGSongWriter tgStream = new TGSongWriterImpl();
+		tgStream.write(tgHandle);
 		out.close();
 		return out.toByteArray();
 	}

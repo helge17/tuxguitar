@@ -41,9 +41,15 @@ public class TGBrowserActionHandler {
 		return tgActionProcessor;
 	}
 
-	public TGActionProcessorListener createBrowserOpenElementAction(TGBrowserElement element, TGFileFormat format) {
+	public TGActionProcessorListener createBrowserOpenElementAction(TGBrowserElement element, String formatCode) {
 		TGActionProcessorListener tgActionProcessor = this.createBrowserElementAction(TGBrowserOpenElementAction.NAME, element);
-		tgActionProcessor.setAttribute(TGBrowserOpenElementAction.ATTRIBUTE_FORMAT, format);
+		tgActionProcessor.setAttribute(TGBrowserOpenElementAction.ATTRIBUTE_FORMAT_CODE, formatCode);
+		return tgActionProcessor;
+	}
+
+	public TGActionProcessorListener createBrowserSaveElementAction(TGBrowserElement element, String formatCode) {
+		TGActionProcessorListener tgActionProcessor = this.createBrowserElementAction(TGBrowserSaveElementAction.NAME, element);
+		tgActionProcessor.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT_CODE, formatCode);
 		return tgActionProcessor;
 	}
 

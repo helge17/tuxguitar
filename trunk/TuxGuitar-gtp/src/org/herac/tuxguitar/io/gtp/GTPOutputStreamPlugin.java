@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.io.plugin.TGOutputStreamPlugin;
+import org.herac.tuxguitar.io.plugin.TGSongWriterPlugin;
 
-public abstract class GTPOutputStreamPlugin extends TGOutputStreamPlugin{
+public abstract class GTPOutputStreamPlugin extends TGSongWriterPlugin{
 	
 	public GTPOutputStreamPlugin(){
-		super();
+		super(true);
 	}
 	
 	public String getModuleId(){

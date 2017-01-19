@@ -18,7 +18,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 
 public class SVGController implements TGController {
 	
-	private SVGExporterStyles tgStyles;
+	private SVGStyles tgStyles;
 	
 	private TGSong tgSong;
 	private TGSongManager tgSongManager;
@@ -26,7 +26,7 @@ public class SVGController implements TGController {
 	private TGResourceFactory tgResourceFactory;
 	private TGLayoutVertical tgLayout;
 	
-	public SVGController(SVGExporterStyles tgStyles){
+	public SVGController(SVGStyles tgStyles){
 		this.tgStyles = tgStyles;
 		this.tgSongManager = new TGSongManager();
 		this.tgSongManager.setFactory(new TGFactoryImpl());

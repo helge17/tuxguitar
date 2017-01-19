@@ -30,12 +30,15 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 		URL url = actionContext.getAttribute(ATTRIBUTE_URL);
 		
 		Boolean unwanted = Boolean.TRUE.equals(actionContext.getAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED));
-		TGDocumentListManager.getInstance(context).findCurrentDocument().setUnwanted(unwanted);
-		TGDocumentListManager.getInstance(context).updateLoadedDocument();
+		TGDocumentListManager tgDocumentListManager = TGDocumentListManager.getInstance(context);
+		tgDocumentListManager.findCurrentDocument().setUnwanted(unwanted);
+		tgDocumentListManager.updateLoadedDocument();
 		
-		TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
-		tgFileHistory.reset(url);
 		if( url != null ) {
+			tgDocumentListManager.findCurrentDocument().setUrl(url);
+			
+			TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
+			tgFileHistory.reset(url);
 			tgFileHistory.setChooserPath( url );
 		}
 		

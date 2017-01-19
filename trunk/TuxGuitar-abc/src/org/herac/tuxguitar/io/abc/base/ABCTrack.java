@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.abc.base;
 
-import org.herac.tuxguitar.io.abc.ABCSongImporterStream;
+import org.herac.tuxguitar.io.abc.ABCSongReader;
 import org.herac.tuxguitar.song.models.TGMeasure;
 
 public class ABCTrack {
@@ -78,7 +78,7 @@ public class ABCTrack {
 		}
 		if(percussion) {
 			for(int i=0;i<strings.length;i++) 
-				strings[i]=ABCSongImporterStream.PERCUSSION_TUNINGS[strings.length-1][i];
+				strings[i]=ABCSongReader.PERCUSSION_TUNINGS[strings.length-1][i];
 		}
 	}
 	
@@ -212,7 +212,7 @@ public class ABCTrack {
 		trk.strings=new int[numstrings];
 		if(trk.percussion) {
 			for(int i=0;i<numstrings;i++) 
-				trk.strings[i]=ABCSongImporterStream.PERCUSSION_TUNINGS[numstrings-1][i];
+				trk.strings[i]=ABCSongReader.PERCUSSION_TUNINGS[numstrings-1][i];
 		}
 		else if(strings.length>numstrings) {
 			for(int i=0;i<numstrings;i++) {

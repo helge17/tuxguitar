@@ -207,8 +207,8 @@ public class MidiToAudioSettingsDialog {
 	
 	private List<TGFileFormat> getSupportedSoundbankFormats(){
 		List<TGFileFormat> list = new ArrayList<TGFileFormat>();
-		list.add(new TGFileFormat("SF2 files", new String[]{"sf2"}));
-		list.add(new TGFileFormat("DLS files", new String[]{"dls"}));
+		list.add(new TGFileFormat("SF2 files", "*/*", new String[]{"sf2"}));
+		list.add(new TGFileFormat("DLS files", "*/*", new String[]{"dls"}));
 		return list;
 	}
 	

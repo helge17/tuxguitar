@@ -6,7 +6,8 @@ import com.google.api.services.drive.model.File;
 
 public class TGDriveBrowserFile implements TGBrowserElement{
 	
-	private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
+	public static final String FILE_MIME_TYPE = "audio/x-tuxguitar";
+	public static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
 	
 	private File file;
 	private TGDriveBrowserFile parent;

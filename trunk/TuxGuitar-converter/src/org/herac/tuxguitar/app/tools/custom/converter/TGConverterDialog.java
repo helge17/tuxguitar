@@ -2,7 +2,6 @@ package org.herac.tuxguitar.app.tools.custom.converter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -16,9 +15,6 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGLocalFileExporter;
-import org.herac.tuxguitar.io.base.TGOutputStreamBase;
-import org.herac.tuxguitar.io.base.TGRawExporter;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
@@ -194,20 +190,9 @@ public class TGConverterDialog implements TGEventListener{
 	private void addFileFormats(UIDropDownSelect<TGConverterFormat> combo){
 		List<UISelectItem<TGConverterFormat>> selectItems = new ArrayList<UISelectItem<TGConverterFormat>>();
 		
-		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.context);
-		
-		Iterator<TGOutputStreamBase> outputStreams = fileFormatManager.getOutputStreams();
-		while(outputStreams.hasNext()){
-			TGOutputStreamBase stream = (TGOutputStreamBase)outputStreams.next();
-			addFileFormats(selectItems, stream.getFileFormat(), stream );
-		}
-		
-		Iterator<TGRawExporter> exporters = fileFormatManager.getExporters();
-		while (exporters.hasNext()) {
-			TGRawExporter exporter = (TGRawExporter)exporters.next();
-			if( exporter instanceof TGLocalFileExporter ){
-				addFileFormats(selectItems, ((TGLocalFileExporter)exporter).getFileFormat() , exporter );
-			}
+		List<TGFileFormat> fileFormats = TGFileFormatManager.getInstance(this.context).findWriteFileFormats(null);
+		for(TGFileFormat fileFormat : fileFormats) {
+			addFileFormats(selectItems, fileFormat);
 		}
 		
 		for(UISelectItem<TGConverterFormat> selectItem : selectItems) {
@@ -219,18 +204,13 @@ public class TGConverterDialog implements TGEventListener{
 		}
 	}
 	
-	private void addFileFormats(List<UISelectItem<TGConverterFormat>> items, TGFileFormat format, Object exporter ){
-		if(format.getSupportedFormats() != null){
+	private void addFileFormats(List<UISelectItem<TGConverterFormat>> items, TGFileFormat format){
+		if( format.getSupportedFormats() != null){
 			String[] extensions = format.getSupportedFormats();
 			if( extensions != null && extensions.length > 0 ){
 				for(int i = 0; i < extensions.length; i ++){
-					String exportName = format.getName();
-					if( exporter instanceof TGLocalFileExporter ){
-						exportName = ((TGLocalFileExporter) exporter).getExportName();
-					}
-					String exportItemName = (exportName + " (*." + extensions[i] + ")");
-					
-					items.add(new UISelectItem<TGConverterFormat>(exportItemName, new TGConverterFormat((extensions[i]).trim(), exporter)));
+					String label = (format.getName() + " (*." + extensions[i] + ")");		
+					items.add(new UISelectItem<TGConverterFormat>(label, new TGConverterFormat(format, extensions[i].trim())));
 				}
 			}
 		}

@@ -1,3 +1,3 @@
 # Add here the TGPlugin implementation class names.
-org.herac.tuxguitar.io.svg.SVGExporterPlugin
-org.herac.tuxguitar.io.svg.SVGExporterStylesPlugin
+org.herac.tuxguitar.io.svg.SVGSongWriterPlugin
+org.herac.tuxguitar.io.svg.SVGStylesHandlerPlugin

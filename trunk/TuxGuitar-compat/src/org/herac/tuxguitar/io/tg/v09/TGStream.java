@@ -1,8 +1,14 @@
 package org.herac.tuxguitar.io.tg.v09;
 
+import org.herac.tuxguitar.io.base.TGFileFormat;
+
 public class TGStream {
 	
 	protected static final String TG_VERSION = ("TuxGuitar File Format - 0.9");
+	
+	protected static final String TG_FORMAT_CODE = ("tg");
+	
+	protected static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 0.9", "audio/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
 	
 	protected static final int TRACK_LYRICS = 0x01;
 	

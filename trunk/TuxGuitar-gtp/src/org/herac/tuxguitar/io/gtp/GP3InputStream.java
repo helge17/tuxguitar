@@ -34,13 +34,14 @@ import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 
-/**
- * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
 public class GP3InputStream extends GTPInputStream {
-	private static final String SUPPORTED_VERSIONS[] = new String[]{ "FICHIER GUITAR PRO v3.00" };
+	
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 3", "audio/x-gtp", new String[]{"gp3"});
+	
+	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
+		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v3.00", 0)
+	};
+	
 	private static final float GP_BEND_SEMITONE = 25f;
 	private static final float GP_BEND_POSITION = 60f;
 	
@@ -52,16 +53,13 @@ public class GP3InputStream extends GTPInputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 3", new String[]{"gp3"});
+		return FILE_FORMAT;
 	}
 	
 	public TGSong readSong() throws TGFileFormatException {
 		try{
 			readVersion();
-			if (!isSupportedVersion(getVersion())) {
-				this.close();
-				throw new GTPFormatException("Unsupported Version");
-			}
+			
 			TGSong song = getFactory().newSong();
 			
 			readInfo(song);

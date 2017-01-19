@@ -1,2 +1,2 @@
-org.herac.tuxguitar.io.pdf.PDFPluginExporter
-org.herac.tuxguitar.io.pdf.PDFPluginStylesHandler
+org.herac.tuxguitar.io.pdf.PDFSongWriterPlugin
+org.herac.tuxguitar.io.pdf.PDFSettingsHandlerPlugin

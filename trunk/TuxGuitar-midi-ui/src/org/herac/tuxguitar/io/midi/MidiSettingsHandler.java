@@ -1,11 +1,13 @@
 package org.herac.tuxguitar.io.midi;
 
-import org.herac.tuxguitar.app.io.TGSongStreamSettingsHandler;
+import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
+import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
+import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class MidiSettingsHandler implements TGSongStreamSettingsHandler {
+public class MidiSettingsHandler implements TGPersistenceSettingsHandler {
 	
 	private TGContext context;
 	
@@ -13,8 +15,12 @@ public class MidiSettingsHandler implements TGSongStreamSettingsHandler {
 		this.context = context;
 	}
 	
-	public String getProviderId() {
-		return MidiSongProvider.PROVIDER_ID;
+	public TGFileFormat getFileFormat() {
+		return MidiFileFormat.FILE_FORMAT;
+	}
+	
+	public TGPersistenceSettingsMode getMode() {
+		return TGPersistenceSettingsMode.READ_WRITE;
 	}
 	
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {

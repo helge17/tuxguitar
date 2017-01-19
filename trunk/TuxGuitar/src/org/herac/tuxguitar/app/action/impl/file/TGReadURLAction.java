@@ -26,7 +26,7 @@ public class TGReadURLAction extends TGActionBase {
 		try {
 			URL url = context.getAttribute(ATTRIBUTE_URL);
 			InputStream stream = (TGFileUtils.isLocalFile(url) ? url.openStream() : TGFileFormatUtils.getInputStream(url.openStream()));
-			context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, TGFileFormatUtils.getImporterFileFormat(getContext(), url.getFile()));
+			context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(url.getFile()));
 			context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 			
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());

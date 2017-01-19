@@ -1,41 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.herac.tuxguitar.android"
-    android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName="SNAPSHOT" >
+	package="org.herac.tuxguitar.android"
+	android:installLocation="auto"
+	android:versionCode="1"
+	android:versionName="SNAPSHOT" >
 
-    <uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="15" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-    <application
-        android:name="org.herac.tuxguitar.android.application.TGApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:largeHeap="true">
-        <activity
-            android:name="org.herac.tuxguitar.android.activity.TGActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            
+	<application
+		android:name="org.herac.tuxguitar.android.application.TGApplication"
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/AppTheme" 
+		android:largeHeap="true">
+		<activity
+			android:name="org.herac.tuxguitar.android.activity.TGActivity"
+			android:configChanges="orientation|screenSize|keyboardHidden"
+			android:label="@string/app_name"
+			android:launchMode="singleTop" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.tg" />
+				<data android:scheme="" />
+				<data android:scheme="file" />
+				<data android:scheme="ftp" />
+				<data android:scheme="content" />
+				<data android:scheme="http" />
+				<data android:scheme="https" />
+				
+				<data android:mimeType="*/*" />
+				
+				<data android:host="*" />
+				
+				<data android:pathPattern=".*\\.tg" />
 			</intent-filter>
-        </activity>
-    </application>
+			
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				
+				<data android:mimeType="audio/x-tuxguitar" />
+			</intent-filter>
+		</activity>
+	</application>
 </manifest>

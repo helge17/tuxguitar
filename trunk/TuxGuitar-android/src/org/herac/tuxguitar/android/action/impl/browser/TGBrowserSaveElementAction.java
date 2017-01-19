@@ -16,11 +16,12 @@ import java.io.OutputStream;
 public class TGBrowserSaveElementAction extends TGActionBase{
 	
 	public static final String NAME = "action.browser.save-element";
-	
-	public static final String ATTRIBUTE_FORMAT = TGWriteSongAction.ATTRIBUTE_FORMAT;
+
 	public static final String ATTRIBUTE_ELEMENT = TGBrowserElement.class.getName();
 	public static final String ATTRIBUTE_SESSION = TGBrowserSession.class.getName();
-	
+	public static final String ATTRIBUTE_FORMAT = TGWriteSongAction.ATTRIBUTE_FORMAT;
+	public static final String ATTRIBUTE_FORMAT_CODE = TGWriteSongAction.ATTRIBUTE_FORMAT_CODE;
+
 	public TGBrowserSaveElementAction(TGContext context) {
 		super(context, NAME);
 	}

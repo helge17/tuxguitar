@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.io.image;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.io.base.TGRawExporter;
+import org.herac.tuxguitar.io.base.TGSongExporter;
 import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.util.TGContext;
 
-public class ImageExporter implements TGRawExporter{
+public class ImageExporter implements TGSongExporter{
 	
 	public static final String PROVIDER_ID = ImageExporter.class.getName();
 	

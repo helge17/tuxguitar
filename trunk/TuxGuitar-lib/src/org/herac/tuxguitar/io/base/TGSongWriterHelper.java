@@ -1,54 +1,65 @@
 package org.herac.tuxguitar.io.base;
 
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.util.Iterator;
+import java.io.IOException;
 
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGSongWriterHelper {
-	
-	private TGContext context;
+public class TGSongWriterHelper extends TGSongPersistenceHelper {
 	
 	public TGSongWriterHelper(TGContext context){
-		this.context = context;
+		super(context);
 	}
 	
-	public void write(TGSongWriterHandle handle) throws TGFileFormatException{
+	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try {
-			TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.context);
-			Iterator<TGOutputStreamBase> it = fileFormatManager.getOutputStreams();
-			while(it.hasNext()){
-				TGOutputStreamBase writer = (TGOutputStreamBase)it.next();
-				if( writer.getFileFormat().getName().equals(handle.getFormat().getName()) ){
-					writer.init(handle.getFactory(), new BufferedOutputStream(handle.getOutputStream()));
-					writer.writeSong(handle.getSong());
-					return;
+			boolean success = false;
+			
+			if( handle.getFormat() == null ) {
+				handle.setFormat(this.detectFileFormat(handle));
+			}
+			
+			if( handle.getFormat() != null ) {
+				TGSongWriter writer = TGFileFormatManager.getInstance(this.getContext()).findSongWriter(handle.getFormat());
+				if( writer != null ){
+					writer.write(handle);
+					success = true;
 				}
 			}
 			
-			Iterator<TGRawExporter> exporters = fileFormatManager.getExporters();
-			while (exporters.hasNext() ) {
-				TGRawExporter rawExporter = exporters.next();
-				if( rawExporter instanceof TGLocalFileExporter ) {
-					TGLocalFileExporter fileExporter = (TGLocalFileExporter) rawExporter;
-					if( fileExporter.getFileFormat().getName().equals(handle.getFormat().getName()) ){							
-						TGSongStreamContext tgStreamContext = new TGSongStreamContext();
-						tgStreamContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, handle.getSong());
-						tgStreamContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, new TGSongManager(handle.getFactory()));
-						tgStreamContext.setAttribute(OutputStream.class.getName(), new BufferedOutputStream(handle.getOutputStream()));
-						
-						TGSongStream tgSongStream = fileExporter.openStream(tgStreamContext);
-						tgSongStream.process();
-						return;
-					}
-				}
+			if(!success) {
+				throw new TGFileFormatException("Unsupported file format");
 			}
-		} catch (Throwable t) {
-			throw new TGFileFormatException(t);
+		} catch(TGFileFormatException tgFileFormatException) {
+			throw tgFileFormatException;
+		} catch(Throwable throwable) {
+			throw new TGFileFormatException(throwable);
+		} finally {
+			try {
+				handle.getOutputStream().close();
+			} catch (IOException e) {
+				throw new TGFileFormatException(e);
+			}
 		}
-		throw new TGFileFormatException("Unsupported file format");
+	}
+	
+	public TGFileFormat detectFileFormat(TGSongWriterHandle handle) throws IOException {
+		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.getContext());
+		
+		String mimeType = handle.getContext().getAttribute(ATTRIBUTE_MIME_TYPE);
+		if( mimeType != null ) {
+			TGFileFormat fileFormat = fileFormatManager.findWriterFileFormatByMimeType(mimeType);
+			if( fileFormat != null ) {
+				return fileFormat;
+			}
+		}
+		
+		String formatCode = handle.getContext().getAttribute(ATTRIBUTE_FORMAT_CODE);
+		if( formatCode != null ) {
+			TGFileFormat fileFormat = fileFormatManager.findReaderFileFormatByCode(formatCode);
+			if( fileFormat != null ) {
+				return fileFormat;
+			}
+		}
+		return null;
 	}
 }

@@ -13,9 +13,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
-import org.herac.tuxguitar.app.action.impl.file.TGExportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
-import org.herac.tuxguitar.app.action.impl.file.TGImportFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGImportSongAction;
 import org.herac.tuxguitar.app.action.impl.file.TGOpenFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGOpenURLAction;
@@ -27,12 +25,15 @@ import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.editor.template.TGTemplate;
 import org.herac.tuxguitar.editor.template.TGTemplateManager;
-import org.herac.tuxguitar.io.base.TGLocalFileExporter;
-import org.herac.tuxguitar.io.base.TGLocalFileImporter;
-import org.herac.tuxguitar.io.base.TGRawExporter;
-import org.herac.tuxguitar.io.base.TGRawImporter;
+import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatManager;
+import org.herac.tuxguitar.io.base.TGSongExporter;
+import org.herac.tuxguitar.io.base.TGSongImporter;
+import org.herac.tuxguitar.io.base.TGSongReader;
+import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
@@ -57,11 +58,15 @@ public class FileMenuItem extends TGMenuItem {
 	private UIMenuActionItem[] historyFiles;
 	private UIMenuActionItem exit;
 	
+	private List<UIMenuActionItem> readerItems;
+	private List<UIMenuActionItem> writerItems;
 	private List<UIMenuActionItem> importItems;
 	private List<UIMenuActionItem> exportItems;
 	
 	public FileMenuItem(UIMenu parent) {
 		this.fileMenuItem = parent.createSubMenuItem();
+		this.readerItems = new ArrayList<UIMenuActionItem>();
+		this.writerItems = new ArrayList<UIMenuActionItem>();
 		this.importItems = new ArrayList<UIMenuActionItem>();
 		this.exportItems = new ArrayList<UIMenuActionItem>();
 	}
@@ -102,24 +107,32 @@ public class FileMenuItem extends TGMenuItem {
 		this.saveAs.addSelectionListener(this.createActionProcessor(TGSaveAsFileAction.NAME));
 		
 		//-- IMPORT | EXPORT --
-		int countImporters = TuxGuitar.getInstance().getFileFormatManager().countImporters();
-		int countExporters = TuxGuitar.getInstance().getFileFormatManager().countExporters();
+		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.findContext());
+		List<TGSongReader> readers = fileFormatManager.findSongReaders(false);
+		List<TGSongWriter> writers = fileFormatManager.findSongWriters(false);
+		List<TGSongImporter> importers = fileFormatManager.getImporters();
+		List<TGSongExporter> exporters = fileFormatManager.getExporters();
+		
+		int countImporters = (readers.size() + importers.size());
+		int countExporters = (writers.size() + exporters.size());
 		if( ( countImporters + countExporters ) > 0 ){
 			//--SEPARATOR--
 			this.fileMenuItem.getMenu().createSeparator();
 			
 			//--IMPORT--
+			this.readerItems.clear();
 			this.importItems.clear();
 			if( countImporters > 0 ){
 				this.importItem = this.fileMenuItem.getMenu().createSubMenuItem();
-				this.addImporters();
+				this.addImporters(readers, importers);
 			}
 			
 			//--EXPORT--
+			this.writerItems.clear();
 			this.exportItems.clear();
 			if( countExporters > 0 ){
 				this.exportItem = this.fileMenuItem.getMenu().createSubMenuItem();
-				this.addExporters();
+				this.addExporters(writers, exporters);
 			}
 		}
 		
@@ -167,73 +180,47 @@ public class FileMenuItem extends TGMenuItem {
 		}
 	}
 	
-	private void addImporters(){
-		List<TGRawImporter> importersRaw = new ArrayList<TGRawImporter>();
-		List<TGLocalFileImporter> importersFile = new ArrayList<TGLocalFileImporter>();
-		
-		Iterator<TGRawImporter> importers = TuxGuitar.getInstance().getFileFormatManager().getImporters();
-		while(importers.hasNext()){
-			TGRawImporter importer = (TGRawImporter)importers.next();
-			if( importer instanceof TGLocalFileImporter ){
-				importersFile.add( (TGLocalFileImporter) importer );
-			}else{
-				importersRaw.add( importer );
-			}
-		}
-		
-		for( int i = 0 ; i < importersFile.size() ; i ++ ){
-			TGLocalFileImporter importer = importersFile.get( i );
+	private void addImporters(List<TGSongReader> readers, List<TGSongImporter> importers) {
+		// readers 
+		for(TGSongReader reader : readers) {
 			UIMenuActionItem uiMenuItem = this.importItem.getMenu().createActionItem();
-			uiMenuItem.setData(TGRawImporter.class.getName(), importer);
-			uiMenuItem.addSelectionListener(this.createImportFileActionProcessor(importer));
-			this.importItems.add( uiMenuItem );
+			uiMenuItem.setData(TGFileFormat.class.getName(), reader.getFileFormat());
+			uiMenuItem.addSelectionListener(this.createOpenFileActionProcessor(reader.getFileFormat()));
+			this.readerItems.add( uiMenuItem );
 		}
 		
-		//--SEPARATOR--
-		if( !importersFile.isEmpty() && !importersRaw.isEmpty() ){
+		// separator
+		if(!readers.isEmpty() && !importers.isEmpty() ){
 			this.importItem.getMenu().createSeparator();
 		}
 		
-		for( int i = 0 ; i < importersRaw.size() ; i ++ ){
-			TGRawImporter importer = importersRaw.get( i );
+		// importers
+		for(TGSongImporter importer : importers) {
 			UIMenuActionItem uiMenuItem = this.importItem.getMenu().createActionItem();
-			uiMenuItem.setData(TGRawImporter.class.getName(), importer);
+			uiMenuItem.setData(TGSongImporter.class.getName(), importer);
 			uiMenuItem.addSelectionListener(this.createImportSongActionProcessor(importer));
 			this.importItems.add( uiMenuItem );
 		}
 	}
 	
-	private void addExporters(){
-		List<TGRawExporter> exportersRaw = new ArrayList<TGRawExporter>();
-		List<TGLocalFileExporter> exportersFile = new ArrayList<TGLocalFileExporter>();
-		
-		Iterator<TGRawExporter> exporters = TuxGuitar.getInstance().getFileFormatManager().getExporters();
-		while(exporters.hasNext()){
-			TGRawExporter exporter = (TGRawExporter)exporters.next();
-			if( exporter instanceof TGLocalFileExporter ){
-				exportersFile.add( (TGLocalFileExporter) exporter );
-			}else{
-				exportersRaw.add( exporter );
-			}
-		}
-		
-		for( int i = 0 ; i < exportersFile.size() ; i ++ ){
-			TGLocalFileExporter exporter = exportersFile.get( i );
+	private void addExporters(List<TGSongWriter> writers, List<TGSongExporter> exporters) {
+		// writers
+		for(TGSongWriter writer : writers) {
 			UIMenuActionItem uiMenuItem = this.exportItem.getMenu().createActionItem();
-			uiMenuItem.setData(TGRawExporter.class.getName(), exporter);
-			uiMenuItem.addSelectionListener(this.createExportFileActionProcessor(exporter));
-			this.exportItems.add( uiMenuItem );
+			uiMenuItem.setData(TGFileFormat.class.getName(), writer.getFileFormat());
+			uiMenuItem.addSelectionListener(this.createSaveAsFileActionProcessor(writer.getFileFormat()));
+			this.writerItems.add( uiMenuItem );
 		}
 		
-		//--SEPARATOR--
-		if( !exportersFile.isEmpty() && !exportersRaw.isEmpty() ){
+		// separator
+		if(!writers.isEmpty() && !exporters.isEmpty() ){
 			this.exportItem.getMenu().createSeparator();
 		}
 		
-		for( int i = 0 ; i < exportersRaw.size() ; i ++ ){
-			TGRawExporter exporter = exportersRaw.get( i );
+		// exporters
+		for(TGSongExporter exporter : exporters){
 			UIMenuActionItem uiMenuItem = this.exportItem.getMenu().createActionItem();
-			uiMenuItem.setData(TGRawExporter.class.getName(), exporter);
+			uiMenuItem.setData(TGSongExporter.class.getName(), exporter);
 			uiMenuItem.addSelectionListener(this.createExportSongActionProcessor(exporter));
 			this.exportItems.add( uiMenuItem );
 		}
@@ -269,25 +256,25 @@ public class FileMenuItem extends TGMenuItem {
 		return tgActionProcessorListener;
 	}
 	
-	public TGActionProcessorListener createImportFileActionProcessor(TGLocalFileImporter importer) {
-		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGImportFileAction.NAME);
-		tgActionProcessorListener.setAttribute(TGImportFileAction.ATTRIBUTE_PROVIDER, importer);
+	public TGActionProcessorListener createOpenFileActionProcessor(TGFileFormat fileFormat) {
+		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGOpenFileAction.NAME);
+		tgActionProcessorListener.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, fileFormat);
 		return tgActionProcessorListener;
 	}
 	
-	public TGActionProcessorListener createImportSongActionProcessor(TGRawImporter importer) {
+	public TGActionProcessorListener createSaveAsFileActionProcessor(TGFileFormat fileFormat) {
+		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGSaveAsFileAction.NAME);
+		tgActionProcessorListener.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, fileFormat);
+		return tgActionProcessorListener;
+	}
+	
+	public TGActionProcessorListener createImportSongActionProcessor(TGSongImporter importer) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGImportSongAction.NAME);
 		tgActionProcessorListener.setAttribute(TGImportSongAction.ATTRIBUTE_PROVIDER, importer);
 		return tgActionProcessorListener;
 	}
 	
-	public TGActionProcessorListener createExportFileActionProcessor(TGLocalFileExporter exporter) {
-		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGExportFileAction.NAME);
-		tgActionProcessorListener.setAttribute(TGExportFileAction.ATTRIBUTE_PROVIDER, exporter);
-		return tgActionProcessorListener;
-	}
-	
-	public TGActionProcessorListener createExportSongActionProcessor(TGRawExporter exporter) {
+	public TGActionProcessorListener createExportSongActionProcessor(TGSongExporter exporter) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGExportSongAction.NAME);
 		tgActionProcessorListener.setAttribute(TGExportSongAction.ATTRIBUTE_PROVIDER, exporter);
 		return tgActionProcessorListener;
@@ -328,27 +315,29 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.exit, "file.exit", TGExitAction.NAME);
 		
 		if( this.importItem != null ){
-			setMenuItemTextAndAccelerator(this.importItem, "file.import", TGImportFileAction.NAME);
+			setMenuItemTextAndAccelerator(this.importItem, "file.import", null);
+			
+			for(UIMenuActionItem item : this.readerItems) {
+				TGFileFormat fileFormat = item.getData(TGFileFormat.class.getName());
+				item.setText(TuxGuitar.getProperty("file.import") + " " + fileFormat.getName());
+			}
 			
 			for(UIMenuActionItem item : this.importItems) {
-				TGRawImporter itemImporter = item.getData(TGRawImporter.class.getName());
-				if( itemImporter instanceof TGLocalFileImporter ){
-					item.setText(TuxGuitar.getProperty("file.import") + " " + ((TGRawImporter)itemImporter).getImportName());
-				} else {
-					item.setText(((TGRawImporter)itemImporter).getImportName());
-				}
+				TGSongImporter itemImporter = item.getData(TGSongImporter.class.getName());
+				item.setText(itemImporter.getImportName());
 			}
 		}
 		if( this.exportItem != null ){
-			setMenuItemTextAndAccelerator(this.exportItem, "file.export", TGExportFileAction.NAME);
+			setMenuItemTextAndAccelerator(this.exportItem, "file.export", null);
+			
+			for(UIMenuActionItem item : this.writerItems) {
+				TGFileFormat fileFormat = item.getData(TGFileFormat.class.getName());
+				item.setText(TuxGuitar.getProperty("file.export") + " " + fileFormat.getName());
+			}
 			
 			for(UIMenuActionItem item : this.exportItems) {
-				TGRawExporter itemExporter = item.getData(TGRawExporter.class.getName());
-				if( itemExporter instanceof TGLocalFileExporter ){
-					item.setText(TuxGuitar.getProperty("file.export") + " " + ((TGRawExporter)itemExporter).getExportName());
-				} else {
-					item.setText(((TGRawExporter)itemExporter).getExportName());
-				}
+				TGSongExporter itemExporter = item.getData(TGSongExporter.class.getName());
+				item.setText(itemExporter.getExportName());
 			}
 		}
 	}

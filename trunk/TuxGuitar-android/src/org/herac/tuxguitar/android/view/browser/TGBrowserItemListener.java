@@ -11,7 +11,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
 import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGBrowserItemListener implements OnItemClickListener {
@@ -51,15 +51,15 @@ public class TGBrowserItemListener implements OnItemClickListener {
 	}
 
 	public void processOpenElementAction(TGBrowserElement element) {
-		TGFileFormat format = this.browserView.findInputFormatByElementName(element);
+		String formatCode = TGFileFormatUtils.getFileFormatCode(element.getName());
 
-		this.browserView.getActionHandler().createBrowserOpenElementAction(element, format).process();
+		this.browserView.getActionHandler().createBrowserOpenElementAction(element, formatCode).process();
 	}
 	
 	public void processSaveElementAction(final TGBrowserElement element) throws TGBrowserException {
 		String confirmMessage = this.browserView.findActivity().getString(R.string.browser_file_overwrite_question);
-		TGFileFormat format = this.browserView.findOutputFormatByElementName(element);
-		TGActionProcessor actionProcessor = this.browserView.getActionHandler().createBrowserSaveElementAction(element, format);
+		String formatCode = TGFileFormatUtils.getFileFormatCode(element.getName());
+		TGActionProcessor actionProcessor = this.browserView.getActionHandler().createBrowserSaveElementAction(element, formatCode);
 		
 		this.browserView.getActionHandler().processConfirmableAction(actionProcessor, confirmMessage);
 	}
