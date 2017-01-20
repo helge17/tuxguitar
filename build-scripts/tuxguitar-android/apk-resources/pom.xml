@@ -48,6 +48,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-midi</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-gervill-plugin</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
@@ -120,6 +127,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ptb</artifactId>
 									<destFileName>tuxguitar-ptb.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-midi</artifactId>
+									<destFileName>tuxguitar-midi.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

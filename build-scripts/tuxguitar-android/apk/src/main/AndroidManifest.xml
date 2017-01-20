@@ -1,56 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.herac.tuxguitar.android.application"
-    android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName="SNAPSHOT" >
+	package="org.herac.tuxguitar.android.application"
+	android:installLocation="auto"
+	android:versionCode="1"
+	android:versionName="SNAPSHOT" >
 
-    <uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="15" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    
-    <!-- Required by google drive -->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+	
+	<!-- Required by google drive -->
 	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 	<uses-permission android:name="android.permission.USE_CREDENTIALS" />
 	
-    <application
-        android:name="org.herac.tuxguitar.android.application.TGApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:largeHeap="true">
-        <activity
-            android:name="org.herac.tuxguitar.android.activity.TGActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            
+	<application
+		android:name="org.herac.tuxguitar.android.application.TGApplication"
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/AppTheme" 
+		android:largeHeap="true">
+		<activity
+			android:name="org.herac.tuxguitar.android.activity.TGActivity"
+			android:configChanges="orientation|screenSize|keyboardHidden"
+			android:label="@string/app_name"
+			android:launchMode="singleTop" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.tg" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.gtp" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.gp3" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.gp4" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.gp5" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.gpx" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*"  android:pathPattern=".*\\.ptb" />
+				<data android:scheme="" />
+				<data android:scheme="file" />
+				<data android:scheme="ftp" />
+				<data android:scheme="content" />
+				<data android:scheme="http" />
+				<data android:scheme="https" />
+				
+				<data android:mimeType="*/*" />
+				
+				<data android:host="*" />
+				
+				<data android:pathPattern=".*\\.tg" />
+				<data android:pathPattern=".*\\.gtp" />
+				<data android:pathPattern=".*\\.gp3" />
+				<data android:pathPattern=".*\\.gp4" />
+				<data android:pathPattern=".*\\.gp5" />
+				<data android:pathPattern=".*\\.gpx" />
+				<data android:pathPattern=".*\\.ptb" />
+				<data android:pathPattern=".*\\.mid" />
 			</intent-filter>
-        </activity>
-        
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-    </application>
+			
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				
+				<data android:mimeType="audio/x-tuxguitar" />
+				<data android:mimeType="audio/x-tg" />
+				<data android:mimeType="audio/x-gtp" />
+				<data android:mimeType="audio/x-gp3" />
+				<data android:mimeType="audio/x-gp4" />
+				<data android:mimeType="audio/x-gp5" />
+				<data android:mimeType="audio/x-gpx" />
+				<data android:mimeType="audio/x-ptb" />
+				<data android:mimeType="audio/x-midi" />
+				<data android:mimeType="audio/midi" />
+			</intent-filter>
+		</activity>
+		
+		<meta-data
+			android:name="com.google.android.gms.version"
+			android:value="@integer/google_play_services_version" />
+	</application>
 </manifest>
