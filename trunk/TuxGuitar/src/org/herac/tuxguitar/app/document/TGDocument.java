@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.app.document;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.herac.tuxguitar.editor.undo.TGUndoableBuffer;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGDocument {
 	
-	private URL url;
+	private URI uri;
 	private TGSong song;
 	private TGUndoableBuffer undoableBuffer;
 	private boolean unsaved;
@@ -17,12 +17,12 @@ public class TGDocument {
 		super();
 	}
 
-	public URL getUrl() {
-		return url;
+	public URI getUri() {
+		return uri;
 	}
 
-	public void setUrl(URL url) {
-		this.url = url;
+	public void setUri(URI uri) {
+		this.uri = uri;
 	}
 
 	public TGSong getSong() {

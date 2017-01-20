@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import org.herac.tuxguitar.util.TGLibraryLoader;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class TGFileUtils {
+	
+	private static final String FILE_SCHEME = "file";
 	
 	private static final String TG_HOME_PATH = "tuxguitar.home.path";
 	private static final String TG_CONFIG_PATH = "tuxguitar.config.path";
@@ -140,9 +143,28 @@ public class TGFileUtils {
 		return false;
 	}
 	
-	public static String getDecodedFileName(URL url) {
+	public static boolean isLocalFile(URI uri){
 		try {
-			return URLDecoder.decode(new File(url.getFile()).getName(), "UTF-8");
+			if( uri.isAbsolute() && !uri.isOpaque() && FILE_SCHEME.equals(uri.getScheme())) {
+				return true;
+			}
+		}catch(Throwable throwable){
+			throwable.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static String getDecodedFileName(URI uri) {
+		return (!uri.isOpaque() ? getDecodedFileName(uri.getPath()) : null);
+	}
+	
+	public static String getDecodedFileName(URL url) {
+		return getDecodedFileName(url.getFile());
+	}
+	
+	public static String getDecodedFileName(String fileName) {
+		try {
+			return URLDecoder.decode(new File(fileName).getName(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

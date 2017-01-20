@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.action.listener.cache.controller;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
@@ -22,9 +23,10 @@ public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 		try {
 			String fileName = actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME);
 			if( fileName != null ) {
-				URL url = new File(fileName).toURI().toURL();
+				URI uri = new File(fileName).toURI();
+				URL url = uri.toURL();
 				
-				TGDocumentListManager.getInstance(context).findCurrentDocument().setUrl(url);
+				TGDocumentListManager.getInstance(context).findCurrentDocument().setUri(uri);
 				
 				TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
 				tgFileHistory.reset(url);

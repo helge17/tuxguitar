@@ -2,7 +2,7 @@ package org.herac.tuxguitar.app.document;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -125,9 +125,9 @@ public class TGDocumentFileManager {
 	
 	public String getCurrentFileName(String defaultName) {
 		if(!this.isNewFile()){
-			URL url = getCurrentURL();
-			if( url != null ){
-				return decode(new File(url.getFile()).getName());
+			URI uri = getCurrentURI();
+			if( uri != null && !uri.isOpaque()){
+				return decode(new File(uri.getPath()).getName());
 			}
 		}
 		return defaultName;
@@ -135,9 +135,9 @@ public class TGDocumentFileManager {
 	
 	public String getCurrentFilePath() {
 		if(!this.isNewFile()){
-			URL url = getCurrentURL();
-			if(url != null){
-				String file = getFilePath(url);
+			URI uri = getCurrentURI();
+			if(uri != null){
+				String file = getFilePath(uri);
 				if( file != null ) {
 					return decode(file);
 				}
@@ -146,31 +146,29 @@ public class TGDocumentFileManager {
 		return null;
 	}
 	
-	public URL getCurrentURL(){
+	public URI getCurrentURI(){
 		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
 		if( document != null ) {
-			return document.getUrl();
+			return document.getUri();
 		}
 		return null;
 	}
 	
-	public String getFilePath(URL url){
-		if( TGFileUtils.isLocalFile(url) ){
-			return new File(url.getFile()).getParent();
+	public String getFilePath(URI uri){
+		if( TGFileUtils.isLocalFile(uri) ){
+			return new File(uri).getParent();
 		}
 		return null;
 	}
 	
 	public boolean isNewFile(){
-		URL url = getCurrentURL();
-		
-		return (url == null);
+		return (this.getCurrentURI() == null);
 	}
 	
 	public boolean isLocalFile(){
-		URL url = getCurrentURL();
+		URI uri = getCurrentURI();
 		
-		return (url != null && TGFileUtils.isLocalFile(url));
+		return (uri != null && TGFileUtils.isLocalFile(uri));
 	}
 	
 	private String decode(String url){

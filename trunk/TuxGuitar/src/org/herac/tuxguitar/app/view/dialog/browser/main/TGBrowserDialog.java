@@ -1,10 +1,15 @@
 package org.herac.tuxguitar.app.view.dialog.browser.main;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
@@ -41,6 +46,7 @@ import org.herac.tuxguitar.ui.widget.UITable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
 import org.herac.tuxguitar.util.error.TGErrorManager;
@@ -367,6 +373,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadSongAction.NAME);
 		tgActionProcessor.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 		tgActionProcessor.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(element.getName()));
+		tgActionProcessor.setAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENT_URI, this.createElementURI(element));
 		tgActionProcessor.setOnFinish(new Runnable() {
 			public void run() {
 				loadCursor(UICursor.NORMAL);
@@ -380,6 +387,16 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}
 		});
 		tgActionProcessor.process();
+	}
+	
+	public URI createElementURI(TGBrowserElement element) {
+		try {
+			return new URI("browser:///" + URLEncoder.encode(element.getName(), "UTF-8"));
+		} catch (URISyntaxException e) {
+			throw new TGException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new TGException(e);
+		}
 	}
 	
 	public void loadIcons() {

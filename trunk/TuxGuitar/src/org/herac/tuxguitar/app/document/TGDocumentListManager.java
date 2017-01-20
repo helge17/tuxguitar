@@ -90,8 +90,11 @@ public class TGDocumentListManager {
 	}
 	
 	public String getDocumentName(TGDocument document) {
-		if( document.getUrl() != null ){
-			return TGFileUtils.getDecodedFileName(document.getUrl());
+		if( document.getUri() != null ){
+			String decodedFileName = TGFileUtils.getDecodedFileName(document.getUri());
+			if( decodedFileName != null ) {
+				return decodedFileName;
+			}
 		}
 		return TGFileChooser.DEFAULT_SAVE_FILENAME;
 	}
