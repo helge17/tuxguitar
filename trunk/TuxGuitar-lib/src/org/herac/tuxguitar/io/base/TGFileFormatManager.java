@@ -162,7 +162,7 @@ public class TGFileFormatManager {
 	
 	public TGFileFormat findWriterFileFormatByCode(String formatCode, Boolean commonFileFormats){
 		if( formatCode != null ) {
-			List<TGFileFormat> fileFormats = this.findReadFileFormats(commonFileFormats);
+			List<TGFileFormat> fileFormats = this.findWriteFileFormats(commonFileFormats);
 			for(TGFileFormat fileFormat : fileFormats) {
 				if( fileFormat.isSupportedCode(formatCode) ){
 					return fileFormat;
