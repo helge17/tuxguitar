@@ -146,8 +146,6 @@ public class TGSongSegmentHelper {
 				for(int i = 0;i < tSegment.getMeasures().size();i++){
 					TGMeasure measure = (TGMeasure)tSegment.getMeasures().get(i);
 					measure.setHeader((TGMeasureHeader)measureHeaders.get(i));
-					//this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());
-					//this.sm.getMeasureManager().moveAllBeats(measure,move);
 					this.sm.getMeasureManager().moveAllBeats(measure,move);
 					this.sm.getMeasureManager().removeVoicesOutOfTime(measure);
 					this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());

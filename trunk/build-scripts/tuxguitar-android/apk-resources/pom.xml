@@ -55,6 +55,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.herac.tuxguitar</groupId>
+			<artifactId>tuxguitar-lilypond</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.herac.tuxguitar</groupId>
 			<artifactId>tuxguitar-android-gervill-plugin</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
@@ -133,6 +140,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-midi</artifactId>
 									<destFileName>tuxguitar-midi.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-lilypond</artifactId>
+									<destFileName>tuxguitar-lilypond.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
