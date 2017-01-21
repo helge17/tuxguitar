@@ -28,6 +28,7 @@
 		<module>../../TuxGuitar-gpx</module>
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-midi</module>
+		<module>../../TuxGuitar-lilypond</module>
 		<module>../../TuxGuitar-android</module>
 		<module>../../TuxGuitar-android-resources</module>
 		<module>../../TuxGuitar-android-gervill</module>
