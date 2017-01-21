@@ -162,6 +162,12 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-lilypond-ui</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-midi</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
