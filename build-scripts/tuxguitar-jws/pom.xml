@@ -44,6 +44,7 @@
 		<module>../../TuxGuitar-gpx</module>
 		<module>../../TuxGuitar-jsa</module>
 		<module>../../TuxGuitar-lilypond</module>
+		<module>../../TuxGuitar-lilypond-ui</module>
 		<module>../../TuxGuitar-midi</module>
 		<module>../../TuxGuitar-midi-ui</module>
 		<module>../../TuxGuitar-musicxml</module>
@@ -188,6 +189,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-lilypond</artifactId>
 									<destFileName>tuxguitar-lilypond.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-lilypond-ui</artifactId>
+									<destFileName>tuxguitar-lilypond-ui.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
