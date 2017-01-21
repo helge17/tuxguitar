@@ -7,6 +7,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class LilypondSettingsHandler implements TGPersistenceSettingsHandler {
 
@@ -25,15 +26,19 @@ public class LilypondSettingsHandler implements TGPersistenceSettingsHandler {
 	}
 	
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
-		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-		final LilypondSettings settings = LilypondSettings.getDefaults();
-		
-		new LilypondSettingsDialog(this.context, song).open(settings, new Runnable() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				if( settings != null ) {
-					context.setAttribute(LilypondSettings.class.getName(), settings);
-					callback.run();
-				}
+				final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+				final LilypondSettings settings = LilypondSettings.getDefaults();
+				
+				new LilypondSettingsDialog(LilypondSettingsHandler.this.context, song).open(settings, new Runnable() {
+					public void run() {
+						if( settings != null ) {
+							context.setAttribute(LilypondSettings.class.getName(), settings);
+							callback.run();
+						}
+					}
+				});
 			}
 		});
 	}

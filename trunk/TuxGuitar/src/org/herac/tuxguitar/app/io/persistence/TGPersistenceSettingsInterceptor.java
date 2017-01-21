@@ -4,6 +4,8 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionInterceptor;
 import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
+import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.editor.action.file.TGSongPersistenceActionBase;
@@ -22,7 +24,9 @@ public class TGPersistenceSettingsInterceptor implements TGActionInterceptor {
 	};
 	
 	private static final String[] INTERCEPTABLE_WRITE_ACTIONS = new String[] {
-		TGWriteFileAction.NAME
+		TGWriteFileAction.NAME,
+		TGSaveAsFileAction.NAME,
+		TGSaveFileAction.NAME
 	};
 	
 	private TGContext context;

@@ -47,10 +47,12 @@ MAKEFILE_SCRIPTS?=\
 	$(MAKEFILE_PATH)/tuxguitar-ptb.mf\
 	$(MAKEFILE_PATH)/tuxguitar-tef.mf\
 	$(MAKEFILE_PATH)/tuxguitar-lilypond.mf\
+	$(MAKEFILE_PATH)/tuxguitar-lilypond-ui.mf\
 	$(MAKEFILE_PATH)/tuxguitar-musicxml.mf\
 	$(MAKEFILE_PATH)/tuxguitar-ascii.mf\
 	$(MAKEFILE_PATH)/tuxguitar-svg.mf\
 	$(MAKEFILE_PATH)/tuxguitar-midi.mf\
+	$(MAKEFILE_PATH)/tuxguitar-midi-ui.mf\
 	$(MAKEFILE_PATH)/tuxguitar-image.mf\
 	$(MAKEFILE_PATH)/tuxguitar-alsa.mf\
 	$(MAKEFILE_PATH)/tuxguitar-fluidsynth.mf\

@@ -1,0 +1,80 @@
+#! /usr/bin/make -f
+#------------------------------------------------------------------------------
+TG_ROOT_PATH?=../../..
+TG_PROJECT_HOME?=$(TG_ROOT_PATH)/TuxGuitar-lilypond-ui
+
+PACKAGE?=tuxguitar-lilypond-ui
+LIBRARY?=lib$(PACKAGE).so
+
+PREFIX?=/usr
+
+# tuxguitar paths
+TG_PREFIX?=$(PREFIX)
+TG_SOURCE_PATH?=$(TG_PREFIX)/src
+TG_LIBRARY_PATH?=$(TG_PREFIX)/lib
+TG_NATIVE_PLUGINS_PATH?=$(TG_PREFIX)/share/tuxguitar/plugins
+
+# tuxguitar lib paths
+TG_LIB_PREFIX?=$(PREFIX)
+TG_LIB_SOURCE_PATH?=$(TG_LIB_PREFIX)/src
+
+# tuxguitar ui-toolkit paths
+TG_UI_TOOLKIT_PREFIX?=$(PREFIX)
+TG_UI_TOOLKIT_SOURCE_PATH?=$(TG_UI_TOOLKIT_PREFIX)/src
+
+# tuxguitar editor-utils paths
+TG_EDITOR_UTILS_PREFIX?=$(PREFIX)
+TG_EDITOR_UTILS_SOURCE_PATH?=$(TG_EDITOR_UTILS_PREFIX)/src
+
+# tuxguitar gm-utils paths
+TG_GM_UTILS_PREFIX?=$(PREFIX)
+TG_GM_UTILS_SOURCE_PATH?=$(TG_GM_UTILS_PREFIX)/src
+
+# tuxguitar lilypond paths
+TG_GTP_PREFIX?=$(PREFIX)
+TG_GTP_SOURCE_PATH?=$(TG_GTP_PREFIX)/src
+
+# install paths
+INSTALL_LIBRARY_DIR?=$(TG_NATIVE_PLUGINS_PATH)
+INSTALL_SHARED_DIR?=$(TG_NATIVE_PLUGINS_PATH)/$(PACKAGE)
+
+# resources
+SHARE_PATH?=$(TG_PROJECT_HOME)/share/
+
+# build paths
+SOURCE_PATH?=$(TG_PROJECT_HOME)/src/
+SOURCES?=$(shell find $(SOURCE_PATH) -name "*.java")
+OBJECTS?=$(PACKAGE).o
+
+GCJ?=gcj
+GCJFLAGS?=-m$(TG_BUILD_ARCH) -fPIC -fsource=$(TG_BUILD_JAVA_VERSION) -I$(TG_LIB_SOURCE_PATH) -I$(TG_UI_TOOLKIT_SOURCE_PATH) -I$(TG_EDITOR_UTILS_SOURCE_PATH) -I$(TG_GM_UTILS_SOURCE_PATH) -I$(TG_GTP_SOURCE_PATH) -I$(TG_SOURCE_PATH)
+LDFLAGS?=
+
+default: all
+
+all: library
+
+library: $(LIBRARY)
+
+install:
+	-install -d $(DESTDIR)$(PREFIX)/
+	-install -d $(DESTDIR)$(INSTALL_LIBRARY_DIR)/
+	-install -d $(DESTDIR)$(INSTALL_SHARED_DIR)/
+	-install $(LIBRARY) $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+	-echo "libtuxguitar-lilypond.so" > $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY).deps
+	-cp -rfa $(SHARE_PATH)/* $(DESTDIR)$(INSTALL_SHARED_DIR)
+
+uninstall:
+	-rm -rf $(DESTDIR)$(INSTALL_SHARED_DIR)/
+	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY)
+	-rm $(DESTDIR)$(INSTALL_LIBRARY_DIR)/$(LIBRARY).deps
+
+clean:
+	-rm *.so -f
+	-rm *.o -f
+
+$(PACKAGE).o: $(SOURCES)
+	$(GCJ) $(GCJFLAGS) -c -o $(@F) $^
+
+$(LIBRARY): $(OBJECTS)
+	$(GCJ) -shared -o $@ $(^F) $(LDFLAGS)
