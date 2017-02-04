@@ -6,8 +6,6 @@ import java.util.List;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
-import org.herac.tuxguitar.app.printer.PrintDocument;
-import org.herac.tuxguitar.app.printer.PrintLayout;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.TGDimension;
@@ -15,6 +13,9 @@ import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
+import org.herac.tuxguitar.graphics.control.print.TGPrintController;
+import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
+import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
@@ -53,8 +54,8 @@ public class ImageExporterStream implements TGSongStream{
 			
 			TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
 			
-			PrintController controller = new PrintController(clonedSong, manager, factory);
-			PrintLayout layout = new PrintLayout(controller, settings.getStyles());
+			TGPrintController controller = new PrintController(this.context, clonedSong, manager, factory);
+			TGPrintLayout layout = new TGPrintLayout(controller, settings.getStyles());
 			
 			layout.loadStyles(1f);
 			layout.updateSong();
@@ -66,7 +67,7 @@ public class ImageExporterStream implements TGSongStream{
 		return TGApplication.getInstance(this.context).getFactory();
 	}
 	
-	private class PrintDocumentImpl implements PrintDocument{
+	private class PrintDocumentImpl implements TGPrintDocument{
 		
 		private TGPainterImpl painter;
 		private TGDimension size;

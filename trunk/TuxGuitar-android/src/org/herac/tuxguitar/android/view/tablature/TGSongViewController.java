@@ -103,10 +103,6 @@ public class TGSongViewController implements TGController {
 		this.bufferController.updateSelection();
 		this.layoutPainter.refreshBuffer();
 	}
-	
-	public void configureStyles(TGLayoutStyles styles) {
-		this.songStyles.configureStyles(styles);
-	}
 
 	public void scale(float scale) {
 		this.getLayout().loadStyles(scale);
@@ -143,6 +139,10 @@ public class TGSongViewController implements TGController {
 	
 	public TGSongViewLayoutPainter getLayoutPainter() {
 		return layoutPainter;
+	}
+
+	public TGLayoutStyles getStyles() {
+		return this.songStyles;
 	}
 
 	public TGLayout getLayout() {

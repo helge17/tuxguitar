@@ -60,14 +60,12 @@ public abstract class TGLayout {
 	
 	private TGController controller;
 	private TGResources resources;
-	private TGLayoutStyles styles;
 	
 	public TGLayout(TGController controller,int style){
 		this.controller = controller;
 		this.trackPositions = new ArrayList<TrackPosition>();
 		this.playModeEnabled = false;
 		this.resources = new TGResources(this);
-		this.styles = new TGLayoutStyles();
 		this.style = style;
 		if((this.style & DISPLAY_TABLATURE) == 0 && (this.style & DISPLAY_SCORE) == 0 ){
 			this.style |= DISPLAY_TABLATURE;
@@ -83,31 +81,32 @@ public abstract class TGLayout {
 	}
 	
 	public void loadStyles(float scale, float fontScale){
+		TGLayoutStyles styles = this.getComponent().getStyles();
+		
 		this.setScale(scale);
 		this.setFontScale(fontScale);
-		this.getComponent().configureStyles(this.styles);
 		
-		this.setBufferEnabled( this.styles.isBufferEnabled() );
-		this.setStringSpacing( (this.styles.getStringSpacing() * getScale() ) );
-		this.setScoreLineSpacing( (this.styles.getScoreLineSpacing() * getScale() ) );
-		this.setFirstMeasureSpacing( (this.styles.getFirstMeasureSpacing() * getScale() ) );
-		this.setMinBufferSeparator( (this.styles.getMinBufferSeparator() * getScale() ) );
-		this.setMinTopSpacing( (this.styles.getMinTopSpacing() * getScale() ) );
-		this.setMinScoreTabSpacing( (this.styles.getMinScoreTabSpacing() * getScale() ) );
-		this.setFirstTrackSpacing( (this.styles.getFirstTrackSpacing() * getScale() ) );
-		this.setTrackSpacing( (this.styles.getTrackSpacing() * getScale() ) );
-		this.setChordFretIndexSpacing( (this.styles.getChordFretIndexSpacing() * getScale() ) );
-		this.setChordStringSpacing( (this.styles.getChordStringSpacing() * getScale() ) );
-		this.setChordFretSpacing( (this.styles.getChordFretSpacing() * getScale() ) );
-		this.setChordNoteSize( (this.styles.getChordNoteSize() * getScale() ) );
-		this.setChordLineWidth( (this.styles.getChordLineWidth() * getScale() ) );
-		this.setRepeatEndingSpacing( (this.styles.getRepeatEndingSpacing() * getScale() ) );
-		this.setTextSpacing( (this.styles.getTextSpacing() * getScale() ) );
-		this.setMarkerSpacing( (this.styles.getMarkerSpacing() * getScale() ) );
-		this.setLoopMarkerSpacing( (this.styles.getLoopMarkerSpacing() * getScale() ) );
-		this.setDivisionTypeSpacing( (this.styles.getDivisionTypeSpacing() * getScale() ) );
-		this.setEffectSpacing( (this.styles.getEffectSpacing() * getScale() ) );
-		this.getResources().load(this.styles);
+		this.setBufferEnabled( styles.isBufferEnabled() );
+		this.setStringSpacing( (styles.getStringSpacing() * getScale() ) );
+		this.setScoreLineSpacing( (styles.getScoreLineSpacing() * getScale() ) );
+		this.setFirstMeasureSpacing( (styles.getFirstMeasureSpacing() * getScale() ) );
+		this.setMinBufferSeparator( (styles.getMinBufferSeparator() * getScale() ) );
+		this.setMinTopSpacing( (styles.getMinTopSpacing() * getScale() ) );
+		this.setMinScoreTabSpacing( (styles.getMinScoreTabSpacing() * getScale() ) );
+		this.setFirstTrackSpacing( (styles.getFirstTrackSpacing() * getScale() ) );
+		this.setTrackSpacing( (styles.getTrackSpacing() * getScale() ) );
+		this.setChordFretIndexSpacing( (styles.getChordFretIndexSpacing() * getScale() ) );
+		this.setChordStringSpacing( (styles.getChordStringSpacing() * getScale() ) );
+		this.setChordFretSpacing( (styles.getChordFretSpacing() * getScale() ) );
+		this.setChordNoteSize( (styles.getChordNoteSize() * getScale() ) );
+		this.setChordLineWidth( (styles.getChordLineWidth() * getScale() ) );
+		this.setRepeatEndingSpacing( (styles.getRepeatEndingSpacing() * getScale() ) );
+		this.setTextSpacing( (styles.getTextSpacing() * getScale() ) );
+		this.setMarkerSpacing( (styles.getMarkerSpacing() * getScale() ) );
+		this.setLoopMarkerSpacing( (styles.getLoopMarkerSpacing() * getScale() ) );
+		this.setDivisionTypeSpacing( (styles.getDivisionTypeSpacing() * getScale() ) );
+		this.setEffectSpacing( (styles.getEffectSpacing() * getScale() ) );
+		this.getResources().load(styles);
 	}
 	
 	public abstract void paintSong(TGPainter painter,TGRectangle clientArea,float fromX,float fromY);
@@ -525,10 +524,6 @@ public abstract class TGLayout {
 	
 	public TGResourceBuffer getResourceBuffer() {
 		return getComponent().getResourceBuffer();
-	}
-	
-	public TGLayoutStyles getStyles() {
-		return this.styles;
 	}
 	
 	public TGController getComponent(){

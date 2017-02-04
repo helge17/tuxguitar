@@ -73,6 +73,7 @@
 				<include name="TuxGuitar-musicxml/**"/>
 				<include name="TuxGuitar-oss/**"/>
 				<include name="TuxGuitar-pdf/**"/>
+				<include name="TuxGuitar-pdf-ui/**"/>
 				<include name="TuxGuitar-ptb/**"/>
 				<include name="TuxGuitar-resources/**"/>
 				<include name="TuxGuitar-svg/**"/>
@@ -121,6 +122,21 @@
 				<exclude name="TuxGuitar*/**/*.jar"/>
 				<exclude name="TuxGuitar*/**/*.zip"/>
 			</fileset>
+			
+			<!-- =================================================== -->
+			<!-- === Copy some excluded files ====================== -->
+			<!-- =================================================== -->
+			<fileset dir="${source.dir}">
+				<include name="build-scripts/tuxguitar-android-playstore/**"/>
+				<include name="TuxGuitar-android-admob/**"/>
+				<include name="TuxGuitar-android-admob-plugin/**"/>
+				<include name="TuxGuitar-android-midimaster/**/*.so"/>
+				
+				<exclude name="**/.*"/>
+				<exclude name="**/.*/**"/>
+				<exclude name="**/target/**"/>
+			</fileset>
+			<!-- =================================================== -->
 		</copy>
 		
 		<replace dir="${target.dir}/${package.name}" token="${source.version}" value="${dist.version}" >

@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.app.view.dialog.printer;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -22,13 +22,13 @@ import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISpinner;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
-public class TGPrintStylesDialog {
+public class TGPrintSettingsDialog {
 
-	public static final String ATTRIBUTE_HANDLER = TGPrintStylesHandler.class.getName();
+	public static final String ATTRIBUTE_HANDLER = TGPrintSettingsHandler.class.getName();
 	
 	public void show(final TGViewContext context) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-		final TGPrintStylesHandler handler = context.getAttribute(ATTRIBUTE_HANDLER);
+		final TGPrintSettingsHandler handler = context.getAttribute(ATTRIBUTE_HANDLER);
 		
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
@@ -45,16 +45,27 @@ public class TGPrintStylesDialog {
 		track.setText(TuxGuitar.getProperty("track"));
 		dialogLayout.set(track, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
-		UILabel trackLabel = uiFactory.createLabel(track);
+		final UILabel trackLabel = uiFactory.createLabel(track);
 		trackLabel.setText(TuxGuitar.getProperty("track"));
 		trackLayout.set(trackLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
-		final UIDropDownSelect<Integer> tracks = uiFactory.createDropDownSelect(track);
+		final UIDropDownSelect<Integer> trackCombo = uiFactory.createDropDownSelect(track);
 		for(int number = 1; number <= song.countTracks(); number ++){
-			tracks.addItem(new UISelectItem<Integer>(TuxGuitar.getInstance().getSongManager().getTrack(song, number).getName(), number));
+			trackCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getInstance().getSongManager().getTrack(song, number).getName(), number));
 		}
-		tracks.setSelectedValue(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
-		trackLayout.set(tracks, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		trackCombo.setSelectedValue(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getNumber());
+		trackLayout.set(trackCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		final UICheckBox trackAllCheck = uiFactory.createCheckBox(track);
+		trackAllCheck.setText(TuxGuitar.getProperty("edit.all-tracks"));
+		trackAllCheck.setSelected(false);
+		trackAllCheck.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				trackLabel.setEnabled( !trackAllCheck.isSelected() );
+				trackCombo.setEnabled( !trackAllCheck.isSelected() );
+			}
+		});
+		trackLayout.set(trackAllCheck, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
 		
 		//------------------MEASURE RANGE------------------
 		UITableLayout rangeLayout = new UITableLayout();
@@ -175,16 +186,17 @@ public class TGPrintStylesDialog {
 				style |= (chordDiagramEnabled.isSelected() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
 				style |= (blackAndWhite.isSelected() ? TGLayout.DISPLAY_MODE_BLACK_WHITE : 0);
 				
-				Integer trackNumber = tracks.getSelectedValue();
-				PrintStyles printStyles = new PrintStyles();
-				printStyles.setTrackNumber(trackNumber != null ? trackNumber : -1);
+				Integer selectedTrack = (!trackAllCheck.isSelected() ? trackCombo.getSelectedValue() : null);
+				
+				TGPrintSettings printStyles = new TGPrintSettings();
+				printStyles.setTrackNumber(selectedTrack != null ? selectedTrack : TGPrintSettings.ALL_TRACKS);
 				printStyles.setFromMeasure(fromSpinner.getValue());
 				printStyles.setToMeasure(toSpinner.getValue());
 				printStyles.setStyle(style);
 				
 				dialog.dispose();
 				
-				handler.updatePrintStyles(printStyles);
+				handler.updatePrintSettings(printStyles);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);

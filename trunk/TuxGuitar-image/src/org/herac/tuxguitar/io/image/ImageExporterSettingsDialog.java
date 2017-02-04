@@ -3,12 +3,12 @@ package org.herac.tuxguitar.io.image;
 import java.io.File;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
@@ -38,7 +38,7 @@ public class ImageExporterSettingsDialog {
 	
 	public void openSettingsDialog(final TGSongStreamContext context, final Runnable callback) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-		final PrintStyles styles = createDefaultStyles(song) ;
+		final TGPrintSettings styles = createDefaultStyles(song) ;
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
@@ -255,8 +255,8 @@ public class ImageExporterSettingsDialog {
 		});
 	}
 	
-	public PrintStyles createDefaultStyles(TGSong song){
-		PrintStyles styles = new PrintStyles();
+	public TGPrintSettings createDefaultStyles(TGSong song){
+		TGPrintSettings styles = new TGPrintSettings();
 		styles.setStyle(TGLayout.DISPLAY_TABLATURE);
 		styles.setFromMeasure(1);
 		styles.setToMeasure(song.countMeasureHeaders());
