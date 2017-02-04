@@ -55,7 +55,7 @@ public class TGSongWriterHelper extends TGSongPersistenceHelper {
 		
 		String formatCode = handle.getContext().getAttribute(ATTRIBUTE_FORMAT_CODE);
 		if( formatCode != null ) {
-			TGFileFormat fileFormat = fileFormatManager.findReaderFileFormatByCode(formatCode);
+			TGFileFormat fileFormat = fileFormatManager.findWriterFileFormatByCode(formatCode);
 			if( fileFormat != null ) {
 				return fileFormat;
 			}
