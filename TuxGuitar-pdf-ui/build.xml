@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<project name="TuxGuitar-pdf" basedir="." default="all">
+<project name="TuxGuitar-pdf-ui" basedir="." default="all">
 	<description>
-		TuxGuitar PDF Exporter
+		TuxGuitar PDF Exporter UI
 	</description>
 	
 	<property file="build.properties" />
 	<property name="build.src.path" value="src" />
 	<property name="build.share.path" value="share" />
 	<property name="build.path" value="build" />
-	<property name="build.jar" value="tuxguitar-pdf.jar" />
+	<property name="build.jar" value="tuxguitar-pdf-ui.jar" />
 	
 	<path id="class.path">
 		<pathelement location="${path.itext}"/>
+		<pathelement location="${path.tuxguitar}"/>
+		<pathelement location="${path.tuxguitar-pdf}"/>
 		<pathelement location="${path.tuxguitar-lib}"/>
+		<pathelement location="${path.tuxguitar-editor-utils}"/>
 	</path >
 	
 	<target name="init" depends="clean">

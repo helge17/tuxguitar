@@ -9,16 +9,13 @@ import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
-import org.herac.tuxguitar.app.printer.PrintDocument;
-import org.herac.tuxguitar.app.printer.PrintLayout;
-import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintPreviewDialog;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintPreviewDialogController;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialog;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialogController;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesHandler;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialog;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialogController;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -27,6 +24,10 @@ import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
+import org.herac.tuxguitar.graphics.control.print.TGPrintController;
+import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
+import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
@@ -39,7 +40,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.print-preview";
 	
-	public static final String ATTRIBUTE_STYLES = PrintStyles.class.getName();
+	public static final String ATTRIBUTE_STYLES = TGPrintSettings.class.getName();
 	
 	private static final int PAGE_WIDTH = 850;
 	private static final int PAGE_HEIGHT = 1050;
@@ -53,7 +54,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		PrintStyles styles = context.getAttribute(ATTRIBUTE_STYLES);
+		TGPrintSettings styles = context.getAttribute(ATTRIBUTE_STYLES);
 		if( styles == null ) {
 			this.configureStyles(context);
 			
@@ -67,8 +68,8 @@ public class TGPrintPreviewAction extends TGActionBase{
 		TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 		
 		TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
-		PrintController controller = new PrintController(targetSong, manager, factory);
-		PrintLayout printLayout = new PrintLayout(controller, styles);
+		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, factory);
+		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
 		printLayout.loadStyles(1f);
 		printLayout.updateSong();
 		printLayout.makeDocument(new PrintDocumentImpl(pageSize, pageMargins));
@@ -76,9 +77,9 @@ public class TGPrintPreviewAction extends TGActionBase{
 	}
 	
 	public void configureStyles(final TGActionContext context) {
-		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintStylesDialogController());
-		context.setAttribute(TGPrintStylesDialog.ATTRIBUTE_HANDLER, new TGPrintStylesHandler() {
-			public void updatePrintStyles(final PrintStyles styles) {
+		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintSettingsDialogController());
+		context.setAttribute(TGPrintSettingsDialog.ATTRIBUTE_HANDLER, new TGPrintSettingsHandler() {
+			public void updatePrintSettings(TGPrintSettings styles) {
 				context.setAttribute(ATTRIBUTE_STYLES, styles);
 				executeActionInNewThread(TGPrintPreviewAction.NAME, context);
 			}
@@ -98,7 +99,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		return TGApplication.getInstance(this.getContext()).getFactory();
 	}
 	
-	private class PrintDocumentImpl implements PrintDocument{
+	private class PrintDocumentImpl implements TGPrintDocument {
 		
 		private TGPainterImpl painter;
 		private TGDimension size;

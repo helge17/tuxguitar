@@ -17,7 +17,7 @@ public interface TGController {
 	
 	public TGSong getSong();
 	
-	public void configureStyles( TGLayoutStyles styles );
+	public TGLayoutStyles getStyles();
 	
 	public int getTrackSelection();
 	

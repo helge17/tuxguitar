@@ -6,13 +6,10 @@ import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
-import org.herac.tuxguitar.app.printer.PrintDocument;
-import org.herac.tuxguitar.app.printer.PrintLayout;
-import org.herac.tuxguitar.app.printer.PrintStyles;
 import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialog;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesDialogController;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintStylesHandler;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialog;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialogController;
+import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsHandler;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserDialog;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserDialogController;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserHandler;
@@ -23,6 +20,10 @@ import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
+import org.herac.tuxguitar.graphics.control.print.TGPrintController;
+import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
+import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.printer.UIPrinter;
@@ -36,7 +37,7 @@ public class TGPrintAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.print";
 	
-	public static final String ATTRIBUTE_STYLES = PrintStyles.class.getName();
+	public static final String ATTRIBUTE_STYLES = TGPrintSettings.class.getName();
 	public static final String ATTRIBUTE_PRINTER = UIPrinter.class.getName();
 	
 	public TGPrintAction(TGContext context) {
@@ -44,7 +45,7 @@ public class TGPrintAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		PrintStyles styles = context.getAttribute(ATTRIBUTE_STYLES);
+		TGPrintSettings styles = context.getAttribute(ATTRIBUTE_STYLES);
 		if( styles == null ) {
 			this.configureStyles(context);
 			return;
@@ -63,8 +64,8 @@ public class TGPrintAction extends TGActionBase{
 		TGDimension pageSize = new TGDimension(printerArea.getWidth(), printerArea.getHeight());
 		TGMargins pageMargins = new TGMargins(printerArea.getY(), printerArea.getX(), 0, 0);
 		
-		PrintController controller = new PrintController(targetSong, manager, new TGResourceFactoryImpl(printer.getResourceFactory()));
-		PrintLayout printLayout = new PrintLayout(controller, styles);
+		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, new TGResourceFactoryImpl(printer.getResourceFactory()));
+		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
 		printLayout.loadStyles(printer.getDpiScale(), 1f);
 		printLayout.updateSong();
 		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, pageSize, pageMargins));
@@ -72,9 +73,9 @@ public class TGPrintAction extends TGActionBase{
 	}
 	
 	public void configureStyles(final TGActionContext context) {
-		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintStylesDialogController());
-		context.setAttribute(TGPrintStylesDialog.ATTRIBUTE_HANDLER, new TGPrintStylesHandler() {
-			public void updatePrintStyles(PrintStyles styles) {
+		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintSettingsDialogController());
+		context.setAttribute(TGPrintSettingsDialog.ATTRIBUTE_HANDLER, new TGPrintSettingsHandler() {
+			public void updatePrintSettings(TGPrintSettings styles) {
 				context.setAttribute(ATTRIBUTE_STYLES, styles);
 				executeActionInNewThread(TGPrintAction.NAME, context);
 			}
@@ -109,9 +110,9 @@ public class TGPrintAction extends TGActionBase{
 		return new TGRectangle(bounds.getX() + scaledMargin, bounds.getY() + scaledMargin, bounds.getWidth() - (scaledMargin * 2f), bounds.getHeight() - (scaledMargin * 2f));
 	}
 	
-	private class PrintDocumentImpl implements PrintDocument{
+	private class PrintDocumentImpl implements TGPrintDocument{
 		
-		private PrintLayout layout;
+		private TGPrintLayout layout;
 		private UIPrinter printer;
 		private UIPrinterJob printerJob;
 		private UIPrinterPage printerPage;
@@ -120,7 +121,7 @@ public class TGPrintAction extends TGActionBase{
 		private TGDimension size;
 		private TGMargins margins;
 		
-		public PrintDocumentImpl(PrintLayout layout, UIPrinter printer, TGDimension size, TGMargins margins){
+		public PrintDocumentImpl(TGPrintLayout layout, UIPrinter printer, TGDimension size, TGMargins margins){
 			this.layout = layout;
 			this.printer = printer;
 			this.size = size;

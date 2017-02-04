@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.io.image;
 
-import org.herac.tuxguitar.app.printer.PrintStyles;
+import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 
 public class ImageExporterSettings {
 	
-	private PrintStyles styles;
+	private TGPrintSettings styles;
 	private ImageFormat format;
 	private String path;
 	
@@ -12,11 +12,11 @@ public class ImageExporterSettings {
 		super();
 	}
 
-	public PrintStyles getStyles() {
+	public TGPrintSettings getStyles() {
 		return styles;
 	}
 
-	public void setStyles(PrintStyles styles) {
+	public void setStyles(TGPrintSettings styles) {
 		this.styles = styles;
 	}
 

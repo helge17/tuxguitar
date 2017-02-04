@@ -92,43 +92,8 @@ public class SVGController implements TGController {
 		}
 	}
 	
-	public void configureStyles(TGLayoutStyles styles) {
-		styles.setBufferEnabled( false );
-		styles.setStringSpacing( this.tgStyles.getStyles().getStringSpacing() );
-		styles.setScoreLineSpacing( this.tgStyles.getStyles().getScoreLineSpacing() );
-		styles.setFirstMeasureSpacing( this.tgStyles.getStyles().getFirstMeasureSpacing() );
-		styles.setMinBufferSeparator( this.tgStyles.getStyles().getMinBufferSeparator() );
-		styles.setMinTopSpacing( this.tgStyles.getStyles().getMinTopSpacing() );
-		styles.setMinScoreTabSpacing( this.tgStyles.getStyles().getMinScoreTabSpacing() );
-		styles.setFirstTrackSpacing( this.tgStyles.getStyles().getFirstTrackSpacing() );
-		styles.setTrackSpacing( this.tgStyles.getStyles().getTrackSpacing() );
-		styles.setChordFretIndexSpacing( this.tgStyles.getStyles().getChordFretIndexSpacing() );
-		styles.setChordStringSpacing( this.tgStyles.getStyles().getChordStringSpacing() );
-		styles.setChordFretSpacing( this.tgStyles.getStyles().getChordFretSpacing() );
-		styles.setChordNoteSize( this.tgStyles.getStyles().getChordNoteSize() );
-		styles.setChordLineWidth( this.tgStyles.getStyles().getChordLineWidth() );
-		styles.setRepeatEndingSpacing( this.tgStyles.getStyles().getRepeatEndingSpacing() );
-		styles.setTextSpacing( this.tgStyles.getStyles().getTextSpacing() );
-		styles.setMarkerSpacing( this.tgStyles.getStyles().getMarkerSpacing() );
-		styles.setLoopMarkerSpacing( this.tgStyles.getStyles().getLoopMarkerSpacing() );
-		styles.setDivisionTypeSpacing( this.tgStyles.getStyles().getDivisionTypeSpacing() );
-		styles.setEffectSpacing( this.tgStyles.getStyles().getEffectSpacing() );
-		styles.setDefaultFont( this.tgStyles.getStyles().getDefaultFont());
-		styles.setNoteFont( this.tgStyles.getStyles().getNoteFont());
-		styles.setTimeSignatureFont( this.tgStyles.getStyles().getTimeSignatureFont());
-		styles.setLyricFont( this.tgStyles.getStyles().getLyricFont() );
-		styles.setTextFont( this.tgStyles.getStyles().getTextFont() );
-		styles.setMarkerFont( this.tgStyles.getStyles().getMarkerFont() );
-		styles.setGraceFont( this.tgStyles.getStyles().getGraceFont());
-		styles.setChordFont( this.tgStyles.getStyles().getChordFont() );
-		styles.setChordFretFont( this.tgStyles.getStyles().getChordFretFont());
-		styles.setBackgroundColor( this.tgStyles.getStyles().getBackgroundColor());
-		styles.setLineColor( this.tgStyles.getStyles().getLineColor());
-		styles.setScoreNoteColor( this.tgStyles.getStyles().getScoreNoteColor());
-		styles.setTabNoteColor( this.tgStyles.getStyles().getTabNoteColor());
-		styles.setPlayNoteColor( this.tgStyles.getStyles().getPlayNoteColor());
-		styles.setLoopSMarkerColor( this.tgStyles.getStyles().getLoopSMarkerColor());
-		styles.setLoopEMarkerColor( this.tgStyles.getStyles().getLoopEMarkerColor());
+	public TGLayoutStyles getStyles() {
+		return this.tgStyles.getStyles();
 	}
 	
 	public int getTrackSelection() {

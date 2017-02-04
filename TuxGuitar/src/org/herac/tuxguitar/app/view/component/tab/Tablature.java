@@ -120,10 +120,11 @@ public class Tablature implements TGController {
 		if( this.getViewLayout() != null ){
 			this.getViewLayout().loadStyles(1f);
 		}
+		this.loadCaretStyles();
 	}
 	
 	public void reloadViewLayout(){
-		TGConfigManager config = TuxGuitar.getInstance().getConfig();
+		TGConfigManager config = TGConfigManager.getInstance(this.context);
 		
 		this.loadViewLayout(config.getIntegerValue(TGConfigKeys.LAYOUT_STYLE), config.getIntegerValue(TGConfigKeys.LAYOUT_MODE));
 	}
@@ -142,6 +143,13 @@ public class Tablature implements TGController {
 				}
 			break;
 		}
+	}
+	
+	public void loadCaretStyles() {
+		TGConfigManager config = TGConfigManager.getInstance(this.context);
+		
+		getCaret().setColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
+		getCaret().setColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
 	}
 	
 	public void dispose(){
@@ -189,48 +197,8 @@ public class Tablature implements TGController {
 		return ( pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber() );
 	}
 	
-	public void configureStyles(TGLayoutStyles styles){
-		TGConfigManager config = TuxGuitar.getInstance().getConfig();
-		
-		styles.setBufferEnabled(true);
-		styles.setStringSpacing(config.getIntegerValue(TGConfigKeys.TAB_LINE_SPACING));
-		styles.setScoreLineSpacing(config.getIntegerValue(TGConfigKeys.SCORE_LINE_SPACING));
-		styles.setFirstMeasureSpacing(20);
-		styles.setMinBufferSeparator(20);
-		styles.setMinTopSpacing(30);
-		styles.setMinScoreTabSpacing(config.getIntegerValue(TGConfigKeys.MIN_SCORE_TABLATURE_SPACING));
-		styles.setFirstTrackSpacing(config.getIntegerValue(TGConfigKeys.FIRST_TRACK_SPACING));
-		styles.setTrackSpacing(config.getIntegerValue(TGConfigKeys.TRACK_SPACING));
-		styles.setChordFretIndexSpacing(8);
-		styles.setChordStringSpacing(5);
-		styles.setChordFretSpacing(6);
-		styles.setChordNoteSize(4);
-		styles.setChordLineWidth(1);
-		styles.setRepeatEndingSpacing(20);
-		styles.setTextSpacing(15);
-		styles.setMarkerSpacing(15);
-		styles.setLoopMarkerSpacing(5);
-		styles.setDivisionTypeSpacing(10);
-		styles.setEffectSpacing(8);
-		
-		styles.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT));
-		styles.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_NOTE));
-		styles.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE));
-		styles.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_LYRIC));
-		styles.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TEXT));
-		styles.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
-		styles.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_GRACE));
-		styles.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD));
-		styles.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
-		styles.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
-		styles.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
-		styles.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
-		styles.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
-		styles.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
-		styles.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
-		styles.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
-		
-		getCaret().setColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
-		getCaret().setColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
+	public TGLayoutStyles getStyles() {
+		return new TablatureStyles(TGConfigManager.getInstance(this.context));
 	}
+
 }

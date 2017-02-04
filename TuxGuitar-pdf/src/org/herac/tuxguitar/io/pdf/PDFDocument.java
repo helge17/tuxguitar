@@ -1,27 +1,24 @@
 package org.herac.tuxguitar.io.pdf;
 
-import java.awt.Graphics2D;
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.app.printer.PrintDocument;
-import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
 import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
-import com.itextpdf.awt.PdfGraphics2D;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class PDFDocument implements PrintDocument{
+public class PDFDocument implements TGPrintDocument{
 	
 	private TGContext context;
-	private TGPainterImpl painter;
+	private PDFPainter painter;
 	private TGDimension size;
 	private TGMargins margins;
 	private OutputStream stream;
@@ -29,14 +26,13 @@ public class PDFDocument implements PrintDocument{
 	private Document document;
 	private PdfContentByte cb;
 	private PdfTemplate template;
-	private Graphics2D graphics;
 	
 	public PDFDocument(TGContext context, TGDimension size, TGMargins margins, OutputStream stream){
 		this.context = context;
 		this.stream = stream;
 		this.size = size;
 		this.margins = margins;
-		this.painter = new TGPainterImpl();
+		this.painter = new PDFPainter();
 	}
 	
 	public TGPainter getPainter() {
@@ -54,16 +50,11 @@ public class PDFDocument implements PrintDocument{
 	public void pageStart() {
 		this.document.newPage();
 		this.template = this.cb.createTemplate(this.size.getWidth(), this.size.getHeight());
-		
-		this.graphics = new PdfGraphics2D(this.template, this.size.getWidth(), this.size.getHeight());
-		this.painter.init(this.graphics);
+		this.painter.init(this.template);
 	}
 	
 	public void pageFinish() {
-		
 		this.painter.dispose();
-		this.graphics.dispose();
-		
 		this.cb.addTemplate(this.template, 0, 0);
 	}
 	

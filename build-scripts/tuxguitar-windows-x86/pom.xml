@@ -44,6 +44,7 @@
 		<module>../../TuxGuitar-musicxml</module>
 		<module>../../TuxGuitar-awt-graphics</module>
 		<module>../../TuxGuitar-pdf</module>
+		<module>../../TuxGuitar-pdf-ui</module>
 		<module>../../TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
@@ -235,6 +236,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-pdf</artifactId>
 									<destFileName>tuxguitar-pdf.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-pdf-ui</artifactId>
+									<destFileName>tuxguitar-pdf-ui.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.printer;
+package org.herac.tuxguitar.graphics.control.print;
 
 import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGPainter;
 
-public interface PrintDocument{
+public interface TGPrintDocument{
 	
 	void start();
 	

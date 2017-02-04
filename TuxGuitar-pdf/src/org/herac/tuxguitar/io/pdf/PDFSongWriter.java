@@ -1,14 +1,15 @@
 package org.herac.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.app.printer.PrintLayout;
-import org.herac.tuxguitar.app.printer.PrintStyles;
-import org.herac.tuxguitar.awt.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.graphics.TGDimension;
 import org.herac.tuxguitar.graphics.TGMargins;
 import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import org.herac.tuxguitar.graphics.control.print.TGPrintController;
+import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongWriter;
@@ -38,32 +39,37 @@ public class PDFSongWriter implements TGSongWriter {
 		return FILE_FORMAT;
 	}
 	
-	public PrintStyles getDefaultStyles(TGSong song){
-		PrintStyles styles = new PrintStyles();
-		styles.setStyle(TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_MODE_BLACK_WHITE);
+	public TGPrintSettings getDefaultStyles(TGSong song){
+		TGPrintSettings styles = new TGPrintSettings();
+		styles.setStyle(TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.DISPLAY_CHORD_NAME | TGLayout.DISPLAY_COMPACT | TGLayout.DISPLAY_MODE_BLACK_WHITE);
 		styles.setFromMeasure(1);
 		styles.setToMeasure(song.countMeasureHeaders());
-		styles.setTrackNumber(1);
+		styles.setTrackNumber(TGPrintSettings.ALL_TRACKS);
 		return styles;
 	}
 	
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try{
-			PrintStyles styles = handle.getContext().getAttribute(PrintStyles.class.getName());
+			TGPrintSettings settings = handle.getContext().getAttribute(TGPrintSettings.class.getName());
+			if( settings == null ) {
+				settings = getDefaultStyles(handle.getSong());
+			}
+			
+			TGLayoutStyles styles = handle.getContext().getAttribute(TGLayoutStyles.class.getName());
 			if( styles == null ) {
-				styles = getDefaultStyles(handle.getSong());
+				styles = new PDFLayoutStyles();
 			}
 			
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = handle.getSong().clone(manager.getFactory());
 			
-			TGResourceFactory factory = new TGResourceFactoryImpl();
-			TGController controller = new PDFController(clonedSong, manager, factory);
+			TGResourceFactory factory = new PDFResourceFactory();
+			TGController controller = new TGPrintController(clonedSong, manager, factory, styles);
 			
 			TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
 			TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 			
-			PrintLayout layout = new PrintLayout(controller, styles);
+			TGPrintLayout layout = new TGPrintLayout(controller, settings);
 			
 			layout.loadStyles(1f);
 			layout.updateSong();
