@@ -102,8 +102,7 @@
 			<scope>provided</scope>
 			<type>jar</type>
 		</dependency>
-		
-		
+				
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
