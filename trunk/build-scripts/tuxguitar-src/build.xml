@@ -122,21 +122,6 @@
 				<exclude name="TuxGuitar*/**/*.jar"/>
 				<exclude name="TuxGuitar*/**/*.zip"/>
 			</fileset>
-			
-			<!-- =================================================== -->
-			<!-- === Copy some excluded files ====================== -->
-			<!-- =================================================== -->
-			<fileset dir="${source.dir}">
-				<include name="build-scripts/tuxguitar-android-playstore/**"/>
-				<include name="TuxGuitar-android-admob/**"/>
-				<include name="TuxGuitar-android-admob-plugin/**"/>
-				<include name="TuxGuitar-android-midimaster/**/*.so"/>
-				
-				<exclude name="**/.*"/>
-				<exclude name="**/.*/**"/>
-				<exclude name="**/target/**"/>
-			</fileset>
-			<!-- =================================================== -->
 		</copy>
 		
 		<replace dir="${target.dir}/${package.name}" token="${source.version}" value="${dist.version}" >
