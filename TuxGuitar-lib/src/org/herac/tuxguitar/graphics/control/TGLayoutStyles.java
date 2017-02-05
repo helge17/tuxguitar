@@ -25,6 +25,7 @@ public class TGLayoutStyles {
 	private float textSpacing;
 	private float markerSpacing;
 	private float loopMarkerSpacing;
+	private float[] durationWidths;
 	private TGFontModel defaultFont;
 	private TGFontModel noteFont;
 	private TGFontModel timeSignatureFont;
@@ -206,6 +207,14 @@ public class TGLayoutStyles {
 		this.loopMarkerSpacing = loopMarkerSpacing;
 	}
 
+	public float[] getDurationWidths() {
+		return durationWidths;
+	}
+
+	public void setDurationWidths(float[] durationWidths) {
+		this.durationWidths = durationWidths;
+	}
+	
 	public TGFontModel getDefaultFont() {
 		return defaultFont;
 	}

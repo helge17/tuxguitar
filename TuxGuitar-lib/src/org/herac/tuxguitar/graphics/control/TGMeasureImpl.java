@@ -82,10 +82,7 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Espacio por defecto de la clave
 	 */
 	private static final int DEFAULT_CLEF_SPACING = 40;
-	/**
-	 * Espacio por defecto entre negra y negra
-	 */
-	private static final int DEFAULT_QUARTER_SPACING = 30;
+	
 	/**
 	 * Posicion X
 	 */
@@ -321,8 +318,8 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 		}
 		
-		if(!this.compactMode){
-			this.quarterSpacing = (minDuration != null)?layout.getSpacingForQuarter(minDuration): Math.round(DEFAULT_QUARTER_SPACING * layout.getScale());
+		if(!this.compactMode) {
+			this.quarterSpacing = (minDuration != null ? layout.getSpacingForQuarter(minDuration): layout.getMinimumDurationWidth());
 			if(chordEnabled && minimumChordLength > 0){
 				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (((float)getTrack().stringCount()) * layout.getChordStringSpacing()));
 				float minimumSpacing = ((((float)TGDuration.QUARTER_TIME) * chordWidth) / ((float)minimumChordLength));
@@ -353,7 +350,7 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	private void makeVoice(TGLayout layout,TGVoiceImpl voice,TGVoiceImpl previousVoice,TGBeatGroup group){
-		voice.setWidth(layout.getVoiceWidth(voice));
+		voice.setWidth(layout.getDurationWidth(voice.getDuration()));
 		voice.setBeatGroup( group );
 		
 		if(previousVoice != null){
@@ -1173,8 +1170,9 @@ public class TGMeasureImpl extends TGMeasure{
 		float mPadding = (bMargin + getHeaderImpl().getLeftSpacing(layout) + getHeaderImpl().getRightSpacing(layout));
 		float mWidth = (this.getWidth(layout) - mPadding);
 		float mWidthWithSpacing = (mWidth + getSpacing());
-		if( mWidthWithSpacing < layout.getMinBeatWidth() ) {
-			mWidthWithSpacing = layout.getMinBeatWidth();
+		float minimumDurationWidth = layout.getMinimumDurationWidth();
+		if( mWidthWithSpacing < minimumDurationWidth ) {
+			mWidthWithSpacing = minimumDurationWidth;
 		}
 		
 		float beatX = (beat.getPosX() - bMargin);

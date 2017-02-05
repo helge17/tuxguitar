@@ -72,6 +72,7 @@ public class SVGStyles {
 		this.getStyles().setLoopMarkerSpacing(5);
 		this.getStyles().setDivisionTypeSpacing(10);
 		this.getStyles().setEffectSpacing(8);
+		this.getStyles().setDurationWidths(new float[] {30f, 25f, 21f, 20f,19f,18f});
 		
 		this.getStyles().setDefaultFont(new TGFontModel("Default", 10, false, false) );
 		this.getStyles().setNoteFont(new TGFontModel("Default", 10, false, false) );

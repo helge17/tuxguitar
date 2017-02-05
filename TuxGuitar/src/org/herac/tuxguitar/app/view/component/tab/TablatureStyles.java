@@ -27,6 +27,7 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setLoopMarkerSpacing(5);
 		this.setDivisionTypeSpacing(10);
 		this.setEffectSpacing(8);
+		this.setDurationWidths(new float[] {30f, 25f, 21f, 20f,19f,18f});
 		
 		this.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT));
 		this.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_NOTE));

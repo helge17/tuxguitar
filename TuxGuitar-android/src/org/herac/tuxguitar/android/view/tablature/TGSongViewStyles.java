@@ -31,6 +31,8 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setDivisionTypeSpacing(10);
 		this.setEffectSpacing(8);
 		
+		this.setDurationWidths(new float[] {30f, 25f, 21f, 20f,19f,18f});
+		
 		this.setDefaultFont( new TGFontModel("sans-serif", 8, false , false ) );
 		this.setNoteFont( new TGFontModel("sans-serif", 9 , true ,false )  );
 		this.setTimeSignatureFont( new TGFontModel("sans-serif", 18 , false , false )  );
