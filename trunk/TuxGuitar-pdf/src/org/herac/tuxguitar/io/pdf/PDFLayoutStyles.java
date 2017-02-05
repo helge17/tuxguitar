@@ -28,6 +28,7 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setMarkerSpacing(15);
 		this.setDivisionTypeSpacing(10);
 		this.setEffectSpacing(8);
+		this.setDurationWidths(new float[] {18f, 18f, 16f, 15f, 14f});
 		this.setDefaultFont(new TGFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
 		this.setNoteFont(new TGFontModel(BaseFont.TIMES_BOLD, 9, true, false));
 		this.setTimeSignatureFont(new TGFontModel(BaseFont.TIMES_BOLD, 15, true, false));
