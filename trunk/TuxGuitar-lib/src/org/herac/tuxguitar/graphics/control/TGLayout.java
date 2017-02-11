@@ -280,22 +280,25 @@ public abstract class TGLayout {
 	
 	public float getDurationWidth(TGDuration duration){
 		float durationWidth = 0f;
-		
-		int index = 0;
-		for(int value = TGDuration.WHOLE; value <= duration.getValue(); value *= 2) {
-			if( this.durationWidths.length > index ) {
-				durationWidth = this.durationWidths[index ++];
+
+		if( this.durationWidths != null ) {
+			int index = 0;
+			for (int value = TGDuration.WHOLE; value <= duration.getValue(); value *= 2) {
+				if (this.durationWidths.length > index) {
+					durationWidth = this.durationWidths[index++];
+				}
 			}
 		}
-		
 		return durationWidth;
 	}
 	
 	public float getMinimumDurationWidth() {
 		Float minimumWidth = null;
-		for(int i = 0 ; i < this.durationWidths.length; i ++) {
-			if( minimumWidth == null || minimumWidth > this.durationWidths[i] ) {
-				minimumWidth = this.durationWidths[i];
+		if( this.durationWidths != null ) {
+			for (int i = 0; i < this.durationWidths.length; i++) {
+				if (minimumWidth == null || minimumWidth > this.durationWidths[i]) {
+					minimumWidth = this.durationWidths[i];
+				}
 			}
 		}
 		return (minimumWidth != null ? minimumWidth : 0f);
