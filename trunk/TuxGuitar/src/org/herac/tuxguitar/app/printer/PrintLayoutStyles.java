@@ -14,6 +14,8 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 	private static final int DEFAULT_MIN_SCORE_TAB_SPACING =  15;
 	private static final int DEFAULT_TRACK_SPACING = 5;
 	private static final int DEFAULT_FIRST_TRACK_SPACING = DEFAULT_TRACK_SPACING;
+	private static final int DEFAULT_FIRST_NOTE_SPACING = 10;
+	private static final int DEFAULT_CLEF_SPACING = 30;
 	private static final int DEFAULT_MIN_BUFFER_SEPARATOR = 15;
 	private static final int DEFAULT_MIN_TOP_SPACING = 20;
 	private static final int DEFAULT_CHORD_FRET_INDEX_SPACING = 8;
@@ -38,6 +40,12 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		this.setFirstTrackSpacing(DEFAULT_FIRST_TRACK_SPACING);
 		this.setTrackSpacing(DEFAULT_TRACK_SPACING);
 		this.setStringSpacing(DEFAULT_STRING_SPACING);
+		this.setFirstNoteSpacing(DEFAULT_FIRST_NOTE_SPACING);
+		this.setMeasureLeftSpacing(DEFAULT_HORIZONTAL_SPACING);
+		this.setMeasureRightSpacing(DEFAULT_HORIZONTAL_SPACING);
+		this.setClefSpacing(DEFAULT_CLEF_SPACING);
+		this.setKeySignatureSpacing(DEFAULT_HORIZONTAL_SPACING);
+		this.setTimeSignatureSpacing(DEFAULT_HORIZONTAL_SPACING);
 		this.setChordFretIndexSpacing(DEFAULT_CHORD_FRET_INDEX_SPACING);
 		this.setChordStringSpacing(DEFAULT_CHORD_STRING_SPACING);
 		this.setChordFretSpacing(DEFAULT_CHORD_FRET_SPACING);

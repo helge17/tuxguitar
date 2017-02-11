@@ -2,6 +2,8 @@ package org.herac.tuxguitar.util.properties;
 
 public class TGPropertiesUtil {
 	
+	private static final String ARRAY_SEPARATOR = ";";
+	
 	public static String getStringValue(TGProperties properties, String key, String defaultValue) {
 		try{
 			String property = properties.getValue(key);
@@ -64,7 +66,32 @@ public class TGPropertiesUtil {
 	}
 	
 	public static boolean getBooleanValue(TGProperties properties, String key) {
-		return getBooleanValue(properties, key,false);
+		return getBooleanValue(properties, key, false);
+	}
+	
+	public static float[] getFloatArrayValue(TGProperties properties, String key, float[] defaultValue) {
+		try{
+			String propertyValue = properties.getValue(key);
+			if( propertyValue != null ) {
+				String[] stringValues = propertyValue.split(ARRAY_SEPARATOR);
+				if( stringValues != null ) {
+					float[] floatValues = new float[stringValues.length];
+					for(int i = 0; i < floatValues.length; i ++) {
+						if( stringValues[i].trim().length() > 0 ) {
+							floatValues[i] = Float.parseFloat(stringValues[i].trim());
+						}
+					}
+					return floatValues;
+				}
+			}
+			return defaultValue;
+		}catch(Throwable throwable){
+			return defaultValue;
+		}
+	}
+	
+	public static float[] getFloatArrayValue(TGProperties properties, String key) {
+		return getFloatArrayValue(properties, key, new float[0]);
 	}
 	
 	public static void setValue(TGProperties properties, String key, String value){
@@ -85,5 +112,16 @@ public class TGPropertiesUtil {
 	
 	public static void setValue(TGProperties properties, String key, boolean value){
 		properties.setValue(key,Boolean.toString(value));
+	}
+	
+	public static void setValue(TGProperties properties, String key, float[] values){
+		StringBuilder sb = new StringBuilder();
+		for(Object value : values) {
+			if( sb.length() > 0 ) {
+				sb.append(ARRAY_SEPARATOR);
+			}
+			sb.append(value);
+		}
+		properties.setValue(key, sb.toString());
 	}
 }

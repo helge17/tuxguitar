@@ -7,6 +7,7 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
+import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
 
 public class TGConfigDefaults{
 	
@@ -69,11 +70,6 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_S_MARKER,"42,165,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_E_MARKER,"165,42,42");
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES,10);
-		loadProperty(properties, TGConfigKeys.MIN_SCORE_TABLATURE_SPACING,20);
-		loadProperty(properties, TGConfigKeys.SCORE_LINE_SPACING,8);
-		loadProperty(properties, TGConfigKeys.TAB_LINE_SPACING,10);
-		loadProperty(properties, TGConfigKeys.FIRST_TRACK_SPACING,20);
-		loadProperty(properties, TGConfigKeys.TRACK_SPACING,10);
 		loadProperty(properties, TGConfigKeys.LANGUAGE,"");
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STRING_SPACING,20);
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STYLE ,TGFretBoardConfig.DISPLAY_TEXT_SCALE);
@@ -99,6 +95,33 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_LINE_3,"173,216,230");
 		loadProperty(properties, TGConfigKeys.TABLE_AUTO_SIZE,true);
 		loadProperty(properties, TGConfigKeys.BROWSER_LINES_VISIBLE,true);
+		
+		loadProperty(properties, TGConfigKeys.STYLE_MIN_BUFFER_SEPARATOR, 20);
+		loadProperty(properties, TGConfigKeys.STYLE_MIN_TOP_SPACING, 30);
+		loadProperty(properties, TGConfigKeys.STYLE_MIN_SCORE_TAB_SPACING, 20);
+		loadProperty(properties, TGConfigKeys.STYLE_STRING_SPACING, 10);
+		loadProperty(properties, TGConfigKeys.STYLE_SCORE_LINE_SPACING, 8);
+		loadProperty(properties, TGConfigKeys.STYLE_TRACK_SPACING, 10);
+		loadProperty(properties, TGConfigKeys.STYLE_FIRST_TRACK_SPACING, 20);
+		loadProperty(properties, TGConfigKeys.STYLE_FIRST_MEASURE_SPACING, 20);
+		loadProperty(properties, TGConfigKeys.STYLE_FIRST_NOTE_SPACING, 10);
+		loadProperty(properties, TGConfigKeys.STYLE_MEASURE_LEFT_SPACING, 15);
+		loadProperty(properties, TGConfigKeys.STYLE_MEASURE_RIGHT_SPACING, 15);
+		loadProperty(properties, TGConfigKeys.STYLE_CLEF_SPACING, 30);
+		loadProperty(properties, TGConfigKeys.STYLE_KEY_SIGNATURE_SPACING, 15);
+		loadProperty(properties, TGConfigKeys.STYLE_TIME_SIGNATURE_SPACING, 15);
+		loadProperty(properties, TGConfigKeys.STYLE_CHORD_FRET_INDEX_SPACING, 8);
+		loadProperty(properties, TGConfigKeys.STYLE_CHORD_STRING_SPACING, 5);
+		loadProperty(properties, TGConfigKeys.STYLE_CHORD_FRET_SPACING, 6);
+		loadProperty(properties, TGConfigKeys.STYLE_CHORD_NOTE_SIZE, 4);
+		loadProperty(properties, TGConfigKeys.STYLE_CHORD_LINE_WIDTH, 1);
+		loadProperty(properties, TGConfigKeys.STYLE_REPEAT_ENDING_SPACING, 20);
+		loadProperty(properties, TGConfigKeys.STYLE_EFFECT_SPACING, 8);
+		loadProperty(properties, TGConfigKeys.STYLE_DIVISION_TYPE_SPACING, 10);
+		loadProperty(properties, TGConfigKeys.STYLE_TEXT_SPACING, 15);
+		loadProperty(properties, TGConfigKeys.STYLE_MARKER_SPACING, 15);
+		loadProperty(properties, TGConfigKeys.STYLE_LOOP_MARKER_SPACING, 5);
+		loadProperty(properties, TGConfigKeys.STYLE_DURATION_WIDTHS, new float[] {30f, 25f, 21f, 20f, 19f,18f});
 	}
 	
 	private static void loadProperty(TGProperties properties, String key,String value){
@@ -111,5 +134,9 @@ public class TGConfigDefaults{
 	
 	private static void loadProperty(TGProperties properties, String key,boolean value){
 		properties.setValue(key,Boolean.toString(value));
+	}
+	
+	private static void loadProperty(TGProperties properties, String key, float[] value) {
+		TGPropertiesUtil.setValue(properties, key, value);
 	}
 }

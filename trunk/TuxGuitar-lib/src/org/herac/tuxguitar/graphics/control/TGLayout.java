@@ -42,6 +42,12 @@ public abstract class TGLayout {
 	private float trackSpacing;
 	private float firstTrackSpacing;
 	private float firstMeasureSpacing;
+	private float firstNoteSpacing;
+	private float measureLeftSpacing;
+	private float measureRightSpacing;
+	private float clefSpacing;
+	private float keySignatureSpacing;
+	private float timeSignatureSpacing;
 	private float chordFretIndexSpacing;
 	private float chordStringSpacing;
 	private float chordFretSpacing;
@@ -90,11 +96,17 @@ public abstract class TGLayout {
 		this.bufferEnabled = styles.isBufferEnabled();
 		this.stringSpacing = (styles.getStringSpacing() * getScale());
 		this.scoreLineSpacing = (styles.getScoreLineSpacing() * getScale());
-		this.firstMeasureSpacing = (styles.getFirstMeasureSpacing() * getScale());
 		this.minBufferSeparator = (styles.getMinBufferSeparator() * getScale());
 		this.minTopSpacing = (styles.getMinTopSpacing() * getScale());
 		this.minScoreTabSpacing = (styles.getMinScoreTabSpacing() * getScale());
 		this.firstTrackSpacing = (styles.getFirstTrackSpacing() * getScale());
+		this.firstMeasureSpacing = (styles.getFirstMeasureSpacing() * getScale());
+		this.firstNoteSpacing = (styles.getFirstNoteSpacing() * getScale());
+		this.measureLeftSpacing = (styles.getMeasureLeftSpacing() * getScale());
+		this.measureRightSpacing = (styles.getMeasureRightSpacing() * getScale());
+		this.clefSpacing = (styles.getClefSpacing() * getScale());
+		this.keySignatureSpacing = (styles.getKeySignatureSpacing() * getScale());
+		this.timeSignatureSpacing = (styles.getTimeSignatureSpacing() * getScale());		
 		this.trackSpacing = (styles.getTrackSpacing() * getScale());
 		this.chordFretIndexSpacing = (styles.getChordFretIndexSpacing() * getScale());
 		this.chordStringSpacing = (styles.getChordStringSpacing() * getScale());
@@ -554,6 +566,30 @@ public abstract class TGLayout {
 		return this.firstMeasureSpacing;
 	}
 	
+	public float getFirstNoteSpacing() {
+		return firstNoteSpacing;
+	}
+
+	public float getMeasureLeftSpacing() {
+		return measureLeftSpacing;
+	}
+
+	public float getMeasureRightSpacing() {
+		return measureRightSpacing;
+	}
+
+	public float getClefSpacing() {
+		return clefSpacing;
+	}
+
+	public float getKeySignatureSpacing() {
+		return keySignatureSpacing;
+	}
+
+	public float getTimeSignatureSpacing() {
+		return timeSignatureSpacing;
+	}
+
 	public float getMinBufferSeparator() {
 		return this.minBufferSeparator;
 	}

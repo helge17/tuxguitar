@@ -20,6 +20,13 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setMinTopSpacing(10);
 		this.setMinScoreTabSpacing( 5 );
 		
+		this.setFirstNoteSpacing(10f);
+		this.setMeasureLeftSpacing(15f);
+		this.setMeasureRightSpacing(15f);
+		this.setClefSpacing(30f);
+		this.setKeySignatureSpacing(15f);
+		this.setTimeSignatureSpacing(15f);
+		
 		this.setChordFretIndexSpacing(8);
 		this.setChordStringSpacing(5);
 		this.setChordFretSpacing(6);

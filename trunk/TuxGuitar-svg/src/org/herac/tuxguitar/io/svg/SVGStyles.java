@@ -61,6 +61,12 @@ public class SVGStyles {
 		this.getStyles().setMinScoreTabSpacing(20);
 		this.getStyles().setFirstTrackSpacing(20);
 		this.getStyles().setTrackSpacing(10);
+		this.getStyles().setFirstNoteSpacing(10f);
+		this.getStyles().setMeasureLeftSpacing(15f);
+		this.getStyles().setMeasureRightSpacing(15f);
+		this.getStyles().setClefSpacing(30f);
+		this.getStyles().setKeySignatureSpacing(15f);
+		this.getStyles().setTimeSignatureSpacing(15f);
 		this.getStyles().setChordFretIndexSpacing(8);
 		this.getStyles().setChordStringSpacing(5);
 		this.getStyles().setChordFretSpacing(6);

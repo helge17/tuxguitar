@@ -4,18 +4,12 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 
 public class TGMeasureHeaderImpl extends TGMeasureHeader{
-	/**
-	 * Espacio por defecto del timeSignature
-	 */
-	private static final int DEFAULT_TIME_SIGNATURE_SPACING = 30;
-	/**
-	 * Espacio por defecto a la izquierda
-	 */
-	private static final int DEFAULT_LEFT_SPACING = 15;
-	/**
-	 * Espacio por defecto a la derecha
-	 */
-	private static final int DEFAULT_RIGHT_SPACING = 15;
+	
+	private static final float DEFAULT_TEMPO_WIDTH = 45;
+	
+	private static final float DEFAULT_TRIPLET_FEEL_WIDTH = 55;
+	
+	private static final float DEFAULT_TIME_SIGNATURE_WIDTH = 10;
 	
 	private static final int PAINT_TEMPO = 0x01;
 	
@@ -112,30 +106,30 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 	}
 	
 	public float getTempoSpacing(TGLayout layout){
-		return (shouldPaintTempo()? Math.round( 45 * layout.getScale() ):0);
+		return (shouldPaintTempo() ? Math.round(DEFAULT_TEMPO_WIDTH * layout.getScale()) : 0);
 	}
 	
 	public float getTripletFeelSpacing(TGLayout layout){
-		return (shouldPaintTripletFeel()? Math.round( 55 * layout.getScale() ):0);
+		return (shouldPaintTripletFeel() ? Math.round(DEFAULT_TRIPLET_FEEL_WIDTH * layout.getScale()) : 0);
 	}
 	
 	public float getTimeSignatureSpacing(TGLayout layout){
-		return (shouldPaintTimeSignature()? Math.round( DEFAULT_TIME_SIGNATURE_SPACING * layout.getScale() ):0);
+		return (shouldPaintTimeSignature() ? Math.round((DEFAULT_TIME_SIGNATURE_WIDTH * layout.getScale()) + layout.getTimeSignatureSpacing()) : 0);
 	}
 	
 	public float getLeftSpacing(TGLayout layout){
-		return Math.round( DEFAULT_LEFT_SPACING * layout.getScale() );
+		return layout.getMeasureLeftSpacing();
 	}
 	
 	public float getRightSpacing(TGLayout layout){
-		return Math.round( DEFAULT_RIGHT_SPACING * layout.getScale() );
+		return layout.getMeasureRightSpacing();
 	}
 	
 	public float getFirstNoteSpacing(TGLayout layout, TGMeasureImpl measure){
-		float topSpacing = getTempoSpacing(layout) + getTripletFeelSpacing(layout);
-		float middleSpacing = getClefSpacing(layout,measure) + getKeySignatureSpacing(layout,measure) + getTimeSignatureSpacing(layout);
+		float topSpacing = (getTempoSpacing(layout) + getTripletFeelSpacing(layout));
+		float middleSpacing = (getClefSpacing(layout,measure) + getKeySignatureSpacing(layout,measure) + getTimeSignatureSpacing(layout) + layout.getFirstNoteSpacing());
 		
-		return Math.round(Math.max( topSpacing , middleSpacing) + (10f * layout.getScale()));
+		return Math.round(Math.max(topSpacing , middleSpacing));
 	}
 	
 	public void notifyClefSpacing(float spacing){
