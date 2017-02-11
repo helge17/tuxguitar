@@ -118,7 +118,7 @@ public class Tablature implements TGController {
 	
 	public void reloadStyles(){
 		if( this.getViewLayout() != null ){
-			this.getViewLayout().loadStyles(1f);
+			this.getViewLayout().loadStyles(4f);
 		}
 		this.loadCaretStyles();
 	}

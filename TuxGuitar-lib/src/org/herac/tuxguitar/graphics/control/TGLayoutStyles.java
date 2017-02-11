@@ -14,6 +14,12 @@ public class TGLayoutStyles {
 	private float trackSpacing;
 	private float firstTrackSpacing;
 	private float firstMeasureSpacing;
+	private float firstNoteSpacing;
+	private float measureLeftSpacing;
+	private float measureRightSpacing;
+	private float clefSpacing;
+	private float keySignatureSpacing;
+	private float timeSignatureSpacing;
 	private float chordFretIndexSpacing;
 	private float chordStringSpacing;
 	private float chordFretSpacing;
@@ -121,6 +127,54 @@ public class TGLayoutStyles {
 
 	public float getChordFretIndexSpacing() {
 		return chordFretIndexSpacing;
+	}
+
+	public float getFirstNoteSpacing() {
+		return firstNoteSpacing;
+	}
+
+	public void setFirstNoteSpacing(float firstNoteSpacing) {
+		this.firstNoteSpacing = firstNoteSpacing;
+	}
+
+	public float getMeasureLeftSpacing() {
+		return measureLeftSpacing;
+	}
+
+	public void setMeasureLeftSpacing(float measureLeftSpacing) {
+		this.measureLeftSpacing = measureLeftSpacing;
+	}
+
+	public float getMeasureRightSpacing() {
+		return measureRightSpacing;
+	}
+
+	public void setMeasureRightSpacing(float measureRightSpacing) {
+		this.measureRightSpacing = measureRightSpacing;
+	}
+
+	public float getClefSpacing() {
+		return clefSpacing;
+	}
+
+	public void setClefSpacing(float clefSpacing) {
+		this.clefSpacing = clefSpacing;
+	}
+
+	public float getKeySignatureSpacing() {
+		return keySignatureSpacing;
+	}
+
+	public void setKeySignatureSpacing(float keySignatureSpacing) {
+		this.keySignatureSpacing = keySignatureSpacing;
+	}
+
+	public float getTimeSignatureSpacing() {
+		return timeSignatureSpacing;
+	}
+
+	public void setTimeSignatureSpacing(float timeSignatureSpacing) {
+		this.timeSignatureSpacing = timeSignatureSpacing;
 	}
 
 	public void setChordFretIndexSpacing(float chordFretIndexSpacing) {

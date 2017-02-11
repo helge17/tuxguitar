@@ -50,11 +50,6 @@ public class TGConfigKeys {
 	public static final String MIDI_PORT = "midi.port";
 	public static final String MIDI_SEQUENCER = "midi.sequencer";
 	public static final String MAX_HISTORY_FILES = "history.max-files";
-	public static final String MIN_SCORE_TABLATURE_SPACING = "score.min.score-tab-spacing";
-	public static final String SCORE_LINE_SPACING = "score.line-spacing";
-	public static final String TAB_LINE_SPACING = "tab.line-spacing";
-	public static final String FIRST_TRACK_SPACING = "first-track.spacing";
-	public static final String TRACK_SPACING = "track.spacing";
 	public static final String FRETBOARD_STRING_SPACING = "fretboard.string-spacing";
 	public static final String FRETBOARD_STYLE = "fretboard.style";
 	public static final String FRETBOARD_FONT = "fretboard.font";
@@ -81,4 +76,31 @@ public class TGConfigKeys {
 	public static final String TABLE_AUTO_SIZE = "table.auto-size";
 	public static final String BROWSER_LINES_VISIBLE = "browser.lines-visible";
 	public static final String FORCE_OS_DEFAULTS = "painter.force-os-defaults";
+	
+	public static final String STYLE_MIN_BUFFER_SEPARATOR = "style.minBufferSeparator";
+	public static final String STYLE_MIN_TOP_SPACING = "style.minTopSpacing";
+	public static final String STYLE_MIN_SCORE_TAB_SPACING = "style.minScoreTabSpacing";
+	public static final String STYLE_STRING_SPACING = "style.stringSpacing";
+	public static final String STYLE_SCORE_LINE_SPACING = "style.scoreLineSpacing";
+	public static final String STYLE_TRACK_SPACING = "style.trackSpacing";
+	public static final String STYLE_FIRST_TRACK_SPACING = "style.firstTrackSpacing";
+	public static final String STYLE_FIRST_MEASURE_SPACING = "style.firstMeasureSpacing";
+	public static final String STYLE_FIRST_NOTE_SPACING = "style.firstNoteSpacing";
+	public static final String STYLE_MEASURE_LEFT_SPACING = "style.measureLeftSpacing";
+	public static final String STYLE_MEASURE_RIGHT_SPACING = "style.measureRightSpacing";
+	public static final String STYLE_CLEF_SPACING = "style.clefSpacing";
+	public static final String STYLE_KEY_SIGNATURE_SPACING = "style.keySignatureSpacing";
+	public static final String STYLE_TIME_SIGNATURE_SPACING = "style.timeSignatureSpacing";
+	public static final String STYLE_CHORD_FRET_INDEX_SPACING = "style.chordFretIndexSpacing";
+	public static final String STYLE_CHORD_STRING_SPACING = "style.chordStringSpacing";
+	public static final String STYLE_CHORD_FRET_SPACING = "style.chordFretSpacing";
+	public static final String STYLE_CHORD_NOTE_SIZE = "style.chordNoteSize";
+	public static final String STYLE_CHORD_LINE_WIDTH = "style.chordLineWidth";
+	public static final String STYLE_REPEAT_ENDING_SPACING = "style.repeatEndingSpacing";
+	public static final String STYLE_EFFECT_SPACING = "style.effectSpacing";
+	public static final String STYLE_DIVISION_TYPE_SPACING = "style.divisionTypeSpacing";
+	public static final String STYLE_TEXT_SPACING = "style.textSpacing";
+	public static final String STYLE_MARKER_SPACING = "style.markerSpacing";
+	public static final String STYLE_LOOP_MARKER_SPACING = "style.loopMarkerSpacing";
+	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
 }

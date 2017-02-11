@@ -81,7 +81,7 @@ public class TGMeasureImpl extends TGMeasure{
 	/**
 	 * Espacio por defecto de la clave
 	 */
-	private static final int DEFAULT_CLEF_SPACING = 40;
+	private static final int DEFAULT_CLEF_WIDTH = 16;
 	
 	/**
 	 * Posicion X
@@ -402,7 +402,7 @@ public class TGMeasureImpl extends TGMeasure{
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			if(this.prevMeasure == null || getClef() != this.prevMeasure.getClef()){
 				this.paintClef = true;
-				this.getHeaderImpl().notifyClefSpacing( Math.round(DEFAULT_CLEF_SPACING * layout.getScale()) );
+				this.getHeaderImpl().notifyClefSpacing(calculateClefSpacing(layout));
 			}
 			if(this.prevMeasure == null || getKeySignature() != this.prevMeasure.getKeySignature()){
 				this.paintKeySignature = true;
@@ -900,8 +900,8 @@ public class TGMeasureImpl extends TGMeasure{
 	private void paintClef(TGLayout layout,TGPainter painter,float fromX, float fromY) {
 		//-----SCORE ------------------------------------//
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 && this.paintClef){
-			float x = fromX + Math.round( 14 * layout.getScale() ) ;
-			float y = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			float x = (fromX + getHeaderImpl().getLeftSpacing(layout));
+			float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			layout.setClefStyle(painter);
 			painter.initPath(TGPainter.PATH_FILL);
 			if(this.getClef() == TGMeasure.CLEF_TREBLE){
@@ -926,8 +926,8 @@ public class TGMeasureImpl extends TGMeasure{
 	private void paintKeySignature(TGLayout layout,TGPainter painter, float fromX, float fromY) {
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 && this.paintKeySignature){
 			float scale = layout.getScoreLineSpacing();
-			float x = fromX + getClefSpacing(layout) + 10;
-			float y = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getClefSpacing(layout));
+			float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			int clefIndex = (this.getClef() - 1);
 			int currentKey = this.getKeySignature();
 			int previousKey = (this.prevMeasure != null ? this.prevMeasure.getKeySignature() : 0);
@@ -984,11 +984,10 @@ public class TGMeasureImpl extends TGMeasure{
 			layout.setTimeSignatureStyle(painter);
 			int style = layout.getStyle();
 			float scale = layout.getScale();
-			float leftSpacing = Math.round( 5.0f * scale );
 			float fmTopLine = painter.getFMTopLine();
 			float fmBaseLine = painter.getFMBaseLine();
 			
-			float x = (getClefSpacing(layout) + getKeySignatureSpacing(layout) + getHeaderImpl().getLeftSpacing(layout) + leftSpacing);
+			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getClefSpacing(layout) + getKeySignatureSpacing(layout));
 			String numerator = Integer.toString(getTimeSignature().getNumerator());
 			String denominator = Integer.toString(getTimeSignature().getDenominator().getValue());
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
@@ -996,15 +995,15 @@ public class TGMeasureImpl extends TGMeasure{
 				float y1 = (y + fmTopLine + (1f * scale));
 				float y2 = ((y + getTrackImpl().getScoreHeight()) + fmBaseLine - (1f * scale));
 				
-				painter.drawString(numerator,fromX + x,fromY + y1,true);
-				painter.drawString(denominator,fromX + x,fromY + y2,true);
+				painter.drawString(numerator, x, fromY + y1,true);
+				painter.drawString(denominator, x, fromY + y2,true);
 			}else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
 				float y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 				float y1 = (y + fmTopLine + (1f * scale));
 				float y2 = ((y + getTrackImpl().getTabHeight()) + fmBaseLine - (1f * scale));
 				
-				painter.drawString(numerator,fromX + x,fromY + y1,true);
-				painter.drawString(denominator,fromX + x,fromY + y2,true);
+				painter.drawString(numerator, x, fromY + y1,true);
+				painter.drawString(denominator, x, fromY + y2,true);
 			}
 		}
 	}
@@ -1192,20 +1191,27 @@ public class TGMeasureImpl extends TGMeasure{
 		return ((layout.getStyle() & TGLayout.DISPLAY_MULTITRACK) != 0 ?this.getHeaderImpl().getMaxWidth():this.width);
 	}
 	
+	private float calculateClefSpacing(TGLayout layout) {
+		return (Math.round(DEFAULT_CLEF_WIDTH * layout.getScale()) + Math.round(layout.getClefSpacing()));
+	}
+	
 	private float calculateKeySignatureSpacing(TGLayout layout){
 		float spacing = 0;
-		if(this.paintKeySignature){
-			if(this.getKeySignature() <= 7){
+		if( this.paintKeySignature) {
+			if( this.getKeySignature() <= 7){
 				spacing += Math.round( ( 6f * layout.getScale() ) * this.getKeySignature() ) ;
 			}else{
 				spacing += Math.round( ( 6f * layout.getScale() ) * (this.getKeySignature() - 7) ) ;
 			}
-			if(this.prevMeasure != null ){
+			if( this.prevMeasure != null ){
 				if(this.prevMeasure.getKeySignature() <= 7){
 					spacing += Math.round( ( 6f * layout.getScale() ) * this.prevMeasure.getKeySignature() ) ;
 				}else{
 					spacing += Math.round( ( 6f * layout.getScale() ) * (this.prevMeasure.getKeySignature() - 7) ) ;
 				}
+			}
+			if( spacing > 0 ) {
+				spacing += layout.getKeySignatureSpacing();
 			}
 		}
 		return spacing;

@@ -76,23 +76,35 @@ public class TGConfigManager {
 		return TGPropertiesUtil.getBooleanValue(this.properties, key, defaultValue);
 	}
 	
+	public float[] getFloatArrayValue(String key) {
+		return TGPropertiesUtil.getFloatArrayValue(this.properties, key);
+	}
+	
+	public float[] getFloatArrayValue(String key, float[] defaultValue) {
+		return TGPropertiesUtil.getFloatArrayValue(this.properties, key, defaultValue);
+	}
+	
 	public void setValue(String key, String value) {
 		TGPropertiesUtil.setValue(this.properties, key, value);
 	}
 
-	public void setValue(String key,int value){
+	public void setValue(String key, int value){
 		TGPropertiesUtil.setValue(this.properties, key, value);
 	}
 	
-	public void setValue(String key,float value){
+	public void setValue(String key, float value){
 		TGPropertiesUtil.setValue(this.properties, key, value);
 	}
 	
-	public void setValue(String key,double value){
+	public void setValue(String key, double value){
 		TGPropertiesUtil.setValue(this.properties, key, value);
 	}
 	
-	public void setValue(String key,boolean value){
+	public void setValue(String key, boolean value){
+		TGPropertiesUtil.setValue(this.properties, key, value);
+	}
+	
+	public void setValue(String key, float[] value){
 		TGPropertiesUtil.setValue(this.properties, key, value);
 	}
 	
