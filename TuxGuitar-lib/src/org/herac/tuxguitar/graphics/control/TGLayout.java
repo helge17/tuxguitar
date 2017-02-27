@@ -59,6 +59,7 @@ public abstract class TGLayout {
 	private float textSpacing;
 	private float markerSpacing;
 	private float loopMarkerSpacing;
+	private float[] lineWidths;
 	private float[] durationWidths;
 	private boolean bufferEnabled;
 	private boolean playModeEnabled;
@@ -119,6 +120,11 @@ public abstract class TGLayout {
 		this.loopMarkerSpacing = (styles.getLoopMarkerSpacing() * getScale());
 		this.divisionTypeSpacing = (styles.getDivisionTypeSpacing() * getScale());
 		this.effectSpacing = (styles.getEffectSpacing() * getScale());
+		
+		this.lineWidths = new float[styles.getLineWidths() != null ? styles.getLineWidths().length : 0];
+		for(int i = 0 ; i < this.lineWidths.length; i ++) {
+			this.lineWidths[i] = (styles.getLineWidths()[i] * getScale());
+		}
 		
 		this.durationWidths = new float[styles.getDurationWidths() != null ? styles.getDurationWidths().length : 0];
 		for(int i = 0 ; i < this.durationWidths.length; i ++) {
@@ -304,6 +310,13 @@ public abstract class TGLayout {
 		return (minimumWidth != null ? minimumWidth : 0f);
 	}
 	
+	public float getLineWidth(int level) {
+		if( this.lineWidths != null ) {
+			return this.lineWidths[this.lineWidths.length > level ? level : this.lineWidths.length - 1];
+		}
+		return TGPainter.THINNEST_LINE_WIDTH;
+	}
+	
 	public float getScoreNoteWidth() {
 		return (this.getScoreLineSpacing() * 1.085f);
 	}
@@ -374,7 +387,7 @@ public abstract class TGLayout {
 	}
 	
 	public void setLineStyle(TGPainter painter){
-		painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+		painter.setLineWidth(getLineWidth(0));
 		painter.setForeground(getDarkColor( getResources().getLineColor()));
 	}
 	

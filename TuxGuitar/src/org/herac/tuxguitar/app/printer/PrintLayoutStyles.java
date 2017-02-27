@@ -28,6 +28,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 	private static final int DEFAULT_MARKER_SPACING = 15;
 	private static final int DEFAULT_TEXT_SPACING = 15;
 	private static final int DEFAULT_REPEAT_ENDING_SPACING = 20;
+	private static final float[] DEFAULT_LINE_WIDTHS = new float[] {0, 1, 2, 3, 4, 5};
 	private static final float[] DEFAULT_DURATION_WIDTHS = new float[] {25f, 22f, 20f, 18f, 16f};
 	
 	public PrintLayoutStyles(TGConfigManager config) {
@@ -56,6 +57,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		this.setMarkerSpacing(DEFAULT_MARKER_SPACING);
 		this.setDivisionTypeSpacing(DEFAULT_DIVISION_TYPE_SPACING);
 		this.setEffectSpacing(DEFAULT_EFFECT_SPACING);
+		this.setLineWidths(DEFAULT_LINE_WIDTHS);
 		this.setDurationWidths(DEFAULT_DURATION_WIDTHS);
 		
 		this.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
