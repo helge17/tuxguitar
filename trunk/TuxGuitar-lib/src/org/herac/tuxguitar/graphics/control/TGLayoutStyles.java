@@ -31,6 +31,7 @@ public class TGLayoutStyles {
 	private float textSpacing;
 	private float markerSpacing;
 	private float loopMarkerSpacing;
+	private float[] lineWidths;
 	private float[] durationWidths;
 	private TGFontModel defaultFont;
 	private TGFontModel noteFont;
@@ -259,6 +260,14 @@ public class TGLayoutStyles {
 
 	public void setLoopMarkerSpacing(float loopMarkerSpacing) {
 		this.loopMarkerSpacing = loopMarkerSpacing;
+	}
+
+	public float[] getLineWidths() {
+		return lineWidths;
+	}
+
+	public void setLineWidths(float[] lineWidths) {
+		this.lineWidths = lineWidths;
 	}
 
 	public float[] getDurationWidths() {

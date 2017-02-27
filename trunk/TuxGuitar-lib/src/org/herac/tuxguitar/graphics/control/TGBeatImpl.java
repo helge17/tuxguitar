@@ -372,7 +372,7 @@ public class TGBeatImpl extends TGBeat{
 			return;
 		}
 		if( getStroke().getDirection() == TGStroke.STROKE_UP ){
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath();
 			painter.moveTo( x, y1 );
 			painter.lineTo( x, y2 );
@@ -382,7 +382,7 @@ public class TGBeatImpl extends TGBeat{
 			painter.lineTo( x, y2 );
 			painter.closePath();
 		}else if( getStroke().getDirection() == TGStroke.STROKE_DOWN ){
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath();
 			painter.moveTo( x, y2 );
 			painter.lineTo( x, y1 );

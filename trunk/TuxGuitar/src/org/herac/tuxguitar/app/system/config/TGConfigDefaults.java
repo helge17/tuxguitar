@@ -121,6 +121,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_TEXT_SPACING, 15);
 		loadProperty(properties, TGConfigKeys.STYLE_MARKER_SPACING, 15);
 		loadProperty(properties, TGConfigKeys.STYLE_LOOP_MARKER_SPACING, 5);
+		loadProperty(properties, TGConfigKeys.STYLE_LINE_WIDTHS, new float[] {0f, 1f, 2f, 3f, 4f, 5f});
 		loadProperty(properties, TGConfigKeys.STYLE_DURATION_WIDTHS, new float[] {30f, 25f, 21f, 20f, 19f,18f});
 	}
 	

@@ -752,7 +752,7 @@ public class TGMeasureImpl extends TGMeasure{
 		float xCenter = (x1 + ((x2 - x1) / 2f));
 		
 		if( beatX2 > beatX1 ) {
-			painter.setLineWidth(scale);
+			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath(TGPainter.PATH_DRAW);
 			painter.moveTo(x1, y1);
 			painter.lineTo(x1, y2);
@@ -801,8 +801,8 @@ public class TGMeasureImpl extends TGMeasure{
 	
 	private void paintDivisions(TGLayout layout,TGPainter painter,float x1, float y1, float x2, float y2, float offsetY, boolean addInfo) {
 		float scale = layout.getScale();
-		float lineWidthSmall = (1f * scale);
-		float lineWidthBig = Math.max(lineWidthSmall,Math.round(3f * scale));
+		float lineWidthSmall = layout.getLineWidth(1);
+		float lineWidthBig = layout.getLineWidth(3);
 		
 		//numero de compas
 		if( addInfo ){ 
@@ -811,17 +811,17 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.drawString(number, getPosX() + scale, y1 + painter.getFMBaseLine() - (2f * scale), true);
 		}
 		
-		layout.setDivisionsStyle(painter,true);
+		layout.setDivisionsStyle(painter, true);
 		
 		//principio
 		if( this.isRepeatOpen() || layout.isFirstMeasure(this) ){
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(x1, y1, lineWidthBig, (y2 + offsetY) - y1);
 			painter.closePath();
 			
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(x1 + lineWidthBig + (2f * scale), y1, lineWidthSmall, (y2 + offsetY) - y1);
@@ -841,7 +841,7 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.closePath();
 			}
 		} else {
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.moveTo(x1, y1);
@@ -851,13 +851,13 @@ public class TGMeasureImpl extends TGMeasure{
 		
 		//fin
 		if( this.getRepeatClose() > 0 || layout.isLastMeasure(this) ){
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle((x2 + getSpacing()) - (lineWidthBig + lineWidthSmall + (2f * scale)), y1, lineWidthSmall, (y2 - y1));
 			painter.closePath();
 			
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle((x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, (y2 - y1));
@@ -883,7 +883,7 @@ public class TGMeasureImpl extends TGMeasure{
 				}
 			}
 		} else {
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.moveTo((x2 + getSpacing()), y1);
@@ -1148,7 +1148,7 @@ public class TGMeasureImpl extends TGMeasure{
 			// Don't uncomment "lineStyle" until be sure SWT bug has fixed.
 			// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=225725
 			//painter.setLineStyle(SWT.LINE_DASH);
-			painter.setLineWidth(1f * scale);
+			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath();
 			painter.setAntialias(false);
 			painter.addRectangle(getPosX() + (5f * scale),y1,width - (10f * scale),(y2 - y1));

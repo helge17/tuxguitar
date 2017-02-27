@@ -448,8 +448,8 @@ public class TGVoiceImpl extends TGVoice{
 			float x = ( fromX + getPosX() + spacing + xMove );
 			float y1 = 0;
 			float y2 = 0;
-			float verticalLineWidth = scale;
-			float horizontalLineWidth = (2f * scale);
+			float verticalLineWidth = layout.getLineWidth(1);
+			float horizontalLineWidth = layout.getLineWidth(2);
 			float stringSpacing = layout.getStringSpacing();
 			float direction = (getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ? 1f : -1f);
 			if( getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ){
@@ -534,7 +534,7 @@ public class TGVoiceImpl extends TGVoice{
 			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.maxNote.getScorePosY() : this.minNote.getScorePosY() );
 			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing, key, clef);
 			
-			painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(TGPainter.PATH_FILL);
 			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
 			painter.lineTo(vX + xMove + (0.5f * scale), vY1 + yMove);
@@ -593,7 +593,7 @@ public class TGVoiceImpl extends TGVoice{
 		float posX = fromX;
 		float posY = fromY;
 		layout.setDotStyle(painter);
-		painter.setLineWidth(TGPainter.THINNEST_LINE_WIDTH);
+		painter.setLineWidth(layout.getLineWidth(0));
 		painter.initPath(TGPainter.PATH_FILL);
 		painter.moveTo(posX - (dotSize / 2), posY - (dotSize / 2));
 		painter.addOval(posX - (dotSize / 2), posY - (dotSize / 2), dotSize,dotSize);
