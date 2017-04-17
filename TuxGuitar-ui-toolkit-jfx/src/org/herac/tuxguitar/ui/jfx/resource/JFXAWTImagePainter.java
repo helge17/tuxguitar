@@ -10,13 +10,13 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 public class JFXAWTImagePainter extends JFXAbstractPainter<JFXAWTImage> implements UIPainter {
 	
@@ -178,23 +178,14 @@ public class JFXAWTImagePainter extends JFXAbstractPainter<JFXAWTImage> implemen
 		this.pathEmpty = false;
 	}
 	
-	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle) {
-		this.path.append(new Arc2D.Float(x, y, width, height, startAngle,arcAngle, Arc2D.OPEN), true);
-		this.pathEmpty = false;
-	}
-	
-	public void addOval(float x, float y, float width, float height) {
-		this.path.append(new Arc2D.Float(x, y, width, height, 0,360, Arc2D.OPEN), true);
+	public void addCircle(float x, float y, float width) {
+		this.path.append(new Arc2D.Float(x, y, width, width, 0, 360, Arc2D.OPEN), true);
 		this.pathEmpty = false;
 	}
 	
 	public void addRectangle(float x,float y,float width,float height) {
 		this.path.append(new Rectangle2D.Float(x, y, width, height), true);
 		this.pathEmpty = false;
-	}
-	
-	public void addString(String arg0, float arg1, float arg2, UIFont arg3) {
-		// TODO Auto-generated method stub
 	}
 	
 	public float getFontSize() {

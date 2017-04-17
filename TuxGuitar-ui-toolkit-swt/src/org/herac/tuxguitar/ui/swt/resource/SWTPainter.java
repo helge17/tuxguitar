@@ -112,18 +112,8 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 		this.pathEmpty = false;
 	}
 	
-	public void addString(String arg0, float arg1, float arg2, UIFont font) {
-		this.path.addString(arg0, arg1, arg2, getFont(font));
-		this.pathEmpty = false;
-	}
-	
-	public void addArc(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
-		this.path.addArc(arg0, arg1, arg2, arg3, arg4, arg5);
-		this.pathEmpty = false;
-	}
-	
-	public void addOval(float arg0, float arg1, float arg2, float arg3) {
-		this.path.addArc(arg0, arg1, arg2, arg3, 0, 360);
+	public void addCircle(float x, float y, float width) {
+		this.path.addArc(x, y, width, width, 0, 360);
 		this.pathEmpty = false;
 	}
 	

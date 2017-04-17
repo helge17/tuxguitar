@@ -426,7 +426,12 @@ public abstract class TGLayout {
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
 		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
 	}
-
+	
+	public void setTiedStyle(TGPainter painter, boolean playing){
+		painter.setForeground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
+		painter.setBackground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
+	}
+	
 	public void setTabEffectStyle(TGPainter painter){
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
 		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));

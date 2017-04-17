@@ -94,19 +94,10 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 		this.pathEmpty = false;
 	}
 	
-	public void addString(String text, float x, float y, UIFont font) {
-		this.path.addText(x, y, getFont(font), text);
+	public void addCircle(float x, float y, float width) {
+		this.path.arcMoveTo(x, y, width, width, 0);
+		this.path.arcTo(x, y, width, width, 0, 360);
 		this.pathEmpty = false;
-	}
-	
-	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle) {
-		this.path.arcMoveTo(x, y, width, height, startAngle);
-		this.path.arcTo(x, y, width, height, startAngle, arcAngle);
-		this.pathEmpty = false;
-	}
-	
-	public void addOval(float x, float y, float width, float height) {
-		this.addArc(x, y, width, height, 0, 360);
 	}
 	
 	public void addRectangle(float x,float y,float width,float height) {

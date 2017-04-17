@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.ui.jfx.resource;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIPosition;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements UIPainter {
 	
@@ -112,22 +112,9 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 		this.pathEmpty = false;
 	}
 	
-	public void addString(String text, float x, float y, UIFont font) {
-		if((this.style & PATH_FILL) != 0) {
-			this.getControl().fillText(text, x, y);
-		} else {
-			this.getControl().strokeText(text, x, y);
-		}
+	public void addCircle(float x, float y, float width) {
+		this.getControl().arc((x + (width / 2f)), (y + (width / 2f)), (width / 2f), (width / 2f), 0, 360);
 		this.pathEmpty = false;
-	}
-	
-	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle) {
-		this.getControl().arc((x + (width / 2f)), (y + (height / 2f)), (width / 2f), (height / 2f), startAngle, arcAngle);
-		this.pathEmpty = false;
-	}
-	
-	public void addOval(float x, float y, float width, float height) {
-		this.addArc(x, y, width, height, 0, 360);
 	}
 	
 	public void addRectangle(float x,float y,float width,float height) {

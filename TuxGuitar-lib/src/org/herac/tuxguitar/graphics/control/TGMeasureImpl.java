@@ -835,9 +835,9 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.setLineWidth(lineWidthSmall);
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2) - (yMove + (size / 2)));
-				painter.addOval(x1 + xMove, y1 + ((y2 - y1) / 2) - (yMove + (size / 2)), size,size);
+				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2) - (yMove + (size / 2)), size);
 				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2) + (yMove - (size / 2)));
-				painter.addOval(x1 + xMove, y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size, size);
+				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size);
 				painter.closePath();
 			}
 		} else {
@@ -871,9 +871,9 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.setLineWidth(lineWidthSmall);
 				painter.initPath(TGPainter.PATH_FILL);
 				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - (yMove + (size / 2)));
-				painter.addOval((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - (yMove + (size / 2)), size,size);
+				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - (yMove + (size / 2)), size);
 				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)));
-				painter.addOval((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size, size);
+				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size);
 				painter.closePath();
 				if( addInfo ){
 					layout.setDivisionsStyle(painter,false);

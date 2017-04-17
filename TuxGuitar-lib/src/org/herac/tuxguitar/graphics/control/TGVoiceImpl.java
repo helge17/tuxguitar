@@ -409,11 +409,11 @@ public class TGVoiceImpl extends TGVoice{
 		if(getDuration().isDotted() || getDuration().isDoubleDotted()){
 			layout.setDotStyle(painter);
 			painter.initPath();
-			painter.moveTo(x + 10,y +1);
-			painter.addOval(x + 10,y +1,1,1);
+			painter.moveTo(x + 10, y +1);
+			painter.addCircle(x + 10, y +1, 1);
 			if(getDuration().isDoubleDotted()){
-				painter.moveTo(x + 13,y +1);
-				painter.addOval(x + 13,y +1,1,1);
+				painter.moveTo(x + 13, y + 1);
+				painter.addCircle(x + 13,y + 1, 1);
 			}
 			painter.closePath();
 		}
@@ -596,10 +596,10 @@ public class TGVoiceImpl extends TGVoice{
 		painter.setLineWidth(layout.getLineWidth(0));
 		painter.initPath(TGPainter.PATH_FILL);
 		painter.moveTo(posX - (dotSize / 2), posY - (dotSize / 2));
-		painter.addOval(posX - (dotSize / 2), posY - (dotSize / 2), dotSize,dotSize);
+		painter.addCircle(posX - (dotSize / 2), posY - (dotSize / 2), dotSize);
 		if(getDuration().isDoubleDotted()){
 			painter.moveTo(posX + (dotSize + 2) - (dotSize / 2), posY - (dotSize / 2));
-			painter.addOval(posX + (dotSize + 2) - (dotSize / 2), posY - (dotSize / 2), dotSize,dotSize);
+			painter.addCircle(posX + (dotSize + 2) - (dotSize / 2), posY - (dotSize / 2), dotSize);
 		}
 		painter.closePath();
 	}

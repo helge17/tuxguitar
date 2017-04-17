@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.ui.jfx.resource;
 
-import javafx.scene.image.Image;
-
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
+
+import javafx.scene.image.Image;
 
 public class JFXBufferedPainter extends JFXAbstractPainter<JFXBufferedImageHandle> implements UIPainter {
 	
@@ -136,28 +136,10 @@ public class JFXBufferedPainter extends JFXAbstractPainter<JFXBufferedImageHandl
 	}
 
 	@Override
-	public void addString(final String text, final float x, final float y, final UIFont font) {
+	public void addCircle(final float x, final float y, final float width) {
 		this.addCommand(new JFXBufferedPainterCommand() {
 			public void paint(JFXAbstractPainter<?> painter, float tx, float ty) {
-				painter.addString(text, tx + x, ty + y, font);
-			}
-		});
-	}
-
-	@Override
-	public void addArc(final float x, final float y, final float width, final float height, final float startAngle, final float arcAngle) {
-		this.addCommand(new JFXBufferedPainterCommand() {
-			public void paint(JFXAbstractPainter<?> painter, float tx, float ty) {
-				painter.addArc(tx + x, ty + y, width, height, startAngle, arcAngle);
-			}
-		});
-	}
-
-	@Override
-	public void addOval(final float x, final float y, final float width, final float height) {
-		this.addCommand(new JFXBufferedPainterCommand() {
-			public void paint(JFXAbstractPainter<?> painter, float tx, float ty) {
-				painter.addOval(tx + x, ty + y, width, height);
+				painter.addCircle(tx + x, ty + y, width);
 			}
 		});
 	}
