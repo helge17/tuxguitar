@@ -84,7 +84,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		return (this.canvas == null || this.paint == null);
 	}
 
-	public void addCircle(float x, float y, float w, float h) {
+	public void addCircle(float x, float y, float w) {
 		this.path.addOval(new RectF(x, y, x + w, y + w), Direction.CW);
 		this.pathEmpty = false;
 	}

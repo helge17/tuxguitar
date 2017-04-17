@@ -69,7 +69,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private TGSong read() throws IOException{
+	private TGSong read() throws IOException {
 		TGSong song = this.factory.newSong();
 		
 		//leo el nombre
@@ -133,7 +133,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return song;
 	}
 	
-	private TGTrack readTrack(int number,TGSong song) throws IOException{
+	private TGTrack readTrack(int number,TGSong song) throws IOException {
 		//header
 		int header = readHeader();
 		
@@ -186,7 +186,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return track;
 	}
 	
-	private TGMeasureHeader readMeasureHeader(int number,long start,TGMeasureHeader lastMeasureHeader) throws IOException{
+	private TGMeasureHeader readMeasureHeader(int number,long start,TGMeasureHeader lastMeasureHeader) throws IOException {
 		int header = readHeader();
 		
 		TGMeasureHeader measureHeader = this.factory.newHeader();
@@ -233,7 +233,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return measureHeader;
 	}
 	
-	private TGMeasure readMeasure(TGMeasureHeader measureHeader,TGMeasure lastMeasure) throws IOException{
+	private TGMeasure readMeasure(TGMeasureHeader measureHeader,TGMeasure lastMeasure) throws IOException {
 		int header = readHeader();
 		
 		TGMeasure measure = this.factory.newMeasure(measureHeader);
@@ -257,7 +257,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return measure;
 	}
 	
-	private void readChannel(TGChannel channel) throws IOException{
+	private void readChannel(TGChannel channel) throws IOException {
 		//leo el id
 		channel.setChannelId(readShort());
 		
@@ -292,7 +292,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		readChannelParameters(channel);
 	}
 	
-	private void readChannelParameters(TGChannel channel) throws IOException{
+	private void readChannelParameters(TGChannel channel) throws IOException {
 		//leo la cantidad de parametros
 		int count = readShort();
 		
@@ -301,7 +301,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private void readChannelParameter(TGChannel channel) throws IOException{
+	private void readChannelParameter(TGChannel channel) throws IOException {
 		TGChannelParameter parameter = this.factory.newChannelParameter();
 			
 		//leo el key
@@ -313,7 +313,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		channel.addParameter(parameter);
 	}
 	
-	private void readBeats(TGMeasure measure,TGBeatData data) throws IOException{
+	private void readBeats(TGMeasure measure,TGBeatData data) throws IOException {
 		int header = BEAT_HAS_NEXT;
 		while(((header & BEAT_HAS_NEXT) != 0)){
 			header = readHeader();
@@ -321,7 +321,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private void readBeat(int header, TGMeasure measure,TGBeatData data) throws IOException{
+	private void readBeat(int header, TGMeasure measure,TGBeatData data) throws IOException {
 		TGBeat beat = this.factory.newBeat();
 		
 		beat.setStart(data.getCurrentStart());
@@ -346,7 +346,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		measure.addBeat(beat);
 	}
 	
-	private void readVoices(int header, TGBeat beat, TGBeatData data) throws IOException{
+	private void readVoices(int header, TGBeat beat, TGBeatData data) throws IOException {
 		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
 			int shift = (i * 2 );
 			
@@ -384,7 +384,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private void readNotes(TGVoice voice,TGBeatData data) throws IOException{
+	private void readNotes(TGVoice voice,TGBeatData data) throws IOException {
 		int header = NOTE_HAS_NEXT;
 		while(((header & NOTE_HAS_NEXT) != 0)){
 			header = readHeader();
@@ -392,7 +392,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private void readNote(int header,TGVoice voice,TGBeatData data) throws IOException{
+	private void readNote(int header,TGVoice voice,TGBeatData data) throws IOException {
 		TGNote note = this.factory.newNote();
 		
 		//leo el valor
@@ -418,7 +418,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		voice.addNote(note);
 	}
 	
-	private void readChord(TGBeat beat) throws IOException{
+	private void readChord(TGBeat beat) throws IOException {
 		TGChord chord = this.factory.newChord(readByte());
 		
 		//leo el nombre
@@ -434,7 +434,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		beat.setChord(chord);
 	}
 	
-	private void readText(TGBeat beat) throws IOException{
+	private void readText(TGBeat beat) throws IOException {
 		TGText text = this.factory.newText();
 		
 		//leo el texto
@@ -443,7 +443,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		beat.setText(text);
 	}
 	
-	private TGString readInstrumentString(int number) throws IOException{
+	private TGString readInstrumentString(int number) throws IOException {
 		TGString string = this.factory.newString();
 		
 		string.setNumber(number);
@@ -454,12 +454,12 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return string;
 	}
 	
-	private void readTempo(TGTempo tempo) throws IOException{
+	private void readTempo(TGTempo tempo) throws IOException {
 		//leo el valor
 		tempo.setValue(readShort());
 	}
 	
-	private void readTimeSignature(TGTimeSignature timeSignature) throws IOException{
+	private void readTimeSignature(TGTimeSignature timeSignature) throws IOException {
 		//leo el numerador
 		timeSignature.setNumerator(readByte());
 		
@@ -467,7 +467,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		readDuration(timeSignature.getDenominator());
 	}
 	
-	private void readDuration(TGDuration duration) throws IOException{
+	private void readDuration(TGDuration duration) throws IOException {
 		int header = readHeader();
 		
 		// leo el puntillo
@@ -488,7 +488,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private void readDivisionType(TGDivisionType divisionType) throws IOException{
+	private void readDivisionType(TGDivisionType divisionType) throws IOException {
 		//leo los enters
 		divisionType.setEnters(readByte());
 		
@@ -496,7 +496,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		divisionType.setTimes(readByte());
 	}
 	
-	private void readStroke(TGStroke stroke) throws IOException{
+	private void readStroke(TGStroke stroke) throws IOException {
 		//leo la direccion
 		stroke.setDirection( readByte() );
 		
@@ -504,7 +504,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		stroke.setValue( readByte() );
 	}
 	
-	private void readNoteEffect(TGNoteEffect effect) throws IOException{
+	private void readNoteEffect(TGNoteEffect effect) throws IOException {
 		int header = readHeader(3);
 		
 		//leo el bend
@@ -580,7 +580,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		effect.setLetRing(((header & EFFECT_LET_RING) != 0));
 	}
 	
-	private TGEffectBend readBendEffect() throws IOException{
+	private TGEffectBend readBendEffect() throws IOException {
 		TGEffectBend bend = this.factory.newEffectBend();
 		
 		//leo la cantidad de puntos
@@ -599,7 +599,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return bend;
 	}
 	
-	private TGEffectTremoloBar readTremoloBarEffect() throws IOException{
+	private TGEffectTremoloBar readTremoloBarEffect() throws IOException {
 		TGEffectTremoloBar tremoloBar = this.factory.newEffectTremoloBar();
 		
 		//leo la cantidad de puntos
@@ -618,7 +618,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return tremoloBar;
 	}
 	
-	private TGEffectHarmonic readHarmonicEffect() throws IOException{
+	private TGEffectHarmonic readHarmonicEffect() throws IOException {
 		TGEffectHarmonic effect = this.factory.newEffectHarmonic();
 		
 		//leo el tipo
@@ -631,7 +631,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return effect;
 	}
 	
-	private TGEffectGrace readGraceEffect() throws IOException{
+	private TGEffectGrace readGraceEffect() throws IOException {
 		int header = readHeader();
 		
 		TGEffectGrace effect = this.factory.newEffectGrace();
@@ -655,7 +655,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return effect;
 	}
 	
-	private TGEffectTremoloPicking readTremoloPickingEffect() throws IOException{
+	private TGEffectTremoloPicking readTremoloPickingEffect() throws IOException {
 		TGEffectTremoloPicking effect = this.factory.newEffectTremoloPicking();
 		
 		//leo la duracion
@@ -664,7 +664,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return effect;
 	}
 	
-	private TGEffectTrill readTrillEffect() throws IOException{
+	private TGEffectTrill readTrillEffect() throws IOException {
 		TGEffectTrill effect = this.factory.newEffectTrill();
 		
 		//leo el fret
@@ -676,7 +676,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return effect;
 	}
 	
-	private TGMarker readMarker(int measure) throws IOException{
+	private TGMarker readMarker(int measure) throws IOException {
 		TGMarker marker = this.factory.newMarker();
 		
 		marker.setMeasure(measure);
@@ -690,14 +690,14 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return marker;
 	}
 	
-	private void readRGBColor(TGColor color) throws IOException{
+	private void readRGBColor(TGColor color) throws IOException {
 		//leo el RGB
 		color.setR((readByte() & 0xff));
 		color.setG((readByte() & 0xff));
 		color.setB((readByte() & 0xff));
 	}
 	
-	private void readLyrics(TGLyric lyrics) throws IOException{
+	private void readLyrics(TGLyric lyrics) throws IOException {
 		//leo el compas de comienzo
 		lyrics.setFrom(readShort());
 		
@@ -705,15 +705,15 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		lyrics.setLyrics(readIntegerString());
 	}
 	
-	private byte readByte() throws IOException{
+	private byte readByte() throws IOException {
 		return (byte)this.dataInputStream.read();
 	}
 	
-	private int readHeader() throws IOException{
+	private int readHeader() throws IOException {
 		return this.dataInputStream.read();
 	}
 	
-	private int readHeader(int bCount) throws IOException{
+	private int readHeader(int bCount) throws IOException {
 		int header = 0;
 		for(int i = bCount; i > 0; i --){
 			header += ( readHeader() << ( (8 * i) - 8 ) );
@@ -721,23 +721,23 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		return header;
 	}
 	
-	private short readShort() throws IOException{
+	private short readShort() throws IOException {
 		return this.dataInputStream.readShort();
 	}
 	
-	private String readUnsignedByteString() throws IOException{
+	private String readUnsignedByteString() throws IOException {
 		return readString( (this.dataInputStream.read() & 0xFF ));
 	}
 	
-	private String readIntegerString() throws IOException{
+	private String readIntegerString() throws IOException {
 		return readString(this.dataInputStream.readInt());
 	}
 	
-	private String readString(int length) throws IOException{
-		char[] chars = new char[length];
-		for(int i = 0;i < chars.length; i++){
-			chars[i] = this.dataInputStream.readChar();
+	private String readString(int length) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < length; i ++){
+			sb.append(this.dataInputStream.readChar());
 		}
-		return String.copyValueOf(chars);
+		return sb.toString();
 	}
 }
