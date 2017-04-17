@@ -81,13 +81,9 @@ public class PDFPainter extends PDFResourceFactory implements TGPainter {
 	public void moveTo(float x, float y) {
 		this.cb.moveTo(x, this.getY(y));
 	}
-	
-	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle) {
-		this.cb.arc(x, this.getY(y), (x + width), this.getY(y + height), startAngle, arcAngle);
-	}
 
-	public void addOval(float x, float y, float width, float height) {
-		this.cb.arc(x, this.getY(y), (x + width), this.getY(y + height), 0, 360);
+	public void addCircle(float x, float y, float width) {
+		this.cb.arc(x, this.getY(y), (x + width), this.getY(y + width), 0, 360);
 	}
 
 	public void addRectangle(float x, float y, float width, float height) {

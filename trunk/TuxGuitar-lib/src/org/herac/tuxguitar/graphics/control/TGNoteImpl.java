@@ -140,31 +140,34 @@ public class TGNoteImpl extends TGNote {
 			this.noteOrientation.setWidth(1);
 			this.noteOrientation.setHeight(1);
 			
-			layout.setTabNoteStyle(painter, (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout)));
+			boolean running = (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout));
+			
 			//-------------ligadura--------------------------------------
 			if (isTiedNote() && (style & TGLayout.DISPLAY_SCORE) == 0) {
 				float tX = 0;
-				float tY = 0;
-				float tWidth = 0;
-				float tHeight = (stringSpacing * 3);
+				float tY = (fromY + getTabPosY() + (stringSpacing / 2f));
 				TGNoteImpl noteForTie = getNoteForTie();
 				if (noteForTie != null) {
-					tX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout));
-					tY = (fromY + noteForTie.getTabPosY() + stringSpacing);
-					tWidth = (x - tX);
+					tX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout) + (5.0f * scale));
 				}else{
-					TGRectangle r = layout.getNoteOrientation(painter, x, y, this);
-					tX = r.getX() - (stringSpacing * 2);
-					tY = (fromY + getTabPosY() + stringSpacing);
-					tWidth = (stringSpacing * 2);
+					tX = (fromX + this.getPosX() + this.getBeatImpl().getSpacing(layout) - (stringSpacing * 2));
 				}
-				painter.setLineWidth(layout.getLineWidth(1));
-				painter.initPath();
-				painter.addArc(tX, (tY - tHeight ), tWidth, tHeight, 225, 90);
+				
+				float tWidth = (x - tX);
+				float tHeight1 = (stringSpacing / 3f);
+				float tHeight2 = (tHeight1 + (scale * 2f));
+				
+				layout.setTiedStyle(painter, running);
+				painter.initPath(TGPainter.PATH_FILL);
+				painter.moveTo(tX, tY);
+				painter.cubicTo(tX, tY + tHeight1, tX + tWidth, tY + tHeight1, tX + tWidth, tY);
+				painter.cubicTo(tX + tWidth, tY + tHeight2, tX, tY + tHeight2, tX, tY);
 				painter.closePath();
 				
 			//-------------nota--------------------------------------
-			} else if(!isTiedNote()){
+			} else if(!isTiedNote()) {
+				layout.setTabNoteStyle(painter, running);
+				
 				TGRectangle r = layout.getNoteOrientation(painter, x, y, this);
 				this.noteOrientation.setX(r.getX());
 				this.noteOrientation.setY(r.getY());
@@ -223,28 +226,31 @@ public class TGNoteImpl extends TGNote {
 			//-------------foreground--------------------------------------
 			boolean playing = (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout));
 			
-			layout.setScoreNoteStyle(painter,playing);
-			
 			//----------ligadura---------------------------------------
 			if (isTiedNote()) {
 				TGNoteImpl noteForTie = getNoteForTie();
 				float tX = x - (20.0f * layoutScale);
-				float tY = y1 - (2.0f * layoutScale);
-				float tWidth = (20.0f * layoutScale);
-				float tHeight = (30.0f * layoutScale);
+				float tY = (y1 + (layout.getScoreLineSpacing() / 2f));
 				if (noteForTie != null) {
 					float tNoteX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout));
 					float tNoteY = (fromY + getScorePosY());
-					tX = tNoteX + (6.0f * layoutScale);
-					tY = tNoteY - (3.0f * layoutScale);
-					tWidth = (x - tNoteX) - (3.0f * layoutScale);
-					tHeight = (35.0f * layoutScale);
+					tX = tNoteX + (10.0f * layoutScale);
+					tY = (tNoteY + (layout.getScoreLineSpacing() / 2f));
 				}
-				painter.setLineWidth(layout.getLineWidth(1));
-				painter.initPath();
-				painter.addArc(tX,tY, tWidth, tHeight, 45, 90);
+				float tWidth = (x - tX) - (3.0f * layoutScale);
+				float tHeight1 = (layout.getScoreLineSpacing() / 2f);
+				float tHeight2 = (tHeight1 - (layoutScale * 2f));
+				
+				layout.setTiedStyle(painter, playing);
+				painter.initPath(TGPainter.PATH_FILL);
+				painter.moveTo(tX, tY);
+				painter.cubicTo(tX, tY - tHeight1, tX + tWidth, tY - tHeight1, tX + tWidth, tY);
+				painter.cubicTo(tX + tWidth, tY - tHeight2, tX, tY - tHeight2, tX, tY);
 				painter.closePath();
 			}
+			
+			layout.setScoreNoteStyle(painter,playing);
+			
 			//----------sostenido--------------------------------------
 			if(this.accidental == TGMeasureImpl.NATURAL){
 				painter.initPath(TGPainter.PATH_FILL);
@@ -310,7 +316,7 @@ public class TGNoteImpl extends TGNote {
 						painter.setLineWidth(layout.getLineWidth(1));
 						painter.initPath(TGPainter.PATH_FILL);
 						painter.moveTo(sX - (size / 2),sY - (size / 2));
-						painter.addOval(sX - (size / 2),sY - (size / 2), size, size);
+						painter.addCircle(sX - (size / 2),sY - (size / 2), size);
 						painter.closePath();
 					}
 					//tremolo picking
@@ -343,7 +349,7 @@ public class TGNoteImpl extends TGNote {
 						painter.setLineWidth(layout.getLineWidth(1));
 						painter.initPath(TGPainter.PATH_FILL);
 						painter.moveTo(sX - (size / 2), sY - (size / 2));
-						painter.addOval(sX - (size / 2), sY - (size / 2), size, size);
+						painter.addCircle(sX - (size / 2), sY - (size / 2), size);
 						painter.closePath();
 					}
 					//tremolo picking
@@ -484,18 +490,20 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	private void paintHammer(TGLayout layout, TGPainter painter, TGNoteImpl nextNote, float fromX, float fromY,float nextFromX){
-		float xScale = layout.getScale();
-		float yScale = (layout.getStringSpacing() / 10.0f);
+		float scale = layout.getScale();
+		float x = (fromX + (7.0f * scale));
+		float y = fromY;
 		
-		float x = (fromX + (7.0f * xScale));
-		float y = (fromY - (5.0f * yScale));
+		float width = (nextNote != null)?( (nextNote.getPosX() + nextFromX + nextNote.getBeatImpl().getSpacing(layout)) - (4.0f * scale) - x ):(10.0f * scale);
+		float height1 = (layout.getStringSpacing() / 2f);
+		float height2 = (height1 - (scale * 2f));
 		
-		float width = (nextNote != null)?( (nextNote.getPosX() + nextFromX + nextNote.getBeatImpl().getSpacing(layout)) - (4.0f * xScale) - x ):(10.0f * xScale);
-		float height = (15.0f * yScale);
 		layout.setTabEffectStyle(painter);
 		painter.setLineWidth(layout.getLineWidth(1));
-		painter.initPath();
-		painter.addArc(x,y, width, height, 45,90);
+		painter.initPath(TGPainter.PATH_FILL);
+		painter.moveTo(x, y);
+		painter.cubicTo(x, y - height1, x + width, y - height1, x + width, y);
+		painter.cubicTo(x + width, y - height2, x, y - height2, x, y);
 		painter.closePath();
 	}
 	

@@ -119,27 +119,10 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgPath.append("M " + x + " " + y + " ");
 	}
 	
-	public void addArc(float x, float y, float width, float height, float startAngle, float arcLength) {
-		double angle1 = Math.toRadians(-startAngle);
-		double x1 = (x + (Math.cos(angle1) * 0.5 + 0.5) * width);
-		double y1 = (y + (Math.sin(angle1) * 0.5 + 0.5) * height);
-		
-		double angle2 = Math.toRadians(-startAngle - arcLength);
-		double x2 = (x + (Math.cos(angle2) * 0.5 + 0.5) * width);
-		double y2 = (y + (Math.sin(angle2) * 0.5 + 0.5) * height);
-		
-		this.svgPath.append("M " + x1 + " " + y1 + " ");
-		this.svgPath.append("A " + (width / 2) + " " + (height / 2) + " 0 ");
-		this.svgPath.append( ( arcLength > 180 || arcLength < -180 ? "1 " : "0 " ) );
-		this.svgPath.append( ( arcLength > 0 ? "0 " : "1 " ) );
-		this.svgPath.append(x2 + " " + y2 + " ");
-		this.svgPath.append("M " + x2 + " " + y2 + " ");
-	}
-	
-	public void addOval(float x, float y, float w, float h) {
-		this.svgPath.append("M " + x + " " + (y + (h / 2f)) + " a ");
-		this.svgPath.append((w / 2f) + " " + (h / 2f) + " 0 1 0 " + w + " 0 ");
-		this.svgPath.append((w / 2f) + " " + (h / 2f) + " 0 1 0 -" + w + " 0 ");
+	public void addCircle(float x, float y, float w) {
+		this.svgPath.append("M " + x + " " + (y + (w / 2f)) + " a ");
+		this.svgPath.append((w / 2f) + " " + (w / 2f) + " 0 1 0 " + w + " 0 ");
+		this.svgPath.append((w / 2f) + " " + (w / 2f) + " 0 1 0 -" + w + " 0 ");
 	}
 	
 	public void addRectangle(float x,float y,float width,float height) {
@@ -148,13 +131,6 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgPath.append("L " + (x + width) + " " + (y + height) + " ");
 		this.svgPath.append("L " + x + " " + (y + height) + " ");
 		this.svgPath.append("L " + x + " " + y + " ");
-	}
-	
-	public void addString(String text, float x, float y, TGFont font) {
-		TGFont currentFont = this.svgFont;
-		this.setFont(font);
-		this.drawString(text, Math.round(x), Math.round(y));
-		this.setFont(currentFont);
 	}
 	
 	public void setFont(TGFont font) {

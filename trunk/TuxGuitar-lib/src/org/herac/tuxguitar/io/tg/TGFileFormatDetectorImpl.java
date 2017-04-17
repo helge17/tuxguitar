@@ -32,12 +32,11 @@ public class TGFileFormatDetectorImpl implements TGFileFormatDetector {
 	}
 	
 	private String readVersion(DataInputStream is) throws IOException {
+		StringBuilder sb = new StringBuilder();
 		int length = (is.read() & 0xFF);
-		
-		char[] chars = new char[length];
-		for(int i = 0;i < chars.length; i++){
-			chars[i] = is.readChar();
+		for(int i = 0; i < length; i ++){
+			sb.append(is.readChar());
 		}
-		return String.copyValueOf(chars);
+		return sb.toString();
 	}
 }

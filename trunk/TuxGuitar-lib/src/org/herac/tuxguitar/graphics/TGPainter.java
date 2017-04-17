@@ -2,72 +2,68 @@ package org.herac.tuxguitar.graphics;
 
 public interface TGPainter extends TGResourceFactory, TGResource {
 	
-	public static final int PATH_DRAW = 0x01;
+	static final int PATH_DRAW = 0x01;
 	
-	public static final int PATH_FILL = 0x02;
+	static final int PATH_FILL = 0x02;
 	
-	public static final float THINNEST_LINE_WIDTH = 0;
+	static final float THINNEST_LINE_WIDTH = 0;
 	
-	public void initPath(int style);
+	void initPath(int style);
 	
-	public void initPath();
+	void initPath();
 	
-	public void closePath();
+	void closePath();
 	
-	public void drawString(String string, float x, float y);
+	void drawString(String string, float x, float y);
 	
-	public void drawString(String string, float x, float y, boolean isTransparent);
+	void drawString(String string, float x, float y, boolean isTransparent);
 	
-	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight);
+	void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight);
 	
-	public void drawImage(TGImage image, float x, float y);
+	void drawImage(TGImage image, float x, float y);
 	
-	public void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1);
+	void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1);
 	
-	public void lineTo(float x, float y);
+	void lineTo(float x, float y);
 	
-	public void moveTo(float x, float y);
+	void moveTo(float x, float y);
 	
-	public void addString(String text, float x, float y, TGFont font);
+	void addCircle(float x, float y, float width);
 	
-	public void addArc(float x, float y, float width, float height, float startAngle, float arcAngle);
+	void addRectangle(float x,float y,float width,float height);
 	
-	public void addOval(float x, float y, float width, float height);
+	void setFont(TGFont font);
 	
-	public void addRectangle(float x,float y,float width,float height);
+	void setForeground(TGColor color);
 	
-	public void setFont(TGFont font);
+	void setBackground(TGColor color);
 	
-	public void setForeground(TGColor color);
+	void setLineWidth(float lineWidth);
 	
-	public void setBackground(TGColor color);
+	void setLineStyleSolid();
 	
-	public void setLineWidth(float lineWidth);
+	void setLineStyleDot();
 	
-	public void setLineStyleSolid();
+	void setLineStyleDash();
 	
-	public void setLineStyleDot();
+	void setLineStyleDashDot();
 	
-	public void setLineStyleDash();
+	void setAlpha(int alpha);
 	
-	public void setLineStyleDashDot();
+	void setAntialias(boolean enabled);
 	
-	public void setAlpha(int alpha);
+	void setAdvanced(boolean advanced);
 	
-	public void setAntialias(boolean enabled);
+	float getFontSize();
 	
-	public void setAdvanced(boolean advanced);
+	float getFMBaseLine();
 	
-	public float getFontSize();
+	float getFMTopLine();
 	
-	public float getFMBaseLine();
+	float getFMMiddleLine();
 	
-	public float getFMTopLine();
+	float getFMHeight();
 	
-	public float getFMMiddleLine();
-	
-	public float getFMHeight();
-	
-	public float getFMWidth( String text );
+	float getFMWidth( String text );
 	
 }

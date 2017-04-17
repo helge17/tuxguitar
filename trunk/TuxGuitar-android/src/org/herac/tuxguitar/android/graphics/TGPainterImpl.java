@@ -83,14 +83,9 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 	public boolean isDisposed() {
 		return (this.canvas == null || this.paint == null);
 	}
-	
-	public void addArc(float x, float y, float w, float h, float startAngle, float arcLength) {
-		this.path.addArc(new RectF(x, y, x + w, y + h), startAngle, arcLength);
-		this.pathEmpty = false;
-	}
 
-	public void addOval(float x, float y, float w, float h) {
-		this.path.addOval(new RectF(x, y, x + w, y + h), Direction.CW);
+	public void addCircle(float x, float y, float w, float h) {
+		this.path.addOval(new RectF(x, y, x + w, y + w), Direction.CW);
 		this.pathEmpty = false;
 	}
 
@@ -132,10 +127,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
     	this.paint.setStyle(Paint.Style.FILL);
     	this.paint.setColor(this.foreground.getHandle(this.alpha));
 		this.canvas.drawText(text, x, y, this.paint);
-	}
-	
-	public void addString(String arg0, float arg1, float arg2, TGFont arg3) {
-		// not implemented..
 	}
 	
 	public void setAdvanced(boolean advanced) {
