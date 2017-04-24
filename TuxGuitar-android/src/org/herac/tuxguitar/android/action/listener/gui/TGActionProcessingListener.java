@@ -12,6 +12,7 @@ import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.view.processing.TGActionProcessingController;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGActionProcessingListener implements TGEventListener {
 
@@ -33,8 +34,8 @@ public class TGActionProcessingListener implements TGEventListener {
 	private TGActionProcessingController controller;
 	private Integer level;
 
-	public TGActionProcessingListener(TGActivity activity) {
-		this.controller = new TGActionProcessingController(activity);
+	public TGActionProcessingListener(TGContext context, TGActivity activity) {
+		this.controller = new TGActionProcessingController(context, activity);
 		this.resetLevel();
 	}
 

@@ -7,19 +7,21 @@ import java.util.List;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 	
+	private TGContext context;
 	private List<MidiSequencer> sequencers;
 	
-	public MidiSequencerProviderImpl(){
-		super();
+	public MidiSequencerProviderImpl(TGContext context){
+		this.context = context;
 	}
 	
 	public List<MidiSequencer> listSequencers() throws MidiPlayerException {
 		if(this.sequencers == null){
 			this.sequencers = new ArrayList<MidiSequencer>();
-			this.sequencers.add(new MidiSequencerImpl());
+			this.sequencers.add(new MidiSequencerImpl(this.context));
 		}
 		return this.sequencers;
 	}

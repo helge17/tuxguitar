@@ -1,20 +1,21 @@
 package org.herac.tuxguitar.android.view.processing;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
 
 public class TGActionProcessingController {
 	
 	private static final long PROCESSING_DELAY = 100;
-	
+
 	private TGLock lock;
 	private TGActionProcessingView view;
 	private TGActionProcessingModel model;
 	
 	private boolean running;
 	
-	public TGActionProcessingController(TGActivity activity){
-		this.lock = new TGLock();
+	public TGActionProcessingController(TGContext context, TGActivity activity){
+		this.lock = new TGLock(context);
 		this.view = new TGActionProcessingView(activity);
 		this.model = new TGActionProcessingModel();
 	}

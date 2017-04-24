@@ -14,7 +14,11 @@ import javax.swing.SwingUtilities;
 
 import org.herac.tuxguitar.app.system.config.TGConfig;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongLoaderHandle;
+import org.herac.tuxguitar.io.base.TGSongReaderHandle;
+import org.herac.tuxguitar.io.base.TGSongStreamContext;
+import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
+import org.herac.tuxguitar.thread.TGMultiThreadHandler;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -48,6 +52,7 @@ public class TGApplet extends Applet{
 	}
 	
 	public void applicationInit() {
+		this.initThreadHandler();
 		this.initConfig();
 		this.initSynchronizer();
 		
@@ -88,6 +93,10 @@ public class TGApplet extends Applet{
 		this.requestFocus();
 	}
 	
+	private void initThreadHandler() {
+		TGThreadManager.getInstance(TuxGuitar.instance().getContext()).setThreadHandler(new TGMultiThreadHandler());
+	}
+	
 	private void initSynchronizer(){
 		TGSynchronizer.getInstance(TuxGuitar.instance().getContext()).setController(new TGSynchronizer.TGSynchronizerController() {
 			
@@ -125,18 +134,23 @@ public class TGApplet extends Applet{
 		try{
 			if(TGConfig.SONG_URL != null){
 				TGContext context = TuxGuitar.instance().getContext();
-				TGFileFormatManager.getInstance(context).addInputStream(new org.herac.tuxguitar.io.tg.v10.TGInputStream());
-				TGFileFormatManager.getInstance(context).addInputStream(new org.herac.tuxguitar.io.tg.v11.TGInputStream());
-				TGFileFormatManager.getInstance(context).addInputStream(new org.herac.tuxguitar.io.tg.v12.TGInputStream());
+				TGFileFormatManager.getInstance(context).addReader(new org.herac.tuxguitar.io.tg.v10.TGSongReaderImpl());
+				TGFileFormatManager.getInstance(context).addReader(new org.herac.tuxguitar.io.tg.v11.TGSongReaderImpl());
+				TGFileFormatManager.getInstance(context).addReader(new org.herac.tuxguitar.io.tg.v12.TGSongReaderImpl());
+				
+				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(org.herac.tuxguitar.io.tg.v10.TGSongReaderImpl.SUPPORTED_FORMAT));
+				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(org.herac.tuxguitar.io.tg.v11.TGSongReaderImpl.SUPPORTED_FORMAT));
+				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(org.herac.tuxguitar.io.tg.v12.TGSongReaderImpl.SUPPORTED_FORMAT));
 				
 				URL url = new URL(TGConfig.SONG_URL);
 				
-				TGSongLoaderHandle tgSongLoaderHandle = new TGSongLoaderHandle();
-				tgSongLoaderHandle.setFactory(TuxGuitar.instance().getSongManager().getFactory());
-				tgSongLoaderHandle.setInputStream(getInputStream(url.openStream()));
-				TGFileFormatManager.getInstance(context).getLoader().load(tgSongLoaderHandle);
+				TGSongReaderHandle tgSongReaderHandle = new TGSongReaderHandle();
+				tgSongReaderHandle.setFactory(TuxGuitar.instance().getSongManager().getFactory());
+				tgSongReaderHandle.setInputStream(getInputStream(url.openStream()));
+				tgSongReaderHandle.setContext(new TGSongStreamContext());
+				TGFileFormatManager.getInstance(context).read(tgSongReaderHandle);
 				
-				TuxGuitar.instance().fireNewSong(tgSongLoaderHandle.getSong());
+				TuxGuitar.instance().fireNewSong(tgSongReaderHandle.getSong());
 			}
 		}catch(Throwable t){
 			t.printStackTrace();

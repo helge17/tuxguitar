@@ -6,6 +6,7 @@ import java.util.List;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
 
 public class TGBrowserConnection {
@@ -15,9 +16,9 @@ public class TGBrowserConnection {
 	private TGBrowser browser;
 	private TGBrowserConnectionHandler handler;
 	
-	public TGBrowserConnection(TGBrowserConnectionHandler handler){
+	public TGBrowserConnection(TGContext context, TGBrowserConnectionHandler handler){
 		this.handler = handler;
-		this.lock = new TGLock();
+		this.lock = new TGLock(context);
 	}
 	
 	public boolean isOpen(){

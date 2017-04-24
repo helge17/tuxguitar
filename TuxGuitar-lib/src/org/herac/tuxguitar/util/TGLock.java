@@ -1,19 +1,23 @@
 package org.herac.tuxguitar.util;
 
+import org.herac.tuxguitar.thread.TGThreadManager;
+
 public class TGLock {
 	
-	private Object lock;
-	private Thread lockThread;
 	private int lockCount;
+	private Object lock;
+	private Object lockThread;
+	private TGThreadManager threadManager;
 	
-	public TGLock(){
+	public TGLock(TGContext context){
+		this.lockCount = 0;
 		this.lock = new Object();
 		this.lockThread = null;
-		this.lockCount = 0;
+		this.threadManager = TGThreadManager.getInstance(context);
 	}
 	
 	public void lock() {
-		Thread thread = Thread.currentThread();
+		final Object thread = this.threadManager.getThreadId();
 		
 		boolean lockSuccess = false;
 		
@@ -24,9 +28,9 @@ public class TGLock {
 			}
 		}
 		
-		if( !lockSuccess ){
+		if( !lockSuccess ){			
 			while( isLocked(thread) ){
-				Thread.yield();
+				this.threadManager.yield();
 			}
 			this.lock();
 		}
@@ -57,13 +61,13 @@ public class TGLock {
 		}
 	}
 	
-	public boolean isLocked(Thread thread) {
+	public boolean isLocked(Object thread) {
 		synchronized( this.lock ){
-			return (this.lockThread != null && this.lockThread != thread);
+			return (this.lockThread != null && !this.lockThread.equals(thread));
 		}
 	}
 	
 	public boolean isLocked() {
-		return isLocked( Thread.currentThread() );
+		return isLocked( this.threadManager.getThreadId() );
 	}
 }

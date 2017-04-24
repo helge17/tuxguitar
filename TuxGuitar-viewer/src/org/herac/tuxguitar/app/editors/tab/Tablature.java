@@ -237,43 +237,6 @@ public class Tablature implements TGController {
 		return this.resourceBuffer;
 	}
 	
-	public void configureStyles(TGLayoutStyles styles) {
-		styles.setBufferEnabled(true);
-		styles.setStringSpacing( TGConfig.TAB_LINE_SPACING );
-		styles.setScoreLineSpacing( TGConfig.SCORE_LINE_SPACING );
-		styles.setFirstMeasureSpacing(0);
-		styles.setMinBufferSeparator(20);
-		styles.setMinTopSpacing(30);
-		styles.setMinScoreTabSpacing(TGConfig.MIN_SCORE_TABLATURE_SPACING);
-		styles.setFirstTrackSpacing(TGConfig.FIRST_TRACK_SPACING);
-		styles.setTrackSpacing(TGConfig.TRACK_SPACING);
-		
-		styles.setChordFretIndexSpacing(8);
-		styles.setChordStringSpacing(5);
-		styles.setChordFretSpacing(6);
-		styles.setChordNoteSize(4);
-		styles.setRepeatEndingSpacing(20);
-		styles.setTextSpacing(15);
-		styles.setMarkerSpacing(15);
-		styles.setDivisionTypeSpacing(10);
-		styles.setEffectSpacing(8);
-		
-		styles.setDefaultFont(TGConfig.FONT_DEFAULT);
-		styles.setNoteFont(TGConfig.FONT_NOTE);
-		styles.setTimeSignatureFont(TGConfig.FONT_TIME_SIGNATURE);
-		styles.setLyricFont(TGConfig.FONT_LYRIC);
-		styles.setTextFont(TGConfig.FONT_TEXT);
-		styles.setMarkerFont(TGConfig.FONT_MARKER);
-		styles.setGraceFont(TGConfig.FONT_GRACE);
-		styles.setChordFont(TGConfig.FONT_CHORD);
-		styles.setChordFretFont(TGConfig.FONT_CHORD_FRET);
-		styles.setBackgroundColor(TGConfig.COLOR_BACKGROUND);
-		styles.setLineColor(TGConfig.COLOR_LINE);
-		styles.setScoreNoteColor(TGConfig.COLOR_SCORE_NOTE);
-		styles.setTabNoteColor(TGConfig.COLOR_TAB_NOTE);
-		styles.setPlayNoteColor(TGConfig.COLOR_PLAY_NOTE);
-	}
-
 	public int getTrackSelection(){
 		if( (getViewLayout().getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0 ){
 			return getCaret().getTrack().getNumber();
@@ -290,12 +253,59 @@ public class Tablature implements TGController {
 	}
 
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader) {
-		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public TGLayoutStyles getStyles() {
+		TGLayoutStyles styles = new TGLayoutStyles();
+		styles.setBufferEnabled(true);
+		styles.setStringSpacing( TGConfig.TAB_LINE_SPACING );
+		styles.setScoreLineSpacing( TGConfig.SCORE_LINE_SPACING );
+		styles.setFirstMeasureSpacing(0);
+		styles.setMinBufferSeparator(20);
+		styles.setMinTopSpacing(30);
+		styles.setMinScoreTabSpacing(TGConfig.MIN_SCORE_TABLATURE_SPACING);
+		styles.setFirstTrackSpacing(TGConfig.FIRST_TRACK_SPACING);
+		styles.setTrackSpacing(TGConfig.TRACK_SPACING);
+		styles.setFirstNoteSpacing(10);
+		styles.setMeasureLeftSpacing(15);
+		styles.setMeasureRightSpacing(15);
+		styles.setClefSpacing(30);
+		styles.setKeySignatureSpacing(15);
+		styles.setTimeSignatureSpacing(15);
+		
+		styles.setChordFretIndexSpacing(8);
+		styles.setChordStringSpacing(5);
+		styles.setChordFretSpacing(6);
+		styles.setChordNoteSize(4);
+		styles.setRepeatEndingSpacing(20);
+		styles.setTextSpacing(15);
+		styles.setMarkerSpacing(15);
+		styles.setDivisionTypeSpacing(10);
+		styles.setEffectSpacing(8);
+		styles.setLineWidths(new float[] {0f, 1f, 2f, 3f, 4f, 5f});
+		styles.setDurationWidths(new float[] {30f, 25f, 21f, 20f, 19f,18f});
+		
+		styles.setDefaultFont(TGConfig.FONT_DEFAULT);
+		styles.setNoteFont(TGConfig.FONT_NOTE);
+		styles.setTimeSignatureFont(TGConfig.FONT_TIME_SIGNATURE);
+		styles.setLyricFont(TGConfig.FONT_LYRIC);
+		styles.setTextFont(TGConfig.FONT_TEXT);
+		styles.setMarkerFont(TGConfig.FONT_MARKER);
+		styles.setGraceFont(TGConfig.FONT_GRACE);
+		styles.setChordFont(TGConfig.FONT_CHORD);
+		styles.setChordFretFont(TGConfig.FONT_CHORD_FRET);
+		styles.setBackgroundColor(TGConfig.COLOR_BACKGROUND);
+		styles.setLineColor(TGConfig.COLOR_LINE);
+		styles.setScoreNoteColor(TGConfig.COLOR_SCORE_NOTE);
+		styles.setTabNoteColor(TGConfig.COLOR_TAB_NOTE);
+		styles.setPlayNoteColor(TGConfig.COLOR_PLAY_NOTE);
+		
+		return styles;
+	}
+
 }
