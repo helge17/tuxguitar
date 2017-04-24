@@ -52,6 +52,8 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.thread.TGMultiThreadHandler;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -81,8 +83,8 @@ public class TuxGuitar {
 	private TGCustomChordManager customChordManager;
 	
 	public TuxGuitar() {
-		this.lock = new TGLock();
 		this.context = new TGContext();
+		this.lock = new TGLock(this.context);
 		this.initialized = false;
 	}
 	
@@ -101,6 +103,7 @@ public class TuxGuitar {
 	}
 	
 	private void createMainContext() {
+		TGThreadManager.getInstance(this.context).setThreadHandler(new TGMultiThreadHandler());
 		TGResourceManager.getInstance(this.context).setResourceLoader(TGClassLoader.getInstance(this.context));
 		TGFileUtils.loadLibraries(this.context);
 		TGFileUtils.loadClasspath(this.context);
@@ -325,7 +328,7 @@ public class TuxGuitar {
 		midiPlayer.init(getDocumentManager());
 		midiPlayer.addListener( new TGTransportListener(this.context) );
 		try {
-			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(), false);
+			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(this.context), false);
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		}

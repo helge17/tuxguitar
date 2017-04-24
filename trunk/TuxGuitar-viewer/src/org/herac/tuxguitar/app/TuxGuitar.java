@@ -51,8 +51,8 @@ public class TuxGuitar {
 	private TGTransport transport;
 	
 	private TuxGuitar() {
-		this.lock = new TGLock();
 		this.context = new TGContext();
+		this.lock = new TGLock(this.context);
 	}
 	
 	public static TuxGuitar instance() {
@@ -120,7 +120,7 @@ public class TuxGuitar {
 			this.player = MidiPlayer.getInstance(this.context);
 			this.player.init(getDocumentManager());
 			try {
-				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl());
+				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(this.context));
 				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl());
 				
 				//check midi sequencer

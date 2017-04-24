@@ -27,7 +27,7 @@ public class TGTransportAdapter {
 			MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
 			midiPlayer.init(TGDocumentManager.getInstance(this.context));
 			midiPlayer.addListener(new TGTransportListener(this.context));
-			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(), true);
+			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(this.context), true);
 			
 			this.appendListeners();
 			this.callLoadSettings();

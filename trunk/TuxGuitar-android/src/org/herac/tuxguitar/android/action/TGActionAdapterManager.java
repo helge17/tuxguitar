@@ -50,7 +50,7 @@ public class TGActionAdapterManager {
 	}
 	
 	private void initializeHandlers(TGActivity activity){
-		TGActionProcessingListener processingListener = new TGActionProcessingListener(activity);
+		TGActionProcessingListener processingListener = new TGActionProcessingListener(this.getContext(), activity);
 		TGHideSoftInputListener hideSoftInputListener = new TGHideSoftInputListener(this.getContext(), activity);
 		
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.getContext());

@@ -4,21 +4,26 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiTransmitter;
+import org.herac.tuxguitar.thread.TGThreadLoop;
+import org.herac.tuxguitar.thread.TGThreadManager;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSequencerImpl implements MidiSequencer{
 	
 	private boolean reset;
 	private boolean running;
 	private boolean stopped;
+	private TGContext context;
 	private MidiTransmitter transmitter;
 	private MidiTickPlayer midiTickPlayer;
 	private MidiEventPlayer midiEventPlayer;
 	private MidiEventDispacher midiEventDispacher;
 	private MidiTrackController midiTrackController;
 	
-	public MidiSequencerImpl(){
+	public MidiSequencerImpl(TGContext context){
 		this.running = false;
 		this.stopped = true;
+		this.context = context;
 		this.midiTickPlayer = new MidiTickPlayer();
 		this.midiEventPlayer = new MidiEventPlayer(this);
 		this.midiEventDispacher = new MidiEventDispacher(this);
@@ -151,9 +156,13 @@ public class MidiSequencerImpl implements MidiSequencer{
 		return "TuxGuitar Sequencer";
 	}
 	
-	private class MidiTimer extends Thread {
+	public TGContext getContext() {
+		return this.context;
+	}
+	
+	private class MidiTimer implements Runnable {
 		
-		private static final int TIMER_DELAY = 15;
+		private static final long TIMER_DELAY = 15;
 		
 		private MidiSequencerImpl sequencer;
 		
@@ -162,15 +171,27 @@ public class MidiSequencerImpl implements MidiSequencer{
 		}
 		
 		public void run() {
+			TGThreadManager.getInstance(this.sequencer.getContext()).loop(new TGThreadLoop() {
+				public Long process() {
+					return (processLoop() ? TIMER_DELAY : BREAK);
+				}
+			});
+		}
+		
+		public boolean processLoop() {
+			boolean running = false;
 			try {
 				synchronized(this.sequencer) {
-					while( this.sequencer.process() ){
-						this.sequencer.wait( TIMER_DELAY );
-					}
+					running = this.sequencer.process();
 				}
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}
+			return running;
+		}
+		
+		public void start() {
+			TGThreadManager.getInstance(this.sequencer.getContext()).start(this);
 		}
 	}
 }

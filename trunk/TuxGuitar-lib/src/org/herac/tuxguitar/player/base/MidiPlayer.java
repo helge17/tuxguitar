@@ -17,6 +17,8 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.thread.TGThreadLoop;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -26,7 +28,7 @@ public class MidiPlayer{
 	
 	public static final int MAX_VOLUME = 10;
 	
-	private static final int TIMER_DELAY = 10;
+	private static final long TIMER_DELAY = 10;
 	
 	private TGContext context;
 	
@@ -82,11 +84,11 @@ public class MidiPlayer{
 	
 	private boolean tryOpenFistDevice;
 	
-	protected TGLock lock = new TGLock();
+	protected TGLock lock;
 	
 	private MidiPlayer(TGContext context) {
 		this.context = context;
-		this.lock = new TGLock();
+		this.lock = new TGLock(context);
 		this.volume = MAX_VOLUME;
 	}
 	
@@ -204,11 +206,11 @@ public class MidiPlayer{
 			this.getCountDown().setTempoPercent(getMode().getCurrentPercent());
 			this.changeTickPosition();
 			
-			new Thread(new Runnable() {
+			TGThreadManager.getInstance(this.context).start(new Runnable() {
 				public void run() {
-					runPlayProcess(notifyStarted);
+					runPlayStartProcess(notifyStarted);
 				}
-			}).start();
+			});
 		}catch (Throwable throwable) {
 			this.reset();
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
@@ -217,7 +219,7 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void runPlayProcess(boolean notifyStarted) {
+	public void runPlayStartProcess(boolean notifyStarted) {
 		try {
 			// Start
 			if( notifyStarted ){
@@ -246,8 +248,26 @@ public class MidiPlayer{
 			}
 			
 			// Play loop
-			Object sequencerLock = new Object();
-			while( this.getSequencer().isRunning() && this.isRunning()) {
+			runPlayLoop();
+		}catch (Throwable throwable) {
+			this.reset();
+			
+			throwable.printStackTrace();
+		}
+	}
+	
+	public void runPlayLoop() {
+		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
+			public Long process() {
+				return (runPlayLoopProcess() ? TIMER_DELAY : BREAK);
+			}
+		});
+	}
+	
+	public boolean runPlayLoopProcess() {
+		try {
+			// Play loop
+			if( this.getSequencer().isRunning() && this.isRunning()) {
 				try {
 					this.lock();
 					
@@ -258,11 +278,22 @@ public class MidiPlayer{
 				} finally {
 					this.unlock();
 				}
-				synchronized(sequencerLock) {
-					sequencerLock.wait( TIMER_DELAY );
-				}
+				return true;
 			}
 			
+			else {
+				runPlayEndProcess();
+			}
+		}catch (Throwable throwable) {
+			this.reset();
+			
+			throwable.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void runPlayEndProcess() {
+		try {
 			// Finish
 			try {
 				this.lock();
@@ -809,11 +840,11 @@ public class MidiPlayer{
 					beat[i][1] = note.getVelocity();
 				}
 				
-				new Thread(new Runnable() {
+				TGThreadManager.getInstance(this.context).start(new Runnable() {
 					public void run() {
 						MidiPlayer.this.playBeat(channelId, bank, program, volume, balance, chorus, reverb, phaser, tremolo, beat);
 					}
-				}).start();
+				});
 			}
 		} finally {
 			this.unlock();

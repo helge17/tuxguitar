@@ -70,7 +70,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 	
 	public TGBrowserDialog(TGContext context){
 		this.context = context;
-		this.connection = new TGBrowserConnection(this);
+		this.connection = new TGBrowserConnection(context, this);
 		this.menu = new TGBrowserMenuBar(this);
 		this.toolBar = new TGBrowserToolBar(this);
 	}

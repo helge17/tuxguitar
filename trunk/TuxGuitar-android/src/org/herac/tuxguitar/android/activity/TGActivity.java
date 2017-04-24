@@ -29,6 +29,8 @@ import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.thread.TGMultiThreadHandler;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
@@ -166,11 +168,12 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 	
 	public void createModules() {
 		TGContext context = this.findContext();
+		TGThreadManager.getInstance(context).setThreadHandler(new TGMultiThreadHandler());
 		TGSynchronizer.getInstance(context).setController(new TGSynchronizerControllerImpl(context));
 		TGErrorManager.getInstance(context).addErrorHandler(new TGErrorHandlerImpl(this));
 		TGResourceManager.getInstance(context).setResourceLoader(new TGResourceLoaderImpl(this));
 		TGActionAdapterManager.getInstance(context).initialize(this);
-		TGEditorManager.getInstance(context).setLockControl(new TGLock());
+		TGEditorManager.getInstance(context).setLockControl(new TGLock(context));
 		TGVarAdapter.initialize(context);
 		TGPropertiesAdapter.initialize(context, this);
 		TGTransportAdapter.getInstance(context).initialize();
