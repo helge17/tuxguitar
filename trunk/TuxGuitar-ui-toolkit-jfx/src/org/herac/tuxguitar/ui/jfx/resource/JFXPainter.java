@@ -113,7 +113,7 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 	}
 	
 	public void addCircle(float x, float y, float width) {
-		this.getControl().arc((x + (width / 2f)), (y + (width / 2f)), (width / 2f), (width / 2f), 0, 360);
+		this.getControl().arc(x, y, (width / 2f), (width / 2f), 0, 360);
 		this.pathEmpty = false;
 	}
 	

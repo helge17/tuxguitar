@@ -383,15 +383,15 @@ public class TGFretBoard {
 				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - STRING_SPACING;
 				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + STRING_SPACING;
 				painter.initPath(TGPainter.PATH_FILL);
-				painter.addCircle(x - (size / 2), y1 - (size / 2), size);
-				painter.addCircle(x - (size / 2), y2 - (size / 2), size);
+				painter.addCircle(x, y1, size);
+				painter.addCircle(x, y2, size);
 				painter.closePath();
 			} else if (fret == 3 || fret == 5 || fret == 7 || fret == 9) {
 				int size = getOvalSize();
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2);
 				painter.initPath(TGPainter.PATH_FILL);
-				painter.addCircle(x - (size / 2),y - (size / 2), size);
+				painter.addCircle(x, y, size);
 				painter.closePath();
 			}
 			painter.setLineWidth(1);
@@ -462,8 +462,8 @@ public class TGFretBoard {
 		int size = getOvalSize();
 		painter.setBackground(new TGColorImpl(background));
 		painter.initPath(TGPainter.PATH_FILL);
-		painter.moveTo(x - (size / 2),y - (size / 2));
-		painter.addCircle(x - (size / 2),y - (size / 2),size);
+		painter.moveTo(x, y);
+		painter.addCircle(x, y, size);
 		painter.closePath();
 	}
 	

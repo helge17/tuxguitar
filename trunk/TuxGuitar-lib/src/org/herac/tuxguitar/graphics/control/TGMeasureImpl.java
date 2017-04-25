@@ -828,16 +828,16 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.closePath();
 			
 			if( this.isRepeatOpen() ){
-				int size = Math.max(1,Math.round(4f * scale));
-				float xMove = ((lineWidthBig + scale + lineWidthSmall) + (2f * scale));
+				int size = Math.max(1, Math.round(4f * scale));
+				float xMove = ((lineWidthBig + scale + lineWidthSmall) + (2f * scale) + size);
 				float yMove = ((lineWidthBig + scale + lineWidthSmall) + (2f * scale));
 				
 				painter.setLineWidth(lineWidthSmall);
 				painter.initPath(TGPainter.PATH_FILL);
-				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2) - (yMove + (size / 2)));
-				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2) - (yMove + (size / 2)), size);
-				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2) + (yMove - (size / 2)));
-				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size);
+				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2) - yMove);
+				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2) - yMove, size);
+				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2) + yMove);
+				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2) + yMove, size);
 				painter.closePath();
 			}
 		} else {
@@ -866,14 +866,14 @@ public class TGMeasureImpl extends TGMeasure{
 			if( this.getRepeatClose() > 0 ){
 				int size = Math.max(1,Math.round(4f * scale));
 				float xMove = (((lineWidthBig + scale + lineWidthSmall) + (2f * scale)) + size);
-				float yMove = ( (lineWidthBig + scale + lineWidthSmall) + (2f * scale) );
+				float yMove = ( (lineWidthBig + scale + lineWidthSmall) + (2f * scale));
 				
 				painter.setLineWidth(lineWidthSmall);
 				painter.initPath(TGPainter.PATH_FILL);
-				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - (yMove + (size / 2)));
-				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - (yMove + (size / 2)), size);
-				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)));
-				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + (yMove - (size / 2)), size);
+				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - yMove);
+				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) - yMove, size);
+				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + yMove);
+				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2) + yMove, size);
 				painter.closePath();
 				if( addInfo ){
 					layout.setDivisionsStyle(painter,false);

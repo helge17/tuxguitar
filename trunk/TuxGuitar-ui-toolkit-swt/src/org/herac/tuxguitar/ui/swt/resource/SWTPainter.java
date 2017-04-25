@@ -113,7 +113,7 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	}
 	
 	public void addCircle(float x, float y, float width) {
-		this.path.addArc(x, y, width, width, 0, 360);
+		this.path.addArc((x - (width / 2f)), (y - (width / 2f)), width, width, 0, 360);
 		this.pathEmpty = false;
 	}
 	

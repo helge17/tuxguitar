@@ -120,7 +120,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 	}
 	
 	public void addCircle(float x, float y, float w) {
-		this.svgPath.append("M " + x + " " + (y + (w / 2f)) + " a ");
+		this.svgPath.append("M " + (x - (w / 2f)) + " " + y + " a ");
 		this.svgPath.append((w / 2f) + " " + (w / 2f) + " 0 1 0 " + w + " 0 ");
 		this.svgPath.append((w / 2f) + " " + (w / 2f) + " 0 1 0 -" + w + " 0 ");
 	}
