@@ -200,7 +200,7 @@ public class TGChordEditor {
 		
 		for(UIPosition point : this.points) {
 			painter.initPath(TGPainter.PATH_FILL);
-			painter.addCircle(point.getX() - (noteSize / 2), point.getY() + (noteSize / 2),noteSize);
+			painter.addCircle(point.getX(), point.getY() + (FRET_SPACING / 2), noteSize);
 			painter.closePath();
 		}
 		
@@ -209,8 +209,8 @@ public class TGChordEditor {
 			if (!hasPoints(i)) {
 				painter.initPath();
 				if (this.firstFrets[i]) {
-					int x = this.strings[i] - (noteSize / 2);
-					int y = (FRET_SPACING - noteSize) - 11;
+					int x = this.strings[i];
+					int y = (FRET_SPACING - ((noteSize - 1) / 2)) - 12;
 					painter.addCircle(x, y, (noteSize - 1));
 				} else {
 					int x = this.strings[i];

@@ -315,8 +315,8 @@ public class TGNoteImpl extends TGNote {
 						layout.setScoreEffectStyle(painter);
 						painter.setLineWidth(layout.getLineWidth(1));
 						painter.initPath(TGPainter.PATH_FILL);
-						painter.moveTo(sX - (size / 2),sY - (size / 2));
-						painter.addCircle(sX - (size / 2),sY - (size / 2), size);
+						painter.moveTo(sX, sY);
+						painter.addCircle(sX, sY, size);
 						painter.closePath();
 					}
 					//tremolo picking
@@ -348,8 +348,8 @@ public class TGNoteImpl extends TGNote {
 						layout.setScoreEffectStyle(painter);
 						painter.setLineWidth(layout.getLineWidth(1));
 						painter.initPath(TGPainter.PATH_FILL);
-						painter.moveTo(sX - (size / 2), sY - (size / 2));
-						painter.addCircle(sX - (size / 2), sY - (size / 2), size);
+						painter.moveTo(sX, sY);
+						painter.addCircle(sX, sY, size);
 						painter.closePath();
 					}
 					//tremolo picking

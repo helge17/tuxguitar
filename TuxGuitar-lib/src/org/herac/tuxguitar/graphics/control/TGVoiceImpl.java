@@ -365,6 +365,7 @@ public class TGVoiceImpl extends TGVoice{
 		float lineSpacing = 0;
 		float y = 0;
 		float scale = 0;
+		float layoutScale = layout.getScale();
 		
 		if((style & TGLayout.DISPLAY_SCORE) != 0 ){
 			x = fromX + getPosX() + getBeatImpl().getSpacing(layout);
@@ -406,16 +407,18 @@ public class TGVoiceImpl extends TGVoice{
 		
 		painter.closePath();
 		
-		if(getDuration().isDotted() || getDuration().isDoubleDotted()){
-			layout.setDotStyle(painter);
-			painter.initPath();
-			painter.moveTo(x + 10, y +1);
-			painter.addCircle(x + 10, y +1, 1);
-			if(getDuration().isDoubleDotted()){
-				painter.moveTo(x + 13, y + 1);
-				painter.addCircle(x + 13,y + 1, 1);
-			}
-			painter.closePath();
+		if( getDuration().isDotted() || getDuration().isDoubleDotted()) {
+			paintDot(layout, painter, (x + 10f * layoutScale), (y + 2f * layoutScale), layoutScale);
+			
+//			layout.setDotStyle(painter);
+//			painter.initPath();
+//			painter.moveTo(x + 10, y + 1);
+//			painter.addCircle(x + 10, y +1, 1);
+//			if(getDuration().isDoubleDotted()){
+//				painter.moveTo(x + 13, y + 1);
+//				painter.addCircle(x + 13,y + 1, 1);
+//			}
+//			painter.closePath();
 		}
 	}
 	
@@ -508,7 +511,7 @@ public class TGVoiceImpl extends TGVoice{
 				int joinedType = getJoinedType();
 				float posX = ((getDuration().getValue() > TGDuration.WHOLE)?((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT || joinedType == TGVoiceImpl.JOINED_TYPE_RIGHT)?(x+ (4.0f * scale)):(x- (5.0f * scale))):x);
 				float posY = (y2 - ((getDuration().getValue() >= TGDuration.EIGHTH ? ((stringSpacing / 2f) * (getDuration().getIndex() - 2)) : scale) * direction));
-				paintDot(layout, painter, posX, posY,scale);
+				paintDot(layout, painter, posX, posY, scale);
 			}
 		}
 	}
@@ -588,18 +591,18 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void paintDot(TGLayout layout,TGPainter painter,float fromX, float fromY,float scale){
+	public void paintDot(TGLayout layout,TGPainter painter,float fromX, float fromY, float scale){
 		float dotSize = (3.0f * scale);
 		float posX = fromX;
 		float posY = fromY;
 		layout.setDotStyle(painter);
 		painter.setLineWidth(layout.getLineWidth(0));
 		painter.initPath(TGPainter.PATH_FILL);
-		painter.moveTo(posX - (dotSize / 2), posY - (dotSize / 2));
-		painter.addCircle(posX - (dotSize / 2), posY - (dotSize / 2), dotSize);
+		painter.moveTo(posX, posY);
+		painter.addCircle(posX, posY, dotSize);
 		if(getDuration().isDoubleDotted()){
-			painter.moveTo(posX + (dotSize + 2) - (dotSize / 2), posY - (dotSize / 2));
-			painter.addCircle(posX + (dotSize + 2) - (dotSize / 2), posY - (dotSize / 2), dotSize);
+			painter.moveTo(posX + (dotSize + (2f * scale)), posY);
+			painter.addCircle(posX + (dotSize + (2f * scale)), posY, dotSize);
 		}
 		painter.closePath();
 	}

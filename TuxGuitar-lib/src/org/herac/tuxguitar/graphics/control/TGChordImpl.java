@@ -346,7 +346,7 @@ public class TGChordImpl extends TGChord {
 		for(int i = 0;i < getStrings().length;i++){
 			int fret = getFretValue(i);
 			float noteX = x + ((getStringSpacing() * (countStrings() - 1)) - (getStringSpacing() * i));
-			if(fret < 0){
+			if( fret < 0){
 				painter.initPath();
 				painter.moveTo((noteX - (getNoteSize() / 2)), fromY);
 				painter.lineTo((noteX + (getNoteSize() / 2)), fromY + getNoteSize());
@@ -356,7 +356,7 @@ public class TGChordImpl extends TGChord {
 			}
 			else if(fret == 0){
 				painter.initPath();
-				painter.addCircle(noteX - (getNoteSize() / 2),fromY,getNoteSize());
+				painter.addCircle(noteX, (fromY + (getNoteSize() / 2)), getNoteSize());
 				painter.closePath();
 			}
 			else{
@@ -364,7 +364,7 @@ public class TGChordImpl extends TGChord {
 				painter.initPath(TGPainter.PATH_FILL);
 				fret -= (getFirstFret() - 1);
 				float noteY = y + ((getFretSpacing() * fret) - (getFretSpacing() / 2 ));
-				painter.addCircle(noteX - (getNoteSize() / 2),noteY - (getNoteSize() / 2),(getNoteSize() + 1));
+				painter.addCircle(noteX, noteY, (getNoteSize() + 1));
 				painter.closePath();
 			}
 		}

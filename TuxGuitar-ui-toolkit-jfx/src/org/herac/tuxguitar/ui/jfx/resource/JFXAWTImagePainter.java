@@ -179,7 +179,7 @@ public class JFXAWTImagePainter extends JFXAbstractPainter<JFXAWTImage> implemen
 	}
 	
 	public void addCircle(float x, float y, float width) {
-		this.path.append(new Arc2D.Float(x, y, width, width, 0, 360, Arc2D.OPEN), true);
+		this.path.append(new Arc2D.Float((x - (width / 2f)), (y - (width / 2f)), width, width, 0, 360, Arc2D.OPEN), true);
 		this.pathEmpty = false;
 	}
 	
