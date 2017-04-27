@@ -72,29 +72,9 @@ class MidiReceiverImpl implements GMReceiver{
 		try{
 			if(!this.device.isOpen()){
 				this.device.open();
-	//			final MidiDevice device = this.device;
-	//			TGSynchronizer.instance().execute(new Runnable() {
-	//				public void run() throws TGException {
-	//					try{
-	//						device.open();
-	//					} catch(MidiUnavailableException e){
-	//						throw new TGException(e);
-	//					}
-	//				}
-	//			});
 			}
 			if( this.receiver == null ){
 				this.setReceiver(this.device.getReceiver());
-	//			final MidiDevice device = this.device;
-	//			TGSynchronizer.instance().execute(new Runnable() {
-	//				public void run() throws TGException {
-	//					try{
-	//						setReceiver(device.getReceiver());
-	//					} catch(MidiUnavailableException e){
-	//						throw new TGException(e);
-	//					}
-	//				}
-	//			});
 			}
 		} catch(Throwable e){
 			throw new TGException(e);
@@ -105,22 +85,9 @@ class MidiReceiverImpl implements GMReceiver{
 		if( this.receiver != null ){
 			this.receiver.close();
 			this.setReceiver(null);
-//			final Receiver receiver = this.receiver;
-//			TGSynchronizer.instance().execute(new Runnable() {
-//				public void run() throws TGException {
-//					receiver.close();
-//					setReceiver(null);
-//				}
-//			});
 		}
 		if( this.device.isOpen() ){
 			this.device.close();
-//			final MidiDevice device = this.device;
-//			TGSynchronizer.instance().execute(new Runnable() {
-//				public void run() throws TGException {
-//					device.close();
-//				}
-//			});
 		}
 	}
 	
