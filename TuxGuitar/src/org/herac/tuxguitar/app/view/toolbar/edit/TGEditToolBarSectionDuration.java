@@ -90,12 +90,9 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		
 		this.tiedNote = toolBar2.createCheckItem();
 		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
-		
-		this.loadIcons();
-		this.loadProperties();
 	}
 	
-	public void updateItems(){
+	public void updateSectionItems() {
 		TGNote note = this.getTablature().getCaret().getSelectedNote();
 		TGDuration duration = this.getTablature().getCaret().getDuration();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
@@ -111,7 +108,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		this.updateDivisionTypeMenuItems(duration.getDivision(), running);
 	}
 	
-	public void loadProperties(){
+	public void loadSectionProperties() {
 		TGDuration duration = this.getTablature().getCaret().getDuration();
 		
 		this.dotted.setToolTipText(this.getText("duration.dotted"));
@@ -122,7 +119,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		this.loadDivisionTypeMenuProperties();
 	}
 	
-	public void loadIcons(){
+	public void loadSectionIcons() {
 		this.dotted.setImage(this.getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(this.getIconManager().getDurationDoubleDotted());
 		this.divisionTypeItem.setImage(this.getIconManager().getDivisionType());

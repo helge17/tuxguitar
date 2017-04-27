@@ -55,12 +55,9 @@ public class TGEditToolBarSectionDynamic extends TGEditToolBarSection {
 		this.menuItems.add(this.createToolItem(toolBar, TGVelocities.FORTE));
 		this.menuItems.add(this.createToolItem(toolBar, TGVelocities.FORTISSIMO));
 		this.menuItems.add(this.createToolItem(toolBar, TGVelocities.FORTE_FORTISSIMO));
-		
-		this.loadIcons();
-		this.loadProperties();
 	}
 	
-	public void loadProperties(){
+	public void loadSectionProperties() {
 		for(UIToolCheckableItem menuItem : this.menuItems) {
 			Integer velocity = menuItem.getData(VELOCITY_VALUE);
 			String nameKey = getNameKey(velocity);
@@ -70,7 +67,7 @@ public class TGEditToolBarSectionDynamic extends TGEditToolBarSection {
 		}
 	}
 	
-	public void loadIcons(){
+	public void loadSectionIcons() {
 		for(UIToolCheckableItem menuItem : this.menuItems) {
 			Integer velocity = menuItem.getData(VELOCITY_VALUE);
 			UIImage icon = this.getDynamicIcon(velocity);
@@ -80,7 +77,7 @@ public class TGEditToolBarSectionDynamic extends TGEditToolBarSection {
 		}
 	}
 	
-	public void updateItems(){
+	public void updateSectionItems() {
 		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		int selection = ((caret.getSelectedNote() != null) ? caret.getSelectedNote().getVelocity() : caret.getVelocity());
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();

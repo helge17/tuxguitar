@@ -29,6 +29,12 @@ public abstract class TGEditToolBarSection implements TGToolBarSection {
 		this.sectionTitle = sectionTitle;
 	}
 	
+	public abstract void loadSectionIcons();
+	
+	public abstract void loadSectionProperties();
+	
+	public abstract void updateSectionItems();
+	
 	public abstract void createSectionToolBars();
 	
 	public UIControl createSection(UIContainer container) {
@@ -37,9 +43,10 @@ public abstract class TGEditToolBarSection implements TGToolBarSection {
 		UITableLayout layout = new UITableLayout();
 		this.toolBarContainer = uiFactory.createLegendPanel(container);
 		this.toolBarContainer.setLayout(layout);
-		this.toolBarContainer.setText(this.getText(this.sectionTitle));
 		
 		this.createSectionToolBars();
+		this.loadIcons();
+		this.loadProperties();
 		
 		List<UIControl> toolBars = this.toolBarContainer.getChildren();
 		for(int i = 0; i < toolBars.size(); i ++) {
@@ -57,6 +64,19 @@ public abstract class TGEditToolBarSection implements TGToolBarSection {
 	
 	public TGActionProcessorListener createActionProcessor(String actionId) {
 		return new TGActionProcessorListener(this.toolBar.getContext(), actionId);
+	}
+	
+	public void loadIcons() {
+		this.loadSectionIcons();
+	}
+	
+	public void loadProperties() {
+		this.toolBarContainer.setText(this.getText(this.sectionTitle));
+		this.loadSectionProperties();
+	}
+	
+	public void updateItems() {
+		this.updateSectionItems();
 	}
 	
 	public String getText(String key) {

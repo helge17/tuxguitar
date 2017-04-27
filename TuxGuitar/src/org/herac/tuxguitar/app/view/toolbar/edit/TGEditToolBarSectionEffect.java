@@ -136,12 +136,9 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		//--FADE IN
 		this.fadeIn = toolBar.createCheckItem();
 		this.fadeIn.addSelectionListener(this.createActionProcessor(TGChangeFadeInAction.NAME));
-		
-		this.loadIcons();
-		this.loadProperties();
 	}
 	
-	public void loadProperties(){
+	public void loadSectionProperties() {
 		this.deadNote.setToolTipText(this.getText("effects.deadnote"));
 		this.ghostNote.setToolTipText(this.getText("effects.ghostnote"));
 		this.accentuatedNote.setToolTipText(this.getText("effects.accentuatednote"));
@@ -163,7 +160,7 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.fadeIn.setToolTipText(this.getText("effects.fade-in"));
 	}
 	
-	public void loadIcons(){
+	public void loadSectionIcons() {
 		this.deadNote.setImage(this.getIconManager().getEffectDead());
 		this.ghostNote.setImage(this.getIconManager().getEffectGhost());
 		this.accentuatedNote.setImage(this.getIconManager().getEffectAccentuated());
@@ -185,7 +182,7 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.fadeIn.setImage(this.getIconManager().getEffectFadeIn());
 	}
 	
-	public void updateItems(){
+	public void updateSectionItems() {
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
 		TGNote note = this.getTablature().getCaret().getSelectedNote();
 		
