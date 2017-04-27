@@ -60,10 +60,17 @@ public class MidiChannelRouter implements MidiReceiver{
 		}
 	}
 	
+	public void sendAllNotesOff(int channelId) throws MidiPlayerException {
+		MidiChannel midiChannel = getMidiChannel(channelId);
+		if( midiChannel != null ){
+			midiChannel.sendAllNotesOff();
+		}
+	}
+	
 	public void sendAllNotesOff() throws MidiPlayerException {
 		List<Integer> midiChannelIds = getMidiChannelIds();
 		for(int i = 0; i < midiChannelIds.size(); i ++){
-			this.sendControlChange(((Integer)midiChannelIds.get(i)).intValue(),MidiControllers.ALL_NOTES_OFF,0);
+			this.sendAllNotesOff(((Integer)midiChannelIds.get(i)).intValue());
 		}
 	}
 	
