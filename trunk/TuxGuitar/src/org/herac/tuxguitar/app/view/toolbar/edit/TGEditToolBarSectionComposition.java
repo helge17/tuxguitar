@@ -44,12 +44,9 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		
 		this.repeatAlternative = toolBar.createCheckItem();
 		this.repeatAlternative.addSelectionListener(this.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
-		
-		this.loadIcons();
-		this.loadProperties();
 	}
 	
-	public void updateItems(){
+	public void updateSectionItems() {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGMeasure measure = this.getTablature().getCaret().getMeasure();
 		
@@ -63,7 +60,7 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		this.repeatAlternative.setChecked(measure != null && measure.getHeader().getRepeatAlternative() > 0);
 	}
 	
-	public void loadProperties(){
+	public void loadSectionProperties() {
 		this.tempo.setToolTipText(this.getText("composition.tempo"));
 		this.timeSignature.setToolTipText(this.getText("composition.timesignature"));
 		this.repeatOpen.setToolTipText(this.getText("repeat.open"));
@@ -71,7 +68,7 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		this.repeatAlternative.setToolTipText(this.getText("repeat.alternative"));
 	}
 	
-	public void loadIcons(){
+	public void loadSectionIcons() {
 		this.tempo.setImage(this.getIconManager().getCompositionTempo());
 		this.timeSignature.setImage(this.getIconManager().getCompositionTimeSignature());
 		this.repeatOpen.setImage(this.getIconManager().getCompositionRepeatOpen());

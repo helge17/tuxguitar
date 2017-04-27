@@ -51,26 +51,23 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		
 		this.strokeDown = toolBar.createCheckItem();
 		this.strokeDown.addSelectionListener(this.createActionProcessor(TGOpenStrokeDownDialogAction.NAME));
-		
-		this.loadIcons();
-		this.loadProperties();
 	}
 	
-	public void loadProperties(){
+	public void loadSectionProperties() {
 		this.chordMenu.setToolTipText(this.getText("insert.chord"));
 		this.text.setToolTipText(this.getText("text.insert"));
 		this.strokeUp.setToolTipText(this.getText("beat.stroke-up"));
 		this.strokeDown.setToolTipText(this.getText("beat.stroke-down"));
 	}
 	
-	public void loadIcons(){
+	public void loadSectionIcons() {
 		this.chordMenu.setImage(this.getIconManager().getChord());
 		this.text.setImage(this.getIconManager().getText());
 		this.strokeUp.setImage(this.getIconManager().getStrokeUp());
 		this.strokeDown.setImage(this.getIconManager().getStrokeDown());
 	}
 	
-	public void updateItems(){
+	public void updateSectionItems() {
 		TGBeat beat = this.getTablature().getCaret().getSelectedBeat();
 		
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();

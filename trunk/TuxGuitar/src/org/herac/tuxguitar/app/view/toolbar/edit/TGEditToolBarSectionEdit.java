@@ -44,12 +44,9 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 		
 		this.notNaturalKey = toolBar.createCheckItem();
 		this.notNaturalKey.addSelectionListener(this.createActionProcessor(TGSetNaturalKeyAction.NAME));
-		
-		this.loadIcons();
-		this.loadProperties();
 	}
 	
-	public void updateItems(){
+	public void updateSectionItems() {
 		TablatureEditor editor = TablatureEditor.getInstance(this.getToolBar().getContext());
 		EditorKit editorKit = editor.getTablature().getEditorKit();
 		
@@ -71,7 +68,7 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 		this.notNaturalKey.setEnabled(!running && editorKit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
 	}
 	
-	public void loadProperties(){
+	public void loadSectionProperties() {
 		this.voice1.setToolTipText(this.getText("edit.voice-1"));
 		this.voice2.setToolTipText(this.getText("edit.voice-2"));
 		this.modeSelection.setToolTipText(this.getText("edit.mouse-mode-selection"));
@@ -79,7 +76,7 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 		this.notNaturalKey.setToolTipText(this.getText("edit.not-natural-key"));
 	}
 	
-	public void loadIcons(){
+	public void loadSectionIcons() {
 		this.voice1.setImage(this.getIconManager().getEditVoice1());
 		this.voice2.setImage(this.getIconManager().getEditVoice2());
 		this.modeSelection.setImage(this.getIconManager().getEditModeSelection());
