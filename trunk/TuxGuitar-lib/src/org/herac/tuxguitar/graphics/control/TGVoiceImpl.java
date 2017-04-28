@@ -409,16 +409,6 @@ public class TGVoiceImpl extends TGVoice{
 		
 		if( getDuration().isDotted() || getDuration().isDoubleDotted()) {
 			paintDot(layout, painter, (x + 10f * layoutScale), (y + 2f * layoutScale), layoutScale);
-			
-//			layout.setDotStyle(painter);
-//			painter.initPath();
-//			painter.moveTo(x + 10, y + 1);
-//			painter.addCircle(x + 10, y +1, 1);
-//			if(getDuration().isDoubleDotted()){
-//				painter.moveTo(x + 13, y + 1);
-//				painter.addCircle(x + 13,y + 1, 1);
-//			}
-//			painter.closePath();
 		}
 	}
 	
@@ -560,31 +550,63 @@ public class TGVoiceImpl extends TGVoice{
 							TGNotePainter.paintFooter(painter, hX, (hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
 							painter.closePath();
 						}
-					}else{
+					} else {
+						float hX = (getPosX() + spacing);
 						float hX1 = 0;
 						float hX2 = 0;
+						float hY1 = 0;
+						float hY2 = 0;
+						float currHX1 = 0;
+						float currHX2 = 0;
+						float hLineWidth = layout.getLineWidth(2);
+						float hLineMargin = hLineWidth;
+						int nIndex = (this.next != null ? this.next.getDuration().getIndex() - 3 : -1);
+						int pIndex = (this.previous != null ? this.previous.getDuration().getIndex() - 3 : -1);
+						boolean pathInitialized = false;
+						
 						if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
-							hX1 = getPosX() + spacing;
+							hX1 = hX;
 							hX2 = getPosX() + spacing + (6f * scale);
 						}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
 							hX1 = getPosX() + spacing - (5f * scale);
-							hX2 = getPosX() + spacing;
+							hX2 = hX;
 						}else{
 							hX1 = getJoin1().getPosX() + getJoin1().getBeatImpl().getSpacing(layout);
 							hX2 = getJoin2().getPosX() + getJoin2().getBeatImpl().getSpacing(layout);
 						}
-						float hY1 = fromY + this.group.getY2(layout,hX1,key,clef);
-						float hY2 = fromY + this.group.getY2(layout,hX2,key,clef);
 						
-						painter.initPath(TGPainter.PATH_FILL);
-						for(int i = 0; i <= index; i ++){
-							painter.moveTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) - (1.5f * scale));
-							painter.lineTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) + (1.5f * scale));
-							painter.lineTo(fromX + xMove + hX2 + (0.5f * scale), hY2 - ((i * (5f * scale)) * dir) + (1.5f * scale));
-							painter.lineTo(fromX + xMove + hX2 + (0.5f * scale), hY2 - ((i * (5f * scale)) * dir) - (1.5f * scale));
-							painter.lineTo(fromX + xMove + hX1 - (0.5f * scale), hY1 - ((i * (5f * scale)) * dir) - (1.5f * scale));
+						for(int i = 0; i <= index; i ++) {
+							currHX1 = hX1;
+							currHX2 = hX2;
+							if( this.previous != null && this.previous.getJoin2() != null && this.previous.getJoin2().equals(this) ) {
+								if((this.getJoin1() != null && this.getJoin1().equals(this.previous)) || i <= pIndex ) {
+									currHX1 = hX;
+								}
+							}
+							if( this.next != null && this.next.getJoin1() != null && this.next.getJoin1().equals(this) ) {
+								if((this.getJoin1() == null || !this.getJoin2().equals(this.next)) && i <= nIndex ) {
+									currHX2 = hX;
+								}
+							}
+							if( currHX1 != currHX2 ) {
+								if(!pathInitialized) {
+									pathInitialized = true;
+									painter.initPath(TGPainter.PATH_FILL);
+								}
+								hY1 = fromY + this.group.getY2(layout, currHX1, key, clef);
+								hY2 = fromY + this.group.getY2(layout, currHX2, key, clef);
+								
+								painter.moveTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
+								painter.lineTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) + hLineWidth);
+								painter.lineTo(fromX + xMove + currHX2 + (0.5f * scale), hY2 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) + hLineWidth);
+								painter.lineTo(fromX + xMove + currHX2 + (0.5f * scale), hY2 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
+								painter.lineTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
+							}
 						}
-						painter.closePath();
+						
+						if( pathInitialized) {
+							painter.closePath();
+						}
 					}
 				}
 			}
