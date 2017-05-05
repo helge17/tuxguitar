@@ -22,6 +22,7 @@ import org.herac.tuxguitar.ui.qt.event.QTFocusGainedListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTFocusLostListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTKeyPressedListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTKeyReleasedListenerManager;
+import org.herac.tuxguitar.ui.qt.event.QTMenuOpenListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseDoubleClickListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseDownListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseDragListenerManager;
@@ -37,11 +38,13 @@ import org.herac.tuxguitar.ui.qt.resource.QTFont;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 import com.trolltech.qt.core.QEvent.Type;
+import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.gui.QApplication;
@@ -70,7 +73,8 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	private QTMouseExitListenerManager mouseExitListener;
 	private QTMouseWheelListenerManager mouseWheelListener;
 	private QTResizeListenerManager resizeListener;
-
+	private QTMenuOpenListenerManager menuOpenListener;
+	
 	private UISize packedSize;
 	private UIColor bgColor;
 	private UIColor fgColor;
@@ -102,6 +106,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		this.mouseDragListener = new QTMouseDragListenerManager(this);
 		this.mouseEnterListener = new QTMouseEnterListenerManager(this);
 		this.mouseExitListener = new QTMouseExitListenerManager(this);
+		this.menuOpenListener = new QTMenuOpenListenerManager(this);
 		this.resizeListener = new QTResizeListenerManager(this);
 		
 		this.getControl().installEventFilter(this.eventFilter);
@@ -249,6 +254,12 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	}
 	
 	public void setPopupMenu(UIPopupMenu popupMenu) {
+		if( this.popupMenu == null && popupMenu != null ) {
+			this.addMouseDownListener(this.menuOpenListener);
+		}
+		else if( this.popupMenu != null && popupMenu == null ) {
+			this.removeMouseDownListener(this.menuOpenListener);
+		}
 		this.popupMenu = popupMenu;
 	}
 
@@ -288,6 +299,19 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 				}
 			}
 		});
+	}
+	
+	public void openPopupMenu(final UIPosition pos) {
+		if( this.popupMenu != null ) {
+			QApplication.invokeLater(new Runnable() {
+				public void run() {
+					if(!QTWidget.this.isDisposed() && QTWidget.this.popupMenu != null ) {
+						QPoint position = QTWidget.this.getControl().mapToGlobal(new QPoint(Math.round(pos.getX()), Math.round(pos.getY())));
+						QTWidget.this.popupMenu.open(new UIPosition(position.x(), position.y()));
+					}
+				}
+			});
+		}
 	}
 	
 	public boolean isIgnoreEvents() {
