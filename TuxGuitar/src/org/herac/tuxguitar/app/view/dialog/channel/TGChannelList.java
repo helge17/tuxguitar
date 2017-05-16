@@ -43,16 +43,12 @@ public class TGChannelList {
 		});
 		
 		this.channelItemArea = uiFactory.createPanel(this.channelItemAreaSC, false);
-		this.channelItemArea.setLayout(new UITableLayout());
 	}
 	
 	public void removeChannelsAfter( int count ){
 		while(!this.channelItems.isEmpty() && this.channelItems.size() > count ){
-			TGChannelItem tgChannelItem = (TGChannelItem)this.channelItems.get(0);
+			TGChannelItem tgChannelItem = this.channelItems.remove(0);
 			tgChannelItem.dispose();
-			
-			this.channelItemAreaSC.layout();
-			this.channelItems.remove(tgChannelItem);
 		}
 	}
 	
@@ -61,10 +57,6 @@ public class TGChannelList {
 			TGChannelItem tgChannelItem = new TGChannelItem(this.dialog);
 			tgChannelItem.show(this.channelItemArea);
 			
-			UITableLayout uiLayout = (UITableLayout) this.channelItemArea.getLayout();
-			uiLayout.set(tgChannelItem.getComposite(), (this.channelItems.size() + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
-			
-			this.channelItemAreaSC.layout();
 			this.channelItems.add(tgChannelItem);
 		}
 		return (TGChannelItem)this.channelItems.get(index);
@@ -89,14 +81,30 @@ public class TGChannelList {
 	public void updateItems(){
 		List<TGChannel> channels = this.dialog.getHandle().getChannels();
 		
-		this.removeChannelsAfter(channels.size());
+		boolean countChanged = (channels.size() != this.channelItems.size());
+		if( countChanged ) {
+			this.removeChannelsAfter(channels.size());
+		}
 		
-		for( int i = 0 ; i < channels.size() ; i ++ ){
+		for(int i = 0 ; i < channels.size() ; i ++) {
 			TGChannel channel = (TGChannel)channels.get(i);
 			TGChannelItem tgChannelItem = getOrCreateChannelItemAt(i);
 			tgChannelItem.setChannel(channel);
 			tgChannelItem.updateItems();
 		}
+		
+		if( countChanged ) {
+			this.layoutItems();
+		}
+	}
+	
+	public void layoutItems() {
+		UITableLayout uiLayout = new UITableLayout();
+		for(int i = 0 ; i < this.channelItems.size() ; i ++) {
+			uiLayout.set(this.channelItems.get(i).getComposite(), (i + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
+		}
+		this.channelItemArea.setLayout(uiLayout);
+		this.channelItemAreaSC.layout();
 	}
 	
 	public UIScrollBarPanel getControl() {
