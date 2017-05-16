@@ -21,6 +21,8 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UICursor;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILabel;
@@ -34,6 +36,8 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGChannelManagerDialog implements TGEventListener {
+	
+	private static final float MINIMUN_HEIGHT = 450f;
 	
 	private UIWindow dialog;
 	
@@ -92,7 +96,10 @@ public class TGChannelManagerDialog implements TGEventListener {
 			}
 		});
 		
-		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+		this.dialog.computePackedSize();
+		this.dialog.layout(new UIRectangle(this.createPreferredSize(this.dialog.getPackedSize())));
+		
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER);
 	}
 	
 	public TGContext getContext(){
@@ -127,6 +134,14 @@ public class TGChannelManagerDialog implements TGEventListener {
 		TuxGuitar.getInstance().getIconManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
+	}
+	
+	private UISize createPreferredSize(UISize size) {
+		UISize preferredSize = new UISize(size.getWidth(), size.getHeight());
+		if( preferredSize.getHeight() < MINIMUN_HEIGHT ) {
+			preferredSize.setHeight(MINIMUN_HEIGHT);
+		}
+		return preferredSize;
 	}
 	
 	private UIPanel createRightComposite(UILayoutContainer parent){

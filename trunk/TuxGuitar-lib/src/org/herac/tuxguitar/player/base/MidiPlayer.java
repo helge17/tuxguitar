@@ -609,22 +609,25 @@ public class MidiPlayer{
 	public void updateParameters(TGChannel tgChannel){
 		try {
 			this.lock();
+			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
 			
 			Iterator<TGChannelParameter> parameters = tgChannel.getParameters();
 			while( parameters.hasNext() ){
 				TGChannelParameter tgChannelParameter = (TGChannelParameter) parameters.next();
-				this.updateParameters(tgChannel, tgChannelParameter);
+				this.updateParameter(tgChannel, tgChannelParameter.getKey(), tgChannelParameter.getValue());
 			}
+			
+			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
 		} finally {
 			this.unlock();
 		}
 	}
 	
-	public void updateParameters(TGChannel tgChannel, TGChannelParameter tgChannelParameter){
+	public void updateParameter(TGChannel tgChannel, String key, String value){
 		try {
 			this.lock();
 			
-			getOutputTransmitter().sendParameter(tgChannel.getChannelId(), tgChannelParameter.getKey(), tgChannelParameter.getValue());
+			getOutputTransmitter().sendParameter(tgChannel.getChannelId(), key, value);
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		} finally {
