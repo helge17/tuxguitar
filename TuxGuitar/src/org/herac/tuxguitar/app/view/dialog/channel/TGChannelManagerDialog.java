@@ -13,7 +13,6 @@ import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
@@ -261,12 +260,6 @@ public class TGChannelManagerDialog implements TGEventListener {
 				this.cursorController = new TGCursorController(this.context, this.dialog);
 			}
 			this.cursorController.loadCursor(cursor);
-		}
-	}
-	
-	public void onUpdateChannel(TGChannel channel){
-		if (TuxGuitar.getInstance().getPlayer().isRunning()) {
-			TuxGuitar.getInstance().getPlayer().updateControllers();
 		}
 	}
 	
