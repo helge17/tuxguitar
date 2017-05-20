@@ -199,9 +199,6 @@ public class MidiPlayer{
 			this.addSequence();
 			this.updateTracks();
 			this.updateChannels();
-			this.updatePrograms();
-			this.updateControllers();
-			this.updateDefaultControllers();
 			this.setMetronomeEnabled(isMetronomeEnabled());
 			this.getCountDown().setTempoPercent(getMode().getCurrentPercent());
 			this.changeTickPosition();
@@ -391,8 +388,10 @@ public class MidiPlayer{
 			
 			this.volume = volume;
 			if (this.isRunning()) {
-				this.updateControllers();
+				this.updateChannels();
 			}
+		} catch (MidiPlayerException e) {
+			e.printStackTrace();
 		} finally {
 			this.unlock();
 		}
@@ -586,27 +585,30 @@ public class MidiPlayer{
 				}
 			}
 			
-			this.updateParameters();
-		} finally {
-			this.unlock();
-		}
-	}
-	
-	public void updateParameters(){
-		try {
-			this.lock();
-			
-			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
+			// Update channels
+			tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
-				TGChannel tgChannel = (TGChannel) tgChannels.next();
-				this.updateParameters(tgChannel);
+				this.updateChannel(tgChannels.next());
 			}
 		} finally {
 			this.unlock();
 		}
 	}
 	
-	public void updateParameters(TGChannel tgChannel){
+	public void updateChannel(TGChannel channel) {
+		try {
+			this.lock();
+			
+			this.updateParameters(channel);
+			this.updateProgram(channel);
+			this.updateController(channel);
+			this.updateDefaultControllers(channel);
+		} finally {
+			this.unlock();
+		}
+	}
+	
+	private void updateParameters(TGChannel tgChannel) {
 		try {
 			this.lock();
 			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
@@ -623,45 +625,13 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void updateParameter(TGChannel tgChannel, String key, String value){
+	private void updateParameter(TGChannel tgChannel, String key, String value){
 		try {
 			this.lock();
 			
 			getOutputTransmitter().sendParameter(tgChannel.getChannelId(), key, value);
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
-		} finally {
-			this.unlock();
-		}
-	}
-	
-	private void updateDefaultControllers(){
-		try {
-			this.lock();
-			
-			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
-			while( tgChannels.hasNext() ){
-				TGChannel tgChannel = (TGChannel) tgChannels.next();
-				getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_MSB,0);
-				getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_LSB,0);
-				getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.DATA_ENTRY_MSB,12);
-				getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.DATA_ENTRY_LSB, 0);
-			}
-		} catch (MidiPlayerException e) {
-			e.printStackTrace();
-		} finally {
-			this.unlock();
-		}
-	}
-	
-	public void updatePrograms() {
-		try {
-			this.lock();
-			
-			Iterator<TGChannel> it = this.getSong().getChannels();
-			while(it.hasNext()){
-				updateProgram((TGChannel)it.next());
-			}
 		} finally {
 			this.unlock();
 		}
@@ -694,20 +664,6 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void updateControllers() {
-		try{
-			this.lock();
-			
-			Iterator<TGChannel> channelsIt = this.getSong().getChannels();
-			while( channelsIt.hasNext() ){
-				this.updateController( (TGChannel)channelsIt.next() );
-			}
-			this.afterUpdate();
-		} finally {
-			this.unlock();
-		}
-	}
-	
 	private void updateController(TGChannel channel) {
 		try{
 			this.lock();
@@ -725,7 +681,7 @@ public class MidiPlayer{
 		}
 	}
 	
-	private void updateController(int channelId,int volume,int balance,int chorus, int reverb,int phaser, int tremolo, int expression) {
+	private void updateController(int channelId, int volume, int balance, int chorus, int reverb, int phaser, int tremolo, int expression) {
 		try{
 			this.lock();
 			
@@ -743,6 +699,21 @@ public class MidiPlayer{
 		}
 	}
 	
+	private void updateDefaultControllers(TGChannel tgChannel){
+		try {
+			this.lock();
+			
+			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_MSB,0);
+			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_LSB,0);
+			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.DATA_ENTRY_MSB,12);
+			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.DATA_ENTRY_LSB, 0);
+		} catch (MidiPlayerException e) {
+			e.printStackTrace();
+		} finally {
+			this.unlock();
+		}
+	}
+		
 	public void updateTracks() {
 		try{
 			this.lock();
@@ -861,15 +832,6 @@ public class MidiPlayer{
 	public void playBeat(int channelId, int bank, int program, int volume, int balance, int chorus, int reverb, int phaser, int tremolo, int[][] beat, long duration, int interval) {
 		try {
 			this.updateChannels();
-			
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.BANK_SELECT, bank);
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.VOLUME, volume);
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.BALANCE, balance);
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.CHORUS, chorus);
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.REVERB, reverb);
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.PHASER, phaser);
-			this.getOutputTransmitter().sendControlChange(channelId,MidiControllers.TREMOLO, tremolo);
-			this.getOutputTransmitter().sendProgramChange(channelId,program);
 			
 			Object sync = new Object();
 			

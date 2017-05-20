@@ -150,6 +150,10 @@ public abstract class TGChannel {
 		this.parameters.remove(index);
 	}
 	
+	public void removeParameters(){
+		this.parameters.clear();
+	}
+	
 	public int countParameters(){
 		return this.parameters.size();
 	}
@@ -176,7 +180,7 @@ public abstract class TGChannel {
 		this.setTremolo(channel.getTremolo());
 		this.setName(channel.getName());
 		
-		this.parameters.clear();
+		this.removeParameters();
 		for(int i = 0; i < channel.countParameters(); i ++){
 			this.addParameter(channel.getParameter(i).clone(factory));
 		}

@@ -208,18 +208,10 @@ public class TGSongManager {
 		return (maximumId + 1);
 	}
 	
-	public TGChannel updateChannel(TGSong song, int id,short bnk,short prg,short vol,short bal,short cho,short rev,short pha,short tre,String name){
-		TGChannel channel = getChannel(song, id);
+	public TGChannel updateChannel(TGSong song, TGChannel source){
+		TGChannel channel = getChannel(song, source.getChannelId());
 		if( channel != null ){
-			channel.setBank(bnk);
-			channel.setProgram(prg);
-			channel.setVolume(vol);
-			channel.setBalance(bal);
-			channel.setChorus(cho);
-			channel.setReverb(rev);
-			channel.setPhaser(pha);
-			channel.setTremolo(tre);
-			channel.setName(name);
+			channel.copyFrom(getFactory(), source);
 		}
 		return channel;
 	}
