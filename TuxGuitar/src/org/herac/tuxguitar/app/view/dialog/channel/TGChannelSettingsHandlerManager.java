@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiDevice;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGChannelSettingsHandlerManager {
 	
+	private TGContext context;
 	private List<TGChannelSettingsHandler> channelSettingsHandler;
 	
-	public TGChannelSettingsHandlerManager(){
+	public TGChannelSettingsHandlerManager(TGContext context){
+		this.context = context;
 		this.channelSettingsHandler = new ArrayList<TGChannelSettingsHandler>();
 	}
 	
@@ -55,10 +59,10 @@ public class TGChannelSettingsHandlerManager {
 	}
 	
 	private MidiDevice getMidiDevice(){
-		return TuxGuitar.getInstance().getPlayer().getOutputPort();
+		return MidiPlayer.getInstance(this.context).getOutputPort();
 	}
 	
 	private TGSong getSong(){
-		return TuxGuitar.getInstance().getDocumentManager().getSong();
+		return TGDocumentManager.getInstance(this.context).getSong();
 	}
 }

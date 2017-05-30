@@ -32,6 +32,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	private TGSong song;
 	private TGChannel channel;
 	private GMChannelRouter router;
+	private UIWindow dialog;
 	private UIDropDownSelect<Integer> gmChannel1Combo;
 	private UIDropDownSelect<Integer> gmChannel2Combo;
 	
@@ -42,19 +43,19 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.router = new GMChannelRouter();
 	}
 	
-	public void show(final UIWindow parent) {
+	public void open(final UIWindow parent) {
 		this.configureRouter();
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		
-		final UIWindow dialog = uiFactory.createWindow(parent, false, false);
-		dialog.setLayout(dialogLayout);
-		dialog.setText(TuxGuitar.getProperty("gm.settings.dialog.title"));
+		this.dialog = uiFactory.createWindow(parent, false, false);
+		this.dialog.setLayout(dialogLayout);
+		this.dialog.setText(TuxGuitar.getProperty("gm.settings.dialog.title"));
 		
 		// ----------------------------------------------------------------------
 		UITableLayout groupLayout = new UITableLayout();
-		UILegendPanel group = uiFactory.createLegendPanel(dialog);
+		UILegendPanel group = uiFactory.createLegendPanel(this.dialog);
 		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("gm.settings.dialog.tip"));
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
@@ -85,7 +86,17 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		
 		updateChannelCombos();
 		
-		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+	
+	public void close() {
+		if( this.isOpen()) {
+			this.dialog.dispose();
+		}
+	}
+	
+	public boolean isOpen(){
+		return (this.dialog != null && !this.dialog.isDisposed());
 	}
 	
 	private void configureRouter(){

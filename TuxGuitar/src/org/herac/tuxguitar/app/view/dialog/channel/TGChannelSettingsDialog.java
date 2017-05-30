@@ -4,5 +4,9 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public interface TGChannelSettingsDialog {
 	
-	void show(UIWindow parent);
+	boolean isOpen();
+	
+	void open(UIWindow parent);
+	
+	void close();
 }
