@@ -60,7 +60,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	public TGChannelManagerDialog(TGContext context){
 		this.context = context;
 		this.channelHandle = new TGChannelHandle(context);
-		this.channelSettingsHandlerManager = new TGChannelSettingsHandlerManager();
+		this.channelSettingsHandlerManager = new TGChannelSettingsHandlerManager(context);
 		this.createSyncProcesses();
 	}
 	

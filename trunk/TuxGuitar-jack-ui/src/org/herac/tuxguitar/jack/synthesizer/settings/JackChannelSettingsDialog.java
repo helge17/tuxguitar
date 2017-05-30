@@ -59,7 +59,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.jackMidiPlayerListener = new JackMidiPlayerListener(this.context, this);
 	}
 	
-	public void show(UIWindow parent) {
+	public void open(UIWindow parent) {
 		this.configureRouter(true);
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
@@ -130,6 +130,16 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		});
 		
 		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+	
+	public void close() {
+		if( this.isOpen()) {
+			this.dialog.dispose();
+		}
+	}
+	
+	public boolean isOpen(){
+		return (this.dialog != null && !this.dialog.isDisposed());
 	}
 	
 	public void addMidiPlayerListener(){

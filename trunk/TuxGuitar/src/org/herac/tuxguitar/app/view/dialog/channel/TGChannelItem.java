@@ -8,6 +8,8 @@ import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIFocusEvent;
 import org.herac.tuxguitar.ui.event.UIFocusLostListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -27,6 +29,7 @@ public class TGChannelItem {
 	
 	private TGChannel channel;
 	private TGChannelManagerDialog dialog;
+	private TGChannelSettingsDialog channelUI;
 	
 	private UIPanel composite;
 	
@@ -55,6 +58,11 @@ public class TGChannelItem {
 		
 		this.composite = uiFactory.createPanel(parent, true);
 		this.composite.setLayout(uiLayout);
+		this.composite.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
+				disposeChannelUI();
+			}
+		});
 		
 		// Column 1
 		UITableLayout col1Layout = new UITableLayout();
@@ -162,6 +170,15 @@ public class TGChannelItem {
 		
 		this.loadIcons();
 		this.loadProperties();
+		this.updateItems();
+	}
+	
+	public void loadChannel(TGChannel channel) {
+		boolean updated = (this.channel == null || !this.channel.equals(channel));
+		if( updated ) {
+			this.disposeChannelUI();
+		}
+		this.channel = channel;
 		this.updateItems();
 	}
 	
@@ -315,10 +332,6 @@ public class TGChannelItem {
 	public TGChannel getChannel() {
 		return this.channel;
 	}
-
-	public void setChannel(TGChannel channel) {
-		this.channel = channel;
-	}
 	
 	public UIPanel getComposite(){
 		return this.composite;
@@ -329,8 +342,8 @@ public class TGChannelItem {
 	}
 	
 	public void dispose() {
-		if(!isDisposed()){
-			getComposite().dispose();
+		if(!this.isDisposed()) {
+			this.getComposite().dispose();
 		}
 	}
 	
@@ -378,12 +391,25 @@ public class TGChannelItem {
 		}
 	}
 	
-	public void setupChannel(){
-		if( getChannel() != null && !isDisposed() ){
-			TGChannelSettingsDialog settingsDialog = this.dialog.getChannelSettingsHandlerManager().findChannelSettingsDialog(getChannel());
-			if( settingsDialog != null ){
-				settingsDialog.show(this.dialog.getWindow());
+	public void setupChannel() {
+		if( getChannel() != null && !isDisposed() ) {
+			if( this.channelUI == null ) {
+				this.channelUI = this.dialog.getChannelSettingsHandlerManager().findChannelSettingsDialog(getChannel());
+			}
+			if( this.channelUI != null ) {
+				if( this.channelUI.isOpen()) {
+					this.channelUI.close();
+				} else {
+					this.channelUI.open(this.dialog.getWindow());
+				}
 			}
 		}
+	}
+	
+	public void disposeChannelUI() {
+		if( this.channelUI != null && this.channelUI.isOpen()) {
+			this.channelUI.close();
+		}
+		this.channelUI = null;
 	}
 }

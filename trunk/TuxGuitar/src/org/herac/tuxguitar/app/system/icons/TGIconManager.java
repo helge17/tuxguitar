@@ -159,6 +159,9 @@ public class TGIconManager {
 	private UIImage strokeDown;
 	private UIImage settings;
 	private UIImage toolbarEdit;
+	private UIImage listAdd;
+	private UIImage listEdit;
+	private UIImage listRemove;
 	
 	private TGIconManager(TGContext context){
 		this.context = context;
@@ -346,6 +349,9 @@ public class TGIconManager {
 		this.strokeDown = loadIcon("stroke_down.png");
 		this.settings = loadIcon("settings.png");
 		this.toolbarEdit = loadIcon("toolbar_edit.png");
+		this.listAdd = loadIcon("list_add.png");
+		this.listEdit = loadIcon("list_edit.png");
+		this.listRemove = loadIcon("list_remove.png");
 	}
 	
 	private UIImage loadIcon(String name) {
@@ -917,19 +923,31 @@ public class TGIconManager {
 	}
 
 	public UIImage getStatusQuestion() {
-		return statusQuestion;
+		return this.statusQuestion;
 	}
 
 	public UIImage getStatusError() {
-		return statusError;
+		return this.statusError;
 	}
 
 	public UIImage getStatusWarning() {
-		return statusWarning;
+		return this.statusWarning;
 	}
 
 	public UIImage getStatusInfo() {
-		return statusInfo;
+		return this.statusInfo;
+	}
+
+	public UIImage getListAdd() {
+		return this.listAdd;
+	}
+
+	public UIImage getListEdit() {
+		return this.listEdit;
+	}
+
+	public UIImage getListRemove() {
+		return listRemove;
 	}
 
 	public static TGIconManager getInstance(TGContext context) {
