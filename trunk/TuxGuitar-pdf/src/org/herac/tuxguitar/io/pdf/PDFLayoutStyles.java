@@ -22,7 +22,7 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setChordStringSpacing(4);
 		this.setChordFretSpacing(5);
 		this.setChordNoteSize(3);
-		this.setChordLineWidth(1);
+		this.setChordLineWidth(0);
 		this.setRepeatEndingSpacing(20);
 		this.setTextSpacing(15);
 		this.setMarkerSpacing(15);

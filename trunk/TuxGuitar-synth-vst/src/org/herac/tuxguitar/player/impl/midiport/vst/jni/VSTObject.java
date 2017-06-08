@@ -3,7 +3,7 @@ package org.herac.tuxguitar.player.impl.midiport.vst.jni;
 public class VSTObject {
 	
 	static {
-		System.loadLibrary("tuxguitar-vst-jni");
+		System.loadLibrary("tuxguitar-synth-vst-jni");
 	}
 	
 	private long instance;

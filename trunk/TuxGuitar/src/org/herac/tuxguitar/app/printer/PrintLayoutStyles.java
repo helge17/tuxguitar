@@ -21,7 +21,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 	private static final int DEFAULT_CHORD_FRET_INDEX_SPACING = 8;
 	private static final int DEFAULT_CHORD_STRING_SPACING = 4;
 	private static final int DEFAULT_CHORD_FRET_SPACING = 5;
-	private static final int DEFAULT_CHORD_LINE_WIDTH = 1;
+	private static final int DEFAULT_CHORD_LINE_WIDTH = 0;
 	private static final int DEFAULT_CHORD_NOTE_SIZE = 3;
 	private static final int DEFAULT_EFFECT_SPACING = 8;
 	private static final int DEFAULT_DIVISION_TYPE_SPACING = 10;

@@ -31,6 +31,7 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setChordStringSpacing(5);
 		this.setChordFretSpacing(6);
 		this.setChordNoteSize(4);
+		this.setChordLineWidth(0);
 		this.setRepeatEndingSpacing(20);
 		this.setTextSpacing(15);
 		this.setMarkerSpacing(15);

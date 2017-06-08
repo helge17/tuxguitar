@@ -1,19 +1,16 @@
-JAVA_HOME=/opt/local/applications/java/jdk1.8.0_111
 VST_SDK_HOME=/home/julian/Downloads/VST_SDK/VST3_SDK
 
-CFLAGS?=-I$(JAVA_HOME)/include -I$(VST_SDK_HOME)/public.sdk/source/vst2.x
-CFLAGS+=-fPIC -fpermissive
-
+RM?=rm -f
+CFLAGS?=-I$(shell gcj -print-file-name=include/) -I$(VST_SDK_HOME)/public.sdk/source/vst2.x -fPIC -fpermissive
 LDFLAGS?=
-LDLIBS?=-ldl -ljsig -lX11
-LDPATH?=-L/usr/lib -L$(JAVA_HOME)/jre/lib/amd64/
+LDLIBS?=-ldl -lX11
+LDPATH?=-L/usr/lib
+LIBRARY_NAME?=tuxguitar-synth-vst-jni
 LIBRARY_PREFIX?=lib
-LIBRARY_NAME?=tuxguitar-vst-jni
-LIBRARY_EXTENSION?=.so
+LIBRARY_SUFFIX?=.so
 LIBRARY_OS?=_GNULinux
 
-
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_EXTENSION)
+LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=\
 	org_herac_tuxguitar_player_impl_midiport_vst_jni_VST.o\
 	org_herac_tuxguitar_player_impl_midiport_vst_jni_VSTEffect.o\
@@ -28,6 +25,6 @@ all:    $(LIBRARY)
 
 $(LIBRARY):	$(OBJECTS)
 	$(CXX) $(LDFLAGS) -shared -o $(LIBRARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
-
+	
 clean: 
-	rm -f $(OBJECTS) $(LIBRARY)
+	$(RM) $(OBJECTS) $(LIBRARY)

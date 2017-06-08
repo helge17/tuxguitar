@@ -735,16 +735,11 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 		return null;
 	}
 	
-	private String readString(int length){
-		try {
-			char[] chars = new char[length];
-			for(int i = 0;i < chars.length; i++){
-				chars[i] = this.dataInputStream.readChar();
-			}
-			return String.copyValueOf(chars);
-		} catch (IOException e) {
-			e.printStackTrace();
+	private String readString(int length) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < length; i ++){
+			sb.append(this.dataInputStream.readChar());
 		}
-		return null;
+		return sb.toString();
 	}
 }
