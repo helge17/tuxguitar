@@ -17,20 +17,18 @@ public class TGSynthThread implements Runnable {
 		TGAudioLine audioLine = new TGAudioLine();
 		TGAudioBufferProcessor audioProcessor = new TGAudioBufferProcessor(this.synthesizer);
 		
-		audioProcessor.start();
+		audioLine.start();
 		while(this.isRunning()) {
-			audioProcessor.process(audioLine.getBuffer());
-			audioLine.write();
+			audioProcessor.process();
+			audioLine.write(audioProcessor.getBuffer());
 		}
-		audioProcessor.stop();
+		audioLine.stop();
 		
 		this.finished = true;
 	}
 	
 	private void startThread(){
-		Thread thread = new Thread( this );
-		thread.setPriority(Thread.MAX_PRIORITY);
-		thread.setDaemon(true);
+		Thread thread = new Thread(this);
 		thread.start();
 	}
 	

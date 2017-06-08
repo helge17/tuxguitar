@@ -114,7 +114,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_CHORD_STRING_SPACING, 5);
 		loadProperty(properties, TGConfigKeys.STYLE_CHORD_FRET_SPACING, 6);
 		loadProperty(properties, TGConfigKeys.STYLE_CHORD_NOTE_SIZE, 4);
-		loadProperty(properties, TGConfigKeys.STYLE_CHORD_LINE_WIDTH, 1);
+		loadProperty(properties, TGConfigKeys.STYLE_CHORD_LINE_WIDTH, 0);
 		loadProperty(properties, TGConfigKeys.STYLE_REPEAT_ENDING_SPACING, 20);
 		loadProperty(properties, TGConfigKeys.STYLE_EFFECT_SPACING, 8);
 		loadProperty(properties, TGConfigKeys.STYLE_DIVISION_TYPE_SPACING, 10);
