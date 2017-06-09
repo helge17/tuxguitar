@@ -7,15 +7,14 @@ import java.util.Map;
 import javax.sound.midi.ShortMessage;
 
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.TGAudioLine;
 import org.herac.tuxguitar.player.impl.midiport.vst.jni.VSTEffect;
 import org.herac.tuxguitar.player.impl.midiport.vst.jni.VSTEffectUI;
 import org.herac.tuxguitar.player.impl.midiport.vst.jni.VSTPlugin;
 
 public class VSTEffectProcessor {
 	
-	public static final int BUFFER_SIZE = ( TGAudioLine.BUFFER_SIZE / 2 ) ;
-	public static final float SAMPLE_RATE = ( TGAudioLine.SAMPLE_RATE );
+	public static final int BUFFER_SIZE = ( TGAudioBuffer.BUFFER_SIZE / 2 ) ;
+	public static final float SAMPLE_RATE = ( TGAudioBuffer.SAMPLE_RATE );
 	
 	private Object lock = new Object();
 	
