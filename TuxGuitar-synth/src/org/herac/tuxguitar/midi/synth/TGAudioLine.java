@@ -9,11 +9,7 @@ import org.herac.tuxguitar.util.TGException;
 
 public class TGAudioLine implements Runnable {
 	
-	public static final int CHANNELS = 2;
-	public static final int BUFFER_SIZE = 1024;
-	public static final float SAMPLE_RATE = 44100f;
-	public static final boolean BIGENDIAN = false;
-	public static final AudioFormat AUDIO_FORMAT = new AudioFormat( SAMPLE_RATE, 16, CHANNELS, true, BIGENDIAN );
+	public static final AudioFormat AUDIO_FORMAT = new AudioFormat(TGAudioBuffer.SAMPLE_RATE, 16, TGAudioBuffer.CHANNELS, true, TGAudioBuffer.BIGENDIAN);
 	
 	private boolean running;
 	private boolean finished;
@@ -28,7 +24,7 @@ public class TGAudioLine implements Runnable {
 			this.buffers = new TGAudioBuffer[] {new TGAudioBuffer(), new TGAudioBuffer()};
 			
 			this.line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, AUDIO_FORMAT));
-			this.line.open(AUDIO_FORMAT, CHANNELS * BUFFER_SIZE);
+			this.line.open(AUDIO_FORMAT, TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE);
 			this.line.start();
 			
 			this.finished = true;

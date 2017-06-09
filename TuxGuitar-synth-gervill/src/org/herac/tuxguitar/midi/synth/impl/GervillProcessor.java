@@ -48,10 +48,10 @@ public class GervillProcessor implements TGMidiProcessor {
 	
 	public void open() {
 		try {
-			this.buffer = new byte[TGAudioLine.CHANNELS * TGAudioLine.BUFFER_SIZE];
-			this.outputs = new float[TGAudioLine.CHANNELS][TGAudioLine.BUFFER_SIZE / 2];
+			this.buffer = new byte[TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE];
+			this.outputs = new float[TGAudioBuffer.CHANNELS][TGAudioBuffer.BUFFER_SIZE / 2];
 			for(int i = 0; i < this.outputs.length; i++) {
-				this.outputs[i] = new float[TGAudioLine.BUFFER_SIZE / 2];
+				this.outputs[i] = new float[TGAudioBuffer.BUFFER_SIZE / 2];
 			}
 			
 			this.synth = new SoftSynthesizer();
