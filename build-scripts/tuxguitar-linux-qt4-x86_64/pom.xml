@@ -9,20 +9,20 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-x86_64</artifactId>
+	<artifactId>tuxguitar-linux-qt4-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-x86_64</project.finalName>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
+		<project.finalName>tuxguitar-${project.version}-linux-qt4-x86_64</project.finalName>
+		<com.trolltech.qt.qtjambi.version>4.8.7</com.trolltech.qt.qtjambi.version>
 	</properties>
-	
+
 	<modules>
 		<module>../../TuxGuitar</module>
 		<module>../../TuxGuitar-ui-toolkit</module>
-		<module>../../TuxGuitar-ui-toolkit-swt</module>
+		<module>../../TuxGuitar-ui-toolkit-qt4</module>
 		<module>../../TuxGuitar-lib</module>
 		<module>../../TuxGuitar-editor-utils</module>
 		<module>../../TuxGuitar-gm-utils</module>
@@ -49,11 +49,8 @@
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
-		<module>../../TuxGuitar-image</module>
-		<module>../../TuxGuitar-synth</module>
-		<module>../../TuxGuitar-synth-gervill</module>
 	</modules>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -80,8 +77,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-lib</artifactId>
-                  					<destFileName>tuxguitar-lib.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-lib.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -91,21 +88,22 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-ui-toolkit-swt</artifactId>
-									<destFileName>tuxguitar-ui-toolkit-swt.jar</destFileName>
+									<artifactId>tuxguitar-ui-toolkit-qt4</artifactId>
+									<version>${project.version}</version>
+									<destFileName>tuxguitar-ui-toolkit-qt4.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-editor-utils</artifactId>
-                  					<destFileName>tuxguitar-editor-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-editor-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
-                  					<destFileName>tuxguitar-gm-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-gm-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -114,12 +112,20 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /LIBRARIES -->
-								
+
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
-									<groupId>${org.eclipse.swt.groupId}</groupId>
-									<artifactId>${org.eclipse.swt.artifactId}</artifactId>
-									<destFileName>swt.jar</destFileName>
+						            <groupId>com.trolltech.qt</groupId>
+						            <artifactId>qtjambi</artifactId>
+						            <version>${com.trolltech.qt.qtjambi.version}</version>
+									<destFileName>qtjambi.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.trolltech.qt</groupId>
+									<artifactId>qtjambi-native-linux64-gcc</artifactId>
+									<version>${com.trolltech.qt.qtjambi.version}</version>
+									<destFileName>qtjambi-native.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								
@@ -136,8 +142,8 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
-								
-								<!-- PLUGINS  -->
+
+								<!-- PLUGINS -->
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ascii</artifactId>
@@ -270,26 +276,8 @@
 									<destFileName>tuxguitar-svg.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-image</artifactId>
-									<destFileName>tuxguitar-image.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-synth</artifactId>
-									<destFileName>tuxguitar-synth.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-synth-gervill</artifactId>
-									<destFileName>tuxguitar-synth-gervill.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
-								</artifactItem>
-								<!-- /PLUGINS  -->
-								
+								<!-- /PLUGINS -->
+
 							</artifactItems>
 						</configuration>
 					</execution>
@@ -307,13 +295,13 @@
 						<configuration>
 							<target name="copy-files">
 								<copy todir="${project.build.directory}/${project.finalName}/share">
-									<fileset dir="${project.rootPath}/TuxGuitar/share/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
-									<fileset dir="${project.rootPath}/TuxGuitar/doc/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/doc/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist">
-									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
@@ -326,10 +314,10 @@
 									<fileset dir="../common-resources/common-linux"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux-swt"/>
+									<fileset dir="../common-resources/common-linux-qtjambi4"/>
 								</copy>
 								
-								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
+								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
 							</target>
 						</configuration>
 						<goals>
@@ -340,7 +328,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>native-modules</id>
@@ -355,9 +343,8 @@
 				<module>../native-modules/tuxguitar-jack-linux-x86_64</module>
 				<module>../native-modules/tuxguitar-oss-linux-x86_64</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-synth-vst-linux-x86_64</module>
 			</modules>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -370,7 +357,7 @@
 								<phase>package</phase>
 								<configuration>
 									<target name="copy-files">
-										<!-- PLUGIN FILES -->				
+										<!-- PLUGIN FILES -->
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-alsa-linux-x86_64/target/build" />
 										</copy>
@@ -382,9 +369,6 @@
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-linux-x86_64/target/build" />
 										</copy>
 										
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
