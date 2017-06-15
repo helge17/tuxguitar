@@ -1,0 +1,5 @@
+- Download and build qtjambi from https://github.com/tilialabs/qtjambi5
+
+- Install jars as maven artifacts
+mvn install:install-file -Dfile=qtjambi-5.5.1.jar -DgroupId=org.qtjambi.qt -DartifactId=qtjambi -Dversion=5.5.1 -Dpackaging=jar
+mvn install:install-file -Dfile=qtjambi-native-linux64-gcc-5.5.1.jar -DgroupId=org.qtjambi.qt -DartifactId=qtjambi-native-linux64-gcc -Dversion=5.5.1 -Dpackaging=jar
