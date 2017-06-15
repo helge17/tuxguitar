@@ -18,7 +18,7 @@ LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 ##CLASSPATH
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit.jar
-CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit-qt.jar
+CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit-qt4.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-lib.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-editor-utils.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-gm-utils.jar
