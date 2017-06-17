@@ -6,7 +6,7 @@ import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.JackPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
-public class JackGmPort  extends GMOutputPort {
+public class JackGmPort extends GMOutputPort {
 	
 	private JackPort jackPort;
 	private JackGmReceiver jackReceiver;

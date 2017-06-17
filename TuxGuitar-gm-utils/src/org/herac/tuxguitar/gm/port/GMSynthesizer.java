@@ -28,4 +28,8 @@ public class GMSynthesizer implements MidiSynthesizer{
 	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException {
 		return true;
 	}
+
+	public GMChannelRouter getChannelRouter() {
+		return this.gmChannelRouter;
+	}
 }
