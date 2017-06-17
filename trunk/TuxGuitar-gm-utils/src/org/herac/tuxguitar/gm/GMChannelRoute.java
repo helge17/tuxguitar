@@ -13,6 +13,8 @@ public class GMChannelRoute {
 	
 	public GMChannelRoute(int channelId){
 		this.channelId = channelId;
+		this.channel1 = NULL_VALUE;
+		this.channel2 = NULL_VALUE;
 	}
 	
 	public int getChannelId() {

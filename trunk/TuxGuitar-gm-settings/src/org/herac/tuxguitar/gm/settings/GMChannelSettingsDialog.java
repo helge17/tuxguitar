@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
+import org.herac.tuxguitar.gm.port.GMSynthesizer;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -36,15 +37,15 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 	private UIDropDownSelect<Integer> gmChannel1Combo;
 	private UIDropDownSelect<Integer> gmChannel2Combo;
 	
-	public GMChannelSettingsDialog(TGContext context, TGChannel channel, TGSong song){
+	public GMChannelSettingsDialog(TGContext context, TGChannel channel, TGSong song, GMSynthesizer synthesizer){
 		this.context = context;
 		this.song = song;
 		this.channel = channel;
-		this.router = new GMChannelRouter();
+		this.router = synthesizer.getChannelRouter();
 	}
 	
 	public void open(final UIWindow parent) {
-		this.configureRouter();
+		this.configureRouter(true);
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
@@ -99,9 +100,20 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		return (this.dialog != null && !this.dialog.isDisposed());
 	}
 	
-	private void configureRouter(){
+	private void configureRouter(boolean updateChannel){
 		GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(this.router);
 		gmChannelRouterConfigurator.configureRouter(this.song.getChannels());
+		
+		if( updateChannel ) {
+			this.updateChannelFromRouter();
+		}
+	}
+	
+	public void updateChannelFromRouter(){
+		GMChannelRoute route = this.router.getRoute(this.channel.getChannelId());
+		
+		this.setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_1, Integer.toString(route.getChannel1()));
+		this.setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_2, Integer.toString(route.getChannel2()));
 	}
 	
 	private void updateChannelCombos(){
@@ -140,7 +152,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_1, Integer.toString(channel1));
 		setChannelParameter(this.channel, GMChannelRoute.PARAMETER_GM_CHANNEL_2, Integer.toString(channel2));
 		
-		configureRouter();
+		configureRouter(false);
 	}
 	
 	private void setChannelParameter( TGChannel tgChannel, String key, String value ){

@@ -10,15 +10,16 @@ public class GMChannel implements MidiChannel{
 	
 	public static final short PERCUSSION_BANK = 128;
 	
+	private boolean percussionChannel;
 	private GMReceiver receiver;
 	private GMChannelRoute route;
 	private GMChannelRouter router;
 	
 	public GMChannel(int channelId, GMChannelRouter router, GMReceiver receiver){
 		this.receiver = receiver;
-		this.route = new GMChannelRoute(channelId);
 		this.router = router;
-		this.router.configureRoutes(this.route, false);
+		this.route = new GMChannelRoute(channelId);
+		this.percussionChannel = false;
 	}
 	
 	public GMChannelRoute getRoute(){
@@ -42,6 +43,7 @@ public class GMChannel implements MidiChannel{
 	}
 	
 	public void sendProgramChange(int value) throws MidiPlayerException {
+		this.router.configureRoutes(this.route, this.percussionChannel);
 		this.receiver.sendProgramChange(this.route.getChannel1(), value);
 		if( this.route.getChannel1() != this.route.getChannel2() ){
 			this.receiver.sendProgramChange(this.route.getChannel2(), value);
@@ -49,8 +51,9 @@ public class GMChannel implements MidiChannel{
 	}
 
 	public void sendControlChange(int controller, int value) throws MidiPlayerException {
-		if( controller == MidiControllers.BANK_SELECT && value == PERCUSSION_BANK ){
-			this.router.configureRoutes(this.route, true);
+		if( controller == MidiControllers.BANK_SELECT ) {
+			this.percussionChannel = (value == PERCUSSION_BANK);
+			this.router.configureRoutes(this.route, this.percussionChannel);
 		}
 		this.receiver.sendControlChange(this.route.getChannel1(), controller, value);
 		if( this.route.getChannel1() != this.route.getChannel2() ){
@@ -59,13 +62,13 @@ public class GMChannel implements MidiChannel{
 	}
 	
 	public void sendParameter(String key, String value) throws MidiPlayerException{
-		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1) ){
+		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1)) {
 			this.route.setChannel1(Integer.parseInt(value));
-			this.router.configureRoutes(this.route, false);
+			this.router.configureRoutes(this.route, this.percussionChannel);
 		}
-		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_2) ){
+		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_2)) {
 			this.route.setChannel2(Integer.parseInt(value));
-			this.router.configureRoutes(this.route, false);
+			this.router.configureRoutes(this.route, this.percussionChannel);
 		}
 	}
 	

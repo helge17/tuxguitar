@@ -15,17 +15,18 @@ public class GMChannelRouter {
 		this.midiChannels = new ArrayList<GMChannelRoute>();
 	}
 	
-	public void resetRoutes(){
+	public void resetRoutes() {
 		this.midiChannels.clear();
 	}
 	
-	public void removeRoute(GMChannelRoute route){
-		if( this.midiChannels.contains(route) ){
-			this.midiChannels.remove(route);
+	public void removeRoute(GMChannelRoute route) {
+		GMChannelRoute existingRoute = this.getRoute(route.getChannelId());
+		if( existingRoute != null ){
+			this.midiChannels.remove(existingRoute);
 		}
 	}
 	
-	public GMChannelRoute getRoute(int channelId){
+	public GMChannelRoute getRoute(int channelId) {
 		Iterator<GMChannelRoute> channelIt = this.midiChannels.iterator();
 		while( channelIt.hasNext() ){
 			GMChannelRoute midiChannel = (GMChannelRoute) channelIt.next();
@@ -36,12 +37,10 @@ public class GMChannelRouter {
 		return null;
 	}
 	
-	public void configureRoutes(GMChannelRoute route, boolean percussionChannel){
+	public void configureRoutes(GMChannelRoute route, boolean percussionChannel) {
 		List<GMChannelRoute> conflictingRoutes = null;
 		
-		if( this.midiChannels.contains(route) ){
-			this.midiChannels.remove(route);
-		}
+		this.removeRoute(route);
 		
 		// Allways channel 9 for percussions
 		if( percussionChannel ){
@@ -70,22 +69,35 @@ public class GMChannelRouter {
 		
 		// Reconfigure conflicting routes
 		if( conflictingRoutes != null ){
-			Iterator<GMChannelRoute> it = conflictingRoutes.iterator();
-			while( it.hasNext() ){
-				GMChannelRoute conflictingRoute = (GMChannelRoute)it.next();
+			for(GMChannelRoute conflictingRoute : conflictingRoutes) {
 				conflictingRoute.setChannel1(GMChannelRoute.NULL_VALUE);
 				conflictingRoute.setChannel2(GMChannelRoute.NULL_VALUE);
 				configureRoutes(conflictingRoute, false);
 			}
 		}
+		
+		// Reconfigure orphan routes
+		List<GMChannelRoute> orphanRoutes = findOrphanRoutes();
+		for(GMChannelRoute orphanRoute : orphanRoutes) {
+			if(!this.getFreeChannels().isEmpty()) {
+				this.configureRoutes(orphanRoute, false);
+			}
+		}
 	}
 	
-	public List<GMChannelRoute> findConflictingRoutes(GMChannelRoute gmChannelRoute){
+	public List<GMChannelRoute> findOrphanRoutes() {
 		List<GMChannelRoute> routes = new ArrayList<GMChannelRoute>();
-		
-		Iterator<GMChannelRoute> it = this.midiChannels.iterator();
-		while( it.hasNext() ){
-			GMChannelRoute route = (GMChannelRoute) it.next();
+		for(GMChannelRoute route : this.midiChannels) {
+			if( route.getChannel1() == GMChannelRoute.NULL_VALUE || route.getChannel2() == GMChannelRoute.NULL_VALUE ) {
+				routes.add(route);
+			}
+		}
+		return routes;
+	}
+	
+	public List<GMChannelRoute> findConflictingRoutes(GMChannelRoute gmChannelRoute) {
+		List<GMChannelRoute> routes = new ArrayList<GMChannelRoute>();
+		for(GMChannelRoute route : this.midiChannels) {
 			if(!route.equals(gmChannelRoute) ){
 				if( route.getChannel1() == gmChannelRoute.getChannel1() || 
 					route.getChannel1() == gmChannelRoute.getChannel2() ||
@@ -96,15 +108,14 @@ public class GMChannelRouter {
 				}
 			}
 		}
-		
 		return routes;
 	}
 	
-	public List<Integer> getFreeChannels(){
+	public List<Integer> getFreeChannels() {
 		return getFreeChannels(null);
 	}
 	
-	public List<Integer> getFreeChannels(GMChannelRoute forRoute){
+	public List<Integer> getFreeChannels(GMChannelRoute forRoute) {
 		List<Integer> freeChannels = new ArrayList<Integer>();
 		
 		for( int ch = 0 ; ch < MAX_CHANNELS ; ch ++ ){
