@@ -99,9 +99,7 @@ public class TGAboutDialog {
 		dialogLayout.set(tabs, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UITabFolder tabFolder = uiFactory.createTabFolder(tabs, false);
-		tabsLayout.set(tabFolder, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-		tabsLayout.set(tabFolder, UITableLayout.PACKED_WIDTH, TAB_ITEM_WIDTH);
-		tabsLayout.set(tabFolder, UITableLayout.PACKED_HEIGHT, TAB_ITEM_HEIGHT);
+		tabsLayout.set(tabFolder, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TAB_ITEM_WIDTH, TAB_ITEM_HEIGHT, null);
 		
 		TGAboutContentReader docReader = new TGAboutContentReader(context.getContext());
 		
@@ -145,8 +143,6 @@ public class TGAboutDialog {
 	}
 	
 	private void createTabItem(UIFactory uiFactory, UITabFolder tabFolder, String itemName, String itemText){
-		final UIColor white = uiFactory.createColor(0xff, 0xff, 0xff);
-		
 		UITabItem uiTabItem = tabFolder.createTab();
 		uiTabItem.setText(TuxGuitar.getProperty(PROPERTY_PREFIX + itemName));
 		
@@ -155,13 +151,7 @@ public class TGAboutDialog {
 		control.setLayout(controlLayout);
 		
 		UIReadOnlyTextBox text = uiFactory.createReadOnlyTextBox(control, true, false);
-		text.setBgColor(white);
 		text.setText(itemText);
-		text.addDisposeListener(new UIDisposeListener() {
-			public void onDispose(UIDisposeEvent event) {
-				white.dispose();
-			}
-		});
 		
 		controlLayout.set(text, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}

@@ -25,14 +25,12 @@ public class TGAboutContentReader {
 	public StringBuffer read(String doc){
 		String lang = TuxGuitar.getInstance().getLanguageManager().getLanguage();
 		InputStream is = TGResourceManager.getInstance(this.context).getResourceAsStream(PREFIX + doc + "_" + lang + EXTENSION);
-		if(is == null){
+		if( is == null){
 			is = TGResourceManager.getInstance(this.context).getResourceAsStream(PREFIX + doc + EXTENSION);
 		}
-		if(is != null){
+		if( is != null){
 			return read(is);
 		}
-		System.out.println(doc + ".txt");
-		
 		return new StringBuffer();
 	}
 	
