@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.awt.graphics;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,15 +20,17 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	
 	private int style;
 	
+	private int alpha;
+	
 	private Graphics2D gc;
 	
 	private GeneralPath path;
 	
 	private BasicStroke stroke;
 	
-	private Color background;
+	private TGColorImpl background;
 	
-	private Color foreground;
+	private TGColorImpl foreground;
 	
 	public TGPainterImpl(){
 		super();
@@ -48,8 +49,9 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 			this.gc.dispose();
 		}
 		this.gc = gc;
-		this.background = Color.WHITE;
-		this.foreground = Color.BLACK;
+		this.alpha = 255;
+		this.background = new TGColorImpl(0xff, 0xff, 0xff);
+		this.foreground = new TGColorImpl(0x00, 0x00, 0x00);
 		this.stroke = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
 	
@@ -70,12 +72,12 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 		}
 		if( (this.style & PATH_DRAW) != 0){
 			//this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			this.gc.setColor(this.foreground);
+			this.gc.setColor(this.foreground.getHandle(this.alpha));
 			this.gc.draw(this.path);
 		}
 		if( (this.style & PATH_FILL) != 0){
 			//this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			this.gc.setColor(this.background);
+			this.gc.setColor(this.background.getHandle(this.alpha));
 			this.gc.fill(this.path);
 		}
 		this.style = 0;
@@ -102,11 +104,11 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	}
 	
 	public void setBackground(TGColor color) {
-		this.background = ((TGColorImpl)color).getHandle();
+		this.background = (TGColorImpl) color;
 	}
 	
 	public void setForeground(TGColor color) {
-		this.foreground = ((TGColorImpl)color).getHandle();
+		this.foreground = (TGColorImpl) color;
 	}
 	
 	public void setLineWidth(float lineWidth) {
@@ -131,7 +133,7 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	}
 	
 	public void setAlpha(int alpha) {
-		// TODO Auto-generated method stub
+		this.alpha = alpha;
 	}
 	
 	public void setAntialias(boolean enabled){
@@ -145,13 +147,13 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	
 	public void drawString(String string, float x, float y) {
 		this.setAntialias(true);
-		this.gc.setColor(this.foreground);
+		this.gc.setColor(this.foreground.getHandle());
 		this.gc.drawString(string, x, (y + this.gc.getFont().getSize()) );
 	}
 	
 	public void drawString(String string, float x, float y, boolean isTransparent) {
 		this.setAntialias(true);
-		this.gc.setColor(this.foreground);
+		this.gc.setColor(this.foreground.getHandle());
 		this.gc.drawString(string, x, (y + this.gc.getFont().getSize()) /*, isTransparent*/);
 	}
 	
