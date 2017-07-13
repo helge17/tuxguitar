@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	style="?attr/dialogStyle">
+    
+	<GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:columnCount="2" >
+	
+		<TextView 
+			android:id="@+id/measure_copy_dlg_from_label"
+			android:text="@string/measure_copy_dlg_from_label" 
+			android:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<Spinner 
+			android:id="@+id/measure_copy_dlg_from_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+			
+		<TextView 
+			android:id="@+id/measure_copy_dlg_to_label"
+			android:text="@string/measure_copy_dlg_to_label" 
+			android:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<Spinner 
+			android:id="@+id/measure_copy_dlg_to_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Space
+			android:layout_gravity="fill"
+			android:layout_columnSpan="2"
+			style="?attr/dialogVerticalSpacerStyle" />
+
+		<CheckBox
+			android:id="@+id/measure_copy_dlg_options_all_tracks"
+			android:text="@string/measure_copy_dlg_options_all_tracks"
+			android:layout_gravity="fill_horizontal|center_vertical"
+			android:layout_columnSpan="2" />
+	</GridLayout>
+
+</ScrollView>

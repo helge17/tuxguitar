@@ -15,4 +15,10 @@
     <item
         android:id="@+id/menu_edit_set_voice_2"
         android:title="@string/menu_edit_set_voice_2"/>
+    <item
+        android:id="@+id/menu_edit_copy"
+        android:title="@string/menu_edit_copy"/>
+    <item
+        android:id="@+id/menu_edit_paste"
+        android:title="@string/menu_edit_paste"/>
 </menu>

@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
@@ -7,9 +10,6 @@ import org.herac.tuxguitar.android.view.dialog.measure.TGMeasureAddDialogControl
 import org.herac.tuxguitar.android.view.dialog.measure.TGMeasureCleanDialogController;
 import org.herac.tuxguitar.android.view.dialog.measure.TGMeasureRemoveDialogController;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 
 public class TGMeasureMenu extends TGContextMenuBase {
 	
