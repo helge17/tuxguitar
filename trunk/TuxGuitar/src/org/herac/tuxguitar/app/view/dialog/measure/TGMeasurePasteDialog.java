@@ -1,12 +1,11 @@
 package org.herac.tuxguitar.app.view.dialog.measure;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.measure.TGPasteMeasureAction;
-import org.herac.tuxguitar.app.clipboard.MeasureTransferable;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
@@ -78,9 +77,9 @@ public class TGMeasurePasteDialog {
 				int pasteMode = 0;
 				int pasteCount = countSpinner.getValue();
 				if( replace.isSelected() ){
-					pasteMode = MeasureTransferable.TRANSFER_TYPE_REPLACE;
+					pasteMode = TGPasteMeasureAction.TRANSFER_TYPE_REPLACE;
 				}else if(insert.isSelected()){
-					pasteMode = MeasureTransferable.TRANSFER_TYPE_INSERT;
+					pasteMode = TGPasteMeasureAction.TRANSFER_TYPE_INSERT;
 				}
 				processAction(context.getContext(), pasteMode, pasteCount);
 				

@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
+import org.herac.tuxguitar.editor.clipboard.TGClipboard;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
@@ -94,7 +95,7 @@ public class MeasureMenuItem extends TGMenuItem {
 		this.cleanMeasure.setEnabled(!running);
 		this.removeMeasure.setEnabled(!running);
 		this.copyMeasure.setEnabled(!running);
-		this.pasteMeasure.setEnabled(!running && !TuxGuitar.getInstance().getTablatureEditor().getClipBoard().isEmpty());
+		this.pasteMeasure.setEnabled(!running && TGClipboard.getInstance(findContext()).getData() != null);
 	}
 	
 	public void loadProperties(){

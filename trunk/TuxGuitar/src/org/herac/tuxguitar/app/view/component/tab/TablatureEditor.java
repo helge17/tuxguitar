@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.clipboard.ClipBoard;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
@@ -17,12 +16,9 @@ public class TablatureEditor implements TGEventListener{
 	
 	private TGContext context;
 	private Tablature tablature;
-	private ClipBoard clipBoard;
 	
 	public TablatureEditor(TGContext context) {
 		this.context = context;
-		this.clipBoard = new ClipBoard();
-		
 		this.initialize();
 	}
 	
@@ -52,10 +48,6 @@ public class TablatureEditor implements TGEventListener{
 	
 	public Tablature getTablature() {
 		return this.tablature;
-	}
-	
-	public ClipBoard getClipBoard(){
-		return this.clipBoard;
 	}
 	
 	public void processUpdateEvent(TGEvent event) {

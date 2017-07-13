@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
@@ -19,9 +22,6 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-
 public class TGTrackMenu extends TGContextMenuBase {
 	
 	public TGTrackMenu(TGActivity activity) {
@@ -39,6 +39,7 @@ public class TGTrackMenu extends TGContextMenuBase {
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGTrack track = caret.getTrack();
 		boolean running = MidiPlayer.getInstance(context).isRunning();
+		boolean percussion = caret.getSongManager().isPercussionChannel(caret.getSong(), track.getChannelId());
 		
 		this.initializeItem(menu, R.id.menu_track_add, this.createActionProcessor(TGAddNewTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.menu_track_remove, this.createActionProcessor(TGRemoveTrackAction.NAME), !running);
@@ -49,6 +50,6 @@ public class TGTrackMenu extends TGContextMenuBase {
 		this.initializeItem(menu, R.id.menu_track_change_mute, this.createActionProcessor(TGChangeTrackMuteAction.NAME), !running, track.isMute());
 		this.initializeItem(menu, R.id.menu_track_set_name, new TGTrackNameDialogController(), !running);
 		this.initializeItem(menu, R.id.menu_track_set_channel, new TGTrackChannelDialogController(), !running);
-		this.initializeItem(menu, R.id.menu_track_change_tuning, new TGTrackTuningDialogController(), !running);
+		this.initializeItem(menu, R.id.menu_track_change_tuning, new TGTrackTuningDialogController(), !running && !percussion);
 	}
 }
