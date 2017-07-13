@@ -65,7 +65,7 @@ public class TGMarkerList implements TGEventListener {
 	
 	public void show(TGViewContext context) {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
-		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		
 		this.dialog = uiFactory.createWindow(uiParent, false, false);

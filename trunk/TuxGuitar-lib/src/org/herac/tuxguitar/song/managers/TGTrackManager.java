@@ -248,6 +248,10 @@ public class TGTrackManager {
 		track.getColor().copyFrom(color);
 	}
 	
+	public void changeOffset(TGTrack track, int offset) {
+		track.setOffset(offset);
+	}
+	
 	public void changeInstrumentStrings(TGTrack track,List<TGString> strings){
 		if(strings.size() < track.getStrings().size()){
 			removeNotesAfterString(track,strings.size());
@@ -271,7 +275,7 @@ public class TGTrackManager {
 		track.setChannelId( (channel != null ? channel.getChannelId() : -1) );
 		
 		if( channel != null && channel.isPercussionChannel() ){
-			track.setStrings(getSongManager().createPercussionStrings(track.getStrings().size()));
+			track.setStrings(getSongManager().createDefaultInstrumentStrings());
 		}
 	}
 	

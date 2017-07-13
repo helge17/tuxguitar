@@ -34,8 +34,8 @@ public class TGToggleViewAction extends TGActionBase {
 			tgViewContext.setAttribute(entry.getKey(), entry.getValue());
 		}
 		
-		if( tgViewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT2) == null ) {
-			tgViewContext.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, TGWindow.getInstance(this.getContext()).getWindow());
+		if( tgViewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT) == null ) {
+			tgViewContext.setAttribute(TGViewContext.ATTRIBUTE_PARENT, TGWindow.getInstance(this.getContext()).getWindow());
 		}
 		
 		return tgViewContext;

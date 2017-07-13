@@ -27,7 +27,7 @@ public class TGMessageDialogUtil {
 	public static void showMessage(TGContext context, UIWindow window, String title, String message, int style) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGMessageDialogController());
-		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, window);
+		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT, window);
 		tgActionProcessor.setAttribute(TGMessageDialog.ATTRIBUTE_STYLE, style);
 		tgActionProcessor.setAttribute(TGMessageDialog.ATTRIBUTE_TITLE, title);
 		tgActionProcessor.setAttribute(TGMessageDialog.ATTRIBUTE_MESSAGE, message);

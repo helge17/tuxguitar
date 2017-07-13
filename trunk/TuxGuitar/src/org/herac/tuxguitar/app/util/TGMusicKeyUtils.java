@@ -75,7 +75,7 @@ public class TGMusicKeyUtils {
 	
 	private static String getName(String prefix,int key,int signature){
 		String resource = ("key." + prefix + "." + key + "." + signature);
-		return TuxGuitar.getInstance().getLanguageManager().getProperty(resource,DEFAULT_KEY_NAMES[key][signature]);
+		return TuxGuitar.getInstance().getLanguageManager().getProperty(resource, DEFAULT_KEY_NAMES[key][signature]);
 	}
 }
 

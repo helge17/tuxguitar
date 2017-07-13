@@ -52,7 +52,7 @@ public class TGSettingsEditor{
 	
 	public void show() {
 		final UIFactory uiFactory = this.getUIFactory();
-		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		
 		this.dialog = uiFactory.createWindow(uiParent, true, false);

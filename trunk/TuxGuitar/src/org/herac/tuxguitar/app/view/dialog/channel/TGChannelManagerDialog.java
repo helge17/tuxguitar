@@ -66,7 +66,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 	
 	public void show(TGViewContext viewContext){
 		UIFactory uiFactory = this.getUIFactory();
-		UIWindow uiParent = viewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		UIWindow uiParent = viewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		UITableLayout dialogLayout = new UITableLayout();
 		
 		this.dialog = uiFactory.createWindow(uiParent, false, true);

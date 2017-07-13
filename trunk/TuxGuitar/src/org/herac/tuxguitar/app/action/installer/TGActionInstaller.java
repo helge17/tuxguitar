@@ -104,6 +104,7 @@ import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
+import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import org.herac.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
@@ -497,6 +498,7 @@ public class TGActionInstaller {
 		installAction(new TGOpenMeasureRemoveDialogAction(context));
 		installAction(new TGOpenMeasureCopyDialogAction(context));
 		installAction(new TGOpenMeasurePasteDialogAction(context));
+		installAction(new TGOpenTrackTuningDialogAction(context));
 		installAction(new TGOpenTrackPropertiesDialogAction(context));
 		installAction(new TGOpenScaleDialogAction(context));
 		installAction(new TGOpenURLAction(context));
