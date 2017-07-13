@@ -50,7 +50,7 @@ public class TGMarkerEditor {
 		this.createEditableMarker();
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context.getContext()).getFactory();
-		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		
 		this.dialog = uiFactory.createWindow(uiParent, true, false);

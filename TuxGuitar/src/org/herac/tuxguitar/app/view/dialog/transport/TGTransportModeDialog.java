@@ -56,7 +56,7 @@ public class TGTransportModeDialog {
 	public void show(){
 		final MidiPlayerMode mode = MidiPlayer.getInstance(this.context.getContext()).getMode();
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
-		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		

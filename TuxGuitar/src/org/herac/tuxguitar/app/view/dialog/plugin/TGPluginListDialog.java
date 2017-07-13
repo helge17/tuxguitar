@@ -35,7 +35,7 @@ public class TGPluginListDialog {
 	
 	public void show(final TGViewContext context) {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
-		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
@@ -154,7 +154,7 @@ public class TGPluginListDialog {
 	public void showInfo(TGContext context, UIWindow parent, String moduleId) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPluginInfoDialogController());
-		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, parent);
+		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT, parent);
 		tgActionProcessor.setAttribute(TGPluginInfoDialog.ATTRIBUTE_MODULE_ID, moduleId);
 		tgActionProcessor.process();
 	}
@@ -162,7 +162,7 @@ public class TGPluginListDialog {
 	public void configure(TGContext context, UIWindow parent, String moduleId) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPluginSettingsDialogController());
-		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT2, parent);
+		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT, parent);
 		tgActionProcessor.setAttribute(TGPluginSettingsDialogController.ATTRIBUTE_MODULE_ID, moduleId);
 		tgActionProcessor.process();
 	}

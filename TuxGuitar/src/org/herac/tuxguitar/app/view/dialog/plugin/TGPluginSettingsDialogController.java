@@ -11,7 +11,7 @@ public class TGPluginSettingsDialogController implements TGOpenViewController {
 	
 	public void openView(TGViewContext context) {
 		String moduleId = context.getAttribute(ATTRIBUTE_MODULE_ID);
-		UIWindow parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		UIWindow parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		
 		TGPluginSettingsManager.getInstance().openPluginSettingsDialog(moduleId, parent);
 	}

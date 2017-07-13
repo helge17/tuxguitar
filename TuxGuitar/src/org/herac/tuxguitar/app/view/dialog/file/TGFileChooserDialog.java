@@ -40,7 +40,7 @@ public class TGFileChooserDialog {
 		final List<TGFileFormat> formats = context.getAttribute(ATTRIBUTE_FILE_FORMATS);
 		
 		final UIFactory factory = TGApplication.getInstance(context.getContext()).getFactory();
-		final UIWindow parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow parent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		
 		UIFileChooser dialog = this.createChooser(factory, parent, style);
 		if( dialog != null ) {

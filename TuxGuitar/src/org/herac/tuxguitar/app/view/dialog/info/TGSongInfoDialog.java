@@ -29,7 +29,7 @@ public class TGSongInfoDialog {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		
 		UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
-		UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		dialog.setLayout(dialogLayout);

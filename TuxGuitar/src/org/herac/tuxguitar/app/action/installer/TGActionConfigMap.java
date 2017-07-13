@@ -103,6 +103,7 @@ import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
+import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import org.herac.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
@@ -553,6 +554,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenMeasureRemoveDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenMeasureCopyDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenMeasurePasteDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTrackTuningDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenTrackPropertiesDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenScaleDialogAction.NAME, SHORTCUT);
 		this.map(TGOpenURLAction.NAME, SHORTCUT);

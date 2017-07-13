@@ -31,7 +31,7 @@ public class TGPrintSettingsDialog {
 		final TGPrintSettingsHandler handler = context.getAttribute(ATTRIBUTE_HANDLER);
 		
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
-		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT2);
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		
