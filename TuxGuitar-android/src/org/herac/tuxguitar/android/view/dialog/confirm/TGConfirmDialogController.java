@@ -1,12 +1,8 @@
 package org.herac.tuxguitar.android.view.dialog.confirm;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
 
-import android.app.Activity;
-
-public class TGConfirmDialogController implements TGDialogController {
+public class TGConfirmDialogController extends TGDialogFragmentController<TGConfirmDialog> {
 	
 	public static final String ATTRIBUTE_MESSAGE = "message";
 	public static final String ATTRIBUTE_RUNNABLE = "runnable";
@@ -15,9 +11,9 @@ public class TGConfirmDialogController implements TGDialogController {
 	public TGConfirmDialogController() {
 		super();
 	}
-	
+
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGConfirmDialog(), context);
+	public TGConfirmDialog createNewInstance() {
+		return new TGConfirmDialog();
 	}
 }

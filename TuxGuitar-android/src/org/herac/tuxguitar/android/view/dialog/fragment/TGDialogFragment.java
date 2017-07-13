@@ -1,19 +1,20 @@
-package org.herac.tuxguitar.android.view.dialog;
+package org.herac.tuxguitar.android.view.dialog.fragment;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
+import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.util.TGContext;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 
-public abstract class TGDialog extends DialogFragment {
+public abstract class TGDialogFragment extends DialogFragment {
 	
-	public TGDialog() {
+	public TGDialogFragment() {
 		super();
 	}
-	
+
 	public abstract Dialog onCreateDialog();
 	
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

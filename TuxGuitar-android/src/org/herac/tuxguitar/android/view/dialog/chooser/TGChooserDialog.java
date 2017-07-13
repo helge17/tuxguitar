@@ -5,12 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TGChooserDialog<T> extends TGDialog {
+public class TGChooserDialog<T> extends TGDialogFragment {
 
 	public TGChooserDialog() {
 		super();

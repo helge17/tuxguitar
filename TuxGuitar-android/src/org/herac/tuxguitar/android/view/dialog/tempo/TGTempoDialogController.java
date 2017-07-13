@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.tempo;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGTempoDialogController implements TGDialogController {
+public class TGTempoDialogController extends TGModalFragmentController<TGTempoDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGTempoDialog(), context);
+	public TGTempoDialog createNewInstance() {
+		return new TGTempoDialog();
 	}
 }

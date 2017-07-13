@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.info;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGSongInfoDialogController implements TGDialogController {
+public class TGSongInfoDialogController extends TGModalFragmentController<TGSongInfoDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGSongInfoDialog(), context);
+	public TGSongInfoDialog createNewInstance() {
+		return new TGSongInfoDialog();
 	}
 }

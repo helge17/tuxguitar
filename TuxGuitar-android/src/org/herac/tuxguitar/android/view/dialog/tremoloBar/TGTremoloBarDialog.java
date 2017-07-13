@@ -1,10 +1,18 @@
 package org.herac.tuxguitar.android.view.dialog.tremoloBar;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -17,84 +25,76 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGTremoloBarDialog extends TGDialog {
+public class TGTremoloBarDialog extends TGModalFragment {
 
 	public TGTremoloBarDialog() {
-		super();
+		super(R.layout.view_tremolo_bar_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.tremolo_bar_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGTremoloBarDialog.this.updateEffect();
+				TGTremoloBarDialog.this.close();
+
+				return true;
+			}
+		});
+		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGTremoloBarDialog.this.cleanEffect();
+				TGTremoloBarDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
-		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGNote note = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		final TGString string = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final List<TGTremoloBarPreset> presets = this.createPresets(songManager);
-		final TGTremoloBarPreset defaultPreset = this.findDefaultPreset(note, presets);
-		final TGEffectTremoloBar defaultTremoloBar = this.findDefaultTremoloBar(note, defaultPreset);
-		
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_tremolo_bar_dialog, null);
-		
-		this.fillSelectablePresets(view, presets, defaultPreset);
+	public void onPostInflateView() {
+		final List<TGTremoloBarPreset> presets = this.createPresets();
+		final TGTremoloBarPreset defaultPreset = this.findDefaultPreset(presets);
+		final TGEffectTremoloBar defaultTremoloBar = this.findDefaultTremoloBar(defaultPreset);
+
+		this.fillSelectablePresets(presets, defaultPreset);
 		
 		if( defaultTremoloBar != null ) {
-			view.post(new Runnable() {
+			this.postWhenReady(new Runnable() {
 				public void run() {
-					loadTremoloBar(view, defaultTremoloBar);
+					loadTremoloBar(defaultTremoloBar);
 				}
 			});
 		}
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.tremolo_bar_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, createTremoloBar(view, songManager));
-				dialog.dismiss();
-			}
-		});
-		builder.setNeutralButton(R.string.global_button_clean, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, null);
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
 	}
 	
-	public TGEffectTremoloBar findDefaultTremoloBar(TGNote note, TGTremoloBarPreset defaultPreset) {
+	public TGEffectTremoloBar findDefaultTremoloBar(TGTremoloBarPreset defaultPreset) {
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isTremoloBar()) {
 			return note.getEffect().getTremoloBar();
 		}
 		return (defaultPreset != null ? defaultPreset.getTremoloBar() : null);
 	}
 	
-	public TGTremoloBarPreset findDefaultPreset(TGNote note, List<TGTremoloBarPreset> presets) {
+	public TGTremoloBarPreset findDefaultPreset(List<TGTremoloBarPreset> presets) {
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isTremoloBar()) {
 			return null;
 		}
 		return presets.get(0);
 	}
 	
-	public List<TGTremoloBarPreset> createPresets(TGSongManager songManager){
+	public List<TGTremoloBarPreset> createPresets() {
+		TGSongManager songManager = this.getSongManager();
 		List<TGTremoloBarPreset> presets = new ArrayList<TGTremoloBarPreset>();
 		TGFactory factory = songManager.getFactory();
 		TGTremoloBarPreset preset = null;
@@ -152,69 +152,100 @@ public class TGTremoloBarDialog extends TGDialog {
 		return builtItems;
 	}
 	
-	public void fillSelectablePresets(final View dlgView, List<TGTremoloBarPreset> presets, TGTremoloBarPreset selection) {
+	public void fillSelectablePresets(List<TGTremoloBarPreset> presets, TGTremoloBarPreset selection) {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets(presets));
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		final Spinner spinner = (Spinner) dlgView.findViewById(R.id.tremolo_bar_dlg_preset_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.tremolo_bar_dlg_preset_value);
 		spinner.setAdapter(arrayAdapter);
 		
-		this.updateSelectedPreset(spinner, selection);
-		this.appendListeners(dlgView, spinner);
+		this.updateSelectedPreset(selection);
+		this.appendListeners();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void updateSelectedPreset(Spinner spinner, TGTremoloBarPreset selection) {
+	public void updateSelectedPreset(TGTremoloBarPreset selection) {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.tremolo_bar_dlg_preset_value);
 		ArrayAdapter<TGSelectableItem> adapter = (ArrayAdapter<TGSelectableItem>) spinner.getAdapter();
 		spinner.setSelection(adapter.getPosition(new TGSelectableItem(selection, null)), false);
 	}
 	
-	public TGTremoloBarPreset findSelectedPreset(Spinner spinner) {
+	public TGTremoloBarPreset findSelectedPreset() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.tremolo_bar_dlg_preset_value);
 		return ((TGTremoloBarPreset) ((TGSelectableItem)spinner.getSelectedItem()).getItem());
 	}
 	
-	public void loadSelectedPreset(View view, Spinner spinner) {
-		TGTremoloBarPreset selection = this.findSelectedPreset(spinner);
+	public void loadSelectedPreset() {
+		TGTremoloBarPreset selection = this.findSelectedPreset();
 		if( selection != null ) {
-			this.loadTremoloBar(view, selection.getTremoloBar());
+			this.loadTremoloBar(selection.getTremoloBar());
 		}
 	}
 	
-	public void loadTremoloBar(View view, TGEffectTremoloBar tremoloBar) {
-		TGTremoloBarEditor tgTremoloBarEditor = (TGTremoloBarEditor) view.findViewById(R.id.tremolo_bar_dlg_tremolo_bar_editor);
+	public void loadTremoloBar(TGEffectTremoloBar tremoloBar) {
+		TGTremoloBarEditor tgTremoloBarEditor = (TGTremoloBarEditor) this.getView().findViewById(R.id.tremolo_bar_dlg_tremolo_bar_editor);
 		tgTremoloBarEditor.loadTremoloBar(tremoloBar);
 	}
 
-	public TGEffectTremoloBar createTremoloBar(View view, TGSongManager songManager){
-		TGTremoloBarEditor tremoloBarEditor = (TGTremoloBarEditor) view.findViewById(R.id.tremolo_bar_dlg_tremolo_bar_editor);
-		TGEffectTremoloBar tremoloBar = tremoloBarEditor.createTremoloBar(songManager.getFactory());
+	public TGEffectTremoloBar createTremoloBar(){
+		TGTremoloBarEditor tremoloBarEditor = (TGTremoloBarEditor) this.getView().findViewById(R.id.tremolo_bar_dlg_tremolo_bar_editor);
+		TGEffectTremoloBar tremoloBar = tremoloBarEditor.createTremoloBar(getSongManager().getFactory());
 		return tremoloBar;
 	}
 	
-	public void appendListeners(final View dlgView, final Spinner spinner) {
+	public void appendListeners() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.tremolo_bar_dlg_preset_value);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		    	loadSelectedPreset(dlgView, spinner);
+		    	loadSelectedPreset();
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
-		    	loadSelectedPreset(dlgView, spinner);
+		    	loadSelectedPreset();
 		    }
 		});
 		
-		TGTremoloBarEditor tgTremoloBarEditor = (TGTremoloBarEditor) dlgView.findViewById(R.id.tremolo_bar_dlg_tremolo_bar_editor);
+		TGTremoloBarEditor tgTremoloBarEditor = (TGTremoloBarEditor) this.getView().findViewById(R.id.tremolo_bar_dlg_tremolo_bar_editor);
 		tgTremoloBarEditor.setListener(new TGTremoloBarEditorListener() {
 			public void onChange() {
-				updateSelectedPreset(spinner, null);
+				updateSelectedPreset(null);
 			}
 		});
 	}
-	
-	public void processAction(TGMeasure measure, TGBeat beat, TGString string, TGEffectTremoloBar effect) {
+
+	public void cleanEffect() {
+		this.updateEffect(null);
+	}
+
+	public void updateEffect() {
+		this.updateEffect(this.createTremoloBar());
+	}
+
+	public void updateEffect(TGEffectTremoloBar effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTremoloBarAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, this.getString());
 		tgActionProcessor.setAttribute(TGChangeTremoloBarAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
+	}
+
+	public TGSongManager getSongManager() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+	}
+
+	public TGMeasure getMeasure() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+	}
+
+	public TGBeat getBeat() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+	}
+
+	public TGNote getNote() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
+	}
+
+	public TGString getString() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 	}
 }

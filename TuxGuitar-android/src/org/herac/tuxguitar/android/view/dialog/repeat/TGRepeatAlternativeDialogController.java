@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.repeat;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGRepeatAlternativeDialogController implements TGDialogController {
+public class TGRepeatAlternativeDialogController extends TGModalFragmentController<TGRepeatAlternativeDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGRepeatAlternativeDialog(), context);
+	public TGRepeatAlternativeDialog createNewInstance() {
+		return new TGRepeatAlternativeDialog();
 	}
 }

@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.clef;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGClefDialogController implements TGDialogController {
+public class TGClefDialogController extends TGModalFragmentController<TGClefDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGClefDialog(), context);
+	public TGClefDialog createNewInstance() {
+		return new TGClefDialog();
 	}
 }

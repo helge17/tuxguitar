@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.herac.tuxguitar.android.TGActivity" >
+
+    <item
+        android:id="@+id/menu_modal_fragment_button_add"
+        android:title="@string/menu_modal_fragment_button_add"
+        android:icon="@drawable/ic_add_circle_outline_white_24dp"
+        android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_modal_fragment_button_ok"
+        android:title="@string/menu_modal_fragment_button_ok"
+        android:icon="@drawable/ic_send_white_24dp"
+        android:showAsAction="always"/>
+</menu>

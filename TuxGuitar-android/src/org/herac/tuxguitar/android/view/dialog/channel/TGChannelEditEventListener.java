@@ -19,7 +19,9 @@ public class TGChannelEditEventListener implements TGEventListener {
 	public void createSyncProcesses() {
 		this.updateItems = new TGSyncProcessLocked(this.handle.findContext(), new Runnable() {
 			public void run() {
-				TGChannelEditEventListener.this.handle.updateItems();
+				if( TGChannelEditEventListener.this.handle.isReady() ) {
+					TGChannelEditEventListener.this.handle.updateItems();
+				}
 			}
 		});
 	}

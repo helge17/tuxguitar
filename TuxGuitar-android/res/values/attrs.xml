@@ -18,10 +18,9 @@
 		<!-- ========================================================= -->
 		<!-- ==== STYLE ============================================== -->
 		<!-- ========================================================= -->
-		<attr name="textViewStyle" format="reference"/>
-		
+
 		<attr name="dialogStyle" format="reference"/>
-		<attr name="dialogSectionSpacerStyle" format="reference"/>
+		<attr name="dialogVerticalSpacerStyle" format="reference"/>
 		<attr name="dialogImageButtonStyle" format="reference"/>
 		<attr name="dialogImageButtonSettingsStyle" format="reference"/>
 		
@@ -30,8 +29,6 @@
 		<attr name="mainImageButtonStopStyle" format="reference"/>
 		
 		<attr name="tabKeyBoardStyle" format="reference"/>
-		<attr name="tabKeyBoardButtonStyle" format="reference"/>
-		<attr name="tabKeyBoardImageButtonStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonKey0Style" format="reference"/>
 		<attr name="tabKeyBoardImageButtonKey1Style" format="reference"/>
 		<attr name="tabKeyBoardImageButtonKey2Style" format="reference"/>
@@ -58,17 +55,7 @@
 		<attr name="mainDrawerImageButtonInfoStyle" format="reference"/>
 		<attr name="mainDrawerToolbarStyle" format="reference"/>
 		<attr name="mainDrawerTransportPanelStyle" format="reference"/>
-		
-		<attr name="browserPanelStyle" format="reference"/>
-		<attr name="browserImageButtonStyle" format="reference"/>
-		<attr name="browserInputControlStyle" format="reference"/>
-		<attr name="browserSpinnerItemStyle" format="reference"/>
-		    
-		<attr name="browserCollectionsPanelStyle" format="reference"/>
-		<attr name="browserCollectionsSpinnerStyle" format="reference"/>
-		<attr name="browserSavePanelStyle" format="reference"/>
-		<attr name="browserSaveEditTextStyle" format="reference"/>
-		<attr name="browserSaveSpinnerStyle" format="reference"/>
+
 		<attr name="browserSaveImageButtonStyle" format="reference"/>
 	
 		<attr name="browserElementIconStyle" format="reference"/>

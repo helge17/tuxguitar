@@ -1,10 +1,18 @@
 package org.herac.tuxguitar.android.view.dialog.measure;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -12,46 +20,36 @@ import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGMeasureCleanDialog extends TGDialog {
+public class TGMeasureCleanDialog extends TGModalFragment {
 
 	public TGMeasureCleanDialog() {
-		super();
+		super(R.layout.view_measure_clean_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.measure_clean_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGMeasureCleanDialog.this.processAction();
+				TGMeasureCleanDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_measure_clean_dialog, null);
-		
-		this.fillRanges(view, track, measure);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.measure_clean_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(track, findSelectedMeasure1(view), findSelectedMeasure2(view));
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
+	public void onPostInflateView() {
+		this.fillRanges();
 	}
 	
 	public TGSelectableItem[] createRangeValues(int minimum, int maximum) {
@@ -71,39 +69,40 @@ public class TGMeasureCleanDialog extends TGDialog {
 		spinner.setAdapter(arrayAdapter);
 	}
 	
-	public void fillRanges(View view, TGTrack track, TGMeasure measure) {
+	public void fillRanges() {
 		final int minimum = 1;
-		final int maximum = track.countMeasures();
-		
-		final Spinner spinner1 = (Spinner) view.findViewById(R.id.measure_clean_dlg_from_value);
-		final Spinner spinner2 = (Spinner) view.findViewById(R.id.measure_clean_dlg_to_value);
+		final int maximum = this.getTrack().countMeasures();
+		final int selection = this.getMeasure().getNumber();
+
+		final Spinner spinner1 = (Spinner) this.getView().findViewById(R.id.measure_clean_dlg_from_value);
+		final Spinner spinner2 = (Spinner) this.getView().findViewById(R.id.measure_clean_dlg_to_value);
 		
 		this.fillSpinner(spinner1, minimum, maximum);
 		this.fillSpinner(spinner2, minimum, maximum);
-		
-		this.updateSpinnerSelection(spinner1, measure.getNumber());
-		this.updateSpinnerSelection(spinner2, measure.getNumber());
+
+		this.updateSpinnerSelection(spinner1, selection);
+		this.updateSpinnerSelection(spinner2, selection);
 		
 		spinner1.setOnItemSelectedListener(new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		    	validateSpinner1Selection(spinner1, spinner2, minimum, maximum);
+		    	validateSpinner1Selection(spinner1, spinner2, minimum);
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
-		    	validateSpinner1Selection(spinner1, spinner2, minimum, maximum);
+		    	validateSpinner1Selection(spinner1, spinner2, minimum);
 		    }
 		});
 		
 		spinner2.setOnItemSelectedListener(new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		    	validateSpinner2Selection(spinner1, spinner2, minimum, maximum);
+		    	validateSpinner2Selection(spinner1, spinner2, maximum);
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
-		    	validateSpinner2Selection(spinner1, spinner2, minimum, maximum);
+		    	validateSpinner2Selection(spinner1, spinner2, maximum);
 		    }
 		});
 	}
 	
-	public void validateSpinner1Selection(Spinner spinner1, Spinner spinner2, int minimum, int maximum) {
+	public void validateSpinner1Selection(Spinner spinner1, Spinner spinner2, int minimum) {
 		int selection1 = findSelectedValue(spinner1);
 		int selection2 = findSelectedValue(spinner2);
 		
@@ -114,7 +113,7 @@ public class TGMeasureCleanDialog extends TGDialog {
 		}
 	}
 	
-	public void validateSpinner2Selection(Spinner spinner1, Spinner spinner2, int minimum, int maximum) {
+	public void validateSpinner2Selection(Spinner spinner1, Spinner spinner2, int maximum) {
 		int selection1 = findSelectedValue(spinner1);
 		int selection2 = findSelectedValue(spinner2);
 		
@@ -125,12 +124,12 @@ public class TGMeasureCleanDialog extends TGDialog {
 		}
 	}
 	
-	public int findSelectedMeasure1(View view) {
-		return this.findSelectedValue((Spinner) view.findViewById(R.id.measure_clean_dlg_from_value));
+	public int findSelectedMeasure1() {
+		return this.findSelectedValue((Spinner) this.getView().findViewById(R.id.measure_clean_dlg_from_value));
 	}
 	
-	public int findSelectedMeasure2(View view) {
-		return this.findSelectedValue((Spinner) view.findViewById(R.id.measure_clean_dlg_to_value));
+	public int findSelectedMeasure2() {
+		return this.findSelectedValue((Spinner) this.getView().findViewById(R.id.measure_clean_dlg_to_value));
 	}
 	
 	public int findSelectedValue(Spinner spinner) {
@@ -143,11 +142,19 @@ public class TGMeasureCleanDialog extends TGDialog {
 		spinner.setSelection(adapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
 	}
 	
-	public void processAction(TGTrack track, Integer measure1, Integer measure2) {
+	public void processAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGCleanMeasureListAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
-		tgActionProcessor.setAttribute(TGCleanMeasureListAction.ATTRIBUTE_MEASURE_NUMBER_1, measure1);
-		tgActionProcessor.setAttribute(TGCleanMeasureListAction.ATTRIBUTE_MEASURE_NUMBER_2, measure2);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, this.getTrack());
+		tgActionProcessor.setAttribute(TGCleanMeasureListAction.ATTRIBUTE_MEASURE_NUMBER_1, this.findSelectedMeasure1());
+		tgActionProcessor.setAttribute(TGCleanMeasureListAction.ATTRIBUTE_MEASURE_NUMBER_2, this.findSelectedMeasure2());
 		tgActionProcessor.process();
+	}
+
+	public TGTrack  getTrack() {
+		return getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+	}
+
+	public TGMeasure getMeasure() {
+		return getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 	}
 }

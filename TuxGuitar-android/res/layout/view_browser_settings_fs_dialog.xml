@@ -7,7 +7,6 @@
 
     <TextView
         android:id="@+id/browser_settings_fs_name_label"
-        style="?attr/textViewStyle"
         android:layout_gravity="fill_horizontal|center_vertical"
         android:text="@string/browser_settings_fs_name_label" />
 
@@ -18,25 +17,23 @@
         android:imeOptions="actionDone" />
 
     <Space
-        style="?attr/dialogSectionSpacerStyle"
+        style="?attr/dialogVerticalSpacerStyle"
         android:layout_columnSpan="2"
         android:layout_gravity="fill" />
 
     <TextView
         android:id="@+id/browser_settings_fs_path_label"
-        style="?attr/textViewStyle"
         android:layout_gravity="fill_horizontal|center_vertical"
         android:text="@string/browser_settings_fs_path_label" />
 
     <TextView
         android:id="@+id/browser_settings_fs_path_preview"
-        style="?attr/textViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="fill_horizontal|center_vertical" />
 
     <Space
-        style="?attr/dialogSectionSpacerStyle"
+        style="?attr/dialogVerticalSpacerStyle"
         android:layout_columnSpan="2"
         android:layout_gravity="fill" />
 

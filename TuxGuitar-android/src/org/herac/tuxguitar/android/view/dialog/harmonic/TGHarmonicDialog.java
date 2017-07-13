@@ -1,10 +1,18 @@
 package org.herac.tuxguitar.android.view.dialog.harmonic;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -16,59 +24,49 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGHarmonicDialog extends TGDialog {
+public class TGHarmonicDialog extends TGModalFragment {
 
 	public TGHarmonicDialog() {
-		super();
+		super(R.layout.view_harmonic_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.harmonic_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGHarmonicDialog.this.updateEffect();
+				TGHarmonicDialog.this.close();
+
+				return true;
+			}
+		});
+		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGHarmonicDialog.this.cleanEffect();
+				TGHarmonicDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
-		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGNote note = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		final TGString string = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_harmonic_dialog, null);
-		
-		this.fillHarmonics(view, note);
-		this.fillData(view, note);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.harmonic_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, createHarmonic(view, songManager));
-				dialog.dismiss();
-			}
-		});
-		builder.setNeutralButton(R.string.global_button_clean, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, null);
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
+	public void onPostInflateView() {
+		this.fillHarmonics();
+		this.fillData();
 	}
 	
-	public boolean isNaturalHarmonicAvailable(TGNote note) {
+	public boolean isNaturalHarmonicAvailable() {
+		TGNote note = this.getNote();
 		if( note != null ) {
 			for(int i = 0;i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
 				if((note.getValue() % 12) == (TGEffectHarmonic.NATURAL_FREQUENCIES[i][0] % 12) ){
@@ -79,11 +77,12 @@ public class TGHarmonicDialog extends TGDialog {
 		return false;
 	}
 	
-	public int getCurrentType(TGNote note) {
+	public int getCurrentType() {
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isHarmonic() ) {
 			return note.getEffect().getHarmonic().getType();
 		}
-		return (isNaturalHarmonicAvailable(note) ? TGEffectHarmonic.TYPE_NATURAL : TGEffectHarmonic.TYPE_ARTIFICIAL);
+		return (isNaturalHarmonicAvailable() ? TGEffectHarmonic.TYPE_NATURAL : TGEffectHarmonic.TYPE_ARTIFICIAL);
 	}
 	
 	public String getTypeLabel(int type){
@@ -118,22 +117,24 @@ public class TGHarmonicDialog extends TGDialog {
 		return builtItems;
 	}
 	
-	public void fillData(View view, TGNote note) {
-		int type = getCurrentType(note);
+	public void fillData() {
+		int type = getCurrentType();
 		int selection = -1;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isHarmonic() ) {
 			selection = note.getEffect().getHarmonic().getData();
 		}
 		
-		this.fillData(view, type, selection);
+		this.fillData(type, selection);
 	}
 	
-	public void fillData(View view, int type, int selection) {
+	public void fillData(int type, int selection) {
 		TGSelectableItem[] selectableItems = createDataValues(type);
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, selectableItems);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		Spinner spinner = (Spinner) view.findViewById(R.id.harmonic_dlg_data_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.harmonic_dlg_data_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setEnabled(selectableItems.length > 0);
 		spinner.setVisibility(selectableItems.length > 0 ? View.VISIBLE : View.GONE);
@@ -142,37 +143,37 @@ public class TGHarmonicDialog extends TGDialog {
 		}
 	}
 	
-	public int findSelectedData(View view) {
-		Spinner spinner = (Spinner) view.findViewById(R.id.harmonic_dlg_data_value);
+	public int findSelectedData() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.harmonic_dlg_data_value);
 		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? ((Integer)selectableItem.getItem()).intValue() : 0);
 	}
 	
-	public void fillHarmonics(View view, TGNote note) {
-		int selection = getCurrentType(note);
-		boolean nhAvailable = isNaturalHarmonicAvailable(note);
+	public void fillHarmonics() {
+		int selection = getCurrentType();
+		boolean nhAvailable = isNaturalHarmonicAvailable();
 		
-		this.fillHarmonic(view, R.id.harmonic_dlg_type_nh, TGEffectHarmonic.TYPE_NATURAL, selection, nhAvailable);
-		this.fillHarmonic(view, R.id.harmonic_dlg_type_ah, TGEffectHarmonic.TYPE_ARTIFICIAL, selection, true);
-		this.fillHarmonic(view, R.id.harmonic_dlg_type_th, TGEffectHarmonic.TYPE_TAPPED, selection, true);
-		this.fillHarmonic(view, R.id.harmonic_dlg_type_ph, TGEffectHarmonic.TYPE_PINCH, selection, true);
-		this.fillHarmonic(view, R.id.harmonic_dlg_type_sh, TGEffectHarmonic.TYPE_SEMI, selection, true);
+		this.fillHarmonic(R.id.harmonic_dlg_type_nh, TGEffectHarmonic.TYPE_NATURAL, selection, nhAvailable);
+		this.fillHarmonic(R.id.harmonic_dlg_type_ah, TGEffectHarmonic.TYPE_ARTIFICIAL, selection, true);
+		this.fillHarmonic(R.id.harmonic_dlg_type_th, TGEffectHarmonic.TYPE_TAPPED, selection, true);
+		this.fillHarmonic(R.id.harmonic_dlg_type_ph, TGEffectHarmonic.TYPE_PINCH, selection, true);
+		this.fillHarmonic(R.id.harmonic_dlg_type_sh, TGEffectHarmonic.TYPE_SEMI, selection, true);
 	}
 
-	public void fillHarmonic(final View view, final int id, final int value, int selection, boolean enabled) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillHarmonic(final int id, final int value, int selection, boolean enabled) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 		radioButton.setEnabled(enabled);
 		radioButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				fillData(view, value, 0);
+				fillData(value, 0);
 			}
 		});
 	}
 	
-	public int findSelectedHarmonic(View view) {
-		RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.harmonic_dlg_type_group);
+	public int findSelectedHarmonic() {
+		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.harmonic_dlg_type_group);
 		int radioButtonId = radioGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
 			RadioButton radioButton = (RadioButton) radioGroup.findViewById(radioButtonId);
@@ -183,19 +184,47 @@ public class TGHarmonicDialog extends TGDialog {
 		return TGEffectHarmonic.TYPE_NATURAL;
 	}
 	
-	public TGEffectHarmonic createHarmonic(View view, TGSongManager songManager){
-		TGEffectHarmonic tgEffectHarmonic = songManager.getFactory().newEffectHarmonic();
-		tgEffectHarmonic.setType(findSelectedHarmonic(view));
-		tgEffectHarmonic.setData(findSelectedData(view));
+	public TGEffectHarmonic createHarmonic(){
+		TGEffectHarmonic tgEffectHarmonic = getSongManager().getFactory().newEffectHarmonic();
+		tgEffectHarmonic.setType(findSelectedHarmonic());
+		tgEffectHarmonic.setData(findSelectedData());
 		return tgEffectHarmonic;
 	}
-	
-	public void processAction(TGMeasure measure, TGBeat beat, TGString string, TGEffectHarmonic effect) {
+
+	public void cleanEffect() {
+		this.updateEffect(null);
+	}
+
+	public void updateEffect() {
+		this.updateEffect(this.createHarmonic());
+	}
+
+	public void updateEffect(TGEffectHarmonic effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeHarmonicNoteAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, this.getString());
 		tgActionProcessor.setAttribute(TGChangeHarmonicNoteAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
+	}
+
+	public TGSongManager getSongManager() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+	}
+
+	public TGMeasure getMeasure() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+	}
+
+	public TGBeat getBeat() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+	}
+
+	public TGNote getNote() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
+	}
+
+	public TGString getString() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 	}
 }

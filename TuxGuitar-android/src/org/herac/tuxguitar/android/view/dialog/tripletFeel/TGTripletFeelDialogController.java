@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.tripletFeel;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGTripletFeelDialogController implements TGDialogController {
+public class TGTripletFeelDialogController extends TGModalFragmentController<TGTripletFeelDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGTripletFeelDialog(), context);
+	public TGTripletFeelDialog createNewInstance() {
+		return new TGTripletFeelDialog();
 	}
 }

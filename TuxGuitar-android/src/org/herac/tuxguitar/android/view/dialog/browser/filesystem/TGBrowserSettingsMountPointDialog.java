@@ -9,14 +9,14 @@ import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.variables.TGVarEnvExternalStorageDirectory;
 import org.herac.tuxguitar.android.variables.TGVarEnvSecondaryStorageDirectory;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TGBrowserSettingsMountPointDialog extends TGDialog {
+public class TGBrowserSettingsMountPointDialog extends TGDialogFragment {
 
 	public TGBrowserSettingsMountPointDialog() {
 		super();

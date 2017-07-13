@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	style="?attr/dialogStyle">
+
+	<GridLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:columnCount="2" >
+
+		<TextView
+			android:id="@+id/track_tuning_dlg_value_label"
+			android:text="@string/track_tuning_dlg_value_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/track_tuning_dlg_value_control"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/track_tuning_dlg_preview_label"
+			android:text="@string/track_tuning_dlg_preview_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<EditText
+			android:id="@+id/track_tuning_dlg_preview_control"
+			android:inputType="text"
+			android:enabled="false"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+	</GridLayout>
+</ScrollView>

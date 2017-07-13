@@ -106,7 +106,7 @@ public class TGBrowserView extends RelativeLayout {
 
 	@SuppressWarnings("unchecked")
 	public void refreshCollections(boolean forceDefaults) {
-		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(findActivity(), R.layout.view_browser_spinner_item, createCollectionValues());
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(findActivity(), android.R.layout.simple_spinner_item, createCollectionValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		TGBrowserCollection selectedCollection = (forceDefaults ? TGBrowserManager.getInstance(this.findContext()).getDefaultCollection() : this.findCurrentCollection());
@@ -173,7 +173,7 @@ public class TGBrowserView extends RelativeLayout {
 	}
 	
 	public void fillFormats() {
-		TGSelectableAdapter selectableAdapter = new TGSelectableAdapter(findActivity(), R.layout.view_browser_spinner_item, createFormatValues());
+		TGSelectableAdapter selectableAdapter = new TGSelectableAdapter(findActivity(), android.R.layout.simple_spinner_item, createFormatValues());
 		selectableAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_save_format);

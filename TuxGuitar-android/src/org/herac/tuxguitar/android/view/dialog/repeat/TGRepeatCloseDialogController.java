@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.repeat;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGRepeatCloseDialogController implements TGDialogController {
+public class TGRepeatCloseDialogController extends TGModalFragmentController<TGRepeatCloseDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGRepeatCloseDialog(), context);
+	public TGRepeatCloseDialog createNewInstance() {
+		return new TGRepeatCloseDialog();
 	}
 }

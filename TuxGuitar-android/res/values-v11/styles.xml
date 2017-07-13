@@ -3,4 +3,12 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
     </style>
+
+    <style name="AppBaseWidget.Spinner" parent="android:Widget.Holo.Light.Spinner">
+        <!-- API 11 theme customizations can go here. -->
+    </style>
+
+    <style name="AppBaseWidget.TextView" parent="android:Widget.Holo.Light.TextView">
+        <!-- API 11 theme customizations can go here. -->
+    </style>
 </resources>
