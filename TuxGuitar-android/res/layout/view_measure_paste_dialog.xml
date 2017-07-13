@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	style="?attr/dialogStyle">
+    
+	<GridLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:columnCount="2" >
+	
+		<TextView 
+			android:id="@+id/measure_paste_dlg_count_label"
+			android:text="@string/measure_paste_dlg_count_label" 
+			android:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<Spinner 
+			android:id="@+id/measure_paste_dlg_count_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+	
+		<Space
+			android:layout_gravity="fill"
+			android:layout_columnSpan="2"
+			style="?attr/dialogVerticalSpacerStyle" />
+			
+		<RadioGroup 
+			android:id="@+id/measure_paste_dlg_options_group"
+			android:layout_gravity="fill_horizontal|center_vertical"
+			android:layout_columnSpan="2" >
+	
+			<RadioButton 
+				android:id="@+id/measure_paste_dlg_options_mode_replace"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/measure_paste_dlg_options_mode_replace" />
+	
+			<RadioButton 
+				android:id="@+id/measure_paste_dlg_options_mode_insert"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:text="@string/measure_paste_dlg_options_mode_insert" />
+
+		</RadioGroup>
+	
+	</GridLayout>
+
+</ScrollView>

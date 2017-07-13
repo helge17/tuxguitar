@@ -39,7 +39,9 @@
     <string name="menu_edit_redo">Redo</string>
     <string name="menu_edit_set_voice_1">Select Voice 1</string>
     <string name="menu_edit_set_voice_2">Select Voice 2</string>
-    
+	<string name="menu_edit_copy">Copy</string>
+	<string name="menu_edit_paste">Paste</string>
+
     <string name="menu_view">View</string>
     <string name="menu_view_channel_list">Instruments</string>
 	<string name="menu_view_layout_show_score">Display score</string>
@@ -367,7 +369,19 @@
 	<string name="measure_clean_dlg_title">Clean Measure</string>
 	<string name="measure_clean_dlg_from_label">From:</string>
 	<string name="measure_clean_dlg_to_label">To:</string>
-	
+
+	<!-- Measure copy dialog -->
+	<string name="measure_copy_dlg_title">Copy Measures</string>
+	<string name="measure_copy_dlg_from_label">From:</string>
+	<string name="measure_copy_dlg_to_label">To:</string>
+	<string name="measure_copy_dlg_options_all_tracks">All tracks</string>
+
+	<!-- Measure paste dialog -->
+	<string name="measure_paste_dlg_title">Paste Measures</string>
+	<string name="measure_paste_dlg_count_label">Paste count:</string>
+	<string name="measure_paste_dlg_options_mode_replace">Paste at the current measure</string>
+	<string name="measure_paste_dlg_options_mode_insert">Paste in new measure</string>
+
 	<!-- Text dialog -->
 	<string name="text_dlg_title">Insert Text</string>
 	

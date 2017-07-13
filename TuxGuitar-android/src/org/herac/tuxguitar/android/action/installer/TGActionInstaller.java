@@ -119,8 +119,10 @@ import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGAddMeasureListAction;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
 import org.herac.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
+import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
@@ -236,9 +238,10 @@ public class TGActionInstaller {
 		installAction(new TGGoPreviousMeasureAction(context));
 		installAction(new TGRemoveMeasureAction(context));
 		installAction(new TGRemoveMeasureRangeAction(context));
-		installAction(new TGCopyMeasureFromAction(context));
 		installAction(new TGInsertMeasuresAction(context));
-		
+		installAction(new TGCopyMeasureFromAction(context));
+		installAction(new TGCopyMeasureAction(context));
+		installAction(new TGPasteMeasureAction(context));
 		//beat actions
 		installAction(new TGChangeNoteAction(context));
 		installAction(new TGChangeTiedNoteAction(context));

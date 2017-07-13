@@ -134,8 +134,10 @@ import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGAddMeasureListAction;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
 import org.herac.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
+import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
@@ -287,7 +289,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGRemoveMeasureRangeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGCopyMeasureFromAction.NAME, LOCKABLE, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGInsertMeasuresAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
-		
+		this.map(TGCopyMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
+		this.map(TGPasteMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
+
 		//beat actions
 		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);

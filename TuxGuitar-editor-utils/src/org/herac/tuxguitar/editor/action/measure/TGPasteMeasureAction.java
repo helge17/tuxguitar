@@ -20,8 +20,8 @@ public class TGPasteMeasureAction extends TGActionBase{
 	public static final String ATTRIBUTE_PASTE_MODE = "pasteMode";
 	public static final String ATTRIBUTE_PASTE_COUNT = "pasteCount";
 	
-	public static final int TRANSFER_TYPE_REPLACE = 1;
-	public static final int TRANSFER_TYPE_INSERT = 2;
+	public static final Integer TRANSFER_TYPE_REPLACE = 1;
+	public static final Integer TRANSFER_TYPE_INSERT = 2;
 	
 	public TGPasteMeasureAction(TGContext context) {
 		super(context, NAME);
