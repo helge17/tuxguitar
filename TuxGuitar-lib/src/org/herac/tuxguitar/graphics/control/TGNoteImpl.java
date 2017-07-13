@@ -168,14 +168,14 @@ public class TGNoteImpl extends TGNote {
 			} else if(!isTiedNote()) {
 				layout.setTabNoteStyle(painter, running);
 				
-				TGRectangle r = layout.getNoteOrientation(painter, x, y, this);
+				String label = layout.getNoteLabel(this);
+				TGRectangle r = layout.getOrientation(painter, x, y, label);
 				this.noteOrientation.setX(r.getX());
 				this.noteOrientation.setY(r.getY());
 				this.noteOrientation.setWidth(r.getWidth());
 				this.noteOrientation.setHeight(r.getHeight());
-				String visualNote = (getEffect().isDeadNote()) ? "X" : Integer.toString(getValue());
-				visualNote = (getEffect().isGhostNote()) ? "(" + visualNote + ")" : visualNote;
-				painter.drawString(visualNote, this.noteOrientation.getX(), this.noteOrientation.getY());
+				
+				painter.drawString(label, this.noteOrientation.getX(), this.noteOrientation.getY());
 			}
 			
 			//-------------efectos--------------------------------------
