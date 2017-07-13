@@ -503,19 +503,16 @@ public abstract class TGLayout {
 		return ((this.getStyle() & TGLayout.DISPLAY_MODE_BLACK_WHITE) != 0 ? getResources().getColorWhite() : color );
 	}
 	
-	public TGRectangle getNoteOrientation(TGPainter painter, float x, float y, TGNote note){
-		String noteAsString = null;
-		if (note.isTiedNote()){
-			noteAsString = "L";
-			noteAsString = (note.getEffect().isGhostNote())?"(" + noteAsString + ")":noteAsString;
-		}else if(note.getEffect().isDeadNote()){
-			noteAsString = "X";
-			noteAsString = (note.getEffect().isGhostNote())?"(" + noteAsString + ")":noteAsString;
-		}else{
-			noteAsString = Integer.toString(note.getValue());
-			noteAsString = (note.getEffect().isGhostNote())?"(" + noteAsString + ")":noteAsString;
+	public String getNoteLabel(TGNote note) {
+		String label = null;
+		if( note.isTiedNote()) {
+			label = "L";
+		} else if(note.getEffect().isDeadNote()) {
+			label = "X";
+		} else {
+			label = Integer.toString(note.getValue());
 		}
-		return getOrientation(painter, x, y, noteAsString);
+		return (note.getEffect().isGhostNote() ? "(" + label + ")" : label);
 	}
 	
 	public TGRectangle getOrientation(TGPainter painter, float x, float y, String s){
