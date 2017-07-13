@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.android.fragment.impl;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGCachedFragment;
 import org.herac.tuxguitar.android.menu.options.TGBrowserMenu;
-
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 public class TGBrowserFragment extends TGCachedFragment {
 
@@ -18,7 +18,7 @@ public class TGBrowserFragment extends TGCachedFragment {
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
 		this.attachInstance();
-		this.setHasOptionsMenu(true);
+		this.createActionBar(true, false, null);
 	}
 	
 	@Override

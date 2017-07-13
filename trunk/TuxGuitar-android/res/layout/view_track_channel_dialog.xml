@@ -1,38 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    style="?attr/dialogStyle">
 
-    <RelativeLayout
-        style="?attr/dialogStyle"
+    <GridLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:columnCount="2" >
 
         <TextView
             android:id="@+id/track_channel_dlg_channel_label"
-            style="?attr/textViewStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/track_channel_dlg_settings_button"
-            android:layout_alignTop="@+id/track_channel_dlg_settings_button"
-            android:gravity="center"
-            android:text="@string/track_channel_dlg_channel_label" />
+            android:text="@string/track_channel_dlg_channel_label"
+            android:layout_gravity="fill_horizontal|center_vertical" />
 
         <Spinner
             android:id="@+id/track_channel_dlg_channel_value"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/track_channel_dlg_settings_button"
-            android:layout_alignTop="@+id/track_channel_dlg_settings_button"
-            android:layout_toRightOf="@+id/track_channel_dlg_channel_label"
-            android:layout_toLeftOf="@+id/track_channel_dlg_settings_button" />
-
-        <ImageView
-            android:id="@+id/track_channel_dlg_settings_button"
-            style="?attr/dialogImageButtonSettingsStyle"
-            android:layout_alignParentRight="true"
-            android:contentDescription="@string/track_channel_dlg_settings_label" />
-    </RelativeLayout>
-
+            android:layout_gravity="fill_horizontal|center_vertical" />
+    </GridLayout>
 </ScrollView>

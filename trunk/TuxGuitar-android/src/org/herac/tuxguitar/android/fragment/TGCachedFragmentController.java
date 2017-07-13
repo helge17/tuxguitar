@@ -26,7 +26,7 @@ public abstract class TGCachedFragmentController<T extends TGCachedFragment> imp
 			}
 		}
 	}
-	
+
 	public void detachInstance(T instance) {
 		synchronized (TGCachedFragmentController.class) {
 			if( this.instance == instance ) {

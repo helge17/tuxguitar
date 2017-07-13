@@ -16,15 +16,31 @@ public class TGBrowserCollectionsSettingsHandler implements TGBrowserFactorySett
 		this.type = type;
 	}
 	
-	public void onCreateSettings(TGBrowserSettings settings) {
-		TGBrowserManager browserManager = TGBrowserManager.getInstance(this.dialog.findContext());
-		TGBrowserCollection collection = browserManager.createCollection(this.type, settings);
-		
-		this.dialog.addCollection(collection);
+	public void onCreateSettings(final TGBrowserSettings settings) {
+		this.dialog.postWhenReady(new Runnable() {
+			public void run() {
+				postOnCreateSettings(settings);
+			}
+		});
 	}
 
 	@Override
-	public void handleError(Throwable throwable) {
+	public void handleError(final Throwable throwable) {
+		this.dialog.postWhenReady(new Runnable() {
+			public void run() {
+				postHandleError(throwable);
+			}
+		});
+	}
+
+	public void postOnCreateSettings(TGBrowserSettings settings) {
+		TGBrowserManager browserManager = TGBrowserManager.getInstance(this.dialog.findContext());
+		TGBrowserCollection collection = browserManager.createCollection(this.type, settings);
+
+		this.dialog.addCollection(collection);
+	}
+
+	public void postHandleError(Throwable throwable) {
 		TGErrorManager.getInstance(this.dialog.findContext()).handleError(throwable);
 	}
 }

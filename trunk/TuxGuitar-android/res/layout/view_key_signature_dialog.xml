@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	style="?attr/dialogStyle">
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:columnCount="2"
-		style="?attr/dialogStyle">
-	
-		<TextView 
+		android:columnCount="2">
+
+		<TextView
 			android:id="@+id/key_signature_dlg_ks_label"
-			android:text="@string/key_signature_dlg_ks_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
-	
-		<Spinner 
+			android:text="@string/key_signature_dlg_ks_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
 			android:id="@+id/key_signature_dlg_ks_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
-			style="?attr/dialogSectionSpacerStyle" />
-	
-		<CheckBox 
+			style="?attr/dialogVerticalSpacerStyle"/>
+
+		<CheckBox
 			android:id="@+id/key_signature_dlg_options_apply_to_end"
-			android:text="@string/key_signature_dlg_options_apply_to_end" 
+			android:text="@string/key_signature_dlg_options_apply_to_end"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:layout_columnSpan="2" />
-	
+
 	</GridLayout>
 
 </ScrollView>

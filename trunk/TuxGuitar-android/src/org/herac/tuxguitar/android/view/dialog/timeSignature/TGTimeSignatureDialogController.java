@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.timeSignature;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGTimeSignatureDialogController implements TGDialogController {
+public class TGTimeSignatureDialogController extends TGModalFragmentController<TGTimeSignatureDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGTimeSignatureDialog(), context);
+	public TGTimeSignatureDialog createNewInstance() {
+		return new TGTimeSignatureDialog();
 	}
 }

@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.grace;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGGraceDialogController implements TGDialogController {
+public class TGGraceDialogController extends TGModalFragmentController<TGGraceDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGGraceDialog(), context);
+	public TGGraceDialog createNewInstance() {
+		return new TGGraceDialog();
 	}
 }

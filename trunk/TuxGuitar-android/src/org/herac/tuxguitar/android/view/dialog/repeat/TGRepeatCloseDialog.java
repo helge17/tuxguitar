@@ -1,37 +1,48 @@
 package org.herac.tuxguitar.android.view.dialog.repeat;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGRepeatCloseAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-
-public class TGRepeatCloseDialog extends TGDialog {
+public class TGRepeatCloseDialog extends TGModalFragment {
 
 	public TGRepeatCloseDialog() {
-		super();
+		super(R.layout.view_repeat_close);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.repeat_close_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGRepeatCloseDialog.this.changeRepeatClose();
+				TGRepeatCloseDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		View view = getActivity().getLayoutInflater().inflate(R.layout.view_repeat_close, null);
-		
-		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-		final TGMeasureHeader header = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-		
-		int repeatCloseDefault = header.getRepeatClose();
+	public void onPostInflateView() {
+		int repeatCloseDefault = this.getHeader().getRepeatClose();
 		if( repeatCloseDefault < 1 ) {
 			repeatCloseDefault = 1;
 		}
@@ -39,26 +50,9 @@ public class TGRepeatCloseDialog extends TGDialog {
 		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createRepeatValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		final Spinner spinner = (Spinner) view.findViewById(R.id.repeat_close_dlg_count_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.repeat_close_dlg_count_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(repeatCloseDefault)));
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.repeat_close_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				changeRepeatClose(song, header, parseRepeatValue(spinner));
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
 	}
 	
 	public Integer[] createRepeatValues() {
@@ -68,32 +62,25 @@ public class TGRepeatCloseDialog extends TGDialog {
 		}
 		return items;
 	}
-	
-	public int parseRepeatValue(Spinner spinner) {
+
+	public int parseRepeatValue() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.repeat_close_dlg_count_value);
 		return ((Integer)spinner.getSelectedItem()).intValue();
 	}
-	
-	public void updateRadio(RadioButton button, Integer value, Integer selection) {
-		button.setTag(Integer.valueOf(value));
-		button.setChecked(selection != null && selection.equals(value));
+
+	public void changeRepeatClose() {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGRepeatCloseAction.NAME);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, this.getHeader());
+		tgActionProcessor.setAttribute(TGRepeatCloseAction.ATTRIBUTE_REPEAT_COUNT, this.parseRepeatValue());
+		tgActionProcessor.processOnNewThread();
 	}
 
-	public Integer parseApplyTo(RadioGroup radioGroup, Integer defaultValue) {
-		int radioButtonId = radioGroup.getCheckedRadioButtonId();
-		if( radioButtonId != -1 ) {
-			RadioButton radioButton = (RadioButton) radioGroup.findViewById(radioButtonId);
-			if( radioButton != null ) {
-				return ((Integer)radioButton.getTag()).intValue();
-			}
-		}
-		return defaultValue;
+	public TGSong getSong() {
+		return getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 	}
-	
-	public void changeRepeatClose(TGSong song, TGMeasureHeader header, Integer repeatCount) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGRepeatCloseAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
-		tgActionProcessor.setAttribute(TGRepeatCloseAction.ATTRIBUTE_REPEAT_COUNT, repeatCount);
-		tgActionProcessor.processOnNewThread();
+
+	public TGMeasureHeader getHeader() {
+		return getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 	}
 }

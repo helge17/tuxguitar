@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+	style="?attr/dialogStyle">
 	
 	<GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		android:columnCount="2"
-		style="?attr/dialogStyle">
+		android:columnCount="2">
 		
 		<TextView 
 			android:id="@+id/song_info_dlg_name_label"
 			android:text="@string/song_info_dlg_name_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_name_value"
@@ -23,8 +22,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_artist_label"
 			android:text="@string/song_info_dlg_artist_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_artist_value"
@@ -34,9 +32,8 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_album_label"
 			android:text="@string/song_info_dlg_album_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
-	
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
 		<EditText
 			android:id="@+id/song_info_dlg_album_value"
 			android:inputType="text" 
@@ -45,8 +42,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_author_label"
 			android:text="@string/song_info_dlg_author_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_author_value"
@@ -56,8 +52,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_date_label"
 			android:text="@string/song_info_dlg_date_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_date_value"
@@ -67,8 +62,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_copyright_label"
 			android:text="@string/song_info_dlg_copyright_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_copyright_value"
@@ -78,8 +72,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_writer_label"
 			android:text="@string/song_info_dlg_writer_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_writer_value"
@@ -89,8 +82,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_transcriber_label"
 			android:text="@string/song_info_dlg_transcriber_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_transcriber_value"
@@ -100,8 +92,7 @@
 		<TextView 
 			android:id="@+id/song_info_dlg_comments_label"
 			android:text="@string/song_info_dlg_comments_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<EditText
 			android:id="@+id/song_info_dlg_comments_value"

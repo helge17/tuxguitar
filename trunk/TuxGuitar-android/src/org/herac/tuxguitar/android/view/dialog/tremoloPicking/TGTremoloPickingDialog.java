@@ -1,7 +1,15 @@
 package org.herac.tuxguitar.android.view.dialog.tremoloPicking;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
@@ -13,69 +21,64 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
-public class TGTremoloPickingDialog extends TGDialog {
+public class TGTremoloPickingDialog extends TGModalFragment {
 
 	public TGTremoloPickingDialog() {
-		super();
+		super(R.layout.view_tremolo_picking_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.tremolo_picking_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGTremoloPickingDialog.this.updateEffect();
+				TGTremoloPickingDialog.this.close();
+
+				return true;
+			}
+		});
+		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGTremoloPickingDialog.this.cleanEffect();
+				TGTremoloPickingDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
-		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGNote note = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		final TGString string = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_tremolo_picking_dialog, null);
-		
-		this.fillDurations(view, note);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.tremolo_picking_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, createTremoloPicking(view, songManager));
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
+	public void onPostInflateView() {
+		this.fillDurations();
 	}
 	
-	public void fillDurations(View view, TGNote note) {
+	public void fillDurations() {
 		int duration = TGDuration.EIGHTH;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isTremoloPicking() ){
 			duration = note.getEffect().getTremoloPicking().getDuration().getValue();
 		}
 		
-		this.fillDuration(view, R.id.tremolo_picking_dlg_duration_8, TGDuration.EIGHTH, duration);
-		this.fillDuration(view, R.id.tremolo_picking_dlg_duration_16, TGDuration.SIXTEENTH, duration);
-		this.fillDuration(view, R.id.tremolo_picking_dlg_duration_32, TGDuration.THIRTY_SECOND, duration);
+		this.fillDuration(R.id.tremolo_picking_dlg_duration_8, TGDuration.EIGHTH, duration);
+		this.fillDuration(R.id.tremolo_picking_dlg_duration_16, TGDuration.SIXTEENTH, duration);
+		this.fillDuration(R.id.tremolo_picking_dlg_duration_32, TGDuration.THIRTY_SECOND, duration);
 	}
 
-	public void fillDuration(View view, int id, int value, int selection) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillDuration(int id, int value, int selection) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
 	
-	public int findSelectedDuration(View view) {
-		RadioGroup optionsGroup = (RadioGroup) view.findViewById(R.id.tremolo_picking_dlg_duration_group);
+	public int findSelectedDuration() {
+		RadioGroup optionsGroup = (RadioGroup) this.getView().findViewById(R.id.tremolo_picking_dlg_duration_group);
 		
 		int radioButtonId = optionsGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
@@ -87,18 +90,46 @@ public class TGTremoloPickingDialog extends TGDialog {
 		return TGDuration.EIGHTH;
 	}
 	
-	public TGEffectTremoloPicking createTremoloPicking(View view, TGSongManager songManager){
-		TGEffectTremoloPicking tgEffectTremoloPicking = songManager.getFactory().newEffectTremoloPicking();
-		tgEffectTremoloPicking.getDuration().setValue(findSelectedDuration(view));
+	public TGEffectTremoloPicking createTremoloPicking(){
+		TGEffectTremoloPicking tgEffectTremoloPicking = this.getSongManager().getFactory().newEffectTremoloPicking();
+		tgEffectTremoloPicking.getDuration().setValue(findSelectedDuration());
 		return tgEffectTremoloPicking;
 	}
-	
-	public void processAction(TGMeasure measure, TGBeat beat, TGString string, TGEffectTremoloPicking effect) {
+
+	public void cleanEffect() {
+		this.updateEffect(null);
+	}
+
+	public void updateEffect() {
+		this.updateEffect(this.createTremoloPicking());
+	}
+
+	public void updateEffect(TGEffectTremoloPicking effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTremoloPickingAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, this.getString());
 		tgActionProcessor.setAttribute(TGChangeTremoloPickingAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
+	}
+
+	public TGSongManager getSongManager() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+	}
+
+	public TGMeasure getMeasure() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+	}
+
+	public TGBeat getBeat() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+	}
+
+	public TGNote getNote() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
+	}
+
+	public TGString getString() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 	}
 }

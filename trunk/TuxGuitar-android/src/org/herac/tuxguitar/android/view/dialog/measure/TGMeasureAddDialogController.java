@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.measure;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGMeasureAddDialogController implements TGDialogController {
+public class TGMeasureAddDialogController extends TGModalFragmentController<TGMeasureAddDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGMeasureAddDialog(), context);
+	public TGMeasureAddDialog createNewInstance() {
+		return new TGMeasureAddDialog();
 	}
 }

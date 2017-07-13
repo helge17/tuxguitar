@@ -1,10 +1,18 @@
 package org.herac.tuxguitar.android.view.dialog.bend;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -17,84 +25,76 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGBendDialog extends TGDialog {
+public class TGBendDialog extends TGModalFragment {
 
 	public TGBendDialog() {
-		super();
+		super(R.layout.view_bend_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.bend_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGBendDialog.this.updateEffect();
+				TGBendDialog.this.close();
+
+				return true;
+			}
+		});
+		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGBendDialog.this.cleanEffect();
+				TGBendDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGSongManager songManager = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
-		final TGMeasure measure = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGNote note = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		final TGString string = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final List<TGBendPreset> presets = this.createPresets(songManager);
-		final TGBendPreset defaultPreset = this.findDefaultPreset(note, presets);
-		final TGEffectBend defaultBend = this.findDefaultBend(note, defaultPreset);
-		
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_bend_dialog, null);
-		
-		this.fillSelectablePresets(view, presets, defaultPreset);
+	public void onPostInflateView() {
+		final List<TGBendPreset> presets = this.createPresets();
+		final TGBendPreset defaultPreset = this.findDefaultPreset(presets);
+		final TGEffectBend defaultBend = this.findDefaultBend(defaultPreset);
+
+		this.fillSelectablePresets(presets, defaultPreset);
 		
 		if( defaultBend != null ) {
-			view.post(new Runnable() {
+			this.postWhenReady(new Runnable() {
 				public void run() {
-					loadBend(view, defaultBend);
+					loadBend(defaultBend);
 				}
 			});
 		}
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.bend_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, createBend(view, songManager));
-				dialog.dismiss();
-			}
-		});
-		builder.setNeutralButton(R.string.global_button_clean, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, null);
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
 	}
 	
-	public TGEffectBend findDefaultBend(TGNote note, TGBendPreset defaultPreset) {
+	public TGEffectBend findDefaultBend(TGBendPreset defaultPreset) {
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isBend()) {
 			return note.getEffect().getBend();
 		}
 		return (defaultPreset != null ? defaultPreset.getBend() : null);
 	}
 	
-	public TGBendPreset findDefaultPreset(TGNote note, List<TGBendPreset> presets) {
+	public TGBendPreset findDefaultPreset(List<TGBendPreset> presets) {
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isBend()) {
 			return null;
 		}
 		return presets.get(0);
 	}
 	
-	public List<TGBendPreset> createPresets(TGSongManager songManager){
+	public List<TGBendPreset> createPresets() {
+		TGSongManager songManager = this.getSongManager();
 		List<TGBendPreset> presets = new ArrayList<TGBendPreset>();
 		TGFactory factory = songManager.getFactory();
 		TGBendPreset preset = null;
@@ -152,69 +152,100 @@ public class TGBendDialog extends TGDialog {
 		return builtItems;
 	}
 	
-	public void fillSelectablePresets(final View dlgView, List<TGBendPreset> presets, TGBendPreset selection) {
+	public void fillSelectablePresets(List<TGBendPreset> presets, TGBendPreset selection) {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets(presets));
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		final Spinner spinner = (Spinner) dlgView.findViewById(R.id.bend_dlg_preset_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.bend_dlg_preset_value);
 		spinner.setAdapter(arrayAdapter);
 		
-		this.updateSelectedPreset(spinner, selection);
-		this.appendListeners(dlgView, spinner);
+		this.updateSelectedPreset(selection);
+		this.appendListeners();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void updateSelectedPreset(Spinner spinner, TGBendPreset selection) {
+	public void updateSelectedPreset(TGBendPreset selection) {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.bend_dlg_preset_value);
 		ArrayAdapter<TGSelectableItem> adapter = (ArrayAdapter<TGSelectableItem>) spinner.getAdapter();
 		spinner.setSelection(adapter.getPosition(new TGSelectableItem(selection, null)), false);
 	}
 	
-	public TGBendPreset findSelectedPreset(Spinner spinner) {
+	public TGBendPreset findSelectedPreset() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.bend_dlg_preset_value);
 		return ((TGBendPreset) ((TGSelectableItem)spinner.getSelectedItem()).getItem());
 	}
 	
-	public void loadSelectedPreset(View view, Spinner spinner) {
-		TGBendPreset selection = this.findSelectedPreset(spinner);
+	public void loadSelectedPreset() {
+		TGBendPreset selection = this.findSelectedPreset();
 		if( selection != null ) {
-			this.loadBend(view, selection.getBend());
+			this.loadBend(selection.getBend());
 		}
 	}
 	
-	public void loadBend(View view, TGEffectBend bend) {
-		TGBendEditor tgBendEditor = (TGBendEditor) view.findViewById(R.id.bend_dlg_bend_editor);
+	public void loadBend(TGEffectBend bend) {
+		TGBendEditor tgBendEditor = (TGBendEditor) this.getView().findViewById(R.id.bend_dlg_bend_editor);
 		tgBendEditor.loadBend(bend);
 	}
 
-	public TGEffectBend createBend(View view, TGSongManager songManager){
-		TGBendEditor bendEditor = (TGBendEditor) view.findViewById(R.id.bend_dlg_bend_editor);
-		TGEffectBend bend = bendEditor.createBend(songManager.getFactory());
+	public TGEffectBend createBend() {
+		TGBendEditor bendEditor = (TGBendEditor) this.getView().findViewById(R.id.bend_dlg_bend_editor);
+		TGEffectBend bend = bendEditor.createBend(this.getSongManager().getFactory());
 		return bend;
 	}
 	
-	public void appendListeners(final View dlgView, final Spinner spinner) {
+	public void appendListeners() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.bend_dlg_preset_value);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		    	loadSelectedPreset(dlgView, spinner);
+		    	loadSelectedPreset();
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
-		    	loadSelectedPreset(dlgView, spinner);
+		    	loadSelectedPreset();
 		    }
 		});
 		
-		TGBendEditor tgBendEditor = (TGBendEditor) dlgView.findViewById(R.id.bend_dlg_bend_editor);
+		TGBendEditor tgBendEditor = (TGBendEditor) this.getView().findViewById(R.id.bend_dlg_bend_editor);
 		tgBendEditor.setListener(new TGBendEditorListener() {
 			public void onChange() {
-				updateSelectedPreset(spinner, null);
+				updateSelectedPreset(null);
 			}
 		});
 	}
-	
-	public void processAction(TGMeasure measure, TGBeat beat, TGString string, TGEffectBend effect) {
+
+	public void cleanEffect() {
+		this.updateEffect(null);
+	}
+
+	public void updateEffect() {
+		this.updateEffect(this.createBend());
+	}
+
+	public void updateEffect(TGEffectBend effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeBendNoteAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, this.getString());
 		tgActionProcessor.setAttribute(TGChangeBendNoteAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
+	}
+
+	public TGSongManager getSongManager() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+	}
+
+	public TGMeasure getMeasure() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+	}
+
+	public TGBeat getBeat() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+	}
+
+	public TGNote getNote() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
+	}
+
+	public TGString getString() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 	}
 }

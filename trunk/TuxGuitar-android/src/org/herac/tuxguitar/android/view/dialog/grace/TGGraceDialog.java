@@ -1,10 +1,18 @@
 package org.herac.tuxguitar.android.view.dialog.grace;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -17,61 +25,49 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGGraceDialog extends TGDialog {
+public class TGGraceDialog extends TGModalFragment {
 
 	public TGGraceDialog() {
-		super();
+		super(R.layout.view_grace_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.grace_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGGraceDialog.this.updateEffect();
+				TGGraceDialog.this.close();
+
+				return true;
+			}
+		});
+		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGGraceDialog.this.cleanEffect();
+				TGGraceDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
-		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGNote note = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		final TGString string = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_grace_dialog, null);
-		
-		this.fillFret(view, note);
-		this.fillDeadNoteOption(view, note);
-		this.fillOnBeatOptions(view, note);
-		this.fillDurations(view, note);
-		this.fillDynamics(view, note);
-		this.fillTransitions(view, note);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.grace_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, createGrace(view, songManager));
-				dialog.dismiss();
-			}
-		});
-		builder.setNeutralButton(R.string.global_button_clean, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, null);
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
+	public void onPostInflateView() {
+		this.fillFret();
+		this.fillDeadNoteOption();
+		this.fillOnBeatOptions();
+		this.fillDurations();
+		this.fillDynamics();
+		this.fillTransitions();
 	}
 	
 	public TGSelectableItem[] createFretValues() {
@@ -84,7 +80,9 @@ public class TGGraceDialog extends TGDialog {
 		return builtItems;
 	}
 	
-	public void fillFret(View view, TGNote note) {
+	public void fillFret() {
+		TGNote note = this.getNote();
+
 		int selection = 0;
 		if( note != null ) {
 			selection = (note.getEffect().isGrace() ? note.getEffect().getGrace().getFret() : note.getValue());
@@ -93,51 +91,55 @@ public class TGGraceDialog extends TGDialog {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		Spinner spinner = (Spinner) view.findViewById(R.id.grace_dlg_fret_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.grace_dlg_fret_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 	}
 	
-	public int findSelectedFret(View view) {
-		Spinner spinner = (Spinner) view.findViewById(R.id.grace_dlg_fret_value);
+	public int findSelectedFret() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.grace_dlg_fret_value);
 		
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
-	public void fillDeadNoteOption(View view, TGNote note) {
+	public void fillDeadNoteOption() {
 		boolean selection = false;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().isDead();
 		}
 		
-		CheckBox checkBox = (CheckBox) view.findViewById(R.id.grace_dlg_dead_note_option);
+		CheckBox checkBox = (CheckBox) this.getView().findViewById(R.id.grace_dlg_dead_note_option);
 		checkBox.setChecked(selection);
 	}
 	
-	public boolean findDeadNoteValue(View view) {
-		CheckBox checkBox = (CheckBox) view.findViewById(R.id.grace_dlg_dead_note_option);
+	public boolean findDeadNoteValue() {
+		CheckBox checkBox = (CheckBox) this.getView().findViewById(R.id.grace_dlg_dead_note_option);
 		
 		return checkBox.isChecked();
 	}
 	
-	public void fillOnBeatOptions(View view, TGNote note) {
+	public void fillOnBeatOptions() {
 		boolean selection = false;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().isOnBeat();
 		}
 		
-		this.fillOnBeatOption(view, R.id.grace_dlg_position_before_beat, false, selection);
-		this.fillOnBeatOption(view, R.id.grace_dlg_position_on_beat, true, selection);
+		this.fillOnBeatOption(R.id.grace_dlg_position_before_beat, false, selection);
+		this.fillOnBeatOption(R.id.grace_dlg_position_on_beat, true, selection);
 	}
 
-	public void fillOnBeatOption(View view, int id, boolean value, boolean selection) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillOnBeatOption(int id, boolean value, boolean selection) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Boolean.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
 	
-	public boolean findSelectedOnBeat(View view) {
-		RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.grace_dlg_position_group);
+	public boolean findSelectedOnBeat() {
+		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.grace_dlg_position_group);
 		int radioButtonId = radioGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
 			RadioButton radioButton = (RadioButton) radioGroup.findViewById(radioButtonId);
@@ -148,73 +150,79 @@ public class TGGraceDialog extends TGDialog {
 		return false;
 	}
 	
-	public void fillDurations(View view, TGNote note) {
+	public void fillDurations() {
 		int selection = 1;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().getDuration();
 		}
 		
-		this.fillDuration(view, R.id.grace_dlg_duration_16, 1, selection);
-		this.fillDuration(view, R.id.grace_dlg_duration_32, 2, selection);
-		this.fillDuration(view, R.id.grace_dlg_duration_64, 3, selection);
+		this.fillDuration(R.id.grace_dlg_duration_16, 1, selection);
+		this.fillDuration(R.id.grace_dlg_duration_32, 2, selection);
+		this.fillDuration(R.id.grace_dlg_duration_64, 3, selection);
 	}
 
-	public void fillDuration(View view, int id, int value, int selection) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillDuration(int id, int value, int selection) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
 	
-	public int findSelectedDuration(View view) {
-		return findSelectedOption((RadioGroup) view.findViewById(R.id.grace_dlg_duration_group), 1);
+	public int findSelectedDuration() {
+		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_duration_group), 1);
 	}
 	
-	public void fillDynamics(View view, TGNote note) {
+	public void fillDynamics() {
 		int selection = TGVelocities.DEFAULT;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().getDynamic();
 		}
 		
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_ppp, TGVelocities.PIANO_PIANISSIMO, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_pp, TGVelocities.PIANISSIMO, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_p, TGVelocities.PIANO, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_mp, TGVelocities.MEZZO_PIANO, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_mf, TGVelocities.MEZZO_FORTE, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_f, TGVelocities.FORTE, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_ff, TGVelocities.FORTISSIMO, selection);
-		this.fillDynamic(view, R.id.grace_dlg_dynamic_fff, TGVelocities.FORTE_FORTISSIMO, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_ppp, TGVelocities.PIANO_PIANISSIMO, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_pp, TGVelocities.PIANISSIMO, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_p, TGVelocities.PIANO, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_mp, TGVelocities.MEZZO_PIANO, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_mf, TGVelocities.MEZZO_FORTE, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_f, TGVelocities.FORTE, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_ff, TGVelocities.FORTISSIMO, selection);
+		this.fillDynamic(R.id.grace_dlg_dynamic_fff, TGVelocities.FORTE_FORTISSIMO, selection);
 	}
 
-	public void fillDynamic(View view, int id, int value, int selection) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillDynamic(int id, int value, int selection) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
 	
-	public int findSelectedDynamic(View view) {
-		return findSelectedOption((RadioGroup) view.findViewById(R.id.grace_dlg_dynamic_group), TGVelocities.DEFAULT);
+	public int findSelectedDynamic() {
+		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_dynamic_group), TGVelocities.DEFAULT);
 	}
 	
-	public void fillTransitions(View view, TGNote note) {
+	public void fillTransitions() {
 		int selection = TGEffectGrace.TRANSITION_NONE;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().getTransition();
 		}
 		
-		this.fillTransition(view, R.id.grace_dlg_transition_none, TGEffectGrace.TRANSITION_NONE, selection);
-		this.fillTransition(view, R.id.grace_dlg_transition_bend, TGEffectGrace.TRANSITION_BEND, selection);
-		this.fillTransition(view, R.id.grace_dlg_transition_slide, TGEffectGrace.TRANSITION_SLIDE, selection);
-		this.fillTransition(view, R.id.grace_dlg_transition_hammer, TGEffectGrace.TRANSITION_HAMMER, selection);
+		this.fillTransition(R.id.grace_dlg_transition_none, TGEffectGrace.TRANSITION_NONE, selection);
+		this.fillTransition(R.id.grace_dlg_transition_bend, TGEffectGrace.TRANSITION_BEND, selection);
+		this.fillTransition(R.id.grace_dlg_transition_slide, TGEffectGrace.TRANSITION_SLIDE, selection);
+		this.fillTransition(R.id.grace_dlg_transition_hammer, TGEffectGrace.TRANSITION_HAMMER, selection);
 	}
 
-	public void fillTransition(View view, int id, int value, int selection) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillTransition(int id, int value, int selection) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
 	
-	public int findSelectedTransition(View view) {
-		return findSelectedOption((RadioGroup) view.findViewById(R.id.grace_dlg_transition_group), TGEffectGrace.TRANSITION_NONE);
+	public int findSelectedTransition() {
+		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_transition_group), TGEffectGrace.TRANSITION_NONE);
 	}
 	
 	public int findSelectedOption(RadioGroup radioGroup, int defaultValue) {
@@ -228,23 +236,51 @@ public class TGGraceDialog extends TGDialog {
 		return defaultValue;
 	}
 	
-	public TGEffectGrace createGrace(View view, TGSongManager songManager){
-		TGEffectGrace tgEffectGrace = songManager.getFactory().newEffectGrace();
-		tgEffectGrace.setDead(this.findDeadNoteValue(view));
-		tgEffectGrace.setOnBeat(this.findSelectedOnBeat(view));
-		tgEffectGrace.setFret(this.findSelectedFret(view));
-		tgEffectGrace.setDuration(this.findSelectedDuration(view));
-		tgEffectGrace.setDynamic(this.findSelectedDynamic(view));
-		tgEffectGrace.setTransition(this.findSelectedTransition(view));
+	public TGEffectGrace createGrace(){
+		TGEffectGrace tgEffectGrace = getSongManager().getFactory().newEffectGrace();
+		tgEffectGrace.setDead(this.findDeadNoteValue());
+		tgEffectGrace.setOnBeat(this.findSelectedOnBeat());
+		tgEffectGrace.setFret(this.findSelectedFret());
+		tgEffectGrace.setDuration(this.findSelectedDuration());
+		tgEffectGrace.setDynamic(this.findSelectedDynamic());
+		tgEffectGrace.setTransition(this.findSelectedTransition());
 		return tgEffectGrace;
 	}
-	
-	public void processAction(TGMeasure measure, TGBeat beat, TGString string, TGEffectGrace effect) {
+
+	public void cleanEffect() {
+		this.updateEffect(null);
+	}
+
+	public void updateEffect() {
+		this.updateEffect(this.createGrace());
+	}
+
+	public void updateEffect(TGEffectGrace effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeGraceNoteAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, this.getString());
 		tgActionProcessor.setAttribute(TGChangeGraceNoteAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
+	}
+
+	public TGSongManager getSongManager() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+	}
+
+	public TGMeasure getMeasure() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+	}
+
+	public TGBeat getBeat() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+	}
+
+	public TGNote getNote() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
+	}
+
+	public TGString getString() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 	}
 }

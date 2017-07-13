@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    style="?attr/dialogStyle">
 
-    <Spinner
-        android:id="@+id/browser_collections_dlg_add_type"
+    <LinearLayout
+        android:id="@+id/browser_collections_dlg_type_container"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/browser_collections_dlg_add_button"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/browser_collections_dlg_add_button"
-        android:layout_toLeftOf="@+id/browser_collections_dlg_add_button" />
-
-    <ImageButton
-        android:id="@+id/browser_collections_dlg_add_button"
-        style="?attr/browserCollectionsDlgImageButtonSubmitStyle"
         android:layout_alignParentRight="true"
-        android:contentDescription="@string/browser_add_collection" />
+        android:gravity="fill_horizontal|center_vertical" >
+
+        <Spinner
+            android:id="@+id/browser_collections_dlg_add_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/browser_collections_dlg_add_button"
+            android:contentDescription="@string/browser_add_collection"
+            style="?attr/browserCollectionsDlgImageButtonSubmitStyle"/>
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/browser_collections_dlg_list"
@@ -24,8 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/browser_collections_dlg_add_type"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/browser_collections_dlg_type_container" />
 
 </RelativeLayout>

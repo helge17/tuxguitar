@@ -1,27 +1,7 @@
 package org.herac.tuxguitar.android.view.dialog.channel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.player.base.MidiInstrument;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnShowListener;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -36,56 +16,62 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 
-public class TGChannelEditDialog extends TGDialog implements OnShowListener {
-	
-	private View view;
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import org.herac.tuxguitar.android.view.util.TGSelectableItem;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.TGEditorManager;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiInstrument;
+import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGSong;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TGChannelEditDialog extends TGModalFragment {
+
 	private TGEventListener eventListener;
 	
 	private ArrayAdapter<TGSelectableItem> instrumentPrograms;
 	private ArrayAdapter<TGSelectableItem> percussionPrograms;
 	
 	public TGChannelEditDialog() {
-		super();
+		super(R.layout.view_channel_edit_dialog);
 	}
 	
 	public TGChannel getChannel() {
 		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(false, false, R.string.channel_edit_dlg_title);
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		this.view = getActivity().getLayoutInflater().inflate(R.layout.view_channel_edit_dialog, null);
+	public void onPostInflateView() {
 		this.eventListener = new TGChannelEditEventListener(this);
 		
 		this.fillProgramAdapters();
 		this.fillBanks();
 		this.updateItems();
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.channel_edit_dlg_title);
-		builder.setView(this.view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		Dialog dialog = builder.create();
-		dialog.setOnShowListener(this);
-		
-		return dialog;
 	}
-	
-	public void onShow(DialogInterface dialog) {
+
+	@Override
+	public void onShowView() {
 		this.appendListeners();
 	}
-	
-	public void onDismiss(DialogInterface dialog) {
+
+	@Override
+	public void onHideView() {
 		this.removeListeners();
-		
-		super.onDismiss(dialog);
 	}
-	
+
 	public void updateItems() {
 		this.updateStates();
 		
@@ -117,16 +103,16 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void appendListeners() {
-		((Spinner) this.view.findViewById(R.id.channel_edit_dlg_bank_value)).setOnItemSelectedListener(createBankSelectedListener());
-		((Spinner) this.view.findViewById(R.id.channel_edit_dlg_program_value)).setOnItemSelectedListener(createProgramSelectedListener());
-		((CheckBox) this.view.findViewById(R.id.channel_edit_dlg_percussion_value)).setOnCheckedChangeListener(createPercussionChangeListener());
-		((EditText) this.view.findViewById(R.id.channel_edit_dlg_name_value)).addTextChangedListener(createNameChangedListener());
-		((SeekBar) this.view.findViewById(R.id.channel_edit_dlg_volume_value)).setOnSeekBarChangeListener(createVolumeChangeListener());
-		((SeekBar) this.view.findViewById(R.id.channel_edit_dlg_balance_value)).setOnSeekBarChangeListener(createBalanceChangeListener());
-		((SeekBar) this.view.findViewById(R.id.channel_edit_dlg_reverb_value)).setOnSeekBarChangeListener(createReverbChangeListener());
-		((SeekBar) this.view.findViewById(R.id.channel_edit_dlg_chorus_value)).setOnSeekBarChangeListener(createChorusChangeListener());
-		((SeekBar) this.view.findViewById(R.id.channel_edit_dlg_phaser_value)).setOnSeekBarChangeListener(createPhaserChangeListener());
-		((SeekBar) this.view.findViewById(R.id.channel_edit_dlg_tremolo_value)).setOnSeekBarChangeListener(createTremoloChangeListener());
+		((Spinner) this.getView().findViewById(R.id.channel_edit_dlg_bank_value)).setOnItemSelectedListener(createBankSelectedListener());
+		((Spinner) this.getView().findViewById(R.id.channel_edit_dlg_program_value)).setOnItemSelectedListener(createProgramSelectedListener());
+		((CheckBox) this.getView().findViewById(R.id.channel_edit_dlg_percussion_value)).setOnCheckedChangeListener(createPercussionChangeListener());
+		((EditText) this.getView().findViewById(R.id.channel_edit_dlg_name_value)).addTextChangedListener(createNameChangedListener());
+		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_volume_value)).setOnSeekBarChangeListener(createVolumeChangeListener());
+		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_balance_value)).setOnSeekBarChangeListener(createBalanceChangeListener());
+		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_reverb_value)).setOnSeekBarChangeListener(createReverbChangeListener());
+		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_chorus_value)).setOnSeekBarChangeListener(createChorusChangeListener());
+		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_phaser_value)).setOnSeekBarChangeListener(createPhaserChangeListener());
+		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_tremolo_value)).setOnSeekBarChangeListener(createTremoloChangeListener());
 		
 		TGEditorManager.getInstance(findContext()).addUpdateListener(this.eventListener);
 	}
@@ -178,7 +164,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public short findSelectedProgram() {
-		Spinner spinner = (Spinner) this.view.findViewById(R.id.channel_edit_dlg_program_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.channel_edit_dlg_program_value);
 		return ((Short) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).shortValue();
 	}
 
@@ -203,7 +189,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public short findSelectedBank() {
-		Spinner spinner = (Spinner) this.view.findViewById(R.id.channel_edit_dlg_bank_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.channel_edit_dlg_bank_value);
 		return ((Short) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).shortValue();
 	}
 	
@@ -248,7 +234,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void setViewEnabled(int id, boolean enabled) {
-		this.view.findViewById(id).setEnabled(enabled);
+		this.getView().findViewById(id).setEnabled(enabled);
 	}
 	
 	public void updateSpinnerValue(int id, Object value) {
@@ -256,7 +242,7 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	}
 	
 	public void updateSpinnerAdapter(int id, ArrayAdapter<TGSelectableItem> adapter) {
-		Spinner spinner = (Spinner) this.view.findViewById(id);
+		Spinner spinner = (Spinner) this.getView().findViewById(id);
 		if(!isSameValue(adapter, spinner.getAdapter())) {
 			spinner.setAdapter(adapter);
 		}
@@ -264,43 +250,43 @@ public class TGChannelEditDialog extends TGDialog implements OnShowListener {
 	
 	public void setTextFieldValue(int id, String value) {
 		if(!isSameValue(value, getTextFieldValue(id))) {
-			((EditText) this.view.findViewById(id)).getText().append(value);
+			((EditText) this.getView().findViewById(id)).getText().append(value);
 		}
 	}
 	
 	public String getTextFieldValue(int id) {
-		return ((EditText) this.view.findViewById(id)).getText().toString();
+		return ((EditText) this.getView().findViewById(id)).getText().toString();
 	}
 	
 	public void setCheckBoxValue(int id, Boolean value) {
 		if(!isSameValue(value, getCheckBoxValue(id))) {
-			((CheckBox) this.view.findViewById(id)).setChecked(value);
+			((CheckBox) this.getView().findViewById(id)).setChecked(value);
 		}
 	}
 	
 	public Boolean getCheckBoxValue(int id) {
-		return ((CheckBox) this.view.findViewById(id)).isChecked();
+		return ((CheckBox) this.getView().findViewById(id)).isChecked();
 	}
 	
 	public TGSelectableItem getSpinnerValue(int id) {
-		return (TGSelectableItem) ((Spinner) this.view.findViewById(id)).getSelectedItem();
+		return (TGSelectableItem) ((Spinner) this.getView().findViewById(id)).getSelectedItem();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void setSpinnerValue(int id, TGSelectableItem selectedItem) {
 		if(!isSameValue(selectedItem, getSpinnerValue(id))) {
-			Spinner spinner = (Spinner) this.view.findViewById(id);
+			Spinner spinner = (Spinner) this.getView().findViewById(id);
 			spinner.setSelection(((ArrayAdapter<TGSelectableItem>) spinner.getAdapter()).getPosition(selectedItem), false);
 		}
 	}
 	
 	public Integer getSeekBarValue(int id) {
-		return ((SeekBar) this.view.findViewById(id)).getProgress();
+		return ((SeekBar) this.getView().findViewById(id)).getProgress();
 	}
 	
 	public void setSeekBarValue(int id, Integer value) {
 		if(!isSameValue(value, getSeekBarValue(id))) {
-			SeekBar seekBar = ((SeekBar) this.view.findViewById(id));
+			SeekBar seekBar = ((SeekBar) this.getView().findViewById(id));
 			seekBar.setProgress(value);
 		}
 	}

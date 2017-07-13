@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.measure;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGMeasureRemoveDialogController implements TGDialogController {
+public class TGMeasureRemoveDialogController extends TGModalFragmentController<TGMeasureRemoveDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGMeasureRemoveDialog(), context);
+	public TGMeasureRemoveDialog createNewInstance() {
+		return new TGMeasureRemoveDialog();
 	}
 }

@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.track;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGTrackTuningDialogController implements TGDialogController {
+public class TGTrackTuningDialogController extends TGModalFragmentController<TGTrackTuningDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGTrackTuningDialog(), context);
+	public TGTrackTuningDialog createNewInstance() {
+		return new TGTrackTuningDialog();
 	}
 }

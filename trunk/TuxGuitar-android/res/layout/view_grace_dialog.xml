@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+	style="?attr/dialogStyle">
     
 	<GridLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		android:columnCount="2" style="?attr/dialogStyle">
+		android:columnCount="2" >
 		
 		<TextView 
 			android:id="@+id/grace_dlg_fret_label"
 			android:text="@string/grace_dlg_fret_label" 
-			android:layout_gravity="fill_horizontal|center_vertical"
-			style="?attr/textViewStyle" />
+			android:layout_gravity="fill_horizontal|center_vertical" />
 	
 		<Spinner 
 			android:id="@+id/grace_dlg_fret_value"
@@ -21,7 +21,7 @@
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
-			style="?attr/dialogSectionSpacerStyle" />
+			style="?attr/dialogVerticalSpacerStyle" />
 			
 		<CheckBox 
 			android:id="@+id/grace_dlg_dead_note_option" 
@@ -32,14 +32,13 @@
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
-			style="?attr/dialogSectionSpacerStyle" />
+			style="?attr/dialogVerticalSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_position_label"
 			android:text="@string/grace_dlg_position_label" 
 			android:layout_gravity="fill_horizontal|center_vertical"
-			android:layout_columnSpan="2"
-			style="?attr/textViewStyle" />
+			android:layout_columnSpan="2" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_position_group"
@@ -63,14 +62,13 @@
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
-			style="?attr/dialogSectionSpacerStyle" />
+			style="?attr/dialogVerticalSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_duration_label"
 			android:text="@string/grace_dlg_duration_label" 
 			android:layout_gravity="fill_horizontal|center_vertical"
-			android:layout_columnSpan="2"
-			style="?attr/textViewStyle" />
+			android:layout_columnSpan="2" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_duration_group"
@@ -102,14 +100,13 @@
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
-			style="?attr/dialogSectionSpacerStyle" />
+			style="?attr/dialogVerticalSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_dynamic_label"
 			android:text="@string/grace_dlg_dynamic_label" 
 			android:layout_gravity="fill_horizontal|center_vertical"
-			android:layout_columnSpan="2"
-			style="?attr/textViewStyle" />
+			android:layout_columnSpan="2" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_dynamic_group"
@@ -177,14 +174,13 @@
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
-			style="?attr/dialogSectionSpacerStyle" />
+			style="?attr/dialogVerticalSpacerStyle" />
 		
 		<TextView 
 			android:id="@+id/grace_dlg_transition_label"
 			android:text="@string/grace_dlg_transition_label" 
 			android:layout_gravity="fill_horizontal|center_vertical"
-			android:layout_columnSpan="2"
-			style="?attr/textViewStyle" />
+			android:layout_columnSpan="2" />
 			
 		<RadioGroup 
 			android:id="@+id/grace_dlg_transition_group"

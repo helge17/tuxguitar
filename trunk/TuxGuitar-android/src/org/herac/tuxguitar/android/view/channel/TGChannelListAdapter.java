@@ -1,12 +1,5 @@
 package org.herac.tuxguitar.android.view.channel;
 
-import java.util.List;
-
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.song.models.TGChannel;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.view.util.TGProcess;
+import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
+import org.herac.tuxguitar.song.models.TGChannel;
+
+import java.util.List;
 
 public class TGChannelListAdapter extends BaseAdapter {
 

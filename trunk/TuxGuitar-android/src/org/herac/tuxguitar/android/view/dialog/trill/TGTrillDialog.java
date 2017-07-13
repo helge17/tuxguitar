@@ -1,10 +1,17 @@
 package org.herac.tuxguitar.android.view.dialog.trill;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.TGDialog;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.android.view.util.TGSelectableItem;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -17,51 +24,45 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TGTrillDialog extends TGDialog {
+public class TGTrillDialog extends TGModalFragment {
 
 	public TGTrillDialog() {
-		super();
+		super(R.layout.view_trill_dialog);
 	}
-	
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.trill_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
+		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGTrillDialog.this.updateEffect();
+				TGTrillDialog.this.close();
+
+				return true;
+			}
+		});
+		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				TGTrillDialog.this.cleanEffect();
+				TGTrillDialog.this.close();
+
+				return true;
+			}
+		});
+	}
+
 	@SuppressLint("InflateParams")
-	public Dialog onCreateDialog() {
-		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
-		final TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGNote note = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		final TGString string = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.view_trill_dialog, null);
-		
-		this.fillFret(view, note);
-		this.fillDurations(view, note);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.trill_dlg_title);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.global_button_ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				processAction(measure, beat, string, createTrill(view, songManager));
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(R.string.global_button_cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		
-		return builder.create();
+	public void onPostInflateView() {
+		this.fillFret();
+		this.fillDurations();
 	}
 	
 	public TGSelectableItem[] createFretValues() {
@@ -74,8 +75,10 @@ public class TGTrillDialog extends TGDialog {
 		return builtItems;
 	}
 	
-	public void fillFret(View view, TGNote note) {
+	public void fillFret() {
 		int selection = 0;
+
+		TGNote note = this.getNote();
 		if( note != null ) {
 			selection = (note.getEffect().isTrill() ? note.getEffect().getTrill().getFret() : note.getValue());
 		}
@@ -83,36 +86,38 @@ public class TGTrillDialog extends TGDialog {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		Spinner spinner = (Spinner) view.findViewById(R.id.trill_dlg_fret_value);
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.trill_dlg_fret_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 	}
 	
-	public int findSelectedFret(View view) {
-		Spinner spinner = (Spinner) view.findViewById(R.id.trill_dlg_fret_value);
+	public int findSelectedFret() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.trill_dlg_fret_value);
 		
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 	
-	public void fillDurations(View view, TGNote note) {
+	public void fillDurations() {
 		int duration = TGDuration.EIGHTH;
+
+		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isTrill() ){
 			duration = note.getEffect().getTrill().getDuration().getValue();
 		}
 		
-		this.fillDuration(view, R.id.trill_dlg_duration_16, TGDuration.SIXTEENTH, duration);
-		this.fillDuration(view, R.id.trill_dlg_duration_32, TGDuration.THIRTY_SECOND, duration);
-		this.fillDuration(view, R.id.trill_dlg_duration_64, TGDuration.SIXTY_FOURTH, duration);
+		this.fillDuration(R.id.trill_dlg_duration_16, TGDuration.SIXTEENTH, duration);
+		this.fillDuration(R.id.trill_dlg_duration_32, TGDuration.THIRTY_SECOND, duration);
+		this.fillDuration(R.id.trill_dlg_duration_64, TGDuration.SIXTY_FOURTH, duration);
 	}
 
-	public void fillDuration(View view, int id, int value, int selection) {
-		RadioButton radioButton = (RadioButton)view.findViewById(id);
+	public void fillDuration(int id, int value, int selection) {
+		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
 	
-	public int findSelectedDuration(View view) {
-		RadioGroup optionsGroup = (RadioGroup) view.findViewById(R.id.trill_dlg_duration_group);
+	public int findSelectedDuration() {
+		RadioGroup optionsGroup = (RadioGroup) this.getView().findViewById(R.id.trill_dlg_duration_group);
 		
 		int radioButtonId = optionsGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
@@ -124,19 +129,47 @@ public class TGTrillDialog extends TGDialog {
 		return TGDuration.EIGHTH;
 	}
 	
-	public TGEffectTrill createTrill(View view, TGSongManager songManager){
-		TGEffectTrill tgEffectTrill = songManager.getFactory().newEffectTrill();
-		tgEffectTrill.setFret(findSelectedFret(view));
-		tgEffectTrill.getDuration().setValue(findSelectedDuration(view));
+	public TGEffectTrill createTrill(){
+		TGEffectTrill tgEffectTrill = getSongManager().getFactory().newEffectTrill();
+		tgEffectTrill.setFret(findSelectedFret());
+		tgEffectTrill.getDuration().setValue(findSelectedDuration());
 		return tgEffectTrill;
 	}
-	
-	public void processAction(TGMeasure measure, TGBeat beat, TGString string, TGEffectTrill effect) {
+
+	public void cleanEffect() {
+		this.updateEffect(null);
+	}
+
+	public void updateEffect() {
+		this.updateEffect(this.createTrill());
+	}
+
+	public void updateEffect(TGEffectTrill effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTrillNoteAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, this.getString());
 		tgActionProcessor.setAttribute(TGChangeTrillNoteAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
+	}
+
+	public TGSongManager getSongManager() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+	}
+
+	public TGMeasure getMeasure() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+	}
+
+	public TGBeat getBeat() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+	}
+
+	public TGNote getNote() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
+	}
+
+	public TGString getString() {
+		return this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 	}
 }

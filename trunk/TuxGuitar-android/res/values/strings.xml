@@ -21,7 +21,13 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 	<string name="menu_tab_keyboard_toggle">Toggle Keyboard</string>
-	
+
+	<string name="menu_modal_fragment_button_ok">OK</string>
+	<string name="menu_modal_fragment_button_add">Add</string>
+	<string name="menu_modal_fragment_button_edit">Edit</string>
+	<string name="menu_modal_fragment_button_clean">Clean</string>
+	<string name="menu_modal_fragment_button_remove">Remove</string>
+
     <string name="menu_file">File</string>
     <string name="menu_file_new">New</string>
     <string name="menu_file_open">Open</string>
@@ -165,6 +171,11 @@
     <string name="menu_channel_list_item_edit">Edit Instrument</string>
     <string name="menu_channel_list_item_remove">Remove Instrument</string>
     <string name="menu_channel_list_item_remove_confirm_question">Are you sure you want to remove this instrument?</string>
+
+	<string name="menu_track_tuning_list_item_add">Add</string>
+	<string name="menu_track_tuning_list_item_edit">Edit</string>
+	<string name="menu_track_tuning_list_item_remove">Remove</string>
+	<string name="menu_track_tuning_list_item_remove_confirm_question">Are you sure you want to remove this string?</string>
 
 	<string name="menu_settings">Settings</string>
 
@@ -328,12 +339,18 @@
 	
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Change Tuning</string>
-	<string name="track_tuning_dlg_strings_label">Strings:</string>
-	<string name="track_tuning_dlg_offset_label">Offset:</string>
+	<string name="track_tuning_dlg_value_label">Value:</string>
+	<string name="track_tuning_dlg_preview_label">Label:</string>
+	<string name="track_tuning_dlg_offset_select_value">Offset #%1$d</string>
+	<string name="track_tuning_dlg_preset_select_value">-- Presets --</string>
 	<string name="track_tuning_dlg_options_transpose">Transpose afected notes</string>
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transpose choors</string>
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Try keep notes at same string</string>
-	
+	<string name="track_tuning_dlg_error_title">Error</string>
+	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
+	<string name="track_tuning_dlg_empty_value_error">Value can not be empty</string>
+
+
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Add Measure</string>
 	<string name="measure_add_dlg_count_label">Add Count:</string>
@@ -431,8 +448,11 @@
 	<string name="stroke_dlg_duration_16">Sixteenth</string>
 	<string name="stroke_dlg_duration_32">Thirty Second</string>
 	<string name="stroke_dlg_duration_64">Sixty Fourth</string>
-	
-	
+
+
+	<!-- Channels view -->
+	<string name="channel_list">Instruments</string>
+
 	<!-- Channel edit dialog -->
 	<string name="channel_edit_dlg_title">Edit Instrument</string>
 	<string name="channel_edit_dlg_name_label">Name</string>

@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.harmonic;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGHarmonicDialogController implements TGDialogController {
+public class TGHarmonicDialogController extends TGModalFragmentController<TGHarmonicDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGHarmonicDialog(), context);
+	public TGHarmonicDialog createNewInstance() {
+		return new TGHarmonicDialog();
 	}
 }

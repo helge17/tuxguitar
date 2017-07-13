@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.bend;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGBendDialogController implements TGDialogController {
+public class TGBendDialogController extends TGModalFragmentController<TGBendDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGBendDialog(), context);
+	public TGBendDialog createNewInstance() {
+		return new TGBendDialog();
 	}
 }

@@ -1,15 +1,11 @@
 package org.herac.tuxguitar.android.view.dialog.tremoloPicking;
 
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogUtil;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
-import android.app.Activity;
-
-public class TGTremoloPickingDialogController implements TGDialogController {
+public class TGTremoloPickingDialogController extends TGModalFragmentController<TGTremoloPickingDialog> {
 
 	@Override
-	public void showDialog(Activity activity, TGDialogContext context) {
-        TGDialogUtil.showDialog(activity, new TGTremoloPickingDialog(), context);
+	public TGTremoloPickingDialog createNewInstance() {
+		return new TGTremoloPickingDialog();
 	}
 }
