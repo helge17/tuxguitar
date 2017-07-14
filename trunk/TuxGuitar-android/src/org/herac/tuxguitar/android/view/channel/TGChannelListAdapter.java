@@ -59,7 +59,7 @@ public class TGChannelListAdapter extends BaseAdapter {
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_channel_list_item, parent, false));
 		view.setTag(channel);
 		view.setOnClickListener(this.channelList.getActionHandler().createEditChannelAction(channel));
-		view.setOnLongClickListener(this.channelList.getActionHandler().createChannelItemMenuAction(channel));
+		view.setOnLongClickListener(this.channelList.getActionHandler().createChannelItemMenuAction(channel, view));
 		
 		TextView textViewName = (TextView) view.findViewById(R.id.channel_item_name);
 		textViewName.setText(channel.getName());

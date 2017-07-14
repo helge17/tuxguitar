@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/menu_tab_keyboard_toggle"
-        android:icon="@drawable/ic_mode_edit_white_24dp"
+        android:icon="@drawable/ic_edit_white_24dp"
         android:title="@string/menu_tab_keyboard_toggle"
         android:showAsAction="always"/>
     <item

@@ -22,15 +22,14 @@ import android.view.MenuItem;
 
 @SuppressLint("UseSparseArrays")
 public class TGToggleStyledIconHelper implements TGEventListener {
-	
+
 	private TGContext context;
 	private TGActivity activity;
 	private TGProcess updateIcons;
 	private Menu menu;
 	private Map<Integer, Drawable> styledIcons;
 	private List<TGToggleStyledIconHandler> handlers;
-	
-	
+
 	public TGToggleStyledIconHelper(TGContext context) {
 		this.context = context;
 		this.styledIcons = new HashMap<Integer, Drawable>();
@@ -38,36 +37,36 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 		this.createSyncProcesses();
 		this.appendListeners();
 	}
-	
+
 	public void initialize(TGActivity activity, Menu menu) {
 		this.activity = activity;
 		this.menu = menu;
 		this.updateIcons.process();
 	}
-	
+
 	public void addHandler(TGToggleStyledIconHandler handler) {
 		this.handlers.add(handler);
 	}
-	
+
 	public void appendListeners() {
 		TGEditorManager.getInstance(this.context).addUpdateListener(this);
 	}
-	
+
 	public Drawable findStyledDrawable(Integer style) {
 		if( this.styledIcons.containsKey(style) ) {
 			return this.styledIcons.get(style);
 		}
-		
+
 		Drawable drawable = null;
 		TypedArray typedArray = this.activity.obtainStyledAttributes(style, new int[] {android.R.attr.src});
 		if( typedArray != null ) {
 			drawable = typedArray.getDrawable(0);
 		}
 		this.styledIcons.put(style, drawable);
-		
+
 		return drawable;
 	}
-	
+
 	public void updateIcon(TGToggleStyledIconHandler handler) {
 		if( this.menu != null && handler != null ) {
 			Integer style = handler.resolveStyle();
@@ -82,7 +81,7 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 			}
 		}
 	}
-	
+
 	public void updateIcons() {
 		if( this.menu != null ) {
 			for(TGToggleStyledIconHandler handler : this.handlers) {
@@ -90,7 +89,7 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 			}
 		}
 	}
-	
+
 	public void createSyncProcesses() {
 		this.updateIcons = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
@@ -98,14 +97,14 @@ public class TGToggleStyledIconHelper implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
 			this.updateIcons.process();
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);

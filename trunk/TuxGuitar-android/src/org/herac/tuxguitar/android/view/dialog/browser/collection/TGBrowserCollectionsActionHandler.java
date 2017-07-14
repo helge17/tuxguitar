@@ -7,7 +7,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollection
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
+import org.herac.tuxguitar.android.menu.context.TGMenuController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -43,7 +43,7 @@ public class TGBrowserCollectionsActionHandler {
 		return tgActionProcessor;
 	}
 	
-	public TGActionProcessorListener createOpenMenuAction(TGContextMenuController controller) {
+	public TGActionProcessorListener createOpenMenuAction(TGMenuController controller) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenMenuAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.view.findActivity());
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);

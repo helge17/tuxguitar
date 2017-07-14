@@ -9,7 +9,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
+import org.herac.tuxguitar.android.menu.context.TGMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGDurationMenu;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
@@ -63,7 +63,7 @@ public class TGTabKeyboard extends FrameLayout {
 		findViewById(R.id.tab_kb_button_set_duration).setOnClickListener(createContextMenuActionListener(new TGDurationMenu(this.findActivity())));
 	}
 	
-	public TGActionProcessorListener createContextMenuActionListener(TGContextMenuController controller) {
+	public TGActionProcessorListener createContextMenuActionListener(TGMenuController controller) {
 		TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(this.findContext(), TGOpenMenuAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.findActivity());

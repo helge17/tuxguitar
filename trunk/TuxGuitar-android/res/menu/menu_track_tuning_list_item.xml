@@ -1,13 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.herac.tuxguitar.android.TGActivity" >
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="org.herac.tuxguitar.android.TGActivity">
 
     <item
         android:id="@+id/menu_track_tuning_list_item_edit"
-        android:title="@string/menu_track_tuning_list_item_edit"/>
+        android:title="@string/menu_track_tuning_list_item_edit"
+        android:icon="@drawable/ic_edit_white_24dp"/>
     
     <item
         android:id="@+id/menu_track_tuning_list_item_remove"
-        android:title="@string/menu_track_tuning_list_item_remove"/>
+        android:title="@string/menu_track_tuning_list_item_remove"
+        android:icon="@drawable/ic_delete_white_24dp"/>
 </menu>

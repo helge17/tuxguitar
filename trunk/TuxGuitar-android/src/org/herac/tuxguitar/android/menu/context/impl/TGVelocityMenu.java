@@ -1,9 +1,12 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
+import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -13,22 +16,18 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-
-public class TGVelocityMenu extends TGContextMenuBase {
+public class TGVelocityMenu extends TGMenuBase {
 	
 	public TGVelocityMenu(TGActivity activity) {
 		super(activity);
 	}
 
-	public void inflate(ContextMenu menu, MenuInflater inflater) {
-		menu.setHeaderTitle(R.string.menu_velocity);
+	public void inflate(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_velocity, menu);
 		initializeItems(menu);
 	}
 	
-	public void initializeItems(ContextMenu menu) {
+	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();
@@ -45,7 +44,7 @@ public class TGVelocityMenu extends TGContextMenuBase {
 		this.initializeVelocityItem(menu, R.id.menu_velocity_fff, TGVelocities.FORTE_FORTISSIMO, selection, running);
 	}
 	
-	public void initializeVelocityItem(ContextMenu menu, int id, int value, int selection, boolean playerRunning) {
+	public void initializeVelocityItem(Menu menu, int id, int value, int selection, boolean playerRunning) {
 		this.initializeItem(menu, id, this.createVelocityActionProcessor(value), !playerRunning, (value == selection));
 	}
 	
