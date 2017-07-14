@@ -8,6 +8,7 @@ import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.menu.context.TGMenuController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
+import org.herac.tuxguitar.editor.TGEditorManager;
 
 public class TGTrackTuningActionHandler {
 
@@ -66,7 +67,8 @@ public class TGTrackTuningActionHandler {
 			@Override
 			public boolean onMenuItemClick(MenuItem menuItem) {
 				TGTrackTuningActionHandler.this.dialog.postRemoveTuningModel(model);
-				return false;
+				TGEditorManager.getInstance(TGTrackTuningActionHandler.this.dialog.findContext()).updateSelection();
+				return true;
 			}
 		};
 	}

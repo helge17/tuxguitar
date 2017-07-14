@@ -7,14 +7,16 @@
         android:id="@+id/main_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:animateLayoutChanges="true">
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/main_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true">
 
         <include layout="@layout/view_tab_keyboard" />
     </FrameLayout>
@@ -24,13 +26,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" >
+        android:animateLayoutChanges="true"
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/main_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" >
+        android:layout_alignParentLeft="true"
+        android:animateLayoutChanges="true">
     </FrameLayout>
 
     <FrameLayout
@@ -40,7 +44,8 @@
         android:layout_above="@+id/main_bottom"
         android:layout_below="@+id/main_top"
         android:layout_toLeftOf="@+id/main_right"
-        android:layout_toRightOf="@+id/main_left" >
+        android:layout_toRightOf="@+id/main_left"
+        android:animateLayoutChanges="true">
 
         <include layout="@layout/view_tablature" />
     </FrameLayout>
