@@ -1,16 +1,16 @@
 package org.herac.tuxguitar.android.action;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
-
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import org.herac.tuxguitar.util.TGContext;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TGActionProcessorListener extends TGActionProcessor implements OnClickListener, OnLongClickListener, OnMenuItemClickListener{
 	
@@ -43,7 +43,7 @@ public class TGActionProcessorListener extends TGActionProcessor implements OnCl
 	public boolean onMenuItemClick(MenuItem item) {
 		this.processEvent(item, null);
 		
-		return false;
+		return true;
 	}
 
 	@Override
@@ -51,6 +51,6 @@ public class TGActionProcessorListener extends TGActionProcessor implements OnCl
 	public boolean onLongClick(View view) {
 		this.processEvent(view, ( view.getTag() instanceof Map ? (Map<String, Object>) view.getTag() : null ));
 		
-		return false;
+		return true;
 	}
 }

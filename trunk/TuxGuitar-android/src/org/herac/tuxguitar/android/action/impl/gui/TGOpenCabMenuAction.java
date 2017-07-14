@@ -22,9 +22,11 @@ public class TGOpenCabMenuAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
+		context.setAttribute(TGMenuCabCallBack.ATTRIBUTE_BY_PASS_CLOSE_MENU, true);
+
 		View selectableView = context.getAttribute(ATTRIBUTE_MENU_SELECTABLE_VIEW);
 		TGMenuController tgMenuController = context.getAttribute(ATTRIBUTE_MENU_CONTROLLER);
-		TGActivity tgActivity = (TGActivity)context.getAttribute(ATTRIBUTE_MENU_ACTIVITY);
-		tgActivity.startActionMode(new TGMenuCabCallBack(tgMenuController, selectableView));
+		TGActivity tgActivity = context.getAttribute(ATTRIBUTE_MENU_ACTIVITY);
+		tgActivity.startActionMode(new TGMenuCabCallBack(this.getContext(), tgMenuController, selectableView));
 	}
 }
