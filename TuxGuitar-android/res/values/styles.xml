@@ -320,8 +320,8 @@
 	</style>
 	
 	<style name="channelListItemStyle" >
-	    <item name="android:background">?attr/darkestColor</item>
 	    <item name="android:paddingTop">12dp</item>
+		<item name="android:background">@drawable/background_selector_darkest</item>
 	</style>
 	
 	<style name="channelListItemTextViewStyle" >

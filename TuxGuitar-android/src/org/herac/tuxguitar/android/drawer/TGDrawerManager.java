@@ -68,11 +68,13 @@ public class TGDrawerManager {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if( this.drawerToggle.isDrawerIndicatorEnabled() ) {
-			return this.drawerToggle.onOptionsItemSelected(item);
+		if( item.getItemId() == android.R.id.home ) {
+			if (this.drawerToggle.isDrawerIndicatorEnabled()) {
+				return this.drawerToggle.onOptionsItemSelected(item);
+			}
+			return this.activity.getNavigationManager().callOpenPreviousFragment();
 		}
-
-		return this.activity.getNavigationManager().callOpenPreviousFragment();
+		return false;
 	}
 	
 	public void onOpenFragment(TGFragmentController<?> controller) {

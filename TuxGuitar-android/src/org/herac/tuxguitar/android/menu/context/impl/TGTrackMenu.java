@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
-import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
+import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackChannelDialogController;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackNameDialogController;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackTuningDialogController;
@@ -22,19 +22,18 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGTrackMenu extends TGContextMenuBase {
+public class TGTrackMenu extends TGMenuBase {
 	
 	public TGTrackMenu(TGActivity activity) {
 		super(activity);
 	}
 
-	public void inflate(ContextMenu menu, MenuInflater inflater) {
-		menu.setHeaderTitle(R.string.menu_track);
+	public void inflate(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_track, menu);
 		initializeItems(menu);
 	}
 	
-	public void initializeItems(ContextMenu menu) {
+	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGTrack track = caret.getTrack();

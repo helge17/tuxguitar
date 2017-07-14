@@ -1,9 +1,12 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
+import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
 import org.herac.tuxguitar.document.TGDocumentManager;
@@ -23,22 +26,18 @@ import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-
-public class TGDurationMenu extends TGContextMenuBase {
+public class TGDurationMenu extends TGMenuBase {
 	
 	public TGDurationMenu(TGActivity activity) {
 		super(activity);
 	}
 
-	public void inflate(ContextMenu menu, MenuInflater inflater) {
-		menu.setHeaderTitle(R.string.menu_duration);
+	public void inflate(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_duration, menu);
 		initializeItems(menu);
 	}
 	
-	public void initializeItems(ContextMenu menu) {
+	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGDuration duration = caret.getDuration();
@@ -66,7 +65,7 @@ public class TGDurationMenu extends TGContextMenuBase {
 		this.initializeDivisionItem(menu, R.id.menu_duration_division_type_13, TGDivisionType.ALTERED_DIVISION_TYPES[8], duration, running);
 	}
 	
-	public void initializeDivisionItem(ContextMenu menu, int id, TGDivisionType divisionType, TGDuration duration, boolean running) {
+	public void initializeDivisionItem(Menu menu, int id, TGDivisionType divisionType, TGDuration duration, boolean running) {
 		this.initializeItem(menu, id, this.createDivisionTypeActionProcessor(divisionType), !running, divisionType.isEqual(duration.getDivision()));
 	}
 	

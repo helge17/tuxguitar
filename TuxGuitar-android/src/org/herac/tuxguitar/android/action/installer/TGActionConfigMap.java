@@ -29,6 +29,7 @@ import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGExitAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
@@ -417,6 +418,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//gui actions
 		this.map(TGOpenDialogAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGOpenMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGOpenCabMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFragmentAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGStartActivityForResultAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		this.map(TGRequestPermissionsAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);

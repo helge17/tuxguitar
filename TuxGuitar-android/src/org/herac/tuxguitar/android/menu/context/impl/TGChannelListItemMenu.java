@@ -1,9 +1,12 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
+import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
@@ -13,11 +16,8 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
+public class TGChannelListItemMenu extends TGMenuBase {
 
-public class TGChannelListItemMenu extends TGContextMenuBase {
-	
 	private TGChannel channel;
 	
 	public TGChannelListItemMenu(TGActivity activity, TGChannel channel) {
@@ -26,15 +26,12 @@ public class TGChannelListItemMenu extends TGContextMenuBase {
 		this.channel = channel;
 	}
 
-	public void inflate(ContextMenu menu, MenuInflater inflater) {
-		if( this.channel.getName() != null ) {
-			menu.setHeaderTitle(this.channel.getName());
-		}
+	public void inflate(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_channel_list_item, menu);
 		initializeItems(menu);
 	}
-	
-	public void initializeItems(ContextMenu menu) {		
+
+	public void initializeItems(Menu menu) {
 		this.initializeItem(menu, R.id.menu_channel_list_item_edit, this.createEditChannelAction(), true);
 		this.initializeItem(menu, R.id.menu_channel_list_item_remove, this.createRemoveChannelAction(), this.isRemovableChannel());
 	}

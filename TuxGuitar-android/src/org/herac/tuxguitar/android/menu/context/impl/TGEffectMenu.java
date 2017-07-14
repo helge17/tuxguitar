@@ -1,8 +1,11 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
+import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.bend.TGBendDialogController;
 import org.herac.tuxguitar.android.view.dialog.grace.TGGraceDialogController;
 import org.herac.tuxguitar.android.view.dialog.harmonic.TGHarmonicDialogController;
@@ -28,22 +31,18 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-
-public class TGEffectMenu extends TGContextMenuBase {
+public class TGEffectMenu extends TGMenuBase {
 	
 	public TGEffectMenu(TGActivity activity) {
 		super(activity);
 	}
 
-	public void inflate(ContextMenu menu, MenuInflater inflater) {
-		menu.setHeaderTitle(R.string.menu_effect);
+	public void inflate(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_effect, menu);
 		initializeItems(menu);
 	}
 	
-	public void initializeItems(ContextMenu menu) {
+	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGNote note = TGSongViewController.getInstance(context).getCaret().getSelectedNote();
 		boolean running = MidiPlayer.getInstance(context).isRunning();

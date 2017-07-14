@@ -30,6 +30,7 @@ import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGExitAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
@@ -373,6 +374,7 @@ public class TGActionInstaller {
 		installAction(new TGFinishAction(context));
 		installAction(new TGOpenDialogAction(context));
 		installAction(new TGOpenMenuAction(context));
+		installAction(new TGOpenCabMenuAction(context));
 		installAction(new TGOpenFragmentAction(context));
 		installAction(new TGStartActivityForResultAction(context));
 		installAction(new TGRequestPermissionsAction(context));

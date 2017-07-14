@@ -1,8 +1,11 @@
 package org.herac.tuxguitar.android.menu.context.impl;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuBase;
+import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
 import org.herac.tuxguitar.android.view.dialog.text.TGTextDialogController;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
@@ -25,22 +28,18 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-
-public class TGBeatMenu extends TGContextMenuBase {
+public class TGBeatMenu extends TGMenuBase {
 	
 	public TGBeatMenu(TGActivity activity) {
 		super(activity);
 	}
 
-	public void inflate(ContextMenu menu, MenuInflater inflater) {
-		menu.setHeaderTitle(R.string.menu_beat);
+	public void inflate(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_beat, menu);
 		initializeItems(menu);
 	}
 	
-	public void initializeItems(ContextMenu menu) {
+	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();

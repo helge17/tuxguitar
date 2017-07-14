@@ -1,12 +1,13 @@
 package org.herac.tuxguitar.android.view.dialog.track;
 
-import org.herac.tuxguitar.android.R;
+import android.view.MenuItem;
+import android.view.View;
+
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
+import org.herac.tuxguitar.android.menu.context.TGMenuController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 
 public class TGTrackTuningActionHandler {
 
@@ -27,26 +28,16 @@ public class TGTrackTuningActionHandler {
 		return tgActionProcessor;
 	}
 
-	public TGActionProcessorListener createOpenMenuAction(TGContextMenuController controller) {
-		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenMenuAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.dialog.findActivity());
-		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);
+	public TGActionProcessorListener createOpenCabMenuAction(TGMenuController controller, View selectableView) {
+		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenCabMenuAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenCabMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.dialog.findActivity());
+		tgActionProcessor.setAttribute(TGOpenCabMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);
+		tgActionProcessor.setAttribute(TGOpenCabMenuAction.ATTRIBUTE_MENU_SELECTABLE_VIEW, selectableView);
 		return tgActionProcessor;
 	}
 
-	public TGActionProcessorListener createTuningModelMenuAction(TGTrackTuningModel model) {
-		return this.createOpenMenuAction(new TGTrackTuningListItemMenu(this.dialog, model));
-	}
-
-	public TGActionProcessorListener createRemoveTuningModelAction(final TGTrackTuningModel model) {
-		TGActionProcessorListener tgActionProcessor = this.createOpenDialogAction(new TGConfirmDialogController());
-		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_MESSAGE, this.dialog.findActivity().getString(R.string.menu_track_tuning_list_item_remove_confirm_question));
-		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_RUNNABLE, new Runnable() {
-			public void run() {
-				TGTrackTuningActionHandler.this.dialog.postRemoveTuningModel(model);
-			}
-		});
-		return tgActionProcessor;
+	public TGActionProcessorListener createTuningModelMenuAction(TGTrackTuningModel model, View selectableView) {
+		return this.createOpenCabMenuAction(new TGTrackTuningListItemMenu(this.dialog, model), selectableView);
 	}
 
 	public TGActionProcessorListener createEditTuningModelAction(final TGTrackTuningModel model) {
@@ -68,5 +59,15 @@ public class TGTrackTuningActionHandler {
 			}
 		});
 		return tgActionProcessor;
+	}
+
+	public MenuItem.OnMenuItemClickListener createRemoveTuningModelAction(final TGTrackTuningModel model) {
+		return new MenuItem.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				TGTrackTuningActionHandler.this.dialog.postRemoveTuningModel(model);
+				return false;
+			}
+		};
 	}
 }

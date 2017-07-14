@@ -43,7 +43,7 @@ public class TGActionProcessorListener extends TGActionProcessor implements OnCl
 	public boolean onMenuItemClick(MenuItem item) {
 		this.processEvent(item, null);
 		
-		return true;
+		return false;
 	}
 
 	@Override
@@ -51,6 +51,6 @@ public class TGActionProcessorListener extends TGActionProcessor implements OnCl
 	public boolean onLongClick(View view) {
 		this.processEvent(view, ( view.getTag() instanceof Map ? (Map<String, Object>) view.getTag() : null ));
 		
-		return true;
+		return false;
 	}
 }

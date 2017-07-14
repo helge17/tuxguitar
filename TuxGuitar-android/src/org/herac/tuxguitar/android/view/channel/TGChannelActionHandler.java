@@ -1,9 +1,12 @@
 package org.herac.tuxguitar.android.view.channel;
 
+import android.view.View;
+
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
-import org.herac.tuxguitar.android.menu.context.TGContextMenuController;
+import org.herac.tuxguitar.android.menu.context.TGMenuController;
 import org.herac.tuxguitar.android.menu.context.impl.TGChannelListItemMenu;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
@@ -63,15 +66,16 @@ public class TGChannelActionHandler {
 		return tgActionProcessor;
 	}
 	
-	public TGActionProcessorListener createOpenMenuAction(TGContextMenuController controller) {
-		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenMenuAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.channelList.findActivity());
-		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);
+	public TGActionProcessorListener createOpenCabMenuAction(TGMenuController controller, View selectableView) {
+		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenCabMenuAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenCabMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.channelList.findActivity());
+		tgActionProcessor.setAttribute(TGOpenCabMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);
+		tgActionProcessor.setAttribute(TGOpenCabMenuAction.ATTRIBUTE_MENU_SELECTABLE_VIEW, selectableView);
 		return tgActionProcessor;
 	}
 	
-	public TGActionProcessorListener createChannelItemMenuAction(TGChannel channel) {
-		return this.createOpenMenuAction(new TGChannelListItemMenu(this.channelList.findActivity(), channel));
+	public TGActionProcessorListener createChannelItemMenuAction(TGChannel channel, View selectableView) {
+		return this.createOpenCabMenuAction(new TGChannelListItemMenu(this.channelList.findActivity(), channel), selectableView);
 	}
 	
 	public void processConfirmableAction(final TGActionProcessor actionProcessor, final String confirmMessage) {
