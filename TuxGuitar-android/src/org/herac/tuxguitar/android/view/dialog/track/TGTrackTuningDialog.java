@@ -31,9 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TGTrackTuningDialog extends TGModalFragment {
-	
-	private static final int MAX_STRINGS = 7;
-	private static final int MIN_STRINGS = 4;
 
 	private List<TGTrackTuningModel> tuning;
 	private List<TGTrackTuningModel[]> tuningPresets;
@@ -402,8 +399,8 @@ public class TGTrackTuningDialog extends TGModalFragment {
 	}
 
 	private boolean validateTrackTuning(List<TGString> strings) {
-		if( strings.size() < MIN_STRINGS || strings.size() > MAX_STRINGS ) {
-			showErrorMessage(this.findActivity().getString(R.string.track_tuning_dlg_range_error, MIN_STRINGS, MAX_STRINGS));
+		if( strings.size() < TGTrack.MIN_STRINGS || strings.size() > TGTrack.MAX_STRINGS ) {
+			showErrorMessage(this.findActivity().getString(R.string.track_tuning_dlg_range_error, TGTrack.MIN_STRINGS, TGTrack.MAX_STRINGS));
 			return false;
 		}
 		return true;

@@ -8,6 +8,7 @@ import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.context.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackChannelDialogController;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackNameDialogController;
+import org.herac.tuxguitar.android.view.dialog.track.TGTrackStringCountDialogController;
 import org.herac.tuxguitar.android.view.dialog.track.TGTrackTuningDialogController;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
@@ -49,6 +50,11 @@ public class TGTrackMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.menu_track_change_mute, this.createActionProcessor(TGChangeTrackMuteAction.NAME), !running, track.isMute());
 		this.initializeItem(menu, R.id.menu_track_set_name, new TGTrackNameDialogController(), !running);
 		this.initializeItem(menu, R.id.menu_track_set_channel, new TGTrackChannelDialogController(), !running);
-		this.initializeItem(menu, R.id.menu_track_change_tuning, new TGTrackTuningDialogController(), !running && !percussion);
+
+		if( percussion ) {
+			this.initializeItem(menu, R.id.menu_track_change_string_count, new TGTrackStringCountDialogController(), !running);
+		} else {
+			this.initializeItem(menu, R.id.menu_track_change_tuning, new TGTrackTuningDialogController(), !running);
+		}
 	}
 }

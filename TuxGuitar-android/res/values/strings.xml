@@ -85,6 +85,7 @@
     <string name="menu_track_set_name">Track Name</string>
     <string name="menu_track_set_channel">Change Instrument</string>
     <string name="menu_track_change_tuning">Change Tuning</string>
+	<string name="menu_track_change_string_count">Change Line Count</string>
 
     <string name="menu_measure">Measure</string>
     <string name="menu_measure_add">Add Measure</string>
@@ -352,6 +353,8 @@
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
 	<string name="track_tuning_dlg_empty_value_error">Value can not be empty</string>
 
+	<string name="track_string_count_dlg_title">Change Line Count</string>
+	<string name="track_string_count_dlg_count_label">Lines</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Add Measure</string>

@@ -165,6 +165,7 @@ import org.herac.tuxguitar.editor.action.track.TGSetTrackInfoAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackNameAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackSoloAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGActionInstaller {
@@ -224,6 +225,7 @@ public class TGActionInstaller {
 		installAction(new TGSetTrackInfoAction(context));
 		installAction(new TGSetTrackNameAction(context));
 		installAction(new TGSetTrackChannelAction(context));
+		installAction(new TGSetTrackStringCountAction(context));
 		installAction(new TGChangeTrackTuningAction(context));
 		installAction(new TGCopyTrackFromAction(context));
 		installAction(new TGChangeTrackPropertiesAction(context));

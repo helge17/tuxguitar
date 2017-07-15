@@ -34,6 +34,7 @@ public abstract class TGMenuBase implements TGMenuController {
 		menuItem.setOnMenuItemClickListener(listener);
 		menuItem.setEnabled(enabled);
 		menuItem.setChecked(checked);
+		menuItem.setVisible(true);
 	}
 	
 	public void initializeItem(Menu menu, int id, MenuItem.OnMenuItemClickListener listener, boolean enabled) {
