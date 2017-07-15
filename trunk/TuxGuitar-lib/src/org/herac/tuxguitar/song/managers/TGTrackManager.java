@@ -12,6 +12,7 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGTrackManager {
+	
 	private TGSongManager songManager;
 	
 	public TGTrackManager(TGSongManager songManager){
@@ -252,7 +253,21 @@ public class TGTrackManager {
 		track.setOffset(offset);
 	}
 	
-	public void changeInstrumentStrings(TGTrack track,List<TGString> strings){
+	public void changeStringCount(TGTrack track, int count){		
+		if( track.stringCount() != count ) {
+			if( count < track.getStrings().size() ){
+				removeNotesAfterString(track, count);
+			}
+			
+			if( getSongManager().isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+				track.setStrings(getSongManager().createPercussionStrings(count));
+			} else {
+				track.setStrings(getSongManager().createDefaultInstrumentStrings(count));
+			}
+		}
+	}
+	
+	public void changeInstrumentStrings(TGTrack track, List<TGString> strings){
 		if(strings.size() < track.getStrings().size()){
 			removeNotesAfterString(track,strings.size());
 		}
@@ -271,11 +286,19 @@ public class TGTrackManager {
 		this.changeChannel(track, getSongManager().getChannel(track.getSong(), channelId));
 	}
 	
-	public void changeChannel(TGTrack track, TGChannel channel){
+	public void changeChannel(TGTrack track, TGChannel channel) {
+		TGChannel oldChannel = getSongManager().getChannel(track.getSong(), track.getChannelId());
+		
 		track.setChannelId( (channel != null ? channel.getChannelId() : -1) );
 		
-		if( channel != null && channel.isPercussionChannel() ){
-			track.setStrings(getSongManager().createDefaultInstrumentStrings());
+		boolean oldPercussion = (oldChannel != null && oldChannel.isPercussionChannel());
+		boolean newPercussion = (channel != null && channel.isPercussionChannel());
+		if( oldPercussion != newPercussion ) {
+			if( newPercussion ) {
+				track.setStrings(getSongManager().createPercussionStrings(track.stringCount()));
+			} else {
+				track.setStrings(getSongManager().createDefaultInstrumentStrings(track.stringCount()));
+			}
 		}
 	}
 	

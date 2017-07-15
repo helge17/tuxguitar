@@ -63,7 +63,6 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	private UIColor colorButtonBg;
 	private UIDropDownSelect<Integer> channelSelect;
 	private UIReadOnlyTextField tuningText;
-	private UIButton tuningSettings;
 	private TGProcess updateItemsProcess;
 	
 	public TGTrackPropertiesDialog(TGViewContext context) {
@@ -195,11 +194,11 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		this.tuningText = factory.createReadOnlyTextField(legendPanel);
 		legendLayout.set(this.tuningText, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
-		this.tuningSettings = factory.createButton(legendPanel);
-		this.tuningSettings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
-		this.tuningSettings.setToolTipText(TuxGuitar.getProperty("settings"));
-		this.tuningSettings.addSelectionListener(this.createOpenViewAction(TGOpenTrackTuningDialogAction.NAME));
-		legendLayout.set(this.tuningSettings, 4, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
+		UIButton tuningSettings = factory.createButton(legendPanel);
+		tuningSettings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		tuningSettings.setToolTipText(TuxGuitar.getProperty("settings"));
+		tuningSettings.addSelectionListener(this.createOpenViewAction(TGOpenTrackTuningDialogAction.NAME));
+		legendLayout.set(tuningSettings, 4, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 	}
 	
 	public TGActionProcessorListener createOpenViewAction(String actionId) {
@@ -232,7 +231,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	public void updateItems(){
 		if( this.dialog != null && !this.dialog.isDisposed() ){
 			this.updateChannelSelect();
-			this.updateTuningFields();
+			this.updateTuningText();
 			this.updateColorButton();
 		}
 	}
@@ -253,7 +252,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		}
 	}
 	
-	private void updateTuningFields() {
+	private void updateTuningText() {
 		StringBuilder label = new StringBuilder(); 
 		List<TGString> tuning = this.findTrack().getStrings();
 		for(int i = 0 ; i < tuning.size(); i ++) {
@@ -267,7 +266,6 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		
 		this.tuningText.setText(label.toString());
 		this.tuningText.setEnabled(enabled);
-		this.tuningSettings.setEnabled(enabled);
 	}
 	
 	private void updateChannelSelect() {

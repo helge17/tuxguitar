@@ -969,19 +969,23 @@ public class TGSongManager {
 		}
 	}
 	
-	public List<TGString> createDefaultInstrumentStrings(){
+	public List<TGString> createDefaultInstrumentStrings() {
 		return createDefaultInstrumentStrings(6);
 	}
 	
-	public List<TGString> createDefaultInstrumentStrings(int stringCount){
+	public List<TGString> createDefaultPercussionStrings() {
+		return createPercussionStrings(6);
+	}
+	
+	public List<TGString> createDefaultInstrumentStrings(int stringCount) {
 		return createStrings(stringCount, DEFAULT_TUNING_VALUES);
 	}
 	
-	public List<TGString> createPercussionStrings(int stringCount){
+	public List<TGString> createPercussionStrings(int stringCount) {
 		return createStrings(stringCount, null);
 	}
 	
-	public List<TGString> createStrings(int stringCount, int[][] defaultTunings){
+	public List<TGString> createStrings(int stringCount, int[][] defaultTunings) {
 		List<TGString> strings = new ArrayList<TGString>();
 		if( defaultTunings != null ) {
 			for(int i = 0; i < defaultTunings.length ; i++) {

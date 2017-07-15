@@ -18,6 +18,8 @@ import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
 import org.herac.tuxguitar.util.TGContext;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -71,7 +73,24 @@ public class TGTabKeyboard extends FrameLayout {
 	}
 	
 	public void toggleVisibility() {
-		this.setVisibility(this.getVisibility() == VISIBLE ? GONE : VISIBLE);
+		this.clearAnimation();
+		if( this.getVisibility() == VISIBLE ) {
+			this.animate().setDuration(300).translationY(this.getHeight()).setListener(new AnimatorListenerAdapter() {
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					TGTabKeyboard.this.clearAnimation();
+					TGTabKeyboard.this.setVisibility(GONE);
+				}
+			});
+		} else {
+			this.setVisibility(VISIBLE);
+			this.animate().setDuration(300).translationY(0f).setListener(new AnimatorListenerAdapter() {
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					TGTabKeyboard.this.clearAnimation();
+				}
+			});
+		}
 	}
 	
 	private TGActivity findActivity() {

@@ -34,5 +34,10 @@
         android:title="@string/menu_track_set_channel"/>
     <item
         android:id="@+id/menu_track_change_tuning"
-        android:title="@string/menu_track_change_tuning"/>
+        android:title="@string/menu_track_change_tuning"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_track_change_string_count"
+        android:title="@string/menu_track_change_string_count"
+        android:visible="false"/>
 </menu>

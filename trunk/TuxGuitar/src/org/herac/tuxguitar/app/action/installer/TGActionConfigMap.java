@@ -253,6 +253,7 @@ import org.herac.tuxguitar.editor.action.track.TGSetTrackLyricsAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackNameAction;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackSoloAction;
+import org.herac.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
 import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
 import org.herac.tuxguitar.editor.undo.impl.channel.TGUndoableChannelGenericController;
 import org.herac.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
@@ -374,6 +375,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetTrackInfoAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL, new TGUndoableTrackInfoController());
 		this.map(TGSetTrackNameAction.NAME, LOCKABLE);
 		this.map(TGSetTrackChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
+		this.map(TGSetTrackStringCountAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGChangeTrackTuningAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGCopyTrackFromAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGSetTrackLyricsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, new TGUndoableTrackLyricsController());

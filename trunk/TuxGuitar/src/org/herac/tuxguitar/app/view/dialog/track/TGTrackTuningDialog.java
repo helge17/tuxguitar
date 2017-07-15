@@ -40,8 +40,6 @@ public class TGTrackTuningDialog {
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_TUNING);
 	private static final float MINIMUM_BUTTON_WIDTH = 80;
 	private static final float MINIMUM_BUTTON_HEIGHT = 25;
-	private static final int MAX_STRINGS = 20;
-	private static final int MIN_STRINGS = 4;
 	private static final int MAX_OCTAVES = 10;
 	private static final int MAX_NOTES = 12;
 	
@@ -421,8 +419,8 @@ public class TGTrackTuningDialog {
 	}
 	
 	private boolean validateTrackTuning(List<TGString> strings) {
-		if( strings.size() < MIN_STRINGS || strings.size() > MAX_STRINGS ) {
-			TGMessageDialogUtil.errorMessage(this.getContext().getContext(), this.dialog, TuxGuitar.getProperty("tuning.strings.range-error", new String[] {Integer.toString(MIN_STRINGS), Integer.toString(MAX_STRINGS)}));
+		if( strings.size() < TGTrack.MIN_STRINGS || strings.size() > TGTrack.MAX_STRINGS ) {
+			TGMessageDialogUtil.errorMessage(this.getContext().getContext(), this.dialog, TuxGuitar.getProperty("tuning.strings.range-error", new String[] {Integer.toString(TGTrack.MIN_STRINGS), Integer.toString(TGTrack.MAX_STRINGS)}));
 			
 			return false;
 		}

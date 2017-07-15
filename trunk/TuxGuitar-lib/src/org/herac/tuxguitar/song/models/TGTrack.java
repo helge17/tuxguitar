@@ -11,13 +11,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
-/**
- * @author julian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+
 public abstract class TGTrack {
+	
+	public static final int MAX_STRINGS = 7;
+	public static final int MIN_STRINGS = 4;
 	public static final int MAX_OFFSET = 24;
 	public static final int MIN_OFFSET = -24;
 	
