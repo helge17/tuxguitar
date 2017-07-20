@@ -261,31 +261,31 @@ public class TGVoiceImpl extends TGVoice{
 			}
 			
 			int duration = getDuration().getValue();
-			if(duration == TGDuration.WHOLE){
+			if( duration == TGDuration.WHOLE) {
 				this.silenceHeight = (scale * 3.6513581f);
-				this.silenceY = ( lineCount <= 5 ? lineSpacing : lineSpacing * 2 );
+				this.silenceY = ((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing : (lineSpacing * (int)((lineCount - 1) / 2)));
 			}
-			else if(duration == TGDuration.HALF){
+			else if(duration == TGDuration.HALF) {
 				this.silenceHeight = (scale * 3.6513581f);
-				this.silenceY = ( lineCount <= 5 ? lineSpacing * 2 : lineSpacing * 3 ) - this.silenceHeight;
+				this.silenceY = (((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing * 2 : (lineSpacing * (int)(lineCount / 2))) - this.silenceHeight);
 			}
-			else if(duration == TGDuration.QUARTER){
+			else if(duration == TGDuration.QUARTER) {
 				this.silenceHeight = (scale * 16);
 				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
 			}
-			else if(duration == TGDuration.EIGHTH){
+			else if(duration == TGDuration.EIGHTH) {
 				this.silenceHeight = (scale * 12);
 				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
 			}
-			else if(duration == TGDuration.SIXTEENTH){
+			else if(duration == TGDuration.SIXTEENTH) {
 				this.silenceHeight = (scale * 16);
 				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
 			}
-			else if(duration == TGDuration.THIRTY_SECOND){
+			else if(duration == TGDuration.THIRTY_SECOND) {
 				this.silenceHeight = (scale * 24);
 				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
 			}
-			else if(duration == TGDuration.SIXTY_FOURTH){
+			else if(duration == TGDuration.SIXTY_FOURTH) {
 				this.silenceHeight = (scale * 28);
 				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
 			}

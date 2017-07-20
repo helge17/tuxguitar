@@ -354,24 +354,21 @@ public class TGBeatImpl extends TGBeat{
 		float x = (fromX + getPosX() + getSpacing(layout) + ( 12f * scale ));
 		float y1 = 0;
 		float y2 = 0;
-		if((style & TGLayout.DISPLAY_SCORE) != 0){
-			float y = (fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES)); 
-			y1 = (y + layout.getScoreLineSpacing());
-			y2 = (y + (getMeasureImpl().getTrackImpl().getScoreHeight() - layout.getScoreLineSpacing()));
-		}
-		if((style & TGLayout.DISPLAY_TABLATURE) != 0){
+		
+		if((style & TGLayout.DISPLAY_TABLATURE) != 0) {
+			float height = getMeasureImpl().getTrackImpl().getTabHeight();
+			float margin = (Math.min((layout.getStringSpacing() * 2f), height - (layout.getStringSpacing() * 2f)) / 2f);
 			float y = (fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE));
-			y1 = (y + layout.getStringSpacing());
-			y2 = (y + (getMeasureImpl().getTrackImpl().getTabHeight() - layout.getStringSpacing()));
+			y1 = (y + margin);
+			y2 = (y + height - margin);
 		}
-		else if((style & TGLayout.DISPLAY_SCORE) != 0){
-			float y = (fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES)); 
+		else if((style & TGLayout.DISPLAY_SCORE) != 0) {
+			float y = (fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			y1 = (y + layout.getScoreLineSpacing());
 			y2 = (y + (getMeasureImpl().getTrackImpl().getScoreHeight() - layout.getScoreLineSpacing()));
-		}else{
-			return;
 		}
-		if( getStroke().getDirection() == TGStroke.STROKE_UP ){
+		
+		if( getStroke().getDirection() == TGStroke.STROKE_UP ) {
 			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath();
 			painter.moveTo( x, y1 );
@@ -381,7 +378,7 @@ public class TGBeatImpl extends TGBeat{
 			painter.moveTo( x + (2.0f * scale), y2 - (5.0f * scale));
 			painter.lineTo( x, y2 );
 			painter.closePath();
-		}else if( getStroke().getDirection() == TGStroke.STROKE_DOWN ){
+		} else if( getStroke().getDirection() == TGStroke.STROKE_DOWN ) {
 			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath();
 			painter.moveTo( x, y2 );
