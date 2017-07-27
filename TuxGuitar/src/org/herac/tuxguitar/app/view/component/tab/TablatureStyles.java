@@ -52,5 +52,8 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
 		this.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		this.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
+		
+//		this.setTabNotePathRendererEnabled(true);
+//		setNoteFont(new UIFontModel("", 9, true, true, new UIFontAlignment(10, 5, 0)));
 	}
 }

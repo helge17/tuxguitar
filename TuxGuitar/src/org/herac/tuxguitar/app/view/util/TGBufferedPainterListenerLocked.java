@@ -6,7 +6,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGBufferedPainterListenerLocked extends TGBufferedPainterLocked implements UIPaintListener {
 	
-	public TGBufferedPainterListenerLocked(TGContext context, TG2BufferedPainterHandle handle) {
+	public TGBufferedPainterListenerLocked(TGContext context, TGBufferedPainterHandle handle) {
 		super(context, handle);
 	}
 

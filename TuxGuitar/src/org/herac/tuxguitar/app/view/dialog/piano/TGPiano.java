@@ -11,7 +11,7 @@ import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -614,7 +614,7 @@ public class TGPiano {
 		}
 	}
 	
-	private class TGPianoPainterListener implements TG2BufferedPainterHandle {
+	private class TGPianoPainterListener implements TGBufferedPainterHandle {
 		
 		public TGPianoPainterListener(){
 			super();

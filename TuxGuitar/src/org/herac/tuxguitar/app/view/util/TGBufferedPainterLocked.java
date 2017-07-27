@@ -16,9 +16,9 @@ public class TGBufferedPainterLocked {
 	
 	private TGContext context;
 	private UIImage buffer;
-	private TG2BufferedPainterHandle handle;
+	private TGBufferedPainterHandle handle;
 	
-	public TGBufferedPainterLocked(TGContext context, TG2BufferedPainterHandle handle) {
+	public TGBufferedPainterLocked(TGContext context, TGBufferedPainterHandle handle) {
 		this.context = context;
 		this.handle = handle;
 		this.handle.getPaintableControl().addDisposeListener(new UIDisposeListener() {
@@ -89,7 +89,7 @@ public class TGBufferedPainterLocked {
 		return this.context;
 	}
 	
-	public static interface TG2BufferedPainterHandle {
+	public static interface TGBufferedPainterHandle {
 		
 		void paintControl(UIPainter painter);
 		

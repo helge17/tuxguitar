@@ -16,7 +16,7 @@ import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
@@ -901,7 +901,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	private class TGMatrixPainterListener implements TG2BufferedPainterHandle {
+	private class TGMatrixPainterListener implements TGBufferedPainterHandle {
 		
 		public TGMatrixPainterListener(){
 			super();
