@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 
-public class TGControlPaintListener implements TG2BufferedPainterHandle {
+public class TGControlPaintListener implements TGBufferedPainterHandle {
 	
 	private TGControl control;
 	

@@ -14,7 +14,7 @@ import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -738,7 +738,7 @@ public class TGFretBoard {
 		}
 	}
 	
-	private class TGFretBoardPainterListener implements TG2BufferedPainterHandle {
+	private class TGFretBoardPainterListener implements TGBufferedPainterHandle {
 		
 		public TGFretBoardPainterListener(){
 			super();

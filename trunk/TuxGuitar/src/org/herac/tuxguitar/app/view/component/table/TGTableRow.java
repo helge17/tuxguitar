@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.app.view.component.table;
 
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
+import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
 import org.herac.tuxguitar.ui.event.UIMouseDownListener;
@@ -225,7 +225,7 @@ public class TGTableRow {
 		}
 	}
 	
-	private class TGTableRowPaintHandle implements TG2BufferedPainterHandle {
+	private class TGTableRowPaintHandle implements TGBufferedPainterHandle {
 		
 		public TGTableRowPaintHandle(){
 			super();
