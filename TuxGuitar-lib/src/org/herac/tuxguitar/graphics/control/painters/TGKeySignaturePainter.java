@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.command.TGCubicTo;
 import org.herac.tuxguitar.graphics.command.TGLineTo;
 import org.herac.tuxguitar.graphics.command.TGMoveTo;
 import org.herac.tuxguitar.graphics.command.TGPaintCommand;
 import org.herac.tuxguitar.graphics.command.TGPaintModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGKeySignaturePainter {
 	
@@ -147,15 +147,15 @@ public class TGKeySignaturePainter {
 		new TGCubicTo(0.37695605f, 0.32397425f, 0.38526937f, -0.09446347f, 0.38526937f, -0.22193468f)
 	);
 	
-	public static void paintSharp(TGPainter painter, float x, float y,float scale){
+	public static void paintSharp(UIPainter painter, float x, float y,float scale){
 		SHARP_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintFlat(TGPainter painter, float x, float y,float scale){
+	public static void paintFlat(UIPainter painter, float x, float y,float scale){
 		FLAT_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintNatural(TGPainter painter, float x, float y,float scale){
+	public static void paintNatural(UIPainter painter, float x, float y,float scale){
 		NATURAL_MODEL.paint(painter, x, y, scale);
 	}
 }

@@ -1,14 +1,11 @@
 package org.herac.tuxguitar.app.view.dialog.about;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGImageImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
@@ -20,6 +17,7 @@ import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UILabel;
@@ -72,8 +70,8 @@ public class TGAboutDialog {
 				float width = TGAboutDialog.this.image.getWidth();
 				float height = TGAboutDialog.this.image.getHeight();
 				
-				TGPainter tgPainter = new TGPainterImpl(uiFactory, event.getPainter());
-				tgPainter.drawImage(new TGImageImpl(uiFactory, TGAboutDialog.this.image), ((IMAGE_WIDTH - width) / 2f),((IMAGE_HEIGHT - height) / 2f));
+				UIPainter tgPainter = event.getPainter();
+				tgPainter.drawImage(TGAboutDialog.this.image, ((IMAGE_WIDTH - width) / 2f),((IMAGE_HEIGHT - height) / 2f));
 			}
 		});
 		headerLayout.set(this.imageComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, IMAGE_WIDTH, IMAGE_HEIGHT, null);

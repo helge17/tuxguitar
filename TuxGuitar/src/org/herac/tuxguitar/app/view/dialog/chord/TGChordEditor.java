@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -28,6 +25,7 @@ import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UICanvas;
@@ -131,7 +129,7 @@ public class TGChordEditor {
 		this.canvas.setBgColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
 		this.canvas.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
-				paintEditor(new TGPainterImpl(uiFactory, event.getPainter()));
+				paintEditor(event.getPainter());
 			}
 		});
 		
@@ -156,17 +154,17 @@ public class TGChordEditor {
 		});
 	}
 	
-	private void paintEditor(TGPainter painter) {
+	private void paintEditor(UIPainter painter) {
 		int noteSize = (FRET_SPACING / 2);
 		
 		// fill background
 		UIRectangle bounds = this.canvas.getBounds();
-		painter.setBackground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_WHITE)));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.setBackground(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
 		painter.closePath();
 		
-		painter.setForeground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_BLACK)));
+		painter.setForeground(this.dialog.getColor(TGColorManager.COLOR_BLACK));
 		
 		// dibujo el puente
 		painter.initPath();
@@ -196,10 +194,10 @@ public class TGChordEditor {
 		painter.closePath();
 		
 		// dibujo las notas
-		painter.setBackground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_BLACK)));
+		painter.setBackground(this.dialog.getColor(TGColorManager.COLOR_BLACK));
 		
 		for(UIPosition point : this.points) {
-			painter.initPath(TGPainter.PATH_FILL);
+			painter.initPath(UIPainter.PATH_FILL);
 			painter.addCircle(point.getX(), point.getY() + (FRET_SPACING / 2), noteSize);
 			painter.closePath();
 		}

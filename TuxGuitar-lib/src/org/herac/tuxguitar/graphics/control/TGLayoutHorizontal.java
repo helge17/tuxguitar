@@ -8,10 +8,10 @@ package org.herac.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 
 /**
  * @author julian
@@ -29,7 +29,7 @@ public class TGLayoutHorizontal extends TGLayout{
 		return MODE_HORIZONTAL;
 	}
 	
-	public void paintSong(TGPainter painter,TGRectangle clientArea, float fromX, float fromY) {
+	public void paintSong(UIPainter painter,UIRectangle clientArea, float fromX, float fromY) {
 		this.setWidth(0);
 		this.setHeight(0);
 		this.clearTrackPositions();
@@ -95,7 +95,7 @@ public class TGLayoutHorizontal extends TGLayout{
 		this.setHeight(height);
 	}
 	
-	public void paintMeasures(TGTrackImpl track,TGPainter painter, float fromX, float fromY,TGTrackSpacing ts,TGRectangle clientArea) {
+	public void paintMeasures(TGTrackImpl track,UIPainter painter, float fromX, float fromY,TGTrackSpacing ts,UIRectangle clientArea) {
 		float posX = Math.round(fromX + getFirstMeasureSpacing());
 		float posY = fromY;
 		float width = getFirstMeasureSpacing();

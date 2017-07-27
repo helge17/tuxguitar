@@ -1,16 +1,12 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
@@ -24,12 +20,15 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGContext;
 
 public class Tablature implements TGController {
 	
 	private TGContext context; 
-	private TGResourceFactory resourceFactory;
+	private UIResourceFactory resourceFactory;
 	private TGDocumentManager documentManager;
 	private TGResourceBuffer resourceBuffer;
 	private TGSyncProcess disposeUnregisteredResources;
@@ -70,18 +69,11 @@ public class Tablature implements TGController {
 		this.caret.update(1, TGDuration.QUARTER_TIME,1);
 	}
 	
-	public void paintTablature(TGPainter painter, TGRectangle area, float fromX, float fromY){
-		this.fillBackground(painter, area);
+	public void paintTablature(UIPainter painter, UIRectangle area, float fromX, float fromY){
+		this.getViewLayout().fillBackground(painter, area);
 		this.getViewLayout().paint(painter, area, fromX, fromY);
 		this.getCaret().paintCaret(this.getViewLayout(), painter);
 		this.getEditorKit().paintSelection(this.getViewLayout(), painter);
-	}
-	
-	public void fillBackground(TGPainter painter, TGRectangle area) {
-		painter.setBackground(this.getViewLayout().getResources().getBackgroundColor());
-		painter.initPath(TGPainter.PATH_FILL);
-		painter.addRectangle(0, 0, area.getWidth(), area.getHeight());
-		painter.closePath();
 	}
 	
 	public Caret getCaret(){
@@ -158,9 +150,9 @@ public class Tablature implements TGController {
 		this.getResourceBuffer().disposeAllResources();
 	}
 	
-	public TGResourceFactory getResourceFactory(){
+	public UIResourceFactory getResourceFactory(){
 		if( this.resourceFactory == null ){
-			this.resourceFactory = new TGResourceFactoryImpl(TGApplication.getInstance(this.context).getFactory());
+			this.resourceFactory = TGApplication.getInstance(this.context).getFactory();
 		}
 		return this.resourceFactory;
 	}

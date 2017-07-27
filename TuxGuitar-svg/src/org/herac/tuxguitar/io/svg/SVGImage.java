@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
-public class SVGImage implements TGImage{
+public class SVGImage implements UIImage{
 	
 	private StringBuffer buffer;
 	
@@ -40,11 +40,11 @@ public class SVGImage implements TGImage{
 		return this.buffer;
 	}
 	
-	public TGPainter createPainter() {
+	public UIPainter createPainter() {
 		return new SVGPainter( this.buffer );
 	}
 	
-	public void applyTransparency(TGColor background) {
+	public void applyTransparency(UIColor background) {
 		// Not implemented
 	}
 }

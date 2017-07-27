@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.graphics;
+package org.herac.tuxguitar.ui.resource;
 
-public class TGMargins {
+public class UIMargin {
 	
 	private float top;
 	private float left;
 	private float right;
 	private float bottom;
 	
-	public TGMargins(float top, float left, float right, float bottom) {
+	public UIMargin(float top, float left, float right, float bottom) {
 		this.top = top;
 		this.left = left;
 		this.right = right;
 		this.bottom = bottom;
 	}
 	
-	public TGMargins() {
+	public UIMargin() {
 		this(0, 0, 0, 0);
 	}
 

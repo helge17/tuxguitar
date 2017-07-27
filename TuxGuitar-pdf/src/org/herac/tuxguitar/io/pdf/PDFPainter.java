@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 
-public class PDFPainter extends PDFResourceFactory implements TGPainter {
+public class PDFPainter extends PDFResourceFactory implements UIPainter {
 	
 	private int style;
 	
@@ -94,7 +94,7 @@ public class PDFPainter extends PDFResourceFactory implements TGPainter {
 		this.cb.lineTo(x, this.getY(y));
 	}
 	
-	public void addString(String text, float x, float y, TGFont font) {
+	public void addString(String text, float x, float y, UIFont font) {
 		this.addString(text, x, y, new PDFFont(font));
 	}
 	
@@ -112,19 +112,15 @@ public class PDFPainter extends PDFResourceFactory implements TGPainter {
 		this.addString(string, x, y, this.font);
 	}
 
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.addString(string, x, y, this.font);
-	}
-
-	public void setFont(TGFont font) {
+	public void setFont(UIFont font) {
 		this.font = new PDFFont(font);
 	}
 
-	public void setBackground(TGColor color) {
+	public void setBackground(UIColor color) {
 		this.background = new PDFColor(color);
 	}
 	
-	public void setForeground(TGColor color) {
+	public void setForeground(UIColor color) {
 		this.foreground = new PDFColor(color);
 	}
 
@@ -194,11 +190,11 @@ public class PDFPainter extends PDFResourceFactory implements TGPainter {
 		// not implemented
 	}
 
-	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
+	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		// not implemented
 	}
 
-	public void drawImage(TGImage image, float x, float y) {
+	public void drawImage(UIImage image, float x, float y) {
 		// not implemented		
 	}
 }

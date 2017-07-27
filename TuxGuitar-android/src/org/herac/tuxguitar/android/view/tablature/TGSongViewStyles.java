@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFontModel;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 
 public class TGSongViewStyles extends TGLayoutStyles {
 	
 	public TGSongViewStyles() {
 		this.setBufferEnabled(false);
-		
+
 		this.setTrackSpacing(5);
 		this.setFirstTrackSpacing(15);
 		this.setFirstMeasureSpacing(5);
@@ -42,21 +42,21 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setLineWidths(new float[] {0, 1, 2, 3, 4, 5});
 		this.setDurationWidths(new float[] {30f, 25f, 21f, 20f,19f,18f});
 		
-		this.setDefaultFont( new TGFontModel("sans-serif", 8, false , false ) );
-		this.setNoteFont( new TGFontModel("sans-serif", 9 , true ,false )  );
-		this.setTimeSignatureFont( new TGFontModel("sans-serif", 18 , false , false )  );
-		this.setLyricFont( new TGFontModel("sans-serif", 8 , false , false )  );
-		this.setTextFont( new TGFontModel("sans-serif", 8 , false , false )  );
-		this.setMarkerFont( new TGFontModel("sans-serif", 8 , false , false )  );
-		this.setGraceFont( new TGFontModel("sans-serif", 6 , false , false )  );
-		this.setChordFont( new TGFontModel("sans-serif", 8 , false , false )  );
-		this.setChordFretFont( new TGFontModel("sans-serif", 8 , false , false )  );
-		this.setBackgroundColor( new TGColorModel(255, 255, 255 ));
-		this.setLineColor( new TGColorModel(200,200,200 ));
-		this.setScoreNoteColor( new TGColorModel(105, 105, 105 ) );
-		this.setTabNoteColor( new TGColorModel(105, 105, 105 ) );
-		this.setPlayNoteColor( new TGColorModel(255, 0, 0 ) );
-		this.setLoopSMarkerColor( new TGColorModel(0, 0, 0 ) );
-		this.setLoopEMarkerColor( new TGColorModel(0, 0, 0 ) );
+		this.setDefaultFont( new UIFontModel("sans-serif", 8, false , false ) );
+		this.setNoteFont( new UIFontModel("sans-serif", 9 , true ,false )  );
+		this.setTimeSignatureFont( new UIFontModel("sans-serif", 18 , false , false )  );
+		this.setLyricFont( new UIFontModel("sans-serif", 8 , false , false )  );
+		this.setTextFont( new UIFontModel("sans-serif", 8 , false , false )  );
+		this.setMarkerFont( new UIFontModel("sans-serif", 8 , false , false )  );
+		this.setGraceFont( new UIFontModel("sans-serif", 6 , false , false )  );
+		this.setChordFont( new UIFontModel("sans-serif", 8 , false , false )  );
+		this.setChordFretFont( new UIFontModel("sans-serif", 8 , false , false )  );
+		this.setBackgroundColor( new UIColorModel(255, 255, 255 ));
+		this.setLineColor( new UIColorModel(200,200,200 ));
+		this.setScoreNoteColor( new UIColorModel(105, 105, 105 ) );
+		this.setTabNoteColor( new UIColorModel(105, 105, 105 ) );
+		this.setPlayNoteColor( new UIColorModel(255, 0, 0 ) );
+		this.setLoopSMarkerColor( new UIColorModel(0, 0, 0 ) );
+		this.setLoopEMarkerColor( new UIColorModel(0, 0, 0 ) );
 	}
 }

@@ -1,35 +1,47 @@
 package org.herac.tuxguitar.awt.graphics;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGFontModel;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class TGResourceFactoryImpl implements TGResourceFactory {
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.util.TGException;
+
+public class TGResourceFactoryImpl implements UIResourceFactory {
 	
 	public TGResourceFactoryImpl(){
 		super();
 	}
 	
-	public TGImage createImage( float width, float height ){
-		return new TGImageImpl( width, height );
-	}
-	
-	public TGColor createColor( int red, int green, int blue ){
+	public UIColor createColor( int red, int green, int blue ){
 		return new TGColorImpl( red, green , blue );
 	}
 	
-	public TGColor createColor( TGColorModel cm ){
+	public UIColor createColor( UIColorModel cm ){
 		return this.createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
 	}
 	
-	public TGFont createFont( String name, float height, boolean bold, boolean italic ){
+	public UIFont createFont( String name, float height, boolean bold, boolean italic ){
 		return new TGFontImpl( name , height , bold , italic );
 	}
 	
-	public TGFont createFont( TGFontModel fm ){
+	public UIFont createFont( UIFontModel fm ){
 		return this.createFont(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
+	}
+	
+	public UIImage createImage( float width, float height ){
+		return new TGImageImpl( width, height );
+	}
+
+	public UIImage createImage(InputStream inputStream) {
+		try {
+			return new TGImageImpl( inputStream );
+		} catch (IOException e) {
+			throw new TGException();
+		}
 	}
 }

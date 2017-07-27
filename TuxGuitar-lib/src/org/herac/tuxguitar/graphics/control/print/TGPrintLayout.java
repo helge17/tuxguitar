@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLyricImpl;
@@ -16,6 +12,10 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public class TGPrintLayout extends TGLayout {
 	
@@ -23,9 +23,9 @@ public class TGPrintLayout extends TGLayout {
 	private TGPrintDocument document;
 	private int page;
 	
-	private TGFont songNameFont;
-	private TGFont trackNameFont;
-	private TGFont songAuthorFont;
+	private UIFont songNameFont;
+	private UIFont trackNameFont;
+	private UIFont songAuthorFont;
 	
 	public TGPrintLayout(TGController controller, TGPrintSettings settings){
 		super(controller,( settings.getStyle() | DISPLAY_COMPACT ) );
@@ -48,7 +48,7 @@ public class TGPrintLayout extends TGLayout {
 		this.document.finish();
 	}
 	
-	public void paintSong(TGPainter painter, TGRectangle clientArea, float fromX, float fromY) {
+	public void paintSong(UIPainter painter, UIRectangle clientArea, float fromX, float fromY) {
 		this.setWidth(0);
 		this.setHeight(0);
 		
@@ -114,7 +114,7 @@ public class TGPrintLayout extends TGLayout {
 		this.setHeight(height);
 	}
 	
-	public float paintHeader(TGPainter painter, TGTrack track){
+	public float paintHeader(UIPainter painter, TGTrack track){
 		float headerOffset = 0f;
 		if( this.document.isPaintable(this.page) ){
 			float x = this.document.getMargins().getLeft();
@@ -125,7 +125,7 @@ public class TGPrintLayout extends TGLayout {
 			String trackName = track.getName();
 			
 			if( songName != null && songName.length() > 0 ){
-				painter.setFont(getSongNameFont(painter));
+				painter.setFont(getSongNameFont());
 				painter.drawString(songName,(x + getCenter(painter,songName)), (fmTopLine + y));
 				
 				headerOffset += (30.0f * getScale());
@@ -133,14 +133,14 @@ public class TGPrintLayout extends TGLayout {
 			
 			if( trackName != null && trackName.length() > 0 ) {
 				trackName = "(" + trackName + ")";
-				painter.setFont(getTrackNameFont(painter));
+				painter.setFont(getTrackNameFont());
 				painter.drawString(trackName,(x + getCenter(painter,trackName)),(fmTopLine + y + Math.round(headerOffset)));
 				
 				headerOffset += (20.0f * getScale());
 			}
 			
 			if( songAuthor != null && songAuthor.length() > 0 ){
-				painter.setFont(getSongAuthorFont(painter));
+				painter.setFont(getSongAuthorFont());
 				painter.drawString(songAuthor,(x + getRight(painter,songAuthor)),(fmTopLine + y + Math.round(headerOffset)));
 				
 				headerOffset += (20.0f * getScale());
@@ -149,7 +149,7 @@ public class TGPrintLayout extends TGLayout {
 		return headerOffset;
 	}
 	
-	private void paintFooter(TGPainter painter){
+	private void paintFooter(UIPainter painter){
 		if(this.document.isPaintable(this.page) ){
 			float x = this.document.getMargins().getLeft();
 			float y = this.document.getMargins().getTop();
@@ -162,7 +162,7 @@ public class TGPrintLayout extends TGLayout {
 		}
 	}
 	
-	public void paintLine(TGTrackImpl track, TempLine line, TGPainter painter, float fromX, float fromY, TGTrackSpacing ts) {
+	public void paintLine(TGTrackImpl track, TempLine line, UIPainter painter, float fromX, float fromY, TGTrackSpacing ts) {
 		if(this.document.isPaintable(this.page) ){
 			float posX = fromX;
 			float posY = fromY;
@@ -206,12 +206,15 @@ public class TGPrintLayout extends TGLayout {
 		}
 	}
 	
-	public void fillBackground(TGPainter painter) {
+	public void fillBackground(UIPainter painter, UIRectangle area) {
 		if(!this.document.isTransparentBackground()) {
-			painter.setBackground(this.getLightColor(this.getResources().getBackgroundColor()));
-			painter.initPath(TGPainter.PATH_FILL);
-			painter.addRectangle(0, 0, this.document.getSize().getWidth(), this.document.getSize().getHeight());
-			painter.closePath();
+			super.fillBackground(painter, area);
+		}
+	}
+	
+	public void fillBackground(UIPainter painter) {
+		if(!this.document.isTransparentBackground()) {
+			this.fillBackground(painter, new UIRectangle(this.document.getSize()));
 		}
 	}
 	
@@ -230,15 +233,15 @@ public class TGPrintLayout extends TGLayout {
 		}
 	}
 	
-	private float getCenter(TGPainter painter,String text){
+	private float getCenter(UIPainter painter,String text){
 		return ((getMaxWidth() - painter.getFMWidth(text)) / 2);
 	}
 	
-	private float getRight(TGPainter painter,String text){
+	private float getRight(UIPainter painter,String text){
 		return ((getMaxWidth() - painter.getFMWidth(text)));
 	}
 	
-	private float getBottom(TGPainter painter,String text){
+	private float getBottom(UIPainter painter,String text){
 		return ((getMaxHeight() - painter.getFMHeight()));
 	}
 	
@@ -304,21 +307,24 @@ public class TGPrintLayout extends TGLayout {
 		return (mh.getNumber() == this.settings.getToMeasure());
 	}
 	
-	public TGFont getSongNameFont( TGResourceFactory factory ){
+	public UIFont getSongNameFont() {
+		UIResourceFactory factory = this.getComponent().getResourceFactory();
 		if( factory != null && ( this.songNameFont == null || this.songNameFont.isDisposed() ) ){
 			this.songNameFont = factory.createFont(this.getResources().getDefaultFont().getName(), (16.0f * getFontScale()), true, false);
 		}
 		return this.songNameFont;
 	}
 	
-	public TGFont getSongAuthorFont( TGResourceFactory factory ){
+	public UIFont getSongAuthorFont() {
+		UIResourceFactory factory = this.getComponent().getResourceFactory();
 		if( factory != null && ( this.songAuthorFont == null || this.songAuthorFont.isDisposed() ) ){
 			this.songAuthorFont = factory.createFont(this.getResources().getDefaultFont().getName(), (8.0f * getFontScale()), true, false);
 		}
 		return this.songAuthorFont;
 	}
 	
-	public TGFont getTrackNameFont( TGResourceFactory factory ){
+	public UIFont getTrackNameFont() {
+		UIResourceFactory factory = this.getComponent().getResourceFactory();
 		if( factory != null && ( this.trackNameFont == null || this.trackNameFont.isDisposed() ) ){
 			this.trackNameFont = factory.createFont(this.getResources().getDefaultFont().getName(), (8.0f * getFontScale()), true, false);
 		}

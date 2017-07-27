@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
-public class SVGPainter extends SVGResourceFactory implements TGPainter {
+public class SVGPainter extends SVGResourceFactory implements UIPainter {
 	
 	public static final float SVG_THINNEST_LINE_WIDTH = 0.75f;
 	
@@ -78,20 +78,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgBuffer.append("</text>");
 	}
 	
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.svgBuffer.append("\r\n");
-		this.svgBuffer.append("<text ");
-		this.svgBuffer.append("x='" + x + "' ");
-		this.svgBuffer.append("y='" + y + "' ");
-		this.svgBuffer.append("font-family=\""+ this.svgFont.getName() + "\" ");
-		this.svgBuffer.append("font-size=\"" + this.svgFont.getHeight() + "\" ");
-		this.svgBuffer.append("fill=\"" + this.svgForeground.toHexString() +"\" ");
-		this.svgBuffer.append(">");
-		this.svgBuffer.append( string );
-		this.svgBuffer.append("</text>");
-	}
-	
-	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
+	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		if( image instanceof SVGImage ){
 			this.svgBuffer.append("<g transform=\"translate(" + destX + "," + destY + ")\">");
 			this.svgBuffer.append( ((SVGImage)image).getBuffer() );
@@ -99,7 +86,7 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		}
 	}
 	
-	public void drawImage(TGImage image, float x, float y) {
+	public void drawImage(UIImage image, float x, float y) {
 		if( image instanceof SVGImage ){
 			this.svgBuffer.append("<g transform=\"translate(" + x + "," + y + ")\">");
 			this.svgBuffer.append( ((SVGImage)image).getBuffer() );
@@ -133,26 +120,26 @@ public class SVGPainter extends SVGResourceFactory implements TGPainter {
 		this.svgPath.append("L " + x + " " + y + " ");
 	}
 	
-	public void setFont(TGFont font) {
+	public void setFont(UIFont font) {
 		if( font instanceof SVGFont ){
 			this.svgFont = (SVGFont)font;
 		}
 	}
 	
-	public void setBackground(TGColor color) {
+	public void setBackground(UIColor color) {
 		if( color instanceof SVGColor ){
 			this.svgBackground = (SVGColor)color;
 		}
 	}
 	
-	public void setForeground(TGColor color) {
+	public void setForeground(UIColor color) {
 		if( color instanceof SVGColor ){
 			this.svgForeground = (SVGColor)color;
 		}
 	}
 	
 	public void setLineWidth(float width) {
-		this.svgStrokeWidth = (width == TGPainter.THINNEST_LINE_WIDTH ? SVG_THINNEST_LINE_WIDTH : width);
+		this.svgStrokeWidth = (width == UIPainter.THINNEST_LINE_WIDTH ? SVG_THINNEST_LINE_WIDTH : width);
 	}
 	
 	public void setLineStyleSolid(){

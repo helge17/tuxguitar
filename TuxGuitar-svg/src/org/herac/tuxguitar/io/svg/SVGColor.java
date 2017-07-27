@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
 
-public class SVGColor implements TGColor{
+public class SVGColor implements UIColor{
 	
-	private TGColorModel handle;
+	private UIColorModel handle;
 	
 	public SVGColor(int red, int green, int blue){
-		this.handle = new TGColorModel(red, green, blue);
+		this.handle = new UIColorModel(red, green, blue);
 	}
 	
 	public void dispose() {
@@ -19,7 +19,7 @@ public class SVGColor implements TGColor{
 		return (this.handle == null);
 	}
 	
-	public TGColorModel getHandle(){
+	public UIColorModel getHandle(){
 		return this.handle;
 	}
 	

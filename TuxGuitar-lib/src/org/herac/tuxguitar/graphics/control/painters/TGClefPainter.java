@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.command.TGCubicTo;
 import org.herac.tuxguitar.graphics.command.TGLineTo;
 import org.herac.tuxguitar.graphics.command.TGMoveTo;
 import org.herac.tuxguitar.graphics.command.TGPaintCommand;
 import org.herac.tuxguitar.graphics.command.TGPaintModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGClefPainter {
 	
@@ -348,19 +348,19 @@ public class TGClefPainter {
 		new TGCubicTo(0.5896894f, -0.44392997f, 0.59568065f, -0.44992122f, 0.6016719f, -0.45291623f)
 	);
 	
-	public static void paintTreble(TGPainter painter, float x, float y,float scale){
+	public static void paintTreble(UIPainter painter, float x, float y,float scale){
 		TREBLE_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintBass(TGPainter painter, float x, float y,float scale){
+	public static void paintBass(UIPainter painter, float x, float y,float scale){
 		BASS_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintAlto(TGPainter painter, float x, float y,float scale){
+	public static void paintAlto(UIPainter painter, float x, float y,float scale){
 		ALTO_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintTenor(TGPainter painter, float x, float y,float scale){
+	public static void paintTenor(UIPainter painter, float x, float y,float scale){
 		TENOR_MODEL.paint(painter, x, y, scale);
 	}
 }

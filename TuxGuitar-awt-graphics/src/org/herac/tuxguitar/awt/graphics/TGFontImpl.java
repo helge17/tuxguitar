@@ -2,9 +2,9 @@ package org.herac.tuxguitar.awt.graphics;
 
 import java.awt.Font;
 
-import org.herac.tuxguitar.graphics.TGFont;
+import org.herac.tuxguitar.ui.resource.UIFont;
 
-public class TGFontImpl implements TGFont {
+public class TGFontImpl implements UIFont {
 	
 	private Font handle;
 	

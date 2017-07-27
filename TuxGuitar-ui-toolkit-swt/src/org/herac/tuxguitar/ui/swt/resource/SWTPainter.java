@@ -12,6 +12,7 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontAlignment;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.swt.SWTComponent;
@@ -26,6 +27,8 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	private int style;
 	
 	private Path path;
+	
+	private UIFontAlignment fontAlignment;
 	
 	public SWTPainter(){
 		super(null);
@@ -79,12 +82,7 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	
 	public void drawString(String string, float x, float y) {
 		this.setAdvanced(false);
-		this.getControl().drawString(string, toInt(x), toInt(y));
-	}
-	
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.setAdvanced(false);
-		this.getControl().drawString(string, toInt(x), toInt(y), isTransparent);
+		this.getControl().drawString(string, toInt(x), toInt(y), true);
 	}
 	
 	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
@@ -129,6 +127,7 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	
 	public void setFont(UIFont font) {
 		this.getControl().setFont(getFont(font));
+		this.fontAlignment = this.getFontAlignment(font);
 	}
 	
 	public void setForeground(UIColor color) {
@@ -175,7 +174,7 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 		}
 	}
 	
-	public float getFontSize(){
+	public float getFontSize() {
 		FontData[] fd = this.getControl().getFont().getFontData();
 		if( fd != null && fd.length > 0 ){
 			return fd[0].getHeight();
@@ -184,14 +183,23 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	}
 	
 	public float getFMTopLine() {
+		if( this.fontAlignment != null ) {
+			return this.fontAlignment.getTop();
+		}
 		return -((this.getFMAscent() / 10f) * 2f);
 	}
 	
 	public float getFMMiddleLine(){
+		if( this.fontAlignment != null ) {
+			return this.fontAlignment.getMiddle();
+		}
 		return -((this.getFMAscent() / 10f) * 6f);
 	}
 	
 	public float getFMBaseLine() {
+		if( this.fontAlignment != null ) {
+			return this.fontAlignment.getBottom();
+		}
 		return -this.getFMAscent();
 	}
 	
@@ -229,6 +237,13 @@ public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	public Font getFont(UIFont font){
 		if( font instanceof SWTFont ){
 			return ((SWTFont)font).getHandle();
+		}
+		return null;
+	}
+	
+	public UIFontAlignment getFontAlignment(UIFont font){
+		if( font instanceof SWTFont ){
+			return ((SWTFont)font).getAlignment();
 		}
 		return null;
 	}

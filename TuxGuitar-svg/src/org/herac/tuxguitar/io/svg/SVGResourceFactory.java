@@ -1,31 +1,37 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGFontModel;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
+import java.io.InputStream;
 
-public class SVGResourceFactory implements TGResourceFactory{
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+
+public class SVGResourceFactory implements UIResourceFactory{
 	
-	public TGImage createImage(float width, float height) {
+	public UIImage createImage(float width, float height) {
 		return new SVGImage(width, height);
 	}
 	
-	public TGColor createColor(TGColorModel colorModel) {
+	public UIColor createColor(UIColorModel colorModel) {
 		return this.createColor(colorModel.getRed(), colorModel.getGreen(), colorModel.getBlue());
 	}
 	
-	public TGColor createColor(int red, int green, int blue) {
+	public UIColor createColor(int red, int green, int blue) {
 		return new SVGColor(red, green, blue);
 	}
 	
-	public TGFont createFont(TGFontModel fontModel) {
+	public UIFont createFont(UIFontModel fontModel) {
 		return createFont(fontModel.getName(), fontModel.getHeight(), fontModel.isBold(), fontModel.isItalic() );
 	}
 	
-	public TGFont createFont(String name, float height, boolean bold, boolean italic) {
+	public UIFont createFont(String name, float height, boolean bold, boolean italic) {
 		return new SVGFont(name, height, bold, italic);
+	}
+
+	public UIImage createImage(InputStream inputStream) {
+		return null;
 	}
 }

@@ -3,6 +3,7 @@ package org.herac.tuxguitar.ui.qt.resource;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontAlignment;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.qtjambi.qt.core.QRect;
@@ -20,6 +21,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	private int style;
 	private boolean pathEmpty;
 	private QPainterPath path;
+	private UIFontAlignment fontAlignment;
 	
 	public QTPainter(QPainter handle){
 		super(handle);
@@ -63,11 +65,6 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 		this.getControl().drawText(toInt(x), toInt(y), string);
 	}
 	
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.setAdvanced(false);
-		this.getControl().drawText(toInt(x), toInt(y), string);
-	}
-	
 	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.setAdvanced(false);
 		this.getControl().drawImage(toRect(destX, destY, destWidth, destHeight), getImage(image), toRect(srcX, srcY, srcWidth, srcHeight));
@@ -106,6 +103,7 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	
 	public void setFont(UIFont font) {
 		this.getControl().setFont(getFont(font));
+		this.fontAlignment = getFontAlignment(font);
 	}
 	
 	public void setBackground(UIColor color) {
@@ -171,15 +169,15 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	}
 	
 	public float getFMTopLine() {
-		return this.getFontSize();
+		return (this.fontAlignment != null ? this.fontAlignment.getTop() : 0f);
 	}
 	
 	public float getFMMiddleLine(){
-		return ((this.getFMTopLine() - this.getFMBaseLine()) / 2f);
+		return (this.fontAlignment != null ? this.fontAlignment.getMiddle() : 0f);
 	}
 	
 	public float getFMBaseLine() {
-		return 0;
+		return (this.fontAlignment != null ? this.fontAlignment.getBottom() : 0f);
 	}
 	
 	public float getFMHeight() {
@@ -188,6 +186,10 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	
 	public float getFMWidth( String text ){
 		return this.getControl().fontMetrics().width(text);
+	}
+	
+	public QRect toRect(float x, float y, float width, float height) {
+		return new QRect(toInt(x), toInt(y), toInt(width), toInt(height));
 	}
 	
 	public QImage getImage(UIImage image){
@@ -211,8 +213,11 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 		return null;
 	}
 	
-	public QRect toRect(float x, float y, float width, float height) {
-		return new QRect(toInt(x), toInt(y), toInt(width), toInt(height));
+	public UIFontAlignment getFontAlignment(UIFont font){
+		if( font instanceof QTFont ){
+			return ((QTFont)font).getAlignment();
+		}
+		return null;
 	}
 	
 	public int toInt(float value) {

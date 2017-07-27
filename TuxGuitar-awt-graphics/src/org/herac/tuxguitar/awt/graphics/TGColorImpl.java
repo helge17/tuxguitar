@@ -2,19 +2,19 @@ package org.herac.tuxguitar.awt.graphics;
 
 import java.awt.Color;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
 
-public class TGColorImpl implements TGColor{
+public class TGColorImpl implements UIColor{
 	
-	private TGColorModel model;
+	private UIColorModel model;
 	
-	public TGColorImpl(TGColorModel model){
+	public TGColorImpl(UIColorModel model){
 		this.model = model;
 	}
 	
 	public TGColorImpl(int red, int green, int blue ){
-		this(new TGColorModel(red,green,blue));
+		this(new UIColorModel(red,green,blue));
 	}
 	
 	public Color getHandle(int alpha) {

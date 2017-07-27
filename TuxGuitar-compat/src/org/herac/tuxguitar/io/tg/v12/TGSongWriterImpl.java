@@ -3,6 +3,7 @@ package org.herac.tuxguitar.io.tg.v12;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
@@ -10,6 +11,7 @@ import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import org.herac.tuxguitar.io.tg.util.TGStringLimitUtil;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -150,11 +152,14 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			lastMeasure = measure;
 		}
 		
+		//obtengo las cuerdas a escribir
+		List<TGString> strings = TGStringLimitUtil.createWritableStrings(track);
+		
 		//escribo la cantidad de cuerdas 
-		writeByte(track.getStrings().size());
+		writeByte(strings.size());
 		
 		//escribo las cuerdas
-		Iterator<TGString> stringIt  = track.getStrings().iterator();
+		Iterator<TGString> stringIt  = strings.iterator();
 		while(stringIt.hasNext()){
 			TGString string = (TGString)stringIt.next();
 			writeInstrumentString(string);

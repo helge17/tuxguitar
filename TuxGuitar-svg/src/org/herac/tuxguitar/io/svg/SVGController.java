@@ -1,9 +1,5 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
@@ -15,6 +11,10 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public class SVGController implements TGController {
 	
@@ -23,7 +23,7 @@ public class SVGController implements TGController {
 	private TGSong tgSong;
 	private TGSongManager tgSongManager;
 	private TGResourceBuffer tgResourceBuffer;
-	private TGResourceFactory tgResourceFactory;
+	private UIResourceFactory tgResourceFactory;
 	private TGLayoutVertical tgLayout;
 	
 	public SVGController(SVGStyles tgStyles){
@@ -43,7 +43,7 @@ public class SVGController implements TGController {
 		return this.tgSong;
 	}
 	
-	public TGResourceFactory getResourceFactory() {
+	public UIResourceFactory getResourceFactory() {
 		return this.tgResourceFactory;
 	}
 	
@@ -60,10 +60,10 @@ public class SVGController implements TGController {
 	public void write(StringBuffer svgBuffer) throws Throwable {		
 		if( this.tgSong != null ){
 			// Do a paint to calculate the document height.
-			TGRectangle svgBounds = new TGRectangle(0, 0, 960, 0 );
-			TGPainter svgPainter = new SVGPainter(new StringBuffer());
+			UIRectangle svgBounds = new UIRectangle(0, 0, 960, 0 );
+			UIPainter svgPainter = new SVGPainter(new StringBuffer());
 			this.tgLayout.paint(svgPainter, svgBounds, 0, 0);
-			svgBounds.setHeight(this.tgLayout.getHeight());
+			svgBounds.getSize().setHeight(this.tgLayout.getHeight());
 			
 			// Start of SVG document
 			svgBuffer.append("<svg width=\"" + svgBounds.getWidth() + "px\" height=\"" + svgBounds.getHeight() + "px\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
@@ -73,9 +73,9 @@ public class SVGController implements TGController {
 			svgPainter = new SVGPainter(svgBuffer);
 			
 			// Fill the background.
-			TGColor svgBackground = svgPainter.createColor(this.tgStyles.getStyles().getBackgroundColor());
+			UIColor svgBackground = this.tgResourceFactory.createColor(this.tgStyles.getStyles().getBackgroundColor());
 			svgPainter.setBackground(svgBackground);
-			svgPainter.initPath(TGPainter.PATH_FILL);
+			svgPainter.initPath(UIPainter.PATH_FILL);
 			svgPainter.addRectangle(0, 0, svgBounds.getWidth(), svgBounds.getHeight());
 			svgPainter.closePath();
 			svgBackground.dispose();

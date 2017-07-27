@@ -5,8 +5,8 @@ import org.herac.tuxguitar.android.graphics.TGPainterImpl;
 import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.android.transport.TGTransportCache;
 import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -72,9 +72,9 @@ public class TGSongView extends View {
 	
 	public void paintBuffer(Canvas canvas) {
 		try {
-			TGRectangle area = createClientArea(canvas);
+			UIRectangle area = createClientArea(canvas);
 
-			TGPainter painter = createBufferedPainter(area);
+			UIPainter painter = createBufferedPainter(area);
 
 			this.paintArea(painter, area);
 
@@ -91,14 +91,14 @@ public class TGSongView extends View {
 		}
 	}
 
-	public void paintArea(TGPainter painter, TGRectangle area) {
+	public void paintArea(UIPainter painter, UIRectangle area) {
 		painter.setBackground(this.controller.getResourceFactory().createColor(255, 255, 255));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight());
 		painter.closePath();
 	}
 
-	public void paintTablature(TGPainter painter, TGRectangle area) {
+	public void paintTablature(UIPainter painter, UIRectangle area) {
 		if (this.controller.getSong() != null) {
 			this.controller.getLayoutPainter().paint(painter, area, -this.getPaintableScrollX(), -this.getPaintableScrollY());
 			this.controller.getCaret().paintCaret(this.controller.getLayout(), painter);
@@ -121,7 +121,7 @@ public class TGSongView extends View {
 		}
 	}
 
-	public void paintTablaturePlayMode(TGPainter painter, TGRectangle area) {
+	public void paintTablaturePlayMode(UIPainter painter, UIRectangle area) {
 		TGTransportCache transportCache = TGTransport.getInstance(this.context).getCache();
 		TGMeasureImpl measure = transportCache.getPlayMeasure();
 		TGBeatImpl beat = transportCache.getPlayBeat();
@@ -134,7 +134,7 @@ public class TGSongView extends View {
 		}
 	}
 
-	public boolean moveScrollTo(TGMeasureImpl measure, TGRectangle area) {
+	public boolean moveScrollTo(TGMeasureImpl measure, UIRectangle area) {
 		boolean success = false;
 		if (measure != null && measure.getTs() != null) {
 			int scrollX = getPaintableScrollX();
@@ -220,11 +220,11 @@ public class TGSongView extends View {
 		this.controller.getLayoutPainter().dispose();
 	}
 	
-	public TGPainter createPainter(Canvas canvas) {
+	public UIPainter createPainter(Canvas canvas) {
 		return new TGPainterImpl(canvas);
 	}
 
-	public TGPainter createBufferedPainter(TGRectangle area) {
+	public UIPainter createBufferedPainter(UIRectangle area) {
 		if( this.bufferedBitmap == null || this.bufferedBitmap.getWidth() != area.getWidth() || this.bufferedBitmap.getHeight() != area.getHeight() ) {
 			this.recycleBuffer();
 			this.bufferedBitmap = Bitmap.createBitmap(Math.round(area.getWidth()), Math.round(area.getHeight()), Bitmap.Config.ARGB_4444);
@@ -239,9 +239,9 @@ public class TGSongView extends View {
 		}
 	}
 	
-	public TGRectangle createClientArea(Canvas canvas) {
+	public UIRectangle createClientArea(Canvas canvas) {
 		Rect rect = canvas.getClipBounds();
-		return new TGRectangle(rect.left, rect.top, rect.right, rect.bottom);
+		return new UIRectangle(rect.left, rect.top, rect.right, rect.bottom);
 	}
 
 	public void handleError(Throwable throwable) {

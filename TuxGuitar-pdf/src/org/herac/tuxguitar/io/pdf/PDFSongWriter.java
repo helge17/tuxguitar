@@ -1,8 +1,5 @@
 package org.herac.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGMargins;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
@@ -16,6 +13,9 @@ import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
 
 public class PDFSongWriter implements TGSongWriter {
@@ -63,11 +63,11 @@ public class PDFSongWriter implements TGSongWriter {
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = handle.getSong().clone(manager.getFactory());
 			
-			TGResourceFactory factory = new PDFResourceFactory();
+			UIResourceFactory factory = new PDFResourceFactory();
 			TGController controller = new TGPrintController(clonedSong, manager, factory, styles);
 			
-			TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
-			TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+			UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
+			UIMargin pageMargins = new UIMargin(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 			
 			TGPrintLayout layout = new TGPrintLayout(controller, settings);
 			

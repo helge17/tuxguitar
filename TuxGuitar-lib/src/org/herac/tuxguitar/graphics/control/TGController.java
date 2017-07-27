@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public interface TGController {
 	
-	public TGResourceFactory getResourceFactory();
+	public UIResourceFactory getResourceFactory();
 	
 	public TGResourceBuffer getResourceBuffer();
 	

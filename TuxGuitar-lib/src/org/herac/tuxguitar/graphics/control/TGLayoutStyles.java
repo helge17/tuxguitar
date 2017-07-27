@@ -1,11 +1,12 @@
 package org.herac.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFontModel;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
 
 public class TGLayoutStyles {
 	
 	private boolean bufferEnabled;
+	private boolean tabNotePathRendererEnabled;
 	private float minBufferSeparator;
 	private float minTopSpacing;
 	private float minScoreTabSpacing;
@@ -33,22 +34,22 @@ public class TGLayoutStyles {
 	private float loopMarkerSpacing;
 	private float[] lineWidths;
 	private float[] durationWidths;
-	private TGFontModel defaultFont;
-	private TGFontModel noteFont;
-	private TGFontModel timeSignatureFont;
-	private TGFontModel lyricFont;
-	private TGFontModel textFont;
-	private TGFontModel markerFont;
-	private TGFontModel graceFont;
-	private TGFontModel chordFont;
-	private TGFontModel chordFretFont;
-	private TGColorModel backgroundColor;
-	private TGColorModel lineColor;
-	private TGColorModel scoreNoteColor;
-	private TGColorModel tabNoteColor;
-	private TGColorModel playNoteColor;
-	private TGColorModel loopSMarkerColor;
-	private TGColorModel loopEMarkerColor;
+	private UIFontModel defaultFont;
+	private UIFontModel noteFont;
+	private UIFontModel timeSignatureFont;
+	private UIFontModel lyricFont;
+	private UIFontModel textFont;
+	private UIFontModel markerFont;
+	private UIFontModel graceFont;
+	private UIFontModel chordFont;
+	private UIFontModel chordFretFont;
+	private UIColorModel backgroundColor;
+	private UIColorModel lineColor;
+	private UIColorModel scoreNoteColor;
+	private UIColorModel tabNoteColor;
+	private UIColorModel playNoteColor;
+	private UIColorModel loopSMarkerColor;
+	private UIColorModel loopEMarkerColor;
 	
 	public TGLayoutStyles() {
 		super();
@@ -60,6 +61,14 @@ public class TGLayoutStyles {
 
 	public void setBufferEnabled(boolean bufferEnabled) {
 		this.bufferEnabled = bufferEnabled;
+	}
+
+	public boolean isTabNotePathRendererEnabled() {
+		return tabNotePathRendererEnabled;
+	}
+
+	public void setTabNotePathRendererEnabled(boolean tabNotePathRendererEnabled) {
+		this.tabNotePathRendererEnabled = tabNotePathRendererEnabled;
 	}
 
 	public float getMinBufferSeparator() {
@@ -278,131 +287,131 @@ public class TGLayoutStyles {
 		this.durationWidths = durationWidths;
 	}
 	
-	public TGFontModel getDefaultFont() {
+	public UIFontModel getDefaultFont() {
 		return defaultFont;
 	}
 
-	public void setDefaultFont(TGFontModel defaultFont) {
+	public void setDefaultFont(UIFontModel defaultFont) {
 		this.defaultFont = defaultFont;
 	}
 
-	public TGFontModel getNoteFont() {
+	public UIFontModel getNoteFont() {
 		return noteFont;
 	}
 
-	public void setNoteFont(TGFontModel noteFont) {
+	public void setNoteFont(UIFontModel noteFont) {
 		this.noteFont = noteFont;
 	}
 
-	public TGFontModel getTimeSignatureFont() {
+	public UIFontModel getTimeSignatureFont() {
 		return timeSignatureFont;
 	}
 
-	public void setTimeSignatureFont(TGFontModel timeSignatureFont) {
+	public void setTimeSignatureFont(UIFontModel timeSignatureFont) {
 		this.timeSignatureFont = timeSignatureFont;
 	}
 
-	public TGFontModel getLyricFont() {
+	public UIFontModel getLyricFont() {
 		return lyricFont;
 	}
 
-	public void setLyricFont(TGFontModel lyricFont) {
+	public void setLyricFont(UIFontModel lyricFont) {
 		this.lyricFont = lyricFont;
 	}
 
-	public TGFontModel getTextFont() {
+	public UIFontModel getTextFont() {
 		return textFont;
 	}
 
-	public void setTextFont(TGFontModel textFont) {
+	public void setTextFont(UIFontModel textFont) {
 		this.textFont = textFont;
 	}
 
-	public TGFontModel getMarkerFont() {
+	public UIFontModel getMarkerFont() {
 		return markerFont;
 	}
 
-	public void setMarkerFont(TGFontModel markerFont) {
+	public void setMarkerFont(UIFontModel markerFont) {
 		this.markerFont = markerFont;
 	}
 
-	public TGFontModel getGraceFont() {
+	public UIFontModel getGraceFont() {
 		return graceFont;
 	}
 
-	public void setGraceFont(TGFontModel graceFont) {
+	public void setGraceFont(UIFontModel graceFont) {
 		this.graceFont = graceFont;
 	}
 
-	public TGFontModel getChordFont() {
+	public UIFontModel getChordFont() {
 		return chordFont;
 	}
 
-	public void setChordFont(TGFontModel chordFont) {
+	public void setChordFont(UIFontModel chordFont) {
 		this.chordFont = chordFont;
 	}
 
-	public TGFontModel getChordFretFont() {
+	public UIFontModel getChordFretFont() {
 		return chordFretFont;
 	}
 
-	public void setChordFretFont(TGFontModel chordFretFont) {
+	public void setChordFretFont(UIFontModel chordFretFont) {
 		this.chordFretFont = chordFretFont;
 	}
 
-	public TGColorModel getBackgroundColor() {
+	public UIColorModel getBackgroundColor() {
 		return backgroundColor;
 	}
 
-	public void setBackgroundColor(TGColorModel backgroundColor) {
+	public void setBackgroundColor(UIColorModel backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 
-	public TGColorModel getLineColor() {
+	public UIColorModel getLineColor() {
 		return lineColor;
 	}
 
-	public void setLineColor(TGColorModel lineColor) {
+	public void setLineColor(UIColorModel lineColor) {
 		this.lineColor = lineColor;
 	}
 
-	public TGColorModel getScoreNoteColor() {
+	public UIColorModel getScoreNoteColor() {
 		return scoreNoteColor;
 	}
 
-	public void setScoreNoteColor(TGColorModel scoreNoteColor) {
+	public void setScoreNoteColor(UIColorModel scoreNoteColor) {
 		this.scoreNoteColor = scoreNoteColor;
 	}
 
-	public TGColorModel getTabNoteColor() {
+	public UIColorModel getTabNoteColor() {
 		return tabNoteColor;
 	}
 
-	public void setTabNoteColor(TGColorModel tabNoteColor) {
+	public void setTabNoteColor(UIColorModel tabNoteColor) {
 		this.tabNoteColor = tabNoteColor;
 	}
 
-	public TGColorModel getPlayNoteColor() {
+	public UIColorModel getPlayNoteColor() {
 		return playNoteColor;
 	}
 
-	public void setPlayNoteColor(TGColorModel playNoteColor) {
+	public void setPlayNoteColor(UIColorModel playNoteColor) {
 		this.playNoteColor = playNoteColor;
 	}
 
-	public TGColorModel getLoopSMarkerColor() {
+	public UIColorModel getLoopSMarkerColor() {
 		return loopSMarkerColor;
 	}
 
-	public void setLoopSMarkerColor(TGColorModel loopSMarkerColor) {
+	public void setLoopSMarkerColor(UIColorModel loopSMarkerColor) {
 		this.loopSMarkerColor = loopSMarkerColor;
 	}
 
-	public TGColorModel getLoopEMarkerColor() {
+	public UIColorModel getLoopEMarkerColor() {
 		return loopEMarkerColor;
 	}
 
-	public void setLoopEMarkerColor(TGColorModel loopEMarkerColor) {
+	public void setLoopEMarkerColor(UIColorModel loopEMarkerColor) {
 		this.loopEMarkerColor = loopEMarkerColor;
 	}
 }

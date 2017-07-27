@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.graphics;
+package org.herac.tuxguitar.ui.resource;
 
-public interface TGPainter extends TGResourceFactory, TGResource {
+public interface UIPainter extends UIResource {
 	
-	static final int PATH_DRAW = 0x01;
+	int PATH_DRAW = 0x01;
 	
-	static final int PATH_FILL = 0x02;
+	int PATH_FILL = 0x02;
 	
-	static final float THINNEST_LINE_WIDTH = 0;
+	float THINNEST_LINE_WIDTH = 0;
 	
 	void initPath(int style);
 	
@@ -16,11 +16,9 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	void drawString(String string, float x, float y);
 	
-	void drawString(String string, float x, float y, boolean isTransparent);
+	void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight);
 	
-	void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight);
-	
-	void drawImage(TGImage image, float x, float y);
+	void drawImage(UIImage image, float x, float y);
 	
 	void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1);
 	
@@ -32,11 +30,11 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	
 	void addRectangle(float x,float y,float width,float height);
 	
-	void setFont(TGFont font);
+	void setFont(UIFont font);
 	
-	void setForeground(TGColor color);
+	void setForeground(UIColor color);
 	
-	void setBackground(TGColor color);
+	void setBackground(UIColor color);
 	
 	void setLineWidth(float lineWidth);
 	
@@ -65,5 +63,4 @@ public interface TGPainter extends TGResourceFactory, TGResource {
 	float getFMHeight();
 	
 	float getFMWidth( String text );
-	
 }

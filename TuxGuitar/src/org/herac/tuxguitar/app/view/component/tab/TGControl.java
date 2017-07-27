@@ -4,8 +4,6 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -17,6 +15,7 @@ import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIContainer;
@@ -100,7 +99,7 @@ public class TGControl {
 		layout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 	}
 	
-	public void paintTablature(TGPainter painter){
+	public void paintTablature(UIPainter painter){
 		this.setPainting(true);
 		try{
 			this.checkScroll();
@@ -108,7 +107,7 @@ public class TGControl {
 			int oldWidth = this.width;
 			int oldHeight = this.height;
 			
-			TGRectangle area = createRectangle(this.canvas.getBounds());
+			UIRectangle area = createRectangle(this.canvas.getBounds());
 			
 			this.scrollX = this.hScroll.getValue();
 			this.scrollY = this.vScroll.getValue();
@@ -138,7 +137,7 @@ public class TGControl {
 		this.setPainting(false);
 	}
 	
-	private void paintTablaturePlayMode(TGPainter painter){
+	private void paintTablaturePlayMode(UIPainter painter){
 		try{
 			TGMeasureImpl measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
 			TGBeatImpl beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
@@ -179,7 +178,7 @@ public class TGControl {
 		this.moveScrollTo(measure, createRectangle(this.canvas.getBounds()));
 	}
 	
-	public void moveScrollTo(TGMeasureImpl measure, TGRectangle area) {
+	public void moveScrollTo(TGMeasureImpl measure, UIRectangle area) {
 		if( measure != null && measure.getTs() != null ){
 			int mX = Math.round(measure.getPosX());
 			int mY = Math.round(measure.getPosY());
@@ -274,7 +273,7 @@ public class TGControl {
 		return (this.container == null || this.container.isDisposed() || this.canvas == null || this.canvas.isDisposed());
 	}
 	
-	public TGRectangle createRectangle(UIRectangle rectangle){
-		return new TGRectangle(rectangle.getX(),rectangle.getY(),rectangle.getWidth(),rectangle.getHeight());
+	public UIRectangle createRectangle(UIRectangle rectangle){
+		return new UIRectangle(rectangle.getX(),rectangle.getY(),rectangle.getWidth(),rectangle.getHeight());
 	}
 }

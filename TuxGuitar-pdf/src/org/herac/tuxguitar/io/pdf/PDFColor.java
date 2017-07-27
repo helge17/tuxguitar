@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
 
 import com.itextpdf.text.BaseColor;
 
-public class PDFColor extends TGColorModel implements TGColor {
+public class PDFColor extends UIColorModel implements UIColor {
 	
 	private boolean disposed;
 	
@@ -13,11 +13,11 @@ public class PDFColor extends TGColorModel implements TGColor {
 		super(red, green, blue);
 	}
 	
-	public PDFColor(TGColorModel model) {
+	public PDFColor(UIColorModel model) {
 		this(model.getRed(), model.getGreen(), model.getBlue());
 	}
 
-	public PDFColor(TGColor color) {
+	public PDFColor(UIColor color) {
 		this(color.getRed(), color.getGreen(), color.getBlue());
 	}
 	

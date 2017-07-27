@@ -1,20 +1,26 @@
 package org.herac.tuxguitar.android.graphics;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
-
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-public class TGImageImpl implements TGImage{
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+
+import java.io.InputStream;
+
+public class TGImageImpl implements UIImage {
 	
 	private Bitmap handle;
 	
 	public TGImageImpl(float width, float height){
 		this.handle = Bitmap.createBitmap(Math.round(width), Math.round(height), Bitmap.Config.ARGB_8888);
 	}
-	
+
+	public TGImageImpl(InputStream stream){
+		this.handle = BitmapFactory.decodeStream(stream);
+	}
+
 	public void dispose() {
 		if(!this.isDisposed()) {
 			this.handle.recycle();
@@ -38,11 +44,8 @@ public class TGImageImpl implements TGImage{
 		return this.handle.getHeight();
 	}
 	
-	public TGPainter createPainter() {
+	public UIPainter createPainter() {
 		return new TGPainterImpl(new Canvas(this.handle));
 	}
-	
-	public void applyTransparency(TGColor background) {
-		// not implemented
-	}
+
 }

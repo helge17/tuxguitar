@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.command.TGCubicTo;
 import org.herac.tuxguitar.graphics.command.TGLineTo;
 import org.herac.tuxguitar.graphics.command.TGMoveTo;
 import org.herac.tuxguitar.graphics.command.TGPaintCommand;
 import org.herac.tuxguitar.graphics.command.TGPaintModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGNotePainter {
 	
@@ -76,15 +76,15 @@ public class TGNotePainter {
 		new TGCubicTo(0.58125f, 0.05f, 0.60625f, 0.01875f, 0.64375f, 0.00625f)
 	);
 	
-	public static void paintNote(TGPainter painter, float x, float y, float scale) {
+	public static void paintNote(UIPainter painter, float x, float y, float scale) {
 		NOTE_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintHarmonic(TGPainter painter, float x, float y, float scale){
+	public static void paintHarmonic(UIPainter painter, float x, float y, float scale){
 		HARMONIC_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintFooter(TGPainter painter, float x, float y,int dir,float scale) {
+	public static void paintFooter(UIPainter painter, float x, float y,int dir,float scale) {
 		TGPaintCommand tgPaintCommand = (dir > 0 ? FOOTER_DOWN_MODEL : FOOTER_UP_MODEL);
 		tgPaintCommand.paint(painter, x, y, scale);
 	}

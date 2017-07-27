@@ -14,8 +14,8 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 
 public abstract class TGTrack {
 	
-	public static final int MAX_STRINGS = 7;
-	public static final int MIN_STRINGS = 4;
+	public static final int MAX_STRINGS = 25;
+	public static final int MIN_STRINGS = 1;
 	public static final int MAX_OFFSET = 24;
 	public static final int MIN_OFFSET = -24;
 	

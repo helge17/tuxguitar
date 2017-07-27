@@ -2,22 +2,23 @@ package org.herac.tuxguitar.ui.qt.resource;
 
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontAlignment;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 
 import com.trolltech.qt.gui.QFont;
 
 public class QTFont extends QTComponent<QFont> implements UIFont {
 	
+	private UIFontAlignment alignment;
+	
 	public QTFont(QFont font) {
 		super(font);
 	}
 	
-	public QTFont(String name, float height, boolean bold, boolean italic) {
-		super(new QFont(QTFont.checkName(name), Math.round(height), (bold ? QFont.Weight.Bold : QFont.Weight.Normal).value(), italic));
-	}
-	
-	public QTFont(UIFontModel model){
-		this(model.getName(), model.getHeight(), model.isBold(), model.isItalic());
+	public QTFont(UIFontModel fm){
+		this(new QFont(QTFont.checkName(fm.getName()), Math.round(fm.getHeight()), (fm.isBold() ? QFont.Weight.Bold : QFont.Weight.Normal).value(), fm.isItalic()));
+		
+		this.alignment = fm.getAlignment();
 	}
 	
 	public String getName() {
@@ -38,6 +39,16 @@ public class QTFont extends QTComponent<QFont> implements UIFont {
 	
 	public UIFontModel toModel() {
 		return new UIFontModel(this.getName(), this.getHeight(), this.isBold(), this.isItalic());
+	}
+	
+	public UIFontAlignment getAlignment() {
+		if( this.alignment == null ) {
+			this.alignment = new UIFontAlignment();
+			this.alignment.setTop(this.getControl().pointSize());
+			this.alignment.setMiddle(this.alignment.getTop() / 2f);
+			this.alignment.setBottom(0f);
+		}
+		return this.alignment;
 	}
 	
 	public static String checkName(String name) {

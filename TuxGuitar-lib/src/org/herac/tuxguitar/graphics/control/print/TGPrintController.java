@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.graphics.control.print;
 
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
@@ -9,16 +8,17 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public class TGPrintController implements TGController {
 	
 	private TGSong song;
 	private TGSongManager songManager;
-	private TGResourceFactory resourceFactory;
+	private UIResourceFactory resourceFactory;
 	private TGResourceBuffer resourceBuffer;
 	private TGLayoutStyles styles;
 	
-	public TGPrintController(TGSong song, TGSongManager songManager, TGResourceFactory resourceFactory, TGLayoutStyles styles){
+	public TGPrintController(TGSong song, TGSongManager songManager, UIResourceFactory resourceFactory, TGLayoutStyles styles){
 		this.song = song;
 		this.songManager = songManager;
 		this.styles = styles;
@@ -34,7 +34,7 @@ public class TGPrintController implements TGController {
 		return this.songManager;
 	}
 	
-	public TGResourceFactory getResourceFactory(){
+	public UIResourceFactory getResourceFactory(){
 		return this.resourceFactory;
 	}
 	

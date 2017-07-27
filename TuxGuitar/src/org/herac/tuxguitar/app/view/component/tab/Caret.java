@@ -12,10 +12,6 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGResource;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
@@ -30,6 +26,10 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIResource;
 
 /**
  * @author julian
@@ -51,8 +51,8 @@ public class Caret {
 	private boolean restBeat;
 	private boolean changes;
 	
-	private TGColor color1;
-	private TGColor color2;
+	private UIColor color1;
+	private UIColor color2;
 	
 	public Caret(Tablature tablature) {
 		this.tablature = tablature;
@@ -140,7 +140,7 @@ public class Caret {
 		this.setChanges(true);
 	}
 	
-	public void paintCaret(TGLayout layout, TGPainter painter) {
+	public void paintCaret(TGLayout layout, UIPainter painter) {
 		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && !this.selectedMeasure.isOutOfBounds() && this.selectedBeat instanceof TGBeatImpl) {
 				TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
@@ -184,8 +184,8 @@ public class Caret {
 		}
 	}
 	
-	public void setPaintStyle(TGPainter painter, boolean expectedVoice){
-		TGColor foreground = ( expectedVoice ? this.color1 : this.color2 );
+	public void setPaintStyle(UIPainter painter, boolean expectedVoice){
+		UIColor foreground = ( expectedVoice ? this.color1 : this.color2 );
 		if( foreground != null ){
 			painter.setForeground( foreground );
 		}
@@ -377,17 +377,17 @@ public class Caret {
 		return this.restBeat;
 	}
 	
-	public void setColor1(TGColorModel cm){
+	public void setColor1(UIColorModel cm){
 		this.disposeResource( this.color1 );
 		this.color1 = this.tablature.getResourceFactory().createColor(cm);
 	}
 	
-	public void setColor2(TGColorModel cm){
+	public void setColor2(UIColorModel cm){
 		this.disposeResource( this.color2 );
 		this.color2 = this.tablature.getResourceFactory().createColor(cm);
 	}
 	
-	public void disposeResource(TGResource resource){
+	public void disposeResource(UIResource resource){
 		if( resource != null && !resource.isDisposed() ){
 			resource.dispose();
 		}

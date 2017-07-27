@@ -2,13 +2,13 @@ package org.herac.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.painters.TGNotePainter;
 import org.herac.tuxguitar.graphics.control.painters.TGSilencePainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGVoiceImpl extends TGVoice{
 	/**
@@ -340,7 +340,7 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void paint(TGLayout layout,TGPainter painter, float fromX, float fromY) {
+	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
 		if(!isEmpty()){
 			if( isRestVoice() && !isHiddenSilence() ){
 				paintSilence(layout, painter, fromX, fromY);
@@ -359,7 +359,7 @@ public class TGVoiceImpl extends TGVoice{
 	}
 	
 	//----silence
-	public void paintSilence(TGLayout layout,TGPainter painter, float fromX, float fromY) {
+	public void paintSilence(TGLayout layout,UIPainter painter, float fromX, float fromY) {
 		int style = layout.getStyle();
 		float x = 0;
 		float lineSpacing = 0;
@@ -380,7 +380,7 @@ public class TGVoiceImpl extends TGVoice{
 		}
 		
 		setStyle(layout, painter,(layout.isPlayModeEnabled() && isPlaying(layout)));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		
 		int duration = getDuration().getValue();
 		if(duration == TGDuration.WHOLE){
@@ -412,7 +412,7 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void setStyle(TGLayout layout, TGPainter painter, boolean playMode){
+	public void setStyle(TGLayout layout, UIPainter painter, boolean playMode){
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			layout.setScoreSilenceStyle(painter, playMode);
 		}else{
@@ -420,7 +420,7 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void paintBeat(TGLayout layout,TGPainter painter, float fromX, float fromY){
+	public void paintBeat(TGLayout layout,UIPainter painter, float fromX, float fromY){
 		if(!isRestVoice() ){
 			int style = layout.getStyle();
 			float spacing = getBeatImpl().getSpacing(layout);
@@ -434,7 +434,7 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void paintTablatureBeat(TGLayout layout,TGPainter painter, float fromX, float fromY, float spacing){
+	public void paintTablatureBeat(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing){
 		if(!isRestVoice() ){
 			float scale = layout.getScale();
 			float xMove = (2f * scale);
@@ -454,7 +454,7 @@ public class TGVoiceImpl extends TGVoice{
 			}
 			if (getDuration().getValue() >= TGDuration.QUARTER) {
 				layout.setTabNoteFooterStyle(painter);
-				painter.initPath(TGPainter.PATH_DRAW | TGPainter.PATH_FILL);
+				painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.setLineWidth( verticalLineWidth );
 				painter.moveTo(x, y1);
@@ -506,7 +506,7 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void paintScoreBeat(TGLayout layout,TGPainter painter, float fromX, float fromY, float spacing){
+	public void paintScoreBeat(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing){
 		float vX = ( fromX + getPosX() + spacing );
 		
 		//dibujo el pie
@@ -528,7 +528,7 @@ public class TGVoiceImpl extends TGVoice{
 			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing, key, clef);
 			
 			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(TGPainter.PATH_FILL);
+			painter.initPath(UIPainter.PATH_FILL);
 			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
 			painter.lineTo(vX + xMove + (0.5f * scale), vY1 + yMove);
 			painter.lineTo(vX + xMove + (0.5f * scale), vY2);
@@ -546,7 +546,7 @@ public class TGVoiceImpl extends TGVoice{
 						float hX = (fromX + xMove + getPosX() + spacing - (0.5f * scale));
 						float hY = ((fromY + this.group.getY2(layout,getPosX() + spacing,key,clef)) - ( (lineSpacing * 2)* dir )) ;
 						for(int i = 0; i <= index; i ++){
-							painter.initPath(TGPainter.PATH_FILL);
+							painter.initPath(UIPainter.PATH_FILL);
 							TGNotePainter.paintFooter(painter, hX, (hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
 							painter.closePath();
 						}
@@ -591,7 +591,7 @@ public class TGVoiceImpl extends TGVoice{
 							if( currHX1 != currHX2 ) {
 								if(!pathInitialized) {
 									pathInitialized = true;
-									painter.initPath(TGPainter.PATH_FILL);
+									painter.initPath(UIPainter.PATH_FILL);
 								}
 								hY1 = fromY + this.group.getY2(layout, currHX1, key, clef);
 								hY2 = fromY + this.group.getY2(layout, currHX2, key, clef);
@@ -613,13 +613,13 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 	
-	public void paintDot(TGLayout layout,TGPainter painter,float fromX, float fromY, float scale){
+	public void paintDot(TGLayout layout,UIPainter painter,float fromX, float fromY, float scale){
 		float dotSize = (3.0f * scale);
 		float posX = fromX;
 		float posY = fromY;
 		layout.setDotStyle(painter);
 		painter.setLineWidth(layout.getLineWidth(0));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.moveTo(posX, posY);
 		painter.addCircle(posX, posY, dotSize);
 		if(getDuration().isDoubleDotted()){

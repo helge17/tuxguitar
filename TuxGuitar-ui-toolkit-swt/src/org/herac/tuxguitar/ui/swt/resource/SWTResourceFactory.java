@@ -27,11 +27,11 @@ public class SWTResourceFactory implements UIResourceFactory {
 	}
 	
 	public UIFont createFont(String name, float height, boolean bold, boolean italic) {
-		return new SWTFont(this.device, name, height, bold, italic);
+		return this.createFont(new UIFontModel(name, height, bold, italic));
 	}
 	
 	public UIFont createFont(UIFontModel model) {
-		return this.createFont(model.getName(), model.getHeight(), model.isBold(), model.isItalic());
+		return new SWTFont(this.device, model);
 	}
 	
 	public UIImage createImage(float width, float height) {

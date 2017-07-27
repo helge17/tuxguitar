@@ -115,12 +115,6 @@ public class JFXAWTImagePainter extends JFXAbstractPainter<JFXAWTImage> implemen
 		this.getGraphics().drawString(string, x, (y + this.getGraphics().getFont().getSize()) );
 	}
 	
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.setAntialias(true);
-		this.getGraphics().setColor(this.foreground);
-		this.getGraphics().drawString(string, x, (y + this.getGraphics().getFont().getSize()));
-	}
-	
 	public void drawImage(BufferedImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.setAntialias(false);
 		this.getGraphics().drawImage(image, toInt(destX), toInt(destY), toInt(destX + destWidth), toInt(destY + destHeight), toInt(srcX), toInt(srcY), toInt(srcX + srcWidth), toInt(srcY + srcHeight), null);

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.graphics;
+package org.herac.tuxguitar.ui.resource;
 
-public class TGFontModel {
+public class UIFontModel {
 	
 	public static final String DEFAULT_NAME = "Default";
 	
@@ -8,16 +8,22 @@ public class TGFontModel {
 	private float height;
 	private boolean bold;
 	private boolean italic;
+	private UIFontAlignment alignment;
 	
-	public TGFontModel(){
-		this(null, 0, false, false);
-	}
-	
-	public TGFontModel(String name, float height, boolean bold, boolean italic){
+	public UIFontModel(String name, float height, boolean bold, boolean italic, UIFontAlignment alignment){
 		this.name = name;
 		this.height = height;
 		this.bold = bold;
 		this.italic = italic;
+		this.alignment = alignment;
+	}
+	
+	public UIFontModel(String name, float height, boolean bold, boolean italic){
+		this(name, height, bold, italic, null);
+	}
+	
+	public UIFontModel(){
+		this(null, 0, false, false, null);
 	}
 	
 	public String getName() {
@@ -50,5 +56,13 @@ public class TGFontModel {
 	
 	public void setItalic(boolean italic) {
 		this.italic = italic;
+	}
+
+	public UIFontAlignment getAlignment() {
+		return alignment;
+	}
+
+	public void setAlignment(UIFontAlignment alignment) {
+		this.alignment = alignment;
 	}
 }

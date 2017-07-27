@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.graphics.control.print;
 
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGMargins;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UISize;
 
 public interface TGPrintDocument{
 	
@@ -18,9 +18,9 @@ public interface TGPrintDocument{
 	
 	boolean isTransparentBackground();
 	
-	TGPainter getPainter();
+	UIPainter getPainter();
 	
-	TGDimension getSize();
+	UISize getSize();
 	
-	TGMargins getMargins();
+	UIMargin getMargins();
 }

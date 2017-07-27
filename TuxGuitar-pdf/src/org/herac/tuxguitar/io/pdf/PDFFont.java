@@ -2,13 +2,13 @@ package org.herac.tuxguitar.io.pdf;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGFontModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.BaseFont;
 
-public class PDFFont extends TGFontModel implements TGFont {
+public class PDFFont extends UIFontModel implements UIFont {
 
 	private boolean disposed;
 	
@@ -16,11 +16,11 @@ public class PDFFont extends TGFontModel implements TGFont {
 		super(name, height, bold, italic);
 	}
 	
-	public PDFFont(TGFontModel model) {
+	public PDFFont(UIFontModel model) {
 		this(model.getName(), model.getHeight(), model.isBold(), model.isItalic());
 	}
 
-	public PDFFont(TGFont font) {
+	public PDFFont(UIFont font) {
 		this(font.getName(), font.getHeight(), font.isBold(), font.isItalic());
 	}
 	

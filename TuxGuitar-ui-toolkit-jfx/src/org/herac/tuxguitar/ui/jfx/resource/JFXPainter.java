@@ -66,14 +66,6 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 		this.getControl().setFill(fill);
 	}
 	
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		Paint fill = this.getControl().getFill();
-		this.setAdvanced(false);
-		this.getControl().setFill(this.getControl().getStroke());
-		this.getControl().fillText(string, x, y);
-		this.getControl().setFill(fill);
-	}
-	
 	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.toAbstractImage(image).paint(this, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
 	}
