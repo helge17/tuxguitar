@@ -1,16 +1,16 @@
 package org.herac.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGTripletFeelPainter {
 	
-	public static void paintTripletFeel8(TGPainter painter, float x, float y,float scale) {
+	public static void paintTripletFeel8(UIPainter painter, float x, float y,float scale) {
 		float topSpacing = (1.0f * scale);
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
 		float ovalWidth = (1.33f * scale);
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x, y + (topSpacing + verticalSpacing) , scale );
 		painter.closePath();
 		
@@ -20,7 +20,7 @@ public class TGTripletFeelPainter {
 		painter.lineTo( x + Math.round(ovalWidth) ,y + topSpacing);
 		painter.closePath();
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x + horizontalSpacing,y + (topSpacing + verticalSpacing)  , scale );
 		painter.closePath();
 		
@@ -30,7 +30,7 @@ public class TGTripletFeelPainter {
 		painter.lineTo(x + Math.round(ovalWidth + horizontalSpacing) ,y +topSpacing);
 		painter.closePath();
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintFooter(painter,x + Math.round(ovalWidth + horizontalSpacing),y + (topSpacing + (scale * 2.3f)), -1 , scale);
 		painter.closePath();
 		
@@ -41,12 +41,12 @@ public class TGTripletFeelPainter {
 		painter.closePath();
 	}
 	
-	public static void paintTripletFeelNone8(TGPainter painter, float x, float y,float scale) {
+	public static void paintTripletFeelNone8(UIPainter painter, float x, float y,float scale) {
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
 		float ovalWidth = (1.33f * scale);
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x, y + verticalSpacing , scale );
 		painter.closePath();
 		
@@ -58,18 +58,18 @@ public class TGTripletFeelPainter {
 		painter.lineTo( x + Math.round(ovalWidth + horizontalSpacing) ,y + Math.round(verticalSpacing + (0.33f * scale)) );
 		painter.closePath();
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x + horizontalSpacing,y + verticalSpacing , scale );
 		painter.closePath();
 	}
 	
-	public static int paintTripletFeel16(TGPainter painter, float x, float y,float scale) {
+	public static int paintTripletFeel16(UIPainter painter, float x, float y,float scale) {
 		float topSpacing = (1.0f * scale);
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
 		float ovalWidth = (1.33f * scale);
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x,y + (topSpacing + verticalSpacing) , scale );
 		painter.closePath();
 		
@@ -83,7 +83,7 @@ public class TGTripletFeelPainter {
 		painter.lineTo(x + Math.round(ovalWidth + horizontalSpacing) ,y + Math.round(topSpacing + (0.5f * scale)));
 		painter.closePath();
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x + horizontalSpacing,y + (topSpacing + verticalSpacing) , scale );
 		painter.closePath();
 		
@@ -96,12 +96,12 @@ public class TGTripletFeelPainter {
 		return Math.round( (ovalWidth * 2f) + horizontalSpacing );
 	}
 	
-	public static int paintTripletFeelNone16(TGPainter painter, float x, float y,float scale) {
+	public static int paintTripletFeelNone16(UIPainter painter, float x, float y,float scale) {
 		float horizontalSpacing = (1.5f * scale);
 		float verticalSpacing = (2.5f * scale);
 		float ovalWidth = (1.33f * scale);
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x,y + verticalSpacing , scale );
 		painter.closePath();
 		
@@ -115,7 +115,7 @@ public class TGTripletFeelPainter {
 		painter.lineTo(x + Math.round(ovalWidth + horizontalSpacing) ,y + Math.round(0.5f * scale));
 		painter.closePath();
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		TGNotePainter.paintNote(painter,x + horizontalSpacing,y + verticalSpacing , scale );
 		painter.closePath();
 		

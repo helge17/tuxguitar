@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.android.graphics;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-
 import android.graphics.Color;
 
-public class TGColorImpl implements TGColor {
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+
+public class TGColorImpl implements UIColor {
 	
-	private TGColorModel model;
+	private UIColorModel model;
 	
-	public TGColorImpl(TGColorModel model){
+	public TGColorImpl(UIColorModel model){
 		this.model = model;
 	}
 	

@@ -21,12 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGFontImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
@@ -45,6 +40,7 @@ import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIContainer;
@@ -94,7 +90,7 @@ public class TGChordList {
 		this.canvas.setBgColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
 		this.canvas.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
-				paintChords(new TGPainterImpl(uiFactory, event.getPainter()));
+				paintChords(event.getPainter());
 			}
 		});
 		this.canvas.addMouseUpListener(new UIMouseUpListener() {
@@ -126,15 +122,15 @@ public class TGChordList {
 		this.canvas.redraw();
 	}
 	
-	private void fillBackground(TGPainter painter) {
+	private void fillBackground(UIPainter painter) {
 		UIRectangle bounds = this.canvas.getBounds();
-		painter.setBackground(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_WHITE)));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.setBackground(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
 		painter.closePath();
 	}
 	
-	private void paintChords(TGPainter painter) {
+	private void paintChords(UIPainter painter) {
 		this.fillBackground(painter);
 		
 		float maxHeight = 0;
@@ -145,20 +141,20 @@ public class TGChordList {
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
 			
-			TGColor color = new TGColorImpl(getChordColor(chord));
+			UIColor color = getChordColor(chord);
 			chord.registerBuffer(this.resourceBuffer);
-			chord.setBackgroundColor(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_WHITE)));
+			chord.setBackgroundColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
 			chord.setColor(color);
 			chord.setNoteColor(color);
-			chord.setTonicColor(new TGColorImpl(this.dialog.getColor(TGColorManager.COLOR_DARK_RED)));
+			chord.setTonicColor(this.dialog.getColor(TGColorManager.COLOR_DARK_RED));
 			chord.setFirstFretSpacing(CHORD_FIRST_FRET_SPACING);
 			chord.setStringSpacing(CHORD_STRING_SPACING);
 			chord.setFretSpacing(CHORD_FRET_SPACING);
 			chord.setNoteSize(CHORD_NOTE_SIZE);
 			chord.setLineWidth(CHORD_LINE_WIDTH);
-			chord.setFirstFretFont(new TGFontImpl(getFont()));
+			chord.setFirstFretFont(getFont());
 			chord.setStyle(TGLayout.DISPLAY_CHORD_DIAGRAM);
-			chord.update(painter, this.resourceBuffer);
+			chord.update(painter, this.getDialog().getUIFactory(), this.resourceBuffer);
 			if( fromX + chord.getWidth() >= ((this.control.getBounds().getX() + this.control.getBounds().getWidth()) - 20)){
 				fromX = 15;
 				fromY += chord.getHeight() + 10;

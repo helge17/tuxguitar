@@ -8,8 +8,6 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
@@ -21,8 +19,6 @@ import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -36,6 +32,8 @@ import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIControl;
@@ -73,7 +71,7 @@ public class TGPiano {
 	private UIButton settings;
 	private TGBeat beat;
 	private TGBeat externalBeat;
-	private TGImage image;
+	private UIImage image;
 	
 	public TGPiano(TGContext context, UIWindow parent) {
 		this.context = context;
@@ -214,29 +212,29 @@ public class TGPiano {
 	 *
 	 * @return
 	 */
-	private TGImage makePianoImage(){
+	private UIImage makePianoImage(){
 		UIFactory factory = getUIFactory();
-		TGImage image = new TGImageImpl(factory, factory.createImage((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)), NATURAL_HEIGHT));
-		TGPainter painter = image.createPainter();
+		UIImage image = factory.createImage((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)), NATURAL_HEIGHT);
+		UIPainter painter = image.createPainter();
 		
 		int x = 0;
 		int y = 0;
-		painter.setBackground(new TGColorImpl(this.config.getColorNatural()));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.setBackground(this.config.getColorNatural());
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
 		painter.closePath();
 		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
 			
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
-				painter.setForeground(new TGColorImpl(this.config.getColorNotNatural()));
+				painter.setForeground(this.config.getColorNotNatural());
 				painter.initPath();
 				painter.setAntialias(false);
 				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
 				painter.closePath();
 				x += NATURAL_WIDTH;
 			}else{
-				painter.setBackground(new TGColorImpl(this.config.getColorNotNatural()));
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.setBackground(this.config.getColorNotNatural());
+				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(x - (SHARP_WIDTH / 2),y,SHARP_WIDTH,SHARP_HEIGHT);
 				painter.closePath();
@@ -254,9 +252,9 @@ public class TGPiano {
 	 * @param gc
 	 * @param value
 	 */
-	private void paintScale(TGPainter painter){
-		painter.setBackground(new TGColorImpl(this.config.getColorScale()));
-		painter.setForeground(new TGColorImpl(this.config.getColorScale()));
+	private void paintScale(UIPainter painter){
+		painter.setBackground(this.config.getColorScale());
+		painter.setForeground(this.config.getColorScale());
 		int posX = 0;
 		
 		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
@@ -282,12 +280,12 @@ public class TGPiano {
 					}
 					
 					int size = SHARP_WIDTH;
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle( (x + 1 + (((NATURAL_WIDTH - size) / 2))) ,(NATURAL_HEIGHT - size - (((NATURAL_WIDTH - size) / 2))),size,size);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1, SHARP_HEIGHT - SHARP_WIDTH + 1,SHARP_WIDTH - 2,SHARP_WIDTH - 2);
 					painter.closePath();
@@ -304,8 +302,8 @@ public class TGPiano {
 	 * @param gc
 	 * @param value
 	 */
-	protected void paintNote(TGPainter painter,int value){
-		painter.setBackground(new TGColorImpl(this.config.getColorNote()));
+	protected void paintNote(UIPainter painter,int value){
+		painter.setBackground(this.config.getColorNote());
 		int posX = 0;
 		int y = 0;
 		
@@ -326,7 +324,7 @@ public class TGPiano {
 			
 			if(i == value){
 				if(TYPE_NOTES[i % TYPE_NOTES.length]){
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT);
 					
@@ -337,7 +335,7 @@ public class TGPiano {
 					painter.addRectangle(x + 1,(y + SHARP_HEIGHT) + 1,NATURAL_WIDTH - 1,(NATURAL_HEIGHT - SHARP_HEIGHT) - 1);
 					painter.closePath();
 				}else{
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
 					painter.closePath();
@@ -349,7 +347,7 @@ public class TGPiano {
 		}
 	}
 	
-	protected void paintEditor(TGPainter painter) {
+	protected void paintEditor(UIPainter painter) {
 		this.updateEditor();
 		
 		painter.drawImage(this.image, 0, 0);
@@ -622,7 +620,7 @@ public class TGPiano {
 			super();
 		}
 
-		public void paintControl(TGPainter painter) {
+		public void paintControl(UIPainter painter) {
 			TGPiano.this.paintEditor(painter);
 		}
 

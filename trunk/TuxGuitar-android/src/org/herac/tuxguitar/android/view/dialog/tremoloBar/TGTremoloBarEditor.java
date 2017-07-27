@@ -1,21 +1,22 @@
 package org.herac.tuxguitar.android.view.dialog.tremoloBar;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.herac.tuxguitar.android.graphics.TGPainterImpl;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGPoint;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import org.herac.tuxguitar.android.graphics.TGColorImpl;
+import org.herac.tuxguitar.android.graphics.TGPainterImpl;
+import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIPosition;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TGTremoloBarEditor extends View {
 	
@@ -26,7 +27,7 @@ public class TGTremoloBarEditor extends View {
 	private float ySpacing;
 	private float[] x;
 	private float[] y;
-	private List<TGPoint> points;	
+	private List<UIPosition> points;	
 	private TGTremoloBarEditorListener listener;
 	private TGTremoloBarEditorGestureDetector gestureDetector;
 	
@@ -35,7 +36,7 @@ public class TGTremoloBarEditor extends View {
 		
 		this.x = new float[X_LENGTH];
 		this.y = new float[Y_LENGTH];
-		this.points = new ArrayList<TGPoint>();
+		this.points = new ArrayList<UIPosition>();
 		this.gestureDetector = new TGTremoloBarEditorGestureDetector(context, this);
 	}
 	
@@ -53,7 +54,7 @@ public class TGTremoloBarEditor extends View {
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		TGPainter painter = createPainter(canvas);
+		UIPainter painter = createPainter(canvas);
 		
 		this.paintEditor(painter);
 		
@@ -80,11 +81,11 @@ public class TGTremoloBarEditor extends View {
 		}
 	}
 	
-	public TGPainter createPainter(Canvas canvas){
+	public UIPainter createPainter(Canvas canvas){
 		return new TGPainterImpl(canvas);
 	}
 	
-	public void paintEditor(TGPainter painter){
+	public void paintEditor(UIPainter painter){
 		for(int i = 0;i < this.x.length;i++){
 			this.setStyleX(painter,i);
 			painter.initPath();
@@ -102,12 +103,12 @@ public class TGTremoloBarEditor extends View {
 			painter.closePath();
 		}
 		
-		TGPoint prevPoint = null;
+		UIPosition prevPoint = null;
 		painter.setLineStyleSolid();
 		painter.setLineWidth(2);
-		painter.setForeground(painter.createColor(new TGColorModel(0x99, 0x99, 0x99)));
+		painter.setForeground(new TGColorImpl(new UIColorModel(0x99, 0x99, 0x99)));
 		
-		for(TGPoint point : this.points){
+		for(UIPosition point : this.points){
 			if( prevPoint != null ){
 				painter.initPath();
 				painter.moveTo(prevPoint.getX(), prevPoint.getY());
@@ -118,9 +119,9 @@ public class TGTremoloBarEditor extends View {
 		}
 		
 		painter.setLineWidth(5);
-		painter.setForeground(painter.createColor(new TGColorModel(0, 0, 0)));
+		painter.setForeground(new TGColorImpl(new UIColorModel(0, 0, 0)));
 		
-		for(TGPoint point : this.points){
+		for(UIPosition point : this.points){
 			painter.initPath();
 			painter.setAntialias(false);
 			painter.addRectangle(point.getX() - 2,point.getY() - 2,5,5);
@@ -129,36 +130,36 @@ public class TGTremoloBarEditor extends View {
 		painter.setLineWidth(1);
 	}
 	
-	public void setStyleX(TGPainter painter,int i){
+	public void setStyleX(UIPainter painter, int i){
 		painter.setLineStyleSolid();
 		if( i == 0 || i == (X_LENGTH - 1) ){
-			painter.setForeground(painter.createColor(new TGColorModel(0, 0, 0)));
+			painter.setForeground(new TGColorImpl(new UIColorModel(0, 0, 0)));
 		} else {
-			painter.setForeground(painter.createColor(new TGColorModel(0, 0, 0xff)));
+			painter.setForeground(new TGColorImpl(new UIColorModel(0, 0, 0xff)));
 			if((i % 3) > 0){
 				painter.setLineStyleDot();
 			}
 		}
 	}
 	
-	private void setStyleY(TGPainter painter,int i){
+	private void setStyleY(UIPainter painter, int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (Y_LENGTH - 1)){
-			painter.setForeground(painter.createColor(new TGColorModel(0, 0, 0)));
+			painter.setForeground(new TGColorImpl(new UIColorModel(0, 0, 0)));
 		}
 		else if(i == (TGEffectTremoloBar.MAX_VALUE_LENGTH)){
-			painter.setForeground(painter.createColor(new TGColorModel(0, 0, 0)));
+			painter.setForeground(new TGColorImpl(new UIColorModel(0, 0, 0)));
 		}else{
-			painter.setForeground(painter.createColor(new TGColorModel(0xff, 0, 0)));
+			painter.setForeground(new TGColorImpl(new UIColorModel(0xff, 0, 0)));
 			if((i % 2) > 0){
 				painter.setLineStyleDot();
-				painter.setForeground(painter.createColor(new TGColorModel(0x99, 0x99, 0x99)));
+				painter.setForeground(new TGColorImpl(new UIColorModel(0x99, 0x99, 0x99)));
 			}
 		}
 	}
 	
 	public void checkPoint(float x, float y){
-		TGPoint point = new TGPoint(this.getX(x),this.getY(y));
+		UIPosition point = new UIPosition(this.getX(x),this.getY(y));
 		if(!this.removePoint(point)){
 			this.removePointsAtXLine(point.getX());
 			this.addPoint(point);
@@ -166,9 +167,9 @@ public class TGTremoloBarEditor extends View {
 		}
 	}
 	
-	public boolean removePoint(TGPoint point){
-		TGPoint pointToRemove = null;
-		for(TGPoint currPoint : this.points){
+	public boolean removePoint(UIPosition point){
+		UIPosition pointToRemove = null;
+		for(UIPosition currPoint : this.points){
 			if( currPoint.getX() == point.getX() && currPoint.getY() == point.getY() ){
 				pointToRemove = currPoint;
 				break;
@@ -184,9 +185,9 @@ public class TGTremoloBarEditor extends View {
 	
 	public void orderPoints(){
 		for(int i = 0;i < this.points.size();i++){
-			TGPoint minPoint = null;
+			UIPosition minPoint = null;
 			for(int noteIdx = i;noteIdx < this.points.size();noteIdx++){
-				TGPoint point = (TGPoint)this.points.get(noteIdx);
+				UIPosition point = (UIPosition)this.points.get(noteIdx);
 				if(minPoint == null || point.getX() < minPoint.getX()){
 					minPoint = point;
 				}
@@ -197,8 +198,8 @@ public class TGTremoloBarEditor extends View {
 	}
 	
 	public void removePointsAtXLine(float x){
-		List<TGPoint> pointsToRemove = new ArrayList<TGPoint>();
-		for(TGPoint point : this.points){
+		List<UIPosition> pointsToRemove = new ArrayList<UIPosition>();
+		for(UIPosition point : this.points){
 			if( point.getX() == x ){
 				pointsToRemove.add(point);
 				break;
@@ -207,7 +208,7 @@ public class TGTremoloBarEditor extends View {
 		this.points.removeAll(pointsToRemove);
 	}
 	
-	public void addPoint(TGPoint point){
+	public void addPoint(UIPosition point){
 		this.points.add(point);
 	}
 	
@@ -251,14 +252,14 @@ public class TGTremoloBarEditor extends View {
 		int indexX = tremoloBarPoint.getPosition();
 		int indexY = (((this.y.length - TGEffectTremoloBar.MAX_VALUE_LENGTH) - tremoloBarPoint.getValue()) - 1);
 		if( indexX >= 0 && indexX < this.x.length && indexY >= 0 && indexY < this.y.length ){
-			TGPoint point = new TGPoint(0,0);
+			UIPosition point = new UIPosition(0,0);
 			point.setX(this.x[indexX]);
 			point.setY(this.y[indexY]);
 			this.points.add(point);
 		}
 	}
 	
-	public void addTremoloBarPointFromPoint(TGEffectTremoloBar effect, TGPoint point){
+	public void addTremoloBarPointFromPoint(TGEffectTremoloBar effect, UIPosition point){
 		int position = 0;
 		int value = 0;
 		for(int i = 0; i < this.x.length; i++){
@@ -287,7 +288,7 @@ public class TGTremoloBarEditor extends View {
 	public TGEffectTremoloBar createTremoloBar(TGFactory factory){
 		if(this.points != null && !this.points.isEmpty()){
 			TGEffectTremoloBar tremoloBar = factory.newEffectTremoloBar();
-			for(TGPoint point : this.points){
+			for(UIPosition point : this.points){
 				addTremoloBarPointFromPoint(tremoloBar, point);
 			}
 			return tremoloBar;

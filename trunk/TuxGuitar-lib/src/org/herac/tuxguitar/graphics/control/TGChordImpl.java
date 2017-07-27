@@ -6,14 +6,14 @@
  */
 package org.herac.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 /**
  * @author julian
  * 
@@ -33,14 +33,14 @@ public class TGChordImpl extends TGChord {
 	private float diagramHeight;
 	private float nameWidth;
 	private float nameHeight;
-	private TGImage diagram;
-	private TGColor foregroundColor;
-	private TGColor backgroundColor;
-	private TGColor noteColor;
-	private TGColor tonicColor;
-	private TGColor color;
-	private TGFont font;
-	private TGFont firstFretFont;
+	private UIImage diagram;
+	private UIColor foregroundColor;
+	private UIColor backgroundColor;
+	private UIColor noteColor;
+	private UIColor tonicColor;
+	private UIColor color;
+	private UIFont font;
+	private UIFont firstFretFont;
 	private float firstFretSpacing;
 	private float stringSpacing;
 	private float fretSpacing;
@@ -93,55 +93,55 @@ public class TGChordImpl extends TGChord {
 		this.tonic = tonic;
 	}
 	
-	public TGColor getForegroundColor() {
+	public UIColor getForegroundColor() {
 		return this.foregroundColor;
 	}
 	
-	public void setForegroundColor(TGColor foregroundColor) {
+	public void setForegroundColor(UIColor foregroundColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.foregroundColor, foregroundColor)){
 			this.dispose();
 		}
 		this.foregroundColor = foregroundColor;
 	}
 	
-	public TGColor getBackgroundColor() {
+	public UIColor getBackgroundColor() {
 		return this.backgroundColor;
 	}
 	
-	public void setBackgroundColor(TGColor backgroundColor) {
+	public void setBackgroundColor(UIColor backgroundColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.backgroundColor, backgroundColor)){
 			this.dispose();
 		}
 		this.backgroundColor = backgroundColor;
 	}
 	
-	public TGColor getColor() {
+	public UIColor getColor() {
 		return this.color;
 	}
 	
-	public void setColor(TGColor color) {
+	public void setColor(UIColor color) {
 		if(!this.isDisposed() && !this.isSameColor(this.color, color)){
 			this.dispose();
 		}
 		this.color = color;
 	}
 	
-	public TGColor getNoteColor() {
+	public UIColor getNoteColor() {
 		return this.noteColor;
 	}
 	
-	public void setNoteColor(TGColor noteColor) {
+	public void setNoteColor(UIColor noteColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.noteColor, noteColor)){
 			this.dispose();
 		}
 		this.noteColor = noteColor;
 	}
 	
-	public TGColor getTonicColor() {
+	public UIColor getTonicColor() {
 		return this.tonicColor;
 	}
 	
-	public void setTonicColor(TGColor tonicColor) {
+	public void setTonicColor(UIColor tonicColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.tonicColor, tonicColor)){
 			this.dispose();
 		}
@@ -203,37 +203,37 @@ public class TGChordImpl extends TGChord {
 		this.lineWidth = lineWidth;
 	}
 	
-	public TGFont getFont() {
+	public UIFont getFont() {
 		return this.font;
 	}
 	
-	public void setFont(TGFont font) {
+	public void setFont(UIFont font) {
 		if(!this.isDisposed() && !this.isSameFont(this.font, font)){
 			this.dispose();
 		}
 		this.font = font;
 	}
 	
-	public TGFont getFirstFretFont() {
+	public UIFont getFirstFretFont() {
 		return this.firstFretFont;
 	}
 	
-	public void setFirstFretFont(TGFont firstFretFont) {
+	public void setFirstFretFont(UIFont firstFretFont) {
 		if(!this.isDisposed() && !this.isSameFont(this.firstFretFont, firstFretFont)){
 			this.dispose();
 		}
 		this.firstFretFont = firstFretFont;
 	}
 	
-	public void paint(TGLayout layout, TGPainter painter, float fromX, float fromY) {
+	public void paint(TGLayout layout, UIPainter painter, float fromX, float fromY) {
 		layout.setChordStyle(this);
 		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
-		this.update(painter, (layout.isBufferEnabled() ? layout.getResourceBuffer() : null));
+		this.update(painter, layout.getComponent().getResourceFactory(), (layout.isBufferEnabled() ? layout.getResourceBuffer() : null));
 		this.paint(painter,getBeatImpl().getSpacing(layout) + fromX + Math.round(4f * layout.getScale()), fromY);
 	}
 	
-	public void paint(TGPainter painter, float fromX, float fromY){
+	public void paint(UIPainter painter, float fromX, float fromY){
 		float x = (fromX + getPosX());
 		float y = (fromY + getPosY());
 		if( (this.style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 ){
@@ -251,7 +251,7 @@ public class TGChordImpl extends TGChord {
 		}
 	}
 	
-	public void update(TGPainter painter, TGResourceBuffer buffer) {
+	public void update(UIPainter painter, UIResourceFactory factory, TGResourceBuffer buffer) {
 		this.width = 0;
 		this.height = 0;
 		if( getFirstFret() <= 0 ){
@@ -263,13 +263,13 @@ public class TGChordImpl extends TGChord {
 			this.height += this.nameHeight;
 		}
 		if( (this.style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 ){
-			this.updateDiagram((buffer != null ? painter : null ), buffer);
+			this.updateDiagram((buffer != null ? factory : null ), buffer);
 			this.width = Math.max(this.width,this.diagramWidth);
 			this.height += this.diagramHeight;
 		}
 	}
 	
-	protected void updateName(TGPainter painter){
+	protected void updateName(UIPainter painter){
 		String name = getName();
 		if(painter == null || name == null || name.length() == 0){
 			this.nameWidth = 0;
@@ -280,13 +280,13 @@ public class TGChordImpl extends TGChord {
 		this.nameHeight = painter.getFMHeight();
 	}
 	
-	protected void updateDiagram(TGResourceFactory bufferFactory, TGResourceBuffer resourceBuffer){
-		TGFont font = getFirstFretFont();
+	protected void updateDiagram(UIResourceFactory bufferFactory, TGResourceBuffer resourceBuffer){
+		UIFont font = getFirstFretFont();
 		this.diagramWidth = getStringSpacing() + (getStringSpacing() * countStrings()) + ((font != null)?getFirstFretSpacing():0);
 		this.diagramHeight = getFretSpacing() + (getFretSpacing() * MAX_FRETS);
 		if( bufferFactory != null && (this.diagram == null || this.diagram.isDisposed())){
 			this.diagram = bufferFactory.createImage(this.diagramWidth, this.diagramHeight);
-			TGPainter painterBuffer = this.diagram.createPainter();
+			UIPainter painterBuffer = this.diagram.createPainter();
 			paintDiagram(painterBuffer, 0, 0);
 			painterBuffer.dispose();
 			
@@ -297,11 +297,11 @@ public class TGChordImpl extends TGChord {
 		}
 	}
 	
-	protected void paintDiagram(TGPainter painter, float fromX, float fromY){
-		TGFont font = getFirstFretFont();
+	protected void paintDiagram(UIPainter painter, float fromX, float fromY){
+		UIFont font = getFirstFretFont();
 		painter.setBackground(getBackgroundColor());
 		painter.setLineWidth(getLineWidth());
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(fromX, fromY, this.diagramWidth, this.diagramHeight);
 		painter.closePath();
 		painter.setForeground(getColor());
@@ -361,7 +361,7 @@ public class TGChordImpl extends TGChord {
 			}
 			else{
 				painter.setBackground(isTonicFret(i, fret) ? getTonicColor() : getNoteColor());
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.initPath(UIPainter.PATH_FILL);
 				fret -= (getFirstFret() - 1);
 				float noteY = y + ((getFretSpacing() * fret) - (getFretSpacing() / 2 ));
 				painter.addCircle(noteX, noteY, (getNoteSize() + 1));
@@ -431,7 +431,7 @@ public class TGChordImpl extends TGChord {
 		return (TGBeatImpl)getBeat();
 	}
 	
-	private boolean isSameFont(TGFont f1, TGFont f2){
+	private boolean isSameFont(UIFont f1, UIFont f2){
 		if( f1 == null && f2 == null ){
 			return true;
 		}
@@ -446,7 +446,7 @@ public class TGChordImpl extends TGChord {
 		return false;
 	}
 	
-	private boolean isSameColor(TGColor c1, TGColor c2){
+	private boolean isSameColor(UIColor c1, UIColor c2){
 		if( c1 == null && c2 == null ){
 			return true;
 		}

@@ -3,6 +3,7 @@ package org.herac.tuxguitar.io.gtp;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.List;
 
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
@@ -10,8 +11,11 @@ import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTrack;
 
 public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWriter{
 	
@@ -104,6 +108,41 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWri
 	protected void close() throws IOException{
 		this.outputStream.flush();
 		this.outputStream.close();
+	}
+	
+	protected List<TGString> createWritableStrings(TGTrack track) {
+		int minimum = 4;
+		int maximum = 7;
+		int count = track.stringCount();
+		if( count >= minimum && count <= maximum ) {
+			return track.getStrings();
+		}
+		int writableCount = count;
+		if( writableCount < minimum ) {
+			writableCount = minimum;
+		}
+		if( writableCount > maximum ) {
+			writableCount = maximum;
+		}
+		List<TGString> strings = track.getStrings();
+		List<TGString> writableStrings = createDefaultStrings(track, writableCount);
+		for(TGString string : strings) {
+			if( string.getNumber() >= minimum && string.getNumber() <= maximum ) {
+				for(TGString writableString : writableStrings) {
+					if( writableString.getNumber() == string.getNumber() ) {
+						writableString.setValue(string.getValue());
+					}
+				}
+			}
+		}
+		return writableStrings;
+	}
+	
+	protected List<TGString> createDefaultStrings(TGTrack track, int count) {
+		if( this.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+			return new TGSongManager().createPercussionStrings(count);
+		}
+		return new TGSongManager().createDefaultInstrumentStrings(count);
 	}
 	
 	protected void configureChannelRouter( TGSong song ){

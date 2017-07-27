@@ -9,12 +9,12 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
-public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
+public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 	
 	private boolean pathEmpty;
 	
@@ -99,15 +99,15 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 		this.gc.setFont(arg0);
 	}
 	
-	public void setFont(TGFont font) {
+	public void setFont(UIFont font) {
 		this.gc.setFont( ((TGFontImpl)font).getHandle() );
 	}
 	
-	public void setBackground(TGColor color) {
+	public void setBackground(UIColor color) {
 		this.background = (TGColorImpl) color;
 	}
 	
-	public void setForeground(TGColor color) {
+	public void setForeground(UIColor color) {
 		this.foreground = (TGColorImpl) color;
 	}
 	
@@ -148,21 +148,15 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter{
 	public void drawString(String string, float x, float y) {
 		this.setAntialias(true);
 		this.gc.setColor(this.foreground.getHandle());
-		this.gc.drawString(string, x, (y + this.gc.getFont().getSize()) );
+		this.gc.drawString(string, x, (y + this.gc.getFont().getSize()));
 	}
 	
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.setAntialias(true);
-		this.gc.setColor(this.foreground.getHandle());
-		this.gc.drawString(string, x, (y + this.gc.getFont().getSize()) /*, isTransparent*/);
-	}
-	
-	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
+	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.setAntialias(false);
 		this.gc.drawImage(((TGImageImpl)image).getHandle(), toInt(destX), toInt(destY), toInt(destX + destWidth), toInt(destY + destHeight), toInt(srcX), toInt(srcY), toInt(srcX + srcWidth), toInt(srcY + srcHeight), null);		
 	}
 
-	public void drawImage(TGImage image, float x, float y) {
+	public void drawImage(UIImage image, float x, float y) {
 		float width = image.getWidth();
 		float height = image.getHeight();
 		this.setAntialias(false);

@@ -1,13 +1,11 @@
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIControl;
@@ -55,21 +53,20 @@ public class TGTunerRoughWidget {
 		this.composite.setBgColor(TGColorManager.getInstance(this.context).getColor(TGColorManager.COLOR_WHITE));
 		this.composite.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
-				TGPainterImpl painter = new TGPainterImpl(factory, event.getPainter());
-				TGTunerRoughWidget.this.paintWidget(painter);
+				TGTunerRoughWidget.this.paintWidget(event.getPainter());
 			}
 
 		});
 		layout.set(this.composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, CANVAS_PACKED_WIDTH, CANVAS_PACKED_HEIGHT, null);
 	}
 	
-	private void paintWidget(TGPainter painter) {
+	private void paintWidget(UIPainter painter) {
 		TGColorManager colorManager = TGColorManager.getInstance(this.context);
 		
 		UIRectangle compositeSize = this.composite.getBounds();
 		
 		// lines and tones
-		painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLACK)));
+		painter.setForeground(colorManager.getColor(TGColorManager.COLOR_BLACK));
 		painter.initPath();
 		painter.moveTo(this.startA, compositeSize.getHeight()/2);
 		painter.lineTo(compositeSize.getWidth()-this.endAb, compositeSize.getHeight()/2);
@@ -87,7 +84,7 @@ public class TGTunerRoughWidget {
 		
 		// marker
 		if (this.currentFrequency>0) {
-			painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLUE)));
+			painter.setForeground(colorManager.getColor(TGColorManager.COLOR_BLUE));
 			painter.initPath();
 			int markerPos = this.markerWidth/2 + this.startA+(int)Math.round(((compositeSize.getWidth()-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
 			painter.moveTo(markerPos, compositeSize.getHeight()/2-this.markerHeight/2);

@@ -4,41 +4,42 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGFontModel;
-import org.herac.tuxguitar.graphics.TGResource;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontAlignment;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIResource;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public class TGResources {
 	
-	private List<TGResource> resources;
+	private List<UIResource> resources;
 	private TGLayout layout;
 	
-	private TGFont defaultFont;
-	private TGFont noteFont;
-	private TGFont timeSignatureFont;
-	private TGFont lyricFont;
-	private TGFont textFont;
-	private TGFont markerFont;
-	private TGFont graceFont;
-	private TGFont chordFont;
-	private TGFont chordFretFont;
-	private TGColor backgroundColor;
-	private TGColor lineColor;
-	private TGColor scoreNoteColor;
-	private TGColor tabNoteColor;
-	private TGColor playNoteColor;
-	private TGColor colorWhite;
-	private TGColor colorBlack;
-	private TGColor colorRed;
-	private TGColor loopSMarkerColor;
-	private TGColor loopEMarkerColor;
+	private UIFont defaultFont;
+	private UIFont noteFont;
+	private UIFont timeSignatureFont;
+	private UIFont lyricFont;
+	private UIFont textFont;
+	private UIFont markerFont;
+	private UIFont graceFont;
+	private UIFont chordFont;
+	private UIFont chordFretFont;
+	private UIColor backgroundColor;
+	private UIColor lineColor;
+	private UIColor scoreNoteColor;
+	private UIColor tabNoteColor;
+	private UIColor playNoteColor;
+	private UIColor colorWhite;
+	private UIColor colorBlack;
+	private UIColor colorRed;
+	private UIColor loopSMarkerColor;
+	private UIColor loopEMarkerColor;
 	
 	public TGResources(TGLayout layout){
 		this.layout = layout;
-		this.resources = new ArrayList<TGResource>();
+		this.resources = new ArrayList<UIResource>();
 	}
 	
 	public void load(TGLayoutStyles styles){
@@ -51,79 +52,79 @@ public class TGResources {
 		return this.layout;
 	}
 	
-	public TGFont getDefaultFont() {
+	public UIFont getDefaultFont() {
 		return this.defaultFont;
 	}
 	
-	public TGFont getNoteFont() {
+	public UIFont getNoteFont() {
 		return this.noteFont;
 	}
 	
-	public TGFont getTimeSignatureFont() {
+	public UIFont getTimeSignatureFont() {
 		return this.timeSignatureFont;
 	}
 	
-	public TGFont getLyricFont(){
+	public UIFont getLyricFont(){
 		return this.lyricFont;
 	}
 	
-	public TGFont getTextFont(){
+	public UIFont getTextFont(){
 		return this.textFont;
 	}
 	
-	public TGFont getMarkerFont(){
+	public UIFont getMarkerFont(){
 		return this.markerFont;
 	}
 	
-	public TGFont getChordFont(){
+	public UIFont getChordFont(){
 		return this.chordFont;
 	}
 	
-	public TGFont getChordFretFont(){
+	public UIFont getChordFretFont(){
 		return this.chordFretFont;
 	}
 	
-	public TGFont getGraceFont() {
+	public UIFont getGraceFont() {
 		return this.graceFont;
 	}
 	
-	public TGColor getBackgroundColor() {
+	public UIColor getBackgroundColor() {
 		return this.backgroundColor;
 	}
 	
-	public TGColor getLineColor() {
+	public UIColor getLineColor() {
 		return this.lineColor;
 	}
 	
-	public TGColor getPlayNoteColor() {
+	public UIColor getPlayNoteColor() {
 		return this.playNoteColor;
 	}
 	
-	public TGColor getScoreNoteColor() {
+	public UIColor getScoreNoteColor() {
 		return this.scoreNoteColor;
 	}
 	
-	public TGColor getTabNoteColor() {
+	public UIColor getTabNoteColor() {
 		return this.tabNoteColor;
 	}
 	
-	public TGColor getColorWhite() {
+	public UIColor getColorWhite() {
 		return this.colorWhite;
 	}
 	
-	public TGColor getColorBlack() {
+	public UIColor getColorBlack() {
 		return this.colorBlack;
 	}
 	
-	public TGColor getColorRed() {
+	public UIColor getColorRed() {
 		return this.colorRed;
 	}
 	
-	public TGColor getLoopSMarkerColor() {
+	public UIColor getLoopSMarkerColor() {
 		return this.loopSMarkerColor;
 	}
 	
-	public TGColor getLoopEMarkerColor() {
+	public UIColor getLoopEMarkerColor() {
 		return this.loopEMarkerColor;
 	}
 	
@@ -149,42 +150,48 @@ public class TGResources {
 		this.loopSMarkerColor = getColor(style.getLoopSMarkerColor());
 		this.loopEMarkerColor = getColor(style.getLoopEMarkerColor());
 		// Static colors
-		this.colorWhite = getColor(new TGColorModel(0xff,0xff,0xff));
-		this.colorBlack = getColor(new TGColorModel(0x00,0x00,0x00));
-		this.colorRed = getColor(new TGColorModel(0xff,0x00,0x00));
+		this.colorWhite = getColor(new UIColorModel(0xff,0xff,0xff));
+		this.colorBlack = getColor(new UIColorModel(0x00,0x00,0x00));
+		this.colorRed = getColor(new UIColorModel(0xff,0x00,0x00));
 	}
 	
-	private TGFont getFont(TGFontModel model, float scale){
-		TGResourceFactory factory = getLayout().getComponent().getResourceFactory();
-		TGFontModel fm = new TGFontModel();
+	private UIFont getFont(UIFontModel model, float scale){
+		UIResourceFactory factory = getLayout().getComponent().getResourceFactory();
+		UIFontModel fm = new UIFontModel();
 		if(model != null){
-			float height = ( model.getHeight() * scale );
+			float height = (model.getHeight() * scale);
 			
-			fm.setHeight( ( height > 1 ? Math.round(height) : 1 ) );
-			fm.setName( model.getName() );
-			fm.setBold( model.isBold() );
-			fm.setItalic( model.isItalic() );
+			fm.setHeight((height > 1 ? Math.round(height) : 1));
+			fm.setName(model.getName());
+			fm.setBold(model.isBold());
+			fm.setItalic(model.isItalic());
+			if( model.getAlignment() != null ) {
+				fm.setAlignment(new UIFontAlignment());
+				fm.getAlignment().setTop(model.getAlignment().getTop() * scale);
+				fm.getAlignment().setMiddle(model.getAlignment().getMiddle() * scale);
+				fm.getAlignment().setBottom(model.getAlignment().getBottom() * scale);
+			}
 		}
 		
-		return (TGFont)addResource(factory.createFont(fm));
+		return (UIFont) addResource(factory.createFont(fm));
 	}
 	
-	private TGColor getColor(TGColorModel model){
-		TGResourceFactory factory = getLayout().getComponent().getResourceFactory();
-		TGColorModel cm = (model != null ? model : new TGColorModel() );
+	private UIColor getColor(UIColorModel model){
+		UIResourceFactory factory = getLayout().getComponent().getResourceFactory();
+		UIColorModel cm = (model != null ? model : new UIColorModel() );
 		
-		return (TGColor)addResource(factory.createColor(cm));
+		return (UIColor) addResource(factory.createColor(cm));
 	}
 	
-	private TGResource addResource(TGResource resource){
+	private UIResource addResource(UIResource resource){
 		this.resources.add(resource);
 		return resource;
 	}
 	
 	public void dispose(){
-		Iterator<TGResource> it = this.resources.iterator();
+		Iterator<UIResource> it = this.resources.iterator();
 		while( it.hasNext() ){
-			TGResource resource = (TGResource)it.next();
+			UIResource resource = (UIResource)it.next();
 			resource.dispose();
 		}
 		this.resources.clear();

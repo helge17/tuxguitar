@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 
 public class TGControlPaintListener implements TG2BufferedPainterHandle {
@@ -12,7 +12,7 @@ public class TGControlPaintListener implements TG2BufferedPainterHandle {
 		this.control = tablature;
 	}
 	
-	public void paintControl(TGPainter painter) {
+	public void paintControl(UIPainter painter) {
 		this.control.paintTablature(painter);
 	}
 

@@ -1,21 +1,20 @@
 package org.herac.tuxguitar.android.graphics;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
-
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 
-public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+
+public class TGPainterImpl implements UIPainter {
 	
 	private boolean pathEmpty;
 	
@@ -36,8 +35,8 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.canvas = canvas;
 		this.paint = new Paint();
 		this.alpha = 0xff;
-		this.foreground = new TGColorImpl(new TGColorModel(0, 0, 0));
-		this.background = new TGColorImpl(new TGColorModel(255, 255, 255));
+		this.foreground = new TGColorImpl(new UIColorModel(0, 0, 0));
+		this.background = new TGColorImpl(new UIColorModel(255, 255, 255));
 	}
 	
 	public Canvas getCanvas() {
@@ -109,11 +108,11 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.pathEmpty = false;
 	}
 
-	public void drawImage(TGImage image, float x, float y) {
+	public void drawImage(UIImage image, float x, float y) {
 		this.canvas.drawBitmap(((TGImageImpl)image).getHandle(), x, y, this.paint);
 	}
 
-	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float dstX, float dstY, float dstWidth, float dstHeight) {
+	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float dstX, float dstY, float dstWidth, float dstHeight) {
 		this.canvas.drawBitmap(((TGImageImpl)image).getHandle(), toRect(srcX, srcY, srcX + srcWidth, srcY + srcHeight), toRect(dstX, dstY, dstX + dstWidth, dstY + dstHeight), this.paint);
 	}
 	
@@ -141,20 +140,20 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.paint.setAntiAlias(antialias);
 	}
 	
-	public void setFont(TGFont font) {
+	public void setFont(UIFont font) {
 		if( font instanceof TGFontImpl ){
 			this.paint.setTypeface(Typeface.create(font.getName(), (font.isBold() ? Typeface.BOLD : 0 ) | (font.isItalic() ? Typeface.ITALIC : 0 ) ));
 			this.paint.setTextSize(font.getHeight());
 		}
 	}
 
-	public void setForeground(TGColor color) {
+	public void setForeground(UIColor color) {
 		if( color instanceof TGColorImpl ){
 			this.foreground = (TGColorImpl)color;
 		}
 	}
 
-	public void setBackground(TGColor color) {
+	public void setBackground(UIColor color) {
 		if( color instanceof TGColorImpl ){
 			this.background = (TGColorImpl)color;
 		}		

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.models.TGLyric;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGLyricImpl extends TGLyric{
 	
@@ -44,7 +44,7 @@ public class TGLyricImpl extends TGLyric{
 		}
 	}
 	
-	public void paintCurrentNoteBeats(TGPainter painter,TGLayout layout,TGMeasureImpl currentMeasure ,float fromX,float fromY){
+	public void paintCurrentNoteBeats(UIPainter painter,TGLayout layout,TGMeasureImpl currentMeasure ,float fromX,float fromY){
 		int from = currentMeasure.getLyricBeatIndex();
 		String[] beats = getLyricBeats();
 		if(beats != null && from >= 0 && from < beats.length){

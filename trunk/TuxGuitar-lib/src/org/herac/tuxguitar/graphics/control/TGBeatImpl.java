@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGBeatImpl extends TGBeat{
 	/**
@@ -282,7 +282,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paint(TGLayout layout,TGPainter painter, float fromX, float fromY) {
+	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
 		if(!layout.isPlayModeEnabled() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			paintExtraLines(painter, layout,fromX, fromY);
 		}
@@ -300,7 +300,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paintExtraLines(TGPainter painter,TGLayout layout,float fromX, float fromY){
+	public void paintExtraLines(UIPainter painter,TGLayout layout,float fromX, float fromY){
 		if(!isRestBeat()){
 			float scoreY = (fromY + getMeasureImpl().getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			paintExtraLines(painter,layout,getMinNote(), fromX, scoreY);
@@ -308,7 +308,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	private void paintExtraLines(TGPainter painter,TGLayout layout,TGNoteImpl note,float fromX,float fromY){
+	private void paintExtraLines(UIPainter painter,TGLayout layout,TGNoteImpl note,float fromX,float fromY){
 		float scale = layout.getScale();
 		float scoreLineSpacing = layout.getScoreLineSpacing();
 		float spacing = (layout.getScoreLineSpacing() / 2f);
@@ -348,7 +348,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paintStroke(TGLayout layout, TGPainter painter, float fromX, float fromY){
+	public void paintStroke(TGLayout layout, UIPainter painter, float fromX, float fromY){
 		int style = layout.getStyle();
 		float scale = layout.getScale();
 		float x = (fromX + getPosX() + getSpacing(layout) + ( 12f * scale ));

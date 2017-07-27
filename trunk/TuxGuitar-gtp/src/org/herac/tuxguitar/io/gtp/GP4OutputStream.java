@@ -199,6 +199,7 @@ public class GP4OutputStream extends GTPOutputStream{
 	
 	private void writeTrack(TGTrack track) throws IOException {
 		GMChannelRoute channel = getChannelRoute(track.getChannelId());
+		List<TGString> strings = this.createWritableStrings(track);
 		
 		int flags = 0;
 		if (isPercussionChannel(track.getSong(),track.getChannelId())) {
@@ -206,12 +207,11 @@ public class GP4OutputStream extends GTPOutputStream{
 		}
 		writeUnsignedByte(flags);
 		writeStringByte(track.getName(), 40);
-		writeInt(track.getStrings().size());
+		writeInt(strings.size());
 		for (int i = 0; i < 7; i++) {
 			int value = 0;
-			if (track.getStrings().size() > i) {
-				TGString string = (TGString) track.getStrings().get(i);
-				value = string.getValue();
+			if (strings.size() > i) {
+				value = strings.get(i).getValue();
 			}
 			writeInt(value);
 		}

@@ -5,27 +5,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.graphics.TGResource;
+import org.herac.tuxguitar.ui.resource.UIResource;
 
 public class TGResourceBuffer {
 	
 	private List<Object> registry;
-	private Map<Object, TGResource> buffer;
+	private Map<Object, UIResource> buffer;
 	
 	public TGResourceBuffer() {
-		this.buffer = new HashMap<Object, TGResource>();
+		this.buffer = new HashMap<Object, UIResource>();
 		this.registry = new ArrayList<Object>();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends TGResource> T getResource(Object key) {
+	public <T extends UIResource> T getResource(Object key) {
 		if( this.buffer.containsKey(key) ) {
 			return (T) this.buffer.get(key);
 		}
 		return null;
 	}
 	
-	public void setResource(Object key, TGResource resource) {
+	public void setResource(Object key, UIResource resource) {
 		if( this.buffer.containsKey(key) ) {
 			this.disposeResource(key);
 		}
@@ -34,7 +34,7 @@ public class TGResourceBuffer {
 	}
 	
 	public void disposeResource(Object key) {
-		TGResource resource = this.getResource(key);
+		UIResource resource = this.getResource(key);
 		if( resource != null && !resource.isDisposed() ) {
 			resource.dispose();
 		}
@@ -78,7 +78,7 @@ public class TGResourceBuffer {
 	}
 	
 	public boolean isResourceDisposed(Object key) {
-		TGResource resource = this.getResource(key);
+		UIResource resource = this.getResource(key);
 		
 		return (resource == null || resource.isDisposed());
 	}

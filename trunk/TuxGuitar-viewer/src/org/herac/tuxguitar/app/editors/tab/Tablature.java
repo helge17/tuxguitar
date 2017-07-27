@@ -10,8 +10,6 @@ import org.herac.tuxguitar.awt.graphics.TGColorImpl;
 import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
 import org.herac.tuxguitar.awt.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.graphics.TGRectangle;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
@@ -25,6 +23,8 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public class Tablature implements TGController {
 	
@@ -214,8 +214,8 @@ public class Tablature implements TGController {
 		}
 	}
 	
-	public TGRectangle createRectangle( Rectangle rectangle ){
-		return new TGRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
+	public UIRectangle createRectangle( Rectangle rectangle ){
+		return new UIRectangle(rectangle.x,rectangle.y,rectangle.width,rectangle.height);
 	}
 	
 	public void reloadViewLayout(){
@@ -226,7 +226,7 @@ public class Tablature implements TGController {
 		this.getViewLayout().disposeLayout();
 	}
 
-	public TGResourceFactory getResourceFactory() {
+	public UIResourceFactory getResourceFactory() {
 		return new TGResourceFactoryImpl();
 	}
 	

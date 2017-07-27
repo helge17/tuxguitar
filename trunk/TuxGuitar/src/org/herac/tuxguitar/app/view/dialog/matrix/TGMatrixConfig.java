@@ -6,8 +6,6 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIColorChooser;
 import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
@@ -85,11 +83,11 @@ public class TGMatrixConfig {
 		return this.colorLines[index];
 	}
 	
-	public UIFont createFont(UIFactory factory, TGFontModel fm) {
+	public UIFont createFont(UIFactory factory, UIFontModel fm) {
 		return TGApplication.getInstance(this.context).getFactory().createFont(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
 	}
 	
-	public UIColor createColor(UIFactory factory, TGColorModel cm) {
+	public UIColor createColor(UIFactory factory, UIColorModel cm) {
 		return TGApplication.getInstance(this.context).getFactory().createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
 	}
 	

@@ -1,23 +1,16 @@
-package org.herac.tuxguitar.app.graphics;
+package org.herac.tuxguitar.graphics.control.print;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
-public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
+public class TGPrintPainter implements UIPainter {
 	
 	private UIPainter handle;
 	
-	public TGPainterImpl(UIResourceFactory factory){
-		super(factory);
-	}
-	
-	public TGPainterImpl(UIResourceFactory factory, UIPainter handle){
-		this(factory);
-		this.setHandle(handle);
+	public TGPrintPainter() {
+		super();
 	}
 	
 	public void setHandle(UIPainter handle){
@@ -48,16 +41,12 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.handle.drawString(string, x, y);
 	}
 
-	public void drawString(String string, float x, float y, boolean isTransparent) {
-		this.handle.drawString(string, x, y, isTransparent);
+	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
+		this.handle.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
 	}
 
-	public void drawImage(TGImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
-		this.handle.drawImage(((TGImageImpl) image).getHandle(), srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
-	}
-
-	public void drawImage(TGImage image, float x, float y) {
-		this.handle.drawImage(((TGImageImpl) image).getHandle(), x, y);
+	public void drawImage(UIImage image, float x, float y) {
+		this.handle.drawImage(image, x, y);
 	}
 
 	public void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
@@ -80,16 +69,16 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements TGPainter {
 		this.handle.addRectangle(x, y, width, height);
 	}
 
-	public void setFont(TGFont font) {
-		this.handle.setFont(((TGFontImpl) font).getHandle());
+	public void setFont(UIFont font) {
+		this.handle.setFont(font);
 	}
 
-	public void setForeground(TGColor color) {
-		this.handle.setForeground(((TGColorImpl) color).getHandle());
+	public void setForeground(UIColor color) {
+		this.handle.setForeground(color);
 	}
 
-	public void setBackground(TGColor color) {
-		this.handle.setBackground(((TGColorImpl) color).getHandle());
+	public void setBackground(UIColor color) {
+		this.handle.setBackground(color);
 	}
 
 	public void setLineWidth(float lineWidth) {

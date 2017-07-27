@@ -20,4 +20,12 @@
 			</resource>
 		</resources>
 	</build>
+	
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-lib</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>

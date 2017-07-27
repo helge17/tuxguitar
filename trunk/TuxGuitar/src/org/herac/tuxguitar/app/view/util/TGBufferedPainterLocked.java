@@ -1,12 +1,11 @@
 package org.herac.tuxguitar.app.view.util;
 
-import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.ui.widget.UICanvas;
@@ -16,7 +15,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class TGBufferedPainterLocked {
 	
 	private TGContext context;
-	private TGImage buffer;
+	private UIImage buffer;
 	private TG2BufferedPainterHandle handle;
 	
 	public TGBufferedPainterLocked(TGContext context, TG2BufferedPainterHandle handle) {
@@ -43,17 +42,17 @@ public class TGBufferedPainterLocked {
 		
 		if( this.buffer == null || this.buffer.isDisposed() || this.buffer.getWidth() != clientWidth || this.buffer.getHeight() != clientHeight ) {
 			this.disposePaintBuffer();
-			this.buffer = new TGResourceFactoryImpl(this.getResourceFactory()).createImage(clientWidth, clientHeight);
+			this.buffer = this.getResourceFactory().createImage(clientWidth, clientHeight);
 		}
 		
-		TGPainter tgPainter = this.buffer.createPainter();
+		UIPainter tgPainter = this.buffer.createPainter();
 		
 		this.handle.paintControl(tgPainter);
 		
 		tgPainter.dispose();
 	}
 	
-	public void paintBufferLocked(TGPainter painter) {
+	public void paintBufferLocked(UIPainter painter) {
 		TGEditorManager editor = TGEditorManager.getInstance(this.context);
 		if (editor.tryLock()) {
 			try {
@@ -92,7 +91,7 @@ public class TGBufferedPainterLocked {
 	
 	public static interface TG2BufferedPainterHandle {
 		
-		void paintControl(TGPainter painter);
+		void paintControl(UIPainter painter);
 		
 		UICanvas getPaintableControl();
 	}

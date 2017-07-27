@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGFontModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
 
-public class SVGFont implements TGFont {
+public class SVGFont implements UIFont {
 	
-	private TGFontModel handle;
+	private UIFontModel handle;
 	
 	public SVGFont(String name, float height, boolean bold, boolean italic){
-		this.handle = new TGFontModel(name, height, bold, italic);
+		this.handle = new UIFontModel(name, height, bold, italic);
 	}
 	
 	public void dispose() {

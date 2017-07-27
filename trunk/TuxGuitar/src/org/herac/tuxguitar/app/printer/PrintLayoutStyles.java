@@ -2,12 +2,12 @@ package org.herac.tuxguitar.app.printer;
 
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.graphics.TGColorModel;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
 
 public class PrintLayoutStyles extends TGLayoutStyles {
 	
-	private static final TGColorModel DEFAULT_BACKGROUND_COLOR = new TGColorModel(0xff,0,0);
+	private static final UIColorModel DEFAULT_BACKGROUND_COLOR = new UIColorModel(0xff, 0xff, 0xff);
 	private static final int DEFAULT_SCORE_LINE_SPACING = 7;
 	private static final int DEFAULT_STRING_SPACING = 8;
 	private static final int DEFAULT_HORIZONTAL_SPACING = 15;

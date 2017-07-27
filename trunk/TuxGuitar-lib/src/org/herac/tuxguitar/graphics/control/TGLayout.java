@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 
 public abstract class TGLayout {
 	
@@ -63,6 +62,7 @@ public abstract class TGLayout {
 	private float[] durationWidths;
 	private boolean bufferEnabled;
 	private boolean playModeEnabled;
+	private boolean tabNotePathRendererEnabled;
 	
 	private List<TrackPosition> trackPositions;
 	
@@ -95,6 +95,7 @@ public abstract class TGLayout {
 		this.fontScale = fontScale;
 		
 		this.bufferEnabled = styles.isBufferEnabled();
+		this.tabNotePathRendererEnabled = styles.isTabNotePathRendererEnabled();
 		this.stringSpacing = (styles.getStringSpacing() * getScale());
 		this.scoreLineSpacing = (styles.getScoreLineSpacing() * getScale());
 		this.minBufferSeparator = (styles.getMinBufferSeparator() * getScale());
@@ -134,16 +135,16 @@ public abstract class TGLayout {
 		this.getResources().load(styles);
 	}
 	
-	public abstract void paintSong(TGPainter painter,TGRectangle clientArea,float fromX,float fromY);
+	public abstract void paintSong(UIPainter painter,UIRectangle clientArea,float fromX,float fromY);
 	
 	public abstract int getMode();
 	
-	public void paint(TGPainter painter,TGRectangle clientArea,float fromX,float fromY){
+	public void paint(UIPainter painter,UIRectangle clientArea,float fromX,float fromY){
 		this.playModeEnabled = false;
 		paintSong(painter,clientArea,fromX,fromY);
 	}
 	
-	public void paintMeasure(TGMeasureImpl measure,TGPainter painter,float spacing) {
+	public void paintMeasure(TGMeasureImpl measure,UIPainter painter,float spacing) {
 		measure.setSpacing(spacing);
 		measure.paintMeasure(this, painter);
 	}
@@ -192,7 +193,7 @@ public abstract class TGLayout {
 	/**
 	 * Pinta las lineas
 	 */
-	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,TGPainter painter,float x,float y,float width) {
+	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,UIPainter painter,float x,float y,float width) {
 		if(width > 0){
 			setLineStyle(painter);
 			float tempX = ((x < 0)?0:x);
@@ -230,7 +231,7 @@ public abstract class TGLayout {
 	/**
 	 * Pinta el compas y las notas que estan sonando
 	 */
-	public void paintPlayMode(TGPainter painter, TGMeasureImpl measure, TGBeatImpl beat){
+	public void paintPlayMode(UIPainter painter, TGMeasureImpl measure, TGBeatImpl beat){
 		this.playModeEnabled = true;
 		
 		//pinto el compas
@@ -245,6 +246,13 @@ public abstract class TGLayout {
 		((TGLyricImpl)measure.getTrackImpl().getLyrics()).paintCurrentNoteBeats(painter,this,measure,measure.getPosX(), measure.getPosY());
 		
 		this.playModeEnabled = false;
+	}
+	
+	public void fillBackground(UIPainter painter, UIRectangle area) {
+		painter.setBackground(this.getLightColor(this.getResources().getBackgroundColor()));
+		painter.initPath(UIPainter.PATH_FILL);
+		painter.addRectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight());
+		painter.closePath();
 	}
 	
 	protected float checkScale(){
@@ -314,7 +322,7 @@ public abstract class TGLayout {
 		if( this.lineWidths != null ) {
 			return this.lineWidths[this.lineWidths.length > level ? level : this.lineWidths.length - 1];
 		}
-		return TGPainter.THINNEST_LINE_WIDTH;
+		return UIPainter.THINNEST_LINE_WIDTH;
 	}
 	
 	public float getScoreNoteWidth() {
@@ -325,147 +333,157 @@ public abstract class TGLayout {
 		return this.playModeEnabled;
 	}
 	
-	public void setMeasureNumberStyle(TGPainter painter){
+	public void setMeasureNumberStyle(UIPainter painter){
 		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setForeground(getDarkColor(getResources().getColorRed()));
 	}
 	
-	public void setDivisionsStyle(TGPainter painter, boolean fill){
+	public void setDivisionsStyle(UIPainter painter, boolean fill){
 		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground( (fill ? getResources().getColorBlack() : getLightColor(getResources().getBackgroundColor())));
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
-	public void setTempoStyle(TGPainter painter, boolean fontStyle){
+	public void setTempoStyle(UIPainter painter, boolean fontStyle){
 		painter.setFont(getResources().getDefaultFont());
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getResources().getColorBlack() ));
 	}
 	
-	public void setTripletFeelStyle(TGPainter painter, boolean fontStyle){
+	public void setTripletFeelStyle(UIPainter painter, boolean fontStyle){
 		painter.setFont(getResources().getDefaultFont());
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getResources().getColorBlack() ));
 	}
 	
-	public void setMeasurePlayingStyle(TGPainter painter){
+	public void setMeasurePlayingStyle(UIPainter painter){
 		painter.setBackground(getResources().getBackgroundColor());
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
-	public void setLyricStyle(TGPainter painter,boolean playMode){
+	public void setLyricStyle(UIPainter painter,boolean playMode){
 		painter.setFont(getResources().getLyricFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getResources().getColorBlack()) );
 	}
 	
-	public void setMarkerStyle(TGPainter painter, TGColor color){
+	public void setMarkerStyle(UIPainter painter, UIColor color){
 		painter.setFont(getResources().getMarkerFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setForeground(getDarkColor(color));
 	}
 	
-	public void setTextStyle(TGPainter painter){
+	public void setTextStyle(UIPainter painter){
 		painter.setFont(getResources().getTextFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setForeground(getResources().getColorBlack());
 	}
 	
-	public void setTimeSignatureStyle(TGPainter painter){
-		painter.setFont(getResources().getTimeSignatureFont());
+	public void setTimeSignatureStyle(UIPainter painter){
 		painter.setForeground(getResources().getColorBlack());
-		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
-	}
-	
-	public void setKeySignatureStyle(TGPainter painter){
 		painter.setBackground(getResources().getColorBlack());
 	}
 	
-	public void setClefStyle(TGPainter painter){
+	public void setKeySignatureStyle(UIPainter painter){
 		painter.setBackground(getResources().getColorBlack());
 	}
 	
-	public void setLineStyle(TGPainter painter){
+	public void setClefStyle(UIPainter painter){
+		painter.setBackground(getResources().getColorBlack());
+	}
+	
+	public void setLineStyle(UIPainter painter){
 		painter.setLineWidth(getLineWidth(0));
 		painter.setForeground(getDarkColor( getResources().getLineColor()));
 	}
 	
-	public void setScoreSilenceStyle(TGPainter painter,boolean playMode){
+	public void setScoreSilenceStyle(UIPainter painter,boolean playMode){
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
 		painter.setBackground( (playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
 	}
 	
-	public void setTabSilenceStyle(TGPainter painter,boolean playMode){
+	public void setTabSilenceStyle(UIPainter painter,boolean playMode){
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor()) ));
 		painter.setBackground( (playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor()) ));
 	}
 	
-	public void setScoreNoteStyle(TGPainter painter,boolean playing){
+	public void setScoreNoteStyle(UIPainter painter,boolean playing){
 		painter.setForeground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
 		painter.setBackground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
 	}
 	
-	public void setScoreNoteFooterStyle(TGPainter painter){
+	public void setScoreNoteFooterStyle(UIPainter painter){
 		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
 		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
 	}
 	
-	public void setScoreEffectStyle(TGPainter painter){
+	public void setScoreEffectStyle(UIPainter painter){
 		painter.setForeground( getDarkColor(getResources().getScoreNoteColor()) );
 		painter.setBackground( getDarkColor(getResources().getScoreNoteColor()) );
 	}
 	
-	public void setTabNoteStyle(TGPainter painter,boolean playMode){
+	public void setTabNotePathStyle(UIPainter painter,boolean playMode){
+		painter.setForeground((playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor())));
+		painter.setBackground((playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor())));
+	}
+	
+	public void setTabNoteFontStyle(UIPainter painter,boolean playMode){
 		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor())));
 		painter.setBackground( getLightColor(getResources().getBackgroundColor()) );
 		painter.setFont(getResources().getNoteFont());
 	}
 	
-	public void setTabNoteFooterStyle(TGPainter painter){
+	public void setTabNoteFooterStyle(UIPainter painter){
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
 		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
 	}
 	
-	public void setTiedStyle(TGPainter painter, boolean playing){
+	
+	public void setTiedStyle(UIPainter painter, boolean playing){
 		painter.setForeground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
 		painter.setBackground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getScoreNoteColor())));
 	}
 	
-	public void setTabEffectStyle(TGPainter painter){
+	public void setTabTiedStyle(UIPainter painter, boolean playing){
+		painter.setForeground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor())));
+		painter.setBackground( (playing ? getResources().getPlayNoteColor() : getDarkColor(getResources().getTabNoteColor())));
+	}
+	
+	public void setTabEffectStyle(UIPainter painter){
 		painter.setForeground( getDarkColor(getResources().getTabNoteColor()));
 		painter.setBackground( getDarkColor(getResources().getTabNoteColor()));
 	}
 	
-	public void setTabGraceStyle(TGPainter painter){
+	public void setTabGraceStyle(UIPainter painter){
 		painter.setFont(getResources().getGraceFont());
 		painter.setForeground(getDarkColor(getResources().getTabNoteColor()));
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 	}
 	
-	public void setPlayNoteColor(TGPainter painter){
+	public void setPlayNoteColor(UIPainter painter){
 		painter.setForeground(getResources().getPlayNoteColor());
 		painter.setBackground(getResources().getPlayNoteColor());
 	}
 
-	public void setOfflineEffectStyle(TGPainter painter){
+	public void setOfflineEffectStyle(UIPainter painter){
 		painter.setForeground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setFont(getResources().getDefaultFont());
 	}
 	
-	public void setDotStyle(TGPainter painter){
+	public void setDotStyle(UIPainter painter){
 		painter.setForeground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
 		painter.setBackground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
 	}
 	
-	public void setDivisionTypeStyle(TGPainter painter){
+	public void setDivisionTypeStyle(UIPainter painter){
 		painter.setForeground(getDarkColor(((getStyle() & TGLayout.DISPLAY_SCORE) != 0 ? getResources().getScoreNoteColor() : getResources().getTabNoteColor())));
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setFont(getResources().getDefaultFont());
 	}
 	
-	public void setRepeatEndingStyle(TGPainter painter){
+	public void setRepeatEndingStyle(UIPainter painter){
 		painter.setForeground(getResources().getColorBlack());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setFont(getResources().getDefaultFont());
@@ -487,41 +505,20 @@ public abstract class TGLayout {
 		chord.setFirstFretFont(getResources().getChordFretFont());
 	}
 	
-	public void setLoopSMarkerStyle(TGPainter painter){
+	public void setLoopSMarkerStyle(UIPainter painter){
 		painter.setBackground(getResources().getLoopSMarkerColor());
 	}
 	
-	public void setLoopEMarkerStyle(TGPainter painter){
+	public void setLoopEMarkerStyle(UIPainter painter){
 		painter.setBackground(getResources().getLoopEMarkerColor());
 	}
 	
-	public TGColor getDarkColor(TGColor color) {
+	public UIColor getDarkColor(UIColor color) {
 		return ((this.getStyle() & TGLayout.DISPLAY_MODE_BLACK_WHITE) != 0 ? getResources().getColorBlack() : color );
 	}
 	
-	public TGColor getLightColor(TGColor color) {
+	public UIColor getLightColor(UIColor color) {
 		return ((this.getStyle() & TGLayout.DISPLAY_MODE_BLACK_WHITE) != 0 ? getResources().getColorWhite() : color );
-	}
-	
-	public String getNoteLabel(TGNote note) {
-		String label = null;
-		if( note.isTiedNote()) {
-			label = "L";
-		} else if(note.getEffect().isDeadNote()) {
-			label = "X";
-		} else {
-			label = Integer.toString(note.getValue());
-		}
-		return (note.getEffect().isGhostNote() ? "(" + label + ")" : label);
-	}
-	
-	public TGRectangle getOrientation(TGPainter painter, float x, float y, String s){
-		float fmWidth = painter.getFMWidth(s);
-		float fmTopLine = painter.getFMTopLine();
-		float fmMiddleLine = painter.getFMMiddleLine();
-		float fmBaseLine = painter.getFMBaseLine();
-		
-		return new TGRectangle((x - (fmWidth / 2f)), (y + fmMiddleLine), fmWidth, (fmBaseLine - fmTopLine));
 	}
 	
 	public TGSongManager getSongManager() {
@@ -580,6 +577,10 @@ public abstract class TGLayout {
 		return this.bufferEnabled;
 	}
 	
+	public boolean isTabNotePathRendererEnabled() {
+		return tabNotePathRendererEnabled;
+	}
+
 	public float getFirstMeasureSpacing() {
 		return this.firstMeasureSpacing;
 	}

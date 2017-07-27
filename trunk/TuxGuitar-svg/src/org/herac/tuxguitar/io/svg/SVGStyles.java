@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
 
 public class SVGStyles {
 	
@@ -81,22 +81,22 @@ public class SVGStyles {
 		this.getStyles().setLineWidths(new float[] {0, 1, 2, 3, 4, 5});
 		this.getStyles().setDurationWidths(new float[] {30f, 25f, 21f, 20f,19f,18f});
 		
-		this.getStyles().setDefaultFont(new TGFontModel("Default", 10, false, false) );
-		this.getStyles().setNoteFont(new TGFontModel("Default", 10, false, false) );
-		this.getStyles().setTimeSignatureFont(new TGFontModel("Default", 14, true, false) );
-		this.getStyles().setLyricFont(new TGFontModel("Default", 10, false, false) );
-		this.getStyles().setTextFont(new TGFontModel("Default", 10, false, false));
-		this.getStyles().setMarkerFont(new TGFontModel("Default", 10, false, false));
-		this.getStyles().setGraceFont(new TGFontModel("Default", 8, false, false));
-		this.getStyles().setChordFont(new TGFontModel("Default", 10, false, false));
-		this.getStyles().setChordFretFont(new TGFontModel("Default", 8, false, false));
+		this.getStyles().setDefaultFont(new UIFontModel("Default", 10, false, false) );
+		this.getStyles().setNoteFont(new UIFontModel("Default", 10, false, false) );
+		this.getStyles().setTimeSignatureFont(new UIFontModel("Default", 14, true, false) );
+		this.getStyles().setLyricFont(new UIFontModel("Default", 10, false, false) );
+		this.getStyles().setTextFont(new UIFontModel("Default", 10, false, false));
+		this.getStyles().setMarkerFont(new UIFontModel("Default", 10, false, false));
+		this.getStyles().setGraceFont(new UIFontModel("Default", 8, false, false));
+		this.getStyles().setChordFont(new UIFontModel("Default", 10, false, false));
+		this.getStyles().setChordFretFont(new UIFontModel("Default", 8, false, false));
 		
-		this.getStyles().setBackgroundColor( new TGColorModel(255,255,255) );
-		this.getStyles().setLineColor(  new TGColorModel(214,214,214)  );
-		this.getStyles().setScoreNoteColor( new TGColorModel(64,64,64));
-		this.getStyles().setTabNoteColor(new TGColorModel(64,64,64));
-		this.getStyles().setPlayNoteColor(new TGColorModel(64,64,64));
-		this.getStyles().setLoopSMarkerColor(new TGColorModel(0,0,0));
-		this.getStyles().setLoopEMarkerColor(new TGColorModel(0,0,0));
+		this.getStyles().setBackgroundColor( new UIColorModel(255,255,255) );
+		this.getStyles().setLineColor(  new UIColorModel(214,214,214)  );
+		this.getStyles().setScoreNoteColor( new UIColorModel(64,64,64));
+		this.getStyles().setTabNoteColor(new UIColorModel(64,64,64));
+		this.getStyles().setPlayNoteColor(new UIColorModel(64,64,64));
+		this.getStyles().setLoopSMarkerColor(new UIColorModel(0,0,0));
+		this.getStyles().setLoopEMarkerColor(new UIColorModel(0,0,0));
 	}
 }

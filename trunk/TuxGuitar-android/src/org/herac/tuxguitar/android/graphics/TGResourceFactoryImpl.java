@@ -1,32 +1,37 @@
 package org.herac.tuxguitar.android.graphics;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFont;
-import org.herac.tuxguitar.graphics.TGFontModel;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
+import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
-public class TGResourceFactoryImpl implements TGResourceFactory{
-	
-	public TGImage createImage(float width, float height) {
-		return new TGImageImpl(width, height);
-	}
-	
-	public TGColor createColor(TGColorModel colorModel) {
+import java.io.InputStream;
+
+public class TGResourceFactoryImpl implements UIResourceFactory {
+
+	public UIColor createColor(UIColorModel colorModel) {
 		return new TGColorImpl(colorModel);
 	}
 	
-	public TGColor createColor(int red, int green, int blue) {
-		return createColor(new TGColorModel(red, green, blue));
+	public UIColor createColor(int red, int green, int blue) {
+		return createColor(new UIColorModel(red, green, blue));
 	}
 	
-	public TGFont createFont(TGFontModel fontModel) {
+	public UIFont createFont(UIFontModel fontModel) {
 		return new TGFontImpl(fontModel);
 	}
 	
-	public TGFont createFont(String name, float height, boolean bold, boolean italic) {
-		return createFont(new TGFontModel(name, height, bold, italic));
+	public UIFont createFont(String name, float height, boolean bold, boolean italic) {
+		return createFont(new UIFontModel(name, height, bold, italic));
 	}
 
+	public UIImage createImage(float width, float height) {
+		return new TGImageImpl(width, height);
+	}
+
+	public UIImage createImage(InputStream inputStream) {
+		return new TGImageImpl(inputStream);
+	}
 }

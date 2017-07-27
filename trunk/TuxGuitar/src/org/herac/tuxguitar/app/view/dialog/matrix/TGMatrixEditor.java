@@ -8,9 +8,6 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGFontImpl;
-import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
@@ -32,8 +29,6 @@ import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.player.base.MidiPercussionKey;
 import org.herac.tuxguitar.song.managers.TGSongManager;
@@ -57,6 +52,8 @@ import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIButton;
@@ -95,7 +92,7 @@ public class TGMatrixEditor implements TGEventListener {
 	private UIScrollBarPanel canvasPanel;
 	private UICanvas editor;
 	private UIRectangle clientArea;
-	private TGImage buffer;
+	private UIImage buffer;
 	private BufferDisposer bufferDisposer;
 	private UIImageView durationLabel;
 	private UILabel gridsLabel;
@@ -339,11 +336,11 @@ public class TGMatrixEditor implements TGEventListener {
 		return start;
 	}
 	
-	private void paintEditor(TGPainter painter) {
+	private void paintEditor(UIPainter painter) {
 		this.clientArea = this.editor.getBounds();
 		
 		if( this.clientArea != null ){
-			TGImage buffer = getBuffer();
+			UIImage buffer = getBuffer();
 			
 			this.width = this.bufferWidth;
 			this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
@@ -360,7 +357,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	private TGImage getBuffer(){
+	private UIImage getBuffer(){
 		if( this.clientArea != null ){
 			this.bufferDisposer.update(this.clientArea.getWidth(), this.clientArea.getHeight());
 			if(this.buffer == null || this.buffer.isDisposed()){
@@ -391,9 +388,9 @@ public class TGMatrixEditor implements TGEventListener {
 				
 				float minimumNameWidth = 110;
 				float minimumNameHeight = 1;
-				TGImage auxImage = new TGImageImpl(uiFactory, uiFactory.createImage(1f, 1f));
-				TGPainter auxPainter = auxImage.createPainter();
-				auxPainter.setFont(new TGFontImpl(this.config.getFont()));
+				UIImage auxImage = uiFactory.createImage(1f, 1f);
+				UIPainter auxPainter = auxImage.createPainter();
+				auxPainter.setFont(this.config.getFont());
 				for(int i = 0; i < names.length;i ++){
 					float fmWidth = auxPainter.getFMWidth(names[i]);
 					if( fmWidth > minimumNameWidth ){
@@ -415,15 +412,15 @@ public class TGMatrixEditor implements TGEventListener {
 				this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.getWidth() - this.leftSpacing) / cols)  );
 				this.bufferWidth = this.leftSpacing + (this.timeWidth * cols);
 				this.bufferHeight = (this.lineHeight * (rows + 1));
-				this.buffer = new TGImageImpl(uiFactory, uiFactory.createImage(this.bufferWidth, this.bufferHeight));
+				this.buffer = uiFactory.createImage(this.bufferWidth, this.bufferHeight);
 				
-				TGPainter painter = this.buffer.createPainter();
-				painter.setFont(new TGFontImpl(this.config.getFont()));
-				painter.setForeground(new TGColorImpl(this.config.getColorForeground()));
+				UIPainter painter = this.buffer.createPainter();
+				painter.setFont(this.config.getFont());
+				painter.setForeground(this.config.getColorForeground());
 				
 				for(int i = 0; i <= rows; i++){
-					painter.setBackground(new TGColorImpl(this.config.getColorLine( i % 2 ) ));
-					painter.initPath(TGPainter.PATH_FILL);
+					painter.setBackground(this.config.getColorLine( i % 2 ));
+					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
 					painter.addRectangle(0 ,(i * this.lineHeight),this.bufferWidth ,this.lineHeight);
 					painter.closePath();
@@ -451,7 +448,7 @@ public class TGMatrixEditor implements TGEventListener {
 		return this.buffer;
 	}
 	
-	private void paintMeasure(TGPainter painter,float fromX, float fromY){
+	private void paintMeasure(UIPainter painter,float fromX, float fromY){
 		if( this.clientArea != null ){
 			TGMeasure measure = getMeasure();
 			if(measure != null){
@@ -464,7 +461,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	private void paintBeat(TGPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
+	private void paintBeat(UIPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
 		if( this.clientArea != null ){
 			float minimumY = BORDER_HEIGHT;
 			float maximumY = (this.clientArea.getHeight() - BORDER_HEIGHT);
@@ -486,8 +483,8 @@ public class TGMatrixEditor implements TGEventListener {
 					y2 = ( y2 > maximumY ? maximumY : y2 );
 					
 					if((x2 - x1) > 0 && (y2 - y1) > 0){
-						painter.setBackground(new TGColorImpl( (note.getBeatImpl().isPlaying(TuxGuitar.getInstance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote() ) ));
-						painter.initPath(TGPainter.PATH_FILL);
+						painter.setBackground( (note.getBeatImpl().isPlaying(TuxGuitar.getInstance().getTablatureEditor().getTablature().getViewLayout()) ? this.config.getColorPlay():this.config.getColorNote()));
+						painter.initPath(UIPainter.PATH_FILL);
 						painter.setAntialias(false);
 						painter.addRectangle(x1,y1, (x2 - x1), (y2 - y1));
 						painter.closePath();
@@ -497,10 +494,10 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	private void paintBorders(TGPainter painter,float fromX, float fromY){
+	private void paintBorders(UIPainter painter,float fromX, float fromY){
 		if( this.clientArea != null ){
-			painter.setBackground(new TGColorImpl(this.config.getColorBorder()));
-			painter.initPath(TGPainter.PATH_FILL);
+			painter.setBackground(this.config.getColorBorder());
+			painter.initPath(UIPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
 			painter.addRectangle(fromX,fromY + (this.clientArea.getHeight() - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
@@ -513,7 +510,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	private void paintPosition(TGPainter painter,float fromX, float fromY){
+	private void paintPosition(UIPainter painter,float fromX, float fromY){
 		if( this.clientArea != null && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			Caret caret = getCaret();
 			TGMeasure measure = getMeasure();
@@ -521,13 +518,13 @@ public class TGMatrixEditor implements TGEventListener {
 			if(beat != null){
 				float x = (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength());
 				float width = ((beat.getVoice(caret.getVoice()).getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime());
-				painter.setBackground(new TGColorImpl(this.config.getColorPosition()));
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.setBackground(this.config.getColorPosition());
+				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(fromX + (this.leftSpacing + x),fromY , width,BORDER_HEIGHT);
 				painter.closePath();
 				
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(fromX + (this.leftSpacing + x),fromY + (this.clientArea.getHeight() - BORDER_HEIGHT), width,BORDER_HEIGHT);
 				painter.closePath();
@@ -535,7 +532,7 @@ public class TGMatrixEditor implements TGEventListener {
 		}
 	}
 	
-	private void paintSelection(TGPainter painter, float fromX, float fromY){
+	private void paintSelection(UIPainter painter, float fromX, float fromY){
 		if( this.clientArea != null && !TuxGuitar.getInstance().getPlayer().isRunning()){
 			if( this.selection >= 0 ){
 				int x = Math.round( fromX );
@@ -544,8 +541,8 @@ public class TGMatrixEditor implements TGEventListener {
 				int height = Math.round( this.lineHeight );
 				
 				painter.setAlpha(100);
-				painter.setBackground(new TGColorImpl(this.config.getColorLine(2)));
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.setBackground(this.config.getColorLine(2));
+				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(x,y,width,height);
 				painter.closePath();
@@ -910,7 +907,7 @@ public class TGMatrixEditor implements TGEventListener {
 			super();
 		}
 
-		public void paintControl(TGPainter painter) {
+		public void paintControl(UIPainter painter) {
 			TGMatrixEditor.this.paintEditor(painter);
 		}
 

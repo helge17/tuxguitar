@@ -5,22 +5,23 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIFontAlignment;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.ui.swt.SWTComponent;
 import org.herac.tuxguitar.ui.swt.SWTEnvironment;
 
 public class SWTFont extends SWTComponent<Font> implements UIFont {
 	
+	private UIFontAlignment alignment;
+	
 	public SWTFont(Font handle){
 		super(handle);
 	}
 	
-	public SWTFont(Device device, String name, float height, boolean bold, boolean italic){
-		this(new Font(device, SWTFont.checkName(device, name), Math.round(height), (SWT.NORMAL | (bold ? SWT.BOLD : 0) | (italic ? SWT.ITALIC : 0))));
-	}
-	
 	public SWTFont(Device device, UIFontModel fm) {
-		this(device, fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
+		this(new Font(device, SWTFont.checkName(fm.getName()), Math.round(fm.getHeight()), (SWT.NORMAL | (fm.isBold() ? SWT.BOLD : 0) | (fm.isItalic() ? SWT.ITALIC : 0))));
+		
+		this.alignment = fm.getAlignment();
 	}
 	
 	public void dispose(){
@@ -55,7 +56,11 @@ public class SWTFont extends SWTComponent<Font> implements UIFont {
 		return ( fd != null && fd.length > 0 ? ((fd[0].getStyle() & SWT.ITALIC) != 0) : false );
 	}
 	
-	public static String checkName(Device device, String name) {
+	public UIFontAlignment getAlignment() {
+		return alignment;
+	}
+	
+	public static String checkName(String name) {
 		if( name != null && name.length() > 0 && !UIFontModel.DEFAULT_NAME.equals(name)) {
 			return name;
 		}

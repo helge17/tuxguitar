@@ -4,8 +4,7 @@ import org.herac.tuxguitar.android.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.graphics.TGRectangle;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
@@ -19,6 +18,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -30,7 +30,7 @@ public class TGSongViewController implements TGController {
 	
 	private boolean disposed;
 	private TGContext context;
-	private TGResourceFactory resourceFactory;
+	private UIResourceFactory resourceFactory;
 	private TGLayout layout;
 	private TGSongViewStyles songStyles;
 	private TGSongViewBufferController bufferController;
@@ -94,7 +94,7 @@ public class TGSongViewController implements TGController {
 		this.disposeUnregisteredResources();
 	}
 
-	public void updateScroll(TGRectangle bounds) {
+	public void updateScroll(UIRectangle bounds) {
 		this.getScroll().getX().setMaximum(Math.max((this.getLayout().getWidth() - bounds.getWidth()), 0));
 		this.getScroll().getY().setMaximum(Math.max((this.getLayout().getHeight() - bounds.getHeight()), 0));
 	}
@@ -129,7 +129,7 @@ public class TGSongViewController implements TGController {
 		return TGDocumentManager.getInstance(getContext()).getSong();
 	}
 
-	public TGResourceFactory getResourceFactory() {
+	public UIResourceFactory getResourceFactory() {
 		return this.resourceFactory;
 	}
 

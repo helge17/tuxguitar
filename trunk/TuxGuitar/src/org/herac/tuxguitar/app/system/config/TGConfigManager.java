@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.app.system.config;
 
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.util.TGContext;
@@ -16,23 +14,15 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 		super(context, CONFIGURATION_MODULE);
 	}
 	
-	public void setValue(String key, TGColorModel model){
+	public void setValue(String key, UIColorModel model){
 		this.setValue(key, (model.getRed() + "," + model.getGreen() + "," + model.getBlue()));
 	}
 	
-	public void setValue(String key, UIColorModel model){
-		this.setValue(key, new TGColorModel(model.getRed(), model.getGreen(), model.getBlue()));
-	}
-	
-	public void setValue(String key, TGFontModel fm){
+	public void setValue(String key, UIFontModel fm){
 		this.setValue(key, (fm.getName() + "," + fm.getHeight() + "," + fm.isBold() + "," + fm.isItalic()));
 	}
 	
-	public void setValue(String key, UIFontModel fm){
-		this.setValue(key, new TGFontModel(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic()));
-	}
-	
-	public TGFontModel getFontModelConfigValue(String key){
+	public UIFontModel getFontModelConfigValue(String key){
 		try{
 			String value = getProperties().getValue(key);
 			if(value != null){
@@ -44,7 +34,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 						boolean bold = Boolean.valueOf(values[2].trim());
 						boolean italic = Boolean.valueOf(values[3].trim());
 						
-						return new TGFontModel((name == null ? UIFontModel.DEFAULT_NAME : name), size, bold, italic);
+						return new UIFontModel((name == null ? UIFontModel.DEFAULT_NAME : name), size, bold, italic);
 					}catch(NumberFormatException e){
 						e.printStackTrace();
 					}
@@ -57,7 +47,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	}
 	
 	public UIFontModel getUIFontModelConfigValue(String key){
-		TGFontModel fm = this.getFontModelConfigValue(key);
+		UIFontModel fm = this.getFontModelConfigValue(key);
 		if( fm != null ) {
 			return new UIFontModel(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
 		}
@@ -65,7 +55,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 		return null;
 	}
 	
-	public TGColorModel getColorModelConfigValue(String key){
+	public UIColorModel getColorModelConfigValue(String key){
 		try{
 			String value = getProperties().getValue(key);
 			if(value != null){
@@ -76,7 +66,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 						int green = Integer.parseInt(values[1].trim());
 						int blue = Integer.parseInt(values[2].trim());
 						
-						return new TGColorModel(red,green,blue);
+						return new UIColorModel(red,green,blue);
 					}catch(NumberFormatException e){
 						e.printStackTrace();
 					}
@@ -89,7 +79,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	}
 	
 	public UIColorModel getUIColorModelConfigValue(String key){
-		TGColorModel cm = this.getColorModelConfigValue(key);
+		UIColorModel cm = this.getColorModelConfigValue(key);
 		if( cm != null ) {
 			return new UIColorModel(cm.getRed(), cm.getGreen(), cm.getBlue());
 		}

@@ -8,9 +8,6 @@ import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGFontImpl;
-import org.herac.tuxguitar.app.graphics.TGImageImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
@@ -25,8 +22,6 @@ import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -40,6 +35,8 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIButton;
@@ -75,7 +72,7 @@ public class TGFretBoard {
 	private UIButton increment;
 	private UIButton decrement;
 	private UIButton settings;
-	private TGImage fretBoard;
+	private UIImage fretBoard;
 	
 	private TGBeat beat;
 	private TGBeat externalBeat;
@@ -322,26 +319,26 @@ public class TGFretBoard {
 		}
 	}
 	
-	private void paintFretBoard(TGPainter painter){
+	private void paintFretBoard(UIPainter painter){
 		if(this.fretBoard == null || this.fretBoard.isDisposed()){
 			UIFactory factory = getUIFactory();
 			UIRectangle area = this.control.getChildArea();
 			
-			this.fretBoard = new TGImageImpl(factory, factory.createImage(area.getWidth(), ((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
+			this.fretBoard = factory.createImage(area.getWidth(), ((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
 			
-			TGPainter painterBuffer = this.fretBoard.createPainter();
+			UIPainter painterBuffer = this.fretBoard.createPainter();
 			
 			//fondo
-			painterBuffer.setBackground(new TGColorImpl(this.config.getColorBackground()));
-			painterBuffer.initPath(TGPainter.PATH_FILL);
+			painterBuffer.setBackground(this.config.getColorBackground());
+			painterBuffer.initPath(UIPainter.PATH_FILL);
 			painterBuffer.addRectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight());
 			painterBuffer.closePath();
 			
 			
 			// pinto las cegillas
 			TGIconManager iconManager = TGIconManager.getInstance(this.context);
-			TGImage fretImage = new TGImageImpl(factory, iconManager.getFretboardFret());
-			TGImage firstFretImage = new TGImageImpl(factory, iconManager.getFretboardFirstFret());
+			UIImage fretImage = iconManager.getFretboardFret();
+			UIImage firstFretImage = iconManager.getFretboardFirstFret();
 			
 			painterBuffer.drawImage(firstFretImage, 0, 0, firstFretImage.getWidth(), firstFretImage.getHeight(), this.frets[0] - 5,this.strings[0] - 5, firstFretImage.getWidth(),this.strings[this.strings.length - 1] );
 			
@@ -353,7 +350,7 @@ public class TGFretBoard {
 			
 			// pinto las cuerdas
 			for (int i = 0; i < this.strings.length; i++) {
-				painterBuffer.setForeground(new TGColorImpl(this.config.getColorString()));
+				painterBuffer.setForeground(this.config.getColorString());
 				if(i > 2){
 					painterBuffer.setLineWidth(2);
 				}
@@ -372,8 +369,8 @@ public class TGFretBoard {
 		painter.drawImage(this.fretBoard,0,0);
 	}
 	
-	private void paintFretPoints(TGPainter painter, int fretIndex) {
-		painter.setBackground(new TGColorImpl(this.config.getColorFretPoint()));
+	private void paintFretPoints(UIPainter painter, int fretIndex) {
+		painter.setBackground(this.config.getColorFretPoint());
 		if ((fretIndex + 1) < this.frets.length) {
 			int fret = ((fretIndex + 1) % 12);
 			painter.setLineWidth(10);
@@ -382,7 +379,7 @@ public class TGFretBoard {
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - STRING_SPACING;
 				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + STRING_SPACING;
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.initPath(UIPainter.PATH_FILL);
 				painter.addCircle(x, y1, size);
 				painter.addCircle(x, y2, size);
 				painter.closePath();
@@ -390,7 +387,7 @@ public class TGFretBoard {
 				int size = getOvalSize();
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
 				int y = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2);
-				painter.initPath(TGPainter.PATH_FILL);
+				painter.initPath(UIPainter.PATH_FILL);
 				painter.addCircle(x, y, size);
 				painter.closePath();
 			}
@@ -398,7 +395,7 @@ public class TGFretBoard {
 		}
 	}
 	
-	private void paintScale(TGPainter painter) {
+	private void paintScale(UIPainter painter) {
 		TGTrack track = getTrack();
 		
 		for (int i = 0; i < this.strings.length; i++) {
@@ -423,10 +420,10 @@ public class TGFretBoard {
 			}
 		}
 		
-		painter.setForeground(new TGColorImpl(this.config.getColorBackground()));
+		painter.setForeground(this.config.getColorBackground());
 	}
 	
-	private void paintNotes(TGPainter painter) {
+	private void paintNotes(UIPainter painter) {
 		if(this.beat != null){
 			TGTrack track = getTrack();
 			
@@ -458,30 +455,30 @@ public class TGFretBoard {
 		}
 	}
 	
-	private void paintKeyOval(TGPainter painter, UIColor background,int x, int y) {
+	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
 		int size = getOvalSize();
-		painter.setBackground(new TGColorImpl(background));
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.setBackground(background);
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.moveTo(x, y);
 		painter.addCircle(x, y, size);
 		painter.closePath();
 	}
 	
-	private void paintKeyText(TGPainter painter, UIColor foreground, int x, int y, String text) {
-		painter.setBackground(new TGColorImpl(this.config.getColorKeyTextBackground()));
-		painter.setForeground(new TGColorImpl(foreground));
-		painter.setFont(new TGFontImpl(this.config.getFont()));
+	private void paintKeyText(UIPainter painter, UIColor foreground, int x, int y, String text) {
+		painter.setBackground(this.config.getColorKeyTextBackground());
+		painter.setForeground(foreground);
+		painter.setFont(this.config.getFont());
 		
 		float fmWidth = painter.getFMWidth(text);
 		float fmHeight = painter.getFMHeight();
 		
-		painter.initPath(TGPainter.PATH_FILL);
+		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(x - (fmWidth / 2f), y - (fmHeight / 2f), fmWidth, fmHeight);
 		painter.closePath();
-		painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine(), true);
+		painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
 	}
 	
-	protected void paintEditor(TGPainter painter) {
+	protected void paintEditor(UIPainter painter) {
 		this.updateEditor();
 		if (this.frets.length > 0 && this.strings.length > 0) {
 			paintFretBoard(painter);
@@ -747,7 +744,7 @@ public class TGFretBoard {
 			super();
 		}
 
-		public void paintControl(TGPainter painter) {
+		public void paintControl(UIPainter painter) {
 			TGFretBoard.this.paintEditor(painter);
 		}
 

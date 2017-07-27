@@ -63,7 +63,7 @@ public class TGFactory {
 	
 	public TGColor newColor(){
 		return new TGColor(){
-			//TGColor Implementation
+			//UIColor Implementation
 		};
 	}
 	

@@ -3,18 +3,15 @@
  */
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGFontImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIFont;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIControl;
@@ -56,8 +53,7 @@ public class TGTunerFineWidget {
 		this.composite.setBgColor(TGColorManager.getInstance(this.context).getColor(TGColorManager.COLOR_WHITE));
 		this.composite.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
-				TGPainterImpl painter = new TGPainterImpl(factory, event.getPainter());
-				TGTunerFineWidget.this.paintWidget(painter);
+				TGTunerFineWidget.this.paintWidget(event.getPainter());
 			}
 		});
 		layout.set(this.composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
@@ -66,14 +62,14 @@ public class TGTunerFineWidget {
 	}
 	
 	
-	public void paintWidget(TGPainter painter) {
+	public void paintWidget(UIPainter painter) {
 		TGColorManager colorManager = TGColorManager.getInstance(this.context);
 		
 		UIRectangle compositeSize = this.composite.getBounds();
 		
 		// margins & stuff
 		
-		painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLACK)));
+		painter.setForeground(colorManager.getColor(TGColorManager.COLOR_BLACK));
 		painter.initPath();
 		painter.setLineWidth(2);
 		float height = compositeSize.getHeight() - BOTTOM_Y-25;
@@ -88,14 +84,14 @@ public class TGTunerFineWidget {
 		
 		if (this.panel.isEnabled()) {
 			// tone name
-			painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_BLUE)));
-			painter.setFont(new TGFontImpl(this.letterFont));
+			painter.setForeground(colorManager.getColor(TGColorManager.COLOR_BLUE));
+			painter.setFont(this.letterFont);
 			painter.drawString(this.currentNoteString, compositeSize.getWidth()*12/15, 10);
 
 			// pointer
 			if (this.currentFrequency!=-1) {
 				painter.setLineWidth(3);
-				painter.setForeground(new TGColorImpl(colorManager.getColor(TGColorManager.COLOR_RED)));
+				painter.setForeground(colorManager.getColor(TGColorManager.COLOR_RED));
 				painter.initPath();
 				painter.moveTo(compositeSize.getWidth()/2, compositeSize.getHeight()-BOTTOM_Y);
 				painter.lineTo((float)(compositeSize.getWidth()/2 + height*Math.cos(this.getAngleRad())),(float)( compositeSize.getHeight()-BOTTOM_Y-height*Math.sin(this.getAngleRad())));

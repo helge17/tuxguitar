@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.models.TGText;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGTextImpl extends TGText{
 	
-	public void paint(TGLayout layout,TGPainter painter,float fromX, float fromY){
+	public void paint(TGLayout layout,UIPainter painter,float fromX, float fromY){
 		TGBeatImpl beat = (TGBeatImpl)getBeat();
 		TGMeasureImpl measure = beat.getMeasureImpl();
 		float x = fromX + beat.getSpacing(layout) + beat.getPosX();

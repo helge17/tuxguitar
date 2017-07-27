@@ -1,3 +1,4 @@
+org.herac.tuxguitar.io.tg.v13.TGSongReaderPluginImpl
 org.herac.tuxguitar.io.tg.v12.TGSongReaderPluginImpl
 org.herac.tuxguitar.io.tg.v11.TGSongReaderPluginImpl
 org.herac.tuxguitar.io.tg.v10.TGSongReaderPluginImpl
@@ -5,6 +6,7 @@ org.herac.tuxguitar.io.tg.v09.TGSongReaderPluginImpl
 org.herac.tuxguitar.io.tg.v08.TGSongReaderPluginImpl
 org.herac.tuxguitar.io.tg.v07.TGSongReaderPluginImpl
 
+org.herac.tuxguitar.io.tg.v13.TGSongWriterPluginImpl
 org.herac.tuxguitar.io.tg.v12.TGSongWriterPluginImpl
 org.herac.tuxguitar.io.tg.v11.TGSongWriterPluginImpl
 org.herac.tuxguitar.io.tg.v10.TGSongWriterPluginImpl

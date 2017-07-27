@@ -6,8 +6,6 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.graphics.TGColorModel;
-import org.herac.tuxguitar.graphics.TGFontModel;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIColorChooser;
 import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
@@ -98,11 +96,11 @@ public class TGFretBoardConfig {
 		return this.direction;
 	}
 	
-	public UIFont createFont(UIFactory factory, TGFontModel fm) {
+	public UIFont createFont(UIFactory factory, UIFontModel fm) {
 		return TGApplication.getInstance(this.context).getFactory().createFont(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
 	}
 	
-	public UIColor createColor(UIFactory factory, TGColorModel cm) {
+	public UIColor createColor(UIFactory factory, UIColorModel cm) {
 		return TGApplication.getInstance(this.context).getFactory().createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
 	}
 	
@@ -117,7 +115,7 @@ public class TGFretBoardConfig {
 		this.colorFretPoint = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
-		this.colorKeyTextBackground = createColor(factory, new TGColorModel(0xff, 0xff, 0xff));
+		this.colorKeyTextBackground = createColor(factory, new UIColorModel(0xff, 0xff, 0xff));
 	}
 	
 	public void defaults(){

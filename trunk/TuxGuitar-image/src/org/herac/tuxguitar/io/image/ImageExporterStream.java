@@ -3,19 +3,14 @@ package org.herac.tuxguitar.io.image;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
-import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGMargins;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.graphics.control.print.TGPrintController;
 import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
 import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintPainter;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongStream;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
@@ -23,6 +18,10 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -49,10 +48,10 @@ public class ImageExporterStream implements TGSongStream{
 			TGSong song = this.streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = song.clone(manager.getFactory());
-			TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
-			TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+			UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
+			UIMargin pageMargins = new UIMargin(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 			
-			TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
+			UIResourceFactory factory = getUIFactory();
 			
 			TGPrintController controller = new PrintController(this.context, clonedSong, manager, factory);
 			TGPrintLayout layout = new TGPrintLayout(controller, settings.getStyles());
@@ -69,31 +68,31 @@ public class ImageExporterStream implements TGSongStream{
 	
 	private class PrintDocumentImpl implements TGPrintDocument{
 		
-		private TGPainterImpl painter;
-		private TGDimension size;
-		private TGMargins margins;
+		private TGPrintPainter painter;
+		private UISize size;
+		private UIMargin margins;
 		private String path;
 		private List<UIImage> pages;
 		private ImageFormat format;
 		
-		public PrintDocumentImpl(TGDimension size, TGMargins margins, ImageFormat format, String path){
+		public PrintDocumentImpl(UISize size, UIMargin margins, ImageFormat format, String path){
 			this.size = size;
 			this.margins = margins;
 			this.path = path;
-			this.painter = new TGPainterImpl(getUIFactory());
+			this.painter = new TGPrintPainter();
 			this.pages = new ArrayList<UIImage>();
 			this.format = format;
 		}
 		
-		public TGPainter getPainter() {
+		public UIPainter getPainter() {
 			return this.painter;
 		}
 		
-		public TGDimension getSize() {
+		public UISize getSize() {
 			return this.size;
 		}
 
-		public TGMargins getMargins() {
+		public UIMargin getMargins() {
 			return this.margins;
 		}
 		

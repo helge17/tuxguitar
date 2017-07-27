@@ -6,7 +6,6 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.graphics.TGColorModel;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIColorChooser;
 import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
@@ -60,7 +59,7 @@ public class TGPianoConfig {
 		return this.colorScale;
 	}
 	
-	public UIColor createColor(UIFactory factory, TGColorModel cm) {
+	public UIColor createColor(UIFactory factory, UIColorModel cm) {
 		return TGApplication.getInstance(this.context).getFactory().createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
 	}
 	

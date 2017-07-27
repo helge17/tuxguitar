@@ -2,10 +2,10 @@ package org.herac.tuxguitar.io.pdf;
 
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGMargins;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
+import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -19,15 +19,15 @@ public class PDFDocument implements TGPrintDocument{
 	
 	private TGContext context;
 	private PDFPainter painter;
-	private TGDimension size;
-	private TGMargins margins;
+	private UISize size;
+	private UIMargin margins;
 	private OutputStream stream;
 	
 	private Document document;
 	private PdfContentByte cb;
 	private PdfTemplate template;
 	
-	public PDFDocument(TGContext context, TGDimension size, TGMargins margins, OutputStream stream){
+	public PDFDocument(TGContext context, UISize size, UIMargin margins, OutputStream stream){
 		this.context = context;
 		this.stream = stream;
 		this.size = size;
@@ -35,15 +35,15 @@ public class PDFDocument implements TGPrintDocument{
 		this.painter = new PDFPainter();
 	}
 	
-	public TGPainter getPainter() {
+	public UIPainter getPainter() {
 		return this.painter;
 	}
 	
-	public TGDimension getSize() {
+	public UISize getSize() {
 		return this.size;
 	}
 
-	public TGMargins getMargins() {
+	public UIMargin getMargins() {
 		return this.margins;
 	}
 	

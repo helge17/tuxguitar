@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGColorImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -14,7 +12,6 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeBendNoteAction;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -30,6 +27,7 @@ import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
@@ -110,7 +108,7 @@ public class TGBendDialog {
 			this.editor.setBgColor(this.colorManager.getColor(TGColorManager.COLOR_WHITE));
 			this.editor.addPaintListener(new UIPaintListener() {
 				public void onPaint(UIPaintEvent event) {
-					paintEditor(new TGPainterImpl(uiFactory, event.getPainter()));
+					paintEditor(event.getPainter());
 				}
 			});
 			this.editor.addMouseUpListener(new UIMouseUpListener() {
@@ -181,7 +179,7 @@ public class TGBendDialog {
 		}
 	}
 	
-	private void paintEditor(TGPainter painter){
+	private void paintEditor(UIPainter painter){
 		for(int i = 0;i < this.x.length;i++){
 			this.setStyleX(painter,i);
 			painter.initPath();
@@ -201,7 +199,7 @@ public class TGBendDialog {
 		
 		painter.setLineStyleSolid();
 		painter.setLineWidth(2);
-		painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_GRAY)));
+		painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_GRAY));
 		
 		UIPosition prevPoint = null;
 		for(UIPosition point : this.points) {
@@ -215,7 +213,7 @@ public class TGBendDialog {
 		}
 		
 		painter.setLineWidth(5);
-		painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
+		painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
 		
 		for(UIPosition point : this.points) {
 			painter.initPath();
@@ -226,28 +224,28 @@ public class TGBendDialog {
 		painter.setLineWidth(1);
 	}
 	
-	private void setStyleX(TGPainter painter,int i){
+	private void setStyleX(UIPainter painter,int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (X_LENGTH - 1)){
-			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
+			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
 		}else{
-			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLUE)));
+			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLUE));
 			if((i % 3) > 0){
 				painter.setLineStyleDot();
 			}
 		}
 	}
 	
-	private void setStyleY(TGPainter painter,int i){
+	private void setStyleY(UIPainter painter,int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (Y_LENGTH - 1)){
-			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_BLACK)));
+			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
 		}else{
-			painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_RED)));
+			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_RED));
 			
 			if((i % 2) > 0){
 				painter.setLineStyleDot();
-				painter.setForeground(new TGColorImpl(this.colorManager.getColor(TGColorManager.COLOR_GRAY)));
+				painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_GRAY));
 			}else if((i % 4) > 0){
 				painter.setLineStyleDot();
 			}

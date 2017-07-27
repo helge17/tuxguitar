@@ -3,8 +3,6 @@ package org.herac.tuxguitar.app.action.impl.file;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
-import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialog;
@@ -15,21 +13,21 @@ import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserDialogControl
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrinterChooserHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGMargins;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.graphics.control.print.TGPrintController;
 import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
 import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintPainter;
 import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.printer.UIPrinter;
 import org.herac.tuxguitar.ui.printer.UIPrinterJob;
 import org.herac.tuxguitar.ui.printer.UIPrinterPage;
+import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
@@ -60,11 +58,11 @@ public class TGPrintAction extends TGActionBase{
 		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
-		TGRectangle printerArea = this.getPrinterArea(printer, 10f);
-		TGDimension pageSize = new TGDimension(printerArea.getWidth(), printerArea.getHeight());
-		TGMargins pageMargins = new TGMargins(printerArea.getY(), printerArea.getX(), 0, 0);
+		UIRectangle printerArea = this.getPrinterArea(printer, 10f);
+		UISize pageSize = new UISize(printerArea.getWidth(), printerArea.getHeight());
+		UIMargin pageMargins = new UIMargin(printerArea.getY(), printerArea.getX(), 0, 0);
 		
-		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, new TGResourceFactoryImpl(printer.getResourceFactory()));
+		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, printer.getResourceFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
 		printLayout.loadStyles(printer.getDpiScale(), 1f);
 		printLayout.updateSong();
@@ -102,42 +100,42 @@ public class TGPrintAction extends TGActionBase{
 		}).start();
 	}
 	
-	protected TGRectangle getPrinterArea(UIPrinter printer, float margin) {
+	protected UIRectangle getPrinterArea(UIPrinter printer, float margin) {
 		Float scale = printer.getDpiScale();
 		Float scaledMargin = (margin * (scale != null ? scale : 1f));
 		UIRectangle bounds = printer.getBounds();
 		
-		return new TGRectangle(bounds.getX() + scaledMargin, bounds.getY() + scaledMargin, bounds.getWidth() - (scaledMargin * 2f), bounds.getHeight() - (scaledMargin * 2f));
+		return new UIRectangle(bounds.getX() + scaledMargin, bounds.getY() + scaledMargin, bounds.getWidth() - (scaledMargin * 2f), bounds.getHeight() - (scaledMargin * 2f));
 	}
 	
 	private class PrintDocumentImpl implements TGPrintDocument{
 		
+		private TGPrintPainter painter;
 		private TGPrintLayout layout;
 		private UIPrinter printer;
 		private UIPrinterJob printerJob;
 		private UIPrinterPage printerPage;
 		
-		private TGPainterImpl painter;
-		private TGDimension size;
-		private TGMargins margins;
+		private UISize size;
+		private UIMargin margins;
 		
-		public PrintDocumentImpl(TGPrintLayout layout, UIPrinter printer, TGDimension size, TGMargins margins){
+		public PrintDocumentImpl(TGPrintLayout layout, UIPrinter printer, UISize size, UIMargin margins){
 			this.layout = layout;
 			this.printer = printer;
 			this.size = size;
 			this.margins = margins;
-			this.painter = new TGPainterImpl(printer.getResourceFactory());
+			this.painter = new TGPrintPainter();
 		}
 		
-		public TGPainter getPainter() {
+		public UIPainter getPainter() {
 			return this.painter;
 		}
 		
-		public TGDimension getSize() {
+		public UISize getSize() {
 			return this.size;
 		}
 
-		public TGMargins getMargins() {
+		public UIMargin getMargins() {
 			return this.margins;
 		}
 		

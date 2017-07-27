@@ -4,15 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.graphics.TGImageImpl;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
 import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIKeyEvent;
@@ -25,7 +20,9 @@ import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKey;
 import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UILabel;
@@ -51,7 +48,7 @@ public class TGPrintPreviewDialog{
 	private UITextField currentText;
 	private UIButton previous;
 	private UIButton next;
-	private TGDimension size;
+	private UISize size;
 	private List<UIImage> pages;
 	private int currentPage;
 	
@@ -166,8 +163,8 @@ public class TGPrintPreviewDialog{
 					
 					int vScroll = TGPrintPreviewDialog.this.previewComposite.getVScroll().getValue();
 					
-					TGImage page = new TGImageImpl(factory, TGPrintPreviewDialog.this.pages.get(TGPrintPreviewDialog.this.currentPage));
-					TGPainter painter = new TGPainterImpl(factory, event.getPainter());
+					UIImage page = TGPrintPreviewDialog.this.pages.get(TGPrintPreviewDialog.this.currentPage);
+					UIPainter painter = event.getPainter();
 					painter.drawImage(page, 0, -vScroll);
 				}
 			}

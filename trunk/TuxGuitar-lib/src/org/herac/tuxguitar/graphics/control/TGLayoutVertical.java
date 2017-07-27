@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGRectangle;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 
 /**
  * @author julian
@@ -34,7 +34,7 @@ public class TGLayoutVertical extends TGLayout{
 		return MODE_VERTICAL;
 	}
 	
-	public void paintSong(TGPainter painter,TGRectangle clientArea, float fromX, float fromY) {
+	public void paintSong(UIPainter painter,UIRectangle clientArea, float fromX, float fromY) {
 		this.marginLeft = getFirstMeasureSpacing();
 		this.marginRight = 10;
 		this.maximumWidth = (clientArea.getWidth() - (this.marginLeft + this.marginRight));
@@ -108,7 +108,7 @@ public class TGLayoutVertical extends TGLayout{
 		this.setWidth( getWidth() + this.marginRight );
 	}
 	
-	public void paintLine(TGTrackImpl track,TempLine line,TGPainter painter, float fromX, float fromY,TGTrackSpacing ts,TGRectangle clientArea) {
+	public void paintLine(TGTrackImpl track,TempLine line,UIPainter painter, float fromX, float fromY,TGTrackSpacing ts,UIRectangle clientArea) {
 		float posX = Math.round(this.marginLeft + fromX);
 		float posY = Math.round(fromY);
 		float width = this.marginLeft;

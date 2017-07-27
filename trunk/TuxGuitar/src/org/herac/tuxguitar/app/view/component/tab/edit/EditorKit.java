@@ -9,7 +9,6 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
@@ -24,6 +23,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.util.TGAbstractContext;
 
 public class EditorKit {
@@ -421,7 +421,7 @@ public class EditorKit {
 		this.selectedMeasure = null;
 	}
 	
-	public void paintSelection(TGLayout layout, TGPainter painter) {
+	public void paintSelection(TGLayout layout, UIPainter painter) {
 		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			TGMeasureImpl measure = this.selectedMeasure;
 			if( measure != null && measure.getTs() != null && measure.getTrack().stringCount() > 0 ){

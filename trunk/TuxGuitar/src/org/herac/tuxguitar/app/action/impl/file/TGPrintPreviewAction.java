@@ -6,8 +6,6 @@ import java.util.List;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.graphics.TGPainterImpl;
-import org.herac.tuxguitar.app.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.app.printer.PrintController;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -19,14 +17,11 @@ import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsHandler;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.graphics.TGDimension;
-import org.herac.tuxguitar.graphics.TGMargins;
-import org.herac.tuxguitar.graphics.TGPainter;
-import org.herac.tuxguitar.graphics.TGResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
 import org.herac.tuxguitar.graphics.control.print.TGPrintController;
 import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
 import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
+import org.herac.tuxguitar.graphics.control.print.TGPrintPainter;
 import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -34,6 +29,9 @@ import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGPrintPreviewAction extends TGActionBase{
@@ -64,11 +62,10 @@ public class TGPrintPreviewAction extends TGActionBase{
 		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
-		TGDimension pageSize = new TGDimension(PAGE_WIDTH, PAGE_HEIGHT);
-		TGMargins pageMargins = new TGMargins(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+		UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
+		UIMargin pageMargins = new UIMargin(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 		
-		TGResourceFactory factory = new TGResourceFactoryImpl(getUIFactory());
-		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, factory);
+		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, this.getUIFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
 		printLayout.loadStyles(1f);
 		printLayout.updateSong();
@@ -101,27 +98,27 @@ public class TGPrintPreviewAction extends TGActionBase{
 	
 	private class PrintDocumentImpl implements TGPrintDocument {
 		
-		private TGPainterImpl painter;
-		private TGDimension size;
-		private TGMargins margins;
+		private TGPrintPainter painter;
+		private UISize size;
+		private UIMargin margins;
 		private List<UIImage> pages;
 		
-		public PrintDocumentImpl(TGDimension size, TGMargins margins){
+		public PrintDocumentImpl(UISize size, UIMargin margins){
 			this.size = size;
 			this.margins = margins;
-			this.painter = new TGPainterImpl(getUIFactory());
 			this.pages = new ArrayList<UIImage>();
+			this.painter = new TGPrintPainter();
 		}
 		
-		public TGPainter getPainter() {
+		public UIPainter getPainter() {
 			return this.painter;
 		}
 		
-		public TGDimension getSize() {
+		public UISize getSize() {
 			return this.size;
 		}
 
-		public TGMargins getMargins() {
+		public UIMargin getMargins() {
 			return this.margins;
 		}
 		
@@ -141,7 +138,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		}
 		
 		public void finish() {
-			final TGDimension size = this.size;
+			final UISize size = this.size;
 			final List<UIImage> pages = this.pages;
 			
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGOpenViewAction.NAME);

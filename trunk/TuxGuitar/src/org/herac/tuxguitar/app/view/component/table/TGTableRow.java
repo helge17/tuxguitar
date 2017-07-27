@@ -2,13 +2,13 @@ package org.herac.tuxguitar.app.view.component.table;
 
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TG2BufferedPainterHandle;
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
 import org.herac.tuxguitar.ui.event.UIMouseDownListener;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 
@@ -231,7 +231,7 @@ public class TGTableRow {
 			super();
 		}
 
-		public void paintControl(TGPainter painter) {
+		public void paintControl(UIPainter painter) {
 			if( TGTableRow.this.getPaintListenerCanvas() != null ){
 				TGTableRow.this.getPaintListenerCanvas().paintTrack(TGTableRow.this, painter);
 			}

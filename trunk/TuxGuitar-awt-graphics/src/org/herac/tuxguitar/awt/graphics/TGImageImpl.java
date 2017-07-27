@@ -6,12 +6,16 @@ import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.herac.tuxguitar.graphics.TGColor;
-import org.herac.tuxguitar.graphics.TGImage;
-import org.herac.tuxguitar.graphics.TGPainter;
+import javax.imageio.ImageIO;
 
-public class TGImageImpl implements TGImage {
+import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIPainter;
+
+public class TGImageImpl implements UIImage {
 	
 	private Image handle;
 	
@@ -23,7 +27,11 @@ public class TGImageImpl implements TGImage {
 		this(new BufferedImage(Math.round(width), Math.round(height), BufferedImage.TYPE_INT_RGB));
 	}
 	
-	public TGPainter createPainter() {
+	public TGImageImpl(InputStream in) throws IOException{
+		this(ImageIO.read(in));
+	}
+	
+	public UIPainter createPainter() {
 		return new TGPainterImpl(this.handle);
 	}
 	
@@ -47,7 +55,7 @@ public class TGImageImpl implements TGImage {
 		this.handle = null;
 	}
 	
-	public void applyTransparency( final TGColor background ){
+	public void applyTransparency( final UIColor background ){
 		ImageFilter filter = new RGBImageFilter() {
 			public int markerRGB = (((TGColorImpl)background).getHandle().getRGB() | 0xFF000000);
 			

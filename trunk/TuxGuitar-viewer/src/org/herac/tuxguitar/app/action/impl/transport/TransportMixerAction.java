@@ -28,7 +28,6 @@ import org.herac.tuxguitar.app.action.impl.ActionDialog;
 import org.herac.tuxguitar.app.system.config.TGConfig;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;

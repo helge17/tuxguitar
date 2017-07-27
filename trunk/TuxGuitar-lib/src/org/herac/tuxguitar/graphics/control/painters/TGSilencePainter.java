@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.graphics.TGPainter;
 import org.herac.tuxguitar.graphics.command.TGCubicTo;
 import org.herac.tuxguitar.graphics.command.TGLineTo;
 import org.herac.tuxguitar.graphics.command.TGMoveTo;
 import org.herac.tuxguitar.graphics.command.TGPaintCommand;
 import org.herac.tuxguitar.graphics.command.TGPaintModel;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGSilencePainter {
 	
@@ -257,31 +257,31 @@ public class TGSilencePainter {
 		new TGCubicTo(5.0812607f, 0.42540812f, 5.4830284f, 0.14180303f, 5.908436f, 0.07090092f)
 	);
 	
-	public static void paintWhole(TGPainter painter, float x, float y,float scale){
+	public static void paintWhole(UIPainter painter, float x, float y,float scale){
 		WHOLE_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintHalf(TGPainter painter, float x, float y,float scale){
+	public static void paintHalf(UIPainter painter, float x, float y,float scale){
 		HALF_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintQuarter(TGPainter painter, float x, float y,float scale){
+	public static void paintQuarter(UIPainter painter, float x, float y,float scale){
 		QUARTER_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintEighth(TGPainter painter, float x, float y,float scale){
+	public static void paintEighth(UIPainter painter, float x, float y,float scale){
 		EIGHTH_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintSixteenth(TGPainter painter, float x, float y,float scale){
+	public static void paintSixteenth(UIPainter painter, float x, float y,float scale){
 		SIXTEENTH_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintThirtySecond(TGPainter painter, float x, float y,float scale){
+	public static void paintThirtySecond(UIPainter painter, float x, float y,float scale){
 		THIRTY_SECOND_MODEL.paint(painter, x, y, scale);
 	}
 	
-	public static void paintSixtyFourth(TGPainter painter, float x, float y,float scale){
+	public static void paintSixtyFourth(UIPainter painter, float x, float y,float scale){
 		SIXTY_FOURTH_MODEL.paint(painter, x, y, scale);
 	}
 }
