@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.menu.context.impl;
+package org.herac.tuxguitar.android.view.channel;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +33,9 @@ public class TGChannelListItemMenu extends TGMenuBase {
 
 	public void initializeItems(Menu menu) {
 		this.initializeItem(menu, R.id.menu_channel_list_item_edit, this.createEditChannelAction(), true);
-		this.initializeItem(menu, R.id.menu_channel_list_item_remove, this.createRemoveChannelAction(), this.isRemovableChannel());
+		if( this.isRemovableChannel()) {
+			this.initializeItem(menu, R.id.menu_channel_list_item_remove, this.createRemoveChannelAction(), true);
+		}
 	}
 	
 	public boolean isRemovableChannel() {
