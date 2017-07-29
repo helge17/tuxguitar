@@ -3,14 +3,11 @@ package org.herac.tuxguitar.player.impl.midiport.vst;
 import java.io.File;
 import java.util.Map;
 
-import javax.sound.midi.ShortMessage;
-
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
 import org.herac.tuxguitar.player.impl.midiport.vst.jni.VSTPlugin;
 
-public class VSTAudioProcessor implements TGMidiProcessor, TGAudioProcessor {
+public class VSTAudioProcessor implements TGAudioProcessor {
 	
 	public static final String PARAM_FILE_NAME = "vst.filename";
 	
@@ -59,9 +56,9 @@ public class VSTAudioProcessor implements TGMidiProcessor, TGAudioProcessor {
 		}
 	}
 
-	public void queueMidiMessage(ShortMessage message) {
+	public void queueMidiMessage(byte[] midiMessage) {
 		if( this.target != null ) {
-			this.target.queueMidiMessage(message);
+			this.target.queueMidiMessage(midiMessage);
 		}
 	}
 	

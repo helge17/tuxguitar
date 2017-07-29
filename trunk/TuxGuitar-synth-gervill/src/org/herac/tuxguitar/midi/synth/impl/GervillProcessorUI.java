@@ -161,8 +161,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		uiFileChooser.choose(new UIFileChooserHandler() {
 			public void onSelectFile(File file) {
 				if (file != null) {
-					GervillProcessorUI.this.processor.getProgram().setSoundbankPath(file.getAbsolutePath());
-					GervillProcessorUI.this.updateProgram();
+					GervillProcessorUI.this.updateProgram(file.getAbsolutePath());
 					
 					gervillSettings.setSoundbankFolder(file.getParentFile().getAbsolutePath());
 					gervillSettings.save();
@@ -205,26 +204,35 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		this.updateSoundbankItem(this.customSoundbankName, this.processor.getProgram().getSoundbankPath());
 	}
 	
-	public void updateProgram() {
+	public void updateProgram(String soundbankPath) {
+		GervillProgram gervillProgram = new GervillProgram();
+		gervillProgram.copyFrom(this.processor.getProgram());
+		
+		if( soundbankPath != null ) {
+			gervillProgram.setSoundbankPath(soundbankPath);
+		}
+		
 		Integer bank = this.bank.getSelectedValue();
 		if( bank != null ) {
-			this.processor.getProgram().setBank(bank);
+			gervillProgram.setBank(bank);
 		}
 		
 		Integer program = this.program.getSelectedValue();
 		if( program != null ) {
-			this.processor.getProgram().setProgram(program);
+			gervillProgram.setProgram(program);
 		}
 		
 		if( this.channelModeSingle.isSelected() ) {
-			this.processor.getProgram().setChannelMode(GervillProgram.CHANNEL_MODE_SINGLE);
+			gervillProgram.setChannelMode(GervillProgram.CHANNEL_MODE_SINGLE);
 		}
 		else if( this.channelModeBend.isSelected() ) {
-			this.processor.getProgram().setChannelMode(GervillProgram.CHANNEL_MODE_BEND);
+			gervillProgram.setChannelMode(GervillProgram.CHANNEL_MODE_BEND);
 		}
 		else if( this.channelModeVoice.isSelected() ) {
-			this.processor.getProgram().setChannelMode(GervillProgram.CHANNEL_MODE_VOICE);
+			gervillProgram.setChannelMode(GervillProgram.CHANNEL_MODE_VOICE);
 		}
+		
+		this.processor.loadProgram(gervillProgram);
 		this.updateItems();
 		this.callback.onChange();
 	}
@@ -244,11 +252,11 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 
 	@Override
 	public void onSelect(UISelectionEvent event) {
-		this.updateProgram();
+		this.updateProgram(null);
 	}
 
 	@Override
 	public void onModify(UIModifyEvent event) {
-		this.updateProgram();
+		this.updateProgram(null);
 	}
 }

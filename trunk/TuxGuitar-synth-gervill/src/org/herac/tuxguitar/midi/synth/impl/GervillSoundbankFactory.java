@@ -12,10 +12,11 @@ import org.herac.tuxguitar.util.TGExpressionResolver;
 
 import com.sun.media.sound.EmergencySoundbank;
 import com.sun.media.sound.ModelPatch;
+import com.sun.media.sound.SF2Instrument;
 
 public class GervillSoundbankFactory {
 	
-	private static Soundbank defaultSoundbank;
+	private static Instrument[][] defaultInstruments;
 	
 	public void create(final TGContext context, final GervillProgram program, final GervillSoundbankCallback callback) {
 		new Thread(new Runnable() {
@@ -37,28 +38,48 @@ public class GervillSoundbankFactory {
 	}
 	
 	private Instrument createInstrument(TGContext context, GervillProgram program) throws Exception {
-		Soundbank soundbank = this.createSoundbank(context, program);
-		
-		boolean percussion = (program.getBank() == 128);
-		Patch patch = new ModelPatch((percussion ? 0 : program.getBank()), program.getProgram(), percussion);
-		return soundbank.getInstrument(patch);
+		Instrument instrument = null;
+		if( program.getSoundbankPath() != null && program.getSoundbankPath().length() > 0 ) {
+			Soundbank soundbank = this.createSoundbank(context, program.getSoundbankPath());
+			
+			boolean percussion = (program.getBank() == 128);
+			Patch patch = new ModelPatch((percussion ? 0 : program.getBank()), program.getProgram(), percussion);
+			instrument = soundbank.getInstrument(patch);
+		}
+		if( instrument == null ) {
+			instrument = getDefaultInstrument(context, program);
+		}
+		if( instrument != null ) {
+			((SF2Instrument) instrument).setPatch(new Patch(0, 0));
+		}
+		return instrument;
 	}
 	
-	private Soundbank createSoundbank(TGContext context, GervillProgram program) throws Exception {
-		if( program.getSoundbankPath() != null && program.getSoundbankPath().length() > 0 ) {
-			return this.createSoundbank(context, program.getSoundbankPath());
-		}
-		
-		if( defaultSoundbank == null ) {
-			String soundbankPath = new GervillSettings(context).getSoundbankPath();
-			if( soundbankPath != null && soundbankPath.length() > 0 ) {
-				defaultSoundbank = this.createSoundbank(context, soundbankPath);
+	private Instrument getDefaultInstrument(TGContext context, GervillProgram program) throws Exception {
+		synchronized (GervillProcessorFactory.class) {
+			if( defaultInstruments == null ) {
+				defaultInstruments = new Instrument[129][128];
+				
+				Soundbank soundbank = null;
+				String soundbankPath = new GervillSettings(context).getSoundbankPath();
+				if( soundbankPath != null && soundbankPath.length() > 0 ) {
+					soundbank = this.createSoundbank(context, soundbankPath);
+				}
+				if( soundbank == null ) {
+					soundbank = EmergencySoundbank.createSoundbank();
+				}
+				if( soundbank != null ) {
+					Instrument[] instruments = soundbank.getInstruments();
+					for(Instrument instrument : instruments) {
+						ModelPatch patch = (ModelPatch) instrument.getPatch();
+						if((patch.getBank() < 128 && patch.getProgram() < 128) || patch.isPercussion() ) {
+							defaultInstruments[patch.isPercussion() ? 128 : patch.getBank()][patch.isPercussion() ? 0 : patch.getProgram()] = instrument;
+						}
+					}
+				}
 			}
-			if( defaultSoundbank == null ) {
-				defaultSoundbank = EmergencySoundbank.createSoundbank();
-			}
 		}
-		return defaultSoundbank;
+		return defaultInstruments[program.getBank()][program.getProgram()];
 	}
 	
 	private Soundbank createSoundbank(TGContext context, String soundbankPath) throws Exception {
