@@ -36,7 +36,6 @@ public class TGLayoutStyles {
 	private float[] durationWidths;
 	private UIFontModel defaultFont;
 	private UIFontModel noteFont;
-	private UIFontModel timeSignatureFont;
 	private UIFontModel lyricFont;
 	private UIFontModel textFont;
 	private UIFontModel markerFont;
@@ -50,6 +49,7 @@ public class TGLayoutStyles {
 	private UIColorModel playNoteColor;
 	private UIColorModel loopSMarkerColor;
 	private UIColorModel loopEMarkerColor;
+	private UIColorModel measureNumberColor;
 	
 	public TGLayoutStyles() {
 		super();
@@ -303,14 +303,6 @@ public class TGLayoutStyles {
 		this.noteFont = noteFont;
 	}
 
-	public UIFontModel getTimeSignatureFont() {
-		return timeSignatureFont;
-	}
-
-	public void setTimeSignatureFont(UIFontModel timeSignatureFont) {
-		this.timeSignatureFont = timeSignatureFont;
-	}
-
 	public UIFontModel getLyricFont() {
 		return lyricFont;
 	}
@@ -413,5 +405,13 @@ public class TGLayoutStyles {
 
 	public void setLoopEMarkerColor(UIColorModel loopEMarkerColor) {
 		this.loopEMarkerColor = loopEMarkerColor;
+	}
+
+	public UIColorModel getMeasureNumberColor() {
+		return measureNumberColor;
+	}
+
+	public void setMeasureNumberColor(UIColorModel measureNumberColor) {
+		this.measureNumberColor = measureNumberColor;
 	}
 }

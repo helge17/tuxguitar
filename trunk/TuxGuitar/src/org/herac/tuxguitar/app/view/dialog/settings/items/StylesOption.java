@@ -32,24 +32,20 @@ public class StylesOption extends TGSettingsOption {
 	private boolean initialized;
 	private UIFontModel defaultFontData;
 	private UIFontModel noteFontData;
-	private UIFontModel timeSignatureFontData;
 	private UIFontModel textFontData;
 	private UIFontModel lyricFontData;
 	private UIFontModel printerDefaultFontData;
 	private UIFontModel printerNoteFontData;
-	private UIFontModel printerTSFontData;
 	private UIFontModel printerTextFontData;
 	private UIFontModel printerLyricFontData;
 	
 	private UIButton defaultFontButton;
 	private UIButton noteFontButton;
-	private UIButton timeSignatureFontButton;
 	private UIButton textFontButton;
 	private UIButton lyricFontButton;
 	
 	private UIButton printerDefaultFontButton;
 	private UIButton printerNoteFontButton;
-	private UIButton printerTSFontButton;
 	private UIButton printerTextFontButton;
 	private UIButton printerLyricFontButton;
 	
@@ -63,12 +59,10 @@ public class StylesOption extends TGSettingsOption {
 		this.initialized = false;
 		this.defaultFontData = new UIFontModel();
 		this.noteFontData = new UIFontModel();
-		this.timeSignatureFontData = new UIFontModel();
 		this.textFontData = new UIFontModel();
 		this.lyricFontData = new UIFontModel();
 		this.printerDefaultFontData = new UIFontModel();
 		this.printerNoteFontData = new UIFontModel();
-		this.printerTSFontData = new UIFontModel();
 		this.printerTextFontData = new UIFontModel();
 		this.printerLyricFontData = new UIFontModel();
 	}
@@ -99,20 +93,17 @@ public class StylesOption extends TGSettingsOption {
 		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.text"), false, 4, 1);
 		this.textFontButton = this.createFontButton(mainSection, this.textFontData, 4, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.time-signature"), false, 5, 1);
-		this.timeSignatureFontButton = this.createFontButton(mainSection, this.timeSignatureFontData, 5, 2);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.score-note"), false, 5, 1);
+		this.scoreNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 5, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.score-note"), false, 6, 1);
-		this.scoreNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 6, 2);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.tab-note"), false, 6, 1);
+		this.tabNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 6, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.tab-note"), false, 7, 1);
-		this.tabNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 7, 2);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.play-note"), false, 7, 1);
+		this.playNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 7, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.play-note"), false, 8, 1);
-		this.playNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 8, 2);
-		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.lines"), false, 9, 1);
-		this.linesColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 9, 2);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.lines"), false, 8, 1);
+		this.linesColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 8, 2);
 		
 		//=================================================== PRINTER STYLES ===================================================//
 		showLabel(getPanel(), TuxGuitar.getProperty("settings.config.styles.printer"), true, 3, 1);
@@ -132,9 +123,6 @@ public class StylesOption extends TGSettingsOption {
 		
 		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.text"), false, 4, 1);
 		this.printerTextFontButton = this.createFontButton(printerSection, this.printerTextFontData, 4, 2);
-		
-		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.time-signature"), false, 5, 1);
-		this.printerTSFontButton = this.createFontButton(printerSection, this.printerTSFontData, 5, 2);
 		
 		this.loadConfig();
 	}
@@ -214,12 +202,10 @@ public class StylesOption extends TGSettingsOption {
 			public void run() {
 				final UIFontModel defaultFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_DEFAULT);
 				final UIFontModel noteFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_NOTE);
-				final UIFontModel timeSignatureFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE);
 				final UIFontModel textFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_TEXT);
 				final UIFontModel lyricFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_LYRIC);
 				final UIFontModel printerDefaultFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT);
 				final UIFontModel printerNoteFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE);
-				final UIFontModel printerTSFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE);
 				final UIFontModel printerTextFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT);
 				final UIFontModel printerLyricFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC);
 				final UIColorModel scoreNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE);
@@ -231,12 +217,10 @@ public class StylesOption extends TGSettingsOption {
 						if(!isDisposed()){
 							loadFontData(defaultFontData, StylesOption.this.defaultFontData, StylesOption.this.defaultFontButton);
 							loadFontData(noteFontData, StylesOption.this.noteFontData, StylesOption.this.noteFontButton);
-							loadFontData(timeSignatureFontData, StylesOption.this.timeSignatureFontData, StylesOption.this.timeSignatureFontButton);
 							loadFontData(textFontData, StylesOption.this.textFontData, StylesOption.this.textFontButton);
 							loadFontData(lyricFontData, StylesOption.this.lyricFontData, StylesOption.this.lyricFontButton);
 							loadFontData(printerDefaultFontData, StylesOption.this.printerDefaultFontData, StylesOption.this.printerDefaultFontButton);
 							loadFontData(printerNoteFontData, StylesOption.this.printerNoteFontData, StylesOption.this.printerNoteFontButton);
-							loadFontData(printerTSFontData, StylesOption.this.printerTSFontData, StylesOption.this.printerTSFontButton);
 							loadFontData(printerTextFontData, StylesOption.this.printerTextFontData, StylesOption.this.printerTextFontButton);
 							loadFontData(printerLyricFontData, StylesOption.this.printerLyricFontData, StylesOption.this.printerLyricFontButton);
 							StylesOption.this.scoreNoteColorButton.loadColor(scoreNoteRGB);
@@ -256,12 +240,10 @@ public class StylesOption extends TGSettingsOption {
 		if(this.initialized){
 			getConfig().setValue(TGConfigKeys.FONT_DEFAULT,this.defaultFontData);
 			getConfig().setValue(TGConfigKeys.FONT_NOTE,this.noteFontData);
-			getConfig().setValue(TGConfigKeys.FONT_TIME_SIGNATURE,this.timeSignatureFontData);
 			getConfig().setValue(TGConfigKeys.FONT_TEXT,this.textFontData);
 			getConfig().setValue(TGConfigKeys.FONT_LYRIC,this.lyricFontData);
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_DEFAULT,this.printerDefaultFontData);
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_NOTE,this.printerNoteFontData);
-			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE,this.printerTSFontData);
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TEXT,this.printerTextFontData);
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_LYRIC,this.printerLyricFontData);
 			getConfig().setValue(TGConfigKeys.COLOR_SCORE_NOTE,this.scoreNoteColorButton.getValue());
@@ -275,12 +257,10 @@ public class StylesOption extends TGSettingsOption {
 		if(this.initialized){
 			getConfig().setValue(TGConfigKeys.FONT_DEFAULT, getDefaults().getValue(TGConfigKeys.FONT_DEFAULT));
 			getConfig().setValue(TGConfigKeys.FONT_NOTE, getDefaults().getValue(TGConfigKeys.FONT_NOTE));
-			getConfig().setValue(TGConfigKeys.FONT_TIME_SIGNATURE, getDefaults().getValue(TGConfigKeys.FONT_TIME_SIGNATURE));
 			getConfig().setValue(TGConfigKeys.FONT_TEXT, getDefaults().getValue(TGConfigKeys.FONT_TEXT));
 			getConfig().setValue(TGConfigKeys.FONT_LYRIC, getDefaults().getValue(TGConfigKeys.FONT_LYRIC));
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_DEFAULT, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_NOTE, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_NOTE));
-			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_TEXT, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_TEXT));
 			getConfig().setValue(TGConfigKeys.FONT_PRINTER_LYRIC, getDefaults().getValue(TGConfigKeys.FONT_PRINTER_LYRIC));
 			getConfig().setValue(TGConfigKeys.COLOR_SCORE_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_SCORE_NOTE));

@@ -38,7 +38,6 @@ public class TablatureStyles extends TGLayoutStyles {
 		
 		this.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT));
 		this.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_NOTE));
-		this.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TIME_SIGNATURE));
 		this.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_LYRIC));
 		this.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_TEXT));
 		this.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
@@ -52,8 +51,6 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
 		this.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		this.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
-		
-//		this.setTabNotePathRendererEnabled(true);
-//		setNoteFont(new UIFontModel("", 9, true, true, new UIFontAlignment(10, 5, 0)));
+		this.setMeasureNumberColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_MEASURE_NUMBER));
 	}
 }

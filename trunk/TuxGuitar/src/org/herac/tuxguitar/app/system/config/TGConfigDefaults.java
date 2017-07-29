@@ -45,7 +45,6 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.EDITOR_NATURAL_KEY_MODE,true);
 		loadProperty(properties, TGConfigKeys.FONT_DEFAULT, (DEFAULT_FONT_NAME + ",6,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_NOTE, (DEFAULT_FONT_NAME + ",7,false,false"));
-		loadProperty(properties, TGConfigKeys.FONT_TIME_SIGNATURE, (DEFAULT_FONT_NAME + ",13,true,false"));
 		loadProperty(properties, TGConfigKeys.FONT_LYRIC, (DEFAULT_FONT_NAME + ",7,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_TEXT, (DEFAULT_FONT_NAME + ",8,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_CHORD, (DEFAULT_FONT_NAME + ",7,false,false"));
@@ -54,7 +53,6 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.FONT_MARKER, (DEFAULT_FONT_NAME + ",7,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_DEFAULT, (DEFAULT_FONT_NAME + ",6,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_NOTE, (DEFAULT_FONT_NAME + ",6,false,false"));
-		loadProperty(properties, TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE, (DEFAULT_FONT_NAME + ",10,true,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_LYRIC, (DEFAULT_FONT_NAME + ",7,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_TEXT, (DEFAULT_FONT_NAME + ",8,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_CHORD, (DEFAULT_FONT_NAME + ",7,false,false"));
@@ -69,6 +67,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_CARET_2,"165,42,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_S_MARKER,"42,165,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_E_MARKER,"165,42,42");
+		loadProperty(properties, TGConfigKeys.COLOR_MEASURE_NUMBER,"255,0,0");
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES,10);
 		loadProperty(properties, TGConfigKeys.LANGUAGE,"");
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STRING_SPACING,20);

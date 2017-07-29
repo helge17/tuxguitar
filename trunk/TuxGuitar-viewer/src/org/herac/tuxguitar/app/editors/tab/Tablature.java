@@ -292,7 +292,6 @@ public class Tablature implements TGController {
 		
 		styles.setDefaultFont(TGConfig.FONT_DEFAULT);
 		styles.setNoteFont(TGConfig.FONT_NOTE);
-		styles.setTimeSignatureFont(TGConfig.FONT_TIME_SIGNATURE);
 		styles.setLyricFont(TGConfig.FONT_LYRIC);
 		styles.setTextFont(TGConfig.FONT_TEXT);
 		styles.setMarkerFont(TGConfig.FONT_MARKER);
@@ -304,6 +303,7 @@ public class Tablature implements TGController {
 		styles.setScoreNoteColor(TGConfig.COLOR_SCORE_NOTE);
 		styles.setTabNoteColor(TGConfig.COLOR_TAB_NOTE);
 		styles.setPlayNoteColor(TGConfig.COLOR_PLAY_NOTE);
+		styles.setMeasureNumberColor(TGConfig.COLOR_MEASURE_NUMBER);
 		
 		return styles;
 	}

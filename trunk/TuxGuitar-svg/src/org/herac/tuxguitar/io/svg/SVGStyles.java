@@ -83,7 +83,6 @@ public class SVGStyles {
 		
 		this.getStyles().setDefaultFont(new UIFontModel("Default", 10, false, false) );
 		this.getStyles().setNoteFont(new UIFontModel("Default", 10, false, false) );
-		this.getStyles().setTimeSignatureFont(new UIFontModel("Default", 14, true, false) );
 		this.getStyles().setLyricFont(new UIFontModel("Default", 10, false, false) );
 		this.getStyles().setTextFont(new UIFontModel("Default", 10, false, false));
 		this.getStyles().setMarkerFont(new UIFontModel("Default", 10, false, false));
@@ -98,5 +97,6 @@ public class SVGStyles {
 		this.getStyles().setPlayNoteColor(new UIColorModel(64,64,64));
 		this.getStyles().setLoopSMarkerColor(new UIColorModel(0,0,0));
 		this.getStyles().setLoopEMarkerColor(new UIColorModel(0,0,0));
+		this.getStyles().setMeasureNumberColor(new UIColorModel(255,0,0));
 	}
 }

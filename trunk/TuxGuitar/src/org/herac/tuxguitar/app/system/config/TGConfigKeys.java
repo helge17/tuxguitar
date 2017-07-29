@@ -23,7 +23,6 @@ public class TGConfigKeys {
 	public static final String EDITOR_NATURAL_KEY_MODE = "editor.natural.key.mode";
 	public static final String FONT_DEFAULT = "font.default";
 	public static final String FONT_NOTE = "font.note";
-	public static final String FONT_TIME_SIGNATURE = "font.time-signature";
 	public static final String FONT_CHORD = "font.chord";
 	public static final String FONT_CHORD_FRET = "font.chord-fret";
 	public static final String FONT_GRACE = "font.grace";
@@ -32,7 +31,6 @@ public class TGConfigKeys {
 	public static final String FONT_MARKER = "font.marker";
 	public static final String FONT_PRINTER_DEFAULT = "font.printer.default";
 	public static final String FONT_PRINTER_NOTE = "font.printer.note";
-	public static final String FONT_PRINTER_TIME_SIGNATURE = "font.printer.time-signature";
 	public static final String FONT_PRINTER_LYRIC = "font.printer.lyric";
 	public static final String FONT_PRINTER_TEXT = "font.printer.text";
 	public static final String FONT_PRINTER_CHORD = "font.printer.chord";
@@ -47,6 +45,7 @@ public class TGConfigKeys {
 	public static final String COLOR_CARET_2 = "color.caret.2";
 	public static final String COLOR_LOOP_S_MARKER = "color.loop.s.marker";
 	public static final String COLOR_LOOP_E_MARKER = "color.loop.e.marker";
+	public static final String COLOR_MEASURE_NUMBER = "color.measure.number";
 	public static final String MIDI_PORT = "midi.port";
 	public static final String MIDI_SEQUENCER = "midi.sequencer";
 	public static final String MAX_HISTORY_FILES = "history.max-files";
