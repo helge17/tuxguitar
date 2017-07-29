@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sound.midi.Instrument;
-import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.Patch;
 import javax.sound.midi.Receiver;
-import javax.sound.midi.ShortMessage;
 import javax.sound.sampled.AudioInputStream;
 
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
@@ -25,6 +25,7 @@ public class GervillProcessor implements TGMidiProcessor {
 	private static final String SYNTH_SOUNDBANK_PATH_PARAM = "gervil.soundbank.path";
 	
 	private static final String SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM = "load default soundbank";
+	private static final String SYNTH_MIDI_CHANNELS_PARAM = "midi channels";
 	
 	private TGContext context;
 	private AudioSynthesizer synth;
@@ -37,28 +38,11 @@ public class GervillProcessor implements TGMidiProcessor {
 	public GervillProcessor(TGContext context) {
 		this.context = context;
 		this.program = new GervillProgram();
-		this.open();
-	}
-	
-	private Map<String, Object> createDefaultInfo(){
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM, new Boolean(false));
-		return map;
-	}
-	
-	public void open() {
-		try {
-			this.buffer = new byte[TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE];
-			this.outputs = new float[TGAudioBuffer.CHANNELS][TGAudioBuffer.BUFFER_SIZE / 2];
-			for(int i = 0; i < this.outputs.length; i++) {
-				this.outputs[i] = new float[TGAudioBuffer.BUFFER_SIZE / 2];
-			}
-			
-			this.synth = new SoftSynthesizer();
-			this.stream = this.synth.openStream(TGAudioLine.AUDIO_FORMAT, this.createDefaultInfo());
-			this.receiver = this.synth.getReceiver();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		this.synth = new SoftSynthesizer();
+		this.buffer = new byte[TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE];
+		this.outputs = new float[TGAudioBuffer.CHANNELS][TGAudioBuffer.BUFFER_SIZE / 2];
+		for(int i = 0; i < this.outputs.length; i++) {
+			this.outputs[i] = new float[TGAudioBuffer.BUFFER_SIZE / 2];
 		}
 	}
 	
@@ -85,23 +69,11 @@ public class GervillProcessor implements TGMidiProcessor {
 	
 	public void fillBuffer(TGAudioBuffer buffer) {
 		try {
-			this.stream.read(buffer.getBuffer());
+			if( this.stream != null ) {
+				this.stream.read(buffer.getBuffer());
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-	}
-	
-	public void queueMidiMessage(ShortMessage msg) {
-		if( this.receiver != null ) {
-			if( this.program.getBank() == 128 ) {
-				try {
-					msg.setMessage(msg.getCommand(), 9, msg.getData1(), msg.getData2());
-				} catch (InvalidMidiDataException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			this.receiver.send(msg, -1);
 		}
 	}
 	
@@ -113,24 +85,46 @@ public class GervillProcessor implements TGMidiProcessor {
 	}
 	
 	public void loadInstrument() {
-		GervillSoundbankFactory gervillSoundbankFactory = new GervillSoundbankFactory();
-		gervillSoundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
-			public void onCreate(Instrument instrument) {
-				GervillProcessor.this.loadInstrument(instrument);
+		try {
+			if( this.synth.isOpen()) {
+				this.synth.close();
 			}
-		});
+			this.stream = this.synth.openStream(TGAudioLine.AUDIO_FORMAT, this.createSynthInfo());
+			this.receiver = this.synth.getReceiver();			
+			
+			GervillSoundbankFactory gervillSoundbankFactory = new GervillSoundbankFactory();
+			gervillSoundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
+				public void onCreate(Instrument instrument) {
+					GervillProcessor.this.loadInstrument(instrument);
+				}
+			});
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public void loadInstrument(Instrument instrument) {
-		try {
-			this.synth.loadInstrument(instrument);
-					
-			ShortMessage shortMessage = new ShortMessage();
-			shortMessage.setMessage(ShortMessage.PROGRAM_CHANGE, 0, this.program.getProgram(), 0);
-			queueMidiMessage(shortMessage);
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
+		this.synth.loadInstrument(instrument);
+		
+		Patch patch = instrument.getPatch();
+		for(MidiChannel midiChannel : this.synth.getChannels()) {
+			midiChannel.programChange(patch.getBank(), patch.getProgram());
 		}
+	}
+	
+	public Map<String, Object> createSynthInfo(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM, new Boolean(false));
+		if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_SINGLE ) {
+			map.put(SYNTH_MIDI_CHANNELS_PARAM, new Integer(1));
+		}
+		else if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_BEND ) {
+			map.put(SYNTH_MIDI_CHANNELS_PARAM, new Integer(2));
+		}
+		else if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_VOICE ) {
+			map.put(SYNTH_MIDI_CHANNELS_PARAM, new Integer(16));
+		}
+		return map;
 	}
 	
 	public void storeParameters(Map<String, String> parameters) {
@@ -163,6 +157,34 @@ public class GervillProcessor implements TGMidiProcessor {
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) {
+		this.synth.getChannels()[resolveChannel(voice, bendMode)].noteOn(key, velocity);
+	}
+	
+	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) {
+		this.synth.getChannels()[resolveChannel(voice, bendMode)].noteOff(key, velocity);
+	}
+	
+	public void sendPitchBend(int value, int voice, boolean bendMode) {
+		this.synth.getChannels()[resolveChannel(voice, bendMode)].setPitchBend(value * 128);
+	}
+	
+	public void sendControlChange(int controller, int value) {
+		for(MidiChannel midiChannel : this.synth.getChannels()) {
+			midiChannel.controlChange(controller, value);
+		}
+	}
+	
+	public int resolveChannel(int voice, boolean bendMode) {
+		if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_BEND ) {
+			return (bendMode ? 1 : 0);
+		}
+		if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_VOICE ) {
+			return (voice >= 0 && voice < 9 ? voice : 10);
+		}
+		return 0;
 	}
 	
 	public GervillProgram getProgram() {

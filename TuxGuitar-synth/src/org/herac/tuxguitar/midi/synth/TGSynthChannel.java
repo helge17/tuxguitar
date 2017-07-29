@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.midi.synth;
 
-import javax.sound.midi.ShortMessage;
-
 import org.herac.tuxguitar.player.base.MidiChannel;
 import org.herac.tuxguitar.player.base.MidiControllers;
 import org.herac.tuxguitar.player.base.MidiParameters;
@@ -66,12 +64,6 @@ public class TGSynthChannel implements MidiChannel {
 		}
 	}
 	
-	public void sendMidiMessage(ShortMessage message){
-		if( this.processor != null){
-			this.processor.sendMidiMessage( message );
-		}
-	}
-	
 	public void fillBuffer(TGAudioBuffer buffer){
 		if( this.processor != null){
 			this.processor.fillBuffer(buffer);
@@ -79,32 +71,20 @@ public class TGSynthChannel implements MidiChannel {
 	}
 	
 	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
-		try{
-			ShortMessage shortMessage = new ShortMessage();
-			shortMessage.setMessage(ShortMessage.NOTE_ON, 0, key, velocity);
-			sendMidiMessage( shortMessage );
-		}catch(Throwable throwable){
-			throw new MidiPlayerException(throwable.getMessage(), throwable);
+		if( this.processor != null && this.processor.getProcessor() != null ) {
+			this.processor.getProcessor().sendNoteOn(key, velocity, voice, bendMode);
 		}
 	}
 	
 	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
-		try{
-			ShortMessage shortMessage = new ShortMessage();
-			shortMessage.setMessage(ShortMessage.NOTE_OFF, 0, key, velocity);
-			sendMidiMessage( shortMessage );
-		}catch(Throwable throwable){
-			throw new MidiPlayerException(throwable.getMessage(), throwable);
+		if( this.processor != null && this.processor.getProcessor() != null ) {
+			this.processor.getProcessor().sendNoteOff(key, velocity, voice, bendMode);
 		}
 	}
 
 	public void sendPitchBend(int value, int voice, boolean bendMode) throws MidiPlayerException {
-		try{
-			ShortMessage shortMessage = new ShortMessage();
-			shortMessage.setMessage(ShortMessage.PITCH_BEND, 0, 0, value);
-			sendMidiMessage( shortMessage );
-		}catch(Throwable throwable){
-			throw new MidiPlayerException(throwable.getMessage(), throwable);
+		if( this.processor != null && this.processor.getProcessor() != null ) {
+			this.processor.getProcessor().sendPitchBend(value, voice, bendMode);
 		}
 	}
 	
@@ -118,9 +98,9 @@ public class TGSynthChannel implements MidiChannel {
 					}
 				}
 			}else{
-				ShortMessage shortMessage = new ShortMessage();
-				shortMessage.setMessage(ShortMessage.CONTROL_CHANGE, 0, controller, value);
-				sendMidiMessage( shortMessage );
+				if( this.processor != null && this.processor.getProcessor() != null ) {
+					this.processor.getProcessor().sendControlChange(controller, value);
+				}
 			}
 		}catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
@@ -141,12 +121,8 @@ public class TGSynthChannel implements MidiChannel {
 	}
 	
 	public void sendAllNotesOff() throws MidiPlayerException {		
-		try{
-			ShortMessage shortMessage = new ShortMessage();
-			shortMessage.setMessage(ShortMessage.CONTROL_CHANGE, 0, MidiControllers.ALL_NOTES_OFF, 0);
-			sendMidiMessage( shortMessage );
-		}catch(Throwable throwable){
-			throw new MidiPlayerException(throwable.getMessage(), throwable);
+		if( this.processor != null && this.processor.getProcessor() != null ) {
+			this.processor.getProcessor().sendControlChange(MidiControllers.ALL_NOTES_OFF, 0);
 		}
 	}
 	

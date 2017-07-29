@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.midi.ShortMessage;
-
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.player.impl.midiport.vst.jni.VSTEffect;
 import org.herac.tuxguitar.player.impl.midiport.vst.jni.VSTEffectUI;
@@ -69,13 +67,10 @@ public class VSTEffectProcessor {
 		return (this.open);
 	}
 	
-	public void queueMidiMessage(ShortMessage message){
+	public void queueMidiMessage(byte[] midiMessage){
 		synchronized (this.lock) {
 			if( this.isOpen()){
-				byte[] pack = new byte[]{
-					(byte)message.getCommand(), (byte)message.getChannel(), (byte)message.getData1(), (byte)message.getData2()
-				};
-				this.messages.add( pack );
+				this.messages.add(midiMessage);
 			}
 		}
 	}

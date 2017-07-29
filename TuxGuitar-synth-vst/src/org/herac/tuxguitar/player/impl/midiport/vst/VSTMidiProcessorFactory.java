@@ -16,7 +16,7 @@ public class VSTMidiProcessorFactory implements TGMidiProcessorFactory {
 	
 	public void createProcessor(TGAudioProcessorFactoryCallback<TGMidiProcessor> callback) {
 		try {
-			callback.onCreate(new VSTAudioProcessor());
+			callback.onCreate(new VSTMidiProcessor());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

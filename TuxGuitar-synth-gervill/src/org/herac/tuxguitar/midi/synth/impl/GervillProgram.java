@@ -68,7 +68,7 @@ public class GervillProgram {
 			if( this.channelMode != p.channelMode ) {
 				return false;
 			}
-			if((this.soundbankPath != null ? this.soundbankPath : "").equals((p.soundbankPath != null ? p.soundbankPath : ""))) {
+			if(!(this.soundbankPath != null ? this.soundbankPath : "").equals((p.soundbankPath != null ? p.soundbankPath : ""))) {
 				return false;
 			}
 			return true;

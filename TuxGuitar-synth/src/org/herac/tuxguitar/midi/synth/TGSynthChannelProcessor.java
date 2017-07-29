@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.midi.ShortMessage;
-
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthChannelProcessor {
@@ -161,7 +159,7 @@ public class TGSynthChannelProcessor {
 		}
 	}
 	
-	public TGMidiProcessor getEffect(){
+	public TGMidiProcessor getProcessor(){
 		synchronized (this.lock) {
 			return this.processor;
 		}
@@ -187,14 +185,6 @@ public class TGSynthChannelProcessor {
 	public int countOutputs(){
 		synchronized (this.lock) {
 			return this.outputs.size();
-		}
-	}
-	
-	public void sendMidiMessage(ShortMessage message){
-		synchronized (this.lock) {
-			if( this.processor != null && this.processor.isOpen() ){
-				this.processor.queueMidiMessage( message );
-			}
 		}
 	}
 	

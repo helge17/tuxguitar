@@ -120,35 +120,76 @@ public class TGNoteImpl extends TGNote {
 	
 	public void paintTablatureNoteValue(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY, boolean running) {
 		if( layout.isTabNotePathRendererEnabled() ) {
-			float noteSize = (layout.getStringSpacing() - 2f);
-			float noteWidth = TGNumberPainter.getDigitsWidth(getValue(), noteSize);
-			
-			margin.setTop(noteSize / 2);
-			margin.setBottom(noteSize / 2);
-			margin.setLeft(noteWidth / 2);
-			margin.setRight(noteWidth / 2);
-			
-			this.fillBackground(layout, painter, margin, fromX, fromY);
-			layout.setTabNotePathStyle(painter, running);
-			TGNumberPainter.paintDigits(getValue(), painter, fromX - margin.getLeft(), fromY - margin.getTop(), noteSize);
+			this.paintTablatureNoteValuePathMode(layout, painter, margin, fromX, fromY, running);
 		} else {
-			layout.setTabNoteFontStyle(painter, running);
-			
-			String label = this.getNoteLabel(this);
-			float fmWidth = painter.getFMWidth(label);
-			float fmTopLine = painter.getFMTopLine();
-			float fmMiddleLine = painter.getFMMiddleLine();
-			float fmBaseLine = painter.getFMBaseLine();
-			
-			margin.setTop((fmTopLine - fmBaseLine) / 2);
-			margin.setBottom((fmTopLine - fmBaseLine) / 2);
-			margin.setLeft(fmWidth / 2);
-			margin.setRight(fmWidth / 2);
-			
-			this.fillBackground(layout, painter, margin, fromX, fromY);
-			layout.setTabNoteFontStyle(painter, running);
-			painter.drawString(label, fromX - margin.getLeft(), fromY + fmMiddleLine);
+			this.paintTablatureNoteValueTextMode(layout, painter, margin, fromX, fromY, running);
 		}
+	}
+	
+	public void paintTablatureNoteValuePathMode(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY, boolean running) {
+		float noteSize = (layout.getStringSpacing() - 2f);
+		float noteWidth = (this.getEffect().isDeadNote() ? 6f * layout.getScale() : TGNumberPainter.getDigitsWidth(getValue(), noteSize));
+		float ghostWidth = (this.getEffect().isGhostNote() ? 3f * layout.getScale() : 0f);
+		
+		margin.setTop(noteSize / 2f);
+		margin.setBottom(noteSize / 2f);
+		margin.setLeft((noteWidth / 2f) + ghostWidth);
+		margin.setRight((noteWidth / 2f) + ghostWidth);
+		
+		this.fillBackground(layout, painter, margin, fromX, fromY);
+		layout.setTabNotePathStyle(painter, running);
+		if( this.getEffect().isDeadNote() ) {
+			painter.initPath(UIPainter.PATH_DRAW);
+			painter.moveTo(fromX - (margin.getLeft() - ghostWidth), fromY - margin.getTop());
+			painter.lineTo(fromX + (margin.getRight() - ghostWidth), fromY + margin.getBottom());
+			painter.moveTo(fromX + (margin.getRight() - ghostWidth), fromY - margin.getTop());
+			painter.lineTo(fromX - (margin.getLeft() - ghostWidth), fromY + margin.getBottom());
+			
+			painter.closePath();
+		} else {
+			TGNumberPainter.paintDigits(getValue(), painter, fromX - (margin.getLeft() - ghostWidth), fromY - margin.getTop(), noteSize);
+		}
+		
+		if( this.getEffect().isGhostNote() ) {
+			float ghostLineWidth = (2f * layout.getScale());
+			float ghostY1 = fromY - margin.getTop();
+			float ghostY2 = fromY + margin.getBottom();
+			float ghostLeftX1 = fromX - (margin.getLeft() - ghostWidth);
+			float ghostLeftX2 = fromX - margin.getLeft();
+			float ghostRightX1 = fromX + (margin.getRight() - ghostWidth);
+			float ghostRightX2 = fromX + margin.getRight();
+			
+			painter.initPath(UIPainter.PATH_FILL);
+			painter.moveTo(ghostLeftX1, ghostY1);
+			painter.cubicTo(ghostLeftX2 - ghostLineWidth, ghostY1, ghostLeftX2 - ghostLineWidth, ghostY2, ghostLeftX1, ghostY2);
+			painter.cubicTo(ghostLeftX2, ghostY2, ghostLeftX2, ghostY1, ghostLeftX1, ghostY1);
+			painter.closePath();
+			
+			painter.initPath(UIPainter.PATH_FILL);
+			painter.moveTo(ghostRightX1, ghostY1);
+			painter.cubicTo(ghostRightX2 + ghostLineWidth, ghostY1, ghostRightX2 + ghostLineWidth, ghostY2, ghostRightX1, ghostY2);
+			painter.cubicTo(ghostRightX2, ghostY2, ghostRightX2, ghostY1, ghostRightX1, ghostY1);
+			painter.closePath();
+		}
+	}
+	
+	public void paintTablatureNoteValueTextMode(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY, boolean running) {
+		layout.setTabNoteFontStyle(painter, running);
+		
+		String label = this.getNoteLabel(this);
+		float fmWidth = painter.getFMWidth(label);
+		float fmTopLine = painter.getFMTopLine();
+		float fmMiddleLine = painter.getFMMiddleLine();
+		float fmBaseLine = painter.getFMBaseLine();
+		
+		margin.setTop((fmTopLine - fmBaseLine) / 2);
+		margin.setBottom((fmTopLine - fmBaseLine) / 2);
+		margin.setLeft(fmWidth / 2);
+		margin.setRight(fmWidth / 2);
+		
+		this.fillBackground(layout, painter, margin, fromX, fromY);
+		layout.setTabNoteFontStyle(painter, running);
+		painter.drawString(label, fromX - margin.getLeft(), fromY + fmMiddleLine);
 	}
 	
 	public void paintTablatureNote(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing) {
