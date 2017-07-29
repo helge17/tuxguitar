@@ -19,7 +19,6 @@ public class TGResources {
 	
 	private UIFont defaultFont;
 	private UIFont noteFont;
-	private UIFont timeSignatureFont;
 	private UIFont lyricFont;
 	private UIFont textFont;
 	private UIFont markerFont;
@@ -33,9 +32,9 @@ public class TGResources {
 	private UIColor playNoteColor;
 	private UIColor colorWhite;
 	private UIColor colorBlack;
-	private UIColor colorRed;
 	private UIColor loopSMarkerColor;
 	private UIColor loopEMarkerColor;
+	private UIColor measureNumberColor;
 	
 	public TGResources(TGLayout layout){
 		this.layout = layout;
@@ -58,10 +57,6 @@ public class TGResources {
 	
 	public UIFont getNoteFont() {
 		return this.noteFont;
-	}
-	
-	public UIFont getTimeSignatureFont() {
-		return this.timeSignatureFont;
 	}
 	
 	public UIFont getLyricFont(){
@@ -116,10 +111,6 @@ public class TGResources {
 		return this.colorBlack;
 	}
 	
-	public UIColor getColorRed() {
-		return this.colorRed;
-	}
-	
 	public UIColor getLoopSMarkerColor() {
 		return this.loopSMarkerColor;
 	}
@@ -128,11 +119,14 @@ public class TGResources {
 		return this.loopEMarkerColor;
 	}
 	
+	public UIColor getMeasureNumberColor() {
+		return this.measureNumberColor;
+	}
+
 	private void initFonts(TGLayoutStyles style){
 		float scale = this.layout.getFontScale() ;
 		this.defaultFont = getFont(style.getDefaultFont(),scale);
 		this.noteFont = getFont(style.getNoteFont(), scale);
-		this.timeSignatureFont = getFont(style.getTimeSignatureFont(), scale);
 		this.lyricFont = getFont(style.getLyricFont(), scale);
 		this.textFont =  getFont(style.getTextFont(), scale);
 		this.markerFont =  getFont(style.getMarkerFont(), scale);
@@ -149,10 +143,11 @@ public class TGResources {
 		this.playNoteColor = getColor(style.getPlayNoteColor());
 		this.loopSMarkerColor = getColor(style.getLoopSMarkerColor());
 		this.loopEMarkerColor = getColor(style.getLoopEMarkerColor());
+		this.measureNumberColor = getColor(style.getMeasureNumberColor());
+		
 		// Static colors
 		this.colorWhite = getColor(new UIColorModel(0xff,0xff,0xff));
 		this.colorBlack = getColor(new UIColorModel(0x00,0x00,0x00));
-		this.colorRed = getColor(new UIColorModel(0xff,0x00,0x00));
 	}
 	
 	private UIFont getFont(UIFontModel model, float scale){

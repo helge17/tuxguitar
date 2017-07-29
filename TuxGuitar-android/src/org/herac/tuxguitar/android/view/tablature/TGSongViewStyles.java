@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.view.tablature;
 
+import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 
 public class TGSongViewStyles extends TGLayoutStyles {
 	
@@ -44,7 +44,6 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		
 		this.setDefaultFont( new UIFontModel("sans-serif", 8, false , false ) );
 		this.setNoteFont( new UIFontModel("sans-serif", 9 , true ,false )  );
-		this.setTimeSignatureFont( new UIFontModel("sans-serif", 18 , false , false )  );
 		this.setLyricFont( new UIFontModel("sans-serif", 8 , false , false )  );
 		this.setTextFont( new UIFontModel("sans-serif", 8 , false , false )  );
 		this.setMarkerFont( new UIFontModel("sans-serif", 8 , false , false )  );
@@ -58,5 +57,6 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setPlayNoteColor( new UIColorModel(255, 0, 0 ) );
 		this.setLoopSMarkerColor( new UIColorModel(0, 0, 0 ) );
 		this.setLoopEMarkerColor( new UIColorModel(0, 0, 0 ) );
+		this.setMeasureNumberColor( new UIColorModel(255, 0, 0 ) );
 	}
 }

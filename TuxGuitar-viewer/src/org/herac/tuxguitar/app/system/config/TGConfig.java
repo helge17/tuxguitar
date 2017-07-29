@@ -26,7 +26,6 @@ public class TGConfig{
 	
 	public static final UIFontModel FONT_DEFAULT = new UIFontModel(DEFAULT_FONT_NAME, 9, false, false);
 	public static final UIFontModel FONT_NOTE = new UIFontModel(DEFAULT_FONT_NAME, 9, false, false);
-	public static final UIFontModel FONT_TIME_SIGNATURE = new UIFontModel(DEFAULT_FONT_NAME, 14, true, false);
 	public static final UIFontModel FONT_LYRIC = new UIFontModel(DEFAULT_FONT_NAME, 7, false, true);
 	public static final UIFontModel FONT_TEXT = new UIFontModel(DEFAULT_FONT_NAME, 9, false, false);
 	public static final UIFontModel FONT_MARKER = new UIFontModel(DEFAULT_FONT_NAME, 9, false, false);
@@ -42,6 +41,7 @@ public class TGConfig{
 	public static final UIColorModel COLOR_PLAY_NOTE = new UIColorModel(255,0,0);
 	public static final UIColorModel COLOR_LOOP_S_MARKER = new UIColorModel(0,255,0);
 	public static final UIColorModel COLOR_LOOP_E_MARKER = new UIColorModel(255,0,0);
+	public static final UIColorModel COLOR_MEASURE_NUMBER = new UIColorModel(255,0,0);
 	
 	public static String LOOK_FEEL = null;
 	public static String SONG_URL = null;

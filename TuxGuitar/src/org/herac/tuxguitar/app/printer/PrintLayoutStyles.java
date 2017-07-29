@@ -62,7 +62,6 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		
 		this.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
 		this.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
-		this.setTimeSignatureFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TIME_SIGNATURE));
 		this.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));
 		this.setTextFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT));
 		this.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_GRACE));
@@ -75,6 +74,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		this.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
 		this.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		this.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
+		this.setMeasureNumberColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_MEASURE_NUMBER));
 		this.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
 	}
 }

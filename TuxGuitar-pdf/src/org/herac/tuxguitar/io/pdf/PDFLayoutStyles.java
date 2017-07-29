@@ -39,7 +39,6 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setDurationWidths(new float[] {18f, 18f, 16f, 15f, 14f});
 		this.setDefaultFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
 		this.setNoteFont(new UIFontModel(BaseFont.TIMES_BOLD, 9, true, false));
-		this.setTimeSignatureFont(new UIFontModel(BaseFont.TIMES_BOLD, 15, true, false));
 		this.setLyricFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
 		this.setTextFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
 		this.setGraceFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
@@ -53,5 +52,6 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setPlayNoteColor(new UIColorModel(0x00,0x00,0x00));
 		this.setLoopSMarkerColor(new UIColorModel(0x00,0x00,0x00));
 		this.setLoopEMarkerColor(new UIColorModel(0x00,0x00,0x00));
+		this.setMeasureNumberColor(new UIColorModel(0xff,0x00,0x00));
 	}
 }

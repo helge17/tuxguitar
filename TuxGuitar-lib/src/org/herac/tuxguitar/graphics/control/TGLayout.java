@@ -336,7 +336,7 @@ public abstract class TGLayout {
 	public void setMeasureNumberStyle(UIPainter painter){
 		painter.setFont(getResources().getDefaultFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
-		painter.setForeground(getDarkColor(getResources().getColorRed()));
+		painter.setForeground(getDarkColor(getResources().getMeasureNumberColor()));
 	}
 	
 	public void setDivisionsStyle(UIPainter painter, boolean fill){

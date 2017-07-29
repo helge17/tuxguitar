@@ -137,14 +137,13 @@ public class Caret {
 			if (this.selectedMeasure != null && this.selectedBeat instanceof TGBeatImpl) {
 				org.herac.tuxguitar.graphics.control.TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){
-					boolean expectedVoice = (getSelectedNote() == null || getSelectedNote().getVoice().getIndex() == getVoice());
 					float stringSpacing = this.tablature.getViewLayout().getStringSpacing();
 					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);
 					float x = this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - 5f;
 					float y = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - 7;
 					float width = 14;
 					float height = 14;
-					painter.setForeground( expectedVoice ? layout.getResources().getLineColor() : layout.getResources().getColorRed());
+					painter.setForeground(layout.getResources().getLineColor());
 					painter.initPath();
 					painter.setAntialias(false);
 					painter.addRectangle(x, y, width, height);
