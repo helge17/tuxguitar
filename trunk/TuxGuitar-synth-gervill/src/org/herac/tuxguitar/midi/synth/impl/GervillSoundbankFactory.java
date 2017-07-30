@@ -82,7 +82,12 @@ public class GervillSoundbankFactory {
 		return defaultInstruments[program.getBank()][program.getProgram()];
 	}
 	
-	private Soundbank createSoundbank(TGContext context, String soundbankPath) throws Exception {
-		return MidiSystem.getSoundbank(new File(TGExpressionResolver.getInstance(context).resolve(soundbankPath)));
+	private Soundbank createSoundbank(TGContext context, String soundbankPath) {
+		try {
+			return MidiSystem.getSoundbank(new File(TGExpressionResolver.getInstance(context).resolve(soundbankPath)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

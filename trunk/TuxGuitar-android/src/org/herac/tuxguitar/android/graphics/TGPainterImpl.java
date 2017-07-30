@@ -122,12 +122,6 @@ public class TGPainterImpl implements UIPainter {
 		this.canvas.drawText(text, x, y, this.paint);
 	}
 
-	public void drawString(String text, float x, float y, boolean transparent) {
-    	this.paint.setStyle(Paint.Style.FILL);
-    	this.paint.setColor(this.foreground.getHandle(this.alpha));
-		this.canvas.drawText(text, x, y, this.paint);
-	}
-	
 	public void setAdvanced(boolean advanced) {
 		this.setAntialias(advanced);
 	}
@@ -199,19 +193,18 @@ public class TGPainterImpl implements UIPainter {
 	}
 	
 	public float getFMAscent() {
-		return (this.paint.getFontMetrics().ascent);
-	}
+		this.paint.setStyle(Paint.Style.FILL);
 
-	public float getFMDescent() {
-		return (this.paint.getFontMetrics().descent);
+		return this.paint.getFontMetrics().ascent;
 	}
 
 	public float getFMHeight() {
-		return (this.getFMDescent() - this.getFMAscent());
+		return (this.getFMTopLine() - this.getFMBaseLine());
 	}
 
 	public float getFMWidth(String text) {
 		Rect bounds = new Rect();
+		this.paint.setStyle(Paint.Style.FILL);
 		this.paint.getTextBounds(text, 0, text.length(), bounds);
 		return bounds.width();
 	}
