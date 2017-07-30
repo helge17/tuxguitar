@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.synchronizer;
 
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -18,7 +19,7 @@ public class TGSynchronizerControllerImpl implements TGSynchronizerController {
 	}
 	
 	public void executeLater(final Runnable runnable) {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				UIApplication application = TGSynchronizerControllerImpl.this.application.getApplication();
 				if( application != null && !application.isDisposed()){
@@ -33,6 +34,6 @@ public class TGSynchronizerControllerImpl implements TGSynchronizerController {
 					});
 				}
 			}
-		}).start();
+		});
 	}
 }

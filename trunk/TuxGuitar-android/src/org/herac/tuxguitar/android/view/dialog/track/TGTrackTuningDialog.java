@@ -213,6 +213,7 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void updateTuningPresetSelection() {
 		TGTrackTuningModel[] selection = null;
 		for(TGTrackTuningModel[] preset : this.tuningPresets) {

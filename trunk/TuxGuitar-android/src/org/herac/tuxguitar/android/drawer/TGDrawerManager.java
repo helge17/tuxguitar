@@ -26,6 +26,7 @@ public class TGDrawerManager {
 		this.activity = activity;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void initialize() {
 		this.drawerView = (ViewGroup) this.activity.findViewById(R.id.left_drawer);
 

@@ -56,6 +56,7 @@ public class TGTrackTuningModelDialog extends TGModalFragment {
 		editText.setText(TGTrackTuningLabel.valueOf(this.findSelectedValue()));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void fillTuning() {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
