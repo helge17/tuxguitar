@@ -6,6 +6,7 @@ import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
@@ -210,7 +211,7 @@ public class TGEditorManager {
 	}
 	
 	public void asyncRunLocked(final Runnable runnable) {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				try {
 					runLocked(runnable);
@@ -218,7 +219,7 @@ public class TGEditorManager {
 					TGErrorManager.getInstance(TGEditorManager.this.context).handleError(throwable);
 				}
 			}
-		}).start();
+		});
 	}
 
 	public static TGEditorManager getInstance(TGContext context) {

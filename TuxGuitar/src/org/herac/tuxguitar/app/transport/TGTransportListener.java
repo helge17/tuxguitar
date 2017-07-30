@@ -6,59 +6,75 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerEvent;
+import org.herac.tuxguitar.thread.TGThreadLoop;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGTransportListener implements TGEventListener{
 	
 	private TGContext context;
-	private Object sync;
 	
 	public TGTransportListener(TGContext context){
 		this.context = context;
-		this.sync = new Object();
+	}
+	
+	public void startLoop() {
+		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
+			public Long process() {
+				return (processLoop() ? 25 : BREAK);
+			}
+		});
+	}
+	
+	public boolean processLoop() {
+		try {
+			TuxGuitar tuxguitar = TuxGuitar.getInstance();
+			TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
+			MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
+			if( midiPlayer.isRunning() ) {
+				tgEditorManager.lock();
+				try {
+					tuxguitar.getEditorCache().updatePlayMode();
+				} finally {
+					tgEditorManager.unlock();
+				}
+				
+				if( tuxguitar.getEditorCache().shouldRedraw()) {
+					tgEditorManager.redrawPlayingNewBeat();
+				} else {
+					if(!tgEditorManager.isLocked()) {
+						tgEditorManager.redrawPlayingThread();
+					}
+				}
+				return true;
+			} else {
+				TGTransportListener.this.notifyStopped();
+			}
+		} catch (Throwable throwable) {
+			TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
+		}
+		return false;
 	}
 	
 	public void notifyStarted() {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				try {
-					TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
-					
 					TuxGuitar tuxguitar = TuxGuitar.getInstance();
+					tuxguitar.getEditorCache().reset();
 					tuxguitar.updateCache(true);
 					
-					MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
-					while( midiPlayer.isRunning() ) {
-						tgEditorManager.lock();
-						try {
-							tuxguitar.getEditorCache().updatePlayMode();
-						} finally {
-							tgEditorManager.unlock();
-						}
-						
-						if( tuxguitar.getEditorCache().shouldRedraw() ) {
-							tgEditorManager.redrawPlayingNewBeat();
-						} else {
-							if(!tgEditorManager.isLocked() ) {
-								tgEditorManager.redrawPlayingThread();
-							}
-						}
-						
-						synchronized( TGTransportListener.this.sync ){
-							TGTransportListener.this.sync.wait(25);
-						}
-					}
-					TGTransportListener.this.notifyStopped();
+					TGTransportListener.this.startLoop();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
 				}
 			}
-		}).start();
+		});
 	}
 	
 	public void notifyStopped() {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
@@ -73,7 +89,7 @@ public class TGTransportListener implements TGEventListener{
 					tgEditorManager.unlock();
 				}
 			}
-		}).start();
+		});
 	}
 	
 	public void processEvent(TGEvent event) {

@@ -1,14 +1,7 @@
 package org.herac.tuxguitar.android.view.dialog.measure;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
@@ -19,8 +12,15 @@ import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 public class TGMeasurePasteDialog extends TGModalFragment {
 
@@ -78,7 +78,6 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 	}
 	
 	public void fillOptions() {
-		TGMeasureHeader header = this.getHeader();
 		this.fillOption(R.id.measure_paste_dlg_options_mode_replace, TGPasteMeasureAction.TRANSFER_TYPE_REPLACE, true);
 		this.fillOption(R.id.measure_paste_dlg_options_mode_insert, TGPasteMeasureAction.TRANSFER_TYPE_INSERT, false);
 	}

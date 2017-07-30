@@ -7,6 +7,8 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerEvent;
+import org.herac.tuxguitar.thread.TGThreadLoop;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
@@ -14,20 +16,48 @@ public class TGTransportListener implements TGEventListener{
 	
 	private TGContext context;
 	
-	protected Object sync;
-	
 	public TGTransportListener(TGContext context){
 		this.context = context;
-		
-		this.sync = new Object();
+	}
+	
+	public void startLoop() {
+		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
+			public Long process() {
+				return (processLoop() ? 25 : BREAK);
+			}
+		});
+	}
+	
+	public boolean processLoop() {
+		try {
+			TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
+			TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
+			MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
+			if( midiPlayer.isRunning() ) {
+				tgEditorManager.lock();
+				try {
+					tgTransport.getCache().updatePlayMode();
+				} finally {
+					tgEditorManager.unlock();
+				}
+				
+				if( tgTransport.getCache().shouldRedraw() ) {
+					tgEditorManager.redrawPlayingNewBeat();
+				}
+				return true;
+			} else {
+				TGTransportListener.this.notifyStopped();
+			}
+		} catch (Throwable throwable) {
+			TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
+		}
+		return false;
 	}
 	
 	public void notifyStarted() {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				try {
-					TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
-					
 					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 					tgTransport.getCache().reset();
 					
@@ -36,33 +66,16 @@ public class TGTransportListener implements TGEventListener{
 						activity.updateCache(true);
 					}
 					
-					MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
-					while( midiPlayer.isRunning() ) {
-						tgEditorManager.lock();
-						try {
-							tgTransport.getCache().updatePlayMode();
-						} finally {
-							tgEditorManager.unlock();
-						}
-						
-						if( tgTransport.getCache().shouldRedraw() ) {
-							tgEditorManager.redrawPlayingNewBeat();
-						}
-						
-						synchronized( TGTransportListener.this.sync ){
-							TGTransportListener.this.sync.wait(25);
-						}
-					}
-					TGTransportListener.this.notifyStopped();
+					TGTransportListener.this.startLoop();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
 				}
 			}
-		}).start();
+		});
 	}
 	
 	public void notifyStopped() {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
@@ -77,7 +90,7 @@ public class TGTransportListener implements TGEventListener{
 					tgEditorManager.unlock();
 				}
 			}
-		}).start();
+		});
 	}
 	
 	public void processEvent(TGEvent event) {

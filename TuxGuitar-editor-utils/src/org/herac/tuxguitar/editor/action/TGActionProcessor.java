@@ -7,6 +7,7 @@ import java.util.Map;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
 
@@ -92,11 +93,11 @@ public class TGActionProcessor {
 	}
 	
 	public void processOnNewThread(final Map<String, Object> customAttributes){
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				processOnCurrentThread(customAttributes);
 			}
-		}).start();
+		});
 	}
 	
 	public void processOnNewThread(){

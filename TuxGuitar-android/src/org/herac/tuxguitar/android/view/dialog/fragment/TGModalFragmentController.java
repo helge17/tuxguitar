@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.android.view.dialog.fragment;
 
-import android.app.Activity;
-
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.fragment.TGCachedFragmentController;
@@ -10,6 +8,8 @@ import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
+
+import android.app.Activity;
 
 public abstract class TGModalFragmentController<T extends TGModalFragment> extends TGCachedFragmentController<T> implements TGDialogController {
 
@@ -22,21 +22,21 @@ public abstract class TGModalFragmentController<T extends TGModalFragment> exten
 		tgActionProcessor.process();
 	}
 
-	private class TGModalFragmentControllerWrapper<T extends TGModalFragment> implements TGFragmentController<T> {
+	private class TGModalFragmentControllerWrapper<E extends TGModalFragment> implements TGFragmentController<E> {
 
 		private TGContext context;
 		private TGDialogContext dialogContext;
-		private TGModalFragmentController<T> target;
+		private TGModalFragmentController<E> target;
 
-		public TGModalFragmentControllerWrapper(TGModalFragmentController<T> target, TGContext context, TGDialogContext dialogContext) {
+		public TGModalFragmentControllerWrapper(TGModalFragmentController<E> target, TGContext context, TGDialogContext dialogContext) {
 			this.target = target;
 			this.context = context;
 			this.dialogContext = dialogContext;
 		}
 
 		@Override
-		public T getFragment() {
-			T fragment = this.target.getFragment();
+		public E getFragment() {
+			E fragment = this.target.getFragment();
 
 			this.context.setAttribute(fragment.getDialogContextKey(), this.dialogContext);
 

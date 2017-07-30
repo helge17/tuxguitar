@@ -395,13 +395,13 @@ public class TuxGuitar {
 	}
 	
 	public void playBeat( final TGBeat beat ){
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() throws TGException {
 				if(!isDisposed() && !getPlayer().isRunning() ){
 					getPlayer().playBeat(beat);
 				}
 			}
-		}).start();
+		});
 	}
 	
 	public boolean isInitialized() {
