@@ -1,15 +1,5 @@
 package org.herac.tuxguitar.android.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuItem;
-import android.view.View;
-
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
@@ -37,6 +27,16 @@ import org.herac.tuxguitar.util.TGLock;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
+import android.view.View;
 
 public class TGActivity extends Activity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -80,6 +80,7 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		super.onDestroy();
 
 		this.detachInstance();
+		this.destroyModules();
 		this.clearContext();
 		this.destroyed = true;
 	}
@@ -172,6 +173,11 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		TGTransportAdapter.getInstance(context).initialize();
 	}
 
+	public void destroyModules() {
+		TGContext context = this.findContext();
+		TGThreadManager.getInstance(context).dispose();
+	}
+	
 	public void connectPlugins() {
 		TGPluginManager.getInstance(this.context).connectEnabled();
 	}
