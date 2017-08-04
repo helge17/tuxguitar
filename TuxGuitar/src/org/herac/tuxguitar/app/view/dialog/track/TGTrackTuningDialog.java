@@ -370,7 +370,7 @@ public class TGTrackTuningDialog {
 	}
 	
 	private void updateTuningFromPreset(TGTrackTuningModel[] preset) {
-		List<TGTrackTuningModel> models = new ArrayList<>();
+		List<TGTrackTuningModel> models = new ArrayList<TGTrackTuningModel>();
 		for(TGTrackTuningModel presetModel : preset) {
 			TGTrackTuningModel model = new TGTrackTuningModel();
 			model.setValue(presetModel.getValue());

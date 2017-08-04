@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.action.listener.cache;
 
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.action.TGActionEvent;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
 import org.herac.tuxguitar.app.action.TGActionAdapterManager;
@@ -29,35 +30,40 @@ public class TGUpdateListener implements TGEventListener {
 		}
 	}
 	
-	public void processPreExecution(TGActionContext actionContext) {
-		TGUpdateContext updateContext = TGUpdateContext.getInstance(this.manager.getContext(), actionContext);
-		
-		if( updateContext.getLevel().equals(0) ) {
-			updateContext.getBuffer().clear();
+	public void processPreExecution(String actionId, TGActionContext actionContext) {
+		if( this.controllers.get(actionId) != null ) {
+			TGUpdateContext updateContext = TGUpdateContext.getInstance(this.manager.getContext(), actionContext);
+			
+			if( updateContext.getLevel().equals(0) ) {
+				updateContext.getBuffer().clear();
+			}
+			
+			updateContext.incrementLevel();
 		}
-		
-		updateContext.incrementLevel();
 	}
 	
 	public void processPostExecution(String actionId, TGActionContext actionContext) {
-		TGUpdateContext updateContext = TGUpdateContext.getInstance(this.manager.getContext(), actionContext);
-		updateContext.decrementLevel();
-		
-		this.processUpdate(actionId, actionContext);
-		
-		if( updateContext.getLevel().equals(0) ) {
-			updateContext.getBuffer().apply(actionContext);
+		if( this.controllers.get(actionId) != null ) {
+			TGUpdateContext updateContext = TGUpdateContext.getInstance(this.manager.getContext(), actionContext);
+			updateContext.decrementLevel();
+			
+			this.processUpdate(actionId, actionContext);
+			
+			if( updateContext.getLevel().equals(0) ) {
+				updateContext.getBuffer().apply(actionContext);
+			}
 		}
 	}
 	
 	public void processPreExecution(TGEvent event) {
+		String actionId = event.getAttribute(TGActionEvent.ATTRIBUTE_ACTION_ID);
 		TGActionContext actionContext = event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
 		
-		this.processPreExecution(actionContext);
+		this.processPreExecution(actionId, actionContext);
 	}
 	
 	public void processPostExecution(TGEvent event) {
-		String actionId = event.getAttribute(TGActionPostExecutionEvent.ATTRIBUTE_ACTION_ID);
+		String actionId = event.getAttribute(TGActionEvent.ATTRIBUTE_ACTION_ID);
 		TGActionContext actionContext = event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
 		
 		this.processPostExecution(actionId, actionContext);
