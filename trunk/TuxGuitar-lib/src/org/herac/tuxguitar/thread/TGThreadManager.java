@@ -30,6 +30,12 @@ public class TGThreadManager implements TGThreadHandler {
 		}
 	}
 	
+	public void dispose() {
+		if( this.handler != null ) {
+			this.handler.dispose();
+		}
+	}
+	
 	public Object getThreadId() {
 		if( this.handler != null ) {
 			return this.handler.getThreadId();

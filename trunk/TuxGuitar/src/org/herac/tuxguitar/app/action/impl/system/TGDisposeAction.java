@@ -16,6 +16,7 @@ import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
 import org.herac.tuxguitar.app.view.toolbar.main.TGMainToolBar;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
@@ -70,5 +71,6 @@ public class TGDisposeAction extends TGActionBase {
 		TGColorManager.getInstance(getContext()).dispose();
 		TGWindow.getInstance(getContext()).getWindow().dispose();
 		TGApplication.getInstance(getContext()).dispose();
+		TGThreadManager.getInstance(getContext()).dispose();
 	}
 }

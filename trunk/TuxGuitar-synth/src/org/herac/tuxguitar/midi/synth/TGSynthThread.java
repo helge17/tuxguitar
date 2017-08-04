@@ -20,8 +20,6 @@ public class TGSynthThread implements Runnable {
 		while(this.isRunning()) {
 			audioProcessor.process();
 			audioLine.write(audioProcessor.getBuffer());
-			
-			Thread.yield();
 		}
 		
 		this.finished = true;

@@ -8,46 +8,50 @@ import org.herac.tuxguitar.util.TGException;
 public class TGMultiThreadHandler implements TGThreadHandler, Runnable {
 	
 	private static final int WORKER_COUNT = 10;
+	
+	private boolean running;
 	private Object mutex;
 	private List<Runnable> queue;
 	
 	public TGMultiThreadHandler() {
 		this.mutex = new Object();
 		this.queue = new ArrayList<Runnable>();
+		this.running = true;
 		
+		this.initialize();
+	}
+	
+	public void initialize() {		
 		for(int i = 0 ; i < WORKER_COUNT ; i ++) {
 			new Thread(this).start();
 		}
 	}
-	
-	public Object getThreadId() {
-		return Thread.currentThread().getId();
-	}
-	
-	public void yield() {
-		Thread.yield();
-	}
-	
+
 	public void start(Runnable runnable) {
 		synchronized (this.mutex) {
 			this.queue.add(runnable);
 		}
 	}
 	
-	public void loop(TGThreadLoop loop) {
-		try {
-			Object mutex = new Object();
-			Long timeout = null;
-			while(!TGThreadLoop.BREAK.equals((timeout = loop.process()))) {
-				if( timeout != null && timeout > 0 ) {
-					synchronized(mutex) {
-						mutex.wait(timeout);
+	public void loop(final TGThreadLoop loop) {
+		final Object mutex = new Object();
+		this.start(new Runnable() {
+			public void run() {
+				try {
+					Long timeout = loop.process();
+					if(!TGThreadLoop.BREAK.equals(timeout)) {
+						if( timeout != null && timeout > 0 ) {
+							synchronized(mutex) {
+								mutex.wait(timeout);
+							}
+						}
+						TGMultiThreadHandler.this.start(this);
 					}
+				} catch (InterruptedException e) {
+					throw new TGException(e.getMessage(), e);
 				}
 			}
-		} catch (InterruptedException e) {
-			throw new TGException(e.getMessage(), e);
-		}
+		});
 	}
 	
 	public void processNext() {
@@ -63,10 +67,22 @@ public class TGMultiThreadHandler implements TGThreadHandler, Runnable {
 	}
 	
 	public void run() {
-		while(true) {
+		while(this.running || !this.queue.isEmpty()) {
 			this.processNext();
 			this.yield();
 		}
+	}
+	
+	public void yield() {
+		Thread.yield();
+	}
+	
+	public void dispose() {
+		this.running = false;
+	}
+	
+	public Object getThreadId() {
+		return Thread.currentThread().getId();
 	}
 }
 
