@@ -483,13 +483,13 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGUpdateChannelAction.NAME, LOCKABLE, new TGUpdateModifiedChannelController(), new TGUndoableModifyChannelController());
 		
 		//transport actions
-		this.map(TGTransportPlayAction.NAME, SHORTCUT);
-		this.map(TGTransportStopAction.NAME, SHORTCUT);
-		this.map(TGTransportMetronomeAction.NAME, SHORTCUT);
-		this.map(TGTransportCountDownAction.NAME, SHORTCUT);
-		this.map(TGTransportModeAction.NAME);
-		this.map(TGTransportSetLoopSHeaderAction.NAME, SHORTCUT);
-		this.map(TGTransportSetLoopEHeaderAction.NAME, SHORTCUT);
+		this.map(TGTransportPlayAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportStopAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportMetronomeAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportCountDownAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportModeAction.NAME, LOCKABLE);
+		this.map(TGTransportSetLoopSHeaderAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportSetLoopEHeaderAction.NAME, LOCKABLE | SHORTCUT);
 		
 		//marker actions
 		this.map(TGUpdateMarkerAction.NAME, LOCKABLE, new TGUpdateModifiedMarkerController(), new TGUndoableMarkerGenericController());
@@ -512,10 +512,10 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		
 		//tools
-		this.map(TGSelectScaleAction.NAME);
+		this.map(TGSelectScaleAction.NAME, LOCKABLE);
 		this.map(TGTransposeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
-		this.map(TGShowExternalBeatAction.NAME);
-		this.map(TGHideExternalBeatAction.NAME);
+		this.map(TGShowExternalBeatAction.NAME, LOCKABLE);
+		this.map(TGHideExternalBeatAction.NAME, LOCKABLE);
 		
 		//settings
 		this.map(TGReloadSettingsAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
@@ -525,60 +525,56 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGReloadStylesAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		this.map(TGReloadTableSettingsAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		this.map(TGReloadMidiDevicesAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
-		this.map(TGOpenSettingsEditorAction.NAME, SHORTCUT);
-		this.map(TGOpenKeyBindingEditorAction.NAME, SHORTCUT);
-		this.map(TGOpenPluginListDialogAction.NAME, SHORTCUT);
+		this.map(TGOpenSettingsEditorAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGOpenKeyBindingEditorAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGOpenPluginListDialogAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		
 		//gui actions
 		this.map(TGOpenViewAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGToggleViewAction.NAME, LOCKABLE | SYNC_THREAD);
-		this.map(TGOpenSongInfoDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTempoDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenClefDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenKeySignatureDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTimeSignatureDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTripletFeelDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenStrokeUpDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenStrokeDownDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenBendDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTrillDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTremoloPickingDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTremoloBarDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenHarmonicDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenGraceDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenBeatMoveDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTextDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenChordDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenRepeatCloseDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenRepeatAlternativeDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenMeasureAddDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenMeasureCleanDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenMeasureRemoveDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenMeasureCopyDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenMeasurePasteDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTrackTuningDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenTrackPropertiesDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGOpenScaleDialogAction.NAME, SHORTCUT);
-		this.map(TGOpenURLAction.NAME, SHORTCUT);
-		this.map(TGOpenTransportModeDialogAction.NAME, SHORTCUT);
-		this.map(TGOpenMarkerEditorAction.NAME, SHORTCUT);
-		this.map(TGOpenTransposeDialogAction.NAME, DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGToggleFretBoardEditorAction.NAME, SHORTCUT);
-		this.map(TGTogglePianoEditorAction.NAME, SHORTCUT);
-		this.map(TGToggleMatrixEditorAction.NAME, SHORTCUT);
-		this.map(TGToggleLyricEditorAction.NAME, SHORTCUT);
-		this.map(TGToggleChannelsDialogAction.NAME, SHORTCUT);
-		this.map(TGToggleBrowserAction.NAME, SHORTCUT);
-		this.map(TGToggleTransportDialogAction.NAME, SHORTCUT);
-		this.map(TGToggleMarkerListAction.NAME, SHORTCUT);
-		this.map(TGToggleMainToolbarAction.NAME, SHORTCUT);
-		this.map(TGToggleEditToolbarAction.NAME, SHORTCUT);
-		this.map(TGOpenDocumentationDialogAction.NAME, SHORTCUT);
-		this.map(TGOpenAboutDialogAction.NAME, SHORTCUT);
-	}
-	
-	private void map(String actionId) {
-		this.map(actionId, 0, UPDATE_ITEMS_CTL, null);
+		this.map(TGOpenSongInfoDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTempoDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenClefDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenKeySignatureDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTimeSignatureDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTripletFeelDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenStrokeUpDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenStrokeDownDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenBendDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTrillDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTremoloPickingDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTremoloBarDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenHarmonicDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenGraceDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenBeatMoveDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTextDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenChordDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenRepeatCloseDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenRepeatAlternativeDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasureAddDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasureCleanDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasureRemoveDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasureCopyDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasurePasteDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTrackTuningDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenTrackPropertiesDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenScaleDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenURLAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenTransportModeDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenMarkerEditorAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenTransposeDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGToggleFretBoardEditorAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGTogglePianoEditorAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleMatrixEditorAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleLyricEditorAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleChannelsDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleBrowserAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleTransportDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleMarkerListAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleMainToolbarAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleEditToolbarAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenDocumentationDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenAboutDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 	}
 	
 	private void map(String actionId, int flags) {
