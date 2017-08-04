@@ -72,8 +72,8 @@ public class GervillSoundbankFactory {
 					Instrument[] instruments = soundbank.getInstruments();
 					for(Instrument instrument : instruments) {
 						ModelPatch patch = (ModelPatch) instrument.getPatch();
-						if((patch.getBank() < 128 && patch.getProgram() < 128) || patch.isPercussion() ) {
-							defaultInstruments[patch.isPercussion() ? 128 : patch.getBank()][patch.isPercussion() ? 0 : patch.getProgram()] = instrument;
+						if( patch.getProgram() < 128 && patch.getBank() < 128 ) {
+							defaultInstruments[patch.isPercussion() ? 128 : patch.getBank()][patch.getProgram()] = instrument;
 						}
 					}
 				}

@@ -49,6 +49,8 @@
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
+		<module>../../TuxGuitar-synth</module>
+		<module>../../TuxGuitar-synth-gervill</module>
 	</modules>
 
 	<build>
@@ -276,6 +278,18 @@
 									<destFileName>tuxguitar-svg.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth</artifactId>
+									<destFileName>tuxguitar-synth.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-gervill</artifactId>
+									<destFileName>tuxguitar-synth-gervill.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
 								<!-- /PLUGINS -->
 
 							</artifactItems>
@@ -343,6 +357,7 @@
 				<module>../native-modules/tuxguitar-jack-linux-x86</module>
 				<module>../native-modules/tuxguitar-oss-linux-x86</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux-x86</module>
+				<module>../native-modules/tuxguitar-synth-vst-linux-x86</module>
 			</modules>
 
 			<build>
@@ -369,6 +384,9 @@
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86/target/build" />
+										</copy>
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="../native-modules/tuxguitar-synth-vst-linux-x86/target/build" />
 										</copy>
 										
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />

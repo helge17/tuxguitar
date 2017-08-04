@@ -95,7 +95,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		
 		String bankPrefix = TuxGuitar.getProperty("instrument.bank");
 		this.bank = uiFactory.createDropDownSelect(programGroup);
-		for(int i = 0; i < 128; i++) {
+		for(int i = 0; i < 129; i++) {
 			this.bank.addItem(new UISelectItem<Integer>((bankPrefix + " #" + i), i));
 		}
 		this.bank.addSelectionListener(this);
