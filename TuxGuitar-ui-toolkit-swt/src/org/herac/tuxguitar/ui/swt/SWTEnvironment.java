@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
@@ -12,6 +13,7 @@ public class SWTEnvironment {
 	
 	private static final String PLATFORM_GTK = "gtk";
 	private static final String PLATFORM_WIN32 = "win32";
+	private static final String PLATFORM_COCOA = "cocoa";
 	
 	private static final String SWT_GTK3 = "SWT_GTK3";
 	private static final String SWT_GTK3_FALSE = "0";
@@ -59,9 +61,17 @@ public class SWTEnvironment {
 	
 	public boolean isToolItemResizeAvailable() {
 		if( this.toolItemResizeAvailable == null ) {
-			this.toolItemResizeAvailable = (PLATFORM_WIN32.equals(SWT.getPlatform()));
+			this.toolItemResizeAvailable = (PLATFORM_WIN32.equals(SWT.getPlatform()) || PLATFORM_COCOA.equals(SWT.getPlatform()));
 		}
 		return this.toolItemResizeAvailable;
+	}
+	
+	public int getToolItemWidth(ToolItem control) {
+		int style = control.getStyle();
+		if((style & SWT.SEPARATOR) == 0 && PLATFORM_COCOA.equals(SWT.getPlatform())) {
+			return ((style & SWT.HORIZONTAL) != 0 ? control.getBounds().width : control.getBounds().height);
+		}
+		return control.getWidth();
 	}
 	
 	public String getDropDownSelectAlternative() {

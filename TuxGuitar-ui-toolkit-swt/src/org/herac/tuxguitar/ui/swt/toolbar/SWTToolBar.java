@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.ui.UIComponent;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
+import org.herac.tuxguitar.ui.swt.SWTEnvironment;
 import org.herac.tuxguitar.ui.swt.widget.SWTContainer;
 import org.herac.tuxguitar.ui.swt.widget.SWTControl;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
@@ -107,7 +108,7 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 			float packedSize = this.findClientMargin();
 			for(SWTToolItem control : this.toolItems) {
 				packedSize += findLeftMargin(control.getControl());
-				packedSize += control.getControl().getWidth();
+				packedSize += findItemWidth(control.getControl());
 			}
 			
 			for(SWTToolCustomItem control : this.toolCustomItems) {
@@ -138,7 +139,7 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 			
 			for(SWTToolItem control : this.toolItems) {
 				itemsWidth += findLeftMargin(control.getControl());
-				itemsWidth += control.getControl().getWidth();
+				itemsWidth += findItemWidth(control.getControl());
 				itemsHeight = Math.max(itemsHeight, this.findHeight(control.getControl().getBounds()));
 			}
 			
@@ -211,6 +212,10 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 			}
 		}
 		return null;
+	}
+	
+	private int findItemWidth(ToolItem control) {
+		return SWTEnvironment.getInstance().getToolItemWidth(control);
 	}
 	
 	private int findPosition(Rectangle r) {
