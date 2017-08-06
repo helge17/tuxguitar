@@ -3,6 +3,13 @@
 DIR_NAME=`dirname "$0"`
 DIR_NAME=`cd "$DIR_NAME"; pwd`
 cd "${DIR_NAME}"
+##JAVA
+if [ -z "$JAVA" ]; then
+	JAVA="${JAVA_HOME}/bin/java"
+	[ ! -f "${JAVA}" ] && JAVA="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java"
+	[ ! -f "${JAVA}" ] && JAVA="/usr/bin/java"
+	[ ! -f "${JAVA}" ] && JAVA="java"
+fi
 ##CLASSPATH
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit.jar
@@ -30,4 +37,4 @@ VM_ARGS="-Xmx512m"
 ##SWT ARGUMENTS
 SWT_ARGS="-XstartOnFirstThread"
 ##LAUNCH
-exec java ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"
+exec "${JAVA}" ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"

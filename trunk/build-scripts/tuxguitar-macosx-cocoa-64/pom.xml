@@ -333,7 +333,7 @@
 									<fileset dir="../common-resources/common-macosx"/>
 								</copy>
 								
-								<chmod file="${project.build.directory}/${project.finalName}/Contents/MacOS/tuxguitar" perm="755" />
+								<chmod file="${project.build.directory}/${project.finalName}/Contents/MacOS/tuxguitar.sh" perm="755" />
 							</target>
 						</configuration>
 						<goals>

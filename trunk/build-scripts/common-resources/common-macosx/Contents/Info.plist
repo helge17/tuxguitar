@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 <key>CFBundleExecutable</key>
-<string>tuxguitar</string>
+<string>tuxguitar.sh</string>
 <key>CFBundleGetInfoString</key>
 <string>TuxGuitar 1.2 for Mac OS X</string>
 <key>CFBundleIconFile</key>
