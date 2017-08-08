@@ -11,8 +11,8 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 	
 	private UIFactory factory;
 	
-	public SWTApplication() {
-		super(new Display());
+	public SWTApplication(String name) {
+		super(createDisplay(name));
 		
 		this.factory = new SWTFactory(this.getControl());
 	}
@@ -36,10 +36,6 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 	public void runInUiThread(Runnable runnable) {
 		this.getControl().asyncExec(runnable);
 	}
-
-	public void setApplicationName(String name) {
-		Display.setAppName(name);
-	}
 	
 	public void openUrl(URL url) {
 		Program.launch(url.toExternalForm());
@@ -61,5 +57,11 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 				this.getControl().sleep();
 			}
 		}
+	}
+	
+	private static Display createDisplay(String name) {
+		Display.setAppName(name);
+		
+		return new Display();
 	}
 }

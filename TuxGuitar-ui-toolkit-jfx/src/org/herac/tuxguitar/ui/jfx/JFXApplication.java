@@ -2,10 +2,10 @@ package org.herac.tuxguitar.ui.jfx;
 
 import java.net.URL;
 
-import javafx.application.Platform;
-
 import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.ui.UIFactory;
+
+import javafx.application.Platform;
 
 public class JFXApplication extends JFXComponent<JFXApplicationHandle> implements UIApplication {
 	
@@ -25,10 +25,6 @@ public class JFXApplication extends JFXComponent<JFXApplicationHandle> implement
 		return this.uiFactory;
 	}
 
-	public void setApplicationName(String name) {
-		//TODO
-	}
-	
 	public void openUrl(URL url) {
 		//TODO
 	}
