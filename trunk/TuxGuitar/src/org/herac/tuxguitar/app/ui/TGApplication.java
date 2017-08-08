@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.ui.UIApplication;
+import org.herac.tuxguitar.ui.UIApplicationFactory;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -21,17 +22,16 @@ public class TGApplication {
 	
 	public TGApplication(TGContext context) {
 		this.context = context;
-		this.application = this.lookupApplication();
-		this.application.setApplicationName(NAME);
+		this.application = this.lookupApplication().createApplication(NAME);
 		this.factory = this.application.getFactory();
 	}
 	
-	private UIApplication lookupApplication() {
-		Iterator<UIApplication> it = TGServiceReader.lookupProviders(UIApplication.class, TGResourceManager.getInstance(this.context));
+	private UIApplicationFactory lookupApplication() {
+		Iterator<UIApplicationFactory> it = TGServiceReader.lookupProviders(UIApplicationFactory.class, TGResourceManager.getInstance(this.context));
 		if( it.hasNext() ){
 			return it.next();
 		}
-		throw new TGException("No implementation class found for: " + UIApplication.class.getName());
+		throw new TGException("No implementation class found for: " + UIApplicationFactory.class.getName());
 	}
 	
 	public UIApplication getApplication() {

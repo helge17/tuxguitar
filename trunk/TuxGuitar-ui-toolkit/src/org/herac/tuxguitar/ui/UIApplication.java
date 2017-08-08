@@ -6,8 +6,6 @@ public interface UIApplication extends UIComponent {
 	
 	UIFactory getFactory();
 	
-	void setApplicationName(String name);
-	
 	void openUrl(URL url);
 	
 	void start(Runnable runnable);

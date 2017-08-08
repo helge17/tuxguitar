@@ -1,17 +1,19 @@
 package org.herac.tuxguitar.cocoa.menu;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
-import org.herac.tuxguitar.app.TuxGuitar;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
 import org.herac.tuxguitar.cocoa.TGCocoa;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class MacMenu {
 	
@@ -57,6 +59,13 @@ public class MacMenu {
 				TGCocoa.setControlAction(menuItem, sel_aboutMenuItemSelected_);
 			}
 		}
+		
+		Display.getCurrent().addListener(SWT.Close, new Listener() {
+			public void handleEvent(Event event) {
+				handleQuitCommand();
+				event.doit = false;
+			}
+		});
 	}
 	
 	public long callbackProc( long id, long sel, long arg0 ) {
@@ -102,10 +111,6 @@ public class MacMenu {
 	}
 	
 	private void executeAction(final String actionId){
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() throws TGException {
-				TuxGuitar.getInstance().getActionManager().execute(actionId);
-			}
-		});
+		new TGActionProcessor(this.context, actionId).process();
 	}
 }

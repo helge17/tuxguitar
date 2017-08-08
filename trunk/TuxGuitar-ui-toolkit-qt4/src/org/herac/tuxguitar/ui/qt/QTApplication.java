@@ -14,11 +14,13 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	private UIFactory uiFactory;
 	private QTEnvironment environment;
 	
-	public QTApplication() {
+	public QTApplication(String name) {
 		super(new QTApplicationHandle());
 		
 		this.environment = new QTEnvironment();
 		this.uiFactory = new QTFactory();
+		
+		this.getControl().setApplicationName(name);
 	}
 	
 	public void dispose() {
@@ -29,10 +31,6 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	
 	public UIFactory getFactory() {
 		return this.uiFactory;
-	}
-
-	public void setApplicationName(String name) {
-		this.getControl().setApplicationName(name);
 	}
 	
 	public void openUrl(URL url) {
