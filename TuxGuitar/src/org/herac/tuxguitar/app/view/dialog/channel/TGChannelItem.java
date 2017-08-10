@@ -27,6 +27,10 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGChannelItem {
 	
+	private static final int MINIMUM_KNOB_VALUE = 0;
+	private static final int MAXIMUM_KNOB_VALUE = 127;
+	private static final int MINIMUM_KNOB_INCREMENT = 4;
+	
 	private TGChannel channel;
 	private TGChannelManagerDialog dialog;
 	private TGChannelSettingsDialog channelUI;
@@ -143,26 +147,44 @@ public class TGChannelItem {
 		TGKnobSelectionListener scaleSelectionListener = new TGKnobSelectionListener(this);
 		
 		this.volumeScale = uiFactory.createKnob(controllerScalesComposite);
+		this.volumeScale.setMinimum(MINIMUM_KNOB_VALUE);
+		this.volumeScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.volumeScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.volumeScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.volumeScale, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.balanceScale = uiFactory.createKnob(controllerScalesComposite);
+		this.balanceScale.setMinimum(MINIMUM_KNOB_VALUE);
+		this.balanceScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.balanceScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.balanceScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.balanceScale, 1, 2, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.reverbScale = uiFactory.createKnob(controllerScalesComposite);
+		this.reverbScale.setMinimum(MINIMUM_KNOB_VALUE);
+		this.reverbScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.reverbScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.reverbScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.reverbScale, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.chorusScale = uiFactory.createKnob(controllerScalesComposite);
+		this.chorusScale.setMinimum(MINIMUM_KNOB_VALUE);
+		this.chorusScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.chorusScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.chorusScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.chorusScale, 1, 4, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.tremoloScale = uiFactory.createKnob(controllerScalesComposite);
+		this.tremoloScale.setMinimum(MINIMUM_KNOB_VALUE);
+		this.tremoloScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.tremoloScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.tremoloScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.tremoloScale, 1, 5, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.phaserScale = uiFactory.createKnob(controllerScalesComposite);
+		this.phaserScale.setMinimum(MINIMUM_KNOB_VALUE);
+		this.phaserScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.phaserScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.phaserScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.phaserScale, 1, 6, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 		
