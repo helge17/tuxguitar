@@ -13,6 +13,7 @@ import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
@@ -204,12 +205,14 @@ public class TGChannelManagerDialog implements TGEventListener {
 		return this.channelList.getControl();
 	}
 	
-	private void changeVolume(){
-		int volume = (short)(this.volumeScale.getMaximum() - this.volumeScale.getValue());
-		if( volume != TuxGuitar.getInstance().getPlayer().getVolume()){
-			TuxGuitar.getInstance().getPlayer().setVolume(volume);
-			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.getInstance().getPlayer().getVolume());
-			this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getValue()));
+	private void changeVolume() {		
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
+		
+		int volume = this.volumeScale.getValue();
+		if( volume != midiPlayer.getVolume()){
+			midiPlayer.setVolume(volume);
+			this.volumeScale.setToolTipText(this.volumeTip + ": " + volume);
+			this.volumeValueLabel.setText(Integer.toString(volume));
 			this.volumeValue = volume;
 		}
 	}
@@ -224,10 +227,10 @@ public class TGChannelManagerDialog implements TGEventListener {
 			
 			this.channelList.updateItems();
 			
-			int volume = TuxGuitar.getInstance().getPlayer().getVolume();
+			int volume = MidiPlayer.getInstance(this.context).getVolume();
 			if( force || this.volumeValue != volume ){
-				this.volumeScale.setValue(this.volumeScale.getMaximum() - TuxGuitar.getInstance().getPlayer().getVolume());
-				this.volumeValueLabel.setText(Integer.toString(this.volumeScale.getMaximum() - this.volumeScale.getValue()));
+				this.volumeScale.setValue(volume);
+				this.volumeValueLabel.setText(Integer.toString(volume));
 				this.volumeValue = volume;
 			}
 			
@@ -241,7 +244,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 			
 			this.volumeValueTitleLabel.setText(TuxGuitar.getProperty("instruments.volume") + ":");
 			this.volumeTip = TuxGuitar.getProperty("instruments.volume");
-			this.volumeScale.setToolTipText(this.volumeTip + ": " + TuxGuitar.getInstance().getPlayer().getVolume());
+			this.volumeScale.setToolTipText(this.volumeTip + ": " + MidiPlayer.getInstance(this.context).getVolume());
 			this.dialog.setText(TuxGuitar.getProperty("instruments.dialog-title"));
 			
 			this.channelList.loadProperties();
