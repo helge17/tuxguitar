@@ -85,17 +85,25 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		return this.parent;
 	}
 	
-	public void setBounds(UIRectangle bounds) {
-		if(!this.getBounds().equals(bounds)) {
+	public void setControlBounds(UIRectangle bounds) {
+		if(!this.getControlBounds().equals(bounds)) {
 			this.getControl().setBounds(Math.round(bounds.getX()), Math.round(bounds.getY()), Math.round(bounds.getWidth()), Math.round(bounds.getHeight()));
 		}
 	}
-
-	public UIRectangle getBounds() {
+	
+	public UIRectangle getControlBounds() {
 		Rectangle bounds = this.getControl().getBounds();
 		return new UIRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
+	
+	public void setBounds(UIRectangle bounds) {
+		this.setControlBounds(bounds);
+	}
 
+	public UIRectangle getBounds() {
+		return this.getControlBounds();
+	}
+	
 	public void setPackedSize(UISize packedSize) {
 		this.packedSize.setWidth(packedSize.getWidth());
 		this.packedSize.setHeight(packedSize.getHeight());

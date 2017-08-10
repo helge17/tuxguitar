@@ -18,11 +18,11 @@ public class SWTScale extends SWTControl<Scale> implements UIScale {
 	}
 	
 	public void setValue(int value) {
-		this.getControl().setSelection(value);
+		this.getControl().setSelection(this.parseValue(value));
 	}
 
 	public int getValue() {
-		return this.getControl().getSelection();
+		return this.parseValue(this.getControl().getSelection());
 	}
 
 	public void setMaximum(int maximum) {
@@ -43,12 +43,20 @@ public class SWTScale extends SWTControl<Scale> implements UIScale {
 
 	public void setIncrement(int increment) {
 		this.getControl().setIncrement(increment);
+		this.getControl().setPageIncrement(increment);
 	}
 
 	public int getIncrement() {
 		return this.getControl().getIncrement();
 	}
 
+	public int parseValue(int value) {
+		if((this.getControl().getStyle() & SWT.VERTICAL) != 0 ) {
+			return ((this.getMaximum() - this.getMinimum()) - value);
+		}
+		return value;
+	}
+	
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().addSelectionListener(this.selectionListener);
