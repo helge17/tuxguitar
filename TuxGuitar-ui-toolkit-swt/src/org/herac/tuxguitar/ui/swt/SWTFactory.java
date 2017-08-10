@@ -33,11 +33,14 @@ import org.herac.tuxguitar.ui.swt.widget.SWTCanvas;
 import org.herac.tuxguitar.ui.swt.widget.SWTCheckBox;
 import org.herac.tuxguitar.ui.swt.widget.SWTCheckTable;
 import org.herac.tuxguitar.ui.swt.widget.SWTContainer;
+import org.herac.tuxguitar.ui.swt.widget.SWTCustomKnob;
+import org.herac.tuxguitar.ui.swt.widget.SWTCustomScale;
 import org.herac.tuxguitar.ui.swt.widget.SWTDivider;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
+import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectCCombo;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
 import org.herac.tuxguitar.ui.swt.widget.SWTImageView;
 import org.herac.tuxguitar.ui.swt.widget.SWTIndeterminateProgressBar;
-import org.herac.tuxguitar.ui.swt.widget.SWTKnob;
 import org.herac.tuxguitar.ui.swt.widget.SWTLabel;
 import org.herac.tuxguitar.ui.swt.widget.SWTLegendPanel;
 import org.herac.tuxguitar.ui.swt.widget.SWTLinkLabel;
@@ -46,11 +49,10 @@ import org.herac.tuxguitar.ui.swt.widget.SWTPanel;
 import org.herac.tuxguitar.ui.swt.widget.SWTPasswordField;
 import org.herac.tuxguitar.ui.swt.widget.SWTProgressBar;
 import org.herac.tuxguitar.ui.swt.widget.SWTRadioButton;
-import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
-import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectCCombo;
 import org.herac.tuxguitar.ui.swt.widget.SWTReadOnlyTextBox;
 import org.herac.tuxguitar.ui.swt.widget.SWTReadOnlyTextField;
 import org.herac.tuxguitar.ui.swt.widget.SWTScale;
+import org.herac.tuxguitar.ui.swt.widget.SWTScaleKnob;
 import org.herac.tuxguitar.ui.swt.widget.SWTScrollBarPanel;
 import org.herac.tuxguitar.ui.swt.widget.SWTSeparator;
 import org.herac.tuxguitar.ui.swt.widget.SWTSlider;
@@ -232,17 +234,29 @@ public class SWTFactory implements UIFactory {
 	
 	@SuppressWarnings("unchecked")
 	public UIScale createHorizontalScale(UIContainer parent) {
+		String alternative = SWTEnvironment.getInstance().getHorizontalScaleAlternative();
+		if( SWTCustomScale.class.getName().equals(alternative) ) {
+			return new SWTCustomScale((SWTContainer<Composite>) parent, true);
+		}
 		return new SWTScale((SWTContainer<Composite>) parent, SWT.HORIZONTAL);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public UIScale createVerticalScale(UIContainer parent) {
+		String alternative = SWTEnvironment.getInstance().getVerticalScaleAlternative();
+		if( SWTCustomScale.class.getName().equals(alternative) ) {
+			return new SWTCustomScale((SWTContainer<Composite>) parent, false);
+		}
 		return new SWTScale((SWTContainer<Composite>) parent, SWT.VERTICAL);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public UIKnob createKnob(UIContainer parent) {
-		return new SWTKnob((SWTContainer<Composite>) parent);
+		String alternative = SWTEnvironment.getInstance().getKnobAlternative();
+		if( SWTCustomScale.class.getName().equals(alternative) ) {
+			return new SWTScaleKnob((SWTContainer<Composite>) parent);
+		}
+		return new SWTCustomKnob((SWTContainer<Composite>) parent);
 	}
 	
 	@SuppressWarnings("unchecked")

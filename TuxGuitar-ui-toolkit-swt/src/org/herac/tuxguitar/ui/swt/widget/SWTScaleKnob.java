@@ -20,7 +20,7 @@ import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UIKnob;
 
-public class SWTKnob extends SWTControl<Button> implements UIKnob {
+public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 	
 	private int maximum;
 	private int minimum;
@@ -35,7 +35,7 @@ public class SWTKnob extends SWTControl<Button> implements UIKnob {
 	
 	private SWTSelectionListenerManager selectionListener;
 	
-	public SWTKnob(SWTContainer<? extends Composite> parent) {
+	public SWTScaleKnob(SWTContainer<? extends Composite> parent) {
 		super(new Button(parent.getControl(), SWT.TOGGLE), parent);
 		
 		this.value = -1;
@@ -183,8 +183,8 @@ public class SWTKnob extends SWTControl<Button> implements UIKnob {
 			
 			this.scale.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent event) {
-					SWTKnob.this.getValueFromScale();
-					SWTKnob.this.selectionListener.widgetSelected(event);
+					SWTScaleKnob.this.getValueFromScale();
+					SWTScaleKnob.this.selectionListener.widgetSelected(event);
 				}
 			});
 			

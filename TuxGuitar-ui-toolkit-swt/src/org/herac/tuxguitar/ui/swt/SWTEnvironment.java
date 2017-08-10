@@ -5,9 +5,14 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
+import org.herac.tuxguitar.ui.swt.widget.SWTCustomKnob;
+import org.herac.tuxguitar.ui.swt.widget.SWTCustomScale;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
+import org.herac.tuxguitar.ui.swt.widget.SWTScale;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
+import org.herac.tuxguitar.ui.widget.UIKnob;
+import org.herac.tuxguitar.ui.widget.UIScale;
 
 public class SWTEnvironment {
 	
@@ -23,7 +28,10 @@ public class SWTEnvironment {
 	private Display display;
 	
 	private String defaultFontName;
+	private String knobAlternative;
 	private String dropDownSelectAlternative;
+	private String verticalScaleAlternative;
+	private String horizontalScaleAlternative;
 	private Boolean toolItemResizeAvailable;
 	
 	private SWTEnvironment() {
@@ -93,6 +101,59 @@ public class SWTEnvironment {
 		}
 		
 		return this.dropDownSelectAlternative;
+	}
+	
+	public String getVerticalScaleAlternative() {
+		if( this.verticalScaleAlternative == null ) {
+			this.verticalScaleAlternative = this.getEnvValue(UIScale.class.getName() + ".vertical");
+		}
+		
+		if( this.verticalScaleAlternative == null ) {
+			this.verticalScaleAlternative = this.getEnvValue(UIScale.class.getName());
+		}
+		
+		if( this.verticalScaleAlternative == null ) {
+			if( PLATFORM_COCOA.equals(SWT.getPlatform())) {
+				this.verticalScaleAlternative = SWTCustomScale.class.getName();
+			}
+		}
+		
+		// Default value
+		if( this.verticalScaleAlternative == null ) {
+			this.verticalScaleAlternative = SWTScale.class.getName();
+		}
+		
+		return this.verticalScaleAlternative;
+	}
+	
+	public String getHorizontalScaleAlternative() {
+		if( this.horizontalScaleAlternative == null ) {
+			this.horizontalScaleAlternative = this.getEnvValue(UIScale.class.getName() + ".horizontal");
+		}
+		
+		if( this.horizontalScaleAlternative == null ) {
+			this.horizontalScaleAlternative = this.getEnvValue(UIScale.class.getName());
+		}
+		
+		// Default value
+		if( this.horizontalScaleAlternative == null ) {
+			this.horizontalScaleAlternative = SWTScale.class.getName();
+		}
+		
+		return this.horizontalScaleAlternative;
+	}
+	
+	public String getKnobAlternative() {
+		if( this.knobAlternative == null ) {
+			this.knobAlternative = this.getEnvValue(UIKnob.class.getName());
+		}
+		
+		// Default value
+		if( this.knobAlternative == null ) {
+			this.knobAlternative = SWTCustomKnob.class.getName();
+		}
+		
+		return this.knobAlternative;
 	}
 	
 	public String getEnvValue(String property) {
