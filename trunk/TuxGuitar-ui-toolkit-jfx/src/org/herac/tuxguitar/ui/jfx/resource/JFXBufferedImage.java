@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.ui.jfx.resource;
 
+import org.herac.tuxguitar.ui.resource.UIPainter;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-
-import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class JFXBufferedImage extends JFXAbstractImage<JFXBufferedImageHandle> {
 	

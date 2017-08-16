@@ -111,7 +111,9 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 	}
 	
 	public void fireSelectionEvent() {
-		this.selectionHandler.onSelect(new UISelectionEvent(this));
+		if(!this.isIgnoreEvents()) {
+			this.selectionHandler.onSelect(new UISelectionEvent(this));
+		}
 	}
 	
 	public void computePackedSize() {

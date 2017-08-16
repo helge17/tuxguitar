@@ -119,7 +119,9 @@ public class SWTCustomScale extends SWTControl<Composite> implements UIScale, UI
 	}
 	
 	public void fireSelectionEvent() {
-		this.selectionHandler.onSelect(new UISelectionEvent(this));
+		if(!this.isIgnoreEvents()) {
+			this.selectionHandler.onSelect(new UISelectionEvent(this));
+		}
 	}
 	
 	public void computePackedSize() {
