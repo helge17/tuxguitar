@@ -3,18 +3,17 @@ package org.herac.tuxguitar.ui.jfx.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.layout.UILayout;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 
-public abstract class JFXLayoutContainer<T extends Pane> extends JFXRegion<T> implements JFXContainer<T>, UILayoutContainer {
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.layout.Region;
+
+public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> implements JFXContainer<T>, UILayoutContainer {
 	
 	private List<JFXNode<? extends Node>> children;
 	private UILayout layout;
@@ -50,12 +49,10 @@ public abstract class JFXLayoutContainer<T extends Pane> extends JFXRegion<T> im
 	
 	public void addChild(JFXNode<? extends Node> uiControl) {
 		this.children.add(uiControl);
-		this.getControl().getChildren().add(uiControl.getControl());
 	}
 	
 	public void removeChild(JFXNode<? extends Node> uiControl) {
 		this.children.remove(uiControl);
-		this.getControl().getChildren().remove(uiControl.getControl());
 	}
 	
 	public UILayout getLayout() {

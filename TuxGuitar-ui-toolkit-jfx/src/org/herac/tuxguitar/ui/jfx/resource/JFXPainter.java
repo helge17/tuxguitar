@@ -4,11 +4,9 @@ import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIPosition;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements UIPainter {
@@ -16,19 +14,14 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 	private int style;
 	private boolean antialias;
 	private boolean pathEmpty;
-	private UIPosition position;
 	
 	public JFXPainter(GraphicsContext handle){
 		super(handle);
-		
-		this.position = new UIPosition();
 	}
 	
 	public void initPath(int style){
 		this.style = style;
 		this.pathEmpty = true;
-		this.position.setX(0f);
-		this.position.setY(0f);
 		this.getControl().beginPath();
 		this.setAntialias(true);
 	}
@@ -48,21 +41,19 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 		}
 		this.style = 0;
 		this.pathEmpty = true;
-		this.position.setX(0f);
-		this.position.setY(0f);
 		this.getControl().closePath();
 		this.setAntialias(false);
 	}
 	
 	public void clearArea(float x, float y, float width, float height) {
-		this.getControl().clearRect(x, y, width, height);
+		this.getControl().clearRect(lpx(x), lpx(y), lpx(width), lpx(height));
 	}
 	
 	public void drawString(String string, float x, float y) {
 		Paint fill = this.getControl().getFill();
 		this.setAdvanced(false);
 		this.getControl().setFill(this.getControl().getStroke());
-		this.getControl().fillText(string, x, y);
+		this.getControl().fillText(string, lpx(x), lpx(y));
 		this.getControl().setFill(fill);
 	}
 	
@@ -75,47 +66,36 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 	}
 	
 	public void drawNativeImage(Image image, float x, float y) {
-		this.getControl().drawImage(image, x, y);
+		this.getControl().drawImage(image, ipx(x), ipx(y));
 	}
 	
 	public void drawNativeImage(Image image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
-		this.getControl().drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
+		this.getControl().drawImage(image, ipx(srcX), ipx(srcY), ipx(srcWidth), ipx(srcHeight), ipx(destX), ipx(destY), ipx(destWidth), ipx(destHeight));
 	}
 	
 	public void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1) {
-		this.getControl().bezierCurveTo(xc1, yc1, xc2, yc2, x1, y1);
+		this.getControl().bezierCurveTo(lpx(xc1), lpx(yc1), lpx(xc2), lpx(yc2), lpx(x1), lpx(y1));
 		this.pathEmpty = false;
 	}
 	
 	public void lineTo(float x, float y) {
-		if(!this.antialias && this.style == PATH_DRAW) {
-			this.drawPixelLine(this.position.getX(), this.position.getY(), x, y);
-			this.moveTo(x, y);
-		} else {
-			this.getControl().lineTo(x, y);
-			this.pathEmpty = false;
-		}
+		this.getControl().lineTo(lpx(x), lpx(y));
+		this.pathEmpty = false;
 	}
 	
 	public void moveTo(float x, float y) {
-		this.getControl().moveTo(x, y);
-		this.position.setX(x);
-		this.position.setY(y);
+		this.getControl().moveTo(lpx(x), lpx(y));
 		this.pathEmpty = false;
 	}
 	
 	public void addCircle(float x, float y, float width) {
-		this.getControl().arc(x, y, (width / 2f), (width / 2f), 0, 360);
+		this.getControl().arc(lpx(x), lpx(y), lpx(width / 2f), lpx(width / 2f), 0, 360);
 		this.pathEmpty = false;
 	}
 	
 	public void addRectangle(float x,float y,float width,float height) {
-		if(!this.antialias && this.style == PATH_DRAW) {
-			this.drawPixelRectangle(x, y, width, height);
-		} else {
-			this.getControl().rect(x, y, width, height);
-			this.pathEmpty = false;
-		}
+		this.getControl().rect(lpx(x), lpx(y), lpx(width), lpx(height));
+		this.pathEmpty = false;
 	}
 	
 	public void setFont(UIFont font) {
@@ -163,44 +143,11 @@ public class JFXPainter extends JFXAbstractPainter<GraphicsContext> implements U
 		this.setAntialias(advanced);
 	}
 	
-	public void drawPixelLine(float x1, float y1, float x2, float y2) {
-		this.drawPixelLine(Math.round(x1), Math.round(y1), Math.round(x2), Math.round(y2));
+	public double lpx(double value) {
+		return (this.antialias ? value : Math.round(value) - ((this.getControl().getLineWidth() / 2d) % 1));
 	}
 	
-	public void drawPixelLine(int srcX1, int srcY1, int srcX2, int srcY2) {
-		int x1 = (srcX1 <= srcX2 ? srcX1 : srcX2);
-		int x2 = (srcX2 >= srcX1 ? srcX2 : srcX1);
-		int y1 = (srcY1 <= srcY2 ? srcY1 : srcY2);
-		int y2 = (srcY2 >= srcY1 ? srcY2 : srcY1);
-		int dx = (x2 - x1);
-		int dy = (y2 - y1);
-		int lineWidth = Math.max(1, (int) Math.round(this.getControl().getLineWidth()));
-		for(int repeat = 0; repeat < lineWidth; repeat ++) {
-			if( dx >= dy ) {
-				for(int x = x1; x <= x2; x++) {
-					this.drawPixel(x, (y1 + dy * (x - x1) / dx) + (repeat - (lineWidth / 2)));
-				}
-			} else {
-				for(int y = y1; y <= y2; y++) {
-					this.drawPixel((x1 + dx * (y - y1) / dy) + (repeat - (lineWidth / 2)), y);
-				}
-			}
-		}
-	}
-	
-	public void drawPixelRectangle(float x, float y, float width, float height) {
-		this.drawPixelRectangle(Math.round(x), Math.round(y), Math.round(width), Math.round(height));
-	}
-	
-	public void drawPixelRectangle(int x, int y, int width, int height) {
-		this.drawPixelLine(x, y, (x + width), y);
-		this.drawPixelLine(x, y, x, (y + height));
-		this.drawPixelLine(x, (y + height), (x + width), (y + height));
-		this.drawPixelLine((x + width), y, (x + width), (y + height));
-	}
-	
-	public void drawPixel(int x, int y) {
-		Color stroke = (Color) this.getControl().getStroke();
-		this.getControl().getPixelWriter().setColor(x, y, stroke != null ? stroke : Color.BLACK);
+	public double ipx(double value) {
+		return (this.antialias ? value : Math.round(value));
 	}
 }

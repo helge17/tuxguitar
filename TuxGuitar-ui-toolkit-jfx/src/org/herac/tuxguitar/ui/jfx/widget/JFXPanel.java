@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 import org.herac.tuxguitar.ui.widget.UIPanel;
 
-public class JFXPanel extends JFXLayoutContainer<Pane> implements UIPanel {
+public class JFXPanel extends JFXPaneContainer<Pane> implements UIPanel {
 	
 	public JFXPanel(JFXContainer<? extends Region> parent, boolean bordered) {
 		super(new Pane(), parent);

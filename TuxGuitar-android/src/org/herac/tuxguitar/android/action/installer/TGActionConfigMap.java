@@ -62,6 +62,7 @@ import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedMeasureController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedTrackController;
+import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateChannelsController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateItemsController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateLoadedSongController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateMeasureController;
@@ -218,6 +219,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	private static final TGUpdateController UPDATE_SONG_CTL = new TGUpdateSongController();
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
+	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
 	
 	private static final TGUndoableActionController UNDOABLE_SONG_GENERIC = new TGUndoableSongGenericController();
 	private static final TGUndoableActionController UNDOABLE_MEASURE_GENERIC = new TGUndoableMeasureGenericController();
@@ -367,10 +369,10 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGRepeatAlternativeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableAltRepeatController());
 		
 		//channel actions
-		this.map(TGSetChannelsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
-		this.map(TGAddChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
-		this.map(TGAddNewChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
-		this.map(TGRemoveChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGSetChannelsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_CHANNELS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGAddChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_CHANNELS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGAddNewChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_CHANNELS_CTL, UNDOABLE_CHANNEL_GENERIC);
+		this.map(TGRemoveChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_CHANNELS_CTL, UNDOABLE_CHANNEL_GENERIC);
 		this.map(TGUpdateChannelAction.NAME, LOCKABLE, new TGUpdateModifiedChannelController(), new TGUndoableModifyChannelController());
 		
 		//transport actions

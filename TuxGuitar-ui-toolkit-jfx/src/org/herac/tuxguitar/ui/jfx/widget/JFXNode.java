@@ -1,9 +1,5 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.Node;
-import javafx.scene.layout.Region;
-import javafx.scene.shape.Rectangle;
-
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
 import org.herac.tuxguitar.ui.event.UIFocusLostListener;
@@ -29,6 +25,7 @@ import org.herac.tuxguitar.ui.jfx.event.JFXMouseExitListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXMouseMoveListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXMouseUpListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXMouseWheelListenerManager;
+import org.herac.tuxguitar.ui.jfx.menu.JFXPopupMenu;
 import org.herac.tuxguitar.ui.jfx.resource.JFXCursor;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIColor;
@@ -37,6 +34,12 @@ import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
+
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
 
 public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implements UIControl {
 	
@@ -183,8 +186,19 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	
 	public void setPopupMenu(UIPopupMenu popupMenu) {
 		this.popupMenu = popupMenu;
+		this.getControl().setOnContextMenuRequested(this.popupMenu != null ? new EventHandler<ContextMenuEvent>() {
+			public void handle(ContextMenuEvent event) {
+				showPopupMenu(event.getScreenX(), event.getScreenY());
+			}
+		} : null);
 	}
-
+	
+	public void showPopupMenu(double x, double y) {
+		if( this.popupMenu != null ) {
+			((JFXPopupMenu) this.popupMenu).getControl().show(this.getControl(), x, y);
+		}
+	}
+	
 	public void setFocus() {
 		this.getControl().requestFocus();
 	}

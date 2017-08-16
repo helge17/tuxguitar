@@ -23,7 +23,7 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 
 import com.sun.javafx.tk.Toolkit;
 
-public class JFXWindow extends JFXLayoutContainer<Pane> implements UIWindow {
+public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	
 	private static final float DEFAULT_DECORATION_WIDTH = 2f;
 	private static final float DEFAULT_DECORATION_HEIGHT = 24f;
