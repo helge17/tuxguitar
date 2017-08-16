@@ -229,7 +229,9 @@ public class TGChannelManagerDialog implements TGEventListener {
 			
 			int volume = MidiPlayer.getInstance(this.context).getVolume();
 			if( force || this.volumeValue != volume ){
+				this.volumeScale.setIgnoreEvents(true);
 				this.volumeScale.setValue(volume);
+				this.volumeScale.setIgnoreEvents(false);
 				this.volumeValueLabel.setText(Integer.toString(volume));
 				this.volumeValue = volume;
 			}
