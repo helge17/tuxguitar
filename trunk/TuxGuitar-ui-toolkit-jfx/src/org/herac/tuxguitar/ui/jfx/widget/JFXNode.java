@@ -88,6 +88,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 		this.mouseExitListener = new JFXMouseExitListenerManager(this);
 		
 		this.getControl().setManaged(false);
+		this.getControl().setFocusTraversable(false);
 		this.getControl().getStyleClass().add(this.getClass().getSimpleName());
 		this.getControl().applyCss();
 	}
@@ -200,6 +201,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	}
 	
 	public void setFocus() {
+		this.getControl().setFocusTraversable(true);
 		this.getControl().requestFocus();
 	}
 

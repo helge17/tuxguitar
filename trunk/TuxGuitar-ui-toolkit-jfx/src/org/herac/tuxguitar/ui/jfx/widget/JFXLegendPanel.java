@@ -18,6 +18,7 @@ public class JFXLegendPanel extends JFXLayoutContainer<TitledPane> implements UI
 		this.getControl().setContent(new Pane());
 		this.getControl().setCollapsible(false);
 		this.getControl().setAnimated(false);
+		this.getContentPane().setFocusTraversable(false);
 	}
 
 	public void addChild(JFXNode<? extends Node> uiControl) {
@@ -48,5 +49,10 @@ public class JFXLegendPanel extends JFXLayoutContainer<TitledPane> implements UI
 
 	public void setText(String text) {
 		this.getControl().setText(text);
+	}
+	
+	public void setFocus() {
+		this.getContentPane().setFocusTraversable(true);
+		this.getContentPane().requestFocus();
 	}
 }

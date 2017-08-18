@@ -32,12 +32,10 @@ public class JFXResourceFactory implements UIResourceFactory {
 	}
 	
 	public UIImage createImage(float width, float height) {
-//		return new JFXAWTImage(width, height);
-//		return new JFXBufferedImage(width, height);
-		return new JFXSnapshotImage(width, height);
+		return new JFXImage(width, height);
 	}
 	
 	public UIImage createImage(InputStream inputStream) {
-		return new JFXSnapshotImage(inputStream);
+		return new JFXImage(inputStream);
 	}
 }

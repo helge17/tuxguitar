@@ -5,8 +5,10 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Region;
 
 public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
@@ -23,6 +25,8 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 		if( hScroll ) {
 			this.hScrollBar = this.createScrollBar(Orientation.HORIZONTAL);
 		}
+		
+		this.getControl().setOnScroll(new JFXScrollBarPanelScrollListener(this));
 	}
 	
 	public UIScrollBar getVScroll() {
@@ -37,6 +41,11 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 		JFXScrollBar jfxScrollBar = new JFXScrollBar(null, orientation);
 		this.getControl().getChildren().add(jfxScrollBar.getControl());
 		jfxScrollBar.getControl().applyCss();
+		jfxScrollBar.getControl().setOnScroll(new EventHandler<ScrollEvent>() {
+			public void handle(ScrollEvent event) {
+				event.consume();
+			}
+		});
 		
 		return jfxScrollBar;
 	}
@@ -89,6 +98,29 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 		for(UIControl uiControl : this.getChildren()) {
 			JFXNode<?> jfxNode = (JFXNode<?>) uiControl;
 			jfxNode.updateClippingArea(childArea);
+		}
+	}
+	
+	public void onScroll(int scrollValue) {
+		JFXScrollBar scrollBar = (this.vScrollBar != null ? this.vScrollBar : this.hScrollBar);
+		if( scrollBar != null ) {
+			scrollBar.getMaximum();
+			scrollBar.setValue(Math.max(Math.min(scrollBar.getValue() + scrollValue, scrollBar.getMaximum()), scrollBar.getMinimum()));
+		}
+	}
+	
+	private class JFXScrollBarPanelScrollListener implements EventHandler<ScrollEvent> {
+		
+		private JFXScrollBarPanel control;
+		
+		public JFXScrollBarPanelScrollListener(JFXScrollBarPanel control) {
+			this.control = control;
+		}
+		
+		public void handle(ScrollEvent event) {
+			this.control.onScroll((int) -Math.round(event.getDeltaX() != 0 ? event.getDeltaX() : event.getDeltaY()));
+			
+			event.consume();
 		}
 	}
 }

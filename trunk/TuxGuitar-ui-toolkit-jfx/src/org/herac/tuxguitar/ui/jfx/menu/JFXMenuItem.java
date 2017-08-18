@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.jfx.menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXSnapshotImage;
+import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.resource.UIImage;
@@ -73,6 +73,6 @@ public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> impleme
 	
 	public void setImage(UIImage image) {
 		this.image = image;
-		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXSnapshotImage) this.image).getHandle()) : null);
+		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXImage) this.image).getHandle()) : null);
 	}
 }

@@ -5,7 +5,7 @@ import javafx.scene.layout.Region;
 
 import org.herac.tuxguitar.ui.event.UIResizeListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXSnapshotImage;
+import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIImageView;
@@ -28,7 +28,7 @@ public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
 	public void setImage(UIImage image) {
 		this.image = image;
 		
-		this.getControl().setImage(this.image != null ? ((JFXSnapshotImage) this.image).getHandle() : null);
+		this.getControl().setImage(this.image != null ? ((JFXImage) this.image).getHandle() : null);
 	}
 
 	public UIRectangle getBounds() {

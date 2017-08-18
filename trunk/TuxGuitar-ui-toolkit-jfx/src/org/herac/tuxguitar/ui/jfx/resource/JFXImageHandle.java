@@ -2,13 +2,13 @@ package org.herac.tuxguitar.ui.jfx.resource;
 
 import javafx.scene.image.Image;
 
-public class JFXSnapshotImageHandle {
+public class JFXImageHandle {
 	
 	private float width;
 	private float height;
 	private Image handle;
 	
-	public JFXSnapshotImageHandle(float width, float height) {
+	public JFXImageHandle(float width, float height) {
 		this.width = width;
 		this.height = height;
 	}
