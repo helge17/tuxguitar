@@ -10,6 +10,7 @@ import org.herac.tuxguitar.ui.qt.event.QTEventHandler;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractContainer;
 import org.herac.tuxguitar.ui.qt.widget.QTContainer;
 import org.herac.tuxguitar.ui.qt.widget.QTWidget;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
@@ -17,12 +18,14 @@ import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 import com.trolltech.qt.core.QEvent;
 import com.trolltech.qt.core.QEvent.Type;
 import com.trolltech.qt.core.QRect;
+import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt.Orientation;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QToolBar;
@@ -129,13 +132,30 @@ public class QTToolBar extends QTAbstractContainer<QToolBar> implements QTContai
 	}
 	
 	public void computePackedSize() {
-		super.computePackedSize();
+		this.computeIconSize();
 		
 		for(UIControl uiControl : this.getChildren()) {
 			uiControl.computePackedSize();
 		}
+		super.computePackedSize();
 	}
 
+	public void computeIconSize() {
+		QSize iconSize = new QSize();
+		for(UIControl control : this.getChildren()) {
+			if( control instanceof UIToolItem ) {
+				UIImage image = ((UIToolItem) control).getImage();
+				if( image != null ) {
+					iconSize.setWidth(Math.max(iconSize.width(), Math.round(image.getWidth())));
+					iconSize.setHeight(Math.max(iconSize.height(), Math.round(image.getHeight())));
+				}
+			}
+		}
+		if(!this.getControl().iconSize().equals(iconSize)) {
+			this.getControl().setIconSize(iconSize);
+		}
+	}
+	
 	public void setBounds(UIRectangle bounds) {
 		super.setBounds(bounds);
 		
