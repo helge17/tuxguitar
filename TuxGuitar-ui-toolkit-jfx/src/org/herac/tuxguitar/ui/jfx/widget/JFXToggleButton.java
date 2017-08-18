@@ -7,7 +7,7 @@ import javafx.scene.layout.Region;
 
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXSnapshotImage;
+import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 
@@ -37,7 +37,7 @@ public class JFXToggleButton extends JFXLabeled<ToggleButton> implements UIToggl
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXSnapshotImage) this.image).getHandle()) : null);
+		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXImage) this.image).getHandle()) : null);
 	}
 
 	public void addSelectionListener(UISelectionListener listener) {

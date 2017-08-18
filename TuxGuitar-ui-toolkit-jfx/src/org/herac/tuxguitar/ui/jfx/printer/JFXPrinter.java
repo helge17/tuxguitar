@@ -1,16 +1,15 @@
 package org.herac.tuxguitar.ui.jfx.printer;
 
-import javafx.print.PageLayout;
-import javafx.print.PageRange;
-import javafx.print.PrintResolution;
-import javafx.print.PrinterJob;
-
 import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.jfx.resource.JFXResourceFactory;
 import org.herac.tuxguitar.ui.printer.UIPrinter;
 import org.herac.tuxguitar.ui.printer.UIPrinterJob;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+
+import javafx.print.PageLayout;
+import javafx.print.PageRange;
+import javafx.print.PrinterJob;
 
 public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 	
@@ -33,10 +32,10 @@ public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 	}
 	
 	public Float getDpiScale() {
-		PrintResolution printResolution = this.getControl().getJobSettings().getPrintResolution();
-		if( printResolution != null ) {
-			return (printResolution.getFeedResolution() / 100.0f);
-		}
+//		PrintResolution printResolution = this.getControl().getJobSettings().getPrintResolution();
+//		if( printResolution != null ) {
+//			return (printResolution.getFeedResolution() / 100.0f);
+//		}
 		return 1f;
 	}
 	

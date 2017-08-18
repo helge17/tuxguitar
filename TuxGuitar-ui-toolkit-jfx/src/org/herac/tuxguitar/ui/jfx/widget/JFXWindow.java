@@ -1,5 +1,17 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
+import org.herac.tuxguitar.ui.event.UICloseListener;
+import org.herac.tuxguitar.ui.jfx.event.JFXCloseListenerManager;
+import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
+import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
+import org.herac.tuxguitar.ui.menu.UIMenuBar;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
+import org.herac.tuxguitar.ui.widget.UIWindow;
+
+import com.sun.javafx.tk.Toolkit;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -12,18 +24,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXCloseListenerManager;
-import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-
-import com.sun.javafx.tk.Toolkit;
-
 public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
+	
+	private static final float DEFAULT_WINDOW_WIDTH = 640f;
+	private static final float DEFAULT_WINDOW_HEIGHT = 480f;
 	
 	private static final float DEFAULT_DECORATION_WIDTH = 2f;
 	private static final float DEFAULT_DECORATION_HEIGHT = 24f;
@@ -42,6 +46,8 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		this.stage = stage;
 		this.stage.setScene(new Scene(getControl()));
 		this.stage.getScene().getStylesheets().add("styles/styles.css");
+		this.stage.setWidth(DEFAULT_WINDOW_WIDTH);
+		this.stage.setHeight(DEFAULT_WINDOW_HEIGHT);
 		this.decorationSize = new UISize(DEFAULT_DECORATION_WIDTH, DEFAULT_DECORATION_HEIGHT);
 		
 		this.closeListener = new JFXCloseListenerManager(this);
@@ -86,6 +92,8 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 
 	public void setImage(UIImage image) {
 		this.image = image;
+		this.getStage().getIcons().clear();
+		this.getStage().getIcons().add(((JFXImage) image).getHandle());
 	}
 	
 	public UIMenuBar getMenuBar() {

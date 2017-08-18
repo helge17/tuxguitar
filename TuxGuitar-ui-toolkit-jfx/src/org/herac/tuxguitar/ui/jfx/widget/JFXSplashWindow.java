@@ -1,5 +1,12 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
+import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
+import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.widget.UISplashWindow;
+
+import com.sun.javafx.tk.Toolkit;
+
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -7,13 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.jfx.resource.JFXAbstractImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UISplashWindow;
-
-import com.sun.javafx.tk.Toolkit;
 
 public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWindow {
 	
@@ -43,6 +43,8 @@ public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWind
 
 	public void setImage(UIImage image) {
 		this.image = image;
+		this.getControl().getIcons().clear();
+		this.getControl().getIcons().add(((JFXImage) image).getHandle());
 	}
 	
 	public UIImage getSplashImage() {
@@ -60,7 +62,7 @@ public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWind
 	}
 	
 	public void open() {
-		ImageView imageView = new ImageView(((JFXAbstractImage<?>)this.getSplashImage()).getHandle());
+		ImageView imageView = new ImageView(((JFXImage)this.getSplashImage()).getHandle());
 		
 		Pane pane = (Pane) this.getControl().getScene().getRoot();
 		pane.getChildren().add(imageView);

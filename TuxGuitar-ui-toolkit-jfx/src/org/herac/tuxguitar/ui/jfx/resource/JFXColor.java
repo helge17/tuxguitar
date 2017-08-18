@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.ui.jfx.resource;
 
-import javafx.scene.paint.Color;
-
 import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
+
+import javafx.scene.paint.Color;
 
 public class JFXColor extends JFXComponent<UIColorModel> implements UIColor{
 	
@@ -33,6 +33,10 @@ public class JFXColor extends JFXComponent<UIColorModel> implements UIColor{
 	}
 	
 	public Color getHandle() {
-		return Color.rgb(this.getRed(), this.getGreen(), this.getBlue());
+		return this.getHandle(1d);
+	}
+	
+	public Color getHandle(double opacity) {
+		return Color.rgb(this.getRed(), this.getGreen(), this.getBlue(), opacity);
 	}
 }

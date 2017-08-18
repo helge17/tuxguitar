@@ -10,7 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXSnapshotImage;
+import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
@@ -52,7 +52,7 @@ public class JFXTableCellFactory<T> implements Callback<TableColumn<UITableItem<
 						} else {
 							UIImage image = item.getImage();
 							if( image != null ) {
-								graphic = new ImageView(((JFXSnapshotImage) image).getHandle());
+								graphic = new ImageView(((JFXImage) image).getHandle());
 							}
 						}
 						item.setData(Node.class.getName(), graphic);
