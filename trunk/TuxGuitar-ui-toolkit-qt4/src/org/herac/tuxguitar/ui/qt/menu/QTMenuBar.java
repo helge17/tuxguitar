@@ -9,10 +9,13 @@ import com.trolltech.qt.gui.QMenuBar;
 
 public class QTMenuBar extends QTAbstractMenu<QMenuBar> implements UIMenuBar {
 	
+	private QTAbstractWindow<?> window;
+	
 	public QTMenuBar(QTAbstractWindow<?> window) {
 		super(new QMenuBar(window.getControl()));
 		
-		window.setMenuBar(this);
+		this.window = window;
+		this.window.setMenuBar(this);
 	}
 	
 	public QMenu createNativeMenu() {
@@ -25,5 +28,16 @@ public class QTMenuBar extends QTAbstractMenu<QMenuBar> implements UIMenuBar {
 	
 	public QAction createNativeSeparator() {
 		return this.getControl().addSeparator();
+	}
+	
+	public void updateVisibility() {
+		this.getControl().setVisible(false);
+		this.getControl().setVisible(true);
+	}
+	
+	public void dispose() {
+		this.window.setMenuBar(null);
+		
+		super.dispose();
 	}
 }

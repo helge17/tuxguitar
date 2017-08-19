@@ -67,9 +67,9 @@ public class TGDisposeAction extends TGActionBase {
 		TGTableViewer.getInstance(getContext()).dispose();
 		TGFretBoardEditor.getInstance(getContext()).dispose();
 		TablatureEditor.getInstance(getContext()).getTablature().dispose();
+		TGWindow.getInstance(getContext()).getWindow().dispose();
 		TGIconManager.getInstance(getContext()).disposeIcons();
 		TGColorManager.getInstance(getContext()).dispose();
-		TGWindow.getInstance(getContext()).getWindow().dispose();
 		TGApplication.getInstance(getContext()).dispose();
 		TGThreadManager.getInstance(getContext()).dispose();
 	}
