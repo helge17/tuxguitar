@@ -249,7 +249,7 @@ public class QTFactory implements UIFactory {
 	}
 	
 	public UIMenuBar createMenuBar(UIWindow parent) {
-		return new QTMenuBar();
+		return new QTMenuBar((QTAbstractWindow<?>) parent);
 	}
 	
 	public UIPopupMenu createPopupMenu(UIWindow parent) {

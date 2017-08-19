@@ -1,15 +1,18 @@
 package org.herac.tuxguitar.ui.jfx.menu;
 
+import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
+import org.herac.tuxguitar.ui.menu.UIMenuBar;
+
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-
 public class JFXMenuBar extends JFXAbstractMenu<MenuBar> implements UIMenuBar {
 	
-	public JFXMenuBar() {
+	public JFXMenuBar(JFXWindow window) {
 		super(new MenuBar());
+		
+		window.setMenuBar(this);
 	}
 	
 	public void addItem(JFXMenuItem<? extends MenuItem> item) {
