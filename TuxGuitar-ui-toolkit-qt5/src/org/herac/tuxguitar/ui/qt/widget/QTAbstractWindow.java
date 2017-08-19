@@ -81,6 +81,9 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 	public void setBounds(UIRectangle bounds) {
 		this.resizeListener.setBounds(bounds);
 		
+		if( this.menuBar != null ) {
+			((QTMenuBar)this.menuBar).updateVisibility();
+		}
 		super.setBounds(bounds);
 	}
 	
