@@ -2,8 +2,6 @@ package org.herac.tuxguitar.ui.jfx;
 
 import java.io.InputStream;
 
-import javafx.geometry.Orientation;
-
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIColorChooser;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
@@ -93,6 +91,8 @@ import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.ui.widget.UIWrapLabel;
+
+import javafx.geometry.Orientation;
 
 public class JFXFactory implements UIFactory {
 	
@@ -249,7 +249,7 @@ public class JFXFactory implements UIFactory {
 	}
 	
 	public UIMenuBar createMenuBar(UIWindow parent) {
-		return new JFXMenuBar();
+		return new JFXMenuBar((JFXWindow) parent);
 	}
 	
 	public UIPopupMenu createPopupMenu(UIWindow parent) {

@@ -93,7 +93,6 @@ import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.ui.widget.UIWrapLabel;
-
 import org.qtjambi.qt.core.Qt.Orientation;
 
 public class QTFactory implements UIFactory {
@@ -249,7 +248,7 @@ public class QTFactory implements UIFactory {
 	}
 	
 	public UIMenuBar createMenuBar(UIWindow parent) {
-		return new QTMenuBar();
+		return new QTMenuBar((QTAbstractWindow<?>) parent);
 	}
 	
 	public UIPopupMenu createPopupMenu(UIWindow parent) {

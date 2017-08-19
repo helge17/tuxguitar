@@ -3,8 +3,6 @@ package org.herac.tuxguitar.ui.qt.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.qt.menu.QTMenuBar;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 
 import com.trolltech.qt.core.Qt.WindowType;
@@ -30,13 +28,6 @@ public class QTDialog extends QTAbstractWindow<QDialog> {
 			windowFlags.add(WindowType.WindowMaximizeButtonHint);
 		}
 		this.getControl().setWindowFlags(windowFlags.toArray(new WindowType[windowFlags.size()]));
-	}
-	
-	public void setMenuBar(UIMenuBar menuBar) {
-		if( menuBar != null ) {
-			((QTMenuBar) menuBar).getControl().setParent(this.getControl());
-		}
-		super.setMenuBar(menuBar);
 	}
 	
 	public void join() {

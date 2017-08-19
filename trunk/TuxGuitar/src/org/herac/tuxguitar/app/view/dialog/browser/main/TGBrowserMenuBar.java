@@ -110,8 +110,6 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 				getBrowser().listElements();
 			}
 		});
-		
-		window.setMenuBar(this.menu);
 	}
 	
 	public void updateItems(){

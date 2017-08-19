@@ -1,15 +1,17 @@
 package org.herac.tuxguitar.ui.qt.menu;
 
 import org.herac.tuxguitar.ui.menu.UIMenuBar;
-
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.qtjambi.qt.widgets.QAction;
 import org.qtjambi.qt.widgets.QMenu;
 import org.qtjambi.qt.widgets.QMenuBar;
 
 public class QTMenuBar extends QTAbstractMenu<QMenuBar> implements UIMenuBar {
 	
-	public QTMenuBar() {
-		super(new QMenuBar());
+	public QTMenuBar(QTAbstractWindow<?> window) {
+		super(new QMenuBar(window.getControl()));
+		
+		window.setMenuBar(this);
 	}
 	
 	public QMenu createNativeMenu() {

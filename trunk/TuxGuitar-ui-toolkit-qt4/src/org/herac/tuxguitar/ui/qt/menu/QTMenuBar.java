@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.ui.qt.menu;
 
 import org.herac.tuxguitar.ui.menu.UIMenuBar;
+import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QMenu;
@@ -8,8 +9,10 @@ import com.trolltech.qt.gui.QMenuBar;
 
 public class QTMenuBar extends QTAbstractMenu<QMenuBar> implements UIMenuBar {
 	
-	public QTMenuBar() {
-		super(new QMenuBar());
+	public QTMenuBar(QTAbstractWindow<?> window) {
+		super(new QMenuBar(window.getControl()));
+		
+		window.setMenuBar(this);
 	}
 	
 	public QMenu createNativeMenu() {

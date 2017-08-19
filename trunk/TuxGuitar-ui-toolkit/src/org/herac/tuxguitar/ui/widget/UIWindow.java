@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.ui.widget;
 
 import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
 import org.herac.tuxguitar.ui.resource.UIImage;
 
 public interface UIWindow extends UILayoutContainer {
@@ -27,10 +26,6 @@ public interface UIWindow extends UILayoutContainer {
 	boolean isMaximized();
 	
 	void moveToTop();
-	
-	UIMenuBar getMenuBar();
-	
-	void setMenuBar(UIMenuBar menu);
 	
 	void addCloseListener(UICloseListener listener);
 	

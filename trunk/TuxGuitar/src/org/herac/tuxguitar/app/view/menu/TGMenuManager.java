@@ -63,8 +63,6 @@ public class TGMenuManager implements TGEventListener {
 		if(!window.isDisposed()) {
 			if( this.menu == null || this.menu.isDisposed() ) {
 				this.menu = TGApplication.getInstance(this.context).getFactory().createMenuBar(window);
-				
-				window.setMenuBar(this.menu);
 			}
 			List<UIMenuItem> items = this.menu.getItems();
 			for(UIMenuItem uiMenuItem : items){
