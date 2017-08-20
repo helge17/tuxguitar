@@ -12,7 +12,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 
@@ -118,7 +118,7 @@ public class TGNoteImpl extends TGNote {
 		}
 	}
 	
-	public void paintTablatureNoteValue(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY, boolean running) {
+	public void paintTablatureNoteValue(TGLayout layout, UIPainter painter, UIInset margin, float fromX, float fromY, boolean running) {
 		if( layout.isTabNotePathRendererEnabled() ) {
 			this.paintTablatureNoteValuePathMode(layout, painter, margin, fromX, fromY, running);
 		} else {
@@ -126,7 +126,7 @@ public class TGNoteImpl extends TGNote {
 		}
 	}
 	
-	public void paintTablatureNoteValuePathMode(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY, boolean running) {
+	public void paintTablatureNoteValuePathMode(TGLayout layout, UIPainter painter, UIInset margin, float fromX, float fromY, boolean running) {
 		float noteSize = (layout.getStringSpacing() - 2f);
 		float noteWidth = (this.getEffect().isDeadNote() ? 6f * layout.getScale() : TGNumberPainter.getDigitsWidth(getValue(), noteSize));
 		float ghostWidth = (this.getEffect().isGhostNote() ? 3f * layout.getScale() : 0f);
@@ -173,7 +173,7 @@ public class TGNoteImpl extends TGNote {
 		}
 	}
 	
-	public void paintTablatureNoteValueTextMode(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY, boolean running) {
+	public void paintTablatureNoteValueTextMode(TGLayout layout, UIPainter painter, UIInset margin, float fromX, float fromY, boolean running) {
 		layout.setTabNoteFontStyle(painter, running);
 		
 		String label = this.getNoteLabel(this);
@@ -195,7 +195,7 @@ public class TGNoteImpl extends TGNote {
 	public void paintTablatureNote(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing) {
 		int style = layout.getStyle();
 		if((style & TGLayout.DISPLAY_TABLATURE) != 0) {
-			UIMargin margin = new UIMargin();
+			UIInset margin = new UIInset();
 			
 			float scale = layout.getScale();
 			float x = (fromX + getPosX() + spacing);
@@ -439,7 +439,7 @@ public class TGNoteImpl extends TGNote {
 		return null;
 	}
 	
-	private void paintEffects(TGLayout layout,UIPainter painter, UIMargin margin, float fromX, float fromY, float spacing){
+	private void paintEffects(TGLayout layout,UIPainter painter, UIInset margin, float fromX, float fromY, float spacing){
 		float x = fromX + getPosX() + spacing;
 		float y = fromY + getTabPosY();
 		TGNoteEffect effect = getEffect();
@@ -694,7 +694,7 @@ public class TGNoteImpl extends TGNote {
 		painter.closePath();
 	}
 	
-	public void fillBackground(TGLayout layout, UIPainter painter, UIMargin margin, float fromX, float fromY) {
+	public void fillBackground(TGLayout layout, UIPainter painter, UIInset margin, float fromX, float fromY) {
 		UIRectangle uiRectangle = new UIRectangle();
 		uiRectangle.getPosition().setX(fromX - margin.getLeft());
 		uiRectangle.getPosition().setY(fromY - margin.getTop());

@@ -24,7 +24,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.printer.UIPrinter;
 import org.herac.tuxguitar.ui.printer.UIPrinterJob;
 import org.herac.tuxguitar.ui.printer.UIPrinterPage;
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
@@ -60,7 +60,7 @@ public class TGPrintAction extends TGActionBase{
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		UIRectangle printerArea = this.getPrinterArea(printer, 10f);
 		UISize pageSize = new UISize(printerArea.getWidth(), printerArea.getHeight());
-		UIMargin pageMargins = new UIMargin(printerArea.getY(), printerArea.getX(), 0, 0);
+		UIInset pageMargins = new UIInset(printerArea.getY(), printerArea.getX(), 0, 0);
 		
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, printer.getResourceFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
@@ -117,9 +117,9 @@ public class TGPrintAction extends TGActionBase{
 		private UIPrinterPage printerPage;
 		
 		private UISize size;
-		private UIMargin margins;
+		private UIInset margins;
 		
-		public PrintDocumentImpl(TGPrintLayout layout, UIPrinter printer, UISize size, UIMargin margins){
+		public PrintDocumentImpl(TGPrintLayout layout, UIPrinter printer, UISize size, UIInset margins){
 			this.layout = layout;
 			this.printer = printer;
 			this.size = size;
@@ -135,7 +135,7 @@ public class TGPrintAction extends TGActionBase{
 			return this.size;
 		}
 
-		public UIMargin getMargins() {
+		public UIInset getMargins() {
 			return this.margins;
 		}
 		
