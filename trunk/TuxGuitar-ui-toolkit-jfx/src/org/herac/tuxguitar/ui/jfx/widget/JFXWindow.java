@@ -6,6 +6,7 @@ import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
 import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.menu.UIMenuBar;
 import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIWindow;
@@ -29,14 +30,11 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	private static final float DEFAULT_WINDOW_WIDTH = 640f;
 	private static final float DEFAULT_WINDOW_HEIGHT = 480f;
 	
-	private static final float DEFAULT_DECORATION_WIDTH = 2f;
-	private static final float DEFAULT_DECORATION_HEIGHT = 24f;
-	
 	private boolean joined;
 	private Stage stage;
 	private UIImage image;
 	private UIMenuBar menuBar;
-	private UISize decorationSize;
+	private UIInset margin;
 	private JFXCloseListenerManager closeListener;
 	private JFXWindowResizeListener resizeListener;
 	
@@ -48,19 +46,19 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		this.stage.getScene().getStylesheets().add("styles/styles.css");
 		this.stage.setWidth(DEFAULT_WINDOW_WIDTH);
 		this.stage.setHeight(DEFAULT_WINDOW_HEIGHT);
-		this.decorationSize = new UISize(DEFAULT_DECORATION_WIDTH, DEFAULT_DECORATION_HEIGHT);
+		this.margin = new UIInset();
 		
 		this.closeListener = new JFXCloseListenerManager(this);
 		this.resizeListener = new JFXWindowResizeListener(this);
-		this.stage.widthProperty().addListener(this.resizeListener);
-		this.stage.heightProperty().addListener(this.resizeListener);
+		this.stage.getScene().widthProperty().addListener(this.resizeListener);
+		this.stage.getScene().heightProperty().addListener(this.resizeListener);
 		this.stage.setOnCloseRequest(new JFXWindowCloseListener(this));
 	}
 	
 	public JFXWindow(JFXWindow parent, boolean modal, boolean resizable) {
 		this(new Stage(), parent);
 		
-		this.setDecorationSize(parent.getDecorationSize());
+		this.setMargin(parent.getMargin());
 		this.stage.initOwner(parent.getStage());
 		this.stage.setResizable(resizable);
 		if( modal ) {
@@ -148,13 +146,16 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	
 	public void setBounds(UIRectangle bounds) {
 		if(!this.getBounds().equals(bounds)) {
-			this.resizeListener.setBounds(bounds);
 			this.getStage().setX(bounds.getX());
 			this.getStage().setY(bounds.getY());
 			this.getStage().setWidth(bounds.getWidth());
 			this.getStage().setHeight(bounds.getHeight());
 		}
-		super.setBounds(this.getSceneBounds());
+		UIRectangle sceneBounds = this.getSceneBounds();
+		
+		this.resizeListener.setSceneBounds(sceneBounds);
+		
+		super.setBounds(sceneBounds);
 	}
 	
 	@Override
@@ -194,31 +195,35 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		return padding;
 	}
 	
-	public UISize getDecorationSize() {
-		double stageWidth = this.getStage().getWidth();
-		double stageHeight = this.getStage().getHeight();
-		double sceneWidth = this.getStage().getScene().getWidth();
-		double sceneHeight = this.getStage().getScene().getHeight();
-		if(!Double.isNaN(stageWidth) && !Double.isNaN(stageHeight) && sceneWidth > 0 && sceneHeight > 0) {
-			this.decorationSize.setWidth((float) (stageWidth - sceneWidth));
-			this.decorationSize.setHeight((float) (stageHeight - sceneHeight));
+	public UIInset getMargin() {
+		float x = (float) this.getStage().getScene().getX();
+		float y = (float) this.getStage().getScene().getY();
+		if( x > 0 ) {
+			this.margin.setLeft(x);
+			this.margin.setRight(x);
+			this.margin.setBottom(x);
 		}
-		return new UISize(this.decorationSize.getWidth(), this.decorationSize.getHeight());
+		if( y > 0 ) {
+			this.margin.setTop(y);
+		}
+		return new UIInset(this.margin.getTop(), this.margin.getLeft(), this.margin.getRight(), this.margin.getBottom());
 	}
 	
-	public void setDecorationSize(UISize decorationSize) {
-		this.decorationSize.setWidth(decorationSize != null ? decorationSize.getWidth() : 0f);
-		this.decorationSize.setHeight(decorationSize != null ? decorationSize.getHeight() : 0f);
+	public void setMargin(UIInset margin) {
+		this.margin.setTop(margin != null ? margin.getTop() : 0f);
+		this.margin.setLeft(margin != null ? margin.getLeft() : 0f);
+		this.margin.setRight(margin != null ? margin.getRight() : 0f);
+		this.margin.setBottom(margin != null ? margin.getBottom() : 0f);
 	}
 	
 	@Override
 	public void computePackedSize() {
 		super.computePackedSize();
 		
-		UISize decorationSize = this.getDecorationSize();
+		UIInset margin = this.getMargin();
 		UISize packedSize = this.getPackedSize();
-		packedSize.setWidth(packedSize.getWidth() + decorationSize.getWidth());
-		packedSize.setHeight(packedSize.getHeight() + decorationSize.getHeight());
+		packedSize.setWidth(packedSize.getWidth() + margin.getLeft() + margin.getRight());
+		packedSize.setHeight(packedSize.getHeight() + margin.getTop() + margin.getBottom());
 		this.setPackedSize(packedSize);
 	}
 	
@@ -268,14 +273,14 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		}
 		
 	    public void changed(ObservableValue<? extends Number> observableValue, Number oldSize, Number newSize) {
-			UIRectangle bounds = this.window.getBounds();
+			UIRectangle bounds = this.window.getSceneBounds();
 			if( this.bounds == null || !this.bounds.equals(bounds)) {
 				this.bounds = bounds;
 				this.window.layout();
 			}
 		}
 	    
-		public void setBounds(UIRectangle bounds) {
+		public void setSceneBounds(UIRectangle bounds) {
 			this.bounds = bounds;
 		}
 	}

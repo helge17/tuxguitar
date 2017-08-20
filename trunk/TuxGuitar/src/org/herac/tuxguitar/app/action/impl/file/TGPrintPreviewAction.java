@@ -29,7 +29,7 @@ import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
@@ -63,7 +63,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
-		UIMargin pageMargins = new UIMargin(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+		UIInset pageMargins = new UIInset(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 		
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, this.getUIFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
@@ -100,10 +100,10 @@ public class TGPrintPreviewAction extends TGActionBase{
 		
 		private TGPrintPainter painter;
 		private UISize size;
-		private UIMargin margins;
+		private UIInset margins;
 		private List<UIImage> pages;
 		
-		public PrintDocumentImpl(UISize size, UIMargin margins){
+		public PrintDocumentImpl(UISize size, UIInset margins){
 			this.size = size;
 			this.margins = margins;
 			this.pages = new ArrayList<UIImage>();
@@ -118,7 +118,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 			return this.size;
 		}
 
-		public UIMargin getMargins() {
+		public UIInset getMargins() {
 			return this.margins;
 		}
 		

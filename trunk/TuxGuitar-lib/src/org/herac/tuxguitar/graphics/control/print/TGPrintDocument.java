@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.graphics.control.print;
 
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UISize;
 
@@ -22,5 +22,5 @@ public interface TGPrintDocument{
 	
 	UISize getSize();
 	
-	UIMargin getMargins();
+	UIInset getMargins();
 }

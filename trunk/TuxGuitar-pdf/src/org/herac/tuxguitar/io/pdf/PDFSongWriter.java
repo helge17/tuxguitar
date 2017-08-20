@@ -13,7 +13,7 @@ import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
@@ -67,7 +67,7 @@ public class PDFSongWriter implements TGSongWriter {
 			TGController controller = new TGPrintController(clonedSong, manager, factory, styles);
 			
 			UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
-			UIMargin pageMargins = new UIMargin(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+			UIInset pageMargins = new UIInset(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 			
 			TGPrintLayout layout = new TGPrintLayout(controller, settings);
 			

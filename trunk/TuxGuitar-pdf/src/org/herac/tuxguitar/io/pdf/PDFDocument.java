@@ -3,7 +3,7 @@ package org.herac.tuxguitar.io.pdf;
 import java.io.OutputStream;
 
 import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.util.TGContext;
@@ -20,14 +20,14 @@ public class PDFDocument implements TGPrintDocument{
 	private TGContext context;
 	private PDFPainter painter;
 	private UISize size;
-	private UIMargin margins;
+	private UIInset margins;
 	private OutputStream stream;
 	
 	private Document document;
 	private PdfContentByte cb;
 	private PdfTemplate template;
 	
-	public PDFDocument(TGContext context, UISize size, UIMargin margins, OutputStream stream){
+	public PDFDocument(TGContext context, UISize size, UIInset margins, OutputStream stream){
 		this.context = context;
 		this.stream = stream;
 		this.size = size;
@@ -43,7 +43,7 @@ public class PDFDocument implements TGPrintDocument{
 		return this.size;
 	}
 
-	public UIMargin getMargins() {
+	public UIInset getMargins() {
 		return this.margins;
 	}
 	

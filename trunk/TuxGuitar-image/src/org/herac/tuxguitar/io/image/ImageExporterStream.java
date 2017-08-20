@@ -18,7 +18,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIMargin;
+import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.ui.resource.UISize;
@@ -49,7 +49,7 @@ public class ImageExporterStream implements TGSongStream{
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 			TGSong clonedSong = song.clone(manager.getFactory());
 			UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
-			UIMargin pageMargins = new UIMargin(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
+			UIInset pageMargins = new UIInset(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);
 			
 			UIResourceFactory factory = getUIFactory();
 			
@@ -70,12 +70,12 @@ public class ImageExporterStream implements TGSongStream{
 		
 		private TGPrintPainter painter;
 		private UISize size;
-		private UIMargin margins;
+		private UIInset margins;
 		private String path;
 		private List<UIImage> pages;
 		private ImageFormat format;
 		
-		public PrintDocumentImpl(UISize size, UIMargin margins, ImageFormat format, String path){
+		public PrintDocumentImpl(UISize size, UIInset margins, ImageFormat format, String path){
 			this.size = size;
 			this.margins = margins;
 			this.path = path;
@@ -92,7 +92,7 @@ public class ImageExporterStream implements TGSongStream{
 			return this.size;
 		}
 
-		public UIMargin getMargins() {
+		public UIInset getMargins() {
 			return this.margins;
 		}
 		

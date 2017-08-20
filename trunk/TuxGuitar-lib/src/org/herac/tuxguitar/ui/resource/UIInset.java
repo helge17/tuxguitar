@@ -1,20 +1,20 @@
 package org.herac.tuxguitar.ui.resource;
 
-public class UIMargin {
+public class UIInset {
 	
 	private float top;
 	private float left;
 	private float right;
 	private float bottom;
 	
-	public UIMargin(float top, float left, float right, float bottom) {
+	public UIInset(float top, float left, float right, float bottom) {
 		this.top = top;
 		this.left = left;
 		this.right = right;
 		this.bottom = bottom;
 	}
 	
-	public UIMargin() {
+	public UIInset() {
 		this(0, 0, 0, 0);
 	}
 
