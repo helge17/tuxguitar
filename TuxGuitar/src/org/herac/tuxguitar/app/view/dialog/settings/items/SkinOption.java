@@ -171,7 +171,7 @@ public class SkinOption extends TGSettingsOption{
 					SkinOption.this.descriptionLabel.setText(info.getDescription());
 					SkinOption.this.versionLabel.setText((info.getDate() == null)?info.getVersion():info.getVersion() + " (" + info.getDate() + ")");
 					if( info.getPreview() != null){
-						SkinOption.this.preview = TGFileUtils.loadImage2(getViewContext().getContext(), info.getSkin(), info.getPreview());
+						SkinOption.this.preview = TGFileUtils.loadImage(getViewContext().getContext(), info.getSkin(), info.getPreview());
 					}
 					SkinOption.this.previewArea.redraw();
 					

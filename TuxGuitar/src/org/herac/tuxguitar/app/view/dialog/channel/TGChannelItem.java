@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -221,7 +222,7 @@ public class TGChannelItem {
 	
 	public void loadIcons(){
 		if(!isDisposed()){
-			this.setupChannelButton.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+			this.setupChannelButton.setImage(TGIconManager.getInstance(getContext()).getSettings());
 		}
 	}
 	

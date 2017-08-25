@@ -128,6 +128,10 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		
 		super.dispose();
 		
+		if( this.getMenuBar() != null && !this.getMenuBar().isDisposed()) {
+			this.getMenuBar().dispose();
+		}
+		
 		this.leave();
 	}
 	
@@ -179,7 +183,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	
 	public UIRectangle getChildArea() {
 		UIRectangle childArea = this.getChildArea(this.getSceneBounds().getSize());
-		if( this.getMenuBar() != null ) {
+		if( this.getMenuBar() != null && !this.getMenuBar().isDisposed()) {
 			childArea.getPosition().setY((float)((JFXMenuBar) this.menuBar).getControl().getHeight());
 		}
 		return childArea;
@@ -187,7 +191,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	
 	public Insets getPadding() {
 		Insets padding = super.getPadding();
-		if( this.getMenuBar() != null ) {
+		if( this.getMenuBar() != null && !this.getMenuBar().isDisposed()) {
 			MenuBar menuBar = ((JFXMenuBar) this.menuBar).getControl();
 			
 			padding = new Insets((padding.getTop() + menuBar.getHeight()), padding.getRight(), padding.getBottom(), padding.getLeft());
