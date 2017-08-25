@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.event.UIResizeListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
 import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIImageView;
+
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 
 public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
 	
@@ -19,6 +19,8 @@ public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
 		super(new ImageView(), parent);
 		
 		this.resizeListener = new JFXResizeListenerManager(this);
+		
+		this.getControl().setPreserveRatio(true);
 	}
 	
 	public UIImage getImage() {
@@ -45,8 +47,11 @@ public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
 		this.getControl().setLayoutX(bounds.getX());
 		this.getControl().setLayoutY(bounds.getY());
 		this.getControl().setFitWidth(bounds.getWidth());
-		this.getControl().setFitHeight( bounds.getHeight());
-		
+		this.getControl().setFitHeight(bounds.getHeight());
+		if( this.image != null ) {
+			this.getControl().setX((bounds.getWidth() - this.image.getWidth()) / 2f);
+			this.getControl().setY((bounds.getHeight() - this.image.getHeight()) / 2f);
+		}
 		this.redraw();
 	}
 

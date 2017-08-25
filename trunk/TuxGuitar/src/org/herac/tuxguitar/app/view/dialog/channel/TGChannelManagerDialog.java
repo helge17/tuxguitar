@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.view.dialog.channel;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -255,6 +256,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 
 	public void loadIcons() {
 		if(!this.isDisposed()){
+			this.dialog.setImage(TGIconManager.getInstance(getContext()).getAppIcon());
 			this.channelList.loadIcons();
 		}
 	}

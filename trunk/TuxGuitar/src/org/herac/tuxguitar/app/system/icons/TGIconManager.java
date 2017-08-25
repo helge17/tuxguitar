@@ -357,7 +357,7 @@ public class TGIconManager {
 	private UIImage loadIcon(String name) {
 		UIImage image = this.theme.getResource(name);
 		if( image == null ) {
-			image = TGFileUtils.loadImage2(this.context, this.theme.getName(), name);
+			image = TGFileUtils.loadImage(this.context, this.theme.getName(), name);
 			
 			this.theme.setResource(name, image);
 		}

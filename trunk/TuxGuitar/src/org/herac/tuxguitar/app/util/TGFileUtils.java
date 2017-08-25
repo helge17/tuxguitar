@@ -118,7 +118,7 @@ public class TGFileUtils {
 		return null;
 	}
 	
-	public static UIImage loadImage2(TGContext context, String skin, String name){
+	public static UIImage loadImage(TGContext context, String skin, String name){
 		UIFactory uiFactory = TGApplication.getInstance(context).getFactory();
 		try{
 			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream("skins/" + skin + "/" + name);
