@@ -40,9 +40,9 @@ public class TGFileHistory {
 		this.addURL(url);
 	}
 	
-	public String getFilePath(URL url){
+	public String getFilePath(URL url) {
 		if( TGFileUtils.isLocalFile(url) ){
-			return new File(url.getFile()).getParent();
+			return new File(TGFileUtils.getDecodedPath(url.getFile())).getParent();
 		}
 		return null;
 	}
@@ -57,7 +57,7 @@ public class TGFileHistory {
 		return false;
 	}
 	
-	public void addURL(URL url){
+	public void addURL(URL url) {
 		if( this.isReadable(url) ) {
 			this.removeURL(url);
 			this.urls.add(0, url);
@@ -67,17 +67,17 @@ public class TGFileHistory {
 		}
 	}
 	
-	public List<URL> getURLs(){
+	public List<URL> getURLs() {
 		return this.urls;
 	}
 	
-	private void checkLimit(){
+	private void checkLimit() {
 		while(this.urls.size() > URL_LIMIT){
 			this.urls.remove(this.urls.size() - 1);
 		}
 	}
 	
-	private void removeURL(URL url){
+	private void removeURL(URL url) {
 		for(int i = 0; i < this.urls.size(); i++){
 			URL old = (URL)this.urls.get(i);
 			if(old.toString().equals(url.toString())){
@@ -111,7 +111,7 @@ public class TGFileHistory {
 		}
 	}
 	
-	public void saveHistory(){
+	public void saveHistory() {
 		try {
 			Properties properties = new Properties();
 			
@@ -131,11 +131,11 @@ public class TGFileHistory {
 		}
 	}
 	
-	private String getHistoryFileName(){
+	private String getHistoryFileName() {
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "history.properties";
 	}
 	
-	public void setChooserPath(URL url){
+	public void setChooserPath(URL url) {
 		String path = getFilePath(url);
 		if( path != null ){
 			this.setChooserPath( path );
@@ -146,7 +146,7 @@ public class TGFileHistory {
 		return this.chooserPath;
 	}
 	
-	public void setChooserPath(String chooserPath){
+	public void setChooserPath(String chooserPath) {
 		this.chooserPath = chooserPath;
 	}
 	

@@ -163,8 +163,12 @@ public class TGFileUtils {
 	}
 	
 	public static String getDecodedFileName(String fileName) {
+		return getDecodedPath(new File(fileName).getName());
+	}
+	
+	public static String getDecodedPath(String path) {
 		try {
-			return URLDecoder.decode(new File(fileName).getName(), "UTF-8");
+			return URLDecoder.decode(path, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
