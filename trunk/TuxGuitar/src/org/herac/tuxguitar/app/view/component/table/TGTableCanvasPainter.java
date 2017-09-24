@@ -9,7 +9,6 @@ import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGTableCanvasPainter {
 	
-	private static final UIColorModel COLOR_GRAY = new UIColorModel(0xC0, 0xC0, 0xC0);
 	private static final UIColorModel COLOR_BLACK = new UIColorModel(0x00, 0x00, 0x00);
 	
 	private TGTableViewer viewer;
@@ -28,9 +27,9 @@ public class TGTableCanvasPainter {
 		boolean playing = TuxGuitar.getInstance().getPlayer().isRunning();
 		
 		UIColor colorBlack = this.viewer.getUIFactory().createColor(COLOR_BLACK);
-		UIColor colorGray = this.viewer.getUIFactory().createColor(COLOR_GRAY);
+		UIColor colorBackground = this.viewer.getColorModel().createBackground(this.viewer.getContext(), 2);
 		
-		painter.setBackground(colorGray);
+		painter.setBackground(colorBackground);
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.setAntialias(false);
 		painter.addRectangle(0, y, width, size);
@@ -67,7 +66,7 @@ public class TGTableCanvasPainter {
 		}
 		
 		trackColor.dispose();
-		colorGray.dispose();
+		colorBackground.dispose();
 		colorBlack.dispose();
 	}
 	
