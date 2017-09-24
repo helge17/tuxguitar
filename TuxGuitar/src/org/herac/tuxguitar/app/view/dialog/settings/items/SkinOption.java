@@ -1,15 +1,13 @@
 package org.herac.tuxguitar.app.view.dialog.settings.items;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.icons.TGSkinManager;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
-import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
@@ -26,6 +24,8 @@ import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.util.TGSynchronizer;
+import org.herac.tuxguitar.util.properties.TGProperties;
+import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
 
 public class SkinOption extends TGSettingsOption{
 	
@@ -107,23 +107,15 @@ public class SkinOption extends TGSettingsOption{
 				SkinOption.this.skins = new ArrayList<SkinInfo>();
 				String[] skinNames = TGFileUtils.getFileNames(getViewContext().getContext(), "skins");
 				if( skinNames != null ){
-					for(int i = 0;i < skinNames.length;i++){
-						Properties properties = new Properties();
-						try {
-							InputStream skinInfo = TGResourceManager.getInstance(getViewContext().getContext()).getResourceAsStream("skins/" + skinNames[i] + "/skin.properties");
-							if( skinInfo != null ){
-								properties.load( skinInfo );
-							}
-						}catch (Throwable throwable) {
-							throwable.printStackTrace();
-						}
+					for(int i = 0;i < skinNames.length;i++) {
+						TGProperties properties = TGSkinManager.getInstance(getViewContext().getContext()).getSkinInfo(skinNames[i]);
 						SkinInfo info = new SkinInfo(skinNames[i]);
-						info.setName(properties.getProperty("name",info.getSkin()));
-						info.setAuthor(properties.getProperty("author","Not available."));
-						info.setVersion(properties.getProperty("version","Not available."));
-						info.setDescription(properties.getProperty("description","Not available."));
-						info.setDate(properties.getProperty("date",null));
-						info.setPreview(properties.getProperty("preview",null));
+						info.setName(TGPropertiesUtil.getStringValue(properties, "name",info.getSkin()));
+						info.setAuthor(TGPropertiesUtil.getStringValue(properties, "author","Not available."));
+						info.setVersion(TGPropertiesUtil.getStringValue(properties, "version","Not available."));
+						info.setDescription(TGPropertiesUtil.getStringValue(properties, "description","Not available."));
+						info.setDate(TGPropertiesUtil.getStringValue(properties, "date"));
+						info.setPreview(TGPropertiesUtil.getStringValue(properties, "preview"));
 						SkinOption.this.skins.add(info);
 					}
 				}

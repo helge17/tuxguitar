@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import org.eclipse.swt.graphics.Image;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
@@ -192,7 +189,7 @@ public class TGIconManager {
 	}
 	
 	public String findConfiguredThemeName() {
-		return TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
+		return TGSkinManager.getInstance(this.context).getCurrentSkin();
 	}
 	
 	public boolean shouldReload(){

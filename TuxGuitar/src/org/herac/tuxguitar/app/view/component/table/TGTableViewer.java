@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.app.view.component.table;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
@@ -40,6 +43,7 @@ import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIResource;
 import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
@@ -63,6 +67,7 @@ public class TGTableViewer implements TGEventListener {
 	private TGProcess loadPropertiesProcess;
 	private TGProcess loadIconsProcess;
 	private TGProcess updateMenuItemsProcess;
+	private TGTableColorModel colorModel;
 	private int selectedTrack;
 	private int selectedMeasure;
 	private int trackCount = 0;
@@ -70,6 +75,7 @@ public class TGTableViewer implements TGEventListener {
 	private boolean update;
 	private boolean followScroll;
 	private boolean resetTexts;
+	private boolean resetColors;
 	
 	public TGTableViewer(TGContext context) {
 		this.context = context;
@@ -86,27 +92,12 @@ public class TGTableViewer implements TGEventListener {
 	
 	public void init(UIContainer parent){
 		this.composite = this.getUIFactory().createScrollBarPanel(parent, true, true, true);
-		this.addColors();
+		this.addColorModel();
 		this.addLayout();
 		this.addTable();
 		this.addHScroll();
 		this.addVScroll();
 		this.loadConfig();
-	}
-	
-	private void addColors(){
-		UIFactory uiFactory = this.getUIFactory();
-		
-		this.backgrounds = new UIColor[]{
-			uiFactory.createColor(255,255,255),
-			uiFactory.createColor(238,238,238),
-			uiFactory.createColor(192,192,192),
-		};
-		this.foregrounds = new UIColor[]{
-			uiFactory.createColor(0, 0, 0),
-			uiFactory.createColor(0, 0, 0),
-			uiFactory.createColor(0, 0, 0),
-		};
 	}
 	
 	private void addLayout(){
@@ -151,6 +142,10 @@ public class TGTableViewer implements TGEventListener {
 		this.loadProperties();
 	}
 	
+	private void addColorModel(){
+		this.colorModel = new TGTableColorModel();
+	}
+	
 	public void loadProperties() {
 		this.table.getColumnNumber().setTitle(TuxGuitar.getProperty("track.number"));
 		this.table.getColumnSoloMute().setTitle(TuxGuitar.getProperty("track.short-solo-mute"));
@@ -187,8 +182,16 @@ public class TGTableViewer implements TGEventListener {
 		this.vScroll.setIncrement(Math.round(this.table.getRowHeight()));
 	}
 	
+	public TGContext getContext() {
+		return context;
+	}
+	
 	public TGTable getTable(){
 		return this.table;
+	}
+	
+	public TGTableColorModel getColorModel() {
+		return this.colorModel;
 	}
 	
 	public int getHScrollSelection(){
@@ -378,19 +381,47 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
-	private void redrawRows(int selectedTrack){
+	private List<UIResource> resetColors() {
+		if( this.resetColors || this.backgrounds == null || this.foregrounds == null) {
+			this.resetColors = false;
+			
+			List<UIResource> disposableResources = new ArrayList<UIResource>();
+			if( this.backgrounds != null ) {
+				for(UIColor uiColor : this.backgrounds) {
+					disposableResources.add(uiColor);
+				}
+			}
+			if( this.foregrounds != null ) {
+				for(UIColor uiColor : this.foregrounds) {
+					disposableResources.add(uiColor);
+				}
+			}
+			
+			this.backgrounds = this.colorModel.createBackgrounds(this.context);
+			this.foregrounds = this.colorModel.createForegrounds(this.context);
+		}
+		return null;
+	}
+	
+	private void redrawRows(int selectedTrack) {
+		List<UIResource> disposableResources = this.resetColors();
+		
 		int rows = this.table.getRowCount();
 		for(int i = 0; i < rows; i ++){
 			TGTableRow row = this.table.getRow(i); 
 			row.getPainter().redraw();
 			if(this.selectedTrack != selectedTrack){
-				row.setBgColor( this.backgrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
-				row.setFgColor( this.foregrounds[ ((selectedTrack - 1) == i)? 2: ( i % 2 ) ] );
+				row.setBgColor( this.backgrounds[ ((selectedTrack - 1) == i) ? 2: ( i % 2 ) ] );
+				row.setFgColor( this.foregrounds[ ((selectedTrack - 1) == i) ? 2: ( i % 2 ) ] );
 			}
+		}
+		
+		if( disposableResources != null ) {
+			this.disposeResources(disposableResources.toArray(new UIResource[disposableResources.size()]));
 		}
 	}
 	
-	public void redraw(){
+	public void redraw() {
 		if(!isDisposed()){
 			this.updateTable();
 			this.table.getColumnCanvas().setTitle(TuxGuitar.getInstance().getDocumentManager().getSong().getName());
@@ -444,34 +475,40 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
-	public void loadConfig(){
+	public void loadConfig() {
 		this.autoSizeEnabled = TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
+		this.colorModel.resetColors(this.context);
+		this.resetColors = true;
 		this.trackCount = 0;
 	}
 	
-	public UIScrollBarPanel getControl(){
+	public UIScrollBarPanel getControl() {
 		return this.composite;
 	}
 	
-	public void createTrackMenu(){
+	public void createTrackMenu() {
 		this.menu = new TrackMenu(this.getUIFactory().createPopupMenu(TGWindow.getInstance(this.context).getWindow()));
 		this.menu.showItems();
 		this.menu.update();
 	}
 	
-	public void disposeColors(){
-		for(int i = 0; i < this.backgrounds.length; i++){
-			this.backgrounds[i].dispose();
-		}
-		for(int i = 0; i < this.foregrounds.length; i++){
-			this.foregrounds[i].dispose();
-		}
+	public void disposeColors() {
+		this.disposeResources(this.backgrounds);
+		this.disposeResources(this.foregrounds);
+		this.backgrounds = null;
+		this.foregrounds = null;
 	}
 	
 	public void disposeMenu() {
 		if( this.menu != null && !this.menu.isDisposed() ) {
 			this.menu.dispose();
 			this.menu = null;
+		}
+	}
+	
+	public void disposeResources(UIResource[] resources) {
+		for(int i = 0; i < resources.length; i++){
+			resources[i].dispose();
 		}
 	}
 	

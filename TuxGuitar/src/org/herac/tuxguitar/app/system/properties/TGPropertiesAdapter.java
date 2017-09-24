@@ -3,6 +3,8 @@ package org.herac.tuxguitar.app.system.properties;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaultsPropertiesHandler;
 import org.herac.tuxguitar.app.system.config.TGConfigPropertiesHandler;
+import org.herac.tuxguitar.app.system.icons.TGSkinInfoHandler;
+import org.herac.tuxguitar.app.system.icons.TGSkinPropertiesHandler;
 import org.herac.tuxguitar.app.system.plugins.TGPluginInfoHandler;
 import org.herac.tuxguitar.app.system.plugins.TGPluginPropertiesHandler;
 import org.herac.tuxguitar.util.TGContext;
@@ -22,5 +24,7 @@ public class TGPropertiesAdapter {
 		tgPropertiesManager.addPropertiesReader(TGPluginInfo.RESOURCE, new TGPluginInfoHandler(context));
 		tgPropertiesManager.addPropertiesReader(TGPluginProperties.RESOURCE, new TGPluginPropertiesHandler(context));
 		tgPropertiesManager.addPropertiesWriter(TGPluginProperties.RESOURCE, new TGPluginPropertiesHandler(context));
+		tgPropertiesManager.addPropertiesReader(TGSkinInfoHandler.RESOURCE, new TGSkinInfoHandler(context));
+		tgPropertiesManager.addPropertiesReader(TGSkinPropertiesHandler.RESOURCE, new TGSkinPropertiesHandler(context));
 	}
 }

@@ -77,7 +77,7 @@ public class TGAboutDialog {
 		headerLayout.set(this.imageComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, IMAGE_WIDTH, IMAGE_HEIGHT, null);
 		
 		final UIColor titleColor = uiFactory.createColor(0xc0, 0xc0, 0xc0);
-		final UIFont titleFont = uiFactory.createFont(configManager.getUIFontModelConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
+		final UIFont titleFont = uiFactory.createFont(configManager.getFontModelConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
 		UILabel title = uiFactory.createLabel(header);
 		title.setFont(titleFont);
 		title.setFgColor(titleColor);

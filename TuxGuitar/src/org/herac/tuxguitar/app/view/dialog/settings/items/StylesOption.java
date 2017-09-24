@@ -200,18 +200,18 @@ public class StylesOption extends TGSettingsOption {
 	protected void loadConfig(){
 		new Thread(new Runnable() {
 			public void run() {
-				final UIFontModel defaultFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_DEFAULT);
-				final UIFontModel noteFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_NOTE);
-				final UIFontModel textFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_TEXT);
-				final UIFontModel lyricFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_LYRIC);
-				final UIFontModel printerDefaultFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT);
-				final UIFontModel printerNoteFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE);
-				final UIFontModel printerTextFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT);
-				final UIFontModel printerLyricFontData = getConfig().getUIFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC);
-				final UIColorModel scoreNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE);
-				final UIColorModel tabNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE);
-				final UIColorModel playNoteRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE);
-				final UIColorModel linesRGB  = getConfig().getUIColorModelConfigValue(TGConfigKeys.COLOR_LINE);
+				final UIFontModel defaultFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT);
+				final UIFontModel noteFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_NOTE);
+				final UIFontModel textFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_TEXT);
+				final UIFontModel lyricFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_LYRIC);
+				final UIFontModel printerDefaultFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT);
+				final UIFontModel printerNoteFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE);
+				final UIFontModel printerTextFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_TEXT);
+				final UIFontModel printerLyricFontData = getConfig().getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC);
+				final UIColorModel scoreNoteRGB  = getConfig().getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE);
+				final UIColorModel tabNoteRGB  = getConfig().getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE);
+				final UIColorModel playNoteRGB  = getConfig().getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE);
+				final UIColorModel linesRGB  = getConfig().getColorModelConfigValue(TGConfigKeys.COLOR_LINE);
 				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
