@@ -22,6 +22,7 @@ CLASSPATH=${CLASSPATH}:./lib/swt.jar
 CLASSPATH=${CLASSPATH}:./lib/gervill.jar
 CLASSPATH=${CLASSPATH}:./lib/itext-pdf.jar
 CLASSPATH=${CLASSPATH}:./lib/itext-xmlworker.jar
+CLASSPATH=${CLASSPATH}:./lib/commons-compress.jar
 CLASSPATH=${CLASSPATH}:./share/
 CLASSPATH=${CLASSPATH}:./dist/
 ##LIBRARY_PATH

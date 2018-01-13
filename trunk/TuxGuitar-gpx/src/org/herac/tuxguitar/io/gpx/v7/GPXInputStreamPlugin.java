@@ -1,13 +1,12 @@
-package org.herac.tuxguitar.io.gpx;
+package org.herac.tuxguitar.io.gpx.v7;
 
 import org.herac.tuxguitar.io.base.TGFileFormatDetector;
 import org.herac.tuxguitar.io.base.TGSongReader;
+import org.herac.tuxguitar.io.gpx.GPXPlugin;
 import org.herac.tuxguitar.io.plugin.TGSongReaderPlugin;
 import org.herac.tuxguitar.util.TGContext;
 
 public class GPXInputStreamPlugin extends TGSongReaderPlugin{
-	
-	public static final String MODULE_ID = "tuxguitar-gpx";
 	
 	public GPXInputStreamPlugin() {
 		super(true);
@@ -22,6 +21,6 @@ public class GPXInputStreamPlugin extends TGSongReaderPlugin{
 	}
 	
 	public String getModuleId() {
-		return MODULE_ID;
+		return GPXPlugin.MODULE_ID;
 	}
 }

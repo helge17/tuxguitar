@@ -61,7 +61,7 @@ public class TGFileFormatUtils {
 		return false;
 	}
 	
-	public static InputStream getInputStream(InputStream in)throws Throwable {
+	public static byte[] getBytes(InputStream in)throws Throwable {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		int read = 0;
 		while((read = in.read()) != -1){
@@ -71,6 +71,10 @@ public class TGFileFormatUtils {
 		in.close();
 		out.close();
 		out.flush();
-		return new ByteArrayInputStream(bytes);
+		return bytes;
+	}
+	
+	public static InputStream getInputStream(InputStream in) throws Throwable {
+		return new ByteArrayInputStream(getBytes(in));
 	}
 }

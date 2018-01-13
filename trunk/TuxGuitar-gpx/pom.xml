@@ -32,5 +32,10 @@
 			<artifactId>tuxguitar-gm-utils</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

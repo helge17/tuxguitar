@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.io.base;
 
-import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,13 +15,14 @@ public class TGSongReaderHelper extends TGSongPersistenceHelper {
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
 		try{
 			boolean success = false;
+			byte[] buffer = TGFileFormatUtils.getBytes(handle.getInputStream());
 			
-			handle.setInputStream(new BufferedInputStream(handle.getInputStream()));
 			if( handle.getFormat() == null ) {
-				handle.setFormat(this.detectFileFormat(handle));
+				handle.setFormat(this.detectFileFormat(handle, buffer));
 			}
 			
 			if( handle.getFormat() != null ) {
+				handle.setInputStream(new ByteArrayInputStream(buffer));
 				TGSongReader reader = TGFileFormatManager.getInstance(this.getContext()).findSongReader(handle.getFormat());
 				if( reader != null ){
 					reader.read(handle);
@@ -45,15 +46,13 @@ public class TGSongReaderHelper extends TGSongPersistenceHelper {
 		}
 	}
 	
-	public TGFileFormat detectFileFormat(TGSongReaderHandle handle) throws IOException {
-		handle.getInputStream().mark(1);
-		
+	public TGFileFormat detectFileFormat(TGSongReaderHandle handle, byte[] buffer) throws IOException {
 		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.getContext());
 		List<TGFileFormatDetector> detectors = fileFormatManager.getFileFormatDetectors();
-		for(TGFileFormatDetector detector : detectors){
+		for(TGFileFormatDetector detector : detectors) {
+			handle.setInputStream(new ByteArrayInputStream(buffer));
 			TGFileFormat fileFormat = detector.getFileFormat(handle.getInputStream());
 			
-			handle.getInputStream().reset();
 			if( fileFormat != null ) {
 				return fileFormat;
 			}

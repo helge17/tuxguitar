@@ -1,9 +1,11 @@
-package org.herac.tuxguitar.io.gpx;
+package org.herac.tuxguitar.io.gpx.v6;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongReader;
 import org.herac.tuxguitar.io.base.TGSongReaderHandle;
+import org.herac.tuxguitar.io.gpx.GPXDocumentParser;
+import org.herac.tuxguitar.io.gpx.GPXDocumentReader;
 
 public class GPXInputStream implements TGSongReader{
 	
@@ -18,8 +20,8 @@ public class GPXInputStream implements TGSongReader{
 			GPXFileSystem gpxFileSystem = new GPXFileSystem();
 			gpxFileSystem.load(handle.getInputStream());
 			
-			GPXDocumentReader gpxReader = new GPXDocumentReader( gpxFileSystem.getFileContentsAsStream("score.gpif"));
-			GPXDocumentParser gpxParser = new GPXDocumentParser( handle.getFactory() , gpxReader.read() );
+			GPXDocumentReader gpxReader = new GPXDocumentReader(gpxFileSystem.getFileContentsAsStream("score.gpif"), GPXDocumentReader.GP6);
+			GPXDocumentParser gpxParser = new GPXDocumentParser(handle.getFactory(), gpxReader.read());
 			
 			handle.setSong(gpxParser.parse());
 		} catch (Throwable throwable) {
