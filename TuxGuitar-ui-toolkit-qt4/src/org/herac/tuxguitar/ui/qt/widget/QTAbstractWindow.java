@@ -163,7 +163,7 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 			super(window);
 		}
 		
-		public void handle(QEvent event) {
+		public boolean handle(QEvent event) {
 			if(!this.getControl().isDisposed()) {
 				if(!this.isEmpty()) {
 					super.handle(event);
@@ -171,6 +171,7 @@ public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContai
 					this.getControl().dispose();
 				}
 			}
+			return true;
 		}
 	}
 }

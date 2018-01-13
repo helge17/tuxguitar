@@ -17,7 +17,9 @@ public class QTMenuShowListenerManager extends UIMenuShowListenerManager impleme
 		this.onMenuShow(new UIMenuEvent(this.control));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle();
+		
+		return true;
 	}
 }

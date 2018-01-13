@@ -13,6 +13,7 @@ import org.herac.tuxguitar.ui.event.UIMouseExitListener;
 import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
+import org.herac.tuxguitar.ui.event.UIZoomListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXDisposeListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXFocusListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXKeyPressedListenerManager;
@@ -25,6 +26,7 @@ import org.herac.tuxguitar.ui.jfx.event.JFXMouseExitListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXMouseMoveListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXMouseUpListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXMouseWheelListenerManager;
+import org.herac.tuxguitar.ui.jfx.event.JFXZoomListenerManager;
 import org.herac.tuxguitar.ui.jfx.menu.JFXPopupMenu;
 import org.herac.tuxguitar.ui.jfx.resource.JFXCursor;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
@@ -57,6 +59,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	private JFXMouseEnterListenerManager mouseEnterListener;
 	private JFXMouseExitListenerManager mouseExitListener;
 	private JFXMouseWheelListenerManager mouseWheelListener;
+	private JFXZoomListenerManager zoomListener;
 	
 	private String toolTipText;
 	private UISize packedSize;
@@ -86,6 +89,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 		this.mouseDragListener = new JFXMouseDragListenerManager(this);
 		this.mouseEnterListener = new JFXMouseEnterListenerManager(this);
 		this.mouseExitListener = new JFXMouseExitListenerManager(this);
+		this.zoomListener = new JFXZoomListenerManager(this);
 		
 		this.getControl().setManaged(false);
 		this.getControl().setFocusTraversable(false);
@@ -394,6 +398,20 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 		this.focusListener.removeListener(listener);
 		if( this.focusListener.isEmpty() ) {
 			this.getControl().focusedProperty().removeListener(this.focusListener);
+		}
+	}
+	
+	public void addZoomListener(UIZoomListener listener) {
+		if( this.zoomListener.isEmpty() ) {
+			this.getControl().setOnScroll(this.zoomListener);
+		}
+		this.zoomListener.addListener(listener);
+	}
+
+	public void removeZoomListener(UIZoomListener listener) {
+		this.zoomListener.removeListener(listener);
+		if( this.zoomListener.isEmpty() ) {
+			this.getControl().setOnScroll(null);
 		}
 	}
 }

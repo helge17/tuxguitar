@@ -53,6 +53,10 @@ import org.herac.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
@@ -453,6 +457,10 @@ public class TGActionInstaller {
 		installAction(new TGSetCompactViewAction(context));
 		installAction(new TGSetChordNameEnabledAction(context));
 		installAction(new TGSetChordDiagramEnabledAction(context));
+		installAction(new TGSetLayoutScaleAction(context));
+		installAction(new TGSetLayoutScaleIncrementAction(context));
+		installAction(new TGSetLayoutScaleDecrementAction(context));
+		installAction(new TGSetLayoutScaleResetAction(context));
 		
 		//tools
 		installAction(new TGSelectScaleAction(context));

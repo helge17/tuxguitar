@@ -14,7 +14,9 @@ public class QTDisposeListenerManager extends UIDisposeListenerManager implement
 		this.control = control;
 	}
 
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.onDispose(new UIDisposeEvent(this.control));
+		
+		return true;
 	}
 }

@@ -4,5 +4,5 @@ import org.qtjambi.qt.core.QEvent;
 
 public interface QTEventHandler {
 	
-	void handle(QEvent event);
+	boolean handle(QEvent event);
 }

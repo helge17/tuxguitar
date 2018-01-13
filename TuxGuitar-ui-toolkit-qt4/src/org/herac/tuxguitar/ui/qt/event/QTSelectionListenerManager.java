@@ -22,7 +22,9 @@ public class QTSelectionListenerManager extends UISelectionListenerManager imple
 		this.onSelect(new UISelectionEvent(this.control));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle();
+		
+		return true;
 	}
 }

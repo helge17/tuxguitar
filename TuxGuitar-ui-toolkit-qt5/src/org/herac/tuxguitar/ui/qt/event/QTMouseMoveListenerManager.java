@@ -20,7 +20,9 @@ public class QTMouseMoveListenerManager extends UIMouseMoveListenerManager imple
 		this.onMouseMove(new UIMouseEvent(this.control, new UIPosition(event.x(), event.y()), QTMouseButton.getMouseButton(event.button())));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle((QMouseEvent) event);
+		
+		return true;
 	}
 }

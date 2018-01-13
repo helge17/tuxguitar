@@ -52,6 +52,10 @@ import org.herac.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
@@ -512,6 +516,11 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetCompactViewAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		
+		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGSetLayoutScaleIncrementAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGSetLayoutScaleDecrementAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
+		this.map(TGSetLayoutScaleResetAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		
 		//tools
 		this.map(TGSelectScaleAction.NAME, LOCKABLE);

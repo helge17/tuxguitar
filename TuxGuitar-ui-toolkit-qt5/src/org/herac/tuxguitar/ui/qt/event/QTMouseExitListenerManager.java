@@ -19,7 +19,9 @@ public class QTMouseExitListenerManager extends UIMouseExitListenerManager imple
 		this.onMouseExit(new UIMouseEvent(this.control, new UIPosition(event.pos().x(), event.pos().y()), 0));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle((QHoverEvent) event);
+		
+		return true;
 	}
 }

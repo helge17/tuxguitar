@@ -19,7 +19,9 @@ public class QTKeyPressedListenerManager extends UIKeyPressedListenerManager imp
 		this.onKeyPressed(new UIKeyEvent(this.control, QTKey.getConvination(event)));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle((QKeyEvent) event);
+		
+		return true;
 	}
 }

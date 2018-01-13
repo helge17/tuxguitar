@@ -20,7 +20,9 @@ public class QTKeyReleasedListenerManager extends UIKeyReleasedListenerManager i
 		this.onKeyReleased(new UIKeyEvent(this.control, QTKey.getConvination(event)));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle((QKeyEvent) event);
+		
+		return true;
 	}
 }

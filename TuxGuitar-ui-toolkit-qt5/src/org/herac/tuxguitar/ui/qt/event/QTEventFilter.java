@@ -45,8 +45,9 @@ public class QTEventFilter extends QObject {
 		if(!this.ignoreEvents) {
 			for(QTEventMap map : this.eventsMap) {
 				if( map.getEventType().equals(event.type()) ) {
-					map.getEventHandler().handle(event);
-					success = true;
+					if( map.getEventHandler().handle(event)) {
+						success = true;
+					}
 				}
 			}
 		}

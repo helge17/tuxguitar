@@ -14,7 +14,9 @@ public class QTFocusLostListenerManager extends UIFocusLostListenerManager imple
 		this.control = control;
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.onFocusLost(new UIFocusEvent(this.control));
+		
+		return true;
 	}
 }

@@ -13,7 +13,9 @@ public class QTResizeListenerManager extends UIResizeListenerManager implements 
 		this.control = control;
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.onResize(new UIResizeEvent(this.control));
+		
+		return true;
 	}
 }
