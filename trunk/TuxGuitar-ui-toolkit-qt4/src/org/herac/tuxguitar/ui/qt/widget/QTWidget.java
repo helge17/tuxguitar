@@ -14,6 +14,7 @@ import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
 import org.herac.tuxguitar.ui.event.UIResizeListener;
+import org.herac.tuxguitar.ui.event.UIZoomListener;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.qt.event.QTDisposeListenerManager;
@@ -32,6 +33,7 @@ import org.herac.tuxguitar.ui.qt.event.QTMouseMoveListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseUpListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMouseWheelListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTResizeListenerManager;
+import org.herac.tuxguitar.ui.qt.event.QTZoomListenerManager;
 import org.herac.tuxguitar.ui.qt.resource.QTColor;
 import org.herac.tuxguitar.ui.qt.resource.QTCursor;
 import org.herac.tuxguitar.ui.qt.resource.QTFont;
@@ -74,6 +76,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	private QTMouseWheelListenerManager mouseWheelListener;
 	private QTResizeListenerManager resizeListener;
 	private QTMenuOpenListenerManager menuOpenListener;
+	private QTZoomListenerManager zoomListener;
 	
 	private UISize packedSize;
 	private UIColor bgColor;
@@ -108,6 +111,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		this.mouseExitListener = new QTMouseExitListenerManager(this);
 		this.menuOpenListener = new QTMenuOpenListenerManager(this);
 		this.resizeListener = new QTResizeListenerManager(this);
+		this.zoomListener = new QTZoomListenerManager(this);
 		
 		this.getControl().installEventFilter(this.eventFilter);
 		
@@ -523,6 +527,20 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		this.resizeListener.removeListener(listener);
 		if( this.resizeListener.isEmpty() ) {
 			this.getEventFilter().disconnect(Type.Resize, this.resizeListener);
+		}
+	}
+	
+	public void addZoomListener(UIZoomListener listener) {
+		if( this.zoomListener.isEmpty() ) {
+			this.getEventFilter().connect(Type.Wheel, this.zoomListener);
+		}
+		this.zoomListener.addListener(listener);
+	}
+
+	public void removeZoomListener(UIZoomListener listener) {
+		this.zoomListener.removeListener(listener);
+		if( this.zoomListener.isEmpty() ) {
+			this.getEventFilter().disconnect(Type.Wheel, this.zoomListener);
 		}
 	}
 }

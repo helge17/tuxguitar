@@ -72,6 +72,7 @@ public class TGControl {
 		this.canvas.addMouseUpListener(this.tablature.getEditorKit().getMouseKit());
 		this.canvas.addMouseMoveListener(this.tablature.getEditorKit().getMouseKit());
 		this.canvas.addMouseExitListener(this.tablature.getEditorKit().getMouseKit());
+		this.canvas.addZoomListener(this.tablature.getEditorKit().getMouseKit());
 		
 		this.hScroll.setIncrement(SCROLL_INCREMENT);
 		this.hScroll.addSelectionListener(new UISelectionListener() {

@@ -21,6 +21,7 @@ import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
 import org.herac.tuxguitar.ui.event.UIResizeListener;
+import org.herac.tuxguitar.ui.event.UIZoomListener;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UICursor;
@@ -36,6 +37,7 @@ import org.herac.tuxguitar.ui.swt.event.SWTMouseMoveListenerManager;
 import org.herac.tuxguitar.ui.swt.event.SWTMouseTrackListenerManager;
 import org.herac.tuxguitar.ui.swt.event.SWTMouseWheelListenerManager;
 import org.herac.tuxguitar.ui.swt.event.SWTResizeListenerManager;
+import org.herac.tuxguitar.ui.swt.event.SWTZoomListenerManager;
 import org.herac.tuxguitar.ui.swt.menu.SWTMenu;
 import org.herac.tuxguitar.ui.swt.resource.SWTColor;
 import org.herac.tuxguitar.ui.swt.resource.SWTCursor;
@@ -54,6 +56,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	private SWTMouseDragListenerManager mouseDragListener;
 	private SWTMouseTrackListenerManager mouseTrackListener;
 	private SWTFocusListenerManager focusListener;
+	private SWTZoomListenerManager zoomListener;
 	
 	private UISize packedSize;
 	private UIColor bgColor;
@@ -79,6 +82,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		this.mouseDragListener = new SWTMouseDragListenerManager(this);
 		this.mouseTrackListener = new SWTMouseTrackListenerManager(this);
 		this.focusListener = new SWTFocusListenerManager(this);
+		this.zoomListener = new SWTZoomListenerManager(this);
 	}
 	
 	public UIControl getParent() {
@@ -420,6 +424,20 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		this.focusListener.removeListener(listener);
 		if( this.focusListener.isEmpty() ) {
 			this.getControl().removeFocusListener(this.focusListener);
+		}
+	}
+	
+	public void addZoomListener(UIZoomListener listener) {
+		if( this.zoomListener.isEmpty() ) {
+			this.getControl().addListener(SWTZoomListenerManager.EVENT_TYPE, this.zoomListener);
+		}
+		this.zoomListener.addListener(listener);
+	}
+
+	public void removeZoomListener(UIZoomListener listener) {
+		this.zoomListener.removeListener(listener);
+		if( this.zoomListener.isEmpty() ) {
+			this.getControl().removeListener(SWTZoomListenerManager.EVENT_TYPE, this.zoomListener);
 		}
 	}
 }

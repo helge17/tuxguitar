@@ -15,12 +15,14 @@ public class QTPaintListenerManager extends UIPaintListenerManager implements QT
 		this.control = control;
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		QPainter qPainter = new QPainter(this.control.getPaintDeviceInterface());
 		QTPainter qtPainter = new QTPainter(qPainter);
 		
 		this.onPaint(new UIPaintEvent(this.control, qtPainter));
 		
 		qtPainter.dispose();
+		
+		return true;
 	}
 }

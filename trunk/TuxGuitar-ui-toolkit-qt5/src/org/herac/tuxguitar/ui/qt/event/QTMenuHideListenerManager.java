@@ -17,7 +17,9 @@ public class QTMenuHideListenerManager extends UIMenuHideListenerManager impleme
 		this.onMenuHide(new UIMenuEvent(this.control));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle();
+		
+		return true;
 	}
 }

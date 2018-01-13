@@ -4,6 +4,9 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordDiagramEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetChordNameEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
@@ -16,6 +19,8 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleMainToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
@@ -24,6 +29,7 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
 import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
@@ -43,6 +49,9 @@ public class ViewMenuItem extends TGMenuItem {
 	private UIMenuCheckableItem scoreEnabled;
 	private UIMenuCheckableItem tablatureEnabled;
 	private UIMenuCheckableItem compact;
+	private UIMenuActionItem zoomIn;
+	private UIMenuActionItem zoomOut;
+	private UIMenuActionItem zoomReset;
 	
 	private UIMenuSubMenuItem chordMenuItem;
 	private UIMenuCheckableItem chordName;
@@ -118,13 +127,25 @@ public class ViewMenuItem extends TGMenuItem {
 		this.chordDiagram = this.chordMenuItem.getMenu().createCheckItem();
 		this.chordDiagram.addSelectionListener(this.createActionProcessor(TGSetChordDiagramEnabledAction.NAME));
 		
+		this.layoutMenuItem.getMenu().createSeparator();
+		
+		//-- ZOOM
+		this.zoomIn = this.layoutMenuItem.getMenu().createActionItem();
+		this.zoomIn.addSelectionListener(this.createActionProcessor(TGSetLayoutScaleIncrementAction.NAME));
+		
+		this.zoomOut = this.layoutMenuItem.getMenu().createActionItem();
+		this.zoomOut.addSelectionListener(this.createActionProcessor(TGSetLayoutScaleDecrementAction.NAME));
+		
+		this.zoomReset = this.layoutMenuItem.getMenu().createActionItem();
+		this.zoomReset.addSelectionListener(this.createActionProcessor(TGSetLayoutScaleResetAction.NAME));
+		
 		this.loadIcons();
 		this.loadProperties();
 	}
 	
-	public void update(){
-		TGLayout layout = TuxGuitar.getInstance().getTablatureEditor().getTablature().getViewLayout();
-		int style = layout.getStyle();
+	public void update() {
+		Tablature tablature = TablatureEditor.getInstance(this.findContext()).getTablature();
+		int style = tablature.getViewLayout().getStyle();
 		this.showMainToolbar.setChecked(TGMainToolBar.getInstance(this.findContext()).isVisible());
 		this.showEditToolbar.setChecked(TGEditToolBar.getInstance(this.findContext()).isVisible());
 		this.showInstruments.setChecked(!TuxGuitar.getInstance().getChannelManager().isDisposed());
@@ -132,15 +153,16 @@ public class ViewMenuItem extends TGMenuItem {
 		this.showFretBoard.setChecked(TuxGuitar.getInstance().getFretBoardEditor().isVisible());
 		this.showPiano.setChecked(!TuxGuitar.getInstance().getPianoEditor().isDisposed());
 		this.showMatrix.setChecked(!TuxGuitar.getInstance().getMatrixEditor().isDisposed());
-		this.pageLayout.setChecked(layout instanceof TGLayoutVertical);
-		this.linearLayout.setChecked(layout instanceof TGLayoutHorizontal);
+		this.pageLayout.setChecked(tablature.getViewLayout() instanceof TGLayoutVertical);
+		this.linearLayout.setChecked(tablature.getViewLayout() instanceof TGLayoutHorizontal);
 		this.multitrack.setChecked( (style & TGLayout.DISPLAY_MULTITRACK) != 0 );
 		this.scoreEnabled.setChecked( (style & TGLayout.DISPLAY_SCORE) != 0 );
 		this.tablatureEnabled.setChecked( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
 		this.compact.setChecked( (style & TGLayout.DISPLAY_COMPACT) != 0 );
-		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || layout.getSong().countTracks() == 1);
+		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || tablature.getViewLayout().getSong().countTracks() == 1);
 		this.chordName.setChecked( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
 		this.chordDiagram.setChecked( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
+		this.zoomReset.setEnabled(!Tablature.DEFAULT_SCALE.equals(tablature.getScale()));
 	}
 	
 	public void loadProperties(){
@@ -161,6 +183,9 @@ public class ViewMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.chordMenuItem, "view.layout.chord-style", null);
 		setMenuItemTextAndAccelerator(this.chordName, "view.layout.chord-name", TGSetChordNameEnabledAction.NAME);
 		setMenuItemTextAndAccelerator(this.chordDiagram, "view.layout.chord-diagram", TGSetChordDiagramEnabledAction.NAME);
+		setMenuItemTextAndAccelerator(this.zoomIn, "view.zoom.in", TGSetLayoutScaleIncrementAction.NAME);
+		setMenuItemTextAndAccelerator(this.zoomOut, "view.zoom.out", TGSetLayoutScaleDecrementAction.NAME);
+		setMenuItemTextAndAccelerator(this.zoomReset, "view.zoom.reset", TGSetLayoutScaleResetAction.NAME);
 	}
 	
 	public void loadIcons(){

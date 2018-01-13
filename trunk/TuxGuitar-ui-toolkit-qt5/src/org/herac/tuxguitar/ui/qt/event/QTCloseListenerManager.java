@@ -21,9 +21,11 @@ public class QTCloseListenerManager extends UICloseListenerManager implements QT
 		this.onClose(new UICloseEvent(this.control));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle();
 		
 		event.ignore();
+		
+		return true;
 	}
 }

@@ -18,7 +18,9 @@ public class QTModifyListenerManager extends UIModifyListenerManager implements 
 		this.onModify(new UIModifyEvent(this.control));
 	}
 	
-	public void handle(QEvent event) {
+	public boolean handle(QEvent event) {
 		this.handle();
+		
+		return true;
 	}
 }

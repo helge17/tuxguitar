@@ -27,6 +27,8 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class Tablature implements TGController {
 	
+	public static final Float DEFAULT_SCALE = 1f;
+	
 	private TGContext context; 
 	private UIResourceFactory resourceFactory;
 	private TGDocumentManager documentManager;
@@ -36,10 +38,12 @@ public class Tablature implements TGController {
 	private Caret caret;
 	private TGLayout viewLayout;
 	private EditorKit editorKit;
+	private Float scale;
 	
 	public Tablature(TGContext context, TGDocumentManager documentManager) {
 		this.context = context;
 		this.documentManager = documentManager;
+		this.scale = DEFAULT_SCALE;
 		this.caret = new Caret(this);
 		this.editorKit = new EditorKit(this);
 		this.createSyncProcesses();
@@ -66,7 +70,7 @@ public class Tablature implements TGController {
 	}
 	
 	public void resetCaret(){
-		this.caret.update(1, TGDuration.QUARTER_TIME,1);
+		this.caret.update(1, TGDuration.QUARTER_TIME, 1);
 	}
 	
 	public void paintTablature(UIPainter painter, UIRectangle area, float fromX, float fromY){
@@ -76,6 +80,10 @@ public class Tablature implements TGController {
 		this.getEditorKit().paintSelection(this.getViewLayout(), painter);
 	}
 	
+	public Float getScale() {
+		return scale;
+	}
+
 	public Caret getCaret(){
 		return this.caret;
 	}
@@ -108,9 +116,9 @@ public class Tablature implements TGController {
 		this.reloadStyles();
 	}
 	
-	public void reloadStyles(){
+	public void reloadStyles() {
 		if( this.getViewLayout() != null ){
-			this.getViewLayout().loadStyles(1f);
+			this.getViewLayout().loadStyles(this.scale);
 		}
 		this.loadCaretStyles();
 	}
@@ -142,6 +150,13 @@ public class Tablature implements TGController {
 		
 		getCaret().setColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
 		getCaret().setColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
+	}
+	
+	public void scale(Float scale) {
+		if(!this.scale.equals(scale)) {
+			this.scale = (scale != null ? scale : DEFAULT_SCALE);
+			this.reloadStyles();
+		}
 	}
 	
 	public void dispose(){

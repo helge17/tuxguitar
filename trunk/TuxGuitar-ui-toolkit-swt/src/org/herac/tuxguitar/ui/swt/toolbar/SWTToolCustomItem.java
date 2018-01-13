@@ -22,6 +22,7 @@ import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
 import org.herac.tuxguitar.ui.event.UIResizeListener;
+import org.herac.tuxguitar.ui.event.UIZoomListener;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UICursor;
@@ -436,6 +437,18 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 	public void removeFocusLostListener(UIFocusLostListener listener) {
 		if( this.control != null ) {
 			this.control.removeFocusLostListener(listener);
+		}
+	}
+	
+	public void addZoomListener(UIZoomListener listener) {
+		if( this.control != null ) {
+			this.control.addZoomListener(listener);
+		}
+	}
+
+	public void removeZoomListener(UIZoomListener listener) {
+		if( this.control != null ) {
+			this.control.removeZoomListener(listener);
 		}
 	}
 	

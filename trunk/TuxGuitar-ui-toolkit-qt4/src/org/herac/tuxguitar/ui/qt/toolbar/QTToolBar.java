@@ -48,8 +48,9 @@ public class QTToolBar extends QTAbstractContainer<QToolBar> implements QTContai
 		this.getControl().setFloatable(false);
 		
 		this.getEventFilter().connect(Type.LayoutRequest, new QTEventHandler() {
-			public void handle(QEvent event) {
+			public boolean handle(QEvent event) {
 				QTToolBar.this.layout();
+				return true;
 			}
 		});
 	}

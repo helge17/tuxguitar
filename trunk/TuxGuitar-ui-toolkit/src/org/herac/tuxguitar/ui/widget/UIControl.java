@@ -15,6 +15,7 @@ import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
 import org.herac.tuxguitar.ui.event.UIResizeListener;
+import org.herac.tuxguitar.ui.event.UIZoomListener;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UICursor;
@@ -127,4 +128,8 @@ public interface UIControl extends UIComponent {
 	void addFocusLostListener(UIFocusLostListener listener);
 	
 	void removeFocusLostListener(UIFocusLostListener listener);
+	
+	void addZoomListener(UIZoomListener listener);
+	
+	void removeZoomListener(UIZoomListener listener);
 }

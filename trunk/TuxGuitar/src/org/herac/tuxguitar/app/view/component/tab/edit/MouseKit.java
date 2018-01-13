@@ -5,6 +5,8 @@ import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMenuShownAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseMoveAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
 import org.herac.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -17,10 +19,12 @@ import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseExitListener;
 import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
+import org.herac.tuxguitar.ui.event.UIZoomEvent;
+import org.herac.tuxguitar.ui.event.UIZoomListener;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.util.TGContext;
 
-public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouseMoveListener, UIMouseExitListener, UIMenuShowListener, UIMenuHideListener {
+public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouseMoveListener, UIMouseExitListener, UIMenuShowListener, UIMenuHideListener, UIZoomListener {
 	
 	private EditorKit kit;
 	private UIPosition position;
@@ -76,5 +80,13 @@ public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouse
 	public void onMenuHide(UIMenuEvent event) {
 		this.menuOpen = false;
 		TuxGuitar.getInstance().updateCache(true);
+	}
+	
+	public void onZoom(UIZoomEvent event) {
+		if( event.getValue() > 0 ) {
+			new TGActionProcessor(this.kit.getTablature().getContext(), TGSetLayoutScaleIncrementAction.NAME).process();
+		} else {
+			new TGActionProcessor(this.kit.getTablature().getContext(), TGSetLayoutScaleDecrementAction.NAME).process();
+		}
 	}
 }
