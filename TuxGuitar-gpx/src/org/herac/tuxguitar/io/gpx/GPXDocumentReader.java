@@ -20,10 +20,15 @@ import org.w3c.dom.NodeList;
 
 public class GPXDocumentReader {
 	
+	public static final Integer GP6 = 6;
+	public static final Integer GP7 = 7;
+	
+	private Integer version;
 	private Document xmlDocument;
 	private GPXDocument gpxDocument;
 	
-	public GPXDocumentReader(InputStream stream){
+	public GPXDocumentReader(InputStream stream, Integer version) {
+		this.version = version;
 		this.xmlDocument = getDocument(stream);
 		this.gpxDocument = new GPXDocument();
 	}
@@ -104,17 +109,50 @@ public class GPXDocumentReader {
 					track.setId( getAttributeIntegerValue(trackNode, "id") );
 					track.setName(getChildNodeContent(trackNode, "Name" ));
 					track.setColor(getChildNodeIntegerContentArray(trackNode, "Color"));
-					Node gmNode = getChildNode(trackNode, "GeneralMidi");
-					if( gmNode != null ){
-						track.setGmProgram(getChildNodeIntegerContent(gmNode, "Program"));
-						track.setGmChannel1(getChildNodeIntegerContent(gmNode, "PrimaryChannel"));
-						track.setGmChannel2(getChildNodeIntegerContent(gmNode, "SecondaryChannel"));
+					
+					if( this.version == GP6 ) {
+						Node gmNode = getChildNode(trackNode, "GeneralMidi");
+						if( gmNode != null ){
+							track.setGmProgram(getChildNodeIntegerContent(gmNode, "Program"));
+							track.setGmChannel1(getChildNodeIntegerContent(gmNode, "PrimaryChannel"));
+							track.setGmChannel2(getChildNodeIntegerContent(gmNode, "SecondaryChannel"));
+						}
+					} else if (this.version == GP7) {
+						Node midiConnectionNode = getChildNode(trackNode, "MidiConnection");
+						if( midiConnectionNode != null ){
+							track.setGmChannel1(getChildNodeIntegerContent(midiConnectionNode, "PrimaryChannel"));
+							track.setGmChannel2(getChildNodeIntegerContent(midiConnectionNode, "SecondaryChannel"));
+						}
+						NodeList soundsNodes = getChildNodeList(trackNode, "Sounds");
+						if( soundsNodes != null ){
+							for( int s = 0 ; s < soundsNodes.getLength() ; s ++ ){
+								Node soundNode = soundsNodes.item( s );
+								if( soundNode.getNodeName().equals("Sound")) {
+									Node midiNode = getChildNode(soundNode, "MIDI");
+									if( midiNode != null ) {
+										track.setGmProgram(getChildNodeIntegerContent(midiNode, "Program"));
+									}
+								}
+							}
+						}
 					}
 					
-					NodeList propertyNodes = getChildNodeList(trackNode, "Properties");
-					if( propertyNodes != null ){
-						for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
-							Node propertyNode = propertyNodes.item( p );
+					NodeList propertiesNode = null;
+					if( this.version == GP6 ) {
+						propertiesNode = getChildNodeList(trackNode, "Properties");
+					} else if (this.version == GP7) {
+						Node stavesNode = getChildNode(trackNode, "Staves");
+						if( stavesNode != null ) {
+							Node staffNode = getChildNode(stavesNode, "Staff");
+							if( staffNode != null ) {
+								propertiesNode = getChildNodeList(staffNode, "Properties");
+							}
+						}
+					}
+					
+					if( propertiesNode != null ){
+						for( int p = 0 ; p < propertiesNode.getLength() ; p ++ ){
+							Node propertyNode = propertiesNode.item( p );
 							if (propertyNode.getNodeName().equals("Property") ){ 
 								if( getAttributeValue(propertyNode, "name").equals("Tuning") ){
 									track.setTunningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
