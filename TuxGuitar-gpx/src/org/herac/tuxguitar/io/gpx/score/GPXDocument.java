@@ -13,6 +13,7 @@ public class GPXDocument {
 	private List<GPXVoice> voices;
 	private List<GPXBeat> beats;
 	private List<GPXNote> notes;
+	private List<GPXChord> chords;
 	private List<GPXRhythm> rhythms;
 	private List<GPXAutomation> automations;
 	
@@ -24,6 +25,7 @@ public class GPXDocument {
 		this.voices = new ArrayList<GPXVoice>();
 		this.beats = new ArrayList<GPXBeat>();
 		this.notes = new ArrayList<GPXNote>();
+		this.chords = new ArrayList<GPXChord>();
 		this.rhythms = new ArrayList<GPXRhythm>();
 		this.automations = new ArrayList<GPXAutomation>();
 	}
@@ -56,6 +58,10 @@ public class GPXDocument {
 		return this.notes;
 	}
 	
+	public List<GPXChord> getChords() {
+		return chords;
+	}
+
 	public List<GPXRhythm> getRhythms() {
 		return this.rhythms;
 	}
@@ -103,6 +109,17 @@ public class GPXDocument {
 			GPXNote note = (GPXNote)it.next();
 			if( note.getId() == id ){
 				return note;
+			}
+		}
+		return null;
+	}
+	
+	public GPXChord getChord( int id ){
+		Iterator<GPXChord> it = this.chords.iterator();
+		while( it.hasNext() ){
+			GPXChord chord = (GPXChord)it.next();
+			if( chord.getId() == id ){
+				return chord;
 			}
 		}
 		return null;

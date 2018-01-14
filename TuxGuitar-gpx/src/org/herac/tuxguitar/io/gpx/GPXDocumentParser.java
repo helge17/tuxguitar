@@ -8,6 +8,7 @@ import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.io.gpx.score.GPXAutomation;
 import org.herac.tuxguitar.io.gpx.score.GPXBar;
 import org.herac.tuxguitar.io.gpx.score.GPXBeat;
+import org.herac.tuxguitar.io.gpx.score.GPXChord;
 import org.herac.tuxguitar.io.gpx.score.GPXDocument;
 import org.herac.tuxguitar.io.gpx.score.GPXDrumkit;
 import org.herac.tuxguitar.io.gpx.score.GPXMasterBar;
@@ -20,6 +21,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
+import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
@@ -248,6 +250,25 @@ public class GPXDocumentParser {
 								text.setBeat(tgBeat);
 								tgBeat.setText(text);
 							}
+							if( beat.getChordId() != null ) {
+								GPXChord gpChord = this.document.getChord( beat.getChordId() );
+								if( gpChord != null ) {
+									TGChord chord = this.factory.newChord(gpChord.getFrets().length);
+									if( gpChord.getName() != null ) {
+										chord.setName(gpChord.getName());
+									}
+									if( gpChord.getBaseFret() != null ) {
+										chord.setFirstFret(gpChord.getBaseFret());
+									}
+									for(int f = 0; f < gpChord.getFrets().length; f ++) {
+										Integer value = gpChord.getFrets()[f];
+										if( value != null ) {
+											chord.addFretValue(f, value);
+										}
+									}
+									tgBeat.setChord(chord);
+								}
+							}
 							
 							this.parseRhythm(gpRhythm, tgVoice.getDuration());
 							if( beat.getNoteIds() != null ){
@@ -309,7 +330,7 @@ public class GPXDocumentParser {
 			tgNote.setString(tgString);
 			tgNote.setTiedNote(gpNote.isTieDestination());
 			tgNote.setVelocity(tgVelocity);
-			tgNote.getEffect().setFadeIn(gpBeat.isFadeIn());
+			tgNote.getEffect().setFadeIn(parseFadeIn(gpBeat));
 			tgNote.getEffect().setVibrato(gpNote.isVibrato());
 			tgNote.getEffect().setSlide(gpNote.isSlide());
 			tgNote.getEffect().setDeadNote(gpNote.isMutedEnabled());
@@ -481,6 +502,15 @@ public class GPXDocumentParser {
 	
 	private int parseTremoloBarPosition( Integer gpOffset ){
 		return Math.round(gpOffset.intValue() * (TGEffectTremoloBar.MAX_POSITION_LENGTH / GP_WHAMMY_BAR_POSITION));
+	}
+	
+	private boolean parseFadeIn(GPXBeat beat){
+		if( beat.getFadding() != null ){
+			if( beat.getFadding().equals("FadeIn")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void parseRhythm(GPXRhythm gpRhythm , TGDuration tgDuration){
