@@ -18,6 +18,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
+import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -459,6 +460,19 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 					}
 					
 					this.channelRouter.configureRoutes(gmChannelRoute, (tempChannel.getChannel() == 9));
+					
+					TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
+					TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
+					
+					gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
+					gmChannel1Param.setValue(Integer.toString(gmChannelRoute.getChannel1()));
+					
+					gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
+					gmChannel2Param.setValue(Integer.toString(gmChannelRoute.getChannel2()));
+					
+					tgChannel.addParameter(gmChannel1Param);
+					tgChannel.addParameter(gmChannel2Param);
+					
 					this.channels.add( tgChannel );
 				}
 			}

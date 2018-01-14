@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.herac.tuxguitar.io.gpx.score.GPXAutomation;
 import org.herac.tuxguitar.io.gpx.score.GPXBar;
 import org.herac.tuxguitar.io.gpx.score.GPXBeat;
+import org.herac.tuxguitar.io.gpx.score.GPXChord;
 import org.herac.tuxguitar.io.gpx.score.GPXDocument;
 import org.herac.tuxguitar.io.gpx.score.GPXMasterBar;
 import org.herac.tuxguitar.io.gpx.score.GPXNote;
@@ -160,7 +161,53 @@ public class GPXDocumentReader {
 							}
 						}
 					}
+					
 					this.gpxDocument.getTracks().add( track );
+					this.readChords(propertiesNode);
+				}
+			}
+		}
+	}
+	
+	public void readChords(NodeList propertiesNode) {
+		if( propertiesNode != null ){
+			for( int p = 0 ; p < propertiesNode.getLength() ; p ++ ){
+				Node propertyNode = propertiesNode.item( p );
+				if (propertyNode.getNodeName().equals("Property") ){ 
+					if( getAttributeValue(propertyNode, "name").equals("DiagramCollection") ) {
+						NodeList itemsNode = getChildNodeList(propertyNode, "Items");
+						if( itemsNode != null ) {
+							for( int i = 0 ; i < itemsNode.getLength() ; i ++ ){
+								Node itemNode = itemsNode.item( i );
+								if (itemNode.getNodeName().equals("Item")) {
+									Node diagramNode = getChildNode(itemNode, "Diagram");
+									NodeList fretsNode = getChildNodeList(itemNode, "Diagram");
+									if( diagramNode != null && fretsNode != null ) {
+										GPXChord chord = new GPXChord();
+										
+										chord.setId(getAttributeIntegerValue(itemNode, "id"));
+										chord.setName(getAttributeValue(itemNode, "name"));
+										chord.setStringCount(getAttributeIntegerValue(diagramNode, "stringCount"));
+										chord.setFretCount(getAttributeIntegerValue(diagramNode, "fretCount"));
+										chord.setBaseFret(getAttributeIntegerValue(diagramNode, "baseFret"));
+										if( chord.getFretCount() != null ) {
+											chord.setFrets(new Integer[chord.getFretCount()]);
+											for( int f = 0 ; f < fretsNode.getLength() ; f ++ ){
+												Node fretNode = fretsNode.item( f );
+												if (fretNode.getNodeName().equals("Fret")) {
+													Integer string = getAttributeIntegerValue(fretNode, "string");
+													if( string != null && string > 0 && string <= chord.getFretCount() ) {
+														chord.getFrets()[string - 1] = getAttributeIntegerValue(fretNode, "fret");
+													}
+												}
+											}
+											this.gpxDocument.getChords().add(chord);
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -243,6 +290,8 @@ public class GPXDocumentReader {
 					beat.setRhythmId(getAttributeIntegerValue(getChildNode(beatNode, "Rhythm"), "ref"));
 					beat.setTremolo( getChildNodeIntegerContentArray(beatNode, "Tremolo", "/"));
 					beat.setNoteIds( getChildNodeIntegerContentArray(beatNode, "Notes"));
+					beat.setChordId( getChildNodeIntegerContent(beatNode, "Chord", null));
+					beat.setFadding( getChildNodeContent(beatNode, "Fadding"));
 					
 					NodeList propertyNodes = getChildNodeList(beatNode, "Properties");
 					if( propertyNodes != null ){
@@ -274,6 +323,9 @@ public class GPXDocumentReader {
 								}
 								if( propertyName.equals("WhammyBarDestinationOffset") ){
 									beat.setWhammyBarDestinationOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+								}
+								if( propertyName.equals("Brush") ){
+									beat.setBrush( getChildNodeContent(propertyNode, "Direction") );
 								}
 							}
 						}
@@ -474,10 +526,14 @@ public class GPXDocumentReader {
 	}
 	
 	private int getChildNodeIntegerContent(Node node, String name){
+		return this.getChildNodeIntegerContent(node, name, 0);
+	}
+	
+	private Integer getChildNodeIntegerContent(Node node, String name, Integer defaultValue){
 		try {
 			return new BigDecimal(this.getChildNodeContent(node, name)).intValue();
 		} catch( Throwable throwable ){
-			return 0;
+			return defaultValue;
 		}
 	}
 	

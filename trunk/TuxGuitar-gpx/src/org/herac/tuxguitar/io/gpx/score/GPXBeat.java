@@ -10,9 +10,9 @@ public class GPXBeat {
 	private boolean popped;
 	private String brush;	// up stroke, down stroke
 	private int[] tremolo; // 1/8, 1/4, etc.
-	private boolean FadeIn;
-	private boolean FadeOut;
+	private String fadding;
 	private String text;
+	private Integer chordId;
 	
 	private boolean whammyBarEnabled;
 	private Integer whammyBarOriginValue;
@@ -27,8 +27,6 @@ public class GPXBeat {
 		this.slapped = false;
 		this.popped = false;
 		this.tremolo = null;
-		this.FadeIn = false;
-		this.FadeOut = false;
 		this.brush = new String();
 		this.text = new String();
 	}
@@ -56,7 +54,7 @@ public class GPXBeat {
 	public void setNoteIds(int[] noteIds) {
 		this.noteIds = noteIds;
 	}
-	
+
 	public String getDynamic() {
 		return this.dynamic;
 	}
@@ -96,21 +94,13 @@ public class GPXBeat {
 	public void setTremolo(int[] tremolo) {
 		this.tremolo = tremolo;
 	}
-
-	public boolean isFadeIn() {
-		return FadeIn;
+	
+	public String getFadding() {
+		return fadding;
 	}
 
-	public void setFadeIn(boolean fadeIn) {
-		FadeIn = fadeIn;
-	}
-
-	public boolean isFadeOut() {
-		return FadeOut;
-	}
-
-	public void setFadeOut(boolean fadeOut) {
-		FadeOut = fadeOut;
+	public void setFadding(String fadding) {
+		this.fadding = fadding;
 	}
 
 	public String getText() {
@@ -119,6 +109,14 @@ public class GPXBeat {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Integer getChordId() {
+		return chordId;
+	}
+
+	public void setChordId(Integer chordId) {
+		this.chordId = chordId;
 	}
 
 	public boolean isWhammyBarEnabled() {
