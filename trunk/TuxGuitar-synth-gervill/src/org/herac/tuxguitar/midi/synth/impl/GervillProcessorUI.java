@@ -31,6 +31,8 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener, UISelectionListener {
 	
+	private static final String DATA_SOUNDBANK_PATH = "soundbankPath";
+	
 	private TGContext context;
 	private TGAudioProcessorUICallback callback;
 	private GervillProcessor processor;
@@ -73,6 +75,15 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		this.customSoundbankName = uiFactory.createReadOnlyTextField(soundbankGroup);
 		soundbankLayout.set(this.customSoundbankName, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, 300f, null, null);
 		
+		final UIButton sbDefault = uiFactory.createButton(soundbankGroup);
+		sbDefault.setImage(TuxGuitar.getInstance().getIconManager().getListRemove());
+		sbDefault.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				GervillProcessorUI.this.updateSoundbank(null);
+			}
+		});
+		soundbankLayout.set(sbDefault, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		
 		final UIButton sbCustomChooser = uiFactory.createButton(soundbankGroup);
 		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		sbCustomChooser.addSelectionListener(new UISelectionListener() {
@@ -80,7 +91,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 				chooseSoundbank(parent);
 			}
 		});
-		soundbankLayout.set(sbCustomChooser, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		soundbankLayout.set(sbCustomChooser, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		
 		//-------------------------------------------------------------------------
 		UITableLayout programLayout = new UITableLayout();
@@ -161,7 +172,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		uiFileChooser.choose(new UIFileChooserHandler() {
 			public void onSelectFile(File file) {
 				if (file != null) {
-					GervillProcessorUI.this.updateProgram(file.getAbsolutePath());
+					GervillProcessorUI.this.updateSoundbank(file.getAbsolutePath());
 					
 					gervillSettings.setSoundbankFolder(file.getParentFile().getAbsolutePath());
 					gervillSettings.save();
@@ -193,6 +204,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 			text.setText(notNullValue);
 			text.setIgnoreEvents(false);
 		}
+		text.setData(DATA_SOUNDBANK_PATH, value);
 	}
 	
 	public void updateItems() {
@@ -204,13 +216,16 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		this.updateSoundbankItem(this.customSoundbankName, this.processor.getProgram().getSoundbankPath());
 	}
 	
-	public void updateProgram(String soundbankPath) {
+	public void updateSoundbank(String soundbankPath) {
+		this.customSoundbankName.setData(DATA_SOUNDBANK_PATH, soundbankPath);
+		this.updateProgram();
+	}
+	
+	public void updateProgram() {
 		GervillProgram gervillProgram = new GervillProgram();
 		gervillProgram.copyFrom(this.processor.getProgram());
 		
-		if( soundbankPath != null ) {
-			gervillProgram.setSoundbankPath(soundbankPath);
-		}
+		gervillProgram.setSoundbankPath((String) this.customSoundbankName.getData(DATA_SOUNDBANK_PATH));
 		
 		Integer bank = this.bank.getSelectedValue();
 		if( bank != null ) {
@@ -252,11 +267,11 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 
 	@Override
 	public void onSelect(UISelectionEvent event) {
-		this.updateProgram(null);
+		this.updateProgram();
 	}
 
 	@Override
 	public void onModify(UIModifyEvent event) {
-		this.updateProgram(null);
+		this.updateProgram();
 	}
 }
