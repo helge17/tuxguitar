@@ -16,8 +16,6 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_vst_jni_VS
 	void *library = NULL;
 	const char *libraryPath = (env)->GetStringUTFChars( str , NULL );
 	
-	JNI_GetJVM()->DetachCurrentThread();
-	
 	VSTPluginLoad( &library, libraryPath );
 	if (library != NULL) {
 		JNIPlugin *handle = (JNIPlugin *) malloc( sizeof(JNIPlugin) );
@@ -46,7 +44,6 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_vst_jni_VST
 			VSTPluginFree( &(handle->library) );
 		}
 		free ( handle );
-		(handle) = NULL;
 	}
 }
 

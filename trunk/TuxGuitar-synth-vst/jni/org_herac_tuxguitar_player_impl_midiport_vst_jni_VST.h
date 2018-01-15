@@ -4,8 +4,6 @@
 #include <jni.h>
 #include <audioeffectx.h>
 
-static JavaVM* JNI_JVM = NULL;
-
 typedef struct {
 	void* library;
 }JNIPlugin;
@@ -13,10 +11,7 @@ typedef struct {
 typedef struct {
 	AEffect* effect;
 	int editorOpen;
-	void* editorHandle;
 }JNIEffect;
-
-JavaVM* JNI_GetJVM( void );
 
 VstIntPtr VSTCALLBACK VSTPluginCallback(AEffect*, VstInt32, VstInt32, VstIntPtr, void*, float);
 
