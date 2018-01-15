@@ -56,7 +56,6 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_vst_jni_VST
 			handle->effect = NULL;
 		}
 		free ( handle );
-		(handle) = NULL;
 	}
 }
 
@@ -157,7 +156,6 @@ void* JNIEffectUI_openProcess(void* ptr)
 		if (eRect) {
 			int width = eRect->right - eRect->left;
 			int height = eRect->bottom - eRect->top;
-			printf("GetRect -> %d, %d\n", width, height);
 			
 			XSizeHints hHints;
 			hHints.min_width  = width;
@@ -190,6 +188,8 @@ void* JNIEffectUI_openProcess(void* ptr)
 		
 		// ------------------------------------------------------------ //
 		handle->effect->effect->dispatcher (handle->effect->effect, effEditClose, 0, 0, NULL, 0);
+		
+		XDestroyWindow(dpy, win);
 		XCloseDisplay(dpy);
 		
 		handle->editorProcessRunning = JNI_FALSE;

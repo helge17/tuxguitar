@@ -15,7 +15,6 @@ public final class VSTEffect extends VSTObject {
 	
 	public void open(){
 		if( isInitialized() ){
-			this.register();
 			this.openEffect( getInstance() );
 		}
 	}
@@ -23,7 +22,6 @@ public final class VSTEffect extends VSTObject {
 	public void close(){
 		if( isInitialized() ){
 			this.closeEffect( getInstance() );
-			this.unregister();
 		}
 	}
 	
@@ -97,18 +95,6 @@ public final class VSTEffect extends VSTObject {
 			return getParameterLabel( getInstance() , index );
 		}
 		return null;
-	}
-	
-	private void register(){
-		if( isInitialized() ){
-			VSTCallback.addEffect( this );
-		}
-	}
-	
-	private void unregister(){
-		if( isInitialized() ){
-			VSTCallback.removeEffect( this );
-		}
 	}
 	
 	private synchronized native long malloc( long instance );
