@@ -140,9 +140,13 @@ void* JNIEffectUI_openProcess(void* ptr)
 		Atom wmDeleteMessage = XInternAtom(dpy, "WM_DELETE_WINDOW", false);
 		XSetWMProtocols(dpy, win, &wmDeleteMessage, 1);
 		
-		Atom prop_atom = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
-		Atom val_atom = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
-		XChangeProperty(dpy, win, prop_atom, XA_ATOM, 32, PropModeReplace, (unsigned char *)&val_atom, 1);
+		Atom windowTypeProp = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
+		Atom windowTypeValue = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
+		XChangeProperty(dpy, win, windowTypeProp, XA_ATOM, 32, PropModeReplace, (unsigned char *)&windowTypeValue, 1);
+
+		Atom stateProp = XInternAtom(dpy, "_NET_WM_STATE", False);
+		Atom stateValue = XInternAtom(dpy, "_NET_WM_STATE_ABOVE", False);
+		XChangeProperty(dpy, win, stateProp, XA_ATOM, 32, PropModeReplace, (unsigned char *) &stateValue, 1);
 
 		// ------------------------------------------------------------ //
 		char effect_name[256];
