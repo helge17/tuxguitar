@@ -43,23 +43,43 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 	}
 
 	public boolean isOpen() {
-		return (this.editor != null && this.editor.isOpen());
+		if( this.processor.getTarget() != null ) {
+			if( this.processor.getTarget().getEffectUI().isEditorAvailable() ) {
+				return this.processor.getTarget().getEffectUI().isNativeEditorOpen();
+			}
+			return (this.editor != null && this.editor.isOpen());
+		}
+		return false;
 	}
 
 	public void open(UIWindow parent) {
 		if( this.processor.getTarget() != null ) {
-			if( this.editor == null ) {
-				this.editor = new VSTEffectEditor(this.context, this.processor.getTarget());
+			if( this.processor.getTarget().getEffectUI().isEditorAvailable() ) {
+				this.processor.getTarget().getEffectUI().openNativeEditor();
 			}
-			this.editor.open(parent);
+			else {
+				if( this.editor == null ) {
+					this.editor = new VSTEffectEditor(this.context, this.processor.getTarget());
+				}
+				this.editor.open(parent);
+			}
 		} else {
 			this.choosePlugin(parent);
 		}
 	}
-
+	
 	public void close() {
-		if (this.editor != null && this.editor.isOpen()) {
-			this.editor.close();
+		if( this.processor.getTarget() != null ) {
+			if( this.processor.getTarget().getEffectUI().isEditorAvailable()) {
+				if( this.processor.getTarget().getEffectUI().isNativeEditorOpen() ) {
+					this.processor.getTarget().getEffectUI().closeNativeEditor();
+				}
+			}
+			else {
+				if (this.editor != null && this.editor.isOpen()) {
+					this.editor.close();
+				}
+			}
 		}
 	}
 	
