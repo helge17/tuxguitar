@@ -44,6 +44,7 @@ public class GervillProcessor implements TGMidiProcessor {
 		for(int i = 0; i < this.outputs.length; i++) {
 			this.outputs[i] = new float[TGAudioBuffer.BUFFER_SIZE / 2];
 		}
+		this.program.setProgram(-1);
 	}
 	
 	public void close() {

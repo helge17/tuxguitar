@@ -13,7 +13,7 @@ public class GervillProgram {
 	
 	public GervillProgram() {
 		this.bank = 0;
-		this.program = -1;
+		this.program = 0;
 		this.channelMode = CHANNEL_MODE_BEND;
 	}
 
