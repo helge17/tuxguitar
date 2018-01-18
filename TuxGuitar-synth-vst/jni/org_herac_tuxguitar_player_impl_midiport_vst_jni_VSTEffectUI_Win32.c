@@ -223,7 +223,7 @@ LRESULT CALLBACK JNIEffectUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM wPara
 						height = wRect.bottom - wRect.top;
 						x = ((GetSystemMetrics(SM_CXSCREEN) - width) / 2);
 						y = ((GetSystemMetrics(SM_CYSCREEN) - height) / 2);
-						SetWindowPos (hwnd, HWND_TOP, x, y, width, height, 0);
+						SetWindowPos (hwnd, HWND_TOPMOST, x, y, width, height, 0);
 					}
 				}
 			}
