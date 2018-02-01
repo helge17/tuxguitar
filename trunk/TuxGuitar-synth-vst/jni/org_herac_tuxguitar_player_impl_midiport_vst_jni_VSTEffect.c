@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <audioeffectx.h>
+#include <aeffectx.h>
 #include "org_herac_tuxguitar_player_impl_midiport_vst_jni_VSTEffect.h"
 #include "org_herac_tuxguitar_player_impl_midiport_vst_jni_VST.h"
 

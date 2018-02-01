@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <audioeffectx.h>
+#include <aeffectx.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>

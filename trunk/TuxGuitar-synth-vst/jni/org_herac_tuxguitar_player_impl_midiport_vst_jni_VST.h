@@ -2,7 +2,7 @@
 #define _Included_org_herac_tuxguitar_player_impl_midiport_vst_jni_VST
 
 #include <jni.h>
-#include <audioeffectx.h>
+#include <aeffectx.h>
 
 typedef struct {
 	void* library;

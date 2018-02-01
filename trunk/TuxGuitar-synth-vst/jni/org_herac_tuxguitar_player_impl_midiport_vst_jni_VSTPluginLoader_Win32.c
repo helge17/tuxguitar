@@ -1,5 +1,5 @@
 #include <windows.h>
-#include <audioeffectx.h>
+#include <aeffectx.h>
 #include "org_herac_tuxguitar_player_impl_midiport_vst_jni_VSTPluginLoader.h"
 
 void VSTPluginLoad(  void **plugin , const char *file )
