@@ -14,6 +14,7 @@ import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
 import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 	
@@ -63,7 +64,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 				this.editor.openInUiThread(parent);
 			}
 		} else {
-			this.choosePlugin(parent);
+			this.choosePluginInUiThread(parent);
 		}
 	}
 	
@@ -110,6 +111,14 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 					
 					VSTAudioProcessorUI.this.openPluginInThread(parent, file);
 				}
+			}
+		});
+	}
+	
+	public void choosePluginInUiThread(final UIWindow parent) {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() {
+				VSTAudioProcessorUI.this.choosePlugin(parent);
 			}
 		});
 	}

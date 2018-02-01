@@ -77,7 +77,7 @@ void VSTSocketRead(VSTSocketHandle *handle, void *buffer, int length)
 			int read = recv(data->socket, (char *) buffer, length, MSG_WAITALL);
 			if( read == SOCKET_ERROR ) {
 				handle->connected = false;
-				VSTLogger_log("Disconected: \n");
+				VSTLogger_log("Disconnected with error: %d\n", WSAGetLastError());
 			}
 			else if( read == 0 ) {
 				time_t now = time(NULL);
@@ -98,9 +98,9 @@ void VSTSocketWrite(VSTSocketHandle *handle, void *buffer, int length)
 	if( handle != NULL && handle->data != NULL ) {
 		VSTSocketHandleData *data = ((VSTSocketHandleData *) handle->data);
 		if( handle->connected ) {
-			if( send(data->socket, (char *) buffer, length, MSG_WAITALL) < 0 ) {
+			if( send(data->socket, (char *) buffer, length, 0) < 0 ) {
 				handle->connected = false;
-				VSTLogger_log("Disconnected: \n");
+				VSTLogger_log("Disconnected with error: %d\n", WSAGetLastError());
 			}
 		}
 	}
