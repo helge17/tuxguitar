@@ -15,9 +15,6 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class VSTServer {
 	
-	private static final Integer DEFAULT_PORT = 50982;
-	private static final String PORT_PROPERTY = "tuxguitar-synth-vst.singleton.port";
-	
 	private TGContext context;
 	private Object lock;
 	private ServerSocket serverSocket;
@@ -54,7 +51,7 @@ public class VSTServer {
 		this.fireServerSocket();
 		
 		VSTClientProcess vstClientProcess = new VSTClientProcess(this.context);
-		vstClientProcess.startSession(sessionId, DEFAULT_PORT, filename);
+		vstClientProcess.startSession(sessionId, this.serverSocket.getLocalPort(), filename);
 		
 		while(this.getSession(sessionId) == null ) {
 			Thread.yield();
@@ -66,11 +63,22 @@ public class VSTServer {
 		return this.getSession(sessionId);
 	}
 	
-	public void fireServerSocket() {
+	public void fireServerSocket() throws VSTException {
 		try {
 			synchronized (this.lock) {
-				if( this.serverSocket == null || this.serverSocket.isClosed() ) {
-					this.serverSocket = new ServerSocket(this.getSocketPort(), 10, this.getSocketHost());
+				if(!this.isServerSocketOpen() ) {
+					int tries = 0;
+					int defaultPort = this.getDefaultSocketPort();
+					
+					while(!this.isServerSocketOpen()) {
+						try {
+							this.serverSocket = new ServerSocket((defaultPort + tries), 10, this.getSocketHost());
+						} catch (IOException e) {
+							if( tries ++ >= 10) {
+								throw new VSTException(e);
+							}
+						}
+					}
 					
 					new Thread(new Runnable() {
 						public void run() {
@@ -80,7 +88,7 @@ public class VSTServer {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new VSTException(e);
 		}
 	}
 	
@@ -132,20 +140,16 @@ public class VSTServer {
 		}
 	}
 	
+	public boolean isServerSocketOpen() {
+		return (this.serverSocket != null && !this.serverSocket.isClosed());
+	}
+	
     public InetAddress getSocketHost() throws UnknownHostException {
     	return InetAddress.getByAddress(new byte[] {127, 0, 0, 1});
     }
     
-    public Integer getSocketPort() throws UnknownHostException {
-    	try {
-    		Object port = System.getProperty(PORT_PROPERTY);
-    		if( port != null ) {
-    			return Integer.valueOf(port.toString());
-    		}
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-    	return DEFAULT_PORT;
+    public Integer getDefaultSocketPort() throws UnknownHostException {
+    	return new VSTSettings(this.context).getDefaultSocketPort();
     }
     
 	public static VSTServer getInstance(TGContext context) {
