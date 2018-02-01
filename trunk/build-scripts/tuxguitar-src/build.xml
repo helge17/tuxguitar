@@ -34,8 +34,9 @@
 				<include name="build-scripts/tuxguitar-linux-x86-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86-installer/**"/>
-				<include name="build-scripts/tuxguitar-linux-qt-x86/**"/>
-				<include name="build-scripts/tuxguitar-linux-qt-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-linux-qt4-x86/**"/>
+				<include name="build-scripts/tuxguitar-linux-qt4-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-linux-qt5-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-32/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-64/**"/>
 				<include name="build-scripts/tuxguitar-windows-x86/**"/>
@@ -82,10 +83,15 @@
 				<include name="TuxGuitar-tuner/**"/>
 				<include name="TuxGuitar-viewer/**"/>
 				<include name="TuxGuitar-winmm/**"/>
+				<include name="TuxGuitar-synth/**"/>
+				<include name="TuxGuitar-synth-gervill/**"/>
+				<include name="TuxGuitar-synth-vst/**"/>
+				<include name="TuxGuitar-synth-vst-remote/**"/>
 				
 				<include name="TuxGuitar-ui-toolkit/**"/>
 				<include name="TuxGuitar-ui-toolkit-swt/**"/>
-				<include name="TuxGuitar-ui-toolkit-qt/**"/>
+				<include name="TuxGuitar-ui-toolkit-qt4/**"/>
+				<include name="TuxGuitar-ui-toolkit-qt5/**"/>
 				<include name="TuxGuitar-ui-toolkit-jfx/**"/>
 				
 				<include name="TuxGuitar-android/**"/>
@@ -114,6 +120,7 @@
 				<exclude name="**/.*/**"/>
 				<exclude name="**/target/**"/>
 				<exclude name="**/lang/last_additions/**"/>
+				<exclude name="**/src-test/**"/>
 				
 				<exclude name="TuxGuitar*/**/*.o"/>
 				<exclude name="TuxGuitar*/**/*.so"/>
