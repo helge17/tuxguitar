@@ -394,7 +394,6 @@
 											<fileset dir="../native-modules/tuxguitar-synth-vst-remote-linux-x86_64/target/build" />
 										</copy>
 										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.bin" perm="775" />
-										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.exe" perm="775" />
 										
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
 										<!-- /PLUGINS FILES -->
