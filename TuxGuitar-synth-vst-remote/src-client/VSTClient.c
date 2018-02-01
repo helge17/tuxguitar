@@ -9,6 +9,7 @@
 #include "VSTEffect.h"
 #include "VSTEffectUI.h"
 
+#define CMD_EFFECT_SET_ACTIVE 1
 #define CMD_EFFECT_GET_NUM_PARAMS 5
 #define CMD_EFFECT_GET_NUM_INPUTS 6
 #define CMD_EFFECT_GET_NUM_OUTPUTS 7
@@ -95,6 +96,9 @@ void ParseArguments(VSTClientHandle *handle, int argc , char *argv[])
 void ProcessCommand(VSTClientHandle *handle, int command) 
 {
 	switch(command) {
+		case CMD_EFFECT_SET_ACTIVE:
+			ProcessSetActiveCommand(handle);
+		break;
 		case CMD_EFFECT_GET_NUM_PARAMS:
 			ProcessGetNumParamsCommand(handle);
 		break;
@@ -141,6 +145,13 @@ void ProcessCommand(VSTClientHandle *handle, int command)
 			ProcessIsEffectUIAvailableCommand(handle);
 		break;
 	}
+}
+
+void ProcessSetActiveCommand(VSTClientHandle *handle)
+{
+	int value = 0;
+	VSTSocketRead(handle->socket, &value, 4);
+	VSTEffect_setActive(handle->effect, value);
 }
 
 void ProcessGetNumParamsCommand(VSTClientHandle *handle)
