@@ -43,6 +43,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 					this.effect = new VSTEffect(VSTServer.getInstance(this.context).createSession(this.file.getAbsolutePath()));
 					this.effect.setBlockSize(BUFFER_SIZE);
 					this.effect.setSampleRate(SAMPLE_RATE);
+					this.effect.setActive(true);
 					this.messages = new ArrayList<byte[]>();
 					this.inputs = new float[this.effect.getNumInputs()][BUFFER_SIZE];
 					this.outputs = new float[this.effect.getNumOutputs()][BUFFER_SIZE];
@@ -56,6 +57,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 	public void close(){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
+				this.effect.setActive(false);
 				this.effect.closeNativeEditor();
 				this.effect.close();
 				this.effect = null;

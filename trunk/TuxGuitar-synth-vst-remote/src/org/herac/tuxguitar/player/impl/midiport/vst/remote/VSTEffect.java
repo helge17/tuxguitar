@@ -14,6 +14,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsEffectUI
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTOpenEffectUICommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTProcessReplacingCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSendMessagesCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetActiveCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetBlockSizeCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetParameterCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetSampleRateCommand;
@@ -30,6 +31,12 @@ public final class VSTEffect {
 		if(!this.isClosed() ){
 			this.session.close();
 		}		
+	}
+	
+	public void setActive(boolean value){
+		if(!this.isClosed() ){
+			new VSTSetActiveCommand(this.getConnection(), value).safeProcess();
+		}
 	}
 	
 	public void sendMessages(List<byte[]> messages){
