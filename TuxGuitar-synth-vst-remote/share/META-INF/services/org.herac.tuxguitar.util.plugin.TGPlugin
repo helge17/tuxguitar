@@ -1,0 +1,2 @@
+# Add here the TGPlugin implementation class names.
+org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTSynthExtension

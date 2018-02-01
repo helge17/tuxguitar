@@ -17,7 +17,7 @@ public class TGAudioLine {
 	public TGAudioLine() {
 		try {
 			this.line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, AUDIO_FORMAT));
-			this.line.open(AUDIO_FORMAT, TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE);
+			this.line.open(AUDIO_FORMAT, (TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE) * 10);
 			this.line.start();
 		} catch (Throwable e) {
 			throw new TGException(e);

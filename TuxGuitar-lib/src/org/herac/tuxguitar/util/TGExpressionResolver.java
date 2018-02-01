@@ -25,13 +25,17 @@ public class TGExpressionResolver {
 	}
 	
 	public String resolve(String source) {
+		return this.resolve(source, null);
+	}
+	
+	public String resolve(String source, Map<String, Object> customVariables) {
 		if( source != null ) {
 			Pattern pattern = Pattern.compile("\\$+\\{+([a-zA-Z0-9_\\-\\.]+)\\}+");
 			Matcher matcher = pattern.matcher(source);
 			StringBuffer sb = new StringBuffer();
 			while (matcher.find()) {
 				String property = matcher.group(1);
-				Object value = this.findProperty(property);
+				Object value = this.findProperty(property, customVariables);
 				if( value != null ) {
 					String stringValue = value.toString();
 					if( stringValue != null ) {
@@ -46,9 +50,13 @@ public class TGExpressionResolver {
 		return null;
 	}
 	
-	private final Object findProperty(String key) {
+	private final Object findProperty(String key, Map<String, Object> customVariables) {
 		Object value = null;
-		if( this.variables.containsKey(key) ) {
+		if( customVariables != null && customVariables.containsKey(key) ) {
+			value = customVariables.get(key);
+		}
+		
+		if( value == null && this.variables.containsKey(key) ) {
 			value = this.variables.get(key);
 		}
 		
