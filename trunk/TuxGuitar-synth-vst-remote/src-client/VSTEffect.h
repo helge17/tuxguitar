@@ -11,6 +11,8 @@ void VSTEffect_openEffect(JNIEffect *handle);
 
 void VSTEffect_closeEffect(JNIEffect *handle);
 
+void VSTEffect_setActive(JNIEffect *handle, int value);
+
 void VSTEffect_getNumParams(JNIEffect *handle, int *value);
 
 void VSTEffect_getNumInputs(JNIEffect *handle, int *value);

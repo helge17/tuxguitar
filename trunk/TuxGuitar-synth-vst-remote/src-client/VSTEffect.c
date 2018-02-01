@@ -47,6 +47,13 @@ void VSTEffect_closeEffect(JNIEffect *handle)
 	}
 }
 
+void VSTEffect_setActive(JNIEffect *handle, int value)
+{
+	if( handle != NULL && handle->effect != NULL){
+		handle->effect->dispatcher (handle->effect, effMainsChanged, 0, value, NULL, 0);
+	}
+}
+
 void VSTEffect_getNumParams(JNIEffect *handle, int *value)
 {
 	if( handle != NULL && handle->effect != NULL){

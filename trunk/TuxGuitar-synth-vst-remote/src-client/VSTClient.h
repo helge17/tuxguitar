@@ -21,6 +21,8 @@ void CreateSocket(VSTClientHandle *handle);
 
 void ProcessCommand(VSTClientHandle *handle, int command);
 
+void ProcessSetActiveCommand(VSTClientHandle *handle);
+
 void ProcessGetNumParamsCommand(VSTClientHandle *handle);
 
 void ProcessGetNumInputsCommand(VSTClientHandle *handle);
