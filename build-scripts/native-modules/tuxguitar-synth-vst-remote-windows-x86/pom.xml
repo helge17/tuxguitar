@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-synth-vst-remote-windows-x86</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+	
+	<properties>
+		<tuxguitar.jni.cxx>g++</tuxguitar.jni.cxx>
+		<tuxguitar.jni.rm>del</tuxguitar.jni.rm>
+		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		
+		<tuxguitar-synth-vst-remote.client.path>${parent.relativePath}/TuxGuitar-synth-vst-remote/src-client/</tuxguitar-synth-vst-remote.client.path>
+		<tuxguitar-synth-vst-remote.client.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst-remote.client.cxx>
+		<tuxguitar-synth-vst-remote.client.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst-remote.client.rm>
+		<tuxguitar-synth-vst-remote.client.vst.sdk>${basedir}/include</tuxguitar-synth-vst-remote.client.vst.sdk>
+		<tuxguitar-synth-vst-remote.client.cflags>-I${tuxguitar-synth-vst-remote.client.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst-remote.client.cflags>
+		<tuxguitar-synth-vst-remote.client.ldflags></tuxguitar-synth-vst-remote.client.ldflags>
+		<tuxguitar-synth-vst-remote.client.ldlibs>-static-libgcc -static-libstdc++ -static -lws2_32 -lpthread</tuxguitar-synth-vst-remote.client.ldlibs>
+		<tuxguitar-synth-vst-remote.client.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst-remote.client.ldpath>
+		<tuxguitar-synth-vst-remote.client.binary.name>tuxguitar-synth-vst-remote-jni</tuxguitar-synth-vst-remote.client.binary.name>
+		<tuxguitar-synth-vst-remote.client.binary.suffix>.exe</tuxguitar-synth-vst-remote.client.binary.suffix>
+		<tuxguitar-synth-vst-remote.client.binary.os>_Win32</tuxguitar-synth-vst-remote.client.binary.os>
+	</properties>
+	
+	<modules>
+		<module>${parent.relativePath}/TuxGuitar-synth-vst-remote</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>compile-native</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="compile-native">
+								<exec dir="${tuxguitar-synth-vst-remote.client.path}" executable="make" failonerror="true" >
+									<env key="CXX" value="${tuxguitar-synth-vst-remote.client.cxx}" />
+									<env key="CFLAGS" value="${tuxguitar-synth-vst-remote.client.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-synth-vst-remote.client.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-synth-vst-remote.client.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-synth-vst-remote.client.ldpath}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.binary.os}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>clean-native</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="clean-native">
+								<exec dir="${tuxguitar-synth-vst-remote.client.path}" executable="make" failonerror="true" >
+									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-synth-vst-remote.client.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.binary.os}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>native-module-copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="copy-files">
+								<mkdir dir="${project.build.directory}/build" />
+								<mkdir dir="${project.build.directory}/build/vst-client" />
+								
+								<copy todir="${project.build.directory}/build/vst-client">
+									<fileset file="${tuxguitar-synth-vst-remote.client.path}/${tuxguitar-synth-vst-remote.client.binary.name}${tuxguitar-synth-vst-remote.client.binary.suffix}" />
+								</copy>
+								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst-remote.client.binary.name}${tuxguitar-synth-vst-remote.client.binary.suffix}" perm="775" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>native-module-copy-libs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-vst-remote</artifactId>
+									<destFileName>tuxguitar-synth-vst-remote.jar</destFileName>
+									<outputDirectory>${project.build.directory}/build/share/plugins</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
