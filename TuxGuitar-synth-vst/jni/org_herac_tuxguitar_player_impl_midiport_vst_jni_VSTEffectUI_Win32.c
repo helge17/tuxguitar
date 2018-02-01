@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <tchar.h>
-#include <audioeffectx.h>
+#include <aeffectx.h>
 #include "org_herac_tuxguitar_player_impl_midiport_vst_jni_VSTEffectUI.h"
 #include "org_herac_tuxguitar_player_impl_midiport_vst_jni_VST.h"
 
