@@ -11,6 +11,7 @@
 		<glob pattern="*.gp4"/>
 		<glob pattern="*.gp5"/>
 		<glob pattern="*.gpx"/>
+		<glob pattern="*.gp"/>
 	</mime-type>
 	<mime-type type="audio/x-ptb">
 		<comment>PowerTab file</comment>

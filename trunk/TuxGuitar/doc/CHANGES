@@ -1,5 +1,7 @@
-TuxGuitar 1.4 changes:
+TuxGuitar 1.5 changes:
 
-* Qt4 port through qtjambi project (http://qtjambi.org/).
-* New edit Toolbar
-* Several bugs fixed
+* String count range moved to 1 - 25
+* New Oxygen Dark skin created for dark themes
+* New synth host plugin with FX support
+* Native VST support (only for Windows/GNULinux releases) for the new synth host plugin.
+* Zomm in/out support  

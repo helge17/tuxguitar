@@ -158,6 +158,12 @@
 			<value>TuxGuitar.File</value>
 		</registrySet>
 		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.gp</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
 			<key>HKEY_CLASSES_ROOT\.ptb</key>
 			<name></name>
 			<type>REG_SZ</type>
