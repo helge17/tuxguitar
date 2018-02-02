@@ -51,6 +51,7 @@
 				<data android:host="*" />
 				
 				<data android:pathPattern=".*\\.tg" />
+				<data android:pathPattern=".*\\.gp" />
 				<data android:pathPattern=".*\\.gtp" />
 				<data android:pathPattern=".*\\.gp3" />
 				<data android:pathPattern=".*\\.gp4" />
@@ -66,6 +67,7 @@
 				
 				<data android:mimeType="audio/x-tuxguitar" />
 				<data android:mimeType="audio/x-tg" />
+				<data android:mimeType="audio/x-gp" />
 				<data android:mimeType="audio/x-gtp" />
 				<data android:mimeType="audio/x-gp3" />
 				<data android:mimeType="audio/x-gp4" />
