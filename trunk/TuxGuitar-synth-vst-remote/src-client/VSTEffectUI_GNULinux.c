@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
@@ -144,6 +145,8 @@ void VSTEffectUI_process(JNIEffect *effect)
 			XFlush(ui->dpy);
 			
 			ui->editorProcessRunning = false;
+		} else {
+			usleep(100000);
 		}
 	}
 }
