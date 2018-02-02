@@ -121,6 +121,8 @@ void VSTEffectUI_process(JNIEffect *effect)
 			
 			effect_ui->editorOpen = false;
 			effect_ui->editorProcessRunning = false;
+		} else {
+			Sleep(100);
 		}
 	}
 }

@@ -127,7 +127,11 @@ public class VSTServer {
 				}
 				
 				while(!vstSession.isClosed()) {
-					Thread.yield();
+					try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						vstSession.close();
+					}
 				}
 				
 				this.connections.remove(vstSession.getId());
