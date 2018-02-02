@@ -30,6 +30,7 @@ public class TGMultiThreadHandler implements TGThreadHandler, Runnable {
 	public void start(Runnable runnable) {
 		synchronized (this.mutex) {
 			this.queue.add(runnable);
+			this.mutex.notifyAll();
 		}
 	}
 	
@@ -66,10 +67,24 @@ public class TGMultiThreadHandler implements TGThreadHandler, Runnable {
 		}
 	}
 	
+	public void waitForNextThread() {
+		try {
+			synchronized (this.mutex) {
+				if( this.queue.isEmpty()) {
+					this.mutex.wait();
+				} else {
+					Thread.yield();
+				}
+			}
+		} catch (InterruptedException e) {
+			throw new TGException(e.getMessage(), e);
+		}
+	}
+	
 	public void run() {
 		while(this.running || !this.queue.isEmpty()) {
 			this.processNext();
-			this.yield();
+			this.waitForNextThread();
 		}
 	}
 	
