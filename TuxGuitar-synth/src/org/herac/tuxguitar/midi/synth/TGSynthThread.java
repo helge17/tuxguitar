@@ -15,7 +15,7 @@ public class TGSynthThread implements Runnable {
 		this.finished = false;
 		
 		TGAudioSync audioSync = new TGAudioSync();
-		TGAudioLine audioLine = new TGAudioLine();
+		TGAudioLine audioLine = new TGAudioLine(this.synthesizer);
 		TGAudioBufferProcessor audioProcessor = new TGAudioBufferProcessor(this.synthesizer);
 		
 		while(this.isRunning()) {

@@ -18,10 +18,12 @@ public class TGSynthesizer implements MidiSynthesizer{
 	private List<TGSynthChannel> channels;
 	private TGProgram[][] programs;
 	private TGSynthThread synthesizerThread;
+	private TGSynthSettings settings;
 	
 	public TGSynthesizer(TGContext context){
 		this.context = context;
-		this.synthesizerThread = new TGSynthThread( this );
+		this.settings = new TGSynthSettings(this.context);
+		this.synthesizerThread = new TGSynthThread(this);
 		this.channels = new ArrayList<TGSynthChannel>();
 		this.programs = new TGProgram[BANKS_LENGTH][PROGRAMS_LENGTH];
 		for( int b = 0; b < BANKS_LENGTH ; b ++ ){
@@ -36,6 +38,7 @@ public class TGSynthesizer implements MidiSynthesizer{
 	}
 	
 	public void open() throws MidiPlayerException{
+		this.settings.loadPrograms(this);
 		this.synthesizerThread.start();
 	}
 	
@@ -98,6 +101,10 @@ public class TGSynthesizer implements MidiSynthesizer{
 			}
 		}
 		return null;
+	}
+
+	public TGSynthSettings getSettings() {
+		return settings;
 	}
 
 	public TGContext getContext() {

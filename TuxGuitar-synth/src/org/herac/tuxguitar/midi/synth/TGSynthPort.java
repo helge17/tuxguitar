@@ -22,8 +22,6 @@ public class TGSynthPort implements MidiOutputPort{
 	public void open() throws MidiPlayerException {
 		try {
 			this.synthesizer.open();
-			
-			new TGSynthSettings(this.context).loadPrograms(this.synthesizer);
 		} catch ( Throwable throwable ){
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
 		}

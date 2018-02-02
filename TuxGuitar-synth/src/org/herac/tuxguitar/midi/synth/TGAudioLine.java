@@ -14,10 +14,10 @@ public class TGAudioLine {
 	
 	private SourceDataLine line;
 	
-	public TGAudioLine() {
+	public TGAudioLine(TGSynthesizer synthesizer) {
 		try {
 			this.line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, AUDIO_FORMAT));
-			this.line.open(AUDIO_FORMAT, (TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE) * 10);
+			this.line.open(AUDIO_FORMAT, (TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE) * Math.max(synthesizer.getSettings().getAudioBufferSize(), 1));
 			this.line.start();
 		} catch (Throwable e) {
 			throw new TGException(e);
