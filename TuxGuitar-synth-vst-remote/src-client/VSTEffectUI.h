@@ -3,18 +3,18 @@
 
 #include "VST.h"
 
-void VSTEffectUI_malloc(JNIEffect *effect);
+void VSTEffectUI_malloc(VSTEffectHandle *effect);
 
-void VSTEffectUI_delete(JNIEffect *effect);
+void VSTEffectUI_delete(VSTEffectHandle *effect);
 
-void VSTEffectUI_process(JNIEffect *effect);
+void VSTEffectUI_process(VSTEffectHandle *effect);
 
-void VSTEffectUI_openEditor(JNIEffect *effect);
+void VSTEffectUI_openEditor(VSTEffectHandle *effect);
 
-void VSTEffectUI_closeEditor(JNIEffect *effect);
+void VSTEffectUI_closeEditor(VSTEffectHandle *effect);
 
-void VSTEffectUI_isEditorOpen(JNIEffect *effect, bool *value);
+void VSTEffectUI_isEditorOpen(VSTEffectHandle *effect, bool *value);
 
-void VSTEffectUI_isEditorAvailable(JNIEffect *effect, bool *value);
+void VSTEffectUI_isEditorAvailable(VSTEffectHandle *effect, bool *value);
 
 #endif /* _Included_VSTEffectUI */

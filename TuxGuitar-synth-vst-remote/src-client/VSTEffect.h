@@ -3,36 +3,36 @@
 
 #include "VST.h"
 
-void VSTEffect_malloc(JNIEffect **handle, JNIPlugin *plugin);
+void VSTEffect_malloc(VSTEffectHandle **handle, VSTPluginHandle *plugin);
 
-void VSTEffect_delete(JNIEffect **handle);
+void VSTEffect_delete(VSTEffectHandle **handle);
 
-void VSTEffect_openEffect(JNIEffect *handle);
+void VSTEffect_openEffect(VSTEffectHandle *handle);
 
-void VSTEffect_closeEffect(JNIEffect *handle);
+void VSTEffect_closeEffect(VSTEffectHandle *handle);
 
-void VSTEffect_setActive(JNIEffect *handle, int value);
+void VSTEffect_setActive(VSTEffectHandle *handle, int value);
 
-void VSTEffect_getNumParams(JNIEffect *handle, int *value);
+void VSTEffect_getNumParams(VSTEffectHandle *handle, int *value);
 
-void VSTEffect_getNumInputs(JNIEffect *handle, int *value);
+void VSTEffect_getNumInputs(VSTEffectHandle *handle, int *value);
 
-void VSTEffect_getNumOutputs(JNIEffect *handle, int *value);
+void VSTEffect_getNumOutputs(VSTEffectHandle *handle, int *value);
 
-void VSTEffect_setBlockSize(JNIEffect *handle, int value);
+void VSTEffect_setBlockSize(VSTEffectHandle *handle, int value);
 
-void VSTEffect_setSampleRate(JNIEffect *handle, float value);
+void VSTEffect_setSampleRate(VSTEffectHandle *handle, float value);
 
-void VSTEffect_setParameter(JNIEffect *handle, int index, float value);
+void VSTEffect_setParameter(VSTEffectHandle *handle, int index, float value);
 
-void VSTEffect_getParameter(JNIEffect *handle, int index, float *value);
+void VSTEffect_getParameter(VSTEffectHandle *handle, int index, float *value);
 
-void VSTEffect_getParameterName(JNIEffect *handle, int index, const char* value);
+void VSTEffect_getParameterName(VSTEffectHandle *handle, int index, const char* value);
 
-void VSTEffect_getParameterLabel(JNIEffect *handle, int index, const char* value);
+void VSTEffect_getParameterLabel(VSTEffectHandle *handle, int index, const char* value);
 
-void VSTEffect_sendMessages(JNIEffect *handle, unsigned char** messages, int length);
+void VSTEffect_sendMessages(VSTEffectHandle *handle, unsigned char** messages, int length);
 
-void VSTEffect_sendProcessReplacing(JNIEffect *handle, float** inputs, float** outputs, int blockSize);
+void VSTEffect_sendProcessReplacing(VSTEffectHandle *handle, float** inputs, float** outputs, int blockSize);
 
 #endif /* _Included_VSTEffect */

@@ -41,17 +41,19 @@ int main(int argc, char *argv[])
 		VSTEffectUI_malloc(handle->effect);
 		VSTEffect_openEffect(handle->effect);
 		
-		pthread_t thread;
-		if( pthread_create(&thread, NULL, VSTClient_processCommandsThread, handle)) {
-			return 1;
+		if( handle->effect != NULL && handle->effect->effect != NULL ) {
+			pthread_t thread;
+			if( pthread_create(&thread, NULL, VSTClient_processCommandsThread, handle)) {
+				return 1;
+			}
+			
+			while(handle->socket->connected) {
+				// bla bla
+				VSTEffectUI_process(handle->effect);
+			}
+			
+			pthread_join(thread, NULL);
 		}
-		
-		while(handle->socket->connected) {
-			// bla bla
-			VSTEffectUI_process(handle->effect);
-		}
-		
-		pthread_join(thread, NULL);
 		
 		VSTEffect_closeEffect(handle->effect);
 		VSTEffectUI_delete(handle->effect);

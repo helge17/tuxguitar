@@ -8,8 +8,8 @@ typedef struct {
 	int sessionId;
 	int serverPort;
 	const char *filename;
-	JNIPlugin *plugin;
-	JNIEffect *effect;
+	VSTPluginHandle *plugin;
+	VSTEffectHandle *effect;
 	VSTSocketHandle *socket;
 } VSTClientHandle;
 
