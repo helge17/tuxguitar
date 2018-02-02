@@ -12,15 +12,15 @@
 typedef struct {
 	bool editorOpen;
 	bool editorProcessRunning;
-} JNIEffectUI;
+} VSTEffectHandleUI;
 
-LRESULT CALLBACK JNIEffectUI_editorHwndProcess(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-void VSTEffectUI_malloc(JNIEffect *effect)
+void VSTEffectUI_malloc(VSTEffectHandle *effect)
 {
 	if( effect != NULL ) {
 		
-		JNIEffectUI *handle = (JNIEffectUI *) malloc( sizeof(JNIEffectUI) );
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) malloc( sizeof(VSTEffectHandleUI) );
 		
 		handle->editorOpen = false;
 		handle->editorProcessRunning = false;
@@ -29,7 +29,7 @@ void VSTEffectUI_malloc(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_delete(JNIEffect *effect)
+void VSTEffectUI_delete(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ){
 		free ( effect->ui );
@@ -38,10 +38,10 @@ void VSTEffectUI_delete(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_openEditor(JNIEffect *effect)
+void VSTEffectUI_openEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
-		JNIEffectUI *handle = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
 		
 		if( handle->editorOpen != true ){
 			handle->editorOpen = true;
@@ -49,10 +49,10 @@ void VSTEffectUI_openEditor(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_closeEditor(JNIEffect *effect)
+void VSTEffectUI_closeEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
-		JNIEffectUI *handle = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
 		
 		handle->editorOpen = false;
 		
@@ -62,12 +62,12 @@ void VSTEffectUI_closeEditor(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_isEditorOpen(JNIEffect *effect, bool *value)
+void VSTEffectUI_isEditorOpen(VSTEffectHandle *effect, bool *value)
 {
-	(*value) = (effect != NULL && effect->ui != NULL ? ((JNIEffectUI *) effect->ui)->editorOpen : false);
+	(*value) = (effect != NULL && effect->ui != NULL ? ((VSTEffectHandleUI *) effect->ui)->editorOpen : false);
 }
 
-void VSTEffectUI_isEditorAvailable(JNIEffect *effect, bool *value)
+void VSTEffectUI_isEditorAvailable(VSTEffectHandle *effect, bool *value)
 {
 	bool editorAvailable = false;
 	if( effect != NULL && effect->effect != NULL ) {
@@ -76,10 +76,10 @@ void VSTEffectUI_isEditorAvailable(JNIEffect *effect, bool *value)
 	(*value) = editorAvailable;
 }
 
-void VSTEffectUI_process(JNIEffect *effect)
+void VSTEffectUI_process(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL && effect->effect != NULL ) {
-		JNIEffectUI *effect_ui = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *effect_ui = (VSTEffectHandleUI *) effect->ui;
 		if( effect_ui->editorOpen && !effect_ui->editorProcessRunning ) {
 			effect_ui->editorProcessRunning = true;
 			
@@ -87,7 +87,7 @@ void VSTEffectUI_process(JNIEffect *effect)
 			WNDCLASS wc = {};
 			BOOL wcRegistered = GetClassInfo(hInstance, WND_CLASS_NAME, &wc);
 			if(!wcRegistered) {
-				wc.lpfnWndProc = JNIEffectUI_editorHwndProcess;
+				wc.lpfnWndProc = VSTEffectHandleUI_editorHwndProcess;
 				wc.hInstance = hInstance;
 				wc.lpszClassName = WND_CLASS_NAME;
 				wc.hbrBackground = (HBRUSH)(COLOR_ACTIVECAPTION + 1);
@@ -127,7 +127,7 @@ void VSTEffectUI_process(JNIEffect *effect)
 	}
 }
 
-LRESULT CALLBACK JNIEffectUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg) {
 		case WM_CREATE: {
@@ -136,7 +136,7 @@ LRESULT CALLBACK JNIEffectUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM wPara
 		case WM_CREATE_VST_UI: {
 			LONG_PTR ptr = GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			if( ptr ) {
-				JNIEffect *effect = NULL;
+				VSTEffectHandle *effect = NULL;
 				memcpy(&effect, &ptr, sizeof(effect));
 				if( effect != NULL && effect->effect != NULL ) {
 					char effect_name[256];
@@ -178,7 +178,7 @@ LRESULT CALLBACK JNIEffectUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM wPara
 		{
 			LONG_PTR ptr = GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			if( ptr ) {
-				JNIEffect *effect = NULL;
+				VSTEffectHandle *effect = NULL;
 				memcpy(&effect, &ptr, sizeof(effect));
 				if( effect != NULL && effect->effect != NULL ) {
 					effect->effect->dispatcher (effect->effect, effEditIdle, 0, 0, 0, 0);
@@ -191,7 +191,7 @@ LRESULT CALLBACK JNIEffectUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM wPara
 
 			LONG_PTR ptr = GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			if( ptr ) {
-				JNIEffect *effect = NULL;
+				VSTEffectHandle *effect = NULL;
 				memcpy(&effect, &ptr, sizeof(effect));
 				if( effect != NULL && effect->effect != NULL ) {
 					effect->effect->dispatcher (effect->effect, effEditClose, 0, 0, 0, 0);

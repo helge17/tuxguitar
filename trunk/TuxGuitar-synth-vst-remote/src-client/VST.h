@@ -5,12 +5,12 @@
 
 typedef struct {
 	void* library;
-}JNIPlugin;
+} VSTPluginHandle;
 
 typedef struct {
 	AEffect* effect;
 	void* ui;
-}JNIEffect;
+} VSTEffectHandle;
 
 VstIntPtr VSTCALLBACK VSTPluginCallback(AEffect*, VstInt32, VstInt32, VstIntPtr, void*, float);
 

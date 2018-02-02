@@ -3,10 +3,10 @@
 #include "VSTPlugin.h"
 #include "VSTPluginLoader.h"
 
-void VSTEffect_malloc(JNIEffect **handle, JNIPlugin *plugin)
+void VSTEffect_malloc(VSTEffectHandle **handle, VSTPluginHandle *plugin)
 {
 	if( plugin != NULL && plugin->library != NULL ){
-		(*handle) = (JNIEffect *) malloc( sizeof(JNIEffect) );
+		(*handle) = (VSTEffectHandle *) malloc( sizeof(VSTEffectHandle) );
 		(*handle)->effect = NULL;
 		(*handle)->ui = NULL;
 		
@@ -17,7 +17,7 @@ void VSTEffect_malloc(JNIEffect **handle, JNIPlugin *plugin)
 	}
 }
 
-void VSTEffect_delete(JNIEffect **handle)
+void VSTEffect_delete(VSTEffectHandle **handle)
 {
 	if( (*handle) != NULL) {
 		if( (*handle)->effect != NULL){
@@ -29,7 +29,7 @@ void VSTEffect_delete(JNIEffect **handle)
 	}
 }
 
-void VSTEffect_openEffect(JNIEffect *handle)
+void VSTEffect_openEffect(VSTEffectHandle *handle)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->resvd1 = NULL;
@@ -38,7 +38,7 @@ void VSTEffect_openEffect(JNIEffect *handle)
 	}
 }
 
-void VSTEffect_closeEffect(JNIEffect *handle)
+void VSTEffect_closeEffect(VSTEffectHandle *handle)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->resvd1 = NULL;
@@ -47,77 +47,77 @@ void VSTEffect_closeEffect(JNIEffect *handle)
 	}
 }
 
-void VSTEffect_setActive(JNIEffect *handle, int value)
+void VSTEffect_setActive(VSTEffectHandle *handle, int value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->dispatcher (handle->effect, effMainsChanged, 0, value, NULL, 0);
 	}
 }
 
-void VSTEffect_getNumParams(JNIEffect *handle, int *value)
+void VSTEffect_getNumParams(VSTEffectHandle *handle, int *value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		(*value) = handle->effect->numParams;
 	}
 }
 
-void VSTEffect_getNumInputs(JNIEffect *handle, int *value)
+void VSTEffect_getNumInputs(VSTEffectHandle *handle, int *value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		(*value) = handle->effect->numInputs;
 	}
 }
 
-void VSTEffect_getNumOutputs(JNIEffect *handle, int *value)
+void VSTEffect_getNumOutputs(VSTEffectHandle *handle, int *value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		(*value) = handle->effect->numOutputs;
 	}
 }
 
-void VSTEffect_setBlockSize(JNIEffect *handle, int value)
+void VSTEffect_setBlockSize(VSTEffectHandle *handle, int value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->dispatcher (handle->effect, effSetBlockSize, 0, value, 0, 0);
 	}
 }
 
-void VSTEffect_setSampleRate(JNIEffect *handle, float value)
+void VSTEffect_setSampleRate(VSTEffectHandle *handle, float value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->dispatcher (handle->effect, effSetSampleRate, 0, 0, 0, value);
 	}
 }
 
-void VSTEffect_setParameter(JNIEffect *handle, int index, float value)
+void VSTEffect_setParameter(VSTEffectHandle *handle, int index, float value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->setParameter(handle->effect, index, value);
 	}
 }
 
-void VSTEffect_getParameter(JNIEffect *handle, int index, float *value)
+void VSTEffect_getParameter(VSTEffectHandle *handle, int index, float *value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		(*value) = handle->effect->getParameter(handle->effect, index);
 	}
 }
 
-void VSTEffect_getParameterName(JNIEffect *handle, int index, const char* value)
+void VSTEffect_getParameterName(VSTEffectHandle *handle, int index, const char* value)
 {
 	if( handle != NULL && handle->effect != NULL) {
 		handle->effect->dispatcher (handle->effect, effGetParamName, index, 0, (void *) value, 0);
 	}
 }
 
-void VSTEffect_getParameterLabel(JNIEffect *handle, int index, const char* value)
+void VSTEffect_getParameterLabel(VSTEffectHandle *handle, int index, const char* value)
 {
 	if( handle != NULL && handle->effect != NULL){
 		handle->effect->dispatcher (handle->effect, effGetParamLabel, index, 0, (void *) value, 0);
 	}
 }
 
-void VSTEffect_sendMessages(JNIEffect *handle, unsigned char** messages, int length)
+void VSTEffect_sendMessages(VSTEffectHandle *handle, unsigned char** messages, int length)
 {
 	if( handle != NULL && handle->effect != NULL) {
 		VstEvents *midi_events = (VstEvents *) malloc( (sizeof(VstEvents) - 2) + (sizeof(VstEvent *) * length) );
@@ -149,7 +149,7 @@ void VSTEffect_sendMessages(JNIEffect *handle, unsigned char** messages, int len
 	}
 }
 
-void VSTEffect_sendProcessReplacing(JNIEffect *handle, float** inputs, float** outputs, int blockSize)
+void VSTEffect_sendProcessReplacing(VSTEffectHandle *handle, float** inputs, float** outputs, int blockSize)
 {
 	if( handle != NULL && handle->effect != NULL) {
 		handle->effect->processReplacing(handle->effect, inputs, outputs, blockSize);

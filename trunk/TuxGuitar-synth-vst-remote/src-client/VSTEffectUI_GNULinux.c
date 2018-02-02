@@ -9,12 +9,12 @@ typedef struct {
 	Display *dpy;
 	bool editorOpen;
 	bool editorProcessRunning;
-} JNIEffectUI;
+} VSTEffectHandleUI;
 
-void VSTEffectUI_malloc(JNIEffect *effect)
+void VSTEffectUI_malloc(VSTEffectHandle *effect)
 {
 	if( effect != NULL ){
-		JNIEffectUI *handle = (JNIEffectUI *) malloc( sizeof(JNIEffectUI) );
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) malloc( sizeof(VSTEffectHandleUI) );
 		
 		handle->dpy = XOpenDisplay(NULL);
 		handle->editorOpen = false;
@@ -24,10 +24,10 @@ void VSTEffectUI_malloc(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_delete(JNIEffect *effect)
+void VSTEffectUI_delete(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
-		JNIEffectUI *handle = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
 		if( handle->dpy != NULL){
 			XCloseDisplay(handle->dpy);
 			handle->dpy = NULL;
@@ -38,20 +38,20 @@ void VSTEffectUI_delete(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_openEditor(JNIEffect *effect)
+void VSTEffectUI_openEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
-		JNIEffectUI *handle = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
 		if(!handle->editorOpen ) {
 			handle->editorOpen = true;
 		}
 	}
 }
 
-void VSTEffectUI_closeEditor(JNIEffect *effect)
+void VSTEffectUI_closeEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
-		JNIEffectUI *handle = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
 		
 		handle->editorOpen = false;
 		
@@ -61,12 +61,12 @@ void VSTEffectUI_closeEditor(JNIEffect *effect)
 	}
 }
 
-void VSTEffectUI_isEditorOpen(JNIEffect *effect, bool *value)
+void VSTEffectUI_isEditorOpen(VSTEffectHandle *effect, bool *value)
 {
-	(*value) = (effect != NULL && effect->ui != NULL ? ((JNIEffectUI *) effect->ui)->editorOpen : false);
+	(*value) = (effect != NULL && effect->ui != NULL ? ((VSTEffectHandleUI *) effect->ui)->editorOpen : false);
 }
 
-void VSTEffectUI_isEditorAvailable(JNIEffect *effect, bool *value)
+void VSTEffectUI_isEditorAvailable(VSTEffectHandle *effect, bool *value)
 {
 	bool editorAvailable = false;
 	if( effect != NULL && effect->effect != NULL ) {
@@ -75,10 +75,10 @@ void VSTEffectUI_isEditorAvailable(JNIEffect *effect, bool *value)
 	(*value) = editorAvailable;
 }
 
-void VSTEffectUI_process(JNIEffect *effect) 
+void VSTEffectUI_process(VSTEffectHandle *effect) 
 {
 	if( effect != NULL && effect->effect != NULL ) {
-		JNIEffectUI *ui = (JNIEffectUI *) effect->ui;
+		VSTEffectHandleUI *ui = (VSTEffectHandleUI *) effect->ui;
 		if( ui->editorOpen && !ui->editorProcessRunning ) {
 			ui->editorProcessRunning = true;
 			
