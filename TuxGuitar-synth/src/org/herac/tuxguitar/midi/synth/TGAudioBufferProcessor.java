@@ -2,10 +2,10 @@ package org.herac.tuxguitar.midi.synth;
 
 public class TGAudioBufferProcessor {
 	
-	private TGSynthesizer synthesizer;
+	private TGSynthModel synthesizer;
 	private TGAudioBuffer buffer;
 	
-	public TGAudioBufferProcessor(TGSynthesizer synthesizer) {
+	public TGAudioBufferProcessor(TGSynthModel synthesizer) {
 		this.synthesizer = synthesizer;
 		this.buffer = new TGAudioBuffer();
 	}
