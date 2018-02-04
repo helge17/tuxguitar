@@ -1,5 +1,5 @@
 Package: tuxguitar
-Version: 1.3-linux-amd64
+Version: SNAPSHOT-linux-amd64
 Architecture: amd64
 Depends: openjdk-9-jdk | openjdk-8-jre | openjdk-7-jre | openjdk-6-jre | sun-java6-jre | sun-java5-jre | java-gcj-compat-headless | java-virtual-machine
 Priority: optional
