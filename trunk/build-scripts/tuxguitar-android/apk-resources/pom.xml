@@ -113,6 +113,11 @@
 			<artifactId>xmlworker</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -213,6 +218,12 @@
 									<groupId>com.itextpdf.tool</groupId>
 									<artifactId>xmlworker</artifactId>
 									<destFileName>itextpdf-worker.jar</destFileName>
+									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.commons</groupId>
+									<artifactId>commons-compress</artifactId>
+									<destFileName>commons-compress.jar</destFileName>
 									<outputDirectory>${project.assets.directory}/plugins</outputDirectory>
 								</artifactItem>
 							</artifactItems>
