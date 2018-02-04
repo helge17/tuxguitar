@@ -13,6 +13,10 @@ void VSTEffect_closeEffect(VSTEffectHandle *handle);
 
 void VSTEffect_setActive(VSTEffectHandle *handle, int value);
 
+void VSTEffect_setUpdated(VSTEffectHandle *handle, bool value);
+
+void VSTEffect_getUpdated(VSTEffectHandle *handle, bool *value);
+
 void VSTEffect_getNumParams(VSTEffectHandle *handle, int *value);
 
 void VSTEffect_getNumInputs(VSTEffectHandle *handle, int *value);

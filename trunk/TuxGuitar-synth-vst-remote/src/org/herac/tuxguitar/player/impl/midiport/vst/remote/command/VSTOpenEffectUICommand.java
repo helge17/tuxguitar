@@ -6,7 +6,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
 
 public class VSTOpenEffectUICommand extends VSTAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 16;
+	public static final Integer COMMAND_ID = 14;
 	
 	public VSTOpenEffectUICommand(VSTConnection connection) {
 		super(connection);

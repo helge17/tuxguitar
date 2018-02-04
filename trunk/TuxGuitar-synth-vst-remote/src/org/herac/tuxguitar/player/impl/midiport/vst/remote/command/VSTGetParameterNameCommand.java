@@ -6,7 +6,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
 
 public class VSTGetParameterNameCommand extends VSTAbstractCommand<String> {
 	
-	public static final Integer COMMAND_ID = 12;
+	public static final Integer COMMAND_ID = 10;
 	
 	private Integer index;
 	

@@ -8,6 +8,8 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
 import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import org.herac.tuxguitar.thread.TGThreadLoop;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIFileChooser;
 import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
@@ -56,10 +58,11 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 		if( this.processor.isOpen() ) {
 			if( this.processor.getEffect().isEditorAvailable() ) {
 				this.processor.getEffect().openNativeEditor();
+				this.startCheckForUpdatesThread();
 			}
 			else {
 				if( this.editor == null ) {
-					this.editor = new VSTEffectEditor(this.context, this.processor.getEffect());
+					this.editor = new VSTEffectEditor(this.context, this.processor.getEffect(), this.callback);
 				}
 				this.editor.openInUiThread(parent);
 			}
@@ -130,10 +133,39 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 	}
 	
 	public void openPluginInThread(final UIWindow parent, final File file) {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				VSTAudioProcessorUI.this.openPlugin(parent, file);
 			}
-		}).start();
+		});
+	}
+	
+	public void checkForUpdates() {
+		if( this.isOpen() ) {
+			if( this.processor.getEffect().isUpdated() ) {
+				this.callback.onChange();
+			}
+		}
+	}
+	
+	public void startCheckForUpdatesThread() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
+			public void run() {
+				processCheckForUpdatesLoop();
+			}
+		});
+	}
+	
+	public void processCheckForUpdatesLoop() {
+		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
+			public Long process() {
+				if( VSTAudioProcessorUI.this.isOpen() ) {
+					VSTAudioProcessorUI.this.checkForUpdates();
+					
+					return 250l;
+				}
+				return BREAK;
+			}
+		});
 	}
 }

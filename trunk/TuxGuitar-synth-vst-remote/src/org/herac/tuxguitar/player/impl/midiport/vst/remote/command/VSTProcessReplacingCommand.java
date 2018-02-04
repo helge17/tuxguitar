@@ -8,7 +8,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
 
 public class VSTProcessReplacingCommand extends VSTAbstractCommand<Float[][]> {
 	
-	public static final Integer COMMAND_ID = 15;
+	public static final Integer COMMAND_ID = 13;
 	
 	private float[][] inputs;
 	private float[][] outputs;

@@ -4,11 +4,11 @@ import java.io.IOException;
 
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
 
-public class VSTIsEffectUIAvailableCommand extends VSTAbstractCommand<Boolean> {
+public class VSTIsUpdatedCommand extends VSTAbstractCommand<Boolean> {
 	
-	public static final Integer COMMAND_ID = 17;
+	public static final Integer COMMAND_ID = 2;
 	
-	public VSTIsEffectUIAvailableCommand(VSTConnection connection) {
+	public VSTIsUpdatedCommand(VSTConnection connection) {
 		super(connection);
 	}
 

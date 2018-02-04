@@ -6,7 +6,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
 
 public class VSTGetNumOutputsCommand extends VSTAbstractCommand<Integer> {
 	
-	public static final Integer COMMAND_ID = 7;
+	public static final Integer COMMAND_ID = 5;
 	
 	public VSTGetNumOutputsCommand(VSTConnection connection) {
 		super(connection);

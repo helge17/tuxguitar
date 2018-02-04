@@ -23,6 +23,8 @@ void ProcessCommand(VSTClientHandle *handle, int command);
 
 void ProcessSetActiveCommand(VSTClientHandle *handle);
 
+void ProcessIsUpdatedCommand(VSTClientHandle *handle);
+
 void ProcessGetNumParamsCommand(VSTClientHandle *handle);
 
 void ProcessGetNumInputsCommand(VSTClientHandle *handle);

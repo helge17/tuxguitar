@@ -10,21 +10,22 @@
 #include "VSTEffectUI.h"
 
 #define CMD_EFFECT_SET_ACTIVE 1
-#define CMD_EFFECT_GET_NUM_PARAMS 5
-#define CMD_EFFECT_GET_NUM_INPUTS 6
-#define CMD_EFFECT_GET_NUM_OUTPUTS 7
-#define CMD_EFFECT_SET_BLOCK_SIZE 8
-#define CMD_EFFECT_SET_SAMPLE_RATE 9
-#define CMD_EFFECT_SET_PARAMETER 10
-#define CMD_EFFECT_GET_PARAMETER 11
-#define CMD_EFFECT_GET_PARAMETER_NAME 12
-#define CMD_EFFECT_GET_PARAMETER_LABEL 13
-#define CMD_EFFECT_SEND_MESSAGES 14
-#define CMD_EFFECT_PROCESS_REPLACING 15
-#define CMD_EFFECT_UI_OPEN 16
-#define CMD_EFFECT_UI_CLOSE 17
-#define CMD_EFFECT_UI_IS_OPEN 18
-#define CMD_EFFECT_UI_IS_AVAILABLE 19
+#define CMD_EFFECT_IS_UPDATED 2
+#define CMD_EFFECT_GET_NUM_PARAMS 3
+#define CMD_EFFECT_GET_NUM_INPUTS 4
+#define CMD_EFFECT_GET_NUM_OUTPUTS 5
+#define CMD_EFFECT_SET_BLOCK_SIZE 6
+#define CMD_EFFECT_SET_SAMPLE_RATE 7
+#define CMD_EFFECT_SET_PARAMETER 8
+#define CMD_EFFECT_GET_PARAMETER 9
+#define CMD_EFFECT_GET_PARAMETER_NAME 10
+#define CMD_EFFECT_GET_PARAMETER_LABEL 11
+#define CMD_EFFECT_SEND_MESSAGES 12
+#define CMD_EFFECT_PROCESS_REPLACING 13
+#define CMD_EFFECT_UI_OPEN 14
+#define CMD_EFFECT_UI_CLOSE 15
+#define CMD_EFFECT_UI_IS_OPEN 16
+#define CMD_EFFECT_UI_IS_AVAILABLE 17
 
 int main(int argc, char *argv[]) 
 {
@@ -101,6 +102,9 @@ void ProcessCommand(VSTClientHandle *handle, int command)
 		case CMD_EFFECT_SET_ACTIVE:
 			ProcessSetActiveCommand(handle);
 		break;
+		case CMD_EFFECT_IS_UPDATED:
+			ProcessIsUpdatedCommand(handle);
+		break;
 		case CMD_EFFECT_GET_NUM_PARAMS:
 			ProcessGetNumParamsCommand(handle);
 		break;
@@ -156,6 +160,16 @@ void ProcessSetActiveCommand(VSTClientHandle *handle)
 	VSTEffect_setActive(handle->effect, value);
 }
 
+void ProcessIsUpdatedCommand(VSTClientHandle *handle)
+{
+	bool value = 0;
+	VSTEffect_getUpdated(handle->effect, &value);
+	if( value ) {
+		VSTEffect_setUpdated(handle->effect, false);
+	}
+	VSTSocketWrite(handle->socket, &value, 1);
+}
+
 void ProcessGetNumParamsCommand(VSTClientHandle *handle)
 {
 	int value = 0;
@@ -196,9 +210,14 @@ void ProcessSetParameterCommand(VSTClientHandle *handle)
 {
 	int index = 0;
 	float value = 0;
+	float currentValue = 0;
 	VSTSocketRead(handle->socket, &index, 4);
 	VSTSocketRead(handle->socket, &value, 4);
-	VSTEffect_setParameter(handle->effect, index, value);
+	
+	VSTEffect_getParameter(handle->effect, index, &currentValue);
+	if( value != currentValue ) {
+		VSTEffect_setParameter(handle->effect, index, value);
+	}
 }
 
 void ProcessGetParameterCommand(VSTClientHandle *handle)
