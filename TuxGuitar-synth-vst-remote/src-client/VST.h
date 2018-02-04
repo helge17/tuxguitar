@@ -10,6 +10,7 @@ typedef struct {
 typedef struct {
 	AEffect* effect;
 	void* ui;
+	bool updated;
 } VSTEffectHandle;
 
 VstIntPtr VSTCALLBACK VSTPluginCallback(AEffect*, VstInt32, VstInt32, VstIntPtr, void*, float);

@@ -11,6 +11,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetParamet
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetParameterNameCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsEffectUIAvailableCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsEffectUIOpenCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsUpdatedCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTOpenEffectUICommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTProcessReplacingCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSendMessagesCommand;
@@ -133,6 +134,13 @@ public final class VSTEffect {
 	public boolean isEditorAvailable(){
 		if(!this.isClosed() ){
 			return new VSTIsEffectUIAvailableCommand(this.getConnection()).safeProcess(false);
+		}
+		return false;
+	}
+	
+	public boolean isUpdated(){
+		if(!this.isClosed() ){
+			return new VSTIsUpdatedCommand(this.getConnection()).safeProcess(false);
 		}
 		return false;
 	}

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
@@ -46,7 +47,7 @@ public class VSTClientProcess {
 	}
 	
 	public void startIOStreamThread() {
-		new Thread(new Runnable() {
+		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
 				try {
 					startIOStream();
@@ -54,7 +55,7 @@ public class VSTClientProcess {
 					e.printStackTrace();
 				}
 			}
-		}).start();
+		});
 	}
 	
 	public void startIOStream() throws VSTException {

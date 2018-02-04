@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
 import org.herac.tuxguitar.util.TGContext;
@@ -14,6 +15,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 	public static final int BUFFER_SIZE = ( TGAudioBuffer.BUFFER_SIZE / 2) ;
 	public static final float SAMPLE_RATE = ( TGAudioBuffer.SAMPLE_RATE );
 	public static final String PARAM_FILE_NAME = "vst.filename";
+	public static final String PARAM_PREFIX = "vst.param.";
 	
 	private Object lock = new Object();
 	private TGContext context;
@@ -114,11 +116,35 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 		if(!this.isOpen() && parameters.containsKey(PARAM_FILE_NAME)) {
 			this.open(new File(parameters.get(PARAM_FILE_NAME)));
 		}
+		if( this.isOpen() ) {
+			int paramCount = this.getEffect().getNumParams();
+			for(int i = 0 ; i < paramCount ; i ++) {
+				String key = PARAM_PREFIX + i;
+				if( parameters.containsKey(key)) {
+					this.getEffect().setParameter(i, Float.parseFloat(parameters.get(key)));
+				}
+			}
+			
+			this.fireParamsEvent(VSTParamsEvent.ACTION_RESTORE, parameters);
+		}
 	}
 	
 	public void storeParameters(Map<String, String> parameters) {
 		if( this.isOpen() ) {
 			parameters.put(PARAM_FILE_NAME, this.file.getAbsolutePath());
+			
+			int paramCount = this.getEffect().getNumParams();
+			for(int i = 0 ; i < paramCount ; i ++) {
+				parameters.put(PARAM_PREFIX + i, Float.toString(this.getEffect().getParameter(i)));
+			}
+			
+			this.fireParamsEvent(VSTParamsEvent.ACTION_STORE, parameters);
+		}
+	}
+	
+	public void fireParamsEvent(Integer action, Map<String, String> parameters) {
+		if( this.isOpen() ) {
+			TGEventManager.getInstance(this.context).fireEvent(new VSTParamsEvent(this.getEffect().getSession(), action, parameters));
 		}
 	}
 	

@@ -53,6 +53,19 @@ void VSTEffect_setActive(VSTEffectHandle *handle, int value)
 		handle->effect->dispatcher (handle->effect, effMainsChanged, 0, value, NULL, 0);
 	}
 }
+void VSTEffect_setUpdated(VSTEffectHandle *handle, bool value)
+{
+	if( handle != NULL ){
+		handle->updated = value;
+	}
+}
+
+void VSTEffect_getUpdated(VSTEffectHandle *handle, bool *value)
+{
+	if( handle != NULL ){
+		(*value) = handle->updated;
+	}
+}
 
 void VSTEffect_getNumParams(VSTEffectHandle *handle, int *value)
 {

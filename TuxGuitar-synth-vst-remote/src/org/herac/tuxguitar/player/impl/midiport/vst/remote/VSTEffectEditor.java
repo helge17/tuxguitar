@@ -2,7 +2,14 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIDisposeEvent;
+import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
@@ -18,15 +25,20 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
-public class VSTEffectEditor {
+public class VSTEffectEditor implements TGEventListener {
 	
 	private VSTEffect effect;
 	private TGContext context;
 	private UIWindow dialog;
+	private TGAudioProcessorUICallback callback;
+	private UIScale[] scaleParameterValue;
+	private UILabel[] labelParameterValue; 
+	private Integer paramCount;
 	
-	public VSTEffectEditor(TGContext context, VSTEffect effect) {
+	public VSTEffectEditor(TGContext context, VSTEffect effect, TGAudioProcessorUICallback callback) {
 		this.context = context;
 		this.effect = effect;
+		this.callback = callback;
 	}
 	
 	public void open(UIWindow parent) {
@@ -60,11 +72,11 @@ public class VSTEffectEditor {
 		UIPanel panel = uiFactory.createPanel(scrollBarPanel, false);
 		panel.setLayout(panelLayout);
 		
-		int params = this.effect.getNumParams();
-		params = params > 50 ? 50 : params;
-		for( int i = 0 ; i < params ; i ++ ){
+		this.paramCount = Math.min(this.effect.getNumParams(), 50);		
+		this.scaleParameterValue = new UIScale[this.paramCount];
+		this.labelParameterValue = new UILabel[this.paramCount];
+		for( int i = 0 ; i < this.paramCount ; i ++ ){
 			final int index = i;
-			final float value = this.effect.getParameter(i);
 			final String name = this.effect.getParameterName( i );
 			final String label = this.effect.getParameterLabel( i );
 			
@@ -76,25 +88,24 @@ public class VSTEffectEditor {
 			labelParameterLabel.setText( (label != null ? label : ("") ) );
 			panelLayout.set(labelParameterLabel, (1 + i), 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 			
-			final UIScale scaleParameterValue = uiFactory.createHorizontalScale(panel);
-			scaleParameterValue.setMaximum(100);
-			scaleParameterValue.setMinimum(0);
-			scaleParameterValue.setIncrement(1);
-			scaleParameterValue.setValue( Math.round(100 * value) );
-			panelLayout.set(scaleParameterValue, (1 + i),3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+			this.scaleParameterValue[i] = uiFactory.createHorizontalScale(panel);
+			this.scaleParameterValue[i].setMaximum(100);
+			this.scaleParameterValue[i].setMinimum(0);
+			this.scaleParameterValue[i].setIncrement(1);
+			panelLayout.set(this.scaleParameterValue[i], (1 + i),3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 			
-			final UILabel labelParameterValue = uiFactory.createLabel(panel);
-			labelParameterValue.setText( Float.toString(value) );
-			panelLayout.set(labelParameterValue, (1 + i), 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+			this.labelParameterValue[i] = uiFactory.createLabel(panel);
+			panelLayout.set(this.labelParameterValue[i], (1 + i), 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 			
-			scaleParameterValue.addSelectionListener(new UISelectionListener() {
+			this.scaleParameterValue[i].addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					float selection = (scaleParameterValue.getValue() / 100f);
-					labelParameterValue.setText(Float.toString(selection));
+					float selection = (VSTEffectEditor.this.scaleParameterValue[index].getValue() / 100f);
 					
+					VSTEffectEditor.this.labelParameterValue[index].setText(Float.toString(selection));
 					VSTEffectEditor.this.effect.setParameter(index, selection);
+					VSTEffectEditor.this.callback.onChange();
 				}
-			} );
+			});
 		}
 		
 		//-------------------------------------------------------------------------
@@ -103,25 +114,45 @@ public class VSTEffectEditor {
 			nativeEditor.setText("Native Editor");
 			nativeEditor.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					new Thread(new Runnable() {
+					TGThreadManager.getInstance(VSTEffectEditor.this.context).start(new Runnable() {
 						public void run() throws TGException {
 							toggleNativeEditor();
 						}
-					}).start();
+					});
 				}
 			});
 			dialogLayout.set(nativeEditor, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		}
 		
+		this.updateItems();
+		this.addEventListeners();
+		
+		this.dialog.addDisposeListener(new UIDisposeListener() {
+			public void onDispose(UIDisposeEvent event) {
+				VSTEffectEditor.this.removeEventListeners();
+			}
+		});
+		
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	public void openInUiThread(final UIWindow parent) {
-		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
-			public void run() {
-				VSTEffectEditor.this.open(parent);
-			}
-		});
+	public void addEventListeners() {
+		TGEventManager.getInstance(this.context).addListener(VSTParamsEvent.EVENT_TYPE, this);
+	}
+	
+	public void removeEventListeners() {
+		TGEventManager.getInstance(this.context).removeListener(VSTParamsEvent.EVENT_TYPE, this);
+	}
+	
+	public void updateItems() {
+		int paramCount = Math.min(this.effect.getNumParams(), 50);
+		for( int i = 0 ; i < paramCount && i < this.paramCount ; i ++ ){
+			final float value = this.effect.getParameter(i);
+			this.scaleParameterValue[i].setIgnoreEvents(true);
+			this.scaleParameterValue[i].setValue( Math.round(100 * value) );
+			this.scaleParameterValue[i].setIgnoreEvents(false);
+			this.labelParameterValue[i].setText( Float.toString(value) );
+		}
 	}
 	
 	public void close() {
@@ -140,6 +171,33 @@ public class VSTEffectEditor {
 			this.effect.closeNativeEditor();
 		}else{
 			this.effect.openNativeEditor();
+		}
+	}
+	
+	public void openInUiThread(final UIWindow parent) {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() {
+				VSTEffectEditor.this.open(parent);
+			}
+		});
+	}
+	
+	public void updateItemsUiThread() {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() {
+				VSTEffectEditor.this.updateItems();
+			}
+		});
+	}
+	
+	public void processEvent(TGEvent event) {
+		if( VSTParamsEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			VSTSession session = event.getAttribute(VSTParamsEvent.PROPERTY_SESSION);
+			if( VSTParamsEvent.ACTION_RESTORE.equals(event.getAttribute(VSTParamsEvent.PROPERTY_ACTION))) {
+				if(!this.effect.isClosed() && this.effect.getSession().getId().equals(session.getId())) {
+					this.updateItemsUiThread();
+				}
+			}
 		}
 	}
 }

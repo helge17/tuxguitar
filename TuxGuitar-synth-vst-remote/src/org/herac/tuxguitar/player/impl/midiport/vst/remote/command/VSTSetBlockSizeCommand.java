@@ -6,7 +6,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
 
 public class VSTSetBlockSizeCommand extends VSTAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 8;
+	public static final Integer COMMAND_ID = 6;
 	
 	private Integer value;
 	
