@@ -12,13 +12,13 @@ public class TGSynthChannel implements MidiChannel {
 	private int id;
 	private int midiBank;
 	private int midiProgram;
-	private TGSynthesizer synthesizer;
+	private TGSynthModel synthesizer;
 	private TGSynthChannelProcessor processor;
 	private TGSynthChannelProperties parameters;
 	private TGProgram program;
 	private boolean customProgram;
 	
-	public TGSynthChannel(TGSynthesizer synthesizer, int id){
+	public TGSynthChannel(TGSynthModel synthesizer, int id){
 		this.synthesizer = synthesizer;
 		this.id = id;
 		this.midiBank = 0;
