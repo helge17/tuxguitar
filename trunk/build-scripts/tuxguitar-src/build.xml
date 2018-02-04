@@ -125,6 +125,8 @@
 				<exclude name="TuxGuitar*/**/*.o"/>
 				<exclude name="TuxGuitar*/**/*.so"/>
 				<exclude name="TuxGuitar*/**/*.dll"/>
+				<exclude name="TuxGuitar*/**/*.exe"/>
+				<exclude name="TuxGuitar*/**/*.bin"/>
 				<exclude name="TuxGuitar*/**/*.jnilib"/>
 				<exclude name="TuxGuitar*/**/*.jar"/>
 				<exclude name="TuxGuitar*/**/*.zip"/>
@@ -134,6 +136,7 @@
 		<replace dir="${target.dir}/${package.name}" token="${source.version}" value="${dist.version}" >
 			<include name="**/*.xml"/>
 			<include name="**/GNUmakefile"/>
+			<include name="**/DEBIAN/control"/>
 		</replace>
 		
 		<echo>+------------------------------------------------------------------------------+</echo>
