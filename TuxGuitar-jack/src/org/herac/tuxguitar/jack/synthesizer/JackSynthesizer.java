@@ -162,4 +162,8 @@ public class JackSynthesizer implements MidiSynthesizer{
 		}
 		return ("Channel-" + jackChannelProxy.getJackChannelId());
 	}
+	
+	public boolean isBusy() {
+		return false;
+	}
 }

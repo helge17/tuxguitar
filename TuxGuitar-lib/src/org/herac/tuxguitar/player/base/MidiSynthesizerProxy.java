@@ -8,22 +8,29 @@ public class MidiSynthesizerProxy implements MidiSynthesizer{
 		super();
 	}
 	
-	public MidiChannel openChannel(int channelId) throws MidiPlayerException{
+	public MidiChannel openChannel(int channelId) throws MidiPlayerException {
 		if( this.midiSynthesizer != null ){
 			return this.midiSynthesizer.openChannel(channelId);
 		}
 		return null;
 	}
 	
-	public void closeChannel(MidiChannel midiChannel) throws MidiPlayerException{
+	public void closeChannel(MidiChannel midiChannel) throws MidiPlayerException {
 		if( this.midiSynthesizer != null ){
 			this.midiSynthesizer.closeChannel(midiChannel);
 		}
 	}
 	
-	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException{
+	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException {
 		if( this.midiSynthesizer != null ){
 			return this.midiSynthesizer.isChannelOpen(midiChannel);
+		}
+		return false;
+	}
+	
+	public boolean isBusy() throws MidiPlayerException {
+		if( this.midiSynthesizer != null ){
+			return this.midiSynthesizer.isBusy();
 		}
 		return false;
 	}

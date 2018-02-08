@@ -37,7 +37,7 @@ public class TGSynthModel implements MidiSynthesizer{
 	}
 	
 	public void closeChannel(MidiChannel midiChannel) throws MidiPlayerException{
-		TGSynthChannel tgChannel = ((TGSynthChannel)midiChannel);
+		TGSynthChannel tgChannel = ((TGSynthChannel) midiChannel);
 		tgChannel.closeProcessor();
 		
 		this.channels.remove(tgChannel);
@@ -45,6 +45,15 @@ public class TGSynthModel implements MidiSynthesizer{
 	
 	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException{
 		return true;
+	}
+	
+	public boolean isBusy() {
+		for(TGSynthChannel channel : this.channels) {
+			if( channel.isBusy() ) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void closeChannels() throws MidiPlayerException{
@@ -55,7 +64,7 @@ public class TGSynthModel implements MidiSynthesizer{
 	
 	public TGSynthChannel getChannel( int index ){
 		if( index >= 0 && index < countChannels() ){
-			return (TGSynthChannel)this.channels.get(index);
+			return this.channels.get(index);
 		}
 		return null;
 	}

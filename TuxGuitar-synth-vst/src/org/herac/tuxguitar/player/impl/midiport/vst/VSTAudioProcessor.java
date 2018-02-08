@@ -77,4 +77,8 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			parameters.put(PARAM_FILE_NAME, this.target.getPlugin().getFile().getAbsolutePath());
 		}
 	}
+	
+	public boolean isBusy() {
+		return false;
+	}
 }

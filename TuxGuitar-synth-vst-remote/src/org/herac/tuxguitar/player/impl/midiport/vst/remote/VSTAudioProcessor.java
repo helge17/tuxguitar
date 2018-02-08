@@ -159,4 +159,8 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 	public boolean isOpen() {
 		return (this.effect != null && !this.effect.isClosed());
 	}
+	
+	public boolean isBusy() {
+		return false;
+	}
 }

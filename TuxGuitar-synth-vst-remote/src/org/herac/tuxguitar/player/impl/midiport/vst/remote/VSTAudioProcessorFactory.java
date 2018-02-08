@@ -2,7 +2,6 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 
 import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
 import org.herac.tuxguitar.midi.synth.TGAudioProcessorFactory;
-import org.herac.tuxguitar.midi.synth.TGAudioProcessorFactoryCallback;
 import org.herac.tuxguitar.util.TGContext;
 
 public class VSTAudioProcessorFactory implements TGAudioProcessorFactory {
@@ -17,11 +16,12 @@ public class VSTAudioProcessorFactory implements TGAudioProcessorFactory {
 		return VSTType.VST.toString();
 	}
 	
-	public void createProcessor(TGAudioProcessorFactoryCallback<TGAudioProcessor> callback) {
+	public TGAudioProcessor createProcessor() {
 		try {
-			callback.onCreate(new VSTAudioProcessor(this.context));
+			return new VSTAudioProcessor(this.context);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }
