@@ -5,9 +5,6 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthesizer extends TGSynthModel {
 	
-	public static final int BANKS_LENGTH = 129;
-	public static final int PROGRAMS_LENGTH = 128;
-	
 	private TGSynthThread synthesizerThread;
 	private TGSynthSettings settings;
 	

@@ -22,31 +22,28 @@ public class TGSynthChannelProcessor {
 		this.lock = new Object();
 	}
 	
-	public void open(final TGContext context, final TGProgram program) {
+	public void open(TGContext context, TGProgram program) {
 		synchronized (this.lock) {
 			this.processor = null;
 			this.outputs.clear();
 			this.closeOrphanProcessors(program);
-			this.openReceiver(context, program.getReceiver(), new TGAudioProcessorFactoryCallback<TGMidiProcessor>() {
-				public void onCreate(TGMidiProcessor processor) {
-					TGSynthChannelProcessor.this.setMidiProcessor(program.getReceiver(), processor);
-					TGSynthChannelProcessor.this.openOutputs(context, program);
-				}
-			});
+			this.openReceiver(context, program.getReceiver());
+			this.openOutputs(context, program);
 		}
 	}
 	
-	public void openReceiver(TGContext context, TGProgramElement receiver, TGAudioProcessorFactoryCallback<TGMidiProcessor> callback) {
+	public void openReceiver(TGContext context, TGProgramElement receiver) {
 		synchronized (this.lock) {
-			TGMidiProcessor mappedProcessor = (TGMidiProcessor) this.getAudioProcessor(receiver);
-			if( mappedProcessor != null && mappedProcessor.isOpen()) {
-				callback.onCreate(mappedProcessor);
-			} else {
+			TGMidiProcessor processor = (TGMidiProcessor) this.getAudioProcessor(receiver);
+			if( processor == null || !processor.isOpen()) {
 				TGSynthManager synthManager = TGSynthManager.getInstance(context);
 				TGMidiProcessorFactory factory = synthManager.findMidiProcessorFactory(receiver.getType());
 				if( factory != null ) {
-					factory.createProcessor(callback);
+					processor = factory.createProcessor();
 				}
+			}
+			if( processor != null ) {
+				this.setMidiProcessor(receiver, processor);
 			}
 		}
 	}
@@ -59,27 +56,18 @@ public class TGSynthChannelProcessor {
 		}
 	}
 	
-	public void openOutput(TGContext context, final TGProgramElement output) {
+	public void openOutput(TGContext context, TGProgramElement output) {
 		synchronized (this.lock) {
-			this.openOutput(context, output, new TGAudioProcessorFactoryCallback<TGAudioProcessor>() {
-				public void onCreate(TGAudioProcessor processor) {
-					TGSynthChannelProcessor.this.addOutputProcessor(output, processor);
-				}
-			});
-		}
-	}
-	
-	public void openOutput(TGContext context, final TGProgramElement output, TGAudioProcessorFactoryCallback<TGAudioProcessor> callback) {
-		synchronized (this.lock) {
-			TGAudioProcessor mappedProcessor = this.getAudioProcessor(output);
-			if( mappedProcessor != null && mappedProcessor.isOpen()) {
-				callback.onCreate(mappedProcessor);
-			} else {
+			TGAudioProcessor processor = this.getAudioProcessor(output);
+			if( processor == null || !processor.isOpen()) {
 				TGSynthManager synthManager = TGSynthManager.getInstance(context);
 				TGAudioProcessorFactory factory = synthManager.findAudioProcessorFactory(output.getType());
 				if( factory != null ) {
-					factory.createProcessor(callback);
+					processor = factory.createProcessor();
 				}
+			}
+			if( processor != null ) {
+				this.addOutputProcessor(output, processor);
 			}
 		}
 	}
@@ -198,6 +186,20 @@ public class TGSynthChannelProcessor {
 				}
 				buffer.mix(this.buffer);
 			}
+		}
+	}
+	
+	public boolean isBusy() {
+		synchronized (this.lock) {
+			if( this.processor != null && this.processor.isBusy()) {
+				return true;
+			}
+			for(TGAudioProcessor procesor : this.outputs) {
+				if( procesor.isBusy() ) {
+					return true;
+				}
+			}			
+			return false;
 		}
 	}
 }

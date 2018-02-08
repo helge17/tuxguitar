@@ -18,13 +18,22 @@ public class GervillSoundbankFactory {
 	
 	private static Instrument[][] defaultInstruments;
 	
+	private int locks;
+	
+	public boolean isBusy() {
+		return (this.locks != 0);
+	}
+	
 	public void create(final TGContext context, final GervillProgram program, final GervillSoundbankCallback callback) {
+		this.locks ++;
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					createInstrument(context, program, callback);
 				} catch (Exception e) {
 					e.printStackTrace();
+				} finally {
+					GervillSoundbankFactory.this.locks --;
 				}
 			}
 		}).start();

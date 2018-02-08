@@ -205,7 +205,7 @@ public class MidiPlayer{
 			
 			TGThreadManager.getInstance(this.context).start(new Runnable() {
 				public void run() {
-					runPlayStartProcess(notifyStarted);
+					runPlayStartWhenReady(notifyStarted);
 				}
 			});
 		}catch (Throwable throwable) {
@@ -214,6 +214,29 @@ public class MidiPlayer{
 		}finally{
 			this.unlock();
 		}
+	}
+	
+	public void runPlayStartWhenReady(final boolean notifyStarted) {
+		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
+			public Long process() {
+				return (runPlayStartWhenReadyProcess(notifyStarted) ? BREAK : 0l);
+			}
+		});
+	}
+	
+	public boolean runPlayStartWhenReadyProcess(boolean notifyStarted) {
+		try {
+			if(!this.getSynthesizerProxy().isBusy()) {
+				this.runPlayStartProcess(notifyStarted);
+				
+				return true;
+			}
+		} catch (Throwable throwable) {
+			this.reset();
+			
+			throwable.printStackTrace();
+		}
+		return false;
 	}
 	
 	public void runPlayStartProcess(boolean notifyStarted) {

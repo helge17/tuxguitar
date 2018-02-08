@@ -32,13 +32,15 @@ public class GervillProcessor implements TGMidiProcessor {
 	private AudioInputStream stream;
 	private Receiver receiver;
 	private GervillProgram program;
+	private GervillSoundbankFactory soundbankFactory;
 	private byte[] buffer;
 	private float[][] outputs;
 	
 	public GervillProcessor(TGContext context) {
 		this.context = context;
-		this.program = new GervillProgram();
 		this.synth = new SoftSynthesizer();
+		this.program = new GervillProgram();
+		this.soundbankFactory = new GervillSoundbankFactory();
 		this.buffer = new byte[TGAudioBuffer.CHANNELS * TGAudioBuffer.BUFFER_SIZE];
 		this.outputs = new float[TGAudioBuffer.CHANNELS][TGAudioBuffer.BUFFER_SIZE / 2];
 		for(int i = 0; i < this.outputs.length; i++) {
@@ -63,7 +65,11 @@ public class GervillProcessor implements TGMidiProcessor {
 	public boolean isOpen() {
 		return (this.buffer != null );
 	}
-
+	
+	public boolean isBusy() {
+		return (this.isOpen() && this.soundbankFactory.isBusy());
+	}
+	
 	public void finalize() {
 		this.close();
 	}
@@ -91,10 +97,9 @@ public class GervillProcessor implements TGMidiProcessor {
 				this.synth.close();
 			}
 			this.stream = this.synth.openStream(TGAudioLine.AUDIO_FORMAT, this.createSynthInfo());
-			this.receiver = this.synth.getReceiver();			
+			this.receiver = this.synth.getReceiver();
 			
-			GervillSoundbankFactory gervillSoundbankFactory = new GervillSoundbankFactory();
-			gervillSoundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
+			this.soundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
 				public void onCreate(Instrument instrument) {
 					GervillProcessor.this.loadInstrument(instrument);
 				}

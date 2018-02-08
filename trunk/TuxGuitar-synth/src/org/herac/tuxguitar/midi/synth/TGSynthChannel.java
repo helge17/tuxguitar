@@ -15,6 +15,7 @@ public class TGSynthChannel implements MidiChannel {
 	private TGSynthModel synthesizer;
 	private TGSynthChannelProcessor processor;
 	private TGSynthChannelProperties parameters;
+	private TGSynthChannelPendingQueue pendingEvents;
 	private TGProgram program;
 	private boolean customProgram;
 	
@@ -25,6 +26,7 @@ public class TGSynthChannel implements MidiChannel {
 		this.midiProgram = -1;
 		this.program = new TGProgram();
 		this.parameters = new TGSynthChannelProperties();
+		this.pendingEvents = new TGSynthChannelPendingQueue(this);
 	}
 	
 	public int getId(){
@@ -35,9 +37,10 @@ public class TGSynthChannel implements MidiChannel {
 		return this.program;
 	}
 	
-	public void loadProgram(TGProgram program) {
+	public void loadProgram(TGProgram program) throws MidiPlayerException {
 		this.program.copyFrom(program);
 		this.openProcessor();
+		this.pendingEvents.dispatch();
 	}
 	
 	public void updateProgram() {
@@ -61,6 +64,7 @@ public class TGSynthChannel implements MidiChannel {
 		if( this.processor != null ){
 			this.processor.close();
 			this.processor = null;
+			this.pendingEvents.clear();
 		}
 	}
 	
@@ -85,6 +89,8 @@ public class TGSynthChannel implements MidiChannel {
 	public void sendPitchBend(int value, int voice, boolean bendMode) throws MidiPlayerException {
 		if( this.processor != null && this.processor.getProcessor() != null ) {
 			this.processor.getProcessor().sendPitchBend(value, voice, bendMode);
+		} else {
+			this.pendingEvents.addPitchBend(value, voice, bendMode);
 		}
 	}
 	
@@ -97,10 +103,10 @@ public class TGSynthChannel implements MidiChannel {
 						this.closeProcessor();
 					}
 				}
-			}else{
-				if( this.processor != null && this.processor.getProcessor() != null ) {
-					this.processor.getProcessor().sendControlChange(controller, value);
-				}
+			} else if( this.processor != null && this.processor.getProcessor() != null ) {
+				this.processor.getProcessor().sendControlChange(controller, value);
+			} else {
+				this.pendingEvents.addControlChange(controller, value);
 			}
 		}catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
@@ -145,5 +151,9 @@ public class TGSynthChannel implements MidiChannel {
 		} else {
 			this.parameters.setValue(key, value);
 		}
+	}
+	
+	public boolean isBusy() {
+		return (this.processor != null && this.processor.isBusy());
 	}
 }

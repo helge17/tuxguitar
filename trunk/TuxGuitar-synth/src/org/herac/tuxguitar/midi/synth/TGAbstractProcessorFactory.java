@@ -4,5 +4,5 @@ public interface TGAbstractProcessorFactory<T extends TGAudioProcessor> {
 	
 	String getType();
 	
-	void createProcessor(TGAudioProcessorFactoryCallback<T> callback);
+	T createProcessor();
 }

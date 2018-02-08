@@ -10,6 +10,8 @@ public interface TGAudioProcessor {
 	
 	boolean isOpen();
 	
+	boolean isBusy();
+	
 	void fillBuffer(TGAudioBuffer buffer);
 	
 	void storeParameters(Map<String, String> parameters);

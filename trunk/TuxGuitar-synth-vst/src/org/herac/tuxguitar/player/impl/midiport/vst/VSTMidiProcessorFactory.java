@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.player.impl.midiport.vst;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessorFactoryCallback;
 import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
 import org.herac.tuxguitar.midi.synth.TGMidiProcessorFactory;
 
@@ -14,11 +13,12 @@ public class VSTMidiProcessorFactory implements TGMidiProcessorFactory {
 		return VSTType.VSTI.toString();
 	}
 	
-	public void createProcessor(TGAudioProcessorFactoryCallback<TGMidiProcessor> callback) {
+	public TGMidiProcessor createProcessor() {
 		try {
-			callback.onCreate(new VSTMidiProcessor());
+			return new VSTMidiProcessor();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

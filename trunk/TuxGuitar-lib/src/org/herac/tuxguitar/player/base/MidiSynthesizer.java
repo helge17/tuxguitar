@@ -7,4 +7,6 @@ public interface MidiSynthesizer {
 	public void closeChannel(MidiChannel midiChannel) throws MidiPlayerException;
 	
 	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException;
+	
+	public boolean isBusy() throws MidiPlayerException;
 }
