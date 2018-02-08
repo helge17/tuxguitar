@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Audio exporter plugin
+plugin.description=Audio exporter through the tuxguitar synthesizer
+plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.version=1.0
