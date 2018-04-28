@@ -6,7 +6,7 @@ import org.herac.tuxguitar.event.TGEvent;
 
 public class VSTParamsEvent extends TGEvent {
 	
-	public static final String EVENT_TYPE = "vsr-params";
+	public static final String EVENT_TYPE = "vst-params";
 	public static final String PROPERTY_ACTION = "action";
 	public static final String PROPERTY_SESSION = "session";
 	public static final String PROPERTY_PARAMS = "parameters";
