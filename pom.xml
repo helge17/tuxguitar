@@ -300,6 +300,12 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-synth-export</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-ui-toolkit-swt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
