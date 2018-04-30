@@ -51,6 +51,7 @@
 		<module>../../TuxGuitar-svg</module>
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
+		<module>../../TuxGuitar-synth-export</module>
 	</modules>
 
 	<build>
@@ -297,6 +298,12 @@
 									<destFileName>tuxguitar-synth-gervill.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-export</artifactId>
+									<destFileName>tuxguitar-synth-export.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
 								<!-- /PLUGINS -->
 
 							</artifactItems>
@@ -333,6 +340,9 @@
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-linux"/>
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-linux-x86"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-linux-qtjambi4"/>
