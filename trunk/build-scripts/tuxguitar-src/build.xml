@@ -87,6 +87,7 @@
 				<include name="TuxGuitar-synth-gervill/**"/>
 				<include name="TuxGuitar-synth-vst/**"/>
 				<include name="TuxGuitar-synth-vst-remote/**"/>
+				<include name="TuxGuitar-synth-export/**"/>
 				
 				<include name="TuxGuitar-ui-toolkit/**"/>
 				<include name="TuxGuitar-ui-toolkit-swt/**"/>
