@@ -31,6 +31,12 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 	
 	public TGResourceLoaderImpl(TGActivity activity) {
 		this.activity = activity;
+
+		synchronized (TGResourceLoaderImpl.class) {
+			if( classLoader == null ) {
+				classLoader = this.createClassLoader();
+			}
+		}
 	}
 	
 	@Override
@@ -69,7 +75,11 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 			throw new TGResourceException(e);
 		}
 	}
-	
+
+	public ClassLoader getClassLoader() throws TGResourceException {
+		return classLoader;
+	}
+
 	public ClassLoader createClassLoader() throws TGResourceException {
 		Context context = this.activity.getApplicationContext();
 		
@@ -125,14 +135,5 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 	
 	public String createLibraryPath() {
 		return this.activity.getApplicationInfo().nativeLibraryDir;
-	}
-	
-	public ClassLoader getClassLoader() throws TGResourceException {
-		synchronized (TGResourceLoaderImpl.class) {
-			if( classLoader == null ) {
-				classLoader = this.createClassLoader();
-			}
-		}
-		return classLoader;
 	}
 }
