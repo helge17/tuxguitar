@@ -17,14 +17,14 @@
             android:id="@+id/main_drawer_transport_mixer"
             style="?attr/mainDrawerImageButtonMixerStyle"
             android:layout_alignParentLeft="true"
-            android:contentDescription="@string/menu_view_channel_list"
+            android:contentDescription="@string/action_view_channel_list"
             android:gravity="left"/>
 
         <ImageButton
             android:id="@+id/main_drawer_song_info"
             style="?attr/mainDrawerImageButtonInfoStyle"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/menu_composition_change_info"
+            android:contentDescription="@string/action_change_info"
             android:gravity="right"/>
     </RelativeLayout>
 

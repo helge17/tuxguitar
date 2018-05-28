@@ -35,7 +35,7 @@ public class TGTremoloPickingDialog extends TGModalFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
-		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTremoloPickingDialog.this.updateEffect();
 				TGTremoloPickingDialog.this.close();
@@ -43,7 +43,7 @@ public class TGTremoloPickingDialog extends TGModalFragment {
 				return true;
 			}
 		});
-		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTremoloPickingDialog.this.cleanEffect();
 				TGTremoloPickingDialog.this.close();

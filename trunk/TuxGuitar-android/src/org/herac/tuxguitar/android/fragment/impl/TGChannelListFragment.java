@@ -5,9 +5,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGCachedFragment;
-import org.herac.tuxguitar.android.menu.options.TGChannelListMenu;
+import org.herac.tuxguitar.android.menu.controller.impl.fragment.TGChannelListMenu;
 
 public class TGChannelListFragment extends TGCachedFragment {
 	
@@ -23,10 +22,7 @@ public class TGChannelListFragment extends TGCachedFragment {
 	
 	@Override
 	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-		menuInflater.inflate(R.menu.menu_channel_list, menu);
-		
-		TGActivity activity = (TGActivity) getActivity();
-		TGChannelListMenu.getInstance(this.findContext()).initialize(activity, menu);
+		TGChannelListMenu.getInstance(this.findContext()).inflate(menu, menuInflater);
 	}
 	
 	public void attachInstance() {

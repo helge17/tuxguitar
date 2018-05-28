@@ -8,7 +8,7 @@ import org.herac.tuxguitar.android.action.impl.intent.TGProcessIntentAction;
 import org.herac.tuxguitar.android.drawer.TGDrawerManager;
 import org.herac.tuxguitar.android.error.TGErrorHandlerImpl;
 import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
-import org.herac.tuxguitar.android.menu.context.TGMenuContextualInflater;
+import org.herac.tuxguitar.android.menu.controller.TGMenuContextualInflater;
 import org.herac.tuxguitar.android.navigation.TGNavigationManager;
 import org.herac.tuxguitar.android.properties.TGPropertiesAdapter;
 import org.herac.tuxguitar.android.resource.TGResourceLoaderImpl;

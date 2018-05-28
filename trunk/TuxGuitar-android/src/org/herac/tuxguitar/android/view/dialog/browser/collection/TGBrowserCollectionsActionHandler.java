@@ -7,7 +7,7 @@ import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollection
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.menu.context.TGMenuController;
+import org.herac.tuxguitar.android.menu.controller.TGMenuController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;

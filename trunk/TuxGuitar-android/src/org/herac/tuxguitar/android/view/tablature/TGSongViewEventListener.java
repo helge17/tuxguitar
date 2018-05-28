@@ -6,6 +6,7 @@ import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
+import org.herac.tuxguitar.util.TGAbstractContext;
 
 public class TGSongViewEventListener implements TGEventListener {
 	
@@ -19,6 +20,11 @@ public class TGSongViewEventListener implements TGEventListener {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
 			this.songView.updateSelection();
+
+			TGAbstractContext sourceContext = event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
+			if( sourceContext != null && Boolean.TRUE.equals(sourceContext.getAttribute(TGSongViewSmartMenu.REQUEST_SMART_MENU))) {
+				this.songView.getSmartMenu().openSmartMenu(sourceContext);
+			}
 		}
 		else if( type == TGUpdateEvent.MEASURE_UPDATED ){
 			this.songView.updateMeasure(((Integer) event.getAttribute(TGUpdateMeasureEvent.PROPERTY_MEASURE_NUMBER)).intValue());

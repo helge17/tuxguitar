@@ -21,10 +21,10 @@ public class TGMainDrawerFileListAdapter extends TGMainDrawerListAdapter {
 	
 	public void createActions() {
 		this.actions = new ArrayList<TGMainDrawerFileAction>();
-		this.actions.add(new TGMainDrawerFileAction(R.string.menu_file_new, getMainDrawer().getActionHandler().createNewFileAction()));
-		this.actions.add(new TGMainDrawerFileAction(R.string.menu_file_open, getMainDrawer().getActionHandler().createOpenFileAction()));
-		this.actions.add(new TGMainDrawerFileAction(R.string.menu_file_save, getMainDrawer().getActionHandler().createSaveFileAction()));
-		this.actions.add(new TGMainDrawerFileAction(R.string.menu_file_save_as, getMainDrawer().getActionHandler().createSaveFileAsAction()));
+		this.actions.add(new TGMainDrawerFileAction(R.string.action_file_new, getMainDrawer().getActionHandler().createNewFileAction()));
+		this.actions.add(new TGMainDrawerFileAction(R.string.action_file_open, getMainDrawer().getActionHandler().createOpenFileAction()));
+		this.actions.add(new TGMainDrawerFileAction(R.string.action_file_save, getMainDrawer().getActionHandler().createSaveFileAction()));
+		this.actions.add(new TGMainDrawerFileAction(R.string.action_file_save_as, getMainDrawer().getActionHandler().createSaveFileAsAction()));
 	}
 	
 	@Override

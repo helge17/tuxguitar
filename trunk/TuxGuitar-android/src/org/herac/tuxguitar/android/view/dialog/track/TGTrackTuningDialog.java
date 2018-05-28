@@ -60,8 +60,8 @@ public class TGTrackTuningDialog extends TGModalFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_track_tuning, menu);
-		menu.findItem(R.id.menu_modal_fragment_button_add).setOnMenuItemClickListener(TGTrackTuningDialog.this.getActionHandler().createAddTuningModelAction());
-		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_add).setOnMenuItemClickListener(TGTrackTuningDialog.this.getActionHandler().createAddTuningModelAction());
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				if( TGTrackTuningDialog.this.updateTrackProperties() ) {
 					TGTrackTuningDialog.this.close();

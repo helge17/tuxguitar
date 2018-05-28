@@ -41,7 +41,7 @@ public class TGTrillDialog extends TGModalFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
-		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTrillDialog.this.updateEffect();
 				TGTrillDialog.this.close();
@@ -49,7 +49,7 @@ public class TGTrillDialog extends TGModalFragment {
 				return true;
 			}
 		});
-		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTrillDialog.this.cleanEffect();
 				TGTrillDialog.this.close();

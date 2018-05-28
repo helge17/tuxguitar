@@ -6,7 +6,7 @@ import android.view.MenuInflater;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGMenuBase;
+import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
@@ -32,9 +32,9 @@ public class TGChannelListItemMenu extends TGMenuBase {
 	}
 
 	public void initializeItems(Menu menu) {
-		this.initializeItem(menu, R.id.menu_channel_list_item_edit, this.createEditChannelAction(), true);
+		this.initializeItem(menu, R.id.action_channel_list_item_edit, this.createEditChannelAction(), true);
 		if( this.isRemovableChannel()) {
-			this.initializeItem(menu, R.id.menu_channel_list_item_remove, this.createRemoveChannelAction(), true);
+			this.initializeItem(menu, R.id.action_channel_list_item_remove, this.createRemoveChannelAction(), true);
 		}
 	}
 	
@@ -55,6 +55,6 @@ public class TGChannelListItemMenu extends TGMenuBase {
 	public TGActionProcessorListener createRemoveChannelAction() {
 		TGActionProcessor tgActionProcessor = this.createActionProcessor(TGRemoveChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel);
-		return this.createConfirmableActionProcessor(tgActionProcessor, this.getActivity().getString(R.string.menu_channel_list_item_remove_confirm_question));
+		return this.createConfirmableActionProcessor(tgActionProcessor, this.getActivity().getString(R.string.action_channel_list_item_remove_confirm_question));
 	}
 }

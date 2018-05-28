@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.android.view.tablature;
 
-import java.util.Iterator;
-
 import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -13,6 +11,10 @@ import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGString;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 public class TGSongViewAxisSelector {
 
 	private TGSongViewController controller;
@@ -21,7 +23,7 @@ public class TGSongViewAxisSelector {
 		this.controller = controller;
 	}
 	
-	public boolean select(float x, float y) {
+	public boolean select(float x, float y, boolean requestSmartMenu) {
 		if( x >= 0 && y >= 0 ){
 			TGTrackImpl track = findSelectedTrack(y);
 			if (track != null) {
@@ -33,8 +35,13 @@ public class TGSongViewAxisSelector {
 						if( string == null ){
 							string = this.controller.getCaret().getSelectedString();
 						}
-						
-						this.callMoveTo(track, measure, beat, string);
+
+						Map<String, Object> smartMenuProperties = null;
+						if( requestSmartMenu ) {
+							smartMenuProperties = this.findSmartMenuProperties(track, measure, beat, x);
+						}
+
+						this.callMoveTo(track, measure, beat, string, smartMenuProperties);
 						
 						return true;
 					}
@@ -116,13 +123,43 @@ public class TGSongViewAxisSelector {
 		
 		return string;
 	}
-	
-	private void callMoveTo(TGTrackImpl track, TGMeasureImpl measure, TGBeat beat, TGString string) {
+
+	private Map<String, Object> findSmartMenuProperties(TGTrackImpl track, TGMeasureImpl measure, TGBeat beat, float x) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(TGSongViewSmartMenu.REQUEST_SMART_MENU, true);
+
+		TGLayout layout = this.controller.getLayout();
+		float measureX1 = measure.getPosX();
+		float measureX2 = (measureX1 + measure.getWidth(layout) + measure.getSpacing());
+		float noteWidth = (((layout.getStringSpacing() - (2.0f * layout.getScale())) * 2) / 2f);
+
+		float leftX1 = measureX1;
+		float leftX2 = (leftX1 + measure.getHeaderImpl().getLeftSpacing(layout) + measure.getFirstNoteSpacing(layout) - noteWidth);
+		if( x >= leftX1 && x <= leftX2 ) {
+			map.put(TGSongViewSmartMenu.LEFT_AREA_SELECTED, true);
+		}
+
+		float rightX1 = (measureX2 - measure.getHeaderImpl().getRightSpacing(layout) + noteWidth);
+		float rightX2 = measureX2;
+		if( x >= rightX1 && x <= rightX2 ) {
+			map.put(TGSongViewSmartMenu.RIGHT_AREA_SELECTED, true);
+		}
+
+		return map;
+	}
+
+	private void callMoveTo(TGTrackImpl track, TGMeasureImpl measure, TGBeat beat, TGString string, Map<String, Object> smartMenuProperties) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.controller.getContext(), TGMoveToAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+
+		if( smartMenuProperties != null ) {
+			for(Map.Entry<String, Object> entry : smartMenuProperties.entrySet()) {
+				tgActionProcessor.setAttribute(entry.getKey(), entry.getValue());
+			}
+		}
 		tgActionProcessor.processOnNewThread();
 	}
 }

@@ -5,8 +5,8 @@ import android.view.View;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGMenuCabCallBack;
-import org.herac.tuxguitar.android.menu.context.TGMenuController;
+import org.herac.tuxguitar.android.menu.controller.TGMenuCabCallBack;
+import org.herac.tuxguitar.android.menu.controller.TGMenuController;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenCabMenuAction extends TGActionBase{
