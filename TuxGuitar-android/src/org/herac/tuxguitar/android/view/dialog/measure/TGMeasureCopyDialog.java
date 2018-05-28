@@ -39,7 +39,7 @@ public class TGMeasureCopyDialog extends TGModalFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_modal_fragment_ok, menu);
-		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGMeasureCopyDialog.this.processAction();
 				TGMeasureCopyDialog.this.close();

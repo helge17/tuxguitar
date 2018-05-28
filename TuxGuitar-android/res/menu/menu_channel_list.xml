@@ -4,9 +4,9 @@
     tools:context="org.herac.tuxguitar.android.TGActivity" >
 
     <item
-        android:id="@+id/menu_channel_list_add"
+        android:id="@+id/action_channel_list_add"
         android:icon="@drawable/ic_add_circle_outline_white_24dp"
-        android:title="@string/menu_channel_list_add"
+        android:title="@string/action_channel_list_add"
         android:showAsAction="always"/>
 
 </menu>

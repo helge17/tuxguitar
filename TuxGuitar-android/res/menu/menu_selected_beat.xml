@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_menu_duration" >
+
+    <item
+        android:id="@+id/action_change_tied_note"
+        android:checkable="true"
+        android:title="@string/action_change_tied_note"
+        android:icon="@drawable/ic_tiednote_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_change_text"
+        android:title="@string/action_change_text"
+        android:icon="@drawable/ic_text_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_clean_beat"
+        android:title="@string/action_clean_beat"
+        android:icon="@drawable/ic_delete_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_move_beats_left"
+        android:title="@string/action_move_beats_left"/>
+    <item
+        android:id="@+id/action_move_beats_right"
+        android:title="@string/action_move_beats_right"/>
+    <item
+        android:id="@+id/action_set_voice_auto"
+        android:title="@string/action_set_voice_auto"/>
+    <item
+        android:id="@+id/action_set_voice_down"
+        android:title="@string/action_set_voice_down"/>
+    <item
+        android:id="@+id/action_set_voice_up"
+        android:title="@string/action_set_voice_up"/>
+    <item
+        android:id="@+id/action_change_stroke"
+        android:title="@string/action_change_stroke"/>
+
+</menu>

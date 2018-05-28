@@ -5,7 +5,7 @@ import android.view.View;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.menu.context.TGMenuController;
+import org.herac.tuxguitar.android.menu.controller.TGMenuController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
 import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;

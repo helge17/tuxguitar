@@ -1,43 +1,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/menu_track" >
+    android:id="@+id/action_menu_track" >
 
     <item
-        android:id="@+id/menu_track_add"
-        android:title="@string/menu_track_add"/>
+        android:id="@+id/action_track_add"
+        android:title="@string/action_track_add"/>
     <item
-        android:id="@+id/menu_track_remove"
-        android:title="@string/menu_track_remove"/>
+        android:id="@+id/action_track_remove"
+        android:title="@string/action_track_remove"/>
     <item
-        android:id="@+id/menu_track_clone"
-        android:title="@string/menu_track_clone"/>
+        android:id="@+id/action_track_clone"
+        android:title="@string/action_track_clone"/>
     <item
-        android:id="@+id/menu_track_move_up"
-        android:title="@string/menu_track_move_up"/>
+        android:id="@+id/action_track_move_up"
+        android:title="@string/action_track_move_up"/>
     <item
-        android:id="@+id/menu_track_move_down"
-        android:title="@string/menu_track_move_down"/>
+        android:id="@+id/action_track_move_down"
+        android:title="@string/action_track_move_down"/>
     <item
-        android:id="@+id/menu_track_change_mute"
+        android:id="@+id/action_track_change_mute"
         android:checkable="true"
-        android:title="@string/menu_track_change_mute"/>
+        android:title="@string/action_track_change_mute"/>
     <item
-        android:id="@+id/menu_track_change_solo"
+        android:id="@+id/action_track_change_solo"
         android:checkable="true"
-        android:title="@string/menu_track_change_solo"/>
+        android:title="@string/action_track_change_solo"/>
     <item
-        android:id="@+id/menu_track_set_name"
-        android:title="@string/menu_track_set_name"/>
+        android:id="@+id/action_track_set_name"
+        android:title="@string/action_track_set_name"/>
     <item
-        android:id="@+id/menu_track_set_channel"
-        android:title="@string/menu_track_set_channel"/>
+        android:id="@+id/action_track_set_channel"
+        android:title="@string/action_track_set_channel"/>
     <item
-        android:id="@+id/menu_track_change_tuning"
-        android:title="@string/menu_track_change_tuning"
+        android:id="@+id/action_track_change_tuning"
+        android:title="@string/action_track_change_tuning"
         android:visible="false"/>
     <item
-        android:id="@+id/menu_track_change_string_count"
-        android:title="@string/menu_track_change_string_count"
+        android:id="@+id/action_track_change_string_count"
+        android:title="@string/action_track_change_string_count"
         android:visible="false"/>
 </menu>

@@ -1,15 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/menu_measure" >
+    android:id="@+id/action_menu_measure" >
 
     <item
-        android:id="@+id/menu_measure_add"
-        android:title="@string/menu_measure_add"/>
+        android:id="@+id/action_measure_add"
+        android:title="@string/action_measure_add"/>
     <item
-        android:id="@+id/menu_measure_clean"
-        android:title="@string/menu_measure_clean"/>
+        android:id="@+id/action_measure_clean"
+        android:title="@string/action_measure_clean"/>
     <item
-        android:id="@+id/menu_measure_remove"
-        android:title="@string/menu_measure_remove"/>
+        android:id="@+id/action_measure_remove"
+        android:title="@string/action_measure_remove"/>
 </menu>

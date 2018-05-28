@@ -6,9 +6,8 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGCachedFragment;
-import org.herac.tuxguitar.android.menu.options.TGMainMenu;
+import org.herac.tuxguitar.android.menu.controller.impl.fragment.TGMainMenu;
 
 public class TGMainFragment extends TGCachedFragment {
 	
@@ -24,10 +23,7 @@ public class TGMainFragment extends TGCachedFragment {
 	
 	@Override
 	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-		menuInflater.inflate(R.menu.menu_main, menu);
-		
-		TGActivity activity = (TGActivity) getActivity();
-		TGMainMenu.getInstance(this.findContext()).initialize(activity, menu);
+		TGMainMenu.getInstance(this.findContext()).inflate(menu, menuInflater);
 	}
 
 	public View findChildViewById(int id) {

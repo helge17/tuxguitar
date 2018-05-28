@@ -45,7 +45,7 @@ public class TGTrackChannelDialog extends TGModalFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_track_channel, menu);
 		menu.findItem(R.id.track_channel_dlg_settings_button).setOnMenuItemClickListener(createConfigureInstrumentsAction());
-		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTrackChannelDialog.this.updateTrackInstrument();
 				TGTrackChannelDialog.this.close();

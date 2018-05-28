@@ -1,0 +1,36 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_menu_composition" >
+
+    <item
+        android:id="@+id/action_change_repeat_open"
+        android:title="@string/action_change_repeat_open"
+        android:icon="@drawable/ic_repeat_open_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_change_repeat_close"
+        android:title="@string/action_change_repeat_close"
+        android:icon="@drawable/ic_repeat_close_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_change_repeat_alternative"
+        android:title="@string/action_change_repeat_alternative"
+        android:icon="@drawable/ic_repeat_alternative_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_change_time_signature"
+        android:title="@string/action_change_time_signature"
+        android:icon="@drawable/ic_time_signature_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_change_tempo"
+        android:title="@string/action_change_tempo"/>
+    <item
+        android:id="@+id/action_change_clef"
+        android:title="@string/action_change_clef"/>
+    <item
+        android:id="@+id/action_change_key_signature"
+        android:title="@string/action_change_key_signature"/>
+    <item
+        android:id="@+id/action_change_triplet_feel"
+        android:title="@string/action_change_triplet_feel"/>
+</menu>

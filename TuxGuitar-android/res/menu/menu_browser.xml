@@ -4,22 +4,22 @@
     tools:context="org.herac.tuxguitar.android.TGActivity" >
 
     <item
-        android:id="@+id/menu_browser_root"
+        android:id="@+id/action_browser_root"
         android:title="@string/browser_root"
         android:icon="@drawable/ic_home_white_24dp"
         android:showAsAction="always"/>
     <item
-        android:id="@+id/menu_browser_back"
+        android:id="@+id/action_browser_back"
         android:title="@string/browser_back"
         android:icon="@drawable/ic_arrow_back_white_24dp"
         android:showAsAction="always"/>
     <item
-        android:id="@+id/menu_browser_refresh"
+        android:id="@+id/action_browser_refresh"
         android:title="@string/browser_refresh"
         android:icon="@drawable/ic_refresh_white_24dp"
         android:showAsAction="always"/>
     <item
-        android:id="@+id/menu_browser_settings"
+        android:id="@+id/action_browser_settings"
         android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/browser_settings"
         android:showAsAction="always"/>

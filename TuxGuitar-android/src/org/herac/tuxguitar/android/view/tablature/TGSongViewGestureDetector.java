@@ -28,10 +28,15 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 		}
 		return true;
 	}
-	
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		this.moveToAxisPosition(e.getX(), e.getY(), true);
+	}
+
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		this.moveToAxisPosition(e.getX(), e.getY());
+		this.moveToAxisPosition(e.getX(), e.getY(), false);
 		
 		return true;
 	}
@@ -51,10 +56,11 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 		}
 	}
 	
-	private void moveToAxisPosition(Float x, Float y) {
+	private void moveToAxisPosition(Float x, Float y, Boolean requestSmartMenu) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGMoveToAxisPositionAction.NAME);
 		tgActionProcessor.setAttribute(TGMoveToAxisPositionAction.ATTRIBUTE_X, x);
 		tgActionProcessor.setAttribute(TGMoveToAxisPositionAction.ATTRIBUTE_Y, y);
+		tgActionProcessor.setAttribute(TGMoveToAxisPositionAction.ATTRIBUTE_REQUEST_SMART_MENU, requestSmartMenu);
 		tgActionProcessor.processOnNewThread();
 	}
 }

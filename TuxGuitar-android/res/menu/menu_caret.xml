@@ -4,15 +4,15 @@
     android:id="@+id/menu_caret" >
 
     <item
-        android:id="@+id/menu_caret_go_left"
-        android:title="@string/menu_caret_go_left"/>
+        android:id="@+id/action_go_left"
+        android:title="@string/action_go_left"/>
     <item
-        android:id="@+id/menu_caret_go_right"
-        android:title="@string/menu_caret_go_right"/>
+        android:id="@+id/action_go_right"
+        android:title="@string/action_go_right"/>
     <item
-        android:id="@+id/menu_caret_go_up"
-        android:title="@string/menu_caret_go_up"/>
+        android:id="@+id/action_go_up"
+        android:title="@string/action_go_up"/>
     <item
-        android:id="@+id/menu_caret_go_down"
-        android:title="@string/menu_caret_go_down"/>
+        android:id="@+id/action_go_down"
+        android:title="@string/action_go_down"/>
 </menu>

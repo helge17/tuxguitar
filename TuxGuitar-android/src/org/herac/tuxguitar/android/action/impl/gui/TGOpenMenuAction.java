@@ -3,8 +3,8 @@ package org.herac.tuxguitar.android.action.impl.gui;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.android.action.TGActionBase;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.context.TGMenuContextualInflater;
-import org.herac.tuxguitar.android.menu.context.TGMenuController;
+import org.herac.tuxguitar.android.menu.controller.TGMenuContextualInflater;
+import org.herac.tuxguitar.android.menu.controller.TGMenuController;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenMenuAction extends TGActionBase{

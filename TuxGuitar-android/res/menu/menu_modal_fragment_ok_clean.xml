@@ -4,14 +4,14 @@
     tools:context="org.herac.tuxguitar.android.TGActivity" >
 
     <item
-        android:id="@+id/menu_modal_fragment_button_clean"
-        android:title="@string/menu_modal_fragment_button_clean"
+        android:id="@+id/action_clean"
+        android:title="@string/global_button_clean"
         android:icon="@drawable/ic_delete_white_24dp"
         android:showAsAction="always"/>
 
     <item
-        android:id="@+id/menu_modal_fragment_button_ok"
-        android:title="@string/menu_modal_fragment_button_ok"
+        android:id="@+id/action_ok"
+        android:title="@string/global_button_ok"
         android:icon="@drawable/ic_send_white_24dp"
         android:showAsAction="always"/>
 </menu>

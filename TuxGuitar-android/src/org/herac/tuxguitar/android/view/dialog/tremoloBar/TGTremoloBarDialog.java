@@ -42,7 +42,7 @@ public class TGTremoloBarDialog extends TGModalFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.menu_modal_fragment_ok_clean, menu);
-		menu.findItem(R.id.menu_modal_fragment_button_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTremoloBarDialog.this.updateEffect();
 				TGTremoloBarDialog.this.close();
@@ -50,7 +50,7 @@ public class TGTremoloBarDialog extends TGModalFragment {
 				return true;
 			}
 		});
-		menu.findItem(R.id.menu_modal_fragment_button_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+		menu.findItem(R.id.action_clean).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TGTremoloBarDialog.this.cleanEffect();
 				TGTremoloBarDialog.this.close();

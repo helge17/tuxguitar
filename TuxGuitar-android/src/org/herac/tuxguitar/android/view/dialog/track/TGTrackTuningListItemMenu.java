@@ -4,7 +4,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.menu.context.TGMenuBase;
+import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
 
 public class TGTrackTuningListItemMenu extends TGMenuBase {
 
@@ -24,7 +24,7 @@ public class TGTrackTuningListItemMenu extends TGMenuBase {
 	}
 	
 	public void initializeItems(Menu menu) {
-		this.initializeItem(menu, R.id.menu_track_tuning_list_item_edit, this.dialog.getActionHandler().createEditTuningModelAction(this.model), true);
-		this.initializeItem(menu, R.id.menu_track_tuning_list_item_remove, this.dialog.getActionHandler().createRemoveTuningModelAction(this.model), true);
+		this.initializeItem(menu, R.id.action_track_tuning_list_item_edit, this.dialog.getActionHandler().createEditTuningModelAction(this.model), true);
+		this.initializeItem(menu, R.id.action_track_tuning_list_item_remove, this.dialog.getActionHandler().createRemoveTuningModelAction(this.model), true);
 	}
 }

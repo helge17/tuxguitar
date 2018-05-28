@@ -1,24 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/menu_edit" >
+    android:id="@+id/action_menu_edit" >
 
     <item
-        android:id="@+id/menu_edit_undo"
-        android:title="@string/menu_edit_undo"/>
+        android:id="@+id/action_undo"
+        android:title="@string/action_undo"/>
     <item
-        android:id="@+id/menu_edit_redo"
-        android:title="@string/menu_edit_redo"/>
+        android:id="@+id/action_redo"
+        android:title="@string/action_redo"/>
     <item
-        android:id="@+id/menu_edit_set_voice_1"
-        android:title="@string/menu_edit_set_voice_1"/>
+        android:id="@+id/action_set_voice_1"
+        android:title="@string/action_set_voice_1"/>
     <item
-        android:id="@+id/menu_edit_set_voice_2"
-        android:title="@string/menu_edit_set_voice_2"/>
+        android:id="@+id/action_set_voice_2"
+        android:title="@string/action_set_voice_2"/>
     <item
-        android:id="@+id/menu_edit_copy"
-        android:title="@string/menu_edit_copy"/>
+        android:id="@+id/action_copy"
+        android:title="@string/action_copy"/>
     <item
-        android:id="@+id/menu_edit_paste"
-        android:title="@string/menu_edit_paste"/>
+        android:id="@+id/action_paste"
+        android:title="@string/action_paste"/>
 </menu>

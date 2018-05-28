@@ -4,44 +4,44 @@
     tools:context="org.herac.tuxguitar.android.TGActivity" >
 
     <item
-        android:id="@+id/menu_tab_keyboard_toggle"
+        android:id="@+id/action_tab_keyboard_toggle"
         android:icon="@drawable/ic_edit_white_24dp"
-        android:title="@string/menu_tab_keyboard_toggle"
+        android:title="@string/action_tab_keyboard_toggle"
         android:showAsAction="always"/>
     <item
-        android:id="@+id/menu_transport_play"
+        android:id="@+id/action_transport_play"
         android:icon="@drawable/ic_play_circle_outline_white_24dp"
-        android:title="@string/menu_transport_play"
+        android:title="@string/action_transport_play"
         android:showAsAction="always"/>
     <item
-        android:id="@+id/menu_edit"
-        android:title="@string/menu_edit"/>
+        android:id="@+id/action_menu_edit"
+        android:title="@string/action_menu_edit"/>
     <item
-        android:id="@+id/menu_view"
-        android:title="@string/menu_view"/>
+        android:id="@+id/action_menu_view"
+        android:title="@string/action_menu_view"/>
     <item
-        android:id="@+id/menu_composition"
-        android:title="@string/menu_composition"/>
+        android:id="@+id/action_menu_composition"
+        android:title="@string/action_menu_composition"/>
     <item
-        android:id="@+id/menu_track"
-        android:title="@string/menu_track"/>
+        android:id="@+id/action_menu_track"
+        android:title="@string/action_menu_track"/>
     <item
-        android:id="@+id/menu_measure"
-        android:title="@string/menu_measure"/>
+        android:id="@+id/action_menu_measure"
+        android:title="@string/action_menu_measure"/>
     <item
-        android:id="@+id/menu_beat"
-        android:title="@string/menu_beat"/>
+        android:id="@+id/action_menu_beat"
+        android:title="@string/action_menu_beat"/>
     <item
-        android:id="@+id/menu_duration"
-        android:title="@string/menu_duration"/>
+        android:id="@+id/action_menu_duration"
+        android:title="@string/action_menu_duration"/>
     <item
-        android:id="@+id/menu_effect"
-        android:title="@string/menu_effect"/>
+        android:id="@+id/action_menu_effect"
+        android:title="@string/action_menu_effect"/>
     <item
-        android:id="@+id/menu_velocity"
-        android:title="@string/menu_velocity"/>
+        android:id="@+id/action_menu_velocity"
+        android:title="@string/action_menu_velocity"/>
 
     <item
-        android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"/>
+        android:id="@+id/action_menu_settings"
+        android:title="@string/action_menu_settings"/>
 </menu>
