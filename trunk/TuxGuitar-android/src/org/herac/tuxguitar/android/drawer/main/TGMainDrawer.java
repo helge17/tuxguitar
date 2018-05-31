@@ -13,11 +13,13 @@ import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainDrawer extends RelativeLayout {
-	
+
+	private static final String ATTRIBUTE_SELECTED_TAB = (TGMainDrawer.class.getName() + "-selectedTab");
+
 	private TGMainDrawerActionHandler actionHandler;
 	private TGMainDrawerListAdapter fileListAdapter;
 	private TGMainDrawerListAdapter trackListAdapter;
-	
+
 	public TGMainDrawer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
@@ -54,37 +56,47 @@ public class TGMainDrawer extends RelativeLayout {
 	}
 
 	public void createTabs() {
+		Object selectedTab = this.findContext().getAttribute(ATTRIBUTE_SELECTED_TAB);
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.main_drawer_tabHost);
 
 		this.createTabSelectionListener(tabLayout);
-		this.createTab(tabLayout, R.id.main_drawer_file_tab, this.findActivity().getString(R.string.main_drawer_file));
-		this.createTab(tabLayout, R.id.main_drawer_track_tab, this.findActivity().getString(R.string.main_drawer_tracks));
+		this.createTab(tabLayout, R.id.main_drawer_file_tab, this.findActivity().getString(R.string.main_drawer_file), selectedTab);
+		this.createTab(tabLayout, R.id.main_drawer_track_tab, this.findActivity().getString(R.string.main_drawer_tracks), selectedTab);
 	}
 
-	public void createTab(TabLayout tabLayout, int layoutId, String indicator) {
+	public void createTab(TabLayout tabLayout, int layoutId, String indicator, Object selectedTab) {
 		TabLayout.Tab tab = tabLayout.newTab();
 		tab.setTag(layoutId);
 		tab.setText(indicator);
 		tabLayout.addTab(tab);
+
+		if( selectedTab != null && selectedTab.equals(layoutId)) {
+			tab.select();
+		}
 	}
 
 	public void createTabSelectionListener(TabLayout tabLayout) {
 		tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			public void onTabSelected(TabLayout.Tab tab) {
-				updateVisibility((Integer) tab.getTag(), View.VISIBLE);
+				onTabSelectionUpdate(tab, true);
 			}
 
 			public void onTabUnselected(TabLayout.Tab tab){
-				updateVisibility((Integer) tab.getTag(), View.GONE);
+				onTabSelectionUpdate(tab, false);
 			}
+
 			public void onTabReselected(TabLayout.Tab tab){
 			}
 		});
 	}
 
-	public void updateVisibility(Integer tabId, Integer visibility) {
-		if( tabId != null ) {
-			findViewById(tabId).setVisibility(visibility);
+	public void onTabSelectionUpdate(TabLayout.Tab tab, Boolean selected) {
+		Object tag = tab.getTag();
+		if( tag != null ) {
+			findViewById((Integer) tag).setVisibility(selected ? View.VISIBLE : View.GONE);
+		}
+		if( selected ) {
+			this.findContext().setAttribute(ATTRIBUTE_SELECTED_TAB, tag);
 		}
 	}
 
