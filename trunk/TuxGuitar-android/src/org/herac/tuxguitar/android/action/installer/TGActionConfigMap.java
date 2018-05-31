@@ -58,6 +58,7 @@ import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
 import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.android.action.listener.cache.TGUpdateController;
 import org.herac.tuxguitar.android.action.listener.cache.controller.TGUpdateAddedMeasureController;
@@ -388,6 +389,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//view actions
 		this.map(TGToggleTabKeyboardAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
+		this.map(TGShowSmartMenuAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);
 		
 		//browser actions
 		this.map(TGBrowserCloseAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);

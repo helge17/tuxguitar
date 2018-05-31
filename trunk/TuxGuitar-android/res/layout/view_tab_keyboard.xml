@@ -110,7 +110,9 @@
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_left"
 		            style="?attr/tabKeyBoardImageButtonLeftStyle"/>
-				<Space android:layout_gravity="fill" />
+				<ImageButton
+					android:id="@+id/tab_kb_button_select"
+					style="?attr/tabKeyBoardImageButtonSelectStyle"/>
 		        <ImageButton
 		            android:id="@+id/tab_kb_button_right"
 		            style="?attr/tabKeyBoardImageButtonRightStyle"/>

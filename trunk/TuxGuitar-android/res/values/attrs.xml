@@ -50,7 +50,8 @@
 		<attr name="tabKeyBoardImageButtonLeftStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonUpStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonDownStyle" format="reference"/>
-		
+		<attr name="tabKeyBoardImageButtonSelectStyle" format="reference"/>
+
 		<attr name="mainDrawerListItemStyle" format="reference"/>
 		<attr name="mainDrawerImageButtonStyle" format="reference"/>
 		<attr name="mainDrawerImageButtonMixerStyle" format="reference"/>
